@@ -1,5 +1,8 @@
 <template>
-  <div class="home">润才之旅正式开始……</div>
+  <div class="home">
+    润才之旅正式开始……
+    <router-view />
+  </div>
 </template>
 
 <script>

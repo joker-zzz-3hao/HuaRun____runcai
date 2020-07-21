@@ -64,7 +64,7 @@
 
 <script>
 export default {
-  name: 'home',
+  name: 'overview',
   components: {
   },
   data() {
