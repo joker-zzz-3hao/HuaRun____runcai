@@ -6,7 +6,7 @@
 
 <script>
 
-import temp from '@/components/temp.vue';
+import temp from '@/components/temp';
 
 export default {
   name: 'home',
