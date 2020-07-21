@@ -13,6 +13,25 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    // don't require .vue extension when importing
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+      vue: 'never'
+    }],
+    // disallow reassignment of function parameters
+    // disallow parameter object manipulation except for specific exclusions
+    'no-param-reassign': ['error', {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'state', // for vuex state
+        'acc', // for reduce accumulators
+        'e' // for e.returnvalue
+      ]
+    }],
+    // allow optionalDependencies
+    'import/no-extraneous-dependencies': ['error', {
+      optionalDependencies: ['test/unit/index.js']
+    }],
     'max-len': ['error', {
       "code": 124,// vscode代码格式化一行最大字符就是124，所以这里要用124
       "tabWidth": 2,
@@ -25,5 +44,13 @@ module.exports = {
       "ignoreTemplateLiterals": true,// ignores lines that contain a template literal
       "ignoreRegExpLiterals": true,// ignores lines that contain a RegExp literal
     }],
+    'no-console': ['off'],
+    'consistent-return': ['off'],
+    'no-underscore-dangle': ['off'],
+    'eqeqeq': ['off'],
+    'no-param-reassign': ['off'],
+    'eol-last': ['off'],
+    'linebreak-style': ['off'],
+    'no-restricted-syntax': ['off'],
   },
 };
