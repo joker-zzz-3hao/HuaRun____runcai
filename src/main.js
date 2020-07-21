@@ -6,7 +6,7 @@ import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';
 
-Vue.use(Element)
+Vue.use(Element);
 
 Vue.config.productionTip = false;
 
