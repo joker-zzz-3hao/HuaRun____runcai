@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import consoleJs from './console';
+import demoJs from './demo';
 
 Vue.use(VueRouter);
-
-const routes = [...consoleJs];
+const routes = [...consoleJs, ...demoJs];
 
 const router = new VueRouter({
   routes,

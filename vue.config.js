@@ -44,20 +44,20 @@ module.exports = {
       // 为开发环境修改配置...
     }
   },
-  // devServer: {
-  //   open: true, // 是否自动弹出浏览器页面
-  //   host: 'localhost', // 表示启动的时候使用的域名，默认可以不写，则是使用localhost和本机IP
-  //   port: '8081', // 设置端口号
-  //   https: false, // 是否使用https协议
-  //   hotOnly: false, // 是否开启热更新
-  //   proxy: {
-  //     '/gateway/account-admin': {
-  //       target: 'https://portal-test.crcloud.com',
-  //       changeOrigin: true, // 是否跨域，虚拟的站点需要更管origin
-  //       // pathRewrite: {
-  //       //   '^/gateway/account-admin': '',
-  //       // }
-  //     },
-  //   },
-  // },
+  devServer: {
+    open: false, // 是否自动弹出浏览器页面
+    host: 'localhost', // 表示启动的时候使用的域名，默认可以不写，则是使用localhost和本机IP
+    port: '8081', // 设置端口号
+    https: false, // 是否使用https协议
+    hotOnly: false, // 是否开启热更新
+    proxy: {
+      '/gateway/account-admin': {
+        target: 'https://portal-test.crcloud.com',
+        changeOrigin: true, // 是否跨域，虚拟的站点需要更管origin
+        // pathRewrite: {
+        //   '^/gateway/account-admin': '',
+        // }
+      },
+    },
+  },
 };
