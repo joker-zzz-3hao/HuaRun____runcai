@@ -1,17 +1,12 @@
 <template>
-  <div class="home">
-    <temp msg="Welcome to Your Vue.js App" />
-  </div>
+  <div class="home">润才之旅正式开始……</div>
 </template>
 
 <script>
 
-import temp from '@/components/temp.vue';
-
 export default {
   name: 'home',
   components: {
-    temp,
   },
 };
 </script>
