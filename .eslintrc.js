@@ -11,7 +11,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'no-console': 'warn',
+    'no-console': 'off',
     'no-debugger': 'warn',
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
