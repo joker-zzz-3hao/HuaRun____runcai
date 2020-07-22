@@ -1,4 +1,5 @@
 const apiList = {
+  mock: 'https://portal-test.crcloud.com',
   sit: 'https://portal-test.crcloud.com',
   pre: 'https://portal-pre.crcloud.com',
   prod: 'https://portal-prod.crcloud.com',
