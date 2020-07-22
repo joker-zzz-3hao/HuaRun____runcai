@@ -5,8 +5,6 @@ export default class Server {
     this.ERROR_MSG = '服务异常，请联系管理员';
   }
 
-
-
   _customError() {
     return {
       data: [],

@@ -1,5 +1,8 @@
-console.log(process.env.NODE_ENV);
+const path = require('path');
+const apiMocker = require('mocker-api');
+const proxyConfig = require('./proxyIndex');
 
+const isMock = !!process.env.VUE_APP_MOCK;
 module.exports = {
   // 生成环境部署路径，默认为'/'
   publicPath: './',
@@ -47,17 +50,17 @@ module.exports = {
   devServer: {
     open: false, // 是否自动弹出浏览器页面
     host: 'localhost', // 表示启动的时候使用的域名，默认可以不写，则是使用localhost和本机IP
-    port: '8081', // 设置端口号
+    port: '8080', // 设置端口号
     https: false, // 是否使用https协议
     hotOnly: false, // 是否开启热更新
-    proxy: {
-      '/gateway/account-admin': {
-        target: 'https://portal-test.crcloud.com',
-        changeOrigin: true, // 是否跨域，虚拟的站点需要更管origin
-        // pathRewrite: {
-        //   '^/gateway/account-admin': '',
-        // }
-      },
+    proxy: proxyConfig,
+    before(app) {
+      if (isMock === true) {
+        apiMocker(app, path.resolve('./mocker/index.js'), {
+          proxy: {},
+          changeHost: true,
+        });
+      }
     },
   },
 };

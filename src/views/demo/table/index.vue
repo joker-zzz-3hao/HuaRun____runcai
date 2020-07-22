@@ -19,23 +19,55 @@
         </tr>
       </draggable>
     </div>
+    <el-input v-model="obj.name"></el-input>
+    <el-input v-model="objName"></el-input>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import CONST from './const';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'crcloudTable',
   data() {
     return {
       CONST,
+      server,
       rowDrag: true,
+      obj: {
+        name: 'chenxiang',
+      },
+      objName: 'chenxiang',
     };
   },
   components: {
     draggable,
+  },
+  mounted() {
+    // this.server.getMockTable().then((res) => {
+    //   console.log(res);
+    // });
+    // this.server.productClassifyAllInfo().then((res) => {
+    //   console.log(res);
+    // });
+  },
+  methods: {
+    getColDragData() {},
+  },
+  watch: {
+    // obj: {
+    //   deep: true,
+    //   handler: (newVal) => {
+    //     console.log(newVal.name);
+    //   },
+    // },
+    // objName(newVal) {
+    //   console.log(newVal);
+    // },
   },
 };
 </script>
