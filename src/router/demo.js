@@ -12,6 +12,16 @@ export default [
         name: 'table',
         component: () => import('@/views/demo/table/index'),
       },
+      // {
+      //   path: '/tree',
+      //   name: 'tree',
+      //   component: () => import('@/views/demo/tree/tree'),
+      // },
+      {
+        path: '/groupdrag',
+        name: 'groupdrag',
+        component: () => import('@/views/demo/draggable/list'),
+      },
     ],
   },
 ];
