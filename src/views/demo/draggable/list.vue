@@ -5,10 +5,10 @@
       <draggable
         class="list-group"
         :list="list1"
-        group="people"
         :clone="cloneDog"
         @end="onMove"
         id="norun"
+        :options="options"
       >
         <div class="list-group-item" v-for="(element, index) in list1" :key="element.name">
           {{ element.name }} {{ index }}
@@ -23,10 +23,10 @@
       <draggable
         class="list-group"
         :list="list2"
-        group="people"
         id="running"
         :clone="cloneDog"
         @end="onMove"
+        :options="options"
       >
         <div class="list-group-item" v-for="(element, index) in list2" :key="element.name">
           {{ element.name }} {{ index }}
@@ -41,12 +41,17 @@
       <draggable
         class="list-group"
         :list="list3"
-        group="people"
         id="end"
         :clone="cloneDog"
         @end="onMove"
+        :options="options"
       >
-        <div class="list-group-item" v-for="(element, index) in list3" :key="element.name">
+        <div
+          :id="element.name"
+          class="list-group-item"
+          v-for="(element, index) in list3"
+          :key="element.name"
+        >
           {{ element.name }} {{ index }}
           <p>{{element.okr}}</p>
           <p>{{element.status}}</p>
@@ -109,6 +114,13 @@ export default {
       changeid: '',
       removeid: '',
       item: {},
+      options: {
+        group: 'people',
+        ghostClass: 'chosendiv',
+        // dragClass: 'dragitem',
+        animation: 0,
+      },
+
     };
   },
   methods: {
@@ -134,10 +146,17 @@ export default {
         this.item.status = '已完成';
       }
     },
+    onstart(evt) {
+      console.log(evt.dragged);
+      evt.dragged.className = `${evt.dragged.className} ghost`;
+    },
   },
 };
 </script>
 <style  scoped>
+.list-group {
+  height: 1500px;
+}
 .list-group-item {
   border: 1px solid rgb(0, 0, 0);
   width: 80%;
@@ -150,5 +169,17 @@ export default {
 }
 .col-4 {
   width: 25%;
+}
+.ghost {
+  background: #c85bfb;
+}
+
+.chosendiv {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.dragitem {
+  /* background: #c85bfb; */
+  border: 1px solid rgb(0, 0, 0);
 }
 </style>
