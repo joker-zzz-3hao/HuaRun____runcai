@@ -22,6 +22,11 @@ export default [
         name: 'groupdrag',
         component: () => import('@/views/demo/draggable/list'),
       },
+      {
+        path: '/simplelist',
+        name: 'simplelist',
+        component: () => import('@/views/demo/draggable/simplelist'),
+      },
     ],
   },
 ];
