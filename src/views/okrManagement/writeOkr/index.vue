@@ -1,10 +1,10 @@
 <template>
-  <div class="home">okrAssess考核</div>
+  <div class="home">我要写OKR</div>
 </template>
 
 <script>
 export default {
-  name: 'okrAssess',
+  name: 'writeOkr',
   components: {
   },
 };

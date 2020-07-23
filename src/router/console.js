@@ -18,6 +18,30 @@ export default [
         name: 'overview',
         component: () => import('@/views/overview/index'),
       },
+      {
+        // OKR地图
+        path: 'okrMaps',
+        name: 'okrMaps',
+        component: () => import('@/views/okrManagement/okrMaps/index'),
+      },
+      {
+        // 我的OKR
+        path: 'myOkr',
+        name: 'myOkr',
+        component: () => import('@/views/okrManagement/myOkr/index'),
+      },
+      {
+        // OKR考核
+        path: 'okrAssess',
+        name: 'okrAssess',
+        component: () => import('@/views/okrManagement/okrAssess/index'),
+      },
+      {
+        // 写OKR
+        path: 'writeOkr',
+        name: 'writeOkr',
+        component: () => import('@/views/okrManagement/writeOkr/index'),
+      },
     ],
   },
 ];
