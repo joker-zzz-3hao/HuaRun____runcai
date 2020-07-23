@@ -5,13 +5,14 @@
       <draggable
         class="list-group"
         :list="list1"
-        group="people"
         :clone="cloneDog"
         @end="onMove"
         id="norun"
+        :options="options"
       >
         <div class="list-group-item" v-for="(element, index) in list1" :key="element.name">
-          {{ element.name }} {{ index }}
+          <p>序号：{{index}}</p>
+          {{ element.name }} {{ element.id }}
           <p>{{element.okr}}</p>
           <p>{{element.status}}</p>
         </div>
@@ -23,13 +24,14 @@
       <draggable
         class="list-group"
         :list="list2"
-        group="people"
         id="running"
         :clone="cloneDog"
         @end="onMove"
+        :options="options"
       >
         <div class="list-group-item" v-for="(element, index) in list2" :key="element.name">
-          {{ element.name }} {{ index }}
+          <p>序号：{{index}}</p>
+          {{ element.name }} {{ element.id }}
           <p>{{element.okr}}</p>
           <p>{{element.status}}</p>
         </div>
@@ -41,13 +43,14 @@
       <draggable
         class="list-group"
         :list="list3"
-        group="people"
         id="end"
         :clone="cloneDog"
         @end="onMove"
+        :options="options"
       >
         <div class="list-group-item" v-for="(element, index) in list3" :key="element.name">
-          {{ element.name }} {{ index }}
+          <p>序号：{{index}}</p>
+          {{ element.name }} {{ element.id }}
           <p>{{element.okr}}</p>
           <p>{{element.status}}</p>
         </div>
@@ -109,6 +112,12 @@ export default {
       changeid: '',
       removeid: '',
       item: {},
+      options: {
+        group: 'people',
+        ghostClass: 'chosendiv', // 占位影子
+        animation: 150, // ms动画排序速度
+        // dragClass: 'dragitem', // 被拖拽元素
+      },
     };
   },
   methods: {
@@ -139,7 +148,7 @@ export default {
 </script>
 <style  scoped>
 .list-group {
-  height: 1500px;
+  height: 300px;
 }
 .list-group-item {
   border: 1px solid rgb(0, 0, 0);
@@ -153,5 +162,10 @@ export default {
 }
 .col-4 {
   width: 25%;
+}
+
+.chosendiv {
+  opacity: 0.3;
+  background: #c8ebfb;
 }
 </style>
