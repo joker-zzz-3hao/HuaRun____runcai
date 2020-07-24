@@ -27,6 +27,11 @@ export default [
         name: 'simplelist',
         component: () => import('@/views/demo/draggable/simplelist'),
       },
+      {
+        path: '/nested',
+        name: 'nested',
+        component: () => import('@/views/demo/draggable/index'),
+      },
     ],
   },
 ];
