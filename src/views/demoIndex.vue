@@ -16,6 +16,7 @@
           <el-menu-item index="table">拖拽表格</el-menu-item>
           <el-menu-item index="simplelist">拖拽列表</el-menu-item>
           <el-menu-item index="nested">拖拽嵌套</el-menu-item>
+          <el-menu-item index="tabletree">表格树</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-scrollbar>
@@ -38,7 +39,7 @@ export default {
     console.log(this.$router);
   },
   methods: {
-    open(index) {
+    handleOpen(index) {
       this.closeItem = index;
     },
     selectMenu(index) {
