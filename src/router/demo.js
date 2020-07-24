@@ -32,6 +32,11 @@ export default [
         name: 'nested',
         component: () => import('@/views/demo/draggable/index'),
       },
+      {
+        path: '/tabletree',
+        name: 'tabletree',
+        component: () => import('@/views/demo/tree/tabletree'),
+      },
     ],
   },
 ];
