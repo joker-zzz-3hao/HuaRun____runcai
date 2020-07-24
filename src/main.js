@@ -10,7 +10,7 @@ import store from './store';
 import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';
-import './quasar';
+// import './quasar';
 
 Vue.use(Element);
 Vue.use(animated);
