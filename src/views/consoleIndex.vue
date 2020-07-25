@@ -1,8 +1,7 @@
 <template>
-  <div class="home">
-    润才之旅正式开始……
-    <router-view />
-  </div>
+  <el-scrollbar class="console-layout">
+    <router-view class="view-wrap" />
+  </el-scrollbar>
 </template>
 
 <script>

@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import consoleJs from './console';
+import loginJs from './login';
 import demoJs from './demo';
 
 Vue.use(VueRouter);
-const routes = [...consoleJs, ...demoJs];
+const routes = [...consoleJs, ...loginJs, ...demoJs];
 
 const router = new VueRouter({
   routes,

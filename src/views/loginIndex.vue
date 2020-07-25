@@ -1,10 +1,12 @@
 <template>
-  <div class="home">润才之旅正式开始……</div>
+  <el-scrollbar class="login-layout">
+    <router-view class="view-wrap" />
+  </el-scrollbar>
 </template>
 
 <script>
 export default {
-  name: 'home',
+  name: 'loginIndex',
   components: {
   },
 };
