@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>表格树</p>
     <el-table
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"
@@ -12,6 +13,24 @@
       <el-table-column prop="name" label="负责人" sortable width="180"></el-table-column>
       <el-table-column prop="address" label="目标"></el-table-column>
     </el-table>
+
+    <p>展开行</p>
+
+    <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <dl v-for="item in props.row.children" :key="item.id">
+            <dd>{{item.date}}</dd>
+            <dd>{{item.name}}</dd>
+            <dd>{{item.address}}</dd>
+          </dl>
+        </template>
+      </el-table-column>
+      <el-table-column prop="date" label="名称" sortable width="180"></el-table-column>
+      <el-table-column prop="name" label="负责人" sortable width="180"></el-table-column>
+      <el-table-column prop="address" label="目标"></el-table-column>
+    </el-table>
+
     <p>懒加载</p>
     <el-table
       :data="tableData1"

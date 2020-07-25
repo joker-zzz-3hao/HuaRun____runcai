@@ -37,6 +37,21 @@ export default [
         name: 'tabletree',
         component: () => import('@/views/demo/tree/tabletree'),
       },
+      {
+        path: '/tree',
+        name: 'tree',
+        component: () => import('@/views/demo/tree/tree'),
+      },
+      {
+        path: '/elementTree',
+        name: 'elementTree',
+        component: () => import('@/views/demo/tree/elementTree'),
+      },
+      {
+        path: '/svgtree',
+        name: 'svgtree',
+        component: () => import('@/views/demo/tree/svgtree'),
+      },
     ],
   },
 ];
