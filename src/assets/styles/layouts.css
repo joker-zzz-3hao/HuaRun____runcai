@@ -1,5 +1,6 @@
 /* 整体框架布局 */
 .console-layout,
+.admin-layout,
 .view-wrap {
   height: 100%;
 }
