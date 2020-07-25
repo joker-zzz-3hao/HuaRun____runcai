@@ -16,30 +16,40 @@ export default [
         // 综合首页
         path: 'overview',
         name: 'overview',
+        meta: {
+        },
         component: () => import('@/views/overview/index'),
       },
       {
         // OKR地图
         path: 'okrMaps',
         name: 'okrMaps',
+        meta: {
+        },
         component: () => import('@/views/okrManagement/okrMaps/index'),
       },
       {
         // 我的OKR
         path: 'myOkr',
         name: 'myOkr',
+        meta: {
+        },
         component: () => import('@/views/okrManagement/myOkr/index'),
       },
       {
         // OKR考核
         path: 'okrAssess',
         name: 'okrAssess',
+        meta: {
+        },
         component: () => import('@/views/okrManagement/okrAssess/index'),
       },
       {
         // 写OKR
         path: 'writeOkr',
         name: 'writeOkr',
+        meta: {
+        },
         component: () => import('@/views/okrManagement/writeOkr/index'),
       },
     ],

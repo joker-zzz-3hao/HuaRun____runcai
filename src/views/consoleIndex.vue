@@ -9,6 +9,10 @@ export default {
   name: 'consoleIndex',
   components: {
   },
+  data() {
+    return {
+    };
+  },
 };
 </script>
 

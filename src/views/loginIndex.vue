@@ -1,13 +1,17 @@
 <template>
-  <el-scrollbar class="login-layout">
+  <section class="login-layout">
     <router-view class="view-wrap" />
-  </el-scrollbar>
+  </section>
 </template>
 
 <script>
 export default {
   name: 'loginIndex',
   components: {
+  },
+  data() {
+    return {
+    };
   },
 };
 </script>

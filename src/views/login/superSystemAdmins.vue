@@ -1,5 +1,5 @@
 <template>
-  <div class="home">我是超级系统管理员哦，牛比不</div>
+  <div class="login-admin">我是超级系统管理员哦，牛比不</div>
 </template>
 
 <script>
