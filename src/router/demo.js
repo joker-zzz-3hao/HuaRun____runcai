@@ -42,11 +42,6 @@ export default [
         name: 'elementTree',
         component: () => import('@/views/demo/tree/elementTree'),
       },
-      {
-        path: '/svgtree',
-        name: 'svgtree',
-        component: () => import('@/views/demo/tree/svgtree'),
-      },
     ],
   },
 ];
