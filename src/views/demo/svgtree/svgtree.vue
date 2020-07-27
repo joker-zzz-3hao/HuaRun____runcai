@@ -12,6 +12,7 @@
           @click="toggle(v)"
         >
           <div class="text">
+            <!-- 卡片里的内容 -->
             <div class="node_title">
               <span
                 :class="v.tlevel == '0' ? 'pink':'blue'"
@@ -135,10 +136,9 @@ export default {
     },
     // 初始化数据： 计算deep等
     initData(data) {
-      console.log('data', data);
-      const keys = {};
+      const keys = {}; // 生成一个以id为key的数组
       let root = null;
-      const levels = [];
+      const levels = []; // 层级数组
 
       if (!data && !(data.length > 0)) {
         return;
@@ -156,43 +156,45 @@ export default {
       });
       data.forEach((v) => {
         if (v.fatherId || v.fatherId > 0) {
-          const p = keys[v.fatherId];
-          p.children = p.children || [];
-          p.children.push(v);
+          const p = keys[v.fatherId]; // p为v的上一级
+          p.children = p.children || []; // 创建p的子节点数组
+          p.children.push(v); // 把当前节点放到p的子节点数组里
           v.parent = p;
-          v.deep = p.deep + 1;
+          v.deep = p.deep + 1; // 深度为p的深度+1
           // v.left = v.deep * 150 + 10;
           v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
-          v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0;
-          v.open = v.deep < 1;
-          v.show = v.deep < 2;
+          v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
+          v.open = v.deep < 1; // 除根节点默认open为false
+          v.show = v.deep < 2; // 大于2层默认show为false
         } else {
           root = v;
           v.open = true;
           v.show = true;
         }
       });
-      data.sort(this.compare);
+      data.sort(this.compare); // 排序
       data.forEach((v) => {
-        levels[v.deep] = levels[v.deep] || [];
-        levels[v.deep].push(v);
-        v.prev = levels[v.deep][levels[v.deep].length - 2];
+        levels[v.deep] = levels[v.deep] || []; // 创建当前层级的数组
+        levels[v.deep].push(v); // 把当前节点加到当前层级里
+        v.prev = levels[v.deep][levels[v.deep].length - 2]; // 前一个节点
       });
 
-      this.root = root;
+      this.root = root; // 根节点
       this.list = data;
       console.log('daya', data);
       this.levels = levels;
       if (this.direction == 'col') {
+        // 横向
         this.calcHeight(root);
         this.calcTop();
         this.calSvg();
       } else {
-        // default
-        this.calWidth(root);
+        // default 纵向
+        this.calWidth(root); // 计算宽度
         this.calcLeft();
         this.calSvgVer();
       }
+      // console.log('data', data);
     },
     // 计算所有节点占用的高度和宽度是否展示
     calcHeight(vnode) {
@@ -203,17 +205,19 @@ export default {
         vnode.height = 0;
         vnode.open = false;
       } else if (!vnode.open) {
+        // 不展开，高度为默认高度
         vnode.height = blockHeight;
       }
-
+      // 有子节点
       if (vnode.children && vnode.children.length > 0) {
         vnode.children.forEach((v) => {
+          // 递归计算所有子节点的高度
           me.calcHeight(v);
           height += v.height;
         });
       }
-
       if (vnode.open) {
+        // 展开，高度为累计高度，需要先计算height
         vnode.height = height || blockHeight;
       }
     },
@@ -226,10 +230,12 @@ export default {
         vnode.width = 0;
         vnode.open = false;
       } else if (!vnode.open) {
+        // 不展开，宽度为默认宽度
         vnode.width = blockWidth;
       }
       if (vnode.children && vnode.children.length > 0) {
         vnode.children.forEach((v) => {
+          // 递归计算所有子节点的宽度
           me.calWidth(v);
           width += v.width;
         });
@@ -243,6 +249,7 @@ export default {
       this.$nextTick(() => {
         // eslint-disable-next-line no-unused-vars
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
+        // 获取svg的dom
         const svg = document.getElementById(this.svgId);
         console.log('svg', svg);
         svg.setAttribute('height', 500);
@@ -250,14 +257,18 @@ export default {
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
     },
+    // 计算svg的大小 纵向
     calSvgVer() {
       this.$nextTick(() => {
         // eslint-disable-next-line no-unused-vars
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
         // let svg = document.getElementById('svg')
+        // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        svg.setAttribute('height', this.$refs.treeContent.scrollHeight);
-        svg.setAttribute('width', this.root.width);
+        console.log('svg', svg);
+        svg.setAttribute('height', this.$refs.treeContent.scrollHeight); // 设置高度 滚动
+        svg.setAttribute('width', this.root.width); // 设置宽度 root根节点的宽度
+        // 向父组件传值？但是父组件没有用到toggle
         this.$emit('toggle', { width: this.root.width, height: this.$refs.treeContent.scrollHeight });
       });
     },
@@ -289,30 +300,35 @@ export default {
     // 节点左边位置
     calcLeft(vnode, prevWidth) {
       if (!vnode) {
-        vnode = this.root;
+        vnode = this.root; // 第一次进来为根节点
       }
       prevWidth = prevWidth || 0;
-      vnode.left = prevWidth + vnode.width / 2;
+      vnode.left = prevWidth + vnode.width / 2; // 前面累计宽度 加 当前节点宽度一半
       if (vnode.children && vnode.children.length > 0) {
         for (let i = 0; i < vnode.children.length; i += 1) {
-          const { width } = vnode.children[i];
+          const { width } = vnode.children[i]; // 解构赋值
+          // 递归计算子节点宽度
           this.calcLeft(vnode.children[i], prevWidth);
-          prevWidth += width;
+          prevWidth += width; // 累计宽度
         }
       }
+      // 如果有父节点
       if (vnode.parent) {
-        const pLeft = vnode.parent.left + 115;
-        const pTop = vnode.parent.top + 150;
-        const vLeft = vnode.left + 115;
-        const vTop = vnode.top;
+        const pLeft = vnode.parent.left + 115; // 父左
+        const pTop = vnode.parent.top + 150;// 父上
+        const vLeft = vnode.left + 115;// 节点左
+        const vTop = vnode.top;// 节点上
         const mLeft = (pLeft + vLeft) / 2;
         // eslint-disable-next-line no-unused-vars
         const mTop = (pTop + vTop) / 2;
+        // 节点在父 左边或右边 控制点的x1（控制曲线的形状）
         const x1 = vLeft > pLeft ? vLeft + 5 : vLeft - 5;
         if (vLeft == pLeft) {
+          // 父左和节点左相等，画一条直线
           // eslint-disable-next-line no-useless-concat
           vnode.path = `M${vLeft},${vTop} ` + ` L ${pLeft},${pTop}`;
         } else {
+          // 画贝塞尔曲线 M 起点 Q x1,y1控制点 x2,y2中间点 T x4,y4终点
           vnode.path = `M${vLeft},${vTop
           } Q ${x1},${vTop - 30} ${
             mLeft},${vTop - 30
@@ -322,9 +338,12 @@ export default {
     },
     // 收缩和展开
     toggle(vnode) {
+      // 点开或关闭
       vnode.open = !vnode.open;
       console.log('vnode', vnode);
+      // 如果有子节点
       if (vnode.children) {
+        // show没用用上
         // eslint-disable-next-line array-callback-return
         vnode.children.map((child) => {
           child.show = !child.show;
