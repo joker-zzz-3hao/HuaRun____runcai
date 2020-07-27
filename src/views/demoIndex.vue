@@ -20,6 +20,7 @@
           <el-menu-item index="tree">树</el-menu-item>
           <el-menu-item index="elementTree">饿了么树</el-menu-item>
           <el-menu-item index="svgtree">svg树</el-menu-item>
+          <el-menu-item index="d3tree">d3树</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-scrollbar>
@@ -64,5 +65,6 @@ export default {
 }
 .routerview {
   margin-left: 210px;
+  overflow: scroll;
 }
 </style>
