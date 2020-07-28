@@ -2,6 +2,7 @@
   <div id="app">
     <div class="draw-area" id="treeContent" ref="treeContent">
       <div v-for="(arr, index) in levels" :key="index">
+        <!-- 通过left和top控制每个节点位置 -->
         <div
           v-for="(v,index) in arr"
           v-show="!v.parent || v.parent.open"
@@ -11,29 +12,7 @@
           :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'"
           @click="toggle(v)"
         >
-          <div class="text">
-            <!-- 卡片里的内容 -->
-            <div class="node_title">
-              <span
-                :class="v.tlevel == '0' ? 'pink':'blue'"
-                class="OKR"
-              >{{v.tlevel == '0' ? 'C' : 'L'}}</span>
-              <span class="label">{{v.name}}</span>
-            </div>
-            <div class="node_des">
-              <div>{{v.content}}</div>
-            </div>
-            <div class="node_progress">{{v.des}}</div>
-            <!-- <div class="showTips">
-              <a
-                target="_blank"
-                href="https://www.cnblogs.com/calamus"
-                class="tips_icon icon_edit"
-              >B</a>
-              <a target="_blank" href="https://www.calamus.xyz" class="tips_icon icon_edit">C</a>
-              <a target="_blank" href="https://github.com/calamus0427" class="tips_icon icon_edit">G</a>
-            </div>-->
-          </div>
+          <card :vnode="v" @open="toggle"></card>
         </div>
       </div>
       <svg :id="svgId" v-if="curveness">
@@ -68,16 +47,19 @@
 </template>
 
 <script>
-// import { list } from './list.js'
-// TODO:横向排列有问题
+import card from './card';
 
 // const width = 800;
 // const height = 600;
-const blockHeight = 50;
+// 这里需要设置
+const blockHeight = 200;
 const blockWidth = 300;
 
 export default {
   name: 'VueSvgTree',
+  components: {
+    card,
+  },
   data() {
     return {
       rules: {
@@ -251,9 +233,8 @@ export default {
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
         // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        console.log('svg', svg);
-        svg.setAttribute('height', 500);
-        svg.setAttribute('width', 700);
+        svg.setAttribute('height', this.root.height);
+        svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
     },
@@ -275,10 +256,12 @@ export default {
     // 计算节点top的位置
     calcTop(vnode, prevHeight) {
       if (!vnode) {
-        vnode = this.root;
+        vnode = this.root; // 第一次进来为根节点
       }
       prevHeight = prevHeight || 0;
       vnode.top = prevHeight + vnode.height / 2;
+      console.log('top', vnode.top);
+      console.log('prevHeight', prevHeight);
       if (vnode.children && vnode.children.length > 0) {
         for (let i = 0; i < vnode.children.length; i += 1) {
           const { height } = vnode.children[i];
@@ -289,6 +272,8 @@ export default {
       if (vnode.parent) {
         const pLeft = vnode.parent.left + blockWidth - 40;
         const pTop = vnode.parent.top;
+        // const vLeft = vnode.left + 115;// 节点左
+        // const vTop = vnode.top;// 节点上
         const mLeft = (vnode.left + pLeft) / 2;
         // eslint-disable-next-line no-unused-vars
         const mTop = (vnode.top + pTop) / 2;
@@ -349,6 +334,7 @@ export default {
           child.show = !child.show;
         });
       }
+      // 计算每个节点位置和画出svg
       if (this.direction == 'col') {
         this.calcHeight(this.root);
         this.calcTop();
@@ -419,14 +405,13 @@ svg {
   background: #ffffff;
   box-shadow: 1px 2px 10px 3px rgba(0, 0, 0, 0.08);
   transition: top 0.3s;
-  cursor: pointer;
+  /* cursor: pointer; */
   width: auto;
   /* width: 230px;
     overflow:hidden; */
 }
-.vnode .text {
-  padding: 0 10px;
-}
+
+/* 如果有子节点。画一条红线 */
 .pnode::after {
   content: "";
   position: absolute;
@@ -454,169 +439,5 @@ svg {
 }
 .vnode:hover .tip {
   display: block;
-}
-
-/**ruler部分*/
-.ruler-head {
-  font-size: 14px;
-  text-align: left;
-}
-.ruler-head span {
-  display: inline-block;
-  width: 50px;
-  text-align: center;
-}
-.ruler {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 100px;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-.ruler-ruler {
-  position: relative;
-  right: 10px;
-  left: 5px;
-  display: inline-block;
-  width: 10px;
-  height: 100px;
-  background: #9a9797;
-}
-.ruler-deg {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  width: 0;
-  width: 0;
-  height: 10px;
-  margin-top: -5px;
-  padding-left: 3px;
-  border-left: 20px solid #666;
-  font-size: 10px;
-  line-height: 10px;
-  text-align: center;
-  color: #666;
-  background: transparent;
-  cursor: row-resize;
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -moz-user-select: none; /* Firefox */
-  user-select: none;
-
-  -webkit-touch-callout: none; /* iOS Safari */
-}
-.vnode .text {
-  position: relative;
-  height: 100%;
-  max-width: 230px;
-  min-width: 216px;
-}
-.vnode .text .node_title {
-  padding: 3px 11px 0px 11px;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-.vnode .text .node_title .OKR {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  color: #fff;
-  line-height: 35px;
-  text-align: center;
-  font-size: 1.2rem;
-}
-.vnode .text .node_title .OKR.pink {
-  background-color: #e1244e;
-}
-.vnode .text .node_title .OKR.blue {
-  background-color: #58c2ef;
-}
-.vnode .text .node_title .label {
-  max-width: 130px;
-  height: 40px;
-  line-height: 40px;
-  overflow: hidden;
-  padding-left: 10px;
-  font-size: 1rem;
-  color: #1f1f1f;
-  display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.vnode .text .node_title .label button {
-  overflow: hidden;
-  color: #1f1f1f !important;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 140px;
-  display: inline-block;
-  line-height: 35px;
-  text-align: left;
-}
-.vnode .text .node_des {
-  display: flex;
-  flex-direction: column;
-  margin-left: 56px;
-  height: 60px;
-  color: #777777;
-  font-size: 12px;
-  justify-content: flex-start;
-}
-.vnode .text .node_des div {
-  width: 140px;
-  text-align: left;
-}
-.vnode .text .node_des div:nth-child(2) {
-  margin-top: 5px;
-}
-.vnode .text .node_progress {
-  position: absolute;
-  width: 200px;
-  bottom: 0px;
-  height: 40px;
-  border-top: 1px solid #d8d8d8;
-  line-height: 40px;
-}
-.vnode .text .node_progress .el-progress {
-  display: inline;
-}
-.vnode .text .node_progress .el-progress .el-progress__text {
-  font-size: 12px !important;
-  color: #777777 !important;
-}
-.vnode .text .showTips {
-  position: absolute;
-  left: 225px;
-  top: 0px;
-  opacity: 0;
-}
-.vnode .text .showTips a {
-  display: inline-block;
-}
-.vnode .text .showTips .tips_icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
-  text-decoration: none;
-  padding: 3px;
-  background: #ffffff;
-  box-shadow: 1px 2px 10px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.5s ease 0s;
-  color: #777777;
-}
-.vnode .text .showTips .tips_icon:hover {
-  color: #58c2ef;
-}
-.vnode .text:hover .showTips {
-  opacity: 1;
-}
-
-.el-progress__text {
-  font-size: 12px !important;
-  color: #777777 !important;
 }
 </style>

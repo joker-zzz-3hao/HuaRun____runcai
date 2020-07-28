@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-svg-tree :treeData="treeData" svgId="svg" ref="svgTree"></vue-svg-tree>
+    <vue-svg-tree :treeData="treeData" svgId="svg" ref="svgTree" :curveness="false" direction="col"></vue-svg-tree>
   </div>
 </template>
 
