@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <el-scrollbar class="demo">
     <el-scrollbar>
       <el-menu
         :default-active="routeName"
@@ -32,7 +32,7 @@
       </el-menu>
     </el-scrollbar>
     <router-view class="routerview"></router-view>
-  </div>
+  </el-scrollbar>
 </template>
 
 <script>
@@ -66,11 +66,11 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-scrollbar {
+<style>
+.demo .el-scrollbar {
   float: left;
 }
-.routerview {
+.demo .routerview {
   margin-left: 210px;
   overflow: scroll;
 }

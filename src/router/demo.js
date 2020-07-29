@@ -48,6 +48,11 @@ export default [
         component: () => import('@/views/demo/svgtree/index'),
       },
       {
+        path: '/element',
+        name: 'element',
+        component: () => import('@/views/demo/element/index'),
+      },
+      {
         path: '/menu',
         name: 'menu',
         component: () => import('@/views/demo/menu/index'),
