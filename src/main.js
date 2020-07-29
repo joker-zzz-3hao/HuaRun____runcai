@@ -10,10 +10,13 @@ import store from './store';
 import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';
+// 全局组建注册
+import crcloudTable from './components/crcloudTable';
 
 Vue.use(Element);
 Vue.use(animated);
 Vue.use(VueAwesomeSwiper);
+Vue.component('crcloud-table', crcloudTable);
 
 // 引入全局axios实例$ajax
 window.$ajax = $ajax;
