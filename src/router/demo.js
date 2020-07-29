@@ -47,6 +47,11 @@ export default [
         name: 'svgtree',
         component: () => import('@/views/demo/svgtree/index'),
       },
+      {
+        path: '/menu',
+        name: 'menu',
+        component: () => import('@/views/demo/menu/index'),
+      },
     ],
   },
 ];
