@@ -1,1 +1,33 @@
-.modules {}
+/* ==================================================================Element 重置样式=============================================================================== */
+/* 按钮 */
+.tl-btn {
+  position: relative;
+  padding: 0 20px;
+  width: auto;
+  height: 40px;
+  border-radius: 0;
+  overflow: hidden;
+  display: unset;
+  line-height: unset;
+  transition: unset;
+  border: unset;
+  z-index: 1;
+}
+
+.tl-btn::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 200%;
+  height: 500%;
+  background: #fc0;
+  transform-origin: 0% 0%;
+  transform: translateX(calc(53% - 25px)) translateY(20%) rotate(-45deg);
+  transition: transform .3s;
+}
+
+.tl-btn:hover::after {
+  transform: translateY(21%) translateX(-25px) rotate(-45deg);
+}
