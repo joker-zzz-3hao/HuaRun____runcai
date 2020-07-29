@@ -52,6 +52,11 @@ export default [
         name: 'menu',
         component: () => import('@/views/demo/menu/index'),
       },
+      {
+        path: '/standardTable',
+        name: 'standardTable',
+        component: () => import('@/views/demo/standardTable/index'),
+      },
     ],
   },
 ];

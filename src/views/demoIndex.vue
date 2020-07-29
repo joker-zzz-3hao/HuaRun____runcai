@@ -12,7 +12,6 @@
             <i class="el-icon-location"></i>
             <span>DEMO展示</span>
           </template>
-
           <el-menu-item index="table">拖拽表格</el-menu-item>
           <el-menu-item index="simplelist">拖拽列表</el-menu-item>
           <el-menu-item index="nested">拖拽嵌套</el-menu-item>
@@ -22,6 +21,13 @@
           <el-menu-item index="svgtree">svg树</el-menu-item>
           <el-menu-item index="d3tree">d3树</el-menu-item>
           <el-menu-item index="menu">菜单组件</el-menu-item>
+        </el-submenu>
+        <el-submenu index="standardTable">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>标准组件</span>
+          </template>
+          <el-menu-item index="standardTable">表格</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-scrollbar>
