@@ -187,7 +187,7 @@ export default {
         vnode.height = 0;
         vnode.open = false;
       } else if (!vnode.open) {
-        // 不展开，高度为默认高度
+        // 不展开，高度为默认高度(只有一个根节点时)
         vnode.height = blockHeight;
       }
       // 有子节点
@@ -199,9 +199,10 @@ export default {
         });
       }
       if (vnode.open) {
-        // 展开，高度为累计高度，需要先计算height
+        // 已展开的节点，高度为子节点高度相加
         vnode.height = height || blockHeight;
       }
+      // console.log(vnode.id, vnode.open, vnode.height);
     },
     calWidth(vnode) {
       const me = this;
@@ -259,9 +260,8 @@ export default {
         vnode = this.root; // 第一次进来为根节点
       }
       prevHeight = prevHeight || 0;
+      // 使父节点top为所有子节点高度一半（位置居中
       vnode.top = prevHeight + vnode.height / 2;
-      console.log('top', vnode.top);
-      console.log('prevHeight', prevHeight);
       if (vnode.children && vnode.children.length > 0) {
         for (let i = 0; i < vnode.children.length; i += 1) {
           const { height } = vnode.children[i];
@@ -269,17 +269,21 @@ export default {
           prevHeight += height;
         }
       }
+      // 画线
       if (vnode.parent) {
-        const pLeft = vnode.parent.left + blockWidth - 40;
-        const pTop = vnode.parent.top;
-        // const vLeft = vnode.left + 115;// 节点左
-        // const vTop = vnode.top;// 节点上
+        // 横向曲线偏移量。使曲线位于节点的中部
+        const pianyi = blockWidth / 4;
+        // 控制曲线的宽度，曲线终点的x
+        const pLeft = vnode.parent.left + blockWidth - 50;
+        // 控制点的y和终点的y
+        const pTop = vnode.parent.top + pianyi;
+        // 控制点的x，调整曲线的形状
         const mLeft = (vnode.left + pLeft) / 2;
         // eslint-disable-next-line no-unused-vars
         const mTop = (vnode.top + pTop) / 2;
-        vnode.path = `M${vnode.left},${vnode.top
-        } C ${mLeft} ${vnode.top},${mLeft} ${pTop
-        },${pLeft} ${pTop}L ${vnode.parent.left + 10},${pTop}`;
+        vnode.path = `M${vnode.left},${vnode.top + pianyi
+        } C ${mLeft} ${vnode.top + pianyi},${mLeft} ${pTop
+        },${pLeft} ${pTop}L ${vnode.parent.left},${pTop}`;
       }
     },
     // 节点左边位置
@@ -345,30 +349,6 @@ export default {
         this.calSvgVer();
       }
       console.log('toggle:', vnode, vnode.open);
-    },
-    // 自定义事件
-    showDetail(data) {
-      delete data.children;
-      this.$emit('detail', data);
-    },
-    addTarget(data) {
-      delete data.children;
-      console.log('1111111', data);
-      this.$emit('add', data);
-    },
-    editTarget(data) {
-      delete data.children;
-      console.log('2222222', data);
-      this.$emit('edit', data);
-    },
-    detailTarget(data) {
-      delete data.children;
-      this.$emit('detail', data);
-    },
-    refreshTarget(data) {
-      delete data.children;
-      console.log('3333333', data);
-      this.$emit('refresh', data);
     },
   },
 };
