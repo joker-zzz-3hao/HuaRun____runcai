@@ -49,7 +49,7 @@ export default [
       },
       {
         path: '/element',
-        name: 'svgtree',
+        name: 'element',
         component: () => import('@/views/demo/element/index'),
       },
       {
