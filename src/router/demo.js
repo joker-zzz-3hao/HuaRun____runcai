@@ -62,6 +62,16 @@ export default [
         name: 'standardTable',
         component: () => import('@/views/demo/standardTable/index'),
       },
+      {
+        path: '/rate',
+        name: 'rate',
+        component: () => import('@/views/demo/element/rate'),
+      },
+      {
+        path: '/timeline',
+        name: 'timeline',
+        component: () => import('@/views/demo/element/timeline'),
+      },
     ],
   },
 ];

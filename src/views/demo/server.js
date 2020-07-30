@@ -5,6 +5,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/crcloud-demo/getTable', param);
   }
 
+  getHistory(param) {
+    return this._ajaxPost('gateway/crcloud-demo/getHistory', param);
+  }
+
   productClassifyAllInfo(param) {
     return this._ajaxPost('gateway/crcloud-product/outside/productClassifyAllInfo', param);
   }
