@@ -8,12 +8,20 @@ export default [
     component: () => import('@/views/settingsIndex'),
     children: [
       {
-        // 角色设置
+        // 组织用户管理
         path: '/organize',
         name: 'organize',
         meta: {
         },
         component: () => import('@/views/settings/organizeUserManagement/index'),
+      },
+      {
+        // 角色设置
+        path: '/role',
+        name: 'role',
+        meta: {
+        },
+        component: () => import('@/views/settings/role/index'),
       },
     ],
   },
