@@ -1,12 +1,12 @@
 <template>
-  <section class="login-layout">
+  <el-scrollbar class="settings-layout">
     <router-view class="view-wrap" />
-  </section>
+  </el-scrollbar>
 </template>
 
 <script>
 export default {
-  name: 'loginIndex',
+  name: 'settingsIndex',
   components: {
   },
   data() {
