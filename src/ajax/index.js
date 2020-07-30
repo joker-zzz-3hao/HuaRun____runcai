@@ -5,7 +5,7 @@ import {
 
 function sessionTimeOut(data) {
   console.log(data);
-  // window.$store.dispatch('common/logout', data);
+  // TODO:未授权时跳转ladp登录首页
 }
 
 const ajax = axios.create({
@@ -130,6 +130,9 @@ const ajax = axios.create({
                 message: res.msg || '数据库异常',
                 type: 'error',
               });
+              break;
+            case -9: // 用户未授权，ladp账号未同步
+              sessionTimeOut(data);
               break;
             case 200: // 业务操作成功
             case 30000: // 系统警告，但是业务还可以继续
