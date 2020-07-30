@@ -21,6 +21,8 @@
           <el-menu-item index="svgtree">svg树</el-menu-item>
           <el-menu-item index="d3tree">d3树</el-menu-item>
           <el-menu-item index="menu">菜单组件</el-menu-item>
+          <el-menu-item index="rate">评分</el-menu-item>
+          <el-menu-item index="timeline">时间线</el-menu-item>
         </el-submenu>
         <el-submenu index="standardTable">
           <template slot="title">
