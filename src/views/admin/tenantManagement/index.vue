@@ -1,10 +1,10 @@
 <template>
-  <div class="role">我是角色配置页面哦</div>
+  <div class="tenant-management">我是租户管理页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'role',
+  name: 'tenantManagement',
   components: {
   },
   data() {

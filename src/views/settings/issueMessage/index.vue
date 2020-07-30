@@ -1,10 +1,10 @@
 <template>
-  <div class="organize-management">我是组织用户管理页面哦</div>
+  <div class="issue-message">我是发布消息页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'organizeManagement',
+  name: 'issueMessage',
   components: {
   },
   data() {

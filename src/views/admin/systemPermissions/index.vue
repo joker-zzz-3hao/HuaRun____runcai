@@ -1,10 +1,10 @@
 <template>
-  <div class="organize-management">我是组织用户管理页面哦</div>
+  <div class="system-permissions">我是系统权限页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'organizeManagement',
+  name: 'systemPermissions',
   components: {
   },
   data() {

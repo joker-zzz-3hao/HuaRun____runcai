@@ -9,8 +9,8 @@ export default [
     children: [
       {
         // 组织用户管理
-        path: '/organize',
-        name: 'organize',
+        path: '/organizeManagement',
+        name: 'organizeManagement',
         meta: {
         },
         component: () => import('@/views/settings/organizeUserManagement/index'),
@@ -22,6 +22,30 @@ export default [
         meta: {
         },
         component: () => import('@/views/settings/role/index'),
+      },
+      {
+        // 设置OKR查看权限
+        path: '/okrPermissions',
+        name: 'okrPermissions',
+        meta: {
+        },
+        component: () => import('@/views/settings/okrPermissions/index'),
+      },
+      {
+        // 设置OKR周期与自评
+        path: '/okrCycle',
+        name: 'okrCycle',
+        meta: {
+        },
+        component: () => import('@/views/settings/okrCycle/index'),
+      },
+      {
+        // 发布消息
+        path: '/issueMessage',
+        name: 'issueMessage',
+        meta: {
+        },
+        component: () => import('@/views/settings/issueMessage/index'),
       },
     ],
   },

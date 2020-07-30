@@ -1,10 +1,10 @@
 <template>
-  <div class="organize-management">我是组织用户管理页面哦</div>
+  <div class="data-dictionary">我是数据字典页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'organizeManagement',
+  name: 'dataDictionary',
   components: {
   },
   data() {
