@@ -40,12 +40,12 @@ export default [
         component: () => import('@/views/admin/systemMaintenance/index'),
       },
       {
-        // 系统权限
-        path: '/systemPermissions',
-        name: 'systemPermissions',
+        // 系统用户管理
+        path: '/systemUserManagement',
+        name: 'systemUserManagement',
         meta: {
         },
-        component: () => import('@/views/admin/systemPermissions/index'),
+        component: () => import('@/views/admin/systemUserManagement/index'),
       },
     ],
   },

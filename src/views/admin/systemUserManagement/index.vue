@@ -1,10 +1,10 @@
 <template>
-  <div class="system-permissions">我是系统权限页面哦</div>
+  <div class="system-user-management">我是系统用户管理页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'systemPermissions',
+  name: 'systemUserManagement',
   components: {
   },
   data() {
