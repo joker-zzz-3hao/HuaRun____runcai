@@ -10,11 +10,7 @@
       <div slot="searchBar">
         <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
           <el-form-item>
-            <el-input
-              :placeholder="$tt('module.order.searchPlaceholder', '请输入产品名称或者订单号')"
-              v-model="formData.keyWord"
-              clearable
-            ></el-input>
+            <el-input placeholder="请输入角色名称/创建时间/角色状态" v-model="formData.keyWord" clearable></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native.prevent="searchList">查询</el-button>

@@ -23,6 +23,36 @@ export default [
         },
         component: () => import('@/views/login/superSystemAdmins'),
       },
+      {
+        // 登录中转
+        path: '/transfer',
+        name: 'transfer',
+        meta: {
+          title: 'transfer',
+          power: '',
+        },
+        component: () => import('@/views/login/transfer'),
+      },
+      {
+        // 403
+        path: '/exception403',
+        name: 'exception403',
+        meta: {
+          title: 'exception403',
+          power: '',
+        },
+        component: () => import('@/views/login/exception403'),
+      },
+      {
+        // 404
+        path: '/exception404',
+        name: 'exception404',
+        meta: {
+          title: 'exception404',
+          power: '',
+        },
+        component: () => import('@/views/login/exception404'),
+      },
     ],
   },
 ];

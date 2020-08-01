@@ -3,6 +3,22 @@ import Vue from 'vue';
 const $bus = new Vue();
 export default {
   methods: {
+    hasPower(power) {
+      const userPowers = (this.$store.state.common.userInfo.privilegeList || []).map((item) => item.privilegeCode);
+      if (typeof power == 'string') {
+        return !!userPowers.includes(power) || userPowers.includes('admin');
+      } if (Array.isArray(power)) {
+        let result = true;
+        if (!userPowers.includes('admin')) {
+          power.forEach((item) => {
+            if (!userPowers.includes(item)) {
+              result = false;
+            }
+          });
+        }
+        return result;
+      }
+    },
     // 读取缓存
     localRead(key) {
       return localStorage.getItem(key) || '';
