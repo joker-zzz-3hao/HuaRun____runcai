@@ -72,6 +72,16 @@ export default [
         name: 'timeline',
         component: () => import('@/views/demo/element/timeline'),
       },
+      {
+        path: '/echarts',
+        name: 'echarts',
+        component: () => import('@/views/demo/echarts/index'),
+      },
+      {
+        path: '/myokrdemo',
+        name: 'myokrdemo',
+        component: () => import('@/views/demo/element/okr'),
+      },
     ],
   },
 ];

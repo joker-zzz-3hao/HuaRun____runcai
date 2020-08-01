@@ -16,12 +16,13 @@
           <el-menu-item index="simplelist">拖拽列表</el-menu-item>
           <el-menu-item index="nested">拖拽嵌套</el-menu-item>
           <el-menu-item index="tabletree">表格树</el-menu-item>
-          <el-menu-item index="tree">树</el-menu-item>
           <el-menu-item index="elementTree">饿了么树</el-menu-item>
           <el-menu-item index="svgtree">svg树</el-menu-item>
           <el-menu-item index="menu">菜单组件</el-menu-item>
           <el-menu-item index="rate">评分</el-menu-item>
           <el-menu-item index="timeline">时间线</el-menu-item>
+          <el-menu-item index="echarts">echarts饼图</el-menu-item>
+          <el-menu-item index="myokrdemo">我的okr</el-menu-item>
         </el-submenu>
         <el-submenu index="standardTable">
           <template slot="title">

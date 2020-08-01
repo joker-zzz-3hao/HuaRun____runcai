@@ -12,4 +12,8 @@ export default class Server extends ServerBase {
   productClassifyAllInfo(param) {
     return this._ajaxPost('gateway/crcloud-product/outside/productClassifyAllInfo', param);
   }
+
+  getokrdata(param) {
+    return this._ajaxPost('gateway/crcloud-demo/getokrdata', param);
+  }
 }

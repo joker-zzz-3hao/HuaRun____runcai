@@ -18,6 +18,12 @@ Vue.use(animated);
 Vue.use(VueAwesomeSwiper);
 Vue.component('crcloud-table', crcloudTable);
 
+// 按需引用echarts
+const echarts = require('echarts/lib/echarts');
+require('echarts/lib/chart/pie');
+
+Vue.prototype.$echarts = echarts;
+
 // 引入全局axios实例$ajax
 window.$ajax = $ajax;
 // 注入自定义minxin

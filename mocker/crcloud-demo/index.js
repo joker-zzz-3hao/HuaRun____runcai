@@ -16,5 +16,23 @@ const mockData = {
       }],
     })));
   },
+  'POST /gateway/crcloud-demo/getokrdata': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|5': [{
+        objectName: '@csentence(10, 20)',
+        'objectId|+1': 1,
+        'percent|+5': 10,
+        'progress|+5': 50,
+        'krList|5': [{
+          'krId|+1': 1,
+          krName: '@csentence(10, 20)',
+          'percent|+5': 10,
+          'progress|+5': 50,
+          'confidence|+1': 1,
+        }],
+
+      }],
+    })));
+  },
 };
 module.exports = mockData;
