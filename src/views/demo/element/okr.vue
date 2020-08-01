@@ -35,7 +35,32 @@
     </div>
     <div>
       <p>用展开行表格</p>
-      <el-table></el-table>
+      <el-table :data="tableList">
+        <el-table-column type="expand" width="50">
+          <template slot-scope="scope">
+            <div v-for="kritem in scope.row.krList" :key="kritem.krId">
+              <span>KRicon</span>
+              <span>{{kritem.krName}}</span>
+              <span>{{kritem.percent}}%</span>
+              <div class="progresswidth">
+                <el-progress :stroke-width="10" :percentage="kritem.progress"></el-progress>
+              </div>
+              <span>信心指数{{kritem.confidence}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="objectName" label="关键目标" width="220"></el-table-column>
+        <el-table-column prop="percent" label="权重" width="120">
+          <template slot-scope="scope">{{scope.row.percent}}%</template>
+        </el-table-column>
+        <el-table-column prop="progress" label="进度条" width="120">
+          <template slot-scope="scope">
+            <el-progress :stroke-width="10" :percentage="scope.row.progress"></el-progress>
+          </template>
+        </el-table-column>
+        <el-table-column prop="confidence" label="信心指数" width="120"></el-table-column>
+        <el-table-column prop="map" label="承接地图" width="120"></el-table-column>
+      </el-table>
     </div>
   </div>
 </template>

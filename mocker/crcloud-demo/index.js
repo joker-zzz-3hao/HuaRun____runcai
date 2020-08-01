@@ -23,6 +23,7 @@ const mockData = {
         'objectId|+1': 1,
         'percent|+5': 10,
         'progress|+5': 50,
+        map: 4,
         'krList|5': [{
           'krId|+1': 1,
           krName: '@csentence(10, 20)',
