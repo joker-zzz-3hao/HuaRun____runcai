@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import {
+  getParams,
   loginOut,
+  localSave,
 } from '@/lib/util';
 import VueRouter from 'vue-router';
 import loginJs from './login';
@@ -37,6 +39,12 @@ function hasPower(power) {
 }
 
 router.beforeEach((to, from, next) => {
+  const urlParams = getParams(window.location.href);
+  const urlCrctoken = urlParams.crctoken;
+  // 判断获取的token,如果token存在就更新存到缓存
+  if (urlCrctoken) {
+    localSave(urlCrctoken);
+  }
   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
   if (!localStorage.token || localStorage.token === null) {
     window.open(process.env.VUE_APP_LOGIN, '_self');

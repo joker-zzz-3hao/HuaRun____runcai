@@ -10,3 +10,16 @@ export const getOrigin = () => {
     : window.location.href.split('/#')[0];
   return origin;
 };
+export const getParams = (url) => {
+  const keyValueArr = url.split('?')[1] ? url.split('?')[1].split('&') : [];
+  const paramObj = {};
+  keyValueArr.forEach((item) => {
+    const keyValue = item.split('=');
+    // eslint-disable-next-line prefer-destructuring
+    paramObj[keyValue[0]] = keyValue[1];
+  });
+  return paramObj;
+};
+export const localSave = (key, value) => {
+  localStorage.setItem(key, value);
+};
