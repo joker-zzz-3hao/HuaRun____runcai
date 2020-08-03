@@ -12,11 +12,13 @@
               <em>LDAP</em>
               <span>帐号登录</span>
             </dt>
-            <dd class="tl-input-account" :class="{'amt-txt-slip': isInputAccount}">
+            <dd
+              class="tl-input-account"
+              :class="{'amt-txt-slip': isInputAccount,'is-error': isLoginError}"
+            >
               <el-input
                 placeholder="请输入账户名"
                 v-model="input"
-                clearable
                 @focus="changeFocus('input-txt')"
                 @blur="loseFocus"
                 @input="animationAccound"
@@ -24,23 +26,42 @@
                 class="tl-input-line"
                 :class="{'amt-line-elastic': focusName == 'input-txt'}"
               ></el-input>
+              <div @click="removeAccound" class="remove-current"></div>
+              <!-- <ul class="state-info">
+                <li @click="removeAccound" class="remove-current"></li>
+                <li class="error-msg">
+                  <span>您输入的账户名或密码有误！</span>
+                  <i></i>
+                </li>
+              </ul>-->
+              <div class="error-msg">您输入的账户名或密码有误！</div>
+              <div class="prompt-info">账户名</div>
             </dd>
-            <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd}">
+            <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd,'is-error': isPwdError}">
               <el-input
                 type="password"
                 placeholder="请输入密码"
                 v-model="input2"
-                clearable
                 @focus="changeFocus('input-pwd')"
                 @blur="loseFocus"
                 @input="animationPwd"
                 ref="input-pwd"
                 class="tl-input-line"
-                :class="{'amt-line-elastic': isInputPwd}"
+                :class="{'amt-line-elastic': focusName == 'input-pwd'}"
               ></el-input>
+              <div @click="removePwd" class="remove-current"></div>
+              <!-- <ul class="state-info">
+                <li @click="removePwd" class="remove-current"></li>
+                <li class="error-msg">
+                  <span></span>
+                  <i></i>
+                </li>
+              </ul>-->
+              <div class="error-msg">您输入的账户名或密码有误！</div>
+              <div class="prompt-info">密码</div>
             </dd>
             <dd>
-              <el-button type="primary" class="tl-btn amt-bg-slip">
+              <el-button type="primary" @click="hasState" class="tl-btn amt-bg-slip">
                 <em>登</em>
                 <em>录</em>
               </el-button>
@@ -69,6 +90,8 @@ export default {
       focusName: '',
       isInputAccount: false,
       isInputPwd: false,
+      isLoginError: false,
+      isPwdError: false,
     };
   },
   computed: {
@@ -80,9 +103,28 @@ export default {
     },
     loseFocus() {
       this.focusName = '';
+      this.isInputAccount = false;
+      this.isInputPwd = false;
     },
-    animation(ref) {
-      this.changeName = ref;
+    animationAccound() {
+      this.isInputAccount = true;
+      this.isLoginError = false;
+    },
+    animationPwd() {
+      this.isInputPwd = true;
+      this.isPwdError = false;
+    },
+    hasState() {
+      this.isLoginError = true;
+      this.isPwdError = true;
+    },
+    removeAccound() {
+      this.input = '';
+      console.log(1111);
+    },
+    removePwd() {
+      this.input2 = '';
+      console.log(222);
     },
   },
 };

@@ -10,7 +10,7 @@
   background: #fc0;
   transform-origin: 0% 0%;
   transform: translateX(calc(53% - 25px)) translateY(20%) rotate(-45deg);
-  transition: transform .3s;
+  transition: transform .3s ease-out;
 }
 
 .amt-bg-slip.el-button--primary:hover::after {
@@ -22,7 +22,7 @@
 .amt-border-slip.is-plain .lines::before,
 .amt-border-slip.is-plain::after,
 .amt-border-slip.is-plain .lines::after {
-  transition: transform .3s;
+  transition: transform .3s ease-out;
 }
 
 .amt-border-slip.is-plain:hover::before {
@@ -46,8 +46,14 @@
   transform: translateX(-50%) scaleX(1);
 }
 
+.amt-line-elastic + .remove-current {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 /* 文本滑动 */
-.amt-txt-slip::before {
-  transform: translateY(-30px);
+.amt-txt-slip .prompt-info,
+.login-info .is-error .error-msg {
+  transform: translateY(-26px);
   opacity: 1;
 }

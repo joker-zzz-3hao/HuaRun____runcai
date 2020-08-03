@@ -56,26 +56,57 @@
   position: relative;
 }
 
-.tl-input-account::before,
-.tl-input-pwd::before {
+.login-info .prompt-info {
   position: absolute;
   left: 0;
   top: 10px;
   width: auto;
   height: 20px;
   color: #333;
-  z-index: 9;
+  z-index: 1;
   transform: translateY(0);
   opacity: 0;
-  transition: all .4s;
+  transition: all .3s ease-out;
 }
 
-.tl-input-account::before {
-  content: '账户名';
+/* .login-info .state-info {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  width: calc(100% - 25px);
+  display: flex;
+  align-items: center;
+} */
+
+.login-info .remove-current {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  z-index: 5;
+  width: 20px;
+  height: 20px;
+  transform: translateX(50px);
+  opacity: 0;
+  transition: all .3s ease-out;
 }
 
-.tl-input-pwd::before {
-  content: '密码';
+.login-info .remove-current {
+  background: url('~@/assets/images/remove-current.png') no-repeat;
+  background-size: 20px 20px;
+}
+
+.login-info .error-msg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  color: #f75958;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(0);
+  transition: all .3s ease-out;
 }
 
 .login-info .tl-btn.el-button--primary {

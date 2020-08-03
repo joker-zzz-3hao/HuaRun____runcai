@@ -75,6 +75,14 @@
 }
 
 /* input */
+.tl-input-line {
+  z-index: 3;
+}
+
+.tl-input-line .el-input__inner {
+  background: transparent;
+}
+
 .tl-input-line::before {
   position: absolute;
   left: 50%;
@@ -84,7 +92,7 @@
   height: 1px;
   background: #685df1;
   transform: translateX(-50%) scaleX(0);
-  transition: all .4s;
+  transition: all .4s ease-out;
   z-index: 5;
 }
 
@@ -103,5 +111,4 @@
   padding: 0;
   border: unset;
   border-radius: unset;
-
 }
