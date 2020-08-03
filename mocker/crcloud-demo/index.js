@@ -16,6 +16,8 @@ const mockData = {
       }],
     })));
   },
+  // author：林心荃/后端：
+  // 用于：我的okr
   'POST /gateway/crcloud-demo/getokrdata': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|5': [{
@@ -31,9 +33,17 @@ const mockData = {
           'progress|+5': 50,
           'confidence|+1': 1,
         }],
-
       }],
     })));
   },
+  'POST /gateway/crcloud-demo/getTimeCycle': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|4': [{
+        'timeid|+1': 1,
+        timecycle: '@datetime("yyyy-MM-dd H:m:s")',
+      }],
+    })));
+  },
+
 };
 module.exports = mockData;
