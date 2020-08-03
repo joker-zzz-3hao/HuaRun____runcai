@@ -1,1 +1,93 @@
-.pages {}
+/* ======================================================================登录模块======================================================================= */
+/* 登录首页 */
+.login {
+  display: flex;
+  align-items: center;
+}
+
+.login .cont-wrap {
+  width: 950px;
+}
+
+.login-inset {
+  flex: 0 0 550px;
+  width: 550px;
+  height: 586px;
+  background: #7767ff;
+  border-radius: 4px;
+  box-shadow: 0 16px 30px 0 rgba(0,14,66,0.10);
+}
+
+.login-info {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  height: 552px;
+  background: #fff;
+  box-shadow: 0 16px 30px 0 rgba(0,14,66,0.10);
+  border-radius: 4px;
+}
+
+.login-info .box-wrap {
+  width: 230px;
+}
+
+.login-info-title {
+  margin-bottom: 30px;
+  font-size: 24px;
+  text-align: center;
+  color: #685df1;
+}
+
+.login-info-title em {
+  margin-right: 6px;
+}
+
+.login-info dd {
+  margin-top: 30px;
+}
+
+.login-info dd:last-child {
+  margin-top: 16px;
+}
+
+.tl-input-account,
+.tl-input-pwd {
+  position: relative;
+}
+
+.tl-input-account::before,
+.tl-input-pwd::before {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: auto;
+  height: 20px;
+  color: #333;
+  z-index: 9;
+  transform: translateY(0);
+  opacity: 0;
+  transition: all .4s;
+}
+
+.tl-input-account::before {
+  content: '账户名';
+}
+
+.tl-input-pwd::before {
+  content: '密码';
+}
+
+.login-info .tl-btn.el-button--primary {
+  width: 100%;
+  background: #685df1;
+  border-radius: 4px;
+}
+
+.login-info .tl-btn.el-button--primary::after {
+  background: #5c50e9;
+}
+
+.login-info .tl-btn em {
+  margin: 0 5px;
+}

@@ -1,7 +1,19 @@
 /* 整体框架布局 */
 .console-layout,
+.login-layout,
 .admin-layout,
 .settings-layout,
 .view-wrap {
   height: 100%;
+}
+
+/* 内容容器 */
+.cont-wrap {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.box-wrap {
+  margin: 0 auto;
 }
