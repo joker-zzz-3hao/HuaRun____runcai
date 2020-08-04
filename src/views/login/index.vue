@@ -34,13 +34,6 @@
                 @mouseout="mouseout('input-txt')"
                 class="remove-current"
               ></div>
-              <!-- <ul class="state-info">
-                <li @click="removeAccound" class="remove-current"></li>
-                <li class="error-msg">
-                  <span>您输入的账户名或密码有误！</span>
-                  <i></i>
-                </li>
-              </ul>-->
               <div class="error-msg">您输入的账户名或密码有误！</div>
               <div class="prompt-info">账户名</div>
             </dd>
@@ -64,13 +57,6 @@
                 @mouseout="mouseout('input-pwd')"
                 class="remove-current"
               ></div>
-              <!-- <ul class="state-info">
-                <li @click="removePwd" class="remove-current"></li>
-                <li class="error-msg">
-                  <span></span>
-                  <i></i>
-                </li>
-              </ul>-->
               <div class="prompt-info">密码</div>
             </dd>
             <dd>
@@ -85,7 +71,9 @@
           </dl>
         </div>
       </div>
-      <div class="login-inset"></div>
+      <div class="login-inset">
+        <div class="login-inset-inside"></div>
+      </div>
     </div>
   </div>
 </template>
