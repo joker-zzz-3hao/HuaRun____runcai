@@ -7,7 +7,13 @@
       </div>
     </div>
     <div v-show="arrowClass == 'el-icon-caret-bottom'">
-      <el-tree :data="data" :props="defaultProps" accordion @node-click="handleNodeClick"></el-tree>
+      <el-tree
+        :data="data"
+        :props="defaultProps"
+        accordion
+        :expand-on-click-node="false"
+        @node-click="handleNodeClick"
+      ></el-tree>
     </div>
   </div>
 </template>
@@ -37,8 +43,17 @@ export default {
         return [];
       },
     },
+    initDepartment: {
+      type: Object,
+      default() {
+        return this.data.length > 0 ? this.data[0] : {};
+      },
+    },
   },
   mounted() {},
+  created() {
+    this.department = this.initDepartment || {};
+  },
   methods: {
     showDepartment() {
       if (this.arrowClass == 'el-icon-caret-top') {
@@ -54,16 +69,15 @@ export default {
     },
   },
   watch: {
-    'data.length': {
-      handler(newVal) {
-        if (newVal > 0) {
-          // eslint-disable-next-line prefer-destructuring
-          this.department = this.data[0];
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
+    // 'data.length': {
+    //   handler(newVal) {
+    //     if (newVal > 0) {
+    //       this.department = this.data[0];
+    //     }
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
 };
 </script>
