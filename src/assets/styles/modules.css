@@ -80,7 +80,11 @@
 }
 
 .tl-input-line .el-input__inner {
+  padding: 0 24px 0 0;
   background: transparent;
+  line-height: unset;
+  border: unset;
+  border-radius: unset;
 }
 
 .tl-input-line::before {
@@ -105,10 +109,4 @@
   height: 1px;
   background: #d8d8d8;
   z-index: 1;
-}
-
-.tl-input-line .el-input__inner {
-  padding: 0;
-  border: unset;
-  border-radius: unset;
 }
