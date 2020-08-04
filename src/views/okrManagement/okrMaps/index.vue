@@ -19,6 +19,11 @@
       <div style="margin-left:20px;">
         <department :data="departmentData" @handleData="handleData"></department>
       </div>
+      <div>
+        <el-input placeholder="部门名称/成员/关键词" v-model="keyword">
+          <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
+        </el-input>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +40,7 @@ export default {
     return {
       server,
       okrCycle: '',
+      keyword: '',
       okrCycleList: [],
       departmentData: [],
     };
@@ -64,6 +70,7 @@ export default {
         self.departmentData = res.data;
       });
     },
+    search() {},
     handleData(data) {
       console.log(data);
     },
