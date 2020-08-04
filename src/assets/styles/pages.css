@@ -10,12 +10,23 @@
 }
 
 .login-inset {
+  position: relative;
   flex: 0 0 550px;
   width: 550px;
   height: 560px;
+}
+
+.login-inset-inside {
+  padding: 40px 40px;
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 570px;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 16px 30px 0 rgba(0,14,66,0.10);
+  z-index: -1;
 }
 
 .login-info {
@@ -68,17 +79,6 @@
   opacity: 0;
   transition: all .3s ease-out;
 }
-
-/* .login-info .state-info {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 5;
-  width: calc(100% - 25px);
-  display: flex;
-  align-items: center;
-} */
 
 .login-info .remove-current {
   position: absolute;
