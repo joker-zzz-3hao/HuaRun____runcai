@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div>
+    <div style="display: flex;">
       <div>
         <el-select
           v-model="okrCycle"
@@ -16,8 +16,8 @@
           ></el-option>
         </el-select>
       </div>
-      <div>
-        <department></department>
+      <div style="margin-left:20px;">
+        <department :data="departmentData" @handleData="handleData"></department>
       </div>
     </div>
   </div>
@@ -36,6 +36,7 @@ export default {
       server,
       okrCycle: '',
       okrCycleList: [],
+      departmentData: [],
     };
   },
   components: {
@@ -43,20 +44,28 @@ export default {
   },
   mounted() {
     const self = this;
-    self.server.test().then((res) => {
-      console.log(res);
-    });
+    // self.server.test().then((res) => {
+    //   console.log(res);
+    // });
     self.init();
   },
   methods: {
     init() {
       const self = this;
+      // 查询周期
       self.server.getOkrCycleList().then((res) => {
         self.okrCycleList = res.data;
         if (self.okrCycleList.length > 0) {
           self.okrCycle = self.okrCycleList[0].okrCycleCode;
         }
       });
+      // 查询组织树
+      self.server.getDepartmentList().then((res) => {
+        self.departmentData = res.data;
+      });
+    },
+    handleData(data) {
+      console.log(data);
     },
   },
 };

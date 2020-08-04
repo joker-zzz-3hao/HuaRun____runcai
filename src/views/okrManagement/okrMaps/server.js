@@ -5,6 +5,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/okr/okrCycleList', param);
   }
 
+  getDepartmentList(param) {
+    return this._ajaxPost('gateway/okr/departmentList', param);
+  }
+
   test(param) {
     return this._ajaxPost('talent-gateway-service/account-service/test', param);
   }
