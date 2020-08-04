@@ -50,16 +50,9 @@
 
 <script>
 
-// const width = 800;
-// const height = 600;
-// 这里需要设置
-const blockHeight = 200;
-const blockWidth = 300;
-
 export default {
   name: 'VueSvgTree',
   components: {
-    // card,
   },
   data() {
     return {
@@ -95,6 +88,16 @@ export default {
     currentView: {
       type: String,
       default: 'card',
+    },
+    // 横向时节点块高度
+    blockHeight: {
+      type: Number,
+      default: 200,
+    },
+    // 纵向时节点块宽度
+    blockWidth: {
+      type: Number,
+      default: 300,
     },
   },
   mounted() {
@@ -193,7 +196,7 @@ export default {
         vnode.open = false;
       } else if (!vnode.open) {
         // 不展开，高度为默认高度(只有一个根节点时)
-        vnode.height = blockHeight;
+        vnode.height = this.blockHeight;
       }
       // 有子节点
       if (vnode.children && vnode.children.length > 0) {
@@ -205,7 +208,7 @@ export default {
       }
       if (vnode.open) {
         // 已展开的节点，高度为子节点高度相加
-        vnode.height = height || blockHeight;
+        vnode.height = height || this.blockHeight;
       }
       // console.log(vnode.id, vnode.open, vnode.height);
     },
@@ -219,7 +222,7 @@ export default {
         vnode.open = false;
       } else if (!vnode.open) {
         // 不展开，宽度为默认宽度
-        vnode.width = blockWidth;
+        vnode.width = this.blockWidth;
       }
       if (vnode.children && vnode.children.length > 0) {
         vnode.children.forEach((v) => {
@@ -229,7 +232,7 @@ export default {
         });
       }
       if (vnode.open) {
-        vnode.width = width || blockWidth;
+        vnode.width = width || this.blockWidth;
       }
     },
     // 计算svg的大小
@@ -277,9 +280,9 @@ export default {
       // 画线
       if (vnode.parent) {
         // 横向曲线偏移量。使曲线位于节点的中部
-        const pianyi = blockWidth / 4;
+        const pianyi = this.blockWidth / 4;
         // 控制曲线的宽度，曲线终点的x
-        const pLeft = vnode.parent.left + blockWidth - 50;
+        const pLeft = vnode.parent.left + this.blockWidth - 50;
         // 控制点的y和终点的y
         const pTop = vnode.parent.top + pianyi;
         // 控制点的x，调整曲线的形状
