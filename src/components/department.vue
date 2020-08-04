@@ -52,6 +52,9 @@ export default {
       this.$emit('handleData', data);
       console.log(data);
     },
+    hide() {
+      this.arrowClass = 'el-icon-caret-top';
+    },
   },
   watch: {
     'data.length': {

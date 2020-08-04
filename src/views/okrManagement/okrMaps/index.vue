@@ -20,9 +20,15 @@
         <department :data="departmentData" @handleData="handleData"></department>
       </div>
       <div>
-        <el-input placeholder="部门名称/成员/关键词" v-model="keyword">
+        <el-input placeholder="部门名称/成员/关键词" v-model="keyword" @keyup.enter.native="search">
           <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
         </el-input>
+      </div>
+      <div>
+        <el-button>
+          公司使命愿景
+          <i class="el-icon-arrow-right el-icon--right"></i>
+        </el-button>
       </div>
     </div>
   </div>
@@ -50,9 +56,6 @@ export default {
   },
   mounted() {
     const self = this;
-    // self.server.test().then((res) => {
-    //   console.log(res);
-    // });
     self.init();
   },
   methods: {
@@ -66,7 +69,7 @@ export default {
         }
       });
       // 查询组织树
-      self.server.getDepartmentList().then((res) => {
+      self.server.getOrgTable().then((res) => {
         self.departmentData = res.data;
       });
     },
