@@ -57,8 +57,7 @@ export default {
     'data.length': {
       handler(newVal) {
         if (newVal > 0) {
-          // eslint-disable-next-line prefer-destructuring
-          this.department = this.data[0];
+          this.department = this.data[0] || {};
         }
       },
       deep: true,

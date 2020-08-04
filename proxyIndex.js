@@ -14,10 +14,12 @@ module.exports = {
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
-  '/gateway/crcloud-account/*': {
-    target: api,
+  '/gateway/talent-query/*': {
+    target: 'http://10.54.39.95:8085',
+    // target: api,
     secure: false,
     changeOrigin: true,
+    pathRewrite: { '^/gateway': '' },
   },
   '/gateway/crcloud-privilege/*': {
     target: api,

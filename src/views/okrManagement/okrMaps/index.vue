@@ -3,16 +3,16 @@
     <div style="display: flex;">
       <div>
         <el-select
-          v-model="okrCycle"
+          v-model="periodId"
           placeholder="请选择周期"
           style="width:240px;"
           :disabled="!okrCycleList.length>0"
         >
           <el-option
             v-for="item in okrCycleList"
-            :key="item.okrCycleCode"
-            :label="item.okrCycleName"
-            :value="item.okrCycleCode"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
           ></el-option>
         </el-select>
       </div>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       server,
-      okrCycle: '',
+      periodId: '',
       keyword: '',
       okrCycleList: [],
       departmentData: [],
@@ -62,7 +62,7 @@ export default {
       self.server.getOkrCycleList().then((res) => {
         self.okrCycleList = res.data;
         if (self.okrCycleList.length > 0) {
-          self.okrCycle = self.okrCycleList[0].okrCycleCode;
+          self.periodId = self.okrCycleList[0].periodId;
         }
       });
       // 查询组织树
@@ -70,7 +70,16 @@ export default {
         self.departmentData = res.data;
       });
     },
-    search() {},
+    search() {
+      const self = this;
+      self.server.searchKeyword({
+        keyword: self.keyword,
+      }).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+        }
+      });
+    },
     handleData(data) {
       console.log(data);
     },
