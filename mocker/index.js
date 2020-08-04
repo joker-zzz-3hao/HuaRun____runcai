@@ -5,6 +5,7 @@ const proxy = {
   ...require('./role/index'),
   ...require('./okrMaps/index'),
   ...require('./components/index'),
+  ...require('./common/index'),
 };
 
 module.exports = (delay(proxy, 1000));
