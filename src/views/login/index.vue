@@ -44,7 +44,7 @@
               <div class="error-msg">您输入的账户名或密码有误！</div>
               <div class="prompt-info">账户名</div>
             </dd>
-            <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd,'is-error': isPwdError}">
+            <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd}">
               <el-input
                 type="password"
                 placeholder="请输入密码"
@@ -104,7 +104,6 @@ export default {
       isInputAccount: false,
       isInputPwd: false,
       isLoginError: false,
-      isPwdError: false,
       mouseRef: '',
     };
   },
@@ -114,7 +113,6 @@ export default {
   methods: {
     changeFocus(ref) {
       this.focusName = ref;
-      console.log(11111111);
     },
     loseFocus() {
       if (this.mouseRef == '') {
@@ -129,11 +127,10 @@ export default {
     },
     animationPwd() {
       this.isInputPwd = true;
-      this.isPwdError = false;
+      this.isLoginError = false;
     },
     hasState() {
       this.isLoginError = true;
-      this.isPwdError = true;
       this.focusName = '';
     },
     removeAccound() {
@@ -146,11 +143,9 @@ export default {
     },
     mouseover(ref) {
       this.mouseRef = ref;
-      console.log(`mouseover:${this.mouseRef}`);
     },
     mouseout() {
       this.mouseRef = '';
-      console.log('mouseover:空');
     },
   },
 };
