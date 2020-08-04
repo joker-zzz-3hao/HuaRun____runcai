@@ -18,7 +18,7 @@
             >
               <el-input
                 placeholder="请输入账户名"
-                v-model="input"
+                v-model="loginName"
                 @focus="changeFocus('input-txt')"
                 @blur="loseFocus"
                 @input="animationAccound"
@@ -48,7 +48,7 @@
               <el-input
                 type="password"
                 placeholder="请输入密码"
-                v-model="input2"
+                v-model="loginPwd"
                 @focus="changeFocus('input-pwd')"
                 @blur="loseFocus"
                 @input="animationPwd"
@@ -74,7 +74,7 @@
               <div class="prompt-info">密码</div>
             </dd>
             <dd>
-              <el-button type="primary" @click="hasState" class="tl-btn amt-bg-slip">
+              <el-button type="primary" @click="login" class="tl-btn amt-bg-slip">
                 <em>登</em>
                 <em>录</em>
               </el-button>
@@ -91,14 +91,22 @@
 </template>
 
 <script>
+import {
+  localSave,
+} from '@/lib/util';
+import Server from './server';
+
+const server = new Server();
+
 export default {
   name: 'login',
   components: {
   },
   data() {
     return {
-      input: '',
-      input2: '',
+      server,
+      loginName: '',
+      loginPwd: '',
       checked: true,
       focusName: '',
       isInputAccount: false,
@@ -111,7 +119,28 @@ export default {
   computed: {
 
   },
+  mounted() {},
   methods: {
+    login() {
+      const self = this;
+      // self.isLoginError = true;
+      // self.isPwdError = true;
+      self.focusName = '';
+      self.server.login({
+        ciphertext: '',
+        loginName: self.loginName,
+        loginPwd: self.loginPwd,
+      }).then((res) => {
+        if (res.code == '200') {
+          localSave('token', res.data);
+          self.$router.push({
+            name: 'overview',
+          });
+        } else {
+          self.$message.error(res.msg);
+        }
+      });
+    },
     changeFocus(ref) {
       this.focusName = ref;
       console.log(11111111);
@@ -131,26 +160,19 @@ export default {
       this.isInputPwd = true;
       this.isPwdError = false;
     },
-    hasState() {
-      this.isLoginError = true;
-      this.isPwdError = true;
-      this.focusName = '';
-    },
     removeAccound() {
-      this.input = '';
+      this.loginName = '';
       this.focusName = '';
     },
     removePwd() {
-      this.input2 = '';
+      this.loginPwd = '';
       this.focusName = '';
     },
     mouseover(ref) {
       this.mouseRef = ref;
-      console.log(`mouseover:${this.mouseRef}`);
     },
     mouseout() {
       this.mouseRef = '';
-      console.log('mouseover:空');
     },
   },
 };

@@ -7,6 +7,13 @@ const apiList = {
 const api = apiList[process.env.VUE_APP_NODE_ENV];
 
 module.exports = {
+  '/talent-gateway-service/*': {
+    // target: api,
+    target: 'http://10.54.8.13:9081',
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '' },
+  },
   '/gateway/crcloud-account/*': {
     target: api,
     secure: false,
