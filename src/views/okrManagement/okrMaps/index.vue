@@ -17,7 +17,11 @@
         </el-select>
       </div>
       <div style="margin-left:20px;">
-        <department :data="departmentData" @handleData="handleData"></department>
+        <department
+          :data="departmentData"
+          :initDepartment="initDepartment"
+          @handleData="handleData"
+        ></department>
       </div>
       <div>
         <el-input placeholder="部门名称/成员/关键词" v-model="keyword" @keyup.enter.native="search">
@@ -49,6 +53,7 @@ export default {
       keyword: '',
       okrCycleList: [],
       departmentData: [],
+      initDepartment: {},
     };
   },
   components: {
@@ -70,7 +75,11 @@ export default {
       });
       // 查询组织树
       self.server.getOrgTable().then((res) => {
-        self.departmentData = res.data;
+        if (res.code == '200') {
+          if (res.data) {
+            self.departmentData.push(res.data);
+          }
+        }
       });
     },
     search() {

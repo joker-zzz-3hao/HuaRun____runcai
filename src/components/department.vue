@@ -2,7 +2,7 @@
   <div>
     <div>
       <div @click="showDepartment">
-        <span>{{department.label}}</span>
+        <span>{{department.orgName}}</span>
         <i :class="arrowClass"></i>
       </div>
     </div>
@@ -31,8 +31,8 @@ export default {
       department: {},
       defaultProps: {
         children: 'children',
-        label: 'label',
-        id: 'id',
+        label: 'orgName',
+        id: 'orgId',
       },
     };
   },
@@ -46,14 +46,12 @@ export default {
     initDepartment: {
       type: Object,
       default() {
-        return this.data.length > 0 ? this.data[0] : {};
+        return {};
       },
     },
   },
   mounted() {},
-  created() {
-    this.department = this.initDepartment || {};
-  },
+  created() {},
   methods: {
     showDepartment() {
       if (this.arrowClass == 'el-icon-caret-top') {
@@ -72,15 +70,19 @@ export default {
     },
   },
   watch: {
-    // 'data.length': {
-    //   handler(newVal) {
-    //     if (newVal > 0) {
-    //       this.department = this.data[0];
-    //     }
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
+    'data.length': {
+      handler(newVal) {
+        if (newVal > 0) {
+          if (this.initDepartment.children) {
+            this.department = this.initDepartment;
+          } else {
+            this.department = this.data[0] || {};
+          }
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>
