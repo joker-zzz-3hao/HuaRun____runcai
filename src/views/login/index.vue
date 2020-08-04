@@ -22,11 +22,18 @@
                 @focus="changeFocus('input-txt')"
                 @blur="loseFocus"
                 @input="animationAccound"
+                @mouseover.native="mouseover('input-txt')"
+                @mouseout.native="mouseout('input-txt')"
                 ref="input-txt"
                 class="tl-input-line"
                 :class="{'amt-line-elastic': focusName == 'input-txt'}"
               ></el-input>
-              <div @click="removeAccound" class="remove-current"></div>
+              <div
+                @click="removeAccound"
+                @mouseover="mouseover('input-txt')"
+                @mouseout="mouseout('input-txt')"
+                class="remove-current"
+              ></div>
               <!-- <ul class="state-info">
                 <li @click="removeAccound" class="remove-current"></li>
                 <li class="error-msg">
@@ -45,11 +52,18 @@
                 @focus="changeFocus('input-pwd')"
                 @blur="loseFocus"
                 @input="animationPwd"
+                @mouseover.native="mouseover('input-pwd')"
+                @mouseout.native="mouseout('input-pwd')"
                 ref="input-pwd"
                 class="tl-input-line"
                 :class="{'amt-line-elastic': focusName == 'input-pwd'}"
               ></el-input>
-              <div @click="removePwd" class="remove-current"></div>
+              <div
+                @click="removePwd"
+                @mouseover="mouseover('input-pwd')"
+                @mouseout="mouseout('input-pwd')"
+                class="remove-current"
+              ></div>
               <!-- <ul class="state-info">
                 <li @click="removePwd" class="remove-current"></li>
                 <li class="error-msg">
@@ -57,7 +71,6 @@
                   <i></i>
                 </li>
               </ul>-->
-              <div class="error-msg">您输入的账户名或密码有误！</div>
               <div class="prompt-info">密码</div>
             </dd>
             <dd>
@@ -92,6 +105,7 @@ export default {
       isInputPwd: false,
       isLoginError: false,
       isPwdError: false,
+      mouseRef: '',
     };
   },
   computed: {
@@ -100,9 +114,12 @@ export default {
   methods: {
     changeFocus(ref) {
       this.focusName = ref;
+      console.log(11111111);
     },
     loseFocus() {
-      this.focusName = '';
+      if (this.mouseRef == '') {
+        this.focusName = '';
+      }
       this.isInputAccount = false;
       this.isInputPwd = false;
     },
@@ -117,14 +134,23 @@ export default {
     hasState() {
       this.isLoginError = true;
       this.isPwdError = true;
+      this.focusName = '';
     },
     removeAccound() {
       this.input = '';
-      console.log(1111);
+      this.focusName = '';
     },
     removePwd() {
       this.input2 = '';
-      console.log(222);
+      this.focusName = '';
+    },
+    mouseover(ref) {
+      this.mouseRef = ref;
+      console.log(`mouseover:${this.mouseRef}`);
+    },
+    mouseout() {
+      this.mouseRef = '';
+      console.log('mouseover:空');
     },
   },
 };
