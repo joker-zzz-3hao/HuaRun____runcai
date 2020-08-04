@@ -185,7 +185,7 @@ export default {
     },
     // 设置负责人
     setLeader(data) {
-
+      console.log(data);
     },
     // 创建/编辑用户
     createOrEditUser() {

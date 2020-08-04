@@ -58,6 +58,7 @@ export default {
   computed: {},
   methods: {
     show(depart) {
+      console.log(depart);
       this.visible = true;
     },
     close() {
