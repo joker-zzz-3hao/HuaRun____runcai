@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane :label="`${$store.state.common.userInfo.departmentName}OKR`" name="team">
         <department-page></department-page>
       </el-tab-pane>

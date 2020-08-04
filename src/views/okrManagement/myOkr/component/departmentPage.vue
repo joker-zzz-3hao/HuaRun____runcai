@@ -2,46 +2,55 @@
   <div>
     <!-- 搜索条件 -->
     <div>
-      <el-select v-model="searchForm.time" placeholder="请选择时间">
+      <el-select v-model="searchForm.time" placeholder="请选择时间" @change="searchOkr">
         <el-option
-          v-for="item in timelist"
-          :key="item.timeid"
+          v-for="(item, index) in timelist"
+          :key="item.timeid+index"
           :label="item.timecycle"
           :value="item.timeid"
         ></el-option>
       </el-select>
       <dl>
-        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">{{item.name}}</dd>
+        <dd
+          v-for="item in CONST.STATUS_LIST"
+          :key="item.id"
+          @click="searchOkr(item.id)"
+        >{{item.name}}</dd>
       </dl>
     </div>
     <!-- 用展开行表格 -->
     <div>
-      <el-table :data="tableList">
-        <el-table-column type="expand" width="50">
-          <template slot-scope="scope">
-            <div v-for="kritem in scope.row.krList" :key="kritem.krId">
-              <span>KRicon</span>
-              <span>{{kritem.krName}}</span>
-              <span>{{kritem.percent}}%</span>
-              <div class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="kritem.progress"></el-progress>
-              </div>
-              <span>信心指数{{kritem.confidence}}</span>
+      <p>用折叠面板</p>
+      <div class="collapsetitle">
+        <span>权重</span>
+        <span>进度条</span>
+        <span>信心指数</span>
+        <span>承接地图</span>
+      </div>
+
+      <el-collapse class="collapse">
+        <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
+          <template slot="title">
+            <span>目标icon</span>
+            <span>{{item.objectName}}</span>
+            <span>{{item.percent}}%</span>
+            <span class="progresswidth">
+              <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
+            </span>
+
+            <button @click="gocheng(item.objectId,item.objectName)">承接地图</button>
+          </template>
+          <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
+            <span>KRicon</span>
+            <span>{{kritem.krName}}</span>
+            <span>{{kritem.percent}}%</span>
+            <div class="progresswidth">
+              <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="objectName" label="关键目标" width="220"></el-table-column>
-        <el-table-column prop="percent" label="权重" width="120">
-          <template slot-scope="scope">{{scope.row.percent}}%</template>
-        </el-table-column>
-        <el-table-column prop="progress" label="进度条" width="120">
-          <template slot-scope="scope">
-            <el-progress :stroke-width="10" :percentage="scope.row.progress"></el-progress>
-          </template>
-        </el-table-column>
-        <el-table-column prop="confidence" label="信心指数" width="120"></el-table-column>
-        <el-table-column prop="map" label="承接地图" width="120"></el-table-column>
-      </el-table>
+            <span>信心指数{{kritem.confidence}}</span>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
     <!-- 展示头像 -->
     <div>
@@ -57,14 +66,18 @@ import CONST from '../const';
 const server = new Server();
 
 export default {
-  name: 'crcloudTable',
+  name: 'departmentPage',
   data() {
     return {
       server,
       CONST,
-      tableList: [],
-      searchForm: {},
-      timelist: [],
+      searchForm: {
+        status: '',
+        time: '',
+      },
+      tableList: [], // okr列表
+      timelist: [], // 周期列表
+      memberList: [], // 成员列表
     };
   },
   created() {
@@ -72,17 +85,29 @@ export default {
   },
   methods: {
     init() {
-      this.server.getokrdata().then((res) => {
-        console.log(res);
-        this.tableList = res.data;
-      });
       this.server.getTimeCycle().then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.timelist = response.data;
+        // 默认选中当前周期
+        this.searchForm.time = this.timelist[0].timeid;
+        this.searchOkr();
+        this.searchMember();
       });
     },
-    gocheng() {
+    searchOkr(status = '01') { // 默认搜索进行时
+      this.searchForm.status = status;
+      this.server.getokrdata(this.searchForm).then((res) => {
+        console.log('搜索条件', this.searchForm);
+        this.tableList = res.data;
+      });
+    },
+    // 搜索团队成员
+    searchMember() {
+
+    },
+    gocheng(id, name) {
       this.$message('要跳到承接地图啦~');
+      this.$router.push({ name: 'supportMaps', params: { objectId: id, objectName: name } });
     },
   },
 };
