@@ -20,7 +20,11 @@
           ></department>
         </el-form-item>
         <el-form-item label="序号" prop="sortIndex">
-          <el-input v-model.trim="formData.sortIndex"></el-input>
+          <el-input v-model.trim="formData.sortIndex"></el-input>（用于部门显示顺序）
+        </el-form-item>
+        <el-form-item prop="sortIndex">
+          <el-button @click="saveDepart">确定</el-button>
+          <el-button @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -57,15 +61,21 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    show(depart) {
+    show() {
       this.visible = true;
     },
-    close() {
+    close(status) {
       this.visible = false;
-      this.$emit('closeDepartDialog');
+      this.$emit('closeDialog', { refreshPage: status == 'refreshPage' });
     },
     handleData(date) {
       this.formData.parentDepart = date.id;
+    },
+    saveDepart() {
+      this.close('refreshPage');
+    },
+    cancel() {
+      this.close();
     },
   },
   watch: {},
