@@ -13,7 +13,7 @@
         </el-form-item>
         <el-form-item label="指定部门负责人" prop="parentDepart">
           <el-select
-            v-model="value"
+            v-model="formData.departName"
             filterable
             remote
             reserve-keyword
