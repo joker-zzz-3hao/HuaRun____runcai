@@ -1,13 +1,19 @@
 <template>
   <el-scrollbar class="settings-layout">
-    <router-view class="view-wrap" />
+    <tl-header></tl-header>
+    <tl-main-area></tl-main-area>
   </el-scrollbar>
 </template>
 
 <script>
+import tlHeader from '@/components/layout/header';
+import tlMainArea from '@/components/layout/mainArea';
+
 export default {
   name: 'settingsIndex',
   components: {
+    tlHeader,
+    tlMainArea,
   },
   data() {
     return {

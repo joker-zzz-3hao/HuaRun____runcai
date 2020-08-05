@@ -95,6 +95,7 @@
 .login-info .remove-current {
   background: url('~@/assets/images/remove-current.png') no-repeat;
   background-size: 20px 20px;
+  cursor: pointer;
 }
 
 .login-info .error-msg {
