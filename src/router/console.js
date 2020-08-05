@@ -35,7 +35,7 @@ export default [
         path: 'myOkr',
         name: 'myOkr',
         meta: {
-          hasMainMenu: false,
+          hasMainMenu: true,
         },
         component: () => import('@/views/okrManagement/myOkr/index'),
       },
