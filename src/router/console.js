@@ -44,6 +44,7 @@ export default [
         path: 'okrAssess',
         name: 'okrAssess',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/okrManagement/okrAssess/index'),
       },

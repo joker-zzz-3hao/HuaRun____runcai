@@ -12,6 +12,7 @@ export default [
         path: '/organizeManagement',
         name: 'organizeManagement',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/settings/organizeUserManagement/index'),
       },
@@ -20,6 +21,7 @@ export default [
         path: '/role',
         name: 'role',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/settings/role/index'),
       },
@@ -28,6 +30,7 @@ export default [
         path: '/okrPermissions',
         name: 'okrPermissions',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/settings/okrPermissions/index'),
       },
@@ -36,6 +39,7 @@ export default [
         path: '/okrCycle',
         name: 'okrCycle',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/settings/okrCycle/index'),
       },
@@ -44,6 +48,7 @@ export default [
         path: '/issueMessage',
         name: 'issueMessage',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/settings/issueMessage/index'),
       },
