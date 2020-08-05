@@ -1,3 +1,6 @@
+<!--
+参考使用说明https://www.yuque.com/crcloud/team/vl2rkn
+-->
 <template>
   <div id="app">
     <div class="draw-area" id="treeContent" ref="treeContent">
@@ -85,10 +88,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    currentView: {
-      type: String,
-      default: 'card',
-    },
     // 横向时节点块高度
     blockHeight: {
       type: Number,
@@ -98,6 +97,14 @@ export default {
     blockWidth: {
       type: Number,
       default: 300,
+    },
+    fatherId: {
+      type: String,
+      default: 'fatherId',
+    },
+    childId: {
+      type: String,
+      default: 'id',
     },
   },
   mounted() {
@@ -119,7 +126,7 @@ export default {
       }
 
       if (v1.parent === v2.parent) {
-        return v1.id - v2.id;
+        return v1[this.childId] - v2[this.childId];
       }
 
       return this.compare(v1.parent, v2.parent);
@@ -135,7 +142,7 @@ export default {
       }
 
       data.forEach((v) => {
-        keys[v.id] = v;
+        keys[v[this.childId]] = v;
         v.deep = 0;
         v.top = 0;
         v.height = 0;
@@ -145,8 +152,8 @@ export default {
         v.prev = null; // 前一个节点
       });
       data.forEach((v) => {
-        if (v.fatherId || v.fatherId > 0) {
-          const p = keys[v.fatherId]; // p为v的上一级
+        if (v[this.fatherId] || v[this.fatherId] > 0) {
+          const p = keys[v[this.fatherId]]; // p为v的上一级
           p.children = p.children || []; // 创建p的子节点数组
           p.children.push(v); // 把当前节点放到p的子节点数组里
           v.parent = p;
@@ -171,7 +178,6 @@ export default {
 
       this.root = root; // 根节点
       this.list = data;
-      console.log('daya', data);
       this.levels = levels;
       if (this.direction == 'col') {
         // 横向
@@ -184,7 +190,6 @@ export default {
         this.calcLeft();
         this.calSvgVer();
       }
-      // console.log('data', data);
     },
     // 计算所有节点占用的高度和宽度是否展示
     calcHeight(vnode) {
@@ -210,7 +215,6 @@ export default {
         // 已展开的节点，高度为子节点高度相加
         vnode.height = height || this.blockHeight;
       }
-      // console.log(vnode.id, vnode.open, vnode.height);
     },
     calWidth(vnode) {
       const me = this;
@@ -255,7 +259,6 @@ export default {
         // let svg = document.getElementById('svg')
         // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        console.log('svg', svg);
         svg.setAttribute('height', this.$refs.treeContent.scrollHeight); // 设置高度 滚动
         svg.setAttribute('width', this.root.width); // 设置宽度 root根节点的宽度
         // 向父组件传值？但是父组件没有用到toggle
@@ -337,7 +340,6 @@ export default {
     toggle(vnode) {
       // 点开或关闭
       vnode.open = !vnode.open;
-      console.log('vnode', vnode);
       // 如果有子节点
       if (vnode.children) {
         // show没用用上
@@ -356,7 +358,6 @@ export default {
         this.calcLeft();
         this.calSvgVer();
       }
-      console.log('toggle:', vnode, vnode.open);
     },
   },
 };

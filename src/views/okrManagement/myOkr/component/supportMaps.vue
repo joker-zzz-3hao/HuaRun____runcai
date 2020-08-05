@@ -1,6 +1,14 @@
 <template>
   <div>
-    <vue-svg-tree :treeData="treeData" svgId="svg" ref="svgTree" :curveness="false" direction="col">
+    <vue-svg-tree
+      :treeData="treeData"
+      svgId="svg"
+      ref="svgTree"
+      :curveness="false"
+      direction="col"
+      fatherId="okrfid"
+      childId="cid"
+    >
       <div slot="treecard" slot-scope="props">
         <div class="text">
           <div class="node_title">

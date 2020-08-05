@@ -48,22 +48,22 @@ const mockData = {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [
         {
-          id: 100, fatherId: 0, name: '润联科技', content: '营业额超过100万',
+          cid: 100, okrfid: 0, name: '润联科技', content: '营业额超过100万',
         },
         {
-          id: 101, fatherId: 100, name: '华润云的O', content: '营业额超过100万',
+          cid: 101, okrfid: 100, name: '华润云的O', content: '营业额超过100万',
         },
         {
-          id: 102, fatherId: 100, name: '智慧技术', content: '营业额超过100万',
+          cid: 102, okrfid: 100, name: '智慧技术', content: '营业额超过100万',
         },
         {
-          id: 103, fatherId: 101, name: '云门户的O', content: '营业额超过100万',
+          cid: 103, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
         },
         {
-          id: 104, fatherId: 100, name: 'IT产品服务', content: '营业额超过100万',
+          cid: 104, okrfid: 100, name: 'IT产品服务', content: '营业额超过100万',
         },
         {
-          id: 105, fatherId: 101, name: '云门户的O', content: '营业额超过100万',
+          cid: 105, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
         }],
     })));
   },
