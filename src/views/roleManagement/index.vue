@@ -1,33 +1,36 @@
 <!--
  * @Author: 许志鹏
- * @Date: 2020-08-04 15:39:16
+ * @Date: 2020-08-04 16:48:29
  * @Description: file content
 -->
 <template>
-  <div class="tenant-management">
+  <div class="home">
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
-        <el-input maxlength="50" v-model="inputValue" placeholder="输入ID/企业名称/企业申请人"></el-input>
+        <el-input maxlength="50" v-model="inputValue" placeholder="请输入角色名称/创建时间/角色状态"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">查询</el-button>
       </el-form-item>
       <el-form-item class="pageright">
-        <el-button type="primary" @click="showAddRoule">创建租户</el-button>
+        <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
       </el-form-item>
     </el-form>
     <div>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="roleId" label="企业ID"></el-table-column>
-        <el-table-column prop="name" label="企业名称"></el-table-column>
-        <el-table-column prop="role" label="申请人"></el-table-column>
-        <el-table-column prop="vioer" label="开通版本"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column fixed prop="roleId" label="角色编码"></el-table-column>
+        <el-table-column prop="name" label="角色名称"></el-table-column>
+        <el-table-column prop="role" label="类型"></el-table-column>
+        <el-table-column prop="city" label="状态">
+          <template slot-scope="scope">
+            <el-switch v-model="value[scope.$index]" active-text="启用"></el-switch>
+          </template>
+        </el-table-column>
         <el-table-column prop="date" label="创建时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="130">
+        <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small" @click="handleDelete()">进入租户</el-button>
+            <el-button type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -43,25 +46,21 @@
         :total="400"
       ></el-pagination>
     </div>
-    <tl-create-tenant v-if="exist" :exist.sync="exist" :title="title"></tl-create-tenant>
+    <tl-add-roule v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-roule>
   </div>
 </template>
 
 <script>
-import createTenant from './components/createTenant';
+import addRoule from './components/addRoule';
 
 export default {
-  name: 'tenantManagement',
-  components: {
-    'tl-create-tenant': createTenant,
-  },
   methods: {
     showAddRoule() {
-      this.title = '创建租户';
+      this.title = '新增角色';
       this.exist = true;
     },
     putRoule() {
-      this.title = '编辑租户';
+      this.title = '编辑角色';
       this.exist = true;
     },
     handleDelete(done) {
@@ -72,40 +71,36 @@ export default {
         .catch(() => {});
     },
   },
+  components: {
+    'tl-add-roule': addRoule,
+  },
   data() {
     return {
+      title: '',
       rouleType: false, // 是否内置管理员
       exist: false,
       value: [],
       inputValue: '',
       tableData: [{
-        roleId: 'US20190210_111001',
-        name: '华润水泥控股有限公司',
-        role: '张三',
+        roleId: '0001',
+        name: '王小虎',
+        role: '内置角色',
         date: '2020-07-16 11:33:00',
-        vioer: '基础版',
-        status: '正常',
       }, {
-        roleId: 'US20190210_111001',
-        name: '华润水泥控股有限公司',
-        role: '张三',
+        roleId: '0001',
+        name: '王小虎',
+        role: '内置角色',
         date: '2020-07-16 11:33:00',
-        vioer: '基础版',
-        status: '正常',
       }, {
-        roleId: 'US20190210_111001',
-        name: '华润水泥控股有限公司',
-        role: '张三',
+        roleId: '0001',
+        name: '王小虎',
+        role: '内置角色',
         date: '2020-07-16 11:33:00',
-        vioer: '基础版',
-        status: '正常',
       }, {
-        roleId: 'US20190210_111001',
-        name: '华润水泥控股有限公司',
-        role: '张三',
+        roleId: '0001',
+        name: '王小虎',
+        role: '内置角色',
         date: '2020-07-16 11:33:00',
-        vioer: '基础版',
-        status: '正常',
       }],
     };
   },
