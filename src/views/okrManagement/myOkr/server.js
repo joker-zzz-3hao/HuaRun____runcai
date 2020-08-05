@@ -8,4 +8,8 @@ export default class Server extends ServerBase {
   getTimeCycle(param) {
     return this._ajaxPost('gateway/crcloud-okrManage/getTimeCycle', param);
   }
+
+  getmaps(param) {
+    return this._ajaxPost('gateway/crcloud-okrManage/getmaps', param);
+  }
 }

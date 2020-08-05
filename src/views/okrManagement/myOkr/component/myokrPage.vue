@@ -2,7 +2,7 @@
   <div>
     <!-- 搜索条件 -->
     <div>
-      <el-select v-model="searchForm.time" placeholder="请选择时间">
+      <el-select v-model="searchForm.time" placeholder="请选择时间" :popper-append-to-body="false">
         <el-option
           v-for="(item, index) in timelist"
           :key="item.timeid+index"
