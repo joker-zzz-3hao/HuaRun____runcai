@@ -1,3 +1,8 @@
+/*
+ * @Author: 许志鹏
+ * @Date: 2020-08-04 15:39:16
+ * @Description: file content
+ */
 export default [
   {
     path: '/settingsIndex',
@@ -51,6 +56,14 @@ export default [
           hasMainMenu: true,
         },
         component: () => import('@/views/settings/issueMessage/index'),
+      },
+      {
+        path: '/roleManagement',
+        name: 'roleManagement',
+        meta: {
+          hasMainMenu: true,
+        },
+        component: () => import('@/views/roleManagement/index'),
       },
     ],
   },
