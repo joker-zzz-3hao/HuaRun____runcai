@@ -9,4 +9,4 @@ const proxy = {
   ...require('./common/index'),
 };
 
-module.exports = (delay(proxy, 1000));
+module.exports = (delay(proxy, 0));
