@@ -1,7 +1,7 @@
 <template>
   <section class="main-area">
     <div class="menu-wrap">
-      <main-menu></main-menu>
+      <main-menu v-if="hasMainMenu"></main-menu>
       <router-view class="view-wrap" />
     </div>
   </section>
@@ -15,6 +15,10 @@ export default {
   components: {
     mainMenu,
   },
-
+  computed: {
+    hasMainMenu() {
+      return this.$route.meta.hasMainMenu;
+    },
+  },
 };
 </script>

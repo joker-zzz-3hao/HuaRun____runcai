@@ -12,6 +12,7 @@ export default [
         path: '/tenantManagement',
         name: 'tenantManagement',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/admin/tenantManagement/index'),
       },
@@ -20,6 +21,7 @@ export default [
         path: '/issueNotice',
         name: 'issueNotice',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/admin/issueNotice/index'),
       },
@@ -28,6 +30,7 @@ export default [
         path: '/dataDictionary',
         name: 'dataDictionary',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/admin/dataDictionary/index'),
       },
@@ -36,6 +39,7 @@ export default [
         path: '/systemMaintenance',
         name: 'systemMaintenance',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/admin/systemMaintenance/index'),
       },
@@ -44,6 +48,7 @@ export default [
         path: '/systemUserManagement',
         name: 'systemUserManagement',
         meta: {
+          hasMainMenu: true,
         },
         component: () => import('@/views/admin/systemUserManagement/index'),
       },
