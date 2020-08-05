@@ -52,6 +52,14 @@ export default [
         },
         component: () => import('@/views/okrManagement/writeOkr/index'),
       },
+      {
+        // 承接树
+        path: 'supportMaps',
+        name: 'supportMaps',
+        meta: {
+        },
+        component: () => import('@/views/okrManagement/myOkr/component/supportMaps'),
+      },
     ],
   },
 ];

@@ -4,17 +4,17 @@
     <div>
       <el-select v-model="searchForm.time" placeholder="请选择时间">
         <el-option
-          v-for="item in timelist"
-          :key="item.timeid"
+          v-for="(item, index) in timelist"
+          :key="item.timeid+index"
           :label="item.timecycle"
           :value="item.timeid"
         ></el-option>
       </el-select>
       <dl>
-        <dd>状态</dd>
+        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">{{item.name}}</dd>
       </dl>
     </div>
-    <!-- 用折叠面板 -->
+    <!-- 用展开行表格 -->
     <div>
       <p>用折叠面板</p>
       <div class="collapsetitle">
@@ -25,42 +25,48 @@
       </div>
 
       <el-collapse class="collapse">
-        <el-collapse-item v-for="item in tableList" :key="item.objectId">
+        <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
           <template slot="title">
             <span>目标icon</span>
             <span>{{item.objectName}}</span>
             <span>{{item.percent}}%</span>
             <span class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="item.progress"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
             </span>
 
-            <span @click="gocheng">承接地图</span>
+            <button @click="gocheng(item.objectId,item.objectName)">承接地图</button>
           </template>
-          <div v-for="kritem in item.krList" :key="kritem.krId">
+          <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
             <span>KRicon</span>
             <span>{{kritem.krName}}</span>
             <span>{{kritem.percent}}%</span>
             <div class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="kritem.progress"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
             </div>
             <span>信心指数{{kritem.confidence}}</span>
           </div>
         </el-collapse-item>
       </el-collapse>
     </div>
+    <!-- 展示头像 -->
+    <div>
+      <p>头像or部门logo</p>
+    </div>
   </div>
 </template>
 
 <script>
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 
 export default {
-  name: 'crcloudTable',
+  name: 'myokrPage',
   data() {
     return {
       server,
+      CONST,
       tableList: [],
       searchForm: {},
       timelist: [],
@@ -80,8 +86,9 @@ export default {
         this.timelist = response.data;
       });
     },
-    gocheng() {
+    gocheng(id, name) {
       this.$message('要跳到承接地图啦~');
+      this.$router.push({ name: 'supportMaps', params: { objectId: id, objectName: name } });
     },
   },
 };

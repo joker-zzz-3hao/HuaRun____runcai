@@ -61,7 +61,8 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    show() {
+    show(depart) {
+      console.log(depart);
       this.visible = true;
     },
     close(status) {

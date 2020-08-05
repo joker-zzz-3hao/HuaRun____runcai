@@ -2,7 +2,8 @@
   <div>
     <div>
       <div @click="showDepartment">
-        <span>{{department.label}}</span>
+        <span v-if="type == 'department'">{{department.orgName}}</span>
+        <span v-else-if="type == 'cycleListSelect'">{{department.okrCycleName}}</span>
         <i :class="arrowClass"></i>
       </div>
     </div>
@@ -18,22 +19,12 @@
   </div>
 </template>
 <script>
-import Server from './server';
-
-const server = new Server();
-
 export default {
   name: 'department',
   data() {
     return {
-      server,
       arrowClass: 'el-icon-caret-top',
       department: {},
-      defaultProps: {
-        children: 'children',
-        label: 'label',
-        id: 'id',
-      },
     };
   },
   props: {
@@ -46,14 +37,24 @@ export default {
     initDepartment: {
       type: Object,
       default() {
-        return this.data.length > 0 ? this.data[0] : {};
+        return {};
       },
+    },
+    defaultProps: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    // type为cycleListSelect时是周期下拉框组件
+    // type为department时是组织下拉框组件
+    type: {
+      type: String,
+      default: '',
     },
   },
   mounted() {},
-  created() {
-    this.department = this.initDepartment || {};
-  },
+  created() {},
   methods: {
     showDepartment() {
       if (this.arrowClass == 'el-icon-caret-top') {
@@ -63,24 +64,40 @@ export default {
       }
     },
     handleNodeClick(data) {
-      this.department = data;
-      this.$emit('handleData', data);
+      if (this.type == 'cycleListSelect') {
+        if (data.okrCycleType != '0') {
+          this.department = data;
+          this.$emit('handleData', data);
+        }
+      } else if (this.type == 'department') {
+        this.department = data;
+        this.$emit('handleData', data);
+      }
       console.log(data);
-    },
-    hide() {
-      this.arrowClass = 'el-icon-caret-top';
     },
   },
   watch: {
-    // 'data.length': {
-    //   handler(newVal) {
-    //     if (newVal > 0) {
-    //       this.department = this.data[0];
-    //     }
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
+    'data.length': {
+      handler(newVal) {
+        if (newVal > 0) {
+          if (this.type == 'cycleListSelect') {
+            this.data.forEach((item) => {
+              if (item.checkStatus == '1') {
+                this.department = item.children[0] || {};
+              }
+            });
+          } else if (this.type == 'department') {
+            if (this.initDepartment.children) {
+              this.department = this.initDepartment;
+            } else {
+              this.department = this.data[0] || {};
+            }
+          }
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>
