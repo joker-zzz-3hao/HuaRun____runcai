@@ -3,7 +3,7 @@
 .login-layout,
 .admin-layout,
 .settings-layout,
-.view-wrap {
+.view-cont {
   height: 100%;
 }
 
@@ -21,18 +21,19 @@
   z-index: 20;
 }
 
-.main-menu {
+/* 主区域 */
+.main-wrap {
+  display: flex;
+}
+
+.menu-cont-inside {
   position: fixed;
   left: 0;
   bottom: 0;
   z-index: 20;
 }
 
-.main-wrap {
-  display: flex;
-}
-
-.view-wrap {
+.view-cont {
   flex: 1 1 auto;
   margin: 0 16px;
 }
