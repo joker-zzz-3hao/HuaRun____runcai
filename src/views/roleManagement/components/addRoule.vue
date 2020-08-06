@@ -5,6 +5,7 @@
 -->
 <template>
   <el-dialog
+    @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
@@ -28,7 +29,7 @@
           class="selectMember"
         ></el-select>
         <div class="roulemember" v-if="dialogVisible">
-          <tl-select-member></tl-select-member>
+          <tl-select-member @click.native.stop></tl-select-member>
         </div>
       </el-form-item>
       <el-form-item label="角色状态">
@@ -134,6 +135,9 @@ export default {
     showMember() {
       this.dialogVisible = !this.dialogVisible;
     },
+    closeshowMember() {
+      this.dialogVisible = false;
+    },
   },
 };
 </script>
@@ -151,8 +155,9 @@ export default {
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-
-.el-select-dropdown {
+</style>
+<style>
+.selectMember .el-select-dropdown {
   display: none !important;
 }
 </style>

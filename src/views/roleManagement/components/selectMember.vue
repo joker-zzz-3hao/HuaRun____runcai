@@ -5,25 +5,28 @@
 -->
 <template>
   <div class="issue-message">
-    <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+    <el-input placeholder="输入用户名称/LDAP账号" v-model="filterText"></el-input>
     <div class="rouleflex">
       <div class="roulewidth">
         <el-tabs type="border-card">
           <el-tab-pane label="常用">
-            <el-tree
-              class="filter-tree"
-              :data="data"
-              :props="defaultProps"
-              default-expand-all
-              :filter-node-method="filterNode"
-              ref="tree"
-            ></el-tree>
+            <div class="roulelist">
+              <ul>
+                <li @click="addSelctRoule(item)">
+                  <img src alt class="rouleimg" />
+                  <span>张三 (zhangshan25）</span>
+                </li>
+                <li>
+                  <img src alt class="rouleimg" />
+                  <span>张三 (zhangshan25）</span>
+                </li>
+              </ul>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="部门">
             <el-tree
               class="filter-tree"
               :data="data2"
-              :props="defaultProps"
               default-expand-all
               :filter-node-method="filterNode"
               ref="tree"
@@ -38,13 +41,9 @@
         </div>
         <div class="roulelist">
           <ul>
-            <li>
+            <li v-for="(item,index) in roulelist" :key="index">
               <img src alt class="rouleimg" />
-              <span>张三 (zhangshan25）</span>
-            </li>
-            <li>
-              <img src alt class="rouleimg" />
-              <span>张三 (zhangshan25）</span>
+              <span>{{item.name}}</span>
             </li>
           </ul>
         </div>
@@ -65,13 +64,13 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-
   },
 
   data() {
     return {
       filterText: '',
       dialogTableVisible: false,
+      roulelist: [],
       data: [{
         id: 1,
         label: '一级 1',
@@ -165,6 +164,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 .rouleselect span:nth-child(2) {
   cursor: pointer;
@@ -172,6 +172,9 @@ export default {
 
 .roulemodel {
   padding: 0 25px;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
 }
 
 .roulelist ul li {
