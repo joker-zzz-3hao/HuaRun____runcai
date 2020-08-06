@@ -7,6 +7,36 @@
   height: 100%;
 }
 
+.el-scrollbar .el-scrollbar__view:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 20;
+}
+
+.main-menu {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+.main-wrap {
+  display: flex;
+}
+
+.view-wrap {
+  flex: 1 1 auto;
+  margin: 0 16px;
+}
+
 /* 内容容器 */
 .cont-wrap {
   margin: 0 auto;
