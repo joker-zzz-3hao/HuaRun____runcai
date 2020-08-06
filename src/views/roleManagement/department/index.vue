@@ -14,7 +14,6 @@
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
-        <el-button type="primary">移除</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -28,8 +27,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="date" label="创建时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
+            <el-button type="text" size="small" @click="$router.push('/members')">成员管理</el-button>
             <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
             <el-button type="text" size="small">移除</el-button>
           </template>
@@ -47,12 +47,12 @@
         :total="400"
       ></el-pagination>
     </div>
-    <tl-add-roule v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-roule>
+    <tl-add-role v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-role>
   </div>
 </template>
 
 <script>
-import addRoule from './components/addRoule';
+import addRole from './components/addRole';
 
 export default {
   methods: {
@@ -65,7 +65,7 @@ export default {
       this.exist = true;
     },
     handleDelete(done) {
-      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+      this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
         .then(() => {
           done();
         })
@@ -79,7 +79,7 @@ export default {
     },
   },
   components: {
-    'tl-add-roule': addRoule,
+    'tl-add-role': addRole,
   },
   data() {
     return {

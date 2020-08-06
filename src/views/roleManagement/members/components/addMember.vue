@@ -18,35 +18,10 @@
       <el-form-item label="角色名称">
         <el-input style="width:320px" v-model="form.name" placeholder="请输入角色名称"></el-input>
       </el-form-item>
-      <el-form-item label="添加成员" class="addRoule">
-        <el-select
-          :popper-append-to-body="false"
-          style="width:320px"
-          v-model="form.region"
-          @click.native="showMember"
-          multiple
-          placeholder="请添加成员"
-          class="selectMember"
-        ></el-select>
-        <div class="roulemember" v-if="dialogVisible">
+      <el-form-item label="选择成员" class="addMember">
+        <div class="roulemember">
           <tl-select-member @click.native.stop></tl-select-member>
         </div>
-      </el-form-item>
-      <el-form-item label="角色状态">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="启用"></el-radio>
-          <el-radio label="禁用"></el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="菜单权限" v-if="!rouleType">
-        <el-tree
-          :data="data"
-          show-checkbox
-          node-key="id"
-          :default-expanded-keys="[2, 3]"
-          :default-checked-keys="[5]"
-          :props="defaultProps"
-        ></el-tree>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -142,22 +117,10 @@ export default {
 };
 </script>
 <style  scoped>
-.addRoule {
+.addMember {
   position: relative;
 }
 .roulemember {
   width: 100%;
-  z-index: 99999999;
-  position: absolute;
-  left: 0;
-  top: 50px;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-</style>
-<style>
-.selectMember .el-select-dropdown {
-  display: none !important;
 }
 </style>
