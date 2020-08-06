@@ -2,11 +2,14 @@
   <div>
     <!-- 填写表单&详情 -->
     <div>
-      <el-form>
+      <el-form :model="formData" ref="dataForm">
         <dl class="okuang" v-for="(oitem,index) in formData.okrList" :key="index">
           <dt>目标名称</dt>
           <dd class="objectdd">
-            <el-form-item>
+            <el-form-item
+              prop="objectName"
+              :rules="[{required:true,trigger: 'blur' , message: '请填写目标名称'}]"
+            >
               <el-input v-if="canWrite" v-model="oitem.objectName"></el-input>
               <span v-else>{{oitem.objectName}}</span>
             </el-form-item>
@@ -33,21 +36,16 @@
             <el-form-item label="关联承接项">
               <el-button @click="guanlian(index)">关联承接项</el-button>
               <span></span>
-              <!-- <el-popover placement="right" width="400" trigger="click">
-                <el-table :data="departokrList">
-                  <el-table-column width="150" property="typeName"></el-table-column>
-                  <el-table-column width="100" property="objectName"></el-table-column>
-                  <el-table-column width="300" property="guanlianId"></el-table-column>
-                </el-table>
-                <el-button slot="reference">关联承接项</el-button>
-              </el-popover>-->
             </el-form-item>
           </dd>
           <dd>
             <dl v-for="(kitem, kindex) in oitem.keyList" :key="kindex">
               <dt>关键结果</dt>
               <dd class="objectdd">
-                <el-form-item>
+                <el-form-item
+                  prop="keyName"
+                  :rules="[{required:true,trigger: 'blur' , message: '请填写目标名称'}]"
+                >
                   <el-input v-if="canWrite" v-model="kitem.keyName"></el-input>
                   <span v-else>{{kitem.keyName}}</span>
                 </el-form-item>
@@ -79,6 +77,14 @@
                     void-icon-class="el-icon-house"
                   ></el-rate>
                   <span v-else>{{kitem.rate}}</span>
+                  <el-popover placement="right" width="400" trigger="click">
+                    <el-table :data="departokrList">
+                      <el-table-column width="150" property="typeName"></el-table-column>
+                      <el-table-column width="100" property="objectName"></el-table-column>
+                      <el-table-column width="300" property="guanlianId"></el-table-column>
+                    </el-table>
+                    <el-button slot="reference">信息状态</el-button>
+                  </el-popover>
                 </el-form-item>
                 <el-button v-if="canWrite" @click="deletekr(index,kindex)">删kr</el-button>
               </dd>
@@ -287,11 +293,32 @@ export default {
     summitguanlian() {
       this.dialogVisible = false;
     },
+    // 校验表单
+
     // 提交表单
     summit() {
-      // 校验权重比例
-      console.log('提交结果', this.formData);
-      // this.canWrite = false;
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          // 校验权重比例
+          let opercent = 0;
+          let keypercent = 0;
+          this.formData.okrList.forEach((oitem) => {
+            opercent += oitem.percent;
+            keypercent = 0;
+            oitem.keyList.forEach((kitem) => {
+              keypercent += kitem.percent;
+            });
+          });
+          if (opercent != 100) {
+            this.$message('o权重相加不等100~');
+          }
+          if (keypercent != 100) {
+            this.$message('kr权重相加不等100~');
+          }
+          console.log('提交结果', this.formData);
+          // this.canWrite = false;
+        }
+      });
     },
   },
   watch: {

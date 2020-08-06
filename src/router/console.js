@@ -64,7 +64,7 @@ export default [
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/okrManagement/myOkr/component/supportMaps'),
+        component: () => import('@/views/okrManagement/undertakeMaps/index'),
       },
     ],
   },

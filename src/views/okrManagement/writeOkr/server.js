@@ -12,4 +12,8 @@ export default class Server extends ServerBase {
   getphilosophy(param) {
     return this._ajaxPost('gateway/crcloud-okrManage/getphilosophy', param);
   }
+
+  getokrDetail(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/okrDetail?okrId=111111222', param);
+  }
 }
