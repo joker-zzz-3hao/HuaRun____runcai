@@ -25,7 +25,11 @@
       </div>
 
       <el-collapse class="collapse">
-        <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
+        <el-collapse-item
+          v-for="(item, index) in tableList"
+          :key="item.objectId+index"
+          @click.native="goDetail(item.objectId)"
+        >
           <template slot="title">
             <span>目标icon</span>
             <span>{{item.objectName}}</span>
@@ -34,7 +38,8 @@
               <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
             </span>
 
-            <button @click="gocheng(item.objectId,item.objectName)">承接地图</button>
+            <el-button @click.native.stop="goHistory(item.objectId)">历史版本</el-button>
+            <el-button @click.native.stop="goUpdate(item.objectId)">进度更新</el-button>
           </template>
           <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
             <span>KRicon</span>
@@ -115,10 +120,23 @@
       <p>头像or部门logo</p>
       <p>头像or部门logo9999999</p>
     </div>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      width="40%"
+      :modal-append-to-body="false"
+    >
+      <component ref="com" v-bind:is="currentView"></component>
+
+      <okrDetail :server="server"></okrDetail>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import okrDetail from './okrDetail';
+import okrUpdate from './okrUpdate';
+import okrHistory from './okrHistory';
 import Server from '../server';
 import CONST from '../const';
 
@@ -126,6 +144,11 @@ const server = new Server();
 
 export default {
   name: 'myokrPage',
+  components: {
+    'okr-detail': okrDetail,
+    'okr-update': okrUpdate,
+    'okr-history': okrHistory,
+  },
   data() {
     return {
       server,
@@ -133,6 +156,9 @@ export default {
       tableList: [],
       searchForm: {},
       timelist: [],
+      dialogVisible: false, // 弹框是否显示
+      currentView: 'okr-detail', // 弹框组件
+      dialogTitle: 'OKR详情', // 弹框标题
     };
   },
   created() {
@@ -149,9 +175,25 @@ export default {
         this.timelist = response.data;
       });
     },
-    gocheng(id, name) {
-      this.$message('要跳到承接地图啦~');
-      this.$router.push({ name: 'supportMaps', params: { objectId: id, objectName: name } });
+    // 更新进度
+    goUpdate(val) {
+      console.log('点击', val);
+      this.currentView = 'okr-update';
+      this.dialogTitle = '更新进度';
+      this.dialogVisible = true;
+    },
+    // 历史版本
+    goHistory(val) {
+      console.log('点击', val);
+      this.currentView = 'okr-history';
+      this.dialogTitle = '历史版本';
+      this.dialogVisible = true;
+    },
+    goDetail(val) {
+      console.log('点击', val);
+      this.currentView = 'okr-detail';
+      this.dialogTitle = 'OKR详情';
+      this.dialogVisible = true;
     },
   },
 };

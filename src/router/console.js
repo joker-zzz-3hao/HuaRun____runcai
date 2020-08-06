@@ -70,7 +70,7 @@ export default [
           hasMainMenu: true,
           isSubMenu: true,
         },
-        component: () => import('@/views/okrManagement/myOkr/component/supportMaps'),
+        component: () => import('@/views/okrManagement/undertakeMaps/index'),
       },
     ],
   },

@@ -8,7 +8,7 @@
     "pre": "vue-cli-service serve --mode pre",
     "prod": "vue-cli-service serve --mode prod",
     "mock": "vue-cli-service serve --mode mock",
-    "build": "vue-cli-service build",
+    "build:sit": "vue-cli-service build --mode sit",
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {

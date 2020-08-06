@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     goWriteOkr() {
-      this.$router.push({ name: 'writeOkr' });
+      this.$router.push({ name: 'writeOkr', params: { canWrite: true } });
     },
   },
 };

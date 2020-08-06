@@ -1,9 +1,32 @@
 <template>
   <div>
+    <!-- okr详情 -->
+    <div>
+      <ul>
+        <li>
+          <span>目标类型</span>
+          <span>{{okrmain.okrBelongType}}</span>
+        </li>
+        <li>
+          <span>负责人</span>
+          <span>{{okrmain.userName}}{{okrmain.userId}}</span>
+        </li>
+        <li>
+          <span>更新时间</span>
+          <span>{{okrmain.updateTime}}</span>
+        </li>
+        <li>
+          <span>进度</span>
+          <span>
+            <el-progress :stroke-width="10" :percentage="okrmain.okrProgress"></el-progress>
+          </span>
+        </li>
+      </ul>
+    </div>
     <el-collapse class="collapse">
       <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
         <template slot="title">
-          <div>{{item.objectName}}</div>
+          <div>{{item.okrDetailObjectKr}}</div>
           <ul class="detail">
             <li>
               <span>权重</span>
@@ -12,7 +35,7 @@
             <li>
               <span>当前进度</span>
               <span class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
+                <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
               </span>
             </li>
             <li>
@@ -54,6 +77,7 @@ export default {
     return {
       CONST,
       tableList: [],
+      okrmain: {},
     };
   },
   props: {
@@ -69,9 +93,10 @@ export default {
   },
   methods: {
     init() {
-      this.server.getokrdata().then((res) => {
+      this.server.getokrDetail().then((res) => {
         console.log(res);
-        this.tableList = res.data;
+        this.tableList = res.data.okrDetails;
+        this.okrmain = res.data.okrMain;
       });
     },
 

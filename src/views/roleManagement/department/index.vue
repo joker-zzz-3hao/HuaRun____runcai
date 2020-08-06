@@ -27,10 +27,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="date" label="创建时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
+            <el-button type="text" size="small" @click="$router.push('/members')">成员管理</el-button>
             <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,12 +47,12 @@
         :total="400"
       ></el-pagination>
     </div>
-    <tl-add-roule v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-roule>
+    <tl-add-role v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-role>
   </div>
 </template>
 
 <script>
-import addRoule from './components/addRoule';
+import addRole from './components/addRole';
 
 export default {
   methods: {
@@ -64,15 +65,21 @@ export default {
       this.exist = true;
     },
     handleDelete(done) {
-      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+      this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
         .then(() => {
           done();
         })
         .catch(() => {});
     },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
   components: {
-    'tl-add-roule': addRoule,
+    'tl-add-role': addRole,
   },
   data() {
     return {
@@ -81,6 +88,10 @@ export default {
       exist: false,
       value: [],
       inputValue: '',
+      currentPage1: 5,
+      currentPage2: 5,
+      currentPage3: 5,
+      currentPage4: 4,
       tableData: [{
         roleId: '0001',
         name: '王小虎',

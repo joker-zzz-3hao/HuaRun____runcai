@@ -1,10 +1,11 @@
 <!--
  * @Author: 许志鹏
- * @Date: 2020-08-05 18:44:17
+ * @Date: 2020-08-04 18:02:57
  * @Description: file content
 -->
 <template>
   <el-dialog
+    @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
@@ -13,41 +14,33 @@
     :visible.sync="dialogTableVisible"
     center
   >
-    <div class="modelCreate">
-      <el-form ref="form" :model="form" label-width="110px">
-        <el-form-item label="租户名称">
-          <el-input style="width:320px" v-model="form.name" placeholder="请输入租户名称"></el-input>
-        </el-form-item>
-        <el-form-item label="申请人">
-          <el-input style="width:320px" v-model="form.name" placeholder="请输入申请人"></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input style="width:320px" v-model="form.name" placeholder="请输入联系电话"></el-input>
-        </el-form-item>
-        <el-form-item label="开放菜单功能">
-          <el-tree :data="data" show-checkbox node-key="id"></el-tree>
-        </el-form-item>
-        <el-form-item label="使用时间">
-          <el-date-picker
-            v-model="form.date"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="角色名称">
+        <el-input style="width:320px" v-model="form.name" placeholder="请输入角色名称"></el-input>
+      </el-form-item>
+      <el-form-item label="菜单权限" v-if="!rouleType">
+        <el-tree
+          :data="data"
+          show-checkbox
+          node-key="id"
+          :default-expanded-keys="[2, 3]"
+          :default-checked-keys="[5]"
+          :props="defaultProps"
+        ></el-tree>
+      </el-form-item>
+    </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="innerVisible = true">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
   </el-dialog>
 </template>
+
 <script>
+import selectMember from './selectMember';
 
 export default {
-  name: 'createTenant',
+  name: 'home',
   props: {
     title: {
       type: String,
@@ -60,15 +53,17 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+        region: [],
+      },
       dialogTableVisible: false,
       dialogVisible: false,
       data: [{
         id: 1,
-        label: '一级 1',
+        label: '企业管理',
         children: [{
           id: 4,
-          label: '二级 1-1',
+          label: '租户管理',
           children: [{
             id: 9,
             label: '三级 1-1-1',
@@ -98,9 +93,15 @@ export default {
           label: '二级 3-2',
         }],
       }],
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+      },
     };
   },
-
+  components: {
+    'tl-select-member': selectMember,
+  },
   mounted() {
     this.dialogTableVisible = true;
   },
@@ -114,13 +115,29 @@ export default {
     showMember() {
       this.dialogVisible = !this.dialogVisible;
     },
+    closeshowMember() {
+      this.dialogVisible = false;
+    },
   },
 };
 </script>
 <style  scoped>
-.modelCreate {
-  display: flex;
+.addRoule {
+  position: relative;
+}
+.roulemember {
   width: 100%;
-  justify-content: center;
+  z-index: 99999999;
+  position: absolute;
+  left: 0;
+  top: 50px;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+</style>
+<style>
+.selectMember .el-select-dropdown {
+  display: none !important;
 }
 </style>
