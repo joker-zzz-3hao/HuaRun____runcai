@@ -151,35 +151,89 @@
 }
 
 .menu-cont {
-  flex: 0 1 70px;
-  /* background: #162565; */
+  width: 90px;
+  transition: all .3s ease-out;
 }
 
-.main-menu {
-  display: flex;
-  position: fixed;
-  top: 70px;
-  left: 0;
+.menu-cont.is-sub-menu {
   width: 248px;
-  background: #fc0;
 }
 
-.main-menu ul {
+.no-sub-menu {
+  width: 70px;
+}
+
+.no-sub-menu .main-menu .sub-menu {
+  width: 0;
+}
+
+.is-sub-menu .main-menu .sub-menu {
+  width: 248px;
+}
+
+.menu-cont-inside {
+  top: 70px;
+  width: 90px;
+  transition: all .3s ease-out;
+}
+
+.is-sub-menu .menu-cont-inside {
+  width: 248px;
+}
+
+.menu-cont-inside ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 70px;
   background: #162565;
 }
 
-.main-menu li {
+.menu-cont-inside > ul {
+  width: 70px;
+}
+
+.main-menu > ul {
+  width: 70px;
+  height: calc(100vh - 70px);
+}
+
+.menu-cont-inside li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  cursor: pointer;
+}
+
+.menu-cont-inside li i {
+  width: 24px;
+  height: 24px;
+  background: url('~@/assets/images/workbench.png') center no-repeat;
+  background-size: 24px 24px;
+}
+
+.menu-cont-inside ul:first-of-type li {
   color: #fff;
 }
 
-.main-menu .sub-menu {
+.main-menu {
   position: relative;
-  width: 20px;
+  width: 90px;
+}
+
+.main-menu .sub-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 90px;
+  height: calc(100vh - 70px);
   background: #f40;
+  z-index: -1;
+  transition: all .3s ease-out;
+}
+
+.sub-menu ul {
+  margin-left: 100px;
 }
 
 .main-menu .sub-menu::after {
@@ -190,4 +244,15 @@
   height: 100%;
   width: 1px;
   background: #000;
+}
+
+.no-sub-menu .menu-cont-inside,
+.no-sub-menu .main-menu {
+  width: 70px;
+}
+
+.management-platform {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }

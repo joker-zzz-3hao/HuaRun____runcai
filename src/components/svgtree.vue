@@ -2,7 +2,7 @@
 参考使用说明https://www.yuque.com/crcloud/team/vl2rkn
 -->
 <template>
-  <div id="app">
+  <div>
     <div class="draw-area" id="treeContent" ref="treeContent">
       <div v-for="(arr, index) in levels" :key="index">
         <!-- 通过left和top控制每个节点位置 -->
