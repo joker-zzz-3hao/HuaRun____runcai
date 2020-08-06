@@ -86,12 +86,14 @@ export default {
                 this.department = item.children[0] || {};
               }
             });
+            this.$emit('handleData', this.department);
           } else if (this.type == 'department') {
             if (this.initDepartment.children) {
               this.department = this.initDepartment;
             } else {
               this.department = this.data[0] || {};
             }
+            this.$emit('handleData', this.department);
           }
         }
       },

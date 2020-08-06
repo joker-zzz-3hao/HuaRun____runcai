@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" style="margin-left: 200px;">
     <div style="display: flex;">
       <div style="margin-left:20px;">
         <department
@@ -64,6 +64,7 @@ export default {
       initDepartment: {},
       cycleData: [],
       okrCycle: {},
+      departmentObj: {},
       departmentDefaultProps: {
         children: 'children',
         label: 'orgName',
@@ -128,13 +129,22 @@ export default {
       }
     },
     getOkrTree() {
-      this.server.getOkrTree({
-        periodId: this.okrCycle.periodId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.treeData = res.data;
-        }
-      });
+      if (this.okrCycle.periodId && this.departmentObj.orgFullId) {
+        this.server.getOkrTree({
+          periodId: this.okrCycle.periodId,
+          orgId: this.departmentObj.orgFullId,
+        }).then((res) => {
+          if (res.code == '200') {
+            // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
+            res.data.forEach((item) => {
+              if (item.orgFullId == this.departmentObj.orgFullId) {
+                item.orgParentId = null;
+              }
+            });
+            this.treeData = res.data;
+          }
+        });
+      }
     },
     getOrgTable() {
       // 查询组织树
@@ -157,6 +167,8 @@ export default {
       });
     },
     handleData(data) {
+      this.departmentObj = data;
+      this.getOkrTree();
       console.log(data);
     },
     handleCycleData(data) {
