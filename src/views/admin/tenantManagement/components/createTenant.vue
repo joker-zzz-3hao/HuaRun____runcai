@@ -14,7 +14,7 @@
     center
   >
     <div class="modelCreate">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="110px">
         <el-form-item label="租户名称">
           <el-input style="width:320px" v-model="form.name" placeholder="请输入租户名称"></el-input>
         </el-form-item>
@@ -24,13 +24,8 @@
         <el-form-item label="联系电话">
           <el-input style="width:320px" v-model="form.name" placeholder="请输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item label="开通版本">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="免费版"></el-radio>
-            <el-radio label="基础版"></el-radio>
-            <el-radio label="高级版"></el-radio>
-            <el-radio label="旗舰版"></el-radio>
-          </el-radio-group>
+        <el-form-item label="开放菜单功能">
+          <el-tree :data="data" show-checkbox node-key="id"></el-tree>
         </el-form-item>
         <el-form-item label="使用时间">
           <el-date-picker
@@ -68,6 +63,41 @@ export default {
       form: {},
       dialogTableVisible: false,
       dialogVisible: false,
+      data: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1',
+          }, {
+            id: 10,
+            label: '三级 1-1-2',
+          }],
+        }],
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1',
+        }, {
+          id: 6,
+          label: '二级 2-2',
+        }],
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1',
+        }, {
+          id: 8,
+          label: '二级 3-2',
+        }],
+      }],
     };
   },
 

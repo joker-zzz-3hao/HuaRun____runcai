@@ -14,6 +14,7 @@
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
+        <el-button type="primary">移除</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -30,7 +31,7 @@
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
