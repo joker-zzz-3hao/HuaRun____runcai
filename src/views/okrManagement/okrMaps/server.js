@@ -9,6 +9,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
 
+  getOkrTree(param) {
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrTree?periodId=${param.periodId}`, param);
+  }
+
   getDepartmentList(param) {
     return this._ajaxPost('gateway/okr/departmentList', param);
   }

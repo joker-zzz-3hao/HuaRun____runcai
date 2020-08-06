@@ -3,7 +3,7 @@
     <div>
       <div @click="showDepartment">
         <span v-if="type == 'department'">{{department.orgName}}</span>
-        <span v-else-if="type == 'cycleListSelect'">{{department.okrCycleName}}</span>
+        <span v-else-if="type == 'cycleListSelect'">{{department.periodName}}</span>
         <i :class="arrowClass"></i>
       </div>
     </div>

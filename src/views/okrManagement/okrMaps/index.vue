@@ -35,8 +35,10 @@
       </div>
     </div>
     <div>
-      <svgtree :treeData="treeData">
-        <div style="width: 216px" slot="treecard">11111</div>
+      <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
+        <template slot="treecard" slot-scope="node">
+          <card :node="node"></card>
+        </template>
       </svgtree>
     </div>
   </div>
@@ -45,8 +47,9 @@
 <script>
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
+import card from './components/card';
 import Server from './server';
-import { list } from './list';
+// import { list } from './list';
 
 const server = new Server();
 
@@ -56,10 +59,11 @@ export default {
     return {
       server,
       keyword: '',
-      treeData: list,
+      treeData: [],
       departmentData: [],
       initDepartment: {},
       cycleData: [],
+      okrCycle: {},
       departmentDefaultProps: {
         children: 'children',
         label: 'orgName',
@@ -67,23 +71,23 @@ export default {
       },
       cycleDefaultProps: {
         children: 'children',
-        label: 'okrCycleName',
-        id: 'okrCycleCode',
+        label: 'periodName',
+        id: 'periodId',
       },
       cycleObj: {
         old: {
           checkStatus: 0,
           children: [],
-          okrCycleName: '历史OKR周期',
+          periodName: '历史OKR周期',
           okrCycleType: '0',
-          okrCycleCode: '0',
+          periodId: '0',
         },
         current: {
           checkStatus: 1,
           children: [],
-          okrCycleName: '当前的OKR周期',
+          periodName: '当前的OKR周期',
           okrCycleType: '0',
-          okrCycleCode: '1',
+          periodId: '1',
         },
       },
     };
@@ -91,6 +95,7 @@ export default {
   components: {
     department,
     svgtree,
+    card,
   },
   mounted() {
     const self = this;
@@ -122,6 +127,15 @@ export default {
         this.cycleData.push(this.cycleObj[key]);
       }
     },
+    getOkrTree() {
+      this.server.getOkrTree({
+        periodId: this.okrCycle.periodId,
+      }).then((res) => {
+        if (res.code == '200') {
+          this.treeData = res.data;
+        }
+      });
+    },
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -146,6 +160,9 @@ export default {
       console.log(data);
     },
     handleCycleData(data) {
+      this.okrCycle = data;
+      // 查询OKR树
+      this.getOkrTree();
       console.log(data);
     },
 
