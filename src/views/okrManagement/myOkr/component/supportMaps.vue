@@ -1,6 +1,14 @@
 <template>
   <div>
-    <vue-svg-tree :treeData="treeData" svgId="svg" ref="svgTree" :curveness="false" direction="col">
+    <vue-svg-tree
+      :treeData="treeData"
+      svgId="svg"
+      ref="svgTree"
+      :curveness="false"
+      direction="col"
+      fatherId="okrfid"
+      childId="cid"
+    >
       <div slot="treecard" slot-scope="props">
         <div class="text">
           <div class="node_title">
@@ -26,7 +34,9 @@
 
 <script>
 import svgtree from '@/components/svgtree';
-import { list } from './list';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'supportMaps',
@@ -35,8 +45,23 @@ export default {
   },
   data() {
     return {
-      treeData: list,
+      server,
+      treeData: [],
     };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      // 查承接地图
+      this.server.getmaps().then((res) => {
+        if (res.code == 200) {
+          console.log('承接地图', res.data);
+          this.treeData = res.data;
+        }
+      });
+    },
   },
 };
 </script>

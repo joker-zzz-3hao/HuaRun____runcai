@@ -28,8 +28,43 @@ const mockData = {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|4': [{
         'timeid|+1': 1,
-        timecycle: '@datetime("yyyy-MM-dd H:m:s")',
+        timecycle: '@datetime("yyyy-MM-dd")',
       }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查公司价值观
+  'POST /gateway/crcloud-okrManage/getphilosophy': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|4': [{
+        'philosophyid|+1': 1,
+        'philosophy|1': ['成就客户', '创新成长', '成人达已', '追求极致'],
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：承接地图
+  'POST /gateway/crcloud-okrManage/getmaps': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      ARRAY: [
+        {
+          cid: 100, okrfid: 0, name: '润联科技', content: '营业额超过100万',
+        },
+        {
+          cid: 101, okrfid: 100, name: '华润云的O', content: '营业额超过100万',
+        },
+        {
+          cid: 102, okrfid: 100, name: '智慧技术', content: '营业额超过100万',
+        },
+        {
+          cid: 103, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
+        },
+        {
+          cid: 104, okrfid: 100, name: 'IT产品服务', content: '营业额超过100万',
+        },
+        {
+          cid: 105, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
+        }],
     })));
   },
 };

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <el-tabs v-model="activeName">
+      <el-button @click="goWriteOkr">创建okr</el-button>
+
       <el-tab-pane :label="`${$store.state.common.userInfo.departmentName}OKR`" name="team">
         <department-page></department-page>
       </el-tab-pane>
@@ -25,6 +27,11 @@ export default {
     return {
       activeName: 'team',
     };
+  },
+  methods: {
+    goWriteOkr() {
+      this.$router.push({ name: 'writeOkr' });
+    },
   },
 };
 </script>
