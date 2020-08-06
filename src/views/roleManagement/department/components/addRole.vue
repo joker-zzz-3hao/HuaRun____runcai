@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import selectMember from './selectMember';
 
 export default {
   name: 'home',
@@ -99,9 +98,7 @@ export default {
       },
     };
   },
-  components: {
-    'tl-select-member': selectMember,
-  },
+
   mounted() {
     this.dialogTableVisible = true;
   },
