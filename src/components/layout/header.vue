@@ -1,6 +1,8 @@
 <template>
   <section class="header-wrap">
-    <div>我是头部</div>
+    <div class="logo-bg">
+      <div class="logo">logo</div>
+    </div>
   </section>
 </template>
 
