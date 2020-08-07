@@ -3,7 +3,7 @@
     <div>
       <div @click="showDepartment">
         <span v-if="type == 'department'">{{department.orgName}}</span>
-        <span v-else-if="type == 'cycleListSelect'">{{department.okrCycleName}}</span>
+        <span v-else-if="type == 'cycleListSelect'">{{department.periodName}}</span>
         <i :class="arrowClass"></i>
       </div>
     </div>
@@ -86,12 +86,14 @@ export default {
                 this.department = item.children[0] || {};
               }
             });
+            this.$emit('handleData', this.department);
           } else if (this.type == 'department') {
             if (this.initDepartment.orgId) {
               this.department = this.initDepartment;
             } else {
               this.department = this.data[0] || {};
             }
+            this.$emit('handleData', this.department);
           }
         }
       },

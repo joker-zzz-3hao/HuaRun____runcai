@@ -1,79 +1,92 @@
 <template>
   <div>
-    <el-collapse class="collapse">
-      <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
+    <!-- okr折叠面板 -->
+    <elcollapse class="collapse">
+      <elcollapseitem v-for="(item, index) in tableList" :key="item.objectId+index">
         <template slot="title">
-          <div>{{item.objectName}}</div>
+          <div>{{item.okrDetailObjectKr}}</div>
           <ul class="detail">
             <li>
               <span>权重</span>
-              <span>{{item.percent}}%</span>
+              <span>{{item.okrWeight}}%</span>
             </li>
             <li>
               <span>当前进度</span>
               <span class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
+                <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
               </span>
             </li>
             <li>
               <span>目标承接自</span>
-              <span>{{item.percent}}</span>
+              <span>{{item.parentObjectKr}}</span>
             </li>
           </ul>
         </template>
         <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
-          <div>{{index+1}}{{kritem.krName}}</div>
+          <div>
+            <span>{{index+1}}</span>
+            {{kritem.okrDetailObjectKr}}
+          </div>
           <ul class="detail">
             <li>
               <span>分权重</span>
-              <span>{{kritem.percent}}%</span>
+              <span>{{kritem.okrWeight}}%</span>
             </li>
             <li>
               <span>当前进度</span>
               <span class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
+                ></el-progress>
               </span>
             </li>
             <li>
-              <span>信心指数</span>
+              <span>信心状态</span>
               <span>{{kritem.confidence}}</span>
             </li>
           </ul>
         </div>
-      </el-collapse-item>
-    </el-collapse>
+      </elcollapseitem>
+    </elcollapse>
   </div>
 </template>
 
 <script>
-import CONST from '../const';
+import elcollapse from '@/components/collapse/collapse';
+import elcollapseitem from '@/components/collapse/collapse-item';
 
 export default {
-  name: 'okrDetail',
+  name: 'okrCollapse',
+  components: {
+    elcollapse, elcollapseitem,
+  },
   data() {
     return {
-      CONST,
-      tableList: [],
+      okrmain: {},
+      canWrite: true, // true写okr false okr详情
     };
   },
   props: {
+    tableList: {
+      type: Array,
 
+    },
     server: {
       type: Object,
       required: true,
     },
-
+    okrid: {
+      type: String,
+    },
   },
   created() {
-    this.init();
+
   },
   methods: {
-    init() {
-      this.server.getokrdata().then((res) => {
-        console.log(res);
-        this.tableList = res.data;
-      });
-    },
+
+  },
+  watch: {
 
   },
 };

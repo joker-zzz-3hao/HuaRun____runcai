@@ -1,9 +1,7 @@
 <template>
-  <section class="main-area">
-    <div class="menu-wrap">
-      <main-menu v-if="hasMainMenu"></main-menu>
-      <router-view class="view-wrap" />
-    </div>
+  <section class="main-wrap">
+    <main-menu v-if="hasMainMenu"></main-menu>
+    <router-view class="view-cont" />
   </section>
 </template>
 

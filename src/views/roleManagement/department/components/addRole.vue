@@ -5,6 +5,7 @@
 -->
 <template>
   <el-dialog
+    @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
@@ -16,26 +17,6 @@
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="角色名称">
         <el-input style="width:320px" v-model="form.name" placeholder="请输入角色名称"></el-input>
-      </el-form-item>
-      <el-form-item label="添加成员" class="addRoule">
-        <el-select
-          :popper-append-to-body="false"
-          style="width:320px"
-          v-model="form.region"
-          @click.native="showMember"
-          multiple
-          placeholder="请添加成员"
-          class="selectMember"
-        ></el-select>
-        <div class="roulemember" v-if="dialogVisible">
-          <tl-select-member></tl-select-member>
-        </div>
-      </el-form-item>
-      <el-form-item label="角色状态">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="启用"></el-radio>
-          <el-radio label="禁用"></el-radio>
-        </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <el-tree
@@ -56,7 +37,6 @@
 </template>
 
 <script>
-import selectMember from './selectMember';
 
 export default {
   name: 'home',
@@ -118,9 +98,7 @@ export default {
       },
     };
   },
-  components: {
-    'tl-select-member': selectMember,
-  },
+
   mounted() {
     this.dialogTableVisible = true;
   },
@@ -133,6 +111,9 @@ export default {
     },
     showMember() {
       this.dialogVisible = !this.dialogVisible;
+    },
+    closeshowMember() {
+      this.dialogVisible = false;
     },
   },
 };
@@ -151,8 +132,9 @@ export default {
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-
-.el-select-dropdown {
+</style>
+<style>
+.selectMember .el-select-dropdown {
   display: none !important;
 }
 </style>

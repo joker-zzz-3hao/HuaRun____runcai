@@ -18,6 +18,7 @@ export default [
         name: 'overview',
         meta: {
           hasMainMenu: true,
+          noSubMenu: true,
         },
         component: () => import('@/views/overview/index'),
       },
@@ -27,6 +28,7 @@ export default [
         name: 'okrMaps',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/okrManagement/okrMaps/index'),
       },
@@ -36,6 +38,7 @@ export default [
         name: 'myOkr',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/okrManagement/myOkr/index'),
       },
@@ -45,6 +48,7 @@ export default [
         name: 'okrAssess',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/okrManagement/okrAssess/index'),
       },
@@ -54,6 +58,7 @@ export default [
         name: 'writeOkr',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/okrManagement/writeOkr/index'),
       },
@@ -63,8 +68,9 @@ export default [
         name: 'supportMaps',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
-        component: () => import('@/views/okrManagement/myOkr/component/supportMaps'),
+        component: () => import('@/views/okrManagement/undertakeMaps/index'),
       },
     ],
   },

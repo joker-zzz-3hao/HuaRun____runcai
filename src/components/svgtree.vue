@@ -2,7 +2,7 @@
 参考使用说明https://www.yuque.com/crcloud/team/vl2rkn
 -->
 <template>
-  <div id="app">
+  <div>
     <div class="draw-area" id="treeContent" ref="treeContent">
       <div v-for="(arr, index) in levels" :key="index">
         <!-- 通过left和top控制每个节点位置 -->
@@ -152,7 +152,7 @@ export default {
         v.prev = null; // 前一个节点
       });
       data.forEach((v) => {
-        if (v[this.fatherId] || v[this.fatherId] > 0) {
+        if (v[this.fatherId] && v[this.fatherId] > 0) {
           const p = keys[v[this.fatherId]]; // p为v的上一级
           p.children = p.children || []; // 创建p的子节点数组
           p.children.push(v); // 把当前节点放到p的子节点数组里

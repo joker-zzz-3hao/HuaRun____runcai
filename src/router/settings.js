@@ -63,7 +63,15 @@ export default [
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/roleManagement/index'),
+        component: () => import('@/views/roleManagement/department/index'),
+      },
+      {
+        path: '/members',
+        name: 'members',
+        meta: {
+          hasMainMenu: true,
+        },
+        component: () => import('@/views/roleManagement/members/index'),
       },
     ],
   },

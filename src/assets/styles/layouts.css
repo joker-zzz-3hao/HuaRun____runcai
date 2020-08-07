@@ -3,8 +3,39 @@
 .login-layout,
 .admin-layout,
 .settings-layout,
-.view-wrap {
+.view-cont {
   height: 100%;
+}
+
+.el-scrollbar .el-scrollbar__view:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 20;
+}
+
+/* 主区域 */
+.main-wrap {
+  display: flex;
+}
+
+.menu-cont-inside {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+.view-cont {
+  flex: 1 1 auto;
+  margin: 0 16px;
 }
 
 /* 内容容器 */

@@ -19,37 +19,19 @@
         ></el-option>
       </el-select>
     </div>
-    <!-- okr详情 -->
-    <div v-else>
-      <ul>
-        <li>
-          <span>目标类型</span>
-          <span>{{}}</span>
-        </li>
-        <li>
-          <span>负责人</span>
-          <span>{{}}</span>
-        </li>
-        <li>
-          <span>更新时间</span>
-          <span>{{}}</span>
-        </li>
-        <li>
-          <span>进度</span>
-          <span>
-            <el-progress :stroke-width="10" :percentage="50"></el-progress>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-    <okr-detail v-else :server="server"></okr-detail>
+
+    <okr-form
+      v-if="canWrite"
+      :searchForm="searchForm"
+      :server="server"
+      :canWrite="canWrite"
+      :const="CONST"
+    ></okr-form>
   </div>
 </template>
 
 <script>
 import okrForm from './component/okrForm';
-import okrDetail from './component/okrDetail';
 import Server from './server';
 import CONST from './const';
 
@@ -59,13 +41,13 @@ export default {
   name: 'writeOkr',
   components: {
     'okr-form': okrForm,
-    'okr-detail': okrDetail,
   },
   data() {
     return {
       server,
       CONST,
       timelist: [],
+      okrmain: {},
       searchForm: {
         status: '01',
         time: '',
@@ -77,6 +59,8 @@ export default {
   },
   created() {
     this.init();
+    this.canWrite = this.$route.params.canWrite || true;
+    console.log('can', this.canWrite);
   },
   methods: {
     init() {
