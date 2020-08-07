@@ -24,61 +24,7 @@
       </ul>
     </div>
     <!-- okr折叠面板 -->
-    <elcollapse class="collapse">
-      <elcollapseitem v-for="(item, index) in tableList" :key="item.detailId+index">
-        <template slot="title">
-          <div>{{item.okrDetailObjectKr}}</div>
-          <!-- <el-popover placement="right" width="400" trigger="click">
-            <i slot="reference" class="el-icon-edit"></i>
-          </el-popover>-->
-          <!-- <el-input v-model="item.okrDetailObjectKr"></el-input> -->
-          <span>
-            <i class="el-icon-edit"></i>
-          </span>
-          <ul class="detail">
-            <li>
-              <span>权重</span>
-              <span>{{item.okrWeight}}%</span>
-            </li>
-            <li>
-              <span>当前进度</span>
-              <span class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
-              </span>
-            </li>
-            <li>
-              <span>目标承接自</span>
-              <span>{{item.parentObjectKr}}</span>
-            </li>
-          </ul>
-        </template>
-        <div v-for="(kritem, index) in item.krList" :key="kritem.detailId+index">
-          <div>
-            <span>{{index+1}}</span>
-            {{kritem.okrDetailObjectKr}}
-          </div>
-          <ul class="detail">
-            <li>
-              <span>分权重</span>
-              <span>{{kritem.okrWeight}}%</span>
-            </li>
-            <li>
-              <span>当前进度</span>
-              <span class="progresswidth">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                ></el-progress>
-              </span>
-            </li>
-            <li>
-              <span>信心状态</span>
-              <span>{{kritem.confidence}}</span>
-            </li>
-          </ul>
-        </div>
-      </elcollapseitem>
-    </elcollapse>
+    <okrCollapse :tableList="tableList"></okrCollapse>
     <!-- 操作历史 -->
     <div></div>
     <!-- 点赞 -->
@@ -91,8 +37,7 @@
 </template>
 
 <script>
-import elcollapse from '@/components/collapse/collapse';
-import elcollapseitem from '@/components/collapse/collapse-item';
+import okrCollapse from '@/components/okrCollapse';
 import CONST from '../const';
 
 export default {
@@ -107,7 +52,7 @@ export default {
     };
   },
   components: {
-    elcollapse, elcollapseitem,
+    okrCollapse,
   },
   props: {
 
