@@ -44,26 +44,26 @@ const mockData = {
   },
   // author：林心荃
   // 用于：承接地图
-  'POST /gateway/crcloud-okrManage/getmaps': (req, res) => {
+  'POST /gateway/talent-query/okr/query/okrContinueMap': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [
         {
-          cid: 100, okrfid: 0, name: '润联科技', content: '营业额超过100万',
+          okrDetailId: 100, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30',
         },
         {
-          cid: 101, okrfid: 100, name: '华润云的O', content: '营业额超过100万',
+          okrDetailId: 101, okrParentDetailId: 100, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30',
         },
         {
-          cid: 102, okrfid: 100, name: '智慧技术', content: '营业额超过100万',
+          okrDetailId: 102, okrParentDetailId: 100, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30',
         },
         {
-          cid: 103, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
+          okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30',
         },
         {
-          cid: 104, okrfid: 100, name: 'IT产品服务', content: '营业额超过100万',
+          okrDetailId: 104, okrParentDetailId: 100, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30',
         },
         {
-          cid: 105, okrfid: 101, name: '云门户的O', content: '营业额超过100万',
+          okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30',
         }],
     })));
   },
@@ -83,14 +83,14 @@ const mockData = {
       'okrDetails|2': [
         {
           'detailId|1': ['1233', '1234'],
-          'okrDetailObjectKr|1': ['定个小目标', '定两个小目标'],
+          'userName|1': ['定个小目标', '定两个小目标'],
           okrWeight: '40',
           okrDetailProgress: '30',
           parentObjectKr: '华润云',
           'krList|2': [
             {
               'detailId|': ['1233', '1234'],
-              'okrDetailObjectKr|1': ['先赚1个亿', '先赚2个亿'],
+              'userName|1': ['先赚1个亿', '先赚2个亿'],
               okrWeight: '40',
               okrDetailProgress: '30',
               parentObjectKr: '华润云',
@@ -101,7 +101,7 @@ const mockData = {
       ],
       'voteUser|3': [{
         'userId|+1': ['0011', '0022', '0033'],
-        'name|1': ['cx', 'tw'],
+        'userName|1': ['cx', 'tw'],
       }],
     })));
   },
