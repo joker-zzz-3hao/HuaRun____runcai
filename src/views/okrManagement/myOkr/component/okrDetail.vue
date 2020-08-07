@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- okr详情 -->
+    <!-- 公共信息 -->
     <div>
       <ul>
         <li>
@@ -9,7 +9,7 @@
         </li>
         <li>
           <span>负责人</span>
-          <span>{{okrmain.userName}}{{okrmain.userId}}</span>
+          <span>{{okrmain.userName}}</span>
         </li>
         <li>
           <span>更新时间</span>
@@ -18,19 +18,27 @@
         <li>
           <span>进度</span>
           <span>
-            <el-progress :stroke-width="10" :percentage="okrmain.okrProgress"></el-progress>
+            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
           </span>
         </li>
       </ul>
     </div>
-    <el-collapse class="collapse">
-      <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
+    <!-- okr折叠面板 -->
+    <elcollapse class="collapse">
+      <elcollapseitem v-for="(item, index) in tableList" :key="item.detailId+index">
         <template slot="title">
           <div>{{item.okrDetailObjectKr}}</div>
+          <!-- <el-popover placement="right" width="400" trigger="click">
+            <i slot="reference" class="el-icon-edit"></i>
+          </el-popover>-->
+          <!-- <el-input v-model="item.okrDetailObjectKr"></el-input> -->
+          <span>
+            <i class="el-icon-edit"></i>
+          </span>
           <ul class="detail">
             <li>
               <span>权重</span>
-              <span>{{item.percent}}%</span>
+              <span>{{item.okrWeight}}%</span>
             </li>
             <li>
               <span>当前进度</span>
@@ -40,35 +48,51 @@
             </li>
             <li>
               <span>目标承接自</span>
-              <span>{{item.percent}}</span>
+              <span>{{item.parentObjectKr}}</span>
             </li>
           </ul>
         </template>
-        <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
-          <div>{{index+1}}{{kritem.krName}}</div>
+        <div v-for="(kritem, index) in item.krList" :key="kritem.detailId+index">
+          <div>
+            <span>{{index+1}}</span>
+            {{kritem.okrDetailObjectKr}}
+          </div>
           <ul class="detail">
             <li>
               <span>分权重</span>
-              <span>{{kritem.percent}}%</span>
+              <span>{{kritem.okrWeight}}%</span>
             </li>
             <li>
               <span>当前进度</span>
               <span class="progresswidth">
-                <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
+                ></el-progress>
               </span>
             </li>
             <li>
-              <span>信心指数</span>
+              <span>信心状态</span>
               <span>{{kritem.confidence}}</span>
             </li>
           </ul>
         </div>
-      </el-collapse-item>
-    </el-collapse>
+      </elcollapseitem>
+    </elcollapse>
+    <!-- 操作历史 -->
+    <div></div>
+    <!-- 点赞 -->
+    <div>
+      <ul style="display:flex">
+        <li v-for="(item,index) in voteUser" :key="item.userId+index">{{item.name}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import elcollapse from '@/components/collapse/collapse';
+import elcollapseitem from '@/components/collapse/collapse-item';
 import CONST from '../const';
 
 export default {
@@ -76,9 +100,14 @@ export default {
   data() {
     return {
       CONST,
-      tableList: [],
-      okrmain: {},
+      tableList: [], // okr列表
+      voteUser: [], // 点赞人列表
+      okrmain: {}, // 公共信息
+      canWrite: true, // true写okr false okr详情
     };
+  },
+  components: {
+    elcollapse, elcollapseitem,
   },
   props: {
 
@@ -86,20 +115,30 @@ export default {
       type: Object,
       required: true,
     },
-
+    okrId: {
+      type: String,
+    },
   },
   created() {
-    this.init();
+    this.getokrDetail();
   },
   methods: {
-    init() {
-      this.server.getokrDetail().then((res) => {
-        console.log(res);
+    getokrDetail() {
+      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+        console.log('detail', res);
         this.tableList = res.data.okrDetails;
         this.okrmain = res.data.okrMain;
+        this.voteUser = res.data.voteUser;
       });
     },
 
+  },
+  watch: {
+    okrid: {
+      handler() {
+        this.getokrDetail();
+      },
+    },
   },
 };
 </script>

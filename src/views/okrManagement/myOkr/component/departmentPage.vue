@@ -1,28 +1,5 @@
 <template>
   <div>
-    <!-- 搜索条件 -->
-    <div>
-      <el-select
-        v-model="searchForm.time"
-        placeholder="请选择时间"
-        @change="searchOkr"
-        :popper-append-to-body="false"
-      >
-        <el-option
-          v-for="(item, index) in timelist"
-          :key="item.timeid+index"
-          :label="item.timecycle"
-          :value="item.timeid"
-        ></el-option>
-      </el-select>
-      <dl>
-        <dd
-          v-for="item in CONST.STATUS_LIST"
-          :key="item.id"
-          @click="searchOkr(item.id)"
-        >{{item.name}}</dd>
-      </dl>
-    </div>
     <!-- 用展开行表格 -->
     <div>
       <p>用折叠面板</p>
@@ -34,23 +11,22 @@
       </div>
 
       <el-collapse class="collapse">
-        <el-collapse-item v-for="(item, index) in tableList" :key="item.objectId+index">
+        <el-collapse-item v-for="(item, index) in tableList" :key="item.detailId+index">
           <template slot="title">
             <span>目标icon</span>
-            <span>{{item.objectName}}</span>
-            <span>{{item.percent}}%</span>
+            <span>{{item.okrDetailObjectKr}}</span>
+            <span>{{item.okrWeight}}%</span>
             <span class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
             </span>
-
-            <button @click="gocheng(item.objectId,item.objectName)">承接地图</button>
+            <button @click="gocheng(item.detailId,item.okrDetailObjectKr)">承接地图</button>
           </template>
-          <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
+          <div v-for="(kritem, index) in item.krList" :key="index">
             <span>KRicon</span>
-            <span>{{kritem.krName}}</span>
-            <span>{{kritem.percent}}%</span>
+            <span>{{kritem.okrDetailObjectKr}}</span>
+            <span>{{kritem.okrWeight}}%</span>
             <div class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
             </div>
             <span>信心指数{{kritem.confidence}}</span>
           </div>
@@ -59,7 +35,10 @@
     </div>
     <!-- 展示头像 -->
     <div>
-      <p>头像or部门logo</p>
+      头像
+      <ul style="display:flex">
+        <li v-for="(item,index) in memberList" :key="item.userId+index">{{item.userName}}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -72,48 +51,69 @@ const server = new Server();
 
 export default {
   name: 'departmentPage',
+  components: {
+  },
   data() {
     return {
       server,
       CONST,
       searchForm: {
-        status: '',
+        status: '1',
         time: '',
       },
       tableList: [], // okr列表
-      timelist: [], // 周期列表
       memberList: [], // 成员列表
+      cycleData: [], // 周期列表
+      cycleDefaultProps: { // 周期数据类型
+        children: 'children',
+        label: 'periodName',
+        id: 'periodId',
+      },
+      cycleObj: { // 周期数据格式
+        old: {
+          checkStatus: 0,
+          children: [],
+          periodName: '历史OKR周期',
+          okrCycleType: '0',
+          periodId: '0',
+        },
+        current: {
+          checkStatus: 1,
+          children: [],
+          periodName: '当前的OKR周期',
+          okrCycleType: '0',
+          periodId: '1',
+        },
+      },
     };
   },
+
   created() {
+    this.searchOkr();
     this.init();
   },
   methods: {
     init() {
-      this.server.getTimeCycle().then((response) => {
-        // console.log(response.data);
-        this.timelist = response.data;
-        // 默认选中当前周期
-        this.searchForm.time = this.timelist[0].timeid;
-        this.searchOkr();
-        this.searchMember();
-      });
     },
-    searchOkr(status = '01') { // 默认搜索进行时
-      this.searchForm.status = status;
-      this.server.getokrdata(this.searchForm).then((res) => {
-        console.log('搜索条件', this.searchForm);
-        this.tableList = res.data;
+    searchOkr() { // 默认搜索进行时
+      this.server.getmyOkr({
+        myOrOrg: 'org',
+        periodId: 'periodId',
+        status: this.searchForm.status,
+        userId: 'user007',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableList = res.data.okrDetails;
+          this.okrId = res.data.okrMain.okrId;
+          this.memberList = res.data.orgUser;
+        }
       });
-    },
-    // 搜索团队成员
-    searchMember() {
-
     },
     gocheng(id, name) {
       this.$message('要跳到承接地图啦~');
       this.$router.push({ name: 'supportMaps', params: { objectId: id, objectName: name } });
     },
+
   },
 };
 </script>

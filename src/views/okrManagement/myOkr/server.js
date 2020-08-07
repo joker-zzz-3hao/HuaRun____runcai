@@ -14,6 +14,14 @@ export default class Server extends ServerBase {
   }
 
   getokrDetail(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrDetail?okrId=111111222', param);
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
+  }
+
+  getmyOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
+
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 }
