@@ -1,15 +1,21 @@
 <template>
   <div class="text">
     <div class="node_title">
-      <span class="OKR">{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
-      <span class="label">{{node.okrDetailObjectKr}}</span>
+      <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
+      <span>{{node.okrDetailObjectKr}}</span>
     </div>
     <div class="node_des">
       <div></div>
-      <div>{{node.okrDetailProgress}}</div>
-      <div>{{node.userName}}</div>
+      <div>
+        <span>进度</span>
+        <span>{{node.okrDetailProgress}}%</span>
+      </div>
+      <div>
+        <span>负责人</span>
+        {{node.userName}}
+      </div>
       <div>{{node.open}}</div>
-      <!-- <div>{{node.children}}</div> -->
+      <div>{{node.children && node.children.length}}</div>
     </div>
     <!-- <div class="showTips" :class="node.children ? 'havechild' : ''">
       <a class="tips_icon icon_edit">

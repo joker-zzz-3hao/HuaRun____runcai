@@ -47,27 +47,52 @@ const mockData = {
   'POST /gateway/talent-query/okr/query/okrContinueMap': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [
-        {
-          okrDetailId: 100, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 101, okrParentDetailId: 100, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 102, okrParentDetailId: 100, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 104, okrParentDetailId: 100, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-        },
-        {
-          okrDetailId: 106, okrParentDetailId: 105, userName: '个人O', okrDetailObjectKr: '营业额超过10万', okrDetailProgress: '30', okrDetailType: 0,
-        },
+        [
+          {
+            okrDetailId: 100, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 101, okrParentDetailId: 100, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 102, okrParentDetailId: 100, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 104, okrParentDetailId: 100, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 106, okrParentDetailId: 105, userName: '个人O', okrDetailObjectKr: '营业额超过10万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+        ],
+        [
+          {
+            okrDetailId: 99, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 101, okrParentDetailId: 99, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 102, okrParentDetailId: 99, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 104, okrParentDetailId: 99, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+          {
+            okrDetailId: 106, okrParentDetailId: 105, userName: '个人O', okrDetailObjectKr: '营业额超过10万', okrDetailProgress: '30', okrDetailType: 0,
+          },
+        ],
       ],
     })));
   },

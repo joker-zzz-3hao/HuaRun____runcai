@@ -20,7 +20,13 @@ const CONFIDENCE = [{
 }, {
   label: '失控', value: '3',
 }];
+const CONFIDENCE_MAP = {
+  1: '可控',
+  2: '有风险',
+  3: '失控',
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
+  CONFIDENCE_MAP,
 };

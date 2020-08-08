@@ -39,7 +39,7 @@
             <div class="progresswidth">
               <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
             </div>
-            <span>信心指数{{kritem.confidence}}</span>
+            <span>信心指数{{CONST.CONFIDENCE_MAP[kritem.confidence]}}</span>
           </div>
         </el-collapse-item>
       </el-collapse>

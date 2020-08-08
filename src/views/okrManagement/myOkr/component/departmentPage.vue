@@ -28,7 +28,7 @@
             <div class="progresswidth">
               <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
             </div>
-            <span>信心指数{{kritem.confidence}}</span>
+            <span>信心指数{{CONST.CONFIDENCE_MAP[kritem.confidence]}}</span>
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -111,7 +111,7 @@ export default {
     },
     goSupportMaps(id, name) {
       this.$message('要跳到承接地图啦~');
-      this.$router.push({ name: 'supportMaps', params: { okrDetailId: id, objectName: name, showAll: false } });
+      this.$router.push({ name: 'supportMaps', params: { okrDetailId: id, objectName: name, showOne: true } });
     },
 
   },

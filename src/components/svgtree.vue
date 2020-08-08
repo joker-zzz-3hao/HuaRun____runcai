@@ -216,7 +216,6 @@ export default {
           height += v.height;
         });
       }
-      console.log('前一个节点', vnode.prev);
 
       // 向上对齐
       // if (vnode.prev) {
@@ -361,7 +360,7 @@ export default {
       }
     },
     // 收缩和展开
-    toggle(vnode) {
+    toggle(vnode, isclose = 'self') {
       // 点开或关闭
       vnode.open = !vnode.open;
       // 如果有子节点
@@ -381,6 +380,16 @@ export default {
         this.calWidth(this.root);
         this.calcLeft();
         this.calSvgVer();
+      }
+      // 是自己点的，是根节点，动作是打开
+      if (isclose == 'self' && vnode.deep === 0 && vnode.open) {
+        this.$emit('handleTree', vnode.okrDetailId);
+      }
+    },
+    // 收起树
+    closeTree() {
+      if (this.root.open) {
+        this.toggle(this.root, 'handle');
       }
     },
   },

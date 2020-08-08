@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div style="margin-left:20px;" v-if="showAll">
+    <div style="margin-left:20px;" v-if="!showOne">
       <department
         :data="cycleData"
         type="cycleListSelect"
@@ -8,7 +8,7 @@
         :defaultProps="cycleDefaultProps"
       ></department>
     </div>
-    <div style="margin-left:20px;" v-if="showAll">
+    <div style="margin-left:20px;" v-if="!showOne">
       <department
         type="department"
         :data="departmentData"
@@ -18,12 +18,10 @@
       ></department>
     </div>
     <!-- 要展示多个 -->
-    <div v-if="showAll">
+    <div v-if="showOne">
       <vue-svg-tree
-        v-for="item in svgList"
-        :key="item.id"
         :treeData="treeData"
-        :svgId="'svg'+item.id"
+        svgId="svg"
         ref="svgTree"
         :curveness="false"
         direction="col"
@@ -38,14 +36,17 @@
     </div>
     <div v-else>
       <vue-svg-tree
-        :treeData="treeData"
-        svgId="svg"
+        v-for="(item,index) in svgList"
+        :key="index"
+        :treeData="item"
+        :svgId="'svg'+index"
         ref="svgTree"
         :curveness="false"
         direction="col"
         fatherId="okrParentDetailId"
         childId="okrDetailId"
         :colAlign="false"
+        @handleTree="handleTree"
       >
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>
@@ -110,21 +111,20 @@ export default {
         label: 'orgName',
         id: 'orgId',
       },
-      svgList: [{
-        id: 1, name: '赚1个亿',
-      }],
-      showAll: true,
+      svgList: [],
+      showOne: false,
     };
   },
   created() {
     this.init();
-    this.showAll = this.$route.params.showAll;
+    // 直接赋值，为空时也会按false判断
+    this.showOne = this.$route.params.showOne;
     this.searchForm.okrDetailId = this.$route.params.okrDetailId || '';
   },
   methods: {
     init() {
       const self = this;
-      if (this.showAll) {
+      if (!this.showOne) {
         // 查询周期
         self.server.getOkrCycleList().then((res) => {
           if (res.data.length > 0) {
@@ -144,11 +144,7 @@ export default {
         self.getOrgTable();
       } else {
         self.getmaps();
-        this.svgList = [{
-          id: 1, name: '赚1个亿',
-        }];
       }
-      // 查询组织树
     },
     pushCycleObj(key) {
       if (this.cycleObj[key].children.length > 0) {
@@ -169,22 +165,42 @@ export default {
       // 查承接地图
       this.server.getmaps(this.searchForm).then((res) => {
         if (res.code == 200) {
-          this.treeData = res.data;
-          // this.treeData.forEach((item) => {
-          //   if (!item.okrParentDetailId) {
-          //     item.okrParentDetailId = '0';
-          //   }
-          // });
-          console.log('承接地图', this.treeData);
+          this.svgList = res.data;
+          if (this.showOne) {
+            [this.treeData] = this.svgList;
+          } else {
+            // 默认收起其他
+            this.$nextTick(() => {
+              for (let i = 1; i < this.svgList.length; i += 1) {
+                this.$refs.svgTree[i].closeTree();
+              }
+            });
+          }
         }
       });
     },
     handleCycleData(data) {
       this.okrCycle = data;
       console.log(data);
+      // this.getmaps();
     },
     handleData(data) {
       console.log(data);
+    },
+    // 当点击根节点，收起其他已打开的树
+    handleTree(data) {
+      this.svgList.forEach((item, index) => {
+        let closeOther = true;
+        item.forEach((tree) => {
+          if (tree.okrDetailId == data) {
+            // 当前点击的树不做处理
+            closeOther = false;
+          }
+        });
+        if (closeOther) {
+          this.$refs.svgTree[index].closeTree();
+        }
+      });
     },
   },
 };
