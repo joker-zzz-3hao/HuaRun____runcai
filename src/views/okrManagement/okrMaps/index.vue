@@ -1,5 +1,5 @@
 <template>
-  <div class="home" style="margin-left: 200px;">
+  <div class="home">
     <div style="display: flex;">
       <div style="margin-left:20px;">
         <department

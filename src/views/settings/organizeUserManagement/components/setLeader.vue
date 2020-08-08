@@ -6,7 +6,13 @@
 -->
 <template>
   <div>
-    <el-dialog :visible="visible" @close="close" title="设置负责人" :close-on-click-modal="false">
+    <el-dialog
+      append-to-body="true"
+      :visible="visible"
+      @close="close"
+      title="设置负责人"
+      :close-on-click-modal="false"
+    >
       <el-form ref="leaderForm" :model="formData">
         <el-form-item label="部门名称" prop="departName">
           <el-input v-model.trim="formData.departName"></el-input>
@@ -40,9 +46,11 @@
 </template>
 
 <script>
+import validateMixin from '../validateMixin';
 
 export default {
   name: 'setLeader',
+  mixins: [validateMixin],
   components: {
   },
   props: {
@@ -50,6 +58,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    server: {
+      type: Object,
+      default() {
+        return {};
       },
     },
   },

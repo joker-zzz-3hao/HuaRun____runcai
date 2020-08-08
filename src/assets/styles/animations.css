@@ -57,3 +57,14 @@
   transform: translateY(-26px);
   opacity: 1;
 }
+
+@keyframes waves {
+  from {
+    transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
+    opacity: 1;
+  }
+}

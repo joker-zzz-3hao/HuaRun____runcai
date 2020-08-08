@@ -88,7 +88,7 @@ export default {
             });
             this.$emit('handleData', this.department);
           } else if (this.type == 'department') {
-            if (this.initDepartment.children) {
+            if (this.initDepartment.orgId) {
               this.department = this.initDepartment;
             } else {
               this.department = this.data[0] || {};

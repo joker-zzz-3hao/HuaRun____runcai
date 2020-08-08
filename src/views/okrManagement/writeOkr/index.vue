@@ -20,7 +20,13 @@
       </el-select>
     </div>
 
-    <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
+    <okr-form
+      v-if="canWrite"
+      :searchForm="searchForm"
+      :server="server"
+      :canWrite="canWrite"
+      :const="CONST"
+    ></okr-form>
   </div>
 </template>
 
@@ -53,7 +59,7 @@ export default {
   },
   created() {
     this.init();
-    this.canWrite = this.$route.params.canWrite || false;
+    this.canWrite = this.$route.params.canWrite || true;
     console.log('can', this.canWrite);
   },
   methods: {

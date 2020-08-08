@@ -1,10 +1,10 @@
 <template>
-  <div class="home">okrAssess考核</div>
+  <div class="home">润才之旅正式开始……</div>
 </template>
 
 <script>
 export default {
-  name: 'okrAssess',
+  name: 'myAssess',
   components: {
   },
 };

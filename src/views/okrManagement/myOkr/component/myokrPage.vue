@@ -2,21 +2,12 @@
   <div>
     <!-- 搜索条件 -->
     <div>
-      <el-select v-model="searchForm.time" placeholder="请选择时间" :popper-append-to-body="false">
-        <el-option
-          v-for="(item, index) in timelist"
-          :key="item.timeid+index"
-          :label="item.timecycle"
-          :value="item.timeid"
-        ></el-option>
-      </el-select>
-      <dl>
-        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">{{item.name}}</dd>
+      <dl style="display:flex">
+        <dd v-for="item in CONST.STATUS_LIST" :key="item.id" @click="searchOkr()">{{item.name}}</dd>
       </dl>
     </div>
     <!-- 用展开行表格 -->
     <div>
-      <p>用折叠面板</p>
       <div class="collapsetitle">
         <span>权重</span>
         <span>进度条</span>
@@ -27,108 +18,45 @@
       <el-collapse class="collapse">
         <el-collapse-item
           v-for="(item, index) in tableList"
-          :key="item.objectId+index"
-          @click.native="goDetail(item.objectId)"
+          :key="item.detailId+index"
+          @click.native="openDialog('okr-detail',item.okrDetailObjectKr)"
         >
           <template slot="title">
             <span>目标icon</span>
-            <span>{{item.objectName}}</span>
-            <span>{{item.percent}}%</span>
+            <span>{{item.okrDetailObjectKr}}</span>
+            <span>{{item.okrWeight}}%</span>
             <span class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(item.progress, 10)"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
             </span>
 
-            <el-button @click.native.stop="goHistory(item.objectId)">历史版本</el-button>
-            <el-button @click.native.stop="goUpdate(item.objectId)">进度更新</el-button>
+            <el-button @click.native.stop="openDialog('okr-history',item.detailId)">历史版本</el-button>
+            <el-button @click.native.stop="openDialog('okr-update',item.detailId)">进度更新</el-button>
           </template>
-          <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
+          <div v-for="(kritem, index) in item.krList" :key="index">
             <span>KRicon</span>
-            <span>{{kritem.krName}}</span>
-            <span>{{kritem.percent}}%</span>
+            <span>{{kritem.okrDetailObjectKr}}</span>
+            <span>{{kritem.okrWeight}}%</span>
             <div class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(kritem.progress, 10)"></el-progress>
+              <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
             </div>
             <span>信心指数{{kritem.confidence}}</span>
           </div>
         </el-collapse-item>
       </el-collapse>
     </div>
-    <!-- 展示头像 -->
-    <div>
-      <p>头像or部门logo111111</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo</p>
-      <p>头像or部门logo9999999</p>
-    </div>
     <el-dialog
       :title="dialogTitle"
       :visible.sync="dialogVisible"
-      width="40%"
+      width="50%"
       :modal-append-to-body="false"
     >
-      <component ref="com" v-bind:is="currentView"></component>
-
-      <okrDetail :server="server"></okrDetail>
+      <component
+        ref="com"
+        v-bind:is="currentView"
+        :server="server"
+        :okrId="okrId"
+        @closeDialog="closeDialog"
+      ></component>
     </el-dialog>
   </div>
 </template>
@@ -153,47 +81,60 @@ export default {
     return {
       server,
       CONST,
-      tableList: [],
-      searchForm: {},
-      timelist: [],
+      tableList: [], // okr列表
+      searchForm: {
+        status: '1',
+        time: '',
+      },
       dialogVisible: false, // 弹框是否显示
       currentView: 'okr-detail', // 弹框组件
       dialogTitle: 'OKR详情', // 弹框标题
+      okrId: '',
     };
   },
+
   created() {
     this.init();
+    this.searchOkr();
   },
   methods: {
     init() {
-      this.server.getokrdata().then((res) => {
-        console.log(res);
-        this.tableList = res.data;
-      });
-      this.server.getTimeCycle().then((response) => {
-        console.log(response.data);
-        this.timelist = response.data;
+    },
+    searchOkr() {
+      this.server.getmyOkr({
+        myOrOrg: 'my',
+        periodId: 'periodId',
+        status: this.searchForm.status,
+        userId: 'user007',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableList = res.data.okrDetails;
+          this.okrId = res.data.okrMain.okrId;
+        }
       });
     },
-    // 更新进度
-    goUpdate(val) {
+    // 打开弹窗
+    openDialog(componentName, val) {
       console.log('点击', val);
-      this.currentView = 'okr-update';
+      this.currentView = componentName;
       this.dialogTitle = '更新进度';
+      switch (componentName) {
+        case 'okr-update':
+          this.dialogTitle = '更新进度';
+          break;
+        case 'okr-history':
+          this.dialogTitle = '历史版本';
+          break;
+        case 'okr-detail':
+          this.dialogTitle = 'OKR详情';
+          break;
+        default:
+          break;
+      }
       this.dialogVisible = true;
     },
-    // 历史版本
-    goHistory(val) {
-      console.log('点击', val);
-      this.currentView = 'okr-history';
-      this.dialogTitle = '历史版本';
-      this.dialogVisible = true;
-    },
-    goDetail(val) {
-      console.log('点击', val);
-      this.currentView = 'okr-detail';
-      this.dialogTitle = 'OKR详情';
-      this.dialogVisible = true;
+    closeDialog() {
+      this.dialogVisible = false;
     },
   },
 };

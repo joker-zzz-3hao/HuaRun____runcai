@@ -9,11 +9,15 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/crcloud-okrManage/getTimeCycle', param);
   }
 
-  getmaps(param) {
-    return this._ajaxPost('gateway/crcloud-okrManage/getmaps', param);
+  getokrDetail(param) {
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
   }
 
-  getokrDetail(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrDetail?okrId=111111222', param);
+  getmyOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
+
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 }

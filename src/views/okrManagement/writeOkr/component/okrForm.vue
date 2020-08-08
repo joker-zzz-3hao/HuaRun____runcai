@@ -3,35 +3,35 @@
     <!-- 填写表单&详情 -->
     <div>
       <el-form :model="formData" ref="dataForm">
-        <dl class="okuang" v-for="(oitem,index) in formData.okrList" :key="index">
+        <dl class="okuang" v-for="(oitem,index) in formData.okrInfoList" :key="index">
           <dt>目标名称</dt>
           <dd class="objectdd">
             <el-form-item
-              prop="objectName"
-              :rules="[{required:true,trigger: 'blur' , message: '请填写目标名称'}]"
+              prop="okrDetailObjectKr"
+              :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
             >
-              <el-input v-if="canWrite" v-model="oitem.objectName"></el-input>
-              <span v-else>{{oitem.objectName}}</span>
+              <el-input v-if="canWrite" v-model="oitem.okrDetailObjectKr"></el-input>
+              <span v-else>{{oitem.okrDetailObjectKr}}</span>
             </el-form-item>
             <el-form-item label="权重">
               <el-input-number
                 v-if="canWrite"
-                v-model="oitem.percent"
+                v-model="oitem.okrWeight"
                 controls-position="right"
                 :min="0"
                 :max="100"
               ></el-input-number>
-              <span v-else>{{oitem.percent}}</span>
+              <span v-else>{{oitem.okrWeight}}</span>
             </el-form-item>
             <el-form-item label="当前进度">
               <el-input-number
                 v-if="canWrite"
-                v-model="oitem.progress"
+                v-model="oitem.okrDetailProgress"
                 controls-position="right"
                 :min="0"
                 :max="100"
               ></el-input-number>
-              <span v-else>{{oitem.progress}}</span>
+              <span v-else>{{oitem.okrDetailProgress}}</span>
             </el-form-item>
             <el-form-item label="关联承接项">
               <el-button @click="guanlian(index)">关联承接项</el-button>
@@ -39,52 +39,55 @@
             </el-form-item>
           </dd>
           <dd>
-            <dl v-for="(kitem, kindex) in oitem.keyList" :key="kindex">
+            <dl v-for="(kitem, kindex) in oitem.krInfoVoList" :key="kindex">
               <dt>关键结果</dt>
               <dd class="objectdd">
                 <el-form-item
-                  prop="keyName"
-                  :rules="[{required:true,trigger: 'blur' , message: '请填写目标名称'}]"
+                  prop="okrDetailObjectKr"
+                  :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
                 >
-                  <el-input v-if="canWrite" v-model="kitem.keyName"></el-input>
-                  <span v-else>{{kitem.keyName}}</span>
+                  <el-input v-if="canWrite" v-model="kitem.okrDetailObjectKr"></el-input>
+                  <span v-else>{{kitem.okrDetailObjectKr}}</span>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
                     v-if="canWrite"
-                    v-model="kitem.percent"
+                    v-model="kitem.okrWeight"
                     controls-position="right"
                     :min="0"
                     :max="100"
                   ></el-input-number>
-                  <span v-else>{{kitem.percent}}</span>
+                  <span v-else>{{kitem.okrWeight}}</span>
                 </el-form-item>
                 <el-form-item label="当前进度">
                   <el-input-number
                     v-if="canWrite"
-                    v-model="kitem.progress"
+                    v-model="kitem.okrDetailProgress"
                     controls-position="right"
                     :min="0"
                     :max="100"
                   ></el-input-number>
-                  <span v-else>{{kitem.progress}}</span>
+                  <span v-else>{{kitem.okrDetailProgress}}</span>
                 </el-form-item>
                 <el-form-item label="信心指数">
-                  <el-rate
+                  <!-- <el-rate
                     v-if="canWrite"
                     v-model="kitem.rate"
                     :icon-classes="['el-icon-house','el-icon-house','el-icon-house']"
                     void-icon-class="el-icon-house"
-                  ></el-rate>
-                  <span v-else>{{kitem.rate}}</span>
-                  <el-popover placement="right" width="400" trigger="click">
-                    <el-table :data="departokrList">
-                      <el-table-column width="150" property="typeName"></el-table-column>
-                      <el-table-column width="100" property="objectName"></el-table-column>
-                      <el-table-column width="300" property="guanlianId"></el-table-column>
-                    </el-table>
+                  ></el-rate>-->
+                  <el-popover v-if="canWrite" placement="right" width="400" trigger="click">
+                    <el-radio-group v-model="kitem.okrDetailConfidence">
+                      <el-radio-button
+                        v-for="citem in CONST.CONFIDENCE"
+                        :key="citem.value"
+                        :label="citem.value"
+                      >{{citem.label}}</el-radio-button>
+                    </el-radio-group>
+
                     <el-button slot="reference">信息状态</el-button>
                   </el-popover>
+                  <span v-else>{{kitem.okrDetailConfidence}}</span>
                 </el-form-item>
                 <el-button v-if="canWrite" @click="deletekr(index,kindex)">删kr</el-button>
               </dd>
@@ -118,7 +121,7 @@
       <!-- okr -->
       <el-table :data="departokrList">
         <el-table-column width="150" prop="typeName"></el-table-column>
-        <el-table-column prop="objectName"></el-table-column>
+        <el-table-column prop="okrDetailObjectKr"></el-table-column>
         <el-table-column width="300">
           <template slot-scope="scope">
             <el-checkbox
@@ -127,7 +130,7 @@
             ></el-checkbox>关联
           </template>
         </el-table-column>
-        <!-- <el-table-column width="300" property="guanlianId"></el-table-column> -->
+        <!-- <el-table-column width="300" property="okrParentDetailId"></el-table-column> -->
       </el-table>
       <!-- 价值观 -->
       <el-table :data="philosophyList">
@@ -151,24 +154,29 @@
 </template>
 
 <script>
+
+import CONST from '../const';
+
 const TIME_INTERVAL = 60 * 1000;
 
 export default {
   name: 'orkForm',
   data() {
     return {
+      CONST,
       formData: {
-        okrList: [{
-          id: 0,
-          objectName: '',
-          percent: 0,
-          progress: 0,
-          keyList: [{
-            id: 0,
-            keyName: '',
-            percent: 0,
-            progress: 0,
-            rate: 0,
+        okrBelongType: '',
+        okrInfoList: [{
+          // id: 0,
+          okrDetailObjectKr: '',
+          okrWeight: 0,
+          okrDetailProgress: 0,
+          krInfoVoList: [{
+            // id: 0,
+            okrDetailObjectKr: '',
+            okrWeight: 0,
+            okrDetailProgress: 0,
+            okrDetailConfidence: '',
           }],
         }],
       },
@@ -210,38 +218,39 @@ export default {
     },
     // 增加kr
     addkr(oindex) {
-      console.log(this.formData.okrList);
-      this.formData.okrList[oindex].keyList.push({
-        id: this.formData.okrList[oindex].keyList.length,
-        keyName: '',
-        percent: 0,
-        progress: 0,
+      console.log(this.formData.okrInfoList);
+      this.formData.okrInfoList[oindex].krInfoVoList.push({
+        // id: this.formData.okrInfoList[oindex].krInfoVoList.length,
+        okrDetailObjectKr: '',
+        okrWeight: 0,
+        okrDetailProgress: 0,
+        okrDetailConfidence: '',
       });
     },
     // 删除kr
     deletekr(oindex, krindex) {
-      this.formData.okrList[oindex].keyList.splice(krindex, 1);
+      this.formData.okrInfoList[oindex].krInfoVoList.splice(krindex, 1);
     },
     // 增加o
     addobject() {
-      this.formData.okrList.push({
-        id: this.formData.okrList.length,
-        objectName: '',
-        percent: 0,
-        progress: 0,
-        guanlianId: '',
+      this.formData.okrInfoList.push({
+        // id: this.formData.okrInfoList.length,
+        okrDetailObjectKr: '',
+        okrWeight: 0,
+        okrDetailProgress: 0,
+        okrParentDetailId: '',
         jiazhiguanId: '',
-        keyList: [{
-          keyName: '',
-          percent: 0,
-          progress: 0,
+        krInfoVoList: [{
+          okrDetailObjectKr: '',
+          okrWeight: 0,
+          okrDetailProgress: 0,
         }],
       });
-      console.log(this.formData.okrList);
+      console.log(this.formData.okrInfoList);
     },
     // 删除o
     deleteobject(oindex) {
-      this.formData.okrList.splice(oindex, 1);
+      this.formData.okrInfoList.splice(oindex, 1);
     },
 
     guanlian(objectIndex) {
@@ -255,15 +264,15 @@ export default {
           res.data.forEach((item) => {
             this.departokrList.push({
               typeName: '目标O',
-              objectName: item.objectName,
-              guanlianId: item.objectId,
+              okrDetailObjectKr: item.okrDetailObjectKr,
+              okrParentDetailId: item.objectId,
               checkFlag: false,
             });
             item.krList.forEach((krItem, index) => {
               this.departokrList.push({
                 typeName: `KR${index}`,
-                objectName: krItem.krName,
-                guanlianId: krItem.krId,
+                okrDetailObjectKr: krItem.krName,
+                okrParentDetailId: krItem.krId,
                 checkFlag: false,
               });
             });
@@ -278,7 +287,7 @@ export default {
       });
       this.departokrList[index].checkFlag = true;
       console.log(row);
-      this.formData.okrList[this.selectObject].guanlianId = row.guanlianId + row.objectName;
+      this.formData.okrInfoList[this.selectObject].okrParentDetailId = row.okrParentDetailId + row.okrDetailObjectKr;
     },
     // 选择关联的价值观
     selectphilosophy(index, row) {
@@ -287,7 +296,7 @@ export default {
       });
       this.philosophyList[index].checkFlag = true;
       console.log(row);
-      this.formData.okrList[this.selectObject].jiazhiguanId = row.philosophyid + row.philosophy;
+      this.formData.okrInfoList[this.selectObject].jiazhiguanId = row.philosophyid + row.philosophy;
     },
     // 提交关联
     summitguanlian() {
@@ -302,11 +311,11 @@ export default {
           // 校验权重比例
           let opercent = 0;
           let keypercent = 0;
-          this.formData.okrList.forEach((oitem) => {
-            opercent += oitem.percent;
+          this.formData.okrInfoList.forEach((oitem) => {
+            opercent += oitem.okrWeight;
             keypercent = 0;
-            oitem.keyList.forEach((kitem) => {
-              keypercent += kitem.percent;
+            oitem.krInfoVoList.forEach((kitem) => {
+              keypercent += kitem.okrWeight;
             });
           });
           if (opercent != 100) {
@@ -315,8 +324,15 @@ export default {
           if (keypercent != 100) {
             this.$message('kr权重相加不等100~');
           }
+          this.formData.okrBelongType = 2;
+          this.formData.periodId = 'periodId';
+          this.formData.userId = 'user001';
+          this.formData.tenantId = 'tenant001';
           console.log('提交结果', this.formData);
           // this.canWrite = false;
+          this.server.addokr(this.formData).then((res) => {
+            console.log(res.code);
+          });
         }
       });
     },
