@@ -24,23 +24,26 @@
         </el-input>
       </div>
       <div>
-        <el-button>
+        <!-- type传1表示使命愿景，2表示战略 -->
+        <el-button @click="showMission(1,'华润使命·愿景')">
           公司使命愿景
           <i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
-        <el-button>
+        <el-button @click="showMission(2,'华润发展战略')">
           公司战略
           <i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
       </div>
     </div>
     <div>
+      <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
       <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
         <template slot="treecard" slot-scope="node">
           <card :node="node"></card>
         </template>
       </svgtree>
     </div>
+    <tl-mission ref="mission"></tl-mission>
   </div>
 </template>
 
@@ -48,8 +51,9 @@
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
 import card from './components/card';
+import mission from './components/mission';
+import worth from './components/worth';
 import Server from './server';
-// import { list } from './list';
 
 const server = new Server();
 
@@ -97,6 +101,8 @@ export default {
     department,
     svgtree,
     card,
+    'tl-mission': mission,
+    'tl-worth': worth,
   },
   mounted() {
     const self = this;
@@ -177,7 +183,11 @@ export default {
       this.getOkrTree();
       console.log(data);
     },
-
+    showMission(type, title) {
+      this.$nextTick(() => {
+        this.$refs.mission.show(type, title);
+      });
+    },
   },
 };
 </script>

@@ -66,7 +66,7 @@ import CONST from './const';
 const server = new Server();
 
 export default {
-  name: 'supportMaps',
+  name: 'undertakeMaps',
   components: {
     'vue-svg-tree': svgtree,
     card,

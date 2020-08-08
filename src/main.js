@@ -5,7 +5,6 @@ import VueAwesomeSwiper from 'vue-awesome-swiper';
 import App from './App';
 import router from './router';
 import mixin from './mixin/global';
-import CONST from './mixin/const';
 import store from './store';
 import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -28,8 +27,6 @@ Vue.prototype.$echarts = echarts;
 window.$ajax = $ajax;
 // 注入自定义minxin
 Vue.mixin(mixin);
-
-window.CONST = CONST;
 
 Vue.config.productionTip = false;
 
