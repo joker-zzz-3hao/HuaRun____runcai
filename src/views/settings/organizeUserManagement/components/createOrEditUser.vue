@@ -197,6 +197,7 @@ export default {
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
       const result = [];
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         const next = queue.shift();
         if (!next) {

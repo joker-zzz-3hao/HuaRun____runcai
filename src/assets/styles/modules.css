@@ -155,20 +155,16 @@
   transition: all .3s ease-out;
 }
 
+.menu-cont.no-sub-menu {
+  width: 70px;
+}
+
 .menu-cont.is-sub-menu {
   width: 248px;
 }
 
-.no-sub-menu {
-  width: 70px;
-}
-
-.no-sub-menu .main-menu .sub-menu {
-  width: 0;
-}
-
-.is-sub-menu .main-menu .sub-menu {
-  width: 248px;
+.menu-cont.is-shrink {
+  width: 90px;
 }
 
 .menu-cont-inside {
@@ -177,9 +173,13 @@
   transition: all .3s ease-out;
 }
 
+/* .no-sub-menu .menu-cont-inside {
+  width: 70px;
+}
+
 .is-sub-menu .menu-cont-inside {
   width: 248px;
-}
+} */
 
 .menu-cont-inside ul {
   display: flex;
@@ -189,11 +189,6 @@
 
 .menu-cont-inside > ul {
   width: 70px;
-}
-
-.main-menu > ul {
-  width: 70px;
-  height: calc(100vh - 70px);
 }
 
 .menu-cont-inside li {
@@ -212,28 +207,41 @@
   background-size: 24px 24px;
 }
 
-.menu-cont-inside ul:first-of-type li {
-  color: #fff;
-}
-
 .main-menu {
   position: relative;
   width: 90px;
+}
+
+.no-sub-menu .main-menu {
+  width: 70px;
+}
+
+.main-menu > ul {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 70px;
+  height: calc(100vh - 70px);
 }
 
 .main-menu .sub-menu {
   position: absolute;
   left: 0;
   top: 0;
-  width: 90px;
+  width: 248px;
   height: calc(100vh - 70px);
-  background: #f40;
+  background: #fff;
   z-index: -1;
+  transform: translateX(-178px);
   transition: all .3s ease-out;
 }
 
-.sub-menu ul {
-  margin-left: 100px;
+.is-sub-menu .main-menu .sub-menu {
+  transform: translateX(0);
+}
+
+.is-shrink .main-menu .sub-menu {
+  transform: translateX(-158px);
 }
 
 .main-menu .sub-menu::after {
@@ -243,12 +251,87 @@
   content: '';
   height: 100%;
   width: 1px;
-  background: #000;
+  background: #e8ecf0;
 }
 
-.no-sub-menu .menu-cont-inside,
-.no-sub-menu .main-menu {
-  width: 70px;
+.main-menu .sub-menu ul {
+  background: #fff;
+}
+
+.main-menu .sub-menu li {
+  height: unset;
+}
+
+.main-menu .sub-menu span {
+  display: block;
+  transform: perspective(100px) translateZ(-24px);
+}
+
+.main-menu .sub-menu em {
+  display: block;
+  opacity: 0;
+  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+}
+
+.main-menu .sub-menu li:nth-child(1) em {
+  transition-delay: .08s;
+}
+
+.main-menu .sub-menu li:nth-child(2) em {
+  transition-delay: .16s;
+}
+
+.main-menu .sub-menu li:nth-child(3) em {
+  transition-delay: .24s;
+}
+
+.main-menu .sub-menu li:nth-child(4) em {
+  transition-delay: .32s;
+}
+
+.is-sub-menu .main-menu .sub-menu em {
+  transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: transparent;
+  opacity: 1;
+}
+
+.is-sub-menu.is-shrink .main-menu .sub-menu em {
+  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+  opacity: 0;
+}
+
+.is-sub-menu.is-extend .main-menu .sub-menu em {
+  /* animation: waves; */
+  /* transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+  opacity: 0; */
+}
+
+.menu-control-button {
+  position: absolute;
+  right: -12px;
+  top: 12px;
+  z-index: 21;
+  width: 24px;
+  height: 24px;
+  background: url('~@/assets/images/return-menu.png') #fff center no-repeat;
+  background-size: 24px 24px;
+  cursor: pointer;
+  transform: translateX(-168px);
+  transform: rotate(0);
+  transition: all .3s ease-out;
+}
+
+.no-sub-menu .menu-control-button {
+  transform: translateX(-20px);
+}
+
+.is-sub-menu .menu-control-button {
+  transform: translateX(0);
+}
+
+.is-shrink .menu-control-button {
+  transform: rotate(-180deg);
 }
 
 .management-platform {
@@ -256,3 +339,4 @@
   bottom: 0;
   left: 0;
 }
+

@@ -22,6 +22,8 @@ const routes = [...loginJs, ...consoleJs, ...settingsJs, ...adminJs, ...demoJs];
 const router = new VueRouter({
   routes,
   base: process.env.BASE_URL,
+  linkActiveClass: 'is-active',
+  linkExactActiveClass: 'exact',
 });
 
 // 判断权限
