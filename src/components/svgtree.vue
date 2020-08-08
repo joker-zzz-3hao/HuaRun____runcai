@@ -216,12 +216,6 @@ export default {
           height += v.height;
         });
       }
-
-      // 向上对齐
-      // if (vnode.prev) {
-      //   me.calcHeight(vnode.prev);
-      //   height += vnode.height;
-      // }
       if (vnode.open) {
         // 已展开的节点，高度为子节点高度相加
         vnode.height = height || this.blockHeight;
@@ -259,6 +253,8 @@ export default {
         const svg = document.getElementById(this.svgId);
         svg.setAttribute('height', this.root.height);
         svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
+        // 设置高度
+        document.getElementById('treeContent').style.height = `${this.blockHeight}px`;
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
     },
