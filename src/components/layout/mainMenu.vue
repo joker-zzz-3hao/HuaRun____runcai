@@ -84,6 +84,38 @@ export default {
     return {
       isShrinkMenus: false,
       isExtend: false,
+      menuList: [
+        {
+          mainMenuTitle: '工作台',
+          classTage: 'workbench',
+          toName: 'overview',
+          subMenuList: [],
+        },
+        {
+          mainMenuTitle: 'OKR管理',
+          classTage: 'okr-management',
+          toName: 'myOkr',
+          subMenuList: [
+            {
+              subMenuTitle: '',
+              subClassTage: 'workbench',
+              subToName: 'overview23',
+            },
+          ],
+        },
+        {
+          mainMenuTitle: '考核管理',
+          classTage: 'appraisal-management',
+          toName: 'myOkr',
+          subMenuList: [
+            {
+              subMenuTitle: '',
+              subClassTage: 'workbench',
+              subToName: 'overview23',
+            },
+          ],
+        },
+      ],
     };
   },
   computed: {
