@@ -2,7 +2,7 @@
   <div>
     <!-- okr折叠面板 -->
     <elcollapse class="collapse">
-      <elcollapseitem v-for="(item, index) in tableList" :key="item.objectId+index">
+      <elcollapseitem ref="okrcoll" v-for="(item, index) in tableList" :key="item.detailId+index">
         <template slot="title">
           <div>{{item.okrDetailObjectKr}}</div>
           <ul class="detail">
@@ -22,7 +22,7 @@
             </li>
           </ul>
         </template>
-        <div v-for="(kritem, index) in item.krList" :key="kritem.krId+index">
+        <div v-for="(kritem, index) in item.krList" :key="kritem.detailId+index">
           <div>
             <span>{{index+1}}</span>
             {{kritem.okrDetailObjectKr}}
@@ -70,11 +70,6 @@ export default {
   props: {
     tableList: {
       type: Array,
-
-    },
-    server: {
-      type: Object,
-      required: true,
     },
     okrid: {
       type: String,
@@ -84,7 +79,10 @@ export default {
 
   },
   methods: {
-
+    zhankai(ref) {
+      console.log('在组件中点了', this.$refs[`okrcoll${ref}`]);
+      this.$refs.okrcoll[ref].handleHeaderClick();
+    },
   },
   watch: {
 
