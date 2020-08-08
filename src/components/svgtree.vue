@@ -106,6 +106,11 @@ export default {
       type: String,
       default: 'id',
     },
+    // 横向时是否居中对齐
+    colAlign: {
+      type: Boolean,
+      default: true,
+    },
   },
   mounted() {
     if (this.treeData && this.treeData.length > 0) {
@@ -203,7 +208,7 @@ export default {
         // 不展开，高度为默认高度(只有一个根节点时)
         vnode.height = this.blockHeight;
       }
-      // 有子节点
+      // 有子节点(居中)
       if (vnode.children && vnode.children.length > 0) {
         vnode.children.forEach((v) => {
           // 递归计算所有子节点的高度
@@ -211,6 +216,13 @@ export default {
           height += v.height;
         });
       }
+      console.log('前一个节点', vnode.prev);
+
+      // 向上对齐
+      // if (vnode.prev) {
+      //   me.calcHeight(vnode.prev);
+      //   height += vnode.height;
+      // }
       if (vnode.open) {
         // 已展开的节点，高度为子节点高度相加
         vnode.height = height || this.blockHeight;
@@ -271,8 +283,20 @@ export default {
         vnode = this.root; // 第一次进来为根节点
       }
       prevHeight = prevHeight || 0;
-      // 使父节点top为所有子节点高度一半（位置居中
-      vnode.top = prevHeight + vnode.height / 2;
+      // 使父节点top为所有子节点高度一半（居中对齐
+      if (this.colAlign) {
+        vnode.top = prevHeight + vnode.height / 2;
+        if (vnode.children && vnode.children.length > 0) {
+          for (let i = 0; i < vnode.children.length; i += 1) {
+            const { height } = vnode.children[i];
+            this.calcTop(vnode.children[i], prevHeight);
+            prevHeight += height;
+          }
+        }
+      } else {
+        // 向上对齐
+        vnode.top = prevHeight;
+      }
       if (vnode.children && vnode.children.length > 0) {
         for (let i = 0; i < vnode.children.length; i += 1) {
           const { height } = vnode.children[i];
