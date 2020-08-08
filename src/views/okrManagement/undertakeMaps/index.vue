@@ -18,8 +18,10 @@
       ></department>
     </div>
     <!-- 要展示多个 -->
-    <div v-for="item in svgList" :key="item.id">
+    <div v-if="showAll">
       <vue-svg-tree
+        v-for="item in svgList"
+        :key="item.id"
         :treeData="treeData"
         :svgId="'svg'+item.id"
         ref="svgTree"
@@ -27,6 +29,23 @@
         direction="col"
         fatherId="okrParentDetailId"
         childId="okrDetailId"
+        :colAlign="false"
+      >
+        <div slot="treecard" slot-scope="props">
+          <card :node="props.node"></card>
+        </div>
+      </vue-svg-tree>
+    </div>
+    <div v-else>
+      <vue-svg-tree
+        :treeData="treeData"
+        svgId="svg"
+        ref="svgTree"
+        :curveness="false"
+        direction="col"
+        fatherId="okrParentDetailId"
+        childId="okrDetailId"
+        :colAlign="false"
       >
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>
@@ -59,7 +78,6 @@ export default {
       treeData: [],
       searchForm: {
         okrDetailId: '',
-        oorKr: 'o',
         orgId: '888822223333',
         periodId: 'periodId',
       },
@@ -101,7 +119,7 @@ export default {
   created() {
     this.init();
     this.showAll = this.$route.params.showAll;
-    this.searchForm.okrDetailId = this.$route.params.okrDetailId;
+    this.searchForm.okrDetailId = this.$route.params.okrDetailId || '';
   },
   methods: {
     init() {
