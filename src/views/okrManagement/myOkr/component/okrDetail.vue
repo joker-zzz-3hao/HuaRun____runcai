@@ -83,6 +83,8 @@ export default {
       handler() {
         this.getokrDetail();
       },
+      deep: true,
+      immediate: true,
     },
   },
 };

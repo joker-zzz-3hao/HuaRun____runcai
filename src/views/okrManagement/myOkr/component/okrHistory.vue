@@ -33,9 +33,9 @@ export default {
     searchOkr() {
       this.searchForm = { okrId: this.okrId };
       this.server.getokrDetail(this.searchForm).then((res) => {
-        if (res.code == 200) {
+        if (res.code == 200 && res.data.okrDetails.length > 0) {
           console.log('搜索条件', this.searchForm);
-          res.data.forEach((item) => {
+          res.data.okrDetails.forEach((item) => {
             this.historyOKRList.push({
               typeName: '目标O',
               objectName: item.okrDetailObjectKr,

@@ -50,7 +50,13 @@
       width="50%"
       :modal-append-to-body="false"
     >
-      <component ref="com" v-bind:is="currentView" :server="server" :okrId="okrId"></component>
+      <component
+        ref="com"
+        v-bind:is="currentView"
+        :server="server"
+        :okrId="okrId"
+        @closeDialog="closeDialog"
+      ></component>
     </el-dialog>
   </div>
 </template>
@@ -126,6 +132,9 @@ export default {
           break;
       }
       this.dialogVisible = true;
+    },
+    closeDialog() {
+      this.dialogVisible = false;
     },
   },
 };

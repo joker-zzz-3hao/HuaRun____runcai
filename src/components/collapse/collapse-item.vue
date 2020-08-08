@@ -90,6 +90,8 @@ export default {
   },
 
   methods: {
+    mmmm() {
+    },
     handleFocus() {
       setTimeout(() => {
         if (!this.isClick) {
@@ -100,6 +102,7 @@ export default {
       }, 50);
     },
     handleHeaderClick() {
+      console.log('在el折叠中收到');
       if (this.disabled) return;
       this.dispatch('ElCollapse', 'item-click', this);
       this.focusing = false;

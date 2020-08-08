@@ -83,16 +83,18 @@ const mockData = {
       'okrDetails|2': [
         {
           'detailId|1': ['1233', '1234'],
-          'userName|1': ['定个小目标', '定两个小目标'],
-          okrWeight: '40',
-          okrDetailProgress: '30',
+          'userName|1': ['心荃', '滕炜'],
+          'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
+          okrWeight: 50,
+          okrDetailProgress: 70,
           parentObjectKr: '华润云',
           'krList|2': [
             {
               'detailId|': ['1233', '1234'],
-              'userName|1': ['先赚1个亿', '先赚2个亿'],
-              okrWeight: '40',
-              okrDetailProgress: '30',
+              'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
+              'userName|1': ['心荃', '滕炜'],
+              okrWeight: 50,
+              okrDetailProgress: 30,
               parentObjectKr: '华润云',
               confidence: '1',
             },
@@ -102,6 +104,46 @@ const mockData = {
       'voteUser|3': [{
         'userId|+1': ['0011', '0022', '0033'],
         'userName|1': ['cx', 'tw'],
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：okr详情
+  'POST /gateway/talent-query/okr/query/myOkr': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      okrMain: {
+        'okrId|1': ['111111222', '111111223'],
+        'okrBelongType|1': ['0', '1'],
+        orgName: '云门户',
+        userName: 'lxq',
+        userId: '0123',
+        updateTime: '2020-08-06',
+        okrProgress: '40',
+      },
+      'okrDetails|3': [
+        {
+          'detailId|1': ['1233', '1234'],
+          'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
+          'userName|1': ['心荃', '滕炜'],
+          okrWeight: 40,
+          okrDetailProgress: 30,
+          parentObjectKr: '华润云',
+          'krList|5': [
+            {
+              'detailId|': ['1233', '1234'],
+              'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
+              'userName|1': ['心荃', '滕炜'],
+              okrWeight: 40,
+              okrDetailProgress: 30,
+              parentObjectKr: '华润云',
+              confidence: '1',
+            },
+          ],
+        },
+      ],
+      'orgUser|10': [{
+        'userId|+1': ['0011', '0022', '0033'],
+        'userName|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
       }],
     })));
   },
