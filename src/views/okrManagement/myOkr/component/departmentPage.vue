@@ -111,7 +111,7 @@ export default {
     },
     goUndertakeMaps(id, name) {
       this.$message('要跳到承接地图啦~');
-      this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: id, objectName: name, showAll: false } });
+      this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: id, objectName: name, showOne: true } });
     },
 
   },

@@ -27,7 +27,7 @@
         direction="col"
         fatherId="okrParentDetailId"
         childId="okrDetailId"
-        :colAlign="false"
+        :colAlign="true"
       >
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>

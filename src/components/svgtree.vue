@@ -253,8 +253,6 @@ export default {
         const svg = document.getElementById(this.svgId);
         svg.setAttribute('height', this.root.height);
         svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
-        // 设置高度
-        document.getElementById('treeContent').style.height = `${this.blockHeight}px`;
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
     },
@@ -281,13 +279,6 @@ export default {
       // 使父节点top为所有子节点高度一半（居中对齐
       if (this.colAlign) {
         vnode.top = prevHeight + vnode.height / 2;
-        if (vnode.children && vnode.children.length > 0) {
-          for (let i = 0; i < vnode.children.length; i += 1) {
-            const { height } = vnode.children[i];
-            this.calcTop(vnode.children[i], prevHeight);
-            prevHeight += height;
-          }
-        }
       } else {
         // 向上对齐
         vnode.top = prevHeight;
@@ -403,7 +394,7 @@ body {
 .draw-area {
   position: relative;
   width: 100%;
-  height: calc(100vh - 100px);
+  /* height: calc(100vh - 100px); */
   margin: 40px auto;
 }
 svg {
@@ -457,119 +448,5 @@ svg {
 }
 .vnode:hover .tip {
   display: block;
-}
-.vnode .text {
-  padding: 0 10px;
-}
-.vnode .text {
-  position: relative;
-  height: 100%;
-  max-width: 230px;
-  min-width: 216px;
-}
-.vnode .text .node_title {
-  padding: 3px 11px 0px 11px;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-.vnode .text .node_title .OKR {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  color: #fff;
-  line-height: 35px;
-  text-align: center;
-  font-size: 1.2rem;
-  background-color: #58c2ef;
-}
-.vnode .text .node_title .OKR.pink {
-  background-color: #e1244e;
-}
-.vnode .text .node_title .OKR.blue {
-  background-color: #58c2ef;
-}
-.vnode .text .node_title .label {
-  max-width: 130px;
-  height: 40px;
-  line-height: 40px;
-  overflow: hidden;
-  padding-left: 10px;
-  font-size: 1rem;
-  color: #1f1f1f;
-  display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.vnode .text .node_title .label button {
-  overflow: hidden;
-  color: #1f1f1f !important;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 140px;
-  display: inline-block;
-  line-height: 35px;
-  text-align: left;
-}
-.vnode .text .node_des {
-  display: flex;
-  flex-direction: column;
-  margin-left: 56px;
-  height: 60px;
-  color: #777777;
-  font-size: 12px;
-  justify-content: flex-start;
-}
-.vnode .text .node_des div {
-  width: 140px;
-  text-align: left;
-}
-.vnode .text .node_des div:nth-child(2) {
-  margin-top: 5px;
-}
-.vnode .text .node_progress {
-  position: absolute;
-  width: 200px;
-  bottom: 0px;
-  height: 40px;
-  border-top: 1px solid #d8d8d8;
-  line-height: 40px;
-}
-.vnode .text .node_progress .el-progress {
-  display: inline;
-}
-.vnode .text .node_progress .el-progress .el-progress__text {
-  font-size: 12px !important;
-  color: #777777 !important;
-}
-.vnode .text .showTips {
-  position: absolute;
-  left: 225px;
-  top: 0px;
-  opacity: 0;
-}
-.vnode .text .showTips a {
-  display: inline-block;
-}
-.vnode .text .showTips .tips_icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
-  text-decoration: none;
-  padding: 3px;
-  background: #ffffff;
-  box-shadow: 1px 2px 10px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.5s ease 0s;
-  color: #777777;
-}
-.vnode .text .showTips .tips_icon:hover {
-  color: #58c2ef;
-}
-.vnode .text:hover .showTips.havechild {
-  color: #58c2ef;
-  opacity: 1;
 }
 </style>
