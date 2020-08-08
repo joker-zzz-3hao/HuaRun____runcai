@@ -72,6 +72,16 @@ export default [
         },
         component: () => import('@/views/okrManagement/undertakeMaps/index'),
       },
+      {
+        // OKR审批
+        path: 'okrApproval',
+        name: 'okrApproval',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+        },
+        component: () => import('@/views/okrManagement/okrApproval/index'),
+      },
     ],
   },
 ];
