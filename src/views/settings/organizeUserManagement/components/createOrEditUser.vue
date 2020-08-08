@@ -20,7 +20,7 @@
         <el-form-item
           label="用户账号"
           prop="userAccount"
-          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
+          :rules="[{required:true,validator:optionType == 'edit'?'':validateAccount,trigger:'blur'}]"
         >
           <el-input
             v-model.trim="formData.userAccount"
@@ -31,7 +31,8 @@
         <el-form-item
           :label="pwdLabel"
           prop="loginPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
+          :rules="[
+          {required:isEditPwd||optionType == 'create',validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
         >
           <el-input
             :disabled="!isEditPwd && optionType == 'edit'"
@@ -44,16 +45,17 @@
         <el-form-item
           v-if="isEditPwd"
           label="新密码"
-          prop="confirmPwd"
-          :rules="[{required:true,validator:validateConfirmPwd,trigger:'blur'}]"
+          prop="newPwd"
+          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
+          <el-input v-model.trim="formData.newPwd" show-password></el-input>
         </el-form-item>
         <el-form-item
           v-if="isEditPwd || optionType != 'edit'"
           label="确认密码"
           prop="confirmPwd"
-          :rules="[{required:true,validator:validateConfirmPwd,trigger:'blur'}]"
+          :rules="[
+          {required:true,validator:optionType == 'create' ? validateConfirmPwd : validateNewConfirmPwd,trigger:'blur'}]"
         >
           <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
         </el-form-item>
@@ -165,6 +167,8 @@ export default {
         orgId: this.treeData[0].orgId, // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
+        userType: 2,
+        newPwd: '',
       },
 
     };
@@ -241,14 +245,18 @@ export default {
           delete this.formData.oldPwd;
         }
       }
-      this.loading = true;
       delete this.formData.confirmPwd;
-      this.server[addOrEdit](this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(successTip);
-          this.close('refreshPage');
+      this.$refs.userForm.validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          this.server[addOrEdit](this.formData).then((res) => {
+            if (res.code == 200) {
+              this.$message.success(successTip);
+              this.close('refreshPage');
+            }
+            this.loading = false;
+          });
         }
-        this.loading = false;
       });
     },
     cancel() {

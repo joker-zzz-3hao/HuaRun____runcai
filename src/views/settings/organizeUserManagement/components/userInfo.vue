@@ -7,7 +7,7 @@
 <template>
   <div>
     <el-dialog
-      append-to-body="true"
+      :append-to-body="true"
       :visible="visible"
       @close="close"
       title="详情"
@@ -30,7 +30,7 @@
           <span>{{userInfo.tenantName}}</span>
         </el-form-item>
         <el-form-item label="所在部门" prop="departName">
-          <span>{{userInfo.orgName}}</span>
+          <span>{{combinedOrgName}}</span>
         </el-form-item>
         <el-form-item label="用户状态" prop="departName">
           <span>{{CONST.USER_STATUS_MAP[userInfo.userStatus]}}</span>
@@ -81,6 +81,8 @@ export default {
     return {
       visible: false,
       userInfo: {},
+      nameList: [],
+      combinedOrgName: '',
       formData: {
         departName: '',
         parentDepart: '',
@@ -93,6 +95,7 @@ export default {
     this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
       if (res.code == 200) {
         this.userInfo = res.data;
+        this.getCombinedOrgName(res.data.orgId);
         // this.setInitDepartment(res.data.orgId);
       }
     });
@@ -109,6 +112,42 @@ export default {
     },
     cancel() {
       this.close();
+    },
+    getCombinedOrgName(orgId) {
+      // ************************************************
+      // 遍历嵌套数组，转换为一维数组
+      const queue = [...this.treeData];
+      const result = [];
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const next = queue.shift();
+        if (!next) {
+          break;
+        }
+        result.push({
+          orgId: next.orgId,
+          orgName: next.orgName,
+          orgParentId: next.orgParentId,
+        });
+        if (Array.isArray(next.sonTree)) {
+          queue.push(...next.sonTree);
+        }
+      }
+      this.getNameStr(result, orgId);
+      this.nameList.reverse();
+      this.combinedOrgName = this.nameList.join('-');
+      // *******************************************************
+    },
+    getNameStr(resultList, orgId) {
+      const result = [...resultList];
+      let orgParentId = '';
+      for (const org of result) {
+        if (org.orgId == orgId) {
+          orgParentId = org.orgParentId;
+          this.nameList.push(org.orgName);
+          this.getNameStr(result, orgParentId);
+        }
+      }
     },
   },
   watch: {},

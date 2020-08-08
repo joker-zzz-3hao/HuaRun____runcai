@@ -19,14 +19,14 @@
             :value="item.key"
           ></el-option>
         </el-select>
-        <el-select v-model.trim="searchData.userStatus" placeholder="部门负责人">
+        <!-- <el-select v-model.trim="searchData.userStatus" placeholder="部门负责人">
           <el-option
             v-for="item in CONST.IS_LEADER_LIST"
             :key="item.key"
             :label="item.label"
             :value="item.key"
           ></el-option>
-        </el-select>
+        </el-select>-->
         <el-input placeholder="输入用户姓名/账号/手机号" v-model.trim="searchData.keyWord" style="width:300px"></el-input>
         <el-button @click="searchList">查询</el-button>
       </span>
@@ -52,8 +52,7 @@
         :filter-node-method="filterNode"
       ></el-tree>
     </div>
-    <div class="org-right-side" v-if="!!globalOrgId">
-      <!-- <span>{{globalOrgName}}（{{total}}人）</span> -->
+    <div class="org-right-side">
       <crcloud-table
         :total="total"
         :pageSize.sync="pageSize"
@@ -63,21 +62,23 @@
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
             <el-table-column align="left" width="100" type="index" label="序号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="用户ID"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="所属租户"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="setLeader(scope.row.userStatus)">
-                  <i v-if="scope.row.userStatus == '0'" class="el-icon-user-solid"></i>
-                  <i v-if="scope.row.userStatus == '50'" class="el-icon-user"></i>
+                <div>
+                  <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
+                    <i v-if="scope.row.leader" class="el-icon-user-solid"></i>
+                  </el-tooltip>
+                  <i v-if="!scope.row.leader" class="el-icon-user" @click="setLeader(scope.row)"></i>
                 </div>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
               <template slot-scope="scope">
+                <!-- 0：注册 1：LDAP 2：创建 -->
                 <div v-if="scope.row.userType=='1'">--</div>
                 <div v-else @click.capture.stop="dataChange(scope.row)">
                   <el-switch
@@ -91,10 +92,10 @@
             </el-table-column>
             <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
               <template slot-scope="scope">
-                <div>{{scope.row.userType=='0'? '注册用户':'LDAP用户'}}</div>
+                <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间"></el-table-column>
+            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
                 <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
@@ -183,21 +184,25 @@ export default {
       treeData: [{
         orgId: '1',
         orgName: '志任集团',
+        orgParentId: '',
         isShow: false,
         sonTree: [
           {
             orgId: '1a',
             orgName: '分公司',
+            orgParentId: '1',
             isShow: false,
             sonTree: [
               {
                 orgId: '1aa',
                 orgName: '分公司11111111111',
+                orgParentId: '1a',
                 isShow: false,
                 sonTree: [
                   {
                     orgId: '1aaa',
                     orgName: '分公司2222222222222',
+                    orgParentId: '1aa',
                     isShow: false,
                   },
                 ],
@@ -226,7 +231,7 @@ export default {
           this.treeData = res.data;
         }
         this.defaultExpandNode = [this.treeData[0].orgId];
-        this.globalOrgId = this.treeData[0].orgId;
+        // this.globalOrgId = this.treeData[0].orgId;
         this.tenantName = this.treeData[0].orgName;
         this.searchList();
       });
@@ -234,26 +239,23 @@ export default {
     searchList(org) {
       if (org && org.orgId) { // 切换组织
         this.globalOrgId = org.orgId;
-        // this.globalOrgName = org.orgName;
         this.currentPage = 1;
         this.pageSize = 10;
       }
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        orgId: this.globalOrgId,
+        orgId: this.globalOrgId == this.treeData[0].orgId ? '' : this.globalOrgId,
         ...this.searchData,
       };
-      if (this.globalOrgId) {
-        this.server.getUserListByOrgId(params).then((res) => {
-          if (res.code == 200) {
-            this.total = res.data.total;
-            this.currentPage = res.data.currentPage;
-            this.pageSize = res.data.pageSize;
-            this.tableData = res.data.content;
-          }
-        });
-      }
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.total = res.data.total;
+          this.currentPage = res.data.currentPage;
+          this.pageSize = res.data.pageSize;
+          this.tableData = res.data.content;
+        }
+      });
     },
     treeChange() {},
     renderContent(h, {
@@ -381,16 +383,16 @@ export default {
       });
     },
     // 设置负责人
-    setLeader(userStatus) {
-      if (userStatus == '0') {
-        userStatus = '50';
-      } else {
-        userStatus = '0';
-      }
-      this.server.setOrgLeader().then((res) => {
-        if (res.code == 200) {
-          this.searchList();
-        }
+    setLeader(user) {
+      // const status = userStatus == '0' ? '50' : '0';
+      // const title = status == '0' ? '是否设置部门负责人?' : '是否取消部门负责人？';
+      this.$confirm('是否设置部门负责人?').then(() => {
+        this.server.setOrgLeader({ userAccount: user.userAccount, orgId: user.orgId }).then((res) => {
+          if (res.code == 200) {
+            this.searchList();
+            this.$message.success('设置成功');
+          }
+        });
       });
     },
 
@@ -415,6 +417,6 @@ export default {
   height: 90%;
   position: absolute;
   left: 400px;
-  top: 100px;
+  top: 150px;
 }
 </style>

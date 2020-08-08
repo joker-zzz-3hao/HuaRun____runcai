@@ -14,7 +14,7 @@ export default {
         callback('不支持中文');
       } else {
         if (this.formData.confirmPwd !== '') {
-          this.$refs.dataForm.validateField('confirmPwd');
+          this.$refs.userForm.validateField('confirmPwd');
         }
         callback();
       }
@@ -29,13 +29,24 @@ export default {
         callback();
       }
     },
+    // 注册确认密码校验
+    validateNewConfirmPwd(rule, value, callback) {
+      if (!value) {
+        callback('请确认密码');
+      } else if (this.formData.newPwd != value) {
+        callback('两次输入密码必须保持一致');
+      } else {
+        callback();
+      }
+    },
     // 邮箱校验
     validateEmail(rule, value, callback) {
       if (!value) {
         callback('请输入邮箱');
       } else if (
-        !/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-          .test(value)) {
+        !
+        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        .test(value)) {
         callback('邮箱格式不正确');
       } else {
         callback();
@@ -50,7 +61,7 @@ export default {
         callback('手机号格式不正确');
       } else {
         if (this.formData.loginPwd) {
-          this.$refs.dataForm.validateField('loginPwd');
+          this.$refs.userForm.validateField('loginPwd');
         }
         callback();
       }

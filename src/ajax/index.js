@@ -85,49 +85,49 @@ const ajax = axios.create({
             case -2: // 错误的请求参数
               Message({
                 showClose: true,
-                message: res.msg || '错误的请求参数',
+                message: data.msg || '错误的请求参数',
                 type: 'error',
               });
               break;
             case -3: // 找不到请求路径
               Message({
                 showClose: true,
-                message: res.msg || '找不到请求路径',
+                message: data.msg || '找不到请求路径',
                 type: 'error',
               });
               break;
             case -4: // 网络连接请求失败
               Message({
                 showClose: true,
-                message: res.msg || '网络连接请求失败',
+                message: data.msg || '网络连接请求失败',
                 type: 'error',
               });
               break;
             case -5: // 不合法的请求方式
               Message({
                 showClose: true,
-                message: res.msg || '不合法的请求方式',
+                message: data.msg || '不合法的请求方式',
                 type: 'error',
               });
               break;
             case -6: // 找不到方法
               Message({
                 showClose: true,
-                message: res.msg || '找不到方法',
+                message: data.msg || '找不到方法',
                 type: 'error',
               });
               break;
             case -7: // 除数为0错误
               Message({
                 showClose: true,
-                message: res.msg || '除数为0错误',
+                message: data.msg || '除数为0错误',
                 type: 'error',
               });
               break;
             case -8: // 数据库异常
               Message({
                 showClose: true,
-                message: res.msg || '数据库异常',
+                message: data.msg || '数据库异常',
                 type: 'error',
               });
               break;

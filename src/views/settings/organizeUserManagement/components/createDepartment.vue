@@ -7,7 +7,7 @@
 <template>
   <div>
     <el-dialog
-      append-to-body="true"
+      :append-to-body="true"
       :visible="visible"
       @close="close"
       title="创建部门"

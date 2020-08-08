@@ -22,6 +22,11 @@ const USER_STATUS_MAP = {
   0: '启用',
   50: '禁用',
 };
+const USER_TYPE_MAP = {
+  0: '注册用户',
+  1: 'LDAP用户',
+  2: '创建用户',
+};
 const IS_LEADER_LIST = [{
     key: '0',
     label: '是',
@@ -36,4 +41,5 @@ export default {
   USER_STATUS_LIST,
   IS_LEADER_LIST,
   USER_STATUS_MAP,
+  USER_TYPE_MAP,
 };

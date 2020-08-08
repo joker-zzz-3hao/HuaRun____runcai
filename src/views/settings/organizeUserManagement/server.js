@@ -8,7 +8,7 @@ export default class Server extends ServerBase {
 
   // 查询组织包含的用户列表
   getUserListByOrgId(param) {
-    return this._ajaxPost('sys/user/listOrgUser', param);
+    return this._ajaxPost('sys/user/listUserPage', param);
   }
 
   // 创建用户
@@ -38,6 +38,6 @@ export default class Server extends ServerBase {
 
   // 设置部门负责人
   setOrgLeader(param) {
-    return this._ajaxPost('sys/organization/insertOrg', param);
+    return this._ajaxPost('sys/userRole/addOrgUserLeader', param);
   }
 }
