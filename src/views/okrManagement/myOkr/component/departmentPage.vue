@@ -19,7 +19,7 @@
             <span class="progresswidth">
               <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
             </span>
-            <button @click="goSupportMaps(item.okrDetailId,item.okrDetailObjectKr)">承接地图</button>
+            <button @click="goUndertakeMaps(item.okrDetailId,item.okrDetailObjectKr)">承接地图</button>
           </template>
           <div v-for="(kritem, index) in item.krList" :key="index">
             <span>KRicon</span>
@@ -109,9 +109,9 @@ export default {
         }
       });
     },
-    goSupportMaps(id, name) {
+    goUndertakeMaps(id, name) {
       this.$message('要跳到承接地图啦~');
-      this.$router.push({ name: 'supportMaps', params: { okrDetailId: id, objectName: name, showAll: false } });
+      this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: id, objectName: name, showAll: false } });
     },
 
   },

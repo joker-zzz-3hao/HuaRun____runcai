@@ -69,8 +69,8 @@ export default [
       {
         // OKR管理
         // 承接树
-        path: 'supportMaps',
-        name: 'supportMaps',
+        path: 'undertakeMaps',
+        name: 'undertakeMaps',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,

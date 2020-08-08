@@ -30,7 +30,7 @@
           </router-link>
           <router-link
             tag="li"
-            :to="{name:'okrAssess'}"
+            :to="{name:'myAssess'}"
             @click.native="changeSubMenu"
             class="workbench"
           >
