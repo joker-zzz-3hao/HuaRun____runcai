@@ -374,6 +374,7 @@ export default {
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
         orgId: user.orgId, // 用户所在部门ID
         userAccount: user.userAccount,
+        userType: 2,
       };
       this.server.updateOrgUser(params).then((res) => {
         if (res.code == 200) {
