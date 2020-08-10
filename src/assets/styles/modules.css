@@ -152,7 +152,7 @@
 
 .menu-cont {
   width: 90px;
-  transition: all .3s ease-out;
+  transition: all 8s ease-out;
 }
 
 .menu-cont.no-sub-menu {
@@ -170,7 +170,7 @@
 .menu-cont-inside {
   top: 70px;
   width: 90px;
-  transition: all .3s ease-out;
+  transition: all 8s ease-out;
 }
 
 /* .no-sub-menu .menu-cont-inside {
@@ -181,7 +181,8 @@
   width: 248px;
 } */
 
-.menu-cont-inside ul {
+.menu-cont-inside .management-platform,
+.menu-cont-inside .main-menu > ul {
   display: flex;
   flex-direction: column;
   background: #162565;
@@ -198,6 +199,8 @@
   width: 100%;
   height: 70px;
   cursor: pointer;
+  /* background: #162565;
+  transition: all 8s ease-out; */
 }
 
 .menu-cont-inside li i {
@@ -210,6 +213,16 @@
 .main-menu {
   position: relative;
   width: 90px;
+}
+
+.main-menu li,
+.management-platform li {
+  background: linear-gradient(#162565, #162565);
+  transition: all 8s ease-out;
+}
+
+.main-menu .is-active {
+  background: linear-gradient(#ffbc20, #d66d2c);
 }
 
 .no-sub-menu .main-menu {
@@ -238,7 +251,7 @@
   background: #fff;
   z-index: -1;
   transform: translateX(-178px);
-  transition: all .3s ease-out;
+  transition: all 8s ease-out;
 }
 
 .is-sub-menu .main-menu .sub-menu {
@@ -259,8 +272,24 @@
   background: #e8ecf0;
 }
 
-.main-menu .sub-menu ul {
-  background: #fff;
+.is-sub-menu .main-menu .sub-menu ul {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transform: translateX(-178px);
+  background: #f40;
+  transition: all 8s ease-out;
+}
+
+.is-sub-menu.is-shrink .main-menu .sub-menu ul {
+  transform: translateX(0);
+
+}
+
+
+.is-sub-menu .main-menu .sub-menu .is-focus {
+  transform: translateX(0);
 }
 
 .main-menu .sub-menu li {
@@ -294,6 +323,10 @@
   transition-delay: .32s;
 }
 
+.main-menu .sub-menu li:nth-child(5) em {
+  transition-delay: .4s;
+}
+
 .is-sub-menu .main-menu .sub-menu em {
   transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
   transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -324,7 +357,7 @@
   cursor: pointer;
   transform: translateX(-168px);
   transform: rotate(0);
-  transition: all .3s ease-out;
+  transition: all 8s ease-out;
 }
 
 .no-sub-menu .menu-control-button {

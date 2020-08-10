@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar class="demo">
-    <el-scrollbar>
+    <section class="main-wrap">
       <el-menu
         :default-active="routeName"
         @select="selectMenu"
@@ -32,8 +32,8 @@
           <el-menu-item index="standardTable">表格</el-menu-item>
         </el-submenu>
       </el-menu>
-    </el-scrollbar>
-    <router-view class="routerview"></router-view>
+      <router-view class="view-cont"></router-view>
+    </section>
   </el-scrollbar>
 </template>
 
@@ -76,14 +76,4 @@ export default {
 @import "~@/assets/styles/animations.css";
 @import "~@/assets/styles/browser.css";
 @import "~@/assets/styles/themes.css";
-</style>
-
-<style>
-.demo .el-scrollbar {
-  float: left;
-}
-.demo .routerview {
-  margin-left: 210px;
-  overflow: scroll;
-}
 </style>

@@ -81,7 +81,7 @@ export default {
     return {
       isShrinkMenus: false,
       isExtend: false,
-      menuIndex: '',
+      menuIndex: 1,
       menuList: [
         {
           mainMenuTitle: '工作台',
@@ -160,28 +160,28 @@ export default {
     },
   },
   methods: {
-    fnHandle(str, index) {
+    fnHandle(str, index, idx) {
       if (str.length > 0 && index < str.length) {
         // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}()`);
+        eval(`this.${str[index]}(${idx})`);
       }
     },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
-      console.log('hahah');
+      this.isExtend = false;
     },
-    rmSubMenu() {
-      console.log(2222);
+    rmSubMenu(index) {
+      this.menuIndex = index;
       this.isShrinkMenus = false;
       this.isExtend = false;
     },
     changeSubMenu() {
       this.isExtend = true;
-      console.log('哈哈，我日');
+      console.log('改变二级菜单');
     },
     getMenuIndex(index) {
       this.menuIndex = index;
-      console.log('我是UL');
+      this.isExtend = true;
     },
   },
 };
