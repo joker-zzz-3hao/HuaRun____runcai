@@ -14,35 +14,13 @@
         <span>信心指数</span>
         <span>承接地图</span>
       </div>
-
-      <el-collapse class="collapse">
-        <el-collapse-item
-          v-for="(item, index) in tableList"
-          :key="item.detailId+index"
-          @click.native="openDialog('okr-detail',item.okrDetailObjectKr)"
-        >
-          <template slot="title">
-            <span>目标icon</span>
-            <span>{{item.okrDetailObjectKr}}</span>
-            <span>{{item.okrWeight}}%</span>
-            <span class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
-            </span>
-
-            <el-button @click.native.stop="openDialog('okr-history',item.detailId)">历史版本</el-button>
-            <el-button @click.native.stop="openDialog('okr-update',item.detailId)">进度更新</el-button>
-          </template>
-          <div v-for="(kritem, index) in item.krList" :key="index">
-            <span>KRicon</span>
-            <span>{{kritem.okrDetailObjectKr}}</span>
-            <span>{{kritem.okrWeight}}%</span>
-            <div class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
-            </div>
-            <span>信心指数{{CONST.CONFIDENCE_MAP[kritem.confidence]}}</span>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
+      <tl-okr-collapse :tableList="tableList" :disabled="false" :activeList="[0]">
+        <template slot="head-bar" slot-scope="props">
+          <el-button @click.native.stop="openDialog('tl-okr-detail',props.okritem.detailId)">详情</el-button>
+          <el-button @click.native.stop="openDialog('tl-okr-history',props.okritem.detailId)">历史版本</el-button>
+          <el-button @click.native.stop="openDialog('tl-okr-update',props.okritem.detailId)">进度更新</el-button>
+        </template>
+      </tl-okr-collapse>
     </div>
 
     <component
@@ -59,6 +37,7 @@
 </template>
 
 <script>
+import okrCollapse from '@/components/okrCollapse';
 import okrDetail from './okrDetail';
 import okrUpdate from './okrUpdate';
 import okrHistory from './okrHistory';
@@ -70,9 +49,10 @@ const server = new Server();
 export default {
   name: 'myokrPage',
   components: {
-    'okr-detail': okrDetail,
-    'okr-update': okrUpdate,
-    'okr-history': okrHistory,
+    'tl-okr-detail': okrDetail,
+    'tl-okr-update': okrUpdate,
+    'tl-okr-history': okrHistory,
+    'tl-okr-collapse': okrCollapse,
   },
   data() {
     return {
@@ -84,7 +64,7 @@ export default {
         time: '',
       },
       dialogExist: false,
-      currentView: 'okr-detail', // 弹框组件
+      currentView: 'tl-okr-detail', // 弹框组件
       okrId: '',
     };
   },
