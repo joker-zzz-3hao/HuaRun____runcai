@@ -8,12 +8,12 @@
         <ul>
           <router-link
             tag="li"
-            v-for="item in menuList"
+            v-for="(item,idx) in menuList"
             :key="item.id"
             :class="item.classTag"
             :to="{name:item.toName}"
           >
-            <i @click="fnHandle(item.functions.events,0)"></i>
+            <i @click="fnHandle(item.functions.events,0,idx)"></i>
           </router-link>
           <!-- <router-link
             tag="li"
@@ -41,19 +41,22 @@
           </router-link>-->
         </ul>
         <div class="sub-menu">
-          <ul v-for="item in menuList" :key="item.id">
-            <router-link
-              tag="li"
-              v-if="options in item.subMenuList"
-              :key="options.id"
-              :class="options.subClassTag"
-              :to="{name:options.subToName}"
-            >
-              <span>
-                <em>{{options}}</em>
-              </span>
-            </router-link>
-          </ul>
+          <template v-for="(item,idx) in menuList">
+            <ul :key="item.id" v-if="item.subMenuList" :class="{'is-focus': menuIndex === idx}">
+              <router-link
+                tag="li"
+                :key="options.id"
+                v-for="options in item.subMenuList"
+                :class="options.subClassTag"
+                :to="{name:options.subToName}"
+              >
+                <span>
+                  <i></i>
+                  <em>{{options.subMenuTitle}}</em>
+                </span>
+              </router-link>
+            </ul>
+          </template>
           <div class="menu-control-button" @click="shrinkMenus">
             <span></span>
           </div>
@@ -78,6 +81,7 @@ export default {
     return {
       isShrinkMenus: false,
       isExtend: false,
+      menuIndex: '',
       menuList: [
         {
           mainMenuTitle: '工作台',
@@ -86,25 +90,13 @@ export default {
           functions: {
             events: ['rmSubMenu'],
           },
-          subMenuList: [
-            {
-              subMenuTitle: '我的考核',
-              subClassTag: ['my-assess-menu'],
-              subToName: 'myAssess',
-            },
-            {
-              subMenuTitle: '考核PK',
-              subClassTag: ['assess-pk-menu'],
-              subToName: 'assessPk',
-            },
-          ],
         },
         {
           mainMenuTitle: 'OKR管理',
           classTag: ['okr-menu'],
           toName: 'myOkr',
           functions: {
-            events: [],
+            events: ['getMenuIndex'],
           },
           subMenuList: [
             {
@@ -139,7 +131,7 @@ export default {
           classTag: ['assess-menu'],
           toName: 'myAssess',
           functions: {
-            events: [],
+            events: ['getMenuIndex'],
           },
           subMenuList: [
             {
@@ -158,7 +150,6 @@ export default {
     };
   },
   mounted() {
-    console.log(123232323);
   },
   computed: {
     noSubMenu() {
@@ -169,6 +160,12 @@ export default {
     },
   },
   methods: {
+    fnHandle(str, index) {
+      if (str.length > 0 && index < str.length) {
+        // eslint-disable-next-line no-eval
+        eval(`this.${str[index]}()`);
+      }
+    },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
       console.log('hahah');
@@ -182,11 +179,9 @@ export default {
       this.isExtend = true;
       console.log('哈哈，我日');
     },
-    fnHandle(str, index) {
-      if (str.length > 0 && index < str.length) {
-        // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}()`);
-      }
+    getMenuIndex(index) {
+      this.menuIndex = index;
+      console.log('我是UL');
     },
   },
 };
