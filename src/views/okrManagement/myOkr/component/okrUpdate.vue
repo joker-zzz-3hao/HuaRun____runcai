@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <el-dialog
+    :title="dialogTitle"
+    :visible.sync="dialogDetailVisible"
+    width="50%"
+    :modal-append-to-body="false"
+    :before-close="close"
+    @closed="closed"
+  >
     <el-form :model="formData" ref="dataForm">
       <dl class="okuang" v-for="(oitem,index) in formData.tableList" :key="oitem.detailId+index">
         <dt>目标名称</dt>
@@ -50,12 +57,12 @@
             <el-input v-model="formData.updateexplain"></el-input>
           </el-form-item>
         </dd>
-        <dd>
-          <el-button @click="summitUpdate">更新</el-button>
-        </dd>
       </dl>
     </el-form>
-  </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="summitUpdate">更新</el-button>
+    </span>
+  </el-dialog>
 </template>
 
 <script>
@@ -63,8 +70,11 @@ export default {
   name: 'okrUpdate',
   data() {
     return {
+      dialogTitle: '更新OKR', // 弹框标题
+      dialogDetailVisible: false,
       formData: {
         tableList: [], // okr列表
+
       },
     };
   },
@@ -76,6 +86,10 @@ export default {
     okrId: {
       type: String,
     },
+    dialogExist: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     getokrDetail() {
@@ -86,17 +100,29 @@ export default {
     },
     summitUpdate() {
       this.$message('提交成功~');
-      this.$emit('closeDialog');
+      this.close();
+      // 需刷新列表吗
+    },
+    // 控制弹窗
+    showOkrDialog() {
+      this.dialogDetailVisible = true;
+      this.getokrDetail();
+    },
+    close() {
+      this.dialogDetailVisible = false;
+    },
+    closed() {
+      this.$emit('update:dialogExist', false);
     },
   },
   watch: {
-    okrid: {
-      handler() {
-        this.getokrDetail();
-      },
-      deep: true,
-      immediate: true,
-    },
+    // okrid: {
+    //   handler() {
+    //     this.getokrDetail();
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
 };
 </script>

@@ -44,20 +44,17 @@
         </el-collapse-item>
       </el-collapse>
     </div>
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      width="50%"
-      :modal-append-to-body="false"
-    >
-      <component
-        ref="com"
-        v-bind:is="currentView"
-        :server="server"
-        :okrId="okrId"
-        @closeDialog="closeDialog"
-      ></component>
-    </el-dialog>
+
+    <component
+      :ref="currentView"
+      v-bind:is="currentView"
+      :server="server"
+      :okrId="okrId"
+      :dialogExist.sync="dialogExist"
+    ></component>
+    <!-- <okr-history ref="okr-history" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-history>
+    <okr-detail ref="okr-detail" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-detail>
+    <okr-update ref="okr-update" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-update>-->
   </div>
 </template>
 
@@ -86,9 +83,8 @@ export default {
         status: '1',
         time: '',
       },
-      dialogVisible: false, // 弹框是否显示
+      dialogExist: false,
       currentView: 'okr-detail', // 弹框组件
-      dialogTitle: 'OKR详情', // 弹框标题
       okrId: '',
     };
   },
@@ -115,26 +111,12 @@ export default {
     },
     // 打开弹窗
     openDialog(componentName, val) {
-      console.log('点击', val);
+      console.log('点击', componentName, val);
       this.currentView = componentName;
-      this.dialogTitle = '更新进度';
-      switch (componentName) {
-        case 'okr-update':
-          this.dialogTitle = '更新进度';
-          break;
-        case 'okr-history':
-          this.dialogTitle = '历史版本';
-          break;
-        case 'okr-detail':
-          this.dialogTitle = 'OKR详情';
-          break;
-        default:
-          break;
-      }
-      this.dialogVisible = true;
-    },
-    closeDialog() {
-      this.dialogVisible = false;
+      this.$nextTick(() => {
+        this.$refs[this.currentView].showOkrDialog();
+        this.dialogExist = true;
+      });
     },
   },
 };

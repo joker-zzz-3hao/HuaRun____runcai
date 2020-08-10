@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <el-dialog
+    :title="dialogTitle"
+    :visible.sync="dialogDetailVisible"
+    width="50%"
+    :modal-append-to-body="false"
+    :before-close="close"
+    @closed="closed"
+  >
     <!-- 公共信息 -->
     <div>
       <ul>
@@ -33,7 +40,7 @@
         <li v-for="(item,index) in voteUser" :key="item.userId+index">{{item.name}}</li>
       </ul>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -49,13 +56,18 @@ export default {
       voteUser: [], // 点赞人列表
       okrmain: {}, // 公共信息
       canWrite: true, // true写okr false okr详情
+      dialogTitle: 'OKR详情', // 弹框标题
+      dialogDetailVisible: false,
     };
   },
   components: {
     okrCollapse,
   },
   props: {
-
+    dialogExist: {
+      type: Boolean,
+      default: true,
+    },
     server: {
       type: Object,
       required: true,
@@ -84,16 +96,26 @@ export default {
         this.voteUser = res.data.voteUser;
       });
     },
-
+    // 控制弹窗
+    showOkrDialog() {
+      this.dialogDetailVisible = true;
+      this.getokrDetail();
+    },
+    close() {
+      this.dialogDetailVisible = false;
+    },
+    closed() {
+      this.$emit('update:dialogExist', false);
+    },
   },
   watch: {
-    okrid: {
-      handler() {
-        this.getokrDetail();
-      },
-      deep: true,
-      immediate: true,
-    },
+    // okrid: {
+    //   handler() {
+    //     this.getokrDetail();
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
 };
 </script>
