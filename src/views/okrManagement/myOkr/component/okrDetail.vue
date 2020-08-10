@@ -66,7 +66,10 @@ export default {
   },
   computed: {
     activeList() {
-      return Array.from(new Array(5).keys());
+      if (this.tableList && this.tableList.length > 0) {
+        return Array.from(new Array(this.tableList.length).keys());
+      }
+      return [];
     },
   },
   created() {
