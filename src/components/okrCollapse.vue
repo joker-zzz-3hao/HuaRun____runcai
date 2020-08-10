@@ -10,6 +10,7 @@
         :disabled="disabled"
       >
         <template slot="title">
+          <div v-if="showOKRInfoLabel">目标O：</div>
           <div>{{item.okrDetailObjectKr}}</div>
           <ul class="detail">
             <li>
@@ -31,6 +32,7 @@
           <slot name="head-bar" :okritem="item"></slot>
         </template>
         <div v-for="(kritem, index) in item.krList" :key="kritem.detailId+index">
+          <div v-if="showOKRInfoLabel">关键行动KR：</div>
           <div>
             <span>{{index+1}}</span>
             {{kritem.okrDetailObjectKr}}
@@ -100,6 +102,11 @@ export default {
     canWrite: {
       type: Boolean,
       default: true,
+    },
+    // 是否显示label
+    showOKRInfoLabel: {
+      type: Boolean,
+      default: false,
     },
   },
   created() {
