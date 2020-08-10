@@ -24,7 +24,7 @@
       </ul>
     </div>
     <!-- okr折叠面板 -->
-    <okrCollapse :tableList="tableList"></okrCollapse>
+    <okrCollapse :tableList="tableList" :activeList="activeList" :disabled="true"></okrCollapse>
     <!-- 操作历史 -->
     <div></div>
     <!-- 点赞 -->
@@ -62,6 +62,11 @@ export default {
     },
     okrId: {
       type: String,
+    },
+  },
+  computed: {
+    activeList() {
+      return Array.from(new Array(5).keys());
     },
   },
   created() {

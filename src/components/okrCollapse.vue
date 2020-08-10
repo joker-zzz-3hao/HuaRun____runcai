@@ -1,8 +1,14 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <elcollapse class="collapse">
-      <elcollapseitem ref="okrcoll" v-for="(item, index) in tableList" :key="item.detailId+index">
+    <elcollapse class="collapse" v-model="activeList">
+      <elcollapseitem
+        ref="okrcoll"
+        v-for="(item, index) in tableList"
+        :key="item.detailId+index"
+        :name="index"
+        :disabled="disabled"
+      >
         <template slot="title">
           <div>{{item.okrDetailObjectKr}}</div>
           <ul class="detail">
@@ -21,6 +27,8 @@
               <span>{{item.parentObjectKr}}</span>
             </li>
           </ul>
+          <!-- 可在折叠面板title处添加内容 -->
+          <slot name="head-bar" :okritem="item"></slot>
         </template>
         <div v-for="(kritem, index) in item.krList" :key="kritem.detailId+index">
           <div>
@@ -46,6 +54,8 @@
               <span>{{kritem.confidence}}</span>
             </li>
           </ul>
+          <!-- 可在折叠面板body处添加内容 -->
+          <slot name="body-bar" :okritem="kritem"></slot>
         </div>
       </elcollapseitem>
     </elcollapse>
@@ -64,7 +74,6 @@ export default {
   data() {
     return {
       okrmain: {},
-      canWrite: true, // true写okr false okr详情
     };
   },
   props: {
@@ -73,6 +82,24 @@ export default {
     },
     okrid: {
       type: String,
+    },
+    // 默认展开的序号数组
+    // 如果canOpen为false，需传入activeList
+    activeList: {
+      type: Array,
+      default() {
+        return [0];
+      },
+    },
+    // disabled:不能收起（true
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    // true写okr false okr详情
+    canWrite: {
+      type: Boolean,
+      default: true,
     },
   },
   created() {

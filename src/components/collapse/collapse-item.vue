@@ -20,7 +20,9 @@
         @blur="focusing = false"
       >
         <slot name="title">{{title}}</slot>
+        <!-- 点击icon在这替换 -->
         <i
+          v-if="!disabled"
           @click="handleHeaderClick"
           class="el-collapse-item__arrow el-icon-arrow-right"
           :class="{'is-active': isActive}"

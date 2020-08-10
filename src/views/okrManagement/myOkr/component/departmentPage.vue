@@ -9,29 +9,18 @@
         <span>信心指数</span>
         <span>承接地图</span>
       </div>
-
-      <el-collapse class="collapse">
-        <el-collapse-item v-for="(item, index) in tableList" :key="item.detailId+index">
-          <template slot="title">
-            <span>目标icon</span>
-            <span>{{item.okrDetailObjectKr}}</span>
-            <span>{{item.okrWeight}}%</span>
-            <span class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
-            </span>
-            <button @click="goUndertakeMaps(item.okrDetailId,item.okrDetailObjectKr)">承接地图</button>
-          </template>
-          <div v-for="(kritem, index) in item.krList" :key="index">
-            <span>KRicon</span>
-            <span>{{kritem.okrDetailObjectKr}}</span>
-            <span>{{kritem.okrWeight}}%</span>
-            <div class="progresswidth">
-              <el-progress :stroke-width="10" :percentage="parseInt(kritem.okrDetailProgress, 10)"></el-progress>
-            </div>
-            <span>信心指数{{CONST.CONFIDENCE_MAP[kritem.confidence]}}</span>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
+      <okrCollapse :tableList="tableList" :disabled="false" :activeList="[0]">
+        <template slot="head-bar" slot-scope="props">
+          <button
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图</button>
+        </template>
+        <template slot="body-bar" slot-scope="props">
+          <button
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图</button>
+        </template>
+      </okrCollapse>
     </div>
     <!-- 展示头像 -->
     <div>
@@ -44,6 +33,7 @@
 </template>
 
 <script>
+import okrCollapse from '@/components/okrCollapse';
 import Server from '../server';
 import CONST from '../const';
 
@@ -52,6 +42,7 @@ const server = new Server();
 export default {
   name: 'departmentPage',
   components: {
+    okrCollapse,
   },
   data() {
     return {
@@ -110,7 +101,7 @@ export default {
       });
     },
     goUndertakeMaps(id, name) {
-      this.$message('要跳到承接地图啦~');
+      // this.$message('要跳到承接地图啦~');
       this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: id, objectName: name, showOne: true } });
     },
 
