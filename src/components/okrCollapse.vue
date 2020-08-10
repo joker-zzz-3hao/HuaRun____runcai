@@ -84,14 +84,14 @@ export default {
       type: String,
     },
     // 默认展开的序号数组
-    // 如果canOpen为false，需传入activeList
+    // 如果 disabled为true，需传入activeList
     activeList: {
       type: Array,
       default() {
         return [0];
       },
     },
-    // disabled:不能收起（true
+    // disabled(不能收起：true;能收起展开：false)
     disabled: {
       type: Boolean,
       default: false,
