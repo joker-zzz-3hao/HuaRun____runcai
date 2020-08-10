@@ -6,13 +6,16 @@
     <div class="menu-cont-inside">
       <div class="main-menu">
         <ul>
-          <!-- <li class="">
-            <i></i>
-          </li>-->
-          <router-link tag="li" :to="{name:'overview'}" @click.native="rmSubMenu" class="workbench">
-            <i></i>
-          </router-link>
           <router-link
+            tag="li"
+            v-for="item in menuList"
+            :key="item.id"
+            :class="item.classTag"
+            :to="{name:item.toName}"
+          >
+            <i @click="fnHandle(item.functions.events,0)"></i>
+          </router-link>
+          <!-- <router-link
             tag="li"
             :to="{name:'myOkr'}"
             @click.native="changeSubMenu"
@@ -35,28 +38,19 @@
             class="workbench"
           >
             <i></i>
-          </router-link>
+          </router-link>-->
         </ul>
         <div class="sub-menu">
-          <ul>
-            <router-link tag="li" :to="{name:'overview'}">
+          <ul v-for="item in menuList" :key="item.id">
+            <router-link
+              tag="li"
+              v-if="options in item.subMenuList"
+              :key="options.id"
+              :class="options.subClassTag"
+              :to="{name:options.subToName}"
+            >
               <span>
-                <em>二级菜单</em>
-              </span>
-            </router-link>
-            <router-link tag="li" :to="{name:'overview'}">
-              <span>
-                <em>二级菜单</em>
-              </span>
-            </router-link>
-            <router-link tag="li" :to="{name:'overview'}">
-              <span>
-                <em>二级菜单</em>
-              </span>
-            </router-link>
-            <router-link tag="li" :to="{name:'overview'}">
-              <span>
-                <em>二级菜单</em>
+                <em>{{options}}</em>
               </span>
             </router-link>
           </ul>
@@ -87,36 +81,84 @@ export default {
       menuList: [
         {
           mainMenuTitle: '工作台',
-          classTage: 'workbench',
+          classTag: ['workbench'],
           toName: 'overview',
-          subMenuList: [],
+          functions: {
+            events: ['rmSubMenu'],
+          },
+          subMenuList: [
+            {
+              subMenuTitle: '我的考核',
+              subClassTag: ['my-assess-menu'],
+              subToName: 'myAssess',
+            },
+            {
+              subMenuTitle: '考核PK',
+              subClassTag: ['assess-pk-menu'],
+              subToName: 'assessPk',
+            },
+          ],
         },
         {
           mainMenuTitle: 'OKR管理',
-          classTage: 'okr-management',
+          classTag: ['okr-menu'],
           toName: 'myOkr',
+          functions: {
+            events: [],
+          },
           subMenuList: [
             {
-              subMenuTitle: '',
-              subClassTage: 'workbench',
-              subToName: 'overview23',
+              subMenuTitle: '我的OKR',
+              subClassTag: ['my-okr-menu'],
+              subToName: 'myOkr',
+            },
+            {
+              subMenuTitle: 'OKR审批',
+              subClassTag: ['approval-menu'],
+              subToName: 'okrApproval',
+            },
+            {
+              subMenuTitle: 'ORK承接与对齐',
+              subClassTag: ['undertake-menu'],
+              subToName: 'undertakeMaps',
+            },
+            {
+              subMenuTitle: '我关注的OKR',
+              subClassTag: ['concerned-menu'],
+              subToName: 'concernedOkr',
+            },
+            {
+              subMenuTitle: 'OKR地图',
+              subClassTag: ['maps-menu'],
+              subToName: 'okrMaps',
             },
           ],
         },
         {
           mainMenuTitle: '考核管理',
-          classTage: 'appraisal-management',
-          toName: 'myOkr',
+          classTag: ['assess-menu'],
+          toName: 'myAssess',
+          functions: {
+            events: [],
+          },
           subMenuList: [
             {
-              subMenuTitle: '',
-              subClassTage: 'workbench',
-              subToName: 'overview23',
+              subMenuTitle: '我的考核',
+              subClassTag: ['my-assess-menu'],
+              subToName: 'myAssess',
+            },
+            {
+              subMenuTitle: '考核PK',
+              subClassTag: ['assess-pk-menu'],
+              subToName: 'assessPk',
             },
           ],
         },
       ],
     };
+  },
+  mounted() {
+    console.log(123232323);
   },
   computed: {
     noSubMenu() {
@@ -132,12 +174,19 @@ export default {
       console.log('hahah');
     },
     rmSubMenu() {
+      console.log(2222);
       this.isShrinkMenus = false;
       this.isExtend = false;
     },
     changeSubMenu() {
       this.isExtend = true;
       console.log('哈哈，我日');
+    },
+    fnHandle(str, index) {
+      if (str.length > 0 && index < str.length) {
+        // eslint-disable-next-line no-eval
+        eval(`this.${str[index]}()`);
+      }
     },
   },
 };
