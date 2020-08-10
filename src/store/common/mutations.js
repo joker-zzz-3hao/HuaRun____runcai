@@ -1,6 +1,6 @@
 export default {
-  // 设置用户信息
-  setUserInfo: (state, userInfo = {}) => {
-    state.userInfo = userInfo;
+  // 设置OKR审批列表和详情切换
+  okrApprovalStep: (state, okrApprovalStep = {}) => {
+    state.okrApprovalStep = okrApprovalStep;
   },
 };
