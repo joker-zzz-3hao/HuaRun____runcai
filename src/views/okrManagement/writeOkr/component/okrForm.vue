@@ -118,32 +118,12 @@
       <dl>
         <dd>{{$store.state.common.userInfo.departmentName}}{{this.searchForm.timecycle}}OKR</dd>
       </dl>
-      <!-- okr -->
-      <el-table :data="departokrList">
-        <el-table-column width="150" prop="typeName"></el-table-column>
-        <el-table-column prop="okrDetailObjectKr"></el-table-column>
-        <el-table-column width="300">
-          <template slot-scope="scope">
-            <el-checkbox
-              v-model="scope.row.checkFlag"
-              @change="selectDepartokr(scope.$index, scope.row)"
-            ></el-checkbox>关联
-          </template>
-        </el-table-column>
-        <!-- <el-table-column width="300" property="okrParentDetailId"></el-table-column> -->
-      </el-table>
-      <!-- 价值观 -->
-      <el-table :data="philosophyList">
-        <el-table-column prop="philosophy"></el-table-column>
-        <el-table-column width="300">
-          <template slot-scope="scope">
-            <el-checkbox
-              v-model="scope.row.checkFlag"
-              @change="selectphilosophy(scope.$index, scope.row)"
-            ></el-checkbox>关联
-          </template>
-        </el-table-column>
-      </el-table>
+      <undertake-table
+        :departokrList="departokrList"
+        :philosophyList="philosophyList"
+        @selectDepart="changeDepart"
+        @selectPhil="changePhil"
+      ></undertake-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="summitguanlian()">确 定</el-button>
@@ -154,13 +134,16 @@
 </template>
 
 <script>
-
+import undertakeTable from './undertakeTable';
 import CONST from '../const';
 
 const TIME_INTERVAL = 60 * 1000;
 
 export default {
   name: 'orkForm',
+  components: {
+    'undertake-table': undertakeTable,
+  },
   data() {
     return {
       CONST,
@@ -260,7 +243,7 @@ export default {
     searchOkr() {
       this.server.getokrdata(this.searchForm).then((res) => {
         if (res.code == 200) {
-          console.log('搜索条件', this.searchForm);
+          console.log('关联表', res.data);
           res.data.forEach((item) => {
             this.departokrList.push({
               typeName: '目标O',
@@ -271,7 +254,7 @@ export default {
             item.krList.forEach((krItem, index) => {
               this.departokrList.push({
                 typeName: `KR${index}`,
-                okrDetailObjectKr: krItem.krName,
+                okrDetailObjectKr: krItem.okrDetailObjectKr,
                 okrParentDetailId: krItem.krId,
                 checkFlag: false,
               });
@@ -281,21 +264,11 @@ export default {
       });
     },
     // 选择关联的okr
-    selectDepartokr(index, row) {
-      this.departokrList.forEach((item, i) => {
-        this.departokrList[i].checkFlag = false;
-      });
-      this.departokrList[index].checkFlag = true;
-      console.log(row);
+    changeDepart(row) {
       this.formData.okrInfoList[this.selectObject].okrParentDetailId = row.okrParentDetailId + row.okrDetailObjectKr;
     },
     // 选择关联的价值观
-    selectphilosophy(index, row) {
-      this.philosophyList.forEach((item, i) => {
-        this.philosophyList[i].checkFlag = false;
-      });
-      this.philosophyList[index].checkFlag = true;
-      console.log(row);
+    changePhil(row) {
       this.formData.okrInfoList[this.selectObject].jiazhiguanId = row.philosophyid + row.philosophy;
     },
     // 提交关联
