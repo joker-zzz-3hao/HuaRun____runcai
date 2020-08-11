@@ -21,26 +21,26 @@
     </div>
 
     <div>
-      <dl v-for="(pitem,index) in personList" :key="index" style="display:flex">
+      <dl v-for="(pitem,index) in personList" :key="index">
         <dt v-if="index==0">{{pitem.userName}}</dt>
-        <dd>
+        <dd v-for="(okritem,okrindex) in pitem" :key="okrindex">
           <ul>
-            <li>{{pitem.createTime}}</li>
+            <li>{{okritem.createTime}}</li>
             <li>
-              <span>关键行为KR</span>
-              <span>{{pitem.okrDetailtitle}}</span>
+              <span>目标O</span>
+              <span>{{okritem.okrDetailtitle}}</span>
             </li>
             <li>
               <span>更新说明</span>
-              <span>{{pitem.content}}</span>
+              <span>{{okritem.content}}</span>
             </li>
             <li>
               <span>来自</span>
-              <span>{{pitem.operateType}}</span>
+              <span>{{okritem.operateType}}</span>
             </li>
             <li>
               <span>本次更新进度+</span>
-              <span>{{pitem.okrDetailProgress}}%</span>
+              <span>{{okritem.okrDetailProgress}}%</span>
             </li>
             <li>
               <el-button @click="duiqi">已对启</el-button>
@@ -79,7 +79,10 @@ export default {
   },
   methods: {
     okrCheck() {
-      this.server.okrCheck().then((res) => {
+      this.server.okrCheck({
+        checkStatus: 0,
+        okrDetailId: '111122',
+      }).then((res) => {
         if (res.code == 200) {
           this.personList = res.data;
         }
