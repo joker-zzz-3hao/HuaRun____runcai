@@ -43,13 +43,13 @@ export default [{
       component: () => import('@/views/admin/systemMaintenance/index'),
     },
     {
-      // 系统用户管理
-      path: '/systemUserManagement',
-      name: 'systemUserManagement',
+      // 用户管理
+      path: '/userManage',
+      name: 'userManage',
       meta: {
         hasMainMenu: true,
       },
-      component: () => import('@/views/admin/systemUserManagement/index'),
+      component: () => import('@/views/admin/userManage/index'),
     },
     {
       // 部门管理
@@ -59,6 +59,15 @@ export default [{
         hasMainMenu: true,
       },
       component: () => import('@/views/admin/departmentManage/index'),
+    },
+    {
+      // 系统用户管理
+      path: '/sysUserManage',
+      name: 'sysUserManage',
+      meta: {
+        hasMainMenu: true,
+      },
+      component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
     },
   ],
 }];

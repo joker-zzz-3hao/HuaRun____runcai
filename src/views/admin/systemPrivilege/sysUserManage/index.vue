@@ -1,87 +1,121 @@
 <template>
-  <div class="organize-management">
-    <div class="org-header">
-      <div>部门管理</div>
-      <span>
-        <el-select v-model.trim="searchData.userType" placeholder="选择租户">
-          <el-option
-            v-for="item in CONST.USER_TYPE_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
-
-        <el-input placeholder="输入用户姓名/账号/手机号" v-model.trim="searchData.keyWord" style="width:300px"></el-input>
-        <el-button @click="searchList">查询</el-button>
-      </span>
-      <span>
-        <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createOrEditUser">创建用户</el-button>
-        <el-button @click="batchImport">批量导入</el-button>
-      </span>
+  <div class="system-user-management">
+    <div>
+      <div>用户管理</div>
     </div>
-    <div class="org-left-side">
-      <el-input placeholder="输入用户姓名/手机号" maxlength="50" style="width:300px" v-model="filterText"></el-input>
-      <el-tree
-        ref="organizeTree"
-        :data="treeData"
-        node-key="orgId"
-        :default-expanded-keys="defaultExpandNode"
-        :props="defaultProps"
-        @check-change="treeChange"
-        @node-click="searchList"
-        :expand-on-click-node="false"
-        :render-content="renderContent"
-        :highlight-current="true"
-        :filter-node-method="filterNode"
-      ></el-tree>
-    </div>
-    <div class="org-right-side">
-      <crcloud-table
-        :total="total"
-        :pageSize.sync="pageSize"
-        :currentPage.sync="currentPage"
-        @searchList="searchList"
-      >
-        <div slot="tableContainer">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData">
-            <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="所属租户"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
-              <template slot-scope="scope">
-                <!-- 0：注册 1：LDAP 2：创建 -->
-                <div v-if="scope.row.userType=='1'">--</div>
-                <div v-else @click.capture.stop="dataChange(scope.row)">
-                  <el-switch
-                    active-value="0"
-                    inactive-value="50"
-                    v-model="scope.row.userStatus"
-                    active-color="#13ce66"
-                  ></el-switch>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
-              <template slot-scope="scope">
-                <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
-            <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
-              <template slot-scope="scope">
-                <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
-                <el-button @click="info(scope.row)">详情</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+    <crcloud-table
+      :total="total"
+      :pageSize.sync="pageSize"
+      :currentPage.sync="currentPage"
+      @searchList="searchList"
+    >
+      <div slot="searchBar" class="search-conditions">
+        <el-form @keyup.enter.native="searchList()">
+          <el-form-item>
+            <el-select v-model.trim="searchData.userType" placeholder="选择租户">
+              <el-option
+                v-for="item in CONST.USER_TYPE_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model.trim="searchData.userType" placeholder="用户类型">
+              <el-option
+                v-for="item in CONST.USER_TYPE_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model.trim="searchData.userStatus" placeholder="用户状态">
+              <el-option
+                v-for="item in CONST.USER_STATUS_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model.trim="searchData.userStatus" placeholder="租户管理员">
+              <el-option
+                v-for="item in CONST.USER_STATUS_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              placeholder="输入用户姓名/账号/手机号"
+              v-model.trim="searchData.keyWord"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="actionBar">
+        <div>
+          <el-button @click="createOrEditUser">创建用户</el-button>
+          <el-button @click="batchImport">批量导入</el-button>
         </div>
-      </crcloud-table>
-    </div>
+        <div>
+          <el-button @click="searchList">查询</el-button>
+        </div>
+      </div>
+      <div slot="tableContainer">
+        <el-table ref="orgTable" v-loading="loading" :data="tableData">
+          <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userMobile" label="所属租户"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userAccount" label="租户管理员">
+            <template slot-scope="scope">
+              <div>
+                <el-tooltip class="item" effect="dark" content="租户管理员" placement="top-start">
+                  <i v-if="scope.row.leader" class="el-icon-user-solid"></i>
+                </el-tooltip>
+                <i v-if="!scope.row.leader" class="el-icon-user" @click="setLeader(scope.row)"></i>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
+            <template slot-scope="scope">
+              <!-- 0：注册 1：LDAP 2：创建 -->
+              <div v-if="scope.row.userType=='1'">--</div>
+              <div v-else @click.capture.stop="dataChange(scope.row)">
+                <el-switch
+                  active-value="0"
+                  inactive-value="50"
+                  v-model="scope.row.userStatus"
+                  active-color="#13ce66"
+                ></el-switch>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
+            <template slot-scope="scope">
+              <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
+            <template slot-scope="scope">
+              <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
+              <el-button @click="info(scope.row)">详情</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </crcloud-table>
     <!-- 创建部门 -->
     <create-department
       ref="createDepart"
@@ -140,8 +174,6 @@ export default {
       globalOrgId: '',
       userAccount: '',
       loading: false,
-      defaultExpandNode: [],
-      filterText: '',
       showcreateDepart: false,
       showCreateUser: false,
       showUserInfo: false,
@@ -187,26 +219,19 @@ export default {
           },
         ],
       }],
-      defaultProps: {
-        children: 'sonTree',
-        label: 'orgName',
-      },
+
     };
   },
   created() {
     this.getOrgTree();
   },
   methods: {
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.orgName.indexOf(value) !== -1;
-    },
+
     getOrgTree() {
       this.server.getOrg().then((res) => {
         if (res.code == 200) {
           this.treeData = res.data;
         }
-        this.defaultExpandNode = [this.treeData[0].orgId];
         // this.globalOrgId = this.treeData[0].orgId;
         this.tenantName = this.treeData[0].orgName;
         this.searchList();
@@ -233,53 +258,7 @@ export default {
         }
       });
     },
-    treeChange() {},
-    renderContent(h, {
-      node,
-      data,
-    }) {
-      return h('span', {
-        style: {},
-        // 这里添加hover事件
-        on: {
-          mouseenter: () => {
-            data.isShow = true;
-          },
-          // 鼠标离开
-          mouseleave: () => {
-            data.isShow = false;
-          },
-        },
-      }, [
-        h('span', {
-          // 显示名称
-        }, node.label),
-        h('span', {
-          style: {
-            display: data.isShow ? '' : 'none',
-          },
-        }, [
-          // 添加
-          // h('i', {
-          //   class: 'el-icon-edit',
-          // }),
-          h('el-button', {
-            props: {
-              type: 'text',
-              size: 'small',
-            },
-            style: {
-              marginLeft: '15px',
-            },
-            on: {
-              click: () => {
-                this.createDepart(data);
-              },
-            },
-          }, '创建部门'),
-        ]),
-      ]);
-    },
+
     // 创建部门
     createDepart(depart) {
       if (depart && depart.orgId) {
@@ -305,7 +284,7 @@ export default {
       });
     },
 
-    // 设置角色
+    //
     info(user) {
       this.userAccount = user.userAccount;
       this.showUserInfo = true;
@@ -375,25 +354,18 @@ export default {
 
   },
   watch: {
-    filterText(val) {
-      this.$refs.organizeTree.filter(val);
-    },
+
   },
 };
 </script>
 <style lang="css">
-.org-header {
-  height: 100px;
+.search-conditions .el-form {
+  display: flex;
+  flex-wrap: wrap;
 }
-.org-left-side {
-  width: 600px;
-  height: 600px;
-}
-.org-right-side {
-  width: 80%;
-  height: 90%;
-  position: absolute;
-  left: 400px;
-  top: 150px;
+
+.search-conditions .el-form-item {
+  margin-right: 20px;
+  min-width: 320px;
 }
 </style>
