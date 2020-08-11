@@ -6,6 +6,10 @@
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id" @click="searchOkr()">{{item.name}}</dd>
       </dl>
     </div>
+    <!-- 一些功能按钮 -->
+    <div>
+      <el-button @click="goChangeOkr">变更</el-button>
+    </div>
     <!-- 用展开行表格 -->
     <div>
       <div class="collapsetitle">
@@ -97,6 +101,9 @@ export default {
         this.$refs[this.currentView].showOkrDialog();
         this.dialogExist = true;
       });
+    },
+    goChangeOkr() {
+      this.$router.push({ name: 'writeOkr', params: { canWrite: false } });
     },
   },
 };
