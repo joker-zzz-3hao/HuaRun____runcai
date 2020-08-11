@@ -10,7 +10,7 @@
             tag="li"
             v-for="(item,idx) in menuList"
             :key="item.id"
-            :class="item.classTag"
+            :class="[item.classTag,{'is-active':item.parentRoute === $route.meta.parentRoute}]"
             :to="{name:item.toName}"
           >
             <i @click="fnHandle(item.functions.events,0,idx)"></i>
@@ -41,13 +41,17 @@
           </router-link>-->
         </ul>
         <div class="sub-menu">
-          <template v-for="(item,idx) in menuList">
-            <ul :key="item.id" v-if="item.subMenuList" :class="{'is-focus': menuIndex === idx}">
+          <template v-for="item in menuList">
+            <ul
+              :key="item.id"
+              v-if="item.subMenuList"
+              :class="{'is-focus': item.parentRoute === $route.meta.parentRoute}"
+            >
               <router-link
                 tag="li"
                 :key="options.id"
                 v-for="options in item.subMenuList"
-                :class="options.subClassTag"
+                :class="[options.subClassTag,{'is-active': selectMenu === options.subToName}]"
                 :to="{name:options.subToName}"
               >
                 <span>
@@ -81,12 +85,15 @@ export default {
     return {
       isShrinkMenus: false,
       isExtend: false,
-      menuIndex: 1,
+      menuIndex: '',
+      subMenuIndex: 0,
+      selectMenu: '',
       menuList: [
         {
           mainMenuTitle: '工作台',
           classTag: ['workbench'],
           toName: 'overview',
+          parentRoute: 'overview',
           functions: {
             events: ['rmSubMenu'],
           },
@@ -95,8 +102,9 @@ export default {
           mainMenuTitle: 'OKR管理',
           classTag: ['okr-menu'],
           toName: 'myOkr',
+          parentRoute: 'okr',
           functions: {
-            events: ['getMenuIndex'],
+            events: ['getMenuIndex', 'getSubMenuIndex'],
           },
           subMenuList: [
             {
@@ -130,8 +138,9 @@ export default {
           mainMenuTitle: '考核管理',
           classTag: ['assess-menu'],
           toName: 'myAssess',
+          parentRoute: 'assess',
           functions: {
-            events: ['getMenuIndex'],
+            events: ['getMenuIndex', 'getSubMenuIndex'],
           },
           subMenuList: [
             {
@@ -150,6 +159,7 @@ export default {
     };
   },
   mounted() {
+    // this.selectMenu = this.$route.name;
   },
   computed: {
     noSubMenu() {
@@ -181,7 +191,29 @@ export default {
     },
     getMenuIndex(index) {
       this.menuIndex = index;
-      this.isExtend = true;
+    },
+    // getSubMenuIndex(index) {
+    //   this.subMenuIndex = index;
+    // },
+  },
+  watch: {
+    '$route.name': {
+      handler(newVal) {
+        this.selectMenu = newVal;
+        console.log(this.selectMenu);
+        console.log(this.$route);
+        // if (
+        //   this.$route.meta
+        //   && this.$route.meta.menuIndex
+        //   && this.$route.meta.parentMenuIndex
+        // ) {
+        //   this.$nextTick(() => {
+        //     this.routeName = this.$route.meta.menuIndex;
+        //   });
+        // }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

@@ -9,99 +9,108 @@ export default [
     children: [
       {
         // 综合首页
-        path: 'overview',
+        path: '/overview',
         name: 'overview',
         meta: {
           hasMainMenu: true,
           noSubMenu: true,
+          parentRoute: 'overview',
         },
         component: () => import('@/views/overview/index'),
       },
       {
         // OKR管理
         // 我的OKR
-        path: 'myOkr',
+        path: '/myOkr',
         name: 'myOkr',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/myOkr/index'),
       },
       {
         // OKR管理
         // OKR审批
-        path: 'okrApproval',
+        path: '/okrApproval',
         name: 'okrApproval',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/okrApproval/index'),
       },
       {
         // OKR管理
         // 写OKR
-        path: 'writeOkr',
+        path: '/writeOkr',
         name: 'writeOkr',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/writeOkr/index'),
       },
       {
         // OKR管理
         // 我关注的OKR
-        path: 'concernedOkr',
+        path: '/concernedOkr',
         name: 'concernedOkr',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/concernedOkr/index'),
       },
       {
         // OKR管理
         // 承接树
-        path: 'undertakeMaps',
+        path: '/undertakeMaps',
         name: 'undertakeMaps',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/undertakeMaps/index'),
       },
       {
         // OKR管理
         // OKR地图
-        path: 'okrMaps',
+        path: '/okrMaps',
         name: 'okrMaps',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/okrMaps/index'),
       },
       {
         // 考核管理
         // 我的考核
-        path: 'myAssess',
+        path: '/myAssess',
         name: 'myAssess',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'assess',
         },
         component: () => import('@/views/assessManagement/myAssess/index'),
       },
       {
         // 考核管理
         // 考核PK
-        path: 'assessPk',
+        path: '/assessPk',
         name: 'assessPk',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'assess',
         },
         component: () => import('@/views/assessManagement/assessPk/index'),
       },
