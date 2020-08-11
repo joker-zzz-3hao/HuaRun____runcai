@@ -23,7 +23,7 @@
                 <el-progress :stroke-width="10" :percentage="parseInt(item.okrDetailProgress, 10)"></el-progress>
               </span>
             </li>
-            <li>
+            <li v-if="showParentOkr">
               <span>目标承接自</span>
               <span>{{item.parentObjectKr}}</span>
             </li>
@@ -100,6 +100,11 @@ export default {
     },
     // true写okr false okr详情
     canWrite: {
+      type: Boolean,
+      default: true,
+    },
+    // 是否显示承接
+    showParentOkr: {
       type: Boolean,
       default: true,
     },

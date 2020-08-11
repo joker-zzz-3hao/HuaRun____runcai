@@ -13,6 +13,8 @@ const ajax = axios.create({
     'Content-Type': 'application/json;charset=UTF-8',
     Pragma: 'no-cache',
     token: localStorage.token,
+    tenantId: 88888888,
+    userId: 'user001',
   },
   transformRequest: [(data) => JSON.stringify(data)],
   transformResponse: [(res) => {
