@@ -20,12 +20,12 @@
     <!-- 要展示多个 -->
     <div v-if="showOne">
       <vue-svg-tree
-        :treeData="treeData"
+        :treeData="svgList"
         svgId="svg"
         ref="svgTree"
         :curveness="false"
         direction="col"
-        fatherId="okrParentDetailId"
+        fatherId="okrParentId"
         childId="okrDetailId"
         :colAlign="true"
       >
@@ -43,7 +43,7 @@
         ref="svgTree"
         :curveness="false"
         direction="col"
-        fatherId="okrParentDetailId"
+        fatherId="okrParentId"
         childId="okrDetailId"
         :colAlign="true"
         @handleTree="handleTree"
@@ -78,8 +78,7 @@ export default {
       server,
       treeData: [],
       searchForm: {
-        okrDetailId: '',
-        orgId: '888822223333',
+        orgId: '8888',
         periodId: 'periodId',
       },
       cycleData: [],
@@ -119,6 +118,7 @@ export default {
     this.init();
     // 直接赋值，为空时也会按false判断
     this.showOne = this.$route.params.showOne;
+    // this.showOne = true;
     this.searchForm.okrDetailId = this.$route.params.okrDetailId || '';
   },
   methods: {
@@ -162,13 +162,42 @@ export default {
       });
     },
     getmaps() {
+      // this.searchForm = {
+      //   okrDetailId: '111122',
+      // };
       // 查承接地图
       this.server.getmaps(this.searchForm).then((res) => {
         if (res.code == 200) {
-          this.svgList = res.data;
+          const allTreeData = res.data;
+          this.svgList = [];
           if (this.showOne) {
-            [this.treeData] = this.svgList;
+            // 要做兼容处理
+            allTreeData.forEach((item) => {
+              this.svgList.push(item);
+              if (item.krContinueList && item.krContinueList.length > 0) {
+                this.svgList = this.svgList.concat(item.krContinueList);
+              }
+            });
           } else {
+            let index = 0;
+            allTreeData.forEach((item) => {
+              this.svgList[index] = [];
+              this.svgList[index].push(item);
+              index += 1;
+              if (item.krList && item.krList.length > 0) {
+                item.krList.forEach((kritem) => {
+                  this.svgList[index] = [];
+                  this.svgList[index].push(kritem);
+                  console.log('kr树', kritem);
+                  if (kritem.krContinueList && kritem.krContinueList.length > 0) {
+                  // TODO: 调试时取了0
+                    this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
+                  }
+                  index += 1;
+                });
+              }
+              console.log('承接树', this.svgList);
+            });
             // 默认收起其他
             this.$nextTick(() => {
               for (let i = 1; i < this.svgList.length; i += 1) {

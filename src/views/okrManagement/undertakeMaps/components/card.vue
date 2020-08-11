@@ -3,6 +3,9 @@
     <div class="node_title">
       <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
       <span>{{node.okrDetailObjectKr}}</span>
+      <span>
+        <el-button @click="goDetil(node)">对齐</el-button>
+      </span>
     </div>
     <div class="node_des">
       <div></div>
@@ -51,7 +54,11 @@ export default {
     console.log(`node:${this.node}`);
   },
   computed: {},
-  methods: {},
+  methods: {
+    goDetil(node) {
+      this.$router.push({ name: 'undertakeDetail', params: { node } });
+    },
+  },
   watch: {},
 };
 </script>

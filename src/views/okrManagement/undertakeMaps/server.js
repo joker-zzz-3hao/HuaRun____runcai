@@ -39,4 +39,8 @@ export default class Server extends ServerBase {
   searchKeyword(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
+
+  okrCheck(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/okrCheck', param);
+  }
 }
