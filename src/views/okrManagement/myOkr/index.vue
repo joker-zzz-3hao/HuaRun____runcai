@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName">
       <el-button @click="goWriteOkr">创建okr</el-button>
 
-      <el-tab-pane :label="`${$store.state.common.userInfo.departmentName}OKR`" name="team">
+      <el-tab-pane :label="`${departmentName}OKR`" name="team">
         <department
           :data="cycleData"
           type="cycleListSelect"
@@ -66,10 +66,12 @@ export default {
           periodId: '1',
         },
       },
+      departmentName: '',
     };
   },
   created() {
     this.init();
+    this.departmentName = this.$store.state.common.userInfo.departmentName;
   },
   methods: {
     init() {
@@ -99,6 +101,14 @@ export default {
     },
     goWriteOkr() {
       this.$router.push({ name: 'writeOkr', params: { canWrite: true } });
+    },
+    dianzan() {
+      this.server.okrSupport({
+        okrId: '1111222',
+        supportType: 1,
+      }).then((res) => {
+        console.log(res.code);
+      });
     },
   },
 };
