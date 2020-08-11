@@ -49,10 +49,12 @@ export default {
       timelist: [],
       okrmain: {},
       searchForm: {
-        status: '01',
+        periodId: 'periodId',
+        userId: 'user066',
+        tenantId: '88888888',
+        timecycle: '',
         time: '',
         okrType: '',
-        timecycle: '',
       },
       canWrite: true, // true写okr false okr详情
     };

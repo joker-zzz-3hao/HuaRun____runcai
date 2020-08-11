@@ -16,7 +16,7 @@
     </el-table>
     <!-- 价值观 -->
     <el-table :data="philosophyList">
-      <el-table-column prop="philosophy"></el-table-column>
+      <el-table-column prop="cultureDesc"></el-table-column>
       <el-table-column width="300">
         <template slot-scope="scope">
           <el-checkbox
