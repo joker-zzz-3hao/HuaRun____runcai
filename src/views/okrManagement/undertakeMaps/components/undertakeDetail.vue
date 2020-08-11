@@ -15,7 +15,7 @@
           <span>{{formData.maindata.userName}}</span>
         </dd>
         <dd>
-          <el-button @click="gengxin">更新OKR</el-button>
+          <el-button @click="openUpdate">更新OKR</el-button>
         </dd>
       </dl>
     </div>
@@ -49,17 +49,29 @@
         </dd>
       </dl>
     </div>
+    <tl-update-progress
+      ref="tlokrupdate"
+      :server="server"
+      :okrForm="okrForm"
+      :dialogExist.sync="dialogExist"
+    ></tl-update-progress>
   </div>
 </template>
 
 <script>
 
+import updateProgress from './updateProgress';
 import Server from '../server';
 
 const server = new Server();
 
 export default {
   name: 'undertakeDetail',
+  components: {
+
+    'tl-update-progress': updateProgress,
+
+  },
   data() {
     return {
       server,
@@ -72,6 +84,12 @@ export default {
 
         },
       },
+      okrForm: {
+        okrDetailObjectKr: '定个小目标',
+        okrDetailProgress: 70,
+        confidence: '1',
+      },
+      dialogExist: false,
     };
   },
   created() {
@@ -88,8 +106,12 @@ export default {
         }
       });
     },
-    gengxin() {
+    openUpdate() {
       // 打开一个
+      this.$nextTick(() => {
+        this.$refs.tlokrupdate.showOkrDialog();
+        this.dialogExist = true;
+      });
     },
     duiqi() {
       console.log('刷新列表');
