@@ -4,7 +4,7 @@
       <li v-for="(item,index) in cycleList" :key="index" style="position: relative;display:flex; ">
         <div style="height: 100%;width: 150px;">
           <span>{{item.date}}</span>
-          <span style="padding-left:10px;">{{item.time}}</span>
+          <span style="padding-left:10px;">{{item.createTime}}</span>
         </div>
         <div class="cycle"></div>
         <div
@@ -12,8 +12,8 @@
           style="position: absolute;left: 154px;height: 100%;border-left: 2px solid #e4e7ed;"
         ></div>
         <div style="margin-left: 20px;width:330px;display: flex;">
-          <div style="width: 50px;">{{item.name}}</div>
-          <div style="width: 80px;">{{item.status}}</div>
+          <div style="width: 50px;">{{item.createBy}}</div>
+          <div style="width: 80px;">{{item.operateType}}</div>
           <div style="width: 200px;">{{item.content}}</div>
         </div>
       </li>

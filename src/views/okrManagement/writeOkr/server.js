@@ -18,6 +18,14 @@ export default class Server extends ServerBase {
   }
 
   addokr(param) {
-    return this._ajaxPost('okr/main/add', param);
+    return this._ajaxPost('gateway/talent-okr/okr/main/add', param);
+  }
+
+  getUndertakeOkr(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/main/getUndertakeOkr?periodId=${param.periodId}`);
+  }
+
+  queryCultureList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
 }

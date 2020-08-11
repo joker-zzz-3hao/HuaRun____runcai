@@ -116,7 +116,7 @@
       </span>
       <!-- 可选多部门 -->
       <dl>
-        <dd>{{$store.state.common.userInfo.departmentName}}{{this.searchForm.timecycle}}OKR</dd>
+        <dd>{{$store.state.common.userInfo.departmentName}}{{okrPeriod.periodDesc}}OKR</dd>
       </dl>
       <undertake-table
         :departokrList="departokrList"
@@ -154,6 +154,7 @@ export default {
           okrDetailObjectKr: '',
           okrWeight: 0,
           okrDetailProgress: 0,
+          cultureId: '',
           krInfoVoList: [{
             // id: 0,
             okrDetailObjectKr: '',
@@ -161,11 +162,13 @@ export default {
             okrDetailProgress: 0,
             okrDetailConfidence: '',
           }],
+          undertakeOkrVo: {},
         }],
       },
       departokrList: [], // 可关联承接的okr
       philosophyList: [], // 价值观
       pselection: [], // 已选价值观
+      okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
     };
   },
@@ -187,7 +190,7 @@ export default {
   },
   methods: {
     getjiazhiguan() {
-      this.server.getphilosophy().then((res) => {
+      this.server.queryCultureList().then((res) => {
         if (res.code == 200) {
           console.log('价值观', res.data);
           this.philosophyList = res.data;
@@ -222,12 +225,13 @@ export default {
         okrWeight: 0,
         okrDetailProgress: 0,
         okrParentDetailId: '',
-        jiazhiguanId: '',
+        cultureId: '',
         krInfoVoList: [{
           okrDetailObjectKr: '',
           okrWeight: 0,
           okrDetailProgress: 0,
         }],
+        undertakeOkrVo: {},
       });
       console.log(this.formData.okrInfoList);
     },
@@ -241,35 +245,42 @@ export default {
       this.dialogVisible = true;
     },
     searchOkr() {
-      this.server.getokrdata(this.searchForm).then((res) => {
+      this.server.getUndertakeOkr({ periodId: 'periodId' }).then((res) => {
         if (res.code == 200) {
           console.log('关联表', res.data);
-          res.data.forEach((item) => {
+          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
             this.departokrList.push({
               typeName: '目标O',
-              okrDetailObjectKr: item.okrDetailObjectKr,
-              okrParentDetailId: item.objectId,
+              okrDetailObjectKr: item.o.okrDetailObjectKr,
+              okrDetailId: item.o.okrDetailId,
+              okrDetailVersion: item.o.okrDetailVersion,
               checkFlag: false,
             });
-            item.krList.forEach((krItem, index) => {
-              this.departokrList.push({
-                typeName: `KR${index}`,
-                okrDetailObjectKr: krItem.okrDetailObjectKr,
-                okrParentDetailId: krItem.krId,
-                checkFlag: false,
+            if (item.krList && item.krList.length > 0) {
+              item.krList.forEach((krItem, index) => {
+                this.departokrList.push({
+                  typeName: `KR${index}`,
+                  okrDetailObjectKr: krItem.okrDetailObjectKr,
+                  okrDetailId: krItem.okrDetailId,
+                  okrDetailVersion: krItem.okrDetailVersion,
+                  checkFlag: false,
+                });
               });
-            });
+            }
           });
         }
       });
     },
     // 选择关联的okr
     changeDepart(row) {
-      this.formData.okrInfoList[this.selectObject].okrParentDetailId = row.okrParentDetailId + row.okrDetailObjectKr;
+      this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrDetailId = row.okrDetailId;
+      this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrVersion = row.okrDetailVersion;
     },
     // 选择关联的价值观
     changePhil(row) {
-      this.formData.okrInfoList[this.selectObject].jiazhiguanId = row.philosophyid + row.philosophy;
+      this.formData.okrInfoList[this.selectObject].cultureId = row.id || '1162020375644299264';
+      console.log('关联', row);
     },
     // 提交关联
     summitguanlian() {
