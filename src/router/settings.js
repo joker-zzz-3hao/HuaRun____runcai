@@ -8,18 +8,18 @@ export default [
     path: '/settingsIndex',
     name: 'settingsIndex',
     redirect: {
-      name: 'organize',
+      name: 'organizeManage',
     },
     component: () => import('@/views/settingsIndex'),
     children: [
       {
         // 组织用户管理
-        path: '/organizeManagement',
-        name: 'organizeManagement',
+        path: '/organizeManage',
+        name: 'organizeManage',
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/settings/organizeUserManagement/index'),
+        component: () => import('@/views/settings/organizeUserManage/index'),
       },
       {
         // 角色设置
@@ -58,12 +58,12 @@ export default [
         component: () => import('@/views/settings/issueMessage/index'),
       },
       {
-        path: '/roleManagement',
-        name: 'roleManagement',
+        path: '/roleManage',
+        name: 'roleManage',
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/roleManagement/department/index'),
+        component: () => import('@/views/roleManage/department/index'),
       },
       {
         path: '/members',
@@ -71,7 +71,7 @@ export default [
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/roleManagement/members/index'),
+        component: () => import('@/views/roleManage/members/index'),
       },
       {
         path: '/setOkr',
