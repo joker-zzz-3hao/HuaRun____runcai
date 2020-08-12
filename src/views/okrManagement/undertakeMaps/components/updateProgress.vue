@@ -77,14 +77,32 @@ export default {
   },
   methods: {
     getokrDetail() {
-      this.server.getokrDetail({ okrId: '111111222' }).then((res) => {
+      this.server.getokrDetail({ okrId: '11111122211' }).then((res) => {
         console.log('detail', res);
         this.formData.tableList = res.data.okrDetails;
       });
     },
     summitUpdate() {
-      this.$message('提交成功~');
-      this.close();
+      this.summitForm = {
+        // krUpdateProcessDtos: [
+        //   {
+        //     detailId: 'string',
+        //     okrDetailConfidence: 0,
+        //     okrDetailProgress: 0,
+        //   },
+        // ],
+        oupdateProcessDto: {
+          detailId: this.okrForm.detailId,
+          okrDetailProgress: this.okrForm.okrDetailProgress,
+        },
+        remark: this.updateexplain,
+      };
+      this.server.summitUpdate(this.summitForm).then((res) => {
+        console.log('detail', res.code);
+        this.$message('提交成功~');
+        this.close();
+      });
+
       // 需刷新列表吗
     },
     // 控制弹窗

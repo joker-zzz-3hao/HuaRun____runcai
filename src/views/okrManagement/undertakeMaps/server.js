@@ -43,4 +43,8 @@ export default class Server extends ServerBase {
   okrCheck(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/okrCheck', param);
   }
+
+  summitUpdate(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/updateOkrProcess', param);
+  }
 }
