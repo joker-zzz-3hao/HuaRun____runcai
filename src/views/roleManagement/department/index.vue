@@ -18,15 +18,10 @@
     </el-form>
     <div>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="roleId" label="角色编码"></el-table-column>
-        <el-table-column prop="name" label="角色名称"></el-table-column>
-        <el-table-column prop="role" label="类型"></el-table-column>
-        <el-table-column prop="city" label="状态">
-          <template slot-scope="scope">
-            <el-switch v-model="value[scope.$index]" active-text="启用"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="date" label="创建时间"></el-table-column>
+        <el-table-column fixed prop="roleCode" label="角色编码"></el-table-column>
+        <el-table-column prop="roleName" label="角色名称"></el-table-column>
+        <el-table-column prop="roleType" label="类型"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="$router.push('/members')">成员管理</el-button>
@@ -53,9 +48,24 @@
 
 <script>
 import addRole from './components/addRole';
+import Server from './server';
 
+const server = new Server();
 export default {
+  created() {
+    this.listRolePage();
+  },
   methods: {
+    listRolePage() {
+      this.server.listRolePage({
+        keyWord: this.keyWord,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableData = res.data.content;
+        }
+      });
+    },
+
     showAddRoule() {
       this.title = '新增角色';
       this.exist = true;
@@ -83,6 +93,7 @@ export default {
   },
   data() {
     return {
+      server,
       title: '',
       rouleType: false, // 是否内置管理员
       exist: false,
@@ -92,27 +103,7 @@ export default {
       currentPage2: 5,
       currentPage3: 5,
       currentPage4: 4,
-      tableData: [{
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }],
+      tableData: [],
     };
   },
 };

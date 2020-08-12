@@ -1,3 +1,8 @@
+/*
+ * @Author: 许志鹏
+ * @Date: 2020-08-04 15:39:16
+ * @Description: file content
+ */
 export default [
   {
     path: '/adminIndex',
@@ -51,6 +56,15 @@ export default [
           hasMainMenu: true,
         },
         component: () => import('@/views/admin/systemUserManagement/index'),
+      },
+      {
+        // 菜单管理
+        path: '/menuManagement',
+        name: 'menuManagement',
+        meta: {
+          hasMainMenu: true,
+        },
+        component: () => import('@/views/admin/menuManagement/index'),
       },
     ],
   },

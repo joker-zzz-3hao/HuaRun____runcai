@@ -15,29 +15,35 @@
     center
   >
     <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="角色编号">
+        <el-input style="width:320px" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
+      </el-form-item>
       <el-form-item label="角色名称">
-        <el-input style="width:320px" v-model="form.name" placeholder="请输入角色名称"></el-input>
+        <el-input style="width:320px" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <el-tree
           :data="data"
           show-checkbox
+          ref="treeMenu"
           node-key="id"
-          :default-expanded-keys="[2, 3]"
-          :default-checked-keys="[5]"
-          :props="defaultProps"
+          @check="getCheckData"
+          default-expand-all
+          @check-change="handleCheckChange"
         ></el-tree>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="innerVisible = true">确定</el-button>
+      <el-button type="primary" @click="submitForm()">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import Server from '../server';
 
+const server = new Server();
 export default {
   name: 'home',
   props: {
@@ -52,57 +58,58 @@ export default {
   },
   data() {
     return {
+      server,
       form: {
-        region: [],
+        roleCode: '',
+        roleName: '',
+        menuTree: [],
       },
       dialogTableVisible: false,
       dialogVisible: false,
-      data: [{
-        id: 1,
-        label: '企业管理',
-        children: [{
-          id: 4,
-          label: '租户管理',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1',
-          }, {
-            id: 10,
-            label: '三级 1-1-2',
-          }],
-        }],
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1',
-        }, {
-          id: 6,
-          label: '二级 2-2',
-        }],
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1',
-        }, {
-          id: 8,
-          label: '二级 3-2',
-        }],
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label',
-      },
+      data: [],
     };
   },
 
   mounted() {
     this.dialogTableVisible = true;
+    this.getqueryMenu();
   },
   methods: {
+
+    handleCheckChange() {
+      const keys = this.$refs.treeMenu.getCheckedKeys();
+      this.form.menuTree = keys.map((item) => ({ id: item }));
+    },
+    // 获取菜单功能树形结构
+    getqueryMenu() {
+      this.server.queryMenu()
+        .then((res) => {
+          this.data = this.getTreeList(res.data, true);
+        });
+    },
+    // 递归修改符合element tree结构数据
+    getTreeList(data, disabled) {
+      if (data) {
+        return data.map((item) => ({
+          id: item.functionId,
+          label: item.functionName,
+          disabled: this.infoBool,
+          children: this.getTreeList(item.children, disabled),
+        }));
+      }
+    },
+    submitForm() {
+      const { form } = this;
+      form.roleType = 'CREATION';
+      this.server.addRole(form).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.msg);
+          this.closed();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     close() {
       this.dialogTableVisible = false;
     },
@@ -114,6 +121,9 @@ export default {
     },
     closeshowMember() {
       this.dialogVisible = false;
+    },
+    getCheckData() {
+
     },
   },
 };

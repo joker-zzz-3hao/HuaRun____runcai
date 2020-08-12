@@ -1,3 +1,8 @@
+/*
+ * @Author: 许志鹏
+ * @Date: 2020-08-04 15:39:16
+ * @Description: file content
+ */
 const apiList = {
   mock: 'https://portal-test.crcloud.com',
   sit: 'http://10.200.197.21:8080',
@@ -20,5 +25,14 @@ module.exports = {
     secure: false,
     changeOrigin: true,
     pathRewrite: { '^/gateway': '' },
+  },
+  '/*': {
+    target: 'http://10.54.25.249:8081', // 曾伟
+    // target: api,
+    secure: false,
+    changeOrigin: true,
+    pathRewrite: {
+      // '^/gateway': '',
+    },
   },
 };

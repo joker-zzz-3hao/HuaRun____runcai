@@ -73,6 +73,14 @@ export default [
         },
         component: () => import('@/views/roleManagement/members/index'),
       },
+      {
+        path: '/setOkr',
+        name: 'setOkr',
+        meta: {
+          hasMainMenu: true,
+        },
+        component: () => import('@/views/settings/setOkr/index'),
+      },
     ],
   },
 ];
