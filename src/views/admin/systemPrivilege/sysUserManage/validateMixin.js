@@ -19,6 +19,25 @@ export default {
         callback();
       }
     },
+    // 密码校验
+    validateNewPwd(rule, value, callback) {
+      if (!value) {
+        callback('请输入密码');
+      } else if (value.length < 8 || value.length > 32) {
+        callback('长度为8-32个字符');
+
+        /* eslint no-useless-escape:off */
+      } else if (!/^(?![a-z]+$)(?!\d+$)(?![^\w\s]+$)\S+$/i.test(value)) {
+        callback('数字、大小写字母及特殊字符至少包含两种');
+      } else if (/[\u4E00-\u9FA5]/g.test(value)) {
+        callback('不支持中文');
+      } else {
+        if (this.formData.confirmPwd !== '') {
+          this.$refs.userForm.validateField('confirmPwd');
+        }
+        callback();
+      }
+    },
     // 注册确认密码校验
     validateConfirmPwd(rule, value, callback) {
       if (!value) {
@@ -44,8 +63,9 @@ export default {
       if (!value) {
         callback('请输入邮箱');
       } else if (
-        !/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-          .test(value)) {
+        !
+        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        .test(value)) {
         callback('邮箱格式不正确');
       } else {
         callback();

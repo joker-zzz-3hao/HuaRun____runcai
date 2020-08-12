@@ -92,12 +92,12 @@
           ></tl-department>
           <el-button @click="addOrg">添加部门</el-button>
         </el-form-item>
-        <el-form-item label="账号状态" prop="sortIndex">
+        <!-- <el-form-item label="账号状态" prop="">
           <el-radio-group v-model="formData.userStatus">
             <el-radio :label="'0'">启用</el-radio>
             <el-radio :label="'50'">禁用</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="saveUser">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
