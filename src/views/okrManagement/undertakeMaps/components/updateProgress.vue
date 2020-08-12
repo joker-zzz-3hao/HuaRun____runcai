@@ -59,6 +59,7 @@ export default {
       dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       updateexplain: '',
+      formData: {},
     };
   },
   props: {

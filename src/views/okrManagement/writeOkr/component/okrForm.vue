@@ -10,32 +10,26 @@
               prop="okrDetailObjectKr"
               :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
             >
-              <el-input v-if="canWrite" v-model="oitem.okrDetailObjectKr"></el-input>
-              <span v-else>{{oitem.okrDetailObjectKr}}</span>
+              <el-input v-model="oitem.okrDetailObjectKr"></el-input>
             </el-form-item>
             <el-form-item label="权重">
               <el-input-number
-                v-if="canWrite"
                 v-model="oitem.okrWeight"
                 controls-position="right"
                 :min="0"
                 :max="100"
               ></el-input-number>
-              <span v-else>{{oitem.okrWeight}}</span>
             </el-form-item>
             <el-form-item label="当前进度">
               <el-input-number
-                v-if="canWrite"
                 v-model="oitem.okrDetailProgress"
                 controls-position="right"
                 :min="0"
                 :max="100"
               ></el-input-number>
-              <span v-else>{{oitem.okrDetailProgress}}</span>
             </el-form-item>
             <el-form-item label="关联承接项">
               <el-button @click="guanlian(index)">关联承接项</el-button>
-              <span></span>
             </el-form-item>
           </dd>
           <dd>
@@ -46,37 +40,26 @@
                   prop="okrDetailObjectKr"
                   :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
                 >
-                  <el-input v-if="canWrite" v-model="kitem.okrDetailObjectKr"></el-input>
-                  <span v-else>{{kitem.okrDetailObjectKr}}</span>
+                  <el-input v-model="kitem.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
-                    v-if="canWrite"
                     v-model="kitem.okrWeight"
                     controls-position="right"
                     :min="0"
                     :max="100"
                   ></el-input-number>
-                  <span v-else>{{kitem.okrWeight}}</span>
                 </el-form-item>
                 <el-form-item label="当前进度">
                   <el-input-number
-                    v-if="canWrite"
                     v-model="kitem.okrDetailProgress"
                     controls-position="right"
                     :min="0"
                     :max="100"
                   ></el-input-number>
-                  <span v-else>{{kitem.okrDetailProgress}}</span>
                 </el-form-item>
                 <el-form-item label="信心指数">
-                  <!-- <el-rate
-                    v-if="canWrite"
-                    v-model="kitem.rate"
-                    :icon-classes="['el-icon-house','el-icon-house','el-icon-house']"
-                    void-icon-class="el-icon-house"
-                  ></el-rate>-->
-                  <el-popover v-if="canWrite" placement="right" width="400" trigger="click">
+                  <el-popover placement="right" width="400" trigger="click">
                     <el-radio-group v-model="kitem.okrDetailConfidence">
                       <el-radio-button
                         v-for="citem in CONST.CONFIDENCE"
@@ -87,23 +70,22 @@
 
                     <el-button slot="reference">信息状态</el-button>
                   </el-popover>
-                  <span v-else>{{kitem.okrDetailConfidence}}</span>
                 </el-form-item>
-                <el-button v-if="canWrite" @click="deletekr(index,kindex)">删kr</el-button>
+                <el-button @click="deletekr(index,kindex)">删kr</el-button>
               </dd>
             </dl>
           </dd>
           <dd class="objectdd">
-            <el-button v-if="canWrite" @click="addkr(index)">加kr</el-button>
+            <el-button @click="addkr(index)">加kr</el-button>
           </dd>
           <dd class="objectdd">
-            <el-button v-if="canWrite" @click="deleteobject(index)">删O</el-button>
+            <el-button @click="deleteobject(index)">删O</el-button>
           </dd>
         </dl>
       </el-form>
 
-      <el-button v-if="canWrite" @click="addobject()">加一个O</el-button>
-      <el-button v-if="canWrite" @click="summit()">提交</el-button>
+      <el-button @click="addobject()">加一个O</el-button>
+      <el-button @click="summit()">提交</el-button>
     </div>
     <el-dialog
       title="关联承接项"
@@ -129,7 +111,6 @@
         <el-button type="primary" @click="summitguanlian()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 可修改 -->
   </div>
 </template>
 
@@ -167,7 +148,6 @@ export default {
       },
       departokrList: [], // 可关联承接的okr
       philosophyList: [], // 价值观
-      pselection: [], // 已选价值观
       okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
     };

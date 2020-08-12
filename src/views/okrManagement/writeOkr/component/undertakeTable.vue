@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'okrHistory',
+  name: 'undertakeTable',
   props: {
     departokrList: {
       type: Array,
