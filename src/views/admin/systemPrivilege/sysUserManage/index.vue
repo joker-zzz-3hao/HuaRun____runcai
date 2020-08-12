@@ -104,7 +104,7 @@ export default {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
       };
-      this.server.getUserListByOrgId(params).then((res) => {
+      this.server.getUserLIst(params).then((res) => {
         if (res.code == 200) {
           this.total = res.data.total;
           this.currentPage = res.data.currentPage;
@@ -114,13 +114,13 @@ export default {
       });
     },
 
-    resetPwd(user) {
+    resetPwd() {
       this.visible = true;
     },
     save() {
       this.$refs.resetForm.validate((valid) => {
         if (valid) {
-          this.server.resetPwd().then((res) => {
+          this.server.editPwd().then((res) => {
             if (res.code == 200) {
               this.$message.success('重置密码成功');
             }
