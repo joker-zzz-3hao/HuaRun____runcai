@@ -46,6 +46,16 @@
               <li>
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
+                <!-- 是变更且有更新显示icon -->
+                <span v-if="canWrite && item.parentUpdate">
+                  <el-popover placement="top-start" title="标题" width="200" trigger="hover">
+                    <span>
+                      您承接的OKR有变更，
+                      <a @click="goUndertake">查看详情</a>
+                    </span>
+                    <i class="el-icon-warning" slot="reference"></i>
+                  </el-popover>
+                </span>
               </li>
             </ul>
             <!-- 可在折叠面板title处添加内容 -->
@@ -166,6 +176,10 @@ export default {
     showKRInput(index, krIndex, name) {
       this.tableList[index].krList[krIndex][name] = true;
       this.$forceUpdate();
+    },
+    goUndertake() {
+      // 给父组件传打开的命令
+      console.log('dakai');
     },
   },
   watch: {
