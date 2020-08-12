@@ -91,7 +91,6 @@ export default {
         myOrOrg: 'org',
         periodId: 'periodId',
         status: this.searchForm.status,
-        userId: 'user066',
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails;

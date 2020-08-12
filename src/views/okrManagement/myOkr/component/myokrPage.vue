@@ -20,9 +20,9 @@
       </div>
       <tl-okr-collapse :tableList="tableList" :disabled="false" :activeList="[0]">
         <template slot="head-bar" slot-scope="props">
-          <el-button @click.native.stop="openDialog('tl-okr-detail',props.okritem.detailId)">详情</el-button>
-          <el-button @click.native.stop="openDialog('tl-okr-history',props.okritem.detailId)">历史版本</el-button>
-          <el-button @click.native.stop="openDialog('tl-okr-update',props.okritem.detailId)">进度更新</el-button>
+          <el-button @click.native.stop="openDialog('tl-okr-detail',props.okritem)">详情</el-button>
+          <el-button @click.native.stop="openDialog('tl-okr-history',props.okritem)">历史版本</el-button>
+          <el-button @click.native.stop="openDialog('tl-okr-update',props.okritem)">进度更新</el-button>
         </template>
       </tl-okr-collapse>
     </div>
@@ -32,6 +32,7 @@
       v-bind:is="currentView"
       :server="server"
       :okrId="okrId"
+      :okrItem="okrItem"
       :dialogExist.sync="dialogExist"
     ></component>
     <!-- <okr-history ref="okr-history" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-history>
@@ -68,8 +69,9 @@ export default {
         time: '',
       },
       dialogExist: false,
-      currentView: 'tl-okr-detail', // 弹框组件
+      currentView: '', // 弹框组件
       okrId: '',
+      okrItem: {},
     };
   },
 
@@ -85,7 +87,6 @@ export default {
         myOrOrg: 'my',
         periodId: 'periodId',
         status: this.searchForm.status,
-        userId: 'user066',
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails;
@@ -97,13 +98,14 @@ export default {
     openDialog(componentName, val) {
       console.log('点击', componentName, val);
       this.currentView = componentName;
+      this.okrItem = val;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
         this.dialogExist = true;
       });
     },
     goChangeOkr() {
-      this.$router.push({ name: 'writeOkr', params: { canWrite: false } });
+      this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot' } });
     },
   },
 };

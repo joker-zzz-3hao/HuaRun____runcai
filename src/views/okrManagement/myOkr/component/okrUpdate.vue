@@ -8,22 +8,22 @@
     @closed="closed"
   >
     <el-form :model="formData" ref="dataForm">
-      <dl class="okuang" v-for="(oitem,index) in formData.tableList" :key="oitem.detailId+index">
+      <dl class="okuang">
         <dt>目标名称</dt>
         <dd class="objectdd">
           <el-form-item>
-            <span>{{oitem.okrDetailObjectKr}}</span>
+            <span>{{formData.okrDetailObjectKr}}</span>
           </el-form-item>
           <el-form-item label="权重">
-            <span>{{oitem.okrWeight}}</span>
+            <span>{{formData.okrWeight}}</span>
           </el-form-item>
           <el-form-item label="当前进度">
-            <el-slider v-model="oitem.okrDetailProgress" show-input :step="1"></el-slider>
+            <el-slider v-model="formData.okrDetailProgress" show-input :step="1"></el-slider>
           </el-form-item>
         </dd>
         <dd>
-          <dl v-for="(kitem, kindex) in oitem.krInfoVoList" :key="kindex">
-            <dt>关键结果{{kindex}}</dt>
+          <dl v-for="(kitem, kindex) in formData.krList" :key="kindex">
+            <dt>关键结果{{kindex+1}}</dt>
             <dd class="objectdd">
               <el-form-item>
                 <span>{{kitem.okrDetailObjectKr}}</span>
@@ -66,14 +66,17 @@
 </template>
 
 <script>
+import CONST from '../const';
+
 export default {
   name: 'okrUpdate',
   data() {
     return {
+      CONST,
       dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       formData: {
-        tableList: [], // okr列表
+        updateexplain: '',
 
       },
     };
@@ -90,17 +93,44 @@ export default {
       type: Boolean,
       default: true,
     },
+    okrItem: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
     getokrDetail() {
-      this.server.getokrDetail({ okrId: '111111222' }).then((res) => {
-        console.log('detail', res);
-        this.formData.tableList = res.data.okrDetails;
-      });
+      if (this.okrItem) {
+        this.formData = JSON.parse(JSON.stringify(this.okrItem));
+      }
     },
     summitUpdate() {
-      this.$message('提交成功~');
-      this.close();
+      this.summitForm = {
+        oupdateProcessDto: {
+          detailId: this.formData.detailId,
+          okrDetailProgress: this.formData.okrDetailProgress,
+        },
+        remark: this.formData.updateexplain,
+      };
+      if (this.formData.krList && this.formData.krList.length > 0) {
+        this.summitForm.krUpdateProcessDtos = [];
+        this.formData.krList.forEach((item) => {
+          this.summitForm.krUpdateProcessDtos.push({
+            detailId: item.detailId,
+            okrDetailConfidence: item.okrDetailConfidence,
+            okrDetailProgress: item.okrDetailProgress,
+          });
+        });
+      }
+
+      this.server.summitUpdate(this.summitForm).then((res) => {
+        console.log('detail', res.code);
+        if (res.code == 200) {
+          this.$message('提交成功~');
+          this.close();
+        }
+      });
+
       // 需刷新列表吗
     },
     // 控制弹窗
