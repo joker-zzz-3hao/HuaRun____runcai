@@ -13,12 +13,12 @@ export default [{
   component: () => import('@/views/adminIndex'),
   children: [{
     // 租户管理
-    path: '/tenantManagement',
-    name: 'tenantManagement',
+    path: '/tenantManage',
+    name: 'tenantManage',
     meta: {
       hasMainMenu: true,
     },
-    component: () => import('@/views/admin/tenantManagement/index'),
+    component: () => import('@/views/admin/tenantManage/index'),
   },
   {
     // 发布公告
@@ -76,12 +76,12 @@ export default [{
   },
   {
     // 菜单管理
-    path: '/menuManagement',
-    name: 'menuManagement',
+    path: '/menuManage',
+    name: 'menuManage',
     meta: {
       hasMainMenu: true,
     },
-    component: () => import('@/views/admin/menuManagement/index'),
+    component: () => import('@/views/admin/menuManage/index'),
   },
   ],
 },

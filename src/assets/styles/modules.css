@@ -341,7 +341,12 @@
 
 .main-menu .sub-menu em {
   display: block;
+  color: #929ba3;
   opacity: 0;
+}
+
+.main-menu .sub-menu .is-active em {
+  color: #685df1;
 }
 
 .is-sub-menu .main-menu .sub-menu em {

@@ -114,7 +114,7 @@ export default {
       });
     },
 
-    resetPwd(user) {
+    resetPwd() {
       this.visible = true;
     },
     save() {
