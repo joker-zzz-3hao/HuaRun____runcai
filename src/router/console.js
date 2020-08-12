@@ -51,6 +51,7 @@ export default [
           hasMainMenu: true,
           isSubMenu: true,
           parentRoute: 'okr',
+          belongsTo: 'myOkr',
         },
         component: () => import('@/views/okrManagement/writeOkr/index'),
       },
