@@ -117,6 +117,7 @@ const mockData = {
           okrWeight: 50,
           okrDetailProgress: 70,
           parentObjectKr: '华润云',
+          'parentUpdate|1': [true, false],
           'krList|2': [
             {
               'detailId|': ['1233', '1234'],

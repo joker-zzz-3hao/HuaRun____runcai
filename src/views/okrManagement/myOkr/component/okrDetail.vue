@@ -65,6 +65,7 @@ export default {
       dialogDetailVisible: false,
       cycleList: [], // 操作历史
       showLike: true, // okr地图查看详情可点赞
+      supportType: 0, // 点赞1 取消赞0
     };
   },
   components: {
@@ -110,9 +111,10 @@ export default {
     },
     // 点赞
     like() {
+      this.supportType = this.supportType === 1 ? 0 : 1;
       this.server.okrSupport({
         okrId: this.okrId,
-        supportType: 1,
+        supportType: this.supportType,
       }).then((res) => {
         console.log(res.code);
       });
@@ -127,6 +129,7 @@ export default {
         }
       });
     },
+    // TODO:查全部pageSize要传大点
     getOperationHistory() {
       this.server.okrOperationHistory({
         currentPage: 1,

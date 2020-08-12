@@ -19,8 +19,8 @@
         ></el-option>
       </el-select>
     </div>
-    <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-    <change-okr v-else :canWrite="canWrite" :server="server"></change-okr>
+    <change-okr v-if="!canWrite" :server="server"></change-okr>
+    <okr-form :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
         time: '',
         okrType: '',
       },
-      canWrite: true, // true写okr false okr详情
+      canWrite: true, // true写okr false changeokr
     };
   },
   created() {
