@@ -33,7 +33,7 @@
             </el-form-item>
           </dd>
           <dd>
-            <dl v-for="(kitem, kindex) in oitem.krInfoVoList" :key="kindex">
+            <dl v-for="(kitem, kindex) in oitem.krList" :key="kindex">
               <dt>关键结果</dt>
               <dd class="objectdd">
                 <el-form-item
@@ -136,7 +136,7 @@ export default {
           okrWeight: 0,
           okrDetailProgress: 0,
           cultureId: '',
-          krInfoVoList: [{
+          krList: [{
             // id: 0,
             okrDetailObjectKr: '',
             okrWeight: 0,
@@ -185,8 +185,8 @@ export default {
     // 增加kr
     addkr(oindex) {
       console.log(this.formData.okrInfoList);
-      this.formData.okrInfoList[oindex].krInfoVoList.push({
-        // id: this.formData.okrInfoList[oindex].krInfoVoList.length,
+      this.formData.okrInfoList[oindex].krList.push({
+        // id: this.formData.okrInfoList[oindex].krList.length,
         okrDetailObjectKr: '',
         okrWeight: 0,
         okrDetailProgress: 0,
@@ -195,7 +195,7 @@ export default {
     },
     // 删除kr
     deletekr(oindex, krindex) {
-      this.formData.okrInfoList[oindex].krInfoVoList.splice(krindex, 1);
+      this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
     },
     // 增加o
     addobject() {
@@ -206,7 +206,7 @@ export default {
         okrDetailProgress: 0,
         okrParentDetailId: '',
         cultureId: '',
-        krInfoVoList: [{
+        krList: [{
           okrDetailObjectKr: '',
           okrWeight: 0,
           okrDetailProgress: 0,
@@ -278,7 +278,7 @@ export default {
           this.formData.okrInfoList.forEach((oitem) => {
             opercent += oitem.okrWeight;
             keypercent = 0;
-            oitem.krInfoVoList.forEach((kitem) => {
+            oitem.krList.forEach((kitem) => {
               keypercent += kitem.okrWeight;
             });
           });
@@ -288,10 +288,10 @@ export default {
           if (keypercent != 100) {
             this.$message('kr权重相加不等100~');
           }
-          this.formData.okrBelongType = 2;
+          this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.periodId = 'periodId';
-          this.formData.userId = 'user001';
-          this.formData.tenantId = 'tenant001';
+          // this.formData.userId = 'user001';
+          // this.formData.tenantId = 'tenant001';
           console.log('提交结果', this.formData);
           // this.canWrite = false;
           this.server.addokr(this.formData).then((res) => {

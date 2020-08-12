@@ -28,4 +28,8 @@ export default class Server extends ServerBase {
   queryCultureList(param) {
     return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
+
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
 }

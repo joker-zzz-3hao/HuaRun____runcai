@@ -1,10 +1,10 @@
 const OKR_TYPE_LIST = [{
-  name: '个人', id: '01',
+  name: '个人', id: 2,
 }, {
-  name: '部门', id: '02',
+  name: '部门', id: 1,
 },
 {
-  name: '公司', id: '03',
+  name: '公司', id: 3,
 }];
 const CONFIDENCE = [{
   label: '可控', value: '1',
