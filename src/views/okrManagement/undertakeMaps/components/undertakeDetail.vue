@@ -1,18 +1,22 @@
 <template>
   <div class="home">
+    <!-- 返回 -->
+    <div>
+      <el-button @click="goback">返回</el-button>
+    </div>
     <!-- 更新 -->
     <div>
       <dl>
-        <dd>{{formData.maindata.okrDetailtitle}}</dd>
+        <dd>{{undertakeDetail.okrDetailObjectKr}}</dd>
         <dd>
           <el-progress
             :stroke-width="10"
-            :percentage="parseInt(formData.maindata.okrDetailProgress, 10)"
+            :percentage="parseInt(undertakeDetail.okrDetailProgress, 10)"
           ></el-progress>
         </dd>
         <dd>
           <span>负责人</span>
-          <span>{{formData.maindata.userName}}</span>
+          <span>{{undertakeDetail.userName}}</span>
         </dd>
         <dd>
           <el-button @click="openUpdate">更新OKR</el-button>
@@ -52,13 +56,15 @@
     <tl-update-progress
       ref="tlokrupdate"
       :server="server"
-      :okrForm="okrForm"
+      :okrForm="undertakeDetail"
       :dialogExist.sync="dialogExist"
     ></tl-update-progress>
   </div>
 </template>
 
 <script>
+
+import { mapState, mapMutations } from 'vuex';
 
 import updateProgress from './updateProgress';
 import Server from '../server';
@@ -68,9 +74,7 @@ const server = new Server();
 export default {
   name: 'undertakeDetail',
   components: {
-
     'tl-update-progress': updateProgress,
-
   },
   data() {
     return {
@@ -95,7 +99,13 @@ export default {
   created() {
     this.okrCheck();
   },
+  computed: {
+    ...mapState('common', {
+      undertakeDetail: (state) => state.undertakeDetail,
+    }),
+  },
   methods: {
+    ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
     okrCheck() {
       this.server.okrCheck({
         checkStatus: 0,
@@ -107,7 +117,7 @@ export default {
       });
     },
     openUpdate() {
-      // 打开一个
+      // 打开更新okr
       this.$nextTick(() => {
         this.$refs.tlokrupdate.showOkrDialog();
         this.dialogExist = true;
@@ -115,6 +125,10 @@ export default {
     },
     duiqi() {
       console.log('刷新列表');
+    },
+    goback() {
+      this.undertakeMapsStep('1');
+      this.setundertakeDetail({});
     },
   },
 };

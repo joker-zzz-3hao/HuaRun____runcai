@@ -114,17 +114,6 @@ export default [
         },
         component: () => import('@/views/assessManagement/assessPk/index'),
       },
-      {
-        // OKR管理
-        // 对齐详情
-        path: 'undertakeDetail',
-        name: 'undertakeDetail',
-        meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
-        },
-        component: () => import('@/views/okrManagement/undertakeMaps/components/undertakeDetail'),
-      },
     ],
   },
 ];
