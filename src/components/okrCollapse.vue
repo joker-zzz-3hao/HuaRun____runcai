@@ -43,7 +43,7 @@
                   ></el-progress>
                 </span>
               </li>
-              <li>
+              <li v-if="showParentOkr">
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
@@ -158,6 +158,11 @@ export default {
     canWrite: {
       type: Boolean,
       default: false,
+    },
+    // 是否显示承接
+    showParentOkr: {
+      type: Boolean,
+      default: true,
     },
     // 是否显示label
     showOKRInfoLabel: {
