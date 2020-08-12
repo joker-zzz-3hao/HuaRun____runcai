@@ -1,65 +1,42 @@
 <template>
   <div
     class="menu-cont"
-    :class="{'no-sub-menu': noSubMenu,'is-sub-menu': isSubMenu,'is-shrink': isShrinkMenus,'is-extend': isExtend}"
+    :class="{'no-sub-menu': noSubMenu,'is-sub-menu': isSubMenu,'is-shrink': isShrinkMenus}"
   >
     <div class="menu-cont-inside">
       <div class="main-menu">
         <ul>
           <router-link
             tag="li"
-            v-for="(item,idx) in menuList"
+            v-for="item in menuList"
             :key="item.id"
             :class="[item.classTag,{'is-active':item.parentRoute === $route.meta.parentRoute}]"
             :to="{name:item.toName}"
           >
-            <i @click="fnHandle(item.functions.events,0,idx)"></i>
+            <i @click="fnHandle(item.functions.events,0)"></i>
           </router-link>
-          <!-- <router-link
-            tag="li"
-            :to="{name:'myOkr'}"
-            @click.native="changeSubMenu"
-            class="workbench"
-          >
-            <i></i>
-          </router-link>
-          <router-link
-            tag="li"
-            :to="{name:'okrMaps'}"
-            @click.native="changeSubMenu"
-            class="workbench"
-          >
-            <i></i>
-          </router-link>
-          <router-link
-            tag="li"
-            :to="{name:'myAssess'}"
-            @click.native="changeSubMenu"
-            class="workbench"
-          >
-            <i></i>
-          </router-link>-->
         </ul>
         <div class="sub-menu">
           <template v-for="item in menuList">
-            <ul
+            <dl
               :key="item.id"
               v-if="item.subMenuList"
               :class="{'is-focus': item.parentRoute === $route.meta.parentRoute}"
             >
+              <dt>{{item.mainMenuTitle}}</dt>
               <router-link
-                tag="li"
+                tag="dd"
                 :key="options.id"
                 v-for="options in item.subMenuList"
                 :class="[options.subClassTag,{'is-active': selectMenu === options.subToName}]"
                 :to="{name:options.subToName}"
               >
+                <i></i>
                 <span>
-                  <i></i>
                   <em>{{options.subMenuTitle}}</em>
                 </span>
               </router-link>
-            </ul>
+            </dl>
           </template>
           <div class="menu-control-button" @click="shrinkMenus">
             <span></span>
@@ -84,9 +61,6 @@ export default {
   data() {
     return {
       isShrinkMenus: false,
-      isExtend: false,
-      menuIndex: '',
-      subMenuIndex: 0,
       selectMenu: '',
       menuList: [
         {
@@ -104,7 +78,7 @@ export default {
           toName: 'myOkr',
           parentRoute: 'okr',
           functions: {
-            events: ['getMenuIndex', 'getSubMenuIndex'],
+            events: ['isExtend'],
           },
           subMenuList: [
             {
@@ -140,7 +114,7 @@ export default {
           toName: 'myAssess',
           parentRoute: 'assess',
           functions: {
-            events: ['getMenuIndex', 'getSubMenuIndex'],
+            events: ['isExtend'],
           },
           subMenuList: [
             {
@@ -158,9 +132,6 @@ export default {
       ],
     };
   },
-  mounted() {
-    // this.selectMenu = this.$route.name;
-  },
   computed: {
     noSubMenu() {
       return this.$route.meta.noSubMenu;
@@ -170,47 +141,28 @@ export default {
     },
   },
   methods: {
-    fnHandle(str, index, idx) {
+    fnHandle(str, index) {
       if (str.length > 0 && index < str.length) {
         // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}(${idx})`);
+        eval(`this.${str[index]}()`);
       }
     },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
-      this.isExtend = false;
     },
-    rmSubMenu(index) {
-      this.menuIndex = index;
+    rmSubMenu() {
       this.isShrinkMenus = false;
-      this.isExtend = false;
     },
-    changeSubMenu() {
-      this.isExtend = true;
-      console.log('改变二级菜单');
+    isExtend() {
+      if (this.isShrinkMenus) {
+        this.isShrinkMenus = false;
+      }
     },
-    getMenuIndex(index) {
-      this.menuIndex = index;
-    },
-    // getSubMenuIndex(index) {
-    //   this.subMenuIndex = index;
-    // },
   },
   watch: {
     '$route.name': {
       handler(newVal) {
         this.selectMenu = newVal;
-        console.log(this.selectMenu);
-        console.log(this.$route);
-        // if (
-        //   this.$route.meta
-        //   && this.$route.meta.menuIndex
-        //   && this.$route.meta.parentMenuIndex
-        // ) {
-        //   this.$nextTick(() => {
-        //     this.routeName = this.$route.meta.menuIndex;
-        //   });
-        // }
       },
       deep: true,
       immediate: true,

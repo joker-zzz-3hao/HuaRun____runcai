@@ -122,6 +122,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okr',
         },
         component: () => import('@/views/okrManagement/undertakeMaps/components/undertakeDetail'),
       },
