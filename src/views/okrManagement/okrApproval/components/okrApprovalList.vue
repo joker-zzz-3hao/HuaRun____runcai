@@ -10,18 +10,18 @@
         <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
           <el-form-item>
             <p>周期</p>
-            <el-select v-model="formData.cycleId" clearable :popper-append-to-body="false">
+            <el-select v-model="formData.periodId" :popper-append-to-body="false">
               <el-option
-                v-for="(item) in CONST.CYCLE_LIST"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(item) in cycleList"
+                :key="item.periodId"
+                :label="item.periodName"
+                :value="item.periodId"
               ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <p>审批状态</p>
-            <el-select v-model="formData.approvalStatus" clearable :popper-append-to-body="false">
+            <el-select v-model="formData.approvalStatus" :popper-append-to-body="false">
               <el-option
                 v-for="(item) in CONST.APPROVAL_STATUS_LIST"
                 :key="item.value"
@@ -32,7 +32,7 @@
           </el-form-item>
           <el-form-item>
             <p>审批类型</p>
-            <el-select v-model="formData.approvalType" clearable :popper-append-to-body="false">
+            <el-select v-model="formData.approvalType" :popper-append-to-body="false">
               <el-option
                 v-for="(item) in CONST.APPROVAL_TYPE_LIST"
                 :key="item.value"
@@ -57,17 +57,39 @@
       </div>
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
-          <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-          <el-table-column prop="okrCycle" label="OKR周期" width="200"></el-table-column>
-          <el-table-column prop="approvalStatus" label="审批状态" width="150"></el-table-column>
-          <el-table-column prop="approvalType" label="审批类型" width="150"></el-table-column>
-          <el-table-column prop="okrProgress" label="OKR进度" width="300"></el-table-column>
-          <el-table-column prop="submitTime" label="提交时间" width="300"></el-table-column>
-          <el-table-column prop="approvalTime" label="审批时间" width="300"></el-table-column>
+          <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
+          <el-table-column prop="approvalStatus" label="审批状态" width="150">
+            <template slot-scope="scope">
+              <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="approvalType" label="审批类型" width="150">
+            <template slot-scope="scope">
+              <span>{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="okrProgress" label="OKR进度" width="300">
+            <template slot-scope="scope">
+              <span v-if="scope.row.okrProgress">{{scope.row.okrProgress}}%</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>
+          <el-table-column prop="approveTime" label="审批时间" width="300"></el-table-column>
           <el-table-column fixed="right" label="操作" width="300">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="okrApproval(scope.row)" type="text" size="small">审批</el-button>
-              <el-button @click.native.prevent="detail(scope.row)" type="text" size="small">查看</el-button>
+              <el-button
+                v-if="scope.row.approvalStatus == '0'"
+                @click.native.prevent="okrApproval(scope.row)"
+                type="text"
+                size="small"
+              >审批</el-button>
+              <el-button
+                v-else
+                @click.native.prevent="detail(scope.row)"
+                type="text"
+                size="small"
+              >查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -77,7 +99,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -93,10 +115,11 @@ export default {
       server,
       tableData: [],
       emptyText: '暂无数据',
+      cycleList: [],
       formData: {
-        cycleId: 1,
-        approvalStatus: '01',
-        approvalType: '001',
+        periodId: '',
+        approvalStatus: '0',
+        approvalType: '',
         keyword: '',
         total: 0,
         pageSize: 10,
@@ -105,37 +128,61 @@ export default {
     };
   },
   created() {},
-  mounted() {
-    this.searchList();
+  mounted() {},
+  computed: {
+    ...mapState('common', {
+      okrApprovalDetail: (state) => state.okrApprovalDetail,
+      okrApprovalStep: (state) => state.okrApprovalStep,
+    }),
   },
-  computed: {},
   methods: {
-    ...mapMutations('common', ['okrApprovalStep']),
+    ...mapMutations('common', ['setOkrApprovalStep', 'setDetailData']),
+    init() {
+      const self = this;
+      self.server.getOkrCycleList().then((res) => {
+        self.cycleList = res.data;
+        if (res.data.length > 0) {
+          self.formData.periodId = res.data[0].periodId;
+          this.searchList();
+        }
+      });
+    },
     searchList() {
       this.tableData = [];
       this.server.getokrApproval({
-        pageSize: this.formData.pageSize,
-        currentPage: this.formData.currentPage,
         approvalStatus: this.formData.approvalStatus,
-        cycleId: this.formData.cycleId,
         approvalType: this.formData.approvalType,
+        currentPage: this.formData.currentPage,
         keyword: this.formData.keyword,
+        pageSize: this.formData.pageSize,
+        periodId: this.formData.periodId,
       }).then((res) => {
         if (res.code == '200') {
-          console.log(res);
           this.tableData = res.data.content;
+          this.formData.total = res.data.total;
+          this.formData.currentPage = res.data.currentPage;
         }
       });
     },
     okrApproval(row) {
-      console.log(row);
-      this.okrApprovalStep('2');
+      this.setDetailData(JSON.stringify(row));
+      this.setOkrApprovalStep('2');
     },
     detail(row) {
-      console.log(row);
-      this.okrApprovalStep('2');
+      this.setDetailData(JSON.stringify(row));
+      this.setOkrApprovalStep('2');
     },
   },
-  watch: {},
+  watch: {
+    okrApprovalStep: {
+      handler(newVal) {
+        if (newVal == '1') {
+          this.init();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>

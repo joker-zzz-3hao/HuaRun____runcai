@@ -14,10 +14,18 @@ export default class Server extends ServerBase {
   }
 
   getokrDetail(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrDetail?okrId=111111222', param);
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
   }
 
   addokr(param) {
-    return this._ajaxPost('okr/main/add', param);
+    return this._ajaxPost('gateway/talent-okr/okr/main/add', param);
+  }
+
+  getUndertakeOkr(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/main/getUndertakeOkr?periodId=${param.periodId}`);
+  }
+
+  queryCultureList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
 }

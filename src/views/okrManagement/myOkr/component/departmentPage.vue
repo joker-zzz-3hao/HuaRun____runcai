@@ -91,18 +91,18 @@ export default {
         myOrOrg: 'org',
         periodId: 'periodId',
         status: this.searchForm.status,
-        userId: 'user007',
+        userId: 'user066',
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails;
-          this.okrId = res.data.okrMain.okrId;
+          this.okrId = res.data.okrMain && res.data.okrMain.okrId;
           this.memberList = res.data.orgUser;
         }
       });
     },
     goUndertakeMaps(id, name) {
       // this.$message('要跳到承接地图啦~');
-      this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: id, objectName: name, showOne: true } });
+      this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: '111122', objectName: name, showOne: true } });
     },
 
   },

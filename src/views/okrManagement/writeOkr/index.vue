@@ -19,19 +19,14 @@
         ></el-option>
       </el-select>
     </div>
-
-    <okr-form
-      v-if="canWrite"
-      :searchForm="searchForm"
-      :server="server"
-      :canWrite="canWrite"
-      :const="CONST"
-    ></okr-form>
+    <change-okr v-if="!canWrite" :server="server"></change-okr>
+    <okr-form :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
   </div>
 </template>
 
 <script>
 import okrForm from './component/okrForm';
+import changeOKR from './component/changeOKR';
 import Server from './server';
 import CONST from './const';
 
@@ -41,6 +36,7 @@ export default {
   name: 'writeOkr',
   components: {
     'okr-form': okrForm,
+    'change-okr': changeOKR,
   },
   data() {
     return {
@@ -49,17 +45,19 @@ export default {
       timelist: [],
       okrmain: {},
       searchForm: {
-        status: '01',
+        periodId: 'periodId',
+        userId: 'user066',
+        tenantId: '88888888',
+        timecycle: '',
         time: '',
         okrType: '',
-        timecycle: '',
       },
-      canWrite: true, // true写okr false okr详情
+      canWrite: true, // true写okr false changeokr
     };
   },
   created() {
     this.init();
-    this.canWrite = this.$route.params.canWrite || true;
+    this.canWrite = this.$route.params.canWrite || false;
     console.log('can', this.canWrite);
   },
   methods: {

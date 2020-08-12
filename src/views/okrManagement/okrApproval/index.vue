@@ -1,7 +1,7 @@
 <template>
   <div>
-    <tl-okrApprovalList v-if="okrApprovalStep == '1'"></tl-okrApprovalList>
-    <tl-okrApprovalDetail v-if="okrApprovalStep == '2'"></tl-okrApprovalDetail>
+    <tl-okrApprovalList v-show="okrApprovalStep == '1'"></tl-okrApprovalList>
+    <tl-okrApprovalDetail v-show="okrApprovalStep == '2'"></tl-okrApprovalDetail>
   </div>
 </template>
 
@@ -30,7 +30,5 @@ export default {
   mounted() {},
   methods: {},
   watch: {},
-  updated() {},
-  beforeDestroy() {},
 };
 </script>

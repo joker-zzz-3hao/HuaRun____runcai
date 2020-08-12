@@ -1,15 +1,131 @@
 <template>
-  <div class="data-dictionary">我是数据字典页面哦</div>
+  <div class="data-dictionary">
+    <crcloud-table
+      :total="total"
+      :pageSize.sync="pageSize"
+      :currentPage.sync="currentPage"
+      @searchList="searchList"
+    >
+      <div slot="searchBar">
+        <el-form @keyup.enter.native="searchList()">
+          <el-form-item>
+            <el-input v-model="keyWord" placeholder="输入字典编号/名称"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="actionBar">
+        <div>
+          <el-button @click="addOrEditDic">新增字典</el-button>
+        </div>
+        <div>
+          <el-button @click="searchList">查询</el-button>
+        </div>
+      </div>
+      <div slot="tableContainer">
+        <el-table ref="dicTable" v-loading="loading" :data="tableData">
+          <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="code" label="字典编号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="name" label="字典名称"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="enabledFlag" label="状态">
+            <template slot-scope="scope">
+              <div>{{scope.row.enabledFlag == "Y" ? '启用' : '停用'}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column width="100px" align="left" label="操作">
+            <template slot-scope="scope">
+              <el-button type="text" @click="addOrEditDic(scope.row)">修改</el-button>
+              <el-button type="text" @click="deleteDic(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </crcloud-table>
+    <tl-dic
+      ref="addOrEditDic"
+      v-if="showDicDialog"
+      :server="server"
+      :codeId="codeId"
+      :optionType="optionType"
+      @closeDicDialog="closeDicDialog"
+    ></tl-dic>
+  </div>
 </template>
 
 <script>
+import createOrEditDic from './components/createOrEditDic';
+import Server from './server';
+
+const server = new Server();
+
 export default {
   name: 'dataDictionary',
   components: {
+    'tl-dic': createOrEditDic,
   },
   data() {
     return {
+      server,
+      showDicDialog: false,
+      keyWord: '',
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      tableData: [],
+      loading: false,
+      codeId: '',
+      optionType: 'add',
     };
+  },
+  created() {
+    this.searchList();
+  },
+  methods: {
+    searchList(params = { currentPage: 1 }) {
+      params.currentPage = this.currentPage;
+      params.pageSize = this.pageSize;
+      params.keyWord = this.keyWord;
+      this.loading = true;
+      this.server.queryOfPage(params).then((res) => {
+        if (res.code == 200) {
+          this.total = res.data.total;
+          this.currentPage = res.data.currentPage;
+          this.pageSize = res.data.pageSize;
+          this.tableData = res.data.content;
+        }
+        this.loading = false;
+      });
+    },
+    addOrEditDic(dic) {
+      if (dic.codeId) {
+        this.codeId = String(dic.codeId);
+        this.optionType = 'edit';
+      } else {
+        this.optionType = 'add';
+      }
+      this.showDicDialog = true;
+      this.$nextTick(() => {
+        this.$refs.addOrEditDic.show();
+      });
+    },
+    deleteDic(dic) {
+      this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
+        this.server.deleteDic({ codeId: dic.codeId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.searchList();
+          }
+        });
+      });
+    },
+    closeDicDialog(data) {
+      // 需要刷新则刷新页面;
+      if (data.refreshPage) {
+        this.searchList();
+      }
+      this.showDicDialog = false;
+    },
   },
 };
 </script>

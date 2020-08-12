@@ -3,6 +3,9 @@
     <div class="node_title">
       <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
       <span>{{node.okrDetailObjectKr}}</span>
+      <span>
+        <el-button @click="goDetail(node)">对齐</el-button>
+      </span>
     </div>
     <div class="node_des">
       <div></div>
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import CONST from '../const';
 
 export default {
@@ -51,7 +55,13 @@ export default {
     console.log(`node:${this.node}`);
   },
   computed: {},
-  methods: {},
+  methods: {
+    ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
+    goDetail(node) {
+      this.undertakeMapsStep('2');
+      this.setundertakeDetail(node);
+    },
+  },
   watch: {},
 };
 </script>

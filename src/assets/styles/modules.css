@@ -116,7 +116,8 @@
   z-index: 1;
 }
 
-/* ========================================================页面布局组件================================================================== */
+/* ========================================================公共页面布局组件================================================================== */
+/* Header */
 .header-wrap {
   height: 70px;
   background: #fff;
@@ -146,13 +147,14 @@
   color: #fff;
 }
 
+/* 主内容区--左侧菜单 */
 .main-wrap {
   margin-top: 70px;
 }
 
 .menu-cont {
   width: 90px;
-  transition: all 8s ease-out;
+  transition: all .4s ease-out;
 }
 
 .menu-cont.no-sub-menu {
@@ -170,7 +172,7 @@
 .menu-cont-inside {
   top: 70px;
   width: 90px;
-  transition: all 8s ease-out;
+  transition: all .4s ease-out;
 }
 
 /* .no-sub-menu .menu-cont-inside {
@@ -215,11 +217,11 @@
   width: 90px;
 }
 
-.main-menu li,
+/* .main-menu li,
 .management-platform li {
   background: linear-gradient(#162565, #162565);
   transition: all 8s ease-out;
-}
+} */
 
 .main-menu .is-active {
   background: linear-gradient(#ffbc20, #d66d2c);
@@ -230,6 +232,7 @@
 }
 
 .main-menu > ul {
+  padding: 10px 0 0 0;
   position: absolute;
   left: 0;
   top: 0;
@@ -251,7 +254,7 @@
   background: #fff;
   z-index: -1;
   transform: translateX(-178px);
-  transition: all 8s ease-out;
+  transition: all .4s ease-out;
 }
 
 .is-sub-menu .main-menu .sub-menu {
@@ -272,78 +275,122 @@
   background: #e8ecf0;
 }
 
-.is-sub-menu .main-menu .sub-menu ul {
+.main-menu .sub-menu dl {
+  padding: 10px 20px 20px 80px;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
-  transform: translateX(-178px);
-  background: #f40;
-  transition: all 8s ease-out;
+  z-index: 1;
+  opacity: 0;
+  transition: all .4s ease-out;
 }
 
-.is-sub-menu.is-shrink .main-menu .sub-menu ul {
+.main-menu .sub-menu dl.is-focus {
+  z-index: 2;
+  opacity: 1;
+}
+
+.main-menu .sub-menu dt,
+.main-menu .sub-menu dd {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  background: #fff;
+}
+
+.main-menu .sub-menu dt {
+  margin: 0 0 10px 10px;
+  color: #b5bec6;
+  font-size: 18px;
+}
+
+.main-menu .sub-menu dd {
+  padding: 0 0 0 10px;
+}
+
+.main-menu .sub-menu dd i {
+  margin: 0 6px 0 0;
+  width: 24px;
+  height: 24px;
+  background: #eee;
+}
+
+.main-menu .sub-menu dd.is-active {
+  background: rgba(94,59,255,.04);
+}
+
+.is-sub-menu .main-menu .sub-menu dl {
+  transform: translateX(-178px);
+}
+
+.is-sub-menu.is-shrink .main-menu .sub-menu dl {
   transform: translateX(0);
 
 }
-
 
 .is-sub-menu .main-menu .sub-menu .is-focus {
   transform: translateX(0);
+  z-index: 2;
 }
 
-.main-menu .sub-menu li {
-  height: unset;
-}
-
-.main-menu .sub-menu ul span {
+.main-menu .sub-menu span {
   display: block;
-  transform: perspective(100px) translateZ(-24px);
+  cursor: pointer;
 }
 
 .main-menu .sub-menu em {
   display: block;
   opacity: 0;
-  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
 }
 
-.main-menu .sub-menu li:nth-child(1) em {
+.is-sub-menu .main-menu .sub-menu em {
+  opacity: 1;
+}
+
+.main-menu .sub-menu dl dd:nth-child(1) em {
   transition-delay: .08s;
 }
 
-.main-menu .sub-menu li:nth-child(2) em {
+.main-menu .sub-menu dl dd:nth-child(2) em {
   transition-delay: .16s;
 }
 
-.main-menu .sub-menu li:nth-child(3) em {
+.main-menu .sub-menu dl dd:nth-child(3) em {
   transition-delay: .24s;
 }
 
-.main-menu .sub-menu li:nth-child(4) em {
+.main-menu .sub-menu dl dd:nth-child(4) em {
   transition-delay: .32s;
 }
 
-.main-menu .sub-menu li:nth-child(5) em {
-  transition-delay: .4s;
+.main-menu .sub-menu dl dd:nth-child(5) em {
+  transition-delay: .40s;
+}
+
+.main-menu .sub-menu dl dd:nth-child(6) em {
+  transition-delay: .48s;
+}
+
+.main-menu .sub-menu span {
+  transform: perspective(100px) translateZ(-24px);
+}
+
+.main-menu .sub-menu em {
+  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
 }
 
 .is-sub-menu .main-menu .sub-menu em {
   transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
   transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  background: transparent;
-  opacity: 1;
 }
 
-.is-sub-menu.is-shrink .main-menu .sub-menu em {
+.is-shrink .main-menu .sub-menu em,
+.is-sub-menu .main-menu .sub-menu dl:not(.is-focus) em {
   transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
   opacity: 0;
 }
 
-.is-sub-menu.is-extend .main-menu .sub-menu em {
-  /* animation: waves; */
-  /* transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
-  opacity: 0; */
-}
 
 .menu-control-button {
   position: absolute;
@@ -357,7 +404,7 @@
   cursor: pointer;
   transform: translateX(-168px);
   transform: rotate(0);
-  transition: all 8s ease-out;
+  transition: all .4s ease-out;
 }
 
 .no-sub-menu .menu-control-button {
@@ -378,3 +425,4 @@
   left: 0;
 }
 
+/* 主内容区--路由区 */
