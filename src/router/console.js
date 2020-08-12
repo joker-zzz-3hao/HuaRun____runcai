@@ -28,7 +28,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'okr',
         },
-        component: () => import('@/views/okrManagement/myOkr/index'),
+        component: () => import('@/views/okrManage/myOkr/index'),
       },
       {
         // OKR管理
@@ -40,7 +40,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'okr',
         },
-        component: () => import('@/views/okrManagement/okrApproval/index'),
+        component: () => import('@/views/okrManage/okrApproval/index'),
       },
       {
         // OKR管理
@@ -53,7 +53,7 @@ export default [
           parentRoute: 'okr',
           belongsTo: 'myOkr',
         },
-        component: () => import('@/views/okrManagement/writeOkr/index'),
+        component: () => import('@/views/okrManage/writeOkr/index'),
       },
       {
         // OKR管理
@@ -65,7 +65,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'okr',
         },
-        component: () => import('@/views/okrManagement/concernedOkr/index'),
+        component: () => import('@/views/okrManage/concernedOkr/index'),
       },
       {
         // OKR管理
@@ -77,7 +77,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'okr',
         },
-        component: () => import('@/views/okrManagement/undertakeMaps/index'),
+        component: () => import('@/views/okrManage/undertakeMaps/index'),
       },
       {
         // OKR管理
@@ -89,7 +89,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'okr',
         },
-        component: () => import('@/views/okrManagement/okrMaps/index'),
+        component: () => import('@/views/okrManage/okrMaps/index'),
       },
       {
         // 考核管理
@@ -101,7 +101,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'assess',
         },
-        component: () => import('@/views/assessManagement/myAssess/index'),
+        component: () => import('@/views/assessManage/myAssess/index'),
       },
       {
         // 考核管理
@@ -113,7 +113,7 @@ export default [
           isSubMenu: true,
           parentRoute: 'assess',
         },
-        component: () => import('@/views/assessManagement/assessPk/index'),
+        component: () => import('@/views/assessManage/assessPk/index'),
       },
     ],
   },

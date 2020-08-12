@@ -22,15 +22,6 @@ export default [
         component: () => import('@/views/settings/organizeUserManage/index'),
       },
       {
-        // 角色设置
-        path: '/role',
-        name: 'role',
-        meta: {
-          hasMainMenu: true,
-        },
-        component: () => import('@/views/settings/role/index'),
-      },
-      {
         // 设置OKR查看权限
         path: '/okrPermissions',
         name: 'okrPermissions',
@@ -63,7 +54,7 @@ export default [
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/roleManage/department/index'),
+        component: () => import('@/views/settings/roleManage/department/index'),
       },
       {
         path: '/members',
@@ -71,7 +62,7 @@ export default [
         meta: {
           hasMainMenu: true,
         },
-        component: () => import('@/views/roleManage/members/index'),
+        component: () => import('@/views/settings/roleManage/members/index'),
       },
       {
         path: '/setOkr',
