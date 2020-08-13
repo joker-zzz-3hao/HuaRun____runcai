@@ -46,54 +46,72 @@ const mockData = {
   // 用于：承接地图
   'POST /gateway/talent-query/okr/query/okrContinueMap': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      ARRAY: [
-        [
-          {
-            okrDetailId: 100, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 101, okrParentDetailId: 100, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 102, okrParentDetailId: 100, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 104, okrParentDetailId: 100, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 106, okrParentDetailId: 105, userName: '个人O', okrDetailObjectKr: '营业额超过10万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-        ],
-        [
-          {
-            okrDetailId: 99, okrParentDetailId: null, userName: '润联科技', okrDetailObjectKr: '先赚100个亿', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 101, okrParentDetailId: 99, userName: '华润云的O', okrDetailObjectKr: '先定一个小目标', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 102, okrParentDetailId: 99, userName: '智慧技术', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 103, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 104, okrParentDetailId: 99, userName: 'IT产品服务', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 105, okrParentDetailId: 101, userName: '云门户的O', okrDetailObjectKr: '营业额超过100万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-          {
-            okrDetailId: 106, okrParentDetailId: 105, userName: '个人O', okrDetailObjectKr: '营业额超过10万', okrDetailProgress: '30', okrDetailType: 0,
-          },
-        ],
-      ],
+      ARRAY: [{
+        detailId: '11',
+        okrDetailId: '1111',
+        okrParentId: null,
+        parentKrOId: null,
+        okrMainId: '888811113333',
+        okrDetailVersion: 1,
+        okrDetailObjectKr: '先赚100个亿--o',
+        okrDetailProgress: 30,
+        okrWeight: 80,
+        okrDetailConfidence: 3,
+        okrDetailType: 0,
+        okrFullId: '1111',
+        allFullId: '1111',
+        createTime: '2020-08-05 13:40:06',
+        updateTime: '2020-08-05 13:40:25',
+        status: 1,
+        approveStatus: 0,
+        okrDetailParentVersion: 0,
+        isTrue: 1,
+        parentObjectKr: null,
+        orgName: null,
+        parentUpdate: false,
+        continueCount: 0,
+        versionCount: 0,
+        userName: 'wangzhirenAB',
+        krList: [{
+          detailId: '1122', okrDetailId: '111111', okrParentId: null, parentKrOId: null, okrMainId: '888811113333', okrDetailVersion: 2, okrDetailObjectKr: '营业额100个亿--kr', okrDetailProgress: 30, okrWeight: 50, okrDetailConfidence: 3, okrDetailType: 1, okrFullId: '111111', allFullId: '111111', createTime: '2020-08-05 13:40:06', updateTime: '2020-08-05 13:40:25', status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 0, versionCount: 0, userName: 'wangzhirenAB', krList: null, krContinueList: [], odetailId: '1111',
+        }, {
+          detailId: '112233',
+          okrDetailId: '111122',
+          okrParentId: null,
+          parentKrOId: null,
+          okrMainId: '888811113333',
+          okrDetailVersion: 1,
+          okrDetailObjectKr: '市场份额100个亿--kr',
+          okrDetailProgress: 30,
+          okrWeight: 50,
+          okrDetailConfidence: 3,
+          okrDetailType: 1,
+          okrFullId: '111122',
+          allFullId: '111122',
+          createTime: '2020-08-05 13:40:06',
+          updateTime: '2020-08-05 13:40:25',
+          status: 1,
+          approveStatus: 0,
+          okrDetailParentVersion: 0,
+          isTrue: 1,
+          parentObjectKr: null,
+          orgName: null,
+          parentUpdate: false,
+          continueCount: 0,
+          versionCount: 0,
+          userName: 'wangzhirenAB',
+          krList: null,
+          krContinueList: [{
+            detailId: '1233', okrDetailId: '11111122211', okrParentId: '111122', parentKrOId: '1111', okrMainId: '88881111333312', okrDetailVersion: 1, okrDetailObjectKr: '先赚100个亿--0', okrDetailProgress: 60, okrWeight: 100, okrDetailConfidence: 3, okrDetailType: 0, okrFullId: '11111122211:111122', allFullId: '1122211:111122', createTime: '2020-08-05 13:40:06', updateTime: '2020-08-05 13:40:25', status: 1, approveStatus: 0, okrDetailParentVersion: 1, isTrue: 1, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 0, versionCount: 0, userName: '用户006', krList: null, krContinueList: null, odetailId: null,
+          }],
+          odetailId: '1111',
+        }],
+        krContinueList: [],
+        odetailId: null,
+      }, {
+        detailId: '1111', okrDetailId: '2222', okrParentId: null, parentKrOId: null, okrMainId: '888811113333', okrDetailVersion: 1, okrDetailObjectKr: '先骗100块钱--o', okrDetailProgress: 30, okrWeight: 20, okrDetailConfidence: 3, okrDetailType: 0, okrFullId: '2222', allFullId: '2222', createTime: '2020-08-05 13:40:06', updateTime: '2020-08-05 13:40:25', status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 0, versionCount: 0, userName: 'wangzhirenAB', krList: null, krContinueList: [], odetailId: '',
+      }],
+
     })));
   },
   // author：林心荃
@@ -138,7 +156,7 @@ const mockData = {
     })));
   },
   // author：林心荃
-  // 用于：okr详情
+  // 用于：我的okr
   'POST /gateway/talent-query/okr/query/myOkr': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       okrMain: {
@@ -174,6 +192,29 @@ const mockData = {
       'orgUser|10': [{
         'userId|+1': ['0011', '0022', '0033'],
         'userName|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查点赞列表
+  'POST /gateway/talent-okr/okr/okrSupport/getSupportList': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'supportUserList|3': [{
+        'userId|+1': ['0011', '0022', '0033'],
+        'userName|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查操作历史
+  'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'records|3': [{
+        'date|+1': ['8月12日', '8月11日', '8月10日'],
+        'createTime|1': ['16:45', '06:15', '20:05'],
+        'createBy|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
+        operateType: 0,
+        content: '@csentence(10, 20)',
       }],
     })));
   },

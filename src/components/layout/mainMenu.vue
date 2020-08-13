@@ -28,7 +28,10 @@
                 tag="dd"
                 :key="options.id"
                 v-for="options in item.subMenuList"
-                :class="[options.subClassTag,{'is-active': selectMenu === options.subToName}]"
+                :class="[
+                options.subClassTag,
+                {'is-active': selectMenu === options.subToName || options.subToName === $route.meta.belongsTo}
+                ]"
                 :to="{name:options.subToName}"
               >
                 <i></i>

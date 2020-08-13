@@ -1,6 +1,6 @@
 <template>
   <section class="login-layout">
-    <router-view class="view-wrap" />
+    <router-view class="view-cont" />
   </section>
 </template>
 

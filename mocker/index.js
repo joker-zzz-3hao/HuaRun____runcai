@@ -8,6 +8,7 @@ const proxy = {
   ...require('./components/index'),
   ...require('./common/index'),
   ...require('./okrApproval/index'),
+  ...require('./tenantManagement/index'),
 };
 
 module.exports = (delay(proxy, 0));
