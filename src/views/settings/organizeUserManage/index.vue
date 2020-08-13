@@ -70,7 +70,11 @@
               <template slot-scope="scope">
                 <div>
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
-                    <i v-if="scope.row.leader" class="el-icon-user-solid"></i>
+                    <i
+                      v-if="scope.row.leader"
+                      class="el-icon-user-solid"
+                      @click="setLeader(scope.row)"
+                    ></i>
                   </el-tooltip>
                   <i v-if="!scope.row.leader" class="el-icon-user" @click="setLeader(scope.row)"></i>
                 </div>
@@ -124,6 +128,7 @@
       :optionType="optionType"
       :userAccount="userAccount"
       :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
       @createDepart="createDepart"
       @closeUserDialog="closeUserDialog"
     ></create-user>
@@ -385,13 +390,13 @@ export default {
     },
     // 设置负责人
     setLeader(user) {
-      // const status = userStatus == '0' ? '50' : '0';
-      // const title = status == '0' ? '是否设置部门负责人?' : '是否取消部门负责人？';
-      this.$confirm('是否设置部门负责人?').then(() => {
-        this.server.setOrgLeader({ userAccount: user.userAccount, orgId: user.orgId }).then((res) => {
+      const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
+      const title = user.leader ? '是否取消部门负责人？' : '是否设置部门负责人?';
+      this.$confirm(title).then(() => {
+        this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
-            this.$message.success('设置成功');
+            this.$message.success('处理成功');
           }
         });
       });

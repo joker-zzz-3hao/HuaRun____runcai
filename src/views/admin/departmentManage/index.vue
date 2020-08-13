@@ -2,7 +2,6 @@
   <div class="organize-management">
     <div class="org-header">
       <div>部门管理</div>
-
       <span>
         <el-button @click="createDepart">创建部门</el-button>
         <el-button @click="createOrEditUser">创建用户</el-button>
@@ -32,15 +31,15 @@
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
-        <div slot="searchBar">
+        <div slot="searchBar" class="search-conditions">
           <el-form>
             <el-form-item>
-              <el-select v-model.trim="searchData.userType" placeholder="选择租户">
+              <el-select v-model.trim="orgId" @change="tenantChange" placeholder="选择租户">
                 <el-option
-                  v-for="item in CONST.USER_TYPE_LIST"
-                  :key="item.key"
-                  :label="item.label"
-                  :value="item.key"
+                  v-for="item in tenantList"
+                  :key="item.orgId"
+                  :label="item.orgName"
+                  :value="item.orgId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -59,11 +58,11 @@
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
             <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
+            <el-table-column min-width="130px" align="left" prop="userId" label="用户ID"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="所属租户"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
@@ -86,8 +85,12 @@
             <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
-                <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
-                <el-button @click="info(scope.row)">详情</el-button>
+                <el-button
+                  type="text"
+                  v-show="scope.row.userType!='1'"
+                  @click="createOrEditUser(scope.row)"
+                >编辑</el-button>
+                <el-button type="text" @click="info(scope.row)">详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -157,6 +160,8 @@ export default {
       showcreateDepart: false,
       showCreateUser: false,
       showUserInfo: false,
+      orgId: '',
+      tenantId: '',
       tenantName: '',
       optionType: 'create',
       initDepartment: {},
@@ -164,6 +169,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       tableData: [],
+      tenantList: [],
       searchData: {
         userType: '',
         userStatus: '',
@@ -217,23 +223,28 @@ export default {
       this.server.getOrg().then((res) => {
         if (res.code == 200) {
           this.treeData = res.data;
+          // 整理租户数据
+          this.setTenantList(res.data);
         }
-        this.defaultExpandNode = [this.treeData[0].orgId];
+        // this.defaultExpandNode = [this.treeData[0].orgId];
         // this.globalOrgId = this.treeData[0].orgId;
+        this.tenantId = this.treeData[0].tenantId;
         this.tenantName = this.treeData[0].orgName;
         this.searchList();
       });
     },
     searchList(org) {
       if (org && org.orgId) { // 切换组织
-        this.globalOrgId = org.orgId;
+        this.globalOrgId = org.orgParentId ? org.orgId : '';
         this.currentPage = 1;
         this.pageSize = 10;
+        this.tenantId = org.tenantId;
       }
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        orgId: this.globalOrgId == this.treeData[0].orgId ? '' : this.globalOrgId,
+        orgId: this.globalOrgId,
+        tenantId: this.tenantId,
         ...this.searchData,
       };
       this.server.getUserListByOrgId(params).then((res) => {
@@ -355,7 +366,6 @@ export default {
       });
     },
     changeStatus(user) {
-      debugger;
       const params = {
         userName: user.userName, // 用户名称
         userMobile: user.userMobile, // 手机
@@ -372,18 +382,47 @@ export default {
         }
       });
     },
-    // 设置负责人
-    setLeader(user) {
-      // const status = userStatus == '0' ? '50' : '0';
-      // const title = status == '0' ? '是否设置部门负责人?' : '是否取消部门负责人？';
-      this.$confirm('是否设置部门负责人?').then(() => {
-        this.server.setOrgLeader({ userAccount: user.userAccount, orgId: user.orgId }).then((res) => {
-          if (res.code == 200) {
-            this.searchList();
-            this.$message.success('设置成功');
-          }
+    setTenantList(data) {
+      for (const item of data) {
+        this.tenantList.push({
+          orgId: item.orgId,
+          orgName: item.orgName,
         });
-      });
+      }
+    },
+    tenantChange(orgId) {
+      // 设置租户ID, orgId
+      this.setTenantId(orgId);
+
+      this.searchList();
+    },
+    setTenantId(orgId) {
+      // 遍历嵌套数组，转换为一维数组
+      const queue = [...this.treeData];
+      const result = [];
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const next = queue.shift();
+        if (!next) {
+          break;
+        }
+        result.push({
+          orgId: next.orgId,
+          orgName: next.orgName,
+          tenantId: next.tenantId,
+          orgParentId: next.orgParentId,
+        });
+        if (Array.isArray(next.sonTree)) {
+          queue.push(...next.sonTree);
+        }
+      }
+      // 遍历一维数组，设置initDepartment值
+      for (const org of result) {
+        if (org.orgId == orgId) {
+          this.tenantId = org.tenantId;
+          this.globalOrgId = org.orgParentId ? org.orgId : '';
+        }
+      }
     },
 
   },
@@ -406,7 +445,16 @@ export default {
   width: 80%;
   height: 90%;
   position: absolute;
-  left: 400px;
-  top: 150px;
+  left: 500px;
+  top: 100px;
+}
+.search-conditions .el-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-conditions .el-form-item {
+  margin-right: 20px;
+  min-width: 320px;
 }
 </style>

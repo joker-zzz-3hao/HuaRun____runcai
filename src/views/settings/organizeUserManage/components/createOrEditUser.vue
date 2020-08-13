@@ -148,6 +148,12 @@ export default {
         return '';
       },
     },
+    globalOrgId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -195,6 +201,8 @@ export default {
             this.setInitDepartment(res.data.orgId);
           }
         });
+      } else {
+        this.setInitDepartment(this.globalOrgId);
       }
     },
     setInitDepartment(orgId) {

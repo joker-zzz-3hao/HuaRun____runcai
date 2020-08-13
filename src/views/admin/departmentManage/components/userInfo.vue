@@ -135,7 +135,7 @@ export default {
       }
       this.getNameStr(result, orgId);
       this.nameList.reverse();
-      this.combinedOrgName = this.nameList.join('-');
+      this.combinedOrgName = this.nameList.join('-') || '--';
       // *******************************************************
     },
     getNameStr(resultList, orgId) {

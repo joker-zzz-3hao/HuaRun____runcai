@@ -15,13 +15,7 @@ export default class Server {
 
   _ajaxPost(url, param) {
     return new Promise((resolve) => {
-      window.$ajax.post(url, param, param && param.userId ? {
-        headers: { // 传递租户id，用户id
-          userId: param.userId,
-          tenantId: param.tenantId,
-          token: localStorage.token,
-        },
-      } : {}).then((response) => {
+      window.$ajax.post(url, param).then((response) => {
         resolve(response.data);
       }).catch((error) => {
         this.error = error;

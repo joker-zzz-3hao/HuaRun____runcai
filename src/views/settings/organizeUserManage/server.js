@@ -37,7 +37,12 @@ export default class Server extends ServerBase {
   }
 
   // 设置部门负责人
-  setOrgLeader(param) {
-    return this._ajaxPost('system-service/sys/userRole/addOrgUserLeader', param);
+  setDepartLeader(param) {
+    return this._ajaxPost('system-service/sys/userRole/addUserRole', param);
+  }
+
+  // 取消部门负责人
+  removeDepartLeder(param) {
+    return this._ajaxPost('system-service/sys/userRole/delUserRole', param);
   }
 }

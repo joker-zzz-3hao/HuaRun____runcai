@@ -35,9 +35,4 @@ export default class Server extends ServerBase {
   createOrg(param) {
     return this._ajaxPost('system-service/sys/organization/insertOrg', param);
   }
-
-  // 设置部门负责人
-  setOrgLeader(param) {
-    return this._ajaxPost('system-service/sys/userRole/addOrgUserLeader', param);
-  }
 }
