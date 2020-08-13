@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-05 10:45:05
- * @Description: file content
--->
 <template>
   <div class="issue-message">
     <el-input placeholder="输入用户名称/LDAP账号" v-model="filterText"></el-input>

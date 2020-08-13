@@ -1,12 +1,7 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 15:39:16
- * @Description: file content
--->
 <template>
   <div class="okr-cycle">
     <el-button type="primary" @click="addOkr()">添加周期</el-button>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" style="width: 100%">
       <el-table-column fixed prop="periodName" label="OKR周期名称"></el-table-column>
       <el-table-column prop="startTime" label="开始时间"></el-table-column>
       <el-table-column prop="endTime" label="结束时间"></el-table-column>

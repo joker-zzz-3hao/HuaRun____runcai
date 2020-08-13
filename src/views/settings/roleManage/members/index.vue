@@ -21,7 +21,7 @@
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleDeleteOne(scope.row.roleId)" size="small">移除</el-button>
+            <el-button type="text" @click="handleDeleteOne(scope.row.id)" size="small">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,7 +74,7 @@ export default {
     handleDeleteOne(id) {
       this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
         .then(() => {
-          this.delUserRole({ id });
+          this.delUserRole([{ id }]);
         })
         .catch(() => {});
     },

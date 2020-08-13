@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 18:02:57
- * @Description: file content
--->
 <template>
   <el-dialog
     @click.native="closeshowMember"

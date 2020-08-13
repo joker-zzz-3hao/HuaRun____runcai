@@ -10,27 +10,27 @@
     :visible.sync="dialogTableVisible"
     center
   >
-    <el-form ref="form" :model="form" label-width="110px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="110px">
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
         <span v-if="menuName">{{menuName}}</span>
         <span v-if="!menuName">主目录</span>
       </el-form-item>
-      <el-form-item label="菜单类型">
+      <el-form-item label="菜单类型" prop="functionType">
         <el-radio-group v-model="form.functionType">
           <el-radio label="PAGE">目录</el-radio>
           <el-radio label="MENU">菜单</el-radio>
           <el-radio label="BTN">按钮</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="菜单编码">
+      <el-form-item label="菜单编码" prop="functionCode">
         <el-input style="width:320px" v-model="form.functionCode" placeholder="请输入菜单编码"></el-input>
       </el-form-item>
-      <el-form-item label="菜单名称">
+      <el-form-item label="菜单名称" prop="functionName">
         <el-input style="width:320px" v-model="form.functionName" placeholder="请输入菜单名称"></el-input>
       </el-form-item>
-      <el-form-item label="显示排序">
+      <el-form-item label="显示排序" prop="functionSequence">
         <el-input
           style="width:320px"
           type="number"
@@ -38,16 +38,24 @@
           placeholder="请设置示排序"
         ></el-input>
       </el-form-item>
-      <el-form-item label="路由地址" v-if="form.functionType!='BTN'">
+      <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="permissionCode">
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入路由地址"></el-input>
       </el-form-item>
-      <el-form-item label="组件路径" v-if="form.functionType=='MENU'">
+      <el-form-item label="组件路径" v-if="form.functionType=='MENU'" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入组件路径"></el-input>
       </el-form-item>
-      <el-form-item label="权限标识" v-if="form.functionType=='BTN'||form.functionType=='MENU'">
+      <el-form-item
+        label="权限标识"
+        v-if="form.functionType=='BTN'||form.functionType=='MENU'"
+        prop="permissionCode"
+      >
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
       </el-form-item>
-      <el-form-item label="菜单状态" v-if="form.functionType=='MENU'||form.functionType=='PAGE'">
+      <el-form-item
+        label="菜单状态"
+        v-if="form.functionType=='MENU'||form.functionType=='PAGE'"
+        prop="status"
+      >
         <el-radio-group v-model="form.status">
           <el-radio label="O">正常</el-radio>
           <el-radio label="S">停用</el-radio>
@@ -55,7 +63,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm()">确定</el-button>
+      <el-button type="primary" @click="validateForm()">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
   </el-dialog>
@@ -90,10 +98,20 @@ export default {
     return {
       server,
       showOption: false,
-      form: {},
+      form: {
+        functionType: 'PAGE',
+        status: 'O',
+      },
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      rules: {
+        functionCode: [{ required: true, message: '请输入菜单编码', trigger: 'change' }],
+        functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+        functionSequence: [{ required: true, message: '请设置示排序', trigger: 'blur' }],
+        permissionCode: [{ required: true, message: '请输入路由地址', trigger: 'blur' }],
+        resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+      },
     };
   },
 
@@ -117,7 +135,15 @@ export default {
         }
       });
     },
-
+    validateForm() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.submitForm();
+        } else {
+          return false;
+        }
+      });
+    },
     close() {
       this.dialogTableVisible = false;
     },

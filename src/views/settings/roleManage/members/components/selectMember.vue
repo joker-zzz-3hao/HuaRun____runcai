@@ -19,7 +19,10 @@
           <ul>
             <li v-for="(item,index) in data" :key="index" @click="selectDep(item)">
               <span v-if="item.type=='user'">
-                <el-checkbox @change="checkMember($event,item)">{{item.label}}</el-checkbox>
+                <el-checkbox
+                  @change="checkMember($event,item)"
+                  v-model="value[index]"
+                >{{item.label}}</el-checkbox>
               </span>
               <span v-else>{{item.label}}</span>
             </li>
@@ -28,8 +31,8 @@
       </div>
       <div class="roulewidth roulemodel">
         <div class="rouleselect">
-          <span>已选1人</span>
-          <span>清空</span>
+          <span>已选{{roulelist.length}}人</span>
+          <span @click="roulelistNum()">清空</span>
         </div>
         <div class="roulelist">
           <ul>
@@ -54,6 +57,11 @@ export default {
     },
   },
   methods: {
+    // 清空
+    roulelistNum() {
+      this.roulelist = [];
+      this.value = this.value.map(() => false);
+    },
     // 返回重置
     cleargetqueryMenu() {
       this.selectList = [];
@@ -101,7 +109,6 @@ export default {
           userName: data.label,
           id: data.id,
           userId: data.userId,
-          orgId: data.orgId,
           roleId: this.$route.query.roleId,
         });
       } else {
@@ -143,6 +150,7 @@ export default {
       data: [],
       form: {},
       member: '',
+      value: [],
       selectList: [],
     };
   },
@@ -180,7 +188,7 @@ export default {
 }
 
 .roulelist ul li {
-  height: 50px;
+  height: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -189,8 +197,8 @@ export default {
 
 .rouleimg {
   background-color: aquamarine;
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: inline-block;
   margin-right: 20px;
