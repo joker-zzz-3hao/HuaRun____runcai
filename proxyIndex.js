@@ -32,15 +32,6 @@ module.exports = {
       '^/gateway': '',
     },
   },
-  '/*': {
-    target: 'http://10.54.25.249:8081', // 曾伟
-    // target: api,
-    secure: false,
-    changeOrigin: true,
-    pathRewrite: {
-      // '^/gateway': '',
-    },
-  },
   '/gateway/talent-okr/*': { // 天龙
     target: 'http://10.54.25.145:8082',
     // target: api,
