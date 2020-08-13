@@ -15,6 +15,8 @@ export default [
           hasMainMenu: true,
           noSubMenu: true,
           parentRoute: 'overview',
+          title: '概览首页',
+          power: '',
         },
         component: () => import('@/views/overview/index'),
       },

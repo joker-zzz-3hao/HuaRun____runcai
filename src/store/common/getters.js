@@ -1,1 +1,3 @@
-export default {};
+export default {
+  userInfo: (state) => (!!state.userInfo),
+};

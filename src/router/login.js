@@ -12,6 +12,8 @@ export default [
         path: '/login',
         name: 'login',
         meta: {
+          title: '登录',
+          power: '',
         },
         component: () => import('@/views/login/index'),
       },

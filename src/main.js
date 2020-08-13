@@ -27,6 +27,7 @@ Vue.prototype.$echarts = echarts;
 window.$ajax = $ajax;
 // 注入自定义minxin
 Vue.mixin(mixin);
+window.$store = store;
 
 Vue.config.productionTip = false;
 
