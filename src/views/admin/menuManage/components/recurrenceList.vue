@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-11 14:28:43
- * @Description: file content
--->
 <template>
   <div>
     <el-collapse>

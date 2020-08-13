@@ -52,7 +52,7 @@ module.exports = {
     // host: '10.54.25.101', // 表示启动的时候使用的域名，默认可以不写，则是使用localhost和本机IP
     // port: '8080', // 设置端口号
     https: false, // 是否使用https协议
-    hotOnly: false, // 是否开启热更新
+    hotOnly: true, // 是否开启热更新
     proxy: proxyConfig,
     before(app) {
       if (isMock === true) {

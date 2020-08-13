@@ -59,10 +59,14 @@
 </template>
 
 <script>
+import Server from '../server';
+
+const server = new Server();
 export default {
   name: 'mainMenu',
   data() {
     return {
+      server,
       isShrinkMenus: false,
       selectMenu: '',
       menuList: [
@@ -142,6 +146,11 @@ export default {
     isSubMenu() {
       return this.$route.meta.isSubMenu;
     },
+  },
+  mounted() {
+    this.server.queryByTenantIdAndUserId().then((res) => {
+      console.log(res);
+    });
   },
   methods: {
     fnHandle(str, index) {

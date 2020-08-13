@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-11 10:43:56
- * @Description: file content
--->
 <template>
   <div class="menuManagement">
     <el-form ref="ruleForm" :inline="true">

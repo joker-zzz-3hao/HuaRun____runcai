@@ -8,46 +8,53 @@
     <el-form ref="membersForm" :inline="true">
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
-        <el-button type="primary">移除</el-button>
+        <el-button type="primary" @click="handleDelete()">移除</el-button>
       </el-form-item>
     </el-form>
     <div>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="roleId" label="角色编码"></el-table-column>
-        <el-table-column prop="name" label="角色名称"></el-table-column>
-        <el-table-column prop="role" label="类型"></el-table-column>
-        <el-table-column prop="city" label="状态">
-          <template slot-scope="scope">
-            <el-switch v-model="value[scope.$index]" active-text="启用"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="date" label="创建时间"></el-table-column>
+      <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column fixed prop="userAccount" label="用户帐号"></el-table-column>
+        <el-table-column prop="userName" label="用户姓名"></el-table-column>
+        <el-table-column prop="userMobile" label="手机号"></el-table-column>
+        <el-table-column prop="sortPropName" label="所在团队"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleDelete(scope.row)" size="small">移除</el-button>
+            <el-button type="text" @click="handleDeleteOne(scope.row.roleId)" size="small">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="pageright">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+      <tl-crcloud-table
         layout="total,  prev, pager,next, sizes"
-        :total="400"
-      ></el-pagination>
+        :total="totalpage"
+        :currentPage="currentPage"
+        :pageSize="pageSize"
+        :searchList="listRoleUser"
+      ></tl-crcloud-table>
     </div>
-    <tl-add-member v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-member>
+    <tl-add-member
+      v-if="exist"
+      :exist.sync="exist"
+      :title="title"
+      :rouleType="rouleType"
+      @getTableList="listRoleUser"
+    ></tl-add-member>
   </div>
 </template>
 
 <script>
+import crcloudTable from '@/components/crcloudTable';
 import addMember from './components/addMember';
+import Server from './server';
 
+const server = new Server();
 export default {
+  created() {
+    this.listRoleUser();
+  },
   methods: {
     showAddRoule() {
       this.title = '新增角色';
@@ -57,10 +64,17 @@ export default {
       this.title = '编辑角色';
       this.exist = true;
     },
-    handleDelete(done) {
+    handleDelete() {
       this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
         .then(() => {
-          done();
+          this.delUserRole(this.listUserRole);
+        })
+        .catch(() => {});
+    },
+    handleDeleteOne(id) {
+      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+        .then(() => {
+          this.delUserRole({ id });
         })
         .catch(() => {});
     },
@@ -70,42 +84,53 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    delUserRole(listUserRole) {
+      this.server.delUserRole({
+        listUserRole,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.listRoleUser();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    handleSelectionChange(data) {
+      const listUserRole = data.map((item) => ({ id: item.id }));
+      this.listUserRole = listUserRole;
+    },
+    listRoleUser() {
+      this.server.listRoleUser({
+        roleId: this.$route.query.roleId,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableData = res.data.content;
+          this.totalpage = res.data.total;
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
   },
   components: {
     'tl-add-member': addMember,
+    'tl-crcloud-table': crcloudTable,
   },
   data() {
     return {
+      listUserRole: [],
+      server,
       title: '',
       rouleType: false, // 是否内置管理员
       exist: false,
       value: [],
       inputValue: '',
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
-      tableData: [{
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }, {
-        roleId: '0001',
-        name: '王小虎',
-        role: '内置角色',
-        date: '2020-07-16 11:33:00',
-      }],
+      currentPage: 1,
+      pageSize: 10,
+      totalpage: 0,
+      tableData: [],
     };
   },
 };

@@ -50,7 +50,7 @@ const router = new VueRouter({
 //   const urlCrctoken = urlParams.crctoken;
 //   // 判断获取的token,如果token存在就更新存到缓存
 //   if (urlCrctoken) {
-//     localSave('token',urlCrctoken);
+//     localSave('token', urlCrctoken);
 //   }
 //   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
 //   if (!localStorage.token || localStorage.token === null) {

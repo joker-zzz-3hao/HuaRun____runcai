@@ -17,4 +17,16 @@ export default class Server extends ServerBase {
   addRole(param) {
     return this._ajaxPost('system-service/sys/role/addRole', param);
   }
+
+  getRole(param) {
+    return this._ajaxPost('system-service/sys/role/getRole', param);
+  }
+
+  updateRole(param) {
+    return this._ajaxPost('system-service/sys/role/updateRole', param);
+  }
+
+  delRole(param) {
+    return this._ajaxPost('system-service/sys/role/delRole', param);
+  }
 }
