@@ -7,46 +7,56 @@
   <div class="home">
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
-        <el-input maxlength="50" v-model="inputValue" placeholder="请输入角色名称/创建时间/角色状态"></el-input>
+        <el-input maxlength="50" v-model="keyWord" placeholder="请输入角色名称/创建时间/角色状态"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="listRolePage">查询</el-button>
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
       </el-form-item>
     </el-form>
     <div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="roleCode" label="角色编码"></el-table-column>
         <el-table-column prop="roleName" label="角色名称"></el-table-column>
         <el-table-column prop="roleType" label="类型"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="$router.push('/members')">成员管理</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="$router.push({path:'/members',query:{roleId:scope.row.roleId,name:encodeURI(scope.row.roleName)}})"
+            >成员管理</el-button>
             <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">移除</el-button>
+            <el-button type="text" size="small" @click="handleDelete(scope.row.roleCode)">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="pageright">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+      <tl-crcloud-table
         layout="total,  prev, pager,next, sizes"
-        :total="400"
-      ></el-pagination>
+        :total="totalpage"
+        :currentPage="currentPage"
+        :pageSize="pageSize"
+        :searchList="listRolePage"
+      ></tl-crcloud-table>
     </div>
-    <tl-add-role v-if="exist" :exist.sync="exist" :title="title" :rouleType="rouleType"></tl-add-role>
+    <tl-add-role
+      v-if="exist"
+      :exist.sync="exist"
+      :title="title"
+      :rouleType="rouleType"
+      :roleInfo="roleInfo"
+      @getSearchList="listRolePage"
+    ></tl-add-role>
   </div>
 </template>
 
 <script>
+import crcloudTable from '@/components/crcloudTable';
 import addRole from './components/addRole';
 import Server from './server';
 
@@ -58,10 +68,13 @@ export default {
   methods: {
     listRolePage() {
       this.server.listRolePage({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
         keyWord: this.keyWord,
       }).then((res) => {
         if (res.code == 200) {
           this.tableData = res.data.content;
+          this.totalpage = res.data.total;
         }
       });
     },
@@ -70,16 +83,27 @@ export default {
       this.title = '新增角色';
       this.exist = true;
     },
-    putRoule() {
+    putRoule(row) {
+      this.roleInfo = row;
       this.title = '编辑角色';
       this.exist = true;
     },
-    handleDelete(done) {
+    handleDelete(roleCode) {
       this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
         .then(() => {
-          done();
+          this.delRole(roleCode);
         })
         .catch(() => {});
+    },
+    delRole(roleCode) {
+      this.server.delRole({ roleCode }).then((res) => {
+        if (res.code == 200) {
+          this.listRolePage();
+          this.$message.success(res.msg);
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -90,6 +114,7 @@ export default {
   },
   components: {
     'tl-add-role': addRole,
+    'tl-crcloud-table': crcloudTable,
   },
   data() {
     return {
@@ -98,12 +123,11 @@ export default {
       rouleType: false, // 是否内置管理员
       exist: false,
       value: [],
-      inputValue: '',
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      totalpage: 0,
+      currentPage: 1,
+      pageSize: 10,
       tableData: [],
+      keyWord: '',
     };
   },
 };

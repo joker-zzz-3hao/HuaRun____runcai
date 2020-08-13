@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-05 18:44:17
- * @Description: file content
--->
 <template>
   <el-dialog
     :modal-append-to-body="false"

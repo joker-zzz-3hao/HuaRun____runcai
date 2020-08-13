@@ -1,8 +1,3 @@
-/*
- * @Author: 许志鹏
- * @Date: 2020-08-10 10:18:59
- * @Description: file content
- */
 import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {

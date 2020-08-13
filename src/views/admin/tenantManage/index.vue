@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 15:39:16
- * @Description: file content
--->
 <template>
   <div class="tenant-management">
     <el-form ref="ruleForm" :inline="true">
@@ -17,7 +12,7 @@
       </el-form-item>
     </el-form>
     <div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="tenantBuId" label="企业ID"></el-table-column>
         <el-table-column prop="tenantName" label="企业名称"></el-table-column>
         <el-table-column prop="applyUser" label="申请人"></el-table-column>

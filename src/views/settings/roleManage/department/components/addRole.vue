@@ -14,11 +14,11 @@
     :visible.sync="dialogTableVisible"
     center
   >
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="角色编号">
+    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form-item label="角色编号" prop="roleCode">
         <el-input style="width:320px" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
       </el-form-item>
-      <el-form-item label="角色名称">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input style="width:320px" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    roleInfo: {
+      type: Object,
+      required: false,
+    },
   },
   data() {
     return {
@@ -62,23 +66,37 @@ export default {
       form: {
         roleCode: '',
         roleName: '',
-        menuTree: [],
+        functionList: [],
       },
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      rules: {
+        roleCode: [
+          { required: true, message: '请输入角色编号', trigger: 'blur' },
+        ],
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
+        ],
+      },
     };
   },
 
   mounted() {
     this.dialogTableVisible = true;
+    if (this.roleInfo) {
+      this.getRole();
+    }
     this.getqueryMenu();
   },
   methods: {
-
     handleCheckChange() {
       const keys = this.$refs.treeMenu.getCheckedKeys();
-      this.form.menuTree = keys.map((item) => ({ id: item }));
+      if (this.roleInfo) {
+        this.form.functionList = keys.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
+      } else {
+        this.form.functionList = keys.map((item) => ({ functionId: item }));
+      }
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -88,21 +106,62 @@ export default {
         });
     },
     // 递归修改符合element tree结构数据
-    getTreeList(data, disabled) {
+    getTreeList(data) {
       if (data) {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
-          disabled: this.infoBool,
-          children: this.getTreeList(item.children, disabled),
+          children: this.getTreeList(item.children),
         }));
       }
     },
     submitForm() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          // eslint-disable-next-line no-unused-expressions
+          this.roleInfo ? this.updateRole() : this.addRole();
+        } else {
+          return false;
+        }
+      });
+    },
+    getRole() {
+      this.server.getRole({
+        roleId: this.roleInfo.roleId,
+        roleCode: this.roleInfo.roleCode,
+      }).then((res) => {
+        this.form = {
+          roleCode: res.data.roleCode,
+          roleName: res.data.roleName,
+          functionList: [],
+        };
+        const treeData = res.data.menuTree.map((item) => item.functionId);
+        console.log(treeData);
+        this.$refs.treeMenu.setCheckedKeys(treeData);
+      });
+    },
+    addRole() {
+      this.handleCheckChange();
       const { form } = this;
       form.roleType = 'CREATION';
       this.server.addRole(form).then((res) => {
         if (res.code == 200) {
+          this.$emit('getSearchList');
+          this.$message.success(res.msg);
+          this.closed();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    updateRole() {
+      this.handleCheckChange();
+      const { form } = this;
+      form.roleType = 'CREATION';
+      form.roleId = this.roleInfo.roleId;
+      this.server.updateRole(form).then((res) => {
+        if (res.code == 200) {
+          this.$emit('getSearchList');
           this.$message.success(res.msg);
           this.closed();
         } else {
