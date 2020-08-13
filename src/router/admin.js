@@ -11,6 +11,7 @@ export default [{
     name: 'tenantManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/tenantManage/index'),
   },
@@ -20,6 +21,7 @@ export default [{
     name: 'userManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/userManage/index'),
   },
@@ -29,6 +31,7 @@ export default [{
     name: 'departmentManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/departmentManage/index'),
   },
@@ -38,6 +41,7 @@ export default [{
     name: 'dictionaryManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/dictionaryManage/index'),
   },
@@ -47,6 +51,7 @@ export default [{
     name: 'menuManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/menuManage/index'),
   },
@@ -56,6 +61,7 @@ export default [{
     name: 'sysUserManage',
     meta: {
       hasMainMenu: true,
+      isSubMenu: true,
     },
     component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
   },

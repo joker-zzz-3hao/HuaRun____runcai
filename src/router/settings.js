@@ -13,6 +13,7 @@ export default [
         name: 'organizeManage',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/settings/organizeUserManage/index'),
       },
@@ -22,6 +23,7 @@ export default [
         name: 'okrPermissions',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/settings/okrPermissions/index'),
       },
@@ -31,6 +33,7 @@ export default [
         name: 'okrCycle',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/settings/okrCycle/index'),
       },
@@ -40,6 +43,7 @@ export default [
         name: 'roleManage',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/settings/roleManage/department/index'),
       },
@@ -49,6 +53,7 @@ export default [
         name: 'members',
         meta: {
           hasMainMenu: true,
+          isSubMenu: true,
         },
         component: () => import('@/views/settings/roleManage/members/index'),
       },

@@ -59,6 +59,9 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-tooltip class="item" effect="light" content="Right Center 提示文字" placement="right">
+      <el-button></el-button>
+    </el-tooltip>
   </div>
 </template>
 

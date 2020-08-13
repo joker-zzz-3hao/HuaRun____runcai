@@ -15,8 +15,6 @@ export default [
           hasMainMenu: true,
           noSubMenu: true,
           parentRoute: 'overview',
-          title: '概览首页',
-          power: '',
         },
         component: () => import('@/views/overview/index'),
       },
@@ -28,7 +26,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
         },
         component: () => import('@/views/okrManage/myOkr/index'),
       },
@@ -40,7 +38,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
         },
         component: () => import('@/views/okrManage/okrApproval/index'),
       },
@@ -52,7 +50,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
           belongsTo: 'myOkr',
         },
         component: () => import('@/views/okrManage/writeOkr/index'),
@@ -65,7 +63,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
         },
         component: () => import('@/views/okrManage/concernedOkr/index'),
       },
@@ -77,7 +75,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
         },
         component: () => import('@/views/okrManage/undertakeMaps/index'),
       },
@@ -89,7 +87,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'okr',
+          parentRoute: 'myOkr',
         },
         component: () => import('@/views/okrManage/okrMaps/index'),
       },
@@ -101,7 +99,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'assess',
+          parentRoute: 'myAssess',
         },
         component: () => import('@/views/assessManage/myAssess/index'),
       },
@@ -113,7 +111,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'assess',
+          parentRoute: 'myAssess',
         },
         component: () => import('@/views/assessManage/assessPk/index'),
       },

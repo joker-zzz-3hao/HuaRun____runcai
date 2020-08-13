@@ -10,10 +10,14 @@
             tag="li"
             v-for="item in menuList"
             :key="item.id"
-            :class="[item.classTag,{'is-active':item.parentRoute === $route.meta.parentRoute}]"
+            :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute}]"
             :to="{name:item.toName}"
           >
             <i @click="fnHandle(item.functions.events,0)"></i>
+            <div class="text-tip">
+              <p>我是提示文案</p>
+              <i></i>
+            </div>
           </router-link>
         </ul>
         <div class="sub-menu">
@@ -21,7 +25,7 @@
             <dl
               :key="item.id"
               v-if="item.subMenuList"
-              :class="{'is-focus': item.parentRoute === $route.meta.parentRoute}"
+              :class="{'is-focus': item.toName === $route.meta.parentRoute}"
             >
               <dt>{{item.mainMenuTitle}}</dt>
               <router-link
@@ -74,7 +78,6 @@ export default {
           mainMenuTitle: '工作台',
           classTag: ['workbench'],
           toName: 'overview',
-          parentRoute: 'overview',
           functions: {
             events: ['rmSubMenu'],
           },
@@ -83,7 +86,6 @@ export default {
           mainMenuTitle: 'OKR管理',
           classTag: ['okr-menu'],
           toName: 'myOkr',
-          parentRoute: 'okr',
           functions: {
             events: ['isExtend'],
           },
@@ -119,7 +121,6 @@ export default {
           mainMenuTitle: '考核管理',
           classTag: ['assess-menu'],
           toName: 'myAssess',
-          parentRoute: 'assess',
           functions: {
             events: ['isExtend'],
           },
