@@ -28,7 +28,9 @@ module.exports = {
     // target: api,
     secure: false,
     changeOrigin: true,
-    pathRewrite: { '^/gateway': '' },
+    pathRewrite: {
+      '^/gateway': '',
+    },
   },
   '/*': {
     target: 'http://10.54.25.249:8081', // 曾伟
@@ -44,7 +46,18 @@ module.exports = {
     // target: api,
     secure: false,
     changeOrigin: true,
-    pathRewrite: { '^/gateway': '' },
+    pathRewrite: {
+      '^/gateway': '',
+    },
+  },
+  '/system-service/*': { // zengwei
+    target: 'http://10.54.25.249:8081',
+    // target: api,
+    secure: false,
+    changeOrigin: true,
+    pathRewrite: {
+      '^/gateway': '/system-service',
+    },
   },
 
 };

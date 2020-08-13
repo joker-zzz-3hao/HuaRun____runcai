@@ -1,3 +1,8 @@
+<!--
+ * @Author: 许志鹏
+ * @Date: 2020-08-11 10:43:56
+ * @Description: file content
+-->
 <template>
   <div class="menuManagement">
     <el-form ref="ruleForm" :inline="true">
@@ -21,22 +26,32 @@
         <el-button type="primary" @click="menuAdd">添加菜单</el-button>
       </el-form-item>
     </el-form>
-    <div class="menuTable">
-      <div class="menuth" style="width:100px">ID</div>
-      <div class="menuth" style="width:100px">菜单名称</div>
-      <div class="menuth" style="width:50px">排序</div>
-      <div class="menuth" style="width:200px">权限标识</div>
-      <div class="menuth" style="width:200px">组件路径</div>
-      <div class="menuth" style="width:100px">状态</div>
-      <div class="menuth" style="width:300px">创建时间</div>
-      <div class="menuth" style="width:300px">操作</div>
+    <div>
+      <el-table
+        :data="tableData"
+        row-key="functionId"
+        style="width: 100%;margin-bottom: 20px;"
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+        <el-table-column prop="functionId" label="ID" width="180"></el-table-column>
+        <el-table-column prop="functionName" label="菜单名称" width="180"></el-table-column>
+        <el-table-column prop="permissionCode" label="权限标识" width="180"></el-table-column>
+        <el-table-column prop="resourceUrl" label="组件路径" width="180"></el-table-column>
+        <el-table-column prop="status" label="状态" width="180">
+          <template slot-scope="scope">
+            <span>{{CONST.STATUS[scope.row.status]}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="130">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="menuPut(scope.row)">修改</el-button>
+            <el-button type="text" size="small" @click="menuAdd(scope.row)">新增</el-button>
+            <el-button type="text" size="small" @click="deleteList(scope.row.functionId)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <tl-recurrence-list
-      :list="tableData"
-      @showForm="menuAdd"
-      @menuPut="menuPut"
-      @getMenuList="getMenuList"
-    ></tl-recurrence-list>
     <tl-add-menu
       :title="title"
       :exist.sync="dialogVisible"
@@ -52,7 +67,6 @@
 <script>
 import addMenu from './components/addMenu';
 import Server from './server';
-import recurrenceList from './components/recurrenceList';
 import CONST from './const';
 
 const server = new Server();
@@ -60,7 +74,6 @@ export default {
   name: 'menuManagement',
   components: {
     'tl-add-menu': addMenu,
-    'tl-recurrence-list': recurrenceList,
   },
   data() {
     return {
@@ -102,6 +115,24 @@ export default {
       this.title = '编辑';
       this.menuName = row.functionName;
       this.menuData = row;
+    },
+    deleteById(id) {
+      this.server.deleteById({ functionId: id }).then((res) => {
+        if (res.code == 200) {
+          this.getMenuList();
+          this.$message.success('删除成功');
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    deleteList(id) {
+      this.$confirm('是否确认删除该数据，删除将无法恢复', '删除确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(() => {
+        this.deleteById(id);
+      });
     },
   },
 };

@@ -2,19 +2,7 @@
   <div class="organize-management">
     <div class="org-header">
       <div>部门管理</div>
-      <span>
-        <el-select v-model.trim="searchData.userType" placeholder="选择租户">
-          <el-option
-            v-for="item in CONST.USER_TYPE_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
 
-        <el-input placeholder="输入用户姓名/账号/手机号" v-model.trim="searchData.keyWord" style="width:300px"></el-input>
-        <el-button @click="searchList">查询</el-button>
-      </span>
       <span>
         <el-button @click="createDepart">创建部门</el-button>
         <el-button @click="createOrEditUser">创建用户</el-button>
@@ -44,6 +32,30 @@
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
+        <div slot="searchBar">
+          <el-form>
+            <el-form-item>
+              <el-select v-model.trim="searchData.userType" placeholder="选择租户">
+                <el-option
+                  v-for="item in CONST.USER_TYPE_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                placeholder="输入用户姓名/账号/手机号"
+                v-model.trim="searchData.keyWord"
+                style="width:300px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="searchList">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
             <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
@@ -343,6 +355,7 @@ export default {
       });
     },
     changeStatus(user) {
+      debugger;
       const params = {
         userName: user.userName, // 用户名称
         userMobile: user.userMobile, // 手机
