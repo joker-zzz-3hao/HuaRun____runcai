@@ -3,22 +3,17 @@
     <div>
       <div>系统用户管理</div>
     </div>
-    <crcloud-table
-      :total="total"
-      :pageSize.sync="pageSize"
-      :currentPage.sync="currentPage"
-      @searchList="searchList"
-    >
+    <crcloud-table @searchList="searchList" :isPage="false">
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
           <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="userId" label="用户账号"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="userAccount" label="用户账号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="用户角色"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userName" label="账号类型"></el-table-column>
           <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
           <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
             <template slot-scope="scope">
-              <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">重置密码</el-button>
+              <el-button @click="resetPwd(scope.row)">重置密码</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,37 +85,36 @@ export default {
       formData: {
         loginPwd: '',
         newPwd: '',
-        confirmPwd: '',
+        userAccount: '',
       },
     };
   },
   created() {
     this.searchList();
-    this.resetPwd();
+    // this.resetPwd();
   },
   methods: {
     searchList() {
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
+        userAccount: 'admin',
       };
       this.server.getUserLIst(params).then((res) => {
         if (res.code == 200) {
-          this.total = res.data.total;
-          this.currentPage = res.data.currentPage;
-          this.pageSize = res.data.pageSize;
-          this.tableData = res.data.content;
+          this.tableData = [{ ...res.data }];
         }
       });
     },
 
-    resetPwd() {
+    resetPwd(user) {
+      this.formData.userAccount = user.userAccount;
       this.visible = true;
     },
     save() {
       this.$refs.resetForm.validate((valid) => {
-        if (valid) {
-          this.server.editPwd().then((res) => {
+        if (!valid) {
+          this.server.editPwd(this.formData).then((res) => {
             if (res.code == 200) {
               this.$message.success('重置密码成功');
             }
