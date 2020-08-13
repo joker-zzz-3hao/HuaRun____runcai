@@ -1,8 +1,3 @@
-/*
- * @Author: 许志鹏
- * @Date: 2020-08-04 15:39:16
- * @Description: file content
- */
 export default [
   {
     path: '/settingsIndex',
@@ -13,7 +8,7 @@ export default [
     component: () => import('@/views/settingsIndex'),
     children: [
       {
-        // 组织用户管理
+        // 组织部门管理
         path: '/organizeManage',
         name: 'organizeManage',
         meta: {
@@ -40,15 +35,7 @@ export default [
         component: () => import('@/views/settings/okrCycle/index'),
       },
       {
-        // 发布消息
-        path: '/issueMessage',
-        name: 'issueMessage',
-        meta: {
-          hasMainMenu: true,
-        },
-        component: () => import('@/views/settings/issueMessage/index'),
-      },
-      {
+        // 角色管理
         path: '/roleManage',
         name: 'roleManage',
         meta: {
@@ -57,20 +44,13 @@ export default [
         component: () => import('@/views/settings/roleManage/department/index'),
       },
       {
+        // 角色管理
         path: '/members',
         name: 'members',
         meta: {
           hasMainMenu: true,
         },
         component: () => import('@/views/settings/roleManage/members/index'),
-      },
-      {
-        path: '/setOkr',
-        name: 'setOkr',
-        meta: {
-          hasMainMenu: true,
-        },
-        component: () => import('@/views/settings/setOkr/index'),
       },
     ],
   },

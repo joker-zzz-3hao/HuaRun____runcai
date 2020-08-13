@@ -1,14 +1,8 @@
-/*
- * @Author: 许志鹏
- * @Date: 2020-08-04 15:39:16
- * @Description: file content
- */
-/* eslint-disable indent */
 export default [{
   path: '/adminIndex',
   name: 'adminIndex',
   redirect: {
-    name: 'role',
+    name: 'tenantManage',
   },
   component: () => import('@/views/adminIndex'),
   children: [{
@@ -19,33 +13,6 @@ export default [{
       hasMainMenu: true,
     },
     component: () => import('@/views/admin/tenantManage/index'),
-  },
-  {
-    // 发布公告
-    path: '/issueNotice',
-    name: 'issueNotice',
-    meta: {
-      hasMainMenu: true,
-    },
-    component: () => import('@/views/admin/issueNotice/index'),
-  },
-  {
-    // 数据字典
-    path: '/dataDictionary',
-    name: 'dataDictionary',
-    meta: {
-      hasMainMenu: true,
-    },
-    component: () => import('@/views/admin/dataDictionary/index'),
-  },
-  {
-    // 系统维护
-    path: '/systemMaintenance',
-    name: 'systemMaintenance',
-    meta: {
-      hasMainMenu: true,
-    },
-    component: () => import('@/views/admin/systemMaintenance/index'),
   },
   {
     // 用户管理
@@ -66,13 +33,13 @@ export default [{
     component: () => import('@/views/admin/departmentManage/index'),
   },
   {
-    // 系统用户管理
-    path: '/sysUserManage',
-    name: 'sysUserManage',
+    // 字典管理
+    path: '/dictionaryManage',
+    name: 'dictionaryManage',
     meta: {
       hasMainMenu: true,
     },
-    component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
+    component: () => import('@/views/admin/dictionaryManage/index'),
   },
   {
     // 菜单管理
@@ -82,6 +49,15 @@ export default [{
       hasMainMenu: true,
     },
     component: () => import('@/views/admin/menuManage/index'),
+  },
+  {
+    // 系统用户管理
+    path: '/sysUserManage',
+    name: 'sysUserManage',
+    meta: {
+      hasMainMenu: true,
+    },
+    component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
   },
   ],
 },

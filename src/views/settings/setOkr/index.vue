@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-11 09:52:20
- * @Description: file content
--->
 <template>
   <div class="setOkr">
     <div class="setmodel" v-for="(item,index) in setList" :key="index">
