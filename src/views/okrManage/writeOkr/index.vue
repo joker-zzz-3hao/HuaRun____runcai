@@ -17,8 +17,8 @@
         ></el-option>
       </el-select>
     </div>
-    <change-okr v-if="!canWrite" :server="server"></change-okr>
-    <okr-form :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
+    <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
+    <change-okr v-else :server="server" :okrId="okrId"></change-okr>
   </div>
 </template>
 
@@ -78,6 +78,7 @@ export default {
   created() {
     this.init();
     this.canWrite = this.$route.params.canWrite != 'cannot';
+    this.okrId = this.$route.params.okrId || '';
     console.log('can', this.canWrite);
   },
   methods: {

@@ -59,7 +59,7 @@
                   ></el-input-number>
                 </el-form-item>
                 <el-form-item label="信心指数">
-                  <el-popover placement="right" width="400" trigger="click">
+                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                     <el-radio-group v-model="kitem.okrDetailConfidence">
                       <el-radio-button
                         v-for="citem in CONST.CONFIDENCE"
@@ -85,7 +85,7 @@
       </el-form>
 
       <el-button @click="addobject()">加一个O</el-button>
-      <el-button @click="summit()">提交</el-button>
+      <el-button v-if="isnew" @click="summit()">提交</el-button>
     </div>
     <el-dialog
       title="关联承接项"
@@ -137,7 +137,7 @@ export default {
           okrDetailProgress: 0,
           cultureId: '',
           krList: [{
-            // id: 0,
+          // id: 0,
             okrDetailObjectKr: '',
             okrWeight: 0,
             okrDetailProgress: 0,
@@ -164,6 +164,15 @@ export default {
       type: Boolean,
       default: true,
     },
+    isnew: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  mounted() {
+    if (!this.isnew) {
+      this.deleteobject(0);
+    }
   },
   created() {
     this.getjiazhiguan();
