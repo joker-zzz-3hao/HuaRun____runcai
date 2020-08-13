@@ -1,6 +1,6 @@
 <template>
   <section class="main-wrap">
-    <main-menu v-if="hasMainMenu"></main-menu>
+    <main-menu :menuList="menuList" v-if="hasMainMenu"></main-menu>
     <router-view class="view-cont" />
   </section>
 </template>
@@ -12,6 +12,14 @@ export default {
   name: 'mainArea',
   components: {
     mainMenu,
+  },
+  props: {
+    menuList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   computed: {
     hasMainMenu() {

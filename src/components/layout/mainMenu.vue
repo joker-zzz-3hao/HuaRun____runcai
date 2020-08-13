@@ -73,72 +73,16 @@ export default {
       server,
       isShrinkMenus: false,
       selectMenu: '',
-      menuList: [
-        {
-          mainMenuTitle: '工作台',
-          classTag: ['workbench'],
-          toName: 'overview',
-          functions: {
-            events: ['rmSubMenu'],
-          },
-        },
-        {
-          mainMenuTitle: 'OKR管理',
-          classTag: ['okr-menu'],
-          toName: 'myOkr',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的OKR',
-              subClassTag: ['my-okr-menu'],
-              subToName: 'myOkr',
-            },
-            {
-              subMenuTitle: 'OKR审批',
-              subClassTag: ['approval-menu'],
-              subToName: 'okrApproval',
-            },
-            {
-              subMenuTitle: 'ORK承接与对齐',
-              subClassTag: ['undertake-menu'],
-              subToName: 'undertakeMaps',
-            },
-            {
-              subMenuTitle: '我关注的OKR',
-              subClassTag: ['concerned-menu'],
-              subToName: 'concernedOkr',
-            },
-            {
-              subMenuTitle: 'OKR地图',
-              subClassTag: ['maps-menu'],
-              subToName: 'okrMaps',
-            },
-          ],
-        },
-        {
-          mainMenuTitle: '考核管理',
-          classTag: ['assess-menu'],
-          toName: 'myAssess',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的考核',
-              subClassTag: ['my-assess-menu'],
-              subToName: 'myAssess',
-            },
-            {
-              subMenuTitle: '考核PK',
-              subClassTag: ['assess-pk-menu'],
-              subToName: 'assessPk',
-            },
-          ],
-        },
-      ],
+      // menuList: [],
     };
+  },
+  props: {
+    menuList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   computed: {
     noSubMenu() {
