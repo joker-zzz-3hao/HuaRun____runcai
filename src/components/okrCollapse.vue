@@ -48,7 +48,13 @@
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
                 <span v-if="canWrite && item.parentUpdate">
-                  <el-popover placement="top-start" title="标题" width="200" trigger="hover">
+                  <el-popover
+                    placement="top-start"
+                    title="标题"
+                    width="200"
+                    trigger="hover"
+                    :append-to-body="false"
+                  >
                     <span>
                       您承接的OKR有变更，
                       <a @click="goUndertake">查看详情</a>
@@ -65,7 +71,7 @@
             <div class="hideEdit">
               <span v-if="showOKRInfoLabel">关键行动KR：</span>
               <el-form-item v-if="canWrite && kritem.showTitleEdit">
-                <el-input v-model="item.okrDetailObjectKr"></el-input>
+                <el-input v-model="kritem.okrDetailObjectKr"></el-input>
               </el-form-item>
               <span v-else>
                 <span>{{krIndex+1}}</span>
@@ -83,7 +89,7 @@
                 <span>分权重</span>
                 <el-form-item v-if="canWrite && kritem.showWeightEdit">
                   <el-input-number
-                    v-model="item.okrWeight"
+                    v-model="kritem.okrWeight"
                     controls-position="right"
                     :min="0"
                     :max="100"
@@ -107,12 +113,14 @@
               </li>
               <li>
                 <span>信心状态</span>
-                <span>{{kritem.confidence}}</span>
+                <!-- okrDetailConfidence -->
+                <span>{{kritem.okrDetailConfidence}}</span>
               </li>
             </ul>
             <!-- 可在折叠面板body处添加内容 -->
             <slot name="body-bar" :okritem="kritem"></slot>
           </div>
+          <slot name="addkr-bar" :oitem="item"></slot>
         </elcollapseitem>
       </elcollapse>
     </el-form>

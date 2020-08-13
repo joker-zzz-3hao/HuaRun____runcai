@@ -14,15 +14,15 @@ const STATUS_LIST = [{
   name: '已完成', id: '7',
 }];
 const CONFIDENCE = [{
-  label: '可控', value: '1',
+  label: '无风险', value: '1',
 }, {
-  label: '有风险', value: '2',
+  label: '风险可控', value: '2',
 }, {
   label: '失控', value: '3',
 }];
 const CONFIDENCE_MAP = {
-  1: '可控',
-  2: '有风险',
+  1: '无风险',
+  2: '风险可控',
   3: '失控',
 };
 export default {

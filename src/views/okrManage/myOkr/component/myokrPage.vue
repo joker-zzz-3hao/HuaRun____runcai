@@ -99,13 +99,14 @@ export default {
       console.log('点击', componentName, val);
       this.currentView = componentName;
       this.okrItem = val;
+      // this.okrId = val.detailId;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
         this.dialogExist = true;
       });
     },
     goChangeOkr() {
-      this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot' } });
+      this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
     },
   },
 };

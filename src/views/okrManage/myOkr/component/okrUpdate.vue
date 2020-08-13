@@ -35,7 +35,7 @@
                 <el-slider v-model="kitem.okrDetailProgress" show-input :step="1"></el-slider>
               </el-form-item>
               <el-form-item label="信心指数">
-                <el-popover placement="right" width="400" trigger="click">
+                <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                   <el-radio-group v-model="kitem.okrDetailConfidence">
                     <el-radio-button
                       v-for="citem in CONST.CONFIDENCE"
