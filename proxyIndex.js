@@ -16,9 +16,9 @@ module.exports = {
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
-  '/gateway/privilege-service/*': {
-    target: api,
-    // target: 'http://10.200.197.21:8082',
+  '/privilege-service/*': {
+    // target: api,
+    target: 'http://10.200.197.21:8082',
     secure: false,
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
