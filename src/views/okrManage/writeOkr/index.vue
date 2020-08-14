@@ -47,7 +47,7 @@ export default {
         userId: 'user066',
         tenantId: '88888888',
         timecycle: '',
-        time: '',
+        okrCycle: '',
         okrType: 2,
       },
       canWrite: true, // true写okr false changeokr
@@ -104,22 +104,13 @@ export default {
       }
     },
     handleCycleData(data) {
-      this.okrCycle = data;
+      // this.okrCycle = data;
+      this.searchForm.okrCycle = data;
       console.log(data);
       // this.getmaps();
     },
   },
   watch: {
-    'searchForm.time': {
-      handler(newVal) {
-        const timeInfo = this.timelist.filter(
-          (item) => item.timeid == newVal,
-        )[0] || {};
-        this.searchForm.timecycle = timeInfo.timecycle;
-      },
-      deep: true,
-      immediate: true,
-    },
   },
 };
 </script>

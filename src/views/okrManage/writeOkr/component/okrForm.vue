@@ -7,8 +7,8 @@
           <dt>目标名称</dt>
           <dd class="objectdd">
             <el-form-item
-              prop="okrDetailObjectKr"
-              :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
+              :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
+              :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
             >
               <el-input v-model="oitem.okrDetailObjectKr"></el-input>
             </el-form-item>
@@ -18,6 +18,8 @@
                 controls-position="right"
                 :min="0"
                 :max="100"
+                :step="1"
+                :precision="0"
               ></el-input-number>
             </el-form-item>
             <el-form-item label="当前进度">
@@ -26,6 +28,8 @@
                 controls-position="right"
                 :min="0"
                 :max="100"
+                :step="1"
+                :precision="0"
               ></el-input-number>
             </el-form-item>
             <el-form-item label="关联承接项">
@@ -37,25 +41,29 @@
               <dt>关键结果</dt>
               <dd class="objectdd">
                 <el-form-item
-                  prop="okrDetailObjectKr"
-                  :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
+                  :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{required:true, trigger:'blur', message: '请填写关键结果KR名称'}]"
                 >
                   <el-input v-model="kitem.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
-                    v-model="kitem.okrWeight"
+                    v-model.trim="kitem.okrWeight"
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <el-form-item label="当前进度">
                   <el-input-number
-                    v-model="kitem.okrDetailProgress"
+                    v-model.trim="kitem.okrDetailProgress"
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <el-form-item label="信心指数">
@@ -141,7 +149,7 @@ export default {
             okrDetailObjectKr: '',
             okrWeight: 0,
             okrDetailProgress: 0,
-            okrDetailConfidence: '',
+            okrDetailConfidence: 1,
           }],
           undertakeOkrVo: {},
         }],
@@ -175,17 +183,10 @@ export default {
     }
   },
   created() {
-    this.getjiazhiguan();
+    this.getCultureList();
   },
   methods: {
-    getjiazhiguan() {
-      this.server.queryCultureList().then((res) => {
-        if (res.code == 200) {
-          console.log('价值观', res.data);
-          this.philosophyList = res.data;
-        }
-      });
-    },
+
     zidongbaocun() {
       this.timedInterval = setInterval(() => {
         this.getMsgNum();
@@ -199,11 +200,15 @@ export default {
         okrDetailObjectKr: '',
         okrWeight: 0,
         okrDetailProgress: 0,
-        okrDetailConfidence: '',
+        okrDetailConfidence: 1,
       });
     },
     // 删除kr
     deletekr(oindex, krindex) {
+      if (this.formData.okrInfoList[oindex].krList.length <= 1) {
+        this.$message('至少有一个kr');
+        return;
+      }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
     },
     // 增加o
@@ -233,6 +238,7 @@ export default {
       this.selectObject = objectIndex;
       this.dialogVisible = true;
     },
+    // 查可关联承接的okr
     searchOkr() {
       this.server.getUndertakeOkr({ periodId: 'periodId' }).then((res) => {
         if (res.code == 200) {
@@ -266,6 +272,15 @@ export default {
       this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrDetailId = row.okrDetailId;
       this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrVersion = row.okrDetailVersion;
     },
+    // 查公司价值观
+    getCultureList() {
+      this.server.queryCultureList().then((res) => {
+        if (res.code == 200) {
+          console.log('价值观', res.data);
+          this.philosophyList = res.data;
+        }
+      });
+    },
     // 选择关联的价值观
     changePhil(row) {
       this.formData.okrInfoList[this.selectObject].cultureId = row.id || '1162020375644299264';
@@ -276,7 +291,6 @@ export default {
       this.dialogVisible = false;
     },
     // 校验表单
-
     // 提交表单
     summit() {
       this.$refs.dataForm.validate((valid) => {
@@ -293,27 +307,30 @@ export default {
           });
           if (opercent != 100) {
             this.$message('o权重相加不等100~');
+            return;
           }
           if (keypercent != 100) {
             this.$message('kr权重相加不等100~');
+            return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.periodId = 'periodId';
-          // this.formData.userId = 'user001';
-          // this.formData.tenantId = 'tenant001';
           console.log('提交结果', this.formData);
-          // this.canWrite = false;
           this.server.addokr(this.formData).then((res) => {
-            console.log(res.code);
+            if (res.code == 200) {
+              this.$message('提交成功~');
+              this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
+            }
           });
         }
       });
     },
   },
   watch: {
-    'searchForm.time': {
+    'searchForm.okrCycle': {
       handler() {
         this.searchOkr();
+        this.getCultureList();
       },
       deep: true,
       immediate: true,

@@ -29,6 +29,8 @@
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <span v-else>{{item.okrWeight}}%</span>
@@ -93,6 +95,8 @@
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <span v-else>{{kritem.okrWeight}}%</span>
