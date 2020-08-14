@@ -18,9 +18,24 @@
     </el-form>
     <div>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="roleCode" label="角色编码"></el-table-column>
-        <el-table-column prop="roleName" label="角色名称"></el-table-column>
-        <el-table-column prop="roleType" label="类型"></el-table-column>
+        <el-table-column prop="roleCode" label="角色编码">
+          <template slot-scope="scope">
+            <span v-if="scope.row.roleCode">{{scope.row.roleCode}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="roleName" label="角色名称">
+          <template slot-scope="scope">
+            <span v-if="scope.row.roleName">{{scope.row.roleName}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="roleType" label="类型">
+          <template slot-scope="scope">
+            <span v-if="scope.row.roleType">{{CONST.ROLE_TYPE[scope.row.roleType]}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
@@ -29,8 +44,18 @@
               size="small"
               @click="$router.push({path:'/members',query:{roleId:scope.row.roleId,name:encodeURI(scope.row.roleName)}})"
             >成员管理</el-button>
-            <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small" @click="handleDelete(scope.row.roleCode)">移除</el-button>
+            <el-button
+              @click="putRoule(scope.row)"
+              type="text"
+              size="small"
+              v-if="scope.row.roleType=='CREATION'"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="handleDelete(scope.row.roleCode)"
+              v-if="scope.row.roleType=='CREATION'"
+            >移除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -59,6 +84,7 @@
 import crcloudTable from '@/components/crcloudTable';
 import addRole from './components/addRole';
 import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 export default {
@@ -118,6 +144,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       title: '',
       rouleType: false, // 是否内置管理员

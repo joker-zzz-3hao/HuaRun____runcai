@@ -1,13 +1,8 @@
-/*
- * @Author: 许志鹏
- * @Date: 2020-08-10 10:08:11
- * @Description: file content
- */
 const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'GET /sys/tenant/pageTenantList': (req, res) => {
+  'POST /system-service/sys/tenant/pageTenantList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|10': [{
         'tenantId|+1': 1,
