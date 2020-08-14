@@ -25,8 +25,14 @@ const CONFIDENCE_MAP = {
   2: '风险可控',
   3: '失控',
 };
+const OKR_TYPE = {
+  1: '部门',
+  2: '个人',
+
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
   CONFIDENCE_MAP,
+  OKR_TYPE,
 };

@@ -72,6 +72,7 @@ export default {
   created() {
     this.init();
     this.departmentName = this.$store.state.common.userInfo.departmentName;
+    this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {
     init() {
@@ -101,14 +102,6 @@ export default {
     },
     goWriteOkr() {
       this.$router.push({ name: 'writeOkr', params: { canWrite: true } });
-    },
-    dianzan() {
-      this.server.okrSupport({
-        okrId: '1111222',
-        supportType: 1,
-      }).then((res) => {
-        console.log(res.code);
-      });
     },
   },
 };

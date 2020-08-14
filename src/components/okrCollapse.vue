@@ -2,7 +2,7 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-model="formData">
-      <elcollapse class="collapse" v-model="activeList">
+      <elcollapse class="collapse" v-model="innerActiveList">
         <elcollapseitem
           ref="okrcoll"
           v-for="(item, index) in tableList"
@@ -140,6 +140,7 @@ export default {
     return {
       okrmain: {},
       formData: {},
+      innerActiveList: [],
     };
   },
   props: {
@@ -178,6 +179,9 @@ export default {
       default: false,
     },
   },
+  mounted() {
+    this.innerActiveList = this.activeList;
+  },
   created() {
 
   },
@@ -193,6 +197,10 @@ export default {
     goUndertake() {
       // 给父组件传打开的命令
       console.log('dakai');
+    },
+    // 改变tableList后强制渲染
+    updateokrCollapse() {
+      this.$forceUpdate();
     },
   },
   watch: {

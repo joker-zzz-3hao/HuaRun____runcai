@@ -12,7 +12,8 @@
       <ul>
         <li>
           <span>目标类型</span>
-          <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span>
+          <!-- <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span> -->
+          <span>{{okrmain.okrBelongType}}</span>
         </li>
         <li>
           <span>负责人</span>
@@ -50,13 +51,11 @@
 <script>
 import okrCollapse from '@/components/okrCollapse';
 import timeline from '@/components/timeLine';
-import CONST from '../const';
 
 export default {
   name: 'okrDetail',
   data() {
     return {
-      CONST,
       tableList: [], // okr列表
       voteUser: [], // 点赞人列表
       okrmain: {}, // 公共信息
@@ -147,6 +146,7 @@ export default {
     },
     // 控制弹窗
     showOkrDialog() {
+      console.log('kongzhi');
       this.dialogDetailVisible = true;
       this.getokrDetail();
     },

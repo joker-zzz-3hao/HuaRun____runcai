@@ -17,7 +17,7 @@ const mockData = {
           okrDetailObjectKr: '@csentence(10, 20)',
           'percent|+5': 10,
           progress: 50,
-          'confidence|+1': 1,
+          'okrDetailConfidence|+1': 1,
         }],
       }],
     })));
@@ -138,13 +138,13 @@ const mockData = {
           'parentUpdate|1': [true, false],
           'krList|2': [
             {
-              'detailId|': ['1233', '1234'],
+              'detailId|1': ['1233', '1234'],
               'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
               'userName|1': ['心荃', '滕炜'],
               okrWeight: 50,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              confidence: '1',
+              okrDetailConfidence: '1',
             },
           ],
         },
@@ -184,7 +184,7 @@ const mockData = {
               okrWeight: 40,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              confidence: '1',
+              okrDetailConfidence: '1',
             },
           ],
         },
@@ -216,6 +216,71 @@ const mockData = {
         operateType: 0,
         content: '@csentence(10, 20)',
       }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查价值观
+  'POST /gateway/talent-okr/okr/cultureValue/queryCultureList': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|5': [{
+        'cultureDesc|+1': ['成人达已', '诚实守信', '追求极致', '勇于担当', '成人达己'],
+        'cultureId|+1': 1,
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查可承接的okr
+  'POST /gateway/talent-okr/okr/main/getUndertakeOkr': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      parentUndertakeOkrInfoResult: {
+        okrPeriodEntity: {
+          periodDesc: '2020上半年',
+        },
+        'okrList|2': [{
+          o: {
+            'okrDetailId|1': ['1233', '1234'],
+            'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
+            'userName|1': ['心荃', '滕炜'],
+            okrWeight: 40,
+            okrDetailProgress: 30,
+            parentObjectKr: '华润云',
+            okrDetailVersion: '1.0',
+          },
+          'krList|2': [
+            {
+              'okrDetailId|': ['1233', '1234'],
+              'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
+              'userName|1': ['心荃', '滕炜'],
+              okrWeight: 40,
+              okrDetailProgress: 30,
+              parentObjectKr: '华润云',
+              okrDetailConfidence: '1',
+              okrDetailVersion: '1.0',
+            },
+          ],
+        }],
+      },
+    })));
+  },
+  // author：林心荃
+  // 用于：新建okr
+  'POST /gateway/talent-okr/okr/main/add': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
+    })));
+  },
+  // author：林心荃
+  // 用于：更新进度
+  'POST /gateway/talent-okr/okr/main/updateOkrProcess': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
+    })));
+  },
+  // author：林心荃
+  // 用于：点赞
+  'POST /gateway/talent-okr/okr/okrSupport/support': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
     })));
   },
 };
