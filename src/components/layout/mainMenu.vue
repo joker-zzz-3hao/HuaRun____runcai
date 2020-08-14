@@ -8,15 +8,18 @@
         <ul>
           <router-link
             tag="li"
-            v-for="item in menuList"
+            v-for="(item,idx) in menuList"
             :key="item.id"
-            :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute}]"
+            :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute},{'is-hover': menuIndex === idx}]"
             :to="{name:item.toName}"
           >
-            <i @click="fnHandle(item.functions.events,0)"></i>
+            <i
+              @click="fnHandle(item.events,0)"
+              @mouseover="fnHandle(item.events,1,idx)"
+              @mouseleave="fnHandle(item.events,2)"
+            ></i>
             <div class="text-tip">
-              <p>我是提示文案</p>
-              <i></i>
+              <p>{{item.mainMenuTitle}}</p>
             </div>
           </router-link>
         </ul>
@@ -73,7 +76,7 @@ export default {
       server,
       isShrinkMenus: false,
       selectMenu: '',
-      // menuList: [],
+      menuIndex: '',
     };
   },
   props: {
@@ -98,10 +101,10 @@ export default {
     });
   },
   methods: {
-    fnHandle(str, index) {
+    fnHandle(str, index, itemIdx) {
       if (str.length > 0 && index < str.length) {
         // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}()`);
+        eval(`this.${str[index]}(${itemIdx})`);
       }
     },
     shrinkMenus() {
@@ -114,6 +117,12 @@ export default {
       if (this.isShrinkMenus) {
         this.isShrinkMenus = false;
       }
+    },
+    moveMenu(itemIndex) {
+      this.menuIndex = itemIndex;
+    },
+    leaveMenu() {
+      this.menuIndex = '';
     },
   },
   watch: {

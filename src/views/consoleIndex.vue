@@ -22,17 +22,13 @@ export default {
           mainMenuTitle: '工作台',
           classTag: ['workbench'],
           toName: 'overview',
-          functions: {
-            events: ['rmSubMenu'],
-          },
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
         },
         {
           mainMenuTitle: 'OKR管理',
           classTag: ['okr-menu'],
           toName: 'myOkr',
-          functions: {
-            events: ['isExtend'],
-          },
+          events: ['isExtend', 'moveMenu', 'leaveMenu'],
           subMenuList: [
             {
               subMenuTitle: '我的OKR',
@@ -65,9 +61,7 @@ export default {
           mainMenuTitle: '考核管理',
           classTag: ['assess-menu'],
           toName: 'myAssess',
-          functions: {
-            events: ['isExtend'],
-          },
+          events: ['isExtend', 'moveMenu', 'leaveMenu'],
           subMenuList: [
             {
               subMenuTitle: '我的考核',

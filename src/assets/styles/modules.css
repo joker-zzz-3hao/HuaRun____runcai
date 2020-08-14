@@ -116,6 +116,15 @@
   z-index: 1;
 }
 
+/* ==========================================================常用基础组件=================================================================== */
+/* 提示文案组件 */
+.text-tip,
+.text-tip::before,
+.text-tip::after,
+.text-tip p::after {
+  position: absolute;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -195,6 +204,7 @@
 }
 
 .menu-cont-inside li {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -203,6 +213,65 @@
   cursor: pointer;
   /* background: #162565;
   transition: all 8s ease-out; */
+}
+
+.menu-cont-inside .text-tip {
+  padding: 10px;
+  right: -43%;
+  top: 50%;
+  transform: translateX(50%) translateY(-50%);
+  width: 80px;
+  background: #fff;
+  border: 1px solid #e5e9ee;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity .4s ease-out;
+}
+
+.menu-cont-inside .main-menu .is-hover .text-tip {
+  opacity: 1;
+}
+
+.menu-cont-inside .text-tip::before {
+  left: -7px;
+  top: 50%;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 0px solid transparent;
+  border-right: 23px solid #e5e9ee;
+  border-bottom: 10px solid transparent;
+  border-radius: 5px 30px 15px 15px;
+  transform: rotate(40deg);
+  z-index: -3;
+}
+
+.menu-cont-inside .text-tip::after {
+  left: -6px;
+  top: 50%;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 0px solid transparent;
+  border-right: 23px solid #fff;
+  border-bottom: 10px solid transparent;
+  border-radius: 5px 30px 15px 15px;
+  transform: rotate(40deg);
+  z-index: -2;
+}
+
+.menu-cont-inside .text-tip p::after {
+  left: -5px;
+  top: 55%;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 0px solid transparent;
+  border-right: 21px solid #fff;
+  border-bottom: 10px solid transparent;
+  border-radius: 5px 30px 15px 15px;
+  transform: rotate(60deg);
+  z-index: -1;
 }
 
 .menu-cont-inside li i {
@@ -429,5 +498,6 @@
   bottom: 0;
   left: 0;
 }
+
 
 /* 主内容区--路由区 */
