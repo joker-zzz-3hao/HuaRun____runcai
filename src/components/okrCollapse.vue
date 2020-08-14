@@ -194,6 +194,10 @@ export default {
       // 给父组件传打开的命令
       console.log('dakai');
     },
+    // 改变tableList后强制渲染
+    updateokrCollapse() {
+      this.$forceUpdate();
+    },
   },
   watch: {
 
