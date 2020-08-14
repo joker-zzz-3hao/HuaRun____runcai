@@ -1,7 +1,7 @@
 import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
-// 查okr详情
+  // 查okr详情
   getokrDetail(param) {
     return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
   }
@@ -34,5 +34,10 @@ export default class Server extends ServerBase {
   // 更新进度
   summitUpdate(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/updateOkrProcess', param);
+  }
+
+  // 历史版本
+  selectOkrHistoryVersion(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/selectOkrHistoryVersion', param);
   }
 }

@@ -12,7 +12,7 @@
       <ul>
         <li>
           <span>目标类型</span>
-          <span>{{okrmain.okrBelongType}}</span>
+          <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span>
         </li>
         <li>
           <span>负责人</span>
@@ -116,13 +116,16 @@ export default {
         okrId: this.okrId,
         supportType: this.supportType,
       }).then((res) => {
-        console.log(res.code);
+        if (res.code == 200) {
+          console.log(res.code);
+          this.getSupportList();
+        }
       });
     },
     // 查点赞列表
     getSupportList() {
       // TODO:{ okrId: this.okrId }
-      this.server.getSupportList({ okrId: '123' }).then((res) => {
+      this.server.getSupportList({ okrId: this.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
           this.voteUser = res.data.supportUserList;
@@ -133,8 +136,8 @@ export default {
     getOperationHistory() {
       this.server.okrOperationHistory({
         currentPage: 1,
-        okrMainId: '888811113333',
-        pageSize: 3,
+        okrMainId: this.okrId,
+        pageSize: 100,
       }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
@@ -155,13 +158,7 @@ export default {
     },
   },
   watch: {
-    // okrid: {
-    //   handler() {
-    //     this.getokrDetail();
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
+
   },
 };
 </script>

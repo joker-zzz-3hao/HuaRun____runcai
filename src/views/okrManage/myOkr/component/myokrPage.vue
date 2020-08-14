@@ -43,7 +43,7 @@
 
 <script>
 import okrCollapse from '@/components/okrCollapse';
-import okrDetail from './okrDetail';
+import okrDetail from '@/components/okrDetail';
 import okrUpdate from './okrUpdate';
 import okrHistory from './okrHistory';
 import Server from '../server';
