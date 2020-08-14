@@ -62,11 +62,10 @@
     </div>
     <div class="pageright">
       <tl-crcloud-table
-        layout="total,  prev, pager,next, sizes"
         :total="totalpage"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        :searchList="listRolePage"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="listRolePage"
       ></tl-crcloud-table>
     </div>
     <tl-add-role

@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="issue-message">
-    <el-input placeholder="输入用户名称/LDAP账号" v-model="filterText"></el-input>
+    <el-input placeholder="输入用户名称/LDAP账号" minlength="64" v-model="filterText"></el-input>
     <div class="rouleflex">
       <div class="roulewidth">
         <div class="selectTitle">
