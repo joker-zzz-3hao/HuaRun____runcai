@@ -295,6 +295,7 @@ export default {
   watch: {
     'searchForm.tenantId': {
       handler(newValue) {
+        console.log(newValue);
         this.searchList();
       },
       deep: true,
