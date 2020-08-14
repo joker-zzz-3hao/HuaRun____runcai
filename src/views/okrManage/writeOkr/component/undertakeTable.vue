@@ -15,6 +15,7 @@
       <!-- <el-table-column width="300" property="okrParentDetailId"></el-table-column> -->
     </el-table>
     <!-- 价值观 -->
+    <div>公司管理价值观</div>
     <el-table :data="philosophyList">
       <el-table-column prop="cultureDesc"></el-table-column>
       <el-table-column width="300">

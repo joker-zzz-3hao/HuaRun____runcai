@@ -34,12 +34,12 @@
         <div slot="searchBar" class="search-conditions">
           <el-form>
             <el-form-item>
-              <el-select v-model.trim="orgId" @change="tenantChange" placeholder="选择租户">
+              <el-select v-model.trim="tenantId" placeholder="选择租户">
                 <el-option
                   v-for="item in tenantList"
-                  :key="item.orgId"
-                  :label="item.orgName"
-                  :value="item.orgId"
+                  :key="item.tenantId"
+                  :label="item.tenantName"
+                  :value="item.tenantId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -171,8 +171,8 @@ export default {
       tableData: [],
       tenantList: [],
       searchData: {
-        userType: '',
-        userStatus: '',
+        // userType: '',
+        // userStatus: '',
         keyWord: '',
       },
       treeData: [{
@@ -212,24 +212,26 @@ export default {
     };
   },
   created() {
-    this.getOrgTree();
+    this.init();
   },
   methods: {
+    init() {
+      this.server.getAllTenant().then((res) => {
+        if (res.code == 200) {
+          this.tenantList = res.data;
+          this.tenantId = this.tenantList.length > 0 ? this.tenantList[0].tenantId : '';
+        }
+      });
+    },
     filterNode(value, data) {
       if (!value) return true;
       return data.orgName.indexOf(value) !== -1;
     },
     getOrgTree() {
-      this.server.getOrg().then((res) => {
+      this.server.getOrg({ tenantId: this.tenantId }).then((res) => {
         if (res.code == 200) {
           this.treeData = res.data;
-          // 整理租户数据
-          this.setTenantList(res.data);
         }
-        // this.defaultExpandNode = [this.treeData[0].orgId];
-        // this.globalOrgId = this.treeData[0].orgId;
-        this.tenantId = this.treeData[0].tenantId;
-        this.tenantName = this.treeData[0].orgName;
         this.searchList();
       });
     },
@@ -344,7 +346,6 @@ export default {
         this.searchList();
       }
       this.showcreateDepart = false;
-      // this.showUserInfo = false;
     },
     // 关闭弹窗
     closeUserDialog(data) {
@@ -382,20 +383,6 @@ export default {
         }
       });
     },
-    setTenantList(data) {
-      for (const item of data) {
-        this.tenantList.push({
-          orgId: item.orgId,
-          orgName: item.orgName,
-        });
-      }
-    },
-    tenantChange(orgId) {
-      // 设置租户ID, orgId
-      this.setTenantId(orgId);
-
-      this.searchList();
-    },
     setTenantId(orgId) {
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
@@ -430,6 +417,17 @@ export default {
     filterText(val) {
       this.$refs.organizeTree.filter(val);
     },
+    tenantId: {
+      handler(newValue) {
+        this.tenantId = newValue;
+        this.tenantList.forEach((element) => {
+          if (element.tenantId == newValue) {
+            this.tenantName = element.tenantName;
+          }
+        });
+        this.getOrgTree();
+      },
+    },
   },
 };
 </script>
@@ -445,7 +443,7 @@ export default {
   width: 80%;
   height: 90%;
   position: absolute;
-  left: 500px;
+  left: 400px;
   top: 100px;
 }
 .search-conditions .el-form {

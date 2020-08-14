@@ -25,7 +25,7 @@
     </div>
     <!-- 变更原因 -->
     <div></div>
-    <okrCollapse :tableList="tableList" :canWrite="true" :showOKRInfoLabel="true">
+    <okrCollapse ref="okrCollapse" :tableList="tableList" :canWrite="true" :showOKRInfoLabel="true">
       <template slot="head-bar" slot-scope="props">
         <el-button @click.native.stop="openDialog(props.okritem,'o')">终止</el-button>
       </template>
@@ -49,6 +49,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
+                  :step="1"
+                  :precision="0"
                 ></el-input-number>
               </el-form-item>
               <el-form-item label="当前进度">
@@ -57,6 +59,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
+                  :step="1"
+                  :precision="0"
                 ></el-input-number>
               </el-form-item>
               <el-form-item label="信心指数">
@@ -75,14 +79,21 @@
             </dd>
           </dl>
         </div>
-        <el-button @click.native.stop="addkr(props.oitem,'kr')">增加kr</el-button>
+        <div style="display:none">{{props.oitem.newkrList}}</div>
+        <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
       </template>
     </okrCollapse>
-    <!-- 新增 -->
+    <!-- 新增okr -->
     <okr-form ref="okrform" :server="server" :canWrite="true" :isnew="false"></okr-form>
+    <!-- 变更原因 -->
+    <div>
+      <span>变更原因</span>
+      <el-input type="textarea" v-model="modifyReason"></el-input>
+    </div>
     <!-- 提交 -->
     <div>
       <el-button @click="summit">提交</el-button>
+      <el-button @click="goback">取消</el-button>
     </div>
     <!-- 终止弹窗 -->
     <el-dialog
@@ -114,9 +125,11 @@
         <el-table-column align="left" width="150" label="权重" prop="krWeight"></el-table-column>
       </el-table>
       <!-- 结束原因 -->
+      <el-input type="textarea" v-model="remark"></el-input>
+
       <!-- 附件 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="close">终止</el-button>
+        <el-button @click="summitStop">终止</el-button>
       </span>
     </el-dialog>
     <!-- <undertake-table
@@ -147,6 +160,11 @@ export default {
       tableData: [], // 终止确认表格
       deletedType: '', // 终止的类型
       deletedProgress: '', // 终止进度
+      detailokrList: [], // 终止进度
+      selectDeletedId: '',
+      remark: '', // 终止原因
+      modifyReason: '', // 变更原因
+      formData: {}, // 提交表单
     };
   },
   components: {
@@ -193,6 +211,8 @@ export default {
     },
     openDialog(row, type) {
       this.tableData = [];
+      this.remark = '';
+      this.selectDeletedId = row.detailId;
       this.deletedType = type;
       this.deletedProgress = row.okrDetailProgress;
       console.log('点了他', row);
@@ -223,6 +243,30 @@ export default {
     close() {
       this.dialogDetailVisible = false;
     },
+    summitStop() {
+      if (this.detailokrList.length == 0) {
+        this.detailokrList.push({
+          okrId: this.selectDeletedId,
+          remark: this.remark,
+          fileIdList: [],
+        });
+      } else if (this.detailokrList.length > 0) {
+        this.detailokrList.forEach((item) => {
+          if (item.okrId != this.selectDeletedId) {
+            this.detailokrList.push({
+              okrId: this.selectDeletedId,
+              remark: this.remark,
+              fileIdList: ['item.okrId != this.selectDeletedId'],
+            });
+          } else {
+            item.remark = this.remark;
+            item.fileIdList = ['else'];
+          }
+        });
+      }
+
+      this.dialogDetailVisible = false;
+    },
     // 增加kr
     addkr(okritem) {
       console.log('newkrList', okritem.newkrList);
@@ -238,17 +282,55 @@ export default {
         okrDetailConfidence: '',
       });
       this.$forceUpdate();
+      this.$refs.okrCollapse.updateokrCollapse();
       console.log('okritem', okritem);
     },
     // 删除kr
     deletekr(okritem, krindex) {
       okritem.newkrList.splice(krindex, 1);
       this.$forceUpdate();
+      this.$refs.okrCollapse.updateokrCollapse();
     },
+    // 提交更改
     summit() {
-      console.log('新增的', this.$refs.okrform.formData);
+      console.log('删除的', this.detailokrList);
       console.log('原来的', this.tableList);
-      console.log('拼起来');
+      console.log('新增的', this.$refs.okrform.formData);
+      const addList = this.$refs.okrform.formData.okrInfoList;
+      const okrInfoList = [];
+      this.tableList.forEach((item, index) => {
+        okrInfoList.push({
+          detailId: item.detailId,
+          okrDetailObjectKr: item.okrDetailObjectKr,
+          okrWeight: item.okrWeight,
+          okrDetailProgress: item.okrDetailProgress,
+          undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+          krList: [],
+        });
+        item.krList.forEach((kritem) => {
+          okrInfoList[index].krList.push({
+            detailId: kritem.detailId,
+            okrDetailObjectKr: kritem.okrDetailObjectKr,
+            okrWeight: kritem.okrWeight,
+            okrDetailProgress: kritem.okrDetailProgress,
+            undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+          });
+        });
+        if (item.newkrList && item.newkrList.length > 0) {
+          okrInfoList[index] = okrInfoList[index].concat(item.newkrList);
+        }
+      });
+      this.formData = {
+        okrInfoList: okrInfoList.concat(addList),
+        detailokrList: this.detailokrList,
+        periodId: 'periodId',
+        okrProgress: this.okrmain.okrProgress,
+        modifyReason: this.modifyReason,
+      };
+      console.log('拼起来后', this.formData);
+    },
+    goback() {
+      this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
     },
   },
 };
