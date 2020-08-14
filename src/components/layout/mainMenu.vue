@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import global from '@/mixin/global';
 import Server from '../server';
 
 const server = new Server();
@@ -79,6 +80,7 @@ export default {
       menuIndex: '',
     };
   },
+  mixins: [global],
   props: {
     menuList: {
       type: Array,
@@ -95,11 +97,7 @@ export default {
       return this.$route.meta.isSubMenu;
     },
   },
-  mounted() {
-    this.server.queryByTenantIdAndUserId().then((res) => {
-      console.log(res);
-    });
-  },
+  mounted() {},
   methods: {
     fnHandle(str, index, itemIdx) {
       if (str.length > 0 && index < str.length) {
