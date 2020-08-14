@@ -6,22 +6,22 @@
     <div class="menu-cont-inside">
       <div class="main-menu">
         <ul>
-          <router-link
-            tag="li"
+          <li
             v-for="(item,idx) in menuList"
             :key="item.id"
             :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute},{'is-hover': menuIndex === idx}]"
             :to="{name:item.toName}"
           >
-            <i
+            <a
               @click="fnHandle(item.events,0)"
               @mouseover="fnHandle(item.events,1,idx)"
               @mouseleave="fnHandle(item.events,2)"
-            ></i>
+            ></a>
+            <i @click="go()"></i>
             <div class="text-tip">
               <p>{{item.mainMenuTitle}}</p>
             </div>
-          </router-link>
+          </li>
         </ul>
         <div class="sub-menu">
           <template v-for="item in menuList">
