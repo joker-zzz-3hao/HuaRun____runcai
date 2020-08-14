@@ -35,4 +35,9 @@ export default class Server extends ServerBase {
   createOrg(param) {
     return this._ajaxPost('system-service/sys/organization/insertOrg', param);
   }
+
+  // 查询所有租户
+  getAllTenant(param) {
+    return this._ajaxPost('system-service/sys/tenant/listTenant', param);
+  }
 }

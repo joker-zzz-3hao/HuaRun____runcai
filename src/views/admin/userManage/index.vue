@@ -12,7 +12,17 @@
       <div slot="searchBar" class="search-conditions">
         <el-form @keyup.enter.native="searchList()">
           <el-form-item>
-            <el-select v-model.trim="searchData.userType" placeholder="选择租户">
+            <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户">
+              <el-option
+                v-for="item in tenantList"
+                :key="item.tenantId"
+                :label="item.tenantName"
+                :value="item.tenantId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model.trim="searchForm.userType" placeholder="用户类型">
               <el-option
                 v-for="item in CONST.USER_TYPE_LIST"
                 :key="item.key"
@@ -22,17 +32,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model.trim="searchData.userType" placeholder="用户类型">
-              <el-option
-                v-for="item in CONST.USER_TYPE_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model.trim="searchData.userStatus" placeholder="用户状态">
+            <el-select v-model.trim="searchForm.userStatus" placeholder="用户状态">
               <el-option
                 v-for="item in CONST.USER_STATUS_LIST"
                 :key="item.key"
@@ -41,8 +41,8 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-select v-model.trim="searchData.userStatus" placeholder="租户管理员">
+          <!-- <el-form-item>
+            <el-select v-model.trim="searchForm.userStatus" placeholder="租户管理员">
               <el-option
                 v-for="item in CONST.USER_STATUS_LIST"
                 :key="item.key"
@@ -50,11 +50,11 @@
                 :value="item.key"
               ></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item>
             <el-input
               placeholder="输入用户姓名/账号/手机号"
-              v-model.trim="searchData.keyWord"
+              v-model.trim="searchForm.keyWord"
               style="width:300px"
             ></el-input>
           </el-form-item>
@@ -76,14 +76,22 @@
           <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="userMobile" label="所属租户"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="租户管理员">
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="dark" content="租户管理员" placement="top-start">
-                  <i v-if="scope.row.leader" class="el-icon-user-solid"></i>
+                  <i
+                    v-if="scope.row.tenantLeader == '1'"
+                    class="el-icon-user-solid"
+                    @click="setLeader(scope.row)"
+                  ></i>
                 </el-tooltip>
-                <i v-if="!scope.row.leader" class="el-icon-user" @click="setLeader(scope.row)"></i>
+                <i
+                  v-if="scope.row.tenantLeader=='0'"
+                  class="el-icon-user"
+                  @click="setLeader(scope.row)"
+                ></i>
               </div>
             </template>
           </el-table-column>
@@ -116,25 +124,15 @@
         </el-table>
       </div>
     </crcloud-table>
-    <!-- 创建部门 -->
-    <create-department
-      ref="createDepart"
-      v-if="showcreateDepart"
-      :treeData="treeData"
-      :initDepartment="initDepartment"
-      :server="server"
-      @closeOrgDialog="closeOrgDialog"
-    ></create-department>
+
     <!-- 创建用户 -->
     <create-user
       ref="createUser"
       v-if="showCreateUser"
-      :treeData="treeData"
       :server="server"
       :optionType="optionType"
       :userAccount="userAccount"
       :tenantName="tenantName"
-      @createDepart="createDepart"
       @closeUserDialog="closeUserDialog"
     ></create-user>
 
@@ -142,7 +140,6 @@
     <user-info
       ref="setRole"
       v-if="showUserInfo"
-      :treeData="treeData"
       :server="server"
       :CONST="CONST"
       :userAccount="userAccount"
@@ -152,7 +149,6 @@
 </template>
 
 <script>
-import createDepart from './components/createDepartment';
 import createOrEditUser from './components/createOrEditUser';
 import userInfo from './components/userInfo';
 import Server from './server';
@@ -163,7 +159,6 @@ const server = new Server();
 export default {
   name: 'organizeManagement',
   components: {
-    'create-department': createDepart,
     'create-user': createOrEditUser,
     'user-info': userInfo,
   },
@@ -174,7 +169,6 @@ export default {
       globalOrgId: '',
       userAccount: '',
       loading: false,
-      showcreateDepart: false,
       showCreateUser: false,
       showUserInfo: false,
       tenantName: '',
@@ -184,72 +178,39 @@ export default {
       currentPage: 1,
       pageSize: 10,
       tableData: [],
-      searchData: {
+      tenantList: [],
+      searchForm: {
         userType: '',
         userStatus: '',
         keyWord: '',
+        tenantId: '',
       },
-      treeData: [{
-        orgId: '1',
-        orgName: '志任集团',
-        orgParentId: '',
-        isShow: false,
-        sonTree: [
-          {
-            orgId: '1a',
-            orgName: '分公司',
-            orgParentId: '1',
-            isShow: false,
-            sonTree: [
-              {
-                orgId: '1aa',
-                orgName: '分公司11111111111',
-                orgParentId: '1a',
-                isShow: false,
-                sonTree: [
-                  {
-                    orgId: '1aaa',
-                    orgName: '分公司2222222222222',
-                    orgParentId: '1aa',
-                    isShow: false,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      }],
-
     };
   },
   created() {
-    this.getOrgTree();
+    this.init();
   },
   methods: {
-
-    getOrgTree() {
-      this.server.getOrg().then((res) => {
+    init() {
+      this.server.getAllTenant().then((res) => {
         if (res.code == 200) {
-          this.treeData = res.data;
+          this.tenantList = res.data;
+          this.searchForm.tenantId = this.tenantList.length > 0 ? this.tenantList[0].tenantId : '';
+          this.searchList();
         }
-        // this.globalOrgId = this.treeData[0].orgId;
-        this.tenantName = this.treeData[0].orgName;
-        this.searchList();
       });
     },
     searchList(org) {
       if (org && org.orgId) { // 切换组织
-        this.globalOrgId = org.orgId;
         this.currentPage = 1;
         this.pageSize = 10;
       }
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        orgId: this.globalOrgId == this.treeData[0].orgId ? '' : this.globalOrgId,
-        ...this.searchData,
+        ...this.searchForm,
       };
-      this.server.getUserListByOrgId(params).then((res) => {
+      this.server.getUserList(params).then((res) => {
         if (res.code == 200) {
           this.total = res.data.total;
           this.currentPage = res.data.currentPage;
@@ -259,17 +220,6 @@ export default {
       });
     },
 
-    // 创建部门
-    createDepart(depart) {
-      if (depart && depart.orgId) {
-        this.initDepartment = depart;
-        this.globalOrgId = depart.orgId;
-      }
-      this.showcreateDepart = true;
-      this.$nextTick(() => {
-        this.$refs.createDepart.show();
-      });
-    },
     // 创建/编辑用户
     createOrEditUser(user) {
       if (user.userAccount) {
@@ -291,16 +241,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.setRole.show();
       });
-    },
-    // 关闭弹窗
-    closeOrgDialog(data) {
-      // 需要刷新则刷新页面;
-      if (data.refreshPage) {
-        this.getOrgTree();
-        this.searchList();
-      }
-      this.showcreateDepart = false;
-      // this.showUserInfo = false;
     },
     // 关闭弹窗
     closeUserDialog(data) {
@@ -340,21 +280,26 @@ export default {
     },
     // 设置负责人
     setLeader(user) {
-      // const status = userStatus == '0' ? '50' : '0';
-      // const title = status == '0' ? '是否设置部门负责人?' : '是否取消部门负责人？';
-      this.$confirm('是否设置部门负责人?').then(() => {
-        this.server.setOrgLeader({ userAccount: user.userAccount, orgId: user.orgId }).then((res) => {
+      const option = user.tenantLeader == '1' ? 'removeDepartLeder' : 'setDepartLeader';
+      const title = user.leader == '1' ? '是否取消部门负责人？' : '是否设置部门负责人?';
+      this.$confirm(title).then(() => {
+        this.server[option]({ userId: user.userId, roleCode: 'TENANT_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
-            this.$message.success('设置成功');
+            this.$message.success('处理成功');
           }
         });
       });
     },
-
   },
   watch: {
-
+    'searchForm.tenantId': {
+      handler(newValue) {
+        this.searchList();
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>

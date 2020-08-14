@@ -164,7 +164,7 @@ export default {
         userMobile: '', // 手机
         userMail: '', // 邮箱
         userStatus: '0', // 状态 0有效50：禁用
-        orgId: this.treeData[0].orgId, // 用户所在部门ID
+        orgId: '', // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
         userType: 2,
@@ -175,24 +175,26 @@ export default {
   },
   created() {
     this.init();
+    this.visible = true;
   },
   mounted() {},
   computed: {},
   methods: {
     init() {
-      if (this.optionType == 'edit') {
-        this.userTitle = '编辑用户';
-        this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
-          if (res.code == 200) {
-            this.formData.userName = res.data.userName;
-            this.formData.userAccount = res.data.userAccount;
-            this.formData.userMobile = res.data.userMobile;
-            this.formData.userMail = res.data.userMail;
-            this.formData.orgId = res.data.orgId;
-            this.formData.userStatus = res.data.userStatus;
-            this.formData.tenantName = res.data.tenantName;
-            this.formData.loginPwd = '******';
-            this.setInitDepartment(res.data.orgId);
+      const self = this;
+      if (self.optionType == 'edit') {
+        self.userTitle = '编辑用户';
+        self.server.getUserInfo({ userAccount: self.userAccount }).then((res) => {
+          if (res.code == 200 && res.data) {
+            // self.formData.userName = res.data.userName;
+            // self.formData.userAccount = res.data.userAccount;
+            // self.formData.userMobile = res.data.userMobile;
+            // self.formData.userMail = res.data.userMail;
+            // self.formData.orgId = res.data.orgId;
+            // self.formData.userStatus = res.data.userStatus;
+            // self.formData.tenantName = res.data.tenantName;
+            // self.formData.loginPwd = '******';
+            // self.setInitDepartment(res.data.orgId);
           }
         });
       }
