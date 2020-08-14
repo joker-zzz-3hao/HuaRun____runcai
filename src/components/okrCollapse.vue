@@ -2,7 +2,7 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-model="formData">
-      <elcollapse class="collapse" v-model="activeList">
+      <elcollapse class="collapse" v-model="innerActiveList">
         <elcollapseitem
           ref="okrcoll"
           v-for="(item, index) in tableList"
@@ -140,6 +140,7 @@ export default {
     return {
       okrmain: {},
       formData: {},
+      innerActiveList: [],
     };
   },
   props: {
@@ -177,6 +178,9 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  mounted() {
+    this.innerActiveList = this.activeList;
   },
   created() {
 
