@@ -13,6 +13,7 @@ const proxy = {
   ...require('./okrCycle/index'),
   ...require('./setOkr/index'),
   ...require('./organizeUserManagement/index'),
+  ...require('./departManage/index'),
 };
 
 module.exports = (delay(proxy, 0));
