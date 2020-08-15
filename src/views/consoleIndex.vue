@@ -75,6 +75,12 @@ export default {
             },
           ],
         },
+        {
+          mainMenuTitle: '项目管理',
+          classTag: ['project-menu'],
+          toName: 'projectManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
       ],
     };
   },

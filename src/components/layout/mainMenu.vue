@@ -10,14 +10,13 @@
             v-for="(item,idx) in menuList"
             :key="item.id"
             :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute},{'is-hover': menuIndex === idx}]"
-            :to="{name:item.toName}"
           >
             <a
-              @click="fnHandle(item.events,0)"
+              @click="fnHandle(item.events,0,item.toName)"
               @mouseover="fnHandle(item.events,1,idx)"
               @mouseleave="fnHandle(item.events,2)"
             ></a>
-            <i @click="go()"></i>
+            <i></i>
             <div class="text-tip">
               <p>{{item.mainMenuTitle}}</p>
             </div>
@@ -66,7 +65,6 @@
 </template>
 
 <script>
-import global from '@/mixin/global';
 import Server from '../server';
 
 const server = new Server();
@@ -80,7 +78,6 @@ export default {
       menuIndex: '',
     };
   },
-  mixins: [global],
   props: {
     menuList: {
       type: Array,
@@ -97,21 +94,35 @@ export default {
       return this.$route.meta.isSubMenu;
     },
   },
-  mounted() {},
+  mounted() {
+    this.server.queryByTenantIdAndUserId().then((res) => {
+      console.log(res);
+    });
+  },
   methods: {
-    fnHandle(str, index, itemIdx) {
+    fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {
-        // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}(${itemIdx})`);
+        if (typeof (parameter) === 'string') {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}('${parameter}')`);
+        } else if (typeof (parameter) === 'number') {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}(${parameter})`);
+        } else {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}(${parameter})`);
+        }
       }
     },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
     },
-    rmSubMenu() {
+    rmSubMenu(routeName) {
+      this.go(routeName);
       this.isShrinkMenus = false;
     },
-    isExtend() {
+    isExtend(routeName) {
+      this.go(routeName);
       if (this.isShrinkMenus) {
         this.isShrinkMenus = false;
       }
