@@ -52,14 +52,13 @@
                 <span v-if="canWrite && item.parentUpdate">
                   <el-popover
                     placement="top-start"
-                    title="标题"
                     width="200"
                     trigger="hover"
                     :append-to-body="false"
                   >
                     <span>
                       您承接的OKR有变更，
-                      <a @click="goUndertake">查看详情</a>
+                      <a @click="goUndertake(index)">查看详情</a>
                     </span>
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
@@ -198,9 +197,10 @@ export default {
       this.tableList[index].krList[krIndex][name] = true;
       this.$forceUpdate();
     },
-    goUndertake() {
+    goUndertake(index) {
       // 给父组件传打开的命令
       console.log('dakai');
+      this.$emit('openUndertake', index);
     },
     // 改变tableList后强制渲染
     updateokrCollapse() {
