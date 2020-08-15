@@ -35,9 +35,9 @@
       <tl-crcloud-table
         layout="total,  prev, pager,next, sizes"
         :total="totalpage"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        :searchList="getTenantList"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="getTenantList"
       ></tl-crcloud-table>
     </div>
     <tl-create-tenant
@@ -47,6 +47,13 @@
       :tenantId="tenantId"
       :infoBool="infoBool"
     ></tl-create-tenant>
+    <tl-tenant-detail
+      v-if="existDetail"
+      :exist.sync="existDetail"
+      :title="title"
+      :tenantId="tenantId"
+      :infoBool="infoBool"
+    ></tl-tenant-detail>
   </div>
 </template>
 
@@ -55,6 +62,7 @@ import crcloudTable from '@/components/crcloudTable';
 import createTenant from './components/createTenant';
 import Server from './server';
 import CONST from './const';
+import tenantDetail from './components/tenantDetail';
 
 const server = new Server();
 export default {
@@ -62,6 +70,7 @@ export default {
   components: {
     'tl-create-tenant': createTenant,
     'tl-crcloud-table': crcloudTable,
+    'tl-tenant-detail': tenantDetail,
   },
   created() {
     this.getTenantList();
@@ -94,7 +103,7 @@ export default {
       this.title = '详情';
       this.tenantId = tenantId;
       this.infoBool = true;
-      this.exist = true;
+      this.existDetail = true;
     },
     handleDelete(done) {
       this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
@@ -119,6 +128,7 @@ export default {
       tenantId: null,
       totalpage: 0,
       infoBool: false,
+      existDetail: false,
     };
   },
 };

@@ -17,7 +17,7 @@
         <el-table-column fixed prop="userAccount" label="用户帐号"></el-table-column>
         <el-table-column prop="userName" label="用户姓名"></el-table-column>
         <el-table-column prop="userMobile" label="手机号"></el-table-column>
-        <el-table-column prop="sortPropName" label="所在团队"></el-table-column>
+        <el-table-column prop="orgName" label="所在团队"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="160">
           <template slot-scope="scope">
@@ -30,9 +30,9 @@
       <tl-crcloud-table
         layout="total,  prev, pager,next, sizes"
         :total="totalpage"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        :searchList="listRoleUser"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="listRoleUser"
       ></tl-crcloud-table>
     </div>
     <tl-add-member

@@ -14,6 +14,7 @@
           <el-input
             style="width:320px"
             v-model="form.tenantName"
+            maxlength="64"
             placeholder="请输入租户名称"
             v-show="!infoBool"
           ></el-input>
@@ -22,6 +23,7 @@
         <el-form-item label="企业ID" prop="tenantID">
           <el-input
             style="width:320px"
+            maxlength="64"
             v-model="form.tenantID"
             placeholder="请输入企业ID"
             v-show="!infoBool"
@@ -31,6 +33,7 @@
         <el-form-item label="申请人" prop="applyUser">
           <el-input
             style="width:320px"
+            maxlength="64"
             v-model="form.applyUser"
             placeholder="请输入申请人"
             v-show="!infoBool"
@@ -118,11 +121,30 @@ export default {
         endTime: '',
       },
       rules: {
-        tenantName: { required: true, message: '请输入租户名称', trigger: 'blur' },
-        applyUser: { required: true, message: '请输入申请人名称', trigger: 'blur' },
-        tenantID: {
+        tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '请输入中文或者字母',
+            trigger: 'blur',
+          },
+
+        ],
+        applyUser: [{ required: true, message: '请输入申请人名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '请输入中文或者字母',
+            trigger: 'blur',
+          },
+        ],
+        tenantID: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
         },
+        {
+          pattern: /^[0-9a-zA-Z]+$/,
+          message: '请输入数字或者英文字母',
+          trigger: 'blur',
+        },
+        ],
         mobilePhone: [
           {
             required: true,
