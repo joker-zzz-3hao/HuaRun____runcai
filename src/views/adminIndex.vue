@@ -19,67 +19,53 @@ export default {
     return {
       menuList: [
         {
-          mainMenuTitle: '工作台',
-          classTag: ['workbench'],
+          mainMenuTitle: '租户管理',
+          classTag: ['tenant-menu'],
+          toName: 'tenantManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '用户管理',
+          classTag: ['user-menu'],
+          toName: 'userManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '部门管理',
+          classTag: ['department-menu'],
+          toName: 'departmentManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '字典管理',
+          classTag: ['dictionary-menu'],
+          toName: 'dictionaryManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '菜单管理',
+          classTag: ['menus-menu'],
+          toName: 'menuManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '系统权限',
+          classTag: ['menus-menu'],
+          toName: 'sysUserManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+          subMenuList: [
+            {
+              subMenuTitle: '系统用户管理',
+              subClassTag: ['sys-user-menu'],
+              subToName: 'sysUserManage',
+            },
+          ],
+        },
+        {
+          mainMenuTitle: '返回前台',
+          classTag: ['go-back-menu'],
           toName: 'overview',
-          functions: {
-            events: ['rmSubMenu'],
-          },
-        },
-        {
-          mainMenuTitle: 'OKR管理',
-          classTag: ['okr-menu'],
-          toName: 'myOkr',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的OKR',
-              subClassTag: ['my-okr-menu'],
-              subToName: 'myOkr',
-            },
-            {
-              subMenuTitle: 'OKR审批',
-              subClassTag: ['approval-menu'],
-              subToName: 'okrApproval',
-            },
-            {
-              subMenuTitle: 'ORK承接与对齐',
-              subClassTag: ['undertake-menu'],
-              subToName: 'undertakeMaps',
-            },
-            {
-              subMenuTitle: '我关注的OKR',
-              subClassTag: ['concerned-menu'],
-              subToName: 'concernedOkr',
-            },
-            {
-              subMenuTitle: 'OKR地图',
-              subClassTag: ['maps-menu'],
-              subToName: 'okrMaps',
-            },
-          ],
-        },
-        {
-          mainMenuTitle: '考核管理',
-          classTag: ['assess-menu'],
-          toName: 'myAssess',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的考核',
-              subClassTag: ['my-assess-menu'],
-              subToName: 'myAssess',
-            },
-            {
-              subMenuTitle: '考核PK',
-              subClassTag: ['assess-pk-menu'],
-              subToName: 'assessPk',
-            },
-          ],
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
         },
       ],
     };

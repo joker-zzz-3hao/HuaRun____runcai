@@ -150,6 +150,28 @@ export default [
         },
         component: () => import('@/views/weeklyManage/teamWeekly/index'),
       },
+      {
+        // 团队管理
+        path: '/teamsManage',
+        name: 'teamsManage',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'teamsManage',
+        },
+        component: () => import('@/views/teamsManage/index'),
+      },
+      // {
+      //   // 项目管理
+      //   path: '/projectManage',
+      //   name: 'projectManage',
+      //   meta: {
+      //     hasMainMenu: true,
+      //     noSubMenu: true,
+      //     parentRoute: 'projectManage',
+      //   },
+      //   component: () => import('@/views/projectManage/index'),
+      // },
     ],
   },
 ];

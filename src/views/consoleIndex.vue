@@ -76,12 +76,6 @@ export default {
           ],
         },
         {
-          mainMenuTitle: '项目管理',
-          classTag: ['project-menu'],
-          toName: 'projectManage',
-          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
-        },
-        {
           mainMenuTitle: '周报管理',
           classTag: ['weekly-menu'],
           toName: 'myWeekly',
@@ -98,6 +92,24 @@ export default {
               subToName: 'teamWeekly',
             },
           ],
+        },
+        {
+          mainMenuTitle: '团队管理',
+          classTag: ['teams-menu'],
+          toName: 'teamsManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '企业管理',
+          classTag: ['company-menu'],
+          toName: 'organizeManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '系统管理',
+          classTag: ['system-menu'],
+          toName: 'tenantManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
         },
       ],
     };
