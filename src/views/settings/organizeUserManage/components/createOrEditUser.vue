@@ -14,8 +14,12 @@
       :close-on-click-modal="false"
     >
       <el-form ref="userForm" :model="formData">
-        <el-form-item label="用户名称" prop="departName">
-          <el-input v-model.trim="formData.userName"></el-input>
+        <el-form-item
+          label="用户名称"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="用户账号"

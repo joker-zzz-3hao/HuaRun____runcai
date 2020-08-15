@@ -48,6 +48,7 @@
                 placeholder="输入用户姓名/账号/手机号"
                 v-model.trim="searchData.keyWord"
                 style="width:300px"
+                maxlength="50"
               ></el-input>
             </el-form-item>
             <el-form-item>

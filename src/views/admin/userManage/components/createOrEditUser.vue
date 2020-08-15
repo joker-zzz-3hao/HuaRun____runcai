@@ -25,8 +25,12 @@
             maxlength="50"
           ></el-input>
         </el-form-item>
-        <el-form-item label="用户姓名" prop="departName">
-          <el-input v-model.trim="formData.userName"></el-input>
+        <el-form-item
+          label="用户名称"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户姓名',trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="手机号码"
