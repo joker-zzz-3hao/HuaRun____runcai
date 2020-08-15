@@ -3,9 +3,9 @@ const mockUtil = require('../mockUtil');
 
 const mockData = {
   // 获取组织树
-  'POST /sys/organization/getOrg': (req, res) => {
+  'POST /system-service/sys/organization/getOrg': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'ARRAY|4': [{
+      'ARRAY|2': [{
         orgId: '1',
         orgName: '华润集团MOCK',
         orgParentId: '',
@@ -32,7 +32,7 @@ const mockData = {
     })));
   },
   // 查询组织包含的用户列表
-  'POST /sys/user/listUserPage': (req, res) => {
+  'POST /system-service/sys/user/listUserPage': (req, res) => {
     res.send(mockUtil.getSuccessDataPage(Mock.mock({
       'content|4': [{
         'userId|+1': 1,
@@ -47,11 +47,11 @@ const mockData = {
     })));
   },
   // 创建用户
-  'POST /sys/user/insertOrgUser': (req, res) => {
+  'POST /system-service/sys/user/insertOrgUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
   // 获取用户信息用户
-  'POST /sys/user/getUser': (req, res) => {
+  'POST /system-service/sys/user/getUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'userId|+1': 1,
       userName: '@cname()',
@@ -67,23 +67,23 @@ const mockData = {
     })));
   },
   // 编辑用户
-  'POST /sys/user/updateOrgUser': (req, res) => {
+  'POST /system-service/sys/user/updateOrgUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
   // 校验唯一性~
-  'POST /sys/user/judgeUser': (req, res) => {
+  'POST /system-service/sys/user/judgeUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
 
     })));
   },
   // 创建部门
-  'POST /sys/organization/insertOrg': (req, res) => {
+  'POST /system-service/sys/organization/insertOrg': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
 
     })));
   },
   // 设置部门负责人
-  'POST /sys/userRole/addOrgUserLeader': (req, res) => {
+  'POST /system-service/sys/userRole/addOrgUserLeader': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
 
     })));
