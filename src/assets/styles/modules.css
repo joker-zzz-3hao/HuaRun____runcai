@@ -508,12 +508,12 @@
 .is-shrink .menu-control-button {
   transform: rotate(-180deg);
 }
-
+/* 
 .management-platform {
   position: absolute;
   bottom: 0;
   left: 0;
-}
+} */
 
 
 /* 主内容区--路由区 */

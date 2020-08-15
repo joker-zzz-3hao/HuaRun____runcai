@@ -52,14 +52,15 @@
           </div>
         </div>
       </div>
-      <ul class="management-platform">
+      <!-- 待后续需要改成下方再显示 -->
+      <!-- <ul class="management-platform">
         <li>
           <i></i>
         </li>
         <li>
           <i></i>
         </li>
-      </ul>
+      </ul>-->
     </div>
   </div>
 </template>
