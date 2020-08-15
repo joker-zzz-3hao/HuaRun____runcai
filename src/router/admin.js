@@ -11,7 +11,8 @@ export default [{
     name: 'tenantManage',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
+      parentRoute: 'tenantManage',
     },
     component: () => import('@/views/admin/tenantManage/index'),
   },
@@ -21,7 +22,8 @@ export default [{
     name: 'userManage',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
+      parentRoute: 'userManage',
     },
     component: () => import('@/views/admin/userManage/index'),
   },
@@ -31,7 +33,8 @@ export default [{
     name: 'departmentManage',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
+      parentRoute: 'departmentManage',
     },
     component: () => import('@/views/admin/departmentManage/index'),
   },
@@ -41,7 +44,8 @@ export default [{
     name: 'dictionaryManage',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
+      parentRoute: 'dictionaryManage',
     },
     component: () => import('@/views/admin/dictionaryManage/index'),
   },
@@ -51,7 +55,8 @@ export default [{
     name: 'menuManage',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
+      parentRoute: 'menuManage',
     },
     component: () => import('@/views/admin/menuManage/index'),
   },
@@ -62,6 +67,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
+      parentRoute: 'sysUserManage',
     },
     component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
   },

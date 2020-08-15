@@ -13,9 +13,32 @@ export default [
         name: 'organizeManage',
         meta: {
           hasMainMenu: true,
-          isSubMenu: true,
+          noSubMenu: true,
+          parentRoute: 'organizeManage',
         },
         component: () => import('@/views/settings/organizeUserManage/index'),
+      },
+      {
+        // 角色管理
+        path: '/roleManage',
+        name: 'roleManage',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'roleManage',
+        },
+        component: () => import('@/views/settings/roleManage/department/index'),
+      },
+      {
+        // 角色管理
+        path: '/members',
+        name: 'members',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'roleManage',
+        },
+        component: () => import('@/views/settings/roleManage/members/index'),
       },
       {
         // 设置OKR查看权限
@@ -24,6 +47,7 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okrPermissions',
         },
         component: () => import('@/views/settings/okrPermissions/index'),
       },
@@ -34,28 +58,9 @@ export default [
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
+          parentRoute: 'okrPermissions',
         },
         component: () => import('@/views/settings/okrCycle/index'),
-      },
-      {
-        // 角色管理
-        path: '/roleManage',
-        name: 'roleManage',
-        meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
-        },
-        component: () => import('@/views/settings/roleManage/department/index'),
-      },
-      {
-        // 角色管理
-        path: '/members',
-        name: 'members',
-        meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
-        },
-        component: () => import('@/views/settings/roleManage/members/index'),
       },
     ],
   },
