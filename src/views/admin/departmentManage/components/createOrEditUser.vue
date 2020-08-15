@@ -264,10 +264,12 @@ export default {
     },
     editPwd() {
       this.pwdLabel = '原始密码';
+      this.formData.loginPwd = '';
       this.isEditPwd = true;
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
+      this.formData.loginPwd = '******';
       this.isEditPwd = false;
     },
     addOrg() {

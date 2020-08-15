@@ -142,6 +142,12 @@ export default {
         return '';
       },
     },
+    tenantId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
     tenantName: {
       type: String,
       default() {
@@ -175,26 +181,24 @@ export default {
   },
   created() {
     this.init();
-    this.visible = true;
   },
   mounted() {},
   computed: {},
   methods: {
     init() {
-      const self = this;
-      if (self.optionType == 'edit') {
-        self.userTitle = '编辑用户';
-        self.server.getUserInfo({ userAccount: self.userAccount }).then((res) => {
+      if (this.optionType == 'edit') {
+        this.userTitle = '编辑用户';
+        this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
           if (res.code == 200 && res.data) {
-            // self.formData.userName = res.data.userName;
-            // self.formData.userAccount = res.data.userAccount;
-            // self.formData.userMobile = res.data.userMobile;
-            // self.formData.userMail = res.data.userMail;
-            // self.formData.orgId = res.data.orgId;
-            // self.formData.userStatus = res.data.userStatus;
-            // self.formData.tenantName = res.data.tenantName;
-            // self.formData.loginPwd = '******';
-            // self.setInitDepartment(res.data.orgId);
+            this.formData.userName = res.data.userName;
+            this.formData.userAccount = res.data.userAccount;
+            this.formData.userMobile = res.data.userMobile;
+            this.formData.userMail = res.data.userMail;
+            this.formData.orgId = res.data.orgId;
+            this.formData.userStatus = res.data.userStatus;
+            this.formData.tenantName = res.data.tenantName;
+            this.formData.loginPwd = '******';
+            this.setInitDepartment(res.data.orgId);
           }
         });
       }
@@ -217,6 +221,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+
       // 遍历一维数组，设置initDepartment值
       for (const org of result) {
         if (org.orgId == orgId) {
@@ -248,6 +253,7 @@ export default {
         }
       }
       delete this.formData.confirmPwd;
+      this.formData.tenantId = this.tenantId;
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -266,10 +272,12 @@ export default {
     },
     editPwd() {
       this.pwdLabel = '原始密码';
+      this.formData.loginPwd = '';
       this.isEditPwd = true;
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
+      this.formData.loginPwd = '******';
       this.isEditPwd = false;
     },
     addOrg() {

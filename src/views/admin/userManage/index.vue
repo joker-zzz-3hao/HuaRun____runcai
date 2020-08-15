@@ -133,6 +133,8 @@
       :optionType="optionType"
       :userAccount="userAccount"
       :tenantName="tenantName"
+      :tenantId="searchForm.tenantId"
+      :treeData="treeData"
       @closeUserDialog="closeUserDialog"
     ></create-user>
 
@@ -143,6 +145,7 @@
       :server="server"
       :CONST="CONST"
       :userAccount="userAccount"
+      :treeData="treeData"
       @closeUserDialog="closeUserDialog"
     ></user-info>
   </div>
@@ -179,6 +182,7 @@ export default {
       pageSize: 10,
       tableData: [],
       tenantList: [],
+      treeData: [],
       searchForm: {
         userType: '',
         userStatus: '',
@@ -199,6 +203,7 @@ export default {
           this.searchList();
         }
       });
+      this.getOrg();
     },
     searchList(org) {
       if (org && org.orgId) { // 切换组织
@@ -219,7 +224,13 @@ export default {
         }
       });
     },
-
+    getOrg() {
+      this.server.getOrg({ tenantId: this.searchForm.tenantId }).then((res) => {
+        if (res.code == 200) {
+          this.treeData = res.data;
+        }
+      });
+    },
     // 创建/编辑用户
     createOrEditUser(user) {
       if (user.userAccount) {
@@ -246,7 +257,6 @@ export default {
     closeUserDialog(data) {
       // 需要刷新则刷新页面;
       if (data.refreshPage) {
-        this.getOrgTree();
         this.searchList();
       }
       this.showCreateUser = false;
@@ -283,7 +293,7 @@ export default {
       const option = user.tenantLeader == '1' ? 'removeDepartLeder' : 'setDepartLeader';
       const title = user.leader == '1' ? '是否取消部门负责人？' : '是否设置部门负责人?';
       this.$confirm(title).then(() => {
-        this.server[option]({ userId: user.userId, roleCode: 'TENANT_ADMIN' }).then((res) => {
+        this.server[option]({ tenantId: this.searchForm.tenantId, userId: user.userId, roleCode: 'TENANT_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
             this.$message.success('处理成功');
@@ -296,7 +306,13 @@ export default {
     'searchForm.tenantId': {
       handler(newValue) {
         console.log(newValue);
+        this.tenantList.forEach((element) => {
+          if (element.tenantId == newValue) {
+            this.tenantName = element.tenantName;
+          }
+        });
         this.searchList();
+        this.getOrg();
       },
       deep: true,
       immediate: true,

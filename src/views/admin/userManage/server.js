@@ -21,6 +21,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('system-service/sys/userRole/delUserRole', param);
   }
 
+  // 查询组织
+  getOrg(param) {
+    return this._ajaxPost('system-service/sys/organization/getOrg', param);
+  }
+
   // 创建用户
   createUser(param) {
     return this._ajaxPost('system-service/sys/user/insertOrgUser', param);

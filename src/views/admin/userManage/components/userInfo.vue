@@ -96,7 +96,6 @@ export default {
       if (res.code == 200) {
         this.userInfo = res.data;
         this.getCombinedOrgName(res.data.orgId);
-        // this.setInitDepartment(res.data.orgId);
       }
     });
   },
@@ -114,7 +113,6 @@ export default {
       this.close();
     },
     getCombinedOrgName(orgId) {
-      // ************************************************
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
       const result = [];
@@ -136,7 +134,6 @@ export default {
       this.getNameStr(result, orgId);
       this.nameList.reverse();
       this.combinedOrgName = this.nameList.join('-');
-      // *******************************************************
     },
     getNameStr(resultList, orgId) {
       const result = [...resultList];
