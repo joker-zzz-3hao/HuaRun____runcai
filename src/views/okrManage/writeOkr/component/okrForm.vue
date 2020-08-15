@@ -33,7 +33,7 @@
               ></el-input-number>
             </el-form-item>
             <el-form-item label="关联承接项">
-              <el-button @click="guanlian(index)">关联承接项</el-button>
+              <el-button @click="openUndertake(index)">关联承接项</el-button>
             </el-form-item>
           </dd>
           <dd>
@@ -109,14 +109,14 @@
         <dd>{{$store.state.common.userInfo.departmentName}}{{okrPeriod.periodDesc}}OKR</dd>
       </dl>
       <undertake-table
-        :departokrList="departokrList"
-        :philosophyList="philosophyList"
-        @selectDepart="changeDepart"
-        @selectPhil="changePhil"
+        v-if="selectIndex !== ''"
+        ref="undertake"
+        :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
+        :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
       ></undertake-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="summitguanlian()">确 定</el-button>
+        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -152,12 +152,17 @@ export default {
             okrDetailConfidence: 1,
           }],
           undertakeOkrVo: {},
+          departokrList: [],
+          philosophyList: [],
         }],
       },
       departokrList: [], // 可关联承接的okr
+      departokrObject: {}, // 可关联承接的okr
       philosophyList: [], // 价值观
+      philosophyObject: {}, // 价值观
       okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
+      selectIndex: '', // 选择o的序号
     };
   },
   props: {
@@ -183,10 +188,10 @@ export default {
     }
   },
   created() {
-    this.getCultureList();
+    // this.getCultureList();
   },
   methods: {
-
+    // 自动保存
     zidongbaocun() {
       this.timedInterval = setInterval(() => {
         this.getMsgNum();
@@ -226,17 +231,14 @@ export default {
           okrDetailProgress: 0,
         }],
         undertakeOkrVo: {},
+        departokrList: JSON.parse(this.departokrObject),
+        philosophyList: JSON.parse(this.philosophyObject),
       });
       console.log(this.formData.okrInfoList);
     },
     // 删除o
     deleteobject(oindex) {
       this.formData.okrInfoList.splice(oindex, 1);
-    },
-
-    guanlian(objectIndex) {
-      this.selectObject = objectIndex;
-      this.dialogVisible = true;
     },
     // 查可关联承接的okr
     searchOkr() {
@@ -264,30 +266,42 @@ export default {
               });
             }
           });
+          this.departokrObject = JSON.stringify(this.departokrList);
+          if (this.formData.okrInfoList.length > 0) {
+            this.formData.okrInfoList[0].departokrList = JSON.parse(this.departokrObject);
+          }
         }
       });
     },
-    // 选择关联的okr
-    changeDepart(row) {
-      this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrDetailId = row.okrDetailId;
-      this.formData.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrVersion = row.okrDetailVersion;
-    },
+
     // 查公司价值观
     getCultureList() {
       this.server.queryCultureList().then((res) => {
         if (res.code == 200) {
           console.log('价值观', res.data);
           this.philosophyList = res.data;
+          this.philosophyObject = JSON.stringify(this.philosophyList);
+          if (this.formData.okrInfoList.length > 0) {
+            this.formData.okrInfoList[0].philosophyList = JSON.parse(this.philosophyObject);
+          }
         }
       });
     },
-    // 选择关联的价值观
-    changePhil(row) {
-      this.formData.okrInfoList[this.selectObject].cultureId = row.id || '1162020375644299264';
-      console.log('关联', row);
+    openUndertake(index) {
+      // 选择o的序号，打开关联承接弹框
+      this.selectIndex = index;
+      this.dialogVisible = true;
     },
-    // 提交关联
-    summitguanlian() {
+    // 提交关联，给选中的o加上承接项和价值观
+    summitUndertake() {
+      this.selectDepartRow = this.$refs.undertake.selectDepartRow;
+      this.selectPhilRow = this.$refs.undertake.selectPhilRow;
+      // eslint-disable-next-line max-len
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
+      // TODO:价值观的id
+      this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
+      console.log('关联', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
       this.dialogVisible = false;
     },
     // 校验表单
@@ -304,6 +318,8 @@ export default {
             oitem.krList.forEach((kitem) => {
               keypercent += kitem.okrWeight;
             });
+            delete oitem.departokrList;
+            delete oitem.philosophyList;
           });
           if (opercent != 100) {
             this.$message('o权重相加不等100~');
