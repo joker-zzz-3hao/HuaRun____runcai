@@ -143,6 +143,26 @@
   z-index: -1;
 }
 
+.top-menu {
+  display: flex;
+  align-items: center;
+}
+
+.top-menu li {
+  display: flex;
+  align-items: center;
+  margin: 0 30px 0 0;
+  font-size: 12px;
+}
+
+.top-menu i {
+  margin: 0 4px 0 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #f2f5f7;
+}
+
 .logo-bg {
   width: 70px;
   height: 70px;
@@ -154,6 +174,12 @@
 .logo {
   font-size: 24px;
   color: #fff;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 /* 主内容区--左侧菜单 */
@@ -279,6 +305,10 @@
   border-radius: 5px 30px 15px 15px;
   transform: rotate(60deg);
   z-index: -1;
+}
+
+.menu-cont-inside:hover {
+  z-index: 22;
 }
 
 .menu-cont-inside li a{
