@@ -41,13 +41,13 @@ module.exports = {
       '^/gateway': '',
     },
   },
-  '/system-service/*': { // zengwei
-    target: 'http://10.54.25.249:8081',
+  '/*': { // zengwei
+    target: 'http://10.54.24.34:8081',
     // target: api,
     secure: false,
     changeOrigin: true,
     pathRewrite: {
-      '^/gateway': '/system-service',
+      '^/gateway': '',
     },
   },
 

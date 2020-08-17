@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 16:48:29
- * @Description: file content
--->
 <template>
   <div class="home">
     <el-form ref="membersForm" :inline="true">
@@ -78,12 +73,6 @@ export default {
           this.delUserRole([{ id }]);
         })
         .catch(() => {});
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
     },
     delUserRole(listUserRole) {
       this.server.delUserRole({
