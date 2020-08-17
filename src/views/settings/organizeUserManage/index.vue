@@ -3,7 +3,11 @@
     <div class="org-header">
       <div>组织管理</div>
       <span>
-        <el-select v-model.trim="searchData.userType" placeholder="用户类型">
+        <el-select
+          v-model.trim="searchData.userType"
+          placeholder="用户类型"
+          :popper-append-to-body="false"
+        >
           <el-option
             v-for="item in CONST.USER_TYPE_LIST"
             :key="item.key"
@@ -11,7 +15,11 @@
             :value="item.key"
           ></el-option>
         </el-select>
-        <el-select v-model.trim="searchData.userStatus" placeholder="用户状态">
+        <el-select
+          v-model.trim="searchData.userStatus"
+          placeholder="用户状态"
+          :popper-append-to-body="false"
+        >
           <el-option
             v-for="item in CONST.USER_STATUS_LIST"
             :key="item.key"

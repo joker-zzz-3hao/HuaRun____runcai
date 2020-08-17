@@ -34,7 +34,7 @@
         <div slot="searchBar" class="search-conditions">
           <el-form>
             <el-form-item>
-              <el-select v-model.trim="tenantId" placeholder="选择租户">
+              <el-select v-model.trim="tenantId" placeholder="选择租户" :popper-append-to-body="false">
                 <el-option
                   v-for="item in tenantList"
                   :key="item.tenantId"
