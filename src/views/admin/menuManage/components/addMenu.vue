@@ -132,12 +132,7 @@ export default {
             message: '请输入数字或者英文字母',
             trigger: 'blur',
           }],
-        resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' },
-          {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
-            trigger: 'blur',
-          }],
+        resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
       },
     };
   },
