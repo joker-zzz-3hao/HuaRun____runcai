@@ -307,7 +307,7 @@
   z-index: -1;
 }
 
-.menu-cont-inside:hover {
+.menu-cont-inside.is-zindex {
   z-index: 22;
 }
 

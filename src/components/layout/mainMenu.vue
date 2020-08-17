@@ -3,7 +3,7 @@
     class="menu-cont"
     :class="{'no-sub-menu': noSubMenu,'is-sub-menu': isSubMenu,'is-shrink': isShrinkMenus}"
   >
-    <div class="menu-cont-inside">
+    <div class="menu-cont-inside" :class="{'is-zindex': zIndex}">
       <div class="main-menu">
         <ul>
           <li
@@ -75,6 +75,7 @@ export default {
     return {
       server,
       isShrinkMenus: false,
+      zIndex: false,
       selectMenu: '',
       menuIndex: '',
     };
@@ -130,9 +131,11 @@ export default {
     },
     moveMenu(itemIndex) {
       this.menuIndex = itemIndex;
+      this.zIndex = true;
     },
     leaveMenu() {
       this.menuIndex = '';
+      this.zIndex = false;
     },
   },
   watch: {
