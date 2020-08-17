@@ -1,12 +1,12 @@
 <template>
-  <el-dialog
+  <el-drawer
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
+    size="35%"
   >
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
@@ -79,12 +79,12 @@
           </el-radio-group>
         </el-form-item>-->
       </el-form>
+      <div>
+        <el-button type="primary" @click="validateForm('form')">确定</el-button>
+        <el-button @click="close()">取 消</el-button>
+      </div>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm('form')">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
-    </div>
-  </el-dialog>
+  </el-drawer>
 </template>
 <script>
 import Server from '../server';
@@ -287,8 +287,8 @@ export default {
 </script>
 <style  scoped>
 .modelCreate {
-  display: flex;
-  width: 100%;
-  justify-content: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 620px;
 }
 </style>

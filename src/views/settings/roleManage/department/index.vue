@@ -1,16 +1,10 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 16:48:29
- * @Description: file content
--->
 <template>
   <div class="home">
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
-        <el-input maxlength="50" v-model="keyWord" placeholder="请输入角色名称/创建时间/角色状态"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="listRolePage">查询</el-button>
+        <el-input maxlength="50" v-model="keyWord" placeholder="请输入角色名称/创建时间/角色状态">
+          <el-button slot="prepend" icon="el-icon-search" @click="listRolePage"></el-button>
+        </el-input>
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
@@ -76,12 +70,21 @@
       :roleInfo="roleInfo"
       @getSearchList="listRolePage"
     ></tl-add-role>
+    <tl-put-role
+      v-if="existPut"
+      :exist.sync="existPut"
+      :title="title"
+      :rouleType="rouleType"
+      :roleInfo="roleInfo"
+      @getSearchList="listRolePage"
+    ></tl-put-role>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
 import addRole from './components/addRole';
+import putRole from './components/putRole';
 import Server from './server';
 import CONST from './const';
 
@@ -112,7 +115,7 @@ export default {
     putRoule(row) {
       this.roleInfo = row;
       this.title = '编辑角色';
-      this.exist = true;
+      this.existPut = true;
     },
     handleDelete(roleCode) {
       this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
@@ -134,6 +137,7 @@ export default {
   },
   components: {
     'tl-add-role': addRole,
+    'tl-put-role': putRole,
     'tl-crcloud-table': crcloudTable,
   },
   data() {
@@ -143,6 +147,7 @@ export default {
       title: '',
       rouleType: false, // 是否内置管理员
       exist: false,
+      existPut: false,
       value: [],
       totalpage: 0,
       currentPage: 1,

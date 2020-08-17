@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-11 10:43:56
- * @Description: file content
--->
 <template>
   <div class="menuManagement">
     <el-form ref="ruleForm" :inline="true">
@@ -17,10 +12,9 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-input maxlength="64" v-model="keyWord" placeholder="输入菜单名称"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getMenuList()">查询</el-button>
+        <el-input maxlength="64" v-model="keyWord" placeholder="输入菜单名称">
+          <el-button slot="prepend" icon="el-icon-search" @click="getMenuList()"></el-button>
+        </el-input>
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="menuAdd">添加菜单</el-button>
@@ -54,8 +48,12 @@
         </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.status">{{CONST.STATUS[scope.row.status]}}</span>
-            <span v-else>--</span>
+            <el-switch
+              v-model.trim="scope.row.status"
+              active-text="启用"
+              active-value="1"
+              inactive-value="0"
+            ></el-switch>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间">

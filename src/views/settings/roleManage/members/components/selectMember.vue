@@ -10,7 +10,9 @@
       minlength="64"
       @keyup.native="fuzzyQueryUser()"
       v-model="keyWord"
-    ></el-input>
+    >
+      <el-button slot="prepend" icon="el-icon-search"></el-button>
+    </el-input>
     <div class="rouleflex">
       <div class="roulewidth">
         <div class="selectTitle">

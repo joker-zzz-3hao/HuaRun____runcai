@@ -11,7 +11,11 @@ export default class Server extends ServerBase {
   }
 
   queryMenu(param) {
-    return this._ajaxPost('system-service/sys/function/query', param);
+    return this._ajaxPost('system-service/sys/function/listTenantFuncation', param);
+  }
+
+  listTenantFuncation(param) {
+    return this._ajaxPost('system-service/sys/function/listTenantFuncation', param);
   }
 
   addRole(param) {
