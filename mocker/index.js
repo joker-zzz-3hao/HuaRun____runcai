@@ -15,6 +15,7 @@ const proxy = {
   ...require('./organizeUserManagement/index'),
   ...require('./departManage/index'),
   ...require('./dictionaryManage/index'),
+  ...require('./sysUserManage/index'),
 };
 
 module.exports = (delay(proxy, 0));
