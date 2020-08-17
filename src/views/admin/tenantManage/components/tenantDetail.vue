@@ -11,7 +11,7 @@
     center
   >
     <div class="modelCreate">
-      <el-form ref="form" :model="form" label-width="110px">
+      <el-form ref="form" label-width="110px">
         <el-form-item label="租户名称" prop="tenantName">
           <span>{{form.tenantName}}</span>
         </el-form-item>
@@ -35,7 +35,7 @@
             node-key="id"
           ></el-tree>
         </el-form-item>
-        <el-form-item label="使用时间" prop="date">
+        <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
             @change="changDate"
@@ -45,34 +45,28 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status" :disabled="infoBool">
-            <el-radio label="O">启用</el-radio>
-            <el-radio label="S">停用</el-radio>
-          </el-radio-group>
+          <span>{{CONST.STATUS[form.status]}}</span>
         </el-form-item>
       </el-form>
-    </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm('form')">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
     </div>
   </el-drawer>
 </template>
 <script>
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 export default {
-  name: 'createTenant',
+  name: 'tenantDetail',
   props: {
     title: {
       type: String,
       required: true,
     },
     tenantId: {
-      type: String,
+      type: [String, Number],
       required: false,
     },
     infoBool: {
@@ -83,6 +77,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       form: {
         tenantName: '',
@@ -101,6 +96,7 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
+    // 判断租户ID存在请求租户详情接口
     if (this.tenantId) {
       this.getTenant();
       this.$nextTick(() => {
@@ -110,6 +106,11 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    // 获取选中tree key值 展示选中
+    handleCheckChange() {
+      const keys = this.$refs.treeMenu.getCheckedKeys();
+      this.form.menuTree = keys.map((item) => ({ functionId: item }));
+    },
     changDate(date) {
       // eslint-disable-next-line prefer-destructuring
       this.form.startTime = date[0];
@@ -134,7 +135,25 @@ export default {
         }));
       }
     },
-
+    // 获取租户详情
+    getTenant() {
+      this.server.getTenant({ tenantId: this.tenantId })
+        .then((res) => {
+          console.log(res);
+          this.form.tenantName = res.data.tenantName;
+          this.form.applyUser = res.data.applyUser;
+          this.form.mobilePhone = res.data.mobilePhone;
+          this.form.tenantID = res.data.tenantID;
+          this.form.status = res.data.status;
+          // this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
+          // this.form.startTime = res.data.startTime;
+          // this.form.endTime = res.data.endTime;
+          const keys = res.data.menuTree.map((item) => item.functionId);
+          this.$nextTick(() => {
+            this.$refs.treeMenu.setCheckedKeys(keys);
+          });
+        });
+    },
     close() {
       this.dialogTableVisible = false;
     },
@@ -142,7 +161,7 @@ export default {
       this.$emit('update:exist', false);
     },
     showMember() {
-      this.dialogVisible = !this.dialogVisible;
+      this.dialogTableVisible = !this.dialogTableVisible;
     },
   },
 };

@@ -61,7 +61,7 @@
             node-key="id"
           ></el-tree>
         </el-form-item>
-        <el-form-item label="使用时间" prop="date">
+        <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
             @change="changDate"
@@ -71,9 +71,9 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status" :disabled="infoBool">
+          <el-radio-group v-model="form.status">
             <el-radio label="O">启用</el-radio>
             <el-radio label="S">停用</el-radio>
           </el-radio-group>
@@ -98,7 +98,7 @@ export default {
       required: true,
     },
     tenantId: {
-      type: String,
+      type: [String, Number],
       required: false,
     },
     infoBool: {
@@ -139,11 +139,6 @@ export default {
         tenantID: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
         },
-        {
-          pattern: /^[0-9a-zA-Z]+$/,
-          message: '请输入数字或者英文字母',
-          trigger: 'blur',
-        },
         ],
         mobilePhone: [
           {
@@ -168,6 +163,7 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
+    // 判断租户ID存在请求租户详情接口
     if (this.tenantId) {
       this.getTenant();
       this.$nextTick(() => {
@@ -209,9 +205,10 @@ export default {
           this.form.applyUser = res.data.applyUser;
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantID = res.data.tenantID;
-          this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
-          this.form.startTime = res.data.startTime;
-          this.form.endTime = res.data.endTime;
+          this.form.status = res.data.status;
+          // this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
+          // this.form.startTime = res.data.startTime;
+          // this.form.endTime = res.data.endTime;
           const keys = res.data.menuTree.map((item) => item.functionId);
           this.$nextTick(() => {
             this.$refs.treeMenu.setCheckedKeys(keys);
@@ -229,6 +226,7 @@ export default {
         }
       });
     },
+    // 获取选中tree key值 展示选中
     handleCheckChange() {
       const keys = this.$refs.treeMenu.getCheckedKeys();
       this.form.menuTree = keys.map((item) => ({ functionId: item }));
@@ -247,6 +245,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
+            this.$emit('getTenantList');
             this.$message.success('创建成功');
             this.closed();
           } else {
@@ -268,10 +267,9 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
+            this.$emit('getTenantList');
             this.$message.success('创建成功');
             this.closed();
-          } else {
-            this.$message.error(res.msg);
           }
         });
     },

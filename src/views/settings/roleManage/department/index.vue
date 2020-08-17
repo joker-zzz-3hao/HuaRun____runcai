@@ -105,6 +105,7 @@ export default {
     },
 
     showAddRoule() {
+      this.roleInfo = '';
       this.title = '新增角色';
       this.exist = true;
     },
@@ -130,12 +131,6 @@ export default {
         }
       });
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
   },
   components: {
     'tl-add-role': addRole,
@@ -154,6 +149,7 @@ export default {
       pageSize: 10,
       tableData: [],
       keyWord: '',
+      roleInfo: '',
     };
   },
 };

@@ -45,6 +45,7 @@
       :exist.sync="exist"
       :title="title"
       :tenantId="tenantId"
+      @getTenantList="getTenantList"
       :infoBool="infoBool"
     ></tl-create-tenant>
     <tl-tenant-detail
@@ -82,8 +83,12 @@ export default {
         pageSize: this.pageSize,
         currentPage: this.currentPage,
       }).then((res) => {
-        this.tableData = res.data.content;
-        this.totalpage = res.data.total;
+        if (res.code == 200) {
+          this.tableData = res.data.content;
+          this.totalpage = res.data.total;
+        } else {
+          this.$message.error(res.msg);
+        }
       });
     },
 

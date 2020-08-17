@@ -51,7 +51,7 @@ export default {
       required: true,
     },
     roleInfo: {
-      type: Object,
+      type: [Object, String],
       required: false,
     },
   },
@@ -141,7 +141,6 @@ export default {
           functionList: [],
         };
         const treeData = res.data.menuTree.map((item) => item.functionId);
-        console.log(treeData);
         this.$refs.treeMenu.setCheckedKeys(treeData);
       });
     },

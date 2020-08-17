@@ -6,6 +6,7 @@
 <template>
   <div class="home">
     <el-form ref="membersForm" :inline="true">
+      <div @click="$router.back()">返回></div>
       <el-form-item class="pageright">
         <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
         <el-button type="primary" @click="handleDelete()">移除</el-button>
