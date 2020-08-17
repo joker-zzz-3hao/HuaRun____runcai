@@ -248,7 +248,7 @@ const mockData = {
           },
           'krList|2': [
             {
-              'okrDetailId|': ['1233', '1234'],
+              'okrDetailId|1': ['1233', '1234'],
               'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
               'userName|1': ['心荃', '滕炜'],
               okrWeight: 40,

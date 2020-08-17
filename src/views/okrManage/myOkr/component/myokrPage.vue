@@ -2,8 +2,13 @@
   <div>
     <!-- 搜索条件 -->
     <div>
+      <!-- 选择状态 -->
       <dl style="display:flex">
-        <dd v-for="item in CONST.STATUS_LIST" :key="item.id" @click="searchOkr()">{{item.name}}</dd>
+        <dd
+          v-for="item in CONST.STATUS_LIST"
+          :key="item.id"
+          @click="searchOkr(item.id)"
+        >{{item.name}}</dd>
       </dl>
     </div>
     <!-- 一些功能按钮 -->
@@ -12,11 +17,22 @@
     </div>
     <!-- 用展开行表格 -->
     <div>
-      <div class="collapsetitle">
-        <span>权重</span>
-        <span>进度条</span>
-        <span>信心指数</span>
-        <span>承接地图</span>
+      <div>
+        <div>{{okrCycle.periodDesc}}OKR</div>
+        <ul>
+          <li>
+            <span>状态</span>
+            <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
+          </li>
+          <li>
+            <span>负责人</span>
+            <span>{{okrMain.userName}}</span>
+          </li>
+          <li>
+            <span>OKR进度</span>
+            <el-progress :stroke-width="10" :percentage="parseInt(okrMain.okrProgress, 10)"></el-progress>
+          </li>
+        </ul>
       </div>
       <tl-okr-collapse :tableList="tableList" :disabled="false" :activeList="[0]">
         <template slot="head-bar" slot-scope="props">
@@ -66,30 +82,36 @@ export default {
       tableList: [], // okr列表
       searchForm: {
         status: '1',
-        time: '',
       },
       dialogExist: false,
       currentView: '', // 弹框组件
       okrId: '',
       okrItem: {},
+      okrMain: { // okr公共信息
+        userName: '',
+        okrProgress: 0,
+      },
     };
   },
-
+  props: {
+    okrCycle: {
+      type: Object,
+      required: true,
+    },
+  },
   created() {
-    this.init();
-    this.searchOkr();
   },
   methods: {
-    init() {
-    },
-    searchOkr() {
+    searchOkr(status) {
+      this.searchForm.status = status || '1';
       this.server.getmyOkr({
         myOrOrg: 'my',
-        periodId: 'periodId',
+        periodId: 'periodId', // this.okrCycle.periodId
         status: this.searchForm.status,
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails;
+          this.okrMain = res.data.okrMain;
           this.okrId = res.data.okrMain.okrId;
         }
       });
@@ -107,6 +129,15 @@ export default {
     },
     goChangeOkr() {
       this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
+    },
+  },
+  watch: {
+    'okrCycle.periodId': {
+      handler() {
+        this.searchOkr();
+      },
+      immediate: true,
+      deep: true,
     },
   },
 };
