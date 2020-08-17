@@ -13,8 +13,8 @@
           <div class="remind-state"></div>
         </li>
         <li class="user-info">
-          <img v-if="true" src="@/assets/images/user/user.jpg" alt />
-          <div v-else class="user-name">佳佳</div>
+          <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+          <div v-else class="user-name">哲民</div>
         </li>
       </ul>
     </div>

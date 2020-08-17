@@ -153,6 +153,7 @@
   align-items: center;
   margin: 0 30px 0 0;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .top-menu i {
@@ -176,10 +177,17 @@
   color: #fff;
 }
 
-.user-info img {
+.user-info img,
+.user-info .user-name {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+}
+
+.user-info .user-name {
+  text-align: center;
+  line-height: 40px;
+  background: #bdc5cd;
 }
 
 /* 主内容区--左侧菜单 */
@@ -369,7 +377,7 @@
   height: calc(100vh - 70px);
   background: #fff;
   z-index: -1;
-  transform: translateX(-178px);
+  transform: translateX(-190px);
   transition: all .4s ease-out;
 }
 
@@ -522,18 +530,18 @@
   background: url('~@/assets/images/return-menu.png') #fff center no-repeat;
   background-size: 24px 24px;
   cursor: pointer;
-  transform: translateX(-168px);
+  /* transform: translateX(-168px); */
   transform: rotate(0);
   transition: all .4s ease-out;
 }
 
-.no-sub-menu .menu-control-button {
+/* .no-sub-menu .menu-control-button {
   transform: translateX(-20px);
 }
 
 .is-sub-menu .menu-control-button {
   transform: translateX(0);
-}
+} */
 
 .is-shrink .menu-control-button {
   transform: rotate(-180deg);
