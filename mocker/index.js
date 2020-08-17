@@ -14,6 +14,7 @@ const proxy = {
   ...require('./setOkr/index'),
   ...require('./organizeUserManagement/index'),
   ...require('./departManage/index'),
+  ...require('./dictionaryManage/index'),
 };
 
 module.exports = (delay(proxy, 0));
