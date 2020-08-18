@@ -9,46 +9,34 @@ const api = apiList[process.env.VUE_APP_NODE_ENV];
 console.log(`api:${api}`);
 
 module.exports = {
-  '/talent-gateway-service/*': {
-    // target: api,
-    target: 'http://10.200.197.21:8080',
+  '/gateway/system-service/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '/system-service' },
+  },
+  '/gateway/privilege-service/*': {
+    target: api,
     secure: false,
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
-  '/privilege-service/*': {
-    // target: api,
-    target: 'http://10.200.197.21:8082',
+  '/gateway/account-service/*': {
+    target: api,
     secure: false,
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
-  '/gateway/talent-query/*': {
-    target: 'http://10.54.39.95:8085',
-    // target: api,
+  '/gateway/okr-service/*': {
+    target: api,
     secure: false,
     changeOrigin: true,
-    pathRewrite: {
-      '^/gateway': '',
-    },
+    // pathRewrite: { '^/gateway': '' },
   },
-  '/gateway/talent-okr/*': { // 天龙
-    target: 'http://10.54.25.145:8082',
-    // target: api,
+  '/gateway/data-query/*': {
+    target: api,
     secure: false,
     changeOrigin: true,
-    pathRewrite: {
-      '^/gateway': '',
-    },
+    // pathRewrite: { '^/gateway': '' },
   },
-  '/system-service/*': { // zengwei
-    target: 'http://10.54.25.249:8081',
-    // target: api,
-    secure: false,
-    changeOrigin: true,
-    pathRewrite: {
-      '^/gateway': '/system-service',
-    },
-  },
-
 };
