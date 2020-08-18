@@ -1,20 +1,27 @@
 import axios from 'axios';
 import {
+  getOrigin,
+} from '@/lib/util';
+import {
   Message,
 } from 'element-ui';
 
 function sessionTimeOut(data) {
   console.log(data);
+  const origin = getOrigin();
   // TODO:未授权时跳转ladp登录首页
+  if (origin == process.env.VUE_APP_PORTAL) {
+    window.open(process.env.VUE_APP_LOGIN, '_self');
+  } else {
+    window.open(`${origin}/#/login`, '_self');
+  }
 }
 
 const ajax = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
     Pragma: 'no-cache',
-    token: localStorage.token,
-    tenantId: 'CR0012000206',
-    userId: 'user001',
+    // token: localStorage.token,
   },
   transformRequest: [(data) => JSON.stringify(data)],
   transformResponse: [(res) => {
@@ -160,9 +167,11 @@ export default {
   get(url, config = {
     params: {},
   }) {
+    ajax.defaults.headers.token = localStorage.token;
     return ajax.get(url, config);
   },
   post(url, data = {}, config = {}) {
+    ajax.defaults.headers.token = localStorage.token;
     return ajax.post(url, data, config);
   },
   options: ajax.defaults,
