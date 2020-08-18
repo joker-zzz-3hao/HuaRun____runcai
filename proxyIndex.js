@@ -9,6 +9,12 @@ const api = apiList[process.env.VUE_APP_NODE_ENV];
 console.log(`api:${api}`);
 
 module.exports = {
+  '/gateway/talent-gateway-service/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '/system-service' },
+  },
   '/gateway/system-service/*': {
     target: api,
     secure: false,
