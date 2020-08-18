@@ -16,9 +16,7 @@
             v-model="form.tenantName"
             maxlength="64"
             placeholder="请输入租户名称"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.tenantName}}</span>
         </el-form-item>
         <el-form-item label="企业ID" prop="tenantID">
           <el-input
@@ -26,9 +24,7 @@
             maxlength="64"
             v-model="form.tenantID"
             placeholder="请输入企业ID"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.tenantID}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
           <el-input
@@ -36,9 +32,7 @@
             maxlength="64"
             v-model="form.applyUser"
             placeholder="请输入申请人"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.applyUser}}</span>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobilePhone">
           <el-input
@@ -46,21 +40,22 @@
             v-model="form.mobilePhone"
             placeholder="请输入联系电话"
             maxlength="11"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.mobilePhone}}</span>
         </el-form-item>
         <el-form-item label="开放菜单功能">
-          <el-tree
-            disabled
-            @check-change="handleCheckChange"
-            ref="treeMenu"
-            :data="data"
-            show-checkbox
-            default-expand-all
-            node-key="id"
-          ></el-tree>
+          <div class="menuTreeList">
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div>+</div>
+          </div>
         </el-form-item>
+        <el-cascader-panel
+          @change="handleCheckChange"
+          ref="treeMenu"
+          v-model="selectArr"
+          :options="data"
+          :props="{ multiple: true }"
+          node-key="id"
+        ></el-cascader-panel>
         <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
@@ -110,6 +105,8 @@ export default {
   data() {
     return {
       server,
+      selectArr: [],
+      menuTreeList: [],
       form: {
         tenantName: '',
         applyUser: '',
@@ -119,6 +116,7 @@ export default {
         status: 'O',
         startTime: '',
         endTime: '',
+
       },
       rules: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
@@ -164,12 +162,6 @@ export default {
   mounted() {
     this.dialogTableVisible = true;
     // 判断租户ID存在请求租户详情接口
-    if (this.tenantId) {
-      this.getTenant();
-      this.$nextTick(() => {
-        this.handleCheckChange();
-      });
-    }
     this.getqueryMenu();
   },
   methods: {
@@ -184,6 +176,7 @@ export default {
       this.server.queryMenu()
         .then((res) => {
           this.data = this.getTreeList(res.data, true);
+          this.getTenant();
         });
     },
     // 递归修改符合element tree结构数据
@@ -192,7 +185,10 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
+          value: item.functionId,
+          checkStrictly: true,
           disabled: this.infoBool,
+          emitPath: false,
           children: this.getTreeList(item.children, disabled),
         }));
       }
@@ -206,12 +202,10 @@ export default {
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantID = res.data.tenantID;
           this.form.status = res.data.status;
-          // this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
-          // this.form.startTime = res.data.startTime;
-          // this.form.endTime = res.data.endTime;
           const keys = res.data.menuTree.map((item) => item.functionId);
+          this.selectArr = keys;
           this.$nextTick(() => {
-            this.$refs.treeMenu.setCheckedKeys(keys);
+            this.handleCheckChange();
           });
         });
     },
@@ -228,8 +222,10 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange() {
-      const keys = this.$refs.treeMenu.getCheckedKeys();
-      this.form.menuTree = keys.map((item) => ({ functionId: item }));
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      this.menuTreeList = keys.map((item) => item.data.label);
+      console.log(this.menuTreeList);
+      this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据
     pudateForm() {
@@ -283,6 +279,7 @@ export default {
       this.dialogVisible = !this.dialogVisible;
     },
   },
+
 };
 </script>
 <style  scoped>
@@ -290,5 +287,16 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
+}
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
 }
 </style>
