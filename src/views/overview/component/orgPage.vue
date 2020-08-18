@@ -1,15 +1,13 @@
 <template>
   <div class="home">
     <!-- okr折叠面板 -->
-
-    <!-- 部门主页 -->
-    <!-- 个人主页 -->
+    <!-- 不同的数据图  -->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'overview',
+  name: 'orgPage',
   components: {
   },
   data() {

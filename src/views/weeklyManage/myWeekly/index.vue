@@ -1,5 +1,10 @@
 <template>
-  <div class="home">我的周报</div>
+  <div class="home">
+    <el-tabs v-model="activeName">
+      <el-tab-pane name="standard"></el-tab-pane>
+      <el-tab-pane name="simple"></el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <script>
