@@ -13,7 +13,7 @@
       :title="userTitle"
       :close-on-click-modal="false"
     >
-      <el-form ref="userForm" :model="formData">
+      <el-form ref="userForm" :model="formData" label-width="80px">
         <el-form-item
           label="用户名称"
           prop="userName"

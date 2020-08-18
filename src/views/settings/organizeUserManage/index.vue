@@ -1,7 +1,7 @@
 <template>
   <div class="organize-management">
     <div class="org-header">
-      <div>组织管理</div>
+      <div>部门管理</div>
       <span>
         <el-select
           v-model.trim="searchData.userType"
@@ -140,6 +140,25 @@
       @createDepart="createDepart"
       @closeUserDialog="closeUserDialog"
     ></create-user>
+    <el-drawer
+      :modal="false"
+      :append-to-body="false"
+      :visible.sync="editDrawer"
+      v-if="editDrawer"
+      :with-header="false"
+    >
+      <edit-user
+        ref="createUser"
+        :treeData="treeData"
+        :server="server"
+        :optionType="optionType"
+        :userAccount="userAccount"
+        :tenantName="tenantName"
+        :globalOrgId="globalOrgId"
+        @createDepart="createDepart"
+        @closeUserDialog="closeUserDialog"
+      ></edit-user>
+    </el-drawer>
 
     <!-- 用户详情 -->
     <user-info
@@ -157,6 +176,7 @@
 <script>
 import createDepart from './components/createDepartment';
 import createOrEditUser from './components/createOrEditUser';
+import editUser from './components/editUser';
 import userInfo from './components/userInfo';
 import Server from './server';
 import CONST from './const';
@@ -168,6 +188,7 @@ export default {
   components: {
     'create-department': createDepart,
     'create-user': createOrEditUser,
+    'edit-user': editUser,
     'user-info': userInfo,
   },
   data() {
@@ -177,6 +198,7 @@ export default {
       globalOrgId: '',
       userAccount: '',
       loading: false,
+      editDrawer: false,
       defaultExpandNode: [],
       filterText: '',
       showcreateDepart: false,
@@ -333,13 +355,14 @@ export default {
       if (user.userAccount) {
         this.optionType = 'edit';
         this.userAccount = user.userAccount;
+        this.editDrawer = true;
       } else {
         this.optionType = 'create';
+        this.showCreateUser = true;
+        this.$nextTick(() => {
+          this.$refs.createUser.show();
+        });
       }
-      this.showCreateUser = true;
-      this.$nextTick(() => {
-        this.$refs.createUser.show();
-      });
     },
 
     // 设置角色
