@@ -27,7 +27,9 @@
 
 /* 主区域 */
 .main-wrap {
+  flex: 1 1 auto;
   display: flex;
+  background: #f7fafc;
 }
 
 .menu-cont-inside {
@@ -41,7 +43,10 @@
   position: relative;
   z-index: 21;
   flex: 1 1 auto;
-  margin: 0 16px;
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 102px);
 }
 
 /* 内容容器 */

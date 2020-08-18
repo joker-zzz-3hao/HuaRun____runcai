@@ -125,6 +125,22 @@
   position: absolute;
 }
 
+/* 标记 */
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  padding: 0 6px;
+  height: 18px;
+  background: #ea5a5a;
+  font-size: 12px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 16px;
+  color: #fff;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -149,6 +165,7 @@
 }
 
 .top-menu li {
+  position: relative;
   display: flex;
   align-items: center;
   margin: 0 30px 0 0;
@@ -218,14 +235,6 @@
   transition: all .4s ease-out;
 }
 
-/* .no-sub-menu .menu-cont-inside {
-  width: 70px;
-}
-
-.is-sub-menu .menu-cont-inside {
-  width: 248px;
-} */
-
 .menu-cont-inside .management-platform,
 .menu-cont-inside .main-menu > ul {
   display: flex;
@@ -244,9 +253,6 @@
   align-items: center;
   width: 100%;
   height: 70px;
-  /* cursor: pointer; */
-  /* background: #162565;
-  transition: all 8s ease-out; */
 }
 
 .menu-cont-inside .text-tip {
@@ -340,12 +346,6 @@
 .is-shrink .main-menu {
   width: 70px;
 }
-
-/* .main-menu li,
-.management-platform li {
-  background: linear-gradient(#162565, #162565);
-  transition: all 8s ease-out;
-} */
 
 .main-menu .is-active {
   background: linear-gradient(#ffbc20, #d66d2c);
@@ -502,21 +502,21 @@
 }
 
 .main-menu .sub-menu span {
-  transform: perspective(100px) translateZ(-24px);
+  transform: translateZ(-19px);
 }
 
 .main-menu .sub-menu em {
-  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+  transform: translateZ(19px) rotateY(180deg) scale(0.5);
 }
 
 .is-sub-menu .main-menu .sub-menu em {
-  transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
+  transform: translateZ(19px) rotateY(0) scale(1);
   transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .is-shrink .main-menu .sub-menu em,
 .is-sub-menu .main-menu .sub-menu dl:not(.is-focus) em {
-  transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+  transform: translateZ(19px) rotateY(180deg) scale(0.5);
   opacity: 0;
 }
 
@@ -530,23 +530,14 @@
   background: url('~@/assets/images/return-menu.png') #fff center no-repeat;
   background-size: 24px 24px;
   cursor: pointer;
-  /* transform: translateX(-168px); */
   transform: rotate(0);
   transition: all .4s ease-out;
 }
 
-/* .no-sub-menu .menu-control-button {
-  transform: translateX(-20px);
-}
-
-.is-sub-menu .menu-control-button {
-  transform: translateX(0);
-} */
-
 .is-shrink .menu-control-button {
   transform: rotate(-180deg);
 }
-/* 
+/* 暂时关闭
 .management-platform {
   position: absolute;
   bottom: 0;
@@ -555,3 +546,23 @@
 
 
 /* 主内容区--路由区 */
+.operating-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #4d5155;
+  font-weight: 600;
+}
+
+.cont-area {
+  padding: 30px;
+  flex: 1 1 auto;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+  background: #fff;
+}

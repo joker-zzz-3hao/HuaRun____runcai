@@ -10,6 +10,7 @@
         <li>
           <i></i>
           <em>通知</em>
+          <div class="badge">9</div>
           <div class="remind-state"></div>
         </li>
         <li class="user-info">
