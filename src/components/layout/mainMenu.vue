@@ -97,9 +97,9 @@ export default {
     },
   },
   mounted() {
-    this.server.queryByTenantIdAndUserId().then((res) => {
-      console.log(res);
-    });
+    // this.server.queryByTenantIdAndUserId().then((res) => {
+    //   console.log(res);
+    // });
   },
   methods: {
     fnHandle(str, index, parameter) {

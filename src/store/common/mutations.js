@@ -27,4 +27,8 @@ export default {
   setSystemMenu: (state, systemMenuList = []) => {
     state.systemMenuList = systemMenuList;
   },
+  // 系统管理菜单
+  setUserInfo: (state, userInfo = {}) => {
+    state.userInfo = userInfo;
+  },
 };
