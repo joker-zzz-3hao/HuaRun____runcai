@@ -7,30 +7,30 @@ import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
   listRolePage(param) {
-    return this._ajaxPost('system-service/sys/role/listRolePage', param);
+    return this._ajaxPost('gateway/system-service/sys/role/listRolePage', param);
   }
 
   queryMenu(param) {
-    return this._ajaxPost('system-service/sys/function/listTenantFuncation', param);
+    return this._ajaxPost('gateway/system-service/sys/function/listTenantFuncation', param);
   }
 
   listTenantFuncation(param) {
-    return this._ajaxPost('system-service/sys/function/listTenantFuncation', param);
+    return this._ajaxPost('gateway/system-service/sys/function/listTenantFuncation', param);
   }
 
   addRole(param) {
-    return this._ajaxPost('system-service/sys/role/addRole', param);
+    return this._ajaxPost('gateway/system-service/sys/role/addRole', param);
   }
 
   getRole(param) {
-    return this._ajaxPost('system-service/sys/role/getRole', param);
+    return this._ajaxPost('gateway/system-service/sys/role/getRole', param);
   }
 
   updateRole(param) {
-    return this._ajaxPost('system-service/sys/role/updateRole', param);
+    return this._ajaxPost('gateway/system-service/sys/role/updateRole', param);
   }
 
   delRole(param) {
-    return this._ajaxPost('system-service/sys/role/delRole', param);
+    return this._ajaxPost('gateway/system-service/sys/role/delRole', param);
   }
 }
