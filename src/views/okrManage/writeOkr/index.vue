@@ -49,6 +49,9 @@ export default {
         timecycle: '',
         okrCycle: '',
         okrType: 2,
+        okrStatus: '',
+        draftParams: '',
+        draftId: '',
       },
       canWrite: true, // true写okr false changeokr
       cycleData: [],
@@ -79,6 +82,11 @@ export default {
     this.init();
     this.canWrite = this.$route.params.canWrite != 'cannot';
     this.okrId = this.$route.params.okrId || '';
+    if (this.$route.params.canWrite == 'draft') {
+      this.searchForm.okrStatus = this.$route.params.draftInfo.okrStatus || '';
+      this.searchForm.draftParams = this.$route.params.draftInfo.draftParams || '';
+      this.searchForm.draftId = this.$route.params.draftInfo.draftId || '';
+    }
     console.log('can', this.canWrite);
   },
   methods: {

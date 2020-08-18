@@ -39,7 +39,9 @@
     <div>
       头像
       <ul style="display:flex" v-if="memberList.length">
-        <li v-for="(item,index) in memberList" :key="item.userId+index">{{item.userName}}</li>
+        <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
+          <div class="user-name">{{cutName(item.userName)}}</div>
+        </li>
       </ul>
     </div>
   </div>
@@ -78,6 +80,8 @@ export default {
       required: true,
     },
   },
+  computed: {
+  },
   created() {
   },
   methods: {
@@ -99,7 +103,10 @@ export default {
       // this.$message('要跳到承接地图啦~');
       this.$router.push({ name: 'undertakeMaps', params: { okrDetailId: '111122', objectName: name, showOne: true } });
     },
-
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
   },
   watch: {
     'okrCycle.periodId': {

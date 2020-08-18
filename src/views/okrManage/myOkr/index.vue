@@ -107,7 +107,7 @@ export default {
       console.log(data);
     },
     goWriteOkr() {
-      this.$router.push({ name: 'writeOkr', params: { canWrite: true } });
+      this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
     },
   },
 };

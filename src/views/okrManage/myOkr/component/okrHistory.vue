@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       historyOKRList: [], // 历史版本okr
-      dialogTitle: 'OKR详情', // 弹框标题
+      dialogTitle: '历史版本', // 弹框标题
       dialogDetailVisible: false,
       oldOKRList: [],
     };

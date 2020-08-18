@@ -94,6 +94,8 @@
 
       <el-button @click="addobject()">加一个O</el-button>
       <el-button v-if="isnew" @click="summit()">提交</el-button>
+      <el-button v-if="isnew" @click="saveDraft()">保存为草稿</el-button>
+      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="saveDraft()">删除草稿</el-button>
     </div>
     <el-dialog
       title="关联承接项"
@@ -157,9 +159,9 @@ export default {
         }],
       },
       departokrList: [], // 可关联承接的okr
-      departokrObject: {}, // 可关联承接的okr
+      departokrObject: '', // 可关联承接的okr
       philosophyList: [], // 价值观
-      philosophyObject: {}, // 价值观
+      philosophyObject: '', // 价值观
       okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号
@@ -188,13 +190,21 @@ export default {
     }
   },
   created() {
-    // this.getCultureList();
+    if (this.searchForm.okrStatus == '6') {
+      this.getOkrDraftById();
+    }
   },
   methods: {
+    // 获取暂存的草稿
+    getOkrDraftById() {
+      this.formData = JSON.parse(this.searchForm.draftParams);
+      this.searchOkr();
+      this.getCultureList();
+    },
     // 自动保存
-    zidongbaocun() {
+    autosave() {
       this.timedInterval = setInterval(() => {
-        this.getMsgNum();
+        this.saveDraft();
       }, TIME_INTERVAL);
     },
     // 增加kr
@@ -231,8 +241,8 @@ export default {
           okrDetailProgress: 0,
         }],
         undertakeOkrVo: {},
-        departokrList: JSON.parse(this.departokrObject),
-        philosophyList: JSON.parse(this.philosophyObject),
+        departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
+        philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
       console.log(this.formData.okrInfoList);
     },
@@ -242,7 +252,7 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: 'periodId' }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || 'periodId' }).then((res) => {
         if (res.code == 200) {
           console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
@@ -266,10 +276,13 @@ export default {
               });
             }
           });
+          // 每个部门okr
           this.departokrObject = JSON.stringify(this.departokrList);
           if (this.formData.okrInfoList.length > 0) {
             this.formData.okrInfoList[0].departokrList = JSON.parse(this.departokrObject);
           }
+        } else {
+          this.departokrObject = JSON.stringify(this.departokrList);
         }
       });
     },
@@ -282,7 +295,17 @@ export default {
           this.philosophyList = res.data;
           this.philosophyObject = JSON.stringify(this.philosophyList);
           if (this.formData.okrInfoList.length > 0) {
-            this.formData.okrInfoList[0].philosophyList = JSON.parse(this.philosophyObject);
+            this.formData.okrInfoList.forEach((item) => {
+              item.philosophyList = JSON.parse(this.philosophyObject);
+              // 如果是草稿，选中已保存的价值观
+              if (this.searchForm.okrStatus == '6' && item.cultureId) {
+                item.philosophyList.forEach((pitem) => {
+                  if (item.cultureId == pitem.id) {
+                    pitem.checkFlag = true;
+                  }
+                });
+              }
+            });
           }
         }
       });
@@ -330,7 +353,8 @@ export default {
             return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
-          this.formData.periodId = 'periodId';
+          this.formData.periodId = this.searchForm.okrCycle.periodId || 'periodId';
+          this.formData.okrDraftId = this.searchForm.draftId;
           console.log('提交结果', this.formData);
           this.server.addokr(this.formData).then((res) => {
             if (res.code == 200) {
@@ -338,6 +362,30 @@ export default {
               this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             }
           });
+        }
+      });
+    },
+    // 保存草稿
+    saveDraft() {
+      this.formData.okrInfoList.forEach((oitem) => {
+        delete oitem.departokrList;
+        delete oitem.philosophyList;
+      });
+      this.formData.okrBelongType = this.searchForm.okrType;
+      this.formData.periodId = this.searchForm.okrCycle.periodId || 'periodId'; // this.searchForm.okrCycle.periodId
+      // this.formData.id = '1198531720864071680';
+      this.server.saveOkrDraft(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message('提交成功~');
+          this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
+        }
+      });
+    },
+    deleteDraft() {
+      this.server.deleteOkrDraft(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message('提交成功~');
+          this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
         }
       });
     },
