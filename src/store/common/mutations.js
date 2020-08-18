@@ -15,4 +15,16 @@ export default {
   setDetailData: (state, okrApprovalDetail = {}) => {
     state.okrApprovalDetail = okrApprovalDetail;
   },
+  // 设置润才菜单
+  setCrMenu: (state, crMenuList = []) => {
+    state.crMenuList = crMenuList;
+  },
+  // 租户管理菜单
+  setTalentMenu: (state, talentMenuList = []) => {
+    state.talentMenuList = talentMenuList;
+  },
+  // 系统管理菜单
+  setSystemMenu: (state, systemMenuList = []) => {
+    state.systemMenuList = systemMenuList;
+  },
 };

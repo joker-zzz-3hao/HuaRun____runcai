@@ -9,7 +9,7 @@
           :defaultProps="cycleDefaultProps"
         ></department>
       </div>
-      <div style="margin-left:20px;">
+      <div style="margin-left:20px;" v-if="showDepartmentSelect">
         <department
           type="department"
           :data="departmentData"
@@ -18,12 +18,15 @@
           :defaultProps="departmentDefaultProps"
         ></department>
       </div>
+      <!-- 搜索框 -->
       <div>
         <el-input placeholder="部门名称/成员/关键词" v-model="keyword" @keyup.enter.native="search">
           <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
         </el-input>
       </div>
-      <div>
+      <!-- 视图切换，公司使命 -->
+      <div v-if="showDepartmentSelect">
+        <el-button @click="showOkrMap = !showOkrMap">视图切换</el-button>
         <!-- type传1表示使命愿景，2表示战略 -->
         <el-button @click="showMission(1,'华润使命·愿景')">
           公司使命愿景
@@ -34,14 +37,28 @@
           <i class="el-icon-arrow-right el-icon--right"></i>
         </el-button>
       </div>
+      <!-- 返回 -->
+      <div v-if="!showDepartmentSelect">
+        <el-button @click="showDepartmentSelect = !showDepartmentSelect">返回</el-button>
+      </div>
     </div>
-    <div>
-      <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
-      <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
-        <template slot="treecard" slot-scope="node">
-          <card :node="node"></card>
-        </template>
-      </svgtree>
+    <!-- 组织树显示 -->
+    <div v-if="showDepartmentSelect">
+      <!-- OKR树 -->
+      <div v-if="showOkrMap">
+        <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
+        <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
+          <template slot="treecard" slot-scope="node">
+            <card :node="node"></card>
+          </template>
+        </svgtree>
+      </div>
+      <!-- OKR表格 -->
+      <tl-okr-table v-if="!showOkrMap" :treeData="treeData"></tl-okr-table>
+    </div>
+    <!-- 搜索框显示 -->
+    <div v-if="!showDepartmentSelect">
+      <tl-search-table></tl-search-table>
     </div>
     <tl-mission ref="mission"></tl-mission>
   </div>
@@ -51,8 +68,10 @@
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
 import card from './components/card';
+import okrTable from './components/okrTable';
 import mission from './components/mission';
 import worth from './components/worth';
+import searchTable from './components/searchTable';
 import Server from './server';
 
 const server = new Server();
@@ -69,6 +88,8 @@ export default {
       cycleData: [],
       okrCycle: {},
       departmentObj: {},
+      showOkrMap: true,
+      showDepartmentSelect: true,
       departmentDefaultProps: {
         children: 'children',
         label: 'orgName',
@@ -103,6 +124,8 @@ export default {
     card,
     'tl-mission': mission,
     'tl-worth': worth,
+    'tl-okr-table': okrTable,
+    'tl-search-table': searchTable,
   },
   mounted() {
     const self = this;
@@ -148,6 +171,7 @@ export default {
               }
             });
             this.treeData = res.data;
+            console.log(this.treeData);
           }
         });
       }
@@ -164,6 +188,7 @@ export default {
     },
     search() {
       const self = this;
+      self.showDepartmentSelect = false;
       self.server.searchKeyword({
         keyword: self.keyword,
       }).then((res) => {

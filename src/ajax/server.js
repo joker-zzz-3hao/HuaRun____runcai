@@ -1,7 +1,7 @@
 import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
-  roleList(param) {
-    return this._ajaxPost('gateway/account-admin/outside/face/sdk/list', param);
+  queryByTenantIdAndUserId(param) {
+    return this._ajaxGet('/gateway/privilege-service/privilege/function/queryByTenantIdAndUserId', param);
   }
 }
