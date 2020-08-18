@@ -118,8 +118,11 @@ export default {
       }).then((res) => {
         if (res.code == '200') {
           localSave('token', res.data);
-          self.$router.push({
-            name: 'overview',
+          this.$router.push({
+            name: 'transfer',
+            query: {
+              token: res.data,
+            },
           });
         } else {
           self.isLoginError = true;

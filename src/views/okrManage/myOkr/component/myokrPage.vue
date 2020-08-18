@@ -11,14 +11,14 @@
         >{{item.name}}</dd>
       </dl>
     </div>
-    <!-- 一些功能按钮 -->
+    <!-- 一些功能按钮 根据状态判断-->
     <div>
       <el-button @click="goChangeOkr">变更</el-button>
     </div>
-    <!-- 用展开行表格 -->
-    <div>
+    <!-- okr模块 只有起草中是有多个 -->
+    <div v-for="(item, index) in okrList" :key="index">
+      <!-- 基本信息 -->
       <div>
-        <div>{{okrCycle.periodDesc}}OKR</div>
         <ul>
           <li>
             <span>状态</span>
@@ -26,19 +26,34 @@
           </li>
           <li>
             <span>负责人</span>
-            <span>{{okrMain.userName}}</span>
+            <span>{{item.okrMain.userName}}</span>
           </li>
           <li>
             <span>OKR进度</span>
-            <el-progress :stroke-width="10" :percentage="parseInt(okrMain.okrProgress, 10)"></el-progress>
+            <el-progress :stroke-width="10" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
+          </li>
+          <li>
+            <span>更新时间</span>
+            <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
           </li>
         </ul>
       </div>
-      <tl-okr-collapse :tableList="tableList" :disabled="false" :activeList="[0]">
+      <!-- okr面板 -->
+      <tl-okr-collapse :tableList="item.tableList" :disabled="false" :activeList="[0]">
         <template slot="head-bar" slot-scope="props">
-          <el-button @click.native.stop="openDialog('tl-okr-detail',props.okritem)">详情</el-button>
-          <el-button @click.native.stop="openDialog('tl-okr-history',props.okritem)">历史版本</el-button>
-          <el-button @click.native.stop="openDialog('tl-okr-update',props.okritem)">进度更新</el-button>
+          <el-button
+            v-if="searchForm.status=='1'"
+            @click.native.stop="openDialog('tl-okr-detail',props.okritem)"
+          >详情</el-button>
+          <el-button
+            v-if="searchForm.status=='1'"
+            @click.native.stop="openDialog('tl-okr-history',props.okritem)"
+          >历史版本</el-button>
+          <el-button
+            v-if="searchForm.status=='1'"
+            @click.native.stop="openDialog('tl-okr-update',props.okritem)"
+          >进度更新</el-button>
+          <el-button v-if="searchForm.status=='6'" @click.native.stop="goDraft(item)">编辑</el-button>
         </template>
       </tl-okr-collapse>
     </div>
@@ -79,7 +94,14 @@ export default {
     return {
       server,
       CONST,
-      tableList: [], // okr列表
+      okrList: [{
+        tableList: [], // okr列表
+        okrMain: { // okr公共信息
+          userName: '',
+          okrProgress: 0,
+          updateTime: '',
+        },
+      }],
       searchForm: {
         status: '1',
       },
@@ -87,10 +109,7 @@ export default {
       currentView: '', // 弹框组件
       okrId: '',
       okrItem: {},
-      okrMain: { // okr公共信息
-        userName: '',
-        okrProgress: 0,
-      },
+
     };
   },
   props: {
@@ -110,9 +129,29 @@ export default {
         status: this.searchForm.status,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableList = res.data.okrDetails;
-          this.okrMain = res.data.okrMain;
-          this.okrId = res.data.okrMain.okrId;
+          if (this.searchForm.status == '6') {
+            this.okrList = [];
+            const draftList = res.data || [];
+            draftList.forEach((item) => {
+              const okrInfo = JSON.parse(item.params);
+              this.okrList.push({
+                tableList: okrInfo.okrInfoList,
+                okrMain: {
+                  userName: item.updateBy || item.createBy,
+                  okrProgress: 0,
+                  updateDate: item.updateTime,
+                },
+                id: item.id,
+                params: item.params,
+              });
+              console.log('草稿', this.tableList);
+            });
+          } else {
+            this.okrList[0].tableList = res.data.okrDetails;
+            this.okrList[0].okrMain = res.data.okrMain;
+            this.okrId = res.data.okrMain.okrId;
+            console.log('进行中', this.tableList);
+          }
         }
       });
     },
@@ -129,6 +168,15 @@ export default {
     },
     goChangeOkr() {
       this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
+    },
+    goDraft(item) {
+      const draftInfo = {
+        draftParams: item.params,
+        draftId: item.id,
+        okrStatus: this.searchForm.status,
+        okrorgCycle: this.okrorgCycle,
+      };
+      this.$router.push({ name: 'writeOkr', params: { canWrite: 'draft', draftInfo } });
     },
   },
   watch: {

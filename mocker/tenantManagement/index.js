@@ -2,7 +2,7 @@ const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'POST /system-service/sys/tenant/pageTenantList': (req, res) => {
+  'POST /gateway/system-service/sys/tenant/pageTenantList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|10': [{
         'tenantId|+1': 1,
@@ -25,7 +25,7 @@ const mockData = {
 
     })));
   },
-  'POST /system-service/sys/tenant/getTenant': (req, res) => {
+  'POST /gateway/system-service/sys/tenant/getTenant': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|1': [{
         tenantID: 'CR0012000206',
@@ -40,22 +40,15 @@ const mockData = {
         createTime: '2020-08-06T19:33:07',
         updateTime: '2020-08-06T19:33:11',
         updateBy: '1234567890000',
-        menuTree: [
-          {
-            id: 7,
-            functionId: 4,
-            roleId: '7',
-          },
-          {
-            id: 19,
-            functionId: 7,
-            roleId: '7',
-          },
-          {
-            id: 31,
-            functionId: 28,
-            roleId: '7',
-          },
+        menuTree: [{
+          functionId: [4, 10],
+        },
+        {
+          functionId: [4, 12],
+        },
+        {
+          functionId: [4, 13],
+        },
         ],
       },
       ],

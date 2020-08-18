@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     getMenuList() {
-      this.server.MenuList({
+      this.server.queryMenu({
         functionName: this.keyWord,
         status: this.status,
       })

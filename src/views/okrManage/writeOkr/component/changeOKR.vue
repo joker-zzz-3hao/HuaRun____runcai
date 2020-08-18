@@ -144,7 +144,12 @@
       width="30%"
       :modal-append-to-body="false"
     >
-      <undertake-table ref="undertake" :departokrList="departokrList" :showPhil="false"></undertake-table>
+      <undertake-table
+        v-if="selectIndex !== ''"
+        ref="undertake"
+        :departokrList="tableList[selectIndex].departokrList"
+        :showPhil="false"
+      ></undertake-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="summitUndertake()">确 定</el-button>
@@ -179,6 +184,8 @@ export default {
       formData: {}, // 提交表单
       dialogVisible: false, // 承接项弹窗
       selectDepartRow: {},
+      selectIndex: '', // 当前选择的
+      okrMainId: '',
     };
   },
   components: {
@@ -208,15 +215,21 @@ export default {
     // 查okr详情
     getokrDetail() {
       this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        console.log('detail', res);
+        console.log('detail', res.data.okrMain);
         this.tableList = res.data.okrDetails;
         this.okrmain = res.data.okrMain;
+        this.okrMainId = res.data.okrMain.okrId;
         // this.voteUser = res.data.voteUser;
+        this.tableList.forEach((item) => {
+          if (item.parentUpdate) {
+            this.searchOkr(item.detailId, item);
+          }
+        });
       });
     },
     // 查可关联承接的okr
-    searchOkr() {
-      this.server.getUndertakeOkr({ periodId: 'periodId' }).then((res) => {
+    searchOkr(detailId, okritem) {
+      this.server.getUndertakeOkr({ detailId }).then((res) => {
         if (res.code == 200) {
           console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
@@ -240,6 +253,7 @@ export default {
               });
             }
           });
+          okritem.departokrList = this.departokrList;
         }
       });
     },
@@ -247,11 +261,11 @@ export default {
     openStopDialog(row, type) {
       this.tableData = [];
       this.remark = '';
-      this.selectDeletedId = row.detailId;
+      this.selectDeletedId = row.detailId; // 即将终止的id
       this.deletedType = type;
       this.deletedProgress = row.okrDetailProgress;
       console.log('点了他', row);
-      row.stopokr = 1; //
+      row.stopMark = 1; // 删除标记
       console.log('点了他', this.tableList);
       if (type == 'o') {
         row.krList.forEach((kritem) => {
@@ -300,6 +314,17 @@ export default {
       this.dialogVisible = false;
     },
     summitStop() {
+      this.tableList.forEach((oitem) => {
+        if (oitem.detailId == this.selectDeletedId) {
+          oitem.stopMark = 1;
+          return;
+        }
+        oitem.krList.forEach((kritem) => {
+          if (kritem.detailId == this.selectDeletedId) {
+            kritem.stopMark = 1;
+          }
+        });
+      });
       if (this.detailokrList.length == 0) {
         this.detailokrList.push({
           okrId: this.selectDeletedId,
@@ -359,10 +384,11 @@ export default {
       this.tableList.forEach((item, index) => {
         okrInfoList.push({
           detailId: item.detailId,
+          okrDetailId: item.okrDetailId,
           okrDetailObjectKr: item.okrDetailObjectKr,
           okrWeight: item.okrWeight,
           okrDetailProgress: item.okrDetailProgress,
-          undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+          undertakeOkr: { undertakeOkrId: item.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: item.okrDetailParentVersion },
           krList: [],
         });
         item.krList.forEach((kritem) => {
@@ -371,21 +397,29 @@ export default {
             okrDetailObjectKr: kritem.okrDetailObjectKr,
             okrWeight: kritem.okrWeight,
             okrDetailProgress: kritem.okrDetailProgress,
-            undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+            okrDetailConfidence: kritem.okrDetailConfidence,
+            undertakeOkr: { undertakeOkrId: kritem.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: kritem.okrDetailParentVersion },
           });
         });
         if (item.newkrList && item.newkrList.length > 0) {
           okrInfoList[index] = okrInfoList[index].concat(item.newkrList);
         }
       });
+      console.log('okrMain', this.okrMainId);
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
         detailokrList: this.detailokrList,
         periodId: 'periodId',
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.modifyReason,
+        okrMainId: this.okrMainId,
       };
       console.log('拼起来后', this.formData);
+      this.server.modifyOkrInfo(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message('提交成功');
+        }
+      });
     },
     goback() {
       this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });

@@ -7,17 +7,17 @@ const STATUS_LIST = [{
 }, {
   name: '已结束', id: '4',
 }, {
-  name: '起草中', id: '5',
+  name: '已退回', id: '5',
 }, {
-  name: '已退回', id: '6',
+  name: '起草中', id: '6',
 }];
 const STATUS_LIST_MAP = {
   1: '进行中',
   2: '考核中',
   3: '已完成',
   4: '已结束',
-  5: '起草中',
-  6: '已退回',
+  5: '已退回',
+  6: '起草中',
 };
 const CONFIDENCE = [{
   label: '无风险', value: '1',

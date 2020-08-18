@@ -2,7 +2,7 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-model="formData">
-      <elcollapse class="collapse" v-model="innerActiveList">
+      <elcollapse class="collapse" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
           v-for="(item, index) in tableList"
@@ -13,7 +13,7 @@
           <template slot="title">
             <div class="hideEdit">
               <span v-if="showOKRInfoLabel">目标O：</span>
-              <el-form-item v-if="canWrite && item.showTitleEdit">
+              <el-form-item style="display:inline-block" v-if="canWrite && item.showTitleEdit">
                 <el-input v-model="item.okrDetailObjectKr"></el-input>
               </el-form-item>
               <span v-else>{{item.okrDetailObjectKr}}</span>
@@ -71,7 +71,7 @@
           <div v-for="(kritem, krIndex) in item.krList" :key="kritem.detailId+krIndex">
             <div class="hideEdit">
               <span v-if="showOKRInfoLabel">关键行动KR：</span>
-              <el-form-item v-if="canWrite && kritem.showTitleEdit">
+              <el-form-item style="display:inline-block" v-if="canWrite && kritem.showTitleEdit">
                 <el-input v-model="kritem.okrDetailObjectKr"></el-input>
               </el-form-item>
               <span v-else>

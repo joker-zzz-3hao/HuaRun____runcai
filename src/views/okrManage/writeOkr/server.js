@@ -14,7 +14,7 @@ export default class Server extends ServerBase {
   }
 
   getokrDetail(param) {
-    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
+    return this._ajaxPost(`gateway/talent-query/okr/outside/query/okrDetail?okrId=${param.okrId}`);
   }
 
   addokr(param) {
@@ -30,6 +30,22 @@ export default class Server extends ServerBase {
   }
 
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
+  }
+
+  modifyOkrInfo(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/modifyOkrInfo', param);
+  }
+
+  saveOkrDraft(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrDraft/saveOkrDraft', param);
+  }
+
+  getOkrDraftById(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/okrDraft/getOkrDraftById?okrDraftId=${param.okrDraftId}`, param);
+  }
+
+  deleteOkrDraft(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/okrDraft/deleteOkrDraft?okrDraftId=${param.okrDraftId}`, param);
   }
 }

@@ -2,7 +2,7 @@ const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'POST /system-service/sys/config/query': (req, res) => {
+  'POST /gateway/system-service/sys/config/query': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|3': [{
         configType: 'OKR',

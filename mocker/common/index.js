@@ -8,7 +8,7 @@ const mockData = {
     })));
   },
   // 查询组织树
-  'POST /gateway/talent-query/okr/query/orgTable': (req, res) => {
+  'POST /gateway/talent-query/okr/outside/query/orgTable': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       children: [
         {

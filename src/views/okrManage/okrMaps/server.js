@@ -2,15 +2,15 @@ import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
   }
 
   getOrgTable(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/orgTable', param);
   }
 
   getOkrTree(param) {
-    return this._ajaxPost(`gateway/talent-query/okr/query/okrTree?periodId=${param.periodId}&orgId=${param.orgId}`, param);
+    return this._ajaxPost(`gateway/talent-query/okr/outside/query/okrTree?periodId=${param.periodId}&orgId=${param.orgId}`, param);
   }
 
   getDepartmentList(param) {
@@ -18,7 +18,7 @@ export default class Server extends ServerBase {
   }
 
   searchKeyword(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
   }
 
   test(param) {
@@ -27,7 +27,7 @@ export default class Server extends ServerBase {
 
   // 查okr详情
   getokrDetail(param) {
-    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
+    return this._ajaxPost(`gateway/talent-query/okr/outside/query/okrDetail?okrId=${param.okrId}`);
   }
 
   // 查点赞列表
@@ -37,6 +37,6 @@ export default class Server extends ServerBase {
 
   // 查操作历史
   okrOperationHistory(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrOperationHistory', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrOperationHistory', param);
   }
 }

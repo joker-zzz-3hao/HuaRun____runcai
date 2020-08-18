@@ -3,7 +3,7 @@ const mockUtil = require('../mockUtil');
 
 const mockData = {
   // 查询周期
-  'POST /gateway/talent-query/okr/query/period': (req, res) => {
+  'POST /gateway/talent-query/okr/outside/query/period': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|2': [{
         'id|+1': 1,
@@ -23,7 +23,7 @@ const mockData = {
     })));
   },
   // 查询OKR树
-  'POST /gateway/talent-query/okr/query/okrTree': (req, res) => {
+  'POST /gateway/talent-query/okr/outside/query/okrTree': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [{
         createTime: '2020-08-04 16:29:54',

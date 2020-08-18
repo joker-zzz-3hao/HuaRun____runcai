@@ -51,16 +51,17 @@
           <span v-if="infoBool">{{form.mobilePhone}}</span>
         </el-form-item>
         <el-form-item label="开放菜单功能">
-          <el-tree
-            disabled
-            @check-change="handleCheckChange"
-            ref="treeMenu"
-            :data="data"
-            show-checkbox
-            default-expand-all
-            node-key="id"
-          ></el-tree>
+          <div></div>
+          <div>+</div>
         </el-form-item>
+        <el-cascader-panel
+          @change="handleCheckChange"
+          ref="treeMenu"
+          v-model="selectArr"
+          :options="data"
+          :props="{ multiple: true }"
+          node-key="id"
+        ></el-cascader-panel>
         <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
@@ -119,6 +120,7 @@ export default {
         status: 'O',
         startTime: '',
         endTime: '',
+        selectArr: '',
       },
       rules: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
@@ -192,6 +194,7 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
+          value: item.functionId,
           disabled: this.infoBool,
           children: this.getTreeList(item.children, disabled),
         }));
@@ -228,8 +231,9 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange() {
-      const keys = this.$refs.treeMenu.getCheckedKeys();
-      this.form.menuTree = keys.map((item) => ({ functionId: item }));
+      console.log(this.selectArr);
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据
     pudateForm() {

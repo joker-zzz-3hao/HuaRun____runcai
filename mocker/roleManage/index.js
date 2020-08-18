@@ -2,7 +2,7 @@ const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'POST /system-service/sys/role/listRolePage': (req, res) => {
+  'POST /gateway/system-service/sys/role/listRolePage': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|10': [{
         'roleCode|+1': 1,
@@ -16,7 +16,7 @@ const mockData = {
       total: 10,
     })));
   },
-  'POST /system-service/sys/userRole/listRoleUser': (req, res) => {
+  'POST /gateway/system-service/sys/userRole/listRoleUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|20': [{
         userAccount: '18867671524',
@@ -30,7 +30,7 @@ const mockData = {
       total: 20,
     })));
   },
-  'POST /system-service/sys/function/query': (req, res) => {
+  'POST /gateway/system-service/sys/function/query': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [
         {
@@ -231,7 +231,7 @@ const mockData = {
     })));
   },
 
-  'POST /system-service/sys/user/listOrgUser': (req, res) => {
+  'POST /gateway/system-service/sys/user/listOrgUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|10': [{
         'id|+1': 1,

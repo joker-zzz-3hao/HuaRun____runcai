@@ -2,13 +2,15 @@
   <div class="tenant-management">
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
+        <span>租户管理</span>
+      </el-form-item>
+      <el-form-item class="pageright">
+        <el-button type="primary" @click="createAddTenant">创建租户</el-button>
+      </el-form-item>
+      <el-form-item class="pageright">
         <el-input maxlength="50" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人">
           <el-button slot="prepend" icon="el-icon-search" @click="getTenantList"></el-button>
         </el-input>
-      </el-form-item>
-
-      <el-form-item class="pageright">
-        <el-button type="primary" @click="createAddTenant">创建租户</el-button>
       </el-form-item>
     </el-form>
     <div>
