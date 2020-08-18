@@ -13,23 +13,23 @@ export default class Server extends ServerBase {
   //   return this._ajaxPost('gateway/crcloud-okrManage/getmaps', param);
   // }
   getmaps(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrContinueMap', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrContinueMap', param);
   }
 
   getokrDetail(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrDetail?okrId=111111222', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrDetail?okrId=111111222', param);
   }
 
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
   }
 
   getOrgTable(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/orgTable', param);
   }
 
   getOkrTree(param) {
-    return this._ajaxPost(`gateway/talent-query/okr/query/okrTree?periodId=${param.periodId}`, param);
+    return this._ajaxPost(`gateway/talent-query/okr/outside/query/okrTree?periodId=${param.periodId}`, param);
   }
 
   getDepartmentList(param) {
@@ -37,11 +37,11 @@ export default class Server extends ServerBase {
   }
 
   searchKeyword(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
   }
 
   okrCheck(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrCheck', param);
+    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrCheck', param);
   }
 
   summitUpdate(param) {
