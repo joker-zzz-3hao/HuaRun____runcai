@@ -1,18 +1,24 @@
 const STATUS_LIST = [{
-  name: '起草中', id: '1',
+  name: '进行中', id: '1',
 }, {
-  name: '被退回', id: '2',
+  name: '考核中', id: '2',
 }, {
-  name: '审核中', id: '3',
+  name: '已完成', id: '3',
 }, {
-  name: '进行中', id: '4',
+  name: '已结束', id: '4',
 }, {
-  name: '已结束', id: '5',
+  name: '起草中', id: '5',
 }, {
-  name: '考核中', id: '6',
-}, {
-  name: '已完成', id: '7',
+  name: '已退回', id: '6',
 }];
+const STATUS_LIST_MAP = {
+  1: '进行中',
+  2: '考核中',
+  3: '已完成',
+  4: '已结束',
+  5: '起草中',
+  6: '已退回',
+};
 const CONFIDENCE = [{
   label: '无风险', value: '1',
 }, {
@@ -25,8 +31,15 @@ const CONFIDENCE_MAP = {
   2: '风险可控',
   3: '失控',
 };
+const OKR_TYPE = {
+  1: '部门',
+  2: '个人',
+
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
   CONFIDENCE_MAP,
+  OKR_TYPE,
+  STATUS_LIST_MAP,
 };

@@ -1,10 +1,10 @@
 <template>
-  <div class="home">润才之旅正式开始……</div>
+  <div class="home">我是项目管理哦</div>
 </template>
 
 <script>
 export default {
-  name: 'home',
+  name: 'projectManage',
   components: {
   },
 };

@@ -60,13 +60,24 @@
     <div v-if="!showDepartmentSelect">
       <tl-search-table></tl-search-table>
     </div>
+    <div v-if="showDepartmentSelect">
+      <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
+      <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
+        <template slot="treecard" slot-scope="node">
+          <card @showDetail="showDetail()" :node="node"></card>
+        </template>
+      </svgtree>
+    </div>
     <tl-mission ref="mission"></tl-mission>
+    <!-- okr详情 -->
+    <tl-okr-detail ref="okrDetail" :dialogExist.sync="dialogExist" :okrId="okrId" :server="server"></tl-okr-detail>
   </div>
 </template>
 
 <script>
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
+import okrDetail from '@/components/okrDetail';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
@@ -116,6 +127,8 @@ export default {
           periodId: '1',
         },
       },
+      dialogExist: false,
+      okrId: '',
     };
   },
   components: {
@@ -126,6 +139,7 @@ export default {
     'tl-worth': worth,
     'tl-okr-table': okrTable,
     'tl-search-table': searchTable,
+    'tl-okr-detail': okrDetail,
   },
   mounted() {
     const self = this;
@@ -211,6 +225,13 @@ export default {
     showMission(type, title) {
       this.$nextTick(() => {
         this.$refs.mission.show(type, title);
+      });
+    },
+    showDetail(okrId) {
+      this.okrId = okrId;
+      this.$nextTick(() => {
+        this.$refs.okrDetail.showOkrDialog();
+        this.dialogExist = true;
       });
     },
   },

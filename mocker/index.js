@@ -9,6 +9,13 @@ const proxy = {
   ...require('./common/index'),
   ...require('./okrApproval/index'),
   ...require('./tenantManagement/index'),
+  ...require('./roleManage/index'),
+  ...require('./okrCycle/index'),
+  ...require('./setOkr/index'),
+  ...require('./organizeUserManagement/index'),
+  ...require('./departManage/index'),
+  ...require('./dictionaryManage/index'),
+  ...require('./sysUserManage/index'),
 };
 
 module.exports = (delay(proxy, 0));

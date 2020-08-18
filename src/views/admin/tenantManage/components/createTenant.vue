@@ -14,6 +14,7 @@
           <el-input
             style="width:320px"
             v-model="form.tenantName"
+            maxlength="64"
             placeholder="请输入租户名称"
             v-show="!infoBool"
           ></el-input>
@@ -22,6 +23,7 @@
         <el-form-item label="企业ID" prop="tenantID">
           <el-input
             style="width:320px"
+            maxlength="64"
             v-model="form.tenantID"
             placeholder="请输入企业ID"
             v-show="!infoBool"
@@ -31,6 +33,7 @@
         <el-form-item label="申请人" prop="applyUser">
           <el-input
             style="width:320px"
+            maxlength="64"
             v-model="form.applyUser"
             placeholder="请输入申请人"
             v-show="!infoBool"
@@ -58,7 +61,7 @@
             node-key="id"
           ></el-tree>
         </el-form-item>
-        <el-form-item label="使用时间" prop="date">
+        <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
             @change="changDate"
@@ -68,13 +71,13 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status" :disabled="infoBool">
+        </el-form-item>-->
+        <!-- <el-form-item label="租户状态">
+          <el-radio-group v-model="form.status">
             <el-radio label="O">启用</el-radio>
             <el-radio label="S">停用</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
     </div>
     <div slot="footer" class="dialog-footer">
@@ -95,7 +98,7 @@ export default {
       required: true,
     },
     tenantId: {
-      type: String,
+      type: [String, Number],
       required: false,
     },
     infoBool: {
@@ -118,11 +121,25 @@ export default {
         endTime: '',
       },
       rules: {
-        tenantName: { required: true, message: '请输入租户名称', trigger: 'blur' },
-        applyUser: { required: true, message: '请输入申请人名称', trigger: 'blur' },
-        tenantID: {
+        tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '请输入中文或者字母',
+            trigger: 'blur',
+          },
+
+        ],
+        applyUser: [{ required: true, message: '请输入申请人名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '请输入中文或者字母',
+            trigger: 'blur',
+          },
+        ],
+        tenantID: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
         },
+        ],
         mobilePhone: [
           {
             required: true,
@@ -146,6 +163,7 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
+    // 判断租户ID存在请求租户详情接口
     if (this.tenantId) {
       this.getTenant();
       this.$nextTick(() => {
@@ -187,9 +205,10 @@ export default {
           this.form.applyUser = res.data.applyUser;
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantID = res.data.tenantID;
-          this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
-          this.form.startTime = res.data.startTime;
-          this.form.endTime = res.data.endTime;
+          this.form.status = res.data.status;
+          // this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
+          // this.form.startTime = res.data.startTime;
+          // this.form.endTime = res.data.endTime;
           const keys = res.data.menuTree.map((item) => item.functionId);
           this.$nextTick(() => {
             this.$refs.treeMenu.setCheckedKeys(keys);
@@ -207,6 +226,7 @@ export default {
         }
       });
     },
+    // 获取选中tree key值 展示选中
     handleCheckChange() {
       const keys = this.$refs.treeMenu.getCheckedKeys();
       this.form.menuTree = keys.map((item) => ({ functionId: item }));
@@ -225,6 +245,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
+            this.$emit('getTenantList');
             this.$message.success('创建成功');
             this.closed();
           } else {
@@ -246,10 +267,9 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
+            this.$emit('getTenantList');
             this.$message.success('创建成功');
             this.closed();
-          } else {
-            this.$message.error(res.msg);
           }
         });
     },

@@ -1,13 +1,8 @@
-/*
- * @Author: 许志鹏
- * @Date: 2020-08-10 10:08:11
- * @Description: file content
- */
 const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'GET /sys/tenant/pageTenantList': (req, res) => {
+  'POST /system-service/sys/tenant/pageTenantList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'content|10': [{
         'tenantId|+1': 1,
@@ -27,6 +22,43 @@ const mockData = {
       currentPage: 1,
       pageSize: 10,
       total: 20,
+
+    })));
+  },
+  'POST /system-service/sys/tenant/getTenant': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|1': [{
+        tenantID: 'CR0012000206',
+        tenantBuId: 'CR0012000206',
+        tenantName: '润联科技',
+        applyUser: '老侯',
+        mobilePhone: '131-0101-0002',
+        status: 'Y',
+        startTime: '2020-08-05T19:26:26',
+        endTime: '2021-08-05T19:26:31',
+        createdBy: '1234567890000',
+        createTime: '2020-08-06T19:33:07',
+        updateTime: '2020-08-06T19:33:11',
+        updateBy: '1234567890000',
+        menuTree: [
+          {
+            id: 7,
+            functionId: 4,
+            roleId: '7',
+          },
+          {
+            id: 19,
+            functionId: 7,
+            roleId: '7',
+          },
+          {
+            id: 31,
+            functionId: 28,
+            roleId: '7',
+          },
+        ],
+      },
+      ],
 
     })));
   },

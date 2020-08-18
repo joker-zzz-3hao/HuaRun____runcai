@@ -16,7 +16,7 @@ export default class Server extends ServerBase {
     return this._ajaxPost('system-service/sys/dictionary/value/queryOfPage', param);
   }
 
-  // 查询数据字详情典
+  // 删除数据字典
   deleteDic(param) {
     return this._ajaxPost('system-service/sys/dictionary/deleteById', param);
   }

@@ -21,7 +21,11 @@
         >
           <el-input v-model.trim="formData.orgName"></el-input>
         </el-form-item>
-        <el-form-item label="上级部门" prop="orgParentId">
+        <el-form-item
+          label="上级部门"
+          prop="orgParentId"
+          :rules="[{required:true,message:'请选择上级部门',trigger:'blur'}]"
+        >
           <tl-department
             :data="treeData"
             :initDepartment="initDepartment"
@@ -31,7 +35,11 @@
             @handleData="handleData"
           ></tl-department>
         </el-form-item>
-        <el-form-item label="序号" prop="orgSort">
+        <el-form-item
+          label="序号"
+          prop="orgSort"
+          :rules="[{required:true,message:'请填写序号',trigger:'blur'}]"
+        >
           <el-input-number
             v-model.trim="formData.orgSort"
             controls-position="right"

@@ -2,7 +2,7 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-model="formData">
-      <elcollapse class="collapse" v-model="activeList">
+      <elcollapse class="collapse" v-model="innerActiveList">
         <elcollapseitem
           ref="okrcoll"
           v-for="(item, index) in tableList"
@@ -29,6 +29,8 @@
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <span v-else>{{item.okrWeight}}%</span>
@@ -50,14 +52,13 @@
                 <span v-if="canWrite && item.parentUpdate">
                   <el-popover
                     placement="top-start"
-                    title="标题"
                     width="200"
                     trigger="hover"
                     :append-to-body="false"
                   >
                     <span>
                       您承接的OKR有变更，
-                      <a @click="goUndertake">查看详情</a>
+                      <a @click="goUndertake(index)">查看详情</a>
                     </span>
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
@@ -93,6 +94,8 @@
                     controls-position="right"
                     :min="0"
                     :max="100"
+                    :step="1"
+                    :precision="0"
                   ></el-input-number>
                 </el-form-item>
                 <span v-else>{{kritem.okrWeight}}%</span>
@@ -140,6 +143,7 @@ export default {
     return {
       okrmain: {},
       formData: {},
+      innerActiveList: [],
     };
   },
   props: {
@@ -178,6 +182,9 @@ export default {
       default: false,
     },
   },
+  mounted() {
+    this.innerActiveList = this.activeList;
+  },
   created() {
 
   },
@@ -190,9 +197,10 @@ export default {
       this.tableList[index].krList[krIndex][name] = true;
       this.$forceUpdate();
     },
-    goUndertake() {
+    goUndertake(index) {
       // 给父组件传打开的命令
       console.log('dakai');
+      this.$emit('openUndertake', index);
     },
     // 改变tableList后强制渲染
     updateokrCollapse() {

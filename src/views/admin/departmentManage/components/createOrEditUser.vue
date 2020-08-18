@@ -14,8 +14,12 @@
       :close-on-click-modal="false"
     >
       <el-form ref="userForm" :model="formData">
-        <el-form-item label="用户名称" prop="departName">
-          <el-input v-model.trim="formData.userName"></el-input>
+        <el-form-item
+          label="用户名称"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="用户账号"
@@ -38,6 +42,7 @@
             :disabled="!isEditPwd && optionType == 'edit'"
             v-model.trim="formData.loginPwd"
             show-password
+            maxlength="50"
           ></el-input>
           <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
           <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
@@ -48,7 +53,7 @@
           prop="newPwd"
           :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.newPwd" show-password></el-input>
+          <el-input v-model.trim="formData.newPwd" show-password maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           v-if="isEditPwd || optionType != 'edit'"
@@ -57,21 +62,21 @@
           :rules="[
           {required:true,validator:optionType == 'create' ? validateConfirmPwd : validateNewConfirmPwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
+          <el-input v-model.trim="formData.confirmPwd" show-password maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="手机号"
           prop="userMobile"
           :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.userMobile"></el-input>
+          <el-input v-model.trim="formData.userMobile" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="电子邮箱"
           prop="userMail"
           :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.userMail"></el-input>
+          <el-input v-model.trim="formData.userMail" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item label="所属租户">
           <el-input v-model.trim="formData.tenantName" disabled></el-input>
@@ -108,6 +113,7 @@
 </template>
 
 <script>
+// import Cryptojs from '@/lib/cryptojs';
 import department from '@/components/department';
 import validateMixin from '../validateMixin';
 
@@ -151,6 +157,7 @@ export default {
   },
   data() {
     return {
+      // Cryptojs,
       visible: false,
       loading: false,
       userTitle: '创建用户',
@@ -264,10 +271,12 @@ export default {
     },
     editPwd() {
       this.pwdLabel = '原始密码';
+      this.formData.loginPwd = '';
       this.isEditPwd = true;
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
+      this.formData.loginPwd = '******';
       this.isEditPwd = false;
     },
     addOrg() {

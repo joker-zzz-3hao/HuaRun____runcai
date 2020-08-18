@@ -8,7 +8,7 @@
     @closed="closed"
   >
     <el-table :data="historyOKRList">
-      <el-table-column>版本</el-table-column>
+      <el-table-column prop="okrDetailVersion"></el-table-column>
       <el-table-column width="250" prop="typeName"></el-table-column>
       <el-table-column prop="objectName"></el-table-column>
       <el-table-column width="100" property="guanlianId">
@@ -47,6 +47,7 @@ export default {
       historyOKRList: [], // 历史版本okr
       dialogTitle: 'OKR详情', // 弹框标题
       dialogDetailVisible: false,
+      oldOKRList: [],
     };
   },
   created() {
@@ -55,24 +56,86 @@ export default {
   methods: {
     searchOkr() {
       this.searchForm = { okrId: this.okrId };
-      this.server.getokrDetail(this.searchForm).then((res) => {
-        if (res.code == 200 && res.data.okrDetails.length > 0) {
-          console.log('搜索条件', this.searchForm);
-          res.data.okrDetails.forEach((item) => {
-            this.historyOKRList.push({
-              typeName: '目标O',
-              objectName: item.okrDetailObjectKr,
-              guanlianId: item.detailId,
-              checkFlag: false,
-            });
-            item.krList.forEach((krItem, index) => {
-              this.historyOKRList.push({
-                typeName: `KR${index}`,
-                objectName: krItem.okrDetailObjectKr,
-                guanlianId: krItem.detailId,
-                checkFlag: false,
+      this.server.selectOkrHistoryVersion({ okrDetailId: this.okrDetailId }).then((res) => {
+        if (res.code == 200) {
+          this.oldOKRList = res.data;
+          this.server.getokrDetail(this.searchForm).then((response) => {
+            if (response.code == 200 && response.data.okrDetails.length > 0) {
+              console.log('搜索条件', this.searchForm);
+              // 重新排列okr层级
+              response.data.okrDetails.forEach((item) => {
+                // 如果是当前查看的okr
+                if (this.okrDetailId == item.okrDetailId) {
+                  // Detail里的是最新版本
+                  this.historyOKRList.push({
+                    typeName: '目标O',
+                    objectName: item.okrDetailObjectKr,
+                    guanlianId: item.detailId,
+                    checkFlag: false,
+                    version: 'new',
+                    versionName: '最新版本',
+                  });
+                  // 将历史版本插入
+                  this.oldOKRList.forEach((oitem) => {
+                    if (oitem.isTrue !== 1) {
+                      this.historyOKRList.push({
+                        typeName: '目标O',
+                        objectName: oitem.okrDetailObjectKr,
+                        guanlianId: oitem.detailId,
+                        checkFlag: false,
+                        version: oitem.okrDetailVersion,
+                        versionName: `历史版本${oitem.okrDetailVersion}`,
+                      });
+                    }
+                  });
+                } else {
+                  // 不是当前查看的，版本显示--
+                  this.historyOKRList.push({
+                    typeName: '目标O',
+                    objectName: item.okrDetailObjectKr,
+                    guanlianId: item.detailId,
+                    checkFlag: false,
+                    version: '',
+                    versionName: '--',
+                  });
+                }
+                // 将kr提上一层级
+                item.krList.forEach((krItem, index) => {
+                  //  如果是当前查看的okr
+                  if (this.okrDetailId == krItem.okrDetailId) {
+                  // Detail里的是最新版本
+                    this.historyOKRList.push({
+                      typeName: `KR${index}`,
+                      objectName: krItem.okrDetailObjectKr,
+                      guanlianId: krItem.detailId,
+                      checkFlag: false,
+                    });
+                    // 将历史版本插入
+                    this.oldOKRList.forEach((kritem) => {
+                      if (kritem.isTrue !== 1) {
+                        this.historyOKRList.push({
+                          typeName: `KR${index}`,
+                          objectName: kritem.okrDetailObjectKr,
+                          guanlianId: kritem.detailId,
+                          checkFlag: false,
+                          version: kritem.okrDetailVersion,
+                          versionName: `历史版本${kritem.okrDetailVersion}`,
+                        });
+                      }
+                    });
+                  } else {
+                    this.historyOKRList.push({
+                      typeName: `KR${index}`,
+                      objectName: krItem.okrDetailObjectKr,
+                      guanlianId: krItem.detailId,
+                      checkFlag: false,
+                      version: '',
+                      versionName: '--',
+                    });
+                  }
+                });
               });
-            });
+            }
           });
         }
       });

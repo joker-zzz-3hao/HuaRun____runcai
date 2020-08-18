@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-11 10:43:56
- * @Description: file content
--->
 <template>
   <div class="menuManagement">
     <el-form ref="ruleForm" :inline="true">
@@ -17,10 +12,9 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-input maxlength="50" v-model="keyWord" placeholder="输入菜单名称"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getMenuList()">查询</el-button>
+        <el-input maxlength="64" v-model="keyWord" placeholder="输入菜单名称">
+          <el-button slot="prepend" icon="el-icon-search" @click="getMenuList()"></el-button>
+        </el-input>
       </el-form-item>
       <el-form-item class="pageright">
         <el-button type="primary" @click="menuAdd">添加菜单</el-button>
@@ -30,19 +24,44 @@
       <el-table
         :data="tableData"
         row-key="functionId"
-        style="width: 100%;margin-bottom: 20px;"
+        style="width: 100%;"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
-        <el-table-column prop="functionId" label="ID" width="180"></el-table-column>
-        <el-table-column prop="functionName" label="菜单名称" width="180"></el-table-column>
-        <el-table-column prop="permissionCode" label="权限标识" width="180"></el-table-column>
-        <el-table-column prop="resourceUrl" label="组件路径" width="180"></el-table-column>
-        <el-table-column prop="status" label="状态" width="180">
+        <el-table-column prop="functionId" label="ID"></el-table-column>
+        <el-table-column prop="functionName" label="菜单名称">
           <template slot-scope="scope">
-            <span>{{CONST.STATUS[scope.row.status]}}</span>
+            <span v-if="scope.row.functionName">{{scope.row.functionName}}</span>
+            <span v-else>--</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+        <el-table-column prop="permissionCode" label="权限标识">
+          <template slot-scope="scope">
+            <span v-if="scope.row.permissionCode">{{scope.row.permissionCode}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="resourceUrl" label="组件路径">
+          <template slot-scope="scope">
+            <span v-if="scope.row.resourceUrl">{{scope.row.resourceUrl}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model.trim="scope.row.status"
+              active-text="启用"
+              active-value="1"
+              inactive-value="0"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间">
+          <template slot-scope="scope">
+            <span v-if="scope.row.createTime">{{scope.row.createTime}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="130">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="menuPut(scope.row)">修改</el-button>
@@ -89,7 +108,7 @@ export default {
       menuData: '',
     };
   },
-  created() {
+  mounted() {
     this.getMenuList();
   },
   methods: {
@@ -99,8 +118,11 @@ export default {
         status: this.status,
       })
         .then((res) => {
-          console.log(res);
-          this.tableData = res.data;
+          if (res.code == 200) {
+            this.tableData = res.data;
+          } else {
+            this.$message.error(res.msg);
+          }
         });
     },
     menuAdd(row) {
@@ -138,16 +160,6 @@ export default {
 };
 </script>
 <style  scoped>
-.menu-table {
-  display: flex;
-  flex-direction: row;
-}
-.menuTable {
-  display: flex;
-  flex-direction: row;
-  height: 50px;
-  line-height: 50px;
-}
 .pageright {
   float: right;
 }

@@ -17,7 +17,7 @@ const mockData = {
           okrDetailObjectKr: '@csentence(10, 20)',
           'percent|+5': 10,
           progress: 50,
-          'confidence|+1': 1,
+          'okrDetailConfidence|+1': 1,
         }],
       }],
     })));
@@ -138,13 +138,13 @@ const mockData = {
           'parentUpdate|1': [true, false],
           'krList|2': [
             {
-              'detailId|': ['1233', '1234'],
+              'detailId|1': ['1233', '1234'],
               'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
               'userName|1': ['心荃', '滕炜'],
               okrWeight: 50,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              confidence: '1',
+              okrDetailConfidence: '1',
             },
           ],
         },
@@ -184,7 +184,7 @@ const mockData = {
               okrWeight: 40,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              confidence: '1',
+              okrDetailConfidence: '1',
             },
           ],
         },
@@ -248,18 +248,39 @@ const mockData = {
           },
           'krList|2': [
             {
-              'okrDetailId|': ['1233', '1234'],
+              'okrDetailId|1': ['1233', '1234'],
               'okrDetailObjectKr|1': ['先赚1个亿', '先赚20亿'],
               'userName|1': ['心荃', '滕炜'],
               okrWeight: 40,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              confidence: '1',
+              okrDetailConfidence: '1',
               okrDetailVersion: '1.0',
             },
           ],
         }],
       },
+    })));
+  },
+  // author：林心荃
+  // 用于：新建okr
+  'POST /gateway/talent-okr/okr/main/add': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
+    })));
+  },
+  // author：林心荃
+  // 用于：更新进度
+  'POST /gateway/talent-okr/okr/main/updateOkrProcess': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
+    })));
+  },
+  // author：林心荃
+  // 用于：点赞
+  'POST /gateway/talent-okr/okr/okrSupport/support': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
     })));
   },
 };

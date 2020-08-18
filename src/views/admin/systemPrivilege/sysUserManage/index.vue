@@ -8,12 +8,20 @@
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
           <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="用户账号"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="userAccount" label="用户角色"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="userName" label="账号类型"></el-table-column>
+          <el-table-column min-width="100px" align="left" label="用户角色">
+            <template>
+              <div>超级管理员</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="100px" align="left" label="账号类型">
+            <template>
+              <div>内置用户</div>
+            </template>
+          </el-table-column>
           <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
           <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
             <template slot-scope="scope">
-              <el-button @click="resetPwd(scope.row)">重置密码</el-button>
+              <el-button @click="resetPwd(scope.row)">修改密码</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -26,7 +34,7 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      title="重置密码"
+      title="修改密码"
       :close-on-click-modal="false"
     >
       <el-form :model="formData" ref="resetForm">
@@ -91,7 +99,6 @@ export default {
   },
   created() {
     this.searchList();
-    // this.resetPwd();
   },
   methods: {
     searchList() {
@@ -113,7 +120,7 @@ export default {
     },
     save() {
       this.$refs.resetForm.validate((valid) => {
-        if (!valid) {
+        if (valid) {
           this.server.editPwd(this.formData).then((res) => {
             if (res.code == 200) {
               this.$message.success('重置密码成功');

@@ -7,10 +7,10 @@
         <department
           :data="cycleData"
           type="cycleListSelect"
-          @handleData="handleCycleData"
+          @handleData="handleorgCycleData"
           :defaultProps="cycleDefaultProps"
         ></department>
-        <department-page></department-page>
+        <department-page :okrCycle="okrorgCycle"></department-page>
       </el-tab-pane>
       <el-tab-pane label="我的OKR" name="myokr">
         <department
@@ -19,7 +19,7 @@
           @handleData="handleCycleData"
           :defaultProps="cycleDefaultProps"
         ></department>
-        <myokr-page></myokr-page>
+        <myokr-page :okrCycle="okrCycle"></myokr-page>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -67,11 +67,14 @@ export default {
         },
       },
       departmentName: '',
+      okrorgCycle: {}, // 当前选择的周期-部门
+      okrCycle: {}, // 当前选择的周期
     };
   },
   created() {
     this.init();
     this.departmentName = this.$store.state.common.userInfo.departmentName;
+    this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {
     init() {
@@ -95,20 +98,16 @@ export default {
         this.cycleData.push(this.cycleObj[key]);
       }
     },
+    handleorgCycleData(data) {
+      this.okrorgCycle = data;
+      console.log(data);
+    },
     handleCycleData(data) {
       this.okrCycle = data;
       console.log(data);
     },
     goWriteOkr() {
       this.$router.push({ name: 'writeOkr', params: { canWrite: true } });
-    },
-    dianzan() {
-      this.server.okrSupport({
-        okrId: '1111222',
-        supportType: 1,
-      }).then((res) => {
-        console.log(res.code);
-      });
     },
   },
 };

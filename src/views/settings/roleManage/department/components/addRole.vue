@@ -11,10 +11,10 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="角色编号" prop="roleCode">
-        <el-input style="width:320px" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
+        <el-input style="width:320px" maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input style="width:320px" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
+        <el-input style="width:320px" maxlength="64" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <el-tree
@@ -51,7 +51,7 @@ export default {
       required: true,
     },
     roleInfo: {
-      type: Object,
+      type: [Object, String],
       required: false,
     },
   },
@@ -69,9 +69,19 @@ export default {
       rules: {
         roleCode: [
           { required: true, message: '请输入角色编号', trigger: 'blur' },
+          {
+            pattern: /^[0-9a-zA-Z]+$/,
+            message: '请输入数字或者英文字母',
+            trigger: 'blur',
+          },
         ],
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '只允许输入中文或者字母',
+            trigger: 'blur',
+          },
         ],
       },
     };
@@ -131,7 +141,6 @@ export default {
           functionList: [],
         };
         const treeData = res.data.menuTree.map((item) => item.functionId);
-        console.log(treeData);
         this.$refs.treeMenu.setCheckedKeys(treeData);
       });
     },

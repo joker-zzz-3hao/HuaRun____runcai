@@ -25,12 +25,18 @@
     </div>
     <!-- 变更原因 -->
     <div></div>
-    <okrCollapse :tableList="tableList" :canWrite="true" :showOKRInfoLabel="true">
+    <okrCollapse
+      ref="okrCollapse"
+      :tableList="tableList"
+      :canWrite="true"
+      :showOKRInfoLabel="true"
+      @openUndertake="openUndertake"
+    >
       <template slot="head-bar" slot-scope="props">
-        <el-button @click.native.stop="openDialog(props.okritem,'o')">终止</el-button>
+        <el-button @click.native.stop="openStopDialog(props.okritem,'o')">终止</el-button>
       </template>
       <template slot="body-bar" slot-scope="props">
-        <el-button @click.native.stop="openDialog(props.okritem,'kr')">终止</el-button>
+        <el-button @click.native.stop="openStopDialog(props.okritem,'kr')">终止</el-button>
       </template>
       <template slot="addkr-bar" slot-scope="props">
         <div v-if="props.oitem.newkrList">
@@ -38,8 +44,8 @@
             <dt>关键结果</dt>
             <dd class="objectdd">
               <el-form-item
-                prop="okrDetailObjectKr"
-                :rules="[{trigger: 'blur' , message: '请填写目标名称'}]"
+                :prop="'newkrList.' + index + '.okrDetailObjectKr'"
+                :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
               >
                 <input v-model="newItem.okrDetailObjectKr" />
               </el-form-item>
@@ -49,6 +55,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
+                  :step="1"
+                  :precision="0"
                 ></el-input-number>
               </el-form-item>
               <el-form-item label="当前进度">
@@ -57,6 +65,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
+                  :step="1"
+                  :precision="0"
                 ></el-input-number>
               </el-form-item>
               <el-form-item label="信心指数">
@@ -75,22 +85,29 @@
             </dd>
           </dl>
         </div>
-        <el-button @click.native.stop="addkr(props.oitem,'kr')">增加kr</el-button>
+        <div style="display:none">{{props.oitem.newkrList}}</div>
+        <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
       </template>
     </okrCollapse>
-    <!-- 新增 -->
+    <!-- 新增okr -->
     <okr-form ref="okrform" :server="server" :canWrite="true" :isnew="false"></okr-form>
+    <!-- 变更原因 -->
+    <div>
+      <span>变更原因</span>
+      <el-input type="textarea" v-model="modifyReason"></el-input>
+    </div>
     <!-- 提交 -->
     <div>
       <el-button @click="summit">提交</el-button>
+      <el-button @click="goback">取消</el-button>
     </div>
     <!-- 终止弹窗 -->
     <el-dialog
       title="终止"
-      :visible.sync="dialogDetailVisible"
+      :visible.sync="dialogStopVisible"
       width="50%"
       :modal-append-to-body="false"
-      :before-close="close"
+      :before-close="closeStopDialog"
     >
       <div>还未完成！进度为{{deletedProgress}}%确认要终止吗？</div>
       <!-- 表格 -->
@@ -114,24 +131,32 @@
         <el-table-column align="left" width="150" label="权重" prop="krWeight"></el-table-column>
       </el-table>
       <!-- 结束原因 -->
+      <el-input type="textarea" v-model="remark"></el-input>
+
       <!-- 附件 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="close">终止</el-button>
+        <el-button @click="summitStop">终止</el-button>
       </span>
     </el-dialog>
-    <!-- <undertake-table
-      :departokrList="departokrList"
-      :philosophyList="philosophyList"
-      @selectDepart="changeDepart"
-      @selectPhil="changePhil"
-    ></undertake-table>-->
+    <el-dialog
+      title="关联承接项"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :modal-append-to-body="false"
+    >
+      <undertake-table ref="undertake" :departokrList="departokrList" :showPhil="false"></undertake-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import okrCollapse from '@/components/okrCollapse';
 import okrForm from './okrForm';
-// import undertakeTable from './undertakeTable';
+import undertakeTable from './undertakeTable';
 import CONST from '../const';
 
 export default {
@@ -143,15 +168,22 @@ export default {
       okrmain: {}, // 公共信息
       departokrList: [], // 可关联承接的okr
       philosophyList: [], // 价值观
-      dialogDetailVisible: false,
+      dialogStopVisible: false, // 终止弹窗
       tableData: [], // 终止确认表格
       deletedType: '', // 终止的类型
       deletedProgress: '', // 终止进度
+      detailokrList: [], // 终止进度
+      selectDeletedId: '',
+      remark: '', // 终止原因
+      modifyReason: '', // 变更原因
+      formData: {}, // 提交表单
+      dialogVisible: false, // 承接项弹窗
+      selectDepartRow: {},
     };
   },
   components: {
     okrCollapse,
-    // 'undertake-table': undertakeTable,
+    'undertake-table': undertakeTable,
     'okr-form': okrForm,
   },
   props: {
@@ -170,6 +202,7 @@ export default {
   },
   created() {
     this.getokrDetail();
+    this.searchOkr();
   },
   methods: {
     // 查okr详情
@@ -181,18 +214,40 @@ export default {
         // this.voteUser = res.data.voteUser;
       });
     },
-    // 选择关联的okr
-    changeDepart(row) {
-      this.tableList.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrDetailId = row.okrDetailId;
-      this.tableList.okrInfoList[this.selectObject].undertakeOkrVo.undertakeOkrVersion = row.okrDetailVersion;
+    // 查可关联承接的okr
+    searchOkr() {
+      this.server.getUndertakeOkr({ periodId: 'periodId' }).then((res) => {
+        if (res.code == 200) {
+          console.log('关联表', res.data);
+          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+            this.departokrList.push({
+              typeName: '目标O',
+              okrDetailObjectKr: item.o.okrDetailObjectKr,
+              okrDetailId: item.o.okrDetailId,
+              okrDetailVersion: item.o.okrDetailVersion,
+              checkFlag: false,
+            });
+            if (item.krList && item.krList.length > 0) {
+              item.krList.forEach((krItem, index) => {
+                this.departokrList.push({
+                  typeName: `KR${index}`,
+                  okrDetailObjectKr: krItem.okrDetailObjectKr,
+                  okrDetailId: krItem.okrDetailId,
+                  okrDetailVersion: krItem.okrDetailVersion,
+                  checkFlag: false,
+                });
+              });
+            }
+          });
+        }
+      });
     },
-    // 选择关联的价值观
-    changePhil(row) {
-      this.tableList.okrInfoList[this.selectObject].cultureId = row.id || '1162020375644299264';
-      console.log('关联', row);
-    },
-    openDialog(row, type) {
+    // 打开终止弹窗
+    openStopDialog(row, type) {
       this.tableData = [];
+      this.remark = '';
+      this.selectDeletedId = row.detailId;
       this.deletedType = type;
       this.deletedProgress = row.okrDetailProgress;
       console.log('点了他', row);
@@ -217,11 +272,56 @@ export default {
           krWeight: row.okrWeight,
         });
       }
-
-      this.dialogDetailVisible = true;
+      this.dialogStopVisible = true;
     },
-    close() {
-      this.dialogDetailVisible = false;
+    // 关闭终止弹窗
+    closeStopDialog() {
+      this.dialogStopVisible = false;
+    },
+    // 打开承接弹窗
+    openUndertake(index) {
+      this.selectIndex = index;
+      //  需要重新查承接list,一进来就先查可承接的。打开对应弹窗再赋值？
+      if (!this.tableList[this.selectIndex].undertakeOkrVo) {
+        this.tableList[this.selectIndex].undertakeOkrVo = {
+          undertakeOkrDetailId: '',
+          undertakeOkrVersion: '',
+        };
+      }
+      this.dialogVisible = true;
+    },
+    // 提交关联，给选中的o加上承接项
+    summitUndertake() {
+      this.selectDepartRow = this.$refs.undertake.selectDepartRow;
+      // eslint-disable-next-line max-len
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
+      console.log('关联', this.tableList[this.selectIndex]);
+      this.dialogVisible = false;
+    },
+    summitStop() {
+      if (this.detailokrList.length == 0) {
+        this.detailokrList.push({
+          okrId: this.selectDeletedId,
+          remark: this.remark,
+          fileIdList: [],
+        });
+      } else if (this.detailokrList.length > 0) {
+        this.detailokrList.forEach((item) => {
+          if (item.okrId != this.selectDeletedId) {
+            this.detailokrList.push({
+              okrId: this.selectDeletedId,
+              remark: this.remark,
+              fileIdList: ['item.okrId != this.selectDeletedId'],
+            });
+          } else {
+            item.remark = this.remark;
+            item.fileIdList = ['else'];
+          }
+        });
+      }
+
+      this.dialogStopVisible = false;
     },
     // 增加kr
     addkr(okritem) {
@@ -235,21 +335,62 @@ export default {
         okrDetailObjectKr: '',
         okrWeight: 0,
         okrDetailProgress: 0,
-        okrDetailConfidence: '',
+        okrDetailConfidence: 1,
       });
       this.$forceUpdate();
+      this.$refs.okrCollapse.updateokrCollapse();
       console.log('okritem', okritem);
     },
     // 删除kr
     deletekr(okritem, krindex) {
       okritem.newkrList.splice(krindex, 1);
       this.$forceUpdate();
+      this.$refs.okrCollapse.updateokrCollapse();
     },
+    // 提交更改
     summit() {
-      console.log('新增的', this.$refs.okrform.formData);
+      // 校验okrForm的
+      // 校验
+      console.log('删除的', this.detailokrList);
       console.log('原来的', this.tableList);
-      console.log('拼起来');
+      console.log('新增的', this.$refs.okrform.formData);
+      const addList = this.$refs.okrform.formData.okrInfoList;
+      const okrInfoList = [];
+      this.tableList.forEach((item, index) => {
+        okrInfoList.push({
+          detailId: item.detailId,
+          okrDetailObjectKr: item.okrDetailObjectKr,
+          okrWeight: item.okrWeight,
+          okrDetailProgress: item.okrDetailProgress,
+          undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+          krList: [],
+        });
+        item.krList.forEach((kritem) => {
+          okrInfoList[index].krList.push({
+            detailId: kritem.detailId,
+            okrDetailObjectKr: kritem.okrDetailObjectKr,
+            okrWeight: kritem.okrWeight,
+            okrDetailProgress: kritem.okrDetailProgress,
+            undertakeOkr: { undertakeOkrId: '', undertakeOkrContent: '', undertakeOkrVersion: '' },
+          });
+        });
+        if (item.newkrList && item.newkrList.length > 0) {
+          okrInfoList[index] = okrInfoList[index].concat(item.newkrList);
+        }
+      });
+      this.formData = {
+        okrInfoList: okrInfoList.concat(addList),
+        detailokrList: this.detailokrList,
+        periodId: 'periodId',
+        okrProgress: this.okrmain.okrProgress,
+        modifyReason: this.modifyReason,
+      };
+      console.log('拼起来后', this.formData);
     },
+    goback() {
+      this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
+    },
+
   },
 };
 </script>

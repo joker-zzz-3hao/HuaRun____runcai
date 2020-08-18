@@ -4,7 +4,7 @@
       <div>
         <p>{{node.node.okrDetailObjectKr}}</p>
       </div>
-      <div>
+      <div @click="goDetail(node.node.okrId)">
         <span>KR</span>
         <span>关键成果</span>
         <span>{{node.node.krCount}}</span>
@@ -42,7 +42,11 @@ export default {
     console.log(`node:${this.node}`);
   },
   computed: {},
-  methods: {},
+  methods: {
+    goDetail(okrid) {
+      this.$emit('showDetail', okrid);
+    },
+  },
   watch: {},
 };
 </script>

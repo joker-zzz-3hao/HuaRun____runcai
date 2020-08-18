@@ -19,67 +19,40 @@ export default {
     return {
       menuList: [
         {
-          mainMenuTitle: '工作台',
-          classTag: ['workbench'],
+          mainMenuTitle: '部门管理',
+          classTag: ['organize-menu'],
+          toName: 'organizeManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '角色管理',
+          classTag: ['role-menu'],
+          toName: 'roleManage',
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        },
+        {
+          mainMenuTitle: '设置管理',
+          classTag: ['settings-menu'],
+          toName: 'okrPermissions',
+          events: ['isExtend', 'moveMenu', 'leaveMenu'],
+          subMenuList: [
+            {
+              subMenuTitle: '设置OKR',
+              subClassTag: ['okr-setting-menu'],
+              subToName: 'okrPermissions',
+            },
+            {
+              subMenuTitle: 'OKR周期与自评',
+              subClassTag: ['okr-cycle-menu'],
+              subToName: 'okrCycle',
+            },
+          ],
+        },
+        {
+          mainMenuTitle: '返回前台',
+          classTag: ['go-back-menu'],
           toName: 'overview',
-          functions: {
-            events: ['rmSubMenu'],
-          },
-        },
-        {
-          mainMenuTitle: 'OKR管理',
-          classTag: ['okr-menu'],
-          toName: 'myOkr',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的OKR',
-              subClassTag: ['my-okr-menu'],
-              subToName: 'myOkr',
-            },
-            {
-              subMenuTitle: 'OKR审批',
-              subClassTag: ['approval-menu'],
-              subToName: 'okrApproval',
-            },
-            {
-              subMenuTitle: 'ORK承接与对齐',
-              subClassTag: ['undertake-menu'],
-              subToName: 'undertakeMaps',
-            },
-            {
-              subMenuTitle: '我关注的OKR',
-              subClassTag: ['concerned-menu'],
-              subToName: 'concernedOkr',
-            },
-            {
-              subMenuTitle: 'OKR地图',
-              subClassTag: ['maps-menu'],
-              subToName: 'okrMaps',
-            },
-          ],
-        },
-        {
-          mainMenuTitle: '考核管理',
-          classTag: ['assess-menu'],
-          toName: 'myAssess',
-          functions: {
-            events: ['isExtend'],
-          },
-          subMenuList: [
-            {
-              subMenuTitle: '我的考核',
-              subClassTag: ['my-assess-menu'],
-              subToName: 'myAssess',
-            },
-            {
-              subMenuTitle: '考核PK',
-              subClassTag: ['assess-pk-menu'],
-              subToName: 'assessPk',
-            },
-          ],
+          events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
         },
       ],
     };

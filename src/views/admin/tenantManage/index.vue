@@ -2,11 +2,11 @@
   <div class="tenant-management">
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
-        <el-input maxlength="50" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人"></el-input>
+        <el-input maxlength="50" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人">
+          <el-button slot="prepend" icon="el-icon-search" @click="getTenantList"></el-button>
+        </el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getTenantList">查询</el-button>
-      </el-form-item>
+
       <el-form-item class="pageright">
         <el-button type="primary" @click="createAddTenant">创建租户</el-button>
       </el-form-item>
@@ -19,7 +19,12 @@
         <!-- <el-table-column prop="version" label="开通版本"></el-table-column> -->
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
-            <span>{{CONST.STATUS[scope.row.status]}}</span>
+            <el-switch
+              v-model.trim="scope.row.status"
+              active-text="启用"
+              active-value="O"
+              inactive-value="S"
+            ></el-switch>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
@@ -35,9 +40,9 @@
       <tl-crcloud-table
         layout="total,  prev, pager,next, sizes"
         :total="totalpage"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        :searchList="getTenantList"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="getTenantList"
       ></tl-crcloud-table>
     </div>
     <tl-create-tenant
@@ -45,23 +50,43 @@
       :exist.sync="exist"
       :title="title"
       :tenantId="tenantId"
+      @getTenantList="getTenantList"
       :infoBool="infoBool"
     ></tl-create-tenant>
+    <tl-tenant-detail
+      v-if="existDetail"
+      :exist.sync="existDetail"
+      :title="title"
+      :tenantId="tenantId"
+      :infoBool="infoBool"
+    ></tl-tenant-detail>
+    <tl-tenant-manage
+      v-if="existPut"
+      :exist.sync="existPut"
+      :title="title"
+      :tenantId="tenantId"
+      @getTenantList="getTenantList"
+      :infoBool="infoBool"
+    ></tl-tenant-manage>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
 import createTenant from './components/createTenant';
+import putTenant from './components/putTenant';
 import Server from './server';
 import CONST from './const';
+import tenantDetail from './components/tenantDetail';
 
 const server = new Server();
 export default {
-  name: 'tenantManagement',
+  name: 'tenantManage',
   components: {
     'tl-create-tenant': createTenant,
     'tl-crcloud-table': crcloudTable,
+    'tl-tenant-detail': tenantDetail,
+    'tl-tenant-manage': putTenant,
   },
   created() {
     this.getTenantList();
@@ -73,8 +98,12 @@ export default {
         pageSize: this.pageSize,
         currentPage: this.currentPage,
       }).then((res) => {
-        this.tableData = res.data.content;
-        this.totalpage = res.data.total;
+        if (res.code == 200) {
+          this.tableData = res.data.content;
+          this.totalpage = res.data.total;
+        } else {
+          this.$message.error(res.msg);
+        }
       });
     },
 
@@ -88,13 +117,13 @@ export default {
       this.title = '编辑租户';
       this.infoBool = false;
       this.tenantId = tenantId;
-      this.exist = true;
+      this.existPut = true;
     },
     infoTenant(tenantId) {
       this.title = '详情';
       this.tenantId = tenantId;
       this.infoBool = true;
-      this.exist = true;
+      this.existDetail = true;
     },
     handleDelete(done) {
       this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
@@ -119,6 +148,8 @@ export default {
       tenantId: null,
       totalpage: 0,
       infoBool: false,
+      existDetail: false,
+      existPut: false,
     };
   },
 };

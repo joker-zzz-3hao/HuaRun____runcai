@@ -3,21 +3,20 @@
     class="menu-cont"
     :class="{'no-sub-menu': noSubMenu,'is-sub-menu': isSubMenu,'is-shrink': isShrinkMenus}"
   >
-    <div class="menu-cont-inside">
+    <div class="menu-cont-inside" :class="{'is-zindex': zIndex}">
       <div class="main-menu">
         <ul>
           <li
             v-for="(item,idx) in menuList"
             :key="item.id"
             :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute},{'is-hover': menuIndex === idx}]"
-            :to="{name:item.toName}"
           >
             <a
-              @click="fnHandle(item.events,0)"
+              @click="fnHandle(item.events,0,item.toName)"
               @mouseover="fnHandle(item.events,1,idx)"
               @mouseleave="fnHandle(item.events,2)"
             ></a>
-            <i @click="go()"></i>
+            <i></i>
             <div class="text-tip">
               <p>{{item.mainMenuTitle}}</p>
             </div>
@@ -53,20 +52,20 @@
           </div>
         </div>
       </div>
-      <ul class="management-platform">
+      <!-- 待后续需要改成下方再显示 -->
+      <!-- <ul class="management-platform">
         <li>
           <i></i>
         </li>
         <li>
           <i></i>
         </li>
-      </ul>
+      </ul>-->
     </div>
   </div>
 </template>
 
 <script>
-import global from '@/mixin/global';
 import Server from '../server';
 
 const server = new Server();
@@ -76,11 +75,11 @@ export default {
     return {
       server,
       isShrinkMenus: false,
+      zIndex: false,
       selectMenu: '',
       menuIndex: '',
     };
   },
-  mixins: [global],
   props: {
     menuList: {
       type: Array,
@@ -97,30 +96,46 @@ export default {
       return this.$route.meta.isSubMenu;
     },
   },
-  mounted() {},
+  mounted() {
+    this.server.queryByTenantIdAndUserId().then((res) => {
+      console.log(res);
+    });
+  },
   methods: {
-    fnHandle(str, index, itemIdx) {
+    fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {
-        // eslint-disable-next-line no-eval
-        eval(`this.${str[index]}(${itemIdx})`);
+        if (typeof (parameter) === 'string') {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}('${parameter}')`);
+        } else if (typeof (parameter) === 'number') {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}(${parameter})`);
+        } else {
+          // eslint-disable-next-line no-eval
+          eval(`this.${str[index]}(${parameter})`);
+        }
       }
     },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
     },
-    rmSubMenu() {
+    rmSubMenu(routeName) {
+      this.go(routeName);
       this.isShrinkMenus = false;
     },
-    isExtend() {
+    isExtend(routeName) {
+      this.go(routeName);
       if (this.isShrinkMenus) {
         this.isShrinkMenus = false;
       }
     },
     moveMenu(itemIndex) {
       this.menuIndex = itemIndex;
+      this.zIndex = true;
     },
     leaveMenu() {
       this.menuIndex = '';
+      this.zIndex = false;
     },
   },
   watch: {

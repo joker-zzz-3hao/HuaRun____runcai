@@ -25,8 +25,12 @@
             maxlength="50"
           ></el-input>
         </el-form-item>
-        <el-form-item label="用户姓名" prop="departName">
-          <el-input v-model.trim="formData.userName"></el-input>
+        <el-form-item
+          label="用户名称"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户姓名',trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
           label="手机号码"
@@ -142,6 +146,12 @@ export default {
         return '';
       },
     },
+    tenantId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
     tenantName: {
       type: String,
       default() {
@@ -164,7 +174,7 @@ export default {
         userMobile: '', // 手机
         userMail: '', // 邮箱
         userStatus: '0', // 状态 0有效50：禁用
-        orgId: this.treeData[0].orgId, // 用户所在部门ID
+        orgId: '', // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
         userType: 2,
@@ -183,7 +193,7 @@ export default {
       if (this.optionType == 'edit') {
         this.userTitle = '编辑用户';
         this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
-          if (res.code == 200) {
+          if (res.code == 200 && res.data) {
             this.formData.userName = res.data.userName;
             this.formData.userAccount = res.data.userAccount;
             this.formData.userMobile = res.data.userMobile;
@@ -215,6 +225,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+
       // 遍历一维数组，设置initDepartment值
       for (const org of result) {
         if (org.orgId == orgId) {
@@ -246,6 +257,7 @@ export default {
         }
       }
       delete this.formData.confirmPwd;
+      this.formData.tenantId = this.tenantId;
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -264,10 +276,12 @@ export default {
     },
     editPwd() {
       this.pwdLabel = '原始密码';
+      this.formData.loginPwd = '';
       this.isEditPwd = true;
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
+      this.formData.loginPwd = '******';
       this.isEditPwd = false;
     },
     addOrg() {

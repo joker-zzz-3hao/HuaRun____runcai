@@ -4,7 +4,7 @@ export default {
     validateDicCode(rule, value, callback) {
       if (!value) {
         callback('请输入编码');
-      } else if (!/^[_0-9a-zA-Z]{3,}$/.test(value)) {
+      } else if (!/^[a-z0-9_]*$/g.test(value)) {
         callback('只支持数字、字母');
       } else if (this.server.queryOfPage) {
         this.server.queryOfPage({
@@ -28,7 +28,7 @@ export default {
     validateDicName(rule, value, callback) {
       if (!value) {
         callback('请输入编码');
-      } else if (!/^[_0-9a-zA-Z]{3,}$/.test(value)) {
+      } else if (!/^[a-z0-9_]*$/g.test(value)) {
         callback('只支持数字、字母');
       } else if (this.server.queryOfPage) {
         this.server.queryOfPage({

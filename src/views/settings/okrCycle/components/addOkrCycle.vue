@@ -11,10 +11,15 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="OKR周期名称" prop="periodName">
-        <el-input style="width:320px" v-model="form.periodName" placeholder="请输入OKR周期名称"></el-input>
+        <el-input
+          style="width:320px"
+          v-model="form.periodName"
+          maxlength="64"
+          placeholder="请输入OKR周期名称"
+        ></el-input>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
-        <el-date-picker type="date" v-model="form.startTime" placeholder="请设置开始日期"></el-date-picker>
+        <el-date-picker type="date" v-model="form.startTime" maxlength="64" placeholder="请设置开始日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="周期结束日期" prop="endTime">
         <el-date-picker type="date" v-model="form.endTime" placeholder="请设置结束日期"></el-date-picker>

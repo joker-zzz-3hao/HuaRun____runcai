@@ -115,6 +115,63 @@ export default [
         },
         component: () => import('@/views/assessManage/assessPk/index'),
       },
+      {
+        // 项目管理
+        path: '/projectManage',
+        name: 'projectManage',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'projectManage',
+        },
+        component: () => import('@/views/projectManage/index'),
+      },
+      {
+        // 周报管理
+        // 我的周报
+        path: '/myWeekly',
+        name: 'myWeekly',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myWeekly',
+        },
+        component: () => import('@/views/weeklyManage/myWeekly/index'),
+      },
+      {
+        // 周报管理
+        // 团队周报
+        path: '/teamWeekly',
+        name: 'teamWeekly',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myWeekly',
+        },
+        component: () => import('@/views/weeklyManage/teamWeekly/index'),
+      },
+      {
+        // 团队管理
+        path: '/teamsManage',
+        name: 'teamsManage',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'teamsManage',
+        },
+        component: () => import('@/views/teamsManage/index'),
+      },
+      // {
+      //   // 项目管理
+      //   path: '/projectManage',
+      //   name: 'projectManage',
+      //   meta: {
+      //     hasMainMenu: true,
+      //     noSubMenu: true,
+      //     parentRoute: 'projectManage',
+      //   },
+      //   component: () => import('@/views/projectManage/index'),
+      // },
     ],
   },
 ];

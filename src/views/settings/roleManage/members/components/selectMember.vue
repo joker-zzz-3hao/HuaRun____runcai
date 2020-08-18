@@ -5,7 +5,14 @@
 -->
 <template>
   <div class="issue-message">
-    <el-input placeholder="输入用户名称/LDAP账号" v-model="filterText"></el-input>
+    <el-input
+      placeholder="输入用户名称/LDAP账号"
+      minlength="64"
+      @keyup.native="fuzzyQueryUser()"
+      v-model="keyWord"
+    >
+      <el-button slot="prepend" icon="el-icon-search"></el-button>
+    </el-input>
     <div class="rouleflex">
       <div class="roulewidth">
         <div class="selectTitle">
@@ -51,12 +58,39 @@ import Server from '../server';
 
 const server = new Server();
 export default {
-  watch: {
-    filterText(val) {
-      this.$refs.tree.filter(val);
-    },
+  name: 'selectMember',
+  data() {
+    return {
+      server,
+      filterText: '',
+      dialogTableVisible: false,
+      roulelist: [],
+      data: [],
+      form: {},
+      member: '',
+      value: [],
+      selectList: [],
+      keyWord: '',
+    };
+  },
+  mounted() {
+    this.dialogTableVisible = true;
+    this.getqueryMenu();
   },
   methods: {
+    fuzzyQueryUser() {
+      this.server.fuzzyQueryUser({
+        keyWord: this.keyWord,
+      }).then((res) => {
+        this.data = res.data.map((item) => ({
+          label: item.userName,
+          id: item.id,
+          type: 'user',
+          userId: item.userId,
+          orgId: item.orgId,
+        }));
+      });
+    },
     // 清空
     roulelistNum() {
       this.roulelist = [];
@@ -65,6 +99,7 @@ export default {
     // 返回重置
     cleargetqueryMenu() {
       this.selectList = [];
+      this.keyWord = '';
       this.getqueryMenu();
     },
     // 设置名称
@@ -73,10 +108,14 @@ export default {
       if (data.type == 'user') {
         return;
       }
-      if (data.children.length == 0) {
-        this.getRember(data);
+      if (data.children) {
+        if (data.children.length == 0) {
+          this.getRember(data);
+        } else {
+          this.data = data.children;
+        }
       } else {
-        this.data = data.children;
+        this.getRember(data);
       }
     },
     // 设置标题
@@ -127,7 +166,7 @@ export default {
       }).then((res) => {
         this.data = res.data.content.map((item) => ({
           label: item.userName,
-          id: item.userAccount,
+          id: item.id,
           type: 'user',
           userId: item.userId,
           orgId: item.orgId,
@@ -135,29 +174,8 @@ export default {
       });
     },
 
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    },
   },
 
-  data() {
-    return {
-      server,
-      filterText: '',
-      dialogTableVisible: false,
-      roulelist: [],
-      data: [],
-      form: {},
-      member: '',
-      value: [],
-      selectList: [],
-    };
-  },
-  mounted() {
-    this.dialogTableVisible = true;
-    this.getqueryMenu();
-  },
 };
 </script>
 <style  scoped>
@@ -211,5 +229,6 @@ export default {
 .selectTitle {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 </style>
