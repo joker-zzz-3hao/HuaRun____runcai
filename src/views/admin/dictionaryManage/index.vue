@@ -1,5 +1,6 @@
 <template>
   <div class="data-dictionary">
+    <div>数据字典</div>
     <crcloud-table
       :total="total"
       :pageSize.sync="pageSize"

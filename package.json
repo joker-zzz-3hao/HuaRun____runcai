@@ -16,6 +16,7 @@
     "animate.css": "^4.1.0",
     "axios": "^0.18.0",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
     "echarts": "^4.8.0",
     "element-ui": "2.13.0",
     "mocker-api": "^1.6.7",
