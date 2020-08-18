@@ -12,7 +12,9 @@ export default [{
     meta: {
       hasMainMenu: true,
       noSubMenu: true,
+      title: 'tenantManage',
       parentRoute: 'tenantManage',
+      power: 'tenantManage',
     },
     component: () => import('@/views/admin/tenantManage/index'),
   },
