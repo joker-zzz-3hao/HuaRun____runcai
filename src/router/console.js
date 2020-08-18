@@ -15,6 +15,8 @@ export default [
           hasMainMenu: true,
           noSubMenu: true,
           parentRoute: 'overview',
+          title: 'overview',
+          power: '',
         },
         component: () => import('@/views/overview/index'),
       },

@@ -57,6 +57,8 @@ export default [{
       hasMainMenu: true,
       noSubMenu: true,
       parentRoute: 'menuManage',
+      title: 'menuManage',
+      power: '',
     },
     component: () => import('@/views/admin/menuManage/index'),
   },
