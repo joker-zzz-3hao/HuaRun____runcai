@@ -7,10 +7,10 @@
 /* 按钮 */
 .tl-btn {
   position: relative;
-  padding: 0 20px;
+  padding: 0 14px;
   width: auto;
   min-width: 76px;
-  height: 40px;
+  height: 36px;
   border-radius: 0;
   overflow: hidden;
   display: unset;
@@ -21,12 +21,16 @@
 }
 
 .tl-btn.el-button--primary {
-  background: #409eff;
+  background: #685df1;
 }
 
 .tl-btn.el-button--primary:focus,
 .tl-btn.el-button--primary:hover {
-  background: #409eff;
+  background: #685df1;
+}
+
+.tl-btn.el-button--primary::after {
+  background: #5c50e9;
 }
 
 .tl-btn.is-plain {
@@ -114,6 +118,35 @@
   height: 1px;
   background: #d8d8d8;
   z-index: 1;
+}
+
+/* radio */
+.tl-radio {
+  font-weight: normal;
+}
+
+.tl-radio .el-radio__inner {
+  border: 1px solid #bdc5cd;
+  border-radius: 2px;
+}
+
+.tl-radio .el-radio__input.is-checked .el-radio__inner {
+  background: #fff;
+  border-color: #685df1;
+}
+
+.tl-radio .el-radio__inner::after {
+  width: 6px;
+  height: 6px;
+  background: #685df1;
+}
+
+.tl-radio .el-radio__input + .el-radio__label {
+  color: #879099;
+}
+
+.tl-radio .el-radio__input.is-checked + .el-radio__label {
+  color: #4d5155;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -547,13 +580,13 @@
 
 /* 主内容区--路由区 */
 .operating-area {
+  margin: 0 0 16px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .page-title {
-  margin: 0 0 16px 0;
   font-size: 18px;
   color: #4d5155;
   font-weight: 600;
@@ -562,7 +595,15 @@
 .cont-area {
   padding: 30px;
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;
+}
+
+.operating-panel {
+  display: flex;
+  justify-content: flex-end;
 }
