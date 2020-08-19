@@ -96,11 +96,7 @@ export default {
       return this.$route.meta.isSubMenu;
     },
   },
-  mounted() {
-    // this.server.queryByTenantIdAndUserId().then((res) => {
-    //   console.log(res);
-    // });
-  },
+  mounted() {},
   methods: {
     fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {

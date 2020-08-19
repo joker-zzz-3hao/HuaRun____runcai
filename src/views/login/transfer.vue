@@ -13,73 +13,33 @@ export default {
   },
   data() {
     return {
-      classTagList: [],
-      eventsList: [],
-      talentList: [],
-      systemList: [],
-      crList: [],
+      adminFlag: false,
     };
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
-      crMenuList: (state) => state.crMenuList,
-      talentMenuList: (state) => state.talentMenuList,
-      systemMenuList: (state) => state.systemMenuList,
     }),
   },
   mounted() {
-    this.init();
-  },
-  methods: {
-    init() {
-      const self = this;
-      console.log(self.userInfo);
-      // self.userInfo.forEach((item) => {
-      //   switch (item.functionCode) {
-      //     // 租户管理员
-      //     case 'TENANT':
-      //       item.children.forEach((tItem) => {
-      //         self.classTagList = [];
-      //         self.classTagList.push(tItem.functionCode);
-      //         self.eventsList = [];
-      //         self.eventsList = tItem.resourceUrl.split(',');
-      //         self.talentList.push({
-      //           mainMenuTitle: tItem.functionName,
-      //           classTag: self.classTagList,
-      //           toName: 'overview',
-      //           events: self.eventsList,
-      //           subMenuList: [],
-      //         });
-      //       });
-      //       break;
-      //     // 系统管理员
-      //     case 'SYSTEM':
-      //       self.systemList = [];
-      //       item.children.forEach((tItem) => {
-      //         self.classTagList = [];
-      //         self.classTagList.push(tItem.functionCode);
-      //         self.eventsList = [];
-      //         self.eventsList = tItem.resourceUrl.split(',');
-      //         self.systemList.push({
-      //           mainMenuTitle: tItem.functionName,
-      //           classTag: self.classTagList,
-      //           toName: 'overview',
-      //           events: self.eventsList,
-      //           subMenuList: [],
-      //         });
-      //       });
-      //       break;
-      //     // 润才
-      //     default:
-      //       self.crList.push(item);
-      //       break;
-      //   }
-      // });
+    console.log(this.userInfo);
+    // 判断是否有system权限，如果是system就直接跳转系统管理，如果不是就跳转润才首页
+    const self = this;
+    self.userInfo.privilegeList.forEach((item) => {
+      if (item.functionCode == 'SYSTEM') {
+        self.adminFlag = true;
+      }
+    });
+    if (self.adminFlag) {
+      self.$router.push({
+        name: 'adminIndex',
+      });
+    } else {
       self.$router.push({
         name: 'overview',
       });
-    },
+    }
   },
+  methods: {},
 };
 </script>
