@@ -83,7 +83,13 @@ const mockData = {
     })));
   },
   // 设置部门负责人
-  'POST /gateway/system-service/sys/userRole/addOrgUserLeader': (req, res) => {
+  'POST /system-service/sys/userRole/addUserRole': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+
+    })));
+  },
+  // 设置部门负责人
+  'POST /system-service/sys/userRole/delUserRole': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
 
     })));

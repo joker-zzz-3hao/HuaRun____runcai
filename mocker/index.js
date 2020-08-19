@@ -16,6 +16,7 @@ const proxy = {
   ...require('./departManage/index'),
   ...require('./dictionaryManage/index'),
   ...require('./sysUserManage/index'),
+  ...require('./weeklyManage/index'),
   ...require('./userManage/index'),
 };
 

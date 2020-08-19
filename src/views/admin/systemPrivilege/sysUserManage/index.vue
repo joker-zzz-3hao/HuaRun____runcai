@@ -6,7 +6,6 @@
     <crcloud-table @searchList="searchList" :isPage="false">
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
-          <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="用户账号"></el-table-column>
           <el-table-column min-width="100px" align="left" label="用户角色">
             <template>

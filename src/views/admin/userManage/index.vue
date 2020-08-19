@@ -41,16 +41,6 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item>
-            <el-select v-model.trim="searchForm.userStatus" placeholder="租户管理员">
-              <el-option
-                v-for="item in CONST.USER_STATUS_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>-->
           <el-form-item>
             <el-input
               placeholder="输入用户姓名/账号/手机号"
@@ -71,13 +61,12 @@
       </div>
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
-          <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="userAccount" label="租户管理员">
+          <el-table-column min-width="100px" align="left" label="租户管理员">
             <template slot-scope="scope">
               <div>
                 <el-tooltip class="item" effect="dark" content="租户管理员" placement="top-start">
@@ -117,7 +106,7 @@
           <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
           <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
             <template slot-scope="scope">
-              <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
+              <el-button v-show="scope.row.userType=='2'" @click="createOrEditUser(scope.row)">编辑</el-button>
               <el-button @click="info(scope.row)">详情</el-button>
             </template>
           </el-table-column>
@@ -131,7 +120,7 @@
       v-if="showCreateUser"
       :server="server"
       :optionType="optionType"
-      :userAccount="userAccount"
+      :userId="userId"
       :tenantName="tenantName"
       :tenantId="searchForm.tenantId"
       :treeData="treeData"
@@ -144,7 +133,7 @@
       v-if="showUserInfo"
       :server="server"
       :CONST="CONST"
-      :userAccount="userAccount"
+      :userId="userId"
       :treeData="treeData"
       @closeUserDialog="closeUserDialog"
     ></user-info>
@@ -170,7 +159,7 @@ export default {
       server,
       CONST,
       globalOrgId: '',
-      userAccount: '',
+      userId: '',
       loading: false,
       showCreateUser: false,
       showUserInfo: false,
@@ -233,9 +222,9 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
-      if (user.userAccount) {
+      if (user.userId) {
         this.optionType = 'edit';
-        this.userAccount = user.userAccount;
+        this.userId = user.userId;
       } else {
         this.optionType = 'create';
       }
@@ -247,7 +236,7 @@ export default {
 
     //
     info(user) {
-      this.userAccount = user.userAccount;
+      this.userId = user.userId;
       this.showUserInfo = true;
       this.$nextTick(() => {
         this.$refs.setRole.show();
@@ -278,7 +267,7 @@ export default {
         userMail: user.userMail, // 邮箱
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
         orgId: user.orgId, // 用户所在部门ID
-        userAccount: user.userAccount,
+        userId: user.userId,
         userType: 2,
       };
       this.server.updateOrgUser(params).then((res) => {

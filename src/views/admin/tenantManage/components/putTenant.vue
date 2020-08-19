@@ -1,53 +1,43 @@
 <template>
-  <el-drawer
+  <el-dialog
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    size="35%"
+    center
   >
-    <div class="modelCreate">
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="租户名称" prop="tenantName">
-          <el-input
-            style="width:320px"
-            v-model="form.tenantName"
-            maxlength="64"
-            placeholder="请输入租户名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="企业ID" prop="tenantID">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.tenantID"
-            placeholder="请输入企业ID"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="申请人" prop="applyUser">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.applyUser"
-            placeholder="请输入申请人"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="mobilePhone">
-          <el-input
-            style="width:320px"
-            v-model="form.mobilePhone"
-            placeholder="请输入联系电话"
-            maxlength="11"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="开放菜单功能">
-          <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-            <div>+</div>
-          </div>
-        </el-form-item>
+    <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+      <el-form-item label="租户名称" prop="tenantName">
+        <el-input
+          style="width:320px"
+          v-model="form.tenantName"
+          maxlength="64"
+          placeholder="请输入租户名称"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="企业ID" prop="tenantID">
+        <el-input style="width:320px" maxlength="64" v-model="form.tenantID" placeholder="请输入企业ID"></el-input>
+      </el-form-item>
+      <el-form-item label="申请人" prop="applyUser">
+        <el-input style="width:320px" maxlength="64" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" prop="mobilePhone">
+        <el-input
+          style="width:320px"
+          v-model="form.mobilePhone"
+          placeholder="请输入联系电话"
+          maxlength="11"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="开放菜单功能">
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+          <div>+</div>
+        </div>
+      </el-form-item>
+      <div class="postMenu">
         <el-cascader-panel
           @change="handleCheckChange"
           ref="treeMenu"
@@ -56,30 +46,13 @@
           :props="{ multiple: true }"
           node-key="id"
         ></el-cascader-panel>
-        <!-- <el-form-item label="使用时间" prop="date">
-          <el-date-picker
-            v-model="form.date"
-            @change="changDate"
-            :disabled="infoBool"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-        </el-form-item>-->
-        <!-- <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status">
-            <el-radio label="O">启用</el-radio>
-            <el-radio label="S">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>-->
-      </el-form>
-      <div>
-        <el-button type="primary" @click="validateForm('form')">确定</el-button>
-        <el-button @click="close()">取 消</el-button>
       </div>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="validateForm('form')">确定</el-button>
+      <el-button @click="close()">取 消</el-button>
     </div>
-  </el-drawer>
+  </el-dialog>
 </template>
 <script>
 import Server from '../server';
@@ -185,7 +158,7 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
-          value: item.functionId,
+          value: item.functionCode,
           checkStrictly: true,
           disabled: this.infoBool,
           emitPath: false,
@@ -202,13 +175,29 @@ export default {
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantID = res.data.tenantID;
           this.form.status = res.data.status;
-          const keys = res.data.menuTree.map((item) => item.functionId);
-          this.selectArr = keys;
+          // eslint-disable-next-line array-callback-return
+          const keys = res.data.menuItems.map((item) => {
+            if (item) {
+              return item.split(':');
+            }
+          });
+          // eslint-disable-next-line array-callback-return
+          this.selectArr = keys.filter((item) => {
+            if (item) {
+              return item;
+            }
+          });
           this.$nextTick(() => {
             this.handleCheckChange();
           });
         });
     },
+    getSelectChild(data) {
+      if (data.children) {
+        return data.map((item) => item.parentId);
+      }
+    },
+
     // 校验数据填写格式
     validateForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -223,8 +212,18 @@ export default {
     // 获取选中tree key值 展示选中
     handleCheckChange() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
-      this.menuTreeList = keys.map((item) => item.data.label);
-      console.log(this.menuTreeList);
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item.data.label;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
       this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据

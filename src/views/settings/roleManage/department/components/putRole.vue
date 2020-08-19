@@ -1,5 +1,5 @@
 <template>
-  <el-drawer
+  <el-dialog
     @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
@@ -7,7 +7,6 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    size="35%"
     center
   >
     <div class="modelPut">
@@ -41,12 +40,12 @@
           ></el-tree>
         </el-form-item>
       </el-form>
-      <div>
+      <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm()">确定</el-button>
         <el-button @click="close()">取 消</el-button>
       </div>
     </div>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <script>

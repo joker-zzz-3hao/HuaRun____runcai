@@ -2,13 +2,18 @@ const Mock = require('mockjs');
 const mockUtil = require('../mockUtil');
 
 const mockData = {
-  'POST /talent-gateway-service/account-service/outside/login': (req, res) => {
+  'POST /gateway/talent-gateway-service/account-service/outside/login': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       STRING: '11eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTY1OTY0NTUsInVzZXJJZCI6InVzZXIwMDEifQ.Ao4mKjIXFDZwfjzxvpsMJsEj9Jfgui0ztgEDTFNHerw',
     })));
   },
+  'POST /gateway/privilege-service/privilege/function/queryByTenantIdAndUserId': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      data: 'success',
+    })));
+  },
   // 查询组织树
-  'POST /gateway/talent-query/okr/outside/query/orgTable': (req, res) => {
+  'POST /gateway/talent-query/okr/query/orgTable': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       children: [
         {

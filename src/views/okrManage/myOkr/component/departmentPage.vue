@@ -88,7 +88,7 @@ export default {
     searchOkr() { // 默认搜索进行时
       this.server.getmyOkr({
         myOrOrg: 'org',
-        periodId: 'periodId', // this.okrCycle.periodId
+        periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
       }).then((res) => {
         if (res.code == 200) {
@@ -110,8 +110,11 @@ export default {
   },
   watch: {
     'okrCycle.periodId': {
-      handler() {
-        this.searchOkr();
+      handler(newVal) {
+        console.log('get', newVal);
+        if (newVal) {
+          this.searchOkr();
+        }
       },
       immediate: true,
       deep: true,

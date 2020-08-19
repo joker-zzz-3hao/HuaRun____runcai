@@ -2,50 +2,11 @@
   <div class="organize-management">
     <div class="org-header">
       <div>部门管理</div>
-      <span>
-        <el-select
-          v-model.trim="searchData.userType"
-          placeholder="用户类型"
-          :popper-append-to-body="false"
-        >
-          <el-option
-            v-for="item in CONST.USER_TYPE_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
-        <el-select
-          v-model.trim="searchData.userStatus"
-          placeholder="用户状态"
-          :popper-append-to-body="false"
-        >
-          <el-option
-            v-for="item in CONST.USER_STATUS_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
-        <!-- <el-select v-model.trim="searchData.userStatus" placeholder="部门负责人">
-          <el-option
-            v-for="item in CONST.IS_LEADER_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>-->
-        <el-input placeholder="输入用户姓名/账号/手机号" v-model.trim="searchData.keyWord" style="width:300px"></el-input>
-        <el-button @click="searchList">查询</el-button>
-      </span>
-      <span>
-        <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createOrEditUser">创建用户</el-button>
-        <el-button @click="batchImport">批量导入</el-button>
-      </span>
     </div>
     <div class="org-left-side">
-      <el-input placeholder="输入用户姓名/手机号" style="width:300px" v-model="filterText"></el-input>
+      <el-input placeholder="输入用户姓名/手机号" style="width:300px" v-model="filterText">
+        <i class="el-icon-search el-input__icon" slot="prefix"></i>
+      </el-input>
       <el-tree
         ref="organizeTree"
         :data="treeData"
@@ -67,14 +28,62 @@
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
+        <div slot="searchBar">
+          <el-form @keyup.enter.native="searchList()">
+            <el-form-item>
+              <el-select
+                v-model.trim="searchData.userType"
+                placeholder="用户类型"
+                :popper-append-to-body="false"
+              >
+                <el-option
+                  v-for="item in CONST.USER_TYPE_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-select
+                v-model.trim="searchData.userStatus"
+                placeholder="用户状态"
+                :popper-append-to-body="false"
+              >
+                <el-option
+                  v-for="item in CONST.USER_STATUS_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                placeholder="输入用户姓名/账号/手机号"
+                v-model.trim="searchData.keyWord"
+                style="width:300px"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div slot="actionBar">
+          <div>
+            <el-button @click="searchList">查询</el-button>
+          </div>
+          <div>
+            <el-button @click="createDepart">创建部门</el-button>
+            <el-button @click="createOrEditUser">创建用户</el-button>
+            <el-button @click="batchImport">批量导入</el-button>
+          </div>
+        </div>
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
-            <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="部门负责人">
+            <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div>
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
@@ -110,7 +119,7 @@
             <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
-                <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
+                <el-button v-show="scope.row.userType=='2'" @click="createOrEditUser(scope.row)">编辑</el-button>
                 <el-button @click="info(scope.row)">详情</el-button>
               </template>
             </el-table-column>
@@ -134,7 +143,7 @@
       :treeData="treeData"
       :server="server"
       :optionType="optionType"
-      :userAccount="userAccount"
+      :userId="userId"
       :tenantName="tenantName"
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
@@ -151,7 +160,7 @@
         :treeData="treeData"
         :server="server"
         :optionType="optionType"
-        :userAccount="userAccount"
+        :userId="userId"
         :tenantName="tenantName"
         :globalOrgId="globalOrgId"
         @closeUserDialog="closeUserDialog"
@@ -165,7 +174,7 @@
       :treeData="treeData"
       :server="server"
       :CONST="CONST"
-      :userAccount="userAccount"
+      :userId="userId"
       @closeUserDialog="closeUserDialog"
     ></user-info>
   </div>
@@ -194,7 +203,7 @@ export default {
       server,
       CONST,
       globalOrgId: '',
-      userAccount: '',
+      userId: '',
       loading: false,
       editDrawer: false,
       defaultExpandNode: [],
@@ -350,9 +359,9 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
-      if (user.userAccount) {
+      if (user.userId) {
         this.optionType = 'edit';
-        this.userAccount = user.userAccount;
+        this.userId = user.userId;
         this.editDrawer = true;
       } else {
         this.optionType = 'create';
@@ -365,7 +374,7 @@ export default {
 
     // 设置角色
     info(user) {
-      this.userAccount = user.userAccount;
+      this.userId = user.userId;
       this.showUserInfo = true;
       this.$nextTick(() => {
         this.$refs.setRole.show();
@@ -407,7 +416,7 @@ export default {
         userMail: user.userMail, // 邮箱
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
         orgId: user.orgId, // 用户所在部门ID
-        userAccount: user.userAccount,
+        userId: user.userId,
         userType: 2,
       };
       this.server.updateOrgUser(params).then((res) => {
@@ -452,6 +461,5 @@ export default {
   height: 90%;
   position: absolute;
   left: 400px;
-  top: 200px;
 }
 </style>

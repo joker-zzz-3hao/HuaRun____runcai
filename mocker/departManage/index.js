@@ -53,7 +53,7 @@ const mockData = {
   // 获取用户信息用户
   'POST /gateway/system-service/sys/user/getUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'userId|+1': 1,
+      'userId|+112': 5,
       userName: '@cname()',
       userAccount: '@csentence(10, 20)',
       userMobile: /^1[385][1-9]\d{8}/,

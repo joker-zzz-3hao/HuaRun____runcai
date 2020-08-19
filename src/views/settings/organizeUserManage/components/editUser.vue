@@ -46,21 +46,44 @@
         :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
         v-if="initDepartment.orgId || optionType == 'create'"
       >
-        <!-- <tl-department
-          v-model="formData.orgId"
-          :data="treeData"
-          :defaultProps="{ children: 'sonTree', label: 'orgName'}"
-          :initDepartment="initDepartment"
-          :type="'department'"
-          @handleData="handleData"
-        ></tl-department>-->
         <el-cascader
           v-model="value"
           :options="treeData"
           :props="{ expandTrigger: 'hover',label:'orgName',children:'sonTree' }"
           @change="handleChange"
         ></el-cascader>
-        <el-button @click="addOrg">添加部门</el-button>
+      </el-form-item>
+
+      <el-form-item
+        :label="pwdLabel"
+        prop="loginPwd"
+        :rules="[
+          {required:isEditPwd||optionType == 'create',validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
+      >
+        <el-input
+          :disabled="!isEditPwd && optionType == 'edit'"
+          v-model.trim="formData.loginPwd"
+          show-password
+        ></el-input>
+        <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
+        <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
+      </el-form-item>
+      <el-form-item
+        v-if="isEditPwd"
+        label="新密码"
+        prop="newPwd"
+        :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
+      >
+        <el-input v-model.trim="formData.newPwd" show-password></el-input>
+      </el-form-item>
+      <el-form-item
+        v-if="isEditPwd || optionType != 'edit'"
+        label="确认密码"
+        prop="confirmPwd"
+        :rules="[
+          {required:true,validator:optionType == 'create' ? validateConfirmPwd : validateNewConfirmPwd,trigger:'blur'}]"
+      >
+        <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
       </el-form-item>
 
       <el-form-item prop="sortIndex">
@@ -68,48 +91,6 @@
         <el-button :disabled="loading" @click="cancel">取消</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog
-      title="修改密码"
-      :append-to-body="false"
-      :modal-append-to-body="false"
-      :visible.sync="pwdVisible"
-      v-if="pwdVisible"
-      width="30%"
-      :before-close="closeEditDialog"
-      :modal="false"
-      :close-on-click-modal="false"
-    >
-      <el-form ref="editPwd" label-width="80px" :model="formData">
-        <el-form-item
-          label="原始密码"
-          prop="loginPwd"
-          :rules="[
-          {required:true,message:'请输入原始密码',trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.loginPwd" show-password></el-input>
-        </el-form-item>
-        <el-form-item
-          label="新密码"
-          prop="newPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.newPwd" show-password></el-input>
-        </el-form-item>
-        <el-form-item
-          label="确认密码"
-          prop="confirmPwd"
-          :rules="[
-          {required:true,validator:validateNewConfirmPwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button @click="cancelEditPwd">取 消</el-button>
-          <el-button type="primary" @click="confirmEditPwd">确 定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
   </div>
 </template>
 
@@ -142,7 +123,7 @@ export default {
         return 'create';
       },
     },
-    userAccount: {
+    userId: {
       type: String,
       default() {
         return '';
@@ -166,7 +147,7 @@ export default {
       loading: false,
       initDepartment: {},
       isEditPwd: false,
-      pwdVisible: false,
+      pwdLabel: '用户密码',
       formData: {
         userName: '', // 用户名称
         userMobile: '', // 手机
@@ -175,7 +156,7 @@ export default {
         orgId: this.treeData[0].orgId, // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
-        userType: 2,
+        userType: 2, // 创建用户
         loginPwd: '', // 密码
         newPwd: '',
         confirmPwd: '',
@@ -189,7 +170,7 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
+      this.server.getUserInfo({ userId: this.userId }).then((res) => {
         if (res.code == 200) {
           this.formData.userName = res.data.userName;
           this.formData.userAccount = res.data.userAccount;
@@ -198,7 +179,7 @@ export default {
           this.formData.orgId = res.data.orgId;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
-
+          this.formData.loginPwd = '******';
           this.setInitDepartment(res.data.orgId);
         }
       });
@@ -250,37 +231,16 @@ export default {
     },
     cancel() {
       this.isEditPwd = false;
-      this.close();
     },
     editPwd() {
+      this.pwdLabel = '原始密码';
       this.formData.loginPwd = '';
-
-      this.pwdVisible = true;
-    },
-    confirmEditPwd() {
-      this.$refs.editPwd.validate((valid) => {
-        if (valid) {
-          this.isEditPwd = true;
-          this.pwdVisible = false;
-        }
-      });
+      this.isEditPwd = true;
     },
     cancelEditPwd() {
+      this.pwdLabel = '用户密码';
+      this.formData.loginPwd = '******';
       this.isEditPwd = false;
-      this.closeDialog();
-    },
-    closeEditDialog() {
-      this.isEditPwd = false;
-      this.closeDialog();
-    },
-    closeDialog() {
-      this.formData.loginPwd = '';
-      this.formData.newPwd = '';
-      this.formData.confirmPwd = '';
-      this.pwdVisible = false;
-    },
-    addOrg() {
-      this.$emit('createDepart');
     },
   },
   watch: {},

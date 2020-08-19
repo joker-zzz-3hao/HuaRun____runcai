@@ -8,12 +8,12 @@ export default class Server extends ServerBase {
 
   // 查okr列表
   getmyOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/myOkr', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
   }
 
   // 查周期
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 
   // 点赞

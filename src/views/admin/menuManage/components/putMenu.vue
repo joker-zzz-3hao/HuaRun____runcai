@@ -41,15 +41,16 @@
       <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="组件路径" v-if="form.functionType=='MENU'" prop="resourceUrl">
-        <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入组件路径"></el-input>
-      </el-form-item>-->
+
       <el-form-item
         label="权限标识"
         v-if="form.functionType=='BTN'||form.functionType=='MENU'"
         prop="permissionCode"
       >
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
+      </el-form-item>
+      <el-form-item label="事件名" v-if="form.functionType !=='BTN'" prop="functionEvent">
+        <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
       </el-form-item>
       <!-- <el-form-item
         label="菜单状态"
@@ -107,11 +108,11 @@ export default {
       data: [],
       rules: {
         functionCode: [{ required: true, message: '请输入菜单编码', trigger: 'change' },
-          {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
-            trigger: 'blur',
-          },
+          // {
+          //   pattern: /^[0-9a-zA-Z]+$/,
+          //   message: '请输入数字或者英文字母',
+          //   trigger: 'blur',
+          // },
         ],
         functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' },
           {
@@ -127,12 +128,16 @@ export default {
           },
         ],
         permissionCode: [{ required: true, message: '请输入路由地址', trigger: 'blur' },
-          {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
-            trigger: 'blur',
-          }],
+          // {
+          //   pattern: /^[0-9a-zA-Z]+$/,
+          //   message: '请输入数字或者英文字母',
+          //   trigger: 'blur',
+          // }
+        ],
         resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+        functionEvent: [
+          { required: true, message: '请输入事件名', trigger: 'blur' },
+        ],
       },
     };
   },

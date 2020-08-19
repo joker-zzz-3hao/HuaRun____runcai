@@ -57,15 +57,27 @@
         </template>
       </tl-okr-collapse>
     </div>
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      title="编辑"
+      :visible.sync="myokrDrawer"
+      size="50%"
+      :before-close="handleClose"
+    >
+      <div>
+        <tl-writeokr @handleClose="handleClose" v-if="writeInfo.canWrite" :writeInfo="writeInfo"></tl-writeokr>
+        <component
+          v-else
+          :ref="currentView"
+          v-bind:is="currentView"
+          :server="server"
+          :okrId="okrId"
+          :okrItem="okrItem"
+        ></component>
+      </div>
+    </el-drawer>
 
-    <component
-      :ref="currentView"
-      v-bind:is="currentView"
-      :server="server"
-      :okrId="okrId"
-      :okrItem="okrItem"
-      :dialogExist.sync="dialogExist"
-    ></component>
     <!-- <okr-history ref="okr-history" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-history>
     <okr-detail ref="okr-detail" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-detail>
     <okr-update ref="okr-update" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-update>-->
@@ -73,10 +85,12 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './okrUpdate';
 import okrHistory from './okrHistory';
+import writeOkr from './writeOkr/index';
 import Server from '../server';
 import CONST from '../const';
 
@@ -89,6 +103,7 @@ export default {
     'tl-okr-update': okrUpdate,
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
+    'tl-writeokr': writeOkr,
   },
   data() {
     return {
@@ -109,7 +124,8 @@ export default {
       currentView: '', // 弹框组件
       okrId: '',
       okrItem: {},
-
+      drawer: false,
+      writeInfo: {},
     };
   },
   props: {
@@ -118,14 +134,20 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapState('common', {
+      myokrDrawer: (state) => state.myokrDrawer,
+    }),
+  },
   created() {
   },
   methods: {
+    ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr(status) {
-      this.searchForm.status = status || '1';
+      this.searchForm.status = status || this.searchForm.status;
       this.server.getmyOkr({
         myOrOrg: 'my',
-        periodId: 'periodId', // this.okrCycle.periodId
+        periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
       }).then((res) => {
         if (res.code == 200) {
@@ -155,7 +177,7 @@ export default {
         }
       });
     },
-    // 打开弹窗
+    // 打开抽屉
     openDialog(componentName, val) {
       console.log('点击', componentName, val);
       this.currentView = componentName;
@@ -163,26 +185,41 @@ export default {
       // this.okrId = val.detailId;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
-        this.dialogExist = true;
+        this.setMyokrDrawer(true);
       });
     },
     goChangeOkr() {
-      this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
+      this.writeInfo = {
+        canWrite: 'cannot',
+        okrId: this.okrId,
+      };
+      // this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
+      this.setMyokrDrawer(true);
+      // this.drawer = true;
     },
     goDraft(item) {
-      const draftInfo = {
+      this.writeInfo = {
+        canWrite: 'draft',
         draftParams: item.params,
         draftId: item.id,
         okrStatus: this.searchForm.status,
         okrorgCycle: this.okrorgCycle,
       };
-      this.$router.push({ name: 'writeOkr', params: { canWrite: 'draft', draftInfo } });
+      // this.$router.push({ name: 'writeOkr', params: { canWrite: 'draft', writeInfo } });
+      this.setMyokrDrawer(true);
+      // this.drawer = true;
+    },
+    handleClose() {
+      this.setMyokrDrawer(false);
     },
   },
   watch: {
     'okrCycle.periodId': {
-      handler() {
-        this.searchOkr();
+      handler(newVal) {
+        console.log('get', newVal);
+        if (newVal) {
+          this.searchOkr();
+        }
       },
       immediate: true,
       deep: true,
