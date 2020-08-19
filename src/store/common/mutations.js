@@ -35,4 +35,8 @@ export default {
   setMyokrDrawer: (state, myokrDrawer = {}) => {
     state.myokrDrawer = myokrDrawer;
   },
+  // 新建okr抽屉
+  setCreateokrDrawer: (state, createokrDrawer = {}) => {
+    state.createokrDrawer = createokrDrawer;
+  },
 };
