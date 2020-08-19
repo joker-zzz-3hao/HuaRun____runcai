@@ -16,7 +16,9 @@
         <el-table :data="tableData" class="tl-table">
           <el-table-column fixed prop="periodName" label="OKR周期名称">
             <template slot-scope="scope">
-              <span>{{scope.row.periodName}}{{scope.row.checkStatus=='1'?'(默认周期)':''}}</span>
+              <em>{{scope.row.periodName}}</em>
+              <span>{{scope.row.checkStatus=='1'?'(默认周期)':''}}</span>
+              <span>默认周期</span>
             </template>
           </el-table-column>
           <el-table-column prop="startTime" label="开始时间"></el-table-column>

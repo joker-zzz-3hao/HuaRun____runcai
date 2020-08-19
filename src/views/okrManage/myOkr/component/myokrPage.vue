@@ -4,16 +4,14 @@
     <div>
       <!-- 选择状态 -->
       <dl style="display:flex">
-        <dd
-          v-for="item in CONST.STATUS_LIST"
-          :key="item.id"
-          @click="searchOkr(item.id)"
-        >{{item.name}}</dd>
+        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
+          <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
+        </dd>
       </dl>
     </div>
     <!-- 一些功能按钮 根据状态判断-->
     <div>
-      <el-button @click="goChangeOkr">变更</el-button>
+      <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
     </div>
     <!-- okr模块 只有起草中是有多个 -->
     <div v-for="(item, index) in okrList" :key="index">
@@ -53,7 +51,10 @@
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-update',props.okritem)"
           >进度更新</el-button>
-          <el-button v-if="searchForm.status=='6'" @click.native.stop="goDraft(item)">编辑</el-button>
+          <el-button
+            v-if="['6',  '8'].includes(searchForm.status)"
+            @click.native.stop="goDraft(item)"
+          >编辑</el-button>
         </template>
       </tl-okr-collapse>
     </div>
@@ -66,7 +67,11 @@
       :before-close="handleClose"
     >
       <div>
-        <tl-writeokr @handleClose="handleClose" v-if="writeInfo.canWrite" :writeInfo="writeInfo"></tl-writeokr>
+        <tl-writeokr
+          v-if="myokrDrawer && writeInfo.canWrite"
+          @handleClose="handleClose"
+          :writeInfo="writeInfo"
+        ></tl-writeokr>
         <component
           v-else
           :ref="currentView"
@@ -125,7 +130,9 @@ export default {
       okrId: '',
       okrItem: {},
       drawer: false,
-      writeInfo: {},
+      writeInfo: {
+        canWrite: '',
+      },
     };
   },
   props: {
@@ -151,11 +158,12 @@ export default {
         status: this.searchForm.status,
       }).then((res) => {
         if (res.code == 200) {
-          if (this.searchForm.status == '6') {
+          if (['6', '7', '8'].includes(this.searchForm.status)) {
             this.okrList = [];
             const draftList = res.data || [];
             draftList.forEach((item) => {
-              const okrInfo = JSON.parse(item.params);
+              let okrInfo = {};
+              okrInfo = JSON.parse(item.paramJson);
               this.okrList.push({
                 tableList: okrInfo.okrInfoList,
                 okrMain: {
@@ -163,10 +171,9 @@ export default {
                   okrProgress: 0,
                   updateDate: item.updateTime,
                 },
-                id: item.id,
-                params: item.params,
+                id: item.id || item.approvalId,
+                params: item.paramJson,
               });
-              console.log('草稿', this.tableList);
             });
           } else {
             this.okrList[0].tableList = res.data.okrDetails;
@@ -198,6 +205,7 @@ export default {
       // this.drawer = true;
     },
     goDraft(item) {
+      console.log('goDraft', item.params);
       this.writeInfo = {
         canWrite: 'draft',
         draftParams: item.params,

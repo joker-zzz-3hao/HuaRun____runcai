@@ -6,7 +6,6 @@
 -->
 <template>
   <div>
-    <span @click="editPwd">修改密码</span>
     <el-form ref="userForm" :model="formData" label-width="80px">
       <el-form-item
         label="用户名称"
@@ -22,7 +21,37 @@
       >
         <el-input v-model.trim="formData.userAccount" maxlength="50"></el-input>
       </el-form-item>
-
+      <el-form-item
+        :label="pwdLabel"
+        prop="loginPwd"
+        :rules="[
+          {required:isEditPwd,validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
+      >
+        <el-input
+          :disabled="!isEditPwd && optionType == 'edit'"
+          v-model.trim="formData.loginPwd"
+          show-password
+        ></el-input>
+        <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
+        <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
+      </el-form-item>
+      <el-form-item
+        v-if="isEditPwd"
+        label="新密码"
+        prop="newPwd"
+        :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
+      >
+        <el-input v-model.trim="formData.newPwd" show-password></el-input>
+      </el-form-item>
+      <el-form-item
+        v-if="isEditPwd"
+        label="确认密码"
+        prop="confirmPwd"
+        :rules="[
+          {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
+      >
+        <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
+      </el-form-item>
       <el-form-item
         label="手机号"
         prop="userMobile"
@@ -44,7 +73,6 @@
         label="所在部门"
         prop="orgId"
         :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-        v-if="initDepartment.orgId || optionType == 'create'"
       >
         <el-cascader
           v-model="value"
@@ -53,39 +81,6 @@
           @change="handleChange"
         ></el-cascader>
       </el-form-item>
-
-      <el-form-item
-        :label="pwdLabel"
-        prop="loginPwd"
-        :rules="[
-          {required:isEditPwd||optionType == 'create',validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
-      >
-        <el-input
-          :disabled="!isEditPwd && optionType == 'edit'"
-          v-model.trim="formData.loginPwd"
-          show-password
-        ></el-input>
-        <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
-        <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
-      </el-form-item>
-      <el-form-item
-        v-if="isEditPwd"
-        label="新密码"
-        prop="newPwd"
-        :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.newPwd" show-password></el-input>
-      </el-form-item>
-      <el-form-item
-        v-if="isEditPwd || optionType != 'edit'"
-        label="确认密码"
-        prop="confirmPwd"
-        :rules="[
-          {required:true,validator:optionType == 'create' ? validateConfirmPwd : validateNewConfirmPwd,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
-      </el-form-item>
-
       <el-form-item prop="sortIndex">
         <el-button :loading="loading" @click="saveUser">确定</el-button>
         <el-button :disabled="loading" @click="cancel">取消</el-button>
@@ -145,7 +140,6 @@ export default {
   data() {
     return {
       loading: false,
-      initDepartment: {},
       isEditPwd: false,
       pwdLabel: '用户密码',
       formData: {
@@ -216,13 +210,19 @@ export default {
       this.formData.orgId = date.orgId;
     },
     saveUser() {
+      if (!this.isEditPwd) {
+        this.formData.loginPwd = '';
+        this.formData.newPwd = '';
+      }
       delete this.formData.confirmPwd;
+      this.formData.userId = this.userId;
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.server.updateOrgUser(this.formData).then((res) => {
             if (res.code == 200) {
               this.$message.success('用户编辑成功');
+              this.$emit('closeUserDialog', { refreshPage: true });
             }
             this.loading = false;
           });
@@ -230,7 +230,7 @@ export default {
       });
     },
     cancel() {
-      this.isEditPwd = false;
+      this.$emit('closeUserDialog', { refreshPage: false });
     },
     editPwd() {
       this.pwdLabel = '原始密码';

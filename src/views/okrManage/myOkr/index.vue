@@ -25,12 +25,12 @@
       :wrapperClosable="false"
       :modal-append-to-body="false"
       title="创建okr"
-      :visible.sync="myokrDrawer"
+      :visible.sync="createokrDrawer"
       size="50%"
       :before-close="handleClose"
     >
       <div>
-        <writeOkr v-if="myokrDrawer"></writeOkr>
+        <writeOkr v-if="createokrDrawer"></writeOkr>
       </div>
     </el-drawer>
   </div>
@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     ...mapState('common', {
-      myokrDrawer: (state) => state.myokrDrawer,
+      createokrDrawer: (state) => state.createokrDrawer,
     }),
   },
   created() {
@@ -98,7 +98,7 @@ export default {
     this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer']),
+    ...mapMutations('common', ['setCreateokrDrawer']),
     init() {
       this.server.getOkrCycleList().then((res) => {
         if (res.data.length > 0) {
@@ -132,12 +132,12 @@ export default {
       console.log(data);
     },
     goWriteOkr() {
-      this.setMyokrDrawer(true);
+      this.setCreateokrDrawer(true);
       // this.drawer = true;
       // this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
     },
     handleClose() {
-      this.setMyokrDrawer(false);
+      this.setCreateokrDrawer(false);
     },
   },
 };
