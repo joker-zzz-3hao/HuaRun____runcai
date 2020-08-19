@@ -4,7 +4,7 @@
       <div>部门管理</div>
     </div>
     <div class="org-left-side">
-      <el-input placeholder="输入用户姓名/手机号" style="width:300px" v-model="filterText">
+      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText">
         <i class="el-icon-search el-input__icon" slot="prefix"></i>
       </el-input>
       <el-tree
@@ -119,8 +119,11 @@
             <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
-                <el-button v-show="scope.row.userType=='2'" @click="createOrEditUser(scope.row)">编辑</el-button>
-                <el-button @click="info(scope.row)">详情</el-button>
+                <el-button
+                  type="text"
+                  v-show="scope.row.userType=='2'"
+                  @click="createOrEditUser(scope.row)"
+                >编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -166,25 +169,13 @@
         @closeUserDialog="closeUserDialog"
       ></edit-user>
     </el-drawer>
-
-    <!-- 用户详情 -->
-    <user-info
-      ref="setRole"
-      v-if="showUserInfo"
-      :treeData="treeData"
-      :server="server"
-      :CONST="CONST"
-      :userId="userId"
-      @closeUserDialog="closeUserDialog"
-    ></user-info>
   </div>
 </template>
 
 <script>
 import createDepart from './components/createDepartment';
-import createOrEditUser from './components/createOrEditUser';
+import createUser from './components/createUser';
 import editUser from './components/editUser';
-import userInfo from './components/userInfo';
 import Server from './server';
 import CONST from './const';
 
@@ -194,9 +185,8 @@ export default {
   name: 'organizeManagement',
   components: {
     'create-department': createDepart,
-    'create-user': createOrEditUser,
+    'create-user': createUser,
     'edit-user': editUser,
-    'user-info': userInfo,
   },
   data() {
     return {
@@ -210,7 +200,6 @@ export default {
       filterText: '',
       showcreateDepart: false,
       showCreateUser: false,
-      showUserInfo: false,
       tenantName: '',
       optionType: 'create',
       initDepartment: {},
@@ -223,36 +212,7 @@ export default {
         userStatus: '',
         keyWord: '',
       },
-      treeData: [{
-        orgId: '1',
-        orgName: '志任集团',
-        orgParentId: '',
-        isShow: false,
-        sonTree: [
-          {
-            orgId: '1a',
-            orgName: '分公司',
-            orgParentId: '1',
-            isShow: false,
-            sonTree: [
-              {
-                orgId: '1aa',
-                orgName: '分公司11111111111',
-                orgParentId: '1a',
-                isShow: false,
-                sonTree: [
-                  {
-                    orgId: '1aaa',
-                    orgName: '分公司2222222222222',
-                    orgParentId: '1aa',
-                    isShow: false,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      }],
+      treeData: [],
       defaultProps: {
         children: 'sonTree',
         label: 'orgName',
@@ -270,7 +230,7 @@ export default {
     getOrgTree() {
       this.server.getOrg().then((res) => {
         if (res.code == 200) {
-          this.treeData = res.data;
+          this.treeData = [{ ...res.data[0] }];
         }
         this.defaultExpandNode = [this.treeData[0].orgId];
         // this.globalOrgId = this.treeData[0].orgId;
@@ -371,15 +331,6 @@ export default {
         });
       }
     },
-
-    // 设置角色
-    info(user) {
-      this.userId = user.userId;
-      this.showUserInfo = true;
-      this.$nextTick(() => {
-        this.$refs.setRole.show();
-      });
-    },
     // 关闭弹窗
     closeOrgDialog(data) {
       // 需要刷新则刷新页面;
@@ -388,17 +339,16 @@ export default {
         this.searchList();
       }
       this.showcreateDepart = false;
-      // this.showUserInfo = false;
     },
     // 关闭弹窗
     closeUserDialog(data) {
-      // 需要刷新则刷新页面;
+      // 需要刷新页面;
       if (data.refreshPage) {
         this.getOrgTree();
         this.searchList();
       }
       this.showCreateUser = false;
-      this.showUserInfo = false;
+      this.editDrawer = false;
     },
     // 批量导入
     batchImport() {
@@ -439,7 +389,6 @@ export default {
         });
       });
     },
-
   },
   watch: {
     filterText(val) {
