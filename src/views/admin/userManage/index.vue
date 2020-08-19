@@ -61,7 +61,6 @@
       </div>
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
-          <el-table-column align="left" width="50" type="index" label="序号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
           <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
