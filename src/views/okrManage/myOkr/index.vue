@@ -21,15 +21,23 @@
         <myokr-page :okrCycle="okrCycle"></myokr-page>
       </el-tab-pane>
     </el-tabs>
-    <el-drawer :append-to-body="true" title="创建okr" :visible.sync="drawer" size="50%">
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      title="创建okr"
+      :visible.sync="createokrDrawer"
+      size="50%"
+      :before-close="handleClose"
+    >
       <div>
-        <writeOkr @handleClose="drawer = false"></writeOkr>
+        <writeOkr v-if="createokrDrawer"></writeOkr>
       </div>
     </el-drawer>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import department from '@/components/department';
 import departmentPage from './component/departmentPage';
 import myokrPage from './component/myokrPage';
@@ -78,12 +86,19 @@ export default {
       drawer: false,
     };
   },
+  computed: {
+    ...mapState('common', {
+      createokrDrawer: (state) => state.createokrDrawer,
+    }),
+  },
   created() {
     this.init();
+    // TODO:部门名
     this.departmentName = this.$store.state.common.userInfo.departmentName;
     this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {
+    ...mapMutations('common', ['setCreateokrDrawer']),
     init() {
       this.server.getOkrCycleList().then((res) => {
         if (res.data.length > 0) {
@@ -117,8 +132,12 @@ export default {
       console.log(data);
     },
     goWriteOkr() {
-      this.drawer = true;
+      this.setCreateokrDrawer(true);
+      // this.drawer = true;
       // this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
+    },
+    handleClose() {
+      this.setCreateokrDrawer(false);
     },
   },
 };

@@ -8,4 +8,5 @@ export default {
   talentMenuList: [], // 租户管理菜单
   systemMenuList: [], // 系统管理菜单
   myokrDrawer: false,
+  createokrDrawer: false,
 };

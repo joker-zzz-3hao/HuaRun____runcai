@@ -36,8 +36,12 @@ export default {
             item.children.forEach((tItem) => {
               self.classTagList = [];
               self.classTagList.push(tItem.functionCode);
-              self.eventsList = [];
-              self.eventsList = tItem.resourceUrl;
+              self.eventsList = ['moveMenu', 'leaveMenu'];
+              if (tItem.children && tItem.children.length > 0) {
+                self.eventsList.unshift('isExtend');
+              } else {
+                self.eventsList.unshift('rmSubMenu');
+              }
               self.talentList.push({
                 mainMenuTitle: tItem.functionName,
                 classTag: self.classTagList,
@@ -52,8 +56,12 @@ export default {
             item.children.forEach((tItem) => {
               self.classTagList = [];
               self.classTagList.push(tItem.functionCode);
-              self.eventsList = [];
-              self.eventsList = tItem.resourceUrl;
+              self.eventsList = ['moveMenu', 'leaveMenu'];
+              if (tItem.children && tItem.children.length > 0) {
+                self.eventsList.unshift('isExtend');
+              } else {
+                self.eventsList.unshift('rmSubMenu');
+              }
               self.systemList.push({
                 mainMenuTitle: tItem.functionName,
                 classTag: self.classTagList,
@@ -82,6 +90,13 @@ export default {
             });
             break;
         }
+      });
+      self.crList.push({
+        mainMenuTitle: '租户管理',
+        classTag: ['tenant-menu'],
+        toName: 'organizeManage',
+        events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
+        subMenuList: [],
       });
       self.setCrMenu(self.crList);
     },

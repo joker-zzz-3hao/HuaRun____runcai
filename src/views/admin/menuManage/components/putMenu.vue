@@ -108,11 +108,11 @@ export default {
       data: [],
       rules: {
         functionCode: [{ required: true, message: '请输入菜单编码', trigger: 'change' },
-          {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
-            trigger: 'blur',
-          },
+          // {
+          //   pattern: /^[0-9a-zA-Z]+$/,
+          //   message: '请输入数字或者英文字母',
+          //   trigger: 'blur',
+          // },
         ],
         functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' },
           {
@@ -128,11 +128,12 @@ export default {
           },
         ],
         permissionCode: [{ required: true, message: '请输入路由地址', trigger: 'blur' },
-          {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
-            trigger: 'blur',
-          }],
+          // {
+          //   pattern: /^[0-9a-zA-Z]+$/,
+          //   message: '请输入数字或者英文字母',
+          //   trigger: 'blur',
+          // }
+        ],
         resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
         functionEvent: [
           { required: true, message: '请输入事件名', trigger: 'blur' },

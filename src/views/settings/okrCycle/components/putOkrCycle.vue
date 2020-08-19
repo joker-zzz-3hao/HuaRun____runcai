@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-drawer
     @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
@@ -7,6 +7,7 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
+    :modal="false"
     center
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
@@ -37,11 +38,11 @@
         </el-radio-group>
       </el-form-item>-->
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <div>
       <el-button type="primary" @click="submitForm()">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>

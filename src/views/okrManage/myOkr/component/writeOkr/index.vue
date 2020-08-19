@@ -53,9 +53,9 @@ export default {
       timelist: [],
       okrmain: {},
       searchForm: {
-        periodId: 'periodId',
-        userId: 'user066',
-        tenantId: '88888888',
+        periodId: '',
+        userId: '',
+        tenantId: '',
         timecycle: '',
         okrCycle: '',
         okrType: 2,
@@ -89,18 +89,19 @@ export default {
       },
     };
   },
-  created() {
-    this.init();
-
+  mounted() {
     if (this.writeInfo.canWrite == 'draft') {
       this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
       this.searchForm.draftParams = this.writeInfo.draftParams || '';
       this.searchForm.draftId = this.writeInfo.draftId || '';
+      console.log('writeInfo', this.writeInfo);
     } else if (this.writeInfo.canWrite == 'cannot') {
       this.canWrite = false;
       this.okrId = this.writeInfo.okrId || '';
     }
-    console.log('can', this.canWrite);
+  },
+  created() {
+    this.init();
   },
   methods: {
     init() {

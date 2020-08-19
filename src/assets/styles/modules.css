@@ -5,7 +5,9 @@
 }
 
 /* 按钮 */
-.tl-btn {
+.tl-btn.el-button--primary,
+.tl-btn.is-plain,
+.tl-btn.el-button--text {
   position: relative;
   padding: 0 14px;
   width: auto;
@@ -83,6 +85,12 @@
   color: #56c5ff;
 }
 
+.tl-btn.el-button--text,
+.tl-btn.el-button--text:focus,
+.tl-btn .el-button--text:hover {
+  color: #685df1;
+}
+
 /* input */
 .tl-input-line {
   z-index: 3;
@@ -147,6 +155,53 @@
 
 .tl-radio .el-radio__input.is-checked + .el-radio__label {
   color: #4d5155;
+}
+
+/* switch */
+.tl-switch .el-switch__core {
+  background: #879099;
+  border: 1px solid #879099;
+}
+
+.tl-switch.is-checked .el-switch__core {
+  background: #685df1;
+  border: 1px solid #685df1;
+}
+
+.tl-switch .el-switch__label {
+  font-weight: normal;
+  color: #4d5155;
+}
+
+/* table */
+.tl-table th {
+  font-weight: normal;
+  color: #879099;
+}
+
+.tl-table .el-table--border::after,
+.tl-table .el-table--group::after,
+.tl-table::before {
+  background: #e5e9ee;
+}
+
+.tl-table td {
+  border-bottom: 1px solid #e5e9ee;
+  color: #4d5155;
+}
+
+.tl-table th.is-leaf {
+  border-bottom: 1px solid #e5e9ee;
+}
+
+.tl-table td,.tl-table th {
+  padding: 0;
+  height: 46px;
+}
+
+.tl-table .tl-btn.el-button--text {
+  padding: 0;
+  min-width: unset;
 }
 
 /* ==========================================================常用基础组件=================================================================== */

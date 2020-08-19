@@ -37,31 +37,16 @@
           <div>+</div>
         </div>
       </el-form-item>
-      <el-cascader-panel
-        @change="handleCheckChange"
-        ref="treeMenu"
-        v-model="selectArr"
-        :options="data"
-        :props="{ multiple: true }"
-        node-key="id"
-      ></el-cascader-panel>
-      <!-- <el-form-item label="使用时间" prop="date">
-          <el-date-picker
-            v-model="form.date"
-            @change="changDate"
-            :disabled="infoBool"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-      </el-form-item>-->
-      <!-- <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status">
-            <el-radio label="O">启用</el-radio>
-            <el-radio label="S">停用</el-radio>
-          </el-radio-group>
-      </el-form-item>-->
+      <div class="postMenu">
+        <el-cascader-panel
+          @change="handleCheckChange"
+          ref="treeMenu"
+          v-model="selectArr"
+          :options="data"
+          :props="{ multiple: true }"
+          node-key="id"
+        ></el-cascader-panel>
+      </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="validateForm('form')">确定</el-button>
@@ -173,7 +158,7 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
-          value: item.functionId,
+          value: item.functionCode,
           checkStrictly: true,
           disabled: this.infoBool,
           emitPath: false,
@@ -190,8 +175,18 @@ export default {
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantID = res.data.tenantID;
           this.form.status = res.data.status;
-          const keys = res.data.menuTree.map((item) => item.functionId);
-          this.selectArr = keys;
+          // eslint-disable-next-line array-callback-return
+          const keys = res.data.menuItems.map((item) => {
+            if (item) {
+              return item.split(':');
+            }
+          });
+          // eslint-disable-next-line array-callback-return
+          this.selectArr = keys.filter((item) => {
+            if (item) {
+              return item;
+            }
+          });
           this.$nextTick(() => {
             this.handleCheckChange();
           });
@@ -217,9 +212,18 @@ export default {
     // 获取选中tree key值 展示选中
     handleCheckChange() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
-      this.menuTreeList = keys.map((item) => item.data.label);
-      console.log(this.menuTreeList);
-      console.log(this.selectArr);
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item.data.label;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
       this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据
