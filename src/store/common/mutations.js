@@ -31,4 +31,8 @@ export default {
   setUserInfo: (state, userInfo = {}) => {
     state.userInfo = userInfo;
   },
+  // 我的okr抽屉
+  setMyokrDrawer: (state, myokrDrawer = {}) => {
+    state.myokrDrawer = myokrDrawer;
+  },
 };

@@ -1,12 +1,5 @@
 <template>
-  <el-dialog
-    :title="dialogTitle"
-    :visible.sync="dialogDetailVisible"
-    width="50%"
-    :modal-append-to-body="false"
-    :before-close="close"
-    @closed="closed"
-  >
+  <div>
     <el-form :model="formData" ref="dataForm">
       <dl class="okuang">
         <dt>目标名称</dt>
@@ -62,10 +55,11 @@
     <span slot="footer" class="dialog-footer">
       <el-button @click="summitUpdate">更新</el-button>
     </span>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import CONST from '../const';
 
 export default {
@@ -99,6 +93,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('common', ['setMyokrDrawer']),
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
@@ -135,15 +130,12 @@ export default {
     },
     // 控制弹窗
     showOkrDialog() {
-      this.dialogDetailVisible = true;
       this.getokrDetail();
     },
     close() {
-      this.dialogDetailVisible = false;
+      this.setMyokrDrawer(false);
     },
-    closed() {
-      this.$emit('update:dialogExist', false);
-    },
+
   },
   watch: {
     // okrid: {

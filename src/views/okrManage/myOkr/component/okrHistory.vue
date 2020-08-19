@@ -1,12 +1,5 @@
 <template>
-  <el-dialog
-    :title="dialogTitle"
-    :visible.sync="dialogDetailVisible"
-    width="50%"
-    :modal-append-to-body="false"
-    :before-close="close"
-    @closed="closed"
-  >
+  <div>
     <el-table :data="historyOKRList">
       <el-table-column prop="okrDetailVersion"></el-table-column>
       <el-table-column width="250" prop="typeName"></el-table-column>
@@ -23,10 +16,12 @@
     <span slot="footer" class="dialog-footer">
       <el-button @click="summitUpdate">更新</el-button>
     </span>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'okrHistory',
   props: {
@@ -46,7 +41,6 @@ export default {
     return {
       historyOKRList: [], // 历史版本okr
       dialogTitle: '历史版本', // 弹框标题
-      dialogDetailVisible: false,
       oldOKRList: [],
     };
   },
@@ -54,6 +48,7 @@ export default {
     // this.searchOkr();
   },
   methods: {
+    ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr() {
       this.searchForm = { okrId: this.okrId };
       this.server.selectOkrHistoryVersion({ okrDetailId: this.okrDetailId }).then((res) => {
@@ -150,16 +145,11 @@ export default {
     },
     // 打开弹窗
     showOkrDialog() {
-      this.dialogDetailVisible = true;
       this.searchOkr();
     },
-    // 关闭弹窗
+    // 关闭抽屉
     close() {
-      this.dialogDetailVisible = false;
-    },
-    // 关闭弹窗
-    closed() {
-      this.$emit('update:dialogExist', false);
+      this.setMyokrDrawer(false);
     },
     summitUpdate() {
       this.$message('提交成功~');
