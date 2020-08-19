@@ -36,9 +36,7 @@
             maxlength="64"
             v-model="form.applyUser"
             placeholder="请输入申请人"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.applyUser}}</span>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobilePhone">
           <el-input
@@ -46,9 +44,7 @@
             v-model="form.mobilePhone"
             placeholder="请输入联系电话"
             maxlength="11"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.mobilePhone}}</span>
         </el-form-item>
         <el-form-item label="开放菜单功能">
           <div></div>

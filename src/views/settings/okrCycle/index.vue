@@ -13,9 +13,10 @@
         <template slot-scope="scope">
           <el-switch
             v-model.trim="scope.row.periodType"
-            active-text="启用"
+            :active-text="scope.row.periodType=='1'?'启用':'禁用'"
             active-value="1"
             inactive-value="0"
+            @change="addOrUpdate(scope.row)"
           ></el-switch>
         </template>
       </el-table-column>
@@ -69,6 +70,20 @@ export default {
     this.getTableList();
   },
   methods: {
+    addOrUpdate(row) {
+      this.server.addOrUpdate({
+        periodId: row.periodId,
+        periodType: row.periodType,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$emit('getTableList');
+          this.$message.success(res.msg);
+          this.closed();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     getTableList() {
       this.server.okrQuery().then((res) => {
         this.tableData = res.data;
@@ -81,7 +96,7 @@ export default {
     updateOkr(row) {
       this.title = '编辑周期';
       this.existPut = true;
-      this.updateData = row;
+      this.updateData = JSON.parse(JSON.stringify(row));
     },
   },
 
