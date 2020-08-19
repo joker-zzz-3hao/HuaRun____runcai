@@ -57,7 +57,14 @@
         </template>
       </tl-okr-collapse>
     </div>
-    <el-drawer :append-to-body="true" title="编辑" :visible.sync="myokrDrawer" size="50%">
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      title="编辑"
+      :visible.sync="myokrDrawer"
+      size="50%"
+      :before-close="handleClose"
+    >
       <div>
         <tl-writeokr @handleClose="handleClose" v-if="writeInfo.canWrite" :writeInfo="writeInfo"></tl-writeokr>
         <component
@@ -111,7 +118,7 @@ export default {
         },
       }],
       searchForm: {
-        status: '6',
+        status: '1',
       },
       dialogExist: false,
       currentView: '', // 弹框组件
@@ -137,7 +144,7 @@ export default {
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr(status) {
-      this.searchForm.status = status || '6';
+      this.searchForm.status = status || this.searchForm.status;
       this.server.getmyOkr({
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,

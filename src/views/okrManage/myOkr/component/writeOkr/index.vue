@@ -89,9 +89,8 @@ export default {
       },
     };
   },
-  created() {
-    this.init();
-
+  mounted() {
+    console.log('can', this.writeInfo);
     if (this.writeInfo.canWrite == 'draft') {
       this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
       this.searchForm.draftParams = this.writeInfo.draftParams || '';
@@ -100,7 +99,9 @@ export default {
       this.canWrite = false;
       this.okrId = this.writeInfo.okrId || '';
     }
-    console.log('can', this.canWrite);
+  },
+  created() {
+    this.init();
   },
   methods: {
     init() {

@@ -97,12 +97,7 @@
       <el-button v-if="isnew" @click="saveDraft()">保存为草稿</el-button>
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="saveDraft()">删除草稿</el-button>
     </div>
-    <el-drawer
-      title="我是里面的"
-      :append-to-body="true"
-      :before-close="handleClose"
-      :visible.sync="innerDrawer"
-    >
+    <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
       <undertake-table
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -268,7 +263,7 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || 'periodId' }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId }).then((res) => {
         if (res.code == 200) {
           console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
@@ -376,6 +371,7 @@ export default {
           this.server.addokr(this.formData).then((res) => {
             if (res.code == 200) {
               this.$message('提交成功~');
+              this.$refs.dataForm.resetFields();
               this.setMyokrDrawer(false);
               // this.$emit('handleClose');
               // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
@@ -395,6 +391,7 @@ export default {
       this.server.saveOkrDraft(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功~');
+          this.$refs.dataForm.resetFields();
           // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
           this.setMyokrDrawer(false);
         }
@@ -412,9 +409,11 @@ export default {
   },
   watch: {
     'searchForm.okrCycle': {
-      handler() {
-        this.searchOkr();
-        this.getCultureList();
+      handler(newVal) {
+        if (newVal.periodId) {
+          this.searchOkr();
+          this.getCultureList();
+        }
       },
       deep: true,
       immediate: true,
