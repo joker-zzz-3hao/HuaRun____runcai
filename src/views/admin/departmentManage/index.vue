@@ -88,7 +88,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-show="scope.row.userType!='1'"
+                  v-show="scope.row.userType=='2'"
                   @click="createOrEditUser(scope.row)"
                 >编辑</el-button>
                 <el-button type="text" @click="info(scope.row)">详情</el-button>
@@ -114,7 +114,7 @@
       :treeData="treeData"
       :server="server"
       :optionType="optionType"
-      :userAccount="userAccount"
+      :userId="userId"
       :tenantName="tenantName"
       @createDepart="createDepart"
       @closeUserDialog="closeUserDialog"
@@ -127,7 +127,7 @@
       :treeData="treeData"
       :server="server"
       :CONST="CONST"
-      :userAccount="userAccount"
+      :userId="userId"
       @closeUserDialog="closeUserDialog"
     ></user-info>
   </div>
@@ -154,7 +154,7 @@ export default {
       server,
       CONST,
       globalOrgId: '',
-      userAccount: '',
+      userId: '',
       loading: false,
       defaultExpandNode: [],
       filterText: '',
@@ -319,9 +319,9 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
-      if (user.userAccount) {
+      if (user.userId) {
         this.optionType = 'edit';
-        this.userAccount = user.userAccount;
+        this.userId = user.userId;
       } else {
         this.optionType = 'create';
       }
@@ -333,7 +333,7 @@ export default {
 
     // 设置角色
     info(user) {
-      this.userAccount = user.userAccount;
+      this.userId = user.userId;
       this.showUserInfo = true;
       this.$nextTick(() => {
         this.$refs.setRole.show();
@@ -374,7 +374,7 @@ export default {
         userMail: user.userMail, // 邮箱
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
         orgId: user.orgId, // 用户所在部门ID
-        userAccount: user.userAccount,
+        userId: user.userId,
         userType: 2,
       };
       this.server.updateOrgUser(params).then((res) => {

@@ -64,7 +64,7 @@ export default {
         return {};
       },
     },
-    userAccount: {
+    userId: {
       type: String,
       default() {
         return '';
@@ -92,7 +92,7 @@ export default {
     };
   },
   created() {
-    this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
+    this.server.getUserInfo({ userId: this.userId }).then((res) => {
       if (res.code == 200) {
         this.userInfo = res.data;
         this.getCombinedOrgName(res.data.orgId);

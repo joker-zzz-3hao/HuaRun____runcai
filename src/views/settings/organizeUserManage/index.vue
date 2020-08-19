@@ -74,7 +74,7 @@
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="部门负责人">
+            <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div>
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
@@ -110,7 +110,7 @@
             <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
-                <el-button v-show="scope.row.userType!='1'" @click="createOrEditUser(scope.row)">编辑</el-button>
+                <el-button v-show="scope.row.userType=='2'" @click="createOrEditUser(scope.row)">编辑</el-button>
                 <el-button @click="info(scope.row)">详情</el-button>
               </template>
             </el-table-column>
@@ -134,7 +134,7 @@
       :treeData="treeData"
       :server="server"
       :optionType="optionType"
-      :userAccount="userAccount"
+      :userId="userId"
       :tenantName="tenantName"
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
@@ -151,7 +151,7 @@
         :treeData="treeData"
         :server="server"
         :optionType="optionType"
-        :userAccount="userAccount"
+        :userId="userId"
         :tenantName="tenantName"
         :globalOrgId="globalOrgId"
         @closeUserDialog="closeUserDialog"
@@ -165,7 +165,7 @@
       :treeData="treeData"
       :server="server"
       :CONST="CONST"
-      :userAccount="userAccount"
+      :userId="userId"
       @closeUserDialog="closeUserDialog"
     ></user-info>
   </div>
@@ -194,7 +194,7 @@ export default {
       server,
       CONST,
       globalOrgId: '',
-      userAccount: '',
+      userId: '',
       loading: false,
       editDrawer: false,
       defaultExpandNode: [],
@@ -350,9 +350,9 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
-      if (user.userAccount) {
+      if (user.userId) {
         this.optionType = 'edit';
-        this.userAccount = user.userAccount;
+        this.userId = user.userId;
         this.editDrawer = true;
       } else {
         this.optionType = 'create';
@@ -365,7 +365,7 @@ export default {
 
     // 设置角色
     info(user) {
-      this.userAccount = user.userAccount;
+      this.userId = user.userId;
       this.showUserInfo = true;
       this.$nextTick(() => {
         this.$refs.setRole.show();
@@ -407,7 +407,7 @@ export default {
         userMail: user.userMail, // 邮箱
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
         orgId: user.orgId, // 用户所在部门ID
-        userAccount: user.userAccount,
+        userId: user.userId,
         userType: 2,
       };
       this.server.updateOrgUser(params).then((res) => {

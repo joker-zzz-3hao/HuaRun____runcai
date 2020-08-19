@@ -139,7 +139,7 @@ export default {
         return 'create';
       },
     },
-    userAccount: {
+    userId: {
       type: String,
       default() {
         return '';
@@ -191,7 +191,7 @@ export default {
     init() {
       if (this.optionType == 'edit') {
         this.userTitle = '编辑用户';
-        this.server.getUserInfo({ userAccount: this.userAccount }).then((res) => {
+        this.server.getUserInfo({ userId: this.userId }).then((res) => {
           if (res.code == 200) {
             this.formData.userName = res.data.userName;
             this.formData.userAccount = res.data.userAccount;
