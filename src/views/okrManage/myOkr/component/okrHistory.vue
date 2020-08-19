@@ -45,7 +45,7 @@ export default {
     };
   },
   created() {
-    // this.searchOkr();
+    this.searchOkr();
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),

@@ -15,7 +15,12 @@
           </el-form-item>
           <div>
             <el-form-item>
-              <el-input maxlength="64" v-model="keyWord" placeholder="输入菜单名称">
+              <el-input
+                maxlength="64"
+                @keyup.enter.native="getMenuList"
+                v-model="keyWord"
+                placeholder="输入菜单名称"
+              >
                 <i class="el-icon-search" slot="prefix" @click="getMenuList()"></i>
               </el-input>
             </el-form-item>
@@ -64,7 +69,7 @@
                 :active-text="scope.row.status=='O'?'启用':'禁用'"
                 active-value="O"
                 inactive-value="S"
-                @change="addOrUpdate"
+                @change="addOrUpdate(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>

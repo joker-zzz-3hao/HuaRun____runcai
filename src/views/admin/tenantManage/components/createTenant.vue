@@ -16,9 +16,7 @@
             v-model="form.tenantName"
             maxlength="64"
             placeholder="请输入租户名称"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.tenantName}}</span>
         </el-form-item>
         <el-form-item label="企业ID" prop="tenantID">
           <el-input
@@ -26,9 +24,7 @@
             maxlength="64"
             v-model="form.tenantID"
             placeholder="请输入企业ID"
-            v-show="!infoBool"
           ></el-input>
-          <span v-if="infoBool">{{form.tenantID}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
           <el-input
@@ -47,17 +43,21 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="开放菜单功能">
-          <div></div>
-          <div>+</div>
+          <div class="menuTreeList">
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div @click="showMenu=!showMenu">+</div>
+          </div>
         </el-form-item>
-        <el-cascader-panel
-          @change="handleCheckChange"
-          ref="treeMenu"
-          v-model="selectArr"
-          :options="data"
-          :props="{ multiple: true }"
-          node-key="id"
-        ></el-cascader-panel>
+        <div v-show="showMenu">
+          <el-cascader-panel
+            @change="handleCheckChange"
+            ref="treeMenu"
+            v-model="selectArr"
+            :options="data"
+            :props="{ multiple: true }"
+            node-key="id"
+          ></el-cascader-panel>
+        </div>
         <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       server,
+      showMenu: false,
       form: {
         tenantName: '',
         applyUser: '',

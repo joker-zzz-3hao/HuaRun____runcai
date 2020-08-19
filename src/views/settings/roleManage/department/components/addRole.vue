@@ -17,16 +17,21 @@
         <el-input style="width:320px" maxlength="64" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
-        <el-tree
-          :data="data"
-          show-checkbox
-          ref="treeMenu"
-          node-key="id"
-          @check="getCheckData"
-          default-expand-all
-          @check-change="handleCheckChange"
-        ></el-tree>
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+          <div @click="showMenu=!showMenu">+</div>
+        </div>
       </el-form-item>
+      <div class="postMenu" v-show="showMenu">
+        <el-cascader-panel
+          @change="handleCheckChange"
+          ref="treeMenu"
+          v-model="selectArr"
+          :options="data"
+          :props="{ multiple: true }"
+          node-key="id"
+        ></el-cascader-panel>
+      </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm()">确定</el-button>
@@ -58,6 +63,8 @@ export default {
   data() {
     return {
       server,
+      menuTreeList: [],
+      showMenu: false,
       form: {
         roleCode: '',
         roleName: '',
@@ -89,19 +96,24 @@ export default {
 
   mounted() {
     this.dialogTableVisible = true;
-    if (this.roleInfo) {
-      this.getRole();
-    }
     this.getqueryMenu();
   },
   methods: {
     handleCheckChange() {
-      const keys = this.$refs.treeMenu.getCheckedKeys();
-      if (this.roleInfo) {
-        this.form.functionList = keys.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
-      } else {
-        this.form.functionList = keys.map((item) => ({ functionId: item }));
-      }
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item.data.label;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+      this.form.functionList = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -116,6 +128,7 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
+          value: item.roleCode,
           children: this.getTreeList(item.children),
         }));
       }
@@ -124,24 +137,10 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
-          this.roleInfo ? this.updateRole() : this.addRole();
+          this.addRole();
         } else {
           return false;
         }
-      });
-    },
-    getRole() {
-      this.server.getRole({
-        roleId: this.roleInfo.roleId,
-        roleCode: this.roleInfo.roleCode,
-      }).then((res) => {
-        this.form = {
-          roleCode: res.data.roleCode,
-          roleName: res.data.roleName,
-          functionList: [],
-        };
-        const treeData = res.data.menuTree.map((item) => item.functionId);
-        this.$refs.treeMenu.setCheckedKeys(treeData);
       });
     },
     addRole() {
@@ -149,21 +148,6 @@ export default {
       const { form } = this;
       form.roleType = 'CREATION';
       this.server.addRole(form).then((res) => {
-        if (res.code == 200) {
-          this.$emit('getSearchList');
-          this.$message.success(res.msg);
-          this.closed();
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
-    },
-    updateRole() {
-      this.handleCheckChange();
-      const { form } = this;
-      form.roleType = 'CREATION';
-      form.roleId = this.roleInfo.roleId;
-      this.server.updateRole(form).then((res) => {
         if (res.code == 200) {
           this.$emit('getSearchList');
           this.$message.success(res.msg);
@@ -185,9 +169,6 @@ export default {
     closeshowMember() {
       this.dialogVisible = false;
     },
-    getCheckData() {
-
-    },
   },
 };
 </script>
@@ -205,9 +186,15 @@ export default {
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-</style>
-<style>
-.selectMember .el-select-dropdown {
-  display: none !important;
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
 }
 </style>

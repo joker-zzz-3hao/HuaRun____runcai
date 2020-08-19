@@ -7,6 +7,7 @@
     title="详情"
     direction="rtl"
     size="35%"
+    :modal="false"
     :visible.sync="dialogTableVisible"
     center
   >
@@ -15,8 +16,8 @@
         <el-form-item label="租户名称" prop="tenantName">
           <span>{{form.tenantName}}</span>
         </el-form-item>
-        <el-form-item label="企业ID" prop="tenantID">
-          <span>{{form.tenantID}}</span>
+        <el-form-item label="企业ID" prop="tenantId">
+          <span>{{form.tenantId}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
           <span>{{form.applyUser}}</span>
@@ -142,7 +143,7 @@ export default {
           this.form.tenantName = res.data.tenantName;
           this.form.applyUser = res.data.applyUser;
           this.form.mobilePhone = res.data.mobilePhone;
-          this.form.tenantID = res.data.tenantID;
+          this.form.tenantID = res.data.tenantId;
           this.form.status = res.data.status;
           // eslint-disable-next-line array-callback-return
           const keys = res.data.menuItems.map((item) => {
@@ -178,5 +179,16 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
+}
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
 }
 </style>

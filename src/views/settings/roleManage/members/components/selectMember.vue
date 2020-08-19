@@ -11,7 +11,7 @@
       @keyup.native="fuzzyQueryUser()"
       v-model="keyWord"
     >
-      <el-button slot="prepend" icon="el-icon-search"></el-button>
+      <i class="el-icon-search" slot="prefix"></i>
     </el-input>
     <div class="rouleflex">
       <div class="roulewidth">

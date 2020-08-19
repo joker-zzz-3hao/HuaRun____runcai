@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <crcloud-table
       :total="formData.total"
       :pageSize.sync="formData.pageSize"

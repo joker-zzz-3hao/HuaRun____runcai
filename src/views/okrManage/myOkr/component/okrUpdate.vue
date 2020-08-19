@@ -92,6 +92,10 @@ export default {
       required: true,
     },
   },
+  created() {
+    this.getokrDetail();
+  },
+
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     getokrDetail() {
