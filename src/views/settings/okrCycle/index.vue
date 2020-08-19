@@ -27,7 +27,7 @@
             <template slot-scope="scope">
               <el-switch
                 v-model.trim="scope.row.periodType"
-                active-text="启用"
+                :active-text="scope.row.periodType==1?'启用':'禁用'"
                 active-value="1"
                 inactive-value="0"
                 class="tl-switch"
