@@ -1,41 +1,38 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 16:48:29
- * @Description: file content
--->
 <template>
   <div class="home">
-    <el-form ref="membersForm" :inline="true">
-      <div @click="$router.back()">返回></div>
-      <el-form-item class="pageright">
-        <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
-        <el-button type="primary" @click="handleDelete()">移除</el-button>
-      </el-form-item>
-    </el-form>
-    <div>
-      <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column fixed prop="userAccount" label="用户帐号"></el-table-column>
-        <el-table-column prop="userName" label="用户姓名"></el-table-column>
-        <el-table-column prop="userMobile" label="手机号"></el-table-column>
-        <el-table-column prop="orgName" label="所在团队"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="160">
-          <template slot-scope="scope">
-            <el-button type="text" @click="handleDeleteOne(scope.row.id)" size="small">移除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="pageright">
-      <tl-crcloud-table
-        layout="total,  prev, pager,next, sizes"
-        :total="totalpage"
-        :currentPage.sync="currentPage"
-        :pageSize.sync="pageSize"
-        @searchList="listRoleUser"
-      ></tl-crcloud-table>
-    </div>
+    <tl-crcloud-table
+      layout="total,  prev, pager,next, sizes"
+      :total="totalpage"
+      :currentPage.sync="currentPage"
+      :pageSize.sync="pageSize"
+      @searchList="listRoleUser"
+    >
+      <div slot="searchBar" @click="$router.back()">返回></div>
+      <div slot="actionBar">
+        <el-form ref="membersForm" :inline="true">
+          <el-form-item class="pageright">
+            <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
+            <el-button type="primary" @click="handleDelete()">移除</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="tableContainer">
+        <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column fixed prop="userAccount" label="用户帐号"></el-table-column>
+          <el-table-column prop="userName" label="用户姓名"></el-table-column>
+          <el-table-column prop="userMobile" label="手机号"></el-table-column>
+          <el-table-column prop="orgName" label="所在团队"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column fixed="right" label="操作" width="160">
+            <template slot-scope="scope">
+              <el-button type="text" @click="handleDeleteOne(scope.row.id)" size="small">移除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </tl-crcloud-table>
+
     <tl-add-member
       v-if="exist"
       :exist.sync="exist"
