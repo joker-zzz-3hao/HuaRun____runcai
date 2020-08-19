@@ -63,9 +63,18 @@
         </el-form-item>
         <el-form-item
           label="所在部门"
-          prop="orgId"
+          prop="orgIdList"
           :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-        ></el-form-item>
+          v-if="formData.orgIdList.length > 0"
+        >
+          <el-cascader
+            v-model="formData.orgIdList"
+            :options="treeData"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
+            @change="selectIdChange"
+          ></el-cascader>
+        </el-form-item>
         <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="saveUser">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
@@ -125,10 +134,6 @@ export default {
     return {
       visible: false,
       loading: false,
-      userTitle: '创建用户',
-      pwdLabel: '用户密码',
-      initDepartment: {},
-      isEditPwd: false,
       formData: {
         userName: '', // 用户名称
         loginPwd: '', // 密码
@@ -136,11 +141,12 @@ export default {
         userMobile: '', // 手机
         userMail: '', // 邮箱
         userStatus: '0', // 状态 0有效50：禁用
-        orgId: this.treeData[0].orgId, // 用户所在部门ID
+        orgId: '', // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
         userType: 2,
         newPwd: '',
+        orgIdList: [],
       },
 
     };
@@ -152,9 +158,9 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.setInitDepartment(this.globalOrgId);
+      this.setOrgIdList(this.globalOrgId);
     },
-    setInitDepartment(orgId) {
+    setOrgIdList(orgId) {
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
       const result = [];
@@ -167,17 +173,22 @@ export default {
         result.push({
           orgId: next.orgId,
           orgName: next.orgName,
+          orgParentId: next.orgParentId,
         });
         if (Array.isArray(next.sonTree)) {
           queue.push(...next.sonTree);
         }
       }
-      // 遍历一维数组，设置initDepartment值
+      this.getOrgIdList(result, orgId);
+      this.formData.orgIdList.reverse();
+    },
+    getOrgIdList(result, orgId) {
+      let orgParentId = '';
       for (const org of result) {
         if (org.orgId == orgId) {
-          this.initDepartment = {
-            orgId, orgName: org.orgName,
-          };
+          orgParentId = org.orgParentId;
+          this.formData.orgIdList.push(org.orgId);
+          this.getOrgIdList(result, orgParentId);
         }
       }
     },
@@ -193,6 +204,8 @@ export default {
     },
     saveUser() {
       delete this.formData.confirmPwd;
+      this.formData.orgId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
+      this.formData.orgFullId = this.formData.orgIdList.join(':');
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -209,16 +222,10 @@ export default {
     cancel() {
       this.close();
     },
-    editPwd() {
-      this.pwdLabel = '原始密码';
-      this.formData.loginPwd = '';
-      this.isEditPwd = true;
+    selectIdChange(data) {
+      this.formData.orgIdList = data;
     },
-    cancelEditPwd() {
-      this.pwdLabel = '用户密码';
-      this.formData.loginPwd = '******';
-      this.isEditPwd = false;
-    },
+
   },
   watch: {},
   updated() {},

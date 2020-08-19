@@ -130,6 +130,7 @@ export default {
         approvalId: this.data.approvalId,
         approvalStatus: this.ruleForm.approvalStatus,
         refuseInfo: this.ruleForm.refuseInfo,
+        approvalType: '0',
       }).then((res) => {
         if (res.code == '200') {
           this.$message.success(res.msg);

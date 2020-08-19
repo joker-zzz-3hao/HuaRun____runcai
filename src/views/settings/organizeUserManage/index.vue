@@ -107,6 +107,7 @@
                     inactive-value="50"
                     v-model="scope.row.userStatus"
                     active-color="#13ce66"
+                    :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
                   ></el-switch>
                 </div>
               </template>
@@ -121,9 +122,10 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-show="scope.row.userType=='2'"
+                  v-if="scope.row.userType=='2'"
                   @click="createOrEditUser(scope.row)"
                 >编辑</el-button>
+                <div v-else>--</div>
               </template>
             </el-table-column>
           </el-table>
@@ -230,10 +232,10 @@ export default {
     getOrgTree() {
       this.server.getOrg().then((res) => {
         if (res.code == 200) {
-          this.treeData = [{ ...res.data[0] }];
+          this.treeData = res.data;
         }
         this.defaultExpandNode = [this.treeData[0].orgId];
-        // this.globalOrgId = this.treeData[0].orgId;
+        this.globalOrgId = this.treeData[0].orgId;
         this.tenantName = this.treeData[0].orgName;
         this.searchList();
       });
@@ -247,7 +249,7 @@ export default {
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        orgId: this.globalOrgId == this.treeData[0].orgId ? '' : this.globalOrgId,
+        orgId: this.globalOrgId,
         ...this.searchData,
       };
       this.server.getUserListByOrgId(params).then((res) => {
@@ -344,7 +346,6 @@ export default {
     closeUserDialog(data) {
       // 需要刷新页面;
       if (data.refreshPage) {
-        this.getOrgTree();
         this.searchList();
       }
       this.showCreateUser = false;
@@ -379,7 +380,7 @@ export default {
     // 设置负责人
     setLeader(user) {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
-      const title = user.leader ? '是否取消部门负责人？' : '是否设置部门负责人?';
+      const title = user.leader ? `是否设置${user.userName}为部门负责人？` : `是否取消部门负责人${user.userName}?`;
       this.$confirm(title).then(() => {
         this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {

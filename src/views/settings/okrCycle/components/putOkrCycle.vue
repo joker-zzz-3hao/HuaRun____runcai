@@ -31,12 +31,6 @@
           <el-radio label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <!-- <el-form-item label="OKR周期状态" prop="periodType">
-        <el-radio-group v-model="form.periodType">
-          <el-radio label="1">开启</el-radio>
-          <el-radio label="0">关闭</el-radio>
-        </el-radio-group>
-      </el-form-item>-->
     </el-form>
     <div>
       <el-button type="primary" @click="submitForm()">确定</el-button>
