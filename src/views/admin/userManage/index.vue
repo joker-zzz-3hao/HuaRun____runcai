@@ -305,7 +305,6 @@ export default {
   watch: {
     'searchForm.tenantId': {
       handler(newValue) {
-        console.log(newValue);
         this.tenantList.forEach((element) => {
           if (element.tenantId == newValue) {
             this.tenantName = element.tenantName;

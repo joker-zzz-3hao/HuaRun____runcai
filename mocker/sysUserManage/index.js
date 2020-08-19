@@ -4,7 +4,7 @@ const mockUtil = require('../mockUtil');
 
 const mockData = {
   // 查询系统用户
-  'POST /system-service/sys/user/getAdminUser': (req, res) => {
+  'POST /gateway/system-service/sys/user/getAdminUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|1': [{
         userAccount: 'admin',
@@ -13,7 +13,7 @@ const mockData = {
     })));
   },
   // 密码修改
-  'POST /system-service/sys/user/updateResetPassword': (req, res) => {
+  'POST /gateway/system-service/sys/user/updateResetPassword': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
 };
