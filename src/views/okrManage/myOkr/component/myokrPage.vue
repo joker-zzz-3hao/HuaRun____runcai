@@ -72,14 +72,32 @@
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>
-        <component
+        <tl-okr-history
+          v-if="currentView=='tl-okr-history'"
+          ref="tl-okr-history"
+          :server="server"
+          :okrId="okrId"
+        ></tl-okr-history>
+        <tl-okr-detail
+          v-if="currentView=='tl-okr-detail'"
+          ref="tl-okr-detail"
+          :server="server"
+          :okrId="okrId"
+        ></tl-okr-detail>
+        <tl-okr-update
+          v-if="currentView=='tl-okr-update'"
+          ref="tl-okr-update"
+          :server="server"
+          :okrId="okrId"
+        ></tl-okr-update>
+        <!-- <component
           v-else
           :ref="currentView"
           v-bind:is="currentView"
           :server="server"
           :okrId="okrId"
           :okrItem="okrItem"
-        ></component>
+        ></component>-->
       </div>
     </el-drawer>
 
@@ -187,11 +205,12 @@ export default {
     // 打开抽屉
     openDialog(componentName, val) {
       console.log('点击', componentName, val);
+      this.writeInfo.canWrite = false;
       this.currentView = componentName;
       this.okrItem = val;
       // this.okrId = val.detailId;
       this.$nextTick(() => {
-        this.$refs[this.currentView].showOkrDialog();
+        // this.$refs[this.currentView].showOkrDialog();
         this.setMyokrDrawer(true);
       });
     },
