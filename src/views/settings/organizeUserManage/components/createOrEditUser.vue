@@ -94,7 +94,6 @@
             :type="'department'"
             @handleData="handleData"
           ></tl-department>
-          <el-button @click="addOrg">添加部门</el-button>
         </el-form-item>
         <!-- <el-form-item label="账号状态" prop="">
           <el-radio-group v-model="formData.userStatus">
@@ -283,9 +282,6 @@ export default {
       this.pwdLabel = '用户密码';
       this.formData.loginPwd = '******';
       this.isEditPwd = false;
-    },
-    addOrg() {
-      this.$emit('createDepart');
     },
   },
   watch: {},

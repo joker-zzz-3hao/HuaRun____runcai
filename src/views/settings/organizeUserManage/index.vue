@@ -137,7 +137,6 @@
       :userAccount="userAccount"
       :tenantName="tenantName"
       :globalOrgId="globalOrgId"
-      @createDepart="createDepart"
       @closeUserDialog="closeUserDialog"
     ></create-user>
     <el-drawer
@@ -155,7 +154,6 @@
         :userAccount="userAccount"
         :tenantName="tenantName"
         :globalOrgId="globalOrgId"
-        @createDepart="createDepart"
         @closeUserDialog="closeUserDialog"
       ></edit-user>
     </el-drawer>

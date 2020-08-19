@@ -157,7 +157,7 @@ const mockData = {
   },
   // author：林心荃
   // 用于：我的okr
-  'POST /gateway/talent-query/okr/outside/query/myOkr': (req, res) => {
+  'POST /gateway/talent-query/okr/query/myOkr': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       okrMain: {
         'okrId|1': ['111111222', '111111223'],
