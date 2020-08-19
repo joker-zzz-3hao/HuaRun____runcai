@@ -85,7 +85,7 @@ export default {
       required: true,
     },
     parentId: {
-      type: Number,
+      type: [Number, String],
       required: false,
     },
     menuName: {
@@ -93,7 +93,7 @@ export default {
       required: false,
     },
     menuData: {
-      type: Object,
+      type: [Object, String],
       required: false,
     },
   },
