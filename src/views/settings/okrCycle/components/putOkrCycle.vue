@@ -1,5 +1,5 @@
 <template>
-  <el-drawer
+  <el-dialog
     @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
@@ -30,18 +30,18 @@
           <el-radio label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="OKR周期状态" prop="periodType">
+      <!-- <el-form-item label="OKR周期状态" prop="periodType">
         <el-radio-group v-model="form.periodType">
           <el-radio label="1">开启</el-radio>
           <el-radio label="0">关闭</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
-    <div>
+    <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm()">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <script>

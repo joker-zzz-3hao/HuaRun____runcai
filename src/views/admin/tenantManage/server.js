@@ -20,4 +20,8 @@ export default class Server extends ServerBase {
   updateTenant(param) {
     return this._ajaxPost('gateway/system-service/sys/tenant/updateTenant', param);
   }
+
+  updateTenantStatus(param) {
+    return this._ajaxPost('gateway/system-service/sys/tenant/updateTenantStatus', param);
+  }
 }
