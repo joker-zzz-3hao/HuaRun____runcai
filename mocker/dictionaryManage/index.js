@@ -4,7 +4,7 @@ const mockUtil = require('../mockUtil');
 
 const mockData = {
   // 查询数据字典列表
-  'POST /system-service/sys/dictionary/queryOfPage': (req, res) => {
+  'POST /gateway/system-service/sys/dictionary/queryOfPage': (req, res) => {
     res.send(mockUtil.getSuccessDataPage(Mock.mock({
       'content|21': [{
         'code|+123': '3',
@@ -18,7 +18,7 @@ const mockData = {
   },
 
   // 查询数据字典详情
-  'POST /system-service/sys/dictionary/value/queryOfPage': (req, res) => {
+  'POST /gateway/system-service/sys/dictionary/value/queryOfPage': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|1': [{
         'code|+123': '3',
@@ -48,7 +48,7 @@ const mockData = {
     })));
   },
   // 获取用户信息用户
-  'POST /system-service/sys/user/getUser': (req, res) => {
+  'POST /gateway/system-service/sys/user/getUser': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'userId|+1': 1,
       userName: '@cname()',
@@ -64,15 +64,15 @@ const mockData = {
     })));
   },
   // 新增、编辑用户
-  'POST /system-service/sys/dictionary/addOrUpdate': (req, res) => {
+  'POST /gateway/system-service/sys/dictionary/addOrUpdate': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
   // 删除数据字典
-  'POST /system-service/sys/dictionary/deleteById': (req, res) => {
+  'POST /gateway/system-service/sys/dictionary/deleteById': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
   // 删除数据字典项
-  'POST /system-service/sys/dictionary/value/deleteById': (req, res) => {
+  'POST /gateway/system-service/sys/dictionary/value/deleteById': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({})));
   },
 };
