@@ -41,16 +41,6 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item>
-            <el-select v-model.trim="searchForm.userStatus" placeholder="租户管理员">
-              <el-option
-                v-for="item in CONST.USER_STATUS_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>-->
           <el-form-item>
             <el-input
               placeholder="输入用户姓名/账号/手机号"

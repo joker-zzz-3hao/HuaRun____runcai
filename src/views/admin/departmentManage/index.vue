@@ -2,11 +2,6 @@
   <div class="organize-management">
     <div class="org-header">
       <div>部门管理</div>
-      <span>
-        <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createOrEditUser">创建用户</el-button>
-        <el-button @click="batchImport">批量导入</el-button>
-      </span>
     </div>
     <div class="org-left-side">
       <el-input placeholder="输入用户姓名/手机号" maxlength="50" style="width:300px" v-model="filterText"></el-input>
@@ -51,10 +46,17 @@
                 maxlength="50"
               ></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button @click="searchList">查询</el-button>
-            </el-form-item>
           </el-form>
+        </div>
+        <div slot="actionBar">
+          <div>
+            <el-button @click="searchList">查询</el-button>
+          </div>
+          <div>
+            <el-button @click="createDepart">创建部门</el-button>
+            <el-button @click="createOrEditUser">创建用户</el-button>
+            <el-button @click="batchImport">批量导入</el-button>
+          </div>
         </div>
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
