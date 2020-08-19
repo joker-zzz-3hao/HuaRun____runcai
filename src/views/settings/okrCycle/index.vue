@@ -17,13 +17,12 @@
           <el-table-column fixed prop="periodName" label="OKR周期名称">
             <template slot-scope="scope">
               <em>{{scope.row.periodName}}</em>
-              <span>{{scope.row.checkStatus=='1'?'(默认周期)':''}}</span>
-              <span>默认周期</span>
+              <span v-if="scope.row.checkStatus=='1'">默认周期</span>
             </template>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间"></el-table-column>
-          <el-table-column prop="endTime" label="结束时间"></el-table-column>
-          <el-table-column prop="checkStatus" label="状态">
+          <el-table-column prop="startTime" label="开始时间" width="180"></el-table-column>
+          <el-table-column prop="endTime" label="结束时间" width="180"></el-table-column>
+          <el-table-column prop="checkStatus" label="状态" width="120">
             <template slot-scope="scope">
               <el-switch
                 v-model.trim="scope.row.periodType"
@@ -34,7 +33,7 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="160">
+          <el-table-column fixed="right" label="操作" width="60">
             <template slot-scope="scope">
               <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>
             </template>
