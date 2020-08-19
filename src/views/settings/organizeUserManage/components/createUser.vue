@@ -24,42 +24,23 @@
         <el-form-item
           label="用户账号"
           prop="userAccount"
-          :rules="[{required:true,validator:optionType == 'edit'?'':validateAccount,trigger:'blur'}]"
+          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
         >
-          <el-input
-            v-model.trim="formData.userAccount"
-            :disabled="optionType == 'edit'"
-            maxlength="50"
-          ></el-input>
+          <el-input v-model.trim="formData.userAccount" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item
-          :label="pwdLabel"
+          label="用户密码"
           prop="loginPwd"
           :rules="[
-          {required:isEditPwd||optionType == 'create',validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
+          {required:true,validator:validatePwd,trigger:'blur'}]"
         >
-          <el-input
-            :disabled="!isEditPwd && optionType == 'edit'"
-            v-model.trim="formData.loginPwd"
-            show-password
-          ></el-input>
-          <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
+          <el-input v-model.trim="formData.loginPwd" show-password></el-input>
         </el-form-item>
         <el-form-item
-          v-if="isEditPwd"
-          label="新密码"
-          prop="newPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.newPwd" show-password></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="isEditPwd || optionType != 'edit'"
           label="确认密码"
           prop="confirmPwd"
           :rules="[
-          {required:true,validator:optionType == 'create' ? validateConfirmPwd : validateNewConfirmPwd,trigger:'blur'}]"
+          {required:true,validator: validateConfirmPwd,trigger:'blur'}]"
         >
           <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
         </el-form-item>
@@ -84,23 +65,7 @@
           label="所在部门"
           prop="orgId"
           :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-          v-if="initDepartment.orgId || optionType == 'create'"
-        >
-          <tl-department
-            v-model="formData.orgId"
-            :data="treeData"
-            :defaultProps="{ children: 'sonTree', label: 'orgName'}"
-            :initDepartment="initDepartment"
-            :type="'department'"
-            @handleData="handleData"
-          ></tl-department>
-        </el-form-item>
-        <!-- <el-form-item label="账号状态" prop="">
-          <el-radio-group v-model="formData.userStatus">
-            <el-radio :label="'0'">启用</el-radio>
-            <el-radio :label="'50'">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>-->
+        ></el-form-item>
         <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="saveUser">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
@@ -111,14 +76,12 @@
 </template>
 
 <script>
-import department from '@/components/department';
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createOrEditUser',
+  name: 'createUser',
   mixins: [validateMixin],
   components: {
-    'tl-department': department,
   },
   props: {
     treeData: {
@@ -189,24 +152,7 @@ export default {
   computed: {},
   methods: {
     init() {
-      if (this.optionType == 'edit') {
-        this.userTitle = '编辑用户';
-        this.server.getUserInfo({ userId: this.userId }).then((res) => {
-          if (res.code == 200) {
-            this.formData.userName = res.data.userName;
-            this.formData.userAccount = res.data.userAccount;
-            this.formData.userMobile = res.data.userMobile;
-            this.formData.userMail = res.data.userMail;
-            this.formData.orgId = res.data.orgId;
-            this.formData.userStatus = res.data.userStatus;
-            this.formData.tenantName = res.data.tenantName;
-            this.formData.loginPwd = '******';
-            this.setInitDepartment(res.data.orgId);
-          }
-        });
-      } else {
-        this.setInitDepartment(this.globalOrgId);
-      }
+      this.setInitDepartment(this.globalOrgId);
     },
     setInitDepartment(orgId) {
       // 遍历嵌套数组，转换为一维数组
@@ -246,23 +192,13 @@ export default {
       this.formData.orgId = date.orgId;
     },
     saveUser() {
-      let addOrEdit = 'createUser';
-      let successTip = '用户创建成功';
-      if (this.optionType == 'edit') {
-        addOrEdit = 'updateOrgUser';
-        successTip = '用户编辑成功';
-        if (!this.isEditPwd) {
-          delete this.formData.loginPwd;
-          delete this.formData.oldPwd;
-        }
-      }
       delete this.formData.confirmPwd;
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server[addOrEdit](this.formData).then((res) => {
+          this.server.createUser(this.formData).then((res) => {
             if (res.code == 200) {
-              this.$message.success(successTip);
+              this.$message.success('用户创建成功');
               this.close('refreshPage');
             }
             this.loading = false;

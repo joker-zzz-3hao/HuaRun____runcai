@@ -5,7 +5,7 @@ const mockData = {
   // 获取组织树
   'POST /gateway/system-service/sys/organization/getOrg': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'ARRAY|2': [{
+      'ARRAY|1': [{
         orgId: '1',
         orgName: '华润集团MOCK',
         orgParentId: '',

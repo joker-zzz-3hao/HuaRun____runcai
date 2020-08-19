@@ -4,7 +4,7 @@
       <div>部门管理</div>
     </div>
     <div class="org-left-side">
-      <el-input placeholder="输入用户姓名/手机号" maxlength="50" style="width:300px" v-model="filterText">
+      <el-input placeholder="输入部门名称" maxlength="50" style="width:300px" v-model="filterText">
         <i class="el-icon-search el-input__icon" slot="prefix"></i>
       </el-input>
       <el-tree
