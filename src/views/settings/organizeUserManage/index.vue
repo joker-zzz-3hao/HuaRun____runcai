@@ -232,7 +232,7 @@ export default {
     getOrgTree() {
       this.server.getOrg().then((res) => {
         if (res.code == 200) {
-          this.treeData = [{ ...res.data[0] }];
+          this.treeData = res.data;
         }
         this.defaultExpandNode = [this.treeData[0].orgId];
         this.globalOrgId = this.treeData[0].orgId;
