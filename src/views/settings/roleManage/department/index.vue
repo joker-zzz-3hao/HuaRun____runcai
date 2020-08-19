@@ -9,7 +9,12 @@
       <div slot="searchBar">
         <el-form ref="ruleForm" :inline="true">
           <el-form-item>
-            <el-input maxlength="50" v-model="keyWord" placeholder="请输入角色名称/创建时间/角色状态">
+            <el-input
+              maxlength="64"
+              @keyup.enter.native="listRolePage"
+              v-model="keyWord"
+              placeholder="请输入角色名称/创建时间/角色状态"
+            >
               <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
             </el-input>
           </el-form-item>
@@ -163,16 +168,5 @@ export default {
 <style  scoped>
 .pageright {
   float: right;
-}
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
 }
 </style>

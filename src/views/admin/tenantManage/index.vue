@@ -13,7 +13,12 @@
             <span>租户管理</span>
           </el-form-item>
           <el-form-item>
-            <el-input maxlength="64" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人">
+            <el-input
+              @keyup.enter.native="getTenantList"
+              maxlength="64"
+              v-model="keyWord"
+              placeholder="输入ID/企业名称/企业申请人"
+            >
               <i class="el-icon-search" slot="prefix" @click="getTenantList"></i>
             </el-input>
           </el-form-item>
@@ -105,6 +110,7 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.getTenantList();
+          this.$message.success(res.msg);
         }
       });
     },

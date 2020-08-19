@@ -143,7 +143,7 @@ export default {
           this.form.tenantName = res.data.tenantName;
           this.form.applyUser = res.data.applyUser;
           this.form.mobilePhone = res.data.mobilePhone;
-          this.form.tenantID = res.data.tenantID;
+          this.form.tenantID = res.data.tenantId;
           this.form.status = res.data.status;
           // eslint-disable-next-line array-callback-return
           const keys = res.data.menuItems.map((item) => {

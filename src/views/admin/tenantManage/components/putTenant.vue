@@ -5,6 +5,7 @@
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
+    :modal="false"
     :visible.sync="dialogTableVisible"
     center
   >
