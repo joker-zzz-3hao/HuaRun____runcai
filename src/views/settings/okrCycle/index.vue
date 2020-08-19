@@ -83,6 +83,20 @@ export default {
     this.getTableList();
   },
   methods: {
+    addOrUpdate(row) {
+      this.server.addOrUpdate({
+        periodId: row.periodId,
+        periodType: row.periodType,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$emit('getTableList');
+          this.$message.success(res.msg);
+          this.closed();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     getTableList() {
       this.server.okrQuery().then((res) => {
         this.tableData = res.data;
@@ -95,7 +109,7 @@ export default {
     updateOkr(row) {
       this.title = '编辑周期';
       this.existPut = true;
-      this.updateData = row;
+      this.updateData = JSON.parse(JSON.stringify(row));
     },
   },
 

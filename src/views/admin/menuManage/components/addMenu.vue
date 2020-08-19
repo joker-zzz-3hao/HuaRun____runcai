@@ -51,6 +51,9 @@
       >
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
       </el-form-item>
+      <el-form-item label="事件名" v-if="form.functionType !=='BTN'" prop="functionEvent">
+        <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
+      </el-form-item>
       <!-- <el-form-item
         label="菜单状态"
         v-if="form.functionType=='MENU'||form.functionType=='PAGE'"
@@ -133,6 +136,9 @@ export default {
             trigger: 'blur',
           }],
         resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+        functionEvent: [
+          { required: true, message: '请输入事件名', trigger: 'blur' },
+        ],
       },
     };
   },

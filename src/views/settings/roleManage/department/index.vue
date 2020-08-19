@@ -3,7 +3,7 @@
     <el-form ref="ruleForm" :inline="true">
       <el-form-item>
         <el-input maxlength="50" v-model="keyWord" placeholder="请输入角色名称/创建时间/角色状态">
-          <el-button slot="prepend" icon="el-icon-search" @click="listRolePage"></el-button>
+          <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
         </el-input>
       </el-form-item>
       <el-form-item class="pageright">
