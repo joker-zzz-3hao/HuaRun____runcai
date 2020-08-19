@@ -112,6 +112,7 @@
 
 .login-info .tl-btn.el-button--primary {
   width: 100%;
+  height: 40px;
   background: #685df1;
   border-radius: 4px;
 }
@@ -126,3 +127,28 @@
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */
+.okr-permissions .dl-list {
+  margin: 0 0 30px 0;
+  border-bottom: 1px solid #e5e9ee;
+}
+
+.okr-permissions .dl-list dt {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4d5155;
+}
+
+.okr-permissions .dl-list em {
+  margin: 0 6px 0 0;
+}
+
+.okr-permissions .dl-list dd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.okr-permissions .tl-radio {
+  margin: 0 0 16px 0;
+}

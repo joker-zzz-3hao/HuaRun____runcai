@@ -5,28 +5,41 @@
       <div class="operating-panel"></div>
     </div>
     <div class="cont-area">
-      <dl>
-        <dt></dt>
-        <dd></dd>
-        <dd></dd>
-      </dl>
-      <!-- <div class="setmodel" v-for="(item,index) in setList" :key="index">
-        <div v-if="item.configTypeDetail=='O-1'">OKR 设置 (OKR 的查看权限)</div>
-        <div v-if="item.configTypeDetail=='O-2'">OKR 是否可编辑</div>
-        <div v-if="item.configTypeDetail=='O-3'">OKR 是否开启OKR审核</div>
-        <div v-if="item.configTypeDetail=='O-1'" class="setRadio">
-          <el-radio v-model="radio[index]" label="O">整个公司的人，能够互相查看彼此的周报</el-radio>
-          <el-radio v-model="radio[index]" label="S">仅部门队友，能够互相查看彼此的周报( 部门队友=部门负责人+部门成员+直接下级部门负责人 )</el-radio>
-        </div>
-        <div v-if="item.configTypeDetail=='O-2'||item.configTypeDetail=='O-3'" class="setRadio">
-          <el-radio v-model="radio[index]" label="O">开启</el-radio>
-          <el-radio v-model="radio[index]" label="S">关闭</el-radio>
-        </div>
+      <div class="cont-panel">
+        <dl class="dl-list" v-for="(item,index) in setList" :key="item.id">
+          <dt v-if="item.configTypeDetail=='O-1'">
+            <em>OKR</em>
+            <span>设置（OKR 的查看权限）</span>
+          </dt>
+          <dt v-if="item.configTypeDetail=='O-2'">
+            <em>OKR</em>
+            <span>是否可编辑</span>
+          </dt>
+          <dt v-if="item.configTypeDetail=='O-3'">
+            <em>OKR</em>
+            <span>设置（OKR 的查看权限）</span>
+          </dt>
+          <dt v-if="item.configTypeDetail=='O-1'">
+            <em>OKR</em>
+            <span>是否开启OKR审核</span>
+          </dt>
+          <dd v-if="item.configTypeDetail=='O-1'">
+            <el-radio v-model="radio[index]" label="O" class="tl-radio">整个公司的人，能够互相查看彼此的周报</el-radio>
+            <el-radio
+              v-model="radio[index]"
+              label="S"
+              class="tl-radio"
+            >仅部门队友，能够互相查看彼此的周报( 部门队友=部门负责人+部门成员+直接下级部门负责人 )</el-radio>
+          </dd>
+          <dd v-if="item.configTypeDetail=='O-2'||item.configTypeDetail=='O-3'">
+            <el-radio v-model="radio[index]" label="O" class="tl-radio">开启</el-radio>
+            <el-radio v-model="radio[index]" label="S" class="tl-radio">关闭</el-radio>
+          </dd>
+        </dl>
       </div>
-
-      <div class="setsave">
-        <el-button type="primary" @click="getSave">保存更改</el-button>
-      </div>-->
+      <div class="operating-panel">
+        <el-button type="primary" @click="getSave" class="tl-btn amt-bg-slip">保存更改</el-button>
+      </div>
     </div>
   </div>
 </template>

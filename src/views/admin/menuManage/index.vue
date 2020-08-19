@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item>
         <el-input maxlength="64" v-model="keyWord" placeholder="输入菜单名称">
-          <el-button slot="prepend" icon="el-icon-search" @click="getMenuList()"></el-button>
+          <i class="el-icon-search" slot="prefix" @click="getMenuList()"></i>
         </el-input>
       </el-form-item>
       <el-form-item class="pageright">
@@ -46,13 +46,19 @@
             <span v-else>--</span>
           </template>
         </el-table-column>
+        <el-table-column prop="functionEvent" label="事件名">
+          <template slot-scope="scope">
+            <span v-if="scope.row.functionEvent">{{scope.row.functionEvent}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <el-switch
               v-model.trim="scope.row.status"
-              active-text="启用"
-              active-value="1"
-              inactive-value="0"
+              :active-text="scope.row.status=='O'?'启用':'禁用'"
+              active-value="O"
+              inactive-value="S"
             ></el-switch>
           </template>
         </el-table-column>
@@ -136,7 +142,7 @@ export default {
       this.dialogVisible = true;
       this.title = '编辑';
       this.menuName = row.functionName;
-      this.menuData = row;
+      this.menuData = JSON.parse(JSON.stringify(row));
     },
     deleteById(id) {
       this.server.deleteById({ functionId: id }).then((res) => {

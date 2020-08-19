@@ -8,8 +8,8 @@
         <el-button type="primary" @click="createAddTenant">创建租户</el-button>
       </el-form-item>
       <el-form-item class="pageright">
-        <el-input maxlength="50" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人">
-          <el-button slot="prepend" icon="el-icon-search" @click="getTenantList"></el-button>
+        <el-input maxlength="64" v-model="keyWord" placeholder="输入ID/企业名称/企业申请人">
+          <i class="el-icon-search" slot="prefix" @click="getTenantList"></i>
         </el-input>
       </el-form-item>
     </el-form>
@@ -23,9 +23,10 @@
           <template slot-scope="scope">
             <el-switch
               v-model.trim="scope.row.status"
-              active-text="启用"
+              :active-text="scope.row.status=='O'?'启用':'禁用'"
               active-value="O"
               inactive-value="S"
+              @change="updateStatus(scope.$index,scope.row)"
             ></el-switch>
           </template>
         </el-table-column>
@@ -94,6 +95,16 @@ export default {
     this.getTenantList();
   },
   methods: {
+    updateStatus(index, row) {
+      this.server.updateTenantStatus({
+        tenantId: row.tenantId,
+        status: row.status,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.getTenantList();
+        }
+      });
+    },
     getTenantList() {
       this.server.tenantList({
         keyWord: this.keyWord,

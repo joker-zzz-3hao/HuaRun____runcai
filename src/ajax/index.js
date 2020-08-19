@@ -10,11 +10,12 @@ function sessionTimeOut(data) {
   console.log(data);
   const origin = getOrigin();
   // TODO:未授权时跳转ladp登录首页
-  if (origin == process.env.VUE_APP_PORTAL) {
-    window.open(process.env.VUE_APP_LOGIN, '_self');
-  } else {
-    window.open(`${origin}/#/login`, '_self');
-  }
+  // if (origin == process.env.VUE_APP_PORTAL) {
+  //   window.open(process.env.VUE_APP_LOGIN, '_self');
+  // } else {
+  //   window.open(`${origin}/#/login`, '_self');
+  // }
+  window.open(`${origin}/#/login`, '_self');
 }
 
 const ajax = axios.create({

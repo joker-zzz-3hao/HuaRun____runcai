@@ -6,7 +6,7 @@ export default class Server extends ServerBase {
   }
 
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 
   approval(param) {

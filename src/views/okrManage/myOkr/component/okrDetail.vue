@@ -1,13 +1,6 @@
 <template>
-  <el-dialog
-    :title="dialogTitle"
-    :visible.sync="dialogDetailVisible"
-    width="50%"
-    :modal-append-to-body="false"
-    :before-close="close"
-    @closed="closed"
-  >
-    <!-- 公共信息 -->
+  <!-- 公共信息 -->
+  <div>
     <div>
       <ul>
         <li>
@@ -44,7 +37,7 @@
         <el-button v-if="showLike" @click="like()">点赞</el-button>
       </ul>
     </div>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -62,7 +55,6 @@ export default {
       okrmain: {}, // 公共信息
       canWrite: true, // true写okr false okr详情
       dialogTitle: 'OKR详情', // 弹框标题
-      dialogDetailVisible: false,
       cycleList: [], // 操作历史
       showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
@@ -147,15 +139,9 @@ export default {
     },
     // 控制弹窗
     showOkrDialog() {
-      this.dialogDetailVisible = true;
       this.getokrDetail();
     },
-    close() {
-      this.dialogDetailVisible = false;
-    },
-    closed() {
-      this.$emit('update:dialogExist', false);
-    },
+
   },
   watch: {
 

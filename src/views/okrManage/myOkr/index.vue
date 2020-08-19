@@ -1,8 +1,7 @@
 <template>
   <div class="home">
+    <el-button style="display:float" @click="goWriteOkr">创建okr</el-button>
     <el-tabs v-model="activeName">
-      <el-button @click="goWriteOkr">创建okr</el-button>
-
       <el-tab-pane :label="`${departmentName}OKR`" name="team">
         <department
           :data="cycleData"
@@ -22,6 +21,11 @@
         <myokr-page :okrCycle="okrCycle"></myokr-page>
       </el-tab-pane>
     </el-tabs>
+    <el-drawer :append-to-body="true" title="创建okr" :visible.sync="drawer" size="50%">
+      <div>
+        <writeOkr @handleClose="drawer = false"></writeOkr>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -29,6 +33,7 @@
 import department from '@/components/department';
 import departmentPage from './component/departmentPage';
 import myokrPage from './component/myokrPage';
+import writeOkr from './component/writeOkr/index';
 import Server from './server';
 
 const server = new Server();
@@ -39,6 +44,7 @@ export default {
     'department-page': departmentPage,
     'myokr-page': myokrPage,
     department,
+    writeOkr,
   },
   data() {
     return {
@@ -69,6 +75,7 @@ export default {
       departmentName: '',
       okrorgCycle: {}, // 当前选择的周期-部门
       okrCycle: {}, // 当前选择的周期
+      drawer: false,
     };
   },
   created() {
@@ -86,6 +93,9 @@ export default {
               this.cycleObj.old.children.push(item);
             } else if (item.checkStatus == '1') {
               this.cycleObj.current.children.push(item);
+              this.okrorgCycle = item;
+              this.okrCycle = item;
+              console.log('当前周期', item);
             }
           });
           this.pushCycleObj('current');
@@ -107,7 +117,8 @@ export default {
       console.log(data);
     },
     goWriteOkr() {
-      this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
+      this.drawer = true;
+      // this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
     },
   },
 };

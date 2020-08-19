@@ -51,9 +51,10 @@ router.beforeEach((to, from, next) => {
   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
   if (!localStorage.token || localStorage.token === null) {
     // 当token不存在时，如果是环境上就需要跳转到ladp登录页面，如果是本地启动就直接跳转login页面
-    if (origin == process.env.VUE_APP_PORTAL) {
-      window.open(process.env.VUE_APP_LOGIN, '_self');
-    } else if (to.name == 'login') {
+    // if (origin == process.env.VUE_APP_PORTAL) {
+    //   window.open(process.env.VUE_APP_LOGIN, '_self');
+    // } else
+    if (to.name == 'login') {
       next();
     } else {
       next('login');
