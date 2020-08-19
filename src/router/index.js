@@ -2,8 +2,8 @@ import Vue from 'vue';
 import {
   getParams,
   localSave,
-  getOrigin,
 } from '@/lib/util';
+// getOrigin,
 import VueRouter from 'vue-router';
 import loginJs from './login';
 import consoleJs from './console';
@@ -43,7 +43,7 @@ function hasPower(power) {
 router.beforeEach((to, from, next) => {
   const urlParams = getParams(window.location.href);
   const urlCrctoken = urlParams.crctoken;
-  const origin = getOrigin();
+  // const origin = getOrigin();
   // 判断获取的token,如果token存在就更新存到缓存
   if (urlCrctoken) {
     localSave('token', urlCrctoken);
@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
     // 没有用户信息时调查询用户信息接口
     window.$store.dispatch('common/getUserInfo').then((response) => {
       // 获取用户信息成功走200
-      if (response.code == 200) {
+      if (response && response.code == 200) {
         if (to.name == 'login') {
           next('transfer');
         } else if (to.meta.title) { // 判断路由是否存在
@@ -76,13 +76,17 @@ router.beforeEach((to, from, next) => {
         } else {
           next('/exception404');
         }
-      } else if (origin == process.env.VUE_APP_PORTAL) {
-        window.open(process.env.VUE_APP_LOGIN, '_self');
       } else if (to.name == 'login') {
+        localStorage.token = '';
         next();
       } else {
+        localStorage.token = '';
         next('login');
       }
+      // TODO:
+      // else if (origin == process.env.VUE_APP_PORTAL) {
+      //   window.open(process.env.VUE_APP_LOGIN, '_self');
+      // }
     });
   } else if (localStorage.token && (window.$store.getters['common/userInfo'].userName)) {
     if (to.name == 'login') {
@@ -99,5 +103,10 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 export default router;
