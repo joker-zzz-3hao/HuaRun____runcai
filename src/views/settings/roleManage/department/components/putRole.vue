@@ -28,17 +28,22 @@
             placeholder="请输入角色名称"
           ></el-input>
         </el-form-item>
-        <el-form-item label="菜单权限" v-if="!rouleType">
-          <el-tree
-            :data="data"
-            show-checkbox
-            ref="treeMenu"
-            node-key="id"
-            @check="getCheckData"
-            default-expand-all
-            @check-change="handleCheckChange"
-          ></el-tree>
+        <el-form-item label="菜单权限">
+          <div class="menuTreeList">
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div @click="showMenu=!showMenu">+</div>
+          </div>
         </el-form-item>
+        <div class="postMenu" v-show="showMenu">
+          <el-cascader-panel
+            @change="handleCheckChange"
+            ref="treeMenu"
+            v-model="selectArr"
+            :options="data"
+            :props="{ multiple: true }"
+            node-key="id"
+          ></el-cascader-panel>
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm()">确定</el-button>
@@ -71,6 +76,9 @@ export default {
   data() {
     return {
       server,
+      menuTreeList: [],
+      selectArr: [],
+      showMenu: false,
       form: {
         roleCode: '',
         roleName: '',
@@ -102,20 +110,32 @@ export default {
 
   mounted() {
     this.dialogTableVisible = true;
-    this.getRole();
+
     this.getqueryMenu();
   },
   methods: {
     handleCheckChange() {
-      const keys = this.$refs.treeMenu.getCheckedKeys();
-
-      this.form.functionList = keys.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item.data.label;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+      this.form.functionList = keys.map((item) => ({ functionId: item.data.id, roleId: this.roleInfo.roleId }));
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.listTenantFuncation()
         .then((res) => {
           this.data = this.getTreeList(res.data, true);
+          this.getRole();
         });
     },
     // 递归修改符合element tree结构数据
@@ -124,6 +144,7 @@ export default {
         return data.map((item) => ({
           id: item.functionId,
           label: item.functionName,
+          value: item.functionCode,
           children: this.getTreeList(item.children),
         }));
       }
@@ -147,8 +168,21 @@ export default {
           roleName: res.data.roleName,
           functionList: [],
         };
-        const treeData = res.data.menuTree.map((item) => item.functionId);
-        this.$refs.treeMenu.setCheckedKeys(treeData);
+        // eslint-disable-next-line array-callback-return
+        const keys = res.data.menuTree.map((item) => {
+          if (item) {
+            return item.split(':');
+          }
+        });
+          // eslint-disable-next-line array-callback-return
+        this.selectArr = keys.filter((item) => {
+          if (item) {
+            return item;
+          }
+        });
+        this.$nextTick(() => {
+          this.handleCheckChange();
+        });
       });
     },
     updateRole() {
@@ -178,9 +212,6 @@ export default {
     closeshowMember() {
       this.dialogVisible = false;
     },
-    getCheckData() {
-
-    },
   },
 };
 </script>
@@ -198,9 +229,16 @@ export default {
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-.modelPut {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 620px;
+
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
 }
 </style>

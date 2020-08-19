@@ -30,6 +30,7 @@
                 :active-text="scope.row.periodType==1?'启用':'禁用'"
                 active-value="1"
                 inactive-value="0"
+                @change="addOrUpdate(scope.row)"
                 class="tl-switch"
               ></el-switch>
             </template>
@@ -92,9 +93,8 @@ export default {
         periodType: row.periodType,
       }).then((res) => {
         if (res.code == 200) {
-          this.$emit('getTableList');
+          this.getTableList();
           this.$message.success(res.msg);
-          this.closed();
         } else {
           this.$message.error(res.msg);
         }

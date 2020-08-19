@@ -164,4 +164,15 @@ export default {
 .pageright {
   float: right;
 }
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
+}
 </style>

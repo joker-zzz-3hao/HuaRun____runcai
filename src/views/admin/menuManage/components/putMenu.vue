@@ -83,7 +83,7 @@ export default {
       required: true,
     },
     parentId: {
-      type: Number,
+      type: [Number, String],
       required: false,
     },
     menuName: {

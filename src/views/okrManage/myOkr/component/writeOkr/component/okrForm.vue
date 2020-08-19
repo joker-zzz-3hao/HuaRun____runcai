@@ -390,7 +390,8 @@ export default {
         delete oitem.philosophyList;
       });
       this.formData.okrBelongType = this.searchForm.okrType;
-      this.formData.periodId = this.searchForm.okrCycle.periodId || 'periodId'; // this.searchForm.okrCycle.periodId
+      this.formData.periodId = this.searchForm.okrCycle.periodId;
+      this.formData.okrDraftId = this.searchForm.draftId;
       this.server.saveOkrDraft(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功~');

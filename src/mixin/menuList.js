@@ -8,6 +8,8 @@ export default {
       talentList: [],
       systemList: [],
       crList: [],
+      subMenuList: [],
+      subMenuClassList: [],
     };
   },
   computed: {
@@ -37,7 +39,17 @@ export default {
               self.classTagList = [];
               self.classTagList.push(tItem.functionCode);
               self.eventsList = ['moveMenu', 'leaveMenu'];
+              self.subMenuList = [];
               if (tItem.children && tItem.children.length > 0) {
+                tItem.children.forEach((cItem) => {
+                  self.subMenuClassList = [];
+                  self.subMenuClassList.push(cItem.functionCode);
+                  self.subMenuList.push({
+                    subMenuTitle: cItem.functionName,
+                    subClassTag: self.subMenuClassList,
+                    subToName: cItem.resourceUrl,
+                  });
+                });
                 self.eventsList.unshift('isExtend');
               } else {
                 self.eventsList.unshift('rmSubMenu');
@@ -47,7 +59,7 @@ export default {
                 classTag: self.classTagList,
                 toName: tItem.resourceUrl,
                 events: self.eventsList,
-                subMenuList: [],
+                subMenuList: self.subMenuList,
               });
             });
             break;
@@ -57,8 +69,18 @@ export default {
               self.classTagList = [];
               self.classTagList.push(tItem.functionCode);
               self.eventsList = ['moveMenu', 'leaveMenu'];
+              self.subMenuList = [];
               if (tItem.children && tItem.children.length > 0) {
                 self.eventsList.unshift('isExtend');
+                tItem.children.forEach((cItem) => {
+                  self.subMenuClassList = [];
+                  self.subMenuClassList.push(cItem.functionCode);
+                  self.subMenuList.push({
+                    subMenuTitle: cItem.functionName,
+                    subClassTag: self.subMenuClassList,
+                    subToName: cItem.resourceUrl,
+                  });
+                });
               } else {
                 self.eventsList.unshift('rmSubMenu');
               }
@@ -67,7 +89,7 @@ export default {
                 classTag: self.classTagList,
                 toName: tItem.resourceUrl,
                 events: self.eventsList,
-                subMenuList: [],
+                subMenuList: self.subMenuList,
               });
             });
             break;
@@ -76,8 +98,18 @@ export default {
             self.classTagList = [];
             self.classTagList.push(item.functionCode);
             self.eventsList = ['moveMenu', 'leaveMenu'];
+            self.subMenuList = [];
             if (item.children && item.children.length > 0) {
               self.eventsList.unshift('isExtend');
+              item.children.forEach((cItem) => {
+                self.subMenuClassList = [];
+                self.subMenuClassList.push(cItem.functionCode);
+                self.subMenuList.push({
+                  subMenuTitle: cItem.functionName,
+                  subClassTag: self.subMenuClassList,
+                  subToName: cItem.resourceUrl,
+                });
+              });
             } else {
               self.eventsList.unshift('rmSubMenu');
             }
@@ -86,7 +118,7 @@ export default {
               classTag: self.classTagList,
               toName: item.resourceUrl,
               events: self.eventsList,
-              subMenuList: [],
+              subMenuList: self.subMenuList,
             });
             break;
         }

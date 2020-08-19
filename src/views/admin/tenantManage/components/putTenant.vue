@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-drawer
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
@@ -8,51 +8,63 @@
     :visible.sync="dialogTableVisible"
     center
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-      <el-form-item label="租户名称" prop="tenantName">
-        <el-input
-          style="width:320px"
-          v-model="form.tenantName"
-          maxlength="64"
-          placeholder="请输入租户名称"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="企业ID" prop="tenantID">
-        <el-input style="width:320px" maxlength="64" v-model="form.tenantID" placeholder="请输入企业ID"></el-input>
-      </el-form-item>
-      <el-form-item label="申请人" prop="applyUser">
-        <el-input style="width:320px" maxlength="64" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话" prop="mobilePhone">
-        <el-input
-          style="width:320px"
-          v-model="form.mobilePhone"
-          placeholder="请输入联系电话"
-          maxlength="11"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="开放菜单功能">
-        <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-          <div>+</div>
+    <div class="modelCreate">
+      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+        <el-form-item label="租户名称" prop="tenantName">
+          <el-input
+            style="width:320px"
+            v-model="form.tenantName"
+            maxlength="64"
+            placeholder="请输入租户名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="企业ID" prop="tenantID">
+          <el-input
+            style="width:320px"
+            maxlength="64"
+            v-model="form.tenantID"
+            placeholder="请输入企业ID"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="申请人" prop="applyUser">
+          <el-input
+            style="width:320px"
+            maxlength="64"
+            v-model="form.applyUser"
+            placeholder="请输入申请人"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="mobilePhone">
+          <el-input
+            style="width:320px"
+            v-model="form.mobilePhone"
+            placeholder="请输入联系电话"
+            maxlength="11"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="开放菜单功能">
+          <div class="menuTreeList">
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div @click="showMenu=!showMenu">+</div>
+          </div>
+        </el-form-item>
+        <div class="postMenu" v-show="showMenu">
+          <el-cascader-panel
+            @change="handleCheckChange"
+            ref="treeMenu"
+            v-model="selectArr"
+            :options="data"
+            :props="{ multiple: true }"
+            node-key="id"
+          ></el-cascader-panel>
         </div>
-      </el-form-item>
-      <div class="postMenu">
-        <el-cascader-panel
-          @change="handleCheckChange"
-          ref="treeMenu"
-          v-model="selectArr"
-          :options="data"
-          :props="{ multiple: true }"
-          node-key="id"
-        ></el-cascader-panel>
+      </el-form>
+      <div>
+        <el-button type="primary" @click="validateForm('form')">确定</el-button>
+        <el-button @click="close()">取 消</el-button>
       </div>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm('form')">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
     </div>
-  </el-dialog>
+  </el-drawer>
 </template>
 <script>
 import Server from '../server';
@@ -78,6 +90,7 @@ export default {
   data() {
     return {
       server,
+      showMenu: false,
       selectArr: [],
       menuTreeList: [],
       form: {
@@ -173,7 +186,7 @@ export default {
           this.form.tenantName = res.data.tenantName;
           this.form.applyUser = res.data.applyUser;
           this.form.mobilePhone = res.data.mobilePhone;
-          this.form.tenantID = res.data.tenantID;
+          this.form.tenantID = res.data.tenantId;
           this.form.status = res.data.status;
           // eslint-disable-next-line array-callback-return
           const keys = res.data.menuItems.map((item) => {
