@@ -13,7 +13,7 @@
     </div>
     <div class="cont-area">
       <div class="cont-panel">
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" class="tl-table">
           <el-table-column fixed prop="periodName" label="OKR周期名称">
             <template slot-scope="scope">
               <span>{{scope.row.periodName}}{{scope.row.checkStatus=='1'?'(默认周期)':''}}</span>
@@ -28,12 +28,13 @@
                 active-text="启用"
                 active-value="1"
                 inactive-value="0"
+                class="tl-switch"
               ></el-switch>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="160">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="updateOkr(scope.row)">编辑</el-button>
+              <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
