@@ -12,10 +12,8 @@ export default {
           pageSize: 10,
           keyWord: value,
         }).then((res) => {
-          if (res.code == 200) {
-            if (res.data.content.length > 0) {
-              callback('该编码已被使用');
-            }
+          if (res.code == 200 && res.data.content.length > 0) {
+            callback('该编码已被使用');
           } else {
             callback();
           }
@@ -36,10 +34,8 @@ export default {
           pageSize: 10,
           keyWord: value,
         }).then((res) => {
-          if (res.code == 200) {
-            if (res.data.content.length > 0) {
-              callback('该编码已被使用');
-            }
+          if (res.code == 200 && res.data.content.length > 0) {
+            callback('该编码已被使用');
           } else {
             callback();
           }

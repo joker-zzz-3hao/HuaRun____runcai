@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import Cryptojs from '@/lib/cryptojs';
 import Server from './server';
 import validateMixin from './validateMixin';
 
@@ -77,6 +78,7 @@ export default {
   },
   data() {
     return {
+      Cryptojs,
       server,
       loading: false,
       visible: false,
@@ -113,9 +115,15 @@ export default {
     },
     save() {
       this.formData.userAccount = this.userInfo.userAccount;
+      const params = {
+        userAccount: 'admin',
+        loginPwd: this.Cryptojs.encrypt(this.formData.loginPwd),
+        newPwd: this.Cryptojs.encrypt(this.formData.newPwd),
+        userId: this.userInfo.userId,
+      };
       this.$refs.resetForm.validate((valid) => {
         if (valid) {
-          this.server.editPwd(this.formData).then((res) => {
+          this.server.editPwd(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('重置密码成功');
             }

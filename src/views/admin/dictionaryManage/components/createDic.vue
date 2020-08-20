@@ -112,7 +112,7 @@
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createOrEditUser',
+  name: 'createdic',
   mixins: [validateMixin],
   components: {
   },
