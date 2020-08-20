@@ -3,6 +3,13 @@
     <div>
       <div>系统用户管理</div>
     </div>
+    <div>
+      <el-form>
+        <el-form-item label="用户在账号">
+          <span>{{userInfo.userAccount}}</span>
+        </el-form-item>
+      </el-form>
+    </div>
     <crcloud-table @searchList="searchList" :isPage="false">
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
@@ -89,6 +96,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       tableData: [],
+      userInfo: {},
       formData: {
         loginPwd: '',
         newPwd: '',
@@ -108,7 +116,7 @@ export default {
       };
       this.server.getUserLIst(params).then((res) => {
         if (res.code == 200) {
-          this.tableData = [{ ...res.data }];
+          this.userInfo = res.data;
         }
       });
     },

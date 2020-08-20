@@ -180,6 +180,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+      this.formData.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -204,7 +205,7 @@ export default {
       this.formData.orgId = date.orgId;
     },
     saveUser() {
-      delete this.formData.confirmPwd;
+      // delete this.formData.confirmPwd;
       this.formData.orgId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
       this.formData.orgFullId = this.formData.orgIdList.join(':');
       this.$refs.userForm.validate((valid) => {

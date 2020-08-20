@@ -7,11 +7,7 @@
 <template>
   <div>
     <el-form ref="userForm" :model="formData" label-width="80px">
-      <el-form-item
-        label="用户名称"
-        prop="userName"
-        :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
-      >
+      <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
         <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
       </el-form-item>
       <el-form-item
@@ -199,6 +195,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+      this.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -217,7 +214,7 @@ export default {
         this.formData.loginPwd = '';
         this.formData.newPwd = '';
       }
-      delete this.formData.confirmPwd;
+      // delete this.formData.confirmPwd;
       this.formData.userId = this.userId;
       this.formData.orgId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
       this.formData.orgFullId = this.formData.orgIdList.join(':');
