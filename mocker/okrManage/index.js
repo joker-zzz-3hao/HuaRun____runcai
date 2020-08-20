@@ -207,7 +207,7 @@ const mockData = {
   },
   // author：林心荃
   // 用于：查操作历史
-  'POST /gateway/talent-query/okr/outside/query/okrOperationHistory': (req, res) => {
+  'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'records|3': [{
         'date|+1': ['8月12日', '8月11日', '8月10日'],

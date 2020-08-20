@@ -9,7 +9,7 @@
           @handleData="handleorgCycleData"
           :defaultProps="cycleDefaultProps"
         ></department>
-        <department-page :okrCycle="okrorgCycle"></department-page>
+        <department-page ref="departmentpage" :okrCycle="okrorgCycle"></department-page>
       </el-tab-pane>
       <el-tab-pane label="我的OKR" name="myokr">
         <department
@@ -18,7 +18,7 @@
           @handleData="handleCycleData"
           :defaultProps="cycleDefaultProps"
         ></department>
-        <myokr-page :okrCycle="okrCycle"></myokr-page>
+        <myokr-page ref="myokrpage" :okrCycle="okrCycle"></myokr-page>
       </el-tab-pane>
     </el-tabs>
     <el-drawer
@@ -138,6 +138,16 @@ export default {
     },
     handleClose() {
       this.setCreateokrDrawer(false);
+    },
+  },
+  watch: {
+    createokrDrawer: {
+      handler(newVal) {
+        if (newVal === false) {
+          this.$$refs.departmentpage.searchOkr();
+          this.$$refs.myokrpage.searchOkr();
+        }
+      },
     },
   },
 };

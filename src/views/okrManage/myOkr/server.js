@@ -28,7 +28,7 @@ export default class Server extends ServerBase {
 
   // 查操作历史
   okrOperationHistory(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrOperationHistory', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/okrOperationHistory', param);
   }
 
   // 更新进度

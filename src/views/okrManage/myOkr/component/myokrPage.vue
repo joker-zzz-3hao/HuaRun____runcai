@@ -16,7 +16,7 @@
     <!-- okr模块 只有起草中是有多个 -->
     <div v-for="(item, index) in okrList" :key="index">
       <!-- 基本信息 -->
-      <div>
+      <div v-if="item.okrMain">
         <ul>
           <li>
             <span>状态</span>
@@ -37,16 +37,21 @@
         </ul>
       </div>
       <!-- okr面板 -->
-      <tl-okr-collapse :tableList="item.tableList" :disabled="false" :activeList="[0]">
+      <tl-okr-table
+        :tableList="item.tableList"
+        :disabled="false"
+        :activeList="[0]"
+        :showOKRInfoLabel="true"
+      >
         <template slot="head-bar" slot-scope="props">
           <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-detail',props.okritem)"
           >详情</el-button>
-          <el-button
+          <!-- <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-history',props.okritem)"
-          >历史版本</el-button>
+          >历史版本</el-button>-->
           <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-update',props.okritem)"
@@ -56,12 +61,12 @@
             @click.native.stop="goDraft(item)"
           >编辑</el-button>
         </template>
-      </tl-okr-collapse>
+      </tl-okr-table>
     </div>
     <el-drawer
       :wrapperClosable="false"
       :modal-append-to-body="false"
-      title="编辑"
+      :title="drawerTitle"
       :visible.sync="myokrDrawer"
       size="50%"
       :before-close="handleClose"
@@ -89,6 +94,7 @@
           ref="tl-okr-update"
           :server="server"
           :okrId="okrId"
+          :okrItem="okrItem"
         ></tl-okr-update>
         <!-- <component
           v-else
@@ -109,8 +115,8 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import okrCollapse from '@/components/okrCollapse';
-import okrDetail from '@/components/okrDetail';
+import okrTable from '@/components/okrTable';
+import okrDetail from './okrDetail';
 import okrUpdate from './okrUpdate';
 import okrHistory from './okrHistory';
 import writeOkr from './writeOkr/index';
@@ -125,7 +131,7 @@ export default {
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-history': okrHistory,
-    'tl-okr-collapse': okrCollapse,
+    'tl-okr-table': okrTable,
     'tl-writeokr': writeOkr,
   },
   data() {
@@ -151,6 +157,7 @@ export default {
       writeInfo: {
         canWrite: '',
       },
+      drawerTitle: '创建okr',
     };
   },
   props: {
@@ -170,6 +177,7 @@ export default {
     ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr(status) {
       this.searchForm.status = status || this.searchForm.status;
+
       this.server.getmyOkr({
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
@@ -194,6 +202,14 @@ export default {
               });
             });
           } else {
+            this.okrList = [{
+              tableList: [], // okr列表
+              okrMain: { // okr公共信息
+                userName: '',
+                okrProgress: 0,
+                updateTime: '',
+              },
+            }];
             this.okrList[0].tableList = res.data.okrDetails;
             this.okrList[0].okrMain = res.data.okrMain;
             this.okrId = res.data.okrMain.okrId;
@@ -209,9 +225,22 @@ export default {
       this.currentView = componentName;
       this.okrItem = val;
       // this.okrId = val.detailId;
+      switch (this.currentView) {
+        case 'tl-okr-detail':
+          this.drawerTitle = 'OKR详情';
+          break;
+        case 'tl-okr-update':
+          this.drawerTitle = '更新进度';
+          break;
+        case 'tl-okr-history':
+          this.drawerTitle = '历史记录';
+          break;
+        default:
+          break;
+      }
+      this.setMyokrDrawer(true);
       this.$nextTick(() => {
-        // this.$refs[this.currentView].showOkrDialog();
-        this.setMyokrDrawer(true);
+        this.$refs[componentName].showOkrDialog();
       });
     },
     goChangeOkr() {
@@ -250,6 +279,13 @@ export default {
       },
       immediate: true,
       deep: true,
+    },
+    myokrDrawer: {
+      handler(newVal) {
+        if (newVal === false) {
+          this.searchOkr();
+        }
+      },
     },
   },
 };

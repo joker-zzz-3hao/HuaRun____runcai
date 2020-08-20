@@ -13,7 +13,7 @@
         </li>
         <li>
           <span>更新时间</span>
-          <span>{{okrmain.updateTime}}</span>
+          <span>{{okrmain.updateTime || okrmain.createTime}}</span>
         </li>
         <li>
           <span>进度</span>
@@ -24,11 +24,24 @@
       </ul>
     </div>
     <!-- okr折叠面板 -->
-    <okrCollapse :tableList="tableList" :activeList="activeList" :disabled="true"></okrCollapse>
+    <tl-okr-collapse :tableList="tableList" :activeList="activeList">
+      <template slot="head-bar" slot-scope="props">
+        <button
+          v-if="props.okritem.versionCount > 1"
+          @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+        >历史版本</button>
+      </template>
+      <template slot="body-bar" slot-scope="props">
+        <button
+          v-if="props.okritem.versionCount > 1"
+          @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+        >历史版本</button>
+      </template>
+    </tl-okr-collapse>
     <!-- 操作历史 -->
     <div>
       <span>操作历史</span>
-      <timeline :cycleList="cycleList"></timeline>
+      <tl-timeline :cycleList="cycleList"></tl-timeline>
     </div>
     <!-- 点赞 -->
     <div>
@@ -37,12 +50,16 @@
         <el-button v-if="showLike" @click="like()">点赞</el-button>
       </ul>
     </div>
+    <el-drawer title="历史版本" :modal="false" :visible.sync="innerDrawer">
+      <tl-okr-history v-if="innerDrawer" ref="tl-okr-history" :server="server" :okrId="okrId"></tl-okr-history>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import okrCollapse from '@/components/okrCollapse';
 import timeline from '@/components/timeLine';
+import okrHistory from './okrHistory';
 import CONST from '../const';
 
 export default {
@@ -58,11 +75,13 @@ export default {
       cycleList: [], // 操作历史
       showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
+      innerDrawer: false,
     };
   },
   components: {
-    okrCollapse,
-    timeline,
+    'tl-okr-history': okrHistory,
+    'tl-okr-collapse': okrCollapse,
+    'tl-timeline': timeline,
   },
   props: {
     dialogExist: {
@@ -137,11 +156,14 @@ export default {
         }
       });
     },
-    // 控制弹窗
+    //
     showOkrDialog() {
       this.getokrDetail();
     },
-
+    // 打开历史版本
+    openHistory() {
+      this.innerDrawer = true;
+    },
   },
   watch: {
 
