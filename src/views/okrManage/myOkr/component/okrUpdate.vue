@@ -91,12 +91,21 @@ export default {
       type: Object,
       required: true,
     },
+    periodId: {
+      type: String,
+      default: '',
+    },
   },
+  created() {
+    this.getokrDetail();
+  },
+
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
+        console.log('periodId', this.periodId);
       }
     },
     summitUpdate() {
@@ -106,6 +115,7 @@ export default {
           okrDetailProgress: this.formData.okrDetailProgress,
         },
         remark: this.formData.updateexplain,
+        periodId: this.periodId,
       };
       if (this.formData.krList && this.formData.krList.length > 0) {
         this.summitForm.krUpdateProcessDtos = [];

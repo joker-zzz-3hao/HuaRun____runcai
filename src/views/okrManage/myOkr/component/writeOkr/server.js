@@ -14,7 +14,7 @@ export default class Server extends ServerBase {
   }
 
   getokrDetail(param) {
-    return this._ajaxPost(`gateway/talent-query/okr/outside/query/okrDetail?okrId=${param.okrId}`);
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
   }
 
   addokr(param) {

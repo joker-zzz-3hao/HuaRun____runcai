@@ -134,6 +134,7 @@ export default {
     return {
       visible: false,
       loading: false,
+      initUserAccount: '',
       formData: {
         userName: '', // 用户名称
         loginPwd: '', // 密码

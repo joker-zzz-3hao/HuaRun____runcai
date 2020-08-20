@@ -4,18 +4,18 @@
       <el-table-column prop="okrDetailVersion"></el-table-column>
       <el-table-column width="250" prop="typeName"></el-table-column>
       <el-table-column prop="objectName"></el-table-column>
-      <el-table-column width="100" property="guanlianId">
+      <!-- <el-table-column width="100" property="guanlianId">
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.checkFlag"
             @change="selectDepartokr(scope.$index, scope.row)"
           ></el-checkbox>关联
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
-    <span slot="footer" class="dialog-footer">
+    <!-- <span slot="footer" class="dialog-footer">
       <el-button @click="summitUpdate">更新</el-button>
-    </span>
+    </span>-->
   </div>
 </template>
 
@@ -45,12 +45,13 @@ export default {
     };
   },
   created() {
-    // this.searchOkr();
+    this.searchOkr();
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr() {
       this.searchForm = { okrId: this.okrId };
+      this.okrDetailId = this.okrId;
       this.server.selectOkrHistoryVersion({ okrDetailId: this.okrDetailId }).then((res) => {
         if (res.code == 200) {
           this.oldOKRList = res.data;

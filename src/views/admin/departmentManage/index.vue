@@ -87,7 +87,13 @@
               </template>
             </el-table-column>
             <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
-            <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
+            <el-table-column
+              min-width="130px"
+              fixed="right"
+              align="left"
+              prop="corpGroupName"
+              label="操作"
+            >
               <template slot-scope="scope">
                 <el-button
                   type="text"

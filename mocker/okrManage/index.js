@@ -116,7 +116,7 @@ const mockData = {
   },
   // author：林心荃
   // 用于：okr详情
-  'POST /gateway/talent-query/okr/outside/query/okrDetail': (req, res) => {
+  'POST /gateway/talent-query/okr/query/okrDetail': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       okrMain: {
         'okrId|1': ['111111222', '111111223'],
@@ -207,7 +207,7 @@ const mockData = {
   },
   // author：林心荃
   // 用于：查操作历史
-  'POST /gateway/talent-query/okr/outside/query/okrOperationHistory': (req, res) => {
+  'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'records|3': [{
         'date|+1': ['8月12日', '8月11日', '8月10日'],

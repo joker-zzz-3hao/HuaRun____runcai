@@ -33,16 +33,16 @@ export default class Server extends ServerBase {
 
   // 创建部门
   createOrg(param) {
-    return this._ajaxPost('system-service/sys/organization/insertOrg', param);
+    return this._ajaxPost('gateway/system-service/sys/organization/insertOrg', param);
   }
 
   // 设置部门负责人
   setDepartLeader(param) {
-    return this._ajaxPost('system-service/sys/userRole/addUserRole', param);
+    return this._ajaxPost('gateway/system-service/sys/userRole/addUserRole', param);
   }
 
   // 取消部门负责人
   removeDepartLeder(param) {
-    return this._ajaxPost('system-service/sys/userRole/delUserRole', param);
+    return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
   }
 }
