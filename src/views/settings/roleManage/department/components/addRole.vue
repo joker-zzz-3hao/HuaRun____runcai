@@ -19,19 +19,21 @@
       <el-form-item label="菜单权限" v-if="!rouleType">
         <div class="menuTreeList">
           <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-          <div @click="showMenu=!showMenu">+</div>
+          <el-popover placement="bottom" trigger="click">
+            <div class="postMenu">
+              <el-cascader-panel
+                @change="handleCheckChange"
+                ref="treeMenu"
+                v-model="selectArr"
+                :options="data"
+                :props="{ multiple: true }"
+                node-key="id"
+              ></el-cascader-panel>
+            </div>
+            <div slot="reference">+</div>
+          </el-popover>
         </div>
       </el-form-item>
-      <div class="postMenu" v-show="showMenu">
-        <el-cascader-panel
-          @change="handleCheckChange"
-          ref="treeMenu"
-          v-model="selectArr"
-          :options="data"
-          :props="{ multiple: true }"
-          node-key="id"
-        ></el-cascader-panel>
-      </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm()">确定</el-button>

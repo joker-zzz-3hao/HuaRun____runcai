@@ -46,19 +46,21 @@
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-            <div @click="showMenu=!showMenu">+</div>
+            <div class="postMenu">
+              <el-popover placement="bottom-end" trigger="click">
+                <el-cascader-panel
+                  @change="handleCheckChange"
+                  ref="treeMenu"
+                  v-model="selectArr"
+                  :options="data"
+                  :props="{ multiple: true }"
+                  node-key="id"
+                ></el-cascader-panel>
+                <div slot="reference">+</div>
+              </el-popover>
+            </div>
           </div>
         </el-form-item>
-        <div class="postMenu" v-show="showMenu">
-          <el-cascader-panel
-            @change="handleCheckChange"
-            ref="treeMenu"
-            v-model="selectArr"
-            :options="data"
-            :props="{ multiple: true }"
-            node-key="id"
-          ></el-cascader-panel>
-        </div>
       </el-form>
       <div>
         <el-button type="primary" @click="validateForm('form')">确定</el-button>
@@ -91,6 +93,7 @@ export default {
   data() {
     return {
       server,
+      visible: false,
       showMenu: false,
       selectArr: [],
       menuTreeList: [],
@@ -195,12 +198,14 @@ export default {
               return item.split(':');
             }
           });
+
           // eslint-disable-next-line array-callback-return
           this.selectArr = keys.filter((item) => {
             if (item) {
               return item;
             }
           });
+
           this.$nextTick(() => {
             this.handleCheckChange();
           });
@@ -224,7 +229,8 @@ export default {
       });
     },
     // 获取选中tree key值 展示选中
-    handleCheckChange() {
+    handleCheckChange(e) {
+      console.log(e);
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
@@ -238,13 +244,14 @@ export default {
           return item;
         }
       });
+
       this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据
     pudateForm() {
       this.server.updateTenant({
         tenantName: this.form.tenantName,
-        tenantID: this.form.tenantID,
+        tenantId: this.form.tenantID,
         applyUser: this.form.applyUser,
         mobilePhone: this.form.mobilePhone,
         startTime: this.form.startTime,
@@ -255,7 +262,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.$emit('getTenantList');
-            this.$message.success('创建成功');
+            this.$message.success(res.msg);
             this.closed();
           } else {
             this.$message.error(res.msg);

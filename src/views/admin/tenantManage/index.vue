@@ -41,7 +41,7 @@
                 :active-text="scope.row.status=='O'?'启用':'禁用'"
                 active-value="O"
                 inactive-value="S"
-                @change="updateStatus(scope.$index,scope.row)"
+                @change="handleChange(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
@@ -103,7 +103,7 @@ export default {
     this.getTenantList();
   },
   methods: {
-    updateStatus(index, row) {
+    updateStatus(row) {
       this.server.updateTenantStatus({
         tenantId: row.tenantId,
         status: row.status,
@@ -147,12 +147,14 @@ export default {
       this.infoBool = true;
       this.existDetail = true;
     },
-    handleDelete(done) {
-      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+    handleChange(row) {
+      this.$confirm('是否修改状态？', '确认修改')
         .then(() => {
-          done();
+          this.updateStatus(row);
         })
-        .catch(() => {});
+        .catch(() => {
+          this.getTenantList();
+        });
     },
   },
   data() {
