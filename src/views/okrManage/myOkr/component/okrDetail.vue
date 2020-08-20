@@ -152,13 +152,16 @@ export default {
       }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.cycleList = res.data.records;
+          this.cycleList = [];
+          this.cycleList.push(res.data.content);
+          console.log('this.cycleList', this.cycleList);
         }
       });
     },
     //
     showOkrDialog() {
       this.getokrDetail();
+      this.getOperationHistory();
     },
     // 打开历史版本
     openHistory() {
