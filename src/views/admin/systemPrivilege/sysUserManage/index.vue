@@ -8,32 +8,20 @@
         <el-form-item label="用户在账号">
           <span>{{userInfo.userAccount}}</span>
         </el-form-item>
+        <el-form-item label="用户角色">
+          <span>超级管理员</span>
+        </el-form-item>
+        <el-form-item label="账号类型">
+          <span>内置用户</span>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <span>{{userInfo.createTime}}</span>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-button @click="resetPwd">修改密码</el-button>
+        </el-form-item>
       </el-form>
     </div>
-    <crcloud-table @searchList="searchList" :isPage="false">
-      <div slot="tableContainer">
-        <el-table ref="orgTable" v-loading="loading" :data="tableData">
-          <el-table-column min-width="100px" align="left" prop="userAccount" label="用户账号"></el-table-column>
-          <el-table-column min-width="100px" align="left" label="用户角色">
-            <template>
-              <div>超级管理员</div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="100px" align="left" label="账号类型">
-            <template>
-              <div>内置用户</div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
-          <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
-            <template slot-scope="scope">
-              <el-button @click="resetPwd(scope.row)">修改密码</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </crcloud-table>
-    <!-- 创建部门 -->
     <el-dialog
       ref="createDepart"
       v-if="visible"
@@ -95,7 +83,6 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 10,
-      tableData: [],
       userInfo: {},
       formData: {
         loginPwd: '',
@@ -121,11 +108,11 @@ export default {
       });
     },
 
-    resetPwd(user) {
-      this.formData.userAccount = user.userAccount;
+    resetPwd() {
       this.visible = true;
     },
     save() {
+      this.formData.userAccount = this.userInfo.userAccount;
       this.$refs.resetForm.validate((valid) => {
         if (valid) {
           this.server.editPwd(this.formData).then((res) => {
