@@ -42,7 +42,7 @@
         @openDialog="openDialog"
       >
         <template slot="head-bar" slot-scope="props">
-          <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button>
+          <!-- <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button> -->
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"

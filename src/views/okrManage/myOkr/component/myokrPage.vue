@@ -58,22 +58,22 @@
         @goDraft="goDraft"
       >
         <template slot="head-bar" slot-scope="props">
-          <el-button
+          <!-- <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-detail',props.okritem)"
-          >详情</el-button>
+          >详情</el-button>-->
           <!-- <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openDialog('tl-okr-history',props.okritem)"
           >历史版本</el-button>-->
           <el-button
             v-if="searchForm.status=='1'"
-            @click.native.stop="openDialog('tl-okr-update',props.okritem)"
+            @click.native.stop="openUpdate('tl-okr-update',props.okritem)"
           >进度更新</el-button>
-          <el-button
+          <!-- <el-button
             v-if="['6', '8'].includes(searchForm.status)"
             @click.native.stop="goDraft(item)"
-          >编辑</el-button>
+          >编辑</el-button>-->
         </template>
       </tl-okr-table>
     </div>
