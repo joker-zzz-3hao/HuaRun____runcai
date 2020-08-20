@@ -3,7 +3,7 @@
     <!-- 用展开行表格 -->
     <div>
       <div>
-        <div>{{okrCycle.periodDesc}}OKR</div>
+        <div>{{okrCycle.periodName}}OKR</div>
         <ul>
           <li>
             <span>状态</span>
@@ -22,22 +22,29 @@
           </li>
         </ul>
       </div>
-      <okrCollapse :tableList="tableList" :disabled="false" :activeList="[0]">
+      <tl-okr-table
+        :tableList="tableList"
+        :disabled="false"
+        :activeList="[0]"
+        :showOKRInfoLabel="true"
+      >
         <template slot="head-bar" slot-scope="props">
           <button
+            v-if="props.okritem.okrParentId"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图</button>
         </template>
         <template slot="body-bar" slot-scope="props">
           <button
+            v-if="props.okritem.okrParentId"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图</button>
         </template>
-      </okrCollapse>
+      </tl-okr-table>
     </div>
     <!-- 展示头像 -->
     <div>
-      头像
+      <span>成员OKR</span>
       <ul style="display:flex" v-if="memberList.length">
         <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
           <div class="user-name">{{cutName(item.userName)}}</div>
@@ -48,7 +55,7 @@
 </template>
 
 <script>
-import okrCollapse from '@/components/okrCollapse';
+import okrTable from '@/components/okrTable';
 import Server from '../server';
 import CONST from '../const';
 
@@ -57,7 +64,7 @@ const server = new Server();
 export default {
   name: 'departmentPage',
   components: {
-    okrCollapse,
+    'tl-okr-table': okrTable,
   },
   data() {
     return {
