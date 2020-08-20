@@ -291,20 +291,31 @@ export default {
           // h('i', {
           //   class: 'el-icon-edit',
           // }),
-          h('el-button', {
-            props: {
-              type: 'text',
-              size: 'small',
-            },
+          // h('el-button', {
+          //   props: {
+          //     type: 'text',
+          //     size: 'small',
+          //   },
+          //   style: {
+          //     marginLeft: '15px',
+          //   },
+          //   on: {
+          //     click: () => {
+          //       this.createDepart(data);
+          //     },
+          //   },
+          // }, '创建部门'),
+          h('i', {
+            class: 'el-icon-edit',
             style: {
-              marginLeft: '15px',
+              marginLeft: '150px',
             },
             on: {
               click: () => {
                 this.createDepart(data);
               },
             },
-          }, '创建部门'),
+          }),
         ]),
       ]);
     },
@@ -380,7 +391,7 @@ export default {
     // 设置负责人
     setLeader(user) {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
-      const title = user.leader ? `是否设置${user.userName}为部门负责人？` : `是否取消部门负责人${user.userName}?`;
+      const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
       this.$confirm(title).then(() => {
         this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
