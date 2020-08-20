@@ -50,6 +50,23 @@
       :optionType="optionType"
       @closeDicDialog="closeDicDialog"
     ></tl-create-dic>
+    <el-drawer
+      :modal="false"
+      :append-to-body="false"
+      :visible.sync="showEditDicDialog"
+      v-if="showEditDicDialog"
+      title="编辑字典"
+      :before-close="closeDicDialog"
+    >
+      <tl-create-dic
+        ref="createDic"
+        v-if="showEditDicDialog"
+        :server="server"
+        :codeId="codeId"
+        :optionType="optionType"
+        @closeDicDialog="closeDicDialog"
+      ></tl-create-dic>
+    </el-drawer>
   </div>
 </template>
 
@@ -68,6 +85,7 @@ export default {
     return {
       server,
       showDicDialog: false,
+      showEditDicDialog: false,
       keyWord: '',
       currentPage: 1,
       pageSize: 10,
@@ -109,6 +127,15 @@ export default {
         this.$refs.createDic.show();
       });
     },
+    editDic(dic) {
+      if (dic.codeId) {
+        this.codeId = String(dic.codeId);
+        this.optionType = 'edit';
+      } else {
+        this.optionType = 'add';
+      }
+      this.showEditDicDialog = true;
+    },
     deleteDic(dic) {
       this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
         this.server.deleteDic({ codeId: dic.codeId }).then((res) => {
@@ -125,6 +152,7 @@ export default {
         this.searchList();
       }
       this.showDicDialog = false;
+      this.showEditDicDialog = false;
     },
   },
 };

@@ -56,8 +56,8 @@
           <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="save">确认</el-button>
-          <el-button @click="close">取消</el-button>
+          <el-button :loading="loading" @click="save">确认</el-button>
+          <el-button :disabled="loading" @click="close">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -89,6 +89,7 @@ export default {
       formData: {
         loginPwd: '',
         newPwd: '',
+        confirmPwd: '',
         userAccount: '',
       },
     };
@@ -123,11 +124,16 @@ export default {
       };
       this.$refs.resetForm.validate((valid) => {
         if (valid) {
+          this.loading = true;
           this.server.editPwd(params).then((res) => {
             if (res.code == 200) {
+              this.formData.loginPwd = '';
+              this.formData.newPwd = '';
+              this.formData.confirmPwd = '';
               this.$message.success('重置密码成功');
+              this.visible = false;
             }
-            this.visible = false;
+            this.loading = false;
           });
         }
       });
