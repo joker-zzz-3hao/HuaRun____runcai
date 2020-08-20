@@ -9,35 +9,18 @@
           :key="item.detailId+index"
           :name="index"
           :disabled="disabled"
+          @click.native.stop="opensome(item)"
         >
           <template slot="title">
-            <div class="hideEdit">
-              <span v-if="showOKRInfoLabel">目标O：</span>
-              <el-form-item style="display:inline-block" v-if="canWrite && item.showTitleEdit">
-                <el-input v-model="item.okrDetailObjectKr"></el-input>
-              </el-form-item>
-              <span v-else>{{item.okrDetailObjectKr}}</span>
-              <!-- 做成hover -->
-              <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
-            </div>
             <ul class="detail">
+              <li>
+                <span v-if="showOKRInfoLabel">目标O：</span>
+                <span>{{item.okrDetailObjectKr}}</span>
+              </li>
               <li class="hideEdit">
-                <span>权重</span>
-                <el-form-item v-if="canWrite && item.showWeightEdit">
-                  <el-input-number
-                    v-model="item.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <span v-else>{{item.okrWeight}}%</span>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showWeightEdit')"></i>
+                <span>{{item.okrWeight}}%</span>
               </li>
               <li>
-                <span>当前进度</span>
                 <span class="progresswidth">
                   <el-progress
                     :stroke-width="10"
@@ -45,8 +28,8 @@
                   ></el-progress>
                 </span>
               </li>
+              <!-- 承接地图 -->
               <li v-if="showParentOkr">
-                <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
                 <span v-if="canWrite && item.parentUpdate">
@@ -69,44 +52,15 @@
             <slot name="head-bar" :okritem="item"></slot>
           </template>
           <div v-for="(kritem, krIndex) in item.krList" :key="kritem.detailId+krIndex">
-            <div class="hideEdit">
-              <span v-if="showOKRInfoLabel">关键行动KR：</span>
-              <el-form-item style="display:inline-block" v-if="canWrite && kritem.showTitleEdit">
-                <el-input v-model="kritem.okrDetailObjectKr"></el-input>
-              </el-form-item>
-              <span v-else>
-                <span>{{krIndex+1}}</span>
-                {{kritem.okrDetailObjectKr}}
-              </span>
-              <!-- 做成hover -->
-              <i
-                v-if="canWrite"
-                class="el-icon-edit"
-                @click="showKRInput(index,krIndex,'showTitleEdit')"
-              ></i>
-            </div>
             <ul class="detail">
+              <li>
+                <span v-if="showOKRInfoLabel">关键行动KR：</span>
+                <span>{{kritem.okrDetailObjectKr}}</span>
+              </li>
               <li class="hideEdit">
-                <span>分权重</span>
-                <el-form-item v-if="canWrite && kritem.showWeightEdit">
-                  <el-input-number
-                    v-model="kritem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <span v-else>{{kritem.okrWeight}}%</span>
-                <i
-                  v-if="canWrite"
-                  class="el-icon-edit"
-                  @click="showKRInput(index,krIndex,'showWeightEdit')"
-                ></i>
+                <span>{{kritem.okrWeight}}%</span>
               </li>
               <li>
-                <span>当前进度</span>
                 <span class="progresswidth">
                   <el-progress
                     :stroke-width="10"
@@ -115,9 +69,8 @@
                 </span>
               </li>
               <li>
-                <span>风险状态</span>
                 <!-- okrDetailConfidence -->
-                <span>{{kritem.okrDetailConfidence}}</span>
+                <span>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
               </li>
             </ul>
             <!-- 可在折叠面板body处添加内容 -->
@@ -134,6 +87,12 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 
+const CONFIDENCE_MAP = {
+  1: '无风险',
+  2: '风险可控',
+  3: '失控',
+};
+
 export default {
   name: 'okrCollapse',
   components: {
@@ -141,6 +100,7 @@ export default {
   },
   data() {
     return {
+      CONFIDENCE_MAP,
       okrmain: {},
       formData: {},
       innerActiveList: [],
@@ -181,6 +141,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      defalut: '1',
+    },
   },
   mounted() {
     this.innerActiveList = this.activeList;
@@ -206,6 +170,15 @@ export default {
     updateokrCollapse() {
       this.$forceUpdate();
     },
+    opensome(item) {
+      console.log('点击了面板', item);
+      // 起草中打开编辑页
+      // if (['6', '8'].includes(this.status)) {
+      //   this.$emit('goDraft', item);
+      // } else {
+      //   this.$emit('openDialog', item);
+      // }
+    },
   },
   watch: {
 
@@ -228,9 +201,11 @@ export default {
 }
 .detail,
 .detail li {
-  display: flex;
+  display: inline-flex;
 }
-
+.hideEdit {
+  display: inline-flex;
+}
 .hideEdit .el-icon-edit {
   opacity: 0;
 }

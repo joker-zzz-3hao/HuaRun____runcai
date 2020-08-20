@@ -12,8 +12,13 @@
     <!-- okr模块 只有起草中是有多个 -->
     <div v-for="(item, index) in okrList" :key="index">
       <!-- 基本信息 -->
-      <div v-if="item.okrMain">
-        <ul>
+      <div v-if="item.tableList.length>0">
+        <div>{{okrCycle.periodName}}OKR</div>
+        <ul class="okrMain" style>
+          <li>
+            <span>更新时间</span>
+            <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
+          </li>
           <li>
             <span>状态</span>
             <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
@@ -24,16 +29,23 @@
           </li>
           <li>
             <span>OKR进度</span>
-            <el-progress :stroke-width="10" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
-          </li>
-          <li>
-            <span>更新时间</span>
-            <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
+            <el-progress
+              type="circle"
+              width="100"
+              :percentage="parseInt(item.okrMain.okrProgress, 10)"
+            ></el-progress>
           </li>
         </ul>
-      </div>
-      <div>
         <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
+      </div>
+      <!-- 表头 -->
+      <div v-if="item.tableList.length>0">
+        <ul class="tablehead" style="display:flex; margin-left:100px">
+          <li>权重</li>
+          <li>进度</li>
+          <li>风险状态</li>
+          <li>承接地图</li>
+        </ul>
       </div>
       <!-- okr面板 -->
       <tl-okr-table
@@ -41,6 +53,9 @@
         :disabled="false"
         :activeList="[0]"
         :showOKRInfoLabel="true"
+        :status="searchForm.status"
+        @openDialog="openDialog"
+        @goDraft="goDraft"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
@@ -56,7 +71,7 @@
             @click.native.stop="openDialog('tl-okr-update',props.okritem)"
           >进度更新</el-button>
           <el-button
-            v-if="['6',  '8'].includes(searchForm.status)"
+            v-if="['6', '8'].includes(searchForm.status)"
             @click.native.stop="goDraft(item)"
           >编辑</el-button>
         </template>
@@ -219,25 +234,34 @@ export default {
       });
     },
     // 打开抽屉
-    openDialog(componentName, val) {
-      console.log('点击', componentName, val);
+    openDialog(val) {
       this.writeInfo.canWrite = false;
-      this.currentView = componentName;
+      this.currentView = 'tl-okr-detail';
       this.okrItem = val;
+      this.drawerTitle = 'OKR详情';
       // this.okrId = val.detailId;
-      switch (this.currentView) {
-        case 'tl-okr-detail':
-          this.drawerTitle = 'OKR详情';
-          break;
-        case 'tl-okr-update':
-          this.drawerTitle = '更新进度';
-          break;
-        case 'tl-okr-history':
-          this.drawerTitle = '历史记录';
-          break;
-        default:
-          break;
-      }
+      // switch (this.currentView) {
+      //   case 'tl-okr-detail':
+      //     this.drawerTitle = 'OKR详情';
+      //     break;
+      //   case 'tl-okr-update':
+      //     this.drawerTitle = '更新进度';
+      //     break;
+      //   case 'tl-okr-history':
+      //     this.drawerTitle = '历史记录';
+      //     break;
+      //   default:
+      //     break;
+      // }
+      this.setMyokrDrawer(true);
+      this.$nextTick(() => {
+        this.$refs[this.currentView].showOkrDialog();
+      });
+    },
+    openUpdate(componentName, val) {
+      this.okrItem = val;
+      this.drawerTitle = '更新进度';
+      this.currentView = componentName;
       this.setMyokrDrawer(true);
       this.$nextTick(() => {
         this.$refs[componentName].showOkrDialog();
@@ -249,25 +273,23 @@ export default {
         okrId: this.okrId,
       };
       this.currentView = '';
-      // this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
       this.setMyokrDrawer(true);
-      // this.drawer = true;
     },
     goDraft(item) {
       console.log('goDraft', item.params);
+      // TODO: 加okr类型
       this.writeInfo = {
         canWrite: 'draft',
         draftParams: item.params,
         draftId: item.id,
         okrStatus: this.searchForm.status,
         okrorgCycle: this.okrorgCycle,
-        okrType: this.okrMain.okrBelongType,
+        okrType: 2,
       };
-      // this.$router.push({ name: 'writeOkr', params: { canWrite: 'draft', writeInfo } });
       this.setMyokrDrawer(true);
-      // this.drawer = true;
     },
     handleClose() {
+      this.currentView = '';
       this.setMyokrDrawer(false);
     },
   },
@@ -305,5 +327,14 @@ export default {
 .progresswidth {
   width: 150px;
   display: inline-block;
+}
+.okrMain {
+  display: flex;
+}
+.okrMain li {
+  margin: 20px;
+}
+.tablehead li {
+  margin: 20px;
 }
 </style>
