@@ -44,8 +44,9 @@ export default {
       if (!value) {
         callback('请输入邮箱');
       } else if (
-        !/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-          .test(value)) {
+        !
+        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+        .test(value)) {
         callback('邮箱格式不正确');
       } else {
         callback();
@@ -69,7 +70,7 @@ export default {
     validateAccount(rule, value, callback) {
       if (!value) {
         callback('请输入账号');
-      } else if (this.server.judgeUser) {
+      } else if (this.server.judgeUser && value != this.initUserAccount) {
         this.server.judgeUser({
           userAccount: value,
         }).then((res) => {
