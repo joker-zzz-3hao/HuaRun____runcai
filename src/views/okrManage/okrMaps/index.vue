@@ -20,7 +20,7 @@
       </div>
       <!-- 搜索框 -->
       <div>
-        <el-input placeholder="部门名称/成员/关键词" v-model="keyword" @keyup.enter.native="search">
+        <el-input placeholder="请输入关键词" v-model="keyword" @keyup.enter.native="search">
           <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
         </el-input>
       </div>
@@ -58,7 +58,7 @@
     </div>
     <!-- 搜索框显示 -->
     <div v-if="!showDepartmentSelect">
-      <tl-search-table :searchData="searchData"></tl-search-table>
+      <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>
     </div>
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
@@ -75,6 +75,7 @@ import okrTable from './components/okrTable';
 import mission from './components/mission';
 import worth from './components/worth';
 import searchTable from './components/searchTable';
+import CONST from './const';
 import Server from './server';
 
 const server = new Server();
@@ -83,9 +84,12 @@ export default {
   name: 'okrMaps',
   data() {
     return {
+      CONST,
       server,
       keyword: '',
+      searchType: '2',
       treeData: [],
+      treeTableData: [],
       departmentData: [],
       initDepartment: {},
       cycleData: [],
@@ -168,17 +172,21 @@ export default {
       if (this.okrCycle.periodId && this.orgFullId) {
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
+          // periodId: '1204827318294274048',
           orgId: this.orgFullId,
+          // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
-            res.data.forEach((item) => {
-              if (item.orgFullId == this.orgFullId) {
-                item.orgParentId = null;
-              }
-            });
-            this.treeData = res.data;
-            console.log(this.treeData);
+            if (res.data.okrTree.length > 0) {
+              res.data.okrTree.forEach((item) => {
+                if (item.orgFullId == this.orgFullId) {
+                // if (item.orgFullId == 'CR0011000054:CR0012000174:CR0012000184:') {
+                  item.orgParentId = null;
+                }
+              });
+              this.treeData = res.data.okrTree;
+            }
           }
         });
       }
@@ -202,7 +210,7 @@ export default {
         keyWord: self.keyword,
         currentPage: 1,
         pageSize: 10,
-        type: '2',
+        type: self.searchType,
       }).then((res) => {
         if (res.code == '200') {
           self.searchData = res.data.content;
@@ -222,6 +230,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.mission.show(type, title);
       });
+    },
+    changeType() {
+      this.search();
     },
     showDetail(okrId) {
       this.okrId = okrId;

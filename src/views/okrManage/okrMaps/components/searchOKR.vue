@@ -7,7 +7,7 @@
     >
       <div style="display:flex;">
         <div>{{CONST.OKR_TYPE_MAP[item.okr_detail_type]}}</div>
-        <div>{{item.okr_detail_content}}</div>
+        <div v-html="item.okr_detail_content"></div>
       </div>
       <div style="display:flex;justify-content: space-between;">
         <div style="display: flex;">
@@ -33,18 +33,36 @@
 </template>
 
 <script>
+import CONST from '../const';
+
 export default {
   name: 'searchOKR',
   components: {},
-  props: {},
+  props: {
+    searchData: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
+      CONST,
       color: 'blue',
     };
   },
   mounted() {},
   computed: {},
   methods: {},
-  watch: {},
+  watch: {
+    'searchData.length': {
+      handler(val) {
+        console.log(val);
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>

@@ -16,6 +16,7 @@ function sessionTimeOut(data) {
   //   window.open(`${origin}/#/login`, '_self');
   // }
   window.open(`${origin}/#/login`, '_self');
+  localStorage.token = '';
 }
 
 const ajax = axios.create({
