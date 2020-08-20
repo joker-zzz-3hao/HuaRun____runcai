@@ -209,7 +209,7 @@ export default {
     },
     saveUser() {
       const params = {
-        userId: this.formData.userId,
+        userId: this.userId,
         orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
         orgFullId: this.formData.orgIdList.join(':'),
         tenantName: this.formData.tenantName,

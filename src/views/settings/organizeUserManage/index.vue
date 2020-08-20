@@ -345,7 +345,7 @@ export default {
           //   },
           // }, '创建部门'),
           h('i', {
-            class: 'el-icon-edit',
+            class: 'el-icon-circle-plus',
             style: {
               marginLeft: '150px',
             },
