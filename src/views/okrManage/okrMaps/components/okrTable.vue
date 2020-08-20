@@ -1,20 +1,24 @@
 <template>
   <div>
-    <el-table
-      :data="tableData"
-      style="width: 100%;margin-bottom: 20px;"
-      row-key="orgId"
-      border
-      default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-    >
-      <el-table-column prop="orgName" label="名称" sortable width="180"></el-table-column>
-      <el-table-column prop="name" label="负责人" sortable width="180"></el-table-column>
-      <el-table-column prop="address" label="进度"></el-table-column>
-      <el-table-column prop="address" label="目标（O）"></el-table-column>
-      <el-table-column prop="address" label="关键结果（KR）"></el-table-column>
-      <el-table-column prop="address" label="状态"></el-table-column>
-    </el-table>
+    <crcloud-table :isPage="false">
+      <div slot="tableContainer">
+        <el-table
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+          border
+          row-key="orgId"
+          :data="tableData"
+          max-height="600"
+          :empty-text="emptyText"
+        >
+          <el-table-column prop="orgName" label="名称" width="180"></el-table-column>
+          <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
+          <el-table-column prop="okrProgress" label="进度" width="180"></el-table-column>
+          <el-table-column prop="name" label="目标（O）" width="180"></el-table-column>
+          <el-table-column prop="name" label="关键结果（KR）" width="180"></el-table-column>
+          <el-table-column prop="name" label="状态" width="180"></el-table-column>
+        </el-table>
+      </div>
+    </crcloud-table>
   </div>
 </template>
 
