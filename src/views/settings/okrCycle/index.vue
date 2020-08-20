@@ -29,7 +29,7 @@
                 :active-text="scope.row.periodType==1?'启用':'禁用'"
                 active-value="1"
                 inactive-value="0"
-                @change="addOrUpdate(scope.row)"
+                @change="statusList(scope.row)"
                 class="tl-switch"
               ></el-switch>
             </template>
@@ -112,6 +112,16 @@ export default {
       this.title = '编辑周期';
       this.existPut = true;
       this.updateData = JSON.parse(JSON.stringify(row));
+    },
+    statusList(row) {
+      this.$confirm('是否确认修改状态', '状态确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(() => {
+        this.addOrUpdate(row);
+      }).catch(() => {
+        this.getTableList();
+      });
     },
   },
 

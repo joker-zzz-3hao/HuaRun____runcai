@@ -141,6 +141,7 @@ export default {
     return {
       loading: false,
       isEditPwd: false,
+      initUserAccount: '',
       pwdLabel: '用户密码',
       formData: {
         userName: '', // 用户名称
@@ -169,6 +170,7 @@ export default {
         if (res.code == 200) {
           this.formData.userName = res.data.userName;
           this.formData.userAccount = res.data.userAccount;
+          this.initUserAccount = res.data.userAccount;
           this.formData.userMobile = res.data.userMobile;
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;

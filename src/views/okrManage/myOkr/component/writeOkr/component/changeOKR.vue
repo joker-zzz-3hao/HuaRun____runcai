@@ -32,12 +32,6 @@
       :showOKRInfoLabel="true"
       @openUndertake="openUndertake"
     >
-      <template slot="head-bar" slot-scope="props">
-        <el-button @click.native.stop="openStopDialog(props.okritem,'o')">终止</el-button>
-      </template>
-      <template slot="body-bar" slot-scope="props">
-        <el-button @click.native.stop="openStopDialog(props.okritem,'kr')">终止</el-button>
-      </template>
       <template slot="addkr-bar" slot-scope="props">
         <div v-if="props.oitem.newkrList">
           <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
@@ -90,7 +84,13 @@
       </template>
     </okrCollapse>
     <!-- 新增okr -->
-    <okr-form ref="okrform" :server="server" :canWrite="true" :isnew="false"></okr-form>
+    <okr-form
+      ref="okrform"
+      :searchForm="searchForm"
+      :server="server"
+      :canWrite="true"
+      :isnew="false"
+    ></okr-form>
     <!-- 变更原因 -->
     <div>
       <span>变更原因</span>
@@ -101,43 +101,7 @@
       <el-button @click="summit">提交</el-button>
       <el-button @click="goback">取消</el-button>
     </div>
-    <!-- 终止弹窗 -->
-    <el-dialog
-      title="终止"
-      :visible.sync="dialogStopVisible"
-      width="50%"
-      :modal-append-to-body="false"
-      :before-close="closeStopDialog"
-    >
-      <div>还未完成！进度为{{deletedProgress}}%确认要终止吗？</div>
-      <!-- 表格 -->
-      <el-table :data="tableData">
-        <el-table-column
-          v-if="deletedType=='o'"
-          align="left"
-          width="150"
-          label="目标（O）"
-          prop="oTitle"
-        ></el-table-column>
-        <el-table-column
-          v-if="deletedType=='o'"
-          align="left"
-          width="150"
-          label="目标进度"
-          prop="oProgress"
-        ></el-table-column>
-        <el-table-column align="left" width="150" label="关键结果（KR）" prop="krTitle"></el-table-column>
-        <el-table-column align="left" width="150" label="KR进度" prop="krProgress"></el-table-column>
-        <el-table-column align="left" width="150" label="权重" prop="krWeight"></el-table-column>
-      </el-table>
-      <!-- 结束原因 -->
-      <el-input type="textarea" v-model="remark"></el-input>
 
-      <!-- 附件 -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="summitStop">终止</el-button>
-      </span>
-    </el-dialog>
     <el-dialog
       title="关联承接项"
       :visible.sync="dialogVisible"
@@ -187,6 +151,9 @@ export default {
       selectDepartRow: {},
       selectIndex: '', // 当前选择的
       okrMainId: '',
+      searchForm: {
+        okrStatus: '1',
+      },
     };
   },
   components: {

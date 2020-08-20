@@ -38,7 +38,12 @@
         </dl>
       </div>
       <div class="operating-panel">
-        <el-button type="primary" @click="getSave" class="tl-btn amt-bg-slip">保存更改</el-button>
+        <el-button
+          type="primary"
+          :disabled="BtnDisabled"
+          @click="getSave"
+          class="tl-btn amt-bg-slip"
+        >保存更改</el-button>
       </div>
     </div>
   </div>
@@ -57,6 +62,7 @@ export default {
       radio: [],
       setList: [],
       sysConfigDtos: [],
+      BtnDisabled: true,
     };
   },
   created() {
@@ -90,6 +96,14 @@ export default {
           this.$message.error(res.msg);
         }
       });
+    },
+  },
+  watch: {
+    radio: {
+      handler() {
+        this.BtnDisabled = false;
+      },
+      deep: true,
     },
   },
   components: {
