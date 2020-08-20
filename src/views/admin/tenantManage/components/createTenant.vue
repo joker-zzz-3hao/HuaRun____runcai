@@ -45,19 +45,22 @@
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-            <div @click="showMenu=!showMenu">+</div>
+            <div>
+              <el-popover placement="bottom" trigger="click">
+                <el-cascader-panel
+                  @change="handleCheckChange"
+                  ref="treeMenu"
+                  v-model="selectArr"
+                  :options="data"
+                  :props="{ multiple: true }"
+                  node-key="id"
+                ></el-cascader-panel>
+                <div slot="reference">+</div>
+              </el-popover>
+            </div>
           </div>
         </el-form-item>
-        <div v-show="showMenu">
-          <el-cascader-panel
-            @change="handleCheckChange"
-            ref="treeMenu"
-            v-model="selectArr"
-            :options="data"
-            :props="{ multiple: true }"
-            node-key="id"
-          ></el-cascader-panel>
-        </div>
+
         <!-- <el-form-item label="使用时间" prop="date">
           <el-date-picker
             v-model="form.date"
@@ -106,6 +109,7 @@ export default {
   },
   data() {
     return {
+      menuTreeList: [],
       server,
       showMenu: false,
       form: {
@@ -162,13 +166,7 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
-    // 判断租户ID存在请求租户详情接口
-    if (this.tenantId) {
-      this.getTenant();
-      this.$nextTick(() => {
-        this.handleCheckChange();
-      });
-    }
+
     this.getqueryMenu();
   },
   methods: {
@@ -230,24 +228,34 @@ export default {
     handleCheckChange() {
       console.log(this.selectArr);
       const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item.data.label;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
       this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
     },
     // 提交编辑数据
     pudateForm() {
       this.server.updateTenant({
         tenantName: this.form.tenantName,
-        tenantID: this.form.tenantID,
+        tenantId: this.form.tenantID,
         applyUser: this.form.applyUser,
         mobilePhone: this.form.mobilePhone,
-        startTime: this.form.startTime,
-        endTime: this.form.endTime,
         status: this.form.status,
         menuTree: this.form.menuTree,
       })
         .then((res) => {
           if (res.code == 200) {
             this.$emit('getTenantList');
-            this.$message.success('创建成功');
+            this.$message.success(res.msg);
             this.closed();
           } else {
             this.$message.error(res.msg);
@@ -258,7 +266,7 @@ export default {
     creatForm() {
       this.server.insertTenant({
         tenantName: this.form.tenantName,
-        tenantID: this.form.tenantID,
+        tenantId: this.form.tenantID,
         applyUser: this.form.applyUser,
         mobilePhone: this.form.mobilePhone,
         startTime: this.form.startTime,
@@ -291,5 +299,16 @@ export default {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+.menuTreeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.menuTreeList .list {
+  background: #f4f6f8;
+  border-radius: 14px;
+  padding: 1px 10px;
 }
 </style>
