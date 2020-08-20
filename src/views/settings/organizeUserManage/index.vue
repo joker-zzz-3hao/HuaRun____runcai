@@ -453,7 +453,7 @@ export default {
   height: 100px;
 }
 .org-left-side {
-  width: 600px;
+  width: 400px;
   height: 600px;
 }
 .org-right-side {
