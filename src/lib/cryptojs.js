@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const KEY = 'talent@pwd20$';
+const KEY = 'crctalent@pwd20$';
 const IV = '09dd2ccef1919317';
 
 export default { // 加密
