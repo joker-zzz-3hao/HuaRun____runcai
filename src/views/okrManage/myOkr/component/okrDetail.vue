@@ -152,15 +152,14 @@ export default {
       }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.cycleList = [];
-          this.cycleList.push(res.data.content);
-          console.log('this.cycleList', this.cycleList);
+          this.cycleList = res.data.content;
         }
       });
     },
     //
     showOkrDialog() {
       this.getokrDetail();
+      this.getSupportList();
       this.getOperationHistory();
     },
     // 打开历史版本
