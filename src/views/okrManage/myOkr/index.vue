@@ -89,12 +89,13 @@ export default {
   computed: {
     ...mapState('common', {
       createokrDrawer: (state) => state.createokrDrawer,
+      userInfo: (state) => state.userInfo,
     }),
   },
   created() {
     this.init();
     // TODO:部门名
-    this.departmentName = this.$store.state.common.userInfo.departmentName;
+    this.departmentName = this.userInfo.orgName || '部门';
     this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {
