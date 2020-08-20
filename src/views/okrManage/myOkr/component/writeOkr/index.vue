@@ -94,6 +94,7 @@ export default {
       this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
       this.searchForm.draftParams = this.writeInfo.draftParams || '';
       this.searchForm.draftId = this.writeInfo.draftId || '';
+      this.searchForm.okrType = this.writeInfo.okrType || '';
       console.log('writeInfo', this.writeInfo);
     } else if (this.writeInfo.canWrite == 'cannot') {
       console.log('writeInfo', this.writeInfo);

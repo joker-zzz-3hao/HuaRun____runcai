@@ -1,49 +1,55 @@
 <template>
-  <!-- 公共信息 -->
   <div>
-    <div>
-      <ul>
-        <li>
-          <span>目标类型</span>
-          <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span>
-        </li>
-        <li>
-          <span>负责人</span>
-          <span>{{okrmain.userName}}</span>
-        </li>
-        <li>
-          <span>更新时间</span>
-          <span>{{okrmain.updateTime || okrmain.createTime}}</span>
-        </li>
-        <li>
-          <span>进度</span>
-          <span>
-            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <!-- okr折叠面板 -->
-    <tl-okr-collapse :tableList="tableList" :activeList="activeList">
-      <template slot="head-bar" slot-scope="props">
-        <button
-          v-if="props.okritem.versionCount > 1"
-          @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-        >历史版本</button>
-      </template>
-      <template slot="body-bar" slot-scope="props">
-        <button
-          v-if="props.okritem.versionCount > 1"
-          @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-        >历史版本</button>
-      </template>
-    </tl-okr-collapse>
-    <!-- 操作历史 -->
-    <div>
-      <span>操作历史</span>
-      <tl-timeline :cycleList="cycleList"></tl-timeline>
-    </div>
-    <!-- 点赞 -->
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="详情" name="detail">
+        <!-- 公共信息 -->
+        <div>
+          <ul>
+            <li>
+              <span>目标类型</span>
+              <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span>
+            </li>
+            <li>
+              <span>负责人</span>
+              <span>{{okrmain.userName}}</span>
+            </li>
+            <li>
+              <span>更新时间</span>
+              <span>{{okrmain.updateTime || okrmain.createTime}}</span>
+            </li>
+            <li>
+              <span>进度</span>
+              <span>
+                <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <!-- okr折叠面板 -->
+        <tl-okr-collapse :tableList="tableList" :activeList="activeList">
+          <template slot="head-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+          <template slot="body-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+        </tl-okr-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="操作历史" name="history">
+        <!-- 操作历史 -->
+        <div>
+          <span>操作历史</span>
+          <tl-timeline :cycleList="cycleList"></tl-timeline>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <!-- 点赞要一直浮着 -->
     <div>
       <ul style="display:flex">
         <li v-for="(item,index) in voteUser" :key="item.userId+index">{{item.userName}}</li>
@@ -76,6 +82,7 @@ export default {
       showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
       innerDrawer: false,
+      activeName: 'detail',
     };
   },
   components: {
@@ -106,9 +113,6 @@ export default {
     },
   },
   created() {
-    this.getokrDetail();
-    this.getSupportList();
-    this.getOperationHistory();
   },
   methods: {
     // 查okr详情

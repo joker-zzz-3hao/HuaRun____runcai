@@ -29,6 +29,7 @@
         :showOKRInfoLabel="true"
       >
         <template slot="head-bar" slot-scope="props">
+          <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button>
           <button
             v-if="props.okritem.okrParentId"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
@@ -51,11 +52,22 @@
         </li>
       </ul>
     </div>
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      :title="drawerTitle"
+      :visible.sync="myokrDrawer"
+      size="50%"
+      :before-close="handleClose"
+    >
+      <tl-okr-detail v-if="myokrDrawer" ref="okrdetail" :server="server" :okrId="okrId"></tl-okr-detail>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import okrTable from '@/components/okrTable';
+import okrDetail from './okrDetail';
 import Server from '../server';
 import CONST from '../const';
 
@@ -65,6 +77,7 @@ export default {
   name: 'departmentPage',
   components: {
     'tl-okr-table': okrTable,
+    'tl-okr-detail': okrDetail,
   },
   data() {
     return {
@@ -79,6 +92,8 @@ export default {
         userName: '',
         okrProgress: 0,
       },
+      okrId: '',
+      myokrDrawer: false,
     };
   },
   props: {
@@ -88,6 +103,7 @@ export default {
     },
   },
   computed: {
+
   },
   created() {
   },
@@ -113,6 +129,17 @@ export default {
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
+    },
+    openDialog(val) {
+      this.okrItem = val;
+      this.drawerTitle = 'OKR详情';
+      this.myokrDrawer = true;
+      this.$nextTick(() => {
+        this.$refs.okrdetail.showOkrDialog();
+      });
+    },
+    handleClose() {
+      this.myokrDrawer = false;
     },
   },
   watch: {

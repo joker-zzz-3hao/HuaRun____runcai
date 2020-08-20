@@ -284,7 +284,7 @@ const mockData = {
     })));
   },
   // author：林心荃
-  // 用于：点赞
+  // 用于：
   'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       content: {

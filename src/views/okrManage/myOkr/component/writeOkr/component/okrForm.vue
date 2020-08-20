@@ -95,7 +95,7 @@
       <el-button @click="addobject()">加一个O</el-button>
       <el-button v-if="isnew" @click="summit()">提交</el-button>
       <el-button v-if="isnew" @click="saveDraft()">保存为草稿</el-button>
-      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="saveDraft()">删除草稿</el-button>
+      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
     </div>
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
       <undertake-table
@@ -104,31 +104,9 @@
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
       ></undertake-table>
+      <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+      <el-button @click="innerDrawer = false">取 消</el-button>
     </el-drawer>
-    <el-dialog
-      title="关联承接项"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :modal-append-to-body="false"
-    >
-      <span slot="title">
-        <h3>关联承接项</h3>！仅支持关联一个目标承接项，如需关联多个，建议新增关键目标O
-      </span>
-      <!-- 可选多部门 -->
-      <dl>
-        <dd>{{$store.state.common.userInfo.departmentName}}{{okrPeriod.periodDesc}}OKR</dd>
-      </dl>
-      <undertake-table
-        v-if="selectIndex !== ''"
-        ref="undertake"
-        :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
-        :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
-      ></undertake-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -339,7 +317,7 @@ export default {
       // TODO:价值观的id
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
       console.log('关联', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
-      this.dialogVisible = false;
+      this.innerDrawer = false;
     },
     // 校验表单
     // 提交表单
@@ -403,7 +381,7 @@ export default {
       });
     },
     deleteDraft() {
-      this.server.deleteOkrDraft(this.formData).then((res) => {
+      this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功~');
           // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
