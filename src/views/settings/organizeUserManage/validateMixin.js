@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable space-unary-ops */
 export default {
   methods: {
     // 密码校验
@@ -43,9 +45,8 @@ export default {
     validateEmail(rule, value, callback) {
       if (!value) {
         callback('请输入邮箱');
-      } else if (
-        !
-        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
+      } else if (!
+        /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
         .test(value)) {
         callback('邮箱格式不正确');
       } else {
