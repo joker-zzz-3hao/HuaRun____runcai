@@ -58,20 +58,20 @@
       title="编辑字典"
       :before-close="closeDicDialog"
     >
-      <tl-create-dic
-        ref="createDic"
+      <tl-edit-dic
         v-if="showEditDicDialog"
         :server="server"
         :codeId="codeId"
         :optionType="optionType"
         @closeDicDialog="closeDicDialog"
-      ></tl-create-dic>
+      ></tl-edit-dic>
     </el-drawer>
   </div>
 </template>
 
 <script>
 import createDic from './components/createDic';
+import editDic from './components/editDic';
 import Server from './server';
 
 const server = new Server();
@@ -80,6 +80,7 @@ export default {
   name: 'dataDictionary',
   components: {
     'tl-create-dic': createDic,
+    'tl-edit-dic': editDic,
   },
   data() {
     return {
