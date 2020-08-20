@@ -66,10 +66,10 @@
             <template slot-scope="scope">
               <el-switch
                 v-model.trim="scope.row.status"
-                :active-text="scope.row.status=='O'?'启用':'禁用'"
-                active-value="O"
-                inactive-value="S"
-                @change="addOrUpdate(scope.row)"
+                :active-text="scope.row.status=='Y'?'启用':'禁用'"
+                active-value="Y"
+                inactive-value="N"
+                @change="statusList(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
@@ -134,7 +134,7 @@ export default {
   methods: {
     addOrUpdate(row) {
       this.server.addOrUpdate({
-        functionId: row.id,
+        functionId: row.functionId,
         status: row.status,
       }).then((res) => {
         if (res.code == 200) {
@@ -184,6 +184,16 @@ export default {
         cancelButtonText: '取消',
       }).then(() => {
         this.deleteById(id);
+      });
+    },
+    statusList(row) {
+      this.$confirm('是否确认修改状态', '状态确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(() => {
+        this.addOrUpdate(row);
+      }).catch(() => {
+        this.getMenuList();
       });
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div style="display: flex;">
-      <div style="margin-left:20px;" v-if="cycleData.length>0">
+      <div style="margin-left:20px;" v-if="cycleData.length>0 && showDepartmentSelect">
         <department
           :data="cycleData"
           type="cycleListSelect"
@@ -58,7 +58,7 @@
     </div>
     <!-- 搜索框显示 -->
     <div v-if="!showDepartmentSelect">
-      <tl-search-table></tl-search-table>
+      <tl-search-table :searchData="searchData"></tl-search-table>
     </div>
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
@@ -121,6 +121,7 @@ export default {
       },
       dialogExist: false,
       okrId: '',
+      searchData: [],
     };
   },
   components: {
@@ -198,13 +199,13 @@ export default {
       const self = this;
       self.showDepartmentSelect = false;
       self.server.search({
-        keyword: self.keyword,
+        keyWord: self.keyword,
         currentPage: 1,
         pageSize: 10,
         type: '2',
       }).then((res) => {
         if (res.code == '200') {
-          console.log(res);
+          self.searchData = res.data.content;
         }
       });
     },

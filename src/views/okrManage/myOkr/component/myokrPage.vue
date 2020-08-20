@@ -95,6 +95,7 @@
           :server="server"
           :okrId="okrId"
           :okrItem="okrItem"
+          :periodId="this.okrCycle.periodId"
         ></tl-okr-update>
         <!-- <component
           v-else

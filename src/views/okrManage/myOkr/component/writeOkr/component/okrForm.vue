@@ -415,7 +415,7 @@ export default {
   watch: {
     'searchForm.okrCycle': {
       handler(newVal) {
-        if (newVal.periodId) {
+        if (newVal && newVal.periodId) {
           this.searchOkr();
           this.getCultureList();
         }

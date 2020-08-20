@@ -96,6 +96,7 @@ export default {
       this.searchForm.draftId = this.writeInfo.draftId || '';
       console.log('writeInfo', this.writeInfo);
     } else if (this.writeInfo.canWrite == 'cannot') {
+      console.log('writeInfo', this.writeInfo);
       this.canWrite = false;
       this.okrId = this.writeInfo.okrId || '';
     }
