@@ -45,4 +45,16 @@ module.exports = {
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
+  '/gateway/talent-query/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '' },
+  },
+  '/gateway/talent-okr/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '' },
+  },
 };

@@ -123,13 +123,6 @@ export default {
             break;
         }
       });
-      self.crList.push({
-        mainMenuTitle: '租户管理',
-        classTag: ['tenant-menu'],
-        toName: 'organizeManage',
-        events: ['rmSubMenu', 'moveMenu', 'leaveMenu'],
-        subMenuList: [],
-      });
       self.setCrMenu(self.crList);
     },
   },

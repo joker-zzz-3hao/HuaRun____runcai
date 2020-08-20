@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div style="display: flex;">
-      <div style="margin-left:20px;">
+      <div style="margin-left:20px;" v-if="cycleData.length>0">
         <department
           :data="cycleData"
           type="cycleListSelect"
@@ -10,13 +10,13 @@
         ></department>
       </div>
       <div style="margin-left:20px;" v-if="showDepartmentSelect">
-        <department
-          type="department"
-          :data="departmentData"
-          :initDepartment="initDepartment"
-          @handleData="handleData"
-          :defaultProps="departmentDefaultProps"
-        ></department>
+        <el-cascader
+          v-model="orgFullId"
+          :options="departmentData"
+          :show-all-levels="false"
+          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
+          @change="selectIdChange"
+        ></el-cascader>
       </div>
       <!-- 搜索框 -->
       <div>
@@ -60,14 +60,6 @@
     <div v-if="!showDepartmentSelect">
       <tl-search-table></tl-search-table>
     </div>
-    <div v-if="showDepartmentSelect">
-      <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
-      <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
-        <template slot="treecard" slot-scope="node">
-          <card @showDetail="showDetail()" :node="node"></card>
-        </template>
-      </svgtree>
-    </div>
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
     <tl-okr-detail ref="okrDetail" :dialogExist.sync="dialogExist" :okrId="okrId" :server="server"></tl-okr-detail>
@@ -98,7 +90,7 @@ export default {
       initDepartment: {},
       cycleData: [],
       okrCycle: {},
-      departmentObj: {},
+      orgFullId: '',
       showOkrMap: true,
       showDepartmentSelect: true,
       departmentDefaultProps: {
@@ -172,15 +164,15 @@ export default {
       }
     },
     getOkrTree() {
-      if (this.okrCycle.periodId && this.departmentObj.orgFullId) {
+      if (this.okrCycle.periodId && this.orgFullId) {
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
-          orgId: this.departmentObj.orgFullId,
+          orgId: this.orgFullId,
         }).then((res) => {
           if (res.code == '200') {
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             res.data.forEach((item) => {
-              if (item.orgFullId == this.departmentObj.orgFullId) {
+              if (item.orgFullId == this.orgFullId) {
                 item.orgParentId = null;
               }
             });
@@ -196,6 +188,8 @@ export default {
         if (res.code == '200') {
           if (res.data) {
             this.departmentData.push(res.data);
+            this.orgFullId = this.departmentData[0].orgFullId;
+            this.getOkrTree();
           }
         }
       });
@@ -203,24 +197,25 @@ export default {
     search() {
       const self = this;
       self.showDepartmentSelect = false;
-      self.server.searchKeyword({
+      self.server.search({
         keyword: self.keyword,
+        currentPage: 1,
+        pageSize: 10,
+        type: '2',
       }).then((res) => {
         if (res.code == '200') {
           console.log(res);
         }
       });
     },
-    handleData(data) {
-      this.departmentObj = data;
+    selectIdChange(data) {
+      this.orgFullId = data[data.length - 1];
       this.getOkrTree();
-      console.log(data);
     },
     handleCycleData(data) {
       this.okrCycle = data;
       // 查询OKR树
       this.getOkrTree();
-      console.log(data);
     },
     showMission(type, title) {
       this.$nextTick(() => {
