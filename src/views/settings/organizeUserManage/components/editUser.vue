@@ -21,15 +21,11 @@
         :label="pwdLabel"
         prop="loginPwd"
         :rules="[
-          {required:isEditPwd,validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
+          {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
       >
-        <el-input
-          :disabled="!isEditPwd && optionType == 'edit'"
-          v-model.trim="formData.loginPwd"
-          show-password
-        ></el-input>
-        <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
-        <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
+        <el-input :disabled="!isEditPwd " v-model.trim="formData.loginPwd" show-password></el-input>
+        <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
+        <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
       </el-form-item>
       <el-form-item
         v-if="isEditPwd"
