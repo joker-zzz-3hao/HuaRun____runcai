@@ -29,7 +29,7 @@
           <el-form-item
             label="字典名称"
             prop="name"
-            :rules="[{required:true,message:'请输入字典名称',trigger:'blur'}]"
+            :rules="[{required:true,validator:validateDicName,trigger:'blur'}]"
           >
             <el-input v-model.trim="formData.name" maxlength="50"></el-input>
           </el-form-item>
@@ -112,7 +112,7 @@
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createOrEditUser',
+  name: 'createdic',
   mixins: [validateMixin],
   components: {
   },

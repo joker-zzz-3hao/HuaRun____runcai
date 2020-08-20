@@ -8,9 +8,14 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="110px"
+      :label-position="labelPosition"
+    >
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
@@ -54,16 +59,16 @@
       <el-form-item label="事件名" v-if="form.functionType !=='BTN'" prop="functionEvent">
         <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
       </el-form-item>
-      <!-- <el-form-item
+      <el-form-item
         label="菜单状态"
         v-if="form.functionType=='MENU'||form.functionType=='PAGE'"
         prop="status"
       >
         <el-radio-group v-model="form.status">
-          <el-radio label="O">正常</el-radio>
-          <el-radio label="S">停用</el-radio>
+          <el-radio label="Y">正常</el-radio>
+          <el-radio label="N">停用</el-radio>
         </el-radio-group>
-      </el-form-item>-->
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="validateForm()">确定</el-button>
@@ -99,11 +104,12 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
       server,
       showOption: false,
       form: {
         functionType: 'PAGE',
-        status: 'O',
+        status: 'Y',
       },
       dialogTableVisible: false,
       dialogVisible: false,

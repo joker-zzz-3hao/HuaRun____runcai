@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-drawer
     @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
@@ -8,9 +8,16 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
+    :modal="false"
+    size="35%"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="110px"
+      :label-position="labelPosition"
+    >
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
@@ -63,11 +70,11 @@
         </el-radio-group>
       </el-form-item>-->
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <div>
       <el-button type="primary" @click="validateForm()">确定</el-button>
       <el-button @click="close()">取 消</el-button>
     </div>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>
@@ -98,6 +105,7 @@ export default {
   data() {
     return {
       server,
+      labelPosition: 'left',
       showOption: false,
       form: {
         functionType: 'PAGE',

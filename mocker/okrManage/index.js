@@ -44,7 +44,7 @@ const mockData = {
   },
   // author：林心荃
   // 用于：承接地图
-  'POST /gateway/talent-query/okr/outside/query/okrContinueMap': (req, res) => {
+  'POST /gateway/talent-query/okr/query/okrContinueMap': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [{
         detailId: '11',
@@ -284,7 +284,7 @@ const mockData = {
     })));
   },
   // author：林心荃
-  // 用于：点赞
+  // 用于：
   'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       content: {

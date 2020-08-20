@@ -14,7 +14,11 @@
         <div style="margin-left: 20px;width:330px;display: flex;">
           <div style="width: 50px;">{{item.createBy}}</div>
           <div style="width: 80px;">{{item.operateType}}</div>
-          <div style="width: 200px;">{{item.content}}</div>
+          <div style="width: 200px;">
+            <ul>
+              <li v-for="(conitem,index) in splitContent(item.content)" :key="index">{{conitem}}</li>
+            </ul>
+          </div>
         </div>
       </li>
     </ul>
@@ -46,7 +50,11 @@ export default {
     },
   },
   created() {},
-  methods: {},
+  methods: {
+    splitContent(content) {
+      return content.split(';');
+    },
+  },
 };
 </script>
 <style scoped>

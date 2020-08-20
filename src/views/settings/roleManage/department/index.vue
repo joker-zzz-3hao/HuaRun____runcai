@@ -60,7 +60,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="handleDelete(scope.row.roleCode)"
+                @click="handleDelete(scope.row.roleId)"
                 v-if="scope.row.roleType=='CREATION'"
               >移除</el-button>
             </template>
@@ -123,15 +123,15 @@ export default {
       this.title = '编辑角色';
       this.existPut = true;
     },
-    handleDelete(roleCode) {
+    handleDelete(roleId) {
       this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
         .then(() => {
-          this.delRole(roleCode);
+          this.delRole(roleId);
         })
         .catch(() => {});
     },
-    delRole(roleCode) {
-      this.server.delRole({ roleCode }).then((res) => {
+    delRole(roleId) {
+      this.server.delRole({ roleId }).then((res) => {
         if (res.code == 200) {
           this.listRolePage();
           this.$message.success(res.msg);

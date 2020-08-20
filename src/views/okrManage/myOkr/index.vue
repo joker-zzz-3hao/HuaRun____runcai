@@ -9,7 +9,11 @@
           @handleData="handleorgCycleData"
           :defaultProps="cycleDefaultProps"
         ></department>
-        <department-page ref="departmentpage" :okrCycle="okrorgCycle"></department-page>
+        <department-page
+          ref="departmentpage"
+          :okrCycle="okrorgCycle"
+          :departmentName="departmentName"
+        ></department-page>
       </el-tab-pane>
       <el-tab-pane label="我的OKR" name="myokr">
         <department
@@ -30,7 +34,7 @@
       :before-close="handleClose"
     >
       <div>
-        <writeOkr v-if="createokrDrawer"></writeOkr>
+        <writeOkr v-if="createokrDrawer" :userName="userName"></writeOkr>
       </div>
     </el-drawer>
   </div>
@@ -81,6 +85,7 @@ export default {
         },
       },
       departmentName: '',
+      userName: '',
       okrorgCycle: {}, // 当前选择的周期-部门
       okrCycle: {}, // 当前选择的周期
       drawer: false,
@@ -89,12 +94,14 @@ export default {
   computed: {
     ...mapState('common', {
       createokrDrawer: (state) => state.createokrDrawer,
+      userInfo: (state) => state.userInfo,
     }),
   },
   created() {
     this.init();
     // TODO:部门名
-    this.departmentName = this.$store.state.common.userInfo.departmentName;
+    this.departmentName = this.userInfo.orgName || '部门';
+    this.userName = this.userInfo.userName || '管理员';
     this.activeName = this.$route.params.activeName || 'team';
   },
   methods: {

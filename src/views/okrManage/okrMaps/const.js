@@ -10,7 +10,14 @@ const OKR_TYPE_MAP = {
   KR: '关键行为KR',
 };
 
+const SEARCH_TYPE_LIST = [
+  { label: '部门', value: '1' },
+  { label: 'OKR', value: '2' },
+  { label: '成员', value: '3' },
+];
+
 export default {
   STATUS_MAP,
   OKR_TYPE_MAP,
+  SEARCH_TYPE_LIST,
 };
