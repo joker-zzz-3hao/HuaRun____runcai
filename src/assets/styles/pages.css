@@ -1,8 +1,12 @@
 /* ======================================================================登录模块======================================================================= */
 /* 登录首页 */
+.login.view-cont {
+  height: calc(100% - 32px);
+}
+
 .login {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .login .cont-wrap {
@@ -127,6 +131,10 @@
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */
+.okr-permissions .operating-panel {
+  height: 36px;
+}
+
 .okr-permissions .dl-list {
   margin: 0 0 30px 0;
   border-bottom: 1px solid #e5e9ee;
@@ -151,6 +159,11 @@
 
 .okr-permissions .tl-radio {
   margin: 0 0 16px 0;
+}
+
+.okr-permissions .tl-btn {
+  width: 90px;
+  height: 40px;
 }
 
 /* OKR周期与自评 */
