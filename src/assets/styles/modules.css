@@ -91,7 +91,52 @@
   color: #685df1;
 }
 
+.tl-dialog .tl-btn {
+  width: 90px;
+  height: 40px;
+}
+
 /* input */
+.tl-input,
+.tl-date-editor,
+.tl-radio-group {
+  margin: 8px 0 2px 0;
+}
+
+.tl-input .el-input__inner {
+  color: #4d5155;
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+  line-height: unset;
+}
+
+.tl-input .el-input.is-active .el-input__inner,
+.tl-input .el-input__inner:focus,
+.tl-date-editor.is-active .el-input__inner,
+.tl-date-editor .el-input__inner:focus {
+  border-color: #685df1;
+}
+
+.tl-input + .el-form-item__error,
+.tl-date-editor + .el-form-item__error,
+.tl-radio-group + .el-form-item__error  {
+  padding: 0;
+  line-height: unset;
+}
+
+.tl-date-editor.el-input,
+.tl-date-editor.el-input__inner {
+  width: 100%;
+}
+
+.tl-date-editor .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+  color: #4d5155;
+  line-height: unset;
+}
+
+/* input-自定义 */
 .tl-input-line {
   z-index: 3;
 }
@@ -124,7 +169,7 @@
   content: '';
   width: 100%;
   height: 1px;
-  background: #d8d8d8;
+  background: #d5dde3;
   z-index: 1;
 }
 
@@ -202,6 +247,81 @@
 .tl-table .tl-btn.el-button--text {
   padding: 0;
   min-width: unset;
+}
+
+/* dialog */
+.tl-dialog {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .el-dialog {
+  margin: 0 auto !important;
+  width: unset;
+}
+
+.tl-dialog + .v-modal {
+  opacity: .1;
+}
+
+.tl-dialog .el-dialog {
+  padding: 30px;
+  box-shadow: unset;
+  border-radius: 4px;
+}
+
+.tl-dialog .el-dialog__header,
+.tl-dialog .el-dialog__body,
+.tl-dialog .el-dialog__footer {
+  padding: 0;
+}
+
+.tl-dialog .el-dialog__footer {
+  margin: 40px 0 0 0;
+}
+
+.tl-dialog .el-dialog__body,
+.tl-dialog .el-form-item__label {
+  color: #4d5155;
+}
+
+.tl-dialog .el-dialog__headerbtn {
+  top: 28px;
+  right: 25px;
+  font-size: 28px;
+}
+
+.tl-dialog .el-dialog__close {
+  color: #d8d8d8;
+}
+
+.tl-dialog .el-dialog__headerbtn:focus .el-dialog__close,
+.tl-dialog .el-dialog__headerbtn:hover .el-dialog__close {
+  color: #685df1;
+}
+
+.tl-dialog .el-dialog__title {
+  color: #222426;
+}
+
+/* form */
+.tl-form .el-form-item {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.tl-form .el-form-item__label {
+  float: unset;
+  padding: 0 20px 0 0;
+  line-height: unset;
+  vertical-align: unset;
+}
+
+.tl-form .el-form-item__content {
+  margin: 0 !important;
+  flex: 1 1 auto;
+  line-height: unset;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -302,7 +422,7 @@
 
 .menu-cont {
   width: 90px;
-  transition: all .4s ease-out;
+  transition: all .4s;
 }
 
 .menu-cont.no-sub-menu {
@@ -311,6 +431,14 @@
 
 .menu-cont.is-sub-menu {
   width: 248px;
+}
+
+.is-sub-menu + .view-cont {
+  width: calc(100vw - 280px);
+}
+
+.is-shrink + .view-cont {
+  width: calc(100vw - 122px);
 }
 
 .menu-cont.is-shrink {
@@ -466,7 +594,7 @@
   background: #fff;
   z-index: -1;
   transform: translateX(-190px);
-  transition: all .4s ease-out;
+  transition: all .4s;
 }
 
 .is-sub-menu .main-menu .sub-menu {

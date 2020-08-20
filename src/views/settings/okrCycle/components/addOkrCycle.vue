@@ -7,38 +7,60 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
+    class="tl-dialog"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="132px"
+      :label-position="labelPosition"
+      class="tl-form"
+    >
       <el-form-item label="OKR周期名称" prop="periodName">
         <el-input
-          style="width:320px"
           v-model="form.periodName"
           maxlength="64"
           placeholder="请输入OKR周期名称"
+          class="tl-input"
         ></el-input>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
-        <el-date-picker type="date" v-model="form.startTime" maxlength="64" placeholder="请设置开始日期"></el-date-picker>
+        <el-date-picker
+          type="date"
+          v-model="form.startTime"
+          maxlength="64"
+          placeholder="请设置开始日期"
+          class="tl-date-editor"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="周期结束日期" prop="endTime">
-        <el-date-picker type="date" v-model="form.endTime" placeholder="请设置结束日期"></el-date-picker>
+        <el-date-picker
+          type="date"
+          v-model="form.endTime"
+          placeholder="请设置结束日期"
+          class="tl-date-editor"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
-        <el-radio-group v-model="form.checkStatus">
-          <el-radio label="1">是</el-radio>
-          <el-radio label="0">否</el-radio>
+        <el-radio-group v-model="form.checkStatus" class="tl-radio-group">
+          <el-radio label="1" class="tl-radio">是</el-radio>
+          <el-radio label="0" class="tl-radio">否</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="OKR周期状态" prop="periodType">
-        <el-radio-group v-model="form.periodType">
-          <el-radio label="1">开启</el-radio>
-          <el-radio label="0">关闭</el-radio>
+        <el-radio-group v-model="form.periodType" class="tl-radio-group">
+          <el-radio label="1" class="tl-radio">开启</el-radio>
+          <el-radio label="0" class="tl-radio">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm()">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button plain @click="close()" class="tl-btn amt-border-slip">
+        取消
+        <span class="lines"></span>
+      </el-button>
     </div>
   </el-dialog>
 </template>
@@ -90,6 +112,7 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      labelPosition: 'left',
     };
   },
 
@@ -135,18 +158,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.addRoule {
-  position: relative;
-}
-.roulemember {
-  width: 100%;
-  z-index: 99999999;
-  position: absolute;
-  left: 0;
-  top: 50px;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-</style>
