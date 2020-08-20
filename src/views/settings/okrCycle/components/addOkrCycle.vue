@@ -8,7 +8,13 @@
     :title="title"
     :visible.sync="dialogTableVisible"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="120px"
+      :label-position="labelPosition"
+    >
       <el-form-item label="OKR周期名称" prop="periodName">
         <el-input
           style="width:320px"
@@ -90,6 +96,7 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      labelPosition: 'left',
     };
   },
 

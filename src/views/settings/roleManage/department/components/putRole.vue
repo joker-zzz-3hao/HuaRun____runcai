@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-drawer
     @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
@@ -7,14 +7,14 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
+    size="35%"
+    :modal="false"
   >
     <div class="modelPut">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="角色编号" prop="roleCode">
           <el-input
             style="width:320px"
-            disabled
             maxlength="64"
             v-model="form.roleCode"
             placeholder="请输入角色编号"
@@ -31,26 +31,28 @@
         <el-form-item label="菜单权限">
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
-            <div @click="showMenu=!showMenu">+</div>
+            <el-popover placement="bottom-end" trigger="click">
+              <div class="postMenu">
+                <el-cascader-panel
+                  @change="handleCheckChange"
+                  ref="treeMenu"
+                  v-model="selectArr"
+                  :options="data"
+                  :props="{ multiple: true, value:'functionId', label:'functionName',children:'children' }"
+                  node-key="id"
+                ></el-cascader-panel>
+              </div>
+              <div slot="reference">+</div>
+            </el-popover>
           </div>
         </el-form-item>
-        <div class="postMenu" v-show="showMenu">
-          <el-cascader-panel
-            @change="handleCheckChange"
-            ref="treeMenu"
-            v-model="selectArr"
-            :options="data"
-            :props="{ multiple: true }"
-            node-key="id"
-          ></el-cascader-panel>
-        </div>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div>
         <el-button type="primary" @click="submitForm()">确定</el-button>
         <el-button @click="close()">取 消</el-button>
       </div>
     </div>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script>
@@ -75,6 +77,7 @@ export default {
   },
   data() {
     return {
+      list: [],
       server,
       menuTreeList: [],
       selectArr: [],
@@ -114,12 +117,12 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    handleCheckChange() {
+    getCheckName() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.label;
+          return item.data.functionName;
         }
       });
       // eslint-disable-next-line array-callback-return
@@ -128,26 +131,24 @@ export default {
           return item;
         }
       });
-      this.form.functionList = keys.map((item) => ({ functionId: item.data.id, roleId: this.roleInfo.roleId }));
+    },
+    handleCheckChange(data) {
+      console.log(data);
+      let arr = [];
+      data.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      console.log(this.list);
+      this.getCheckName();
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.listTenantFuncation()
         .then((res) => {
-          this.data = this.getTreeList(res.data, true);
+          this.data = res.data;
           this.getRole();
         });
-    },
-    // 递归修改符合element tree结构数据
-    getTreeList(data) {
-      if (data) {
-        return data.map((item) => ({
-          id: item.functionId,
-          label: item.functionName,
-          value: item.functionCode,
-          children: this.getTreeList(item.children),
-        }));
-      }
     },
     submitForm() {
       this.$refs.form.validate((valid) => {
@@ -168,26 +169,16 @@ export default {
           roleName: res.data.roleName,
           functionList: [],
         };
-        // eslint-disable-next-line array-callback-return
-        const keys = res.data.menuTree.map((item) => {
-          if (item) {
-            return item.split(':');
-          }
-        });
-          // eslint-disable-next-line array-callback-return
-        this.selectArr = keys.filter((item) => {
-          if (item) {
-            return item;
-          }
-        });
+        console.log(res.data.menuTree);
+        this.selectArr = res.data.menuTree;
         this.$nextTick(() => {
-          this.handleCheckChange();
+          this.getCheckName();
         });
       });
     },
     updateRole() {
-      this.handleCheckChange();
       const { form } = this;
+      form.functionList = this.list.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
       form.roleType = 'CREATION';
       form.roleId = this.roleInfo.roleId;
       this.server.updateRole(form).then((res) => {

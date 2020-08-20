@@ -4,7 +4,7 @@
       <div slot="searchBar">
         <el-form ref="ruleForm" :inline="true">
           <el-form-item>
-            <el-select v-model="status" placeholder="请选择">
+            <el-select v-model="status" placeholder="请选择" @change="getMenuList()" clearable>
               <el-option
                 v-for="(item,index) in CONST.STATUS_LIST"
                 :key="index"
@@ -98,12 +98,22 @@
       :menuData="menuData"
       @getMenuList="getMenuList"
     ></tl-add-menu>
+    <tl-put-menu
+      :title="title"
+      :exist.sync="dialogVisiblePut"
+      v-if="dialogVisiblePut"
+      :menuName="menuName"
+      :parentId="parentId"
+      :menuData="menuData"
+      @getMenuList="getMenuList"
+    ></tl-put-menu>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
 import addMenu from './components/addMenu';
+import putMenu from './components/putMenu';
 import Server from './server';
 import CONST from './const';
 
@@ -113,6 +123,7 @@ export default {
   components: {
     'tl-add-menu': addMenu,
     'tl-crcloud-table': crcloudTable,
+    'tl-put-menu': putMenu,
   },
   data() {
     return {
@@ -124,6 +135,7 @@ export default {
       keyWord: '',
       tableData: [],
       dialogVisible: false,
+      dialogVisiblePut: false,
       parentId: '',
       menuData: '',
     };
@@ -163,7 +175,7 @@ export default {
       this.menuName = row.functionName;
     },
     menuPut(row) {
-      this.dialogVisible = true;
+      this.dialogVisiblePut = true;
       this.title = '编辑';
       this.menuName = row.functionName;
       this.menuData = JSON.parse(JSON.stringify(row));
