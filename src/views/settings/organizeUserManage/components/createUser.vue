@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import Cryptojs from '@/lib/cryptojs';
 import validateMixin from '../validateMixin';
 
 export default {
@@ -132,6 +133,7 @@ export default {
   },
   data() {
     return {
+      Cryptojs,
       visible: false,
       loading: false,
       initUserAccount: '',
@@ -180,6 +182,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+      this.formData.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -204,13 +207,23 @@ export default {
       this.formData.orgId = date.orgId;
     },
     saveUser() {
-      delete this.formData.confirmPwd;
-      this.formData.orgId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
-      this.formData.orgFullId = this.formData.orgIdList.join(':');
+      // delete this.formData.confirmPwd;
+      const params = {
+        orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        loginPwd: this.Cryptojs.encrypt(this.formData.loginPwd),
+        orgFullId: this.formData.orgIdList.join(':'),
+        tenantName: this.formData.tenantName,
+        userAccount: this.formData.userAccount,
+        userMail: this.formData.userMail,
+        userMobile: this.formData.userMobile,
+        userName: this.formData.userName,
+        userStatus: this.formData.userStatus,
+        userType: this.formData.userType,
+      };
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.createUser(this.formData).then((res) => {
+          this.server.createUser(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('用户创建成功');
               this.close('refreshPage');

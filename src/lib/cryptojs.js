@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const KEY = 'crcportal@pwd20$';
+const KEY = 'crctalent@pwd20$';
 const IV = '09dd2ccef1919317';
 
 export default { // 加密
@@ -12,7 +12,7 @@ export default { // 加密
     const encrypted = CryptoJS.AES.encrypt(srcs, key, {
       iv,
       mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7
+      padding: CryptoJS.pad.Pkcs7,
     });
     return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
   },
@@ -26,7 +26,7 @@ export default { // 加密
     const decrypt = CryptoJS.AES.decrypt(src, key, {
       iv,
       mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7
+      padding: CryptoJS.pad.Pkcs7,
     });
     const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
     return decryptedStr.toString();

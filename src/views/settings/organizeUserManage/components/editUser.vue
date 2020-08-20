@@ -7,11 +7,7 @@
 <template>
   <div>
     <el-form ref="userForm" :model="formData" label-width="80px">
-      <el-form-item
-        label="用户名称"
-        prop="userName"
-        :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
-      >
+      <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
         <el-input v-model.trim="formData.userName" maxlength="50"></el-input>
       </el-form-item>
       <el-form-item
@@ -25,15 +21,11 @@
         :label="pwdLabel"
         prop="loginPwd"
         :rules="[
-          {required:isEditPwd,validator:optionType == 'create' ? validatePwd : '',trigger:'blur'}]"
+          {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
       >
-        <el-input
-          :disabled="!isEditPwd && optionType == 'edit'"
-          v-model.trim="formData.loginPwd"
-          show-password
-        ></el-input>
-        <el-button v-if="!isEditPwd && optionType == 'edit'" @click="editPwd">修改密码</el-button>
-        <el-button v-if="isEditPwd && optionType == 'edit'" @click="cancelEditPwd">取消</el-button>
+        <el-input :disabled="!isEditPwd " v-model.trim="formData.loginPwd" show-password></el-input>
+        <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
+        <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
       </el-form-item>
       <el-form-item
         v-if="isEditPwd"
@@ -92,6 +84,7 @@
 </template>
 
 <script>
+import Cryptojs from '@/lib/cryptojs';
 import validateMixin from '../validateMixin';
 
 export default {
@@ -139,6 +132,7 @@ export default {
   },
   data() {
     return {
+      Cryptojs,
       loading: false,
       isEditPwd: false,
       initUserAccount: '',
@@ -199,6 +193,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
+      this.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -213,18 +208,29 @@ export default {
       }
     },
     saveUser() {
-      if (!this.isEditPwd) {
-        this.formData.loginPwd = '';
-        this.formData.newPwd = '';
+      const params = {
+        userId: this.userId,
+        orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        orgFullId: this.formData.orgIdList.join(':'),
+        tenantName: this.formData.tenantName,
+        userAccount: this.formData.userAccount,
+        userMail: this.formData.userMail,
+        userMobile: this.formData.userMobile,
+        userName: this.formData.userName,
+        userStatus: this.formData.userStatus,
+        userType: this.formData.userType,
+      };
+      if (this.isEditPwd) {
+        params.loginPwd = this.Cryptojs.encrypt(this.formData.loginPwd);
+        params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);
+      } else if (!this.isEditPwd && params.loginPwd && params.newPwd) {
+        delete params.loginPwd;
+        delete params.newPwd;
       }
-      delete this.formData.confirmPwd;
-      this.formData.userId = this.userId;
-      this.formData.orgId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
-      this.formData.orgFullId = this.formData.orgIdList.join(':');
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.updateOrgUser(this.formData).then((res) => {
+          this.server.updateOrgUser(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('用户编辑成功');
               this.$emit('closeUserDialog', { refreshPage: true });

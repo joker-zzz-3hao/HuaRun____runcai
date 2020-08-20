@@ -9,10 +9,6 @@
         </dd>
       </dl>
     </div>
-    <!-- 一些功能按钮 根据状态判断-->
-    <div>
-      <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
-    </div>
     <!-- okr模块 只有起草中是有多个 -->
     <div v-for="(item, index) in okrList" :key="index">
       <!-- 基本信息 -->
@@ -35,6 +31,9 @@
             <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
           </li>
         </ul>
+      </div>
+      <div>
+        <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
       </div>
       <!-- okr面板 -->
       <tl-okr-table
@@ -78,24 +77,24 @@
           :writeInfo="writeInfo"
         ></tl-writeokr>
         <tl-okr-history
-          v-if="currentView=='tl-okr-history'"
+          v-if="currentView=='tl-okr-history' && myokrDrawer"
           ref="tl-okr-history"
           :server="server"
           :okrId="okrId"
         ></tl-okr-history>
         <tl-okr-detail
-          v-if="currentView=='tl-okr-detail'"
+          v-if="currentView=='tl-okr-detail' && myokrDrawer"
           ref="tl-okr-detail"
           :server="server"
           :okrId="okrId"
         ></tl-okr-detail>
         <tl-okr-update
-          v-if="currentView=='tl-okr-update'"
+          v-if="currentView=='tl-okr-update' && myokrDrawer"
           ref="tl-okr-update"
           :server="server"
           :okrId="okrId"
           :okrItem="okrItem"
-          :periodId="this.okrCycle.periodId"
+          :periodId="okrCycle.periodId"
         ></tl-okr-update>
         <!-- <component
           v-else
@@ -249,6 +248,7 @@ export default {
         canWrite: 'cannot',
         okrId: this.okrId,
       };
+      this.currentView = '';
       // this.$router.push({ name: 'writeOkr', params: { canWrite: 'cannot', okrId: this.okrId } });
       this.setMyokrDrawer(true);
       // this.drawer = true;
@@ -261,6 +261,7 @@ export default {
         draftId: item.id,
         okrStatus: this.searchForm.status,
         okrorgCycle: this.okrorgCycle,
+        okrType: this.okrMain.okrBelongType,
       };
       // this.$router.push({ name: 'writeOkr', params: { canWrite: 'draft', writeInfo } });
       this.setMyokrDrawer(true);

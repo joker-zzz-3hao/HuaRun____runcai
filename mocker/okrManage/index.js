@@ -207,17 +207,17 @@ const mockData = {
   },
   // author：林心荃
   // 用于：查操作历史
-  'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
-    res.send(mockUtil.getSuccessData(Mock.mock({
-      'records|3': [{
-        'date|+1': ['8月12日', '8月11日', '8月10日'],
-        'createTime|1': ['16:45', '06:15', '20:05'],
-        'createBy|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
-        operateType: 0,
-        content: '@csentence(10, 20)',
-      }],
-    })));
-  },
+  // 'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
+  //   res.send(mockUtil.getSuccessData(Mock.mock({
+  //     'records|3': [{
+  //       'date|+1': ['8月12日', '8月11日', '8月10日'],
+  //       'createTime|1': ['16:45', '06:15', '20:05'],
+  //       'createBy|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
+  //       operateType: 0,
+  //       content: '@csentence(10, 20)',
+  //     }],
+  //   })));
+  // },
   // author：林心荃
   // 用于：查价值观
   'POST /gateway/talent-okr/okr/cultureValue/queryCultureList': (req, res) => {
@@ -281,6 +281,21 @@ const mockData = {
   'POST /gateway/talent-okr/okr/okrSupport/support': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       data: 'success',
+    })));
+  },
+  // author：林心荃
+  // 用于：
+  'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      content: {
+        '2020-08-20': [{
+          id: '1206431540120363008', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: null, content: '测试-HM-1 更新：目标(O)进度 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+        }, {
+          id: '1206431540120363009', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: '1206360106224295941', content: '测试-HM-1 更新：关键结果(KR)进度 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+        }, {
+          id: '1206431540120363010', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: '1206360106224295941', content: '测试-HM-1 更新：关键结果(KR)风险指数 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+        }],
+      },
     })));
   },
 };

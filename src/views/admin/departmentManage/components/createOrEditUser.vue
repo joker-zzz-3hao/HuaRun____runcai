@@ -113,7 +113,7 @@
 </template>
 
 <script>
-// import Cryptojs from '@/lib/cryptojs';
+import Cryptojs from '@/lib/cryptojs';
 import department from '@/components/department';
 import validateMixin from '../validateMixin';
 
@@ -157,7 +157,7 @@ export default {
   },
   data() {
     return {
-      // Cryptojs,
+      Cryptojs,
       visible: false,
       loading: false,
       userTitle: '创建用户',

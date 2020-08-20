@@ -158,7 +158,8 @@
       :append-to-body="false"
       :visible.sync="editDrawer"
       v-if="editDrawer"
-      :with-header="false"
+      title="编辑用户"
+      :before-close="closeUserDialog"
     >
       <edit-user
         ref="createUser"
@@ -203,6 +204,8 @@ export default {
       showcreateDepart: false,
       showCreateUser: false,
       tenantName: '',
+      orgFullId: '',
+      orgIdList: [],
       optionType: 'create',
       initDepartment: {},
       total: 0,
@@ -246,10 +249,13 @@ export default {
         this.currentPage = 1;
         this.pageSize = 10;
       }
+      this.setOrgIdList(this.globalOrgId);
+      this.orgFullId = this.orgIdList.join(':');
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        orgId: this.globalOrgId,
+        // orgId: this.globalOrgId,
+        orgFullId: this.orgFullId,
         ...this.searchData,
       };
       this.server.getUserListByOrgId(params).then((res) => {
@@ -260,6 +266,39 @@ export default {
           this.tableData = res.data.content;
         }
       });
+    },
+    setOrgIdList(orgId) {
+      // 遍历嵌套数组，转换为一维数组
+      const queue = [...this.treeData];
+      const result = [];
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const next = queue.shift();
+        if (!next) {
+          break;
+        }
+        result.push({
+          orgId: next.orgId,
+          orgName: next.orgName,
+          orgParentId: next.orgParentId,
+        });
+        if (Array.isArray(next.sonTree)) {
+          queue.push(...next.sonTree);
+        }
+      }
+      this.orgIdList = [];
+      this.getOrgIdList(result, orgId);
+      this.orgIdList.reverse();
+    },
+    getOrgIdList(result, orgId) {
+      let orgParentId = '';
+      for (const org of result) {
+        if (org.orgId == orgId) {
+          orgParentId = org.orgParentId;
+          this.orgIdList.push(org.orgId);
+          this.getOrgIdList(result, orgParentId);
+        }
+      }
     },
     treeChange() {},
     renderContent(h, {
@@ -306,7 +345,7 @@ export default {
           //   },
           // }, '创建部门'),
           h('i', {
-            class: 'el-icon-edit',
+            class: 'el-icon-circle-plus',
             style: {
               marginLeft: '150px',
             },
@@ -414,7 +453,7 @@ export default {
   height: 100px;
 }
 .org-left-side {
-  width: 600px;
+  width: 400px;
   height: 600px;
 }
 .org-right-side {
