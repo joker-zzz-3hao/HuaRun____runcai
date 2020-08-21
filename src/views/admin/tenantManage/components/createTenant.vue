@@ -45,7 +45,7 @@
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">
               {{item.data.functionName}}
-              <i class="el-icon-error" @click="clearNode()"></i>
+              <i class="el-icon-error" @click="clearNode(item)"></i>
             </div>
             <div>
               <el-popover placement="bottom" trigger="click">
@@ -108,7 +108,6 @@ export default {
         status: 'O',
         startTime: '',
         endTime: '',
-        selectArr: '',
       },
       rules: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
@@ -156,7 +155,17 @@ export default {
   },
   methods: {
     clearNode(node) {
-      this.$refs.treeMenu.clearCheckedNodes(node);
+      const deleteArr = this.selectArr;
+      deleteArr.forEach((item, index) => {
+        if (this.boolCheck(item, node)) {
+          deleteArr.splice(index, 1);
+        }
+      });
+      this.selectArr = [...deleteArr];
+      console.log(this.selectArr);
+    },
+    boolCheck(item, node) {
+      return item.some((li) => li === node.data.functionId);
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -178,13 +187,13 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange(data) {
+      this.selectArr = data;
       let arr = [];
       data.forEach((item) => {
         arr = arr.concat(item);
       });
       this.list = Array.from(new Set(arr));
       const keys = this.$refs.treeMenu.getCheckedNodes();
-      console.log(keys);
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {

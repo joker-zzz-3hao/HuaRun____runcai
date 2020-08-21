@@ -51,12 +51,7 @@
                 size="small"
                 @click="$router.push({path:'/members',query:{roleId:scope.row.roleId,name:encodeURI(scope.row.roleName)}})"
               >成员管理</el-button>
-              <el-button
-                @click="putRoule(scope.row)"
-                type="text"
-                size="small"
-                v-if="scope.row.roleType=='CREATION'"
-              >编辑</el-button>
+              <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
               <el-button
                 type="text"
                 size="small"
