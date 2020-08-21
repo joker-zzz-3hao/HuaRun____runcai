@@ -4,7 +4,7 @@
       <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
       <span>{{node.okrDetailObjectKr}}</span>
       <span>
-        <el-button @click="goDetail(node)">对齐</el-button>
+        <el-button @click="goDetail(node)">对齐{{node.parent}}</el-button>
       </span>
     </div>
     <div class="node_des">
@@ -18,7 +18,7 @@
         {{node.userName}}
       </div>
       <div>{{node.open}}</div>
-      <div>{{node.children && node.children.length}}</div>
+      <div>{{node.children?node.children.length:0}}</div>
     </div>
     <!-- <div class="showTips" :class="node.children ? 'havechild' : ''">
       <a class="tips_icon icon_edit">

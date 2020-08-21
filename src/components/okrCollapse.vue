@@ -45,7 +45,7 @@
                   ></el-progress>
                 </span>
               </li>
-              <li v-if="showParentOkr">
+              <li v-if="showParentOkr && item.okrParentId">
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
