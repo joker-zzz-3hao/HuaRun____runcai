@@ -32,11 +32,10 @@
         </el-form-item>
         <div class="postMenu" v-show="false">
           <el-cascader-panel
-            @change="handleCheckChange"
             ref="treeMenu"
             v-model="selectArr"
             :options="data"
-            :props="{ multiple: true }"
+            :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
             node-key="id"
           ></el-cascader-panel>
         </div>
@@ -98,12 +97,12 @@ export default {
   },
   methods: {
     // 获取选中tree key值 展示选中
-    handleCheckChange() {
+    selectCheckList() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.label;
+          return item.data.functionName;
         }
       });
       // eslint-disable-next-line array-callback-return
@@ -112,29 +111,14 @@ export default {
           return item;
         }
       });
-      this.form.menuTree = keys.map((item) => ({ functionId: item }));
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.queryMenu()
         .then((res) => {
-          this.data = this.getTreeList(res.data, true);
+          this.data = res.data;
           this.getTenant();
         });
-    },
-    // 递归修改符合element tree结构数据
-    getTreeList(data, disabled) {
-      if (data) {
-        return data.map((item) => ({
-          id: item.functionId,
-          label: item.functionName,
-          value: item.functionCode,
-          checkStrictly: true,
-          disabled: this.infoBool,
-          emitPath: false,
-          children: this.getTreeList(item.children, disabled),
-        }));
-      }
     },
     // 获取租户详情
     getTenant() {
@@ -145,20 +129,10 @@ export default {
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantId = res.data.tenantId;
           this.form.status = res.data.status;
-          // eslint-disable-next-line array-callback-return
-          const keys = res.data.menuItems.map((item) => {
-            if (item) {
-              return item.split(':');
-            }
-          });
-          // eslint-disable-next-line array-callback-return
-          this.selectArr = keys.filter((item) => {
-            if (item) {
-              return item;
-            }
-          });
+
+          this.selectArr = res.data.menuItems;
           this.$nextTick(() => {
-            this.handleCheckChange();
+            this.selectCheckList();
           });
         });
     },

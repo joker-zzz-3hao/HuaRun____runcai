@@ -7,9 +7,14 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="80px"
+      :label-position="labelPosition"
+    >
       <el-form-item label="角色编号" prop="roleCode">
         <el-input style="width:320px" maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
       </el-form-item>
@@ -26,7 +31,7 @@
                 ref="treeMenu"
                 v-model="selectArr"
                 :options="data"
-                :props="{ multiple: true }"
+                :props="{ multiple: true,value:'functionId',children:'children',label:'functionName' }"
                 node-key="id"
               ></el-cascader-panel>
             </div>
@@ -65,7 +70,10 @@ export default {
   data() {
     return {
       server,
+      labelPosition: 'left',
       menuTreeList: [],
+      selectArr: [],
+      list: [],
       showMenu: false,
       form: {
         roleCode: '',
@@ -101,12 +109,12 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    handleCheckChange() {
+    getCheckName() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.label;
+          return item.data.functionName;
         }
       });
       // eslint-disable-next-line array-callback-return
@@ -115,25 +123,20 @@ export default {
           return item;
         }
       });
-      this.form.functionList = keys.map((item) => ({ functionId: item.data.id }));
     },
-    // 获取菜单功能树形结构
+    handleCheckChange(data) {
+      let arr = [];
+      data.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      this.getCheckName();
+    },
     getqueryMenu() {
-      this.server.queryMenu()
+      this.server.listTenantFuncation()
         .then((res) => {
-          this.data = this.getTreeList(res.data, true);
+          this.data = res.data;
         });
-    },
-    // 递归修改符合element tree结构数据
-    getTreeList(data) {
-      if (data) {
-        return data.map((item) => ({
-          id: item.functionId,
-          label: item.functionName,
-          value: item.roleCode,
-          children: this.getTreeList(item.children),
-        }));
-      }
     },
     submitForm() {
       this.$refs.form.validate((valid) => {
@@ -146,8 +149,8 @@ export default {
       });
     },
     addRole() {
-      this.handleCheckChange();
       const { form } = this;
+      this.form.functionList = this.list.map((item) => ({ functionId: item }));
       form.roleType = 'CREATION';
       this.server.addRole(form).then((res) => {
         if (res.code == 200) {

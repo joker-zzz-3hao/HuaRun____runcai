@@ -6,7 +6,6 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
   >
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
@@ -18,11 +17,11 @@
             placeholder="请输入租户名称"
           ></el-input>
         </el-form-item>
-        <el-form-item label="企业ID" prop="tenantID">
+        <el-form-item label="企业ID" prop="tenantId">
           <el-input
             style="width:320px"
             maxlength="64"
-            v-model="form.tenantID"
+            v-model="form.tenantId"
             placeholder="请输入企业ID"
           ></el-input>
         </el-form-item>
@@ -52,7 +51,7 @@
                   ref="treeMenu"
                   v-model="selectArr"
                   :options="data"
-                  :props="{ multiple: true }"
+                  :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
                   node-key="id"
                 ></el-cascader-panel>
                 <div slot="reference">+</div>
@@ -60,24 +59,6 @@
             </div>
           </div>
         </el-form-item>
-
-        <!-- <el-form-item label="使用时间" prop="date">
-          <el-date-picker
-            v-model="form.date"
-            @change="changDate"
-            :disabled="infoBool"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-        </el-form-item>-->
-        <!-- <el-form-item label="租户状态">
-          <el-radio-group v-model="form.status">
-            <el-radio label="O">启用</el-radio>
-            <el-radio label="S">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>-->
       </el-form>
     </div>
     <div slot="footer" class="dialog-footer">
@@ -109,6 +90,7 @@ export default {
   },
   data() {
     return {
+      list: [],
       menuTreeList: [],
       server,
       showMenu: false,
@@ -116,7 +98,7 @@ export default {
         tenantName: '',
         applyUser: '',
         mobilePhone: '',
-        tenantID: '',
+        tenantId: '',
         date: '',
         status: 'O',
         startTime: '',
@@ -139,7 +121,7 @@ export default {
             trigger: 'blur',
           },
         ],
-        tenantID: [{
+        tenantId: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
         },
         ],
@@ -155,13 +137,11 @@ export default {
             trigger: 'blur',
           },
         ],
-        date: {
-          required: true, message: '请选择开始时间与结束时间', trigger: 'change',
-        },
       },
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      selectArr: [],
     };
   },
   mounted() {
@@ -170,47 +150,12 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    changDate(date) {
-      // eslint-disable-next-line prefer-destructuring
-      this.form.startTime = date[0];
-      // eslint-disable-next-line prefer-destructuring
-      this.form.endTime = date[1];
-    },
+
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.queryMenu()
         .then((res) => {
-          this.data = this.getTreeList(res.data, true);
-        });
-    },
-    // 递归修改符合element tree结构数据
-    getTreeList(data, disabled) {
-      if (data) {
-        return data.map((item) => ({
-          id: item.functionId,
-          label: item.functionName,
-          value: item.functionId,
-          disabled: this.infoBool,
-          children: this.getTreeList(item.children, disabled),
-        }));
-      }
-    },
-    // 获取租户信息
-    getTenant() {
-      this.server.getTenant({ tenantId: this.tenantId })
-        .then((res) => {
-          this.form.tenantName = res.data.tenantName;
-          this.form.applyUser = res.data.applyUser;
-          this.form.mobilePhone = res.data.mobilePhone;
-          this.form.tenantID = res.data.tenantID;
-          this.form.status = res.data.status;
-          // this.form.date = [new Date(res.data.startTime), new Date(res.data.endTime)];
-          // this.form.startTime = res.data.startTime;
-          // this.form.endTime = res.data.endTime;
-          const keys = res.data.menuTree.map((item) => item.functionId);
-          this.$nextTick(() => {
-            this.$refs.treeMenu.setCheckedKeys(keys);
-          });
+          this.data = res.data;
         });
     },
     // 校验数据填写格式
@@ -218,20 +163,24 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
-          this.tenantId ? this.pudateForm() : this.creatForm();
+          this.creatForm();
         } else {
           return false;
         }
       });
     },
     // 获取选中tree key值 展示选中
-    handleCheckChange() {
-      console.log(this.selectArr);
+    handleCheckChange(data) {
+      let arr = [];
+      data.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.label;
+          return item.data.functionName;
         }
       });
       // eslint-disable-next-line array-callback-return
@@ -240,33 +189,13 @@ export default {
           return item;
         }
       });
-      this.form.menuTree = keys.map((item) => ({ functionId: item.data.id }));
-    },
-    // 提交编辑数据
-    pudateForm() {
-      this.server.updateTenant({
-        tenantName: this.form.tenantName,
-        tenantId: this.form.tenantID,
-        applyUser: this.form.applyUser,
-        mobilePhone: this.form.mobilePhone,
-        status: this.form.status,
-        menuTree: this.form.menuTree,
-      })
-        .then((res) => {
-          if (res.code == 200) {
-            this.$emit('getTenantList');
-            this.$message.success(res.msg);
-            this.closed();
-          } else {
-            this.$message.error(res.msg);
-          }
-        });
     },
     // 提交创建数据
     creatForm() {
+      this.form.menuTree = this.list.map((item) => ({ functionId: item }));
       this.server.insertTenant({
         tenantName: this.form.tenantName,
-        tenantId: this.form.tenantID,
+        tenantId: this.form.tenantId,
         applyUser: this.form.applyUser,
         mobilePhone: this.form.mobilePhone,
         startTime: this.form.startTime,

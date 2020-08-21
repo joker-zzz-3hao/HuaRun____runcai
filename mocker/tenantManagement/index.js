@@ -28,7 +28,7 @@ const mockData = {
   'POST /gateway/system-service/sys/tenant/getTenant': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|1': [{
-        tenantID: 'CR0012000206',
+        tenantId: 'CR0012000206',
         tenantBuId: 'CR0012000206',
         tenantName: '润联科技',
         applyUser: '老侯',
@@ -40,16 +40,7 @@ const mockData = {
         createTime: '2020-08-06T19:33:07',
         updateTime: '2020-08-06T19:33:11',
         updateBy: '1234567890000',
-        menuTree: [{
-          functionId: [4, 10],
-        },
-        {
-          functionId: [4, 12],
-        },
-        {
-          functionId: [4, 13],
-        },
-        ],
+        menuTree: [[4, 13], [4, 10]],
       },
       ],
 
