@@ -94,6 +94,7 @@
                   inactive-value="50"
                   v-model="scope.row.userStatus"
                   active-color="#13ce66"
+                  :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
                 ></el-switch>
               </div>
             </template>
@@ -106,8 +107,12 @@
           <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
           <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
             <template slot-scope="scope">
-              <el-button v-show="scope.row.userType=='2'" @click="createOrEditUser(scope.row)">编辑</el-button>
-              <el-button @click="info(scope.row)">详情</el-button>
+              <el-button
+                type="text"
+                v-if="scope.row.userType=='2'"
+                @click="createOrEditUser(scope.row)"
+              >编辑</el-button>
+              <span v-else>--</span>
             </template>
           </el-table-column>
         </el-table>
@@ -126,23 +131,32 @@
       :treeData="treeData"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-
-    <!-- 用户详情 -->
-    <user-info
-      ref="setRole"
-      v-if="showUserInfo"
-      :server="server"
-      :CONST="CONST"
-      :userId="userId"
-      :treeData="treeData"
-      @closeUserDialog="closeUserDialog"
-    ></user-info>
+    <!-- 用户编辑 -->
+    <el-drawer
+      :modal="false"
+      :append-to-body="false"
+      :visible.sync="editDrawer"
+      v-if="editDrawer"
+      title="编辑用户"
+      :before-close="closeUserDialog"
+    >
+      <edit-user
+        ref="createUser"
+        :treeData="treeData"
+        :server="server"
+        :optionType="optionType"
+        :userId="userId"
+        :tenantName="tenantName"
+        :globalOrgId="globalOrgId"
+        @closeUserDialog="closeUserDialog"
+      ></edit-user>
+    </el-drawer>
   </div>
 </template>
 
 <script>
-import createOrEditUser from './components/createOrEditUser';
-import userInfo from './components/userInfo';
+import createUser from './components/createUser';
+import editUser from './components/editUser';
 import Server from './server';
 import CONST from './const';
 
@@ -151,8 +165,8 @@ const server = new Server();
 export default {
   name: 'organizeManagement',
   components: {
-    'create-user': createOrEditUser,
-    'user-info': userInfo,
+    'create-user': createUser,
+    'edit-user': editUser,
   },
   data() {
     return {
@@ -161,11 +175,10 @@ export default {
       globalOrgId: '',
       userId: '',
       loading: false,
+      editDrawer: false,
       showCreateUser: false,
-      showUserInfo: false,
       tenantName: '',
       optionType: 'create',
-      initDepartment: {},
       total: 0,
       currentPage: 1,
       pageSize: 10,
@@ -225,22 +238,14 @@ export default {
       if (user.userId) {
         this.optionType = 'edit';
         this.userId = user.userId;
+        this.editDrawer = true;
       } else {
         this.optionType = 'create';
+        this.showCreateUser = true;
+        this.$nextTick(() => {
+          this.$refs.createUser.show();
+        });
       }
-      this.showCreateUser = true;
-      this.$nextTick(() => {
-        this.$refs.createUser.show();
-      });
-    },
-
-    //
-    info(user) {
-      this.userId = user.userId;
-      this.showUserInfo = true;
-      this.$nextTick(() => {
-        this.$refs.setRole.show();
-      });
     },
     // 关闭弹窗
     closeUserDialog(data) {
@@ -249,16 +254,16 @@ export default {
         this.searchList();
       }
       this.showCreateUser = false;
-      this.showUserInfo = false;
+      this.editDrawer = false;
     },
     // 批量导入
     batchImport() {
 
     },
     dataChange(user) {
-      this.$confirm('确认更改用户状态？').then(() => {
-        this.changeStatus(user);
-      });
+      // this.$confirm('确认更改用户状态？').then(() => {
+      this.changeStatus(user);
+      // });
     },
     changeStatus(user) {
       const params = {
@@ -280,7 +285,7 @@ export default {
     // 设置负责人
     setLeader(user) {
       const option = user.tenantLeader == '1' ? 'removeDepartLeder' : 'setDepartLeader';
-      const title = user.leader == '1' ? '是否取消部门负责人？' : '是否设置部门负责人?';
+      const title = user.tenantLeader == '1' ? '是否取消租户管理员？' : '是否设置租户管理员?';
       this.$confirm(title).then(() => {
         this.server[option]({ tenantId: this.searchForm.tenantId, userId: user.userId, roleCode: 'TENANT_ADMIN' }).then((res) => {
           if (res.code == 200) {
