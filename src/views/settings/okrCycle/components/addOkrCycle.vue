@@ -57,10 +57,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close()" class="tl-btn amt-border-slip">
-        取消
-        <span class="lines"></span>
-      </el-button>
+      <el-button plain @click="close()" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
   </el-dialog>
 </template>
