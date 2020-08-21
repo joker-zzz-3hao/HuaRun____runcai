@@ -16,22 +16,19 @@
     <div class="rouleflex">
       <div class="roulewidth">
         <div class="selectTitle">
-          <div @click="cleargetqueryMenu()">返回></div>
-          <div v-for="(item,index) in selectList" :key="index" @click="selectDep(item)">
-            {{item.label}}
+          <div @click="clearUser">返回></div>
+          <div v-for="(item,index) in selectList" :key="index" @click="getqueryOrgAndUser(item)">
+            {{item.name}}
             >
           </div>
         </div>
         <div>
           <ul>
-            <li v-for="(item,index) in data" :key="index" @click="selectDep(item)">
-              <span v-if="item.type=='user'">
-                <el-checkbox
-                  @change="checkMember($event,item)"
-                  v-model="value[index]"
-                >{{item.label}}</el-checkbox>
+            <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
+              <span v-if="item.type=='USER'">
+                <el-checkbox @change="checkMember($event,item)" v-model="value[index]">{{item.name}}</el-checkbox>
               </span>
-              <span v-else>{{item.label}}</span>
+              <span v-else>{{item.name}}</span>
             </li>
           </ul>
         </div>
@@ -75,80 +72,33 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
-    this.getqueryMenu();
+    this.getqueryOrgAndUser({});
   },
   methods: {
-    fuzzyQueryUser() {
-      this.server.fuzzyQueryUser({
-        keyWord: this.keyWord,
+    clearUser() {
+      this.getqueryOrgAndUser({});
+      this.selectList = [];
+    },
+    getqueryOrgAndUser(item) {
+      if (item.type == 'USER') return false;
+      this.selectList[item.level - 2] = item;
+      this.selectList.splice((item.level - 1), this.selectList.length - (item.level - 2));
+      this.server.queryOrgAndUser({
+        orgId: item.id,
       }).then((res) => {
-        this.data = res.data.map((item) => ({
-          label: item.userName,
-          id: item.id,
-          type: 'user',
-          userId: item.userId,
-          orgId: item.orgId,
-        }));
+        if (res.code == 200) {
+          this.data = res.data;
+        }
       });
     },
-    // 清空
-    roulelistNum() {
-      this.roulelist = [];
-      this.value = this.value.map(() => false);
-    },
-    // 返回重置
-    cleargetqueryMenu() {
-      this.selectList = [];
-      this.keyWord = '';
-      this.getqueryMenu();
-    },
-    // 设置名称
-    selectDep(data) {
-      this.setTitle(data);
-      if (data.type == 'user') {
-        return;
-      }
-      if (data.children) {
-        if (data.children.length == 0) {
-          this.getRember(data);
-        } else {
-          this.data = data.children;
-        }
-      } else {
-        this.getRember(data);
-      }
-    },
-    // 设置标题
-    setTitle(data) {
-      this.selectList[data.num] = data;
-    },
-    // 获取菜单功能树形结构
-    getqueryMenu() {
-      this.server.getOrg({})
-        .then((res) => {
-          this.data = this.getTreeList(res.data[0].sonTree, -1);
-        });
-    },
-    // 递归修改符合element tree结构数据
-    getTreeList(data, num) {
-      num += 1;
-      if (data) {
-        return data.map((item) => ({
-          id: item.orgId,
-          label: item.orgName,
-          num,
-          children: this.getTreeList(item.sonTree, num),
-          type: 'dep',
-        }));
-      }
-    },
     checkMember(node, data) {
+      console.log(data);
       if (node) {
         this.roulelist.push({
-          userName: data.label,
-          id: data.id,
-          userId: data.userId,
+          userName: data.name,
+          userId: data.id,
           roleId: this.$route.query.roleId,
+          orgId: data.parentId,
         });
       } else {
         this.roulelist.forEach((item, index) => {
@@ -170,6 +120,18 @@ export default {
           type: 'user',
           userId: item.userId,
           orgId: item.orgId,
+        }));
+      });
+    },
+    fuzzyQueryUser() {
+      this.server.fuzzyQueryUser({
+        keyWord: this.keyWord,
+      }).then((res) => {
+        this.data = res.data.map((item) => ({
+          id: item.userId,
+          name: item.userName,
+          parentId: item.orgId,
+          type: 'USER',
         }));
       });
     },

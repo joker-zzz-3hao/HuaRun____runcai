@@ -174,6 +174,10 @@ export default {
       type: String,
       default: '',
     },
+    periodId: {
+      type: String,
+      default: '',
+    },
   },
   created() {
     this.getokrDetail();
@@ -320,10 +324,8 @@ export default {
     },
     // 增加kr
     addkr(okritem) {
-      console.log('newkrList', okritem.newkrList);
       if (!okritem.newkrList) {
         okritem.newkrList = [];
-        console.log('newkrList', okritem.newkrList);
       }
       okritem.newkrList.push({
         // id: this.formData.okrInfoList[oindex].krList.length,
@@ -372,14 +374,15 @@ export default {
           });
         });
         if (item.newkrList && item.newkrList.length > 0) {
-          okrInfoList[index] = okrInfoList[index].concat(item.newkrList);
+          console.log('newkrList', item.newkrList);
+          console.log('okrInfoList[index]', okrInfoList[index].krList);
+          okrInfoList[index].krList = okrInfoList[index].krList.concat(item.newkrList);
         }
       });
-      console.log('okrMain', this.okrMainId);
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
-        detailokrList: this.detailokrList,
-        periodId: 'periodId',
+        // detailokrList: this.detailokrList,
+        periodId: this.periodId,
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.modifyReason,
         okrMainId: this.okrMainId,

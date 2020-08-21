@@ -22,10 +22,29 @@
           </el-table-column>
           <el-table-column prop="startTime" label="开始时间" width="180">
             <template slot-scope="scope">
-              <em>{{scope.row.startTime}}</em>
+              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
             </template>
           </el-table-column>
-          <el-table-column prop="endTime" label="结束时间" width="180"></el-table-column>
+          <el-table-column prop="endTime" label="结束时间" width="180">
+            <template slot-scope="scope">
+              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+            </template>
+          </el-table-column>
+          <el-table-column prop="endTime" label="起草开始时间" width="150">
+            <template slot-scope="scope">
+              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+            </template>
+          </el-table-column>
+          <el-table-column prop="endTime" label="审批结束时间" width="150">
+            <template slot-scope="scope">
+              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+            </template>
+          </el-table-column>
+          <el-table-column prop="endTime" label="自评举证时间" width="150">
+            <template slot-scope="scope">
+              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+            </template>
+          </el-table-column>
           <el-table-column prop="checkStatus" label="状态" width="120">
             <template slot-scope="scope">
               <el-switch

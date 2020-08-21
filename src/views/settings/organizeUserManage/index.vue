@@ -13,13 +13,24 @@
         node-key="orgId"
         :default-expanded-keys="defaultExpandNode"
         :props="defaultProps"
-        @check-change="treeChange"
         @node-click="searchList"
         :expand-on-click-node="false"
-        :render-content="renderContent"
         :highlight-current="true"
         :filter-node-method="filterNode"
-      ></el-tree>
+      >
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
+            <div
+              @mouseout="outDepart(data)"
+              v-show="data.isShow"
+              style="marginLeft:150px"
+              @click="createDepart(data)"
+            >创建部门</div>
+          </span>
+        </span>
+      </el-tree>
     </div>
     <div class="org-right-side">
       <crcloud-table
@@ -83,6 +94,7 @@
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div>
@@ -300,66 +312,9 @@ export default {
         }
       }
     },
-    treeChange() {},
-    renderContent(h, {
-      node,
-      data,
-    }) {
-      return h('span', {
-        style: {},
-        // 这里添加hover事件
-        on: {
-          mouseenter: () => {
-            data.isShow = true;
-          },
-          // 鼠标离开
-          mouseleave: () => {
-            data.isShow = false;
-          },
-        },
-      }, [
-        h('span', {
-          // 显示名称
-        }, node.label),
-        h('span', {
-          style: {
-            display: data.isShow ? '' : 'none',
-          },
-        }, [
-          // 添加
-          // h('i', {
-          //   class: 'el-icon-edit',
-          // }),
-          // h('el-button', {
-          //   props: {
-          //     type: 'text',
-          //     size: 'small',
-          //   },
-          //   style: {
-          //     marginLeft: '15px',
-          //   },
-          //   on: {
-          //     click: () => {
-          //       this.createDepart(data);
-          //     },
-          //   },
-          // }, '创建部门'),
-          h('i', {
-            class: 'el-icon-circle-plus',
-            style: {
-              marginLeft: '150px',
-            },
-            on: {
-              click: () => {
-                this.createDepart(data);
-              },
-            },
-          }),
-        ]),
-      ]);
-    },
     // 创建部门
     createDepart(depart) {
+      depart.isShow = false;
       if (depart && depart.orgId) {
         this.initDepartment = depart;
         this.globalOrgId = depart.orgId;
@@ -422,7 +377,6 @@ export default {
       };
       this.server.updateOrgUser(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('状态更改成功');
           this.searchList();
         }
       });
@@ -435,10 +389,15 @@ export default {
         this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
-            this.$message.success('处理成功');
           }
         });
       });
+    },
+    hoverDepart(depart) {
+      depart.isShow = true;
+    },
+    outDepart(depart) {
+      depart.isShow = false;
     },
   },
   watch: {

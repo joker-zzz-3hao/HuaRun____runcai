@@ -1,5 +1,8 @@
 /* eslint-disable indent */
 const USER_TYPE_LIST = [{
+  key: '',
+  label: '全部',
+}, {
   key: '0',
   label: '注册用户',
 }, {
@@ -10,6 +13,9 @@ const USER_TYPE_LIST = [{
   label: '创建用户',
 }];
 const USER_STATUS_LIST = [{
+    key: '',
+    label: '全部',
+  }, {
     key: '0',
     label: '启用',
   },
@@ -28,6 +34,9 @@ const USER_TYPE_MAP = {
   2: '创建用户',
 };
 const IS_LEADER_LIST = [{
+    key: '',
+    label: '全部',
+  }, {
     key: '0',
     label: '是',
   },
