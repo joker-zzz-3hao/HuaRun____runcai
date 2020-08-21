@@ -200,6 +200,10 @@ export default {
     },
     // 增加kr
     addkr(oindex) {
+      if (this.formData.okrInfoList[oindex].krList.length > 20) {
+        this.$message('最多能创建20个关键结果KR');
+        return;
+      }
       this.formData.okrInfoList[oindex].krList.push({
         // id: this.formData.okrInfoList[oindex].krList.length,
         okrDetailObjectKr: '',
@@ -218,6 +222,10 @@ export default {
     },
     // 增加o
     addobject() {
+      if (this.formData.okrInfoList.length > 20) {
+        this.$message('最多能创建20个目标O');
+        return;
+      }
       this.formData.okrInfoList.push({
         // id: this.formData.okrInfoList.length,
         okrDetailObjectKr: '',
@@ -435,5 +443,8 @@ export default {
 .okuang {
   margin: 10px;
   border: 1px solid rgb(190, 190, 190);
+}
+.el-drawer__body {
+  overflow: auto;
 }
 </style>
