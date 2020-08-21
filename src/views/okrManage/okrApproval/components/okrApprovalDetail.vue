@@ -58,7 +58,21 @@
     </div>
     <div>
       <p>审核记录</p>
-      <tl-timeLine :cycleList="cycleList"></tl-timeLine>
+      <!-- <el-timeline>
+        <el-timeline-item
+          :timestamp="`${item.createDate} ${item.createTime}`"
+          placement="top"
+          v-for="item in cycleList"
+          :key="item.id"
+        >
+          <div style="display: flex;">
+            <div>张三</div>
+            <div>「提交」</div>
+            <div>意见</div>
+            <div>「请沟通调整」</div>
+          </div>
+        </el-timeline-item>
+      </el-timeline>-->
     </div>
   </div>
 </template>
@@ -66,7 +80,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
-import timeLine from '@/components/timeLine';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -86,30 +99,11 @@ export default {
         approvalStatus: '1',
         refuseInfo: '',
       },
-      cycleList: [{
-        date: '2020-08-01',
-        time: '16:14',
-        name: '张三',
-        statusName: '通过',
-        content: '内内容内容内容内容内容内容内容内容容',
-      }, {
-        date: '2020-08-01',
-        time: '16:14',
-        name: '张三',
-        statusName: '通过',
-        content: '内内容内容内容内容内容内容内容内容容',
-      }, {
-        date: '2020-08-01',
-        time: '16:14',
-        name: '张三',
-        statusName: '通过',
-        content: '内内容内容内容内容内容内容内容内容容',
-      }],
+      cycleList: [],
     };
   },
   components: {
     'tl-okrCollapse': okrCollapse,
-    'tl-timeLine': timeLine,
   },
   props: {},
   computed: {
@@ -139,6 +133,15 @@ export default {
         this.loading = false;
       });
     },
+    okrOperationHistory() {
+      this.server.okrOperationHistory({
+        attachId: this.data.approvalId,
+      }).then((res) => {
+        if (res.code == '200') {
+          this.cycleList = res.data;
+        }
+      });
+    },
     backList() {
       this.setOkrApprovalStep('1');
     },
@@ -155,8 +158,9 @@ export default {
             this.okrData = {};
             this.tableList = [];
           }
-          console.log(this.data);
-          console.log(this.okrData);
+          this.okrOperationHistory();
+          console.log(111);
+          console.log(this.tableList);
         }
       },
       deep: true,

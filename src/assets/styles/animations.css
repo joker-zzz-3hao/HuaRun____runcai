@@ -41,6 +41,9 @@
   transform: translateX(100%);
 }
 
+/* 边框淡入 */
+.amt-border-fadeout {}
+
 /* line 缩放 */
 .amt-line-elastic::before {
   transform: translateX(-50%) scaleX(1);

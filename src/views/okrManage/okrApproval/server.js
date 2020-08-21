@@ -12,4 +12,8 @@ export default class Server extends ServerBase {
   approval(param) {
     return this._ajaxPost('gateway/talent-okr/okr/approval', param);
   }
+
+  okrOperationHistory(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/okrOperationHistory', param);
+  }
 }

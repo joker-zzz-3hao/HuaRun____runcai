@@ -406,9 +406,9 @@ export default {
 
     },
     dataChange(user) {
-      this.$confirm('确认更改用户状态？').then(() => {
-        this.changeStatus(user);
-      });
+      // this.$confirm('确认更改用户状态？').then(() => {
+      this.changeStatus(user);
+      // });
     },
     changeStatus(user) {
       const params = {

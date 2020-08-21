@@ -4,7 +4,13 @@
       <div slot="searchBar">
         <el-form ref="ruleForm" :inline="true">
           <el-form-item>
-            <el-select v-model="status" placeholder="请选择" @change="getMenuList()" clearable>
+            <el-select
+              v-model="status"
+              :popper-append-to-body="false"
+              placeholder="请选择"
+              @change="getMenuList()"
+              clearable
+            >
               <el-option
                 v-for="(item,index) in CONST.STATUS_LIST"
                 :key="index"
@@ -178,6 +184,7 @@ export default {
       this.dialogVisiblePut = true;
       this.title = '编辑';
       this.menuName = row.functionName;
+      this.parentId = row.parentId;
       this.menuData = JSON.parse(JSON.stringify(row));
     },
     deleteById(id) {
