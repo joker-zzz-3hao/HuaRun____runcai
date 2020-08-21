@@ -41,7 +41,7 @@
                 :active-text="scope.row.status=='O'?'启用':'禁用'"
                 active-value="O"
                 inactive-value="S"
-                @change="handleChange(scope.row)"
+                @change="updateStatus(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>

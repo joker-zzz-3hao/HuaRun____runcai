@@ -8,7 +8,6 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     :modal="false"
-    center
   >
     <el-form
       ref="form"
@@ -25,11 +24,15 @@
           placeholder="请输入OKR周期名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="周期开始日期" prop="startTime">
-        <el-date-picker type="date" v-model="form.startTime" maxlength="64" placeholder="请设置开始日期"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="周期结束日期" prop="endTime">
-        <el-date-picker type="date" v-model="form.endTime" placeholder="请设置结束日期"></el-date-picker>
+      <el-form-item label="周期开始日期" prop="dateTime">
+        <el-date-picker
+          v-model="dateTime"
+          @change="getTime"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="请设置开始日期"
+          end-placeholder="请设置结束日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
         <el-radio-group v-model="form.checkStatus">
@@ -93,16 +96,24 @@ export default {
       dialogVisible: false,
       data: [],
       labelPosition: 'left',
+      dateTime: '',
     };
   },
 
   mounted() {
     this.dialogTableVisible = true;
-    if (this.updateData) {
-      this.form = this.updateData;
-    }
+    console.log(this.updateData);
+    this.form = this.updateData;
+    this.dateTime = [this.updateData.startTime, this.updateData.endTime];
   },
   methods: {
+    getTime(date) {
+      console.log(date);
+      // eslint-disable-next-line prefer-destructuring
+      this.form.startTime = date[0];
+      // eslint-disable-next-line prefer-destructuring
+      this.form.endTime = date[1];
+    },
     addOrUpdate() {
       this.server.addOrUpdate(this.form).then((res) => {
         if (res.code == 200) {
