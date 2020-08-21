@@ -225,9 +225,9 @@ export default {
                 updateTime: '',
               },
             }];
-            this.okrList[0].tableList = res.data.okrDetails;
-            this.okrList[0].okrMain = res.data.okrMain;
-            this.okrId = res.data.okrMain.okrId;
+            this.okrList[0].tableList = res.data.okrDetails || [];
+            this.okrList[0].okrMain = res.data.okrMain || {};
+            this.okrId = res.data.okrMain.okrId || '';
           }
         }
       });
@@ -257,6 +257,7 @@ export default {
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
+        periodId: this.okrCycle.periodId,
       };
       this.currentView = '';
       this.setMyokrDrawer(true);
