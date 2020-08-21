@@ -7,6 +7,7 @@
         type="cycleListSelect"
         @handleData="handleCycleData"
         :defaultProps="cycleDefaultProps"
+        :defaultData="searchForm.periodId"
       ></department>
       <el-select v-model="searchForm.okrType" placeholder="请选择类型" :popper-append-to-body="false">
         <el-option
@@ -95,9 +96,8 @@ export default {
       this.searchForm.draftParams = this.writeInfo.draftParams || '';
       this.searchForm.draftId = this.writeInfo.draftId || '';
       this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
-      console.log('writeInfo', this.writeInfo);
+      this.searchForm.periodId = JSON.parse(this.searchForm.draftParams).periodId;
     } else if (this.writeInfo.canWrite == 'cannot') {
-      console.log('writeInfo', this.writeInfo);
       this.canWrite = false;
       this.okrId = this.writeInfo.okrId || '';
     }
@@ -131,7 +131,6 @@ export default {
     handleCycleData(data) {
       // this.okrCycle = data;
       this.searchForm.okrCycle = data;
-      console.log(data);
       // this.getmaps();
     },
   },

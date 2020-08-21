@@ -180,7 +180,6 @@ export default {
     }
   },
   created() {
-    console.log('到里面了', this.searchForm);
     if (this.searchForm.okrStatus == '6' || this.searchForm.okrStatus == '8') {
       this.getOkrDraftById();
     }
@@ -189,9 +188,7 @@ export default {
     ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer']),
     // 获取暂存的草稿
     getOkrDraftById() {
-      console.log('获取暂存的草稿', this.searchForm.draftParams);
       this.formData = JSON.parse(this.searchForm.draftParams);
-      console.log('获取暂存的草稿', this.formData);
       this.searchOkr();
       this.getCultureList();
     },
@@ -203,7 +200,6 @@ export default {
     },
     // 增加kr
     addkr(oindex) {
-      console.log(this.formData.okrInfoList);
       this.formData.okrInfoList[oindex].krList.push({
         // id: this.formData.okrInfoList[oindex].krList.length,
         okrDetailObjectKr: '',
@@ -238,7 +234,6 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
-      console.log(this.formData.okrInfoList);
     },
     // 删除o
     deleteobject(oindex) {
@@ -248,7 +243,6 @@ export default {
     searchOkr() {
       this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || this.formData.periodId }).then((res) => {
         if (res.code == 200) {
-          console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
           res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
             this.departokrList.push({
@@ -333,7 +327,6 @@ export default {
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
       // TODO:价值观的id
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
-      console.log('关联', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
       this.innerDrawer = false;
     },
     // 校验表单
@@ -420,7 +413,6 @@ export default {
     },
     'searchForm.okrStatus': {
       handler(newVal) {
-        console.log('获取暂存的草稿', newVal);
         if (newVal == '6' || newVal == '8') {
           this.getOkrDraftById();
         }
