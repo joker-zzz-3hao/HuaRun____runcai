@@ -65,6 +65,7 @@
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div>
@@ -314,24 +315,6 @@ export default {
             display: data.isShow ? '' : 'none',
           },
         }, [
-          // 添加
-          // h('i', {
-          //   class: 'el-icon-edit',
-          // }),
-          // h('el-button', {
-          //   props: {
-          //     type: 'text',
-          //     size: 'small',
-          //   },
-          //   style: {
-          //     marginLeft: '15px',
-          //   },
-          //   on: {
-          //     click: () => {
-          //       this.createDepart(data);
-          //     },
-          //   },
-          // }, '创建部门'),
           h('i', {
             class: 'el-icon-circle-plus',
             style: {
