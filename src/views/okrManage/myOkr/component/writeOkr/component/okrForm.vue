@@ -21,6 +21,7 @@
                 :step="1"
                 :precision="0"
               ></el-input-number>
+              <span>%</span>
             </el-form-item>
             <el-form-item label="当前进度">
               <el-input-number
@@ -31,9 +32,15 @@
                 :step="1"
                 :precision="0"
               ></el-input-number>
+              <span>%</span>
             </el-form-item>
-            <el-form-item label="关联承接项">
-              <el-button @click="openUndertake(index)">关联承接项</el-button>
+            <el-form-item label="承接自">
+              <el-button @click="openUndertake(index)">
+                <span
+                  v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
+                >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</span>
+                <span v-else>+关联</span>
+              </el-button>
             </el-form-item>
           </dd>
           <dd>
@@ -55,6 +62,7 @@
                     :step="1"
                     :precision="0"
                   ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <el-form-item label="当前进度">
                   <el-input-number
@@ -65,6 +73,7 @@
                     :step="1"
                     :precision="0"
                   ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <el-form-item label="风险状态">
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
@@ -331,10 +340,13 @@ export default {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
+      // 承接项的id、版本、名称
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       // TODO:价值观的id
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       this.innerDrawer = false;
     },
     // 校验表单
@@ -399,12 +411,18 @@ export default {
       });
     },
     deleteDraft() {
-      this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
-        if (res.code == 200) {
-          this.$message('提交成功~');
-          // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
-          this.setMyokrDrawer(false);
-        }
+      this.$xconfirm({
+        content: '',
+        title: '如果您要确定删除，该OKR将无法恢复',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
+          if (res.code == 200) {
+            this.$message('提交成功~');
+            // 关闭抽屉
+            this.setMyokrDrawer(false);
+          }
+        });
       });
     },
   },

@@ -52,8 +52,10 @@
     <!-- 点赞要一直浮着 -->
     <div>
       <ul style="display:flex">
-        <li v-for="(item,index) in voteUser" :key="item.userId+index">{{item.userName}}</li>
         <el-button v-if="showLike" @click="like()">点赞</el-button>
+        <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+          <div class="user-name">{{cutName(item.userName)}}</div>
+        </li>
       </ul>
     </div>
     <el-drawer title="历史版本" :modal="false" :visible.sync="innerDrawer">
@@ -169,6 +171,10 @@ export default {
     // 打开历史版本
     openHistory() {
       this.innerDrawer = true;
+    },
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
     },
   },
   watch: {
