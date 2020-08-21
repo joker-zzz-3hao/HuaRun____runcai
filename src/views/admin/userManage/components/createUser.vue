@@ -17,7 +17,7 @@
         <el-form-item
           label="用户账号"
           prop="userAccount"
-          :rules="[{required:true,validator:optionType == 'edit'?'':validateAccount,trigger:'blur'}]"
+          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
         >
           <el-input
             v-model.trim="formData.userAccount"
@@ -51,19 +51,17 @@
         </el-form-item>
         <el-form-item
           label="所在部门"
-          prop="orgId"
+          prop="orgIdList"
           :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-          v-if="initDepartment.orgId || optionType == 'create'"
+          v-if="formData.orgIdList.length > 0"
         >
-          <tl-department
-            v-model="formData.orgId"
-            :data="treeData"
-            :defaultProps="{ children: 'sonTree', label: 'orgName'}"
-            :initDepartment="initDepartment"
-            :type="'department'"
-            @handleData="handleData"
-          ></tl-department>
-          <el-button @click="addOrg">添加部门</el-button>
+          <el-cascader
+            v-model="formData.orgIdList"
+            :options="treeData"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
+            @change="selectIdChange"
+          ></el-cascader>
         </el-form-item>
         <el-form-item
           :label="pwdLabel"
@@ -96,12 +94,7 @@
         >
           <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
         </el-form-item>
-        <el-form-item label="用户状态" prop="sortIndex">
-          <el-radio-group v-model="formData.userStatus">
-            <el-radio :label="'0'">启用</el-radio>
-            <el-radio :label="'50'">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
+
         <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="saveUser">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
@@ -112,14 +105,14 @@
 </template>
 
 <script>
-import department from '@/components/department';
+import Cryptojs from '@/lib/cryptojs';
 import validateMixin from '../validateMixin';
 
 export default {
   name: 'createOrEditUser',
   mixins: [validateMixin],
   components: {
-    'tl-department': department,
+
   },
   props: {
     treeData: {
@@ -161,6 +154,7 @@ export default {
   },
   data() {
     return {
+      Cryptojs,
       visible: false,
       loading: false,
       userTitle: '创建用户',
@@ -179,6 +173,7 @@ export default {
         tenantName: this.tenantName,
         userType: 2,
         newPwd: '',
+        orgIdList: [],
       },
 
     };
@@ -190,6 +185,7 @@ export default {
   computed: {},
   methods: {
     init() {
+      this.setOrgIdList(this.treeData[0].orgId);
       if (this.optionType == 'edit') {
         this.userTitle = '编辑用户';
         this.server.getUserInfo({ userId: this.userId }).then((res) => {
@@ -202,12 +198,12 @@ export default {
             this.formData.userStatus = res.data.userStatus;
             this.formData.tenantName = res.data.tenantName;
             this.formData.loginPwd = '******';
-            this.setInitDepartment(res.data.orgId);
+            // this.setInitDepartment(res.data.orgId);
           }
         });
       }
     },
-    setInitDepartment(orgId) {
+    setOrgIdList(orgId) {
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
       const result = [];
@@ -220,18 +216,23 @@ export default {
         result.push({
           orgId: next.orgId,
           orgName: next.orgName,
+          orgParentId: next.orgParentId,
         });
         if (Array.isArray(next.sonTree)) {
           queue.push(...next.sonTree);
         }
       }
-
-      // 遍历一维数组，设置initDepartment值
+      this.formData.orgIdList = [];
+      this.getOrgIdList(result, orgId);
+      this.formData.orgIdList.reverse();
+    },
+    getOrgIdList(result, orgId) {
+      let orgParentId = '';
       for (const org of result) {
         if (org.orgId == orgId) {
-          this.initDepartment = {
-            orgId, orgName: org.orgName,
-          };
+          orgParentId = org.orgParentId;
+          this.formData.orgIdList.push(org.orgId);
+          this.getOrgIdList(result, orgParentId);
         }
       }
     },
@@ -246,24 +247,36 @@ export default {
       this.formData.orgId = date.orgId;
     },
     saveUser() {
-      let addOrEdit = 'createUser';
-      let successTip = '用户创建成功';
-      if (this.optionType == 'edit') {
-        addOrEdit = 'updateOrgUser';
-        successTip = '用户编辑成功';
-        if (!this.isEditPwd) {
-          delete this.formData.loginPwd;
-          delete this.formData.oldPwd;
-        }
-      }
-      delete this.formData.confirmPwd;
-      this.formData.tenantId = this.tenantId;
+      // let addOrEdit = 'createUser';
+      // let successTip = '用户创建成功';
+      // if (this.optionType == 'edit') {
+      //   addOrEdit = 'updateOrgUser';
+      //   successTip = '用户编辑成功';
+      //   if (!this.isEditPwd) {
+      //     delete this.formData.loginPwd;
+      //     delete this.formData.oldPwd;
+      //   }
+      // }
+      // delete this.formData.confirmPwd;
+      const params = {
+        orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        loginPwd: this.Cryptojs.encrypt(this.formData.loginPwd),
+        orgFullId: this.formData.orgIdList.join(':'),
+        tenantName: this.formData.tenantName,
+        userAccount: this.formData.userAccount,
+        userMail: this.formData.userMail,
+        userMobile: this.formData.userMobile,
+        userName: this.formData.userName,
+        userStatus: this.formData.userStatus,
+        userType: this.formData.userType,
+        tenantId: this.tenantId,
+      };
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server[addOrEdit](this.formData).then((res) => {
+          this.server.createUser(params).then((res) => {
             if (res.code == 200) {
-              this.$message.success(successTip);
+              this.$message.success('用户创建成功');
               this.close('refreshPage');
             }
             this.loading = false;
@@ -284,9 +297,10 @@ export default {
       this.formData.loginPwd = '******';
       this.isEditPwd = false;
     },
-    addOrg() {
-      this.$emit('createDepart');
+    selectIdChange(data) {
+      this.formData.orgIdList = data;
     },
+
   },
   watch: {},
   updated() {},

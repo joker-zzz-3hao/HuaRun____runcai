@@ -164,6 +164,9 @@ export default {
       this.setOrgIdList(this.globalOrgId);
     },
     setOrgIdList(orgId) {
+      if (!orgId) { // 无orgId默认使用顶级租户的orgId
+        orgId = this.treeData[0].orgId;
+      }
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
       const result = [];

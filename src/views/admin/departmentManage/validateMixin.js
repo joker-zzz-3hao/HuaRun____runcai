@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable space-unary-ops */
 export default {
   methods: {
     // 密码校验
@@ -43,9 +45,9 @@ export default {
     validateEmail(rule, value, callback) {
       if (!value) {
         callback('请输入邮箱');
-      } else if (
-        !/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-          .test(value)) {
+      } else if (!
+        /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+        .test(value)) {
         callback('邮箱格式不正确');
       } else {
         callback();
@@ -69,7 +71,7 @@ export default {
     validateAccount(rule, value, callback) {
       if (!value) {
         callback('请输入账号');
-      } else if (this.server.judgeUser) {
+      } else if (this.server.judgeUser && value != this.initUserAccount) {
         this.server.judgeUser({
           userAccount: value,
         }).then((res) => {
