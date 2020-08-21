@@ -54,8 +54,8 @@
         :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog"
-        @goDraft="goDraft"
+        @openDialog="openDialog(item)"
+        @goDraft="goDraft(item)"
       >
         <template slot="head-bar" slot-scope="props">
           <!-- <el-button
@@ -228,7 +228,6 @@ export default {
             this.okrList[0].tableList = res.data.okrDetails;
             this.okrList[0].okrMain = res.data.okrMain;
             this.okrId = res.data.okrMain.okrId;
-            console.log('进行中', this.tableList);
           }
         }
       });
@@ -239,20 +238,7 @@ export default {
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
       this.drawerTitle = 'OKR详情';
-      // this.okrId = val.detailId;
-      // switch (this.currentView) {
-      //   case 'tl-okr-detail':
-      //     this.drawerTitle = 'OKR详情';
-      //     break;
-      //   case 'tl-okr-update':
-      //     this.drawerTitle = '更新进度';
-      //     break;
-      //   case 'tl-okr-history':
-      //     this.drawerTitle = '历史记录';
-      //     break;
-      //   default:
-      //     break;
-      // }
+
       this.setMyokrDrawer(true);
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
@@ -277,14 +263,13 @@ export default {
     },
     goDraft(item) {
       console.log('goDraft', item.params);
-      // TODO: 加okr类型
+      this.drawerTitle = '编辑';
       this.writeInfo = {
         canWrite: 'draft',
         draftParams: item.params,
         draftId: item.id,
         okrStatus: this.searchForm.status,
         okrorgCycle: this.okrorgCycle,
-        okrType: 2,
       };
       this.setMyokrDrawer(true);
     },

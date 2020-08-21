@@ -5,6 +5,9 @@
 }
 
 /* 按钮 */
+.tl-btn + .tl-btn {
+  margin: 0 0 0 16px;
+}
 .tl-btn.el-button--primary,
 .tl-btn.is-plain,
 .tl-btn.el-button--text {
@@ -82,11 +85,13 @@
 .tl-btn.el-button.is-plain:active,
 .tl-btn.el-button.is-plain:focus,
 .tl-btn.el-button.is-plain:hover {
-  color: #56c5ff;
+  color: #685df1;
 }
 
 .amt-border-fadeout.is-plain {
   background: #f0effe;
+  color: #685df1;
+  transform: translateZ(0);
 }
 
 .amt-border-fadeout.is-plain::before {
@@ -96,8 +101,20 @@
   right: 0;
   top: 0;
   bottom: 0;
-  border: 1px solid #f0effe;
+  border-color: #685df1;
+  border-style: solid;
+  border-width: 0;
   z-index: -1;
+  transition: border-width .1s ease-out;
+}
+
+.amt-border-fadeout.is-plain:hover {
+  background: #f0effe;
+}
+
+.amt-border-fadeout.is-plain:hover::before {
+  border-width: 2px;
+  transform: translateY(0);
 }
 
 .tl-btn.el-button--text,

@@ -39,17 +39,15 @@
         :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog"
+        @openDialog="openDialog(item)"
       >
         <template slot="head-bar" slot-scope="props">
           <!-- <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button> -->
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >
-            承接地图{{props.okritem.continueCount}}
-            <i></i>
-          </el-button>
+          >承接地图icon</el-button>
+          {{props.okritem.continueCount}}
         </template>
       </tl-okr-table>
     </div>

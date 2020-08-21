@@ -20,7 +20,11 @@
               <span v-if="scope.row.checkStatus=='1'">默认周期</span>
             </template>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间" width="180"></el-table-column>
+          <el-table-column prop="startTime" label="开始时间" width="180">
+            <template slot-scope="scope">
+              <em>{{scope.row.startTime}}</em>
+            </template>
+          </el-table-column>
           <el-table-column prop="endTime" label="结束时间" width="180"></el-table-column>
           <el-table-column prop="checkStatus" label="状态" width="120">
             <template slot-scope="scope">
@@ -29,7 +33,7 @@
                 :active-text="scope.row.periodType==1?'启用':'禁用'"
                 active-value="1"
                 inactive-value="0"
-                @change="statusList(scope.row)"
+                @change="addOrUpdate(scope.row)"
                 class="tl-switch"
               ></el-switch>
             </template>
@@ -44,7 +48,6 @@
           :exist.sync="exist"
           v-if="exist"
           :title="title"
-          :updateData.sync="updateData"
           @getTableList="getTableList"
         ></tl-add-okr-cycle>
         <tl-put-okr-cycle
@@ -61,6 +64,7 @@
 </template>
 
 <script>
+import global from '@/mixin/global';
 import addOkrCycle from './components/addOkrCycle';
 import putOkrCycle from './components/putOkrCycle';
 import Server from './server';
@@ -72,6 +76,7 @@ export default {
     'tl-add-okr-cycle': addOkrCycle,
     'tl-put-okr-cycle': putOkrCycle,
   },
+  mixins: [global],
   data() {
     return {
       tableData: [],

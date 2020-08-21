@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
 import card from './card';
@@ -78,8 +79,8 @@ export default {
       server,
       treeData: [],
       searchForm: {
-        orgId: '8888',
-        periodId: 'periodId',
+        orgId: '',
+        periodId: '',
       },
       cycleData: [],
       departmentData: [],
@@ -111,20 +112,27 @@ export default {
         id: 'orgId',
       },
       svgList: [],
-      showOne: false,
+      showOne: false, // 是否只展示一棵树
+      orgId: '',
     };
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   created() {
     this.init();
-    // 直接赋值，为空时也会按false判断
-    this.showOne = this.$route.params.showOne;
-    // this.showOne = true;
-    this.searchForm.okrDetailId = this.$route.params.okrDetailId || '';
   },
   methods: {
     init() {
       const self = this;
-      if (!this.showOne) {
+      // 直接赋值，为空时也会按false判断（从myokr跳传
+      self.showOne = self.$route.params.showOne;
+      self.searchForm.okrDetailId = self.$route.params.okrDetailId || '';
+      self.searchForm.periodId = self.$route.params.periodId || '';
+      self.orgId = self.userInfo.orgId;
+      if (!self.showOne) {
         // 查询周期
         self.server.getOkrCycleList().then((res) => {
           if (res.data.length > 0) {
@@ -139,7 +147,6 @@ export default {
             self.pushCycleObj('current');
             self.pushCycleObj('old');
           }
-          self.getmaps();
         });
         self.getOrgTable();
       } else {
@@ -162,9 +169,6 @@ export default {
       });
     },
     getmaps() {
-      // this.searchForm = {
-      //   okrDetailId: '111122',
-      // };
       // 查承接地图
       this.server.getmaps(this.searchForm).then((res) => {
         if (res.code == 200) {
@@ -183,17 +187,21 @@ export default {
             allTreeData.forEach((item) => {
               this.svgList[index] = [];
               this.svgList[index].push(item);
+              if (item.krContinueList && item.krContinueList.length > 0) {
+                // TODO: 调试时取了0
+                this.svgList[index] = this.svgList[index].concat(item.krContinueList);
+              }
               index += 1;
               if (item.krList && item.krList.length > 0) {
                 item.krList.forEach((kritem) => {
                   this.svgList[index] = [];
                   this.svgList[index].push(kritem);
+                  index += 1;
                   console.log('kr树', kritem);
                   if (kritem.krContinueList && kritem.krContinueList.length > 0) {
                   // TODO: 调试时取了0
                     this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
                   }
-                  index += 1;
                 });
               }
               console.log('承接树', this.svgList);
@@ -209,12 +217,15 @@ export default {
       });
     },
     handleCycleData(data) {
-      this.okrCycle = data;
-      console.log(data);
-      // this.getmaps();
+      this.searchForm.periodId = data.periodId;
+      console.log(this.searchForm.periodId);
+      this.getmaps();
     },
     handleData(data) {
-      console.log(data);
+      this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
+      this.orgId = '';
+      console.log(this.searchForm.orgId);
+      this.getmaps();
     },
     // 当点击根节点，收起其他已打开的树
     handleTree(data) {
