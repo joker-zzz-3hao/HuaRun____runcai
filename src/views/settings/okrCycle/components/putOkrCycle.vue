@@ -8,7 +8,6 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     :modal="false"
-    center
   >
     <el-form
       ref="form"
