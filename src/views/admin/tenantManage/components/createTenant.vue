@@ -43,7 +43,10 @@
         </el-form-item>
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+              {{item.data.functionName}}
+              <i class="el-icon-error" @click="clearNode()"></i>
+            </div>
             <div>
               <el-popover placement="bottom" trigger="click">
                 <el-cascader-panel
@@ -54,7 +57,9 @@
                   :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
                   node-key="id"
                 ></el-cascader-panel>
-                <div slot="reference">+</div>
+                <div slot="reference">
+                  <i class="el-icon-circle-plus-outline"></i>
+                </div>
               </el-popover>
             </div>
           </div>
@@ -150,7 +155,9 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-
+    clearNode(node) {
+      this.$refs.treeMenu.clearCheckedNodes(node);
+    },
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.queryMenu()
@@ -177,10 +184,11 @@ export default {
       });
       this.list = Array.from(new Set(arr));
       const keys = this.$refs.treeMenu.getCheckedNodes();
+      console.log(keys);
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.functionName;
+          return item;
         }
       });
       // eslint-disable-next-line array-callback-return

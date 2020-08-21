@@ -45,7 +45,10 @@
         </el-form-item>
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+              {{item}}
+              <i class="el-icon-error"></i>
+            </div>
             <div class="postMenu">
               <el-popover placement="bottom-end" trigger="click">
                 <el-cascader-panel
@@ -56,7 +59,9 @@
                   :props="{ multiple: true, label:'functionName',value:'functionId',children:'children'}"
                   node-key="id"
                 ></el-cascader-panel>
-                <div slot="reference">+</div>
+                <div slot="reference">
+                  <i class="el-icon-circle-plus-outline"></i>
+                </div>
               </el-popover>
             </div>
           </div>
