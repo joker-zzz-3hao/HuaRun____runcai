@@ -13,13 +13,24 @@
         node-key="orgId"
         :default-expanded-keys="defaultExpandNode"
         :props="defaultProps"
-        @check-change="treeChange"
         @node-click="searchList"
         :expand-on-click-node="false"
-        :render-content="renderContent"
         :highlight-current="true"
         :filter-node-method="filterNode"
-      ></el-tree>
+      >
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
+            <div
+              @mouseout="outDepart(data)"
+              v-show="data.isShow"
+              style="marginLeft:150px"
+              @click="createDepart(data)"
+            >创建部门</div>
+          </span>
+        </span>
+      </el-tree>
     </div>
     <div class="org-right-side">
       <crcloud-table
@@ -289,46 +300,6 @@ export default {
         }
       }
     },
-    treeChange() {},
-    renderContent(h, {
-      node,
-      data,
-    }) {
-      return h('span', {
-        style: {},
-        // 这里添加hover事件
-        on: {
-          mouseenter: () => {
-            data.isShow = true;
-          },
-          // 鼠标离开
-          mouseleave: () => {
-            data.isShow = false;
-          },
-        },
-      }, [
-        h('span', {
-          // 显示名称
-        }, node.label),
-        h('span', {
-          style: {
-            display: data.isShow ? '' : 'none',
-          },
-        }, [
-          h('i', {
-            class: 'el-icon-circle-plus',
-            style: {
-              marginLeft: '150px',
-            },
-            on: {
-              click: () => {
-                this.createDepart(data);
-              },
-            },
-          }),
-        ]),
-      ]);
-    },
     // 创建部门
     createDepart(depart) {
       if (depart && depart.orgId) {
@@ -408,6 +379,12 @@ export default {
           }
         });
       });
+    },
+    hoverDepart(depart) {
+      depart.isShow = true;
+    },
+    outDepart(depart) {
+      depart.isShow = false;
     },
   },
   watch: {

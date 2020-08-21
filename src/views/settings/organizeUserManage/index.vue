@@ -28,8 +28,6 @@
               style="marginLeft:150px"
               @click="createDepart(data)"
             >创建部门</div>
-            <!-- <el-button type="text" size="mini" @click="() => append(data)">Append</el-button>
-            <el-button type="text" size="mini" @click="() => remove(node, data)">Delete</el-button>-->
           </span>
         </span>
       </el-tree>
