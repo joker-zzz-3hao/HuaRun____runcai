@@ -184,3 +184,7 @@
   font-size: 12px;
   color: #685df1;
 }
+
+.okr-cycle .tl-drawer .el-drawer__body {
+  margin: 14px 0 0 0;
+}

@@ -33,9 +33,10 @@
           range-separator="-"
           start-placeholder="请设置开始日期"
           end-placeholder="请设置结束日期"
+          popper-class="tl-popper"
+          class="tl-range-editor"
         ></el-date-picker>
       </el-form-item>
-
       <el-form-item label="设置为默认周期" prop="checkStatus">
         <el-radio-group v-model="form.checkStatus" class="tl-radio-group">
           <el-radio label="1" class="tl-radio">是</el-radio>

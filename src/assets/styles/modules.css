@@ -108,22 +108,14 @@
   transition: border-width .1s ease-out;
 }
 
-.amt-border-fadeout.is-plain:hover {
-  background: #f0effe;
-}
-
-.amt-border-fadeout.is-plain:hover::before {
-  border-width: 2px;
-  transform: translateY(0);
-}
-
 .tl-btn.el-button--text,
 .tl-btn.el-button--text:focus,
 .tl-btn .el-button--text:hover {
   color: #685df1;
 }
 
-.tl-dialog .tl-btn {
+.tl-dialog .tl-btn,
+.tl-drawer .tl-btn {
   width: 90px;
   height: 40px;
 }
@@ -131,7 +123,8 @@
 /* input */
 .tl-input,
 .tl-date-editor,
-.tl-radio-group {
+.tl-radio-group,
+.tl-range-editor {
   margin: 8px 0 2px 0;
 }
 
@@ -157,15 +150,35 @@
 }
 
 .tl-date-editor.el-input,
-.tl-date-editor.el-input__inner {
+.tl-date-editor .el-input__inner {
   width: 100%;
 }
 
-.tl-date-editor .el-input__inner {
+.tl-date-editor .el-input__inner,
+.tl-range-editor.el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
   color: #4d5155;
   line-height: unset;
+}
+
+.tl-range-editor.el-input__inner {
+  width: 290px;
+}
+
+.tl-range-editor.is-active,
+.tl-range-editor.is-active:hover {
+  border-color: #685df1;
+}
+
+.tl-popper .el-date-table td.today span,
+.tl-popper .el-date-table td.available:hover {
+  color: #685df1;
+}
+
+.tl-popper .el-date-table td.end-date span,
+.tl-popper .el-date-table td.start-date span {
+  background: #685df1;
 }
 
 /* input-自定义 */
@@ -325,6 +338,7 @@
 
 .tl-dialog .el-dialog__close {
   color: #d8d8d8;
+  transition: color .3s ease-out;
 }
 
 .tl-dialog .el-dialog__headerbtn:focus .el-dialog__close,
@@ -354,6 +368,69 @@
   margin: 0 !important;
   flex: 1 1 auto;
   line-height: unset;
+}
+
+/* drawer */
+.tl-drawer {
+  top: unset;
+  height: calc(100vh - 70px);
+}
+
+.tl-drawer .el-drawer {
+  padding: 0 30px 30px 30px;
+  box-shadow: -6px 0 16px 0 rgba(0,0,0,0.04);
+  width: unset !important;
+}
+
+.tl-drawer .el-drawer__header {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  height: 50px;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.tl-drawer .el-drawer__header::before,
+.tl-drawer .el-drawer__header::after {
+  position: absolute;
+  bottom: -1px;
+  content: '';
+  background: #e8ecf0;
+  width: 100%;
+  height: 1px;
+}
+
+.tl-drawer .el-drawer__header::before {
+  left: -100px;
+}
+
+.tl-drawer .el-drawer__header::after {
+  right: -100px;
+}
+
+.tl-drawer .el-drawer__header span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #bcc4cc;
+  outline: unset;
+}
+
+.tl-drawer .el-drawer__close-btn {
+  font-size: 24px;
+  color: #d8d8d8;
+  transition: color .3s ease-out;
+}
+
+.tl-drawer .el-drawer__close-btn:hover {
+  color: #685df1;
+}
+
+.tl-drawer .el-drawer__body {
+  margin: 30px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* ==========================================================常用基础组件=================================================================== */

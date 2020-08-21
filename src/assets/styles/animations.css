@@ -42,7 +42,14 @@
 }
 
 /* 边框淡入 */
-.amt-border-fadeout {}
+.amt-border-fadeout.is-plain:hover {
+  background: #f0effe;
+}
+
+.amt-border-fadeout.is-plain:hover::before {
+  border-width: 2px;
+  transform: translateY(0);
+}
 
 /* line 缩放 */
 .amt-line-elastic::before {

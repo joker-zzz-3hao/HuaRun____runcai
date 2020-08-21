@@ -8,20 +8,22 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     :modal="false"
+    class="tl-drawer"
   >
     <el-form
       ref="form"
       :model="form"
       :rules="rules"
-      label-width="120px"
+      label-width="132px"
       :label-position="labelPosition"
+      class="tl-form"
     >
       <el-form-item label="OKR周期名称" prop="periodName">
         <el-input
-          style="width:320px"
           v-model="form.periodName"
           maxlength="64"
           placeholder="请输入OKR周期名称"
+          class="tl-input"
         ></el-input>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="dateTime">
@@ -32,18 +34,20 @@
           range-separator="-"
           start-placeholder="请设置开始日期"
           end-placeholder="请设置结束日期"
+          popper-class="tl-popper"
+          class="tl-range-editor"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
-        <el-radio-group v-model="form.checkStatus">
-          <el-radio label="1">是</el-radio>
-          <el-radio label="0">否</el-radio>
+        <el-radio-group v-model="form.checkStatus" class="tl-radio-group">
+          <el-radio label="1" class="tl-radio">是</el-radio>
+          <el-radio label="0" class="tl-radio">否</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <div>
-      <el-button type="primary" @click="submitForm()">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+    <div class="operating-panel">
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">保存</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -149,18 +153,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.addRoule {
-  position: relative;
-}
-.roulemember {
-  width: 100%;
-  z-index: 99999999;
-  position: absolute;
-  left: 0;
-  top: 50px;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-</style>
