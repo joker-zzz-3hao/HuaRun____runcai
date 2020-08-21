@@ -27,21 +27,15 @@
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
         <el-date-picker
-          type="date"
-          v-model="form.startTime"
-          maxlength="64"
-          placeholder="请设置开始日期"
-          class="tl-date-editor"
+          v-model="dateTime"
+          @change="getTime"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="请设置开始日期"
+          end-placeholder="请设置结束日期"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="周期结束日期" prop="endTime">
-        <el-date-picker
-          type="date"
-          v-model="form.endTime"
-          placeholder="请设置结束日期"
-          class="tl-date-editor"
-        ></el-date-picker>
-      </el-form-item>
+
       <el-form-item label="设置为默认周期" prop="checkStatus">
         <el-radio-group v-model="form.checkStatus" class="tl-radio-group">
           <el-radio label="1" class="tl-radio">是</el-radio>
@@ -63,6 +57,7 @@
 </template>
 
 <script>
+
 import Server from '../server';
 
 const server = new Server();
@@ -78,17 +73,15 @@ export default {
       required: false,
     },
   },
+
   data() {
     return {
       rules: {
         periodName: [
           { required: true, message: '请输入OKR周期名称', trigger: 'blur' },
         ],
-        startTime: [
-          { required: true, message: '请设置开始日期', trigger: 'change' },
-        ],
-        endTime: [
-          { required: true, message: '请设置结束日期', trigger: 'change' },
+        dateTime: [
+          { required: true, message: '请设置日期', trigger: 'change' },
         ],
         checkStatus: [
           { required: true, message: '设置为默认周期', trigger: 'change' },
@@ -110,16 +103,21 @@ export default {
       dialogVisible: false,
       data: [],
       labelPosition: 'left',
+      dateTime: '',
     };
   },
 
   mounted() {
     this.dialogTableVisible = true;
-    if (this.updateData) {
-      this.form = this.updateData;
-    }
   },
   methods: {
+    getTime(date) {
+      console.log(date);
+      // eslint-disable-next-line prefer-destructuring
+      this.form.startTime = date[0];
+      // eslint-disable-next-line prefer-destructuring
+      this.form.endTime = date[1];
+    },
     addOrUpdate() {
       this.server.addOrUpdate(this.form).then((res) => {
         if (res.code == 200) {
