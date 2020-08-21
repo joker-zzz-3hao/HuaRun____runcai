@@ -17,7 +17,7 @@
         <el-form-item label="创建时间">
           <span>{{userInfo.createTime}}</span>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item>
           <el-button @click="resetPwd">修改密码</el-button>
         </el-form-item>
       </el-form>
