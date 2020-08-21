@@ -52,6 +52,11 @@ export default {
       type: String,
       default: '',
     },
+    // 回显默认值
+    defaultData: {
+      type: String,
+      default: '',
+    },
   },
   mounted() {},
   created() {},
@@ -82,7 +87,10 @@ export default {
         if (newVal > 0) {
           if (this.type == 'cycleListSelect') {
             this.data.forEach((item) => {
-              if (item.checkStatus == '1') {
+              // 有默认值默认选中
+              if (this.defaultData) {
+                this.department = item.children.filter((citem) => citem.periodId === this.defaultData)[0] || {};
+              } else if (item.checkStatus == '1') {
                 this.department = item.children[0] || {};
               }
             });

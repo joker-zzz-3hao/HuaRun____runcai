@@ -13,7 +13,7 @@ export default class Server extends ServerBase {
   //   return this._ajaxPost('gateway/crcloud-okrManage/getmaps', param);
   // }
   getmaps(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrContinueMap', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/okrContinueMap', param);
   }
 
   getokrDetail(param) {
@@ -21,7 +21,7 @@ export default class Server extends ServerBase {
   }
 
   getOkrCycleList(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 
   getOrgTable(param) {
@@ -37,11 +37,11 @@ export default class Server extends ServerBase {
   }
 
   searchKeyword(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/period', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }
 
   okrCheck(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/query/okrCheck', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/okrCheck', param);
   }
 
   summitUpdate(param) {

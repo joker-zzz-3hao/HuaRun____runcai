@@ -21,6 +21,7 @@
                 :step="1"
                 :precision="0"
               ></el-input-number>
+              <span>%</span>
             </el-form-item>
             <el-form-item label="当前进度">
               <el-input-number
@@ -31,9 +32,15 @@
                 :step="1"
                 :precision="0"
               ></el-input-number>
+              <span>%</span>
             </el-form-item>
-            <el-form-item label="关联承接项">
-              <el-button @click="openUndertake(index)">关联承接项</el-button>
+            <el-form-item label="承接自">
+              <el-button @click="openUndertake(index)">
+                <span
+                  v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
+                >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</span>
+                <span v-else>+关联</span>
+              </el-button>
             </el-form-item>
           </dd>
           <dd>
@@ -55,6 +62,7 @@
                     :step="1"
                     :precision="0"
                   ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <el-form-item label="当前进度">
                   <el-input-number
@@ -65,6 +73,7 @@
                     :step="1"
                     :precision="0"
                   ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <el-form-item label="风险状态">
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
@@ -180,7 +189,6 @@ export default {
     }
   },
   created() {
-    console.log('到里面了', this.searchForm);
     if (this.searchForm.okrStatus == '6' || this.searchForm.okrStatus == '8') {
       this.getOkrDraftById();
     }
@@ -189,9 +197,7 @@ export default {
     ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer']),
     // 获取暂存的草稿
     getOkrDraftById() {
-      console.log('获取暂存的草稿', this.searchForm.draftParams);
       this.formData = JSON.parse(this.searchForm.draftParams);
-      console.log('获取暂存的草稿', this.formData);
       this.searchOkr();
       this.getCultureList();
     },
@@ -203,7 +209,10 @@ export default {
     },
     // 增加kr
     addkr(oindex) {
-      console.log(this.formData.okrInfoList);
+      if (this.formData.okrInfoList[oindex].krList.length > 20) {
+        this.$message('最多能创建20个关键结果KR');
+        return;
+      }
       this.formData.okrInfoList[oindex].krList.push({
         // id: this.formData.okrInfoList[oindex].krList.length,
         okrDetailObjectKr: '',
@@ -222,6 +231,10 @@ export default {
     },
     // 增加o
     addobject() {
+      if (this.formData.okrInfoList.length > 20) {
+        this.$message('最多能创建20个目标O');
+        return;
+      }
       this.formData.okrInfoList.push({
         // id: this.formData.okrInfoList.length,
         okrDetailObjectKr: '',
@@ -238,7 +251,6 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
-      console.log(this.formData.okrInfoList);
     },
     // 删除o
     deleteobject(oindex) {
@@ -248,7 +260,6 @@ export default {
     searchOkr() {
       this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || this.formData.periodId }).then((res) => {
         if (res.code == 200) {
-          console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
           res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
             this.departokrList.push({
@@ -329,11 +340,13 @@ export default {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
+      // 承接项的id、版本、名称
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       // TODO:价值观的id
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
-      console.log('关联', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       this.innerDrawer = false;
     },
     // 校验表单
@@ -398,12 +411,18 @@ export default {
       });
     },
     deleteDraft() {
-      this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
-        if (res.code == 200) {
-          this.$message('提交成功~');
-          // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
-          this.setMyokrDrawer(false);
-        }
+      this.$xconfirm({
+        content: '',
+        title: '如果您要确定删除，该OKR将无法恢复',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
+          if (res.code == 200) {
+            this.$message('提交成功~');
+            // 关闭抽屉
+            this.setMyokrDrawer(false);
+          }
+        });
       });
     },
   },
@@ -420,7 +439,6 @@ export default {
     },
     'searchForm.okrStatus': {
       handler(newVal) {
-        console.log('获取暂存的草稿', newVal);
         if (newVal == '6' || newVal == '8') {
           this.getOkrDraftById();
         }
@@ -443,5 +461,8 @@ export default {
 .okuang {
   margin: 10px;
   border: 1px solid rgb(190, 190, 190);
+}
+.el-drawer__body {
+  overflow: auto;
 }
 </style>
