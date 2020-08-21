@@ -54,8 +54,8 @@
         :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog"
-        @goDraft="goDraft"
+        @openDialog="openDialog(item)"
+        @goDraft="goDraft(item)"
       >
         <template slot="head-bar" slot-scope="props">
           <!-- <el-button

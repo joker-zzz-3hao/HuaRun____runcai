@@ -66,7 +66,7 @@
                     :precision="0"
                   ></el-input-number>
                 </el-form-item>
-                <el-form-item label="信心指数">
+                <el-form-item label="风险状态">
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                     <el-radio-group v-model="kitem.okrDetailConfidence">
                       <el-radio-button
@@ -76,7 +76,9 @@
                       >{{citem.label}}</el-radio-button>
                     </el-radio-group>
 
-                    <el-button slot="reference">信息状态</el-button>
+                    <el-button
+                      slot="reference"
+                    >{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence||'1']}}</el-button>
                   </el-popover>
                 </el-form-item>
                 <el-button @click="deletekr(index,kindex)">删kr</el-button>
@@ -94,7 +96,7 @@
 
       <el-button @click="addobject()">加一个O</el-button>
       <el-button v-if="isnew" @click="summit()">提交</el-button>
-      <el-button v-if="isnew" @click="saveDraft()">保存为草稿</el-button>
+      <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
     </div>
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
@@ -189,6 +191,7 @@ export default {
     getOkrDraftById() {
       console.log('获取暂存的草稿', this.searchForm.draftParams);
       this.formData = JSON.parse(this.searchForm.draftParams);
+      console.log('获取暂存的草稿', this.formData);
       this.searchOkr();
       this.getCultureList();
     },
@@ -243,7 +246,7 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || this.formData.periodId }).then((res) => {
         if (res.code == 200) {
           console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
@@ -267,10 +270,21 @@ export default {
               });
             }
           });
-          // 每个部门okr
+          // 将可承接列表转换成字符串
           this.departokrObject = JSON.stringify(this.departokrList);
+          // 给已有的o加上可承接列表
           if (this.formData.okrInfoList.length > 0) {
-            this.formData.okrInfoList[0].departokrList = JSON.parse(this.departokrObject);
+            this.formData.okrInfoList.forEach((item) => {
+              item.departokrList = JSON.parse(this.departokrObject);
+              // 如果是草稿，选中已保存的承接项
+              if (['6', '8'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
+                item.departokrList.forEach((pitem) => {
+                  if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
+                    pitem.checkFlag = true;
+                  }
+                });
+              }
+            });
           }
         } else {
           this.departokrObject = JSON.stringify(this.departokrList);
@@ -282,14 +296,15 @@ export default {
     getCultureList() {
       this.server.queryCultureList().then((res) => {
         if (res.code == 200) {
-          console.log('价值观', res.data);
           this.philosophyList = res.data;
+          // 将价值观列表转换成字符串
           this.philosophyObject = JSON.stringify(this.philosophyList);
+          // 给已有的o加上价值观
           if (this.formData.okrInfoList.length > 0) {
             this.formData.okrInfoList.forEach((item) => {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
-              if (this.searchForm.okrStatus == '6' && item.cultureId) {
+              if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
                     pitem.checkFlag = true;
@@ -298,6 +313,8 @@ export default {
               }
             });
           }
+        } else {
+          this.philosophyObject = JSON.stringify(this.philosophyList);
         }
       });
     },

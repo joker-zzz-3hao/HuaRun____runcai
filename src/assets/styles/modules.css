@@ -41,10 +41,10 @@
   color: #56c5ff;
 }
 
-.tl-btn.is-plain::before,
-.tl-btn.is-plain .lines::before,
-.tl-btn.is-plain::after,
-.tl-btn.is-plain .lines::after {
+.amt-border-slip.is-plain::before,
+.amt-border-slip.is-plain .lines::before,
+.amt-border-slip.is-plain::after,
+.amt-border-slip.is-plain .lines::after {
   position: absolute;
   left: 0;
   top: 0;
@@ -54,12 +54,12 @@
   background: #56c5ff;
 }
 
-.tl-btn.is-plain::before {
+.amt-border-slip.is-plain::before {
   bottom: 0;
   top: auto;
 }
 
-.tl-btn.is-plain .lines {
+.amt-border-slip.is-plain .lines {
   position: absolute;
   top: 0;
   left: 0;
@@ -68,13 +68,13 @@
   height: 100%;
 }
 
-.tl-btn.is-plain .lines::before,
-.tl-btn.is-plain .lines::after {
+.amt-border-slip.is-plain .lines::before,
+.amt-border-slip.is-plain .lines::after {
   height: 100%;
   width: 2px;
 }
 
-.tl-btn.is-plain .lines::after {
+.amt-border-slip.is-plain .lines::after {
   left: auto;
   right: 0;
 }
@@ -83,6 +83,21 @@
 .tl-btn.el-button.is-plain:focus,
 .tl-btn.el-button.is-plain:hover {
   color: #56c5ff;
+}
+
+.amt-border-fadeout.is-plain {
+  background: #f0effe;
+}
+
+.amt-border-fadeout.is-plain::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px solid #f0effe;
+  z-index: -1;
 }
 
 .tl-btn.el-button--text,
@@ -313,7 +328,7 @@
 
 .tl-form .el-form-item__label {
   float: unset;
-  padding: 0 20px 0 0;
+  padding: 6px 20px 0 0;
   line-height: unset;
   vertical-align: unset;
 }
