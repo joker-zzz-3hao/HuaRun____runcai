@@ -31,6 +31,11 @@ const APPROVAL_TYPE_MAP = {
   1: '变更',
   2: '全部',
 };
+const APPROVAL_HISTROY_MAP = {
+  0: '提交',
+  1: '通过',
+  2: '退回',
+};
 
 export default {
   bbb,
@@ -40,4 +45,5 @@ export default {
   CYCLE_MAP,
   APPROVAL_STATUS_MAP,
   APPROVAL_TYPE_MAP,
+  APPROVAL_HISTROY_MAP,
 };

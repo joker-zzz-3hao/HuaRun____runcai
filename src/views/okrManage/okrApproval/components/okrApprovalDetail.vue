@@ -3,9 +3,9 @@
     <div>
       <span @click="backList">返回</span>
     </div>
-    <div>
+    <div style="margin-top: 20px;">
       <p>基本信息</p>
-      <div style="display: flex;">
+      <div style="display: flex;margin-top: 20px;justify-content:space-between;">
         <div>
           <span>姓名：</span>
           <span>{{data.userName}}</span>
@@ -22,17 +22,21 @@
           <span>OKR类型：</span>
           <span>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</span>
         </div>
-        <div>
-          <span>OKR进度：</span>
-          <span>{{data.okrProgress}}%</span>
+        <div style="display:flex;">
+          <div>OKR进度：</div>
+          <div>
+            <el-progress type="circle" :percentage="data.okrProgress"></el-progress>
+          </div>
         </div>
       </div>
     </div>
-    <div>
+    <div style="margin-top: 20px;">
       <p>OKR信息信息</p>
-      <tl-okrCollapse :tableList="tableList" :showOKRInfoLabel="true" :showParentOkr="false"></tl-okrCollapse>
+      <el-card class="box-card">
+        <tl-okrItem :tableList="tableList"></tl-okrItem>
+      </el-card>
     </div>
-    <div v-if="data.approvalStatus =='0'">
+    <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
       <p>审核</p>
       <div>
         <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -56,31 +60,40 @@
         </el-form>
       </div>
     </div>
-    <div>
+    <div style="margin-top: 20px;">
       <p>审核记录</p>
-      <!-- <el-timeline>
+      <el-timeline>
         <el-timeline-item
-          :timestamp="`${item.createDate} ${item.createTime}`"
+          :timestamp="item.createTime"
           placement="top"
           v-for="item in cycleList"
           :key="item.id"
         >
           <div style="display: flex;">
-            <div>张三</div>
-            <div>「提交」</div>
-            <div>意见</div>
-            <div>「请沟通调整」</div>
+            <div>
+              <div
+                v-if="item.remark && JSON.parse(item.remark).approvalStatus == '0'"
+              >{{JSON.parse(item.remark).createName}}</div>
+              <div v-else>{{JSON.parse(item.remark).approveName}}</div>
+            </div>
+            <div
+              v-if="item.remark"
+            >{{`「${CONST.APPROVAL_HISTROY_MAP[JSON.parse(item.remark).approvalStatus]}」`}}</div>
+            <div v-if="item.remark && JSON.parse(item.remark).approvalStatus == '2'">意见</div>
+            <div
+              v-if="item.remark && JSON.parse(item.remark).approvalStatus == '2'"
+            >{{`「${item.content}」`}}</div>
           </div>
         </el-timeline-item>
-      </el-timeline>-->
+      </el-timeline>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import okrCollapse from '@/components/okrCollapse';
 import CONST from '@/lib/const';
+import okrItem from './okrItem';
 import Server from '../server';
 
 const server = new Server();
@@ -103,16 +116,13 @@ export default {
     };
   },
   components: {
-    'tl-okrCollapse': okrCollapse,
+    'tl-okrItem': okrItem,
   },
   props: {},
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
     }),
-    activeList() {
-      return Array.from(new Array(this.tableList.length).keys());
-    },
   },
   mounted() {},
   methods: {
@@ -135,10 +145,11 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        attachId: this.data.approvalId,
+        // attachId: this.data.approvalId,
+        attachId: '1204662838228131841',
       }).then((res) => {
         if (res.code == '200') {
-          this.cycleList = res.data;
+          this.cycleList = res.data.content;
         }
       });
     },
@@ -158,9 +169,9 @@ export default {
             this.okrData = {};
             this.tableList = [];
           }
-          this.okrOperationHistory();
           console.log(111);
           console.log(this.tableList);
+          this.okrOperationHistory();
         }
       },
       deep: true,
