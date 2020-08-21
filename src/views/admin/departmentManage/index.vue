@@ -393,7 +393,6 @@ export default {
       };
       this.server.updateOrgUser(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('状态更改成功');
           this.searchList();
         }
       });
@@ -406,7 +405,6 @@ export default {
         this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
-            this.$message.success('处理成功');
           }
         });
       });
