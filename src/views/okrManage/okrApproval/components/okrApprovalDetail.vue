@@ -32,10 +32,8 @@
     </div>
     <div style="margin-top: 20px;">
       <p>OKR信息信息</p>
-      <tl-okr-collapse :tableList="tableList"></tl-okr-collapse>
-      <el-card class="box-card">
-        <!-- <tl-okrItem :tableList="tableList"></tl-okrItem> -->
-      </el-card>
+      <!-- <tl-okr-collapse :tableList="tableList"></tl-okr-collapse> -->
+      <tl-okrItem :tableList="tableList"></tl-okrItem>
     </div>
     <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
       <p>审核</p>
@@ -93,9 +91,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import okrCollapse from '@/components/okrCollapse';
+// import okrCollapse from '@/components/okrCollapse';
 import CONST from '@/lib/const';
-// import okrItem from './okrItem';
+import okrItem from './okrItem';
 import Server from '../server';
 
 const server = new Server();
@@ -118,8 +116,8 @@ export default {
     };
   },
   components: {
-    // 'tl-okrItem': okrItem,
-    'tl-okr-collapse': okrCollapse,
+    'tl-okrItem': okrItem,
+    // 'tl-okr-collapse': okrCollapse,
   },
   props: {},
   computed: {
@@ -137,7 +135,7 @@ export default {
         approvalId: this.data.approvalId,
         approvalStatus: this.ruleForm.approvalStatus,
         refuseInfo: this.ruleForm.refuseInfo,
-        approvalType: '0',
+        approvalType: this.data.approvalType,
       }).then((res) => {
         if (res.code == '200') {
           this.$message.success(res.msg);
@@ -165,9 +163,11 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.data = JSON.parse(newVal);
-          if (this.data.paramJson) {
+          if (this.data.approvalType == '0' && this.data.paramJson) {
             this.okrData = JSON.parse(this.data.paramJson);
             this.tableList = this.okrData.okrInfoList;
+          } else if (this.data.approvalType == '1' && this.data.updateJson) {
+            this.tableList = JSON.parse(this.data.updateJson);
           } else {
             this.okrData = {};
             this.tableList = [];

@@ -3,23 +3,23 @@
     <!-- KR -->
     <div class="display-flex">
       <div>KR</div>
-      <div style="margin-left: 10px;">收入100万</div>
+      <div style="margin-left: 10px;">{{krData.okrDetailObjectKr}}</div>
     </div>
     <div class="display-flex" style="margin-top: 20px;justify-content:space-between;">
       <div>
         <span>权重</span>
-        <span style="margin-left: 10px;">30%</span>
+        <span style="margin-left: 10px;">{{krData.okrWeight}}%</span>
       </div>
       <div class="display-flex">
         <div>进度</div>
         <div style="margin-left: 10px;width: 150px;">
-          <el-progress :percentage="50"></el-progress>
+          <el-progress :percentage="krData.okrDetailProgress"></el-progress>
         </div>
       </div>
       <div class="display-flex">
         <div>风险状态</div>
         <div v-for="item in new Array(3)" :key="item">
-          <tl-riskStatus></tl-riskStatus>
+          <tl-riskStatus :status="krData.okrDetailConfidence"></tl-riskStatus>
         </div>
       </div>
     </div>
@@ -38,7 +38,14 @@ export default {
   components: {
     'tl-riskStatus': riskStatus,
   },
-  props: {},
+  props: {
+    krData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   mounted() {},
   computed: {},
   methods: {},

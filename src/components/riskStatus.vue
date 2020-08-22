@@ -9,7 +9,12 @@
 export default {
   name: 'riskStatus',
   components: {},
-  props: {},
+  props: {
+    status: {
+      type: String,
+      default: '1',
+    },
+  },
   data() {
     return {
     };
