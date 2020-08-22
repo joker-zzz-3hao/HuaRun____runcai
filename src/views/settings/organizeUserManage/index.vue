@@ -259,6 +259,9 @@ export default {
     searchList(org) {
       if (org && org.orgId) { // 切换组织
         this.globalOrgId = org.orgId;
+        this.searchData.userType = '';
+        this.searchData.userStatus = '';
+        this.searchData.keyWord = '';
         this.currentPage = 1;
         this.pageSize = 10;
       }
@@ -267,9 +270,10 @@ export default {
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-        // orgId: this.globalOrgId,
         orgFullId: this.orgFullId,
-        ...this.searchData,
+        userType: this.searchData.userType,
+        userStatus: this.searchData.userStatus,
+        keyWord: this.searchData.keyWord,
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
