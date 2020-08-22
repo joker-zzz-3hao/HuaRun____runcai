@@ -24,6 +24,7 @@
               v-model.trim="formData.code"
               :disabled="this.optionType == 'edit'"
               maxlength="50"
+              clearable
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -31,7 +32,7 @@
             prop="name"
             :rules="[{required:true,validator:validateDicName,trigger:'blur'}]"
           >
-            <el-input v-model.trim="formData.name" maxlength="50"></el-input>
+            <el-input v-model.trim="formData.name" maxlength="50" clearable></el-input>
           </el-form-item>
           <el-form-item
             label="状态"
@@ -44,7 +45,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="备注" prop="description">
-            <el-input v-model.trim="formData.description" maxlength="100"></el-input>
+            <el-input v-model.trim="formData.description" maxlength="100" clearable></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -53,12 +54,12 @@
         <el-table ref="dicTable" v-loading="tableLoading" :data="tableData">
           <el-table-column label="字典键" prop="value">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.value" maxlength="50"></el-input>
+              <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
             </template>
           </el-table-column>
           <el-table-column label="字典值" prop="meaning">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.meaning" maxlength="50"></el-input>
+              <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
             </template>
           </el-table-column>
           <el-table-column label="字典排序" prop="orderSeq">
@@ -85,7 +86,7 @@
           </el-table-column>
           <el-table-column label="备注" prop="description">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.description" maxlength="50"></el-input>
+              <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime">

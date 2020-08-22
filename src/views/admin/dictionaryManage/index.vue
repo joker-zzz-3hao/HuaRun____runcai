@@ -10,7 +10,7 @@
       <div slot="searchBar">
         <el-form @keyup.enter.native="searchList()">
           <el-form-item>
-            <el-input v-model="keyWord" placeholder="输入字典编号/名称" maxlength="50"></el-input>
+            <el-input v-model="keyWord" placeholder="输入字典编号/名称" maxlength="50" clearable></el-input>
           </el-form-item>
         </el-form>
       </div>
