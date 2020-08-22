@@ -4,7 +4,7 @@
       <div>组织管理</div>
     </div>
     <div class="org-left-side">
-      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText">
+      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText" clearable>
         <i class="el-icon-search el-input__icon" slot="prefix"></i>
       </el-input>
       <el-tree
@@ -45,6 +45,7 @@
                 v-model.trim="searchData.userType"
                 placeholder="用户类型"
                 :popper-append-to-body="false"
+                clearable
               >
                 <el-option
                   v-for="item in CONST.USER_TYPE_LIST"
@@ -59,6 +60,7 @@
                 v-model.trim="searchData.userStatus"
                 placeholder="用户状态"
                 :popper-append-to-body="false"
+                clearable
               >
                 <el-option
                   v-for="item in CONST.USER_STATUS_LIST"
@@ -73,6 +75,7 @@
                 placeholder="输入用户姓名/账号/手机号"
                 v-model.trim="searchData.keyWord"
                 style="width:300px"
+                clearable
               ></el-input>
             </el-form-item>
           </el-form>
@@ -159,7 +162,6 @@
       v-if="showCreateUser"
       :treeData="treeData"
       :server="server"
-      :optionType="optionType"
       :userId="userId"
       :tenantName="tenantName"
       :globalOrgId="globalOrgId"
@@ -177,7 +179,6 @@
         ref="createUser"
         :treeData="treeData"
         :server="server"
-        :optionType="optionType"
         :userId="userId"
         :tenantName="tenantName"
         :globalOrgId="globalOrgId"
@@ -218,7 +219,6 @@ export default {
       tenantName: '',
       orgFullId: '',
       orgIdList: [],
-      optionType: 'create',
       departOptionType: 'create',
       initDepartment: {},
       total: 0,
@@ -354,11 +354,9 @@ export default {
     // 创建/编辑用户
     createOrEditUser(user) {
       if (user.userId) {
-        this.optionType = 'edit';
         this.userId = user.userId;
         this.editDrawer = true;
       } else {
-        this.optionType = 'create';
         this.showCreateUser = true;
         this.$nextTick(() => {
           this.$refs.createUser.show();
