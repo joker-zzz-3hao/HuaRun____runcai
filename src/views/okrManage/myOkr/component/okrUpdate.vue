@@ -8,7 +8,7 @@
             <span>{{formData.okrDetailObjectKr}}</span>
           </el-form-item>
           <el-form-item label="权重">
-            <span>{{formData.okrWeight}}</span>
+            <span>{{formData.okrWeight}}%</span>
           </el-form-item>
           <el-form-item label="当前进度">
             <el-slider v-model="formData.okrDetailProgress" show-input :step="1"></el-slider>
@@ -22,7 +22,7 @@
                 <span>{{kitem.okrDetailObjectKr}}</span>
               </el-form-item>
               <el-form-item label="权重">
-                <span>{{kitem.okrWeight}}</span>
+                <span>{{kitem.okrWeight}}%</span>
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-slider v-model="kitem.okrDetailProgress" show-input :step="1"></el-slider>

@@ -69,7 +69,7 @@
           <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openUpdate('tl-okr-update',props.okritem)"
-          >进度更新</el-button>
+          >更新进度</el-button>
           <!-- <el-button
             v-if="['6', '8'].includes(searchForm.status)"
             @click.native.stop="goDraft(item)"

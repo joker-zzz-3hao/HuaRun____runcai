@@ -32,8 +32,9 @@
     </div>
     <div style="margin-top: 20px;">
       <p>OKR信息信息</p>
+      <tl-okr-collapse :tableList="tableList"></tl-okr-collapse>
       <el-card class="box-card">
-        <tl-okrItem :tableList="tableList"></tl-okrItem>
+        <!-- <tl-okrItem :tableList="tableList"></tl-okrItem> -->
       </el-card>
     </div>
     <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
@@ -92,8 +93,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import okrCollapse from '@/components/okrCollapse';
 import CONST from '@/lib/const';
-import okrItem from './okrItem';
+// import okrItem from './okrItem';
 import Server from '../server';
 
 const server = new Server();
@@ -116,7 +118,8 @@ export default {
     };
   },
   components: {
-    'tl-okrItem': okrItem,
+    // 'tl-okrItem': okrItem,
+    'tl-okr-collapse': okrCollapse,
   },
   props: {},
   computed: {

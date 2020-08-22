@@ -45,7 +45,20 @@
         <!-- 操作历史 -->
         <div>
           <span>操作历史</span>
-          <tl-timeline :cycleList="cycleList"></tl-timeline>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in cycleList"
+              :key="index"
+              :timestamp="activity.createTime"
+            >
+              <ul>
+                <li
+                  v-for="(conitem,index) in splitContent(activity.content)"
+                  :key="index"
+                >{{conitem}}</li>
+              </ul>
+            </el-timeline-item>
+          </el-timeline>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -66,7 +79,6 @@
 
 <script>
 import okrCollapse from '@/components/okrCollapse';
-import timeline from '@/components/timeLine';
 import okrHistory from './okrHistory';
 import CONST from '../const';
 
@@ -90,7 +102,6 @@ export default {
   components: {
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
-    'tl-timeline': timeline,
   },
   props: {
     dialogExist: {
@@ -175,6 +186,9 @@ export default {
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
+    },
+    splitContent(content) {
+      return content.split(';');
     },
   },
   watch: {
