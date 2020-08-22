@@ -7,55 +7,43 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    size="35%"
     :modal="false"
+    class="tl-drawer"
   >
-    <div class="modelPut">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="角色编号" prop="roleCode">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.roleCode"
-            placeholder="请输入角色编号"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.roleName"
-            placeholder="请输入角色名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="菜单权限">
-          <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              <span>{{item.data.functionName}}</span>
-              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
-            </div>
-            <el-popover placement="bottom-end" trigger="click">
-              <div class="postMenu">
-                <el-cascader-panel
-                  @change="handleCheckChange"
-                  ref="treeMenu"
-                  v-model="selectArr"
-                  :options="data"
-                  :props="{ multiple: true, value:'functionId', label:'functionName',children:'children' }"
-                  node-key="id"
-                ></el-cascader-panel>
-              </div>
-              <div slot="reference">
-                <i class="el-icon-circle-plus-outline"></i>
-              </div>
-            </el-popover>
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="tl-form">
+      <el-form-item label="角色编号" prop="roleCode">
+        <el-input maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号" class="tl-input"></el-input>
+      </el-form-item>
+      <el-form-item label="角色名称" prop="roleName">
+        <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>
+      </el-form-item>
+      <el-form-item label="菜单权限">
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+            <span>{{item.data.functionName}}</span>
+            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
-        </el-form-item>
-      </el-form>
-      <div>
-        <el-button type="primary" @click="submitForm()">确定</el-button>
-        <el-button @click="close()">取 消</el-button>
-      </div>
+          <el-popover placement="bottom-end" trigger="click">
+            <div class="postMenu">
+              <el-cascader-panel
+                @change="handleCheckChange"
+                ref="treeMenu"
+                v-model="selectArr"
+                :options="data"
+                :props="{ multiple: true, value:'functionId', label:'functionName',children:'children' }"
+                node-key="id"
+              ></el-cascader-panel>
+            </div>
+            <div slot="reference">
+              <i class="el-icon-circle-plus-outline"></i>
+            </div>
+          </el-popover>
+        </div>
+      </el-form-item>
+    </el-form>
+    <div class="operating-panel">
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">保存</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -236,30 +224,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.addRoule {
-  position: relative;
-}
-.roulemember {
-  width: 100%;
-  z-index: 99999999;
-  position: absolute;
-  left: 0;
-  top: 50px;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
-}
-</style>

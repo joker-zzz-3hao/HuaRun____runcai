@@ -324,17 +324,14 @@
 
 .tl-dialog .el-dialog {
   margin: 0 auto !important;
-  width: unset;
+  padding: 30px;
+  box-shadow: unset;
+  border-radius: 4px;
+  flex: 0 0 480px;
 }
 
 .tl-dialog + .v-modal {
   opacity: .1;
-}
-
-.tl-dialog .el-dialog {
-  padding: 30px;
-  box-shadow: unset;
-  border-radius: 4px;
 }
 
 .tl-dialog .el-dialog__header,
@@ -466,6 +463,86 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* pagination */
+.tl-pagination {
+  display: flex;
+}
+
+.tl-pagination.is-background .btn-next,
+.tl-pagination.is-background .btn-prev,
+.tl-pagination.is-background .el-pager li,
+.tl-pagination .el-pagination__editor {
+  margin: 0 4px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  color: #666;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tl-pagination .el-pagination__editor .el-input__inner {
+  border-color: transparent;
+  color: #666;
+}
+
+.tl-pagination.is-background .btn-next,
+.tl-pagination.is-background .btn-prev {
+  color: #6d6d6d;
+}
+
+.tl-pagination.is-background .el-pager li:not(.disabled).active {
+  color: #685df1;
+  border-color: #685df1;
+  background: #fff;
+}
+
+.tl-pagination.is-background .el-pager li:not(.disabled):hover {
+  color: #685df1;
+}
+
+.tl-pagination.is-background .btn-next.disabled,
+.tl-pagination.is-background .btn-next:disabled,
+.tl-pagination.is-background .btn-prev.disabled,
+.tl-pagination.is-background .btn-prev:disabled,
+.tl-pagination.is-background .el-pager li.disabled {
+  color: #d8d8d8;
+}
+
+.tl-pagination .btn-next .el-icon,
+.tl-pagination .btn-prev .el-icon {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.tl-pagination.is-background .el-pager .btn-quicknext,
+.tl-pagination.is-background .el-pager .btn-quickprev {
+  border-color: #fff;
+}
+
+.tl-pagination.is-background .el-pager .btn-quicknext.el-icon-d-arrow-right,
+.tl-pagination.is-background .el-pager .btn-quickprev.el-icon-d-arrow-left {
+  color: #685df1;
+  font-size: 18px;
+}
+
+.tl-pagination button,
+.tl-pagination span:not([class*=suffix]) {
+  display: unset;
+  height: 34px;
+  line-height: 34px;
+}
+
+.tl-pagination .el-pagination__jump {
+  margin: 0 0 0 16px;
+  display: flex;
+  color: #666;
 }
 
 /* ==========================================================常用基础组件=================================================================== */

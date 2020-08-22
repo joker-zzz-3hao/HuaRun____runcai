@@ -11,6 +11,7 @@
         :layout="layout"
         :total="total"
         background
+        class="tl-pagination"
       ></el-pagination>
     </div>
   </div>
