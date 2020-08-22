@@ -21,6 +21,7 @@
         <div v-for="item in new Array(3)" :key="item">
           <tl-riskStatus :status="krData.okrDetailConfidence"></tl-riskStatus>
         </div>
+        <span>{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</span>
       </div>
     </div>
   </div>
@@ -28,11 +29,13 @@
 
 <script>
 import riskStatus from '@/components/riskStatus';
+import CONST from '../const';
 
 export default {
   name: 'krComponent',
   data() {
     return {
+      CONST,
     };
   },
   components: {

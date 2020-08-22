@@ -1,5 +1,12 @@
 <template>
   <div class="home">
+    <div @click="$router.back()">返回></div>
+    <el-form ref="membersForm" :inline="true">
+      <el-form-item class="pageright">
+        <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
+        <el-button type="primary" @click="handleDelete()">移除</el-button>
+      </el-form-item>
+    </el-form>
     <tl-crcloud-table
       layout="total,  prev, pager,next, sizes"
       :total="totalpage"
@@ -7,15 +14,6 @@
       :pageSize.sync="pageSize"
       @searchList="listRoleUser"
     >
-      <div slot="searchBar" @click="$router.back()">返回></div>
-      <div slot="actionBar">
-        <el-form ref="membersForm" :inline="true">
-          <el-form-item class="pageright">
-            <el-button type="primary" @click="showAddRoule()">添加成员</el-button>
-            <el-button type="primary" @click="handleDelete()">移除</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
       <div slot="tableContainer">
         <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
