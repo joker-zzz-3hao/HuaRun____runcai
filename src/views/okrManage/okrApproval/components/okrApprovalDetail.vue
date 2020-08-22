@@ -139,6 +139,8 @@ export default {
       }).then((res) => {
         if (res.code == '200') {
           this.$message.success(res.msg);
+          this.ruleForm.approvalStatus = '1';
+          this.ruleForm.refuseInfo = '';
           this.setOkrApprovalStep('1');
         }
         this.loading = false;
@@ -162,6 +164,8 @@ export default {
     okrApprovalDetail: {
       handler(newVal) {
         if (newVal) {
+          this.ruleForm.approvalStatus = '1';
+          this.ruleForm.refuseInfo = '';
           this.data = JSON.parse(newVal);
           if (this.data.approvalType == '0' && this.data.paramJson) {
             this.okrData = JSON.parse(this.data.paramJson);
