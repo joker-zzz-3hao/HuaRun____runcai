@@ -23,7 +23,10 @@
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+            <span>{{item.data.functionName}}</span>
+            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
+          </div>
           <el-popover placement="bottom" trigger="click">
             <div class="postMenu">
               <el-cascader-panel
@@ -35,7 +38,9 @@
                 node-key="id"
               ></el-cascader-panel>
             </div>
-            <div slot="reference">+</div>
+            <div slot="reference">
+              <i class="el-icon-circle-plus-outline"></i>
+            </div>
           </el-popover>
         </div>
       </el-form-item>
@@ -109,12 +114,44 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    clearNode(node) {
+      const deleteArr = this.selectArr;
+      deleteArr.forEach((item, index) => {
+        if (this.boolCheck(item, node)) {
+          deleteArr.splice(index, 1);
+        }
+      });
+      this.selectArr = [...deleteArr, []];
+      let arr = [];
+      this.selectArr.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      this.$nextTick(() => {
+        const keys = this.$refs.treeMenu.getCheckedNodes();
+        // eslint-disable-next-line array-callback-return
+        const keyCheck = keys.map((item) => {
+          if (item.children.length == 0) {
+            return item;
+          }
+        });
+        // eslint-disable-next-line array-callback-return
+        this.menuTreeList = keyCheck.filter((item) => {
+          if (item) {
+            return item;
+          }
+        });
+      });
+    },
+    boolCheck(item, node) {
+      return item.some((li) => li === node.data.functionId);
+    },
     getCheckName() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.functionName;
+          return item;
         }
       });
       // eslint-disable-next-line array-callback-return
