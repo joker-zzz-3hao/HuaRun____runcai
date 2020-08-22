@@ -185,6 +185,24 @@
   background: #685df1;
 }
 
+.tl-input-search {
+  min-width: 180px;
+}
+
+.tl-input-search .el-input__inner {
+  border: 1px solid #fff;
+}
+
+.tl-input-search .el-input__inner:focus {
+  border-color: #fff;
+}
+
+.tl-input-search .el-input__prefix {
+  top: 50%;
+  transform: translateY(-50%);
+  height: unset;
+}
+
 /* input-自定义 */
 .tl-input-line {
   z-index: 3;
@@ -374,6 +392,19 @@
   line-height: unset;
 }
 
+.tl-form-inline .el-form-item {
+  margin: 0 30px 0 0;
+}
+
+.tl-form-inline .el-form-item__content {
+  line-height: unset;
+}
+
+.tl-form-inline .el-input {
+  display: flex;
+  align-items: center;
+}
+
 /* drawer */
 .tl-drawer {
   top: unset;
@@ -552,6 +583,11 @@
 
 .is-shrink + .view-cont {
   width: calc(100vw - 122px);
+  z-index: 23;
+}
+
+.no-sub-menu + .view-cont {
+  z-index: 23;
 }
 
 .menu-cont.is-shrink {
@@ -651,7 +687,11 @@
 }
 
 .menu-cont-inside.is-zindex {
-  z-index: 22;
+  z-index: 24;
+}
+
+.menu-cont:hover .menu-cont-inside {
+  z-index: 25;
 }
 
 .menu-cont-inside li a{
@@ -875,6 +915,21 @@
 
 
 /* 主内容区--路由区 */
+.operating-area .operating-panel .el-button,
+.operating-area .operating-panel .el-input__inner {
+  height: 36px;
+  line-height: unset;
+}
+
+.cont-area .operating-panel .el-button {
+  min-width: 90px;
+  height: 40px;
+}
+
+.operating-area .tl-input-search {
+  min-width: 270px;
+}
+
 .operating-area {
   margin: 0 0 16px 0;
   display: flex;
@@ -900,6 +955,19 @@
 }
 
 .operating-panel {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.page-bar {
+  margin: 30px 0 0 0;
   display: flex;
   justify-content: flex-end;
 }

@@ -6,7 +6,7 @@
         <el-button
           type="primary"
           icon="el-icon-plus"
-          @click="addOkr()"
+          @click="addOkr"
           class="tl-btn amt-bg-slip"
         >添加周期</el-button>
       </div>

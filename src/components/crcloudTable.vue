@@ -1,6 +1,6 @@
 <template>
   <div class="table-pagination">
-    <slot name="tableContainer" class="table-container"></slot>
+    <slot name="tableContainer"></slot>
     <div class="page-bar" v-show="isPage">
       <el-pagination
         @size-change="handleSizeChange"
@@ -65,5 +65,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
