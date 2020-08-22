@@ -1,27 +1,27 @@
 <template>
   <div class="data-dictionary">
     <div>数据字典</div>
+    <!-- <div slot="searchBar"> -->
+    <el-form @keyup.enter.native="searchList()">
+      <el-form-item>
+        <el-input v-model="keyWord" placeholder="输入字典编号/名称" maxlength="50" clearable></el-input>
+      </el-form-item>
+    </el-form>
+    <!-- </div>
+    <div slot="actionBar">-->
+    <div>
+      <el-button @click="createDic">新增字典</el-button>
+    </div>
+    <div>
+      <el-button @click="searchList">查询</el-button>
+    </div>
+    <!-- </div> -->
     <crcloud-table
       :total="total"
       :pageSize.sync="pageSize"
       :currentPage.sync="currentPage"
       @searchList="searchList"
     >
-      <div slot="searchBar">
-        <el-form @keyup.enter.native="searchList()">
-          <el-form-item>
-            <el-input v-model="keyWord" placeholder="输入字典编号/名称" maxlength="50" clearable></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div slot="actionBar">
-        <div>
-          <el-button @click="createDic">新增字典</el-button>
-        </div>
-        <div>
-          <el-button @click="searchList">查询</el-button>
-        </div>
-      </div>
       <div slot="tableContainer">
         <el-table ref="dicTable" v-loading="loading" :data="tableData">
           <el-table-column min-width="100px" align="left" prop="code" label="字典编号"></el-table-column>
