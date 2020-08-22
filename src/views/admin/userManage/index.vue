@@ -3,62 +3,63 @@
     <div>
       <div>用户管理</div>
     </div>
+    <!-- <div slot="searchBar" class="search-conditions"> -->
+    <el-form @keyup.enter.native="searchList()">
+      <el-form-item>
+        <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户" clearable>
+          <el-option
+            v-for="item in tenantList"
+            :key="item.tenantId"
+            :label="item.tenantName"
+            :value="item.tenantId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model.trim="searchForm.userType" placeholder="用户类型" clearable>
+          <el-option
+            v-for="item in CONST.USER_TYPE_LIST"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model.trim="searchForm.userStatus" placeholder="用户状态" clearable>
+          <el-option
+            v-for="item in CONST.USER_STATUS_LIST"
+            :key="item.key"
+            :label="item.label"
+            :value="item.key"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-input
+          placeholder="输入用户姓名/账号/手机号"
+          v-model.trim="searchForm.keyWord"
+          style="width:300px"
+          clearable
+        ></el-input>
+      </el-form-item>
+    </el-form>
+    <!-- </div> -->
+    <!-- <div slot="actionBar"> -->
+    <div>
+      <el-button @click="createOrEditUser">创建用户</el-button>
+      <el-button @click="batchImport">批量导入</el-button>
+    </div>
+    <div>
+      <el-button @click="searchList">查询</el-button>
+    </div>
+    <!-- </div> -->
     <crcloud-table
       :total="total"
       :pageSize.sync="pageSize"
       :currentPage.sync="currentPage"
       @searchList="searchList"
     >
-      <div slot="searchBar" class="search-conditions">
-        <el-form @keyup.enter.native="searchList()">
-          <el-form-item>
-            <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户">
-              <el-option
-                v-for="item in tenantList"
-                :key="item.tenantId"
-                :label="item.tenantName"
-                :value="item.tenantId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model.trim="searchForm.userType" placeholder="用户类型">
-              <el-option
-                v-for="item in CONST.USER_TYPE_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model.trim="searchForm.userStatus" placeholder="用户状态">
-              <el-option
-                v-for="item in CONST.USER_STATUS_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input
-              placeholder="输入用户姓名/账号/手机号"
-              v-model.trim="searchForm.keyWord"
-              style="width:300px"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div slot="actionBar">
-        <div>
-          <el-button @click="createOrEditUser">创建用户</el-button>
-          <el-button @click="batchImport">批量导入</el-button>
-        </div>
-        <div>
-          <el-button @click="searchList">查询</el-button>
-        </div>
-      </div>
       <div slot="tableContainer">
         <el-table ref="orgTable" v-loading="loading" :data="tableData">
           <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
@@ -68,19 +69,15 @@
           <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
           <el-table-column min-width="100px" align="left" label="租户管理员">
             <template slot-scope="scope">
-              <div>
+              <div style="cursor:pointer" @click="setLeader(scope.row)">
                 <el-tooltip class="item" effect="dark" content="租户管理员" placement="top-start">
-                  <i
-                    v-if="scope.row.tenantLeader == '1'"
-                    class="el-icon-user-solid"
-                    @click="setLeader(scope.row)"
-                  ></i>
+                  <i v-if="scope.row.tenantLeader == '1'" class="el-icon-user-solid">
+                    <span>设置</span>
+                  </i>
                 </el-tooltip>
-                <i
-                  v-if="scope.row.tenantLeader=='0'"
-                  class="el-icon-user"
-                  @click="setLeader(scope.row)"
-                ></i>
+                <i v-if="scope.row.tenantLeader=='0'" class="el-icon-user">
+                  <span>设置</span>
+                </i>
               </div>
             </template>
           </el-table-column>
@@ -124,7 +121,6 @@
       ref="createUser"
       v-if="showCreateUser"
       :server="server"
-      :optionType="optionType"
       :userId="userId"
       :tenantName="tenantName"
       :tenantId="searchForm.tenantId"
@@ -144,7 +140,6 @@
         ref="createUser"
         :treeData="treeData"
         :server="server"
-        :optionType="optionType"
         :userId="userId"
         :tenantName="tenantName"
         :globalOrgId="globalOrgId"
@@ -178,7 +173,6 @@ export default {
       editDrawer: false,
       showCreateUser: false,
       tenantName: '',
-      optionType: 'create',
       total: 0,
       currentPage: 1,
       pageSize: 10,
@@ -236,11 +230,9 @@ export default {
     // 创建/编辑用户
     createOrEditUser(user) {
       if (user.userId) {
-        this.optionType = 'edit';
         this.userId = user.userId;
         this.editDrawer = true;
       } else {
-        this.optionType = 'create';
         this.showCreateUser = true;
         this.$nextTick(() => {
           this.$refs.createUser.show();
@@ -277,7 +269,6 @@ export default {
       };
       this.server.updateOrgUser(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('状态更改成功');
           this.searchList();
         }
       });
@@ -290,7 +281,6 @@ export default {
         this.server[option]({ tenantId: this.searchForm.tenantId, userId: user.userId, roleCode: 'TENANT_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
-            this.$message.success('处理成功');
           }
         });
       });

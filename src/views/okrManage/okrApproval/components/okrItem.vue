@@ -1,30 +1,30 @@
 <template>
   <div>
-    <div v-for="(item,index) in tableList" :key="index">
-      <!-- O -->
-      <div>
-        <tl-oComponent :oData="item"></tl-oComponent>
-      </div>
-      <!-- O历史版本 -->
-      <div style="margin-top: 10px;background-color: #999;">
-        <div>历史版本</div>
-        <tl-oComponent style="margin-top: 10px;"></tl-oComponent>
-      </div>
-      <hr />
-      <!-- KR -->
-      <div v-if="item.krList.length>0">
-        <div v-for="(krItem,index) in item.krList" :key="index+krItem.okrWeight">
-          <div>
-            <tl-krComponent :krData="krItem"></tl-krComponent>
-          </div>
-          <!-- KR历史版本 -->
-          <div style="margin-top: 10px;background-color: #999;">
-            <div>历史版本</div>
-            <tl-krComponent></tl-krComponent>
-          </div>
+    <el-card v-for="(item,index) in tableList" :key="index" style="margin-top: 20px;">
+      <div v-if="item.okrDetailType == '0'">
+        <!-- O -->
+        <div>
+          <tl-oComponent :oData="item"></tl-oComponent>
+        </div>
+        <!-- O历史版本 -->
+        <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
+          <div>历史版本</div>
+          <tl-oComponent :oData="item.historyOkr" style="margin-top: 10px;"></tl-oComponent>
         </div>
       </div>
-    </div>
+      <!-- <hr v-if="item.okrDetailType == '0'" /> -->
+      <!-- KR -->
+      <div v-if="item.okrDetailType == '1'">
+        <div>
+          <tl-krComponent :krData="item"></tl-krComponent>
+        </div>
+        <!-- KR历史版本 -->
+        <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
+          <div>历史版本</div>
+          <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 

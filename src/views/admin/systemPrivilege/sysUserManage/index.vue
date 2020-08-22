@@ -38,14 +38,14 @@
           :rules="[
           {required:true,validator: validatePwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.loginPwd" show-password></el-input>
+          <el-input v-model.trim="formData.loginPwd" show-password clearable></el-input>
         </el-form-item>
         <el-form-item
           label="新密码"
           prop="newPwd"
           :rules="[{required:true,validator:validateNewPwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.newPwd" show-password></el-input>
+          <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
         </el-form-item>
         <el-form-item
           label="确认密码"
@@ -53,7 +53,7 @@
           :rules="[
           {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password></el-input>
+          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button :loading="loading" @click="save">确认</el-button>

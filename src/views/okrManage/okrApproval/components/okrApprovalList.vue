@@ -1,60 +1,57 @@
 <template>
   <div class="home">
+    <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
+      <el-form-item>
+        <p>周期</p>
+        <el-select v-model="formData.periodId" :popper-append-to-body="false">
+          <el-option
+            v-for="(item) in cycleList"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <p>审批状态</p>
+        <el-select v-model="formData.approvalStatus" :popper-append-to-body="false">
+          <el-option
+            v-for="(item) in CONST.APPROVAL_STATUS_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <p>审批类型</p>
+        <el-select v-model="formData.approvalType" :popper-append-to-body="false">
+          <el-option
+            v-for="(item) in CONST.APPROVAL_TYPE_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <p>成员</p>
+        <el-input v-model.trim="formData.keyword"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click.native.prevent="searchList">搜索</el-button>
+      </el-form-item>
+    </el-form>
+    <div>
+      <el-button>OKR对齐</el-button>
+    </div>
     <crcloud-table
       :total="formData.total"
       :pageSize.sync="formData.pageSize"
       :currentPage.sync="formData.currentPage"
       @searchList="searchList"
+      layout="prev, pager, next, jumper"
     >
-      <div slot="searchBar">
-        <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
-          <el-form-item>
-            <p>周期</p>
-            <el-select v-model="formData.periodId" :popper-append-to-body="false">
-              <el-option
-                v-for="(item) in cycleList"
-                :key="item.periodId"
-                :label="item.periodName"
-                :value="item.periodId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <p>审批状态</p>
-            <el-select v-model="formData.approvalStatus" :popper-append-to-body="false">
-              <el-option
-                v-for="(item) in CONST.APPROVAL_STATUS_LIST"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <p>审批类型</p>
-            <el-select v-model="formData.approvalType" :popper-append-to-body="false">
-              <el-option
-                v-for="(item) in CONST.APPROVAL_TYPE_LIST"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <p>成员</p>
-            <el-input v-model.trim="formData.keyword"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click.native.prevent="searchList">搜索</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div slot="actionBar">
-        <div>
-          <el-button>OKR对齐</el-button>
-        </div>
-      </div>
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
           <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
