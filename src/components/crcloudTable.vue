@@ -8,8 +8,9 @@
         :current-page="currentPage"
         :page-sizes="pageSizes"
         :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
+        :layout="layout"
         :total="total"
+        background
       ></el-pagination>
     </div>
   </div>
@@ -19,7 +20,7 @@ export default {
   name: 'crcloudTable',
   data() {
     return {
-
+      // layout: 'total, sizes, prev, pager, next, jumper',
     };
   },
   props: {
@@ -44,6 +45,10 @@ export default {
       default() {
         return [10, 20, 30, 50];
       },
+    },
+    layout: {
+      type: String,
+      default: 'total, sizes, prev, pager, next, jumper',
     },
   },
   computed: {},

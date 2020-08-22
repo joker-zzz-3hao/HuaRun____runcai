@@ -5,6 +5,7 @@
       :currentPage.sync="currentPage"
       :pageSize.sync="pageSize"
       @searchList="listRolePage"
+      layout="prev, pager, next, jumper"
     >
       <div slot="searchBar">
         <el-form ref="ruleForm" :inline="true">
