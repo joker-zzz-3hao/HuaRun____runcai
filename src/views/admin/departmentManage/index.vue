@@ -4,7 +4,7 @@
       <div>组织管理</div>
     </div>
     <div class="org-left-side">
-      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText">
+      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText" clearable>
         <i class="el-icon-search el-input__icon" slot="prefix"></i>
       </el-input>
       <el-tree
@@ -32,43 +32,49 @@
       </el-tree>
     </div>
     <div class="org-right-side">
+      <!-- <div slot="searchBar"> -->
+      <el-form @keyup.enter.native="searchList()">
+        <el-form-item>
+          <el-select
+            v-model.trim="tenantId"
+            placeholder="选择租户"
+            :popper-append-to-body="false"
+            clearable
+          >
+            <el-option
+              v-for="item in tenantList"
+              :key="item.tenantId"
+              :label="item.tenantName"
+              :value="item.tenantId"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            placeholder="输入用户姓名/账号/手机号"
+            v-model.trim="searchData.keyWord"
+            style="width:300px"
+            clearable
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- </div>
+      <div slot="actionBar">-->
+      <div>
+        <el-button @click="searchList">查询</el-button>
+      </div>
+      <div>
+        <el-button @click="createDepart">创建部门</el-button>
+        <el-button @click="createOrEditUser">创建用户</el-button>
+        <el-button @click="batchImport">批量导入</el-button>
+      </div>
+      <!-- </div> -->
       <crcloud-table
         :total="total"
         :pageSize.sync="pageSize"
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
-        <div slot="searchBar">
-          <el-form @keyup.enter.native="searchList()">
-            <el-form-item>
-              <el-select v-model.trim="tenantId" placeholder="选择租户" :popper-append-to-body="false">
-                <el-option
-                  v-for="item in tenantList"
-                  :key="item.tenantId"
-                  :label="item.tenantName"
-                  :value="item.tenantId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-input
-                placeholder="输入用户姓名/账号/手机号"
-                v-model.trim="searchData.keyWord"
-                style="width:300px"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div slot="actionBar">
-          <div>
-            <el-button @click="searchList">查询</el-button>
-          </div>
-          <div>
-            <el-button @click="createDepart">创建部门</el-button>
-            <el-button @click="createOrEditUser">创建用户</el-button>
-            <el-button @click="batchImport">批量导入</el-button>
-          </div>
-        </div>
         <div slot="tableContainer">
           <el-table ref="orgTable" v-loading="loading" :data="tableData">
             <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
