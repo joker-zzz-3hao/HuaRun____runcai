@@ -26,10 +26,20 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="起草开始时间">
-        <el-date-picker type="date" placeholder="请设置起草开始时间"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="请设置起草开始时间"
+          popper-class="tl-date-popper"
+          class="tl-date-editor"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="审批结束时间">
-        <el-date-picker type="date" placeholder="请设置审批结束时间"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="请设置审批结束时间"
+          popper-class="tl-date-popper"
+          class="tl-date-editor"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
         <el-date-picker
@@ -39,12 +49,17 @@
           range-separator="-"
           start-placeholder="请设置开始日期"
           end-placeholder="请设置结束日期"
-          popper-class="tl-popper"
+          popper-class="tl-range-popper"
           class="tl-range-editor"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="自评举证时间">
-        <el-date-picker type="date" placeholder="请设置自评举证时间"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="请设置自评举证时间"
+          popper-class="tl-date-popper"
+          class="tl-date-editor"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
         <el-radio-group v-model="form.checkStatus" class="tl-radio-group">

@@ -171,13 +171,17 @@
   border-color: #685df1;
 }
 
-.tl-popper .el-date-table td.today span,
-.tl-popper .el-date-table td.available:hover {
+.tl-date-popper .el-date-table td.today span,
+.tl-date-popper .el-date-table td.available:hover,
+.tl-range-popper .el-date-table td.today span,
+.tl-range-popper .el-date-table td.available:hover {
   color: #685df1;
 }
 
-.tl-popper .el-date-table td.end-date span,
-.tl-popper .el-date-table td.start-date span {
+.tl-date-popper .el-date-table td.end-date span,
+.tl-date-popper .el-date-table td.start-date span,
+.tl-range-popper .el-date-table td.end-date span,
+.tl-range-popper .el-date-table td.start-date span {
   background: #685df1;
 }
 
