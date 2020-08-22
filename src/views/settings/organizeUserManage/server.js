@@ -45,4 +45,9 @@ export default class Server extends ServerBase {
   removeDepartLeder(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
   }
+
+  // 删除部门
+  deleteDepart(param) {
+    return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
+  }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="organize-management">
     <div class="org-header">
-      <div>部门管理</div>
+      <div>组织管理</div>
     </div>
     <div class="org-left-side">
       <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText">
@@ -22,12 +22,12 @@
           <span>{{ node.label }}</span>
           <span>
             <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
-            <div
-              @mouseout="outDepart(data)"
-              v-show="data.isShow"
-              style="marginLeft:150px"
-              @click="createDepart(data)"
-            >创建部门</div>
+            <!-- <div @mouseout="outDepart(data)" v-show="data.isShow"> -->
+            <div v-show="data.isShow">
+              <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
+              <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>
+              <div style="marginLeft:250px" @click="deleteDepart(data)">删除</div>
+            </div>
           </span>
         </span>
       </el-tree>
@@ -131,6 +131,7 @@
       ref="createDepart"
       v-if="showcreateDepart"
       :treeData="treeData"
+      :departOptionType="departOptionType"
       :initDepartment="initDepartment"
       :server="server"
       @closeOrgDialog="closeOrgDialog"
@@ -203,6 +204,7 @@ export default {
       orgFullId: '',
       orgIdList: [],
       optionType: 'create',
+      departOptionType: 'create',
       initDepartment: {},
       total: 0,
       currentPage: 1,
@@ -309,6 +311,31 @@ export default {
       this.showcreateDepart = true;
       this.$nextTick(() => {
         this.$refs.createDepart.show();
+      });
+    },
+    updateDepart(depart) {
+      this.departOptionType = 'edit';
+      depart.isShow = false;
+      if (depart && depart.orgId) {
+        this.initDepartment = depart;
+        this.globalOrgId = depart.orgId;
+      }
+      this.showcreateDepart = true;
+      this.$nextTick(() => {
+        this.$refs.createDepart.show(depart);
+      });
+    },
+    deleteDepart(depart) {
+      this.$xconfirm({
+        title: '删除确认',
+        content: '是否确认删除该数据，删除将无法恢复',
+
+      }).then(() => {
+        this.server.deleteDepart({ orgId: depart.orgId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('部门删除成功');
+          }
+        });
       });
     },
     // 创建/编辑用户

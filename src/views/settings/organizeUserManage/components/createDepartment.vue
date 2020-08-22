@@ -82,6 +82,12 @@ export default {
         return {};
       },
     },
+    departOptionType: {
+      type: String,
+      default() {
+        return 'create';
+      },
+    },
   },
   data() {
     return {
@@ -134,8 +140,14 @@ export default {
         }
       }
     },
-    show() {
-      this.visible = true;
+    show(depart) {
+      if (depart) {
+        this.formData.orgName = depart.orgName;
+        this.formData.orgSort = depart.orgSort;
+      }
+      this.$nextTick(() => {
+        this.visible = true;
+      });
     },
     close(status) {
       this.visible = false;
@@ -145,8 +157,15 @@ export default {
       this.formData.orgParentId = date.orgId;
     },
     saveDepart() {
-      this.formData.orgFullId = this.formData.orgIdList.join(':');
-      this.formData.orgParentId = this.formData.orgIdList[this.formData.orgIdList.length - 1];
+      const params = {
+        orgFullId: this.formData.orgIdList.join(':'),
+        orgParentId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        orgName: this.formData.orgName,
+        orgSort: this.formData.orgSort,
+      };
+      if (this.departOptionType == 'edit') {
+        params.orgId = this.initDepartment.orgId;
+      }
       this.$refs.departForm.validate((valid) => {
         if (valid) {
           this.loading = true;

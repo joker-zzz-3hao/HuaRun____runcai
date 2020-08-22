@@ -40,4 +40,9 @@ export default class Server extends ServerBase {
   getAllTenant(param) {
     return this._ajaxPost('gateway/system-service/sys/tenant/listTenant', param);
   }
+
+  // 删除部门
+  deleteDepart(param) {
+    return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
+  }
 }
