@@ -1,5 +1,18 @@
 <template>
   <div class="home">
+    <el-form ref="ruleForm" :inline="true">
+      <el-form-item>
+        <el-input
+          maxlength="64"
+          @keyup.enter.native="listRolePage"
+          v-model="keyWord"
+          placeholder="请输入角色名称/创建时间/角色状态"
+        >
+          <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
+        </el-input>
+      </el-form-item>
+    </el-form>
+    <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
     <tl-crcloud-table
       :total="totalpage"
       :currentPage.sync="currentPage"
@@ -7,23 +20,6 @@
       @searchList="listRolePage"
       layout="prev, pager, next, jumper"
     >
-      <div slot="searchBar">
-        <el-form ref="ruleForm" :inline="true">
-          <el-form-item>
-            <el-input
-              maxlength="64"
-              @keyup.enter.native="listRolePage"
-              v-model="keyWord"
-              placeholder="请输入角色名称/创建时间/角色状态"
-            >
-              <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
-            </el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div slot="actionBar">
-        <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
-      </div>
       <div slot="tableContainer">
         <el-table :data="tableData" style="width: 100%">
           <el-table-column prop="roleCode" label="角色编码">
