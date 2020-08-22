@@ -31,7 +31,7 @@ export default [
           title: 'roleManage',
           power: '',
         },
-        component: () => import('@/views/settings/roleManage/department/index'),
+        component: () => import('@/views/settings/roleManage/roleType/index'),
       },
       {
         // 角色管理
