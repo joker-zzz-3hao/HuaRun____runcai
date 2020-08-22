@@ -12,8 +12,9 @@
       </div>
       <div class="display-flex">
         <div>进度</div>
-        <div style="margin-left: 10px;width: 150px;">
-          <el-progress :percentage="krData.okrDetailProgress"></el-progress>
+        <div style="margin-left: 10px;">
+          <!-- <el-progress :percentage="krData.okrDetailProgress"></el-progress> -->
+          <tl-process :data="krData.okrDetailProgress"></tl-process>
         </div>
       </div>
       <div class="display-flex">
@@ -29,6 +30,7 @@
 
 <script>
 import riskStatus from '@/components/riskStatus';
+import process from '@/components/process';
 import CONST from '../const';
 
 export default {
@@ -40,6 +42,7 @@ export default {
   },
   components: {
     'tl-riskStatus': riskStatus,
+    'tl-process': process,
   },
   props: {
     krData: {

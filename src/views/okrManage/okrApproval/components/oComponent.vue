@@ -12,8 +12,8 @@
       </div>
       <div class="display-flex">
         <div>进度</div>
-        <div style="margin-left: 10px;width: 150px;">
-          <el-progress :percentage="oData.okrDetailProgress"></el-progress>
+        <div style="margin-left: 10px;">
+          <tl-process :data="oData.okrDetailProgress"></tl-process>
         </div>
       </div>
       <div>
@@ -25,13 +25,17 @@
 </template>
 
 <script>
+import process from '@/components/process';
+
 export default {
   name: 'oComponent',
   data() {
     return {
     };
   },
-  components: {},
+  components: {
+    'tl-process': process,
+  },
   props: {
     oData: {
       type: Object,
