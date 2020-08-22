@@ -1,26 +1,16 @@
 <template>
-  <div>
-    <div>
-      <div class="search-bar">
-        <slot name="searchBar"></slot>
-      </div>
-      <div class="action-bar">
-        <slot name="actionBar"></slot>
-      </div>
-      <div class="table-container">
-        <slot name="tableContainer"></slot>
-      </div>
-      <div class="page-bar" v-show="isPage">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="pageSizes"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </div>
+  <div class="table-pagination">
+    <slot name="tableContainer" class="table-container"></slot>
+    <div class="page-bar" v-show="isPage">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
     </div>
   </div>
 </template>

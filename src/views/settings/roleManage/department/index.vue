@@ -160,8 +160,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.pageright {
-  float: right;
-}
-</style>
