@@ -216,8 +216,6 @@ export default {
       pageSize: 10,
       tableData: [],
       searchData: {
-        userType: '',
-        userStatus: '',
         keyWord: '',
       },
       treeData: [],
@@ -254,16 +252,17 @@ export default {
     searchList(org) {
       if (org && org.orgId) { // 切换部门
         this.globalOrgId = org.orgId;
+        this.searchData.keyWord = '';
+        this.tenantId = org.tenantId;
         this.currentPage = 1;
         this.pageSize = 10;
-        this.tenantId = org.tenantId;
       }
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         orgId: this.globalOrgId,
         tenantId: this.tenantId,
-        ...this.searchData,
+        keyWord: this.searchData.keyWord,
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
