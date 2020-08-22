@@ -22,8 +22,7 @@
           <span>{{ node.label }}</span>
           <span>
             <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
-            <!-- <div @mouseout="outDepart(data)" v-show="data.isShow"> -->
-            <div v-show="data.isShow">
+            <div @mouseleave="outDepart(data)" v-show="data.isShow">
               <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
               <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>
               <div style="marginLeft:250px" @click="deleteDepart(data)">删除</div>
@@ -97,15 +96,15 @@
             <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div>
+                <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
-                    <i
-                      v-if="scope.row.leader"
-                      class="el-icon-user-solid"
-                      @click="setLeader(scope.row)"
-                    ></i>
+                    <i v-if="scope.row.leader" class="el-icon-user-solid">
+                      <span>设置</span>
+                    </i>
                   </el-tooltip>
-                  <i v-if="!scope.row.leader" class="el-icon-user" @click="setLeader(scope.row)"></i>
+                  <i v-if="!scope.row.leader" class="el-icon-user">
+                    <span>设置</span>
+                  </i>
                 </div>
               </template>
             </el-table-column>
