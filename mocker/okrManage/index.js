@@ -284,7 +284,7 @@ const mockData = {
     })));
   },
   // author：林心荃
-  // 用于：
+  // 用于：查操作历史
   'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       content: {
@@ -296,6 +296,34 @@ const mockData = {
           id: '1206431540120363010', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: '1206360106224295941', content: '测试-HM-1 更新：关键结果(KR)风险指数 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
         }],
       },
+    })));
+  },
+  // author：林心荃
+  // 用于：查变更承接项
+  'POST /gateway/talent-okr/okr/main/getOkrModifyUndertakeOkrList': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      modifyUndertakeList: [{
+        detailId: '1213546204999188481', okrDetailId: '1213463501108789251', okrDetailType: 0, okrDetailVersion: 2, okrDetailObjectKr: '门户o（变更了门户的o）', currentOption: false, modifyReason: null,
+      }, {
+        detailId: '1213463501108789250', okrDetailId: '1213463501108789251', okrDetailType: 0, okrDetailVersion: 1, okrDetailObjectKr: '门户o', currentOption: true, modifyReason: null,
+      }, {
+        detailId: '1213485560060821508', okrDetailId: '1213485560060821509', okrDetailType: 1, okrDetailVersion: 1, okrDetailObjectKr: '个人kr', currentOption: false, modifyReason: null,
+      }],
+    })));
+  },
+  // author：林心荃
+  // 用于：查历史版本
+  'POST /gateway/talent-okr/okr/main/selectOkrHistoryVersion': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      ARRAY: [{
+        detailId: '1213129799329218561', okrDetailId: '1213057025402765315', okrMainId: '1213057025402765313', okrDetailVersion: 4, okrDetailObjectKr: '版本6修改o', okrDetailProgress: 0, okrWeight: 80, okrDetailConfidence: 0, okrDetailType: 0, okrFullId: 'xxxxx', createTime: '2020-08-22 14:50:06', updateTime: null, status: 1, approveStatus: null, okrParentId: null, okrDetailParentVersion: null, isTrue: 1, cultureId: '1162020375644299262', okrDetailParentObjectKr: null, modifyReason: null, odetailId: '',
+      }, {
+        detailId: '1213098257089101825', okrDetailId: '1213057025402765315', okrMainId: '1213057025402765313', okrDetailVersion: 3, okrDetailObjectKr: '版本1o变为版本3', okrDetailProgress: 0, okrWeight: 80, okrDetailConfidence: 0, okrDetailType: 0, okrFullId: 'xxxxx', createTime: '2020-08-22 14:50:06', updateTime: null, status: 1, approveStatus: null, okrParentId: null, okrDetailParentVersion: null, isTrue: 0, cultureId: '1162020375644299262', okrDetailParentObjectKr: null, modifyReason: null, odetailId: '',
+      }, {
+        detailId: '1213083310602911745', okrDetailId: '1213057025402765315', okrMainId: '1213057025402765313', okrDetailVersion: 2, okrDetailObjectKr: '版本1o', okrDetailProgress: 0, okrWeight: 80, okrDetailConfidence: 0, okrDetailType: 0, okrFullId: 'xxxxx', createTime: '2020-08-22 14:50:06', updateTime: null, status: 1, approveStatus: null, okrParentId: null, okrDetailParentVersion: null, isTrue: 0, cultureId: '1162020375644299262', okrDetailParentObjectKr: null, modifyReason: null, odetailId: '',
+      }, {
+        detailId: '1213057025402765314', okrDetailId: '1213057025402765315', okrMainId: '1213057025402765313', okrDetailVersion: 1, okrDetailObjectKr: '版本1o', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 0, okrDetailType: 0, okrFullId: 'xxxxx', createTime: '2020-08-22 14:50:06', updateTime: null, status: 1, approveStatus: null, okrParentId: null, okrDetailParentVersion: null, isTrue: 0, cultureId: '1162020375644299262', okrDetailParentObjectKr: null, modifyReason: null, odetailId: '',
+      }],
     })));
   },
 };

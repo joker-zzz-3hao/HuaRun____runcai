@@ -1,61 +1,65 @@
 <template>
   <div class="tenant-management">
-    <tl-crcloud-table
-      layout="total,  prev, pager,next, sizes"
-      :total="totalpage"
-      :currentPage.sync="currentPage"
-      :pageSize.sync="pageSize"
-      @searchList="getTenantList"
-    >
-      <div slot="searchBar">
-        <el-form ref="ruleForm" :inline="true">
-          <el-form-item>
-            <span>租户管理</span>
-          </el-form-item>
+    <div class="operating-area">
+      <div class="page-title">角色管理</div>
+      <div class="operating-panel">
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-input
-              @keyup.enter.native="getTenantList"
               maxlength="64"
+              @keyup.enter.native="getTenantList"
               v-model="keyWord"
               placeholder="输入ID/企业名称/企业申请人"
+              class="tl-input-search"
             >
               <i class="el-icon-search" slot="prefix" @click="getTenantList"></i>
             </el-input>
           </el-form-item>
         </el-form>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="createAddTenant"
+          class="tl-btn amt-bg-slip"
+        >创建租户</el-button>
       </div>
-      <div slot="actionBar">
-        <el-button type="primary" @click="createAddTenant">创建租户</el-button>
-      </div>
-
-      <div slot="tableContainer">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column fixed prop="tenantBuId" label="企业ID"></el-table-column>
-          <el-table-column prop="tenantName" label="企业名称"></el-table-column>
-          <el-table-column prop="applyUser" label="申请人"></el-table-column>
-          <!-- <el-table-column prop="version" label="开通版本"></el-table-column> -->
-          <el-table-column prop="status" label="状态">
-            <template slot-scope="scope">
-              <el-switch
-                v-model.trim="scope.row.status"
-                :active-text="scope.row.status=='O'?'启用':'禁用'"
-                active-value="O"
-                inactive-value="S"
-                @change="updateStatus(scope.row)"
-              ></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="创建时间"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="130">
-            <template slot-scope="scope">
-              <el-button @click="putTenant(scope.row.tenantId)" type="text" size="small">编辑</el-button>
-              <el-button type="text" size="small" @click="infoTenant(scope.row.tenantId)">详情</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </tl-crcloud-table>
-
+    </div>
+    <div class="cont-area">
+      <tl-crcloud-table
+        layout="total,  prev, pager,next, sizes"
+        :total="totalpage"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="getTenantList"
+      >
+        <div slot="tableContainer" class="table-container">
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column fixed prop="tenantBuId" label="企业ID"></el-table-column>
+            <el-table-column prop="tenantName" label="企业名称"></el-table-column>
+            <el-table-column prop="applyUser" label="申请人"></el-table-column>
+            <!-- <el-table-column prop="version" label="开通版本"></el-table-column> -->
+            <el-table-column prop="status" label="状态">
+              <template slot-scope="scope">
+                <el-switch
+                  v-model.trim="scope.row.status"
+                  :active-text="scope.row.status=='O'?'启用':'禁用'"
+                  active-value="O"
+                  inactive-value="S"
+                  @change="updateStatus(scope.row)"
+                ></el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="创建时间"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="130">
+              <template slot-scope="scope">
+                <el-button @click="putTenant(scope.row.tenantId)" type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small" @click="infoTenant(scope.row.tenantId)">详情</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </tl-crcloud-table>
+    </div>
     <tl-create-tenant
       v-if="exist"
       :exist.sync="exist"

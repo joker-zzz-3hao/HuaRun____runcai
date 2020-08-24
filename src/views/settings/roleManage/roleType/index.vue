@@ -1,81 +1,99 @@
 <template>
-  <div class="home">
-    <el-form ref="ruleForm" :inline="true">
-      <el-form-item>
-        <el-input
-          maxlength="64"
-          @keyup.enter.native="listRolePage"
-          v-model="keyWord"
-          placeholder="请输入角色名称/创建时间/角色状态"
-        >
-          <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
-        </el-input>
-      </el-form-item>
-    </el-form>
-    <el-button type="primary" @click="showAddRoule()">新增角色</el-button>
-    <tl-crcloud-table
-      :total="totalpage"
-      :currentPage.sync="currentPage"
-      :pageSize.sync="pageSize"
-      @searchList="listRolePage"
-      layout="prev, pager, next, jumper"
-    >
-      <div slot="tableContainer">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="roleCode" label="角色编码">
-            <template slot-scope="scope">
-              <span v-if="scope.row.roleCode">{{scope.row.roleCode}}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="roleName" label="角色名称">
-            <template slot-scope="scope">
-              <span v-if="scope.row.roleName">{{scope.row.roleName}}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="roleType" label="类型">
-            <template slot-scope="scope">
-              <span v-if="scope.row.roleType">{{CONST.ROLE_TYPE[scope.row.roleType]}}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="创建时间"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="160">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="$router.push({path:'/members',query:{roleId:scope.row.roleId,name:encodeURI(scope.row.roleName)}})"
-              >成员管理</el-button>
-              <el-button @click="putRoule(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="handleDelete(scope.row.roleId)"
-                v-if="scope.row.roleType=='CREATION'"
-              >移除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+  <div class="role-type">
+    <div class="operating-area">
+      <div class="page-title">角色管理</div>
+      <div class="operating-panel">
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form-item>
+            <el-input
+              maxlength="64"
+              @keyup.enter.native="listRolePage"
+              v-model="keyWord"
+              placeholder="请输入角色名称/创建时间/角色状态"
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix" @click="listRolePage"></i>
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="showAddRoule"
+          class="tl-btn amt-bg-slip"
+        >新增角色</el-button>
       </div>
-    </tl-crcloud-table>
-    <tl-add-role
-      v-if="exist"
-      :exist.sync="exist"
-      :title="title"
-      :rouleType="rouleType"
-      :roleInfo="roleInfo"
-      @getSearchList="listRolePage"
-    ></tl-add-role>
-    <tl-put-role
-      v-if="existPut"
-      :exist.sync="existPut"
-      :title="title"
-      :rouleType="rouleType"
-      :roleInfo="roleInfo"
-      @getSearchList="listRolePage"
-    ></tl-put-role>
+    </div>
+    <div class="cont-area">
+      <tl-crcloud-table
+        :total="totalpage"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="listRolePage"
+        layout="prev, pager, next, jumper"
+      >
+        <div slot="tableContainer" class="table-container">
+          <el-table :data="tableData" class="tl-table">
+            <el-table-column prop="roleCode" label="角色编码" min-width="140">
+              <template slot-scope="scope">
+                <span v-if="scope.row.roleCode">{{scope.row.roleCode}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="roleName" label="角色名称" min-width="160">
+              <template slot-scope="scope">
+                <span v-if="scope.row.roleName">{{scope.row.roleName}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="roleType" label="类型" min-width="120">
+              <template slot-scope="scope">
+                <span v-if="scope.row.roleType">{{CONST.ROLE_TYPE[scope.row.roleType]}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="创建时间" min-width="180"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="180">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  @click="$router.push({
+                    path:'/members',
+                    query:{
+                    roleId:scope.row.roleId,
+                    name:encodeURI(scope.row.roleName)
+                    }})"
+                  class="tl-btn"
+                >成员管理</el-button>
+                <el-button @click="putRoule(scope.row)" type="text" class="tl-btn">编辑</el-button>
+                <el-button
+                  type="text"
+                  @click="handleDelete(scope.row.roleId)"
+                  v-if="scope.row.roleType=='CREATION'"
+                  class="tl-btn"
+                >移除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </tl-crcloud-table>
+      <tl-add-role
+        v-if="exist"
+        :exist.sync="exist"
+        :title="title"
+        :rouleType="rouleType"
+        :roleInfo="roleInfo"
+        @getSearchList="listRolePage"
+      ></tl-add-role>
+      <tl-put-role
+        v-if="existPut"
+        :exist.sync="existPut"
+        :title="title"
+        :rouleType="rouleType"
+        :roleInfo="roleInfo"
+        @getSearchList="listRolePage"
+      ></tl-put-role>
+    </div>
   </div>
 </template>
 

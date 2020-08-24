@@ -131,7 +131,7 @@
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */
-.okr-permissions .operating-panel {
+.okr-permissions .operating-area {
   height: 36px;
 }
 
@@ -159,11 +159,6 @@
 
 .okr-permissions .tl-radio {
   margin: 0 0 16px 0;
-}
-
-.okr-permissions .tl-btn {
-  width: 90px;
-  height: 40px;
 }
 
 /* OKR周期与自评 */

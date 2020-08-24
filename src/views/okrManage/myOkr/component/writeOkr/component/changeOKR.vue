@@ -23,14 +23,13 @@
         </li>
       </ul>
     </div>
-    <!-- 变更原因 -->
-    <div></div>
+    <!-- okr折叠面板 -->
     <okrCollapse
       ref="okrCollapse"
       :tableList="tableList"
       :canWrite="true"
       :showOKRInfoLabel="true"
-      @openUndertake="openUndertake"
+      @openUndertake="openUndertakepage"
     >
       <template slot="addkr-bar" slot-scope="props">
         <div v-if="props.oitem.newkrList">
@@ -102,23 +101,17 @@
       <el-button @click="goback">取消</el-button>
     </div>
 
-    <el-dialog
-      title="关联承接项"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :modal-append-to-body="false"
-    >
+    <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
       <undertake-table
         v-if="selectIndex !== ''"
         ref="undertake"
-        :departokrList="tableList[selectIndex].departokrList"
-        :showPhil="false"
+        :departokrList="tableList[this.selectIndex].departokrList"
+        :philosophyList="tableList[this.selectIndex].philosophyList"
+        :showPhil="undertakeType=='new'"
       ></undertake-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      </span>
-    </el-dialog>
+      <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+      <el-button @click="innerDrawer = false">取 消</el-button>
+    </el-drawer>
   </div>
 </template>
 
@@ -137,23 +130,25 @@ export default {
       tableList: [], // okr列表
       okrmain: {}, // 公共信息
       departokrList: [], // 可关联承接的okr
+      departokrObject: '',
       philosophyList: [], // 价值观
+      philosophyObject: {},
       dialogStopVisible: false, // 终止弹窗
       tableData: [], // 终止确认表格
       deletedType: '', // 终止的类型
-      deletedProgress: '', // 终止进度
-      detailokrList: [], // 终止进度
+
       selectDeletedId: '',
       remark: '', // 终止原因
       modifyReason: '', // 变更原因
       formData: {}, // 提交表单
-      dialogVisible: false, // 承接项弹窗
+      innerDrawer: false, // 承接项抽屉
       selectDepartRow: {},
       selectIndex: '', // 当前选择的
       okrMainId: '',
       searchForm: {
         okrStatus: '1',
       },
+      undertakeType: true, //
     };
   },
   components: {
@@ -180,30 +175,19 @@ export default {
     },
   },
   created() {
-    this.getokrDetail();
     this.searchOkr();
+    this.getCultureList();
+    this.$nextTick(() => {
+      this.getokrDetail();
+      this.searchForm.periodId = this.periodId;
+    });
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
-    // 查okr详情
-    getokrDetail() {
-      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        console.log('detail', res.data.okrMain);
-        this.tableList = res.data.okrDetails;
-        this.okrmain = res.data.okrMain;
-        this.okrMainId = res.data.okrMain.okrId;
-        // this.voteUser = res.data.voteUser;
-        this.tableList.forEach((item) => {
-          if (item.parentUpdate) {
-            this.searchOkr(item.detailId, item);
-          }
-        });
-      });
-    },
-    // 查可关联承接的okr
-    searchOkr(detailId, okritem) {
-      this.server.getUndertakeOkr({ detailId }).then((res) => {
-        if (res.code == 200) {
+    // 按周期查可关联承接的okr
+    searchOkr() {
+      this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
+        if (res.code === 200) {
           console.log('关联表', res.data);
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
           res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
@@ -226,48 +210,65 @@ export default {
               });
             }
           });
-          okritem.departokrList = this.departokrList;
+          // 将可承接列表转换成字符串
+          this.departokrObject = JSON.stringify(this.departokrList);
         }
       });
     },
-    // 打开终止弹窗
-    openStopDialog(row, type) {
-      this.tableData = [];
-      this.remark = '';
-      this.selectDeletedId = row.detailId; // 即将终止的id
-      this.deletedType = type;
-      this.deletedProgress = row.okrDetailProgress;
-      console.log('点了他', row);
-      row.stopMark = 1; // 删除标记
-      console.log('点了他', this.tableList);
-      if (type == 'o') {
-        row.krList.forEach((kritem) => {
-          this.tableData.push({
-            oTitle: row.okrDetailObjectKr,
-            oProgress: row.okrDetailProgress,
-            krTitle: kritem.okrDetailObjectKr,
-            krProgress: kritem.okrDetailProgress,
-            krWeight: kritem.okrWeight,
-          });
-        });
-      } else if (type == 'kr') {
-        this.tableData.push({
-          // oTitle: row.okrDetailObjectKr,
-          // oProgress: row.okrDetailProgress,
-          krTitle: row.okrDetailObjectKr,
-          krProgress: row.okrDetailProgress,
-          krWeight: row.okrWeight,
-        });
-      }
-      this.dialogStopVisible = true;
+    // 查公司价值观
+    getCultureList() {
+      this.server.queryCultureList().then((res) => {
+        if (res.code == 200) {
+          this.philosophyList = res.data;
+          // 将价值观列表转换成字符串
+          this.philosophyObject = JSON.stringify(this.philosophyList);
+        }
+      });
     },
-    // 关闭终止弹窗
-    closeStopDialog() {
-      this.dialogStopVisible = false;
+    // 查okr详情
+    getokrDetail() {
+      console.log('查okr详情');
+      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+        console.log('detail', res.data.okrDetails);
+        this.tableList = res.data.okrDetails;
+        this.okrmain = res.data.okrMain;
+        this.okrMainId = res.data.okrMain.okrId;
+        // this.voteUser = res.data.voteUser;
+        this.tableList.forEach((item) => {
+          // item.departokrList = JSON.parse(this.departokrObject);
+          if (item.parentUpdate) {
+            // 关联承接变更接口
+            console.log('关联承接变更接口', item);
+            this.getOkrModifyUndertakeOkrList(item);
+          }
+        });
+      });
+    },
+    // 可变更
+    getOkrModifyUndertakeOkrList(okritem) {
+      const formData = {
+        periodId: this.periodId,
+        detailId: okritem.detailId,
+        okrDetailId: okritem.okrDetailId,
+        okrParentId: okritem.okrParentId,
+        okrDetailParentVersion: okritem.okrDetailParentVersion,
+      };
+      this.server.getOkrModifyUndertakeOkrList(formData).then((res) => {
+        if (res.code == 200) {
+          const modifyUndertakeList = res.data.modifyUndertakeList || [];
+          modifyUndertakeList.forEach((item) => {
+            item.typeName = item.okrDetailType === 1 ? '关键结果KR' : '目标O';
+          });
+          okritem.departokrList = res.data.modifyUndertakeList;
+        }
+      });
     },
     // 打开承接弹窗
-    openUndertake(index) {
-      this.selectIndex = index;
+    openUndertakepage(data) {
+      console.log('打开承接弹窗', data);
+      // 选择o的序号，打开关联承接弹框
+      this.selectIndex = parseInt(data.num, 10);
+      this.undertakeType = data.type;
       //  需要重新查承接list,一进来就先查可承接的。打开对应弹窗再赋值？
       if (!this.tableList[this.selectIndex].undertakeOkrVo) {
         this.tableList[this.selectIndex].undertakeOkrVo = {
@@ -275,52 +276,18 @@ export default {
           undertakeOkrVersion: '',
         };
       }
-      this.dialogVisible = true;
+      this.innerDrawer = true;
     },
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       // eslint-disable-next-line max-len
+      // 承接项id、版本、名称
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
       console.log('关联', this.tableList[this.selectIndex]);
-      this.dialogVisible = false;
-    },
-    // 提交终止
-    summitStop() {
-      this.tableList.forEach((oitem) => {
-        if (oitem.detailId == this.selectDeletedId) {
-          oitem.stopMark = 1;
-          return;
-        }
-        oitem.krList.forEach((kritem) => {
-          if (kritem.detailId == this.selectDeletedId) {
-            kritem.stopMark = 1;
-          }
-        });
-      });
-      if (this.detailokrList.length == 0) {
-        this.detailokrList.push({
-          okrId: this.selectDeletedId,
-          remark: this.remark,
-          fileIdList: [],
-        });
-      } else if (this.detailokrList.length > 0) {
-        this.detailokrList.forEach((item) => {
-          if (item.okrId != this.selectDeletedId) {
-            this.detailokrList.push({
-              okrId: this.selectDeletedId,
-              remark: this.remark,
-              fileIdList: ['item.okrId != this.selectDeletedId'],
-            });
-          } else {
-            item.remark = this.remark;
-            item.fileIdList = ['else'];
-          }
-        });
-      }
-
-      this.dialogStopVisible = false;
+      this.innerDrawer = false;
     },
     // 增加kr
     addkr(okritem) {
@@ -348,7 +315,6 @@ export default {
     summit() {
       // 校验okrForm的
       // 校验
-      console.log('删除的', this.detailokrList);
       console.log('原来的', this.tableList);
       console.log('新增的', this.$refs.okrform.formData);
       const addList = this.$refs.okrform.formData.okrInfoList;
@@ -400,6 +366,17 @@ export default {
       // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
     },
 
+  },
+  watch: {
+    'tableList.length': {
+      handler() {
+        // 添加承接列表
+        this.tableList.forEach((item) => {
+          item.departokrList = JSON.parse(this.departokrObject) || [];
+          item.philosophyList = JSON.parse(this.philosophyObject) || [];
+        });
+      },
+    },
   },
 };
 </script>

@@ -6,7 +6,7 @@
         <el-button
           type="primary"
           icon="el-icon-plus"
-          @click="addOkr()"
+          @click="addOkr"
           class="tl-btn amt-bg-slip"
         >添加周期</el-button>
       </div>
@@ -14,7 +14,7 @@
     <div class="cont-area">
       <div class="cont-panel">
         <el-table :data="tableData" class="tl-table">
-          <el-table-column prop="periodName" label="OKR周期名称" min-width="120">
+          <el-table-column prop="periodName" label="OKR周期名称" min-width="180">
             <template slot-scope="scope">
               <em>{{scope.row.periodName}}</em>
               <span v-if="scope.row.checkStatus=='1'">默认周期</span>

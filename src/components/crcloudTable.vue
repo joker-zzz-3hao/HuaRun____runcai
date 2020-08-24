@@ -1,6 +1,6 @@
 <template>
   <div class="table-pagination">
-    <slot name="tableContainer" class="table-container"></slot>
+    <slot name="tableContainer"></slot>
     <div class="page-bar" v-show="isPage">
       <el-pagination
         @size-change="handleSizeChange"
@@ -11,6 +11,8 @@
         :layout="layout"
         :total="total"
         background
+        popper-class="tl-select-dropdown"
+        class="tl-pagination"
       ></el-pagination>
     </div>
   </div>
@@ -65,5 +67,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>

@@ -44,18 +44,18 @@
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              {{item.data.functionName}}
-              <i class="el-icon-error" @click="clearNode(item)"></i>
+              <span>{{item.data.functionName}}</span>
+              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
             </div>
             <div>
               <el-popover placement="bottom" trigger="click">
                 <el-cascader-panel
                   @change="handleCheckChange"
                   ref="treeMenu"
-                  v-model="selectArr"
+                  v-model.lazy="selectArr"
                   :options="data"
                   :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
-                  node-key="id"
+                  node-key="value"
                 ></el-cascader-panel>
                 <div slot="reference">
                   <i class="el-icon-circle-plus-outline"></i>
@@ -161,8 +161,27 @@ export default {
           deleteArr.splice(index, 1);
         }
       });
-      this.selectArr = [...deleteArr];
-      console.log(this.selectArr);
+      this.selectArr = [...deleteArr, []];
+      let arr = [];
+      this.selectArr.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      this.$nextTick(() => {
+        const keys = this.$refs.treeMenu.getCheckedNodes();
+        // eslint-disable-next-line array-callback-return
+        const keyCheck = keys.map((item) => {
+          if (item.children.length == 0) {
+            return item;
+          }
+        });
+        // eslint-disable-next-line array-callback-return
+        this.menuTreeList = keyCheck.filter((item) => {
+          if (item) {
+            return item;
+          }
+        });
+      });
     },
     boolCheck(item, node) {
       return item.some((li) => li === node.data.functionId);
@@ -187,7 +206,6 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange(data) {
-      this.selectArr = data;
       let arr = [];
       data.forEach((item) => {
         arr = arr.concat(item);

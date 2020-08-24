@@ -7,25 +7,14 @@
     :title="title"
     :modal="false"
     :visible.sync="dialogTableVisible"
-    center
   >
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="租户名称" prop="tenantName">
-          <el-input
-            style="width:320px"
-            v-model="form.tenantName"
-            maxlength="64"
-            placeholder="请输入租户名称"
-          ></el-input>
+          <span>{{form.tenantName}}</span>
         </el-form-item>
         <el-form-item label="企业ID" prop="tenantId">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.tenantId"
-            placeholder="请输入企业ID"
-          ></el-input>
+          <span>{{form.tenantId}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
           <el-input
@@ -46,8 +35,8 @@
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
             <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              {{item}}
-              <i class="el-icon-error"></i>
+              <span>{{item.data.functionName}}</span>
+              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
             </div>
             <div class="postMenu">
               <el-popover placement="bottom-end" trigger="click">
@@ -159,12 +148,44 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    clearNode(node) {
+      const deleteArr = this.selectArr;
+      deleteArr.forEach((item, index) => {
+        if (this.boolCheck(item, node)) {
+          deleteArr.splice(index, 1);
+        }
+      });
+      this.selectArr = [...deleteArr, []];
+      let arr = [];
+      this.selectArr.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      this.$nextTick(() => {
+        const keys = this.$refs.treeMenu.getCheckedNodes();
+        // eslint-disable-next-line array-callback-return
+        const keyCheck = keys.map((item) => {
+          if (item.children.length == 0) {
+            return item;
+          }
+        });
+        // eslint-disable-next-line array-callback-return
+        this.menuTreeList = keyCheck.filter((item) => {
+          if (item) {
+            return item;
+          }
+        });
+      });
+    },
+    boolCheck(item, node) {
+      return item.some((li) => li === node.data.functionId);
+    },
     selectCheckList() {
       const keys = this.$refs.treeMenu.getCheckedNodes();
       // eslint-disable-next-line array-callback-return
       const keyCheck = keys.map((item) => {
         if (item.children.length == 0) {
-          return item.data.functionName;
+          return item;
         }
       });
       // eslint-disable-next-line array-callback-return

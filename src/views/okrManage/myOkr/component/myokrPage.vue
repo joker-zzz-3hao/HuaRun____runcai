@@ -210,7 +210,7 @@ export default {
                 okrMain: {
                   userName: item.updateBy || item.createBy,
                   okrProgress: 0,
-                  updateDate: item.updateTime,
+                  updateDate: item.updateTime || item.createTime,
                 },
                 id: item.id || item.approvalId,
                 params: item.paramJson,
@@ -254,6 +254,7 @@ export default {
       });
     },
     goChangeOkr() {
+      this.drawerTitle = '华润云第三季度OKR';
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
