@@ -124,6 +124,8 @@ export default {
         }
       });
       self.setCrMenu(self.crList);
+      self.setSystemMenu(self.systemList);
+      self.setTalentMenu(self.talentList);
     },
   },
 };
