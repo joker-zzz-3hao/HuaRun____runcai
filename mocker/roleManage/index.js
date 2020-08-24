@@ -30,7 +30,7 @@ const mockData = {
       total: 20,
     })));
   },
-  'POST /gateway/system-service/sys/function/query': (req, res) => {
+  'POST /gateway/system-service/sys/function/listTenantFuncation': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       ARRAY: [
         {
@@ -239,6 +239,21 @@ const mockData = {
         orgId: 'US20190210_111001',
         userName: '@cname',
         createTime: '@datetime()',
+      }],
+    })));
+  },
+  'POST /gateway/system-service/sys/role/getRole': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      'ARRAY|1': [{
+        currentPage: 1,
+        keyWord: null,
+        menuTree: [[4, 7], [4, 13]],
+        pageSize: 10,
+        roleCode: 'SYS_ADMIN',
+        roleName: '系统管理员',
+        sortOrderBy: 'ASC',
+        sortPropName: null,
+        tenantId: null,
       }],
     })));
   },

@@ -166,9 +166,7 @@ export default {
       this.selectArr.forEach((item) => {
         arr = arr.concat(item);
       });
-      console.log(arr);
       this.list = Array.from(new Set(arr));
-      console.log(this.list);
       this.$nextTick(() => {
         const keys = this.$refs.treeMenu.getCheckedNodes();
         // eslint-disable-next-line array-callback-return
