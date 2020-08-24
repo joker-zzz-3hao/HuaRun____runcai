@@ -13,12 +13,12 @@ export default class Server extends ServerBase {
 
   // 设置部门负责人
   setDepartLeader(param) {
-    return this._ajaxPost('gateway/system-service/sys/userRole/addUserRole', param);
+    return this._ajaxPost('gateway/system-service/sys/userRole/setUserRole', param);
   }
 
   // 取消部门负责人
   removeDepartLeder(param) {
-    return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
+    return this._ajaxPost('gateway/system-service/sys/userRole/cancelUserRole', param);
   }
 
   // 查询组织

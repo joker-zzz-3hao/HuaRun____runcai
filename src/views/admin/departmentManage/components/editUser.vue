@@ -117,6 +117,12 @@ export default {
         return '';
       },
     },
+    tenantId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
     tenantName: {
       type: String,
       default() {

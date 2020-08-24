@@ -11,6 +11,7 @@
         :layout="layout"
         :total="total"
         background
+        popper-class="tl-select-dropdown"
         class="tl-pagination"
       ></el-pagination>
     </div>
