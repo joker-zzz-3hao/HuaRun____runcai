@@ -406,7 +406,9 @@ export default {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
       const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
       this.$confirm(title).then(() => {
-        this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
+        this.server[option]({
+          tenantId: user.tenantId, userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN',
+        }).then((res) => {
           if (res.code == 200) {
             this.searchList();
           }
