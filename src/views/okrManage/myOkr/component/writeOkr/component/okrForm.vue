@@ -35,12 +35,12 @@
               <span>%</span>
             </el-form-item>
             <el-form-item label="承接自">
-              <el-button @click="openUndertake(index)">
+              <a @click="openUndertake(index)">
                 <span
                   v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
                 >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</span>
                 <span v-else>+关联</span>
-              </el-button>
+              </a>
             </el-form-item>
           </dd>
           <dd>
@@ -186,6 +186,8 @@ export default {
   mounted() {
     if (!this.isnew) {
       this.deleteobject(0);
+      this.searchOkr();
+      this.getCultureList();
     }
   },
   created() {
@@ -251,6 +253,7 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
+      console.log('addobject增加o', this.departokrObject);
     },
     // 删除o
     deleteobject(oindex) {
@@ -258,7 +261,9 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: this.searchForm.okrCycle.periodId || this.formData.periodId }).then((res) => {
+      console.log('变更时点添加');
+      // eslint-disable-next-line max-len
+      this.server.getUndertakeOkr({ periodId: this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
         if (res.code == 200) {
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
           res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
@@ -297,6 +302,7 @@ export default {
               }
             });
           }
+          console.log('变更时点添加');
         } else {
           this.departokrObject = JSON.stringify(this.departokrList);
         }

@@ -48,4 +48,8 @@ export default class Server extends ServerBase {
   deleteOkrDraft(param) {
     return this._ajaxPost(`gateway/talent-okr/okr/okrDraft/deleteOkrDraft?okrDraftId=${param.okrDraftId}`, param);
   }
+
+  getOkrModifyUndertakeOkrList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/getOkrModifyUndertakeOkrList', param);
+  }
 }
