@@ -50,6 +50,7 @@
               v-for="(activity, index) in cycleList"
               :key="index"
               :timestamp="activity.createTime"
+              placement="top"
             >
               <ul>
                 <li
@@ -72,7 +73,13 @@
       </ul>
     </div>
     <el-drawer title="历史版本" :modal="false" :visible.sync="innerDrawer">
-      <tl-okr-history v-if="innerDrawer" ref="tl-okr-history" :server="server" :okrId="okrId"></tl-okr-history>
+      <tl-okr-history
+        v-if="innerDrawer"
+        ref="tl-okr-history"
+        :server="server"
+        :okrId="okrId"
+        :okrDetailId="okrDetailId"
+      ></tl-okr-history>
     </el-drawer>
   </div>
 </template>
@@ -97,6 +104,7 @@ export default {
       supportType: 0, // 点赞1 取消赞0
       innerDrawer: false,
       activeName: 'detail',
+      okrDetailId: '',
     };
   },
   components: {
@@ -180,7 +188,9 @@ export default {
       this.getOperationHistory();
     },
     // 打开历史版本
-    openHistory() {
+    openHistory(id, name) {
+      console.log(name);
+      this.okrDetailId = id;
       this.innerDrawer = true;
     },
     cutName(userName) {
@@ -188,7 +198,10 @@ export default {
       return userName.substring(nameLength - 2, nameLength);
     },
     splitContent(content) {
-      return content.split(';');
+      if (content) {
+        return content.split(';');
+      }
+      return '';
     },
   },
   watch: {

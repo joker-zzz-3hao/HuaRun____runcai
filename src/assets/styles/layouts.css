@@ -50,6 +50,10 @@
   min-height: calc(100vh - 102px);
 }
 
+.el-popup-parent--hidden .view-cont {
+  z-index: 26 !important;
+}
+
 /* 内容容器 */
 .cont-wrap {
   margin: 0 auto;

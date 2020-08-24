@@ -6,7 +6,7 @@
         <elcollapseitem
           ref="okrcoll"
           v-for="(item, index) in tableList"
-          :key="item.detailId+index"
+          :key="item.okrDetailId+index"
           :name="index"
           :disabled="disabled"
         >
@@ -45,6 +45,7 @@
                   ></el-progress>
                 </span>
               </li>
+              <!-- 有承接项时 -->
               <li v-if="showParentOkr && item.okrParentId">
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
@@ -58,17 +59,26 @@
                   >
                     <span>
                       您承接的OKR有变更，
-                      <a @click="goUndertake(index)">查看详情</a>
+                      <a @click="goUndertake(index,'change')">查看详情</a>
                     </span>
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
                 </span>
               </li>
+              <!-- 无承接项时 -->
+              <li v-else-if="showParentOkr">
+                <a @click="goUndertake(index,'new')">
+                  <span
+                    v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrObjectKr) || item.cultureName"
+                  >{{item.undertakeOkrVo.undertakeOkrObjectKr}}{{item.cultureName}}</span>
+                  <span v-else>+关联</span>
+                </a>
+              </li>
             </ul>
             <!-- 可在折叠面板title处添加内容 -->
             <slot name="head-bar" :okritem="item"></slot>
           </template>
-          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.detailId+krIndex">
+          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.okrDetailId+krIndex">
             <div class="hideEdit">
               <span v-if="showOKRInfoLabel">关键行动KR：</span>
               <el-form-item style="display:inline-block" v-if="canWrite && kritem.showTitleEdit">
@@ -197,10 +207,14 @@ export default {
       this.tableList[index].krList[krIndex][name] = true;
       this.$forceUpdate();
     },
-    goUndertake(index) {
+    goUndertake(index, type) {
       // 给父组件传打开的命令
-      console.log('dakai');
-      this.$emit('openUndertake', index);
+      const undertakeInfo = {
+        num: parseInt(index, 10),
+        type,
+      };
+      console.log('dakai', undertakeInfo);
+      this.$emit('openUndertake', undertakeInfo);
     },
     // 改变tableList后强制渲染
     updateokrCollapse() {

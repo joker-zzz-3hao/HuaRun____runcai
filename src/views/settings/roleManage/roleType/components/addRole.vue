@@ -7,19 +7,21 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
+    class="tl-dialog"
   >
     <el-form
       ref="form"
       :model="form"
       :rules="rules"
-      label-width="80px"
+      label-width="100px"
       :label-position="labelPosition"
+      class="tl-form"
     >
       <el-form-item label="角色编号" prop="roleCode">
-        <el-input style="width:320px" maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号"></el-input>
+        <el-input maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号" class="tl-input"></el-input>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input style="width:320px" maxlength="64" v-model="form.roleName" placeholder="请输入角色名称"></el-input>
+        <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <div class="menuTreeList">
@@ -46,8 +48,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm()">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -214,29 +216,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.addRoule {
-  position: relative;
-}
-.roulemember {
-  width: 100%;
-  z-index: 99999999;
-  position: absolute;
-  left: 0;
-  top: 50px;
-  padding: 25px;
-  background-color: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
-}
-</style>

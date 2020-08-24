@@ -61,6 +61,12 @@
         </li>
       </ul>
       <!-- 部门负责人视图 -->
+      <span>{{departmentName}}</span>
+      <ul style="display:flex" v-if="orgTable.length">
+        <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
+          <div class="user-name">{{cutName(item.orgName)}}</div>
+        </li>
+      </ul>
     </div>
     <el-drawer
       :wrapperClosable="false"
@@ -134,6 +140,7 @@ export default {
           this.okrMain = res.data.okrMain;
           this.okrId = res.data.okrMain && res.data.okrMain.okrId;
           this.memberList = res.data.orgUser || [];
+          this.orgTable = res.data.orgTable || [];
         }
       });
     },
