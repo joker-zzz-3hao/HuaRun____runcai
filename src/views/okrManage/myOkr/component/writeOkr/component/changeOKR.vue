@@ -354,7 +354,6 @@ export default {
         okrMainId: this.okrMainId,
       };
       console.log('拼起来后', this.formData);
-      debugger;
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功');
