@@ -16,11 +16,7 @@
           </li>
           <li>
             <span>OKR进度</span>
-            <el-progress
-              type="circle"
-              width="100"
-              :percentage="parseInt(okrMain.okrProgress, 10) || 0"
-            ></el-progress>
+            <el-progress type="circle" :percentage="parseInt(okrMain.okrProgress, 10) || 0"></el-progress>
           </li>
         </ul>
       </div>
@@ -40,9 +36,16 @@
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog(item)"
+        :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
-          <!-- <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button> -->
+          <el-button
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图icon</el-button>
+          {{props.okritem.continueCount}}
+        </template>
+        <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
@@ -54,19 +57,24 @@
     <!-- 展示头像 -->
     <div>
       <!-- 基层员工视图 -->
-      <span>{{departmentName}}成员OKR</span>
-      <ul style="display:flex" v-if="memberList.length">
-        <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
-          <div class="user-name">{{cutName(item.userName)}}</div>
-        </li>
-      </ul>
+      <div v-if="memberList.length>0">
+        <span>{{departmentName}}成员OKR</span>
+        <ul style="display:flex">
+          <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
+            <div class="user-name">{{cutName(item.userName)}}</div>
+          </li>
+        </ul>
+      </div>
+
       <!-- 部门负责人视图 -->
-      <span>{{departmentName}}</span>
-      <ul style="display:flex" v-if="orgTable.length">
-        <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
-          <div class="user-name">{{cutName(item.orgName)}}</div>
-        </li>
-      </ul>
+      <div v-if="orgTable.length>0">
+        <span>{{departmentName}}</span>
+        <ul style="display:flex">
+          <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
+            <div class="user-name">{{cutName(item.orgName)}}</div>
+          </li>
+        </ul>
+      </div>
     </div>
     <el-drawer
       :wrapperClosable="false"
@@ -82,6 +90,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from './okrDetail';
 import Server from '../server';
@@ -124,7 +133,9 @@ export default {
     },
   },
   computed: {
-
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   created() {
   },
@@ -134,11 +145,12 @@ export default {
         myOrOrg: 'org',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
+        orgId: this.userInfo.orgId,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableList = res.data.okrDetails;
-          this.okrMain = res.data.okrMain;
-          this.okrId = res.data.okrMain && res.data.okrMain.okrId;
+          this.tableList = res.data.okrDetails || [];
+          this.okrMain = res.data.okrMain || {};
+          this.okrId = this.okrMain.okrId || '';
           this.memberList = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
         }
@@ -149,7 +161,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrMain.orgId,
         },
       });
     },

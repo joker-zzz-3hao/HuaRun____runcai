@@ -15,13 +15,6 @@
     >
       <el-form ref="userForm" :model="formData" label-width="80px">
         <el-form-item
-          label="用户名称"
-          prop="userName"
-          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
-        </el-form-item>
-        <el-form-item
           label="用户账号"
           prop="userAccount"
           :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
@@ -29,23 +22,15 @@
           <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
         </el-form-item>
         <el-form-item
-          label="用户密码"
-          prop="loginPwd"
-          :rules="[
-          {required:true,validator:validatePwd,trigger:'blur'}]"
+          label="用户姓名"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.loginPwd" show-password clearable></el-input>
+          <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
         </el-form-item>
+
         <el-form-item
-          label="确认密码"
-          prop="confirmPwd"
-          :rules="[
-          {required:true,validator: validateConfirmPwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
-        </el-form-item>
-        <el-form-item
-          label="手机号"
+          label="手机号码"
           prop="userMobile"
           :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
         >
@@ -74,6 +59,22 @@
             :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
             @change="selectIdChange"
           ></el-cascader>
+        </el-form-item>
+        <el-form-item
+          label="用户密码"
+          prop="loginPwd"
+          :rules="[
+          {required:true,validator:validatePwd,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.loginPwd" show-password clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          label="确认密码"
+          prop="confirmPwd"
+          :rules="[
+          {required:true,validator: validateConfirmPwd,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
         </el-form-item>
         <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="saveUser">确定</el-button>
@@ -113,6 +114,12 @@ export default {
       },
     },
     userId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    tenantId: {
       type: String,
       default() {
         return '';

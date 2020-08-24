@@ -131,7 +131,8 @@ export default {
       self.showOne = self.$route.params.showOne;
       self.searchForm.okrDetailId = self.$route.params.okrDetailId || '';
       self.searchForm.periodId = self.$route.params.periodId || '';
-      self.orgId = self.userInfo.orgId;
+      self.orgId = self.userInfo.orgId || '';
+      self.searchForm.orgId = self.$route.params.orgId || '';
       if (!self.showOne) {
         // 查询周期
         self.server.getOkrCycleList().then((res) => {
@@ -170,51 +171,56 @@ export default {
     },
     getmaps() {
       // 查承接地图
-      this.server.getmaps(this.searchForm).then((res) => {
-        if (res.code == 200) {
-          const allTreeData = res.data;
-          this.svgList = [];
-          if (this.showOne) {
+      if (this.searchForm.orgId) {
+        this.server.getmaps(this.searchForm).then((res) => {
+          if (res.code == 200) {
+            const allTreeData = res.data;
+            this.svgList = [];
+            if (this.showOne) {
             // 要做兼容处理
-            allTreeData.forEach((item) => {
-              this.svgList.push(item);
-              if (item.krContinueList && item.krContinueList.length > 0) {
-                this.svgList = this.svgList.concat(item.krContinueList);
-              }
-            });
-          } else {
-            let index = 0;
-            allTreeData.forEach((item) => {
-              this.svgList[index] = [];
-              this.svgList[index].push(item);
-              if (item.krContinueList && item.krContinueList.length > 0) {
-                // TODO: 调试时取了0
-                this.svgList[index] = this.svgList[index].concat(item.krContinueList);
-              }
-              index += 1;
-              if (item.krList && item.krList.length > 0) {
-                item.krList.forEach((kritem) => {
-                  this.svgList[index] = [];
-                  this.svgList[index].push(kritem);
-                  index += 1;
-                  console.log('kr树', kritem);
-                  if (kritem.krContinueList && kritem.krContinueList.length > 0) {
-                  // TODO: 调试时取了0
-                    this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
-                  }
-                });
-              }
+              allTreeData.forEach((item, index) => {
+                if (index === 0) {
+                  item.okrParentId = null;
+                }
+                this.svgList.push(item);
+                if (item.krContinueList && item.krContinueList.length > 0) {
+                  this.svgList = this.svgList.concat(item.krContinueList);
+                }
+              });
               console.log('承接树', this.svgList);
-            });
-            // 默认收起其他
-            this.$nextTick(() => {
-              for (let i = 1; i < this.svgList.length; i += 1) {
-                this.$refs.svgTree[i].closeTree();
-              }
-            });
+            } else {
+              let index = 0;
+              allTreeData.forEach((item) => {
+                item.okrParentId = null;
+                this.svgList[index] = [];
+                this.svgList[index].push(item);
+                if (item.krContinueList && item.krContinueList.length > 0) {
+                  this.svgList[index] = this.svgList[index].concat(item.krContinueList);
+                }
+                index += 1;
+                if (item.krList && item.krList.length > 0) {
+                  item.krList.forEach((kritem) => {
+                    kritem.okrParentId = null;
+                    this.svgList[index] = [];
+                    this.svgList[index].push(kritem);
+                    index += 1;
+                    if (kritem.krContinueList && kritem.krContinueList.length > 0) {
+                      this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
+                    }
+                  });
+                }
+                console.log('承接树', this.svgList);
+              });
+              // 默认收起其他
+              this.$nextTick(() => {
+                for (let i = 1; i < this.svgList.length; i += 1) {
+                  this.$refs.svgTree[i].closeTree();
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }
     },
     handleCycleData(data) {
       this.searchForm.periodId = data.periodId;
@@ -224,7 +230,6 @@ export default {
     handleData(data) {
       this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
       this.orgId = '';
-      console.log(this.searchForm.orgId);
       this.getmaps();
     },
     // 当点击根节点，收起其他已打开的树

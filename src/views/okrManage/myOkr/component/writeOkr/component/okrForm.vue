@@ -8,9 +8,9 @@
           <dd class="objectdd">
             <el-form-item
               :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
-              :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
+              :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
             >
-              <el-input v-model="oitem.okrDetailObjectKr"></el-input>
+              <el-input placeholder="请输入目标名称" v-model="oitem.okrDetailObjectKr"></el-input>
             </el-form-item>
             <el-form-item label="权重">
               <el-input-number
@@ -45,13 +45,13 @@
           </dd>
           <dd>
             <dl v-for="(kitem, kindex) in oitem.krList" :key="kindex">
-              <dt>关键结果</dt>
+              <dt>关键结果{{kindex+1}}</dt>
               <dd class="objectdd">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur', message: '请填写关键结果KR名称'}]"
+                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
                 >
-                  <el-input v-model="kitem.okrDetailObjectKr"></el-input>
+                  <el-input placeholder="请输入关键结果" v-model="kitem.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
@@ -76,13 +76,19 @@
                   <span>%</span>
                 </el-form-item>
                 <el-form-item label="风险状态">
+                  <!-- <el-select v-model="kitem.okrDetailConfidence">
+
+                  </el-select>-->
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                     <el-radio-group v-model="kitem.okrDetailConfidence">
                       <el-radio-button
                         v-for="citem in CONST.CONFIDENCE"
                         :key="citem.value"
                         :label="citem.value"
-                      >{{citem.label}}</el-radio-button>
+                      >
+                        <tl-riskStatus :status="citem.value"></tl-riskStatus>
+                        {{citem.label}}
+                      </el-radio-button>
                     </el-radio-group>
 
                     <el-button
@@ -102,12 +108,12 @@
           </dd>
         </dl>
       </el-form>
-
       <el-button @click="addobject()">加一个O</el-button>
       <el-button v-if="isnew" @click="summit()">提交</el-button>
       <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
     </div>
+    <!-- 关联承接项抽屉 -->
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
       <undertake-table
         v-if="selectIndex !== ''"
@@ -123,6 +129,8 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import riskStatus from '@/components/riskStatus';
+import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 import CONST from '../const';
 
@@ -130,8 +138,10 @@ const TIME_INTERVAL = 60 * 1000;
 
 export default {
   name: 'orkForm',
+  mixins: [validateMixin],
   components: {
     'undertake-table': undertakeTable,
+    'tl-riskStatus': riskStatus,
   },
   data() {
     return {
@@ -355,7 +365,6 @@ export default {
       this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       this.innerDrawer = false;
     },
-    // 校验表单
     // 提交表单
     summit() {
       this.$refs.dataForm.validate((valid) => {

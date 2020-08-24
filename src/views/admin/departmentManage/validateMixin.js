@@ -74,6 +74,7 @@ export default {
       } else if (this.server.judgeUser && value != this.initUserAccount) {
         this.server.judgeUser({
           userAccount: value,
+          tenantId: this.tenantId,
         }).then((res) => {
           if (res.code == 200 && res.data == 'Y') {
             callback('该账号已被使用');

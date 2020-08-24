@@ -9,12 +9,11 @@
           :key="item.detailId+index"
           :name="index"
           :disabled="disabled"
-          @click.native.stop="opensome(item)"
         >
           <template slot="title">
-            <ul class="detail">
+            <ul @click="opensome(item)" class="detail">
               <li>
-                <span v-if="showOKRInfoLabel">目标O：</span>
+                <span v-if="showOKRInfoLabel">目标</span>
                 <span>{{item.okrDetailObjectKr}}</span>
               </li>
               <li class="hideEdit">
@@ -28,33 +27,18 @@
                   ></el-progress>
                 </span>
               </li>
-              <!-- 承接地图 -->
-              <li v-if="showParentOkr">
-                <span>{{item.parentObjectKr}}</span>
-                <!-- 是变更且有更新显示icon -->
-                <span v-if="canWrite && item.parentUpdate">
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :append-to-body="false"
-                  >
-                    <span>
-                      您承接的OKR有变更，
-                      <a @click="goUndertake(index)">查看详情</a>
-                    </span>
-                    <i class="el-icon-warning" slot="reference"></i>
-                  </el-popover>
-                </span>
-              </li>
             </ul>
             <!-- 可在折叠面板title处添加内容 -->
             <slot name="head-bar" :okritem="item"></slot>
           </template>
-          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.detailId+krIndex">
+          <div
+            @click="opensome(item)"
+            v-for="(kritem, krIndex) in item.krList"
+            :key="kritem.detailId+krIndex"
+          >
             <ul class="detail">
               <li>
-                <span v-if="showOKRInfoLabel">关键行动KR：</span>
+                <span v-if="showOKRInfoLabel">KR</span>
                 <span>{{kritem.okrDetailObjectKr}}</span>
               </li>
               <li class="hideEdit">
@@ -70,6 +54,7 @@
               </li>
               <li>
                 <!-- okrDetailConfidence -->
+                <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
                 <span>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
               </li>
             </ul>
@@ -84,6 +69,7 @@
 </template>
 
 <script>
+import riskStatus from '@/components/riskStatus';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 
@@ -96,7 +82,9 @@ const CONFIDENCE_MAP = {
 export default {
   name: 'okrCollapse',
   components: {
-    elcollapse, elcollapseitem,
+    elcollapse,
+    elcollapseitem,
+    'tl-riskStatus': riskStatus,
   },
   data() {
     return {

@@ -31,55 +31,58 @@
       :showOKRInfoLabel="true"
       @openUndertake="openUndertakepage"
     >
+      <!-- 在o下新增kr -->
       <template slot="addkr-bar" slot-scope="props">
-        <div v-if="props.oitem.newkrList">
-          <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
-            <dt>关键结果</dt>
-            <dd class="objectdd">
-              <el-form-item
-                :prop="'newkrList.' + index + '.okrDetailObjectKr'"
-                :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
-              >
-                <input v-model="newItem.okrDetailObjectKr" />
-              </el-form-item>
-              <el-form-item label="权重">
-                <el-input-number
-                  v-model="newItem.okrWeight"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                ></el-input-number>
-              </el-form-item>
-              <el-form-item label="当前进度">
-                <el-input-number
-                  v-model="newItem.okrDetailProgress"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                ></el-input-number>
-              </el-form-item>
-              <el-form-item label="信心指数">
-                <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-                  <el-radio-group v-model="newItem.okrDetailConfidence">
-                    <el-radio-button
-                      v-for="citem in CONST.CONFIDENCE"
-                      :key="citem.value"
-                      :label="citem.value"
-                    >{{citem.label}}</el-radio-button>
-                  </el-radio-group>
-                  <el-button slot="reference">信息状态</el-button>
-                </el-popover>
-              </el-form-item>
-              <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>
-            </dd>
-          </dl>
-        </div>
-        <div style="display:none">{{props.oitem.newkrList}}</div>
-        <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
+        <form :model="props.oitem">
+          <div v-if="props.oitem.newkrList">
+            <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
+              <dt>KR</dt>
+              <dd class="objectdd">
+                <el-form-item
+                  :prop="'newkrList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
+                >
+                  <input v-model="newItem.okrDetailObjectKr" />
+                </el-form-item>
+                <el-form-item label="权重">
+                  <el-input-number
+                    v-model="newItem.okrWeight"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                  ></el-input-number>
+                </el-form-item>
+                <el-form-item label="当前进度">
+                  <el-input-number
+                    v-model="newItem.okrDetailProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                  ></el-input-number>
+                </el-form-item>
+                <el-form-item label="信心指数">
+                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
+                    <el-radio-group v-model="newItem.okrDetailConfidence">
+                      <el-radio-button
+                        v-for="citem in CONST.CONFIDENCE"
+                        :key="citem.value"
+                        :label="citem.value"
+                      >{{citem.label}}</el-radio-button>
+                    </el-radio-group>
+                    <el-button slot="reference">信息状态</el-button>
+                  </el-popover>
+                </el-form-item>
+                <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>
+              </dd>
+            </dl>
+          </div>
+          <div style="display:none">{{props.oitem.newkrList}}</div>
+          <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
+        </form>
       </template>
     </okrCollapse>
     <!-- 新增okr -->
@@ -116,6 +119,7 @@
 </template>
 
 <script>
+import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
 import okrForm from './okrForm';
@@ -124,6 +128,7 @@ import CONST from '../const';
 
 export default {
   name: 'changeOKR',
+  mixins: [validateMixin],
   data() {
     return {
       CONST,
@@ -186,38 +191,42 @@ export default {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 按周期查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
-        if (res.code === 200) {
-          console.log('关联表', res.data);
-          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-            this.departokrList.push({
-              typeName: '目标O',
-              okrDetailObjectKr: item.o.okrDetailObjectKr,
-              okrDetailId: item.o.okrDetailId,
-              okrDetailVersion: item.o.okrDetailVersion,
-              checkFlag: false,
-            });
-            if (item.krList && item.krList.length > 0) {
-              item.krList.forEach((krItem, index) => {
-                this.departokrList.push({
-                  typeName: `KR${index}`,
-                  okrDetailObjectKr: krItem.okrDetailObjectKr,
-                  okrDetailId: krItem.okrDetailId,
-                  okrDetailVersion: krItem.okrDetailVersion,
-                  checkFlag: false,
-                });
+      if (this.periodId) {
+        this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
+          console.log('searchOkr', res);
+          if (res.code == 200) {
+            console.log('关联表', res.data);
+            this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+            res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+              this.departokrList.push({
+                typeName: '目标O',
+                okrDetailObjectKr: item.o.okrDetailObjectKr,
+                okrDetailId: item.o.okrDetailId,
+                okrDetailVersion: item.o.okrDetailVersion,
+                checkFlag: false,
               });
-            }
-          });
-          // 将可承接列表转换成字符串
-          this.departokrObject = JSON.stringify(this.departokrList);
-        }
-      });
+              if (item.krList && item.krList.length > 0) {
+                item.krList.forEach((krItem, index) => {
+                  this.departokrList.push({
+                    typeName: `KR${index}`,
+                    okrDetailObjectKr: krItem.okrDetailObjectKr,
+                    okrDetailId: krItem.okrDetailId,
+                    okrDetailVersion: krItem.okrDetailVersion,
+                    checkFlag: false,
+                  });
+                });
+              }
+            });
+            // 将可承接列表转换成字符串
+            this.departokrObject = JSON.stringify(this.departokrList);
+          }
+        });
+      }
     },
     // 查公司价值观
     getCultureList() {
       this.server.queryCultureList().then((res) => {
+        console.log('getCultureList', res);
         if (res.code == 200) {
           this.philosophyList = res.data;
           // 将价值观列表转换成字符串
@@ -281,13 +290,19 @@ export default {
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
+      this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
       // 承接项id、版本、名称
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
-      console.log('关联', this.tableList[this.selectIndex]);
+
+      // TODO:价值观的id
+      this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
+      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
+      console.log('关联', this.selectDepartRow);
       this.innerDrawer = false;
+      this.$refs.okrCollapse.updateokrCollapse();
     },
     // 增加kr
     addkr(okritem) {
@@ -320,13 +335,24 @@ export default {
       const addList = this.$refs.okrform.formData.okrInfoList;
       const okrInfoList = [];
       this.tableList.forEach((item, index) => {
+        let undertakeOkr = {};
+        if (item.undertakeOkrVo) {
+          undertakeOkr = item.undertakeOkrVo;
+        } else {
+          undertakeOkr = {
+            undertakeOkrId: item.okrParentId,
+            undertakeOkrContent: item.parentObjectKr,
+            undertakeOkrVersion: item.okrDetailParentVersion,
+          };
+        }
         okrInfoList.push({
           detailId: item.detailId,
           okrDetailId: item.okrDetailId,
           okrDetailObjectKr: item.okrDetailObjectKr,
           okrWeight: item.okrWeight,
           okrDetailProgress: item.okrDetailProgress,
-          undertakeOkr: { undertakeOkrId: item.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: item.okrDetailParentVersion },
+          cultureId: item.cultureId,
+          undertakeOkrDto: undertakeOkr,
           krList: [],
         });
         item.krList.forEach((kritem) => {
@@ -336,7 +362,11 @@ export default {
             okrWeight: kritem.okrWeight,
             okrDetailProgress: kritem.okrDetailProgress,
             okrDetailConfidence: kritem.okrDetailConfidence,
-            undertakeOkr: { undertakeOkrId: kritem.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: kritem.okrDetailParentVersion },
+            // undertakeOkr: {
+            //   undertakeOkrId: kritem.okrParentId || '',
+            //   undertakeOkrContent: '',
+            //   undertakeOkrVersion: kritem.okrDetailParentVersion,
+            // },
           });
         });
         if (item.newkrList && item.newkrList.length > 0) {
@@ -354,6 +384,7 @@ export default {
         okrMainId: this.okrMainId,
       };
       console.log('拼起来后', this.formData);
+      debugger;
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功');

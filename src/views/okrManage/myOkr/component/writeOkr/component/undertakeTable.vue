@@ -9,7 +9,7 @@
           <div v-else>「最新版本」</div>
         </template>
       </el-table-column>
-      <el-table-column width="300" prop="okrDetailObjectKr"></el-table-column>
+      <el-table-column width="150" prop="okrDetailObjectKr"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
           <el-checkbox
@@ -69,7 +69,6 @@ export default {
         }
       });
       this.selectDepartRow = row;
-      // this.$emit('selectDepart', this.selection);
     },
     // 选择关联的价值观
     selectphilosophy(index, row) {
@@ -77,9 +76,9 @@ export default {
         if (index != i) {
           this.philosophyList[i].checkFlag = false;
         }
+        console.log(i, this.philosophyList[i].checkFlag);
       });
       this.selectPhilRow = row;
-      // this.$emit('selectPhil', this.selection);
     },
   },
   watch: {

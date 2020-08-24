@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar class="admin-layout">
     <tl-header></tl-header>
-    <tl-main-area :menuList="systemList"></tl-main-area>
+    <tl-main-area :menuList="systemMenuList"></tl-main-area>
   </el-scrollbar>
 </template>
 

@@ -30,7 +30,6 @@
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="listRolePage"
-        layout="prev, pager, next, jumper"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">

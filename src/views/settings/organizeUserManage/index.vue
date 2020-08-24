@@ -131,7 +131,11 @@
                 <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间"></el-table-column>
+            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间">
+              <template slot-scope="scope">
+                <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+              </template>
+            </el-table-column>
             <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -167,24 +171,16 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <el-drawer
-      :modal="false"
-      :append-to-body="false"
-      :visible.sync="editDrawer"
+    <edit-user
+      ref="editUser"
+      :treeData="treeData"
       v-if="editDrawer"
-      title="编辑用户"
-      :before-close="closeUserDialog"
-    >
-      <edit-user
-        ref="createUser"
-        :treeData="treeData"
-        :server="server"
-        :userId="userId"
-        :tenantName="tenantName"
-        :globalOrgId="globalOrgId"
-        @closeUserDialog="closeUserDialog"
-      ></edit-user>
-    </el-drawer>
+      :server="server"
+      :userId="userId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      @closeUserDialog="closeUserDialog"
+    ></edit-user>
   </div>
 </template>
 
@@ -359,7 +355,9 @@ export default {
     createOrEditUser(user) {
       if (user.userId) {
         this.userId = user.userId;
-        this.editDrawer = true;
+        this.$nextTick(() => {
+          this.editDrawer = true;
+        });
       } else {
         this.showCreateUser = true;
         this.$nextTick(() => {

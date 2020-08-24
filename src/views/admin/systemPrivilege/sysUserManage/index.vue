@@ -15,7 +15,7 @@
           <span>内置用户</span>
         </el-form-item>
         <el-form-item label="创建时间">
-          <span>{{userInfo.createTime}}</span>
+          <span>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(userInfo.createTime) )}}</span>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetPwd">修改密码</el-button>
