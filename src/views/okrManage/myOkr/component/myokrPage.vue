@@ -197,6 +197,7 @@ export default {
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
+
       }).then((res) => {
         if (res.code == 200) {
           if (['6', '7', '8'].includes(this.searchForm.status)) {

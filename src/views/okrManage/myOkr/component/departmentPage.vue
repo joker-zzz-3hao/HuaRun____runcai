@@ -40,6 +40,7 @@
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog(item)"
+        :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
           <!-- <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button> -->
@@ -82,6 +83,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from './okrDetail';
 import Server from '../server';
@@ -124,7 +126,9 @@ export default {
     },
   },
   computed: {
-
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   created() {
   },
@@ -134,6 +138,7 @@ export default {
         myOrOrg: 'org',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
+        orgId: this.userInfo.orgId,
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails;
@@ -149,7 +154,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrMain.orgId,
         },
       });
     },
