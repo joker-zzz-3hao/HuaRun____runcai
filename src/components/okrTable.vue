@@ -9,10 +9,9 @@
           :key="item.detailId+index"
           :name="index"
           :disabled="disabled"
-          @click.native.stop="opensome(item)"
         >
           <template slot="title">
-            <ul class="detail">
+            <ul @click="opensome(item)" class="detail">
               <li>
                 <span v-if="showOKRInfoLabel">目标O：</span>
                 <span>{{item.okrDetailObjectKr}}</span>
@@ -51,7 +50,11 @@
             <!-- 可在折叠面板title处添加内容 -->
             <slot name="head-bar" :okritem="item"></slot>
           </template>
-          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.detailId+krIndex">
+          <div
+            @click="opensome(item)"
+            v-for="(kritem, krIndex) in item.krList"
+            :key="kritem.detailId+krIndex"
+          >
             <ul class="detail">
               <li>
                 <span v-if="showOKRInfoLabel">关键行动KR：</span>
