@@ -12,72 +12,78 @@
       </div>
     </div>
     <div class="cont-area">
-      <div class="cont-panel">
-        <el-table :data="tableData" class="tl-table">
-          <el-table-column prop="periodName" label="OKR周期名称" min-width="180">
-            <template slot-scope="scope">
-              <em>{{scope.row.periodName}}</em>
-              <span v-if="scope.row.checkStatus=='1'">默认周期</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="startTime" label="开始时间" min-width="120">
-            <template slot-scope="scope">
-              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
-            </template>
-          </el-table-column>
-          <el-table-column prop="endTime" label="结束时间" min-width="120">
-            <template slot-scope="scope">
-              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
-            </template>
-          </el-table-column>
-          <el-table-column prop="endTime" label="起草开始时间" min-width="120">
-            <template slot-scope="scope">
-              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
-            </template>
-          </el-table-column>
-          <el-table-column prop="endTime" label="审批结束时间" min-width="120">
-            <template slot-scope="scope">
-              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
-            </template>
-          </el-table-column>
-          <el-table-column prop="endTime" label="自评举证时间" min-width="120">
-            <template slot-scope="scope">
-              <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
-            </template>
-          </el-table-column>
-          <el-table-column prop="checkStatus" label="状态" min-width="120">
-            <template slot-scope="scope">
-              <el-switch
-                v-model.trim="scope.row.periodType"
-                :active-text="scope.row.periodType==1?'启用':'禁用'"
-                active-value="1"
-                inactive-value="0"
-                @change="addOrUpdate(scope.row)"
-                class="tl-switch"
-              ></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" width="60">
-            <template slot-scope="scope">
-              <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <tl-add-okr-cycle
-          :exist.sync="exist"
-          v-if="exist"
-          :title="title"
-          @getTableList="getTableList"
-        ></tl-add-okr-cycle>
-        <tl-put-okr-cycle
-          :exist.sync="existPut"
-          v-if="existPut"
-          :title="title"
-          :updateData.sync="updateData"
-          @getTableList="getTableList"
-        ></tl-put-okr-cycle>
-      </div>
-      <div class="operating-panel">这里是底部操作区，这里可以放 按钮、翻页控件等</div>
+      <tl-crcloud-table
+        :total="totalpage"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="getTableList"
+      >
+        <div slot="tableContainer" class="table-container">
+          <el-table :data="tableData" class="tl-table">
+            <el-table-column prop="periodName" label="OKR周期名称" min-width="180">
+              <template slot-scope="scope">
+                <em>{{scope.row.periodName}}</em>
+                <span v-if="scope.row.checkStatus=='1'">默认周期</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="startTime" label="开始时间" min-width="120">
+              <template slot-scope="scope">
+                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" label="结束时间" min-width="120">
+              <template slot-scope="scope">
+                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" label="起草开始时间" min-width="120">
+              <template slot-scope="scope">
+                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" label="审批结束时间" min-width="120">
+              <template slot-scope="scope">
+                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" label="自评举证时间" min-width="120">
+              <template slot-scope="scope">
+                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+              </template>
+            </el-table-column>
+            <el-table-column prop="checkStatus" label="状态" min-width="120">
+              <template slot-scope="scope">
+                <el-switch
+                  v-model.trim="scope.row.periodType"
+                  :active-text="scope.row.periodType==1?'启用':'禁用'"
+                  active-value="1"
+                  inactive-value="0"
+                  @change="addOrUpdate(scope.row)"
+                  class="tl-switch"
+                ></el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="60">
+              <template slot-scope="scope">
+                <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <tl-add-okr-cycle
+            :exist.sync="exist"
+            v-if="exist"
+            :title="title"
+            @getTableList="getTableList"
+          ></tl-add-okr-cycle>
+          <tl-put-okr-cycle
+            :exist.sync="existPut"
+            v-if="existPut"
+            :title="title"
+            :updateData.sync="updateData"
+            @getTableList="getTableList"
+          ></tl-put-okr-cycle>
+        </div>
+      </tl-crcloud-table>
     </div>
   </div>
 </template>

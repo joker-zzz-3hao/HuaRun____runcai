@@ -1,20 +1,25 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <el-form v-model="formData">
+    <el-form :model="formData" ref="changeForm">
       <elcollapse class="collapse" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
-          v-for="(item, index) in tableList"
+          v-for="(item, index) in formData.tableList"
           :key="item.okrDetailId+index"
           :name="index"
           :disabled="disabled"
         >
           <template slot="title">
             <div class="hideEdit">
-              <span v-if="showOKRInfoLabel">目标O：</span>
-              <el-form-item style="display:inline-block" v-if="canWrite && item.showTitleEdit">
-                <el-input v-model="item.okrDetailObjectKr"></el-input>
+              <span v-if="showOKRInfoLabel">目标：</span>
+              <el-form-item
+                style="display:inline-block"
+                v-if="canWrite && item.showTitleEdit"
+                :prop="'tableList.' + index + '.okrDetailObjectKr'"
+                :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+              >
+                <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
               </el-form-item>
               <span v-else>{{item.okrDetailObjectKr}}</span>
               <!-- 做成hover -->
@@ -80,9 +85,14 @@
           </template>
           <div v-for="(kritem, krIndex) in item.krList" :key="kritem.okrDetailId+krIndex">
             <div class="hideEdit">
-              <span v-if="showOKRInfoLabel">关键行动KR：</span>
-              <el-form-item style="display:inline-block" v-if="canWrite && kritem.showTitleEdit">
-                <el-input v-model="kritem.okrDetailObjectKr"></el-input>
+              <span v-if="showOKRInfoLabel">KR</span>
+              <el-form-item
+                style="display:inline-block"
+                v-if="canWrite && kritem.showTitleEdit"
+                :prop="'tableList.' + index + '.krList.' + krIndex + '.okrDetailObjectKr'"
+                :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+              >
+                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr"></el-input>
               </el-form-item>
               <span v-else>
                 <span>{{krIndex+1}}</span>
@@ -141,11 +151,13 @@
 </template>
 
 <script>
+import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 
 export default {
   name: 'okrCollapse',
+  mixins: [validateMixin],
   components: {
     elcollapse, elcollapseitem,
   },
@@ -222,7 +234,16 @@ export default {
     },
   },
   watch: {
-
+    tableList: {
+      handler(newVal) {
+        if (newVal) {
+          this.formData.tableList = this.tableList;
+          this.$forceUpdate();
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
 };
 </script>

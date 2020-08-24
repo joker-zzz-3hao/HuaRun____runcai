@@ -8,9 +8,9 @@
           <dd class="objectdd">
             <el-form-item
               :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
-              :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
+              :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
             >
-              <el-input v-model="oitem.okrDetailObjectKr"></el-input>
+              <el-input placeholder="请输入目标名称" v-model="oitem.okrDetailObjectKr"></el-input>
             </el-form-item>
             <el-form-item label="权重">
               <el-input-number
@@ -45,13 +45,13 @@
           </dd>
           <dd>
             <dl v-for="(kitem, kindex) in oitem.krList" :key="kindex">
-              <dt>关键结果</dt>
+              <dt>关键结果{{kindex+1}}</dt>
               <dd class="objectdd">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur', message: '请填写关键结果KR名称'}]"
+                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
                 >
-                  <el-input v-model="kitem.okrDetailObjectKr"></el-input>
+                  <el-input placeholder="请输入关键结果" v-model="kitem.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
@@ -123,6 +123,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 import CONST from '../const';
 
@@ -130,6 +131,7 @@ const TIME_INTERVAL = 60 * 1000;
 
 export default {
   name: 'orkForm',
+  mixins: [validateMixin],
   components: {
     'undertake-table': undertakeTable,
   },
@@ -355,7 +357,6 @@ export default {
       this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       this.innerDrawer = false;
     },
-    // 校验表单
     // 提交表单
     summit() {
       this.$refs.dataForm.validate((valid) => {

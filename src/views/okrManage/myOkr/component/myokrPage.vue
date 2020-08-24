@@ -29,11 +29,7 @@
           </li>
           <li>
             <span>OKR进度</span>
-            <el-progress
-              type="circle"
-              width="100"
-              :percentage="parseInt(item.okrMain.okrProgress, 10)"
-            ></el-progress>
+            <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
           </li>
         </ul>
         <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
@@ -197,6 +193,7 @@ export default {
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
+
       }).then((res) => {
         if (res.code == 200) {
           if (['6', '7', '8'].includes(this.searchForm.status)) {
