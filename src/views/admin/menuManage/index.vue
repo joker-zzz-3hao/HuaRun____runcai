@@ -9,6 +9,7 @@
           placeholder="请选择"
           @change="getMenuList"
           clearable
+          class="tl-select"
         >
           <el-option
             v-for="(item,index) in CONST.STATUS_LIST"

@@ -183,3 +183,8 @@
 .okr-cycle .tl-drawer .el-drawer__body {
   margin: 6px 0 0 0;
 }
+
+.menuTreeList {
+  height: 400px;
+  overflow: auto;
+}
