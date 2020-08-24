@@ -52,7 +52,14 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" min-width="180"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" min-width="180">
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.createTime"
+                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button
@@ -99,6 +106,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import global from '@/mixin/global';
 import addRole from './components/addRole';
 import putRole from './components/putRole';
 import Server from './server';
@@ -109,6 +117,7 @@ export default {
   created() {
     this.listRolePage();
   },
+  mixins: [global],
   methods: {
     listRolePage() {
       this.server.listRolePage({
@@ -134,11 +143,12 @@ export default {
       this.existPut = true;
     },
     handleDelete(roleId) {
-      this.$confirm('您是否确定需要移除该成员？', '移除成员确认')
-        .then(() => {
-          this.delRole(roleId);
-        })
-        .catch(() => {});
+      this.$xconfirm({
+        title: '您是否确定需要移除该成员？',
+        content: '',
+      }).then(() => {
+        this.delRole(roleId);
+      });
     },
     delRole(roleId) {
       this.server.delRole({ roleId }).then((res) => {

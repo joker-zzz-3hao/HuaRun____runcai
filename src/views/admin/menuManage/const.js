@@ -5,6 +5,10 @@ const STATUS = {
 
 const STATUS_LIST = [
   {
+    statusName: '全部',
+    statusCode: '',
+  },
+  {
     statusName: '开通',
     statusCode: 'Y',
   },

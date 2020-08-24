@@ -16,12 +16,7 @@
   >
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="角色名称">
-        <el-input
-          style="width:320px"
-          :value="decodeURI($route.query.name)"
-          disabled
-          placeholder="请输入角色名称"
-        ></el-input>
+        <span>{{decodeURI($route.query.name)}}</span>
       </el-form-item>
       <el-form-item label="选择成员" class="addMember">
         <div class="roulemember">

@@ -1,41 +1,41 @@
 <template>
   <div class="menuManagement">
-    <tl-crcloud-table :isPage="false">
-      <div slot="searchBar">
-        <el-form ref="ruleForm" :inline="true">
-          <el-form-item>
-            <el-select
-              v-model="status"
-              :popper-append-to-body="false"
-              placeholder="请选择"
-              @change="getMenuList()"
-              clearable
-            >
-              <el-option
-                v-for="(item,index) in CONST.STATUS_LIST"
-                :key="index"
-                :label="item.statusName"
-                :value="item.statusCode"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <div>
-            <el-form-item>
-              <el-input
-                maxlength="64"
-                @keyup.enter.native="getMenuList"
-                v-model="keyWord"
-                placeholder="输入菜单名称"
-              >
-                <i class="el-icon-search" slot="prefix" @click="getMenuList()"></i>
-              </el-input>
-            </el-form-item>
-          </div>
-        </el-form>
-        <div slot="actionBar">
-          <el-button type="primary" @click="menuAdd">添加菜单</el-button>
-        </div>
+    <div class="operating-area">
+      <div class="page-title">菜单管理</div>
+      <div class="operating-panel">
+        <el-select
+          v-model="status"
+          :popper-append-to-body="false"
+          placeholder="请选择"
+          @change="getMenuList"
+          clearable
+        >
+          <el-option
+            v-for="(item,index) in CONST.STATUS_LIST"
+            :key="index"
+            :label="item.statusName"
+            :value="item.statusCode"
+          ></el-option>
+        </el-select>
+        <el-input
+          maxlength="64"
+          @keyup.enter.native="getMenuList"
+          v-model="keyWord"
+          placeholder="输入菜单名称"
+          class="tl-input-search"
+        >
+          <i class="el-icon-search" slot="prefix" @click="getMenuList"></i>
+        </el-input>
+
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="menuAdd"
+          class="tl-btn amt-bg-slip"
+        >添加菜单</el-button>
       </div>
+    </div>
+    <tl-crcloud-table :isPage="false">
       <div slot="tableContainer">
         <el-table
           :data="tableData"
@@ -44,6 +44,12 @@
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         >
           <el-table-column prop="functionId" label="ID"></el-table-column>
+          <el-table-column prop="functionCode" label="菜单编码">
+            <template slot-scope="scope">
+              <span v-if="scope.row.functionCode">{{scope.row.functionCode}}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="functionName" label="菜单名称">
             <template slot-scope="scope">
               <span v-if="scope.row.functionName">{{scope.row.functionName}}</span>
@@ -75,13 +81,15 @@
                 :active-text="scope.row.status=='Y'?'启用':'禁用'"
                 active-value="Y"
                 inactive-value="N"
-                @change="statusList(scope.row)"
+                @change="addOrUpdate(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间">
             <template slot-scope="scope">
-              <span v-if="scope.row.createTime">{{scope.row.createTime}}</span>
+              <span
+                v-if="scope.row.createTime"
+              >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
               <span v-else>--</span>
             </template>
           </el-table-column>
@@ -118,6 +126,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import global from '@/mixin/global';
 import addMenu from './components/addMenu';
 import putMenu from './components/putMenu';
 import Server from './server';
@@ -131,6 +140,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-put-menu': putMenu,
   },
+  mixins: [global],
   data() {
     return {
       title: '',
@@ -198,9 +208,9 @@ export default {
       });
     },
     deleteList(id) {
-      this.$confirm('是否确认删除该数据，删除将无法恢复', '删除确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$xconfirm({
+        title: '您是否确定需要移除？',
+        content: '',
       }).then(() => {
         this.deleteById(id);
       });
