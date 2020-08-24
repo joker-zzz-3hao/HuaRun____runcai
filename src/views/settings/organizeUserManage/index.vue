@@ -171,24 +171,16 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <el-drawer
-      :modal="false"
-      :append-to-body="false"
-      :visible.sync="editDrawer"
+    <edit-user
+      ref="editUser"
+      :treeData="treeData"
       v-if="editDrawer"
-      title="编辑用户"
-      :before-close="closeUserDialog"
-    >
-      <edit-user
-        ref="createUser"
-        :treeData="treeData"
-        :server="server"
-        :userId="userId"
-        :tenantName="tenantName"
-        :globalOrgId="globalOrgId"
-        @closeUserDialog="closeUserDialog"
-      ></edit-user>
-    </el-drawer>
+      :server="server"
+      :userId="userId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      @closeUserDialog="closeUserDialog"
+    ></edit-user>
   </div>
 </template>
 
@@ -363,7 +355,9 @@ export default {
     createOrEditUser(user) {
       if (user.userId) {
         this.userId = user.userId;
-        this.editDrawer = true;
+        this.$nextTick(() => {
+          this.editDrawer = true;
+        });
       } else {
         this.showCreateUser = true;
         this.$nextTick(() => {
