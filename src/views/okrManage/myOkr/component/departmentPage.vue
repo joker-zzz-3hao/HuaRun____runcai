@@ -16,11 +16,7 @@
           </li>
           <li>
             <span>OKR进度</span>
-            <el-progress
-              type="circle"
-              width="100"
-              :percentage="parseInt(okrMain.okrProgress, 10) || 0"
-            ></el-progress>
+            <el-progress type="circle" :percentage="parseInt(okrMain.okrProgress, 10) || 0"></el-progress>
           </li>
         </ul>
       </div>
@@ -55,19 +51,24 @@
     <!-- 展示头像 -->
     <div>
       <!-- 基层员工视图 -->
-      <span>{{departmentName}}成员OKR</span>
-      <ul style="display:flex" v-if="memberList.length">
-        <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
-          <div class="user-name">{{cutName(item.userName)}}</div>
-        </li>
-      </ul>
+      <div v-if="memberList.length>0">
+        <span>{{departmentName}}成员OKR</span>
+        <ul style="display:flex">
+          <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
+            <div class="user-name">{{cutName(item.userName)}}</div>
+          </li>
+        </ul>
+      </div>
+
       <!-- 部门负责人视图 -->
-      <span>{{departmentName}}</span>
-      <ul style="display:flex" v-if="orgTable.length">
-        <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
-          <div class="user-name">{{cutName(item.orgName)}}</div>
-        </li>
-      </ul>
+      <div v-if="orgTable.length>0">
+        <span>{{departmentName}}</span>
+        <ul style="display:flex">
+          <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
+            <div class="user-name">{{cutName(item.orgName)}}</div>
+          </li>
+        </ul>
+      </div>
     </div>
     <el-drawer
       :wrapperClosable="false"

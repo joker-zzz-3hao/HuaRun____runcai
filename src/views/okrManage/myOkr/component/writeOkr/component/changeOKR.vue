@@ -191,38 +191,42 @@ export default {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 按周期查可关联承接的okr
     searchOkr() {
-      this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
-        if (res.code === 200) {
-          console.log('关联表', res.data);
-          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-            this.departokrList.push({
-              typeName: '目标O',
-              okrDetailObjectKr: item.o.okrDetailObjectKr,
-              okrDetailId: item.o.okrDetailId,
-              okrDetailVersion: item.o.okrDetailVersion,
-              checkFlag: false,
-            });
-            if (item.krList && item.krList.length > 0) {
-              item.krList.forEach((krItem, index) => {
-                this.departokrList.push({
-                  typeName: `KR${index}`,
-                  okrDetailObjectKr: krItem.okrDetailObjectKr,
-                  okrDetailId: krItem.okrDetailId,
-                  okrDetailVersion: krItem.okrDetailVersion,
-                  checkFlag: false,
-                });
+      if (this.periodId) {
+        this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
+          console.log('searchOkr', res);
+          if (res.code == 200) {
+            console.log('关联表', res.data);
+            this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+            res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+              this.departokrList.push({
+                typeName: '目标O',
+                okrDetailObjectKr: item.o.okrDetailObjectKr,
+                okrDetailId: item.o.okrDetailId,
+                okrDetailVersion: item.o.okrDetailVersion,
+                checkFlag: false,
               });
-            }
-          });
-          // 将可承接列表转换成字符串
-          this.departokrObject = JSON.stringify(this.departokrList);
-        }
-      });
+              if (item.krList && item.krList.length > 0) {
+                item.krList.forEach((krItem, index) => {
+                  this.departokrList.push({
+                    typeName: `KR${index}`,
+                    okrDetailObjectKr: krItem.okrDetailObjectKr,
+                    okrDetailId: krItem.okrDetailId,
+                    okrDetailVersion: krItem.okrDetailVersion,
+                    checkFlag: false,
+                  });
+                });
+              }
+            });
+            // 将可承接列表转换成字符串
+            this.departokrObject = JSON.stringify(this.departokrList);
+          }
+        });
+      }
     },
     // 查公司价值观
     getCultureList() {
       this.server.queryCultureList().then((res) => {
+        console.log('getCultureList', res);
         if (res.code == 200) {
           this.philosophyList = res.data;
           // 将价值观列表转换成字符串
