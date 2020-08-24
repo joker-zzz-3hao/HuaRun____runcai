@@ -550,6 +550,31 @@
   color: #666;
 }
 
+.tl-pagination .el-select--mini {
+  display: unset;
+}
+
+.tl-pagination .el-input__inner {
+  height: 34px;
+  line-height: unset;
+  border-color: #d8d8d8;
+  color: #666;
+  border-radius: 4px;
+}
+
+.tl-pagination .el-pagination__sizes .el-input .el-input__inner:hover,
+.tl-pagination .el-select .el-input.is-focus .el-input__inner {
+  color: #685df1;
+}
+
+.tl-pagination .el-pagination__sizes .el-input .el-input__inner:hover {
+  border-color: #685df1;
+}
+
+.tl-select-dropdown .el-select-dropdown__item.selected {
+  color: #685df1;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* 提示文案组件 */
 .text-tip,
