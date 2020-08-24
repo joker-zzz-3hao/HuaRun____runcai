@@ -335,6 +335,16 @@ export default {
       const addList = this.$refs.okrform.formData.okrInfoList;
       const okrInfoList = [];
       this.tableList.forEach((item, index) => {
+        let undertakeOkr = {};
+        if (item.undertakeOkrVo) {
+          undertakeOkr = item.undertakeOkrVo;
+        } else {
+          undertakeOkr = {
+            undertakeOkrId: item.okrParentId,
+            undertakeOkrContent: item.parentObjectKr,
+            undertakeOkrVersion: item.okrDetailParentVersion,
+          };
+        }
         okrInfoList.push({
           detailId: item.detailId,
           okrDetailId: item.okrDetailId,
@@ -342,11 +352,7 @@ export default {
           okrWeight: item.okrWeight,
           okrDetailProgress: item.okrDetailProgress,
           cultureId: item.cultureId,
-          undertakeOkr: {
-            undertakeOkrId: item.okrParentId || item.undertakeOkrVo.undertakeOkrDetailId,
-            undertakeOkrContent: item.undertakeOkrVo.undertakeOkrContent,
-            undertakeOkrVersion: item.okrDetailParentVersion || item.undertakeOkrVo.undertakeOkrVersion,
-          },
+          undertakeOkrDto: undertakeOkr,
           krList: [],
         });
         item.krList.forEach((kritem) => {
@@ -378,6 +384,7 @@ export default {
         okrMainId: this.okrMainId,
       };
       console.log('拼起来后', this.formData);
+      debugger;
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message('提交成功');

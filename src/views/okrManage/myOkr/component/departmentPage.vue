@@ -47,10 +47,10 @@
         </template>
         <template slot="body-bar" slot-scope="props">
           <el-button
-            v-if="props.kritem.continueCount>0"
-            @click="goUndertakeMaps(props.kritem.okrDetailId,props.kritem.okrDetailObjectKr)"
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon</el-button>
-          {{props.kritem.continueCount}}
+          {{props.okritem.continueCount}}
         </template>
       </tl-okr-table>
     </div>
