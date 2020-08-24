@@ -39,12 +39,18 @@
         :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
-          <!-- <el-button v-if="searchForm.status=='1'" @click.native.stop="openDialog(props.okritem)">详情</el-button> -->
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon</el-button>
           {{props.okritem.continueCount}}
+        </template>
+        <template slot="body-bar" slot-scope="props">
+          <el-button
+            v-if="props.kritem.continueCount>0"
+            @click="goUndertakeMaps(props.kritem.okrDetailId,props.kritem.okrDetailObjectKr)"
+          >承接地图icon</el-button>
+          {{props.kritem.continueCount}}
         </template>
       </tl-okr-table>
     </div>
@@ -142,9 +148,9 @@ export default {
         orgId: this.userInfo.orgId,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableList = res.data.okrDetails;
-          this.okrMain = res.data.okrMain;
-          this.okrId = res.data.okrMain && res.data.okrMain.okrId;
+          this.tableList = res.data.okrDetails || [];
+          this.okrMain = res.data.okrMain || {};
+          this.okrId = this.okrMain.okrId || '';
           this.memberList = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
         }

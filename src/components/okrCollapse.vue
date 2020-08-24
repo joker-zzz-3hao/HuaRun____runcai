@@ -74,8 +74,8 @@
               <li v-else-if="showParentOkr">
                 <a @click="goUndertake(index,'new')">
                   <span
-                    v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrObjectKr) || item.cultureName"
-                  >{{item.undertakeOkrVo.undertakeOkrObjectKr}}{{item.cultureName}}</span>
+                    v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                  >{{item.undertakeOkrVo.undertakeOkrContent}}{{item.cultureName}}</span>
                   <span v-else>+关联</span>
                 </a>
               </li>

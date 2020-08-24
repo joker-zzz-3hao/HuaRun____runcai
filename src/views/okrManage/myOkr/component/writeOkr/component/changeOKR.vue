@@ -290,13 +290,19 @@ export default {
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
+      this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
       // 承接项id、版本、名称
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
-      console.log('关联', this.tableList[this.selectIndex]);
+
+      // TODO:价值观的id
+      this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
+      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
+      console.log('关联', this.selectDepartRow);
       this.innerDrawer = false;
+      this.$refs.okrCollapse.updateokrCollapse();
     },
     // 增加kr
     addkr(okritem) {
@@ -335,7 +341,12 @@ export default {
           okrDetailObjectKr: item.okrDetailObjectKr,
           okrWeight: item.okrWeight,
           okrDetailProgress: item.okrDetailProgress,
-          undertakeOkr: { undertakeOkrId: item.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: item.okrDetailParentVersion },
+          cultureId: item.cultureId,
+          undertakeOkr: {
+            undertakeOkrId: item.okrParentId || item.undertakeOkrVo.undertakeOkrDetailId,
+            undertakeOkrContent: item.undertakeOkrVo.undertakeOkrContent,
+            undertakeOkrVersion: item.okrDetailParentVersion || item.undertakeOkrVo.undertakeOkrVersion,
+          },
           krList: [],
         });
         item.krList.forEach((kritem) => {
@@ -345,7 +356,11 @@ export default {
             okrWeight: kritem.okrWeight,
             okrDetailProgress: kritem.okrDetailProgress,
             okrDetailConfidence: kritem.okrDetailConfidence,
-            undertakeOkr: { undertakeOkrId: kritem.okrParentId || '', undertakeOkrContent: '', undertakeOkrVersion: kritem.okrDetailParentVersion },
+            // undertakeOkr: {
+            //   undertakeOkrId: kritem.okrParentId || '',
+            //   undertakeOkrContent: '',
+            //   undertakeOkrVersion: kritem.okrDetailParentVersion,
+            // },
           });
         });
         if (item.newkrList && item.newkrList.length > 0) {
