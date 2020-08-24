@@ -50,21 +50,6 @@ export default [
       },
       {
         // OKR管理
-        // 写OKR
-        path: '/writeOkr',
-        name: 'writeOkr',
-        meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
-          parentRoute: 'myOkr',
-          belongsTo: 'myOkr',
-          title: 'writeOkr',
-          power: '',
-        },
-        component: () => import('@/views/okrManage/writeOkr/index'),
-      },
-      {
-        // OKR管理
         // 我关注的OKR
         path: '/concernedOkr',
         name: 'concernedOkr',
