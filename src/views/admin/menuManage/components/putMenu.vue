@@ -21,8 +21,8 @@
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
-        <span v-if="menuName">{{menuName}}</span>
-        <span v-if="!menuName">主目录</span>
+        <em v-if="menuName">{{menuName}}</em>
+        <em v-if="!menuName">主目录</em>
       </el-form-item>
       <el-form-item label="菜单类型" prop="functionType">
         <el-radio-group v-model="form.functionType">
@@ -48,7 +48,9 @@
       <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
       </el-form-item>
-
+      <el-form-item label="类标识" v-if="form.functionType=='MENU'" prop="classTag">
+        <el-input style="width:320px" v-model="form.classTag" placeholder="请输入类标识"></el-input>
+      </el-form-item>
       <el-form-item
         label="权限标识"
         v-if="form.functionType=='BTN'||form.functionType=='MENU'"
@@ -59,20 +61,10 @@
       <el-form-item label="事件名" v-if="form.functionType !=='BTN'" prop="functionEvent">
         <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
       </el-form-item>
-      <!-- <el-form-item
-        label="菜单状态"
-        v-if="form.functionType=='MENU'||form.functionType=='PAGE'"
-        prop="status"
-      >
-        <el-radio-group v-model="form.status">
-          <el-radio label="O">正常</el-radio>
-          <el-radio label="S">停用</el-radio>
-        </el-radio-group>
-      </el-form-item>-->
     </el-form>
     <div>
-      <el-button type="primary" @click="validateForm()">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="validateForm">确定</el-button>
+      <el-button @click="close">取 消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -122,6 +114,7 @@ export default {
           //   trigger: 'blur',
           // },
         ],
+        classTag: [{ required: true, message: '请输入类标识', trigger: 'blur' }],
         functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' },
           {
             pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
@@ -152,9 +145,8 @@ export default {
 
   mounted() {
     this.dialogTableVisible = true;
-    if (this.menuData) {
-      this.form = this.menuData;
-    }
+    console.log(this.menuData);
+    this.form = this.menuData;
   },
   methods: {
     submitForm() {

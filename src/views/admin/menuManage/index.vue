@@ -44,6 +44,12 @@
             :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
           >
             <el-table-column prop="functionId" label="ID"></el-table-column>
+            <el-table-column prop="classTag" label="类标识">
+              <template slot-scope="scope">
+                <span v-if="scope.row.classTag">{{scope.row.classTag}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="functionName" label="菜单名称">
               <template slot-scope="scope">
                 <span v-if="scope.row.functionName">{{scope.row.functionName}}</span>
@@ -81,7 +87,9 @@
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间">
               <template slot-scope="scope">
-                <span v-if="scope.row.createTime">{{scope.row.createTime}}</span>
+                <span
+                  v-if="scope.row.createTime"
+                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
