@@ -53,6 +53,7 @@
     <el-drawer
       :modal="false"
       :append-to-body="false"
+      :wrapperClosable="false"
       :visible.sync="showEditDicDialog"
       v-if="showEditDicDialog"
       title="编辑字典"

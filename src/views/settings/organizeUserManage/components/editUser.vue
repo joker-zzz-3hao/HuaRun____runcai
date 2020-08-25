@@ -9,6 +9,7 @@
     <el-drawer
       :modal="false"
       :append-to-body="false"
+      :wrapperClosable="false"
       title="编辑用户"
       :before-close="closeDrawer"
       :visible.sync="drawerVisible"

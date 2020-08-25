@@ -135,6 +135,7 @@
     <el-drawer
       :modal="false"
       :append-to-body="false"
+      :wrapperClosable="false"
       :visible.sync="editDrawer"
       v-if="editDrawer"
       title="编辑用户"
