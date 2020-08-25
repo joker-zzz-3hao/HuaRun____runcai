@@ -11,12 +11,7 @@
   >
     <el-form ref="form" :model="form" label-width="80px" class="tl-form">
       <el-form-item label="角色名称">
-        <el-input
-          :value="decodeURI($route.query.name)"
-          disabled
-          placeholder="请输入角色名称"
-          class="tl-input"
-        ></el-input>
+        <span>{{decodeURI($route.query.name)}}</span>
       </el-form-item>
       <el-form-item label="选择成员" class="tl-label-self">
         <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>

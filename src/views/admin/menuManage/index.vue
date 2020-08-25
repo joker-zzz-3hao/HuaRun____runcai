@@ -119,6 +119,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import global from '@/mixin/global';
 import addMenu from './components/addMenu';
 import putMenu from './components/putMenu';
 import Server from './server';
@@ -132,6 +133,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-put-menu': putMenu,
   },
+  mixins: [global],
   data() {
     return {
       title: '',
@@ -199,9 +201,9 @@ export default {
       });
     },
     deleteList(id) {
-      this.$confirm('是否确认删除该数据，删除将无法恢复', '删除确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$xconfirm({
+        title: '您是否确定需要移除？',
+        content: '',
       }).then(() => {
         this.deleteById(id);
       });

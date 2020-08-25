@@ -14,7 +14,7 @@
       <div class="selected-target">ghjfghjfg</div>
       <!-- <div class="roulewidth">
         <div class="selectTitle">
-          <div @click="clearUser">返回></div>
+          <div @click="clearUser">组织架构></div>
           <div v-for="(item,index) in selectList" :key="index" @click="getqueryOrgAndUser(item)">
             {{item.name}}
             >
@@ -34,7 +34,7 @@
       <div class="roulewidth roulemodel">
         <div class="rouleselect">
           <span>已选{{roulelist.length}}人</span>
-          <span @click="roulelistNum()">清空</span>
+          <span @click="clearMember">清空</span>
         </div>
         <div class="roulelist">
           <ul>
@@ -89,6 +89,12 @@ export default {
         }
       });
     },
+    clearMember() {
+      this.roulelist = [];
+      this.$set(this, 'value', []);
+      this.member = this.roulelist;
+      this.$emit('getMember', this.member);
+    },
     checkMember(node, data) {
       console.log(data);
       if (node) {
@@ -100,7 +106,7 @@ export default {
         });
       } else {
         this.roulelist.forEach((item, index) => {
-          if (item.id == data.id) {
+          if (item.userId == data.id) {
             this.roulelist.splice(index, 1);
           }
         });

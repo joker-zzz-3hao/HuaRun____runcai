@@ -39,7 +39,12 @@
                 :props="{ multiple: true,value:'functionId',children:'children',label:'functionName' }"
                 node-key="id"
               ></el-cascader-panel>
+              <div>
+                <el-button type="text" @click="saveTree">确认</el-button>
+                <el-button type="text" @click="clearNodeAll">清空</el-button>
+              </div>
             </div>
+
             <div slot="reference">
               <i class="el-icon-circle-plus-outline"></i>
             </div>
@@ -90,6 +95,7 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
+      selectList: [],
       rules: {
         roleCode: [
           { required: true, message: '请输入角色编号', trigger: 'blur' },
@@ -116,6 +122,27 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    saveTree() {
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+      this.selectList = this.list;
+    },
+    clearNodeAll() {
+      this.$refs.treeMenu.clearCheckedNodes();
+      this.menuTreeList = [];
+      this.selectList = [];
+    },
     clearNode(node) {
       const deleteArr = this.selectArr;
       deleteArr.forEach((item, index) => {
@@ -169,7 +196,6 @@ export default {
         arr = arr.concat(item);
       });
       this.list = Array.from(new Set(arr));
-      this.getCheckName();
     },
     getqueryMenu() {
       this.server.listTenantFuncation()
@@ -189,7 +215,7 @@ export default {
     },
     addRole() {
       const { form } = this;
-      this.form.functionList = this.list.map((item) => ({ functionId: item }));
+      this.form.functionList = this.selectList.map((item) => ({ functionId: item }));
       form.roleType = 'CREATION';
       this.server.addRole(form).then((res) => {
         if (res.code == 200) {
