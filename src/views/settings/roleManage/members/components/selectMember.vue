@@ -10,8 +10,21 @@
       <i class="el-icon-search" slot="prefix"></i>
     </el-input>
     <div class="tl-transfer-select">
-      <div class="select-target">sdfsfd</div>
-      <div class="selected-target">ghjfghjfg</div>
+      <div class="select-target">
+        <div class="transfer-head">
+          <div class="crumbs">
+            <em>润联科技</em>
+            <em>华润云</em>
+            <em>云门户</em>
+          </div>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <div class="selected-target">
+        <div class="transfer-head"></div>
+      </div>
       <!-- <div class="roulewidth">
         <div class="selectTitle">
           <div @click="clearUser">组织架构></div>
@@ -23,24 +36,24 @@
         <div>
           <ul>
             <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
-              <span v-if="item.type=='USER'">
+              <em v-if="item.type=='USER'">
                 <el-checkbox @change="checkMember($event,item)" v-model="value[index]">{{item.name}}</el-checkbox>
-              </span>
-              <span v-else>{{item.name}}</span>
+              </em>
+              <em v-else>{{item.name}}</em>
             </li>
           </ul>
         </div>
       </div>
       <div class="roulewidth roulemodel">
         <div class="rouleselect">
-          <span>已选{{roulelist.length}}人</span>
-          <span @click="clearMember">清空</span>
+          <em>已选{{roulelist.length}}人</em>
+          <em @click="clearMember">清空</em>
         </div>
         <div class="roulelist">
           <ul>
             <li v-for="(item,index) in roulelist" :key="index">
               <img src alt class="rouleimg" />
-              <span>{{item.userName}}</span>
+              <em>{{item.userName}}</em>
             </li>
           </ul>
         </div>
@@ -91,7 +104,7 @@ export default {
     },
     clearMember() {
       this.roulelist = [];
-      this.$set(this, 'value', []);
+      this.value = this.value.map(() => false);
       this.member = this.roulelist;
       this.$emit('getMember', this.member);
     },
