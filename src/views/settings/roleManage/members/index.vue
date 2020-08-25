@@ -55,6 +55,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import global from '@/mixin/global';
 import addMember from './components/addMember';
 import Server from './server';
 
@@ -63,6 +64,7 @@ export default {
   created() {
     this.listRoleUser();
   },
+  mixin: [global],
   methods: {
     showAddRoule() {
       this.title = '新增角色';
@@ -73,14 +75,18 @@ export default {
       this.exist = true;
     },
     handleDelete() {
-      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+      if (this.listUserRole.length == 0) {
+        this.$message.error('请勾选删除项');
+        return false;
+      }
+      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
         .then(() => {
           this.delUserRole(this.listUserRole);
         })
         .catch(() => {});
     },
     handleDeleteOne(id) {
-      this.$confirm('该数据删除将无法恢复，确认要删除吗？', '删除确认')
+      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
         .then(() => {
           this.delUserRole([{ id }]);
         })
