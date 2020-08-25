@@ -3,7 +3,7 @@
     <!-- okr -->
     <el-table :data="departokrList">
       <el-table-column width="150" prop="typeName"></el-table-column>
-      <el-table-column width="150" prop="okrDetailVersion">
+      <el-table-column v-if="!showPhil" width="150" prop="okrDetailVersion">
         <template slot-scope="scope">
           <div v-if="scope.row.currentOption">「历史版本{{scope.row.okrDetailVersion}}」</div>
           <div v-else>「最新版本」</div>

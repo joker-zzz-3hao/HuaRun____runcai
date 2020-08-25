@@ -1,22 +1,39 @@
 <template>
   <div class="home">
-    <!-- 写okr选择时间和okr类型 -->
+    <!-- 创建OKR -->
     <div v-if="canWrite">
-      <department
-        :data="cycleData"
-        type="cycleListSelect"
-        @handleData="handleCycleData"
-        :defaultProps="cycleDefaultProps"
-        :defaultData="searchForm.periodId"
-      ></department>
-      <el-select v-model="searchForm.okrType" placeholder="请选择类型" :popper-append-to-body="false">
-        <el-option
-          v-for="(item, index) in CONST.OKR_TYPE_LIST"
-          :key="item.id+index"
-          :label="item.name"
-          :value="item.id"
-        ></el-option>
-      </el-select>
+      <dl style="display:flex">
+        <dd>
+          <span>目标周期</span>
+          <department
+            :data="cycleData"
+            type="cycleListSelect"
+            @handleData="handleCycleData"
+            :defaultProps="cycleDefaultProps"
+            :defaultData="searchForm.periodId"
+          ></department>
+        </dd>
+        <dd>
+          <span>OKR类型</span>
+          <el-select
+            v-model="searchForm.okrType"
+            placeholder="请选择类型"
+            :popper-append-to-body="false"
+          >
+            <el-option
+              v-for="(item, index) in CONST.OKR_TYPE_LIST"
+              :key="item.id+index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </dd>
+        <dd class="user-info">
+          <span>负责人</span>
+          <div class="user-name">{{cutName(userName)}}</div>
+          <span>{{userName}}</span>
+        </dd>
+      </dl>
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
     <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr>
@@ -45,6 +62,10 @@ export default {
       default() {
         return {};
       },
+    },
+    userName: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -133,6 +154,10 @@ export default {
       // this.okrCycle = data;
       this.searchForm.okrCycle = data;
       // this.getmaps();
+    },
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
     },
   },
   watch: {

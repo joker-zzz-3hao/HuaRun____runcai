@@ -43,6 +43,9 @@
               </a>
             </el-form-item>
           </dd>
+          <dd class="objectdd">
+            <el-button @click="deleteobject(index)">-（删O）</el-button>
+          </dd>
           <dd>
             <dl v-for="(kitem, kindex) in oitem.krList" :key="kindex">
               <dt>关键结果{{kindex+1}}</dt>
@@ -86,7 +89,7 @@
                         :key="citem.value"
                         :label="citem.value"
                       >
-                        <tl-riskStatus :status="citem.value"></tl-riskStatus>
+                        <tl-riskStatus :status="toString(citem.value)"></tl-riskStatus>
                         {{citem.label}}
                       </el-radio-button>
                     </el-radio-group>
@@ -96,20 +99,17 @@
                     >{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence||'1']}}</el-button>
                   </el-popover>
                 </el-form-item>
-                <el-button @click="deletekr(index,kindex)">删kr</el-button>
+                <el-button @click="deletekr(index,kindex)">-（删kr）</el-button>
               </dd>
             </dl>
           </dd>
           <dd class="objectdd">
-            <el-button @click="addkr(index)">加kr</el-button>
-          </dd>
-          <dd class="objectdd">
-            <el-button @click="deleteobject(index)">删O</el-button>
+            <el-button @click="addkr(index)">+（加kr）</el-button>
           </dd>
         </dl>
       </el-form>
-      <el-button @click="addobject()">加一个O</el-button>
-      <el-button v-if="isnew" @click="summit()">提交</el-button>
+      <el-button @click="addobject()">+添加目标</el-button>
+      <el-button v-if="isnew" @click="summit()">创建目标</el-button>
       <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
     </div>
@@ -134,7 +134,7 @@ import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 import CONST from '../const';
 
-const TIME_INTERVAL = 60 * 1000;
+const TIME_INTERVAL = 5 * 1000;
 
 export default {
   name: 'orkForm',
@@ -204,6 +204,8 @@ export default {
     if (this.searchForm.okrStatus == '6' || this.searchForm.okrStatus == '8') {
       this.getOkrDraftById();
     }
+    // TODO:自动保存
+    // this.autosave();
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer']),
@@ -394,6 +396,7 @@ export default {
           this.formData.okrDraftId = this.searchForm.draftId;
           console.log('提交结果', this.formData);
           this.server.addokr(this.formData).then((res) => {
+            console.log(res);
             if (res.code == 200) {
               this.$message('提交成功~');
               this.$refs.dataForm.resetFields();
@@ -401,6 +404,9 @@ export default {
               this.setMyokrDrawer(false);
               // this.$emit('handleClose');
               // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
+            } else {
+              console.log('重复提交');
+              this.$message(res.msg);
             }
           });
         }
@@ -408,22 +414,24 @@ export default {
     },
     // 保存草稿
     saveDraft() {
-      this.formData.okrInfoList.forEach((oitem) => {
-        delete oitem.departokrList;
-        delete oitem.philosophyList;
-      });
-      this.formData.okrBelongType = this.searchForm.okrType;
-      this.formData.periodId = this.searchForm.okrCycle.periodId;
-      this.formData.okrDraftId = this.searchForm.draftId;
-      this.server.saveOkrDraft(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message('提交成功~');
-          this.$refs.dataForm.resetFields();
-          // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
-          this.setCreateokrDrawer(false);
-          this.setMyokrDrawer(false);
-        }
-      });
+      if (this.formData.okrInfoList.length > 0) {
+        this.formData.okrInfoList.forEach((oitem) => {
+          delete oitem.departokrList;
+          delete oitem.philosophyList;
+        });
+        this.formData.okrBelongType = this.searchForm.okrType;
+        this.formData.periodId = this.searchForm.okrCycle.periodId;
+        this.formData.okrDraftId = this.searchForm.draftId;
+        this.server.saveOkrDraft(this.formData).then((res) => {
+          if (res.code == 200) {
+            this.$message('提交成功~');
+            this.$refs.dataForm.resetFields();
+            // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
+            this.setCreateokrDrawer(false);
+            this.setMyokrDrawer(false);
+          }
+        });
+      }
     },
     deleteDraft() {
       this.$xconfirm({
