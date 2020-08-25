@@ -49,7 +49,7 @@
         @handleTree="handleTree"
       >
         <div slot="treecard" slot-scope="props">
-          <tl-card :node="props.node"></tl-card>
+          <card :node="props.node"></card>
         </div>
       </tl-svgtree>
     </div>
@@ -70,7 +70,7 @@ export default {
   name: 'undertakeMaps',
   components: {
     'tl-svgtree': svgtree,
-    'tl-card': card,
+    card,
     'tl-department': department,
   },
   data() {
