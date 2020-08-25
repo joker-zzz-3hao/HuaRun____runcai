@@ -57,6 +57,10 @@
                   :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
                   node-key="value"
                 ></el-cascader-panel>
+                <div>
+                  <el-button type="text" @click="saveTree">确认</el-button>
+                  <el-button type="text" @click="clearNodeAll">清空</el-button>
+                </div>
                 <div slot="reference">
                   <i class="el-icon-circle-plus-outline"></i>
                 </div>
@@ -99,6 +103,7 @@ export default {
       menuTreeList: [],
       server,
       showMenu: false,
+      selectList: [],
       form: {
         tenantName: '',
         applyUser: '',
@@ -154,6 +159,27 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    saveTree() {
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+      this.selectList = this.list;
+    },
+    clearNodeAll() {
+      this.$refs.treeMenu.clearCheckedNodes();
+      this.menuTreeList = [];
+      this.selectList = [];
+    },
     clearNode(node) {
       const deleteArr = this.selectArr;
       deleteArr.forEach((item, index) => {
@@ -211,23 +237,10 @@ export default {
         arr = arr.concat(item);
       });
       this.list = Array.from(new Set(arr));
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
     },
     // 提交创建数据
     creatForm() {
-      this.form.menuTree = this.list.map((item) => ({ functionId: item }));
+      this.form.menuTree = this.selectList.map((item) => ({ functionId: item }));
       this.server.insertTenant({
         tenantName: this.form.tenantName,
         tenantId: this.form.tenantId,

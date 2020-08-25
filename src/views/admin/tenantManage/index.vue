@@ -26,7 +26,6 @@
     </div>
     <div class="cont-area">
       <tl-crcloud-table
-        layout="total,  prev, pager,next, sizes"
         :total="totalpage"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
@@ -49,7 +48,14 @@
                 ></el-switch>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间">
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.createTime"
+                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="130">
               <template slot-scope="scope">
                 <el-button @click="putTenant(scope.row.tenantId)" type="text" size="small">编辑</el-button>
@@ -88,6 +94,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import global from '@/mixin/global';
 import createTenant from './components/createTenant';
 import putTenant from './components/putTenant';
 import Server from './server';
@@ -106,6 +113,7 @@ export default {
   created() {
     this.getTenantList();
   },
+  mixins: [global],
   methods: {
     updateStatus(row) {
       this.server.updateTenantStatus({
@@ -152,13 +160,12 @@ export default {
       this.existDetail = true;
     },
     handleChange(row) {
-      this.$confirm('是否修改状态？', '确认修改')
-        .then(() => {
-          this.updateStatus(row);
-        })
-        .catch(() => {
-          this.getTenantList();
-        });
+      this.$xconfirm({
+        title: '是否修改状态？',
+        content: '',
+      }).then(() => {
+        this.updateStatus(row);
+      });
     },
   },
   data() {
