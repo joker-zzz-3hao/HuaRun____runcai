@@ -1,25 +1,25 @@
 <template>
   <div class="home">
     <div style="margin-left:20px;" v-if="!showOne">
-      <department
+      <tl-department
         :data="cycleData"
         type="cycleListSelect"
         @handleData="handleCycleData"
         :defaultProps="cycleDefaultProps"
-      ></department>
+      ></tl-department>
     </div>
     <div style="margin-left:20px;" v-if="!showOne">
-      <department
+      <tl-department
         type="department"
         :data="departmentData"
         :initDepartment="initDepartment"
         @handleData="handleData"
         :defaultProps="departmentDefaultProps"
-      ></department>
+      ></tl-department>
     </div>
     <!-- 要展示多个 -->
-    <div v-if="showOne">
-      <vue-svg-tree
+    <div v-if="showOne && svgList.length>0">
+      <tl-svgtree
         :treeData="svgList"
         svgId="svg"
         ref="svgTree"
@@ -32,10 +32,10 @@
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>
         </div>
-      </vue-svg-tree>
+      </tl-svgtree>
     </div>
-    <div v-else>
-      <vue-svg-tree
+    <div v-else-if="svgList.length>0">
+      <tl-svgtree
         v-for="(item,index) in svgList"
         :key="index"
         :treeData="item"
@@ -51,7 +51,7 @@
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>
         </div>
-      </vue-svg-tree>
+      </tl-svgtree>
     </div>
   </div>
 </template>
@@ -69,9 +69,9 @@ const server = new Server();
 export default {
   name: 'undertakeMaps',
   components: {
-    'vue-svg-tree': svgtree,
+    'tl-svgtree': svgtree,
     card,
-    department,
+    'tl-department': department,
   },
   data() {
     return {
@@ -112,6 +112,7 @@ export default {
         id: 'orgId',
       },
       svgList: [],
+      allTree: [],
       showOne: false, // 是否只展示一棵树
       orgId: '',
     };
@@ -187,7 +188,9 @@ export default {
                   this.svgList = this.svgList.concat(item.krContinueList);
                 }
               });
-              console.log('承接树', this.svgList);
+              this.svgList.forEach((item) => {
+                delete item.krContinueList;
+              });
             } else {
               let index = 0;
               allTreeData.forEach((item) => {
@@ -196,6 +199,7 @@ export default {
                 this.svgList[index].push(item);
                 if (item.krContinueList && item.krContinueList.length > 0) {
                   this.svgList[index] = this.svgList[index].concat(item.krContinueList);
+                  delete item.krContinueList;
                 }
                 index += 1;
                 if (item.krList && item.krList.length > 0) {
@@ -203,13 +207,14 @@ export default {
                     kritem.okrParentId = null;
                     this.svgList[index] = [];
                     this.svgList[index].push(kritem);
-                    index += 1;
                     if (kritem.krContinueList && kritem.krContinueList.length > 0) {
                       this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
+                      delete kritem.krContinueList;
                     }
+                    index += 1;
                   });
+                  delete item.krList;
                 }
-                console.log('承接树', this.svgList);
               });
               // 默认收起其他
               this.$nextTick(() => {
@@ -224,7 +229,6 @@ export default {
     },
     handleCycleData(data) {
       this.searchForm.periodId = data.periodId;
-      console.log(this.searchForm.periodId);
       this.getmaps();
     },
     handleData(data) {

@@ -65,7 +65,6 @@
           label="所在部门"
           prop="orgIdList"
           :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-          v-if="formData.orgIdList.length > 0"
         >
           <el-cascader
             v-model="formData.orgIdList"

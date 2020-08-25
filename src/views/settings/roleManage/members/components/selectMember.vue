@@ -1,20 +1,18 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-05 10:45:05
- * @Description: file content
--->
 <template>
-  <div class="issue-message">
+  <div class="tl-item-cont">
     <el-input
       placeholder="输入用户名称/LDAP账号"
       minlength="64"
       @keyup.native="fuzzyQueryUser()"
       v-model="keyWord"
+      class="tl-input-search"
     >
       <i class="el-icon-search" slot="prefix"></i>
     </el-input>
-    <div class="rouleflex">
-      <div class="roulewidth">
+    <div class="tl-transfer-select">
+      <div class="select-target">sdfsfd</div>
+      <div class="selected-target">ghjfghjfg</div>
+      <!-- <div class="roulewidth">
         <div class="selectTitle">
           <div @click="clearUser">组织架构></div>
           <div v-for="(item,index) in selectList" :key="index" @click="getqueryOrgAndUser(item)">
@@ -46,7 +44,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -143,60 +141,5 @@ export default {
     },
 
   },
-
 };
 </script>
-<style  scoped>
-.rouleflex {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-.roulewidth {
-  width: 50%;
-}
-.rouleselect {
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.rouleselect span:nth-child(2) {
-  cursor: pointer;
-}
-
-.roulemodel {
-  padding: 0 25px;
-  background: #fff;
-}
-
-.roulelist ul li {
-  height: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.rouleimg {
-  background-color: aquamarine;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 20px;
-}
-
-.issue-message {
-  height: 300px;
-  overflow-y: scroll;
-}
-.selectTitle {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-</style>
