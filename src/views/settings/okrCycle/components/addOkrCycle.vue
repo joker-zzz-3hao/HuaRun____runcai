@@ -28,6 +28,7 @@
       <el-form-item label="起草开始时间">
         <el-date-picker
           type="date"
+          v-model="form.draftingStartTime"
           placeholder="请设置起草开始时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -36,6 +37,7 @@
       <el-form-item label="审批结束时间">
         <el-date-picker
           type="date"
+          v-model="form.approvalEndTime"
           placeholder="请设置审批结束时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -56,6 +58,7 @@
       <el-form-item label="自评举证时间">
         <el-date-picker
           type="date"
+          v-model="form.selfAssessReminderTime"
           placeholder="请设置自评举证时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -108,6 +111,15 @@ export default {
         dateTime: [
           { required: true, message: '请设置日期', trigger: 'change' },
         ],
+        draftingStartTime: [
+          { required: true, message: '请设置起草开始时间', trigger: 'change' },
+        ],
+        approvalEndTime: [
+          { required: true, message: '请设置结束时间', trigger: 'change' },
+        ],
+        selfAssessReminderTime: [
+          { required: true, message: '请设置自评举证时间', trigger: 'change' },
+        ],
         checkStatus: [
           { required: true, message: '设置为默认周期', trigger: 'change' },
         ],
@@ -122,6 +134,9 @@ export default {
         checkStatus: '',
         periodType: '',
         periodDesc: '',
+        draftingStartTime: '',
+        approvalEndTime: '',
+        selfAssessReminderTime: '',
       },
       server,
       dialogTableVisible: false,

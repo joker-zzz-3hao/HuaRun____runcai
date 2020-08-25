@@ -2,6 +2,7 @@
   <div class="okr-permissions">
     <div class="operating-area">
       <div class="page-title">设置OKR</div>
+      <div class="operating-panel"></div>
     </div>
     <div class="cont-area">
       <div class="cont-panel">
@@ -15,10 +16,6 @@
             <span>是否可编辑</span>
           </dt>
           <dt v-if="item.configTypeDetail=='O-3'">
-            <em>OKR</em>
-            <span>设置（OKR 的查看权限）</span>
-          </dt>
-          <dt v-if="item.configTypeDetail=='O-1'">
             <em>OKR</em>
             <span>是否开启OKR审核</span>
           </dt>

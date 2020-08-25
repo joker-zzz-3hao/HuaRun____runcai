@@ -6,6 +6,11 @@ const OKR_TYPE_LIST = [{
 {
   name: '公司', id: 3,
 }];
+const OKR_TYPE_MAP = {
+  1: '部门',
+  2: '个人',
+  3: '公司',
+};
 const CONFIDENCE = [{
   label: '无风险', value: '1',
 }, {
@@ -22,4 +27,5 @@ export default {
   OKR_TYPE_LIST,
   CONFIDENCE,
   CONFIDENCE_MAP,
+  OKR_TYPE_MAP,
 };
