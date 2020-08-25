@@ -1,8 +1,3 @@
-<!--
- * @Author: 许志鹏
- * @Date: 2020-08-04 18:02:57
- * @Description: file content
--->
 <template>
   <el-dialog
     @click.native="closeshowMember"
@@ -12,26 +7,24 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
+    class="tl-dialog"
   >
-    <el-form ref="form" :model="form" label-width="80px">
+    <el-form ref="form" :model="form" label-width="80px" class="tl-form">
       <el-form-item label="角色名称">
         <el-input
-          style="width:320px"
           :value="decodeURI($route.query.name)"
           disabled
           placeholder="请输入角色名称"
+          class="tl-input"
         ></el-input>
       </el-form-item>
-      <el-form-item label="选择成员" class="addMember">
-        <div class="roulemember">
-          <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
-        </div>
+      <el-form-item label="选择成员" class="tl-label-self">
+        <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -102,11 +95,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.addMember {
-  position: relative;
-}
-.roulemember {
-  width: 100%;
-}
-</style>
