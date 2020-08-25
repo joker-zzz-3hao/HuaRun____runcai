@@ -56,7 +56,7 @@
       >
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
       </el-form-item>
-      <el-form-item label="事件名" v-if="form.functionType !=='BTN'" prop="functionEvent">
+      <el-form-item label="事件名" v-if="form.functionType !=='BTN'">
         <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
       </el-form-item>
       <el-form-item
