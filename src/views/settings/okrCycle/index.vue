@@ -28,27 +28,42 @@
             </el-table-column>
             <el-table-column prop="startTime" label="开始时间" min-width="120">
               <template slot-scope="scope">
-                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
+                <em
+                  v-if="scope.row.startTime"
+                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
+                <em v-else>--</em>
               </template>
             </el-table-column>
             <el-table-column prop="endTime" label="结束时间" min-width="120">
               <template slot-scope="scope">
-                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em
+                  v-if="scope.row.endTime"
+                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="endTime" label="起草开始时间" min-width="120">
+            <el-table-column prop="draftingStartTime" label="起草开始时间" min-width="120">
               <template slot-scope="scope">
-                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em
+                  v-if="scope.row.draftingStartTime"
+                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.draftingStartTime))}}</em>
+                <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="endTime" label="审批结束时间" min-width="120">
+            <el-table-column prop="approvalEndTime" label="审批结束时间" min-width="120">
               <template slot-scope="scope">
-                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em
+                  v-if="scope.row.approvalEndTime"
+                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.approvalEndTime))}}</em>
+                <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="endTime" label="自评举证时间" min-width="120">
+            <el-table-column prop="selfAssessReminderTime" label="自评举证时间" min-width="120">
               <template slot-scope="scope">
-                <em>{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em
+                  v-if="scope.row.selfAssessReminderTime"
+                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.selfAssessReminderTime))}}</em>
+                <em v-else>--</em>
               </template>
             </el-table-column>
             <el-table-column prop="checkStatus" label="状态" min-width="120">
@@ -90,6 +105,7 @@
 
 <script>
 import global from '@/mixin/global';
+import crcloudTable from '@/components/crcloudTable';
 import addOkrCycle from './components/addOkrCycle';
 import putOkrCycle from './components/putOkrCycle';
 import Server from './server';
@@ -100,6 +116,7 @@ export default {
   components: {
     'tl-add-okr-cycle': addOkrCycle,
     'tl-put-okr-cycle': putOkrCycle,
+    'tl-crcloud-table': crcloudTable,
   },
   mixins: [global],
   data() {
@@ -110,6 +127,10 @@ export default {
       existPut: false,
       title: '',
       updateData: '',
+      pageSize: 10,
+      currentPage: 1,
+      pageSizes: 1,
+      totalpage: 0,
     };
   },
   created() {
@@ -130,7 +151,10 @@ export default {
       });
     },
     getTableList() {
-      this.server.okrQuery().then((res) => {
+      this.server.okrQuery({
+        pageSize: this.pageSize,
+        currentPage: this.currentPage,
+      }).then((res) => {
         this.tableData = res.data;
       });
     },
