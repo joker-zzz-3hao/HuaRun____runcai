@@ -11,7 +11,7 @@
   >
     <el-form ref="form" :model="form" label-width="80px" class="tl-form">
       <el-form-item label="角色名称">
-        <span>{{decodeURI($route.query.name)}}</span>
+        <em>{{decodeURI($route.query.name)}}</em>
       </el-form-item>
       <el-form-item label="选择成员" class="tl-label-self">
         <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>

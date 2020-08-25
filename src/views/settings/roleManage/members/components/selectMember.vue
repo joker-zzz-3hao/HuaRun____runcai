@@ -10,8 +10,21 @@
       <i class="el-icon-search" slot="prefix"></i>
     </el-input>
     <div class="tl-transfer-select">
-      <div class="select-target">sdfsfd</div>
-      <div class="selected-target">ghjfghjfg</div>
+      <div class="select-target">
+        <div class="transfer-head">
+          <div class="crumbs">
+            <em>润联科技</em>
+            <em>华润云</em>
+            <em>云门户</em>
+          </div>
+          <ul>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <div class="selected-target">
+        <div class="transfer-head"></div>
+      </div>
       <!-- <div class="roulewidth">
         <div class="selectTitle">
           <div @click="clearUser">组织架构></div>
