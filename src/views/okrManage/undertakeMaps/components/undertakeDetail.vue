@@ -7,7 +7,10 @@
     <!-- 更新 -->
     <div>
       <dl>
-        <dd>{{undertakeDetail.okrDetailObjectKr}}</dd>
+        <dd>
+          <span>{{CONST.OKR_TYPE_MAP[undertakeDetail.okrDetailType]}}：</span>
+          <span>{{undertakeDetail.okrDetailObjectKr}}</span>
+        </dd>
         <dd>
           <el-progress
             :stroke-width="10"
@@ -15,7 +18,7 @@
           ></el-progress>
         </dd>
         <dd>
-          <span>负责人</span>
+          <span>负责人:</span>
           <span>{{undertakeDetail.userName}}</span>
         </dd>
         <dd>
@@ -23,7 +26,10 @@
         </dd>
       </dl>
     </div>
-
+    <div>
+      <el-button v-if="checkStatus === 0" @click="okrCheck(1)">icon历史OKR对齐</el-button>
+      <el-button v-else @click="okrCheck(0)">icon返回</el-button>
+    </div>
     <div>
       <dl v-for="(pitem,index) in personList" :key="index">
         <dt v-if="index==0">{{pitem.userName}}</dt>
@@ -46,9 +52,9 @@
               <span>本次更新进度+</span>
               <span>{{okritem.okrDetailProgress}}%</span>
             </li>
-            <li>
+            <!-- <li>
               <el-button @click="duiqi">已对启</el-button>
-            </li>
+            </li>-->
           </ul>
         </dd>
       </dl>
@@ -68,6 +74,7 @@ import { mapState, mapMutations } from 'vuex';
 
 import updateProgress from './updateProgress';
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 
@@ -78,6 +85,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       personList: [],
       formData: {
@@ -94,10 +102,11 @@ export default {
         confidence: '1',
       },
       dialogExist: false,
+      checkStatus: 0,
     };
   },
   created() {
-    this.okrCheck();
+    this.okrCheck(this.checkStatus);
   },
   computed: {
     ...mapState('common', {
@@ -106,11 +115,12 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
-    okrCheck() {
-      console.log(this.undertakeDetail);
+    okrCheck(checkStatus) {
+      this.checkStatus = checkStatus;
+      this.okrDetailId = this.undertakeDetail.okrDetailId || '';
       this.server.okrCheck({
-        checkStatus: 0,
-        okrDetailId: '111122',
+        checkStatus,
+        okrDetailId: this.okrDetailId,
       }).then((res) => {
         if (res.code == 200) {
           this.personList = res.data;

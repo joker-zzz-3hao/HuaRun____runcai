@@ -64,7 +64,7 @@
                     :precision="0"
                   ></el-input-number>
                 </el-form-item>
-                <el-form-item label="信心指数">
+                <el-form-item label="风险状态">
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                     <el-radio-group v-model="newItem.okrDetailConfidence">
                       <el-radio-button
@@ -73,7 +73,9 @@
                         :label="citem.value"
                       >{{citem.label}}</el-radio-button>
                     </el-radio-group>
-                    <el-button slot="reference">信息状态</el-button>
+                    <el-button
+                      slot="reference"
+                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
                   </el-popover>
                 </el-form-item>
                 <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>

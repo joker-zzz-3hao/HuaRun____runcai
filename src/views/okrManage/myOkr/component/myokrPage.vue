@@ -54,22 +54,20 @@
         @goDraft="goDraft(item)"
       >
         <template slot="head-bar" slot-scope="props">
-          <!-- <el-button
-            v-if="searchForm.status=='1'"
-            @click.native.stop="openDialog('tl-okr-detail',props.okritem)"
-          >详情</el-button>-->
-          <!-- <el-button
-            v-if="searchForm.status=='1'"
-            @click.native.stop="openDialog('tl-okr-history',props.okritem)"
-          >历史版本</el-button>-->
+          <el-button
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图icon{{props.okritem.continueCount}}</el-button>
           <el-button
             v-if="searchForm.status=='1'"
             @click.native.stop="openUpdate('tl-okr-update',props.okritem)"
           >更新进度</el-button>
-          <!-- <el-button
-            v-if="['6', '8'].includes(searchForm.status)"
-            @click.native.stop="goDraft(item)"
-          >编辑</el-button>-->
+        </template>
+        <template slot="body-bar" slot-scope="props">
+          <el-button
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>
       </tl-okr-table>
     </div>
@@ -275,6 +273,15 @@ export default {
     handleClose() {
       this.currentView = '';
       this.setMyokrDrawer(false);
+    },
+    // 跳到承接地图
+    goUndertakeMaps(id, name) {
+      this.$router.push({
+        name: 'undertakeMaps',
+        params: {
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrMain.orgId,
+        },
+      });
     },
   },
   watch: {
