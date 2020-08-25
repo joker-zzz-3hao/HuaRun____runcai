@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <!-- okr折叠面板 -->
-
-    <!-- 部门主页 -->
-    <!-- 个人主页 -->
+    <tl-teamleader></tl-teamleader>
   </div>
 </template>
 
 <script>
+import teamleader from './teamleader/index';
+
 export default {
   name: 'overview',
   components: {
+    'tl-teamleader': teamleader,
   },
   data() {
     return {

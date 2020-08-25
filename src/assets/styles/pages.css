@@ -162,12 +162,6 @@
 }
 
 /* OKR周期与自评 */
-.okr-cycle .el-table__body .cell {
-  display: flex;
-  align-items: center;
-  line-height: unset;
-}
-
 .okr-cycle .el-table__body .cell em {
   margin: 0 14px 0 0;
 }
@@ -182,4 +176,9 @@
 
 .okr-cycle .tl-drawer .el-drawer__body {
   margin: 6px 0 0 0;
+}
+
+.menuTreeList {
+  height: 400px;
+  overflow: auto;
 }

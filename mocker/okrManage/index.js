@@ -106,7 +106,9 @@ const mockData = {
           }],
           odetailId: '1111',
         }],
-        krContinueList: [],
+        krContinueList: [{
+          detailId: '1111', okrDetailId: '22232', okrParentId: '1111', parentKrOId: null, okrMainId: '888811113333', okrDetailVersion: 1, okrDetailObjectKr: '先骗100块钱--o', okrDetailProgress: 30, okrWeight: 20, okrDetailConfidence: 3, okrDetailType: 0, okrFullId: '2222', allFullId: '2222', createTime: '2020-08-05 13:40:06', updateTime: '2020-08-05 13:40:25', status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 0, versionCount: 0, userName: 'wangzhirenAB', krList: null, krContinueList: [], odetailId: '',
+        }],
         odetailId: null,
       }, {
         detailId: '1111', okrDetailId: '2222', okrParentId: null, parentKrOId: null, okrMainId: '888811113333', okrDetailVersion: 1, okrDetailObjectKr: '先骗100块钱--o', okrDetailProgress: 30, okrWeight: 20, okrDetailConfidence: 3, okrDetailType: 0, okrFullId: '2222', allFullId: '2222', createTime: '2020-08-05 13:40:06', updateTime: '2020-08-05 13:40:25', status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 0, versionCount: 0, userName: 'wangzhirenAB', krList: null, krContinueList: [], odetailId: '',

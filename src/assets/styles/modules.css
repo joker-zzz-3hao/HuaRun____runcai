@@ -321,6 +321,38 @@
   min-width: unset;
 }
 
+.tl-table .cell,
+.tl-table th>.cell {
+  display: flex;
+  align-items: center;
+  line-height: unset;
+}
+
+.tl-table .el-table__header tr th:first-child .cell {
+  padding-left: 14px;
+}
+
+.tl-table .el-table-column--selection .el-checkbox__input {
+  line-height: unset;
+}
+
+.tl-table .el-checkbox__input.is-checked .el-checkbox__inner,
+.tl-table .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background: transparent;
+  border-color: #685df1;
+}
+
+.tl-table .el-checkbox__inner:hover,
+.tl-table .el-checkbox__inner::after,
+.tl-table .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
+  border-color: #685df1;
+}
+
+.tl-table .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  border-color: #685df1;
+  background: #fff;
+}
+
 /* dialog */
 .tl-dialog {
   display: flex;
@@ -405,6 +437,35 @@
 .tl-form-inline .el-input {
   display: flex;
   align-items: center;
+}
+
+.tl-label-self .el-form-item__label {
+  margin: 5px 0 0 0;
+  align-self: start;
+}
+
+.tl-item-cont {
+  padding: 20px;
+  border: 1px solid #d5dde3;
+  border-radius: 4px;
+}
+
+.tl-item-cont .tl-input-search {
+  margin: 0 0 16px 0;
+}
+
+.tl-item-cont .tl-input-search .el-input__inner {
+  padding-left: 34px;
+  color: #4d5155;
+  background: #f4f6f8;
+  border-color: #f4f6f8;
+  border-radius: 2px;
+  height: 36px;
+  line-height: unset;
+}
+
+.tl-item-cont .tl-input-search .el-input__prefix {
+  left: 10px;
 }
 
 /* drawer */
@@ -580,6 +641,14 @@
 .text-tip p::after {
   position: absolute;
 }
+
+/* 穿梭选择 */
+.tl-transfer-select {
+  display: flex;
+}
+
+.tl-transfer-select .select-target,
+.tl-transfer-select .select-target {}
 
 /* 标记 */
 .badge {

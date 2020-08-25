@@ -9,7 +9,7 @@
           <div v-else>「最新版本」</div>
         </template>
       </el-table-column>
-      <el-table-column width="300" prop="okrDetailObjectKr"></el-table-column>
+      <el-table-column width="150" prop="okrDetailObjectKr"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
           <el-checkbox

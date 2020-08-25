@@ -4,8 +4,8 @@
  * @Description: file content
  */
 const STATUS = {
-  O: '开通',
-  S: '停用',
+  O: '启用',
+  S: '禁用',
   E: '过期',
 };
 

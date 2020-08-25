@@ -12,7 +12,7 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="tl-form">
       <el-form-item label="角色编号" prop="roleCode">
-        <el-input maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号" class="tl-input"></el-input>
+        <span>{{form.roleCode}}</span>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
         <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>
@@ -33,6 +33,10 @@
                 :props="{ multiple: true, value:'functionId', label:'functionName',children:'children' }"
                 node-key="id"
               ></el-cascader-panel>
+              <div>
+                <el-button type="text" @click="saveTree">确认</el-button>
+                <el-button type="text" @click="clearNodeAll">清空</el-button>
+              </div>
             </div>
             <div slot="reference">
               <i class="el-icon-circle-plus-outline"></i>
@@ -75,6 +79,7 @@ export default {
       menuTreeList: [],
       selectArr: [],
       showMenu: false,
+      selectList: [],
       form: {
         roleCode: '',
         roleName: '',
@@ -105,6 +110,22 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    saveTree() {
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item;
+        }
+      });
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+      this.selectList = this.list;
+    },
     clearNode(node) {
       const deleteArr = this.selectArr;
       deleteArr.forEach((item, index) => {
@@ -118,6 +139,7 @@ export default {
         arr = arr.concat(item);
       });
       this.list = Array.from(new Set(arr));
+
       this.$nextTick(() => {
         const keys = this.$refs.treeMenu.getCheckedNodes();
         // eslint-disable-next-line array-callback-return
@@ -133,6 +155,7 @@ export default {
           }
         });
       });
+      this.selectList = this.list;
     },
     boolCheck(item, node) {
       return item.some((li) => li === node.data.functionId);
@@ -159,7 +182,6 @@ export default {
         arr = arr.concat(item);
       });
       this.list = Array.from(new Set(arr));
-      this.getCheckName();
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -191,12 +213,17 @@ export default {
         this.selectArr = res.data.menuTree;
         this.$nextTick(() => {
           this.getCheckName();
+          let arr = [];
+          this.selectArr.forEach((item) => {
+            arr = arr.concat(item);
+          });
+          this.selectList = Array.from(new Set(arr));
         });
       });
     },
     updateRole() {
       const { form } = this;
-      form.functionList = this.list.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
+      form.functionList = this.selectList.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
       form.roleType = 'CREATION';
       form.roleId = this.roleInfo.roleId;
       this.server.updateRole(form).then((res) => {
