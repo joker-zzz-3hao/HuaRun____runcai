@@ -157,6 +157,16 @@ export default {
     submitForm() {
       const { form } = this;
       form.parentId = this.parentId;
+      if (form.functionType == 'PAGE') {
+        form.permissionCode = '';
+        form.classTag = '';
+      }
+      if (form.functionType == 'BTN') {
+        form.permissionCode = '';
+        form.classTag = '';
+        form.functionEvent = '';
+        form.resourceUrl = '';
+      }
       this.server.addOrUpdate(form).then((res) => {
         if (res.code == 200) {
           this.$message.success(res.msg);

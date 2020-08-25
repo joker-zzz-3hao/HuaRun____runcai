@@ -1,6 +1,17 @@
 <template>
   <div class="okrRiskTotal">
     <div id="okrRiskTotal"></div>
+    <div class="model">
+      <div>周报</div>
+      <el-select v-model="value" placeholder="请选择">
+        <el-option>2020年07月 第三周</el-option>
+      </el-select>
+      <el-table :data="tableData" :show-header="false" style="width: 100%">
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="desc" label="内容"></el-table-column>
+        <el-table-column prop="date" label="日期"></el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -8,10 +19,26 @@
 import echarts from 'echarts';
 
 export default {
-  name: 'okrRiskTotal',
+  name: 'okrRisk',
   data() {
     return {
-
+      tableData: [
+        {
+          name: '第三周  07月20日～07月26日',
+          desc: '本周心情：    平常',
+          date: '提交时间：2020年7月26日 21:12  周五',
+        },
+        {
+          name: '第三周  07月20日～07月26日',
+          desc: '本周心情：    平常',
+          date: '提交时间：2020年7月26日 21:12  周五',
+        },
+        {
+          name: '第三周  07月20日～07月26日',
+          desc: '本周心情：    平常',
+          date: '提交时间：2020年7月26日 21:12  周五',
+        },
+      ],
     };
   },
   mounted() {
@@ -22,36 +49,31 @@ export default {
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         xAxis: {
-          type: 'category',
-          data: ['2020-07', '2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2020-13'],
+          data: ['2020-7-10', '2020-7-11', '2020-7-12', '2020-7-13', '2020-7-14', '2020-7-15', '2020-7-16'],
         },
         yAxis: {
-          type: 'value',
+          min: 0,
+          max: 4,
           axisLabel: {
-            show: true,
-            textStyle: {
-              color: '#fff',
-            },
-            // 这里重新定义就可以
             formatter(value) {
               const texts = [];
-              if (value === 0 || value === '0') {
+              if (value == 0) {} else if (value <= 1) {
                 texts.push('无风险');
-              } else if (value === 1 || value === '1') {
+              } else if (value <= 2) {
                 texts.push('风险可控');
-              } else if (value === 2 || value === '2') {
-                texts.push('无风险');
+              } else if (value <= 3) {
+                texts.push('失控');
               }
               return texts;
             },
           },
         },
         series: [{
-          data: ['失控', '风险可控', '无风险'],
-          name: '邮件营销',
+          name: '风险',
           type: 'line',
-          stack: '总量',
-        }],
+          data: [1, 3, 2, 3, 2, 1],
+        },
+        ],
       };
 
       myChart.setOption(option);
