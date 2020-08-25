@@ -4,7 +4,7 @@
       <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
       <span>{{node.okrDetailObjectKr}}</span>
       <span>
-        <el-button @click="goDetail(node)">对齐{{node.parent}}</el-button>
+        <el-button v-if="!node.okrParentId" @click="goDetail(node)">对齐</el-button>
       </span>
     </div>
     <div class="node_des">
@@ -52,7 +52,7 @@ export default {
     };
   },
   mounted() {
-    console.log(`node:${this.node}`);
+    console.log(`node:${this.node.okrParentId}`);
   },
   computed: {},
   methods: {

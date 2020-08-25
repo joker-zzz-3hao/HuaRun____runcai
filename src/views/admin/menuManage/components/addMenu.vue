@@ -19,8 +19,8 @@
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
-        <span v-if="menuName">{{menuName}}</span>
-        <span v-if="!menuName">主目录</span>
+        <em v-if="menuName">{{menuName}}</em>
+        <em v-if="!menuName">主目录</em>
       </el-form-item>
       <el-form-item label="菜单类型" prop="functionType">
         <el-radio-group v-model="form.functionType">
@@ -46,9 +46,9 @@
       <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="组件路径" v-if="form.functionType=='MENU'" prop="resourceUrl">
-        <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入组件路径"></el-input>
-      </el-form-item>-->
+      <el-form-item label="类标识" v-if="form.functionType=='MENU'" prop="classTag">
+        <el-input style="width:320px" v-model="form.classTag" placeholder="请输入类标识"></el-input>
+      </el-form-item>
       <el-form-item
         label="权限标识"
         v-if="form.functionType=='BTN'||form.functionType=='MENU'"
@@ -71,8 +71,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm()">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="validateForm">确定</el-button>
+      <el-button @click="close">取 消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -116,11 +116,8 @@ export default {
       data: [],
       rules: {
         functionCode: [{ required: true, message: '请输入菜单编码', trigger: 'change' },
-          // {
-          //   pattern: /^[0-9a-zA-Z]+$/,
-          //   message: '请输入数字或者英文字母',
-          //   trigger: 'blur',
-          // },
+        ],
+        classTag: [{ required: true, message: '请输入类标识', trigger: 'change' },
         ],
         functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' },
           {

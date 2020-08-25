@@ -340,7 +340,7 @@ export default {
           undertakeOkr = item.undertakeOkrVo;
         } else {
           undertakeOkr = {
-            undertakeOkrId: item.okrParentId,
+            undertakeOkrDetailId: item.okrParentId,
             undertakeOkrContent: item.parentObjectKr,
             undertakeOkrVersion: item.okrDetailParentVersion,
           };
