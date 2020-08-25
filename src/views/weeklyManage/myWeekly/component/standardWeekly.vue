@@ -1,3 +1,9 @@
+<!--与原型不一致的地方
+1、进度条，直接显示进度条，且可滑动
+2、关联项目直接使用下拉框
+3、
+
+-->
 <template>
   <div class="home">
     <div style="display: inline; list-style-type:none;padding: 5px 5px;">
@@ -33,46 +39,76 @@
     <div>
       <el-table ref="dicTable" v-loading="tableLoading" :data="tableData">
         <el-table-column label="序号" type="index"></el-table-column>
-        <el-table-column label="工作项" prop="value">
+        <el-table-column label="工作项" prop="workContent">
           <template slot-scope="scope">
-            <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
+            <el-input
+              v-model.trim="scope.row.workContent"
+              maxlength="50"
+              clearable
+              placeholder="请用一句话概括某项工作，不超过100个字符"
+            ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="内容" prop="meaning">
+        <el-table-column label="内容" prop="workDesc">
           <template slot-scope="scope">
-            <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
+            <el-input
+              type="textarea"
+              v-model.trim="scope.row.workDesc"
+              maxlength="50"
+              clearable
+              placeholder="请描述具体工作内容"
+            ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="进度" prop="orderSeq">
+        <el-table-column label="进度" prop="workProgress">
+          <template slot-scope="scope">
+            <el-slider v-model="scope.row.workProgress" :step="1"></el-slider>
+            <span>{{scope.row.workProgress}}%</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="推进工时" prop="workTime">
           <template slot-scope="scope">
             <el-input-number
-              v-model.trim="scope.row.orderSeq"
+              v-model.trim="scope.row.workTime"
               controls-position="right"
               :min="1"
               :max="1000"
-            ></el-input-number>
+            ></el-input-number>h
           </template>
         </el-table-column>
-        <el-table-column label="推进工时" prop="enabledFlag">
+        <el-table-column label="关联项目" prop="projectId">
           <template slot-scope="scope">
-            <div @click.capture.stop="dataChange(scope.row)">
-              <el-switch
-                active-value="Y"
-                inactive-value="N"
-                v-model="scope.row.enabledFlag"
-                active-color="#13ce66"
-              ></el-switch>
+            <el-select v-model="scope.row.projectId" filterable placeholder="请选择">
+              <el-option
+                v-for="item in projectList"
+                :key="item.calendarId"
+                :label="item.calendarYear"
+                :value="item.calendarId"
+              ></el-option>
+            </el-select>
+            <a style="cursor:pointer" @click="selectTempPro">临时项目</a>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”"
+              placement="top"
+            >
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+            <div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="支持OKR/价值观" prop="okrCultureValueIds">
+          <!-- okrIds -->
+          <template slot-scope="scope">
+            <el-input v-model.trim="scope.row.workContent" clearable placeholder="请用选择所支持OKR/价值观"></el-input>
+            <div>
+              <span class="okr-selected" v-for="item in selectedOkr" :key="item.id">
+                {{item.name}}
+                <i @click="deleteOkr" style="cursor:pointer" class="el-icon-close"></i>
+              </span>
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="关联项目" prop="description">
-          <template slot-scope="scope">
-            <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column label="支持OKR/价值观" prop="createTime">
-          <template slot-scope="scope">
-            <span>{{scope.row.createTime ?scope.row.createTime :'--' }}</span>
+            <i style="cursor:pointer" @click="addOkr" class="el-icon-plus"></i>
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="code">
@@ -103,9 +139,23 @@ export default {
     return {
       server,
       tableLoading: false,
+      showOkrData: false,
       monthDate: this.dateFormat('YYYY-mm-dd', new Date()),
       tableData: [],
+      projectList: [],
       weekList: [{}],
+      selectedOkr: [
+        {
+          id: 111,
+          code: 111,
+          name: '公司上市',
+        },
+        {
+          id: 222,
+          code: 222,
+          name: '公司盈利',
+        },
+      ],
     };
   },
   components: {
@@ -121,6 +171,8 @@ export default {
     init() {
       // 获取每月日历
       this.getWeek();
+      // 获取项目列表
+      this.getProjectList();
     },
     getWeek(val) {
       if (val) {
@@ -134,6 +186,13 @@ export default {
           });
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
+        }
+      });
+    },
+    getProjectList() {
+      this.server.getCalendar({ }).then((res) => {
+        if (res.code == 200) {
+          this.projectList = res.data;
         }
       });
     },
@@ -200,11 +259,25 @@ export default {
       // 本地数据
       this.tableData = this.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
     },
+    selectTempPro() {
+
+    },
+    showProList() {
+    },
+    addOkr() {
+      // this.$refs.showOkrData
+      this.showOkrData = true;
+    },
+    deleteOkr() {},
   },
 };
 </script>
 <style lang="css">
 .btn-selected {
   background: rgb(2, 2, 2);
+}
+.okr-selected {
+  background: grey;
+  margin-left: 2px;
 }
 </style>

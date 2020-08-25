@@ -160,6 +160,7 @@
     ></create-user>
     <el-drawer
       :modal="false"
+      :wrapperClosable="false"
       :append-to-body="false"
       :visible.sync="editDrawer"
       v-if="editDrawer"

@@ -6,6 +6,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
   }
 
+  // 查询项目
+  getProjectList(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
+
   // 查询周报
   queryWeekly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/get', param);
