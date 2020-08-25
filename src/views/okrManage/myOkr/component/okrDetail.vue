@@ -7,7 +7,7 @@
           <ul>
             <li>
               <span>目标类型</span>
-              <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span>
+              <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
             </li>
             <li>
               <span>负责人</span>

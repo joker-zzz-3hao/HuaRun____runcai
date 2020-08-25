@@ -67,7 +67,7 @@ export default {
   mixin: [global],
   methods: {
     showAddRoule() {
-      this.title = '新增角色';
+      this.title = '添加成员';
       this.exist = true;
     },
     putRoule() {
