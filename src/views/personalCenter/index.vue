@@ -1,10 +1,10 @@
 <template>
-  <div class="home">润才之旅正式开始……</div>
+  <div class="personal-center">我可是 个人中心页面哦</div>
 </template>
 
 <script>
 export default {
-  name: 'home',
+  name: 'personalCenter',
   components: {
   },
 };

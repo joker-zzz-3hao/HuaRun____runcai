@@ -365,6 +365,7 @@
   box-shadow: unset;
   border-radius: 4px;
   flex: 0 0 480px;
+  width: unset;
 }
 
 .tl-dialog + .v-modal {
@@ -426,7 +427,7 @@
   line-height: unset;
 }
 
-.tl-form .el-form-item__content em {
+.tl-form .el-form-item__content > em {
   margin: 6px 0 0 0;
   display: block;
 }
@@ -647,12 +648,60 @@
 }
 
 /* 穿梭选择 */
-.tl-transfer-select {
+.tl-transfer-select,
+.tl-transfer-select .transfer-head {
   display: flex;
+  justify-content: space-between;
 }
 
 .tl-transfer-select .select-target,
-.tl-transfer-select .select-target {}
+.tl-transfer-select .selected-target {
+  padding: 16px;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+  width: 330px;
+}
+
+.tl-transfer-select .selected-target {
+  margin: 0 0 0 20px;
+}
+
+.tl-transfer-select .crumbs {
+  display: flex;
+  align-items: center;
+}
+
+.tl-transfer-select .crumbs .is-subset {
+  color: #685df1;
+  cursor: pointer;
+}
+
+.tl-transfer-select .crumbs em {
+  position: relative;
+  margin: 0 0 0 20px;
+}
+
+.tl-transfer-select .crumbs em::after {
+  position: absolute;
+  font-family: element-icons!important;
+  content: '\e6e0';
+  right: -24px;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+.tl-transfer-select .crumbs em:last-child::after {
+  content: unset;
+}
+
+.tl-transfer-select .crumbs em:first-child {
+  margin: 0;
+}
+
+.tl-transfer-select .selected-number em {
+  color: #685df1;
+}
 
 /* 标记 */
 .badge {

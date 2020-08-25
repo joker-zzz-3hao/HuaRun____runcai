@@ -183,6 +183,19 @@ export default [
       //   },
       //   component: () => import('@/views/projectManage/index'),
       // },
+      {
+        // 个人中心
+        path: '/personalCenter',
+        name: 'personalCenter',
+        meta: {
+          hasMainMenu: true,
+          noSubMenu: true,
+          parentRoute: 'personalCenter',
+          title: 'personalCenter',
+          power: '',
+        },
+        component: () => import('@/views/personalCenter/index'),
+      },
     ],
   },
 ];
