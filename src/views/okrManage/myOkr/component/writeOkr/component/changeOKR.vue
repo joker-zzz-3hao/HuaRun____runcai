@@ -5,7 +5,7 @@
       <ul>
         <li>
           <span>目标类型</span>
-          <span>{{okrmain.okrBelongType}}</span>
+          <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
         </li>
         <li>
           <span>负责人</span>
@@ -375,6 +375,15 @@ export default {
           okrInfoList[index].krList = okrInfoList[index].krList.concat(item.newkrList);
         }
       });
+      // additem.undertakeOkrVo ||
+      addList.forEach((additem) => {
+        additem.undertakeOkrDto = {
+          undertakeOkrDetailId: '',
+          undertakeOkrContent: '',
+          undertakeOkrVersion: 0,
+        };
+        delete additem.undertakeOkrVo;
+      });
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
         // detailokrList: this.detailokrList,
@@ -382,6 +391,7 @@ export default {
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.modifyReason,
         okrMainId: this.okrMainId,
+        okrBelongType: this.okrmain.okrBelongType,
       };
       console.log('拼起来后', this.formData);
       debugger;
