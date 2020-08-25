@@ -94,9 +94,7 @@
                       </el-radio-button>
                     </el-radio-group>
 
-                    <el-button
-                      slot="reference"
-                    >{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence||'1']}}</el-button>
+                    <el-button slot="reference">{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence]}}</el-button>
                   </el-popover>
                 </el-form-item>
                 <el-button @click="deletekr(index,kindex)">-（删kr）</el-button>
@@ -159,7 +157,7 @@ export default {
             okrDetailObjectKr: '',
             okrWeight: 0,
             okrDetailProgress: 0,
-            okrDetailConfidence: 1,
+            okrDetailConfidence: '1',
           }],
           undertakeOkrVo: {},
           departokrList: [],
@@ -191,6 +189,10 @@ export default {
     isnew: {
       type: Boolean,
       default: true,
+    },
+    periodId: {
+      type: String,
+      default: '',
     },
   },
   mounted() {
@@ -232,7 +234,7 @@ export default {
         okrDetailObjectKr: '',
         okrWeight: 0,
         okrDetailProgress: 0,
-        okrDetailConfidence: 1,
+        okrDetailConfidence: '1',
       });
     },
     // 删除kr
@@ -260,6 +262,7 @@ export default {
           okrDetailObjectKr: '',
           okrWeight: 0,
           okrDetailProgress: 0,
+          okrDetailConfidence: '1',
         }],
         undertakeOkrVo: {},
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
@@ -273,9 +276,9 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      console.log('变更时点添加');
+      console.log('变更时点添加', this.periodId);
       // eslint-disable-next-line max-len
-      this.server.getUndertakeOkr({ periodId: this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.periodId || this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
         if (res.code == 200) {
           this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
           res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {

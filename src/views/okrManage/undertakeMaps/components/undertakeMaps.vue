@@ -17,6 +17,10 @@
         :defaultProps="departmentDefaultProps"
       ></tl-department>
     </div>
+    <!-- 返回 -->
+    <div>
+      <el-button v-if="showOne" @click="goback">返回</el-button>
+    </div>
     <!-- 要展示多个 -->
     <div v-if="showOne && svgList.length>0">
       <tl-svgtree
@@ -250,6 +254,9 @@ export default {
           this.$refs.svgTree[index].closeTree();
         }
       });
+    },
+    goback() {
+      this.$router.back(-1);
     },
   },
 };

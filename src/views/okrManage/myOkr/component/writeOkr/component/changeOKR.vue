@@ -92,6 +92,7 @@
       :server="server"
       :canWrite="true"
       :isnew="false"
+      :periodId="periodId"
     ></okr-form>
     <!-- 变更原因 -->
     <div>
@@ -338,12 +339,14 @@ export default {
         let undertakeOkr = {};
         if (item.undertakeOkrVo) {
           undertakeOkr = item.undertakeOkrVo;
-        } else {
+        } else if (item.okrParentId) {
           undertakeOkr = {
             undertakeOkrDetailId: item.okrParentId,
             undertakeOkrContent: item.parentObjectKr,
             undertakeOkrVersion: item.okrDetailParentVersion,
           };
+        } else {
+          undertakeOkr = null;
         }
         okrInfoList.push({
           detailId: item.detailId,
@@ -377,11 +380,13 @@ export default {
       });
       // additem.undertakeOkrVo ||
       addList.forEach((additem) => {
-        additem.undertakeOkrDto = {
-          undertakeOkrDetailId: '',
-          undertakeOkrContent: '',
-          undertakeOkrVersion: 0,
-        };
+        // TODO:
+        if (additem.undertakeOkrVo.undertakeOkrDetailId) {
+          additem.undertakeOkrDto = additem.undertakeOkrVo;
+          // additem.undertakeOkrDto = null;
+        } else {
+          additem.undertakeOkrDto = null;
+        }
         delete additem.undertakeOkrVo;
       });
       this.formData = {
@@ -408,7 +413,7 @@ export default {
 
   },
   watch: {
-    'tableList.length': {
+    tableList: {
       handler() {
         // 添加承接列表
         this.tableList.forEach((item) => {
@@ -417,6 +422,7 @@ export default {
         });
       },
     },
+    deep: true,
   },
 };
 </script>

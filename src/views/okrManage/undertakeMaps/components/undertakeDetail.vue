@@ -107,6 +107,7 @@ export default {
   methods: {
     ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
     okrCheck() {
+      console.log(this.undertakeDetail);
       this.server.okrCheck({
         checkStatus: 0,
         okrDetailId: '111122',
