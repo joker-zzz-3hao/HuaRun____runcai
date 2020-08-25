@@ -64,7 +64,7 @@
                     :precision="0"
                   ></el-input-number>
                 </el-form-item>
-                <el-form-item label="信心指数">
+                <el-form-item label="风险状态">
                   <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
                     <el-radio-group v-model="newItem.okrDetailConfidence">
                       <el-radio-button
@@ -73,7 +73,9 @@
                         :label="citem.value"
                       >{{citem.label}}</el-radio-button>
                     </el-radio-group>
-                    <el-button slot="reference">信息状态</el-button>
+                    <el-button
+                      slot="reference"
+                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
                   </el-popover>
                 </el-form-item>
                 <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>
@@ -92,6 +94,7 @@
       :server="server"
       :canWrite="true"
       :isnew="false"
+      :periodId="periodId"
     ></okr-form>
     <!-- 变更原因 -->
     <div>
@@ -338,12 +341,14 @@ export default {
         let undertakeOkr = {};
         if (item.undertakeOkrVo) {
           undertakeOkr = item.undertakeOkrVo;
-        } else {
+        } else if (item.okrParentId) {
           undertakeOkr = {
             undertakeOkrDetailId: item.okrParentId,
             undertakeOkrContent: item.parentObjectKr,
             undertakeOkrVersion: item.okrDetailParentVersion,
           };
+        } else {
+          undertakeOkr = null;
         }
         okrInfoList.push({
           detailId: item.detailId,
@@ -377,11 +382,13 @@ export default {
       });
       // additem.undertakeOkrVo ||
       addList.forEach((additem) => {
-        additem.undertakeOkrDto = {
-          undertakeOkrDetailId: '',
-          undertakeOkrContent: '',
-          undertakeOkrVersion: 0,
-        };
+        // TODO:
+        if (additem.undertakeOkrVo.undertakeOkrDetailId) {
+          additem.undertakeOkrDto = additem.undertakeOkrVo;
+          // additem.undertakeOkrDto = null;
+        } else {
+          additem.undertakeOkrDto = null;
+        }
         delete additem.undertakeOkrVo;
       });
       this.formData = {
@@ -408,7 +415,7 @@ export default {
 
   },
   watch: {
-    'tableList.length': {
+    tableList: {
       handler() {
         // 添加承接列表
         this.tableList.forEach((item) => {
@@ -417,6 +424,7 @@ export default {
         });
       },
     },
+    deep: true,
   },
 };
 </script>

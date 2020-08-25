@@ -52,12 +52,18 @@
               :timestamp="activity.createTime"
               placement="top"
             >
-              <ul>
-                <li
-                  v-for="(conitem,index) in splitContent(activity.content)"
-                  :key="index"
-                >{{conitem}}</li>
-              </ul>
+              <div>
+                <div>{{activity.userName}}</div>
+                <ul v-for="(conitem,index) in activity.changeContent" :key="index">
+                  <li v-if="conitem.historyType == '1'">
+                    <span>变更</span>
+                    {{conitem.oldOkrDetailObjectKr}}
+                    <span>为</span>
+                    <span>{{conitem.okrDetailObjectKr}}</span>
+                  </li>
+                  <li v-if="conitem.historyType == '2'"></li>
+                </ul>
+              </div>
             </el-timeline-item>
           </el-timeline>
         </div>

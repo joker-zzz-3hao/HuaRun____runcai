@@ -14,16 +14,35 @@
         <div class="transfer-head">
           <div class="crumbs">
             <em>润联科技</em>
-            <em>华润云</em>
+            <em :class="{'is-subset': true}">华润云</em>
             <em>云门户</em>
           </div>
-          <ul>
-            <li></li>
-          </ul>
         </div>
+        <ul class="txt-list">
+          <li>
+            <em>云门户</em>
+            <i class="icon-arrow"></i>
+          </li>
+        </ul>
       </div>
       <div class="selected-target">
-        <div class="transfer-head"></div>
+        <div class="transfer-head">
+          <div class="selected-number">
+            <span>已选</span>
+            <em>13</em>人
+          </div>
+          <div class="clear">清空</div>
+        </div>
+        <ul class="txt-list">
+          <li>
+            <div class="img-user">
+              <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+              <em v-else>哲民</em>
+            </div>
+            <em>云门户</em>
+            <i class="icon-clear"></i>
+          </li>
+        </ul>
       </div>
       <!-- <div class="roulewidth">
         <div class="selectTitle">

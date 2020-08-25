@@ -8,11 +8,12 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     :modal="false"
+    :wrapperClosable="false"
     class="tl-drawer"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="tl-form">
       <el-form-item label="角色编号" prop="roleCode">
-        <span>{{form.roleCode}}</span>
+        <em>{{form.roleCode}}</em>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
         <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>

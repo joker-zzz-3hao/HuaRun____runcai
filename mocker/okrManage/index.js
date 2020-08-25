@@ -289,15 +289,32 @@ const mockData = {
   // 用于：查操作历史
   'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      content: {
-        '2020-08-20': [{
-          id: '1206431540120363008', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: null, content: '测试-HM-1 更新：目标(O)进度 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+      'content|3': [{
+        userName: '张三',
+        createTime: '@datetime("yyyy-MM-dd")',
+        reason: '变更说明',
+        changeContent: [{
+          historyType: '1', // 变更
+          oldOkrDetailObjectKr: '原okr标题',
+          okrDetailObjectKr: '变更后okr标题',
+          oldOkrWeight: 20, // 原权重
+          okrWeight: 30, // 变更后权重
         }, {
-          id: '1206431540120363009', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: '1206360106224295941', content: '测试-HM-1 更新：关键结果(KR)进度 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+          historyType: '2', // 关联
+          undertakeOkrContent: '关联的okr标题',
+          undertakeOkrType: '1', // 关联的okr类型 o || kr
         }, {
-          id: '1206431540120363010', periodId: '1206360106224295937', attachId: null, okrMainId: '1206360106224295937', okrDetailId: '1206360106224295941', content: '测试-HM-1 更新：关键结果(KR)风险指数 为 50，原因：还可以 ', operateType: 5, checkStatus: 0, status: 1, createBy: '1234567890001', createTime: '2020-08-20 09:16:19', createDate: '2020-08-20',
+          historyType: '3', // 创建目标
+          okrDetailObjectKr: 'okr标题',
+          okrDetailType: '1', // okr类型 o || kr
+        }, {
+          historyType: '4', // 更新进度
+          okrDetailObjectKr: 'okr标题',
+          okrDetailType: '1', // okr类型 o || kr
+          okrDetailProgress: 30, // 进度
+          okrDetailConfidence: '1', // 风险状态
         }],
-      },
+      }],
     })));
   },
   // author：林心荃
