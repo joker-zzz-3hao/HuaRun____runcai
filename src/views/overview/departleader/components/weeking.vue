@@ -101,9 +101,7 @@ export default {
           axisLabel: {
             formatter(value) {
               const texts = [];
-              if (value == 0) {
-                console.log(1);
-              } else if (value <= 1) {
+              if (value <= 1) {
                 texts.push('无风险');
               } else if (value <= 2) {
                 texts.push('风险可控');
