@@ -2,10 +2,11 @@
   <div class="home">
     <div class="creatOkr">
       <div>云门户</div>
-      <div>
+      <div v-if="false">
         <img style="width:100px;height:100px;display:block;border:1px solid black;" src alt srcset />
         <el-button type="primary">创建OKR</el-button>
       </div>
+      <tl-org-page></tl-org-page>
       <div>
         <ul>
           <li class="user-info" style="display:flex;flex-direction: row;">
@@ -47,7 +48,7 @@
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import okrRiskTotal from './components/okrRiskTotal';
-
+import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
 
 export default {
@@ -59,6 +60,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     'tl-okr-risk-total': okrRiskTotal,
     'tl-weeking': weeking,
+    'tl-org-page': orgPage,
   },
   data() {
     return {

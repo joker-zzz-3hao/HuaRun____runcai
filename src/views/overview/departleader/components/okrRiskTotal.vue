@@ -1,6 +1,5 @@
 <template>
   <div class="okrRiskTotal">
-    <div></div>
     <tl-echart-page idName="okrRiskTotal" :option="option" :widthHeight="widthHeight"></tl-echart-page>
   </div>
 </template>

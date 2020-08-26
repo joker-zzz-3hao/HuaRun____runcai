@@ -9,6 +9,7 @@ import store from './store';
 import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';
+import 'swiper/swiper-bundle.css';
 // 全局组建注册
 import crcloudTable from './components/crcloudTable';
 

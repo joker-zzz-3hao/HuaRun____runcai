@@ -49,11 +49,7 @@
       <el-form-item label="类标识" v-if="form.functionType !=='BTN'" prop="classTag">
         <el-input style="width:320px" v-model="form.classTag" placeholder="请输入类标识"></el-input>
       </el-form-item>
-      <el-form-item
-        label="权限标识"
-        v-if="form.functionType=='BTN'||form.functionType=='MENU'"
-        prop="permissionCode"
-      >
+      <el-form-item label="权限标识" prop="permissionCode">
         <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
       </el-form-item>
       <el-form-item label="事件名" v-if="form.functionType !=='BTN'">
@@ -157,12 +153,8 @@ export default {
     submitForm() {
       const { form } = this;
       form.parentId = this.parentId;
-      if (form.functionType == 'PAGE') {
-        form.permissionCode = '';
-        form.classTag = '';
-      }
+
       if (form.functionType == 'BTN') {
-        form.permissionCode = '';
         form.classTag = '';
         form.functionEvent = '';
         form.resourceUrl = '';
