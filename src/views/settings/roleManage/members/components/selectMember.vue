@@ -20,7 +20,7 @@
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li>
+            <!-- <li>
               <el-checkbox class="tl-checkbox">
                 <div class="img-user">
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
@@ -28,12 +28,16 @@
                 </div>
                 <em>云门户</em>
               </el-checkbox>
-            </li>
+            </li>-->
             <li>
               <em>云门户</em>
               <i class="el-icon-arrow-right"></i>
             </li>
             <li>
+              <em>云门户</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <!-- <li>
               <em>云门户</em>
               <i class="el-icon-arrow-right"></i>
             </li>
@@ -84,7 +88,7 @@
             <li>
               <em>捷运</em>
               <i class="el-icon-arrow-right"></i>
-            </li>
+            </li>-->
           </ul>
         </el-scrollbar>
       </div>
@@ -98,7 +102,7 @@
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li>
+            <!-- <li>
               <div class="img-user">
                 <img v-if="false" src="@/assets/images/user/user.jpg" alt />
                 <div class="user-name" v-else>哲民</div>
@@ -113,143 +117,7 @@
               </div>
               <em>云门户</em>
               <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
+            </li>-->
           </ul>
         </el-scrollbar>
       </div>
