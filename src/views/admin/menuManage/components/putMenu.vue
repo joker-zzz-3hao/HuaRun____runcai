@@ -48,7 +48,7 @@
       <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
       </el-form-item>
-      <el-form-item label="类标识" v-if="form.functionType=='MENU'" prop="classTag">
+      <el-form-item label="类标识" v-if="form.functionType!=='BTN'" prop="classTag">
         <el-input style="width:320px" v-model="form.classTag" placeholder="请输入类标识"></el-input>
       </el-form-item>
       <el-form-item
@@ -154,7 +154,6 @@ export default {
       form.parentId = this.parentId;
       if (form.functionType == 'PAGE') {
         form.permissionCode = '';
-        form.classTag = '';
       }
       if (form.functionType == 'BTN') {
         form.permissionCode = '';
