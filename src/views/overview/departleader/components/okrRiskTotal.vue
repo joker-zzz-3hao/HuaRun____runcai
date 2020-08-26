@@ -1,18 +1,23 @@
 <template>
   <div class="okrRiskTotal">
-    <div id="okrRiskTotal"></div>
+    <div></div>
+    <tl-echart-page idName="okrRiskTotal" :option="option"></tl-echart-page>
   </div>
 </template>
 
 <script>
 import echarts from 'echarts';
+import echartPage from '../../component/echartPage';
 
 export default {
   name: 'okrRiskTotal',
   data() {
     return {
-
+      option: '',
     };
+  },
+  components: {
+    'tl-echart-page': echartPage,
   },
   mounted() {
     this.init();
