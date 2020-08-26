@@ -49,7 +49,7 @@
         <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
         <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
           <template slot="treecard" slot-scope="node">
-            <card :node="node"></card>
+            <card :node="node" @showDetail="showDetail(node.node.okrId)"></card>
           </template>
         </svgtree>
       </div>
