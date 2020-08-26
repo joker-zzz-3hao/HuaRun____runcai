@@ -1,7 +1,19 @@
 <template>
   <div>
     <!-- okr -->
+    <div>
+      <span>{{departmentName}}{{periodName}}OKR</span>
+      <span>（单选）</span>
+    </div>
     <el-table :data="departokrList">
+      <el-table-column>
+        <template slot-scope="scope">
+          <el-checkbox
+            v-model="scope.row.checkFlag"
+            @change="selectDepartokr(scope.$index, scope.row)"
+          ></el-checkbox>
+        </template>
+      </el-table-column>
       <el-table-column width="150" prop="typeName"></el-table-column>
       <el-table-column v-if="!showPhil" width="150" prop="okrDetailVersion">
         <template slot-scope="scope">
@@ -10,33 +22,29 @@
         </template>
       </el-table-column>
       <el-table-column width="150" prop="okrDetailObjectKr"></el-table-column>
-      <el-table-column>
-        <template slot-scope="scope">
-          <el-checkbox
-            v-model="scope.row.checkFlag"
-            @change="selectDepartokr(scope.$index, scope.row)"
-          ></el-checkbox>关联
-        </template>
-      </el-table-column>
-      <!-- <el-table-column width="300" property="okrParentDetailId"></el-table-column> -->
     </el-table>
     <!-- 价值观 -->
-    <div v-if="showPhil">公司管理价值观</div>
+    <div v-if="showPhil">
+      <span>公司管理价值观</span>
+      <span>（单选）</span>
+    </div>
     <el-table v-if="showPhil" :data="philosophyList">
-      <el-table-column width="300" prop="cultureDesc"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.checkFlag"
             @change="selectphilosophy(scope.$index, scope.row)"
-          ></el-checkbox>关联
+          ></el-checkbox>
         </template>
       </el-table-column>
+      <el-table-column width="300" prop="cultureDesc"></el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'undertakeTable',
   props: {
@@ -50,15 +58,25 @@ export default {
       type: Boolean,
       default: true,
     },
+    periodName: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       selectDepartRow: {},
       selectPhilRow: {},
-
+      departmentName: '',
     };
   },
   created() {
+    this.departmentName = this.userInfo.orgParentName || '部门';
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   methods: {
     // 选择关联的okr

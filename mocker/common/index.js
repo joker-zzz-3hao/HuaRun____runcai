@@ -21,6 +21,11 @@ const mockData = {
       userStatus: 0,
       userType: 0,
       tenantId: 'CR0011000054',
+      orgParentId: 'CR0012000177',
+      orgParentName: '智慧技术部',
+      roleList: [{
+        roleId: null, tenantId: null, roleCode: 'ORG_ADMIN', roleName: '部门负责人', createTime: null, updateTime: null, orgId: 'CR0012000225',
+      }],
       privilegeList: [
         {
           children: null,

@@ -118,6 +118,7 @@
         ref="undertake"
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
+        :periodName="periodName"
       ></undertake-table>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
@@ -172,6 +173,7 @@ export default {
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号
       innerDrawer: false,
+      periodName: '', // 周期名
     };
   },
   props: {
@@ -292,7 +294,7 @@ export default {
             if (item.krList && item.krList.length > 0) {
               item.krList.forEach((krItem, index) => {
                 this.departokrList.push({
-                  typeName: `KR${index}`,
+                  typeName: `KR${index + 1}`,
                   okrDetailObjectKr: krItem.okrDetailObjectKr,
                   okrDetailId: krItem.okrDetailId,
                   okrDetailVersion: krItem.okrDetailVersion,
@@ -317,7 +319,6 @@ export default {
               }
             });
           }
-          console.log('变更时点添加');
         } else {
           this.departokrObject = JSON.stringify(this.departokrList);
         }
@@ -353,7 +354,6 @@ export default {
     openUndertake(index) {
       // 选择o的序号，打开关联承接弹框
       this.selectIndex = index;
-      // this.dialogVisible = true;
       this.innerDrawer = true;
     },
     // 提交关联，给选中的o加上承接项和价值观
@@ -406,8 +406,6 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-              // this.$emit('handleClose');
-              // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             } else {
               this.$message(res.msg);
             }
@@ -429,7 +427,6 @@ export default {
           if (res.code == 200) {
             this.$message('已保存');
             this.$refs.dataForm.resetFields();
-            // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             this.setCreateokrDrawer(false);
             this.setMyokrDrawer(false);
           }
@@ -458,6 +455,8 @@ export default {
         if (newVal && newVal.periodId) {
           this.searchOkr();
           this.getCultureList();
+          console.log('周期', newVal);
+          this.periodName = newVal.periodName;
         }
       },
       deep: true,
