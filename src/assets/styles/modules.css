@@ -398,7 +398,23 @@
   height: 14px;
 }
 
+.tl-checkbox .el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #d8d8d8;
+}
 
+.tl-checkbox .el-checkbox__input.is-checked .el-checkbox__inner,
+.tl-checkbox .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background: transparent;
+  border-color: #685df1;
+}
+
+.tl-checkbox .el-checkbox__inner::after {
+  border-color: #685df1;
+}
+
+.tl-checkbox .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #685df1;
+}
 
 /* dialog */
 .tl-dialog {
