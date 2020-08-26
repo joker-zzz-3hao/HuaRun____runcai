@@ -1,27 +1,35 @@
 <template>
   <div>
+    <div>
+      <span>{{okrmain.orgName}}{{okrmain.periodName}}OKR</span>
+    </div>
     <el-table :data="historyOKRList">
-      <el-table-column width="100" prop="typeName"></el-table-column>
-      <el-table-column prop="versionName"></el-table-column>
-      <el-table-column prop="objectName"></el-table-column>
-      <el-table-column prop="okrWeight">
+      <el-table-column width="100" prop="okrDetailType">
+        <template slot-scope="scope">
+          <span v-if="scope.row.okrDetailType === 0">目标</span>
+          <span v-else>KR</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="versionName">
+        <template slot-scope="scope">
+          <div>{{scope.row.versionName}}</div>
+          <div v-if="scope.row.isTrue != 1">(当前选择)</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="objectName">
+        <template slot-scope="scope">
+          <div>{{scope.row.objectName}}</div>
+          <div v-if="scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
+        </template>
+      </el-table-column>
+      <!-- 权重暂时不加 -->
+      <!-- <el-table-column prop="okrWeight">
         <template slot-scope="scope">
           <span>权重</span>
           <span>{{scope.row.okrWeight}}%</span>
         </template>
-      </el-table-column>
-      <!-- <el-table-column width="100" property="guanlianId">
-        <template slot-scope="scope">
-          <el-checkbox
-            v-model="scope.row.checkFlag"
-            @change="selectDepartokr(scope.$index, scope.row)"
-          ></el-checkbox>关联
-        </template>
       </el-table-column>-->
     </el-table>
-    <!-- <span slot="footer" class="dialog-footer">
-      <el-button @click="summitUpdate">更新</el-button>
-    </span>-->
   </div>
 </template>
 
@@ -43,6 +51,12 @@ export default {
       type: String,
       defualt: '',
     },
+    okrmain: {
+      type: Object,
+      defualt() {
+        return {};
+      },
+    },
 
   },
   data() {
@@ -58,18 +72,17 @@ export default {
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr() {
-      // this.okrDetailId = this.okrId;
       this.server.selectOkrHistoryVersion({ okrDetailId: this.okrDetailId }).then((res) => {
         if (res.code == 200) {
           this.oldOKRList = res.data;
           this.oldOKRList.forEach((oitem) => {
             this.historyOKRList.push({
-              typeName: '目标O',
+              okrDetailType: oitem.okrDetailType,
               objectName: oitem.okrDetailObjectKr,
               guanlianId: oitem.detailId,
               checkFlag: false,
               version: oitem.okrDetailVersion,
-              versionName: oitem.isTrue === 1 ? '最新版本' : `历史版本${oitem.okrDetailVersion}`,
+              versionName: oitem.isTrue === 1 ? '「最新版本」' : `「历史版本${oitem.okrDetailVersion}」`,
               isTrue: oitem.isTrue, // 是否为最新版本
               okrWeight: oitem.okrWeight, // 权重
               okrDetailParentObjectKr: oitem.okrDetailParentObjectKr, // 承接的okr
@@ -102,13 +115,6 @@ export default {
     },
   },
   watch: {
-    // okrid: {
-    //   handler() {
-    //     this.searchOkr();
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
   },
 };
 </script>

@@ -109,7 +109,7 @@
       <el-button @click="addobject()">+添加目标</el-button>
       <el-button v-if="isnew" @click="summit()">创建目标</el-button>
       <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
-      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
+      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
     </div>
     <!-- 关联承接项抽屉 -->
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
@@ -435,7 +435,7 @@ export default {
     },
     deleteDraft() {
       this.$xconfirm({
-        content: '',
+        content: '请问您是否确定删除？',
         title: '如果您要确定删除，该OKR将无法恢复',
       }).then(() => {
         // 提交确认弹窗
@@ -446,7 +446,7 @@ export default {
             this.setMyokrDrawer(false);
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   watch: {

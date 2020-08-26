@@ -75,8 +75,8 @@
         v-if="innerDrawer"
         ref="tl-okr-history"
         :server="server"
-        :okrId="okrId"
         :okrDetailId="okrDetailId"
+        :okrmain="okrmain"
       ></tl-okr-history>
     </el-drawer>
   </div>
@@ -141,10 +141,10 @@ export default {
     // 查okr详情
     getokrDetail() {
       this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        console.log('detail', res);
-        this.tableList = res.data.okrDetails;
-        this.okrmain = res.data.okrMain;
-        // this.voteUser = res.data.voteUser;
+        if (res.code == 200) {
+          this.tableList = res.data.okrDetails || [];
+          this.okrmain = res.data.okrMain || {};
+        }
       });
     },
     // 点赞
@@ -162,7 +162,6 @@ export default {
     },
     // 查点赞列表
     getSupportList() {
-      // TODO:{ okrId: this.okrId }
       this.server.getSupportList({ okrId: this.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
