@@ -2,15 +2,15 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option>2020年07月 第三周</el-option>
+      <el-select placeholder="请选择" v-model="value">
+        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
       </el-select>
       <div id="weeking"></div>
     </div>
     <div class="model">
       <div>周报动态</div>
       <el-select v-model="value" placeholder="请选择">
-        <el-option>2020年07月 第三周</el-option>
+        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
       </el-select>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="name" label="部门"></el-table-column>
@@ -25,7 +25,7 @@
       <div>员工情绪大屏</div>
       <div>
         <el-select v-model="value" placeholder="请选择">
-          <el-option>2020年07月 第三周</el-option>
+          <el-option :key="1" :value="1">2020年07月 第三周</el-option>
         </el-select>
       </div>
       <div id="mood"></div>
@@ -40,6 +40,7 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 import Server from '../server';
 
 const server = new Server();
@@ -47,6 +48,7 @@ export default {
   name: 'weeking',
   data() {
     return {
+      value: '',
       server,
       tableData: [
         {
@@ -87,6 +89,11 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   mounted() {
     this.init();
     this.initMood();
@@ -94,7 +101,14 @@ export default {
   },
   methods: {
     getriskStatistics() {
-      this.server.riskStatistics().then((res) => {
+      this.server.riskStatistics({
+        dto: {
+          orgId: this.userInfo.orgId,
+          periodId: this.userInfo.periodId,
+          personOrOrg: this.userInfo.personOrOrg,
+          userId: this.userInfo.userId,
+        },
+      }).then((res) => {
         console.log(res);
       });
     },

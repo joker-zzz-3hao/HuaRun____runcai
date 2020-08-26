@@ -13,77 +13,35 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em>润联科技</em>
-            <em :class="{'is-subset': true}">华润云</em>
-            <em>云门户云门户</em>
+            <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em>
+            <em
+              :class="light==item.id?'is-subset':''"
+              v-for="(item,index) in selectList"
+              :key="index"
+              @click="getqueryOrgAndUser(item)"
+            >{{item.name}}</em>
           </div>
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li>
-              <el-checkbox class="tl-checkbox">
-                <div class="img-user">
-                  <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                  <div class="user-name" v-else>哲民</div>
-                </div>
-                <em>云门户</em>
-              </el-checkbox>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>云门户</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>行云</em>
-              <i class="el-icon-arrow-right"></i>
-            </li>
-            <li>
-              <em>捷运</em>
-              <i class="el-icon-arrow-right"></i>
+            <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
+              <template v-if="item.type=='USER'">
+                <el-checkbox
+                  class="tl-checkbox"
+                  @change="checkMember($event,item)"
+                  v-model="value[index]"
+                >
+                  <div class="img-user">
+                    <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+                    <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                  </div>
+                  <em>{{item.name}}</em>
+                </el-checkbox>
+              </template>
+              <template v-else>
+                <em>{{item.name}}</em>
+                <i class="el-icon-arrow-right"></i>
+              </template>
             </li>
           </ul>
         </el-scrollbar>
@@ -92,200 +50,23 @@
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
-            <em>13</em>人
+            <em>{{roulelist.length}}</em>人
           </div>
-          <div class="clear">清空</div>
+          <div class="clear" @click="clearMember">清空</div>
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li>
+            <li v-for="(item,index) in roulelist" :key="index">
               <div class="img-user">
                 <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
+                <div class="user-name" v-else>{{checkName(item.userName)}}</div>
               </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
-              <i class="el-icon-close"></i>
-            </li>
-            <li>
-              <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>哲民</div>
-              </div>
-              <em>云门户</em>
+              <em>{{item.userName}}</em>
               <i class="el-icon-close"></i>
             </li>
           </ul>
         </el-scrollbar>
       </div>
-      <!-- <div class="roulewidth">
-        <div class="selectTitle">
-          <div @click="clearUser">组织架构></div>
-          <div v-for="(item,index) in selectList" :key="index" @click="getqueryOrgAndUser(item)">
-            {{item.name}}
-            >
-          </div>
-        </div>
-        <div>
-          <ul>
-            <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
-              <em v-if="item.type=='USER'">
-                <el-checkbox @change="checkMember($event,item)" v-model="value[index]">{{item.name}}</el-checkbox>
-              </em>
-              <em v-else>{{item.name}}</em>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="roulewidth roulemodel">
-        <div class="rouleselect">
-          <em>已选{{roulelist.length}}人</em>
-          <em @click="clearMember">清空</em>
-        </div>
-        <div class="roulelist">
-          <ul>
-            <li v-for="(item,index) in roulelist" :key="index">
-              <img src alt class="rouleimg" />
-              <em>{{item.userName}}</em>
-            </li>
-          </ul>
-        </div>
-      </div>-->
     </div>
   </div>
 </template>
@@ -307,6 +88,7 @@ export default {
       value: [],
       selectList: [],
       keyWord: '',
+      light: 0,
     };
   },
   mounted() {
@@ -314,19 +96,24 @@ export default {
     this.getqueryOrgAndUser({});
   },
   methods: {
+    checkName(name) {
+      return name.substring(name.length - 2);
+    },
     clearUser() {
       this.getqueryOrgAndUser({});
       this.selectList = [];
+      this.light = 0;
     },
     getqueryOrgAndUser(item) {
       if (item.type == 'USER') return false;
       this.selectList[item.level - 2] = item;
+      this.light = item.id;
       this.selectList.splice((item.level - 1), this.selectList.length - (item.level - 2));
       this.server.queryOrgAndUser({
         orgId: item.id,
       }).then((res) => {
         if (res.code == 200) {
-          this.data = res.data;
+          this.data = res.data.reverse();
         }
       });
     },
@@ -369,6 +156,10 @@ export default {
       });
     },
     fuzzyQueryUser() {
+      if (this.keyWord == '') {
+        this.getqueryOrgAndUser({});
+        return false;
+      }
       this.server.fuzzyQueryUser({
         keyWord: this.keyWord,
       }).then((res) => {
