@@ -6,13 +6,16 @@
 
 <script>
 import echartPage from '../../component/echartPage';
+import Server from '../server';
 
+const server = new Server();
 export default {
   name: 'okrRiskTotal',
   data() {
     return {
       option: '',
       widthHeight: '',
+      server,
     };
   },
   components: {

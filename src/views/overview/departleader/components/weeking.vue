@@ -40,11 +40,14 @@
 
 <script>
 import echarts from 'echarts';
+import Server from '../server';
 
+const server = new Server();
 export default {
   name: 'weeking',
   data() {
     return {
+      server,
       tableData: [
         {
           name: '陆涛',
@@ -87,8 +90,14 @@ export default {
   mounted() {
     this.init();
     this.initMood();
+    this.getriskStatistics();
   },
   methods: {
+    getriskStatistics() {
+      this.server.riskStatistics().then((res) => {
+        console.log(res);
+      });
+    },
     init() {
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
