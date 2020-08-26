@@ -68,13 +68,13 @@
           >承接地图icon{{props.okritem.continueCount}}</el-button>
           <el-button
             v-if="searchForm.status=='1'"
-            @click.native.stop="openUpdate('tl-okr-update',props.okritem)"
+            @click.stop="openUpdate('tl-okr-update',props.okritem)"
           >更新进度</el-button>
         </template>
         <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>
       </tl-okr-table>
@@ -293,7 +293,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrMain.orgId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrId,
         },
       });
     },
