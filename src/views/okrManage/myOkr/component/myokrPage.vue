@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 搜索条件 -->
     <div>
       <!-- 选择状态 -->
       <dl style="display:flex">
@@ -8,6 +7,15 @@
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>
       </dl>
+    </div>
+    <!-- 状态为审批中需展示温馨提示 -->
+    <div v-if="searchForm.status=='7'">
+      <el-alert type="warning">
+        <div slot="title">
+          <i>温馨提示icon</i>
+          <span>审批成功后才展示变更后的内容</span>
+        </div>
+      </el-alert>
     </div>
     <!-- okr模块 只有起草中是有多个 -->
     <div v-for="(item, index) in okrList" :key="index">
@@ -71,6 +79,8 @@
         </template>
       </tl-okr-table>
     </div>
+    <!-- 无数据时展示 -->
+    <div>暂无数据</div>
     <el-drawer
       :wrapperClosable="false"
       :modal-append-to-body="false"
@@ -81,24 +91,24 @@
     >
       <div>
         <tl-writeokr
-          v-if="myokrDrawer && writeInfo.canWrite"
+          v-if="currentView=='tl-okr-history' && myokrDrawer && writeInfo.canWrite"
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>
         <tl-okr-history
-          v-if="currentView=='tl-okr-history' && myokrDrawer"
+          v-else-if="currentView=='tl-okr-history' && myokrDrawer"
           ref="tl-okr-history"
           :server="server"
           :okrId="okrId"
         ></tl-okr-history>
         <tl-okr-detail
-          v-if="currentView=='tl-okr-detail' && myokrDrawer"
+          v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
           ref="tl-okr-detail"
           :server="server"
           :okrId="okrId"
         ></tl-okr-detail>
         <tl-okr-update
-          v-if="currentView=='tl-okr-update' && myokrDrawer"
+          v-else-if="currentView=='tl-okr-update' && myokrDrawer"
           ref="tl-okr-update"
           :server="server"
           :okrId="okrId"
@@ -194,6 +204,7 @@ export default {
 
       }).then((res) => {
         if (res.code == 200) {
+          // 如果是草稿、退回、审批中回显json串
           if (['6', '7', '8'].includes(this.searchForm.status)) {
             this.okrList = [];
             const draftList = res.data || [];
@@ -227,7 +238,7 @@ export default {
         }
       });
     },
-    // 打开抽屉
+    // 打开详情
     openDialog(val) {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
@@ -239,6 +250,7 @@ export default {
         this.$refs[this.currentView].showOkrDialog();
       });
     },
+    // 打开更新进度
     openUpdate(componentName, val) {
       this.okrItem = val;
       this.drawerTitle = '更新进度';
@@ -249,17 +261,17 @@ export default {
       });
     },
     goChangeOkr() {
+      // TODO: 弹框标题
       this.drawerTitle = '华润云第三季度OKR';
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
         periodId: this.okrCycle.periodId,
       };
-      this.currentView = '';
+      this.currentView = 'tl-writeokr';
       this.setMyokrDrawer(true);
     },
     goDraft(item) {
-      console.log('goDraft', item.params);
       this.drawerTitle = '编辑';
       this.writeInfo = {
         canWrite: 'draft',
@@ -268,6 +280,7 @@ export default {
         okrStatus: this.searchForm.status,
         okrorgCycle: this.okrorgCycle,
       };
+      this.currentView = 'tl-writeokr';
       this.setMyokrDrawer(true);
     },
     handleClose() {

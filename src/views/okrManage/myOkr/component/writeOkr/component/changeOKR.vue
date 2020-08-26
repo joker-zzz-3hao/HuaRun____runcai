@@ -33,7 +33,7 @@
     >
       <!-- 在o下新增kr -->
       <template slot="addkr-bar" slot-scope="props">
-        <form :model="props.oitem">
+        <el-form>
           <div v-if="props.oitem.newkrList">
             <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
               <dt>KR</dt>
@@ -84,7 +84,7 @@
           </div>
           <div style="display:none">{{props.oitem.newkrList}}</div>
           <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
-        </form>
+        </el-form>
       </template>
     </okrCollapse>
     <!-- 新增okr -->
@@ -99,7 +99,11 @@
     <!-- 变更原因 -->
     <div>
       <span>变更原因</span>
-      <el-input type="textarea" v-model="modifyReason"></el-input>
+      <el-form>
+        <el-form-item>
+          <el-input type="textarea" v-model="modifyReason"></el-input>
+        </el-form-item>
+      </el-form>
     </div>
     <!-- 提交 -->
     <div>

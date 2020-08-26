@@ -49,7 +49,7 @@
       <dl>
         <dd>
           <el-form-item label="更新说明">
-            <el-input v-model="formData.updateexplain"></el-input>
+            <el-input maxlength="200" v-model="formData.updateexplain"></el-input>
           </el-form-item>
         </dd>
       </dl>

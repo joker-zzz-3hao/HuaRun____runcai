@@ -386,12 +386,13 @@ export default {
             delete oitem.departokrList;
             delete oitem.philosophyList;
           });
+
           if (opercent != 100) {
-            this.$message('o权重相加不等100~');
+            this.$message('！ 权重值不足100%');
             return;
           }
           if (keypercent != 100) {
-            this.$message('kr权重相加不等100~');
+            this.$message('！ 权重值不足100%');
             return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
@@ -401,14 +402,13 @@ export default {
           this.server.addokr(this.formData).then((res) => {
             console.log(res);
             if (res.code == 200) {
-              this.$message('提交成功~');
+              this.$message('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
               // this.$emit('handleClose');
               // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             } else {
-              console.log('重复提交');
               this.$message(res.msg);
             }
           });
@@ -427,7 +427,7 @@ export default {
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
           if (res.code == 200) {
-            this.$message('提交成功~');
+            this.$message('已保存');
             this.$refs.dataForm.resetFields();
             // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             this.setCreateokrDrawer(false);
