@@ -1,12 +1,11 @@
 <template>
   <div class="okrRiskTotal">
     <div></div>
-    <tl-echart-page idName="okrRiskTotal" :option="option"></tl-echart-page>
+    <tl-echart-page idName="okrRiskTotal" :option="option" :widthHeight="widthHeight"></tl-echart-page>
   </div>
 </template>
 
 <script>
-import echarts from 'echarts';
 import echartPage from '../../component/echartPage';
 
 export default {
@@ -14,6 +13,7 @@ export default {
   data() {
     return {
       option: '',
+      widthHeight: '',
     };
   },
   components: {
@@ -24,8 +24,7 @@ export default {
   },
   methods: {
     init() {
-      const myChart = echarts.init(document.getElementById('okrRiskTotal'));
-      const option = {
+      this.option = {
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)',
@@ -60,8 +59,10 @@ export default {
           },
         ],
       };
-
-      myChart.setOption(option);
+      this.widthHeight = {
+        width: '400px',
+        height: '400px',
+      };
     },
   },
 };
