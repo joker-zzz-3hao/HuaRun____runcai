@@ -388,11 +388,11 @@ export default {
           });
 
           if (opercent != 100) {
-            this.$message('！ 权重值不足100%');
+            this.$message('！ 目标O权重值必须为100');
             return;
           }
           if (keypercent != 100) {
-            this.$message('！ 权重值不足100%');
+            this.$message('！ 结果KR权重值必须为100');
             return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
