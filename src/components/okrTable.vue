@@ -54,7 +54,9 @@
               </li>
               <li>
                 <!-- okrDetailConfidence -->
-                <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
+                <div v-for="item in new Array(3)" :key="item">
+                  <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
+                </div>
                 <span>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
               </li>
             </ul>

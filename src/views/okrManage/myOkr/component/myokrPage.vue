@@ -106,6 +106,7 @@
           ref="tl-okr-detail"
           :server="server"
           :okrId="okrId"
+          :CONST="CONST"
         ></tl-okr-detail>
         <tl-okr-update
           v-else-if="currentView=='tl-okr-update' && myokrDrawer"
@@ -135,7 +136,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTable';
-import okrDetail from './okrDetail';
+import okrDetail from '@/components/okrDetail';
 import okrUpdate from './okrUpdate';
 import okrHistory from './okrHistory';
 import writeOkr from './writeOkr/index';

@@ -62,7 +62,22 @@
     </div>
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
-    <tl-okr-detail ref="okrDetail" :dialogExist.sync="dialogExist" :okrId="okrId" :server="server"></tl-okr-detail>
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      :title="drawerTitle"
+      :visible.sync="myokrDrawer"
+      size="50%"
+      :before-close="handleClose"
+    >
+      <tl-okr-detail
+        v-if="myokrDrawer"
+        ref="okrdetail"
+        :server="server"
+        :okrId="okrId"
+        :CONST="CONST"
+      ></tl-okr-detail>
+    </el-drawer>
   </div>
 </template>
 
@@ -126,6 +141,8 @@ export default {
       dialogExist: false,
       okrId: '',
       searchData: [],
+      myokrDrawer: false,
+      drawerTitle: 'OKR详情',
     };
   },
   components: {
@@ -236,10 +253,14 @@ export default {
     },
     showDetail(okrId) {
       this.okrId = okrId;
+      this.drawerTitle = 'OKR详情';
+      this.myokrDrawer = true;
       this.$nextTick(() => {
-        this.$refs.okrDetail.showOkrDialog();
-        this.dialogExist = true;
+        this.$refs.okrdetail.showOkrDialog();
       });
+    },
+    handleClose() {
+      this.myokrDrawer = false;
     },
   },
 };

@@ -136,8 +136,9 @@
               </li>
               <li>
                 <span>风险状态</span>
-                <!-- okrDetailConfidence -->
-                <span>{{kritem.okrDetailConfidence}}</span>
+                <div v-for="item in new Array(3)" :key="item">
+                  <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
+                </div>
               </li>
             </ul>
             <!-- 可在折叠面板body处添加内容 -->
@@ -151,6 +152,7 @@
 </template>
 
 <script>
+import riskStatus from '@/components/riskStatus';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
@@ -159,7 +161,10 @@ export default {
   name: 'okrCollapse',
   mixins: [validateMixin],
   components: {
-    elcollapse, elcollapseitem,
+    elcollapse,
+    elcollapseitem,
+    'tl-riskStatus': riskStatus,
+
   },
   data() {
     return {

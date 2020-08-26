@@ -35,7 +35,7 @@
         :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog(item)"
+        @openDialog="openDialog()"
         :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
@@ -82,7 +82,13 @@
       size="50%"
       :before-close="handleClose"
     >
-      <tl-okr-detail v-if="myokrDrawer" ref="okrdetail" :server="server" :okrId="okrId"></tl-okr-detail>
+      <tl-okr-detail
+        v-if="myokrDrawer"
+        ref="okrdetail"
+        :server="server"
+        :okrId="okrId"
+        :CONST="CONST"
+      ></tl-okr-detail>
     </el-drawer>
   </div>
 </template>
@@ -111,6 +117,7 @@ export default {
       },
       tableList: [], // okr列表
       memberList: [], // 成员列表
+      orgTable: [], // 部门列表
       okrMain: { // okr公共信息
         userName: '',
         okrProgress: 0,
