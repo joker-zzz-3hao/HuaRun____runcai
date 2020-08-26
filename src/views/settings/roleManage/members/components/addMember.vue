@@ -30,7 +30,7 @@ import Server from '../server';
 
 const server = new Server();
 export default {
-  name: 'home',
+  name: 'addMember',
   props: {
     title: {
       type: String,
