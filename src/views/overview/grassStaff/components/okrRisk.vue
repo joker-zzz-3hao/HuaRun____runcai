@@ -3,7 +3,7 @@
     <div id="okrRiskTotal"></div>
     <div class="model">
       <div>周报</div>
-      <el-select v-model="value" placeholder="请选择">
+      <el-select placeholder="请选择">
         <el-option>2020年07月 第三周</el-option>
       </el-select>
       <el-table :data="tableData" :show-header="false" style="width: 100%">

@@ -31,6 +31,6 @@ export default class Server extends ServerBase {
   }
 
   queryOrgAndUser(param) {
-    return this._ajaxPost('gateway/system-service//sys/organization/queryOrgAndUser', param);
+    return this._ajaxPost('gateway/system-service/sys/organization/queryOrgAndUser', param);
   }
 }
