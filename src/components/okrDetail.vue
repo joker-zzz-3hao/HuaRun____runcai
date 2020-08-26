@@ -1,56 +1,98 @@
 <template>
-  <el-dialog
-    :title="dialogTitle"
-    :visible.sync="dialogDetailVisible"
-    width="50%"
-    :modal-append-to-body="false"
-    :before-close="close"
-    @closed="closed"
-  >
-    <!-- 公共信息 -->
-    <div>
-      <ul>
-        <li>
-          <span>目标类型</span>
-          <!-- <span>{{CONST.OKR_TYPE[okrmain.okrBelongType]}}</span> -->
-          <span>{{okrmain.okrBelongType}}</span>
-        </li>
-        <li>
-          <span>负责人</span>
-          <span>{{okrmain.userName}}</span>
-        </li>
-        <li>
-          <span>更新时间</span>
-          <span>{{okrmain.updateTime}}</span>
-        </li>
-        <li>
-          <span>进度</span>
-          <span>
-            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <!-- okr折叠面板 -->
-    <okrCollapse :tableList="tableList" :activeList="activeList" :disabled="true"></okrCollapse>
-    <!-- 操作历史 -->
-    <div>
-      <span>操作历史</span>
-      <timeline :cycleList="cycleList"></timeline>
-    </div>
-    <!-- 点赞 -->
+  <div>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="详情" name="detail">
+        <!-- 公共信息 -->
+        <div>
+          <ul>
+            <li>
+              <span>目标类型</span>
+              <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
+            </li>
+            <li>
+              <span>负责人</span>
+              <span>{{okrmain.userName}}</span>
+            </li>
+            <li>
+              <span>更新时间</span>
+              <span>{{okrmain.updateTime || okrmain.createTime}}</span>
+            </li>
+            <li>
+              <span>进度</span>
+              <span>
+                <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <!-- okr折叠面板 -->
+        <tl-okr-collapse :tableList="tableList" :activeList="activeList" :showParentOkr="false">
+          <template slot="head-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+          <template slot="body-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+        </tl-okr-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="操作历史" name="history">
+        <!-- 操作历史 -->
+        <div>
+          <span>操作历史</span>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in cycleList"
+              :key="index"
+              :timestamp="activity.createTime"
+              placement="top"
+            >
+              <div>
+                <div>{{activity.userName}}</div>
+                <ul v-for="(conitem,index) in activity.changeContent" :key="index">
+                  <li v-if="conitem.historyType == '1'">
+                    <span>变更</span>
+                    {{conitem.oldOkrDetailObjectKr}}
+                    <span>为</span>
+                    <span>{{conitem.okrDetailObjectKr}}</span>
+                  </li>
+                  <li v-if="conitem.historyType == '2'"></li>
+                </ul>
+              </div>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <!-- 点赞要一直浮着 -->
     <div>
       <ul style="display:flex">
-        <li v-for="(item,index) in voteUser" :key="item.userId+index">{{item.userName}}</li>
         <el-button v-if="showLike" @click="like()">点赞</el-button>
+        <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+          <div class="user-name">{{cutName(item.userName)}}</div>
+        </li>
       </ul>
     </div>
-  </el-dialog>
+    <el-drawer title="历史版本" :modal="false" :visible.sync="innerDrawer">
+      <tl-okr-history
+        v-if="innerDrawer"
+        ref="tl-okr-history"
+        :server="server"
+        :okrId="okrId"
+        :okrDetailId="okrDetailId"
+      ></tl-okr-history>
+    </el-drawer>
+  </div>
 </template>
 
 <script>
 import okrCollapse from '@/components/okrCollapse';
-import timeline from '@/components/timeLine';
+import okrHistory from './okrHistory';
 
 export default {
   name: 'okrDetail',
@@ -61,15 +103,17 @@ export default {
       okrmain: {}, // 公共信息
       canWrite: true, // true写okr false okr详情
       dialogTitle: 'OKR详情', // 弹框标题
-      dialogDetailVisible: false,
       cycleList: [], // 操作历史
       showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
+      innerDrawer: false,
+      activeName: 'detail',
+      okrDetailId: '',
     };
   },
   components: {
-    okrCollapse,
-    timeline,
+    'tl-okr-history': okrHistory,
+    'tl-okr-collapse': okrCollapse,
   },
   props: {
     dialogExist: {
@@ -83,6 +127,12 @@ export default {
     okrId: {
       type: String,
     },
+    CONST: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   computed: {
     // 生成数字序列（用于打开okrCollapse
@@ -94,9 +144,6 @@ export default {
     },
   },
   created() {
-    this.getokrDetail();
-    this.getSupportList();
-    this.getOperationHistory();
   },
   methods: {
     // 查okr详情
@@ -140,21 +187,31 @@ export default {
       }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.cycleList = res.data.records;
+          this.cycleList = res.data.content;
         }
       });
     },
-    // 控制弹窗
+    //
     showOkrDialog() {
-      console.log('kongzhi');
-      this.dialogDetailVisible = true;
       this.getokrDetail();
+      this.getSupportList();
+      this.getOperationHistory();
     },
-    close() {
-      this.dialogDetailVisible = false;
+    // 打开历史版本
+    openHistory(id, name) {
+      console.log(name);
+      this.okrDetailId = id;
+      this.innerDrawer = true;
     },
-    closed() {
-      this.$emit('update:dialogExist', false);
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
+    splitContent(content) {
+      if (content) {
+        return content.split(';');
+      }
+      return '';
     },
   },
   watch: {
