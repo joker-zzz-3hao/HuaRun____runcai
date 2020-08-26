@@ -777,6 +777,10 @@
   order: 1;
 }
 
+.tl-transfer-select .el-scrollbar__wrap {
+  overflow-y: scroll;
+}
+
 /* 标记 */
 .badge {
   position: absolute;
