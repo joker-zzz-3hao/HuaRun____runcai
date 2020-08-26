@@ -95,12 +95,6 @@
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>
-        <tl-okr-history
-          v-else-if="currentView=='tl-okr-history' && myokrDrawer"
-          ref="tl-okr-history"
-          :server="server"
-          :okrId="okrId"
-        ></tl-okr-history>
         <tl-okr-detail
           v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
           ref="tl-okr-detail"
@@ -116,20 +110,8 @@
           :okrItem="okrItem"
           :periodId="okrCycle.periodId"
         ></tl-okr-update>
-        <!-- <component
-          v-else
-          :ref="currentView"
-          v-bind:is="currentView"
-          :server="server"
-          :okrId="okrId"
-          :okrItem="okrItem"
-        ></component>-->
       </div>
     </el-drawer>
-
-    <!-- <okr-history ref="okr-history" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-history>
-    <okr-detail ref="okr-detail" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-detail>
-    <okr-update ref="okr-update" :server="server" :okrId="okrId" :dialogExist.sync="dialogExist"></okr-update>-->
   </div>
 </template>
 
@@ -138,7 +120,6 @@ import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './okrUpdate';
-import okrHistory from './okrHistory';
 import writeOkr from './writeOkr/index';
 import Server from '../server';
 import CONST from '../const';
@@ -150,7 +131,6 @@ export default {
   components: {
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
-    'tl-okr-history': okrHistory,
     'tl-okr-table': okrTable,
     'tl-writeokr': writeOkr,
   },
