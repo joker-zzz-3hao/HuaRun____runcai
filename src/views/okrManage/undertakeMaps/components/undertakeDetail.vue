@@ -134,6 +134,7 @@ export default {
             if (pitem.length > 0) {
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
+                // eslint-disable-next-line max-len
                 citem.okrDetailProgress = (contentObject.afterOkrDetailProgress - contentObject.beforeOkrDetailProgress) || 0;
                 citem.remark = contentObject.remark || '暂无';
               });

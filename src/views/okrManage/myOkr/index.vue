@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       server,
-      activeName: 'team',
+      activeName: 'myokr',
       cycleData: [], // 周期列表
       cycleDefaultProps: { // 周期数据类型
         children: 'children',
@@ -102,7 +102,7 @@ export default {
     // TODO:部门名
     this.departmentName = this.userInfo.orgParentName || '部门';
     this.userName = this.userInfo.userName || '管理员';
-    this.activeName = this.$route.params.activeName || 'team';
+    this.activeName = this.$route.params.activeName || 'myokr';
   },
   methods: {
     ...mapMutations('common', ['setCreateokrDrawer']),
@@ -140,8 +140,6 @@ export default {
     },
     goWriteOkr() {
       this.setCreateokrDrawer(true);
-      // this.drawer = true;
-      // this.$router.push({ name: 'writeOkr', params: { canWrite: true, okrorgCycle: this.okrorgCycle } });
     },
     handleClose() {
       this.setCreateokrDrawer(false);
