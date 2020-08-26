@@ -23,6 +23,6 @@ export default class Server extends ServerBase {
 
   // 获取公司价值观
   getValues(param) {
-    return this._ajaxPost('gateway/crcloud-okrManage/getphilosophy', param);
+    return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
 }
