@@ -33,16 +33,6 @@ const mockData = {
     })));
   },
   // author：林心荃
-  // 用于：查公司价值观
-  'POST /gateway/crcloud-okrManage/getphilosophy': (req, res) => {
-    res.send(mockUtil.getSuccessData(Mock.mock({
-      'ARRAY|4': [{
-        'philosophyid|+1': 1,
-        'philosophy|1': ['成就客户', '创新成长', '成人达已', '追求极致'],
-      }],
-    })));
-  },
-  // author：林心荃
   // 用于：承接地图
   'POST /gateway/talent-query/okr/query/okrContinueMap': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({

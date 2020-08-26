@@ -9,10 +9,6 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/crcloud-okrManage/getTimeCycle', param);
   }
 
-  getphilosophy(param) {
-    return this._ajaxPost('gateway/crcloud-okrManage/getphilosophy', param);
-  }
-
   getokrDetail(param) {
     return this._ajaxPost(`gateway/talent-query/okr/query/okrDetail?okrId=${param.okrId}`);
   }
