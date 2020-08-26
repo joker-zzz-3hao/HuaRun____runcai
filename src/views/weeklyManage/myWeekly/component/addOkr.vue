@@ -16,47 +16,43 @@
       <div>
         <!-- <span>选择团队</span>
         <el-select v-model="team">
-          <el-option
-            v-for="item in "
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+          <el-option v-for="item in " :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>-->
+        <span>
+          <span>团队：</span>
+          <span>{{userInfo.orgName}}</span>
+        </span>
+        <span style="marginLeft:100px">
+          <span>个人：</span>
+          <span>{{userInfo.userName}}</span>
+        </span>
       </div>
       <div>
         <h4>团队目标</h4>
-        <el-checkbox
-          style
-          v-model="teamTarget.checked"
-          v-for="teamTarget in orgOkrList"
-          :key="teamTarget.okrDetailId"
-        >
-          <span>{{teamTarget.indexText}}</span>
-          {{teamTarget.okrDetailObjectKr}}
-        </el-checkbox>
+        <div v-for="teamTarget in orgOkrList" :key="teamTarget.okrDetailId">
+          <el-checkbox v-model="teamTarget.checked" @change="orgOkrChange(teamTarget)">
+            <span>{{teamTarget.indexText}}</span>
+            {{teamTarget.okrDetailObjectKr}}
+          </el-checkbox>
+        </div>
       </div>
       <div>
         <h4>个人目标</h4>
-        <el-checkbox
-          v-model="teamTarget.checked"
-          v-for="teamTarget in myOkrList"
-          :key="teamTarget.okrDetailId"
-        >
-          <span>{{teamTarget.indexText}}</span>
-          {{teamTarget.okrDetailObjectKr}}
-        </el-checkbox>
+        <div v-for="personalTarget in myOkrList" :key="personalTarget.okrDetailId">
+          <el-checkbox v-model="personalTarget.checked" @change="orgOkrChange(personalTarget)">
+            <span>{{personalTarget.indexText}}</span>
+            {{personalTarget.okrDetailObjectKr}}
+          </el-checkbox>
+        </div>
       </div>
       <div>
         <h4>公司价值观</h4>
-        <el-checkbox
-          v-model="teamTarget.checked"
-          v-for="teamTarget in teamTargetList"
-          :key="teamTarget.id"
-        >
-          <span>{{teamTarget.targetType}}</span>
-          {{teamTarget.name}}
-        </el-checkbox>
+        <div v-for="culture in cultureList" :key="culture.id">
+          <el-checkbox
+            v-model="culture.checked"
+            @change="cultureChange(culture)"
+          >{{culture.cultureName}}</el-checkbox>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -86,7 +82,9 @@ export default {
       initUserAccount: '',
       myOkrList: [],
       orgOkrList: [],
-
+      okrIdList: [],
+      cultureList: [],
+      cultureIdList: [],
     };
   },
   created() {
@@ -143,12 +141,14 @@ export default {
       for (const okr of okrDetails) {
         oIndex += 1;
         okr.indexText = `目标O${oIndex}`;
+        okr.checked = false;
         tempResult.push(okr);
         if (okr.krList && okr.krList.length > 0) {
           let krIndex = 0;
           for (const kr of okr.krList) {
             krIndex += 1;
             kr.indexText = `KR${krIndex}`;
+            kr.checked = false;
             tempResult.push(kr);
           }
         }
@@ -162,9 +162,26 @@ export default {
     getValues() {
       this.server.getValues().then((res) => {
         if (res.code == 200) {
-          this.valueList = res.data;
+          this.cultureList = res.data;
         }
       });
+    },
+    orgOkrChange(okr) {
+      if (okr.checked) {
+        this.okrIdList.push(okr.okrDetailId);
+      } else {
+        this.okrIdList = this.okrIdList.filter((orgId) => orgId != okr.okrDetailId);
+      }
+      this.$forceUpdate();
+      console.log(this.okrIdList);
+    },
+    cultureChange(culture) {
+      if (culture.checked) {
+        this.cultureIdList.push(culture.id);
+      } else {
+        this.cultureIdList = this.cultureIdList.filter((cultureId) => cultureId != culture.id);
+      }
+      console.log(this.cultureIdList);
     },
   },
   watch: {},
