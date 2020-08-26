@@ -66,7 +66,7 @@
             <span>{{scope.row.workProgress}}%</span>
           </template>
         </el-table-column>
-        <el-table-column label="推进工时" prop="workTime">
+        <el-table-column width="220" label="推进工时" prop="workTime">
           <template slot-scope="scope">
             <el-input-number
               v-model.trim="scope.row.workTime"
@@ -78,7 +78,11 @@
         </el-table-column>
         <el-table-column label="关联项目" prop="projectId">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.projectId" filterable placeholder="请选择">
+            <el-select
+              v-model="scope.row.projectId"
+              filterable
+              :placeholder="scope.row.projectPlaceholder"
+            >
               <el-option
                 v-for="item in projectList"
                 :key="item.calendarId"
@@ -86,7 +90,7 @@
                 :value="item.calendarId"
               ></el-option>
             </el-select>
-            <a style="cursor:pointer" @click="selectTempPro">临时项目</a>
+            <a style="cursor:pointer" @click="selectTempPro(scope.row)">临时项目</a>
             <el-tooltip
               class="item"
               effect="dark"
@@ -101,16 +105,42 @@
         <el-table-column label="支持OKR/价值观" prop="okrCultureValueIds">
           <!-- okrIds -->
           <template slot-scope="scope">
-            <el-input v-model.trim="scope.row.workContent" clearable placeholder="请用选择所支持OKR/价值观"></el-input>
+            <el-input
+              v-if="scope.row.selectedOkr.length < 1"
+              @focus="addOkr(scope.row)"
+              v-model.trim="scope.row.workContent"
+              clearable
+              placeholder="请用选择所支持OKR/价值观"
+            ></el-input>
             <div>
-              <span class="okr-selected" v-for="item in selectedOkr" :key="item.id">
-                <el-tooltip class="item" effect="dark" :content="item.name" placement="top-end">
-                  <span>{{setOkrStyle(item.name)}}</span>
+              <span
+                class="okr-selected"
+                v-for="item in scope.row.selectedOkr"
+                :key="item.okrDetailId"
+              >
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="item.okrDetailObjectKr"
+                  placement="top-end"
+                >
+                  <span>
+                    {{setOkrStyle(item.okrDetailObjectKr)}}
+                    <i
+                      @click="deleteOkr(item,scope.row.randomId)"
+                      style="cursor:pointer"
+                      class="el-icon-close"
+                    ></i>
+                  </span>
                 </el-tooltip>
-                <i @click="deleteOkr(item)" style="cursor:pointer" class="el-icon-close"></i>
               </span>
             </div>
-            <i style="cursor:pointer" @click="addOkr" class="el-icon-plus"></i>
+            <i
+              v-show="scope.row.selectedOkr.length > 0"
+              style="cursor:pointer"
+              @click="addOkr(scope.row)"
+              class="el-icon-plus"
+            ></i>
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="code">
@@ -128,8 +158,78 @@
       </el-table>
       <el-button @click="addItem" style>新增</el-button>
     </div>
+    <!-- 本周感想、建议、收获 -->
+    <div style="marginTop:50px">
+      <h1>本周感想、建议、收获</h1>
+      <div v-for="thoughts in thoughtsList" :key="thoughts.randomId">
+        <span>
+          <el-button
+            @click="thoughtTypeChange(thoughts,0)"
+            :class="{'is-thoughts': thoughts.thoughtType == 0}"
+          >感想</el-button>
+          <el-button
+            @click="thoughtTypeChange(thoughts,1)"
+            :class="{'is-suggest': thoughts.thoughtType == 1}"
+          >建议</el-button>
+          <el-button
+            @click="thoughtTypeChange(thoughts,2)"
+            :class="{'is-harvest': thoughts.thoughtType == 2}"
+          >收获</el-button>
+          <el-input v-model.trim="thoughts.thoughtContent" style="width:60%" type="textarea"></el-input>
+          <i
+            style="cursor:pointer"
+            class="el-icon-minus"
+            @click="deleteThoughts(thoughts.randomId)"
+          ></i>
+          <i
+            style="cursor:pointer"
+            v-if="thoughts.randomId == thoughtsList[thoughtsList.length-1].randomId"
+            class="el-icon-plus"
+            @click="addThoughts"
+          ></i>
+        </span>
+      </div>
+      <!-- 下周计划 -->
+      <div style="marginTop:50px">
+        <h1>下周计划</h1>
+        <el-table ref="dicTable" v-loading="tableLoading" :data="tableData">
+          <el-table-column label="序号" type="index"></el-table-column>
+          <el-table-column label="工作项" prop="workContent">
+            <template slot-scope="scope">
+              <el-input
+                v-model.trim="scope.row.workContent"
+                maxlength="50"
+                clearable
+                placeholder="请用一句话概括某项工作，不超过100个字符"
+              ></el-input>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作" prop="code">
+            <template slot-scope="scope">
+              <el-dropdown @command="deleteItem(scope.row)">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>删除</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+
     <!-- 添加支撑项 -->
-    <add-okr ref="addOkr" v-if="showAddOkr" :server="server" @closeOkrDialog="closeOkrDialog"></add-okr>
+    <add-okr
+      ref="addOkr"
+      v-if="showAddOkr"
+      :currenItemrandomId="currenItemrandomId"
+      :selectedOkr="selectedOkr"
+      :server="server"
+      @closeOkrDialog="closeOkrDialog"
+    ></add-okr>
   </div>
 </template>
 
@@ -148,34 +248,14 @@ export default {
     return {
       server,
       tableLoading: false,
-
+      currenItemrandomId: '',
       showAddOkr: false,
       monthDate: this.dateFormat('YYYY-mm-dd', new Date()),
       tableData: [],
       projectList: [],
       weekList: [{}],
-      selectedOkr: [
-        {
-          id: '111',
-          code: '111',
-          name: '公司成功在上海主板上市',
-        },
-        {
-          id: '222',
-          code: '222',
-          name: '公司本年度盈利突破300亿人民币',
-        },
-        {
-          id: '333',
-          code: '333',
-          name: '融资100亿',
-        },
-        {
-          id: '444',
-          code: '444',
-          name: '倒闭了',
-        },
-      ],
+      selectedOkr: [],
+      thoughtsList: [],
     };
   },
 
@@ -183,7 +263,14 @@ export default {
     this.init();
   },
   computed: {
-
+    setOkrStyle() {
+      return (okr) => {
+        if (okr && okr.length > 5) {
+          return `${okr.slice(0, 5)}...`;
+        }
+        return okr;
+      };
+    },
   },
   methods: {
     init() {
@@ -191,6 +278,15 @@ export default {
       this.getWeek();
       // 获取项目列表
       this.getProjectList();
+      const randomId = Math.random().toString(36).substr(3);
+      this.thoughtsList.push({
+        thoughtContent: '好开心',
+        thoughtId: 'thoughtId',
+        thoughtType: 0,
+        weeklyId: 'weeklyId',
+        randomId,
+
+      });
     },
     getWeek(val) {
       if (val) {
@@ -270,6 +366,8 @@ export default {
         workProgress: 0,
         workTime: 0,
         randomId, // 添加随机id，用于删除环节
+        selectedOkr: [],
+        projectPlaceholder: '请选择项目',
       });
     },
     deleteItem(item) {
@@ -277,26 +375,58 @@ export default {
       // 本地数据
       this.tableData = this.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
     },
-    selectTempPro() {
-
+    selectTempPro(data) {
+      data.projectPlaceholder = '临时项目';
+      data.projectId = '';
     },
     showProList() {
     },
-    addOkr() {
+    addOkr(data) {
+      this.currenItemrandomId = data.randomId;
+      this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
       this.$nextTick(() => {
         this.$refs.addOkr.show();
       });
     },
-    deleteOkr() {},
-    setOkrStyle(okr) {
-      if (okr.length > 5) {
-        return `${okr.slice(0, 5)}...`;
+    deleteOkr(okr, randomId) {
+      for (const item of this.tableData) {
+        if (item.randomId == randomId) {
+          item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
+        }
       }
-      return okr;
     },
-    closeOkrDialog() {
+
+    closeOkrDialog(selectedData) {
+      for (const item of this.tableData) {
+        if (item.randomId == selectedData.currenItemrandomId) {
+          item.selectedOkr = selectedData.selectedOkrAndCulture;
+        }
+      }
       this.showAddOkr = false;
+      this.$forceUpdate();
+    },
+    addThoughts() {
+      const randomId = Math.random().toString(36).substr(3);
+      this.thoughtsList.push({
+        thoughtContent: '好开心',
+        thoughtId: 'thoughtId',
+        thoughtType: 0,
+        weeklyId: 'weeklyId',
+        randomId,
+
+      });
+    },
+    deleteThoughts(randomId) {
+      for (const item of this.thoughtsList) {
+        if (item.randomId == randomId) {
+          this.thoughtsList = this.thoughtsList.filter((element) => element.randomId != randomId);
+        }
+      }
+    },
+    thoughtTypeChange(thoughts, type) {
+      thoughts.thoughtType = type;
+      this.$forceUpdate();
     },
   },
 };
@@ -308,5 +438,14 @@ export default {
 .okr-selected {
   background: rgb(204, 198, 198);
   margin-left: 2px;
+}
+.is-thoughts {
+  background: rgb(123, 243, 197);
+}
+.is-suggest {
+  background: rgb(228, 241, 151);
+}
+.is-harvest {
+  background: rgb(95, 138, 218);
 }
 </style>

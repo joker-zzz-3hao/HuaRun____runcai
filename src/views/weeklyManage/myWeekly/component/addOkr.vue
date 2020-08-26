@@ -54,6 +54,10 @@
           >{{culture.cultureName}}</el-checkbox>
         </div>
       </div>
+      <div>
+        <el-button @click="confirm">确认</el-button>
+        <el-button @click="cancel">取消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -73,6 +77,18 @@ export default {
         return { };
       },
     },
+    currenItemrandomId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    selectedOkr: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
 
   },
   data() {
@@ -82,9 +98,9 @@ export default {
       initUserAccount: '',
       myOkrList: [],
       orgOkrList: [],
-      okrIdList: [],
+      selectedOkrList: [],
       cultureList: [],
-      cultureIdList: [],
+      selectedCultureList: [],
     };
   },
   created() {
@@ -95,6 +111,9 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    okrAndCulture() {
+      return [...this.myOkrList, ...this.orgOkrList];
+    },
   },
   methods: {
     init() {
@@ -105,12 +124,36 @@ export default {
     show() {
       this.visible = true;
     },
-    close(status) {
+    confirm() {
+      this.close();
+    },
+    close() {
       this.visible = false;
-      this.$emit('closeOkrDialog', { refreshPage: status == 'refreshPage' });
+      this.$emit('closeOkrDialog', { selectedOkrAndCulture: [...this.selectedOkrList, ...this.selectedCultureList], currenItemrandomId: this.currenItemrandomId });
     },
     cancel() {
       this.close();
+    },
+    initSelectedData() {
+      for (const item of this.selectedOkr) {
+        // 匹配okr
+        for (const okr of [...this.myOkrList, ...this.orgOkrList]) {
+          if (item.okrDetailId == okr.okrDetailId) {
+            okr.checked = true;
+            this.selectedOkrList.push(okr);
+          }
+        }
+        // 匹配价值观
+        for (const culture of this.cultureList) {
+          if (item.okrDetailId == culture.id) {
+            culture.checked = true;
+            this.selectedCultureList.push({
+              okrDetailId: culture.id,
+              okrDetailObjectKr: culture.cultureName,
+            });
+          }
+        }
+      }
     },
     queryTeamOrPersonalTarget(myOrOrg) {
       const params = {
@@ -168,23 +211,37 @@ export default {
     },
     orgOkrChange(okr) {
       if (okr.checked) {
-        this.okrIdList.push(okr.okrDetailId);
+        this.selectedOkrList.push(okr);
       } else {
-        this.okrIdList = this.okrIdList.filter((orgId) => orgId != okr.okrDetailId);
+        this.selectedOkrList = this.selectedOkrList.filter((item) => item.okrDetailId != okr.okrDetailId);
       }
       this.$forceUpdate();
-      console.log(this.okrIdList);
+      console.log(this.selectedOkrList);
     },
     cultureChange(culture) {
       if (culture.checked) {
-        this.cultureIdList.push(culture.id);
+        this.selectedCultureList.push({
+          okrDetailId: culture.id,
+          okrDetailObjectKr: culture.cultureName,
+        });
       } else {
-        this.cultureIdList = this.cultureIdList.filter((cultureId) => cultureId != culture.id);
+        this.selectedCultureList = this.selectedCultureList.filter((item) => item.okrDetailId != culture.id);
       }
-      console.log(this.cultureIdList);
+      this.$forceUpdate();
+      console.log(this.selectedCultureList);
     },
   },
-  watch: {},
+  watch: {
+    okrAndCulture: {
+      handler(val) {
+        if (val && this.myOkrList.length > 0 && this.orgOkrList.length > 0 && this.cultureList.length > 0) {
+          if (this.selectedOkr.length > 0) {
+            this.initSelectedData();
+          }
+        }
+      },
+    },
+  },
   updated() {},
   beforeDestroy() {},
 };
