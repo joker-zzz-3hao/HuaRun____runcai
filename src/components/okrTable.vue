@@ -35,6 +35,7 @@
             @click="opensome(item)"
             v-for="(kritem, krIndex) in item.krList"
             :key="kritem.detailId+krIndex"
+            style="display:flex"
           >
             <ul class="detail">
               <li>
