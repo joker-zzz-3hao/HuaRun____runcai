@@ -104,8 +104,10 @@
             <el-input v-model.trim="scope.row.workContent" clearable placeholder="请用选择所支持OKR/价值观"></el-input>
             <div>
               <span class="okr-selected" v-for="item in selectedOkr" :key="item.id">
-                {{item.name}}
-                <i @click="deleteOkr" style="cursor:pointer" class="el-icon-close"></i>
+                <el-tooltip class="item" effect="dark" :content="item.name" placement="top-end">
+                  <span>{{setOkrStyle(item.name)}}</span>
+                </el-tooltip>
+                <i @click="deleteOkr(item)" style="cursor:pointer" class="el-icon-close"></i>
               </span>
             </div>
             <i style="cursor:pointer" @click="addOkr" class="el-icon-plus"></i>
@@ -126,41 +128,57 @@
       </el-table>
       <el-button @click="addItem" style>新增</el-button>
     </div>
+    <!-- 添加支撑项 -->
+    <add-okr ref="addOkr" v-if="showAddOkr" :server="server" @closeOkrDialog="closeOkrDialog"></add-okr>
   </div>
 </template>
 
 <script>
+
 import Server from '../server';
+import addOkr from './addOkr';
 
 const server = new Server();
 export default {
   name: 'standardWeekly',
+  components: {
+    'add-okr': addOkr,
+  },
   data() {
     return {
       server,
       tableLoading: false,
-      showOkrData: false,
+
+      showAddOkr: false,
       monthDate: this.dateFormat('YYYY-mm-dd', new Date()),
       tableData: [],
       projectList: [],
       weekList: [{}],
       selectedOkr: [
         {
-          id: 111,
-          code: 111,
-          name: '公司上市',
+          id: '111',
+          code: '111',
+          name: '公司成功在上海主板上市',
         },
         {
-          id: 222,
-          code: 222,
-          name: '公司盈利',
+          id: '222',
+          code: '222',
+          name: '公司本年度盈利突破300亿人民币',
+        },
+        {
+          id: '333',
+          code: '333',
+          name: '融资100亿',
+        },
+        {
+          id: '444',
+          code: '444',
+          name: '倒闭了',
         },
       ],
     };
   },
-  components: {
 
-  },
   created() {
     this.init();
   },
@@ -265,10 +283,21 @@ export default {
     showProList() {
     },
     addOkr() {
-      // this.$refs.showOkrData
-      this.showOkrData = true;
+      this.showAddOkr = true;
+      this.$nextTick(() => {
+        this.$refs.addOkr.show();
+      });
     },
     deleteOkr() {},
+    setOkrStyle(okr) {
+      if (okr.length > 5) {
+        return `${okr.slice(0, 5)}...`;
+      }
+      return okr;
+    },
+    closeOkrDialog() {
+      this.showAddOkr = false;
+    },
   },
 };
 </script>
@@ -277,7 +306,7 @@ export default {
   background: rgb(2, 2, 2);
 }
 .okr-selected {
-  background: grey;
+  background: rgb(204, 198, 198);
   margin-left: 2px;
 }
 </style>

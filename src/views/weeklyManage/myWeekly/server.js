@@ -15,4 +15,14 @@ export default class Server extends ServerBase {
   queryWeekly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/get', param);
   }
+
+  // 查询团队目标、个人目标
+  queryTeamOrPersonalTarget(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
+
+  // 获取公司价值观
+  getValues(param) {
+    return this._ajaxPost('gateway/crcloud-okrManage/getphilosophy', param);
+  }
 }
