@@ -53,16 +53,8 @@
               placement="top"
             >
               <div>
-                <div>{{activity.userName}}</div>
-                <ul v-for="(conitem,index) in activity.changeContent" :key="index">
-                  <li v-if="conitem.historyType == '1'">
-                    <span>变更</span>
-                    {{conitem.oldOkrDetailObjectKr}}
-                    <span>为</span>
-                    <span>{{conitem.okrDetailObjectKr}}</span>
-                  </li>
-                  <li v-if="conitem.historyType == '2'"></li>
-                </ul>
+                <div>张三{{activity.userName}}</div>
+                <div>{{activity.content}}</div>
               </div>
             </el-timeline-item>
           </el-timeline>
@@ -188,6 +180,10 @@ export default {
         console.log(res.code);
         if (res.code == 200) {
           this.cycleList = res.data.content;
+          this.cycleList.forEach((item) => {
+            console.log(item.content);
+            item.content = JSON.parse(item.content);
+          });
         }
       });
     },

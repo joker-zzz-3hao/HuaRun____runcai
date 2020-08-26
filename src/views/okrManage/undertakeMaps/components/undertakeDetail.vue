@@ -32,31 +32,37 @@
     </div>
     <div>
       <dl v-for="(pitem,index) in personList" :key="index">
-        <dt v-if="index==0">{{pitem.userName}}</dt>
-        <dd v-for="(okritem,okrindex) in pitem" :key="okrindex">
-          <ul>
-            <li>{{okritem.createTime}}</li>
-            <li>
-              <span>目标O</span>
-              <span>{{okritem.okrDetailtitle}}</span>
-            </li>
-            <li>
-              <span>更新说明</span>
-              <span>{{okritem.content}}</span>
-            </li>
-            <li>
-              <span>来自</span>
-              <span>{{okritem.operateType}}</span>
-            </li>
-            <li>
-              <span>本次更新进度+</span>
-              <span>{{okritem.okrDetailProgress}}%</span>
-            </li>
-            <!-- <li>
-              <el-button @click="duiqi">已对启</el-button>
-            </li>-->
-          </ul>
-        </dd>
+        <dt v-if="index==0">
+          <span>{{pitem[0].userName}}</span>
+          <span>({{pitem.length}})</span>
+        </dt>
+        <el-timeline>
+          <el-timeline-item
+            v-for="(okritem, okrindex) in pitem"
+            :key="okrindex"
+            :timestamp="okritem.createTime"
+            placement="top"
+          >
+            <div>
+              <dd>
+                <span>目标O{{okritem.okrDetailType}}</span>
+                <span>{{okritem.okrContent}}</span>
+              </dd>
+              <dd>
+                <span>更新说明</span>
+                <span>{{okritem.remark}}</span>
+              </dd>
+              <dd>
+                <span>来自-</span>
+                <span>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
+              </dd>
+              <dd>
+                <span>本次更新进度+</span>
+                <span>{{okritem.okrDetailProgress}}%</span>
+              </dd>
+            </div>
+          </el-timeline-item>
+        </el-timeline>
       </dl>
     </div>
     <tl-update-progress
@@ -123,7 +129,16 @@ export default {
         okrDetailId: this.okrDetailId,
       }).then((res) => {
         if (res.code == 200) {
-          this.personList = res.data;
+          this.personList = res.data || [];
+          this.personList.forEach((pitem) => {
+            if (pitem.length > 0) {
+              pitem.forEach((citem) => {
+                const contentObject = JSON.parse(citem.content) || {};
+                citem.okrDetailProgress = (contentObject.afterOkrDetailProgress - contentObject.beforeOkrDetailProgress) || 0;
+                citem.remark = contentObject.remark || '暂无';
+              });
+            }
+          });
         }
       });
     },

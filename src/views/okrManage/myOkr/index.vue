@@ -30,8 +30,8 @@
       :modal-append-to-body="false"
       title="创建okr"
       :visible.sync="createokrDrawer"
-      size="50%"
       :before-close="handleClose"
+      class="tl-drawer"
     >
       <div>
         <writeOkr v-if="createokrDrawer" :userName="userName"></writeOkr>
