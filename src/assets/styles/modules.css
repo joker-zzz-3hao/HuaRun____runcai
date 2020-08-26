@@ -807,6 +807,11 @@
   order: 1;
 }
 
+.tl-transfer-select .el-scrollbar,
+.tl-transfer-select .el-scrollbar__view {
+  height: 100%;
+}
+
 .tl-transfer-select .el-scrollbar__wrap {
   overflow-y: scroll;
   overflow-x: unset;
