@@ -8,10 +8,10 @@
     </div>
     <div class="swiperModel">
       <div class="upDown">
-        <i class="el-icon-arrow-up"></i>
-        <i class="el-icon-arrow-down"></i>
+        <i class="el-icon-arrow-up" @click="swiperNext"></i>
+        <i class="el-icon-arrow-down" @click="swiperPrev"></i>
       </div>
-      <div>
+      <div class="swiperLayout">
         <swiper :options="swiperOption" ref="mySwiper">
           <!-- slides -->
           <swiper-slide>
@@ -69,24 +69,30 @@ export default {
   data() {
     return {
       swiperOption: {
-
+        autoplay: 3000,
+        direction: 'vertical',
+        slidesPerView: 2,
+        centeredSlides: true,
+        observeParent: true,
+        roundLengths: true,
+        height: 100,
+        observer: true,
+        spaceBetween: 0,
+        observeSlideChildren: true,
       },
     };
   },
   created() {
-    this.swiperOption = {
-      autoplay: 3000,
-      direction: 'vertical',
-      slidesPerView: 2,
-      height: 120,
-      centeredSlides: true,
-      observeParent: true,
-      roundLengths: true,
-      observer: true,
-    };
+
   },
   methods: {
-
+    swiperNext() {
+      console.log(this.$refs.mySwiper);
+      this.$refs.mySwiper.$swiper.slideNext();
+    },
+    swiperPrev() {
+      this.$refs.mySwiper.$swiper.slidePrev();
+    },
   },
 };
 </script>
@@ -103,13 +109,14 @@ export default {
   flex-direction: row;
 }
 .swiperModel {
-  overflow: hidden;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 200px;
   display: flex;
   flex-direction: row;
+}
+.swiperLayout {
+  overflow: hidden;
+  height: 200px;
 }
 .listOkr {
   display: flex;
@@ -121,7 +128,7 @@ export default {
   justify-content: space-between;
 }
 .swiperList {
-  width: 800px;
+  width: 1000px;
   border: 1px solid black;
   padding: 10px;
 }
