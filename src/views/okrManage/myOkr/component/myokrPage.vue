@@ -91,7 +91,7 @@
     >
       <div>
         <tl-writeokr
-          v-if="currentView=='tl-okr-history' && myokrDrawer && writeInfo.canWrite"
+          v-if="currentView=='tl-writeokr' && myokrDrawer && writeInfo.canWrite"
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>

@@ -5,6 +5,7 @@ export default {
     const infoUrl = '/gateway/privilege-service/privilege/function/queryByTenantIdAndUserId';
     return window.$ajax.get(infoUrl).then((response) => {
       if (response.data.code == 200) {
+        commit('setRoleCode', response.data.data.roleList.map((item) => item.roleCode));
         commit('setUserInfo', response.data.data);
         return response.data;
       }

@@ -7,9 +7,9 @@
     :before-close="close"
     @closed="closed"
   >
-    <el-form :model="formData" ref="dataForm">
+    <el-form :model="okrForm" ref="dataForm">
       <dl class="okuang">
-        <dt>目标名称</dt>
+        <dt>{{okrForm.okrDetailType === 0 ? '目标名称' : '关键结果'}}</dt>
         <dd class="objectdd">
           <el-form-item>
             <span>{{okrForm.okrDetailObjectKr}}</span>
@@ -20,7 +20,7 @@
           <el-form-item label="当前进度">
             <el-slider v-model="okrForm.okrDetailProgress" show-input :step="1"></el-slider>
           </el-form-item>
-          <el-form-item label="风险状态">
+          <el-form-item label="风险状态" v-if="okrForm.okrDetailConfidence">
             <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
               <el-radio-group v-model="okrForm.okrDetailConfidence">
                 <el-radio-button
@@ -29,7 +29,7 @@
                   :label="citem.value"
                 >{{citem.label}}</el-radio-button>
               </el-radio-group>
-              <el-button slot="reference">{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence||'1']}}</el-button>
+              <el-button slot="reference">{{CONST.CONFIDENCE_MAP[okrForm.okrDetailConfidence||'1']}}</el-button>
             </el-popover>
           </el-form-item>
         </dd>
@@ -37,7 +37,7 @@
       <dl>
         <dd>
           <el-form-item label="更新说明">
-            <el-input v-model="updateexplain"></el-input>
+            <el-input maxlength="200" v-model="okrForm.updateexplain"></el-input>
           </el-form-item>
         </dd>
       </dl>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import CONST from '../const';
 
 export default {
@@ -75,28 +76,25 @@ export default {
       default: true,
     },
   },
+  computed: {
+    ...mapState('common', {
+      undertakePeriodId: (state) => state.undertakePeriodId,
+    }),
+  },
   methods: {
-    getokrDetail() {
-      this.server.getokrDetail({ okrId: '11111122211' }).then((res) => {
-        console.log('detail', res);
-        this.formData.tableList = res.data.okrDetails;
-      });
-    },
     summitUpdate() {
+      console.log('this.okrForm', this.okrForm);
       this.summitForm = {
-        // krUpdateProcessDtos: [
-        //   {
-        //     detailId: 'string',
-        //     okrDetailConfidence: 0,
-        //     okrDetailProgress: 0,
-        //   },
-        // ],
-        oupdateProcessDto: {
-          detailId: this.okrForm.detailId,
-          okrDetailProgress: this.okrForm.okrDetailProgress,
-        },
-        remark: this.updateexplain,
+        detailId: this.okrForm.detailId,
+        okrDetailConfidence: this.okrForm.okrDetailConfidence || null,
+        okrDetailId: this.okrForm.okrDetailId,
+        okrDetailProgress: this.okrForm.okrDetailProgress,
+        okrMainId: this.okrForm.okrMainId,
+        // TODO: 需要从vuex取
+        periodId: this.undertakePeriodId,
+        remark: this.okrForm.updateexplain,
       };
+      console.log('detail', this.summitForm);
       this.server.summitUpdate(this.summitForm).then((res) => {
         console.log('detail', res.code);
         this.$message('提交成功~');
@@ -107,6 +105,7 @@ export default {
     },
     // 控制弹窗
     showOkrDialog() {
+      console.log('dakai ');
       this.dialogDetailVisible = true;
       // this.getokrDetail();
     },
@@ -118,13 +117,6 @@ export default {
     },
   },
   watch: {
-    // okrid: {
-    //   handler() {
-    //     this.getokrDetail();
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
   },
 };
 </script>

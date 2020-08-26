@@ -11,7 +11,6 @@ export default {
   components: {},
   props: {
     status: {
-      type: String,
       default: '1',
     },
   },

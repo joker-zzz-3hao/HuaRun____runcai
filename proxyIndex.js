@@ -53,6 +53,7 @@ module.exports = {
   },
   '/gateway/talent-okr/*': {
     target: api,
+    // target: 'http://10.54.39.102:8085',
     secure: false,
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },

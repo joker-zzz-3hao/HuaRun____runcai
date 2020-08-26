@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import department from '@/components/department';
 import svgtree from '@/components/svgtree';
 import card from './card';
@@ -130,6 +130,7 @@ export default {
     this.init();
   },
   methods: {
+    ...mapMutations('common', ['setPeriodId']),
     init() {
       const self = this;
       // 直接赋值，为空时也会按false判断（从myokr跳传
@@ -175,6 +176,8 @@ export default {
       });
     },
     getmaps() {
+      // 存周期id
+      this.setPeriodId(this.searchForm.periodId);
       // 查承接地图
       if (this.searchForm.orgId) {
         this.server.getmaps(this.searchForm).then((res) => {

@@ -21,7 +21,7 @@
             :popper-append-to-body="false"
           >
             <el-option
-              v-for="(item, index) in CONST.OKR_TYPE_LIST"
+              v-for="(item, index) in okrTypeList"
               :key="item.id+index"
               :label="item.name"
               :value="item.id"
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import department from '@/components/department';
 import okrForm from './component/okrForm';
 import changeOKR from './component/changeOKR';
@@ -108,8 +109,14 @@ export default {
           periodId: '1',
         },
         okrId: '',
+        okrTypeList: [],
       },
     };
+  },
+  computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+    }),
   },
   mounted() {
     if (this.writeInfo.canWrite == 'draft') {
@@ -129,6 +136,14 @@ export default {
   },
   methods: {
     init() {
+      // okr类型
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        this.searchForm.okrType = 1;
+        this.okrTypeList = this.OKR_TYPE_LIST.filter(
+          (item) => item.id != 3,
+        );
+      } else { this.okrTypeList = this.OKR_TYPE_LIST; }
+      // 周期
       this.server.getOkrCycleList().then((res) => {
         if (res.data.length > 0) {
           res.data.forEach((item) => {

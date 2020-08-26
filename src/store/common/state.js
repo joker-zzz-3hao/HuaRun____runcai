@@ -9,4 +9,6 @@ export default {
   systemMenuList: [], // 系统管理菜单
   myokrDrawer: false,
   createokrDrawer: false,
+  undertakePeriodId: '', // 承接地图周期id
+  roleCode: '', // 用户角色
 };

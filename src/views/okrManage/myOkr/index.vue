@@ -100,7 +100,7 @@ export default {
   created() {
     this.init();
     // TODO:部门名
-    this.departmentName = this.userInfo.orgName || '部门';
+    this.departmentName = this.userInfo.orgParentName || '部门';
     this.userName = this.userInfo.userName || '管理员';
     this.activeName = this.$route.params.activeName || 'team';
   },

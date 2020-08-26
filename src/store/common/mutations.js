@@ -39,4 +39,12 @@ export default {
   setCreateokrDrawer: (state, createokrDrawer = {}) => {
     state.createokrDrawer = createokrDrawer;
   },
+  // 设置承接地图周期id
+  setPeriodId: (state, undertakePeriodId = {}) => {
+    state.undertakePeriodId = undertakePeriodId;
+  },
+  // 设置用户角色
+  setRoleCode: (state, roleCode = {}) => {
+    state.roleCode = roleCode;
+  },
 };
