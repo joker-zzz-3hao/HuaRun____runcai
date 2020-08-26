@@ -81,7 +81,7 @@ export default {
         tenantId: '',
         timecycle: '',
         okrCycle: '',
-        okrType: 2,
+        okrType: null,
         okrStatus: '',
         draftParams: '',
         draftId: '',
@@ -109,7 +109,6 @@ export default {
           periodId: '1',
         },
         okrId: '',
-        okrTypeList: [],
       },
     };
   },
@@ -117,6 +116,16 @@ export default {
     ...mapState('common', {
       roleCode: (state) => state.roleCode,
     }),
+    okrTypeList() {
+      console.log('roleCode', this.roleCode);
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return this.CONST.OKR_TYPE_LIST.filter(
+          (item) => item.id != 3,
+        );
+      } return this.CONST.OKR_TYPE_LIST.filter(
+        (item) => item.id == 2,
+      );
+    },
   },
   mounted() {
     if (this.writeInfo.canWrite == 'draft') {
@@ -139,10 +148,7 @@ export default {
       // okr类型
       if (this.roleCode.includes('ORG_ADMIN')) {
         this.searchForm.okrType = 1;
-        this.okrTypeList = this.OKR_TYPE_LIST.filter(
-          (item) => item.id != 3,
-        );
-      } else { this.okrTypeList = this.OKR_TYPE_LIST; }
+      } else { this.searchForm.okrType = 2; }
       // 周期
       this.server.getOkrCycleList().then((res) => {
         if (res.data.length > 0) {
