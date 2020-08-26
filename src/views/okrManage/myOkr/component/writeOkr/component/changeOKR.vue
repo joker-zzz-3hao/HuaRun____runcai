@@ -120,6 +120,7 @@
         :showPhil="undertakeType=='new'"
       ></undertake-table>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+      <el-button v-if="undertakeType=='change'" type="primary" @click="summitUndertake()">忽 略</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
     </el-drawer>
   </div>
@@ -159,8 +160,9 @@ export default {
       okrMainId: '',
       searchForm: {
         okrStatus: '1',
+        periodId: '',
       },
-      undertakeType: true, //
+      undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
     };
   },
   components: {
@@ -200,9 +202,7 @@ export default {
     searchOkr() {
       if (this.periodId) {
         this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
-          console.log('searchOkr', res);
           if (res.code == 200) {
-            console.log('关联表', res.data);
             this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
@@ -236,6 +236,9 @@ export default {
         console.log('getCultureList', res);
         if (res.code == 200) {
           this.philosophyList = res.data;
+          this.philosophyList.forEach((item) => {
+            item.checkFlag = false;
+          });
           // 将价值观列表转换成字符串
           this.philosophyObject = JSON.stringify(this.philosophyList);
         }
@@ -243,24 +246,23 @@ export default {
     },
     // 查okr详情
     getokrDetail() {
-      console.log('查okr详情');
       this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        console.log('detail', res.data.okrDetails);
-        this.tableList = res.data.okrDetails;
-        this.okrmain = res.data.okrMain;
-        this.okrMainId = res.data.okrMain.okrId;
-        // this.voteUser = res.data.voteUser;
-        this.tableList.forEach((item) => {
+        if (res.code == 200) {
+          this.tableList = res.data.okrDetails;
+          this.okrmain = res.data.okrMain;
+          this.okrMainId = res.data.okrMain.okrId;
+          // this.voteUser = res.data.voteUser;
+          this.tableList.forEach((item) => {
           // item.departokrList = JSON.parse(this.departokrObject);
-          if (item.parentUpdate) {
+            if (item.parentUpdate) {
             // 关联承接变更接口
-            console.log('关联承接变更接口', item);
-            this.getOkrModifyUndertakeOkrList(item);
-          }
-        });
+              this.getOkrModifyUndertakeOkrList(item);
+            }
+          });
+        }
       });
     },
-    // 可变更
+    // 可变更的关联承接项
     getOkrModifyUndertakeOkrList(okritem) {
       const formData = {
         periodId: this.periodId,
@@ -274,7 +276,10 @@ export default {
           const modifyUndertakeList = res.data.modifyUndertakeList || [];
           modifyUndertakeList.forEach((item) => {
             item.typeName = item.okrDetailType === 1 ? '关键结果KR' : '目标O';
+            // 是否为当前选中
+            item.checkFlag = item.currentOption;
           });
+          // 将承接项添加到列表里
           okritem.departokrList = res.data.modifyUndertakeList;
         }
       });
@@ -285,7 +290,6 @@ export default {
       // 选择o的序号，打开关联承接弹框
       this.selectIndex = parseInt(data.num, 10);
       this.undertakeType = data.type;
-      //  需要重新查承接list,一进来就先查可承接的。打开对应弹窗再赋值？
       if (!this.tableList[this.selectIndex].undertakeOkrVo) {
         this.tableList[this.selectIndex].undertakeOkrVo = {
           undertakeOkrDetailId: '',
@@ -308,6 +312,7 @@ export default {
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
       this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       console.log('关联', this.selectDepartRow);
+      // 关闭关联承接抽屉并刷新
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
     },
@@ -371,11 +376,6 @@ export default {
             okrWeight: kritem.okrWeight,
             okrDetailProgress: kritem.okrDetailProgress,
             okrDetailConfidence: kritem.okrDetailConfidence,
-            // undertakeOkr: {
-            //   undertakeOkrId: kritem.okrParentId || '',
-            //   undertakeOkrContent: '',
-            //   undertakeOkrVersion: kritem.okrDetailParentVersion,
-            // },
           });
         });
         if (item.newkrList && item.newkrList.length > 0) {
@@ -414,7 +414,6 @@ export default {
     },
     goback() {
       this.setMyokrDrawer(false);
-      // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
     },
 
   },

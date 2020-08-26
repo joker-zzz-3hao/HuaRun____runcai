@@ -1,9 +1,8 @@
 <template>
   <div>
-    <!-- 用展开行表格 -->
-    <div>
+    <div v-if="tableList.length>0">
       <!-- 公共信息 -->
-      <div v-if="tableList.length>0">
+      <div>
         <div>{{okrCycle.periodName}}OKR</div>
         <ul class="okrMain">
           <li>
@@ -52,6 +51,7 @@
         </template>
       </tl-okr-table>
     </div>
+    <div v-else>暂无数据~</div>
     <!-- 展示头像 -->
     <div>
       <!-- 基层员工视图 -->
