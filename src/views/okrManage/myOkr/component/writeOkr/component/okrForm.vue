@@ -411,8 +411,6 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-            } else {
-              this.$message(res.msg);
             }
           });
         }

@@ -144,7 +144,66 @@
             <!-- 可在折叠面板body处添加内容 -->
             <slot name="body-bar" :okritem="kritem"></slot>
           </div>
-          <slot name="addkr-bar" :oitem="item"></slot>
+          <div v-if="item.newkrList">
+            <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex">
+              <dt>KR</dt>
+              <dd class="objectdd">
+                <el-form-item
+                  :prop="'newkrList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
+                >
+                  <!-- 不强制刷新无法输入 -->
+                  <el-input v-model="newItem.okrDetailObjectKr" @input="updateokrCollapse"></el-input>
+                </el-form-item>
+                <el-form-item label="权重">
+                  <el-input-number
+                    v-model="newItem.okrWeight"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                  ></el-input-number>
+                </el-form-item>
+                <el-form-item label="当前进度">
+                  <el-input-number
+                    v-model="newItem.okrDetailProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                  ></el-input-number>
+                </el-form-item>
+                <el-form-item label="风险状态">
+                  <el-popover
+                    placement="bottom"
+                    width="400"
+                    trigger="click"
+                    :append-to-body="false"
+                  >
+                    <el-radio-group
+                      v-model="newItem.okrDetailConfidence"
+                      @change="updateokrCollapse"
+                    >
+                      <el-radio-button
+                        v-for="citem in CONST.CONFIDENCE"
+                        :key="citem.value"
+                        :label="citem.value"
+                      >{{citem.label}}</el-radio-button>
+                    </el-radio-group>
+                    <el-button
+                      slot="reference"
+                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
+                  </el-popover>
+                </el-form-item>
+                <el-button @click="deletekr(item,kindex)">删kr</el-button>
+              </dd>
+            </dl>
+          </div>
+          <div style="display:none">{{item.newkrList}}</div>
+          <el-button v-if="canWrite" @click="addkr(item,'kr')">增加kr</el-button>
+          <!-- <slot name="addkr-bar" :oitem="item"></slot> -->
         </elcollapseitem>
       </elcollapse>
     </el-form>
@@ -156,6 +215,7 @@ import riskStatus from '@/components/riskStatus';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
+import CONST from './const';
 
 export default {
   name: 'okrCollapse',
@@ -168,6 +228,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       okrmain: {},
       formData: {},
       innerActiveList: [],
@@ -236,6 +297,28 @@ export default {
     // 改变tableList后强制渲染
     updateokrCollapse() {
       this.$forceUpdate();
+    },
+    // 增加kr
+    addkr(okritem) {
+      if (!okritem.newkrList) {
+        okritem.newkrList = [];
+      }
+      okritem.newkrList.push({
+        // id: this.formData.okrInfoList[oindex].krList.length,
+        okrDetailObjectKr: '',
+        okrWeight: 0,
+        okrDetailProgress: 0,
+        okrDetailConfidence: 1,
+      });
+      this.$forceUpdate();
+      // this.$refs.okrCollapse.updateokrCollapse();
+      console.log('okritem', okritem);
+    },
+    // 删除kr
+    deletekr(okritem, krindex) {
+      okritem.newkrList.splice(krindex, 1);
+      this.$forceUpdate();
+      // this.$refs.okrCollapse.updateokrCollapse();
     },
   },
   watch: {

@@ -89,7 +89,9 @@ export default {
             this.data.forEach((item) => {
               // 有默认值默认选中
               if (this.defaultData) {
-                this.department = item.children.filter((citem) => citem.periodId === this.defaultData)[0] || {};
+                this.department = item.children.filter(
+                  (citem) => citem.periodId === this.defaultData,
+                )[0] || this.department;
               } else if (item.checkStatus == '1') {
                 this.department = item.children[0] || {};
               }

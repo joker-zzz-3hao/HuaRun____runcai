@@ -32,7 +32,7 @@
       @openUndertake="openUndertakepage"
     >
       <!-- 在o下新增kr -->
-      <template slot="addkr-bar" slot-scope="props">
+      <!-- <template slot="addkr-bar" slot-scope="props">
         <el-form>
           <div v-if="props.oitem.newkrList">
             <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
@@ -85,7 +85,7 @@
           <div style="display:none">{{props.oitem.newkrList}}</div>
           <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
         </el-form>
-      </template>
+      </template>-->
     </okrCollapse>
     <!-- 新增okr -->
     <okr-form

@@ -21,7 +21,7 @@
             :popper-append-to-body="false"
           >
             <el-option
-              v-for="(item, index) in okrTypeList"
+              v-for="(item, index) in CONST.OKR_TYPE_LIST"
               :key="item.id+index"
               :label="item.name"
               :value="item.id"
@@ -116,16 +116,16 @@ export default {
     ...mapState('common', {
       roleCode: (state) => state.roleCode,
     }),
-    okrTypeList() {
-      console.log('roleCode', this.roleCode);
-      if (this.roleCode.includes('ORG_ADMIN')) {
-        return this.CONST.OKR_TYPE_LIST.filter(
-          (item) => item.id != 3,
-        );
-      } return this.CONST.OKR_TYPE_LIST.filter(
-        (item) => item.id == 2,
-      );
-    },
+    // okrTypeList() {
+    //   console.log('roleCode', this.roleCode);
+    //   if (this.roleCode.includes('ORG_ADMIN')) {
+    //     return this.CONST.OKR_TYPE_LIST.filter(
+    //       (item) => item.id != 3,
+    //     );
+    //   } return this.CONST.OKR_TYPE_LIST.filter(
+    //     (item) => item.id == 2,
+    //   );
+    // },
   },
   mounted() {
     if (this.writeInfo.canWrite == 'draft') {
@@ -134,6 +134,7 @@ export default {
       this.searchForm.draftId = this.writeInfo.draftId || '';
       this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
       this.searchForm.periodId = JSON.parse(this.searchForm.draftParams).periodId;
+      console.log('this.searchForm.periodId', this.searchForm.periodId);
     } else if (this.writeInfo.canWrite == 'cannot') {
       this.canWrite = false;
       this.okrId = this.writeInfo.okrId || '';
@@ -174,6 +175,7 @@ export default {
     handleCycleData(data) {
       // this.okrCycle = data;
       this.searchForm.okrCycle = data;
+      console.log('okrCycle', data);
       // this.getmaps();
     },
     cutName(userName) {
