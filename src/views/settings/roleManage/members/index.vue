@@ -32,8 +32,15 @@
             <el-table-column prop="userAccount" label="用户帐号" min-width="165"></el-table-column>
             <el-table-column prop="userName" label="用户姓名" min-width="90"></el-table-column>
             <el-table-column prop="userMobile" label="手机号" min-width="120"></el-table-column>
-            <el-table-column prop="orgName" label="所在团队" min-width="90"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间" min-width="180"></el-table-column>
+            <el-table-column prop="orgName" label="所在团队" min-width="180"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" min-width="180">
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.createTime"
+                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="60">
               <template slot-scope="scope">
                 <el-button type="text" @click="handleDeleteOne(scope.row.id)" class="tl-btn">移除</el-button>
