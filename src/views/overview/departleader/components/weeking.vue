@@ -103,10 +103,8 @@ export default {
     getriskStatistics() {
       this.server.riskStatistics({
         dto: {
-          orgId: this.userInfo.orgId,
-          periodId: this.userInfo.periodId,
-          personOrOrg: this.userInfo.personOrOrg,
-          userId: this.userInfo.userId,
+          periodId: '1179885687267901440',
+          personOrOrg: 'person',
         },
       }).then((res) => {
         console.log(res);
