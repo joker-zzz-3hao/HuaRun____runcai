@@ -24,8 +24,81 @@
         </div>
         <el-scrollbar>
           <ul class="txt-list">
+            <!-- <li>
+              <el-checkbox class="tl-checkbox">
+                <div class="img-user">
+                  <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+                  <div class="user-name" v-else>哲民</div>
+                </div>
+                <em>云门户</em>
+              </el-checkbox>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>-->
             <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
-              <template v-if="item.type=='USER'">
+              <div v-if="item.type=='USER'">
                 <el-checkbox
                   class="tl-checkbox"
                   @change="checkMember($event,item)"
@@ -37,11 +110,11 @@
                   </div>
                   <em>{{item.name}}</em>
                 </el-checkbox>
-              </template>
-              <template v-else>
+              </div>
+              <div v-else>
                 <em>{{item.name}}</em>
                 <i class="el-icon-arrow-right"></i>
-              </template>
+              </div>
             </li>
           </ul>
         </el-scrollbar>

@@ -363,7 +363,7 @@
   line-height: unset;
 }
 
-.tl-transfer-select .el-checkbox__input.is-checked + .el-checkbox__label {
+.tl-transfer-select .tl-checkbox .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #4d5155;
 }
 
@@ -823,8 +823,7 @@
   order: 1;
 }
 
-.tl-transfer-select .el-scrollbar,
-.tl-transfer-select .el-scrollbar__view {
+.tl-transfer-select .el-scrollbar {
   height: 100%;
 }
 

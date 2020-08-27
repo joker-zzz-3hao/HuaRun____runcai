@@ -14,7 +14,7 @@
               v-for="item in data"
               :key="item.userId"
             >
-              <div class="img-user" style="display: flex;">
+              <div class="img-user">
                 <img src="@/assets/images/user/user.jpg" alt />
                 <div>{{`${item.userName}(${item.userAccount})`}}</div>
               </div>
