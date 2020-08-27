@@ -4,23 +4,25 @@
     <div>
       <div class="display-flex">
         <div>所属部门：</div>
-        <div>华润云-云门户</div>
+        <div>{{baseInfo.orgName}}</div>
       </div>
       <div class="display-flex">
         <div>团队负责人：</div>
-        <div>张聪</div>
+        <div>{{baseInfo.orgLeader}}</div>
       </div>
       <div class="display-flex">
         <div>团队综合管理员：</div>
-        <div>未设置</div>
+        <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div>
+        <div v-else>未设置</div>
       </div>
     </div>
     <!-- 管理设置 -->
     <div>
       <div class="display-flex">
         <div>团队综合管理员：</div>
-        <div>李四</div>
+        <!-- <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div> -->
         <div>
+          <div>未设置</div>
           <el-button @click="setManager">设置团队综合管理员</el-button>
         </div>
       </div>
@@ -59,12 +61,12 @@
         </div>
         <div style="width: auto;height: 100px;align-items: center;display: flex;">
           <div
-            :class="{'bg-select': item.select == teamSelect,'bg-unselect': item.select != teamSelect,}"
+            :class="{'bg-select': item.orgFullId == teamSelect,'bg-unselect': item.orgFullId != teamSelect,}"
             v-for="item in circleList"
             class="circle"
-            :key="item.id"
+            :key="item.orgFullId"
             @click="selectTeam(item)"
-          >{{item.name}}</div>
+          >{{item.orgName}}</div>
         </div>
       </div>
       <!-- 实体成员 -->
@@ -74,15 +76,21 @@
         </div>
         <div style="width: 1100px;height: 100px;align-items: center;display: flex;">
           <div style="width: 80%;display:flex;">
-            <div style="margin-left: 10px;" v-for="tItem in teamMemberList" :key="tItem.id">
+            <div
+              style="margin-left: 10px;"
+              v-for="tItem in teamMemberList"
+              :key="tItem.userId"
+              @click="setFictitious(tItem)"
+            >
               <div>
                 <el-avatar :src="tItem.headerUrl"></el-avatar>
               </div>
-              <div>{{tItem.name}}</div>
+              <div>{{tItem.userName}}</div>
             </div>
           </div>
-          <div style="width: 20%">
-            <el-button>查看更多成员</el-button>
+          <!-- TODO -->
+          <div style="width: 20%" v-if="totalMemberList.length>30">
+            <el-button @click="more">查看更多成员</el-button>
             <p>提示：点击头像可进行设置虚线汇报部门</p>
           </div>
         </div>
@@ -98,12 +106,12 @@
               <div
                 style="margin-left: 10px;position: relative;"
                 v-for="fItem in fictitiousList"
-                :key="fItem.id"
+                :key="fItem.userId"
               >
                 <div>
                   <el-avatar :src="fItem.headerUrl"></el-avatar>
                 </div>
-                <div>{{fItem.name}}</div>
+                <div>{{fItem.userName}}</div>
                 <div style="position: absolute;top: 0;right: 0;" @click="deleteFictitious(fItem)">
                   <i class="el-icon-close"></i>
                 </div>
@@ -114,6 +122,14 @@
           </div>
         </div>
       </div>
+      <!-- 团队架构 -->
+      <div>
+        <tl-svgtree fatherId="parentId" childId="orgId" :treeData="teamTreeData">
+          <template slot="treecard" slot-scope="node">
+            <tl-teamCard :node="node" @editTeam="editTeamFun"></tl-teamCard>
+          </template>
+        </tl-svgtree>
+      </div>
     </div>
     <tl-setManager
       v-if="setManagerExist"
@@ -121,11 +137,37 @@
       :server="server"
       @closed="closedSetManager"
     ></tl-setManager>
+    <tl-setFictitious
+      v-if="setFictitiousExist"
+      ref="setFictitious"
+      :server="server"
+      @closed="closedSetFictitious"
+    ></tl-setFictitious>
+    <tl-moreMembers
+      v-if="moreMembersExist"
+      ref="moreMembers"
+      :server="server"
+      @closed="closedSetMembers"
+      :totalMemberList="totalMemberList"
+      :setFictitious="setFictitious"
+    ></tl-moreMembers>
+    <tl-editTeam
+      v-if="editTeamExist"
+      ref="editTeam"
+      :server="server"
+      @success="closedEditTeam"
+      :teamMembers="teamMembers"
+    ></tl-editTeam>
   </div>
 </template>
 
 <script>
+import svgtree from '@/components/svgtree';
 import setManager from './component/setManager';
+import setFictitious from './component/setFictitious';
+import teamCard from './component/teamCard';
+import editTeam from './component/editTeam';
+import moreMembers from './component/moreMembers';
 import Server from './server';
 
 const server = new Server();
@@ -136,30 +178,30 @@ export default {
     return {
       server,
       setManagerExist: false,
+      setFictitiousExist: false,
+      moreMembersExist: false,
+      editTeamExist: false,
       weeklyOpen: false,
       openOkrApproval: false,
+      teamData: {},
       baseInfo: {},
       weeklyMode: ['1'],
-      teamSelect: 'yunmenhu',
-      circleList: [
-        { id: 1, name: '云门户', select: 'yunmenhu' },
-        { id: 2, name: '行云', select: 'xingyun' },
-        { id: 3, name: '磐云', select: 'panyun' },
-      ],
-      teamMemberList: [
-        { id: 1, name: '赵云', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-        { id: 2, name: '马超', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-        { id: 3, name: '魏延', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-      ],
-      fictitiousList: [
-        { id: 1, name: '赵云', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-        { id: 2, name: '马超', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-        { id: 3, name: '魏延', headerUrl: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' },
-      ],
+      teamSelect: '',
+      circleList: [],
+      teamTreeData: [],
+      teamMemberList: [],
+      totalMemberList: [],
+      fictitiousList: [],
+      teamMembers: [],
     };
   },
   components: {
     'tl-setManager': setManager,
+    'tl-setFictitious': setFictitious,
+    'tl-moreMembers': moreMembers,
+    'tl-teamCard': teamCard,
+    'tl-svgtree': svgtree,
+    'tl-editTeam': editTeam,
   },
   mounted() {
     this.init();
@@ -167,9 +209,25 @@ export default {
   methods: {
     init() {
       const self = this;
+      self.teamTreeData = [];
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          res.data.parentId = null;
+          self.teamTreeData.push(res.data);
+          self.server.queryOrgParent({ orgFullId: res.data.orgFullId }).then((response) => {
+            if (response.code == '200') {
+              console.log(response);
+              response.data.forEach((tItem) => {
+                tItem.parentId = self.baseInfo.orgId;
+                self.teamTreeData.push(tItem);
+              });
+              self.circleList = response.data.filter((item) => item.orgType == '0');
+              if (self.circleList.length > 0) {
+                self.teamSelect = self.circleList[0].orgFullId;
+              }
+            }
+          });
         }
       });
     },
@@ -180,11 +238,42 @@ export default {
         self.$refs.setManager.show();
       });
     },
+    setFictitious(data) {
+      const self = this;
+      self.setFictitiousExist = true;
+      self.$nextTick(() => {
+        self.$refs.setFictitious.show(data);
+      });
+    },
+    more() {
+      const self = this;
+      self.moreMembersExist = true;
+      self.$nextTick(() => {
+        self.$refs.moreMembers.show();
+      });
+    },
+    editTeamFun(data) {
+      const self = this;
+      self.editTeamExist = true;
+      self.$nextTick(() => {
+        self.$refs.editTeam.show(data);
+      });
+    },
     closedSetManager() {
       this.setManagerExist = false;
     },
+    closedSetMembers() {
+      this.moreMembersExist = false;
+    },
+    closedEditTeam() {
+      this.editTeamExist = false;
+      this.init();
+    },
+    closedSetFictitious() {
+      this.setFictitiousExist = false;
+    },
     selectTeam(data) {
-      this.teamSelect = data.select;
+      this.teamSelect = data.orgFullId;
     },
     deleteFictitious(data) {
       this.$xconfirm({
@@ -192,8 +281,45 @@ export default {
         content: '是否确认删除该虚线汇报成员',
 
       }).then(() => {
-        console.log(data);
+        this.server.updateReportRelation({
+          orgId: data.orgId,
+          userId: data.userId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.queryTeamMember(data.orgFullId);
+          }
+        });
       });
+    },
+    queryTeamMember(data) {
+      this.teamMemberList = [];
+      this.totalMemberList = [];
+      this.fictitiousList = [];
+      this.server.listOrgUserPage({ orgFullId: data }).then((res) => {
+        this.teamMembers = res.data;
+        res.data.forEach((item, index) => {
+          // userType为0时是实体组织下的实体成员，为2时时实体组织下的虚拟汇报成员
+          if (item.userType == '0') {
+            if (index <= 30) {
+              this.teamMemberList.push(item);
+            }
+            this.totalMemberList.push(item);
+          } else if (item.userType == '2') {
+            this.fictitiousList.push(item);
+          }
+        });
+      });
+    },
+  },
+  watch: {
+    teamSelect: {
+      handler(val) {
+        if (val) {
+          this.queryTeamMember(val);
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

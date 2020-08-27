@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-drawer
-      title="设置团队综合管理员"
-      :visible.sync="showSetManager"
+      title="编辑虚拟团队"
+      :visible.sync="showEditTeam"
       :with-header="true"
       @close="closed"
       :modal="false"
@@ -26,6 +26,12 @@
               <div>
                 <i class="el-icon-close" @click="deleteMember(item)"></i>
               </div>
+              <!-- <div v-for="item in formData.chargeMember" :key="item.userId">
+                <div>{{item.userName}}</div>
+                <div>
+                  <i class="el-icon-close" @click="deleteMember(item)"></i>
+                </div>
+              </div>-->
             </div>
             <div v-else>
               <i class="el-icon-plus" @click="showSelectMember=!showSelectMember"></i>
@@ -49,39 +55,63 @@
 </template>
 
 <script>
+import selectMember from '@/components/selectMember';
+
 export default {
-  name: 'setManager',
-  components: {},
+  name: 'editTeam',
+  components: {
+    'tl-selectMember': selectMember,
+  },
   props: {
-    server: {
-      type: Object,
+    teamMembers: {
+      type: Array,
       default() {
-        return {};
+        return [];
       },
     },
   },
   data() {
     return {
-      showSetManager: true,
+      showEditTeam: false,
+      formData: {
+        teamName: '',
+        chargeMember: '',
+      },
+      showSelectMember: false,
     };
   },
   mounted() {},
   computed: {},
   methods: {
-    show() {
-      const self = this;
-      self.showSetManager = true;
+    show(data) {
+      this.showEditTeam = true;
+      console.log(data);
+    },
+    getMember(data) {
+      this.formData.chargeMember = data;
+      this.showSelectMember = false;
+    },
+    deleteMember() {
+      this.formData.chargeMember = '';
+    },
+    cancel(data) {
+      console.log(data);
+      this.showSelectMember = false;
     },
     closed() {
-      this.showSetManager = false;
-      this.$emit('closed');
+      this.showEditTeam = false;
+    },
+    submitMember() {
+      this.server.updateVirtualOrg({
+
+      }).then((res) => {
+        if (res.code == '200') {
+          this.showEditTeam = false;
+          this.$emit('success');
+        }
+      });
     },
   },
   watch: {},
 };
 </script>
-<style scoped>
-.display-flex {
-  display: flex;
-}
-</style>
