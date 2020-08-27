@@ -1,13 +1,22 @@
 <template>
   <div>
-    <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
-      <el-radio-group v-model="kitem.okrDetailConfidence">
-        <el-radio-button v-for="citem in CONST.CONFIDENCE" :key="citem.value" :label="citem.value">
-          <tl-riskStatus :status="toString(citem.value)"></tl-riskStatus>
-          {{citem.label}}
-        </el-radio-button>
-      </el-radio-group>
-      <el-button slot="reference">{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence]}}</el-button>
+    <el-popover placement="bottom" width="200" trigger="click" :append-to-body="false">
+      <ul>
+        <li v-for="citem in CONST.CONFIDENCE" :key="citem.value">
+          <div @click="handleClick(citem.value)">
+            <div v-for="item in new Array(3)" :key="item">
+              <tl-riskStatus :status="citem.value"></tl-riskStatus>
+            </div>
+            <span>{{citem.label}}</span>
+          </div>
+        </li>
+      </ul>
+      <div slot="reference">
+        <div v-for="item in new Array(3)" :key="item">
+          <tl-riskStatus :status="modelVal"></tl-riskStatus>
+        </div>
+        <span>{{CONST.CONFIDENCE_MAP[modelVal]}}</span>
+      </div>
     </el-popover>
   </div>
 </template>
@@ -25,7 +34,24 @@ export default {
   data() {
     return {
       CONST,
+      okrDetailConfidence: '1',
     };
+  },
+  model: {
+    prop: 'modelVal', // 指向props的参数名
+    event: 'change', // 事件名称
+  },
+  props: {
+    modelVal: {
+      type: String,
+      default: '1',
+    },
+  },
+  methods: {
+    handleClick(value) {
+      this.okrDetailConfidence = value;
+      this.$emit('change', value);
+    },
   },
 };
 </script>
