@@ -30,63 +30,7 @@
       :canWrite="true"
       :showOKRInfoLabel="true"
       @openUndertake="openUndertakepage"
-    >
-      <!-- 在o下新增kr -->
-      <!-- <template slot="addkr-bar" slot-scope="props">
-        <el-form>
-          <div v-if="props.oitem.newkrList">
-            <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
-              <dt>KR</dt>
-              <dd class="objectdd">
-                <el-form-item
-                  :prop="'newkrList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
-                >
-                  <input v-model="newItem.okrDetailObjectKr" />
-                </el-form-item>
-                <el-form-item label="权重">
-                  <el-input-number
-                    v-model="newItem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="当前进度">
-                  <el-input-number
-                    v-model="newItem.okrDetailProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="风险状态">
-                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-                    <el-radio-group v-model="newItem.okrDetailConfidence">
-                      <el-radio-button
-                        v-for="citem in CONST.CONFIDENCE"
-                        :key="citem.value"
-                        :label="citem.value"
-                      >{{citem.label}}</el-radio-button>
-                    </el-radio-group>
-                    <el-button
-                      slot="reference"
-                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                  </el-popover>
-                </el-form-item>
-                <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>
-              </dd>
-            </dl>
-          </div>
-          <div style="display:none">{{props.oitem.newkrList}}</div>
-          <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
-        </el-form>
-      </template>-->
-    </okrCollapse>
+    ></okrCollapse>
     <!-- 新增okr -->
     <okr-form
       ref="okrform"
