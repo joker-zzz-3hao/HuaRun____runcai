@@ -224,7 +224,7 @@ export default {
     // 删除kr
     deletekr(oindex, krindex) {
       if (this.formData.okrInfoList[oindex].krList.length <= 1) {
-        this.$message('至少有一个kr');
+        this.$message('至少有一个关键结果');
         return;
       }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
@@ -256,6 +256,10 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
+      if (this.formData.okrInfoList.length <= 1) {
+        this.$message('至少有一个目标');
+        return;
+      }
       this.formData.okrInfoList.splice(oindex, 1);
     },
     // 查可关联承接的okr
