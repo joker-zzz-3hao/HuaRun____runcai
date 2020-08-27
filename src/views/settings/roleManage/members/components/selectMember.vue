@@ -98,20 +98,19 @@
               <i class="el-icon-arrow-right"></i>
             </li>-->
             <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
-              <div v-if="item.type=='USER'">
-                <el-checkbox
-                  class="tl-checkbox"
-                  @change="checkMember($event,item)"
-                  v-model="value[index]"
-                >
-                  <div class="img-user">
-                    <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                    <div class="user-name" v-else>{{checkName(item.name)}}</div>
-                  </div>
-                  <em>{{item.name}}</em>
-                </el-checkbox>
-              </div>
-              <div v-else>
+              <el-checkbox
+                class="tl-checkbox"
+                @change="checkMember($event,item)"
+                v-model="value[index]"
+                v-if="item.type=='USER'"
+              >
+                <div class="img-user">
+                  <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+                  <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                </div>
+                <em>{{item.name}}</em>
+              </el-checkbox>
+              <div v-else class="flex-sb">
                 <em>{{item.name}}</em>
                 <i class="el-icon-arrow-right"></i>
               </div>
