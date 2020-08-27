@@ -36,7 +36,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 22;
+  z-index: 25;
 }
 
 .view-cont {
@@ -63,4 +63,11 @@
 
 .box-wrap {
   margin: 0 auto;
+}
+
+.flex-sb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

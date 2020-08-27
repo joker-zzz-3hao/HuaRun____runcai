@@ -363,7 +363,7 @@
   line-height: unset;
 }
 
-.tl-transfer-select .el-checkbox__input.is-checked + .el-checkbox__label {
+.tl-transfer-select .tl-checkbox .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #4d5155;
 }
 
@@ -796,11 +796,11 @@
   font-size: 12px;
 }
 
-.tl-transfer-select .selected-target .txt-list li {
-  margin: 0 0 16px 0;
+.tl-transfer-select .txt-list li {
+  margin: 0 0 8px 0;
 }
 
-.tl-transfer-select .selected-target .txt-list li:last-child {
+.tl-transfer-select .txt-list li:last-child {
   margin: 0;
 }
 
@@ -823,8 +823,12 @@
   order: 1;
 }
 
-.tl-transfer-select .el-scrollbar,
-.tl-transfer-select .el-scrollbar__view {
+.tl-transfer-select .tl-checkbox .el-checkbox__label {
+  color: #4d5155;
+  font-size: 14px;
+}
+
+.tl-transfer-select .el-scrollbar {
   height: 100%;
 }
 

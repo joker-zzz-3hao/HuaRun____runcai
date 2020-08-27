@@ -51,7 +51,7 @@
       </div>
       <!-- 表头 -->
       <div v-if="item.tableList.length>0">
-        <ul class="tablehead" style="display:flex; margin-left:100px">
+        <ul class="tablehead">
           <li>权重</li>
           <li>进度</li>
           <li>风险状态</li>

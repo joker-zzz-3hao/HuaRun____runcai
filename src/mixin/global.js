@@ -82,7 +82,7 @@ export default {
     },
     /* 用法
         let date = new Date() date不是时间格式时
-         dateFormat("YYYY-mm-dd HH:MM", date) */
+         dateFormat("YYYY-mm-dd HH:MM:SS", date) */
     dateFormat(fmt, date) {
       let ret;
       const opt = {

@@ -83,8 +83,12 @@
             <!-- 可在折叠面板title处添加内容 -->
             <slot name="head-bar" :okritem="item"></slot>
           </template>
-          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.okrDetailId+krIndex">
-            <div class="hideEdit">
+          <dl
+            v-for="(kritem, krIndex) in item.krList"
+            :key="kritem.okrDetailId+krIndex"
+            class="detail"
+          >
+            <dd class="hideEdit">
               <span v-if="showOKRInfoLabel">KR</span>
               <el-form-item
                 style="display:inline-block"
@@ -104,13 +108,64 @@
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
-            </div>
-            <ul class="detail">
-              <li class="hideEdit">
-                <span>分权重</span>
-                <el-form-item v-if="canWrite && kritem.showWeightEdit">
+            </dd>
+            <!-- <dl class="detail"> -->
+            <dd class="hideEdit">
+              <span>分权重</span>
+              <el-form-item v-if="canWrite && kritem.showWeightEdit">
+                <el-input-number
+                  v-model="kritem.okrWeight"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                ></el-input-number>
+              </el-form-item>
+              <span v-else>{{kritem.okrWeight}}%</span>
+              <i
+                v-if="canWrite"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showWeightEdit')"
+              ></i>
+            </dd>
+            <dd>
+              <span>当前进度</span>
+              <span class="progresswidth">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
+                ></el-progress>
+              </span>
+            </dd>
+            <dd style="display:flex">
+              <span>风险状态</span>
+              <div v-for="item in new Array(3)" :key="item">
+                <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
+              </div>
+            </dd>
+            <!-- </dl> -->
+            <!-- 可在折叠面板body处添加内容 -->
+            <slot name="body-bar" :okritem="kritem"></slot>
+          </dl>
+          <div v-if="item.newkrList">
+            <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex">
+              <dt>KR</dt>
+              <dd class="objectdd">
+                <el-form-item
+                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+                >
+                  <!-- 不强制刷新无法输入 -->
+                  <el-input
+                    placeholder="请输入关键结果"
+                    v-model="newItem.okrDetailObjectKr"
+                    @input="updateokrCollapse"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="权重">
                   <el-input-number
-                    v-model="kritem.okrWeight"
+                    v-model="newItem.okrWeight"
                     controls-position="right"
                     :min="0"
                     :max="100"
@@ -118,33 +173,45 @@
                     :precision="0"
                   ></el-input-number>
                 </el-form-item>
-                <span v-else>{{kritem.okrWeight}}%</span>
-                <i
-                  v-if="canWrite"
-                  class="el-icon-edit"
-                  @click="showKRInput(index,krIndex,'showWeightEdit')"
-                ></i>
-              </li>
-              <li>
-                <span>当前进度</span>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
-              </li>
-              <li>
-                <span>风险状态</span>
-                <div v-for="item in new Array(3)" :key="item">
-                  <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
-                </div>
-              </li>
-            </ul>
-            <!-- 可在折叠面板body处添加内容 -->
-            <slot name="body-bar" :okritem="kritem"></slot>
+                <el-form-item label="当前进度">
+                  <el-input-number
+                    v-model="newItem.okrDetailProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                  ></el-input-number>
+                </el-form-item>
+                <el-form-item label="风险状态">
+                  <el-popover
+                    placement="bottom"
+                    width="400"
+                    trigger="click"
+                    :append-to-body="false"
+                  >
+                    <el-radio-group
+                      v-model="newItem.okrDetailConfidence"
+                      @change="updateokrCollapse"
+                    >
+                      <el-radio-button
+                        v-for="citem in CONST.CONFIDENCE"
+                        :key="citem.value"
+                        :label="citem.value"
+                      >{{citem.label}}</el-radio-button>
+                    </el-radio-group>
+                    <el-button
+                      slot="reference"
+                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
+                  </el-popover>
+                </el-form-item>
+                <el-button @click="deletekr(item,kindex)">删kr</el-button>
+              </dd>
+            </dl>
           </div>
-          <slot name="addkr-bar" :oitem="item"></slot>
+          <div style="display:none">{{item.newkrList}}</div>
+          <el-button v-if="canWrite" @click="addkr(item,'kr')">增加kr</el-button>
+          <!-- <slot name="addkr-bar" :oitem="item"></slot> -->
         </elcollapseitem>
       </elcollapse>
     </el-form>
@@ -156,6 +223,7 @@ import riskStatus from '@/components/riskStatus';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
+import CONST from './const';
 
 export default {
   name: 'okrCollapse',
@@ -168,6 +236,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       okrmain: {},
       formData: {},
       innerActiveList: [],
@@ -230,13 +299,31 @@ export default {
         num: parseInt(index, 10),
         type,
       };
-      console.log('dakai', undertakeInfo);
       this.$emit('openUndertake', undertakeInfo);
     },
     // 改变tableList后强制渲染
     updateokrCollapse() {
       this.$forceUpdate();
     },
+    // 增加kr
+    addkr(okritem) {
+      if (!okritem.newkrList) {
+        okritem.newkrList = [];
+      }
+      okritem.newkrList.push({
+        okrDetailObjectKr: '',
+        okrWeight: 0,
+        okrDetailProgress: 0,
+        okrDetailConfidence: 1,
+      });
+      this.$forceUpdate();
+    },
+    // 删除kr
+    deletekr(okritem, krindex) {
+      okritem.newkrList.splice(krindex, 1);
+      this.$forceUpdate();
+    },
+
   },
   watch: {
     tableList: {

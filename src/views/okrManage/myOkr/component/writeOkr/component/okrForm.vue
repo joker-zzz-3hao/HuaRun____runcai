@@ -82,7 +82,12 @@
                   <!-- <el-select v-model="kitem.okrDetailConfidence">
 
                   </el-select>-->
-                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
+                  <el-popover
+                    placement="bottom"
+                    width="400"
+                    trigger="click"
+                    :append-to-body="false"
+                  >
                     <el-radio-group v-model="kitem.okrDetailConfidence">
                       <el-radio-button
                         v-for="citem in CONST.CONFIDENCE"
@@ -406,8 +411,6 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-            } else {
-              this.$message(res.msg);
             }
           });
         }

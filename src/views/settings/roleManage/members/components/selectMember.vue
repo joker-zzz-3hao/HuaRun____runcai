@@ -23,25 +23,98 @@
           </div>
         </div>
         <el-scrollbar>
-          <ul class="txt-list">
+          <ul class="txt-list" v-show="showLoad">
+            <!-- <li>
+              <el-checkbox class="tl-checkbox">
+                <div class="img-user">
+                  <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+                  <div class="user-name" v-else>哲民</div>
+                </div>
+                <em>云门户</em>
+              </el-checkbox>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>
+            <li>
+              <em>云门户是发撒大法</em>
+              <i class="el-icon-arrow-right"></i>
+            </li>-->
             <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
-              <template v-if="item.type=='USER'">
-                <el-checkbox
-                  class="tl-checkbox"
-                  @change="checkMember($event,item)"
-                  v-model="value[index]"
-                >
-                  <div class="img-user">
-                    <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                    <div class="user-name" v-else>{{checkName(item.name)}}</div>
-                  </div>
-                  <em>{{item.name}}</em>
-                </el-checkbox>
-              </template>
-              <template v-else>
+              <el-checkbox
+                :key="item.id"
+                class="tl-checkbox"
+                @change="checkMember($event,item)"
+                v-model="value[item.id]"
+                v-if="item.type=='USER'"
+              >
+                <div class="img-user">
+                  <img v-if="false" src="@/assets/images/user/user.jpg" alt />
+                  <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                </div>
+                <em>{{item.name}}</em>
+              </el-checkbox>
+              <div v-else class="flex-sb">
                 <em>{{item.name}}</em>
                 <i class="el-icon-arrow-right"></i>
-              </template>
+              </div>
             </li>
           </ul>
         </el-scrollbar>
@@ -62,7 +135,7 @@
                 <div class="user-name" v-else>{{checkName(item.userName)}}</div>
               </div>
               <em>{{item.userName}}</em>
-              <i class="el-icon-close"></i>
+              <i class="el-icon-close" @click="deleteMember(index,item.userId)"></i>
             </li>
           </ul>
         </el-scrollbar>
@@ -85,10 +158,11 @@ export default {
       data: [],
       form: {},
       member: '',
-      value: [],
+      value: {},
       selectList: [],
       keyWord: '',
       light: 0,
+      showLoad: true,
     };
   },
   mounted() {
@@ -106,6 +180,7 @@ export default {
     },
     getqueryOrgAndUser(item) {
       if (item.type == 'USER') return false;
+      this.showLoad = false;
       this.selectList[item.level - 2] = item;
       this.light = item.id;
       this.selectList.splice((item.level - 1), this.selectList.length - (item.level - 2));
@@ -114,17 +189,20 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.data = res.data.reverse();
+          this.showLoad = true;
         }
       });
     },
     clearMember() {
       this.roulelist = [];
-      this.value = this.value.map(() => false);
+      // eslint-disable-next-line guard-for-in
+      for (const key in this.value) {
+        this.value[key] = false;
+      }
       this.member = this.roulelist;
       this.$emit('getMember', this.member);
     },
     checkMember(node, data) {
-      console.log(data);
       if (node) {
         this.roulelist.push({
           userName: data.name,
@@ -170,6 +248,11 @@ export default {
           type: 'USER',
         }));
       });
+    },
+    deleteMember(index, id) {
+      console.log({ value: this.value, id });
+      this.$set(this.value, id, false);
+      this.roulelist.splice(index, 1);
     },
 
   },

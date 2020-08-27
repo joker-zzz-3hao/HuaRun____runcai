@@ -2,14 +2,14 @@
   <div>
     <el-form :model="formData" ref="dataForm">
       <dl class="okuang">
-        <dt>目标名称</dt>
+        <dt>目标O</dt>
         <dd class="objectdd">
           <el-form-item>
             <span>{{formData.okrDetailObjectKr}}</span>
           </el-form-item>
-          <el-form-item label="权重">
+          <!-- <el-form-item label="权重">
             <span>{{formData.okrWeight}}%</span>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="当前进度">
             <el-slider v-model="formData.okrDetailProgress" show-input :step="1"></el-slider>
           </el-form-item>
@@ -21,9 +21,9 @@
               <el-form-item>
                 <span>{{kitem.okrDetailObjectKr}}</span>
               </el-form-item>
-              <el-form-item label="权重">
+              <!-- <el-form-item label="权重">
                 <span>{{kitem.okrWeight}}%</span>
-              </el-form-item>
+              </el-form-item>-->
               <el-form-item label="当前进度">
                 <el-slider v-model="kitem.okrDetailProgress" show-input :step="1"></el-slider>
               </el-form-item>
@@ -54,9 +54,8 @@
         </dd>
       </dl>
     </el-form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="summitUpdate">更新</el-button>
-    </span>
+    <el-button @click="summitUpdate">确定</el-button>
+    <el-button @click="close">取消</el-button>
   </div>
 </template>
 
@@ -137,8 +136,6 @@ export default {
           this.close();
         }
       });
-
-      // 需刷新列表吗
     },
     // 控制弹窗
     showOkrDialog() {
@@ -150,13 +147,6 @@ export default {
 
   },
   watch: {
-    // okrid: {
-    //   handler() {
-    //     this.getokrDetail();
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
   },
 };
 </script>
