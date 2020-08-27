@@ -837,6 +837,40 @@
   overflow-x: unset;
 }
 
+/* tabs */
+.tl-diy-tabs {
+  position: relative;
+  height: 100%;
+}
+
+.tl-diy-tabs .tab-list {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.tl-diy-tabs .tab-list li {
+  padding: 0 10px;
+  margin: 0 20px 0 0;
+  cursor: pointer;
+  color: #7b8a95 ;
+  font-weight: 500;
+  transition: all .4s ease-out;
+}
+
+.tl-diy-tabs .tab-list .is-focus {
+  color: #685df1;
+}
+
+.tl-diy-tabs .border-slip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #685df1;
+  transition: all .2s ease-out;
+}
+
 /* 标记 */
 .badge {
   position: absolute;

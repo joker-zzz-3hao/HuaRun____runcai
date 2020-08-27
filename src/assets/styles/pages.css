@@ -131,7 +131,6 @@
 
 /* ==========================================================OKR管理================================================================== */
 .my-okr {
-  position: unset;
   padding: 50px 0 0 0;
 }
 
@@ -163,6 +162,10 @@
   width: 100%;
   height: 50px;
   transition: all .4s ease-out;
+}
+
+.no-sub-menu + .my-okr .operating-area {
+  left: 70px;
 }
 
 .is-shrink + .my-okr .operating-area .operating-area-inside {
