@@ -8,7 +8,18 @@
       </div>
     </div>
     <router-view class="cont-area"></router-view>
-    <tl-writeokr></tl-writeokr>
+    <el-drawer
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      title="创建okr"
+      :visible.sync="createokrDrawer"
+      :before-close="handleClose"
+      class="tl-drawer"
+    >
+      <div>
+        <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
