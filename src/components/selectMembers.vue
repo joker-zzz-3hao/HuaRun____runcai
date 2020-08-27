@@ -6,9 +6,8 @@
     <div class="tl-transfer-select">
       <div class="select-target">
         <el-scrollbar>
-          <!-- <el-checkbox-group v-model="checkList"> -->
-          <el-radio-group v-model="checkList">
-            <el-radio
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox
               :label="item.userId"
               class="tl-checkbox"
               v-for="item in data"
@@ -18,8 +17,8 @@
                 <img src="@/assets/images/user/user.jpg" alt />
                 <div>{{`${item.userName}(${item.userAccount})`}}</div>
               </div>
-            </el-radio>
-          </el-radio-group>
+            </el-checkbox>
+          </el-checkbox-group>
         </el-scrollbar>
       </div>
     </div>
@@ -35,7 +34,7 @@ export default {
   data() {
     return {
       keyWord: '',
-      checkList: '',
+      checkList: [],
     };
   },
   props: {
@@ -46,8 +45,10 @@ export default {
       },
     },
     value: {
-      type: String,
-      default: '',
+      type: Array,
+      default() {
+        return [];
+      },
     },
   },
   computed: {
@@ -67,6 +68,7 @@ export default {
     },
   },
   mounted() {
+    debugger;
     this.checkList = this.value;
   },
   methods: {
@@ -74,7 +76,15 @@ export default {
       this.$emit('cancel');
     },
     ok() {
-      this.$emit('ok', this.checkList);
+      this.resultData = [];
+      this.checkList.forEach((item) => {
+        this.teamMembers.forEach((tItem) => {
+          if (tItem.userId == item) {
+            this.resultData.push(tItem);
+          }
+        });
+      });
+      this.$emit('ok', this.resultData);
     },
   },
 };
