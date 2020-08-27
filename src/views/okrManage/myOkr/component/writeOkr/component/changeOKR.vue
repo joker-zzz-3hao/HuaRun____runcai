@@ -24,45 +24,48 @@
       </ul>
     </div>
     <!-- okr折叠面板 -->
-    <okrCollapse
+    <tl-okrcollapse
       ref="okrCollapse"
       :tableList="tableList"
       :canWrite="true"
       :showOKRInfoLabel="true"
       @openUndertake="openUndertakepage"
-    ></okrCollapse>
+    ></tl-okrcollapse>
     <!-- 新增okr -->
-    <okr-form
+    <tl-okrform
       ref="okrform"
       :searchForm="searchForm"
       :server="server"
       :canWrite="true"
       :isnew="false"
       :periodId="periodId"
-    ></okr-form>
+    ></tl-okrform>
     <!-- 变更原因 -->
     <div>
       <span>变更原因</span>
-      <el-form>
-        <el-form-item>
-          <el-input type="textarea" v-model="modifyReason"></el-input>
+      <el-form :model="reason" ref="reasonForm">
+        <el-form-item
+          prop="modifyReason"
+          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+        >
+          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
         </el-form-item>
       </el-form>
     </div>
     <!-- 提交 -->
     <div>
-      <el-button @click="summit">提交</el-button>
+      <el-button @click="validateForm">提交</el-button>
       <el-button @click="goback">取消</el-button>
     </div>
 
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
-      <undertake-table
+      <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"
         :departokrList="tableList[this.selectIndex].departokrList"
         :philosophyList="tableList[this.selectIndex].philosophyList"
         :showPhil="undertakeType=='new'"
-      ></undertake-table>
+      ></tl-undertaketable>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
       <el-button v-if="undertakeType=='change'" type="primary" @click="summitUndertake()">忽 略</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
@@ -90,13 +93,10 @@ export default {
       departokrObject: '',
       philosophyList: [], // 价值观
       philosophyObject: {},
-      dialogStopVisible: false, // 终止弹窗
-      tableData: [], // 终止确认表格
-      deletedType: '', // 终止的类型
-
       selectDeletedId: '',
-      remark: '', // 终止原因
-      modifyReason: '', // 变更原因
+      reason: {
+        modifyReason: '', // 变更原因
+      },
       formData: {}, // 提交表单
       innerDrawer: false, // 承接项抽屉
       selectDepartRow: {},
@@ -110,9 +110,9 @@ export default {
     };
   },
   components: {
-    okrCollapse,
-    'undertake-table': undertakeTable,
-    'okr-form': okrForm,
+    'tl-okrcollapse': okrCollapse,
+    'tl-undertaketable': undertakeTable,
+    'tl-okrform': okrForm,
   },
   props: {
     server: {
@@ -260,32 +260,31 @@ export default {
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
     },
-    // 增加kr
-    addkr(okritem) {
-      if (!okritem.newkrList) {
-        okritem.newkrList = [];
-      }
-      okritem.newkrList.push({
-        // id: this.formData.okrInfoList[oindex].krList.length,
-        okrDetailObjectKr: '',
-        okrWeight: 0,
-        okrDetailProgress: 0,
-        okrDetailConfidence: 1,
+
+    validateForm() {
+      // 校验表单
+      const okrformValid = this.$refs.okrform.$refs.dataForm;
+      const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
+      const reasonValid = this.$refs.reasonForm;
+      Promise.all([okrformValid, okrCollapseValid, reasonValid].map(this.getFormPromise)).then((res) => {
+        const validateResult = res.every((item) => !!item);
+        if (validateResult) {
+          console.log('两个表单都校验通过', validateResult);
+          this.summit();
+        } else {
+          console.log('两个表单未校验通过');
+        }
       });
-      this.$forceUpdate();
-      this.$refs.okrCollapse.updateokrCollapse();
-      console.log('okritem', okritem);
     },
-    // 删除kr
-    deletekr(okritem, krindex) {
-      okritem.newkrList.splice(krindex, 1);
-      this.$forceUpdate();
-      this.$refs.okrCollapse.updateokrCollapse();
+    getFormPromise(form) {
+      return new Promise((resolve) => {
+        form.validate((res) => {
+          resolve(res);
+        });
+      });
     },
     // 提交更改
     summit() {
-      // 校验okrForm的
-      // 校验
       console.log('原来的', this.tableList);
       console.log('新增的', this.$refs.okrform.formData);
       const addList = this.$refs.okrform.formData.okrInfoList;
@@ -344,7 +343,7 @@ export default {
         // detailokrList: this.detailokrList,
         periodId: this.periodId,
         okrProgress: this.okrmain.okrProgress,
-        modifyReason: this.modifyReason,
+        modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
         okrBelongType: this.okrmain.okrBelongType,
       };

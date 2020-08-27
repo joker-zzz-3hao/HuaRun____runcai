@@ -83,8 +83,12 @@
             <!-- 可在折叠面板title处添加内容 -->
             <slot name="head-bar" :okritem="item"></slot>
           </template>
-          <div v-for="(kritem, krIndex) in item.krList" :key="kritem.okrDetailId+krIndex">
-            <div class="hideEdit">
+          <dl
+            v-for="(kritem, krIndex) in item.krList"
+            :key="kritem.okrDetailId+krIndex"
+            class="detail"
+          >
+            <dd class="hideEdit">
               <span v-if="showOKRInfoLabel">KR</span>
               <el-form-item
                 style="display:inline-block"
@@ -104,56 +108,60 @@
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
-            </div>
-            <ul class="detail">
-              <li class="hideEdit">
-                <span>分权重</span>
-                <el-form-item v-if="canWrite && kritem.showWeightEdit">
-                  <el-input-number
-                    v-model="kritem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <span v-else>{{kritem.okrWeight}}%</span>
-                <i
-                  v-if="canWrite"
-                  class="el-icon-edit"
-                  @click="showKRInput(index,krIndex,'showWeightEdit')"
-                ></i>
-              </li>
-              <li>
-                <span>当前进度</span>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
-              </li>
-              <li>
-                <span>风险状态</span>
-                <div v-for="item in new Array(3)" :key="item">
-                  <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
-                </div>
-              </li>
-            </ul>
+            </dd>
+            <!-- <dl class="detail"> -->
+            <dd class="hideEdit">
+              <span>分权重</span>
+              <el-form-item v-if="canWrite && kritem.showWeightEdit">
+                <el-input-number
+                  v-model="kritem.okrWeight"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                ></el-input-number>
+              </el-form-item>
+              <span v-else>{{kritem.okrWeight}}%</span>
+              <i
+                v-if="canWrite"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showWeightEdit')"
+              ></i>
+            </dd>
+            <dd>
+              <span>当前进度</span>
+              <span class="progresswidth">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
+                ></el-progress>
+              </span>
+            </dd>
+            <dd style="display:flex">
+              <span>风险状态</span>
+              <div v-for="item in new Array(3)" :key="item">
+                <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
+              </div>
+            </dd>
+            <!-- </dl> -->
             <!-- 可在折叠面板body处添加内容 -->
             <slot name="body-bar" :okritem="kritem"></slot>
-          </div>
+          </dl>
           <div v-if="item.newkrList">
             <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex">
               <dt>KR</dt>
               <dd class="objectdd">
                 <el-form-item
-                  :prop="'newkrList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
+                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
                 >
                   <!-- 不强制刷新无法输入 -->
-                  <el-input v-model="newItem.okrDetailObjectKr" @input="updateokrCollapse"></el-input>
+                  <el-input
+                    placeholder="请输入关键结果"
+                    v-model="newItem.okrDetailObjectKr"
+                    @input="updateokrCollapse"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="权重">
                   <el-input-number
@@ -291,7 +299,6 @@ export default {
         num: parseInt(index, 10),
         type,
       };
-      console.log('dakai', undertakeInfo);
       this.$emit('openUndertake', undertakeInfo);
     },
     // 改变tableList后强制渲染
@@ -304,22 +311,19 @@ export default {
         okritem.newkrList = [];
       }
       okritem.newkrList.push({
-        // id: this.formData.okrInfoList[oindex].krList.length,
         okrDetailObjectKr: '',
         okrWeight: 0,
         okrDetailProgress: 0,
         okrDetailConfidence: 1,
       });
       this.$forceUpdate();
-      // this.$refs.okrCollapse.updateokrCollapse();
-      console.log('okritem', okritem);
     },
     // 删除kr
     deletekr(okritem, krindex) {
       okritem.newkrList.splice(krindex, 1);
       this.$forceUpdate();
-      // this.$refs.okrCollapse.updateokrCollapse();
     },
+
   },
   watch: {
     tableList: {
