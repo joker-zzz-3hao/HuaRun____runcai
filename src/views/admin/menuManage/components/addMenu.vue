@@ -43,7 +43,7 @@
           placeholder="请设置示排序"
         ></el-input>
       </el-form-item>
-      <el-form-item label="路由地址" v-if="form.functionType!='BTN'" prop="resourceUrl">
+      <el-form-item label="路由地址" prop="resourceUrl">
         <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
       </el-form-item>
       <el-form-item label="类标识" v-if="form.functionType !=='BTN'" prop="classTag">
@@ -157,7 +157,6 @@ export default {
       if (form.functionType == 'BTN') {
         form.classTag = '';
         form.functionEvent = '';
-        form.resourceUrl = '';
       }
       this.server.addOrUpdate(form).then((res) => {
         if (res.code == 200) {

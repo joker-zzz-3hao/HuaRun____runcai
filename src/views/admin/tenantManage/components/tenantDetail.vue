@@ -9,7 +9,7 @@
     size="35%"
     :modal="false"
     :visible.sync="dialogTableVisible"
-    center
+    class="tl-drawer"
   >
     <div class="modelCreate">
       <el-form ref="form" label-width="110px">
@@ -153,16 +153,5 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
-}
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
 }
 </style>

@@ -2,8 +2,13 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <el-select placeholder="请选择" v-model="value">
-        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
+      <el-select placeholder="请选择" v-model="value" @change="getriskStatistics">
+        <el-option
+          v-for="item in options"
+          :key="item.id"
+          :value="item.periodId"
+          :label="item.periodName"
+        ></el-option>
       </el-select>
       <div id="weeking"></div>
     </div>
@@ -50,6 +55,9 @@ export default {
     return {
       value: '',
       server,
+      options: [],
+      echartDataY: [],
+      echartDataX: [],
       tableData: [
         {
           name: '陆涛',
@@ -95,26 +103,35 @@ export default {
     }),
   },
   mounted() {
-    this.init();
     this.initMood();
     this.getriskStatistics();
+    this.getokrQuery();
+    this.init();
   },
   methods: {
+    getokrQuery() {
+      this.server.okrQuery().then((res) => {
+        this.options = res.data;
+      });
+    },
     getriskStatistics() {
       this.server.riskStatistics({
-        dto: {
-          periodId: '1179885687267901440',
-          personOrOrg: 'person',
-        },
+        periodId: this.value,
+        orgId: this.userInfo.orgId,
+        personOrOrg: 'org',
       }).then((res) => {
-        console.log(res);
+        this.echartDataY = res.data.datas.map((item) => item.allScore);
+        this.echartDataX = res.data.datas.map((item) => item.createDate);
+        console.log(this.echartDataX);
+        this.init();
       });
     },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
         xAxis: {
-          data: ['2020-7-10', '2020-7-11', '2020-7-12', '2020-7-13', '2020-7-14', '2020-7-15', '2020-7-16'],
+          data: that.echartDataX,
         },
         yAxis: {
           min: 0,
@@ -122,7 +139,9 @@ export default {
           axisLabel: {
             formatter(value) {
               const texts = [];
-              if (value <= 1) {
+              if (value == 0) {
+                console.log(1);
+              } else if (value <= 1) {
                 texts.push('无风险');
               } else if (value <= 2) {
                 texts.push('风险可控');
@@ -136,7 +155,7 @@ export default {
         series: [{
           name: '风险',
           type: 'line',
-          data: [1, 3, 2, 3, 2, 1],
+          data: that.echartDataY,
         },
         ],
       };
