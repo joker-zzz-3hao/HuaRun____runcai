@@ -79,28 +79,7 @@
                   <span>%</span>
                 </el-form-item>
                 <el-form-item label="风险状态">
-                  <!-- <el-select v-model="kitem.okrDetailConfidence">
-
-                  </el-select>-->
-                  <el-popover
-                    placement="bottom"
-                    width="400"
-                    trigger="click"
-                    :append-to-body="false"
-                  >
-                    <el-radio-group v-model="kitem.okrDetailConfidence">
-                      <el-radio-button
-                        v-for="citem in CONST.CONFIDENCE"
-                        :key="citem.value"
-                        :label="citem.value"
-                      >
-                        <tl-riskStatus :status="toString(citem.value)"></tl-riskStatus>
-                        {{citem.label}}
-                      </el-radio-button>
-                    </el-radio-group>
-
-                    <el-button slot="reference">{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence]}}</el-button>
-                  </el-popover>
+                  <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
                 </el-form-item>
                 <el-button @click="deletekr(index,kindex)">-（删kr）</el-button>
               </dd>
@@ -133,10 +112,9 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import riskStatus from '@/components/riskStatus';
+import confidenceSelect from '@/components/confidenceSelect';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
-import CONST from '../const';
 
 const TIME_INTERVAL = 5 * 1000;
 
@@ -145,11 +123,10 @@ export default {
   mixins: [validateMixin],
   components: {
     'undertake-table': undertakeTable,
-    'tl-riskStatus': riskStatus,
+    'tl-confidence': confidenceSelect,
   },
   data() {
     return {
-      CONST,
       formData: {
         okrBelongType: '',
         okrInfoList: [{
@@ -247,7 +224,7 @@ export default {
     // 删除kr
     deletekr(oindex, krindex) {
       if (this.formData.okrInfoList[oindex].krList.length <= 1) {
-        this.$message('至少有一个kr');
+        this.$message('至少有一个关键结果');
         return;
       }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
@@ -279,6 +256,10 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
+      if (this.formData.okrInfoList.length <= 1) {
+        this.$message('至少有一个目标');
+        return;
+      }
       this.formData.okrInfoList.splice(oindex, 1);
     },
     // 查可关联承接的okr
@@ -411,8 +392,6 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-            } else {
-              this.$message(res.msg);
             }
           });
         }

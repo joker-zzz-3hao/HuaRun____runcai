@@ -28,4 +28,28 @@ export default class Server extends ServerBase {
   updateVirtualOrg(param) {
     return this._ajaxPost('/gateway/system-service/sys/organization/updateVirtualOrg', param);
   }
+
+  getVirtualOrgUser(param) {
+    return this._ajaxPost('/gateway/system-service/sys/teamManagement/getVirtualOrgUser', param);
+  }
+
+  setTeamAdminRole(param) {
+    return this._ajaxPost('/gateway/system-service/sys/userRole/setTeamAdminRole', param);
+  }
+
+  delVirtualOrg(param) {
+    return this._ajaxPost('/gateway/system-service/sys/organization/delVirtualOrg', param);
+  }
+
+  addVirtualOrg(param) {
+    return this._ajaxPost('/gateway/system-service/sys/organization/addVirtualOrg', param);
+  }
+
+  updateOrgConfig(param) {
+    return this._ajaxPost('/gateway/system-service/sys/config/updateOrgConfig', param);
+  }
+
+  getOrg(param) {
+    return this._ajaxPost('/gateway/system-service/sys/organization/getOrg', param);
+  }
 }

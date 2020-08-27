@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-drawer
-      title="编辑虚拟团队"
-      :visible.sync="showEditTeam"
+      title="创建虚拟团队"
+      :visible.sync="showCreateTeam"
       :with-header="true"
       @close="closed"
       :modal="false"
@@ -16,13 +16,13 @@
       <div>
         <div>
           <span>团队名称</span>
-          <el-input v-model="formData.orgName" placeholder="请输入团队名称"></el-input>
+          <el-input v-model="formData.teamName" placeholder="请输入团队名称"></el-input>
         </div>
         <div>
           <div>
             <div>指定团队负责人</div>
-            <div v-if="formData.chargeMember && formData.chargeMember.orgLeader">
-              <div>{{formData.chargeMember.orgLeader}}</div>
+            <div v-if="formData.chargeMember.userName">
+              <div>{{formData.chargeMember.userName}}</div>
               <div>
                 <i class="el-icon-close" @click="deleteMember"></i>
               </div>
@@ -33,7 +33,7 @@
           </div>
           <div v-if="showSelectMember">
             <tl-selectMember
-              :value="formData.chargeMember.userId"
+              :value="formData.chargeMember.userName"
               :teamMembers="teamMembers"
               @ok="getMember"
               @cancel="cancel"
@@ -43,7 +43,7 @@
         <div>
           <div>
             <div>团队成员</div>
-            <div>
+            <div v-if="formData.chargeMembers.length>0">
               <div v-for="item in formData.chargeMembers" :key="item.userId">
                 <div>{{item.userName}}</div>
                 <div>
@@ -51,13 +51,13 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div v-else>
               <i class="el-icon-plus" @click="showSelectMembers=!showSelectMembers"></i>
             </div>
           </div>
           <div v-if="showSelectMembers">
             <tl-selectMembers
-              :value="formData.chargeMembersValue"
+              :value="formData.chargeMembers"
               :teamMembers="teamMembers"
               @ok="getMembers"
               @cancel="cancel"
@@ -98,14 +98,12 @@ export default {
   },
   data() {
     return {
-      showEditTeam: false,
+      showCreateTeam: false,
       data: {},
       formData: {
-        orgName: '',
         teamName: '',
-        chargeMember: {},
+        chargeMember: '',
         chargeMembers: [],
-        chargeMembersValue: [],
       },
       showSelectMember: false,
       showSelectMembers: false,
@@ -117,24 +115,10 @@ export default {
   methods: {
     show(data) {
       this.data = data;
-      this.formData.orgName = data.orgName;
-      this.formData.chargeMember.orgLeader = data.orgLeader;
-      this.formData.chargeMember.userId = data.userId;
-      this.chargeMembersValue = [];
-      this.server.getVirtualOrgUser({ orgId: data.orgId }).then((res) => {
-        if (res.code == '200') {
-          this.formData.chargeMembers = res.data;
-          res.data.forEach((item) => {
-            this.formData.chargeMembersValue.push(item.userId);
-          });
-        }
-      });
-      this.showEditTeam = true;
-      console.log(this.chargeMembersValue);
+      this.showCreateTeam = true;
     },
     getMember(data) {
       this.formData.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
-      this.formData.chargeMember.orgLeader = this.formData.chargeMember.userName;
       console.log(this.formData.chargeMember);
       this.showSelectMember = false;
     },
@@ -157,7 +141,7 @@ export default {
       this.showSelectMember = false;
     },
     closed() {
-      this.showEditTeam = false;
+      this.showCreateTeam = false;
     },
     submitMember() {
       this.formData.chargeMembers.forEach((item) => {
@@ -165,15 +149,16 @@ export default {
           userId: item.userId,
         });
       });
-      this.server.updateVirtualOrg({
-        orgName: this.formData.orgName,
-        orgId: this.data.orgId,
+      this.server.addVirtualOrg({
+        orgName: this.formData.teamName,
+        orgFullId: this.data.orgFullId,
+        orgParentId: this.data.orgId,
         roleCode: 'ORG_ADMIN',
         userId: this.formData.chargeMember.userId,
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
         if (res.code == '200') {
-          this.showEditTeam = false;
+          this.showCreateTeam = false;
           this.$emit('success');
         }
       });

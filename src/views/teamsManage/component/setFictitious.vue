@@ -73,7 +73,6 @@ export default {
       data.parentId = null;
       self.treeData.push(data);
       self.getTreeData(data);
-      console.log(self.treeData);
     },
     getTreeData(data) {
       const self = this;
@@ -84,10 +83,13 @@ export default {
             item.userName = item.orgLeader;
             self.treeData.push(item);
           });
-          self.treeData.push({
-            parentId: data.userId,
-            userId: null,
-          });
+          if (self.treeData.length < 3) {
+            self.treeData.push({
+              parentId: data.userId,
+              userId: null,
+              add: true,
+            });
+          }
         }
       });
     },
@@ -99,6 +101,8 @@ export default {
       this.$emit('closed');
     },
     addFictitiousSuccess() {
+      this.treeData = [];
+      this.treeData.push(this.userData);
       this.getTreeData(this.userData);
     },
   },

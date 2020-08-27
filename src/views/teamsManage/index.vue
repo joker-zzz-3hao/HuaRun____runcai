@@ -20,8 +20,8 @@
     <div>
       <div class="display-flex">
         <div>团队综合管理员：</div>
-        <!-- <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div> -->
-        <div>
+        <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div>
+        <div v-else>
           <div>未设置</div>
           <el-button @click="setManager">设置团队综合管理员</el-button>
         </div>
@@ -30,7 +30,12 @@
         <div class="display-flex">
           <div>周报是否开放 (周报的查看权限)</div>
           <div>
-            <el-switch v-model="weeklyOpen" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch
+              v-model="weeklyOpen"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="changeWeeklyOpen"
+            ></el-switch>
           </div>
         </div>
         <div>
@@ -40,7 +45,7 @@
       </div>
       <div class="display-flex">
         <div>写周报模式</div>
-        <el-checkbox-group v-model="weeklyMode" :min="1">
+        <el-checkbox-group v-model="weeklyMode" :min="1" @change="changeWeeklyMode">
           <el-checkbox label="1">标准模式</el-checkbox>
           <el-checkbox label="2">简单模式</el-checkbox>
         </el-checkbox-group>
@@ -48,7 +53,12 @@
       <div class="display-flex">
         <div>是否开启OKR审核</div>
         <div>
-          <el-switch v-model="openOkrApproval" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch
+            v-model="openOkrApproval"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="changeOkrExamine"
+          ></el-switch>
         </div>
       </div>
     </div>
@@ -126,7 +136,12 @@
       <div>
         <tl-svgtree fatherId="parentId" childId="orgId" :treeData="teamTreeData">
           <template slot="treecard" slot-scope="node">
-            <tl-teamCard :node="node" @editTeam="editTeamFun"></tl-teamCard>
+            <tl-teamCard
+              :node="node"
+              @editTeam="editTeamFun"
+              @deleteTeam="deleteTeam"
+              @addTeam="addTeam"
+            ></tl-teamCard>
           </template>
         </tl-svgtree>
       </div>
@@ -136,6 +151,8 @@
       ref="setManager"
       :server="server"
       @closed="closedSetManager"
+      :teamMembers="teamMembers"
+      @setSuccess="setSuccess"
     ></tl-setManager>
     <tl-setFictitious
       v-if="setFictitiousExist"
@@ -158,6 +175,13 @@
       @success="closedEditTeam"
       :teamMembers="teamMembers"
     ></tl-editTeam>
+    <tl-addTeam
+      v-if="addTeamExist"
+      ref="addTeam"
+      :server="server"
+      @success="closedAddTeam"
+      :teamMembers="teamMembers"
+    ></tl-addTeam>
   </div>
 </template>
 
@@ -167,6 +191,7 @@ import setManager from './component/setManager';
 import setFictitious from './component/setFictitious';
 import teamCard from './component/teamCard';
 import editTeam from './component/editTeam';
+import addTeam from './component/addTeam';
 import moreMembers from './component/moreMembers';
 import Server from './server';
 
@@ -183,9 +208,10 @@ export default {
       editTeamExist: false,
       weeklyOpen: false,
       openOkrApproval: false,
+      addTeamExist: false,
       teamData: {},
       baseInfo: {},
-      weeklyMode: ['1'],
+      weeklyMode: ['1', '2'],
       teamSelect: '',
       circleList: [],
       teamTreeData: [],
@@ -202,6 +228,7 @@ export default {
     'tl-teamCard': teamCard,
     'tl-svgtree': svgtree,
     'tl-editTeam': editTeam,
+    'tl-addTeam': addTeam,
   },
   mounted() {
     this.init();
@@ -213,6 +240,15 @@ export default {
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          if (self.baseInfo.weeklySee == 'O') {
+            self.weeklyOpen = true;
+          }
+          if (self.baseInfo.openOkrExamine == 'O') {
+            self.openOkrApproval = true;
+          }
+          if (self.baseInfo.weeklyPattern) {
+            self.weeklyMode = self.baseInfo.weeklyPattern.split(',');
+          }
           res.data.parentId = null;
           self.teamTreeData.push(res.data);
           self.server.queryOrgParent({ orgFullId: res.data.orgFullId }).then((response) => {
@@ -221,6 +257,11 @@ export default {
               response.data.forEach((tItem) => {
                 tItem.parentId = self.baseInfo.orgId;
                 self.teamTreeData.push(tItem);
+              });
+              // 手动添加最后一个添加虚拟组织的按钮
+              self.teamTreeData.push({
+                parentId: self.baseInfo.orgId,
+                orgId: 'add',
               });
               self.circleList = response.data.filter((item) => item.orgType == '0');
               if (self.circleList.length > 0) {
@@ -235,7 +276,7 @@ export default {
       const self = this;
       self.setManagerExist = true;
       self.$nextTick(() => {
-        self.$refs.setManager.show();
+        self.$refs.setManager.show(this.baseInfo);
       });
     },
     setFictitious(data) {
@@ -259,6 +300,28 @@ export default {
         self.$refs.editTeam.show(data);
       });
     },
+    addTeam() {
+      const self = this;
+      self.addTeamExist = true;
+      self.$nextTick(() => {
+        self.$refs.addTeam.show(this.baseInfo);
+      });
+    },
+    deleteTeam(data) {
+      this.$xconfirm({
+        title: '删除确认',
+        content: '该数据删除将无法恢复，确认要删除吗？',
+
+      }).then(() => {
+        this.server.delVirtualOrg({
+          orgId: data.orgId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.init();
+          }
+        });
+      });
+    },
     closedSetManager() {
       this.setManagerExist = false;
     },
@@ -269,11 +332,60 @@ export default {
       this.editTeamExist = false;
       this.init();
     },
+    closedAddTeam() {
+      this.addTeamExist = false;
+      this.init();
+    },
+    setSuccess() {
+      this.setManagerExist = false;
+      this.init();
+    },
     closedSetFictitious() {
       this.setFictitiousExist = false;
     },
     selectTeam(data) {
       this.teamSelect = data.orgFullId;
+    },
+    changeWeeklyMode(data) {
+      this.updateOrgConfig(this.baseInfo.weeklyPatternId, data.join(','));
+      // this.$xconfirm({
+      //   title: '确认',
+      //   content: '是否确认修改写周报模式',
+
+      // }).then(() => {
+      //   this.updateOrgConfig(this.baseInfo.weeklyPatternId, data);
+      // });
+    },
+    changeWeeklyOpen(data) {
+      this.updateOrgConfig(this.baseInfo.weeklySeeId, data ? 'O' : 'S');
+      // this.$xconfirm({
+      //   title: '确认',
+      //   content: '是否确认修改写周报模式',
+
+      // }).then(() => {
+      //   this.updateOrgConfig(this.baseInfo.weeklySeeId, data);
+      // });
+    },
+    changeOkrExamine(data) {
+      this.updateOrgConfig(this.baseInfo.openOkrExamineId, data ? 'O' : 'S');
+      // this.$xconfirm({
+      //   title: '确认',
+      //   content: '是否确认修改写周报模式',
+
+      // }).then(() => {
+      //   this.updateOrgConfig(this.baseInfo.openOkrExamineId, data);
+      // });
+    },
+    updateOrgConfig(configId, configItemCode) {
+      this.server.updateOrgConfig({
+        configId,
+        configItemCode,
+      }).then((res) => {
+        if (res.code == '200') {
+          this.$message.success(res.msg);
+        }
+        this.init();
+      });
     },
     deleteFictitious(data) {
       this.$xconfirm({

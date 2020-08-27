@@ -28,19 +28,7 @@
                 <el-slider v-model="kitem.okrDetailProgress" show-input :step="1"></el-slider>
               </el-form-item>
               <el-form-item label="风险状态">
-                <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-                  <el-radio-group v-model="kitem.okrDetailConfidence">
-                    <el-radio-button
-                      v-for="citem in CONST.CONFIDENCE"
-                      :key="citem.value"
-                      :label="citem.value"
-                    >{{citem.label}}</el-radio-button>
-                  </el-radio-group>
-
-                  <el-button
-                    slot="reference"
-                  >{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence||'1']}}</el-button>
-                </el-popover>
+                <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
               </el-form-item>
             </dd>
           </dl>
@@ -60,14 +48,16 @@
 </template>
 
 <script>
+import confidenceSelect from '@/components/confidenceSelect';
 import { mapMutations } from 'vuex';
-import CONST from '../const';
 
 export default {
   name: 'okrUpdate',
+  components: {
+    'tl-confidence': confidenceSelect,
+  },
   data() {
     return {
-      CONST,
       dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       formData: {
