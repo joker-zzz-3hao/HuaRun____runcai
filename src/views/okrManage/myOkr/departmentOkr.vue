@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- 选择周期 -->
+    <tl-department
+      :data="cycleData"
+      type="cycleListSelect"
+      @handleData="handleorgCycleData"
+      :defaultProps="cycleDefaultProps"
+    ></tl-department>
     <div v-if="tableList.length>0">
       <!-- 公共信息 -->
       <div>
@@ -95,6 +102,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import department from '@/components/department';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import Server from './server';
@@ -107,6 +115,7 @@ export default {
   components: {
     'tl-okr-table': okrTable,
     'tl-okr-detail': okrDetail,
+    'tl-department': department,
   },
   data() {
     return {
@@ -125,13 +134,34 @@ export default {
       okrId: '',
       myokrDrawer: false,
       drawerTitle: 'OKR详情',
+      okrorgCycle: {}, // 当前选择的周期-部门
+      okrCycle: {}, // 当前选择的周期
+      cycleData: [], // 周期列表
+      cycleDefaultProps: { // 周期数据类型
+        children: 'children',
+        label: 'periodName',
+        id: 'periodId',
+      },
+      cycleObj: { // 周期数据格式
+        old: {
+          checkStatus: 0,
+          children: [],
+          periodName: '历史OKR周期',
+          okrCycleType: '0',
+          periodId: '0',
+        },
+        current: {
+          checkStatus: 1,
+          children: [],
+          periodName: '当前的OKR周期',
+          okrCycleType: '0',
+          periodId: '1',
+        },
+      },
     };
   },
   props: {
-    okrCycle: {
-      type: Object,
-      required: true,
-    },
+
     departmentName: {
       type: String,
       default: '',
@@ -140,9 +170,14 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   created() {
+    this.getOkrCycleList();
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.departmentName = this.userInfo.orgParentName || '部门';
+    } else { this.departmentName = this.userInfo.orgName || '部门'; }
   },
   methods: {
     searchOkr() { // 默认搜索进行时
@@ -184,6 +219,34 @@ export default {
     },
     handleClose() {
       this.myokrDrawer = false;
+    },
+    // 周期
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        if (res.data.length > 0) {
+          res.data.forEach((item) => {
+            // checkStatus为0时是历史周期，1为当前周期
+            if (item.checkStatus == '0') {
+              this.cycleObj.old.children.push(item);
+            } else if (item.checkStatus == '1') {
+              this.cycleObj.current.children.push(item);
+              this.okrorgCycle = item;
+              this.okrCycle = item;
+              console.log('当前周期', item);
+            }
+          });
+          this.pushCycleObj('current');
+          this.pushCycleObj('old');
+        }
+      });
+    },
+    pushCycleObj(key) {
+      if (this.cycleObj[key].children.length > 0) {
+        this.cycleData.push(this.cycleObj[key]);
+      }
+    },
+    handleCycleData(data) {
+      this.okrCycle = data;
     },
   },
   watch: {

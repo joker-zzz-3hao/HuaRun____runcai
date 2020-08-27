@@ -83,7 +83,7 @@ const CONFIDENCE_MAP = {
 };
 
 export default {
-  name: 'okrCollapse',
+  name: 'okrTable',
   components: {
     elcollapse,
     elcollapseitem,
