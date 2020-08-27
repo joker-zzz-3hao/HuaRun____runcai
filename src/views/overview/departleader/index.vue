@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <tl-period></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -50,6 +51,7 @@ import okrUpdate from './components/okrUpdate';
 import okrRiskTotal from './components/okrRiskTotal';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
+import period from '../component/period';
 
 export default {
   name: 'departleader',
@@ -61,6 +63,7 @@ export default {
     'tl-okr-risk-total': okrRiskTotal,
     'tl-weeking': weeking,
     'tl-org-page': orgPage,
+    'tl-period': period,
   },
   data() {
     return {

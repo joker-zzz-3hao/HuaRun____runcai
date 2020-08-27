@@ -64,7 +64,7 @@ export default {
             });
             break;
           // 系统管理员
-          case 'SYSTEM':
+          case 'sys_system':
             item.children.forEach((tItem) => {
               self.classTagList = [];
               self.classTagList.push(tItem.functionCode);

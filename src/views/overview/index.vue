@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <tl-teamleader v-if="false"></tl-teamleader>
+    <tl-teamleader></tl-teamleader>
     <tl-grass-staff v-if="false"></tl-grass-staff>
-    <tl-depart-leader></tl-depart-leader>
+    <tl-depart-leader v-if="false"></tl-depart-leader>
   </div>
 </template>
 

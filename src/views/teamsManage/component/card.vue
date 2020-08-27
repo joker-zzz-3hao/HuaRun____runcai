@@ -4,7 +4,7 @@
       <div>{{node.node.orgName}}</div>
       <div>{{node.node.userName}}</div>
     </div>
-    <div v-else>
+    <div v-if="node.node.add">
       <div>
         <i class="el-icon-plus" @click="addFictitious"></i>
         <el-cascader-panel

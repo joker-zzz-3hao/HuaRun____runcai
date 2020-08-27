@@ -87,6 +87,7 @@ export default {
             self.treeData.push({
               parentId: data.userId,
               userId: null,
+              add: true,
             });
           }
         }
@@ -101,6 +102,7 @@ export default {
     },
     addFictitiousSuccess() {
       this.treeData = [];
+      this.treeData.push(this.userData);
       this.getTreeData(this.userData);
     },
   },

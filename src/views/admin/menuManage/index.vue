@@ -24,7 +24,7 @@
           v-model="keyWord"
           placeholder="输入菜单名称"
         >
-          <i class="el-icon-search" slot="prefix" @click="getMenuList()"></i>
+          <i class="el-icon-search" slot="prefix" @click="getMenuList"></i>
         </el-input>
         <el-button
           type="primary"

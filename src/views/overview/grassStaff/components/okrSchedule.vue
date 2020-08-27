@@ -6,18 +6,20 @@
 
 <script>
 import echarts from 'echarts';
+import Server from '../../server';
 
+const server = new Server();
 export default {
   name: 'okrSchedule',
   data() {
     return {
-
+      server,
     };
   },
   mounted() {
-    this.init();
   },
   methods: {
+
     init() {
       const myChart = echarts.init(document.getElementById('okrSchedule'));
       const option = {
