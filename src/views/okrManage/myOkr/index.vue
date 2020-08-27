@@ -1,28 +1,14 @@
 <template>
-  <div class="home">
-    <!-- <el-tabs v-model="activeName">
-      <el-tab-pane label="我的OKR" name="myOkr"></el-tab-pane>
-      <el-tab-pane label="departmentOkrOKR" name="departmentOkr"></el-tab-pane>
-    </el-tabs>-->
-    <el-tabs v-model="activeName" @tab-click="goRoutesss">
-      <el-tab-pane label="我的OKR" name="myOkr"></el-tab-pane>
-      <el-tab-pane :label="departmentName+'OKR'" name="departmentOkr"></el-tab-pane>
-    </el-tabs>
-    <el-button style="display:float" @click="goWriteOkr">创建okr</el-button>
-
-    <router-view></router-view>
-    <el-drawer
-      :wrapperClosable="false"
-      :modal-append-to-body="false"
-      title="创建okr"
-      :visible.sync="createokrDrawer"
-      :before-close="handleClose"
-      class="tl-drawer"
-    >
-      <div>
-        <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+  <div class="my-okr">
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div>sdfasdfsa</div>
+        <div>ghjrrt</div>
+        <el-button @click="goWriteOkr">创建okr</el-button>
       </div>
-    </el-drawer>
+    </div>
+    <router-view class="cont-area"></router-view>
+    <tl-writeokr></tl-writeokr>
   </div>
 </template>
 
@@ -41,7 +27,6 @@ export default {
   data() {
     return {
       server,
-      activeName: 'myOkr',
     };
   },
   computed: {
