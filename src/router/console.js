@@ -53,6 +53,7 @@ export default [
               hasMainMenu: true,
               isSubMenu: true,
               parentRoute: 'myOkr',
+              belongsTo: 'myOkr',
               title: 'departmentOkr',
               power: '',
             },

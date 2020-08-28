@@ -62,7 +62,7 @@ export default {
           toName: 'myOkr',
         },
         {
-          menuTitle: '部门OKR',
+          menuTitle: '华润云大部门的部门OKR',
           toName: 'departmentOkr',
         },
       ],
@@ -98,7 +98,9 @@ export default {
     borderSlip(item, index, name) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
+      const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
+      borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
       this.go(name);
     },
