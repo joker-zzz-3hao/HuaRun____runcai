@@ -43,7 +43,7 @@
       </el-form-item>
     </el-form>
     <div>
-      <el-button>OKR对齐</el-button>
+      <el-button @click="goUndertake">OKR对齐</el-button>
     </div>
     <crcloud-table
       :total="formData.total"
@@ -168,6 +168,9 @@ export default {
     detail(row) {
       this.setDetailData(JSON.stringify(row));
       this.setOkrApprovalStep('2');
+    },
+    goUndertake() {
+      this.go('undertakeMaps');
     },
   },
   watch: {

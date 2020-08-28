@@ -169,7 +169,7 @@ export default {
       this.$refs.departForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.createOrg(this.formData).then((res) => {
+          this.server.createOrg(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('部门创建成功');
               this.close('refreshPage');
