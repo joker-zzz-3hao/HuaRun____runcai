@@ -11,6 +11,15 @@
         ></el-option>
       </el-select>
       <div id="weeking"></div>
+      <ul>
+        <li>磐云</li>
+        <li>磐云</li>
+        <li>磐云</li>
+        <li>磐云</li>
+        <li>磐云</li>
+        <li>磐云</li>
+        <li>磐云</li>
+      </ul>
     </div>
     <div class="model">
       <div>周报动态</div>
@@ -104,14 +113,14 @@ export default {
   },
   mounted() {
     this.initMood();
-    this.getriskStatistics();
     this.getokrQuery();
-    this.init();
   },
   methods: {
     getokrQuery() {
       this.server.okrQuery().then((res) => {
-        this.options = res.data;
+        this.options = res.data.content;
+        this.value = this.options[0].periodId;
+        this.getriskStatistics();
       });
     },
     getriskStatistics() {
@@ -122,7 +131,6 @@ export default {
       }).then((res) => {
         this.echartDataY = res.data.datas.map((item) => item.allScore);
         this.echartDataX = res.data.datas.map((item) => item.createDate);
-        console.log(this.echartDataX);
         this.init();
       });
     },

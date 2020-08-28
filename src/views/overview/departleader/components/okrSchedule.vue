@@ -10,9 +10,16 @@ import echarts from 'echarts';
 
 export default {
   name: 'okrSchedule',
+  props: {
+    mainData: {
+      type: String,
+      require: true,
+    },
+  },
   data() {
     return {
-
+      mainDataY: [],
+      mainDataX: [],
     };
   },
   mounted() {
@@ -20,7 +27,12 @@ export default {
     this.initCount();
   },
   methods: {
+    checkData() {
+      this.mainDataX = this.mainData.map((item) => item.okrProgress);
+      this.mainDataY = this.mainData.map((item) => item.orgName);
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrSchedule'));
       const option = {
         tooltip: {
@@ -42,14 +54,14 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: ['行云', '行云', '行云', '行云', '行云', '行云'],
+          data: that.mainDataY,
         },
         series: [
           {
             name: '2011年',
             type: 'bar',
             barWidth: 20,
-            data: [10, 30, 60, 70, 90, 100],
+            data: that.mainDataX,
           },
         ],
       };

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period></tl-period>
+    <tl-period @getPeriod="getPeriod"></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -9,18 +9,19 @@
       </div>
       <tl-org-page></tl-org-page>
       <div>
-        <ul>
-          <li class="user-info" style="display:flex;flex-direction: row;">
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
+        <ul style="display:flex;flex-direction: row;">
+          <li class="user-info" v-for="(item,index) in orgTable" :key="index">
+            <div>
+              <div class="user-name">{{checkName(item.orgName)}}</div>
+              <div>{{item.orgName}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
     <div class="creatOkr">
       <div>OKR当前进度</div>
-      <tl-okr-schedule></tl-okr-schedule>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
       <div>
@@ -46,12 +47,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import okrRiskTotal from './components/okrRiskTotal';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
 import period from '../component/period';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'departleader',
@@ -67,6 +72,10 @@ export default {
   },
   data() {
     return {
+      server,
+      orgTable: [],
+      period: '',
+      mainData: {},
       tableData: [
         {
           data1: '承接数',
@@ -104,8 +113,39 @@ export default {
       ],
     };
   },
-  methods: {
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
+  created() {
+    this.getqueryMyOkr();
+  },
 
+  methods: {
+    // eslint-disable-next-line no-shadow
+    getPeriod(period) {
+      this.period = period;
+      this.getmainData();
+    },
+    checkName(name) {
+      return name.substring(0, 1);
+    },
+    getqueryMyOkr() {
+      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.userInfo.orgId }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgTable;
+        }
+      });
+    },
+    getmainData() {
+      this.server.mainData({
+        periodId: this.period,
+        orgId: this.userInfo.orgId,
+      }).then((res) => {
+        this.mainData = res.data;
+      });
+    },
   },
 };
 </script>
