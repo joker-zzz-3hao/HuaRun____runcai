@@ -113,7 +113,7 @@ export default {
       rules: {
         functionCode: [{ required: true, message: '请输入菜单编码', trigger: 'change' },
         ],
-        classTag: [{ required: true, message: '请输入类标识', trigger: 'change' },
+        classTag: [{ required: true, message: '请输入类标识', trigger: 'blur' },
         ],
         functionName: [{ required: true, message: '请输入菜单名称', trigger: 'blur' },
           {
@@ -128,14 +128,14 @@ export default {
             trigger: 'blur',
           },
         ],
-        permissionCode: [{ required: true, message: '请输入路由地址', trigger: 'blur' },
+        permissionCode: [{ required: true, message: '请输入权限标识', trigger: 'blur' },
           // {
           //   pattern: /^[0-9a-zA-Z]+$/,
           //   message: '请输入数字或者英文字母',
           //   trigger: 'blur',
           // }
         ],
-        resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+        resourceUrl: [{ required: true, message: '请输入路由地址', trigger: 'blur' }],
         functionEvent: [
           { required: true, message: '请输入事件名', trigger: 'blur' },
         ],
