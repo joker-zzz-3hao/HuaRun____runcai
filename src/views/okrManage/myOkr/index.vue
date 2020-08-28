@@ -72,10 +72,20 @@ export default {
     ...mapState('common', {
       createokrDrawer: (state) => state.createokrDrawer,
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   created() {
-    this.departmentName = this.userInfo.orgParentName || '部门';
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.departmentName = this.userInfo.orgParentName || '部门';
+    } else {
+      this.departmentName = this.userInfo.orgName || '部门';
+    }
+    this.tabsList.forEach((item) => {
+      if (item.toName == 'departmentOkr') {
+        item.menuTitle = `${this.departmentName}OKR`;
+      }
+    });
   },
   mounted() {
     const liWidth = document.querySelectorAll('.tab-list li');
