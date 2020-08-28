@@ -6,73 +6,52 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
+    class="tl-dialog"
   >
-    <div class="modelCreate">
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="租户名称" prop="tenantName">
-          <el-input
-            style="width:320px"
-            v-model="form.tenantName"
-            maxlength="64"
-            placeholder="请输入租户名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="企业ID" prop="tenantId">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.tenantId"
-            placeholder="请输入企业ID"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="申请人" prop="applyUser">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.applyUser"
-            placeholder="请输入申请人"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="mobilePhone">
-          <el-input
-            style="width:320px"
-            v-model="form.mobilePhone"
-            placeholder="请输入联系电话"
-            maxlength="11"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="开放菜单功能">
-          <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              <span>{{item.data.functionName}}</span>
-              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
-            </div>
-            <div>
-              <el-popover placement="bottom" trigger="click">
-                <el-cascader-panel
-                  @change="handleCheckChange"
-                  ref="treeMenu"
-                  v-model.lazy="selectArr"
-                  :options="data"
-                  :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
-                  node-key="value"
-                ></el-cascader-panel>
-                <div>
-                  <el-button type="text" @click="saveTree">确认</el-button>
-                  <el-button type="text" @click="clearNodeAll">清空</el-button>
-                </div>
-                <div slot="reference">
-                  <i class="el-icon-circle-plus-outline"></i>
-                </div>
-              </el-popover>
-            </div>
+    <el-form ref="form" :model="form" :rules="rules" label-width="110px" class="tl-form">
+      <el-form-item label="租户名称" prop="tenantName">
+        <el-input v-model="form.tenantName" maxlength="64" class="tl-input" placeholder="请输入租户名称"></el-input>
+      </el-form-item>
+      <el-form-item label="企业ID" prop="tenantId">
+        <el-input maxlength="64" class="tl-input" v-model="form.tenantId" placeholder="请输入企业ID"></el-input>
+      </el-form-item>
+      <el-form-item label="申请人" prop="applyUser">
+        <el-input maxlength="64" class="tl-input" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" prop="mobilePhone">
+        <el-input v-model="form.mobilePhone" class="tl-input" placeholder="请输入联系电话" maxlength="11"></el-input>
+      </el-form-item>
+      <el-form-item label="开放菜单功能">
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+            <span>{{item.data.functionName}}</span>
+            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
-        </el-form-item>
-      </el-form>
-    </div>
+          <div>
+            <el-popover placement="bottom" trigger="click">
+              <el-cascader-panel
+                @change="handleCheckChange"
+                ref="treeMenu"
+                v-model.lazy="selectArr"
+                :options="data"
+                :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
+                node-key="value"
+              ></el-cascader-panel>
+              <div>
+                <el-button type="text" @click="saveTree">确认</el-button>
+                <el-button type="text" @click="clearNodeAll">清空</el-button>
+              </div>
+              <div slot="reference">
+                <i class="el-icon-circle-plus-outline"></i>
+              </div>
+            </el-popover>
+          </div>
+        </div>
+      </el-form-item>
+    </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm('form')">确定</el-button>
-      <el-button @click="close()">取 消</el-button>
+      <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -271,21 +250,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.modelCreate {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
-}
-</style>

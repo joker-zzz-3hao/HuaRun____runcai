@@ -23,16 +23,42 @@ export default [
       {
         // OKR管理
         // 我的OKR
-        path: '/myOkr',
-        name: 'myOkr',
+        path: '/okr',
+        name: 'okr',
+        redirect: {
+          name: 'myOkr',
+        },
         meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
-          parentRoute: 'myOkr',
-          title: 'myOkr',
+          title: 'okr',
           power: '',
         },
         component: () => import('@/views/okrManage/myOkr/index'),
+        children: [
+          {
+            path: '/myOkr',
+            name: 'myOkr',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'myOkr',
+              title: 'myOkr',
+              power: '',
+            },
+            component: () => import('@/views/okrManage/myOkr/myOkr'),
+          },
+          {
+            path: '/departmentOkr',
+            name: 'departmentOkr',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'myOkr',
+              title: 'departmentOkr',
+              power: '',
+            },
+            component: () => import('@/views/okrManage/myOkr/departmentOkr'),
+          },
+        ],
       },
       {
         // OKR管理

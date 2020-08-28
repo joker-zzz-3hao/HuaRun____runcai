@@ -4,7 +4,7 @@ const OKR_TYPE_MAP = {
 };
 const OKR_TYPE_NAME_MAP = {
   0: '目标O',
-  1: '关键行为KR',
+  1: '关键结果KR',
 };
 const CONFIDENCE = [{
   label: '无风险', value: 1,

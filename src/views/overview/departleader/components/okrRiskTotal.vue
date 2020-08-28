@@ -1,11 +1,10 @@
 <template>
   <div class="okrRiskTotal">
-    <tl-echart-page idName="okrRiskTotal" :option="option" :widthHeight="widthHeight"></tl-echart-page>
+    <div id="okrRiskTotal" :option="option"></div>
   </div>
 </template>
 
 <script>
-import echartPage from '../../component/echartPage';
 import Server from '../server';
 
 const server = new Server();
@@ -18,9 +17,7 @@ export default {
       server,
     };
   },
-  components: {
-    'tl-echart-page': echartPage,
-  },
+
   mounted() {
     this.init();
   },

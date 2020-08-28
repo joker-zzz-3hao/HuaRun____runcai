@@ -1,40 +1,40 @@
 <template>
-  <div class="home">
-    <el-button style="display:float" @click="goWriteOkr">创建okr</el-button>
-    <el-tabs v-model="activeName">
-      <el-tab-pane :label="`${departmentName}OKR`" name="team">
-        <department
-          :data="cycleData"
-          type="cycleListSelect"
-          @handleData="handleorgCycleData"
-          :defaultProps="cycleDefaultProps"
-        ></department>
-        <department-page
-          ref="departmentpage"
-          :okrCycle="okrorgCycle"
-          :departmentName="departmentName"
-        ></department-page>
-      </el-tab-pane>
-      <el-tab-pane label="我的OKR" name="myokr">
-        <department
-          :data="cycleData"
-          type="cycleListSelect"
-          @handleData="handleCycleData"
-          :defaultProps="cycleDefaultProps"
-        ></department>
-        <myokr-page ref="myokrpage" :okrCycle="okrCycle"></myokr-page>
-      </el-tab-pane>
-    </el-tabs>
+  <div class="my-okr">
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div class="tl-diy-tabs">
+          <ul class="tab-list">
+            <li
+              v-for="(item,idx) in tabsList"
+              :key="item.menuTitle"
+              @click="borderSlip(item,idx,item.toName)"
+              :class="{'is-focus': currentIndex === idx}"
+            >{{item.menuTitle}}</li>
+          </ul>
+          <div class="border-slip"></div>
+        </div>
+        <div class="operating-panel">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="goWriteOkr"
+            class="tl-btn amt-bg-slip"
+          >创建OKR</el-button>
+        </div>
+      </div>
+    </div>
+    <router-view class="cont-area"></router-view>
     <el-drawer
       :wrapperClosable="false"
       :modal-append-to-body="false"
       title="创建okr"
       :visible.sync="createokrDrawer"
       :before-close="handleClose"
+      :modal="false"
       class="tl-drawer"
     >
       <div>
-        <writeOkr v-if="createokrDrawer" :userName="userName"></writeOkr>
+        <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
       </div>
     </el-drawer>
   </div>
@@ -42,53 +42,30 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import department from '@/components/department';
-import departmentPage from './component/departmentPage';
-import myokrPage from './component/myokrPage';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 
 const server = new Server();
 
 export default {
-  name: 'myOkr',
+  name: 'okr',
   components: {
-    'department-page': departmentPage,
-    'myokr-page': myokrPage,
-    department,
-    writeOkr,
+    'tl-writeokr': writeOkr,
   },
   data() {
     return {
       server,
-      activeName: 'myokr',
-      cycleData: [], // 周期列表
-      cycleDefaultProps: { // 周期数据类型
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: { // 周期数据格式
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
+      currentIndex: 0,
+      tabsList: [
+        {
+          menuTitle: '我的OKR',
+          toName: 'myOkr',
         },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
+        {
+          menuTitle: '部门OKR',
+          toName: 'departmentOkr',
         },
-      },
-      departmentName: '',
-      userName: '',
-      okrorgCycle: {}, // 当前选择的周期-部门
-      okrCycle: {}, // 当前选择的周期
-      drawer: false,
+      ],
     };
   },
   computed: {
@@ -98,45 +75,19 @@ export default {
     }),
   },
   created() {
-    this.init();
-    // TODO:部门名
     this.departmentName = this.userInfo.orgParentName || '部门';
-    this.userName = this.userInfo.userName || '管理员';
-    this.activeName = this.$route.params.activeName || 'myokr';
+  },
+  mounted() {
+    const liWidth = document.querySelectorAll('.tab-list li');
+    const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
     ...mapMutations('common', ['setCreateokrDrawer']),
-    init() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.data.length > 0) {
-          res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              this.cycleObj.old.children.push(item);
-            } else if (item.checkStatus == '1') {
-              this.cycleObj.current.children.push(item);
-              this.okrorgCycle = item;
-              this.okrCycle = item;
-              console.log('当前周期', item);
-            }
-          });
-          this.pushCycleObj('current');
-          this.pushCycleObj('old');
-        }
-      });
-    },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
-    },
-    handleorgCycleData(data) {
-      this.okrorgCycle = data;
-      console.log(data);
-    },
-    handleCycleData(data) {
-      this.okrCycle = data;
-      console.log(data);
+    goRoutesss(tab, event) {
+      console.log(tab);
+      console.log(event);
+      this.go(this.activeName);
     },
     goWriteOkr() {
       this.setCreateokrDrawer(true);
@@ -144,16 +95,15 @@ export default {
     handleClose() {
       this.setCreateokrDrawer(false);
     },
+    borderSlip(item, index, name) {
+      const borderWidth = document.querySelector('.border-slip');
+      const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
+      borderWidth.style.left = `${selfLeft}px`;
+      this.currentIndex = index;
+      this.go(name);
+    },
   },
   watch: {
-    createokrDrawer: {
-      handler(newVal) {
-        if (newVal === false) {
-          this.$$refs.departmentpage.searchOkr();
-          this.$$refs.myokrpage.searchOkr();
-        }
-      },
-    },
   },
 };
 </script>

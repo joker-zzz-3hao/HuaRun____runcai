@@ -1,10 +1,10 @@
 <template>
-  <div style="width: 216px">
+  <div style="width: 216px" @click.stop="goDetail(node.node.okrId)">
     <div>
       <div>
         <p>{{node.node.okrDetailObjectKr}}</p>
       </div>
-      <div @click="goDetail(node.node.okrId)">
+      <div>
         <span>KR</span>
         <span>关键成果</span>
         <span>{{node.node.krCount}}</span>

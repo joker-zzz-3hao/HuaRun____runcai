@@ -2,11 +2,18 @@
   <div>
     <div>
       <!-- 选择状态 -->
-      <dl style="display:flex">
+      <dl>
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>
       </dl>
+      <!-- 选择周期 -->
+      <tl-department
+        :data="cycleData"
+        type="cycleListSelect"
+        @handleData="handleCycleData"
+        :defaultProps="cycleDefaultProps"
+      ></tl-department>
     </div>
     <!-- 状态为审批中需展示温馨提示 -->
     <div v-if="searchForm.status=='7'">
@@ -44,7 +51,7 @@
       </div>
       <!-- 表头 -->
       <div v-if="item.tableList.length>0">
-        <ul class="tablehead" style="display:flex; margin-left:100px">
+        <ul class="tablehead">
           <li>权重</li>
           <li>进度</li>
           <li>风险状态</li>
@@ -117,18 +124,20 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import department from '@/components/department';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
-import okrUpdate from './okrUpdate';
-import writeOkr from './writeOkr/index';
-import Server from '../server';
-import CONST from '../const';
+import okrUpdate from './component/okrUpdate';
+import writeOkr from './component/writeOkr/index';
+import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 
 export default {
-  name: 'myokrPage',
+  name: 'myOkr',
   components: {
+    'tl-department': department,
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
@@ -158,13 +167,31 @@ export default {
         canWrite: '',
       },
       drawerTitle: '创建okr',
+      okrorgCycle: {}, // 当前选择的周期-部门
+      okrCycle: {}, // 当前选择的周期
+      cycleData: [], // 周期列表
+      cycleDefaultProps: { // 周期数据类型
+        children: 'children',
+        label: 'periodName',
+        id: 'periodId',
+      },
+      cycleObj: { // 周期数据格式
+        old: {
+          checkStatus: 0,
+          children: [],
+          periodName: '历史OKR周期',
+          okrCycleType: '0',
+          periodId: '0',
+        },
+        current: {
+          checkStatus: 1,
+          children: [],
+          periodName: '当前的OKR周期',
+          okrCycleType: '0',
+          periodId: '1',
+        },
+      },
     };
-  },
-  props: {
-    okrCycle: {
-      type: Object,
-      required: true,
-    },
   },
   computed: {
     ...mapState('common', {
@@ -172,6 +199,7 @@ export default {
     }),
   },
   created() {
+    this.getOkrCycleList();
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
@@ -277,6 +305,34 @@ export default {
         },
       });
     },
+    // 周期
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        if (res.data.length > 0) {
+          res.data.forEach((item) => {
+            // checkStatus为0时是历史周期，1为当前周期
+            if (item.checkStatus == '0') {
+              this.cycleObj.old.children.push(item);
+            } else if (item.checkStatus == '1') {
+              this.cycleObj.current.children.push(item);
+              this.okrorgCycle = item;
+              this.okrCycle = item;
+              console.log('当前周期', item);
+            }
+          });
+          this.pushCycleObj('current');
+          this.pushCycleObj('old');
+        }
+      });
+    },
+    pushCycleObj(key) {
+      if (this.cycleObj[key].children.length > 0) {
+        this.cycleData.push(this.cycleObj[key]);
+      }
+    },
+    handleCycleData(data) {
+      this.okrCycle = data;
+    },
   },
   watch: {
     'okrCycle.periodId': {
@@ -299,27 +355,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.collapse span,
-.collapsetitle span {
-  margin-left: 10px;
-}
-
-.collapsetitle {
-  margin-left: 250px;
-}
-.progresswidth {
-  width: 150px;
-  display: inline-block;
-}
-.okrMain {
-  display: flex;
-}
-.okrMain li {
-  margin: 20px;
-}
-.tablehead li {
-  margin: 20px;
-}
-</style>

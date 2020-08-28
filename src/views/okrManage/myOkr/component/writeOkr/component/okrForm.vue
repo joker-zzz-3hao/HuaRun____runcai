@@ -79,23 +79,7 @@
                   <span>%</span>
                 </el-form-item>
                 <el-form-item label="风险状态">
-                  <!-- <el-select v-model="kitem.okrDetailConfidence">
-
-                  </el-select>-->
-                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-                    <el-radio-group v-model="kitem.okrDetailConfidence">
-                      <el-radio-button
-                        v-for="citem in CONST.CONFIDENCE"
-                        :key="citem.value"
-                        :label="citem.value"
-                      >
-                        <tl-riskStatus :status="toString(citem.value)"></tl-riskStatus>
-                        {{citem.label}}
-                      </el-radio-button>
-                    </el-radio-group>
-
-                    <el-button slot="reference">{{CONST.CONFIDENCE_MAP[kitem.okrDetailConfidence]}}</el-button>
-                  </el-popover>
+                  <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
                 </el-form-item>
                 <el-button @click="deletekr(index,kindex)">-（删kr）</el-button>
               </dd>
@@ -109,7 +93,7 @@
       <el-button @click="addobject()">+添加目标</el-button>
       <el-button v-if="isnew" @click="summit()">创建目标</el-button>
       <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
-      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿</el-button>
+      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
     </div>
     <!-- 关联承接项抽屉 -->
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
@@ -118,6 +102,7 @@
         ref="undertake"
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
+        :periodName="periodName"
       ></undertake-table>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
@@ -127,10 +112,9 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import riskStatus from '@/components/riskStatus';
+import confidenceSelect from '@/components/confidenceSelect';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
-import CONST from '../const';
 
 const TIME_INTERVAL = 5 * 1000;
 
@@ -139,11 +123,10 @@ export default {
   mixins: [validateMixin],
   components: {
     'undertake-table': undertakeTable,
-    'tl-riskStatus': riskStatus,
+    'tl-confidence': confidenceSelect,
   },
   data() {
     return {
-      CONST,
       formData: {
         okrBelongType: '',
         okrInfoList: [{
@@ -172,6 +155,7 @@ export default {
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号
       innerDrawer: false,
+      periodName: '', // 周期名
     };
   },
   props: {
@@ -240,7 +224,7 @@ export default {
     // 删除kr
     deletekr(oindex, krindex) {
       if (this.formData.okrInfoList[oindex].krList.length <= 1) {
-        this.$message('至少有一个kr');
+        this.$message('至少有一个关键结果');
         return;
       }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
@@ -272,6 +256,10 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
+      if (this.formData.okrInfoList.length < 1) {
+        this.$message('至少有一个目标');
+        return;
+      }
       this.formData.okrInfoList.splice(oindex, 1);
     },
     // 查可关联承接的okr
@@ -292,7 +280,7 @@ export default {
             if (item.krList && item.krList.length > 0) {
               item.krList.forEach((krItem, index) => {
                 this.departokrList.push({
-                  typeName: `KR${index}`,
+                  typeName: `KR${index + 1}`,
                   okrDetailObjectKr: krItem.okrDetailObjectKr,
                   okrDetailId: krItem.okrDetailId,
                   okrDetailVersion: krItem.okrDetailVersion,
@@ -317,7 +305,6 @@ export default {
               }
             });
           }
-          console.log('变更时点添加');
         } else {
           this.departokrObject = JSON.stringify(this.departokrList);
         }
@@ -353,7 +340,6 @@ export default {
     openUndertake(index) {
       // 选择o的序号，打开关联承接弹框
       this.selectIndex = index;
-      // this.dialogVisible = true;
       this.innerDrawer = true;
     },
     // 提交关联，给选中的o加上承接项和价值观
@@ -388,11 +374,11 @@ export default {
           });
 
           if (opercent != 100) {
-            this.$message('！ 权重值不足100%');
+            this.$message('！ 目标O权重值必须为100');
             return;
           }
           if (keypercent != 100) {
-            this.$message('！ 权重值不足100%');
+            this.$message('！ 结果KR权重值必须为100');
             return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
@@ -406,10 +392,6 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-              // this.$emit('handleClose');
-              // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
-            } else {
-              this.$message(res.msg);
             }
           });
         }
@@ -429,7 +411,6 @@ export default {
           if (res.code == 200) {
             this.$message('已保存');
             this.$refs.dataForm.resetFields();
-            // this.$router.push({ name: 'myOkr', params: { activeName: 'myokr' } });
             this.setCreateokrDrawer(false);
             this.setMyokrDrawer(false);
           }
@@ -438,7 +419,7 @@ export default {
     },
     deleteDraft() {
       this.$xconfirm({
-        content: '',
+        content: '请问您是否确定删除？',
         title: '如果您要确定删除，该OKR将无法恢复',
       }).then(() => {
         // 提交确认弹窗
@@ -449,7 +430,7 @@ export default {
             this.setMyokrDrawer(false);
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   watch: {
@@ -458,6 +439,8 @@ export default {
         if (newVal && newVal.periodId) {
           this.searchOkr();
           this.getCultureList();
+          console.log('周期', newVal);
+          this.periodName = newVal.periodName;
         }
       },
       deep: true,

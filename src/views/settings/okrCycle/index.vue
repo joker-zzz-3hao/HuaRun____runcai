@@ -155,7 +155,7 @@ export default {
         pageSize: this.pageSize,
         currentPage: this.currentPage,
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = res.data.content;
       });
     },
     addOkr() {

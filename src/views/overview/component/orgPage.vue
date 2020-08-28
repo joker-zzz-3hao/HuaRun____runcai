@@ -1,98 +1,25 @@
 <template>
-  <div class="home">
-    <div class="org">
-      <em>2020年下半年OKR</em>
-      <el-progress :percentage="50" class="progress"></el-progress>
-      <em>状态 · 进行中</em>
-      <em>负责人 肖海山</em>
-    </div>
-    <div class="swiperModel">
-      <div class="upDown">
-        <i class="el-icon-arrow-up" @click="swiperNext"></i>
-        <i class="el-icon-arrow-down" @click="swiperPrev"></i>
-      </div>
-      <div class="swiperLayout">
-        <swiper :options="swiperOption" ref="mySwiper">
-          <!-- slides -->
-          <swiper-slide>
-            <div class="swiperList">
-              <div class="okrPress">
-                <em>完成上半年营收入100万元</em>
-                <em>x</em>
-              </div>
-              <div class="listOkr">
-                <em>权重：30%</em>
-                <el-progress :percentage="50" class="progress"></el-progress>
-                <em>50%</em>
-              </div>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="swiperList">
-              <div class="okrPress">
-                <em>完成上半年营收入100万元</em>
-                <em>x</em>
-              </div>
-              <div class="listOkr">
-                <em>权重：30%</em>
-                <el-progress :percentage="50" class="progress"></el-progress>
-                <em>50%</em>
-              </div>
-            </div>
-          </swiper-slide>
-          <swiper-slide>
-            <div class="swiperList">
-              <div class="okrPress">
-                <em>完成上半年营收入100万元</em>
-                <em>x</em>
-              </div>
-              <div class="listOkr">
-                <em>权重：30%</em>
-                <el-progress :percentage="50" class="progress"></el-progress>
-                <em>50%</em>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper>
-      </div>
-    </div>
+  <div class="org">
+    <tl-okr-table></tl-okr-table>
   </div>
 </template>
 
 <script>
+import okrTable from '@/components/okrTable';
 
 export default {
   name: 'orgPage',
   components: {
-
+    'tl-okr-table': okrTable,
   },
   data() {
     return {
-      swiperOption: {
-        autoplay: 3000,
-        direction: 'vertical',
-        slidesPerView: 2,
-        centeredSlides: true,
-        observeParent: true,
-        roundLengths: true,
-        height: 100,
-        observer: true,
-        spaceBetween: 0,
-        observeSlideChildren: true,
-      },
     };
   },
   created() {
 
   },
   methods: {
-    swiperNext() {
-      console.log(this.$refs.mySwiper);
-      this.$refs.mySwiper.$swiper.slideNext();
-    },
-    swiperPrev() {
-      this.$refs.mySwiper.$swiper.slidePrev();
-    },
   },
 };
 </script>

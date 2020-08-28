@@ -363,7 +363,7 @@
   line-height: unset;
 }
 
-.tl-transfer-select .el-checkbox__input.is-checked + .el-checkbox__label {
+.tl-transfer-select .tl-checkbox .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #4d5155;
 }
 
@@ -796,11 +796,11 @@
   font-size: 12px;
 }
 
-.tl-transfer-select .selected-target .txt-list li {
-  margin: 0 0 16px 0;
+.tl-transfer-select .txt-list li {
+  margin: 0 0 8px 0;
 }
 
-.tl-transfer-select .selected-target .txt-list li:last-child {
+.tl-transfer-select .txt-list li:last-child {
   margin: 0;
 }
 
@@ -823,14 +823,52 @@
   order: 1;
 }
 
-.tl-transfer-select .el-scrollbar,
-.tl-transfer-select .el-scrollbar__view {
+.tl-transfer-select .tl-checkbox .el-checkbox__label {
+  color: #4d5155;
+  font-size: 14px;
+}
+
+.tl-transfer-select .el-scrollbar {
   height: 100%;
 }
 
 .tl-transfer-select .el-scrollbar__wrap {
   overflow-y: scroll;
   overflow-x: unset;
+}
+
+/* tabs */
+.tl-diy-tabs {
+  position: relative;
+  height: 100%;
+}
+
+.tl-diy-tabs .tab-list {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.tl-diy-tabs .tab-list li {
+  padding: 0 10px;
+  margin: 0 20px 0 0;
+  cursor: pointer;
+  color: #7b8a95 ;
+  font-weight: 500;
+  transition: all .4s ease-out;
+}
+
+.tl-diy-tabs .tab-list .is-focus {
+  color: #685df1;
+}
+
+.tl-diy-tabs .border-slip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #685df1;
+  transition: all .2s ease-out;
 }
 
 /* 标记 */

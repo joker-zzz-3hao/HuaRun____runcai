@@ -52,9 +52,18 @@
               :timestamp="activity.createTime"
               placement="top"
             >
-              <div>
-                <div>张三{{activity.userName}}</div>
-                <div>{{activity.content}}</div>
+              <div v-if="activity.operateType==5">
+                <sapn>张三{{activity.userName}}</sapn>
+                <span>更新</span>
+                <span>xxx</span>
+                <span>进度为</span>
+                <span>{{activity.afterProgress}}%，</span>
+                <span v-if="activity.afterConfidence">风险状态修改为</span>
+                <span
+                  v-if="activity.afterConfidence"
+                >{{CONST.CONFIDENCE_MAP[activity.afterConfidence]}}。</span>
+                <span v-if="activity.remark">说明：</span>
+                <span v-if="activity.remark">{{activity.remark}}。</span>
               </div>
             </el-timeline-item>
           </el-timeline>
@@ -75,8 +84,8 @@
         v-if="innerDrawer"
         ref="tl-okr-history"
         :server="server"
-        :okrId="okrId"
         :okrDetailId="okrDetailId"
+        :okrmain="okrmain"
       ></tl-okr-history>
     </el-drawer>
   </div>
@@ -141,10 +150,10 @@ export default {
     // 查okr详情
     getokrDetail() {
       this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        console.log('detail', res);
-        this.tableList = res.data.okrDetails;
-        this.okrmain = res.data.okrMain;
-        // this.voteUser = res.data.voteUser;
+        if (res.code == 200) {
+          this.tableList = res.data.okrDetails || [];
+          this.okrmain = res.data.okrMain || {};
+        }
       });
     },
     // 点赞
@@ -162,7 +171,6 @@ export default {
     },
     // 查点赞列表
     getSupportList() {
-      // TODO:{ okrId: this.okrId }
       this.server.getSupportList({ okrId: this.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
@@ -182,7 +190,15 @@ export default {
           this.cycleList = res.data.content;
           this.cycleList.forEach((item) => {
             console.log(item.content);
-            item.content = JSON.parse(item.content);
+            const contents = JSON.parse(item.content);
+            item.contents = contents;
+            // 更新进度
+            if (item.operateType == 5) {
+              item.beforeProgress = contents.beforeProgress;
+              item.afterProgress = contents.afterProgress;
+              item.afterConfidence = contents.afterConfidence;
+              item.remark = contents.remark;
+            }
           });
         }
       });

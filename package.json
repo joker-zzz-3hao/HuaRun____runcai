@@ -21,6 +21,7 @@
     "element-ui": "2.13.0",
     "mocker-api": "^1.6.7",
     "mockjs": "^1.0.1-beta3",
+    "qs": "^6.9.4",
     "swiper": "^6.0.4",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",

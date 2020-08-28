@@ -24,103 +24,50 @@
       </ul>
     </div>
     <!-- okr折叠面板 -->
-    <okrCollapse
+    <tl-okrcollapse
       ref="okrCollapse"
       :tableList="tableList"
       :canWrite="true"
       :showOKRInfoLabel="true"
       @openUndertake="openUndertakepage"
-    >
-      <!-- 在o下新增kr -->
-      <template slot="addkr-bar" slot-scope="props">
-        <el-form>
-          <div v-if="props.oitem.newkrList">
-            <dl v-for="(newItem, kindex) in props.oitem.newkrList" :key="kindex">
-              <dt>KR</dt>
-              <dd class="objectdd">
-                <el-form-item
-                  :prop="'newkrList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{trigger: 'blur', message: '请填写目标O名称',required:true}]"
-                >
-                  <input v-model="newItem.okrDetailObjectKr" />
-                </el-form-item>
-                <el-form-item label="权重">
-                  <el-input-number
-                    v-model="newItem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="当前进度">
-                  <el-input-number
-                    v-model="newItem.okrDetailProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="风险状态">
-                  <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-                    <el-radio-group v-model="newItem.okrDetailConfidence">
-                      <el-radio-button
-                        v-for="citem in CONST.CONFIDENCE"
-                        :key="citem.value"
-                        :label="citem.value"
-                      >{{citem.label}}</el-radio-button>
-                    </el-radio-group>
-                    <el-button
-                      slot="reference"
-                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                  </el-popover>
-                </el-form-item>
-                <el-button @click="deletekr(props.oitem,kindex)">删kr</el-button>
-              </dd>
-            </dl>
-          </div>
-          <div style="display:none">{{props.oitem.newkrList}}</div>
-          <el-button @click="addkr(props.oitem,'kr')">增加kr</el-button>
-        </el-form>
-      </template>
-    </okrCollapse>
+    ></tl-okrcollapse>
     <!-- 新增okr -->
-    <okr-form
+    <tl-okrform
       ref="okrform"
       :searchForm="searchForm"
       :server="server"
       :canWrite="true"
       :isnew="false"
       :periodId="periodId"
-    ></okr-form>
+    ></tl-okrform>
     <!-- 变更原因 -->
     <div>
       <span>变更原因</span>
-      <el-form>
-        <el-form-item>
-          <el-input type="textarea" v-model="modifyReason"></el-input>
+      <el-form :model="reason" ref="reasonForm">
+        <el-form-item
+          prop="modifyReason"
+          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+        >
+          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
         </el-form-item>
       </el-form>
     </div>
     <!-- 提交 -->
     <div>
-      <el-button @click="summit">提交</el-button>
+      <el-button @click="validateForm">提交</el-button>
       <el-button @click="goback">取消</el-button>
     </div>
 
     <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
-      <undertake-table
+      <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"
         :departokrList="tableList[this.selectIndex].departokrList"
         :philosophyList="tableList[this.selectIndex].philosophyList"
         :showPhil="undertakeType=='new'"
-      ></undertake-table>
+      ></tl-undertaketable>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      <el-button v-if="undertakeType=='change'" type="primary" @click="summitUndertake()">忽 略</el-button>
+      <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
     </el-drawer>
   </div>
@@ -146,13 +93,10 @@ export default {
       departokrObject: '',
       philosophyList: [], // 价值观
       philosophyObject: {},
-      dialogStopVisible: false, // 终止弹窗
-      tableData: [], // 终止确认表格
-      deletedType: '', // 终止的类型
-
       selectDeletedId: '',
-      remark: '', // 终止原因
-      modifyReason: '', // 变更原因
+      reason: {
+        modifyReason: '', // 变更原因
+      },
       formData: {}, // 提交表单
       innerDrawer: false, // 承接项抽屉
       selectDepartRow: {},
@@ -166,9 +110,9 @@ export default {
     };
   },
   components: {
-    okrCollapse,
-    'undertake-table': undertakeTable,
-    'okr-form': okrForm,
+    'tl-okrcollapse': okrCollapse,
+    'tl-undertaketable': undertakeTable,
+    'tl-okrform': okrForm,
   },
   props: {
     server: {
@@ -298,6 +242,13 @@ export default {
       }
       this.innerDrawer = true;
     },
+    // 忽略
+    summitIgnore() {
+      // 选择原承接的
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.tableList[this.selectIndex].okrParentId || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.tableList[this.selectIndex].parentObjectKr || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.tableList[this.selectIndex].okrDetailParentVersion || '';
+    },
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
@@ -316,32 +267,31 @@ export default {
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
     },
-    // 增加kr
-    addkr(okritem) {
-      if (!okritem.newkrList) {
-        okritem.newkrList = [];
-      }
-      okritem.newkrList.push({
-        // id: this.formData.okrInfoList[oindex].krList.length,
-        okrDetailObjectKr: '',
-        okrWeight: 0,
-        okrDetailProgress: 0,
-        okrDetailConfidence: 1,
+
+    validateForm() {
+      // 校验表单
+      const okrformValid = this.$refs.okrform.$refs.dataForm;
+      const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
+      const reasonValid = this.$refs.reasonForm;
+      Promise.all([okrformValid, okrCollapseValid, reasonValid].map(this.getFormPromise)).then((res) => {
+        const validateResult = res.every((item) => !!item);
+        if (validateResult) {
+          console.log('两个表单都校验通过', validateResult);
+          this.summit();
+        } else {
+          console.log('两个表单未校验通过');
+        }
       });
-      this.$forceUpdate();
-      this.$refs.okrCollapse.updateokrCollapse();
-      console.log('okritem', okritem);
     },
-    // 删除kr
-    deletekr(okritem, krindex) {
-      okritem.newkrList.splice(krindex, 1);
-      this.$forceUpdate();
-      this.$refs.okrCollapse.updateokrCollapse();
+    getFormPromise(form) {
+      return new Promise((resolve) => {
+        form.validate((res) => {
+          resolve(res);
+        });
+      });
     },
     // 提交更改
     summit() {
-      // 校验okrForm的
-      // 校验
       console.log('原来的', this.tableList);
       console.log('新增的', this.$refs.okrform.formData);
       const addList = this.$refs.okrform.formData.okrInfoList;
@@ -400,7 +350,7 @@ export default {
         // detailokrList: this.detailokrList,
         periodId: this.periodId,
         okrProgress: this.okrmain.okrProgress,
-        modifyReason: this.modifyReason,
+        modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
         okrBelongType: this.okrmain.okrBelongType,
       };

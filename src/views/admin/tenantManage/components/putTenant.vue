@@ -7,6 +7,7 @@
     :title="title"
     :modal="false"
     :visible.sync="dialogTableVisible"
+    class="tl-drawer"
   >
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
@@ -17,18 +18,13 @@
           <span>{{form.tenantId}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
-          <el-input
-            style="width:320px"
-            maxlength="64"
-            v-model="form.applyUser"
-            placeholder="请输入申请人"
-          ></el-input>
+          <el-input maxlength="64" v-model="form.applyUser" placeholder="请输入申请人" class="tl-input"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobilePhone">
           <el-input
-            style="width:320px"
             v-model="form.mobilePhone"
             placeholder="请输入联系电话"
+            class="tl-input"
             maxlength="11"
           ></el-input>
         </el-form-item>
@@ -60,9 +56,9 @@
           </div>
         </el-form-item>
       </el-form>
-      <div>
-        <el-button type="primary" @click="validateForm('form')">确定</el-button>
-        <el-button @click="close()">取 消</el-button>
+      <div class="operating-panel">
+        <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
+        <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
       </div>
     </div>
   </el-drawer>
@@ -312,16 +308,5 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
-}
-.menuTreeList {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.menuTreeList .list {
-  background: #f4f6f8;
-  border-radius: 14px;
-  padding: 1px 10px;
 }
 </style>
