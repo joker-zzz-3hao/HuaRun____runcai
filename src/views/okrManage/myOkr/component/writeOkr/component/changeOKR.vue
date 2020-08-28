@@ -67,7 +67,7 @@
         :showPhil="undertakeType=='new'"
       ></tl-undertaketable>
       <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      <el-button v-if="undertakeType=='change'" type="primary" @click="summitUndertake()">忽 略</el-button>
+      <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
       <el-button @click="innerDrawer = false">取 消</el-button>
     </el-drawer>
   </div>
@@ -241,6 +241,13 @@ export default {
         };
       }
       this.innerDrawer = true;
+    },
+    // 忽略
+    summitIgnore() {
+      // 选择原承接的
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.tableList[this.selectIndex].okrParentId || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.tableList[this.selectIndex].parentObjectKr || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.tableList[this.selectIndex].okrDetailParentVersion || '';
     },
     // 提交关联，给选中的o加上承接项
     summitUndertake() {

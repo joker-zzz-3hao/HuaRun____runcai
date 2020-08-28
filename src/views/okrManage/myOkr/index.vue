@@ -2,9 +2,25 @@
   <div class="my-okr">
     <div class="operating-area">
       <div class="operating-area-inside">
-        <div>sdfasdfsa</div>
-        <div>ghjrrt</div>
-        <el-button @click="goWriteOkr">创建okr</el-button>
+        <div class="tl-diy-tabs">
+          <ul class="tab-list">
+            <li
+              v-for="(item,idx) in tabsList"
+              :key="item.menuTitle"
+              @click="borderSlip(item,idx,item.toName)"
+              :class="{'is-focus': currentIndex === idx}"
+            >{{item.menuTitle}}</li>
+          </ul>
+          <div class="border-slip"></div>
+        </div>
+        <div class="operating-panel">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="goWriteOkr"
+            class="tl-btn amt-bg-slip"
+          >创建OKR</el-button>
+        </div>
       </div>
     </div>
     <router-view class="cont-area"></router-view>
@@ -14,6 +30,7 @@
       title="创建okr"
       :visible.sync="createokrDrawer"
       :before-close="handleClose"
+      :modal="false"
       class="tl-drawer"
     >
       <div>
@@ -38,6 +55,17 @@ export default {
   data() {
     return {
       server,
+      currentIndex: 0,
+      tabsList: [
+        {
+          menuTitle: '我的OKR',
+          toName: 'myOkr',
+        },
+        {
+          menuTitle: '部门OKR',
+          toName: 'departmentOkr',
+        },
+      ],
     };
   },
   computed: {
@@ -48,6 +76,11 @@ export default {
   },
   created() {
     this.departmentName = this.userInfo.orgParentName || '部门';
+  },
+  mounted() {
+    const liWidth = document.querySelectorAll('.tab-list li');
+    const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
     ...mapMutations('common', ['setCreateokrDrawer']),
@@ -61,6 +94,13 @@ export default {
     },
     handleClose() {
       this.setCreateokrDrawer(false);
+    },
+    borderSlip(item, index, name) {
+      const borderWidth = document.querySelector('.border-slip');
+      const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
+      borderWidth.style.left = `${selfLeft}px`;
+      this.currentIndex = index;
+      this.go(name);
     },
   },
   watch: {

@@ -2,7 +2,7 @@
   <div>
     <div>
       <!-- 选择状态 -->
-      <dl style="display:flex">
+      <dl>
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>

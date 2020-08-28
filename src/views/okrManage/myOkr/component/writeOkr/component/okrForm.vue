@@ -256,7 +256,7 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
-      if (this.formData.okrInfoList.length <= 1) {
+      if (this.formData.okrInfoList.length < 1) {
         this.$message('至少有一个目标');
         return;
       }
