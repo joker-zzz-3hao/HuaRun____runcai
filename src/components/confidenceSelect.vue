@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-popover placement="bottom" width="200" trigger="click" :append-to-body="false">
+    <el-popover
+      placement="bottom"
+      width="200"
+      trigger="click"
+      :append-to-body="false"
+      v-model="visible"
+    >
       <ul>
         <li v-for="citem in CONST.CONFIDENCE" :key="citem.value">
           <div @click="handleClick(citem.value)">
@@ -34,7 +40,7 @@ export default {
   data() {
     return {
       CONST,
-      okrDetailConfidence: '1',
+      visible: false,
     };
   },
   model: {
@@ -49,8 +55,8 @@ export default {
   },
   methods: {
     handleClick(value) {
-      this.okrDetailConfidence = value;
       this.$emit('change', value);
+      this.visible = false;
     },
   },
 };
