@@ -20,7 +20,7 @@
       <el-alert type="warning">
         <div slot="title">
           <i>温馨提示icon</i>
-          <span>审批成功后才展示变更后的内容</span>
+          <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
         </div>
       </el-alert>
     </div>
