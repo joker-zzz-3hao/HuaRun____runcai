@@ -398,7 +398,7 @@ export default {
           userId: data.userId,
         }).then((res) => {
           if (res.code == '200') {
-            this.queryTeamMember(data.orgFullId);
+            this.queryTeamMember(this.teamSelect);
           }
         });
       });

@@ -124,14 +124,14 @@ export default {
             trigger: 'blur',
           },
         ],
-        permissionCode: [{ required: true, message: '请输入路由地址', trigger: 'blur' },
+        permissionCode: [{ required: true, message: '请输入权限标识', trigger: 'blur' },
           // {
           //   pattern: /^[0-9a-zA-Z]+$/,
           //   message: '请输入数字或者英文字母',
           //   trigger: 'blur',
           // }
         ],
-        resourceUrl: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+        resourceUrl: [{ required: true, message: '请输入路由地址', trigger: 'blur' }],
         functionEvent: [
           { required: true, message: '请输入事件名', trigger: 'blur' },
         ],

@@ -2,6 +2,10 @@ import ServerBase from '@/ajax/serverBase';
 import qs from 'qs';
 
 export default class Server extends ServerBase {
+  riskStatistics(param) {
+    return this._ajaxPost('gateway/talent-query/home/okr/riskStatistics', param);
+  }
+
   identity(param) {
     return this._ajaxPost('gateway/talent-query/home/person/identity', param);
   }
