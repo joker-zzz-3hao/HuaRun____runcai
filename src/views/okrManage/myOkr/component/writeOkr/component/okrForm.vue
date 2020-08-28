@@ -392,6 +392,17 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
+            } else if (res.code == 40000) {
+              this.$xconfirm({
+                content: '',
+                title: '当前周期已提交提交，是否保存为草稿？',
+              }).then(() => {
+              // 提交确认弹窗
+                this.saveDraft();
+              }).catch(() => {
+                this.setCreateokrDrawer(false);
+                this.setMyokrDrawer(false);
+              });
             }
           });
         }
@@ -401,8 +412,10 @@ export default {
     saveDraft() {
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
-          delete oitem.departokrList;
-          delete oitem.philosophyList;
+          if (oitem.departokrList) {
+            delete oitem.departokrList;
+            delete oitem.philosophyList;
+          }
         });
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.periodId = this.searchForm.okrCycle.periodId;
