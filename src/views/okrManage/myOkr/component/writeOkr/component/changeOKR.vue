@@ -283,10 +283,10 @@ export default {
       Promise.all([okrformValid, okrCollapseValid, reasonValid].map(this.getFormPromise)).then((res) => {
         const validateResult = res.every((item) => !!item);
         if (validateResult) {
-          console.log('两个表单都校验通过', validateResult);
+          console.log('表单都校验通过', validateResult);
           this.summit();
         } else {
-          console.log('两个表单未校验通过');
+          console.log('表单未校验通过');
         }
       });
     },
@@ -364,8 +364,10 @@ export default {
       console.log('拼起来后', this.formData);
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
-          this.$message('提交成功');
+          this.$message.success('提交成功');
           this.setMyokrDrawer(false);
+        } else if (res.code === 30000) {
+          this.$message.warning('正在审批中');
         }
       });
     },

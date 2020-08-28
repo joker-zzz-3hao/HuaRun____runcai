@@ -3,14 +3,7 @@
     <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
       <el-form-item>
         <p>周期</p>
-        <el-select v-model="formData.periodId" :popper-append-to-body="false">
-          <el-option
-            v-for="(item) in cycleList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
+        <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
       </el-form-item>
       <el-form-item>
         <p>审批状态</p>
@@ -97,6 +90,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import periodSelect from '@/components/periodSelect';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -104,7 +98,9 @@ const server = new Server();
 
 export default {
   name: 'okrApprovalList',
-  components: {},
+  components: {
+    'tl-periodselect': periodSelect,
+  },
   props: {},
   data() {
     return {
@@ -112,7 +108,6 @@ export default {
       server,
       tableData: [],
       emptyText: '暂无数据',
-      cycleList: [],
       formData: {
         periodId: '',
         approvalStatus: '0',
@@ -122,6 +117,8 @@ export default {
         pageSize: 10,
         currentPage: 1,
       },
+      okrCycle: {}, // 当前选择的周期
+      periodList: [], // 周期列表
     };
   },
   created() {},
@@ -137,10 +134,8 @@ export default {
     init() {
       const self = this;
       self.server.getOkrCycleList().then((res) => {
-        self.cycleList = res.data;
-        if (res.data.length > 0) {
-          self.formData.periodId = res.data[0].periodId;
-          this.searchList();
+        if (res.code == 200) {
+          self.periodList = res.data;
         }
       });
     },
@@ -171,6 +166,11 @@ export default {
     },
     goUndertake() {
       this.go('undertakeMaps');
+    },
+    handleCycleData(data) {
+      this.okrCycle = data;
+      this.formData.periodId = data.periodId;
+      this.searchList();
     },
   },
   watch: {

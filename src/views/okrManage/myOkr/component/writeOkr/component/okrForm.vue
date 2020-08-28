@@ -395,7 +395,7 @@ export default {
           this.server.addokr(this.formData).then((res) => {
             console.log(res);
             if (res.code == 200) {
-              this.$message('创建成功，请等待上级领导审批。');
+              this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
