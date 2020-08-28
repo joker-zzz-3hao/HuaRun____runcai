@@ -96,7 +96,14 @@
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
     </div>
     <!-- 关联承接项抽屉 -->
-    <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
+    <el-drawer
+      title="关联承接项"
+      :visible.sync="innerDrawer"
+      :modal="false"
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      class="tl-drawer"
+    >
       <undertake-table
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -392,17 +399,14 @@ export default {
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
-            } else if (res.code == 40000) {
+            } else if (res.code == 30000) {
               this.$xconfirm({
                 content: '',
                 title: '当前周期已提交提交，是否保存为草稿？',
               }).then(() => {
               // 提交确认弹窗
                 this.saveDraft();
-              }).catch(() => {
-                this.setCreateokrDrawer(false);
-                this.setMyokrDrawer(false);
-              });
+              }).catch(() => {});
             }
           });
         }

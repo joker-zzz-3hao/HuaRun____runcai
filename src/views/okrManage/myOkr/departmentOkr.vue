@@ -88,6 +88,7 @@
       :visible.sync="myokrDrawer"
       size="50%"
       :before-close="handleClose"
+      :modal="false"
     >
       <tl-okr-detail
         v-if="myokrDrawer"

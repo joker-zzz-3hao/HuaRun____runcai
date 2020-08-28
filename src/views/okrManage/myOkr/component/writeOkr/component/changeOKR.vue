@@ -58,7 +58,14 @@
       <el-button @click="goback">取消</el-button>
     </div>
 
-    <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
+    <el-drawer
+      title="关联承接项"
+      :visible.sync="innerDrawer"
+      :modal="false"
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
+      class="tl-drawer"
+    >
       <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"

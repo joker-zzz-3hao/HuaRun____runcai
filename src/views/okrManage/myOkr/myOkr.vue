@@ -89,11 +89,12 @@
     <!-- 无数据时展示 -->
     <div>暂无数据</div>
     <el-drawer
-      :wrapperClosable="false"
-      :modal-append-to-body="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
       :before-close="handleClose"
+      :modal="false"
+      :wrapperClosable="false"
+      :modal-append-to-body="false"
       class="tl-drawer"
     >
       <div>

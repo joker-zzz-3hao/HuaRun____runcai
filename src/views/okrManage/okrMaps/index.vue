@@ -63,12 +63,13 @@
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
     <el-drawer
+      :modal="false"
       :wrapperClosable="false"
       :modal-append-to-body="false"
+      class="tl-drawer"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
       :before-close="handleClose"
-      class="tl-drawer"
     >
       <tl-okr-detail
         v-if="myokrDrawer"
