@@ -1,12 +1,7 @@
 <template>
   <div class="home">
     <div style="margin-left:20px;" v-if="!showOne">
-      <tl-department
-        :data="cycleData"
-        type="cycleListSelect"
-        @handleData="handleCycleData"
-        :defaultProps="cycleDefaultProps"
-      ></tl-department>
+      <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
     </div>
     <div style="margin-left:20px;" v-if="!showOne">
       <tl-department
@@ -63,6 +58,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import department from '@/components/department';
+import periodSelect from '@/components/periodSelect';
 import svgtree from '@/components/svgtree';
 import card from './card';
 import Server from '../server';
@@ -76,6 +72,7 @@ export default {
     'tl-svgtree': svgtree,
     card,
     'tl-department': department,
+    'tl-periodselect': periodSelect,
   },
   data() {
     return {
@@ -89,27 +86,6 @@ export default {
       cycleData: [],
       departmentData: [],
       initDepartment: {},
-      cycleDefaultProps: {
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: {
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-      },
       departmentDefaultProps: {
         children: 'children',
         label: 'orgName',
@@ -119,6 +95,7 @@ export default {
       allTree: [],
       showOne: false, // 是否只展示一棵树
       orgId: '',
+      periodList: [],
     };
   },
   computed: {
@@ -142,17 +119,8 @@ export default {
       if (!self.showOne) {
         // 查询周期
         self.server.getOkrCycleList().then((res) => {
-          if (res.data.length > 0) {
-            res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-              if (item.checkStatus == '0') {
-                self.cycleObj.old.children.push(item);
-              } else if (item.checkStatus == '1') {
-                self.cycleObj.current.children.push(item);
-              }
-            });
-            self.pushCycleObj('current');
-            self.pushCycleObj('old');
+          if (res.code == 200) {
+            this.periodList = res.data || [];
           }
         });
         self.getOrgTable();
@@ -160,11 +128,7 @@ export default {
         self.getmaps();
       }
     },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
-    },
+
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -236,6 +200,7 @@ export default {
     },
     handleCycleData(data) {
       this.searchForm.periodId = data.periodId;
+      console.log('writeokrCycle', data);
       this.getmaps();
     },
     handleData(data) {

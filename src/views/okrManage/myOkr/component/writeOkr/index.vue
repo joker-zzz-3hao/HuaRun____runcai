@@ -5,13 +5,7 @@
       <dl style="display:flex">
         <dd>
           <span>目标周期</span>
-          <department
-            :data="cycleData"
-            type="cycleListSelect"
-            @handleData="handleCycleData"
-            :defaultProps="cycleDefaultProps"
-            :defaultData="searchForm.periodId"
-          ></department>
+          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
         </dd>
         <dd>
           <span>OKR类型</span>
@@ -42,7 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import department from '@/components/department';
+import periodSelect from '@/components/periodSelect';
 import okrForm from './component/okrForm';
 import changeOKR from './component/changeOKR';
 import Server from './server';
@@ -55,7 +49,7 @@ export default {
   components: {
     'okr-form': okrForm,
     'change-okr': changeOKR,
-    department,
+    'tl-periodselect': periodSelect,
   },
   props: {
     writeInfo: {
@@ -110,6 +104,7 @@ export default {
         },
         okrId: '',
       },
+      periodList: [],
     };
   },
   computed: {
@@ -152,31 +147,15 @@ export default {
       } else { this.searchForm.okrType = 2; }
       // 周期
       this.server.getOkrCycleList().then((res) => {
-        if (res.data.length > 0) {
-          res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              this.cycleObj.old.children.push(item);
-            } else if (item.checkStatus == '1') {
-              this.cycleObj.current.children.push(item);
-              this.searchForm.okrCycle = item;
-            }
-          });
-          this.pushCycleObj('current');
-          this.pushCycleObj('old');
+        if (res.code == 200) {
+          this.periodList = res.data || [];
         }
       });
     },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
-    },
+
     handleCycleData(data) {
-      // this.okrCycle = data;
       this.searchForm.okrCycle = data;
-      console.log('okrCycle', data);
-      // this.getmaps();
+      console.log('writeokrCycle', data);
     },
     cutName(userName) {
       const nameLength = userName.length;
