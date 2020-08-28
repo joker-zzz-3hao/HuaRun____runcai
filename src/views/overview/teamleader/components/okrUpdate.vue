@@ -11,40 +11,58 @@ export default {
   name: 'okrUpdate',
   data() {
     return {
-
+      mainDataY: [],
+      mainDataX: [],
     };
   },
+  props: {
+    mainData: {
+      type: [Array, String, Object],
+    },
+  },
   mounted() {
-    this.init();
+    this.getmainData();
   },
   methods: {
+    getmainData() {
+      this.mainDataY = this.mainData.map((item) => item.okrProgressUpdateCount);
+      this.mainDataX = this.mainData.map((item) => item.orgName);
+      this.init();
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrUpdate'));
       const option = {
         xAxis: {
           type: 'category',
-          data: ['马', '为', '丁', '撒', '比', '腾', '王', '丁', '的', '额', '娃', '是', '磊', '特', '尔', '化', '王', 'aa', '菲', '出', '唱', 'vf', '周', 's', '景', '索', '头'],
+          data: that.mainDataX,
         },
         yAxis: [
           {
             type: 'value',
             show: true,
+            max: 100,
           },
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: [20, 100, 50, 80, 70, 90, 30, 20, 100, 50, 80, 70, 90, 30, 10, 100, 50, 80, 70, 100, 30, 20, 100, 50, 80, 70, 90, 30],
+          data: that.mainDataY,
           type: 'bar',
           barWidth: 20,
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(220, 220, 220, 0.8)',
-          },
 
         }],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    mainData: {
+      handler() {
+        this.getmainData();
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

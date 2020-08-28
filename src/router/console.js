@@ -11,6 +11,9 @@ export default [
         // 综合首页
         path: '/overview',
         name: 'overview',
+        redirect: {
+          name: 'departleader',
+        },
         meta: {
           hasMainMenu: true,
           noSubMenu: true,
@@ -19,6 +22,56 @@ export default [
           power: '',
         },
         component: () => import('@/views/overview/index'),
+        children: [
+          {
+            path: '/teamleader',
+            name: 'teamleader',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'teamleader',
+              title: 'teamleader',
+              power: '',
+            },
+            component: () => import('@/views/overview/teamleader/index'),
+          },
+          {
+            path: '/teamleader',
+            name: 'teamleader',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'teamleader',
+              title: 'teamleader',
+              power: '',
+            },
+            component: () => import('@/views/overview/teamleader/index'),
+          },
+          {
+            path: '/departleader',
+            name: 'departleader',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'departleader',
+              title: 'departleader',
+              power: '',
+            },
+            component: () => import('@/views/overview/departleader/index'),
+          },
+          {
+            path: '/grassStaff',
+            name: 'grassStaff',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: true,
+              parentRoute: 'grassStaff',
+              title: 'grassStaff',
+              power: '',
+            },
+            component: () => import('@/views/overview/grassStaff/index'),
+          },
+        ],
       },
       {
         // OKR管理

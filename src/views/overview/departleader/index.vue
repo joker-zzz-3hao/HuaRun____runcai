@@ -28,21 +28,28 @@
         <em>OKR承接与变更统计</em>
       </div>
       <div>
-        <el-table :data="tableData" border>
-          <el-table-column prop="data1" label></el-table-column>
-          <el-table-column prop="data2" label="容云"></el-table-column>
-          <el-table-column prop="data3" label="捷云"></el-table-column>
-          <el-table-column prop="data4" label="耕云"></el-table-column>
-          <el-table-column prop="data5" label="行云"></el-table-column>
-          <el-table-column prop="data6" label="合云"></el-table-column>
-          <el-table-column prop="data7" label="门户"></el-table-column>
-          <el-table-column prop="data8" label="运维管理"></el-table-column>
-          <el-table-column prop="data9" label="运营管理部"></el-table-column>
-        </el-table>
+        <table border="1">
+          <tr>
+            <td></td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.orgName}}</td>
+          </tr>
+          <tr>
+            <td>承接数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.okrContinueCount}}</td>
+          </tr>
+          <tr>
+            <td>变更数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.okrChangeCount}}</td>
+          </tr>
+          <tr>
+            <td>总人数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.personCount}}</td>
+          </tr>
+        </table>
       </div>
     </div>
 
-    <tl-weeking></tl-weeking>
+    <tl-weeking :orgTable="orgTable"></tl-weeking>
   </div>
 </template>
 
@@ -75,42 +82,7 @@ export default {
       server,
       orgTable: [],
       period: '',
-      mainData: {},
-      tableData: [
-        {
-          data1: '承接数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-        {
-          data1: '变更数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-        {
-          data1: '总人数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-      ],
+      mainData: [],
     };
   },
   computed: {

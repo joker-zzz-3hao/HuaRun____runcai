@@ -20,11 +20,11 @@
     </div>
     <div class="creatOkr">
       <div>OKR当前进度</div>
-      <tl-okr-schedule></tl-okr-schedule>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
       <div>OKR进度更新榜</div>
-      <tl-okr-update></tl-okr-update>
+      <tl-okr-update :mainData="mainData"></tl-okr-update>
     </div>
     <div class="creatOkr">
       <div>
@@ -43,12 +43,10 @@
           </el-table-column>
         </el-table>
         <div style="display:inline-block">
-          <tl-okr-risk-total></tl-okr-risk-total>
+          <tl-okr-risk-total :tableData="tableData"></tl-okr-risk-total>
         </div>
         <ul style="display:inline-block">
-          <li>风险 20</li>
-          <li>风险可控 20</li>
-          <li>无风险 20</li>
+          <li v-for="(item,index) in tableData" :key="index">{{item.riskName}} {{item.ratio+'%'}}</li>
         </ul>
       </div>
     </div>
@@ -88,6 +86,7 @@ export default {
       server,
       tableData: [],
       period: '',
+      mainData: [],
     };
   },
   mounted() {
@@ -111,11 +110,20 @@ export default {
         this.tableData = res.data;
       });
     },
+    getmainData() {
+      this.server.mainData({
+        periodId: this.period,
+        orgId: this.userInfo.orgId,
+      }).then((res) => {
+        this.mainData = res.data;
+      });
+    },
     // eslint-disable-next-line no-shadow
     getPeriod(period) {
       this.period = period;
       this.getokrRisk();
       this.getokrData();
+      this.getmainData();
     },
   },
 };

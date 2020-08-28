@@ -34,4 +34,8 @@ export default class Server extends ServerBase {
   queryMyOkr(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
   }
+
+  calendarQurey(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
 }

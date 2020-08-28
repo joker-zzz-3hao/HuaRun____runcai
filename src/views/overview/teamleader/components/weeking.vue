@@ -37,11 +37,15 @@
 
 <script>
 import echarts from 'echarts';
+import Server from '../../server';
 
+const server = new Server();
 export default {
   name: 'weeking',
   data() {
     return {
+      server,
+      dateOption: [],
       value: '',
       tableData: [
         {
@@ -87,6 +91,7 @@ export default {
     this.initMood();
   },
   methods: {
+
     init() {
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
