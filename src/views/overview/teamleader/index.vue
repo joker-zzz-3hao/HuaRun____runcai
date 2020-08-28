@@ -36,7 +36,7 @@
           <el-table-column prop="riskName" label="KR状态"></el-table-column>
           <el-table-column prop="count" label="数量"></el-table-column>
           <el-table-column prop="ratio" label="占比">
-            <template scope="scope">
+            <template slot-scope="scope">
               <span v-if="scope.row.ratio">{{scope.row.ratio+'%'}}</span>
               <span v-else>--</span>
             </template>
@@ -94,14 +94,7 @@ export default {
 
   },
   methods: {
-    getmainData() {
-      this.server.mainData({
-        periodId: this.period,
-        orgId: this.userInfo.orgId,
-      }).then((res) => {
-        console.log(res);
-      });
-    },
+
     getokrData() {
       this.server.okrData({
         periodId: this.period,
@@ -123,7 +116,6 @@ export default {
       this.period = period;
       this.getokrRisk();
       this.getokrData();
-      this.getmainData();
     },
   },
 };

@@ -29,4 +29,9 @@ export default class Server extends ServerBase {
   mainData(param) {
     return this._ajaxPost(`gateway/talent-query/home/org/mainData?${qs.stringify(param)}`);
   }
+
+  // 查询下级部门
+  queryMyOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
 }

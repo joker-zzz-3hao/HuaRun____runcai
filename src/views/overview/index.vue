@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <tl-teamleader></tl-teamleader>
+    <tl-teamleader v-if="false"></tl-teamleader>
     <tl-grass-staff v-if="false"></tl-grass-staff>
-    <tl-depart-leader v-if="false"></tl-depart-leader>
+    <tl-depart-leader v-if="true"></tl-depart-leader>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ export default {
     }),
   },
   methods: {
+
     getidentity() {
       this.server.identity({
         user: this.userInfo.userId,
