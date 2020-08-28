@@ -67,8 +67,6 @@ export default {
     return {
       server,
       CONST,
-      timelist: [],
-      okrmain: {},
       searchForm: {
         periodId: '',
         userId: '',
@@ -81,29 +79,6 @@ export default {
         draftId: '',
       },
       canWrite: true, // true写okr false changeokr
-      cycleData: [],
-      cycleDefaultProps: {
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: {
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-        okrId: '',
-      },
       periodList: [],
     };
   },

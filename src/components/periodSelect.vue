@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="periodId" placeholder="请选择">
+  <el-select v-model="periodId" placeholder="请选择目标周期">
     <el-option-group v-for="group in cycleList" :key="group.label" :label="group.label">
       <el-option
         v-for="item in group.options"
