@@ -219,6 +219,7 @@ export default {
       totalMemberList: [],
       fictitiousList: [],
       teamMembers: [],
+      teamOrgId: '',
     };
   },
   components: {
@@ -344,6 +345,7 @@ export default {
       this.setFictitiousExist = false;
     },
     selectTeam(data) {
+      this.teamOrgId = data.orgId;
       this.teamSelect = data.orgFullId;
     },
     changeWeeklyMode(data) {
@@ -394,7 +396,7 @@ export default {
 
       }).then(() => {
         this.server.updateReportRelation({
-          orgId: data.orgId,
+          orgId: this.teamOrgId,
           userId: data.userId,
         }).then((res) => {
           if (res.code == '200') {
