@@ -86,9 +86,9 @@
       :modal-append-to-body="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
-      size="50%"
       :before-close="handleClose"
       :modal="false"
+      class="tl-drawer"
     >
       <tl-okr-detail
         v-if="myokrDrawer"
