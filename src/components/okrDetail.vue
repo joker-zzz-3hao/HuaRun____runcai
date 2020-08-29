@@ -83,7 +83,7 @@
       title="历史版本"
       :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
+      :append-to-body="true"
       class="tl-drawer"
       :visible.sync="innerDrawer"
     >

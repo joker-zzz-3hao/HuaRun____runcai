@@ -87,9 +87,8 @@
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
       :before-close="handleClose"
-      :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
+      :append-to-body="true"
       class="tl-drawer"
     >
       <div>
