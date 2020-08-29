@@ -48,6 +48,7 @@
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
           <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="userName" label="角色" width="120"></el-table-column>
           <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
           <el-table-column prop="approvalStatus" label="审批状态" width="150">
             <template slot-scope="scope">
@@ -61,7 +62,7 @@
           </el-table-column>
           <el-table-column prop="okrProgress" label="OKR进度" width="300">
             <template slot-scope="scope">
-              <span v-if="scope.row.okrProgress">{{scope.row.okrProgress}}%</span>
+              <span>{{scope.row.okrProgress}}%</span>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>
@@ -122,7 +123,9 @@ export default {
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
@@ -177,7 +180,7 @@ export default {
     okrApprovalStep: {
       handler(newVal) {
         if (newVal == '1') {
-          this.init();
+          this.searchList();
         }
       },
       deep: true,
