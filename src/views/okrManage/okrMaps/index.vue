@@ -10,13 +10,24 @@
         ></department>
       </div>
       <div style="margin-left:20px;" v-if="showDepartmentSelect">
-        <el-cascader
+        <!-- <el-cascader
           v-model="orgFullId"
           :options="departmentData"
           :show-all-levels="false"
           :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
           @change="selectIdChange"
-        ></el-cascader>
+        ></el-cascader>-->
+        <div @click="showCascader=!showCascader">
+          <el-input v-model="test"></el-input>
+        </div>
+        <el-cascader-panel
+          v-model="orgFullId"
+          :style="{display: showCascader ? '' : 'none'}"
+          :options="departmentData"
+          :show-all-levels="false"
+          @change="selectIdChange"
+          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
+        ></el-cascader-panel>
       </div>
       <!-- 搜索框 -->
       <div>
@@ -54,7 +65,7 @@
         </svgtree>
       </div>
       <!-- OKR表格 -->
-      <tl-okr-table v-if="!showOkrMap" :treeData="treeData"></tl-okr-table>
+      <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
     </div>
     <!-- 搜索框显示 -->
     <div v-if="!showDepartmentSelect">
@@ -63,9 +74,8 @@
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
     <el-drawer
-      :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
+      :append-to-body="true"
       class="tl-drawer"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
@@ -103,12 +113,15 @@ export default {
       CONST,
       server,
       keyword: '',
+      test: '',
+      showCascader: false,
       searchType: '2',
       treeData: [],
       treeTableData: [],
       departmentData: [],
       initDepartment: {},
       cycleData: [],
+      orgFullIdList: [],
       okrCycle: {},
       orgFullId: '',
       showOkrMap: true,
@@ -161,6 +174,10 @@ export default {
     self.init();
   },
   methods: {
+    changeCascader(data) {
+      this.test = data;
+      this.showCascader = false;
+    },
     init() {
       const self = this;
       // 查询周期
@@ -188,6 +205,7 @@ export default {
     },
     getOkrTree() {
       if (this.okrCycle.periodId && this.orgFullId) {
+        this.treeTableData = [];
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
           // periodId: '1204827318294274048',
@@ -195,6 +213,8 @@ export default {
           // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
+            // OKR表格数据
+            this.treeTableData.push(res.data);
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
               res.data.okrTree.forEach((item) => {
@@ -236,8 +256,23 @@ export default {
       });
     },
     selectIdChange(data) {
+      this.showCascader = false;
       this.orgFullId = data[data.length - 1];
+      this.orgFullIdList = this.orgFullId.split(':');
+      this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      this.getOrgName(this.departmentData, 0);
       this.getOkrTree();
+    },
+    getOrgName(data, index) {
+      data.forEach((item) => {
+        if (this.orgFullIdList[index] == item.orgId) {
+          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
+            this.getOrgName(item.children, index + 1);
+          } else if ((index + 1) == this.orgFullIdList.length) {
+            this.test = item.orgName;
+          }
+        }
+      });
     },
     handleCycleData(data) {
       this.okrCycle = data;

@@ -3,7 +3,7 @@
     :modal-append-to-body="false"
     :before-close="close"
     @closed="close"
-    :close-on-click-modal="false"
+    :close-on-click-modal="true"
     :title="title"
     :visible.sync="dialogTableVisible"
     center

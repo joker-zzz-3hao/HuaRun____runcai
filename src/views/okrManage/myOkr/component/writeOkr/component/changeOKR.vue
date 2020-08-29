@@ -63,7 +63,7 @@
       :visible.sync="innerDrawer"
       :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
+      :append-to-body="true"
       class="tl-drawer"
     >
       <tl-undertaketable
@@ -305,17 +305,21 @@ export default {
       const okrInfoList = [];
       this.tableList.forEach((item, index) => {
         let undertakeOkr = {};
+        // 新增或变更承接项
         if (item.undertakeOkrVo) {
           undertakeOkr = item.undertakeOkrVo;
+          // 原有承接不改变
         } else if (item.okrParentId) {
           undertakeOkr = {
             undertakeOkrDetailId: item.okrParentId,
             undertakeOkrContent: item.parentObjectKr,
             undertakeOkrVersion: item.okrDetailParentVersion,
           };
+          // 无承接
         } else {
           undertakeOkr = null;
         }
+        // 整理入参
         okrInfoList.push({
           detailId: item.detailId,
           okrDetailId: item.okrDetailId,
@@ -335,39 +339,59 @@ export default {
             okrDetailConfidence: kritem.okrDetailConfidence,
           });
         });
+        // 合并新增kr
         if (item.newkrList && item.newkrList.length > 0) {
-          console.log('newkrList', item.newkrList);
-          console.log('okrInfoList[index]', okrInfoList[index].krList);
           okrInfoList[index].krList = okrInfoList[index].krList.concat(item.newkrList);
         }
       });
-      // additem.undertakeOkrVo ||
+      // 新增的okr中的支撑项
       addList.forEach((additem) => {
-        // TODO:
-        if (additem.undertakeOkrVo.undertakeOkrDetailId) {
+        if (additem.undertakeOkrVo && additem.undertakeOkrVo.undertakeOkrDetailId) {
           additem.undertakeOkrDto = additem.undertakeOkrVo;
-          // additem.undertakeOkrDto = null;
         } else {
           additem.undertakeOkrDto = null;
         }
         delete additem.undertakeOkrVo;
       });
+      // 拼入参
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
-        // detailokrList: this.detailokrList,
         periodId: this.periodId,
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
         okrBelongType: this.okrmain.okrBelongType,
       };
+      // 校验权重比例
+      let opercent = 0;
+      let keypercent = 0;
+      try {
+        this.formData.okrInfoList.forEach((oitem) => {
+          opercent += oitem.okrWeight;
+          keypercent = 0;
+          oitem.krList.forEach((kitem) => {
+            keypercent += kitem.okrWeight;
+          });
+          if (keypercent != 100) {
+            this.$message.error('结果KR权重值总和必须为100');
+            throw Error();
+          }
+        });
+        if (opercent != 100) {
+          this.$message.error('目标O权重值总和必须为100');
+          throw Error();
+        }
+      } catch (e) {
+        return;
+      }
+
       console.log('拼起来后', this.formData);
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.setMyokrDrawer(false);
         } else if (res.code === 30000) {
-          this.$message.warning('正在审批中');
+          this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
     },

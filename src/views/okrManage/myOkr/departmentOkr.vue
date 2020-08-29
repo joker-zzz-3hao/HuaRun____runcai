@@ -79,11 +79,10 @@
     </div>
     <el-drawer
       :wrapperClosable="false"
-      :modal-append-to-body="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
       :before-close="handleClose"
-      :modal="false"
+      :append-to-body="true"
       class="tl-drawer"
     >
       <tl-okr-detail

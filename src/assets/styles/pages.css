@@ -196,6 +196,15 @@
 
 .create-okr .allocation-info dt {
   margin: 0 10px 0 0;
+  color: #acb6bf;
+}
+
+.create-okr .allocation-info dd {
+  margin: 0 10px 0 0;
+}
+
+.create-okr .allocation-info dd:last-child {
+  margin: 0;
 }
 
 /* =========================================================租户管理================================================================== */

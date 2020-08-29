@@ -111,7 +111,7 @@
             </dd>
             <!-- <dl class="detail"> -->
             <dd class="hideEdit">
-              <span>分权重</span>
+              <span>权重</span>
               <el-form-item v-if="canWrite && kritem.showWeightEdit">
                 <el-input-number
                   v-model="kritem.okrWeight"
@@ -120,7 +120,7 @@
                   :max="100"
                   :step="1"
                   :precision="0"
-                ></el-input-number>
+                ></el-input-number>%
               </el-form-item>
               <span v-else>{{kritem.okrWeight}}%</span>
               <i
@@ -154,7 +154,6 @@
               <dd class="objectdd">
                 <el-form-item
                   :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
                 >
                   <!-- 不强制刷新无法输入 -->
                   <el-input
