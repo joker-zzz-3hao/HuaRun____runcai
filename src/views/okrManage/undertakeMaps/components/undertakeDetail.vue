@@ -57,7 +57,10 @@
                 <span>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
               </dd>
               <dd>
-                <span>本次更新进度+</span>
+                <span>
+                  本次更新进度
+                  <span v-if="okritem.okrDetailProgress>0">+</span>
+                </span>
                 <span>{{okritem.okrDetailProgress}}%</span>
               </dd>
             </div>
@@ -94,19 +97,6 @@ export default {
       CONST,
       server,
       personList: [],
-      formData: {
-        maindata: {
-          okrDetailtitle: '实现公司收入1亿元',
-          okrDetailProgress: 50,
-          userName: '肖海山',
-
-        },
-      },
-      okrForm: {
-        okrDetailObjectKr: '定个小目标',
-        okrDetailProgress: 70,
-        confidence: '1',
-      },
       dialogExist: false,
       checkStatus: 0,
     };
@@ -135,7 +125,7 @@ export default {
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
-                citem.okrDetailProgress = (contentObject.afterOkrDetailProgress - contentObject.beforeOkrDetailProgress) || 0;
+                citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
                 citem.remark = contentObject.remark || '暂无';
               });
             }
