@@ -14,7 +14,7 @@
     </div>
     <div class="create">
       <div>OKR风险状态统计</div>
-      <tl-okr-risk></tl-okr-risk>
+      <tl-okr-risk :mainData="mainData"></tl-okr-risk>
     </div>
   </div>
 </template>
@@ -40,6 +40,10 @@ export default {
     return {
       period: '',
       server,
+      mainData: {},
+      userWeek: [],
+      calendarId: '',
+      dateTime: '',
     };
   },
   computed: {
@@ -52,15 +56,27 @@ export default {
     getPeriod(period) {
       this.period = period;
       this.getokrStatistics();
+      this.riskStatistics();
     },
     getokrStatistics() {
-      this.server.riskStatistics({
+      this.server.okrStatistics({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
         personOrOrg: 'person',
         userId: '',
       }).then((res) => {
         console.log(res);
+      });
+    },
+    riskStatistics() {
+      this.server.riskStatistics({
+        periodId: this.period,
+        orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
+        personOrOrg: 'person',
+        userId: '',
+      }).then((res) => {
+        console.log(res);
+        this.mainData = res.data;
       });
     },
   },

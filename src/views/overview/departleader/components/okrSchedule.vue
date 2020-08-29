@@ -13,7 +13,7 @@ export default {
   props: {
     mainData: {
       type: [String, Object, Array],
-      require: true,
+      required: true,
     },
   },
   data() {
@@ -23,7 +23,9 @@ export default {
     };
   },
   mounted() {
-    this.checkData();
+    this.$nextTick(() => {
+      this.checkData();
+    });
   },
   methods: {
     checkData() {
@@ -108,7 +110,6 @@ export default {
         this.checkData();
       },
       deep: true,
-      immediate: true,
     },
   },
 };

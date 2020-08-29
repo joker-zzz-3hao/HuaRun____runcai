@@ -53,7 +53,6 @@
         </table>
       </div>
     </div>
-
     <tl-weeking :orgTable="orgTable"></tl-weeking>
   </div>
 </template>
@@ -62,7 +61,6 @@
 import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
-import okrRiskTotal from './components/okrRiskTotal';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
 import period from '../component/period';
@@ -76,8 +74,6 @@ export default {
     'tl-okr-schedule': okrSchedule,
     // eslint-disable-next-line vue/no-unused-components
     'tl-okr-update': okrUpdate,
-    // eslint-disable-next-line vue/no-unused-components
-    'tl-okr-risk-total': okrRiskTotal,
     'tl-weeking': weeking,
     'tl-org-page': orgPage,
     'tl-period': period,

@@ -9,6 +9,7 @@
     <el-dialog
       :append-to-body="true"
       :visible="visible"
+      v-if="visible"
       @close="close"
       title="支撑OKR/价值观"
       :close-on-click-modal="false"
@@ -29,21 +30,31 @@
       </div>
       <div>
         <h4>团队目标</h4>
-        <div v-for="teamTarget in orgOkrList" :key="teamTarget.okrDetailId">
-          <el-checkbox v-model="teamTarget.checked" @change="orgOkrChange(teamTarget)">
-            <span>{{teamTarget.indexText}}</span>
+        <el-checkbox-group v-model="orgSelectData" :min="0" :max="1">
+          <el-checkbox
+            v-for="teamTarget in orgOkrList"
+            :label="teamTarget.okrDetailId"
+            :key="teamTarget.okrDetailId"
+            @change="orgOkrChange(teamTarget)"
+          >
+            {{teamTarget.indexText}}
             {{teamTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </div>
+        </el-checkbox-group>
       </div>
       <div>
         <h4>个人目标</h4>
-        <div v-for="personalTarget in myOkrList" :key="personalTarget.okrDetailId">
-          <el-checkbox v-model="personalTarget.checked" @change="orgOkrChange(personalTarget)">
-            <span>{{personalTarget.indexText}}</span>
+        <el-checkbox-group v-model="personalSelectData" :min="0" :max="1">
+          <el-checkbox
+            v-for="personalTarget in myOkrList"
+            :label="personalTarget.okrDetailId"
+            :key="personalTarget.okrDetailId"
+            @change="personalOkrChange(personalTarget)"
+          >
+            {{personalTarget.indexText}}
             {{personalTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </div>
+        </el-checkbox-group>
       </div>
       <div>
         <h4>公司价值观</h4>
@@ -98,9 +109,17 @@ export default {
       initUserAccount: '',
       myOkrList: [],
       orgOkrList: [],
+      originalMyOkrList: [],
+      originalOrgOkrList: [],
       selectedOkrList: [],
       cultureList: [],
       selectedCultureList: [],
+      supportMyOkrObj: {},
+      selectOkrList: [],
+      orgSelectData: [],
+      personalSelectData: [],
+      orgOkr: [],
+      personalOkr: [],
     };
   },
   created() {
@@ -129,24 +148,43 @@ export default {
     },
     close() {
       this.visible = false;
-      this.$emit('closeOkrDialog', { selectedOkrAndCulture: [...this.selectedOkrList, ...this.selectedCultureList], currenItemrandomId: this.currenItemrandomId });
+      this.$emit('closeOkrDialog', {
+        selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList],
+        selectedOkr: [...this.orgOkr, ...this.personalOkr],
+        selectedCulture: [...this.selectedCultureList],
+        currenItemrandomId: this.currenItemrandomId,
+        supportMyOkrObj: this.supportMyOkrObj,
+      });
     },
     cancel() {
       this.close();
     },
     initSelectedData() {
       for (const item of this.selectedOkr) {
-        // 匹配okr
-        for (const okr of [...this.myOkrList, ...this.orgOkrList]) {
+        // 匹配个人okr
+        for (const okr of this.myOkrList) {
           if (item.okrDetailId == okr.okrDetailId) {
-            okr.checked = true;
-            this.selectedOkrList.push(okr);
+            // 反显
+            this.personalSelectData = [okr.okrDetailId];
+            // 赋值已选项
+            this.personalOkr = [okr];
+          }
+        }
+        // 匹配团队okr
+        for (const okr of this.orgOkrList) {
+          if (item.okrDetailId == okr.okrDetailId) {
+            // 反显
+            this.orgSelectData = [okr.okrDetailId];
+            // 赋值已选项
+            this.orgOkr = [okr];
           }
         }
         // 匹配价值观
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
+            // 反显
             culture.checked = true;
+            // 赋值已选项
             this.selectedCultureList.push({
               okrDetailId: culture.id,
               okrDetailObjectKr: culture.cultureName,
@@ -166,11 +204,13 @@ export default {
           if (myOrOrg == 'my') {
             // 我的目标
             this.myOkrList = [];
-            this.setMyOrOrgOkrList(res.data.okrDetails, 'my');
+            this.originalMyOkrList = res.data.okrDetails;
+            this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
           } else {
             // 团队目标
             this.orgOkrList = [];
-            this.setMyOrOrgOkrList(res.data.okrDetails, 'org');
+            this.originalOrgOkrList = res.data.okrDetails;
+            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
           }
         }
       });
@@ -197,9 +237,9 @@ export default {
         }
       }
       if (orgOrMy == 'org') {
-        this.orgOkrList = tempResult;
+        this.orgOkrList = [...tempResult];
       } else {
-        this.myOkrList = tempResult;
+        this.myOkrList = [...tempResult];
       }
     },
     getValues() {
@@ -210,13 +250,21 @@ export default {
       });
     },
     orgOkrChange(okr) {
-      if (okr.checked) {
-        this.selectedOkrList.push(okr);
-      } else {
-        this.selectedOkrList = this.selectedOkrList.filter((item) => item.okrDetailId != okr.okrDetailId);
+      this.orgOkr = this.orgSelectData.length > 0 ? [okr] : [];
+    },
+    personalOkrChange(okr) {
+      this.personalOkr = this.personalSelectData.length > 0 ? [okr] : [];
+      // 如果是选中kr，则需要将父级目标带到周报页面，用于展示在个人okr完成度部分
+      for (const o of this.originalMyOkrList) {
+        if (okr.okrDetailId == o.okrDetailId) {
+          this.supportMyOkrObj = { o };
+        }
+        for (const kr of o.krList) {
+          if (kr.okrDetailId == okr.okrDetailId) {
+            this.supportMyOkrObj = { o, kr: okr };
+          }
+        }
       }
-      this.$forceUpdate();
-      console.log(this.selectedOkrList);
     },
     cultureChange(culture) {
       if (culture.checked) {
@@ -228,7 +276,6 @@ export default {
         this.selectedCultureList = this.selectedCultureList.filter((item) => item.okrDetailId != culture.id);
       }
       this.$forceUpdate();
-      console.log(this.selectedCultureList);
     },
   },
   watch: {

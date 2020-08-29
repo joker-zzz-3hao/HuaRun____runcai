@@ -55,4 +55,12 @@ export default class Server extends ServerBase {
   removeDepartLeder(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/cancelUserRole', param);
   }
+
+  queryOrgAndUser(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/queryOrgAndUser', param);
+  }
+
+  fuzzyQueryUser(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/fuzzyQueryUser', param);
+  }
 }
