@@ -8,12 +8,12 @@ export default class Server extends ServerBase {
 
   // 查询项目
   getProjectList(param) {
-    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+    return this._ajaxPost('gateway/weekly-service/weekly/project', param);
   }
 
   // 查询周报
   queryWeekly(param) {
-    return this._ajaxPost('gateway/weekly-service/weekly/get', param);
+    return this._ajaxPost(`gateway/weekly-service/weekly/get?weeklyId=${param.weeklyId}`, param);
   }
 
   // 查询团队目标、个人目标
@@ -24,5 +24,10 @@ export default class Server extends ServerBase {
   // 获取公司价值观
   getValues(param) {
     return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
+  }
+
+  // 保存周报
+  commitWeekly(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/save', param);
   }
 }
