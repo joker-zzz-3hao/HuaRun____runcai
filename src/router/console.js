@@ -36,18 +36,6 @@ export default [
             component: () => import('@/views/overview/teamleader/index'),
           },
           {
-            path: '/teamleader',
-            name: 'teamleader',
-            meta: {
-              hasMainMenu: true,
-              noSubMenu: true,
-              parentRoute: 'overview',
-              title: 'teamleader',
-              power: '',
-            },
-            component: () => import('@/views/overview/teamleader/index'),
-          },
-          {
             path: '/departleader',
             name: 'departleader',
             meta: {
@@ -64,8 +52,8 @@ export default [
             name: 'grassStaff',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
-              parentRoute: 'grassStaff',
+              noSubMenu: true,
+              parentRoute: 'overview',
               title: 'grassStaff',
               power: '',
             },

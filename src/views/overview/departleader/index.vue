@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period @getPeriod="getPeriod"></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -10,7 +10,12 @@
       <tl-org-page></tl-org-page>
       <div>
         <ul style="display:flex;flex-direction: row;">
-          <li class="user-info" v-for="(item,index) in orgTable" :key="index">
+          <li
+            class="user-info"
+            v-for="(item,index) in orgTable"
+            :key="index"
+            @click="goToDep(item.orgId)"
+          >
             <div>
               <div class="user-name">{{checkName(item.orgName)}}</div>
               <div>{{item.orgName}}</div>
@@ -95,6 +100,9 @@ export default {
   },
 
   methods: {
+    goToDep(id) {
+      this.$router.push({ name: 'teamleader', query: { id } });
+    },
     // eslint-disable-next-line no-shadow
     getPeriod(period) {
       this.period = period;

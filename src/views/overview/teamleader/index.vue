@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period @getPeriod="getPeriod"></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -9,11 +9,17 @@
       </div>
       <tl-org-page></tl-org-page>
       <div>
-        <ul>
-          <li class="user-info" style="display:flex;flex-direction: row;">
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
+        <ul style="display:flex;flex-direction: row;">
+          <li
+            class="user-info"
+            v-for="(item,index) in orgTable"
+            :key="index"
+            @click="goToDep(item.orgId)"
+          >
+            <div>
+              <div class="user-name">{{checkName(item.userName)}}</div>
+              <div>{{item.userName}}</div>
+            </div>
           </li>
         </ul>
       </div>
@@ -87,17 +93,29 @@ export default {
       tableData: [],
       period: '',
       mainData: [],
+      orgId: '',
+      orgTable: [],
     };
   },
-  mounted() {
-
+  created() {
+    if (this.$route.query.id) {
+      this.orgId = this.$route.query.id;
+    } else {
+      this.orgId = this.userInfo.orgId;
+    }
+    this.getqueryMyOkr();
   },
   methods: {
-
+    goToDep(id) {
+      this.$router.push({ name: 'grassStaff', query: { id } });
+    },
+    checkName(name) {
+      return name.substring(0, 1);
+    },
     getokrData() {
       this.server.okrData({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         console.log(res);
       });
@@ -105,7 +123,7 @@ export default {
     getokrRisk() {
       this.server.okrRisk({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         this.tableData = res.data;
       });
@@ -113,7 +131,7 @@ export default {
     getmainData() {
       this.server.mainData({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         this.mainData = res.data;
       });
@@ -124,6 +142,13 @@ export default {
       this.getokrRisk();
       this.getokrData();
       this.getmainData();
+    },
+    getqueryMyOkr() {
+      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.orgId }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgUser;
+        }
+      });
     },
   },
 };
