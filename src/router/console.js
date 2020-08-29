@@ -264,6 +264,20 @@ export default [
         },
         component: () => import('@/views/personalCenter/index'),
       },
+      {
+        // 任务管理
+        // 我的任务
+        path: '/myTask',
+        name: 'myTask',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myTask',
+          title: 'myTask',
+          power: '',
+        },
+        component: () => import('@/views/taskManage/myTask/index'),
+      },
     ],
   },
 ];
