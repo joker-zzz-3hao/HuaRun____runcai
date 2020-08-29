@@ -94,6 +94,8 @@ export default {
       });
     },
     deleteSuccess() {
+      this.treeData = [];
+      this.treeData.push(this.userData);
       this.getTreeData(this.userData);
     },
     closed() {

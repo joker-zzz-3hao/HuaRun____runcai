@@ -68,7 +68,6 @@ export default {
     },
   },
   mounted() {
-    debugger;
     this.checkList = this.value;
   },
   methods: {

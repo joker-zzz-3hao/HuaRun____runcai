@@ -11,9 +11,19 @@
         ></el-option>
       </el-select>
       <div id="weeking"></div>
+      <ul>
+        <li
+          v-for="(item,index) in orgTable"
+          @click="changIdAction(item.id)"
+          :key="index"
+        >{{item.orgName}}</li>
+      </ul>
     </div>
     <div class="model">
       <div>周报动态</div>
+      <el-select v-model="value" placeholder="请选择">
+        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
+      </el-select>
       <el-select v-model="value" placeholder="请选择">
         <el-option :key="1" :value="1">2020年07月 第三周</el-option>
       </el-select>
@@ -51,10 +61,17 @@ import Server from '../../server';
 const server = new Server();
 export default {
   name: 'weeking',
+  props: {
+    orgTable: {
+      type: [String, Object, Array],
+      require: true,
+    },
+  },
   data() {
     return {
       value: '',
       server,
+      userId: '',
       options: [],
       echartDataY: [],
       echartDataX: [],
@@ -103,26 +120,36 @@ export default {
     }),
   },
   mounted() {
+    this.calendarQurey();
     this.initMood();
-    this.getriskStatistics();
     this.getokrQuery();
-    this.init();
   },
   methods: {
+    calendarQurey() {
+      this.server.calendarQurey().then((res) => {
+        this.dateOption = res.data;
+      });
+    },
+    changIdAction(id) {
+      this.userId = id;
+      this.getriskStatistics();
+    },
     getokrQuery() {
       this.server.okrQuery().then((res) => {
-        this.options = res.data;
+        this.options = res.data.content;
+        this.value = this.options[0].periodId;
+        this.getriskStatistics();
       });
     },
     getriskStatistics() {
       this.server.riskStatistics({
         periodId: this.value,
         orgId: this.userInfo.orgId,
+        userId: this.userId,
         personOrOrg: 'org',
       }).then((res) => {
         this.echartDataY = res.data.datas.map((item) => item.allScore);
-        this.echartDataX = res.data.datas.map((item) => item.createDate);
-        console.log(this.echartDataX);
+        this.echartDataX = res.data.months;
         this.init();
       });
     },

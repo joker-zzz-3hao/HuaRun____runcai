@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -9,49 +9,66 @@
       </div>
       <tl-org-page></tl-org-page>
       <div>
-        <ul>
-          <li class="user-info" style="display:flex;flex-direction: row;">
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
+        <ul style="display:flex;flex-direction: row;">
+          <li
+            class="user-info"
+            v-for="(item,index) in orgTable"
+            :key="index"
+            @click="goToDep(item.orgId)"
+          >
+            <div>
+              <div class="user-name">{{checkName(item.orgName)}}</div>
+              <div>{{item.orgName}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
     <div class="creatOkr">
       <div>OKR当前进度</div>
-      <tl-okr-schedule></tl-okr-schedule>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
       <div>
         <em>OKR承接与变更统计</em>
       </div>
       <div>
-        <el-table :data="tableData" border>
-          <el-table-column prop="data1" label></el-table-column>
-          <el-table-column prop="data2" label="容云"></el-table-column>
-          <el-table-column prop="data3" label="捷云"></el-table-column>
-          <el-table-column prop="data4" label="耕云"></el-table-column>
-          <el-table-column prop="data5" label="行云"></el-table-column>
-          <el-table-column prop="data6" label="合云"></el-table-column>
-          <el-table-column prop="data7" label="门户"></el-table-column>
-          <el-table-column prop="data8" label="运维管理"></el-table-column>
-          <el-table-column prop="data9" label="运营管理部"></el-table-column>
-        </el-table>
+        <table border="1">
+          <tr>
+            <td></td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.orgName}}</td>
+          </tr>
+          <tr>
+            <td>承接数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.okrContinueCount}}</td>
+          </tr>
+          <tr>
+            <td>变更数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.okrChangeCount}}</td>
+          </tr>
+          <tr>
+            <td>总人数</td>
+            <td v-for="(item,index) in mainData" :key="index">{{item.personCount}}</td>
+          </tr>
+        </table>
       </div>
     </div>
 
-    <tl-weeking></tl-weeking>
+    <tl-weeking :orgTable="orgTable"></tl-weeking>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import okrRiskTotal from './components/okrRiskTotal';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
 import period from '../component/period';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'departleader',
@@ -67,45 +84,48 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        {
-          data1: '承接数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-        {
-          data1: '变更数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-        {
-          data1: '总人数',
-          data2: '111',
-          data3: '111',
-          data4: '111',
-          data5: '111',
-          data6: '111',
-          data7: '111',
-          data8: '111',
-          data9: '111',
-        },
-      ],
+      server,
+      orgTable: [],
+      period: '',
+      mainData: [],
     };
   },
-  methods: {
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
+  created() {
+    this.getqueryMyOkr();
+  },
 
+  methods: {
+    goToDep(id) {
+      this.$router.push({ name: 'teamleader', query: { id } });
+    },
+    // eslint-disable-next-line no-shadow
+    getPeriod(period) {
+      this.period = period;
+      this.getmainData();
+    },
+    checkName(name) {
+      return name.substring(0, 1);
+    },
+    getqueryMyOkr() {
+      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.userInfo.orgId }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgTable;
+        }
+      });
+    },
+    getmainData() {
+      this.server.mainData({
+        periodId: this.period,
+        orgId: this.userInfo.orgId,
+      }).then((res) => {
+        this.mainData = res.data;
+      });
+    },
   },
 };
 </script>

@@ -9,16 +9,26 @@ import echarts from 'echarts';
 
 export default {
   name: 'okrRiskTotal',
+  props: {
+    tableData: {
+      type: [Object, Array, String],
+    },
+  },
   data() {
     return {
-
+      aroundData: [],
     };
   },
   mounted() {
-    this.init();
+    this.cheMainData();
   },
   methods: {
+    cheMainData() {
+      this.aroundData = this.tableData.map((item) => ({ value: item.count, name: item.ratio }));
+      this.init();
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         tooltip: {
@@ -27,7 +37,7 @@ export default {
         },
         series: [
           {
-            name: '访问来源',
+            name: '风险统计',
             type: 'pie',
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
@@ -45,18 +55,21 @@ export default {
             labelLine: {
               show: false,
             },
-            data: [
-              { value: 335, name: '50%' },
-              { value: 310, name: '70%' },
-              { value: 234, name: '20%' },
-              { value: 135, name: '30%' },
-              { value: 1548, name: '70%' },
-            ],
+            data: that.aroundData,
           },
         ],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    tableData: {
+      handler() {
+        this.cheMainData();
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

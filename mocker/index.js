@@ -18,6 +18,7 @@ const proxy = {
   ...require('./sysUserManage/index'),
   ...require('./weeklyManage/index'),
   ...require('./userManage/index'),
+  ...require('./taskManage/index'),
 };
 
 module.exports = (delay(proxy, 0));

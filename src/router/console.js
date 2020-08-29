@@ -11,6 +11,9 @@ export default [
         // 综合首页
         path: '/overview',
         name: 'overview',
+        redirect: {
+          name: 'departleader',
+        },
         meta: {
           hasMainMenu: true,
           noSubMenu: true,
@@ -19,6 +22,44 @@ export default [
           power: '',
         },
         component: () => import('@/views/overview/index'),
+        children: [
+          {
+            path: '/teamleader',
+            name: 'teamleader',
+            meta: {
+              hasMainMenu: true,
+              noSubMenu: true,
+              parentRoute: 'overview',
+              title: 'teamleader',
+              power: '',
+            },
+            component: () => import('@/views/overview/teamleader/index'),
+          },
+          {
+            path: '/departleader',
+            name: 'departleader',
+            meta: {
+              hasMainMenu: true,
+              noSubMenu: true,
+              parentRoute: 'overview',
+              title: 'departleader',
+              power: '',
+            },
+            component: () => import('@/views/overview/departleader/index'),
+          },
+          {
+            path: '/grassStaff',
+            name: 'grassStaff',
+            meta: {
+              hasMainMenu: true,
+              noSubMenu: true,
+              parentRoute: 'overview',
+              title: 'grassStaff',
+              power: '',
+            },
+            component: () => import('@/views/overview/grassStaff/index'),
+          },
+        ],
       },
       {
         // OKR管理
@@ -53,6 +94,7 @@ export default [
               hasMainMenu: true,
               isSubMenu: true,
               parentRoute: 'myOkr',
+              belongsTo: 'myOkr',
               title: 'departmentOkr',
               power: '',
             },
@@ -221,6 +263,20 @@ export default [
           power: '',
         },
         component: () => import('@/views/personalCenter/index'),
+      },
+      {
+        // 任务管理
+        // 我的任务
+        path: '/myTask',
+        name: 'myTask',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myTask',
+          title: 'myTask',
+          power: '',
+        },
+        component: () => import('@/views/taskManage/myTask/index'),
       },
     ],
   },

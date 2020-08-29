@@ -3,14 +3,7 @@
     <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
       <el-form-item>
         <p>周期</p>
-        <el-select v-model="formData.periodId" :popper-append-to-body="false">
-          <el-option
-            v-for="(item) in cycleList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
+        <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
       </el-form-item>
       <el-form-item>
         <p>审批状态</p>
@@ -43,7 +36,7 @@
       </el-form-item>
     </el-form>
     <div>
-      <el-button>OKR对齐</el-button>
+      <el-button @click="goUndertake">OKR对齐</el-button>
     </div>
     <crcloud-table
       :total="formData.total"
@@ -55,6 +48,7 @@
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
           <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="userName" label="角色" width="120"></el-table-column>
           <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
           <el-table-column prop="approvalStatus" label="审批状态" width="150">
             <template slot-scope="scope">
@@ -68,7 +62,7 @@
           </el-table-column>
           <el-table-column prop="okrProgress" label="OKR进度" width="300">
             <template slot-scope="scope">
-              <span v-if="scope.row.okrProgress">{{scope.row.okrProgress}}%</span>
+              <span>{{scope.row.okrProgress}}%</span>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>
@@ -97,6 +91,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import periodSelect from '@/components/periodSelect';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -104,7 +99,9 @@ const server = new Server();
 
 export default {
   name: 'okrApprovalList',
-  components: {},
+  components: {
+    'tl-periodselect': periodSelect,
+  },
   props: {},
   data() {
     return {
@@ -112,7 +109,6 @@ export default {
       server,
       tableData: [],
       emptyText: '暂无数据',
-      cycleList: [],
       formData: {
         periodId: '',
         approvalStatus: '0',
@@ -122,10 +118,14 @@ export default {
         pageSize: 10,
         currentPage: 1,
       },
+      okrCycle: {}, // 当前选择的周期
+      periodList: [], // 周期列表
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
@@ -137,10 +137,8 @@ export default {
     init() {
       const self = this;
       self.server.getOkrCycleList().then((res) => {
-        self.cycleList = res.data;
-        if (res.data.length > 0) {
-          self.formData.periodId = res.data[0].periodId;
-          this.searchList();
+        if (res.code == 200) {
+          self.periodList = res.data;
         }
       });
     },
@@ -169,12 +167,20 @@ export default {
       this.setDetailData(JSON.stringify(row));
       this.setOkrApprovalStep('2');
     },
+    goUndertake() {
+      this.go('undertakeMaps');
+    },
+    handleCycleData(data) {
+      this.okrCycle = data;
+      this.formData.periodId = data.periodId;
+      this.searchList();
+    },
   },
   watch: {
     okrApprovalStep: {
       handler(newVal) {
         if (newVal == '1') {
-          this.init();
+          this.searchList();
         }
       },
       deep: true,

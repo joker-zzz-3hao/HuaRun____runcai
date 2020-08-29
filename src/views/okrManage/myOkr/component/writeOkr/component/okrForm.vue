@@ -96,7 +96,14 @@
       <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
     </div>
     <!-- 关联承接项抽屉 -->
-    <el-drawer title="关联承接项" :modal="false" :visible.sync="innerDrawer">
+    <el-drawer
+      title="关联承接项"
+      :visible.sync="innerDrawer"
+      :modal="false"
+      :wrapperClosable="false"
+      :append-to-body="true"
+      class="tl-drawer"
+    >
       <undertake-table
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -374,11 +381,11 @@ export default {
           });
 
           if (opercent != 100) {
-            this.$message('！ 目标O权重值必须为100');
+            this.$message.error('目标O权重值总和必须为100');
             return;
           }
           if (keypercent != 100) {
-            this.$message('！ 结果KR权重值必须为100');
+            this.$message.error('结果KR权重值总和必须为100');
             return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
@@ -388,10 +395,18 @@ export default {
           this.server.addokr(this.formData).then((res) => {
             console.log(res);
             if (res.code == 200) {
-              this.$message('创建成功，请等待上级领导审批。');
+              this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
               this.setCreateokrDrawer(false);
               this.setMyokrDrawer(false);
+            } else if (res.code == 30000) {
+              this.$xconfirm({
+                content: '',
+                title: '当前周期已提交提交，是否保存为草稿？',
+              }).then(() => {
+              // 提交确认弹窗
+                this.saveDraft();
+              }).catch(() => {});
             }
           });
         }
@@ -401,8 +416,10 @@ export default {
     saveDraft() {
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
-          delete oitem.departokrList;
-          delete oitem.philosophyList;
+          if (oitem.departokrList) {
+            delete oitem.departokrList;
+            delete oitem.philosophyList;
+          }
         });
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.periodId = this.searchForm.okrCycle.periodId;

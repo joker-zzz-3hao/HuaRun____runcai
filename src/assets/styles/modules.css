@@ -540,6 +540,7 @@
 .tl-drawer {
   top: unset;
   height: calc(100vh - 70px);
+  z-index: 2001 !important;
 }
 
 .tl-drawer .el-drawer {
@@ -554,7 +555,7 @@
   padding: 0;
   justify-content: space-between;
   height: 50px;
-  border-bottom: 1px solid #e8ecf0;
+  border-bottom: 1px solid #e5e9ee;
 }
 
 .tl-drawer .el-drawer__header::before,
@@ -562,7 +563,7 @@
   position: absolute;
   bottom: -1px;
   content: '';
-  background: #e8ecf0;
+  background: #e5e9ee;
   width: 100%;
   height: 1px;
 }
@@ -582,7 +583,33 @@
   outline: unset;
 }
 
+.tl-drawer .diy-drawer .el-drawer__header {
+  border: unset;
+  height: 70px;
+}
+
+.tl-drawer .diy-drawer .el-drawer__header::before,
+.tl-drawer .diy-drawer .el-drawer__header::after {
+  content: unset;
+}
+
+.tl-drawer .flex-sb {
+  margin: 0 30px 0 0;
+}
+
+.tl-drawer .drawer-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #222426;
+}
+
+.tl-drawer .icon-save em {
+  color: #3e9aff;
+  font-size: 12px;
+}
+
 .tl-drawer .el-drawer__close-btn {
+  margin: 2px 0 0 0;
   font-size: 24px;
   color: #d8d8d8;
   transition: color .3s ease-out;
@@ -597,6 +624,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.tl-drawer + .v-modal,
+.el-popup-parent--hidden .v-modal {
+  background: unset;
+  opacity: unset;
+  z-index: 2000 !important;
+}
+
+.tl-drawer + .v-modal + .tl-drawer,
+.tl-drawer + .tl-drawer {
+  z-index: 2002 !important;
 }
 
 /* pagination */
@@ -697,8 +736,61 @@
   border-color: #685df1;
 }
 
+/* select */
+.tl-select .el-input__inner {
+  border: unset;
+  background: unset;
+  color: #4d5155;
+}
+
+.tl-select .el-icon-arrow-up::before {
+  content: "\e78f";
+}
+
+.tl-select-dropdown {
+  border: unset;
+  box-shadow: 0 0 8px 0 rgba(0,0,0,0.10);
+}
+
+.tl-select-dropdown.el-popper {
+  margin: 0;
+}
+
 .tl-select-dropdown .el-select-dropdown__item.selected {
   color: #685df1;
+}
+
+.tl-select-dropdown .popper__arrow {
+  border: unset;
+}
+
+.tl-select-dropdown .popper__arrow::after {
+  content: unset;
+}
+
+.tl-select-dropdown .el-select-group__title {
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+.tl-select-dropdown .el-select-dropdown__item,
+.tl-select-dropdown .el-select-group__title {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: unset;
+}
+
+.tl-select-dropdown .el-select-dropdown__item.hover,
+.tl-select-dropdown .el-select-dropdown__item:hover {
+  background: #f4f6f8;
+}
+
+.tl-select-dropdown .el-select-group__wrap:not(:last-of-type)::after {
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  background: #f4f6f8;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -850,10 +942,13 @@
 }
 
 .tl-diy-tabs .tab-list li {
+  display: flex;
+  align-items: center;
   padding: 0 10px;
   margin: 0 20px 0 0;
   cursor: pointer;
   color: #7b8a95 ;
+  height: 100%;
   font-weight: 500;
   transition: all .4s ease-out;
 }
@@ -998,11 +1093,11 @@
 
 .is-shrink + .view-cont {
   width: calc(100vw - 122px);
-  z-index: 23;
+  z-index: 24;
 }
 
 .no-sub-menu + .view-cont {
-  z-index: 23;
+  z-index: 24;
 }
 
 .menu-cont.is-shrink {
@@ -1039,24 +1134,19 @@
   padding: 10px;
   right: -43%;
   top: 50%;
-  transform: translateX(90%) translateY(-50%);
+  transform: translateX(35%) translateY(-50%);
   width: 80px;
   background: #fff;
   border: 1px solid #e5e9ee;
   border-radius: 3px;
   opacity: 0;
   transition: all .4s ease-out;
-  z-index: -1;
-}
-
-.is-shrink .menu-cont-inside .text-tip {
-  z-index: -1;
+  z-index: 0;
 }
 
 .menu-cont-inside .main-menu .is-hover .text-tip {
   transform: translateX(50%) translateY(-50%);
   opacity: 1;
-  z-index: 0;
 }
 
 .menu-cont-inside .text-tip::before {
@@ -1102,10 +1192,6 @@
 }
 
 .menu-cont-inside.is-zindex {
-  z-index: 24;
-}
-
-.menu-cont:hover .menu-cont-inside {
   z-index: 25;
 }
 

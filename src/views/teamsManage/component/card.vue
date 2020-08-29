@@ -1,7 +1,19 @@
 <template>
   <div style="width: 216px;position: relative;">
-    <div v-if="node.node.userId">
+    <div v-if="node.node.orgType == '0'">
       <div>{{node.node.orgName}}</div>
+      <div>{{node.node.orgLeader || node.node.userName}}</div>
+    </div>
+    <div
+      v-else-if="node.node.orgType == '1'"
+      style="position: absolute;top: 0;right: 0;"
+      @click="deleteFictitious(node.node)"
+    >
+      <div>{{node.node.orgName}}</div>
+      <div>{{node.node.orgLeader || '未设置'}}</div>
+      <i class="el-icon-close"></i>
+    </div>
+    <div v-else-if="!node.node.orgType && node.node.userName">
       <div>{{node.node.userName}}</div>
     </div>
     <div v-if="node.node.add">
@@ -16,13 +28,6 @@
         ></el-cascader-panel>
       </div>
       <div>添加虚线汇报部门</div>
-    </div>
-    <div
-      v-if="node.node.orgType == '1'"
-      style="position: absolute;top: 0;right: 0;"
-      @click="deleteFictitious(node.node)"
-    >
-      <i class="el-icon-close"></i>
     </div>
   </div>
 </template>

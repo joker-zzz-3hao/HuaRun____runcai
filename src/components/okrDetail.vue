@@ -79,7 +79,14 @@
         </li>
       </ul>
     </div>
-    <el-drawer title="历史版本" :modal="false" :visible.sync="innerDrawer">
+    <el-drawer
+      title="历史版本"
+      :modal="false"
+      :wrapperClosable="false"
+      :append-to-body="true"
+      class="tl-drawer"
+      :visible.sync="innerDrawer"
+    >
       <tl-okr-history
         v-if="innerDrawer"
         ref="tl-okr-history"

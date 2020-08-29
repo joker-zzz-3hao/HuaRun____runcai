@@ -1,5 +1,6 @@
 <template>
   <div class="personPage">
+    <el-button v-if="showBack" @click="$router.back()">返回</el-button>
     <el-select v-model="value" placeholder="请选择" @change="selectPeriod">
       <el-option
         v-for="item in options"
@@ -25,6 +26,12 @@ export default {
       options: [],
       value: '',
     };
+  },
+  props: {
+    showBack: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     this.getokrQuery();

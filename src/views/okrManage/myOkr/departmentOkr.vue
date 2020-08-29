@@ -1,12 +1,8 @@
 <template>
   <div>
     <!-- 选择周期 -->
-    <tl-department
-      :data="cycleData"
-      type="cycleListSelect"
-      @handleData="handleorgCycleData"
-      :defaultProps="cycleDefaultProps"
-    ></tl-department>
+    <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+
     <div v-if="tableList.length>0">
       <!-- 公共信息 -->
       <div>
@@ -83,11 +79,11 @@
     </div>
     <el-drawer
       :wrapperClosable="false"
-      :modal-append-to-body="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
-      size="50%"
       :before-close="handleClose"
+      :append-to-body="true"
+      class="tl-drawer"
     >
       <tl-okr-detail
         v-if="myokrDrawer"
@@ -102,7 +98,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import department from '@/components/department';
+import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import Server from './server';
@@ -113,9 +109,9 @@ const server = new Server();
 export default {
   name: 'departmentOkr',
   components: {
+    'tl-periodselect': periodSelect,
     'tl-okr-table': okrTable,
     'tl-okr-detail': okrDetail,
-    'tl-department': department,
   },
   data() {
     return {
@@ -134,30 +130,8 @@ export default {
       okrId: '',
       myokrDrawer: false,
       drawerTitle: 'OKR详情',
-      okrorgCycle: {}, // 当前选择的周期-部门
       okrCycle: {}, // 当前选择的周期
-      cycleData: [], // 周期列表
-      cycleDefaultProps: { // 周期数据类型
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: { // 周期数据格式
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-      },
+      periodList: [], // 周期列表
     };
   },
   props: {
@@ -223,27 +197,10 @@ export default {
     // 周期
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
-        if (res.data.length > 0) {
-          res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              this.cycleObj.old.children.push(item);
-            } else if (item.checkStatus == '1') {
-              this.cycleObj.current.children.push(item);
-              this.okrorgCycle = item;
-              this.okrCycle = item;
-              console.log('当前周期', item);
-            }
-          });
-          this.pushCycleObj('current');
-          this.pushCycleObj('old');
+        if (res.code == 200) {
+          this.periodList = res.data || [];
         }
       });
-    },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
     },
     handleCycleData(data) {
       this.okrCycle = data;

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period @getPeriod="getPeriod"></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="create">
       <em>陆涛</em>
     </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import okrRisk from './components/okrRisk';
@@ -41,6 +42,11 @@ export default {
       server,
     };
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   methods: {
     // eslint-disable-next-line no-shadow
     getPeriod(period) {
@@ -48,8 +54,11 @@ export default {
       this.getokrStatistics();
     },
     getokrStatistics() {
-      this.server.okrStatistics({
+      this.server.riskStatistics({
         periodId: this.period,
+        orgId: this.userInfo.orgId,
+        personOrOrg: 'person',
+        userId: '',
       }).then((res) => {
         console.log(res);
       });

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period @getPeriod="getPeriod"></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="creatOkr">
       <div>云门户</div>
       <div v-if="false">
@@ -9,22 +9,28 @@
       </div>
       <tl-org-page></tl-org-page>
       <div>
-        <ul>
-          <li class="user-info" style="display:flex;flex-direction: row;">
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
-            <div class="user-name">马云</div>
+        <ul style="display:flex;flex-direction: row;">
+          <li
+            class="user-info"
+            v-for="(item,index) in orgTable"
+            :key="index"
+            @click="goToDep(item.orgId)"
+          >
+            <div>
+              <div class="user-name">{{checkName(item.userName)}}</div>
+              <div>{{item.userName}}</div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
     <div class="creatOkr">
       <div>OKR当前进度</div>
-      <tl-okr-schedule></tl-okr-schedule>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
       <div>OKR进度更新榜</div>
-      <tl-okr-update></tl-okr-update>
+      <tl-okr-update :mainData="mainData"></tl-okr-update>
     </div>
     <div class="creatOkr">
       <div>
@@ -36,19 +42,17 @@
           <el-table-column prop="riskName" label="KR状态"></el-table-column>
           <el-table-column prop="count" label="数量"></el-table-column>
           <el-table-column prop="ratio" label="占比">
-            <template scope="scope">
+            <template slot-scope="scope">
               <span v-if="scope.row.ratio">{{scope.row.ratio+'%'}}</span>
               <span v-else>--</span>
             </template>
           </el-table-column>
         </el-table>
         <div style="display:inline-block">
-          <tl-okr-risk-total></tl-okr-risk-total>
+          <tl-okr-risk-total :tableData="tableData"></tl-okr-risk-total>
         </div>
         <ul style="display:inline-block">
-          <li>风险 20</li>
-          <li>风险可控 20</li>
-          <li>无风险 20</li>
+          <li v-for="(item,index) in tableData" :key="index">{{item.riskName}} {{item.ratio+'%'}}</li>
         </ul>
       </div>
     </div>
@@ -88,24 +92,30 @@ export default {
       server,
       tableData: [],
       period: '',
+      mainData: [],
+      orgId: '',
+      orgTable: [],
     };
   },
-  mounted() {
-
+  created() {
+    if (this.$route.query.id) {
+      this.orgId = this.$route.query.id;
+    } else {
+      this.orgId = this.userInfo.orgId;
+    }
+    this.getqueryMyOkr();
   },
   methods: {
-    getmainData() {
-      this.server.mainData({
-        periodId: this.period,
-        orgId: this.userInfo.orgId,
-      }).then((res) => {
-        console.log(res);
-      });
+    goToDep(id) {
+      this.$router.push({ name: 'grassStaff', query: { id } });
+    },
+    checkName(name) {
+      return name.substring(0, 1);
     },
     getokrData() {
       this.server.okrData({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         console.log(res);
       });
@@ -113,9 +123,17 @@ export default {
     getokrRisk() {
       this.server.okrRisk({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         this.tableData = res.data;
+      });
+    },
+    getmainData() {
+      this.server.mainData({
+        periodId: this.period,
+        orgId: this.orgId,
+      }).then((res) => {
+        this.mainData = res.data;
       });
     },
     // eslint-disable-next-line no-shadow
@@ -124,6 +142,13 @@ export default {
       this.getokrRisk();
       this.getokrData();
       this.getmainData();
+    },
+    getqueryMyOkr() {
+      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.orgId }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgUser;
+        }
+      });
     },
   },
 };

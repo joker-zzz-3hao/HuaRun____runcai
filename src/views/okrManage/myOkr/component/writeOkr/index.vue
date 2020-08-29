@@ -1,17 +1,41 @@
 <template>
-  <div class="home">
-    <!-- 创建OKR -->
-    <div v-if="canWrite">
-      <dl style="display:flex">
+  <div class="create-okr">
+    <div v-if="canWrite" class="allocation-info">
+      <dl>
+        <dt>目标周期</dt>
+        <dd>
+          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+        </dd>
+      </dl>
+      <dl>
+        <dt>OKR类型</dt>
+        <dd>
+          <el-select
+            v-model="searchForm.okrType"
+            placeholder="请选择类型"
+            :popper-append-to-body="false"
+          >
+            <el-option
+              v-for="(item, index) in CONST.OKR_TYPE_LIST"
+              :key="item.id+index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="user-info">
+        <dt>负责人</dt>
+        <dd v-if="true">
+          <img src="@/assets/images/user/user.jpg" alt />
+        </dd>
+        <dd v-else class="user-name">{{cutName(userName)}}</dd>
+        <dd>{{userName}}徐佳佳</dd>
+      </dl>
+      <!-- <dl>
         <dd>
           <span>目标周期</span>
-          <department
-            :data="cycleData"
-            type="cycleListSelect"
-            @handleData="handleCycleData"
-            :defaultProps="cycleDefaultProps"
-            :defaultData="searchForm.periodId"
-          ></department>
+          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
         </dd>
         <dd>
           <span>OKR类型</span>
@@ -33,7 +57,7 @@
           <div class="user-name">{{cutName(userName)}}</div>
           <span>{{userName}}</span>
         </dd>
-      </dl>
+      </dl>-->
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
     <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr>
@@ -42,7 +66,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import department from '@/components/department';
+import periodSelect from '@/components/periodSelect';
 import okrForm from './component/okrForm';
 import changeOKR from './component/changeOKR';
 import Server from './server';
@@ -55,7 +79,7 @@ export default {
   components: {
     'okr-form': okrForm,
     'change-okr': changeOKR,
-    department,
+    'tl-periodselect': periodSelect,
   },
   props: {
     writeInfo: {
@@ -73,8 +97,6 @@ export default {
     return {
       server,
       CONST,
-      timelist: [],
-      okrmain: {},
       searchForm: {
         periodId: '',
         userId: '',
@@ -87,29 +109,7 @@ export default {
         draftId: '',
       },
       canWrite: true, // true写okr false changeokr
-      cycleData: [],
-      cycleDefaultProps: {
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: {
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-        okrId: '',
-      },
+      periodList: [],
     };
   },
   computed: {
@@ -152,31 +152,15 @@ export default {
       } else { this.searchForm.okrType = 2; }
       // 周期
       this.server.getOkrCycleList().then((res) => {
-        if (res.data.length > 0) {
-          res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              this.cycleObj.old.children.push(item);
-            } else if (item.checkStatus == '1') {
-              this.cycleObj.current.children.push(item);
-              this.searchForm.okrCycle = item;
-            }
-          });
-          this.pushCycleObj('current');
-          this.pushCycleObj('old');
+        if (res.code == 200) {
+          this.periodList = res.data || [];
         }
       });
     },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
-    },
+
     handleCycleData(data) {
-      // this.okrCycle = data;
       this.searchForm.okrCycle = data;
-      console.log('okrCycle', data);
-      // this.getmaps();
+      console.log('writeokrCycle', data);
     },
     cutName(userName) {
       const nameLength = userName.length;

@@ -10,17 +10,31 @@ import echarts from 'echarts';
 
 export default {
   name: 'okrSchedule',
+  props: {
+    mainData: {
+      type: [String, Object, Array],
+      require: true,
+    },
+  },
   data() {
     return {
-
+      mainDataY: [],
+      mainDataX: [],
     };
   },
   mounted() {
-    this.init();
-    this.initCount();
+    this.checkData();
   },
   methods: {
+    checkData() {
+      this.mainDataX = this.mainData.map((item) => item.okrProgress);
+      this.mainDataY = this.mainData.map((item) => item.orgName);
+      this.mainCount = this.mainData.map((item) => item.okrChangeCount);
+      this.init();
+      this.initCount();
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrSchedule'));
       const option = {
         tooltip: {
@@ -39,17 +53,23 @@ export default {
         xAxis: {
           type: 'value',
           boundaryGap: [0, 0.01],
+          max: 100,
+          splitNumber: 10,
+          axisLabel: {
+            show: true,
+            interval: 'auto',
+            formatter: '{value} %',
+          },
         },
         yAxis: {
           type: 'category',
-          data: ['行云', '行云', '行云', '行云', '行云', '行云'],
+          data: that.mainDataY,
         },
         series: [
           {
-            name: '2011年',
             type: 'bar',
             barWidth: 20,
-            data: [10, 30, 60, 70, 90, 100],
+            data: that.mainDataX,
           },
         ],
       };
@@ -57,11 +77,12 @@ export default {
       myChart.setOption(option);
     },
     initCount() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrCountUpdate'));
       const option = {
         xAxis: {
           type: 'category',
-          data: ['捷云', '捷云', '捷云', '捷云', '捷云', '捷云', '捷云', '捷云'],
+          data: that.mainDataY,
         },
         yAxis: [
           {
@@ -71,18 +92,23 @@ export default {
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: [20, 100, 50, 80, 70, 90, 30, 20],
+          data: that.mainCount,
           type: 'bar',
           barWidth: 20,
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(220, 220, 220, 0.8)',
-          },
 
         }],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    mainData: {
+      handler() {
+        this.checkData();
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

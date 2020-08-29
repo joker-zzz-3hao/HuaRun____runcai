@@ -26,16 +26,22 @@
     <router-view class="cont-area"></router-view>
     <el-drawer
       :wrapperClosable="false"
-      :modal-append-to-body="false"
-      title="创建okr"
+      :modal-append-to-body="true"
+      :append-to-body="true"
       :visible.sync="createokrDrawer"
       :before-close="handleClose"
-      :modal="false"
+      custom-class="diy-drawer create-okr"
       class="tl-drawer"
     >
-      <div>
-        <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">创建OKR</div>
+        <div class="icon-save">
+          <i></i>
+          <em>已自动保存</em>
+        </div>
       </div>
+      <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <div class="operating-panel">sdfsdf</div>
     </el-drawer>
   </div>
 </template>
@@ -72,10 +78,20 @@ export default {
     ...mapState('common', {
       createokrDrawer: (state) => state.createokrDrawer,
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   created() {
-    this.departmentName = this.userInfo.orgParentName || '部门';
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.departmentName = this.userInfo.orgParentName || '部门';
+    } else {
+      this.departmentName = this.userInfo.orgName || '部门';
+    }
+    this.tabsList.forEach((item) => {
+      if (item.toName == 'departmentOkr') {
+        item.menuTitle = `${this.departmentName}OKR`;
+      }
+    });
   },
   mounted() {
     const liWidth = document.querySelectorAll('.tab-list li');
@@ -98,7 +114,9 @@ export default {
     borderSlip(item, index, name) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
+      const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
+      borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
       this.go(name);
     },
