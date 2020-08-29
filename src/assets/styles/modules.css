@@ -1199,6 +1199,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 
 .menu-cont-inside li i {
@@ -1232,8 +1233,8 @@
   top: 0;
   width: 70px;
   height: calc(100vh - 70px);
+  z-index: 0;
 }
-
 .menu-cont-inside .main-menu i {
   width: 100%;
   height: 100%;
@@ -1241,14 +1242,22 @@
 
 .main-menu .sub-menu {
   position: absolute;
-  left: 0;
+  left: 70px;
   top: 0;
-  width: 248px;
+  width: 178px;
   height: calc(100vh - 70px);
   background: #fff;
   z-index: -1;
   transform: translateX(-190px);
   transition: all .4s;
+}
+
+.main-menu .sub-menu.change-index {
+  z-index: 0;
+}
+
+.is-main-menu .sub-menu.change-index {
+  z-index: -1;
 }
 
 .is-sub-menu .main-menu .sub-menu {
@@ -1270,7 +1279,7 @@
 }
 
 .main-menu .sub-menu dl {
-  padding: 10px 20px 20px 80px;
+  padding: 10px 20px 20px 10px;
   position: absolute;
   left: 0;
   top: 0;
@@ -1315,7 +1324,7 @@
 }
 
 .is-sub-menu .main-menu .sub-menu dl {
-  transform: translateX(-178px);
+  transform: translateX(-248px);
 }
 
 .is-sub-menu.is-shrink .main-menu .sub-menu dl {
@@ -1393,7 +1402,7 @@
 .menu-control-button {
   position: absolute;
   right: -12px;
-  top: 12px;
+  top: 8px;
   z-index: 21;
   width: 24px;
   height: 24px;
