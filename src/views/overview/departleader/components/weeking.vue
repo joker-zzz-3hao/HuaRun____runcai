@@ -2,7 +2,7 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <el-select placeholder="请选择" v-model="value" @change="getriskStatistics">
+      <el-select placeholder="请选择" v-model="periodId" @change="getriskStatistics">
         <el-option
           v-for="item in options"
           :key="item.id"
@@ -21,25 +21,40 @@
     </div>
     <div class="model">
       <div>周报动态</div>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
-      </el-select>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
+      <el-date-picker
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        v-model="dateTime"
+        @change="getDate"
+        type="month"
+        placeholder="选择日期"
+      ></el-date-picker>
+
+      <el-select v-model="calendarId" @change="changeLeek" placeholder="请选择">
+        <el-option
+          :key="index"
+          :value="item.calendarId"
+          v-for="(item,index) in dateOption"
+          :label="item.weekBegin+' 至 '+item.weekEnd"
+        ></el-option>
       </el-select>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="name" label="部门"></el-table-column>
-        <el-table-column prop="desc" label="部门人数"></el-table-column>
-        <el-table-column prop="date" label="标准/简单模式"></el-table-column>
-        <el-table-column prop="name" label="浏览次数"></el-table-column>
-        <el-table-column prop="desc" label="浏览人数"></el-table-column>
-        <el-table-column prop="date" label="负责人"></el-table-column>
+        <el-table-column prop="orgName" label="部门"></el-table-column>
+        <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
+        <el-table-column label="标准/简单模式">
+          <template slot-scope="scope">
+            <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
+        <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
+        <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
       </el-table>
     </div>
     <div class="model">
       <div>员工情绪大屏</div>
       <div>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select placeholder="请选择">
           <el-option :key="1" :value="1">2020年07月 第三周</el-option>
         </el-select>
       </div>
@@ -69,49 +84,17 @@ export default {
   },
   data() {
     return {
+      periodId: '',
       value: '',
       server,
       userId: '',
+      calendarId: '',
+      dateTime: '',
       options: [],
+      dateOption: [],
       echartDataY: [],
       echartDataX: [],
-      tableData: [
-        {
-          name: '陆涛',
-          desc: '1111',
-          date: '2020年7月21日',
-        },
-        {
-          name: '陆涛',
-          desc: '1111',
-          date: '2020年7月21日',
-        },
-        {
-          name: '陆涛',
-          desc: '1111',
-          date: '2020年7月21日',
-        },
-      ],
-      submittData: [
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-      ],
+      tableData: [],
     };
   },
   computed: {
@@ -120,14 +103,43 @@ export default {
     }),
   },
   mounted() {
-    this.calendarQurey();
+    this.fetchData();
     this.initMood();
     this.getokrQuery();
   },
   methods: {
-    calendarQurey() {
-      this.server.calendarQurey().then((res) => {
+    changeLeek() {
+      this.orgWeekly();
+    },
+    fetchData() {
+      const date = new Date();
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      const time = `${y}-${m}`;
+      this.dateTime = time;
+      this.getDate(this.dateTime);
+    },
+    getDate(date) {
+      this.calendarQurey(`${date}-01`);
+    },
+    calendarQurey(date) {
+      this.server.calendarQurey(
+        {
+          date,
+        },
+      ).then((res) => {
         this.dateOption = res.data;
+        this.calendarId = res.data[0].calendarId;
+        this.changeLeek();
+      });
+    },
+    orgWeekly() {
+      this.server.orgWeekly({
+        calendarId: this.calendarId,
+        date: this.dateTime,
+        userId: this.userInfo.userId,
+      }).then((res) => {
+        this.tableData = res.data;
       });
     },
     changIdAction(id) {
@@ -137,13 +149,13 @@ export default {
     getokrQuery() {
       this.server.okrQuery().then((res) => {
         this.options = res.data.content;
-        this.value = this.options[0].periodId;
+        this.periodId = this.options[0].periodId;
         this.getriskStatistics();
       });
     },
     getriskStatistics() {
       this.server.riskStatistics({
-        periodId: this.value,
+        periodId: this.periodId,
         orgId: this.userInfo.orgId,
         userId: this.userId,
         personOrOrg: 'org',
@@ -232,6 +244,15 @@ export default {
       };
 
       myChart.setOption(option);
+    },
+    orgEmotion() {
+      this.server.orgEmotion({
+        calendarId: this.calendarId,
+        date: this.dateTime,
+        userId: this.userInfo.userId,
+      }).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

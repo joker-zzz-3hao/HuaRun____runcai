@@ -38,4 +38,16 @@ export default class Server extends ServerBase {
   calendarQurey(param) {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
   }
+
+  orgWeekly(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/orgWeekly', param);
+  }
+
+  orgEmotion(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/orgEmotion', param);
+  }
+
+  userWeekly(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/userWeekly', param);
+  }
 }
