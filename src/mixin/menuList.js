@@ -24,10 +24,11 @@ export default {
     this.init();
   },
   methods: {
-    ...mapMutations('common', ['setCrMenu', 'setSystemMenu', 'setTalentMenu']),
+    ...mapMutations('common', ['setCrMenu', 'setSystemMenu', 'setTalentMenu', 'setUserInfo']),
     init() {
       const self = this;
       console.log(self.userInfo);
+      this.setUserInfo(self.userInfo);
       self.crList = [];
       self.systemList = [];
       self.talentList = [];
