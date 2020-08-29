@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tl-period @getPeriod="getPeriod"></tl-period>
+    <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="create">
       <em>陆涛</em>
     </div>

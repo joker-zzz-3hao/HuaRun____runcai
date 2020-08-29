@@ -28,7 +28,7 @@ export default [
             name: 'teamleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
+              isSubMenu: false,
               parentRoute: 'teamleader',
               title: 'teamleader',
               power: '',
@@ -40,7 +40,7 @@ export default [
             name: 'teamleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
+              isSubMenu: false,
               parentRoute: 'teamleader',
               title: 'teamleader',
               power: '',
@@ -52,7 +52,7 @@ export default [
             name: 'departleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
+              isSubMenu: false,
               parentRoute: 'departleader',
               title: 'departleader',
               power: '',
@@ -64,7 +64,7 @@ export default [
             name: 'grassStaff',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
+              isSubMenu: false,
               parentRoute: 'grassStaff',
               title: 'grassStaff',
               power: '',

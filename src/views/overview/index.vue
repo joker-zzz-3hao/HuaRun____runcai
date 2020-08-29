@@ -27,7 +27,7 @@ export default {
       server,
     };
   },
-  created() {
+  mounted() {
     // this.getidentity();
   },
   computed: {
