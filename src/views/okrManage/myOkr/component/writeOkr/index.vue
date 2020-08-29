@@ -1,8 +1,35 @@
 <template>
-  <div class="home">
-    <!-- 创建OKR -->
-    <div v-if="canWrite">
-      <dl style="display:flex">
+  <div class="create-okr">
+    <div v-if="canWrite" class="allocation-info">
+      <dl>
+        <dt>目标周期</dt>
+        <dd>
+          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+        </dd>
+      </dl>
+      <dl>
+        <dt>OKR类型</dt>
+        <dd>
+          <el-select
+            v-model="searchForm.okrType"
+            placeholder="请选择类型"
+            :popper-append-to-body="false"
+          >
+            <el-option
+              v-for="(item, index) in CONST.OKR_TYPE_LIST"
+              :key="item.id+index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="user-info">
+        <dt>负责人</dt>
+        <dd class="user-name">{{cutName(userName)}}</dd>
+        <dd>{{userName}}徐佳佳</dd>
+      </dl>
+      <!-- <dl>
         <dd>
           <span>目标周期</span>
           <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
@@ -27,7 +54,7 @@
           <div class="user-name">{{cutName(userName)}}</div>
           <span>{{userName}}</span>
         </dd>
-      </dl>
+      </dl>-->
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
     <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr>

@@ -26,16 +26,22 @@
     <router-view class="cont-area"></router-view>
     <el-drawer
       :wrapperClosable="false"
-      :modal-append-to-body="false"
-      title="创建okr"
+      :modal-append-to-body="true"
+      :append-to-body="true"
       :visible.sync="createokrDrawer"
       :before-close="handleClose"
-      :modal="false"
+      custom-class="diy-drawer create-okr"
       class="tl-drawer"
     >
-      <div>
-        <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">创建OKR</div>
+        <div class="icon-save">
+          <i></i>
+          <em>已自动保存</em>
+        </div>
       </div>
+      <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <div class="operating-panel">sdfsdf</div>
     </el-drawer>
   </div>
 </template>
@@ -62,7 +68,7 @@ export default {
           toName: 'myOkr',
         },
         {
-          menuTitle: '华润云大部门的部门OKR',
+          menuTitle: '部门OKR',
           toName: 'departmentOkr',
         },
       ],

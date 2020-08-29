@@ -1,5 +1,10 @@
 <template>
-  <el-select v-model="periodId" placeholder="请选择目标周期">
+  <el-select
+    v-model="periodId"
+    placeholder="请选择目标周期"
+    popper-class="tl-select-dropdown"
+    class="tl-select"
+  >
     <el-option-group v-for="group in cycleList" :key="group.label" :label="group.label">
       <el-option
         v-for="item in group.options"

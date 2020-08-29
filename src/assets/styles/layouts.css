@@ -22,7 +22,7 @@
   left: 0;
   right: 0;
   top: 0;
-  z-index: 25;
+  z-index: 26;
 }
 
 /* 主区域 */
@@ -36,7 +36,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 25;
+  z-index: 24;
 }
 
 .view-cont {
@@ -51,7 +51,7 @@
 }
 
 .el-popup-parent--hidden .view-cont {
-  z-index: 26 !important;
+  z-index: 23 !important;
 }
 
 /* 内容容器 */

@@ -134,6 +134,10 @@
   padding: 50px 0 0 0;
 }
 
+.is-shrink + .my-okr {
+  z-index: 21;
+}
+
 .my-okr .operating-area {
   position: fixed;
   top: 70px;
@@ -141,17 +145,7 @@
   right: 0;
   background: #fff;
   height: 50px;
-  z-index: 25;
 }
-
-/* .is-sub-menu + .my-okr .operating-area {
-  width: calc(100% - 264px);
-  transition: all .4s ease-out;
-}
-
-.is-shrink + .my-okr .operating-area {
-  width: calc(100% - 102px);
-} */
 
 .my-okr .operating-area-inside {
   padding: 0 30px 0 206px;
@@ -181,55 +175,28 @@
   background: #fff;
 }
 
-/* .my-okr .operating-area::before,
-.my-okr .operating-area::after {
-  position: absolute;
-  top: -17px;
-  content: '';
-  height: 50px;
-  width: 100px;
-  background: #fff;
+/* 创建okr */
+.create-okr .el-drawer__body {
+  margin: 10px 0 0 0;
+  width: 900px;
 }
 
-.my-okr .operating-area::before {
-  left: -100px;
-  z-index: -2;
+.create-okr .allocation-info {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f6f8;
 }
 
-.my-okr .operating-area::after {
-  right: -100px;
+.create-okr .allocation-info dl {
+  display: flex;
+  align-items: center;
 }
 
-.my-okr .operating-area .operating-area-inside {
-  margin-top: -7px;
-} */
-
-/* myOkr */
-/* .my-okr {
-  margin: 66px 16px 16px 16px;
-  min-height: calc(100vh - 152px);
-} */
-
-/* .my-okr .operating-area {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  right: 0;
-  z-index: 22;
-  padding: 0 0 0 46px;
-  background: #fff;
-  height: 50px;
-  transform: translateX(0);
-  transition: transform .3s ease-out;
-} */
-
-/* .is-sub-menu + .my-okr .operating-area {
-  transform: translateX(248px);
-} */
-
-/* .is-shrink + .my-okr .operating-area {
-  transform: translateX(90px);
-} */
+.create-okr .allocation-info dt {
+  margin: 0 10px 0 0;
+}
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */

@@ -101,7 +101,7 @@
       :visible.sync="innerDrawer"
       :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
+      :append-to-body="true"
       class="tl-drawer"
     >
       <undertake-table

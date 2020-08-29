@@ -28,8 +28,8 @@ export default [
             name: 'teamleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
-              parentRoute: 'teamleader',
+              noSubMenu: true,
+              parentRoute: 'overview',
               title: 'teamleader',
               power: '',
             },
@@ -40,8 +40,8 @@ export default [
             name: 'teamleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
-              parentRoute: 'teamleader',
+              noSubMenu: true,
+              parentRoute: 'overview',
               title: 'teamleader',
               power: '',
             },
@@ -52,8 +52,8 @@ export default [
             name: 'departleader',
             meta: {
               hasMainMenu: true,
-              isSubMenu: true,
-              parentRoute: 'departleader',
+              noSubMenu: true,
+              parentRoute: 'overview',
               title: 'departleader',
               power: '',
             },
