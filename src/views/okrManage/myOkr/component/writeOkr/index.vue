@@ -26,7 +26,10 @@
       </dl>
       <dl class="user-info">
         <dt>负责人</dt>
-        <dd class="user-name">{{cutName(userName)}}</dd>
+        <dd v-if="true">
+          <img src="@/assets/images/user/user.jpg" alt />
+        </dd>
+        <dd v-else class="user-name">{{cutName(userName)}}</dd>
         <dd>{{userName}}徐佳佳</dd>
       </dl>
       <!-- <dl>

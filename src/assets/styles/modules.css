@@ -736,14 +736,61 @@
   border-color: #685df1;
 }
 
-.tl-select-dropdown .el-select-dropdown__item.selected {
-  color: #685df1;
-}
-
 /* select */
 .tl-select .el-input__inner {
   border: unset;
   background: unset;
+  color: #4d5155;
+}
+
+.tl-select .el-icon-arrow-up::before {
+  content: "\e78f";
+}
+
+.tl-select-dropdown {
+  border: unset;
+  box-shadow: 0 0 8px 0 rgba(0,0,0,0.10);
+}
+
+.tl-select-dropdown.el-popper {
+  margin: 0;
+}
+
+.tl-select-dropdown .el-select-dropdown__item.selected {
+  color: #685df1;
+}
+
+.tl-select-dropdown .popper__arrow {
+  border: unset;
+}
+
+.tl-select-dropdown .popper__arrow::after {
+  content: unset;
+}
+
+.tl-select-dropdown .el-select-group__title {
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+.tl-select-dropdown .el-select-dropdown__item,
+.tl-select-dropdown .el-select-group__title {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: unset;
+}
+
+.tl-select-dropdown .el-select-dropdown__item.hover,
+.tl-select-dropdown .el-select-dropdown__item:hover {
+  background: #f4f6f8;
+}
+
+.tl-select-dropdown .el-select-group__wrap:not(:last-of-type)::after {
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  background: #f4f6f8;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
