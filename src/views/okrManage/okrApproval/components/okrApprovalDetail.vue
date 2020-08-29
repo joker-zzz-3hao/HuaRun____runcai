@@ -148,8 +148,7 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        // attachId: this.data.approvalId,
-        attachId: '1204662838228131841',
+        attachId: this.data.approvalId,
       }).then((res) => {
         if (res.code == '200') {
           this.cycleList = res.data.content;

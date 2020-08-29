@@ -14,7 +14,7 @@
       </div>
     </div>
     <div style="display: flex;justify-content: space-between;">
-      <div>负责人：{{node.node.userId}}</div>
+      <div>负责人：{{node.node.userName}}</div>
       <div>{{node.node.orgName}} ></div>
     </div>
   </div>
