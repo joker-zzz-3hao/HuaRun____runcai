@@ -2,6 +2,7 @@
   <el-select
     v-model="periodId"
     placeholder="请选择目标周期"
+    :popper-append-to-body="false"
     popper-class="tl-select-dropdown"
     class="tl-select"
   >
