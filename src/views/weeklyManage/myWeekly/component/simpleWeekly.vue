@@ -314,6 +314,7 @@ export default {
           label: '失控',
         },
       ],
+      timer: null,
     };
   },
 
@@ -346,6 +347,25 @@ export default {
       this.getProjectList();
       // 本周任务初始化数据
       this.addWork();
+      // 五分钟自动提交页面，不要校验
+      this.timer = setInterval(() => {
+        const params = {
+          calendarId: this.calendarId,
+          weeklyEmotion: this.weeklyEmotion,
+          weeklyId: this.weeklyId,
+          weeklyType: this.weeklyType,
+          weeklyOkrSaveList: this.weeklyOkrSaveList,
+          weeklyPlanSaveList: this.formData.weeklyPlanSaveList,
+          weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
+          weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
+        };
+        console.log(params);
+        // this.server.commitWeekly(params).then((res) => {
+        //   if (res.code == 200) {
+        //     this.$message.success('提交成功');
+        //   }
+        // });
+      }, 5 * 60 * 1000);
     },
     addWork() {
       this.formData.weeklyWorkVoSaveList.push({
@@ -573,6 +593,9 @@ export default {
       },
       deep: true,
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
 };
 </script>
