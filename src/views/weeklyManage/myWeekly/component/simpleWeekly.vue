@@ -48,7 +48,7 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
-                  maxlength="50"
+                  maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
                 ></el-input>
@@ -314,11 +314,6 @@ export default {
           label: '失控',
         },
       ],
-      // rules: {
-      //   workContent: [{ required: true, validator: this.validateWorkContent, trigger: 'blur' }],
-      //   projectId: [{ required: true, validator: this.validateProjectId, trigger: 'blur' }],
-      //   selectedOkr: [{ required: true, validator: this.validateSelectedOkr, trigger: 'change' }],
-      // },
     };
   },
 
@@ -454,7 +449,6 @@ export default {
     },
     projectChange(week) {
       week.projectId = week.validateProjectId;
-      debugger;
     },
 
     deleteItem(item) {
