@@ -38,7 +38,7 @@
       :server="server"
       :canWrite="true"
       :isnew="false"
-      :periodId="periodId"
+      :periodId="searchForm.periodId"
     ></tl-okrform>
     <!-- 变更原因 -->
     <div>
@@ -84,9 +84,12 @@
 import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
-import okrForm from './okrForm';
-import undertakeTable from './undertakeTable';
+import okrForm from './writeOkr/component/okrForm';
+import undertakeTable from './writeOkr/component/undertakeTable';
 import CONST from '../const';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'changeOKR',
@@ -94,6 +97,7 @@ export default {
   data() {
     return {
       CONST,
+      server,
       tableList: [], // okr列表
       okrmain: {}, // 公共信息
       departokrList: [], // 可关联承接的okr
@@ -122,29 +126,22 @@ export default {
     'tl-okrform': okrForm,
   },
   props: {
-    server: {
+    writeInfo: {
       type: Object,
-      required: true,
-    },
-    canWrite: {
-      type: Boolean,
-      default: true,
-    },
-    okrId: {
-      type: String,
-      default: '',
-    },
-    periodId: {
-      type: String,
-      default: '',
+      default() {
+        return {};
+      },
     },
   },
+  mounted() {
+    console.log(this.writeInfo);
+    this.okrId = this.writeInfo.okrId || '';
+    this.searchForm.periodId = this.writeInfo.periodId;
+  },
   created() {
-    this.searchOkr();
     this.getCultureList();
     this.$nextTick(() => {
       this.getokrDetail();
-      this.searchForm.periodId = this.periodId;
     });
   },
   methods: {
@@ -152,7 +149,7 @@ export default {
     // 按周期查可关联承接的okr
     searchOkr() {
       if (this.periodId) {
-        this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
+        this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
           if (res.code == 200) {
             this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
@@ -216,7 +213,7 @@ export default {
     // 可变更的关联承接项
     getOkrModifyUndertakeOkrList(okritem) {
       const formData = {
-        periodId: this.periodId,
+        periodId: this.searchForm.periodId,
         detailId: okritem.detailId,
         okrDetailId: okritem.okrDetailId,
         okrParentId: okritem.okrParentId,
@@ -356,7 +353,7 @@ export default {
       // 拼入参
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
-        periodId: this.periodId,
+        periodId: this.searchForm.periodId,
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
@@ -404,13 +401,25 @@ export default {
     tableList: {
       handler() {
         // 添加承接列表
-        this.tableList.forEach((item) => {
-          item.departokrList = JSON.parse(this.departokrObject) || [];
-          item.philosophyList = JSON.parse(this.philosophyObject) || [];
-        });
+        if (this.tableList.length > 0) {
+          this.tableList.forEach((item) => {
+            item.departokrList = JSON.parse(this.departokrObject) || [];
+            item.philosophyList = JSON.parse(this.philosophyObject) || [];
+          });
+        }
       },
+      deep: true,
     },
-    deep: true,
+    writeInfo: {
+      handler() {
+        console.log(this.writeInfo);
+        this.okrId = this.writeInfo.okrId || '';
+        this.searchForm.periodId = this.writeInfo.periodId;
+        this.searchOkr();
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>
