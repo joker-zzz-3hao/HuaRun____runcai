@@ -15,7 +15,7 @@ export default class Server extends ServerBase {
   }
 
   okrStatistics(param) {
-    return this._ajaxPost('gateway/talent-query/home/person/okrStatistics', param);
+    return this._ajaxPost(`gateway/talent-query/home/person/okrStatistics?${qs.stringify(param)}`);
   }
 
   okrRisk(param) {
@@ -49,5 +49,13 @@ export default class Server extends ServerBase {
 
   userWeekly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/statistic/userWeekly', param);
+  }
+
+  teamEmotion(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/teamEmotion', param);
+  }
+
+  teamWeekly(param) {
+    return this._ajaxPost('gateway/weekly-service//weekly/statistic/teamWeekly', param);
   }
 }

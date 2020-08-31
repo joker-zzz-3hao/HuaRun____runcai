@@ -14,29 +14,50 @@ export default {
 
     };
   },
+  props: {
+    mainData: {
+      type: [Object, Array],
+    },
+  },
   mounted() {
-    this.init();
+    this.getmainData();
   },
   methods: {
+    getmainData() {
+      this.mainDataX = this.mainData.map((item) => item.months);
+      this.mainDataY = this.mainData.map((item) => item.okrProgress);
+      this.init();
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrUpdate'));
       const option = {
         xAxis: {
           type: 'category',
-          data: ['2020-07', '2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2020-13'],
+          data: that.mainDataX,
         },
         yAxis: {
           type: 'value',
+          min: 0,
+          max: 100,
         },
         series: [{
-          data: [10, 39, 40, 50, 100, 20, 20],
-          name: '邮件营销',
+          data: that.mainDataY,
+          name: 'okr更新次数',
           type: 'line',
           stack: '总量',
         }],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    mainData: {
+      handler() {
+        this.getmainData();
+      },
+      deep: true,
     },
   },
 };

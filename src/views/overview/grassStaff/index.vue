@@ -2,19 +2,19 @@
   <div class="home">
     <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="create">
-      <em>陆涛</em>
+      <em>{{decodeURI($route.query.name)}}</em>
     </div>
     <div class="create">
       <div>OKR当前进度数据</div>
-      <tl-okr-schedule></tl-okr-schedule>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="create">
       <div>进度更新次数趋势</div>
-      <tl-okr-update></tl-okr-update>
+      <tl-okr-update :mainData="mainData"></tl-okr-update>
     </div>
     <div class="create">
       <div>OKR风险状态统计</div>
-      <tl-okr-risk :mainData="mainData"></tl-okr-risk>
+      <tl-okr-risk :okrData="okrData"></tl-okr-risk>
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@ export default {
       userWeek: [],
       calendarId: '',
       dateTime: '',
+      okrData: [],
     };
   },
   computed: {
@@ -61,22 +62,19 @@ export default {
     getokrStatistics() {
       this.server.okrStatistics({
         periodId: this.period,
-        orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
-        personOrOrg: 'person',
+        user: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
         userId: '',
       }).then((res) => {
-        console.log(res);
+        this.mainData = res.data;
       });
     },
     riskStatistics() {
       this.server.riskStatistics({
         periodId: this.period,
         orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
-        personOrOrg: 'person',
-        userId: '',
+        personOrOrg: 'org',
       }).then((res) => {
-        console.log(res);
-        this.mainData = res.data;
+        this.okrData = res.data;
       });
     },
   },

@@ -69,7 +69,6 @@ export default {
         this.cheMainData();
       },
       deep: true,
-      immediate: true,
     },
   },
 };
