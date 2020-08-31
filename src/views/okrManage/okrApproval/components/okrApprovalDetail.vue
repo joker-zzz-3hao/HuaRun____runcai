@@ -45,11 +45,16 @@
               <el-radio label="2">退回</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="审核意见" prop="refuseInfo">
+          <el-form-item
+            label="审核意见"
+            prop="refuseInfo"
+            :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审核意见'}]"
+          >
             <el-input
               type="textarea"
               placeholder="请输入退回原因，不超过100个字符"
               v-model.trim="ruleForm.refuseInfo"
+              :maxlength="100"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -130,20 +135,24 @@ export default {
     ...mapMutations('common', ['setOkrApprovalStep']),
     // 审批
     submitForm() {
-      this.loading = true;
-      this.server.approval({
-        approvalId: this.data.approvalId,
-        approvalStatus: this.ruleForm.approvalStatus,
-        refuseInfo: this.ruleForm.refuseInfo,
-        approvalType: this.data.approvalType,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$message.success(res.msg);
-          this.ruleForm.approvalStatus = '1';
-          this.ruleForm.refuseInfo = '';
-          this.setOkrApprovalStep('1');
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.loading = true;
+          this.server.approval({
+            approvalId: this.data.approvalId,
+            approvalStatus: this.ruleForm.approvalStatus,
+            refuseInfo: this.ruleForm.refuseInfo,
+            approvalType: this.data.approvalType,
+          }).then((res) => {
+            if (res.code == '200') {
+              this.$message.success(res.msg);
+              this.ruleForm.approvalStatus = '1';
+              this.ruleForm.refuseInfo = '';
+              this.setOkrApprovalStep('1');
+            }
+            this.loading = false;
+          });
         }
-        this.loading = false;
       });
     },
     okrOperationHistory() {
@@ -175,7 +184,6 @@ export default {
             this.okrData = {};
             this.tableList = [];
           }
-          console.log(111);
           console.log(this.tableList);
           this.okrOperationHistory();
         }

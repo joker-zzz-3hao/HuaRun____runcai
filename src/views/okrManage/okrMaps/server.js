@@ -44,4 +44,9 @@ export default class Server extends ServerBase {
   search(param) {
     return this._ajaxPost('gateway/talent-query/okr/outside/search', param);
   }
+
+  // 点赞
+  okrSupport(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrSupport/support', param);
+  }
 }

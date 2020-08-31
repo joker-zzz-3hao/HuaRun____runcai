@@ -65,7 +65,7 @@
         </svgtree>
       </div>
       <!-- OKR表格 -->
-      <tl-okr-table v-if="!showOkrMap" :treeData="treeData"></tl-okr-table>
+      <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
     </div>
     <!-- 搜索框显示 -->
     <div v-if="!showDepartmentSelect">
@@ -205,6 +205,7 @@ export default {
     },
     getOkrTree() {
       if (this.okrCycle.periodId && this.orgFullId) {
+        this.treeTableData = [];
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
           // periodId: '1204827318294274048',
@@ -212,6 +213,8 @@ export default {
           // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
+            // OKR表格数据
+            this.treeTableData.push(res.data);
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
               res.data.okrTree.forEach((item) => {
@@ -263,7 +266,7 @@ export default {
     getOrgName(data, index) {
       data.forEach((item) => {
         if (this.orgFullIdList[index] == item.orgId) {
-          if (item.children.length > 0 && this.orgFullIdList[index + 1]) {
+          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
             this.getOrgName(item.children, index + 1);
           } else if ((index + 1) == this.orgFullIdList.length) {
             this.test = item.orgName;

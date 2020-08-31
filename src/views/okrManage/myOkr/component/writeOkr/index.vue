@@ -14,6 +14,8 @@
             v-model="searchForm.okrType"
             placeholder="请选择类型"
             :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
           >
             <el-option
               v-for="(item, index) in CONST.OKR_TYPE_LIST"

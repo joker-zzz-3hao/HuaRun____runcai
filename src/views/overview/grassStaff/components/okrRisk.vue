@@ -3,8 +3,22 @@
     <div id="okrRiskTotal"></div>
     <div class="model">
       <div>周报</div>
-      <el-select placeholder="请选择">
-        <el-option>2020年07月 第三周</el-option>
+      <el-date-picker
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        v-model="dateTime"
+        @change="getDate"
+        type="month"
+        placeholder="选择日期"
+      ></el-date-picker>
+
+      <el-select v-model="calendarId" @change="changeLeek" placeholder="请选择">
+        <el-option
+          :key="index"
+          :value="item.calendarId"
+          v-for="(item,index) in dateOption"
+          :label="item.weekBegin+' 至 '+item.weekEnd"
+        ></el-option>
       </el-select>
       <el-table :data="tableData" :show-header="false" style="width: 100%">
         <el-table-column prop="name" label="名称"></el-table-column>
@@ -17,11 +31,29 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
+import Server from '../../server';
 
+const server = new Server();
 export default {
   name: 'okrRisk',
+  props: {
+    mainData: {
+      type: [Object],
+    },
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   data() {
     return {
+      calendarId: '',
+      server,
+      userWeek: '',
+      dateTime: '',
+      dateOption: [],
       tableData: [
         {
           name: '第三周  07月20日～07月26日',
@@ -43,13 +75,49 @@ export default {
   },
   mounted() {
     this.init();
+    this.fetchData();
   },
   methods: {
+    changeLeek() {
+      this.userWeekly();
+    },
+    fetchData() {
+      const date = new Date();
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      const time = `${y}-${m}`;
+      this.dateTime = time;
+      this.getDate(this.dateTime);
+    },
+    getDate(date) {
+      this.calendarQurey(`${date}-01`);
+    },
+    calendarQurey(date) {
+      this.server.calendarQurey(
+        {
+          date,
+        },
+      ).then((res) => {
+        this.dateOption = res.data;
+        this.calendarId = res.data[0].calendarId;
+        this.changeLeek();
+      });
+    },
+    userWeekly() {
+      this.server.userWeekly({
+        calendarId: this.calendarId,
+        date: this.dateTime,
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
+      }).then((res) => {
+        this.userWeek = res.data;
+      });
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         xAxis: {
-          data: ['2020-7-10', '2020-7-11', '2020-7-12', '2020-7-13', '2020-7-14', '2020-7-15', '2020-7-16'],
+          data: that.mainData.months,
         },
         yAxis: {
           min: 0,
@@ -71,7 +139,7 @@ export default {
         series: [{
           name: '风险',
           type: 'line',
-          data: [1, 3, 2, 3, 2, 1],
+          data: [['2020-07-11', 1], 3, 2, 3, 2, 1],
         },
         ],
       };

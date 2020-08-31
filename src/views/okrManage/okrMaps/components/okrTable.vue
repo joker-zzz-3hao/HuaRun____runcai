@@ -6,15 +6,15 @@
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
           border
           row-key="orgId"
-          :data="tableData"
+          :data="treeData"
           max-height="600"
           :empty-text="emptyText"
         >
           <el-table-column prop="orgName" label="名称" width="180"></el-table-column>
           <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
           <el-table-column prop="okrProgress" label="进度" width="180"></el-table-column>
-          <el-table-column prop="name" label="目标（O）" width="180"></el-table-column>
-          <el-table-column prop="name" label="关键结果（KR）" width="180"></el-table-column>
+          <el-table-column prop="okrDetailObjectKr" label="目标（O）" width="180"></el-table-column>
+          <el-table-column prop="krCount" label="关键结果（KR）" width="180"></el-table-column>
           <el-table-column prop="name" label="状态" width="180"></el-table-column>
         </el-table>
       </div>

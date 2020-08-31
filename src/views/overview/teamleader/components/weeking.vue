@@ -6,6 +6,10 @@
         <el-option :key="1" :value="1">2020年07月 第三周</el-option>
       </el-select>
       <div id="weeking"></div>
+      <div>
+        <div>进行中工作项</div>
+        <div>已完成工作项</div>
+      </div>
     </div>
     <div class="model">
       <div>周报动态</div>
