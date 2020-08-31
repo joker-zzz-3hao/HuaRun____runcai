@@ -197,7 +197,7 @@ export default {
                 tableList: okrInfo.okrInfoList,
                 okrMain: {
                   userName: item.updateBy || item.createBy,
-                  okrProgress: 0,
+                  okrProgress: item.okrProgress,
                   updateDate: item.updateTime || item.createTime,
                 },
                 id: item.id || item.approvalId,

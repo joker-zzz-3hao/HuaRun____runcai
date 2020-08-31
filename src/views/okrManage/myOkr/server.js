@@ -40,4 +40,39 @@ export default class Server extends ServerBase {
   selectOkrHistoryVersion(param) {
     return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
   }
+
+  // 新建okr
+  addokr(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/add', param);
+  }
+
+  // 承接项
+  getUndertakeOkr(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/main/getUndertakeOkr?periodId=${param.periodId}`);
+  }
+
+  // 价值观
+  queryCultureList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
+  }
+
+  // 变更
+  modifyOkrInfo(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/modifyOkrInfo', param);
+  }
+
+  // 报错草稿
+  saveOkrDraft(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrDraft/saveOkrDraft', param);
+  }
+
+  // 删除草稿
+  deleteOkrDraft(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/okrDraft/deleteOkrDraft?okrDraftId=${param.okrDraftId}`, param);
+  }
+
+  // 获取可更新承接项
+  getOkrModifyUndertakeOkrList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/getOkrModifyUndertakeOkrList', param);
+  }
 }
