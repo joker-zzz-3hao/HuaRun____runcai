@@ -4,7 +4,23 @@
       <dl>
         <dt>目标周期</dt>
         <dd>
-          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+          <el-select
+            v-model="searchForm.periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option-group v-for="group in cycleList" :key="group.label" :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.periodId"
+                :label="item.periodName"
+                :value="item.periodId"
+              ></el-option>
+            </el-option-group>
+          </el-select>
+          <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
         </dd>
       </dl>
       <dl>
@@ -42,7 +58,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import periodSelect from '@/components/periodSelect';
 import okrForm from './component/okrForm';
 import Server from './server';
 import CONST from './const';
@@ -53,7 +68,6 @@ export default {
   name: 'writeOkr',
   components: {
     'okr-form': okrForm,
-    'tl-periodselect': periodSelect,
   },
   props: {
     writeInfo: {
@@ -84,6 +98,15 @@ export default {
       },
       canWrite: true, // true写okr false changeokr
       periodList: [],
+      cycleList: [{
+        label: '当前的OKR周期',
+        options: [],
+      }, {
+        label: '历史OKR周期',
+        options: [],
+      }],
+      periodId: '',
+      okrCycle: {},
     };
   },
   computed: {
@@ -129,6 +152,27 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
+          // 分组
+          this.periodList.forEach((item) => {
+            // checkStatus为0时是历史周期，1为当前周期
+            if (item.checkStatus == '0') {
+              this.cycleList.forEach((citem) => {
+                if (citem.label == '历史OKR周期') {
+                  citem.options.push(item);
+                }
+              });
+            } else if (item.checkStatus == '1') {
+              this.cycleList.forEach((citem) => {
+                if (citem.label == '当前的OKR周期') {
+                  citem.options.push(item);
+                }
+                if (!this.searchForm.periodId) {
+                  this.searchForm.periodId = item.periodId;
+                  this.okrCycle = item;
+                }
+              });
+            }
+          });
         }
       });
     },
@@ -143,6 +187,17 @@ export default {
     },
   },
   watch: {
+    'searchForm.periodId': {
+      handler(newVal) {
+        if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId === newVal,
+          )[0] || this.okrCycle;
+          // this.$emit('handleData', this.okrCycle);
+          this.handleData(this.okrCycle);
+        }
+      },
+    },
   },
 };
 </script>
