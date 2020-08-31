@@ -97,6 +97,11 @@
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>
+        <tl-changeokr
+          v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
+          @handleClose="handleClose"
+          :writeInfo="writeInfo"
+        ></tl-changeokr>
         <tl-okr-detail
           v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
           ref="tl-okr-detail"
@@ -123,6 +128,7 @@ import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
+import changeOKR from './component/changeOKR';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 import CONST from './const';
@@ -137,6 +143,7 @@ export default {
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
     'tl-writeokr': writeOkr,
+    'tl-changeokr': changeOKR,
   },
   data() {
     return {
@@ -250,7 +257,7 @@ export default {
         okrId: this.okrId,
         periodId: this.okrCycle.periodId,
       };
-      this.currentView = 'tl-writeokr';
+      this.currentView = 'tl-changeokr';
       this.setMyokrDrawer(true);
     },
     goDraft(item) {

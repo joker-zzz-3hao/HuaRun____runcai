@@ -36,7 +36,7 @@
       </dl>
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-    <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr>
+    <!-- <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr> -->
   </div>
 </template>
 
@@ -44,7 +44,6 @@
 import { mapState } from 'vuex';
 import periodSelect from '@/components/periodSelect';
 import okrForm from './component/okrForm';
-import changeOKR from './component/changeOKR';
 import Server from './server';
 import CONST from './const';
 
@@ -54,7 +53,6 @@ export default {
   name: 'writeOkr',
   components: {
     'okr-form': okrForm,
-    'change-okr': changeOKR,
     'tl-periodselect': periodSelect,
   },
   props: {
@@ -111,11 +109,12 @@ export default {
       this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
       this.searchForm.periodId = JSON.parse(this.searchForm.draftParams).periodId;
       console.log('this.searchForm.periodId', this.searchForm.periodId);
-    } else if (this.writeInfo.canWrite == 'cannot') {
-      this.canWrite = false;
-      this.okrId = this.writeInfo.okrId || '';
-      this.searchForm.periodId = this.writeInfo.periodId || '';
     }
+    // else if (this.writeInfo.canWrite == 'cannot') {
+    //   this.canWrite = false;
+    //   this.okrId = this.writeInfo.okrId || '';
+    //   this.searchForm.periodId = this.writeInfo.periodId || '';
+    // }
   },
   created() {
     this.init();
