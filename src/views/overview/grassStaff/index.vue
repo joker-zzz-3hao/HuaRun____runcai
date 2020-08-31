@@ -2,7 +2,8 @@
   <div class="home">
     <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="create">
-      <em>{{decodeURI($route.query.name)}}</em>
+      <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
+      <em v-else>{{userInfo.userName}}</em>
     </div>
     <div class="create">
       <div>OKR当前进度数据</div>
