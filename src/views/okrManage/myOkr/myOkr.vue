@@ -251,7 +251,7 @@ export default {
     },
     goChangeOkr() {
       // TODO: 弹框标题
-      this.drawerTitle = '华润云第三季度OKR';
+      this.drawerTitle = `${this.okrList[0].okrMain.orgName + this.okrList[0].okrMain.periodName}OKR`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,

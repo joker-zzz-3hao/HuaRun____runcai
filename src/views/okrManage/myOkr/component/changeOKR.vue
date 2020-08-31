@@ -13,7 +13,7 @@
         </li>
         <li>
           <span>更新时间</span>
-          <span>{{okrmain.updateTime}}</span>
+          <span>{{okrmain.updateTime||okrmain.createTime}}</span>
         </li>
         <li>
           <span>进度</span>
@@ -134,21 +134,20 @@ export default {
     },
   },
   mounted() {
-    console.log(this.writeInfo);
     this.okrId = this.writeInfo.okrId || '';
     this.searchForm.periodId = this.writeInfo.periodId;
   },
   created() {
-    this.getCultureList();
-    this.$nextTick(() => {
-      this.getokrDetail();
-    });
+    // this.getCultureList();
+    // this.$nextTick(() => {
+    //   this.getokrDetail();
+    // });
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 按周期查可关联承接的okr
     searchOkr() {
-      if (this.periodId) {
+      if (this.searchForm.periodId) {
         this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
           if (res.code == 200) {
             this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
@@ -194,20 +193,34 @@ export default {
     },
     // 查okr详情
     getokrDetail() {
-      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        if (res.code == 200) {
-          this.tableList = res.data.okrDetails;
-          this.okrmain = res.data.okrMain;
-          this.okrMainId = res.data.okrMain.okrId;
-          // this.voteUser = res.data.voteUser;
-          this.tableList.forEach((item) => {
-          // item.departokrList = JSON.parse(this.departokrObject);
-            if (item.parentUpdate) {
-            // 关联承接变更接口
-              this.getOkrModifyUndertakeOkrList(item);
-            }
-          });
-        }
+      const detialP = new Promise(((resolve) => {
+        this.getCultureList();
+        resolve('p1 data');
+      }));
+
+      const undertakeP = new Promise(((resolve) => {
+        console.log('this.departokrObject');
+        this.searchOkr();
+        resolve('p2 data');
+      }));
+
+      Promise.all([detialP, undertakeP]).then((results) => {
+        console.log(results); // ["p1 data", ""p2 data""]
+
+        this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+          if (res.code == 200) {
+            this.tableList = res.data.okrDetails;
+            this.okrmain = res.data.okrMain;
+            this.okrMainId = res.data.okrMain.okrId;
+            // this.voteUser = res.data.voteUser;
+            this.tableList.forEach((item) => {
+              if (item.parentUpdate) {
+                // 关联承接变更接口
+                this.getOkrModifyUndertakeOkrList(item);
+              }
+            });
+          }
+        });
       });
     },
     // 可变更的关联承接项
@@ -263,7 +276,6 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
 
-      // TODO:价值观的id
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
       this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       console.log('关联', this.selectDepartRow);
@@ -412,10 +424,9 @@ export default {
     },
     writeInfo: {
       handler() {
-        console.log(this.writeInfo);
         this.okrId = this.writeInfo.okrId || '';
         this.searchForm.periodId = this.writeInfo.periodId;
-        this.searchOkr();
+        this.getokrDetail();
       },
       deep: true,
       immediate: true,

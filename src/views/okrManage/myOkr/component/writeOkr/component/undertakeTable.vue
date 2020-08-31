@@ -97,6 +97,7 @@ export default {
         console.log(i, this.philosophyList[i].checkFlag);
       });
       this.selectPhilRow = row;
+      this.$forceUpdate();
     },
   },
   watch: {
