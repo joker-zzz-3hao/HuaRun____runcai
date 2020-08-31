@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="tl-diy-popover">
     <el-popover
       placement="bottom"
       width="200"
       trigger="click"
       :append-to-body="false"
       v-model="visible"
+      :visible-arrow="false"
     >
       <ul>
         <li v-for="citem in CONST.CONFIDENCE" :key="citem.value">
@@ -61,6 +62,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

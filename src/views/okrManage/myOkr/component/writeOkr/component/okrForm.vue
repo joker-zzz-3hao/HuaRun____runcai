@@ -1,100 +1,129 @@
 <template>
-  <div>
-    <!-- 填写表单&详情 -->
-    <div>
-      <el-form :model="formData" ref="dataForm">
-        <dl class="okuang" v-for="(oitem,index) in formData.okrInfoList" :key="index">
-          <dt>目标名称</dt>
-          <dd class="objectdd">
-            <el-form-item
-              :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
-              :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
-            >
-              <el-input placeholder="请输入目标名称" v-model="oitem.okrDetailObjectKr"></el-input>
-            </el-form-item>
-            <el-form-item label="权重">
-              <el-input-number
-                v-model="oitem.okrWeight"
-                controls-position="right"
-                :min="0"
-                :max="100"
-                :step="1"
-                :precision="0"
-              ></el-input-number>
-              <span>%</span>
-            </el-form-item>
-            <el-form-item label="当前进度">
-              <el-input-number
-                v-model="oitem.okrDetailProgress"
-                controls-position="right"
-                :min="0"
-                :max="100"
-                :step="1"
-                :precision="0"
-              ></el-input-number>
-              <span>%</span>
-            </el-form-item>
-            <el-form-item label="承接自">
-              <a @click="openUndertake(index)">
-                <span
-                  v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
-                >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</span>
-                <span v-else>+关联</span>
-              </a>
-            </el-form-item>
-          </dd>
-          <dd class="objectdd">
-            <el-button @click="deleteobject(index)">-（删O）</el-button>
-          </dd>
-          <dd>
-            <dl v-for="(kitem, kindex) in oitem.krList" :key="kindex">
-              <dt>关键结果{{kindex+1}}</dt>
-              <dd class="objectdd">
-                <el-form-item
-                  :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
-                >
-                  <el-input placeholder="请输入关键结果" v-model="kitem.okrDetailObjectKr"></el-input>
-                </el-form-item>
-                <el-form-item label="权重">
-                  <el-input-number
-                    v-model.trim="kitem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                  <span>%</span>
-                </el-form-item>
-                <el-form-item label="当前进度">
-                  <el-input-number
-                    v-model.trim="kitem.okrDetailProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                  <span>%</span>
-                </el-form-item>
-                <el-form-item label="风险状态">
-                  <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
-                </el-form-item>
-                <el-button @click="deletekr(index,kindex)">-（删kr）</el-button>
-              </dd>
-            </dl>
-          </dd>
-          <dd class="objectdd">
-            <el-button @click="addkr(index)">+（加kr）</el-button>
-          </dd>
-        </dl>
-      </el-form>
-      <el-button @click="addobject()">+添加目标</el-button>
-      <el-button v-if="isnew" @click="summit()">创建目标</el-button>
-      <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
-      <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
+  <div class="okr-info">
+    <div class="tl-diy-timeline">
+      <el-scrollbar>
+        <el-form :model="formData" ref="dataForm">
+          <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
+            <dt>
+              <div class="list-info">
+                <div class="list-title">目标名称</div>
+                <div class="list-cont">
+                  <el-form-item
+                    :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
+                    :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+                  >
+                    <el-input
+                      placeholder="请输入目标名称"
+                      v-model="oitem.okrDetailObjectKr"
+                      class="tl-input"
+                    ></el-input>
+                  </el-form-item>
+                  <div class="item-group">
+                    <el-form-item label="权重">
+                      <el-input-number
+                        v-model="oitem.okrWeight"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </el-form-item>
+                    <el-form-item label="当前进度">
+                      <el-input-number
+                        v-model="oitem.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </el-form-item>
+                    <el-form-item label="承接自" @click.native="openUndertake(index)">
+                      <div
+                        class="sdf"
+                        v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
+                      >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</div>
+                      <el-button
+                        plain
+                        icon="el-icon-plus"
+                        @click="handleDelete"
+                        class="tl-btn amt-border-slip"
+                        v-else
+                      >
+                        关联
+                        <span class="lines"></span>
+                      </el-button>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="icon-clear" @click="deleteobject(index)">
+                <i class="el-icon-minus"></i>
+              </div>
+            </dt>
+            <dd v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
+              <div class="list-info">
+                <div class="list-title">关键结果{{kindex+1}}</div>
+                <div class="list-cont">
+                  <el-form-item
+                    :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
+                    :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+                  >
+                    <el-input
+                      placeholder="请输入关键结果"
+                      v-model="kitem.okrDetailObjectKr"
+                      class="tl-input"
+                    ></el-input>
+                  </el-form-item>
+                  <div class="item-group">
+                    <el-form-item label="权重">
+                      <el-input-number
+                        v-model.trim="kitem.okrWeight"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </el-form-item>
+                    <el-form-item label="当前进度">
+                      <el-input-number
+                        v-model.trim="kitem.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </el-form-item>
+                    <el-form-item label="风险状态">
+                      <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="icon-clear" @click="deletekr(index,kindex)">
+                <i class="el-icon-minus"></i>
+              </div>
+            </dd>
+            <el-button @click="addkr(index)" class="sub-list-add">+（加kr）</el-button>
+          </dl>
+        </el-form>
+        <el-button @click="addobject()" class="list-add">+添加目标</el-button>
+      </el-scrollbar>
     </div>
+    <el-button v-if="isnew" @click="summit()">创建目标</el-button>
+    <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
+    <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
     <!-- 关联承接项抽屉 -->
     <el-drawer
       title="关联承接项"

@@ -628,8 +628,7 @@
 
 .tl-drawer + .v-modal,
 .el-popup-parent--hidden .v-modal {
-  background: unset;
-  opacity: unset;
+  opacity: .1;
   z-index: 2000 !important;
 }
 
@@ -791,6 +790,34 @@
   right: 0;
   bottom: 4px;
   background: #f4f6f8;
+}
+
+/* tl-input-number */
+.tl-input-number,
+.tl-input-number .el-input {
+  line-height: unset;
+  width: 92px;
+}
+
+.tl-input-number.is-controls-right .el-input-number__decrease {
+  border-radius: 0 0 2px;
+  border-left: 1px solid #d5dde3;
+  line-height: 16px;
+  width: 24px;
+}
+
+.tl-input-number.is-controls-right .el-input-number__increase {
+  border-radius: 0 0 2px;
+  border-bottom: 1px solid #d5dde3;
+  line-height: 15px;
+  width: 24px;
+}
+
+.tl-input-number .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+  height: 32px;
+  line-height: unset;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -1001,6 +1028,12 @@
 .txt-list li em {
   flex: 1;
   margin: 0 16px 0 0;
+}
+
+/* timeline */
+.tl-diy-timeline .el-form-item__content,
+.tl-diy-timeline .el-form-item__label {
+  line-height: unset;
 }
 
 /* ========================================================公共页面布局组件================================================================== */

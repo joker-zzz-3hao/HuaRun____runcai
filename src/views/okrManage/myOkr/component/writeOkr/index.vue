@@ -36,7 +36,6 @@
       </dl>
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-    <!-- <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr> -->
   </div>
 </template>
 

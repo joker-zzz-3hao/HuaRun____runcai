@@ -176,12 +176,26 @@
 }
 
 /* 创建okr */
+.create-okr {
+  height: 100%;
+}
+
+.create-okr .okr-info {
+  height: 100%;
+  height: calc(100% - 120px);
+}
+
 .create-okr .el-drawer__body {
   margin: 10px 0 0 0;
-  width: 900px;
+  width: 800px;
+}
+
+.create-okr .tl-diy-timeline {
+  height: 100%;
 }
 
 .create-okr .allocation-info {
+  margin: 0 20px 0 0;
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -207,6 +221,53 @@
 .create-okr .allocation-info dd:last-child {
   margin: 0;
 }
+
+.tl-drawer .create-okr .el-drawer__body {
+  overflow: hidden;
+}
+
+.create-okr .el-scrollbar {
+  height: 100%;
+}
+
+.create-okr .timeline-list {
+  padding: 0 10px 0 0;
+}
+
+.create-okr .timeline-list dt {
+  display: flex;
+}
+
+.create-okr .timeline-list .list-info {
+  flex: 1;
+}
+
+.create-okr .timeline-list .icon-clear {
+  margin: 0 10px 0 20px;
+}
+
+.create-okr .timeline-list dd {
+  display: flex;
+}
+
+.create-okr .timeline-list .item-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-okr .timeline-list .item-group .el-form-item {
+  display: flex;
+  align-items: center;
+}
+
+.create-okr .timeline-list .tl-input-number {
+  margin: 0 10px 0 0;
+}
+
+.create-okr .timeline-list .item-group .tl-btn {
+  height: 30px;
+}
+
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */
