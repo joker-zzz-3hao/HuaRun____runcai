@@ -42,10 +42,20 @@ const OKR_TYPE_MAP = {
   2: '个人',
   3: '公司',
 };
+const OKR_TYPE_LIST = [{
+  name: '个人', id: 2,
+}, {
+  name: '部门', id: 1,
+},
+{
+  name: '公司', id: 3,
+}];
+
 export default {
   STATUS_LIST,
   CONFIDENCE,
   CONFIDENCE_MAP,
   OKR_TYPE_MAP,
   STATUS_LIST_MAP,
+  OKR_TYPE_LIST,
 };

@@ -13,7 +13,7 @@
         </li>
         <li>
           <span>更新时间</span>
-          <span>{{okrmain.updateTime}}</span>
+          <span>{{okrmain.updateTime||okrmain.createTime}}</span>
         </li>
         <li>
           <span>进度</span>
@@ -38,7 +38,7 @@
       :server="server"
       :canWrite="true"
       :isnew="false"
-      :periodId="periodId"
+      :periodId="searchForm.periodId"
     ></tl-okrform>
     <!-- 变更原因 -->
     <div>
@@ -84,9 +84,12 @@
 import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
-import okrForm from './okrForm';
-import undertakeTable from './undertakeTable';
+import okrForm from './writeOkr/component/okrForm';
+import undertakeTable from './writeOkr/component/undertakeTable';
 import CONST from '../const';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'changeOKR',
@@ -94,6 +97,7 @@ export default {
   data() {
     return {
       CONST,
+      server,
       tableList: [], // okr列表
       okrmain: {}, // 公共信息
       departokrList: [], // 可关联承接的okr
@@ -122,37 +126,29 @@ export default {
     'tl-okrform': okrForm,
   },
   props: {
-    server: {
+    writeInfo: {
       type: Object,
-      required: true,
-    },
-    canWrite: {
-      type: Boolean,
-      default: true,
-    },
-    okrId: {
-      type: String,
-      default: '',
-    },
-    periodId: {
-      type: String,
-      default: '',
+      default() {
+        return {};
+      },
     },
   },
+  mounted() {
+    this.okrId = this.writeInfo.okrId || '';
+    this.searchForm.periodId = this.writeInfo.periodId;
+  },
   created() {
-    this.searchOkr();
-    this.getCultureList();
-    this.$nextTick(() => {
-      this.getokrDetail();
-      this.searchForm.periodId = this.periodId;
-    });
+    // this.getCultureList();
+    // this.$nextTick(() => {
+    //   this.getokrDetail();
+    // });
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 按周期查可关联承接的okr
     searchOkr() {
-      if (this.periodId) {
-        this.server.getUndertakeOkr({ periodId: this.periodId }).then((res) => {
+      if (this.searchForm.periodId) {
+        this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
           if (res.code == 200) {
             this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
@@ -197,26 +193,40 @@ export default {
     },
     // 查okr详情
     getokrDetail() {
-      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        if (res.code == 200) {
-          this.tableList = res.data.okrDetails;
-          this.okrmain = res.data.okrMain;
-          this.okrMainId = res.data.okrMain.okrId;
-          // this.voteUser = res.data.voteUser;
-          this.tableList.forEach((item) => {
-          // item.departokrList = JSON.parse(this.departokrObject);
-            if (item.parentUpdate) {
-            // 关联承接变更接口
-              this.getOkrModifyUndertakeOkrList(item);
-            }
-          });
-        }
+      const detialP = new Promise(((resolve) => {
+        this.getCultureList();
+        resolve('p1 data');
+      }));
+
+      const undertakeP = new Promise(((resolve) => {
+        console.log('this.departokrObject');
+        this.searchOkr();
+        resolve('p2 data');
+      }));
+
+      Promise.all([detialP, undertakeP]).then((results) => {
+        console.log(results); // ["p1 data", ""p2 data""]
+
+        this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+          if (res.code == 200) {
+            this.tableList = res.data.okrDetails;
+            this.okrmain = res.data.okrMain;
+            this.okrMainId = res.data.okrMain.okrId;
+            // this.voteUser = res.data.voteUser;
+            this.tableList.forEach((item) => {
+              if (item.parentUpdate) {
+                // 关联承接变更接口
+                this.getOkrModifyUndertakeOkrList(item);
+              }
+            });
+          }
+        });
       });
     },
     // 可变更的关联承接项
     getOkrModifyUndertakeOkrList(okritem) {
       const formData = {
-        periodId: this.periodId,
+        periodId: this.searchForm.periodId,
         detailId: okritem.detailId,
         okrDetailId: okritem.okrDetailId,
         okrParentId: okritem.okrParentId,
@@ -266,7 +276,6 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
 
-      // TODO:价值观的id
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
       this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
       console.log('关联', this.selectDepartRow);
@@ -356,7 +365,7 @@ export default {
       // 拼入参
       this.formData = {
         okrInfoList: okrInfoList.concat(addList),
-        periodId: this.periodId,
+        periodId: this.searchForm.periodId,
         okrProgress: this.okrmain.okrProgress,
         modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
@@ -404,13 +413,24 @@ export default {
     tableList: {
       handler() {
         // 添加承接列表
-        this.tableList.forEach((item) => {
-          item.departokrList = JSON.parse(this.departokrObject) || [];
-          item.philosophyList = JSON.parse(this.philosophyObject) || [];
-        });
+        if (this.tableList.length > 0) {
+          this.tableList.forEach((item) => {
+            item.departokrList = JSON.parse(this.departokrObject) || [];
+            item.philosophyList = JSON.parse(this.philosophyObject) || [];
+          });
+        }
       },
+      deep: true,
     },
-    deep: true,
+    writeInfo: {
+      handler() {
+        this.okrId = this.writeInfo.okrId || '';
+        this.searchForm.periodId = this.writeInfo.periodId;
+        this.getokrDetail();
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>

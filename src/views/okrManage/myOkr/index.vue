@@ -1,5 +1,6 @@
 <template>
   <div class="my-okr">
+    <router-view class="cont-area"></router-view>
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="tl-diy-tabs">
@@ -23,7 +24,6 @@
         </div>
       </div>
     </div>
-    <router-view class="cont-area"></router-view>
     <el-drawer
       :wrapperClosable="false"
       :modal-append-to-body="true"
@@ -41,7 +41,6 @@
         </div>
       </div>
       <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
-      <div class="operating-panel">sdfsdf</div>
     </el-drawer>
   </div>
 </template>

@@ -4,8 +4,55 @@ export default {
   },
   methods: {
     validateNickName(rule, value, callback) {
+      if (value == '' || value == undefined || value == null) {
+        callback('请输入原始密码');
+      } else if (/[\u4E00-\u9FA5]/g.test(value)) {
+        callback('不支持设置中文');
+      } else if (value.length < 8 || value.length > 32) {
+        callback('密码长度不够，请输入8-32个字符');
+      } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
+        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
+      } else if (!/^([0-9a-zA-Z~!@#$%^&*()]*$)/g.test(value)) {
+        callback('只支持包含以下特殊字符~!@#$%^&*()');
+      } else {
+        callback();
+      }
+    },
+    validateLoginPwd(rule, value, callback) {
+      if (value == '' || value == undefined || value == null) {
+        callback('请输入原始密码');
+      } else if (/[\u4E00-\u9FA5]/g.test(value)) {
+        callback('不支持设置中文');
+      } else if (value.length < 8 || value.length > 32) {
+        callback('密码长度不够，请输入8-32个字符');
+      } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
+        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
+      } else if (!/^([0-9a-zA-Z~!@#$%^&*()]*$)/g.test(value)) {
+        callback('只支持包含以下特殊字符~!@#$%^&*()');
+      } else {
+        callback();
+      }
+    },
+    validateConfirmPwd(rule, value, callback) {
+      if (value == '' || value == undefined || value == null) {
+        callback('请输入确认密码');
+      } else if (value != this.ruleForm.confirmPwd) {
+        callback('两次输入的密码不一致，请重新输入');
+      } else if (/[\u4E00-\u9FA5]/g.test(value)) {
+        callback('不支持设置中文');
+      } else if (value.length < 8 || value.length > 32) {
+        callback('密码长度不够，请输入8-32个字符');
+      } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
+        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
+      } else if (!/^([0-9a-zA-Z~!@#$%^&*()]*$)/g.test(value)) {
+        callback('只支持包含以下特殊字符~!@#$%^&*()');
+      } else {
+        callback();
+      }
+    },
+    validateNewPwd(rule, value, callback) {
       if (!value) {
-        callback('请输入昵称');
+        callback('请输入新密码');
       } else {
         callback();
       }

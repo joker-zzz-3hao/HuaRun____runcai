@@ -87,6 +87,7 @@
         :server="server"
         :okrId="okrId"
         :CONST="CONST"
+        :showSupport="true"
       ></tl-okr-detail>
     </el-drawer>
   </div>

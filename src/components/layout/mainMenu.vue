@@ -4,7 +4,7 @@
     :class="{'no-sub-menu': noSubMenu,'is-sub-menu': isSubMenu,'is-shrink': isShrinkMenus}"
   >
     <div class="menu-cont-inside" :class="{'is-zindex': zIndex}">
-      <div class="main-menu">
+      <div class="main-menu" :class="{'is-main-menu': isMainMenu}">
         <ul>
           <li
             v-for="(item,idx) in menuList"
@@ -22,7 +22,7 @@
             </div>
           </li>
         </ul>
-        <div class="sub-menu">
+        <div class="sub-menu" :class="{'change-index': changeZindex}">
           <template v-for="item in menuList">
             <dl
               :key="item.id"
@@ -39,6 +39,8 @@
                 {'is-active': selectMenu === options.subToName || options.subToName === $route.meta.belongsTo}
                 ]"
                 :to="{name:options.subToName}"
+                @mouseover.native="changeIndex"
+                @mouseleave.native="rmChangeIndex"
               >
                 <i></i>
                 <span>
@@ -47,7 +49,7 @@
               </router-link>
             </dl>
           </template>
-          <div class="menu-control-button" @click="shrinkMenus">
+          <div class="menu-control-button" @click="shrinkMenus" @mouseover.stop="rmChangeIndex">
             <span></span>
           </div>
         </div>
@@ -78,6 +80,8 @@ export default {
       zIndex: false,
       selectMenu: '',
       menuIndex: '',
+      changeZindex: false,
+      isMainMenu: false,
     };
   },
   props: {
@@ -114,6 +118,8 @@ export default {
     },
     shrinkMenus() {
       this.isShrinkMenus = !this.isShrinkMenus;
+      // this.changeZindex = !this.changeZindex;
+      this.isMainMenu = true;
     },
     rmSubMenu(routeName) {
       this.go(routeName);
@@ -128,10 +134,27 @@ export default {
     moveMenu(itemIndex) {
       this.menuIndex = itemIndex;
       this.zIndex = true;
+      console.log(555);
     },
     leaveMenu() {
       this.menuIndex = '';
       this.zIndex = false;
+    },
+    changeIndex() {
+      if (!this.changeZindex) {
+        this.changeZindex = true;
+        console.log(11111);
+        if (this.isMainMenu) {
+          this.isMainMenu = false;
+          console.log(333);
+        }
+      }
+    },
+    rmChangeIndex() {
+      if (this.changeZindex) {
+        this.changeZindex = false;
+        console.log(2222);
+      }
     },
   },
   watch: {

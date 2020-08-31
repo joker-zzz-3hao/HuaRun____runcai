@@ -82,7 +82,7 @@
       </tl-okr-table>
     </div>
     <!-- 无数据时展示 -->
-    <div v-if="okrList.length == 0">暂无数据</div>
+    <div v-if="okrList[0].tableList.length == 0">暂无数据~</div>
     <el-drawer
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
@@ -97,12 +97,18 @@
           @handleClose="handleClose"
           :writeInfo="writeInfo"
         ></tl-writeokr>
+        <tl-changeokr
+          v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
+          @handleClose="handleClose"
+          :writeInfo="writeInfo"
+        ></tl-changeokr>
         <tl-okr-detail
           v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
           ref="tl-okr-detail"
           :server="server"
           :okrId="okrId"
           :CONST="CONST"
+          :okrItem="okrItem"
         ></tl-okr-detail>
         <tl-okr-update
           v-else-if="currentView=='tl-okr-update' && myokrDrawer"
@@ -123,6 +129,7 @@ import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
+import changeOKR from './component/changeOKR';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 import CONST from './const';
@@ -137,6 +144,7 @@ export default {
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
     'tl-writeokr': writeOkr,
+    'tl-changeokr': changeOKR,
   },
   data() {
     return {
@@ -197,8 +205,9 @@ export default {
                 tableList: okrInfo.okrInfoList,
                 okrMain: {
                   userName: item.updateBy || item.createBy,
-                  okrProgress: 0,
-                  updateDate: item.updateTime || item.createTime,
+                  okrProgress: item.okrProgress,
+                  updateTime: item.updateTime || item.createTime,
+                  okrBelongType: okrInfo.okrBelongType,
                 },
                 id: item.id || item.approvalId,
                 params: item.paramJson,
@@ -244,13 +253,13 @@ export default {
     },
     goChangeOkr() {
       // TODO: 弹框标题
-      this.drawerTitle = '华润云第三季度OKR';
+      this.drawerTitle = `${this.okrList[0].okrMain.orgName + this.okrList[0].okrMain.periodName}OKR`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
         periodId: this.okrCycle.periodId,
       };
-      this.currentView = 'tl-writeokr';
+      this.currentView = 'tl-changeokr';
       this.setMyokrDrawer(true);
     },
     goDraft(item) {

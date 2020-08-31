@@ -51,55 +51,67 @@
       </div>
       <div>
         <el-button @click="addItem">新增</el-button>
-        <el-table ref="dicTable" v-loading="tableLoading" :data="tableData">
-          <el-table-column label="字典键" prop="value">
-            <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="字典值" prop="meaning">
-            <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="字典排序" prop="orderSeq">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model.trim="scope.row.orderSeq"
-                controls-position="right"
-                :min="1"
-                :max="1000"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态" prop="enabledFlag">
-            <template slot-scope="scope">
-              <div @click.capture.stop="dataChange(scope.row)">
-                <el-switch
-                  active-value="Y"
-                  inactive-value="N"
-                  v-model="scope.row.enabledFlag"
-                  active-color="#13ce66"
-                ></el-switch>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="备注" prop="description">
-            <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="创建时间" prop="createTime">
-            <template slot-scope="scope">
-              <span>{{scope.row.createTime ?scope.row.createTime :'--' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" prop="code">
-            <template slot-scope="scope">
-              <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
+          <el-table v-loading="tableLoading" :data="formTableData.tableData">
+            <el-table-column label="字典键" prop="value">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'tableData.' + scope.$index + '.value'"
+                  :rules="formTableData.rules.value"
+                >
+                  <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="字典值" prop="meaning">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'tableData.' + scope.$index + '.meaning'"
+                  :rules="formTableData.rules.meaning"
+                >
+                  <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="字典排序" prop="orderSeq">
+              <template slot-scope="scope">
+                <el-input-number
+                  v-model.trim="scope.row.orderSeq"
+                  controls-position="right"
+                  :min="1"
+                  :max="1000"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" prop="enabledFlag">
+              <template slot-scope="scope">
+                <div @click.capture.stop="dataChange(scope.row)">
+                  <el-switch
+                    active-value="Y"
+                    inactive-value="N"
+                    v-model="scope.row.enabledFlag"
+                    active-color="#13ce66"
+                  ></el-switch>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" prop="description">
+              <template slot-scope="scope">
+                <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="创建时间" prop="createTime">
+              <template slot-scope="scope">
+                <span>{{scope.row.createTime ?scope.row.createTime :'--' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" prop="code">
+              <template slot-scope="scope">
+                <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
       </div>
       <div>
         <el-button :loading="loading" @click="save">确定</el-button>
@@ -143,7 +155,23 @@ export default {
       loading: false,
       tableLoading: false,
       dicTitle: '新增字典',
-      tableData: [],
+      formTableData: {
+        rules: {
+          value: {
+            type: 'string',
+            required: true,
+            message: '请填写字典键',
+            trigger: 'blur',
+          },
+          meaning: {
+            type: 'string',
+            required: true,
+            message: '请填写字典值',
+            trigger: 'blur',
+          },
+        },
+        tableData: [],
+      },
       formData: {
         code: '',
         name: '',
@@ -173,7 +201,7 @@ export default {
             this.formData.description = res.data.description;
             this.tableData = res.data.subList;
             // 添加字段
-            for (const item of this.tableData) {
+            for (const item of this.formTableData.tableData) {
               item.randomId = '';// 添加随机id，用于删除环节
             }
           }
@@ -195,42 +223,52 @@ export default {
       if (this.optionType == 'edit') {
         successTip = '编辑成功';
       }
-      this.$refs.dicForm.validate((valid) => {
-        if (valid) {
-          this.formData.subList = this.tableData;
-          this.loading = true;
-          this.server.addOrUpdate(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success(successTip);
-              this.close('refreshPage');
-            }
-            this.loading = false;
-          });
-        }
+      // 校验
+      const v1 = new Promise((resolve) => {
+        this.$refs.dicForm.validate((valid) => {
+          if (valid) resolve();
+        });
+      });
+      const v2 = new Promise((resolve) => {
+        this.$refs.formTable.validate((valid) => {
+          if (valid) resolve();
+        });
+      });
+      Promise.all([v1, v2]).then(() => {
+        this.formData.subList = this.formTableData.tableData;
+        this.loading = true;
+        this.server.addOrUpdate(this.formData).then((res) => {
+          if (res.code == 200) {
+            this.$message.success(successTip);
+            this.close('refreshPage');
+          }
+          this.loading = false;
+        });
       });
     },
     cancel() {
       this.close();
     },
     addItem() { // 添加本地数据
-      const randomId = Math.random().toString(36).substr(3);
-      this.tableData.push({
+      this.formTableData.tableData.push({
         meaning: '',
         value: '',
         orderSeq: '',
         enabledFlag: 'Y',
         description: '',
-        randomId, // 添加随机id，用于删除环节
+        randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
     },
     deleteItem(item) {
       if (item.randomId) { // 删除本地数据
-        this.tableData = this.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
+        this.formTableData.tableData = this.formTableData.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
       } else { // 删除数据库数据
         this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
           this.server.deleteDicItem({ codeValueId: item.codeValueId }).then((res) => {
             if (res.code == 200) {
-              this.tableData = this.tableData.filter((dicItem) => dicItem.codeValueId != item.codeValueId);
+              this.formTableData.tableData = this.formTableData.tableData.filter(
+                (dicItem) => dicItem.codeValueId != item.codeValueId,
+              );
               this.$message.success('删除成功');
             }
           });

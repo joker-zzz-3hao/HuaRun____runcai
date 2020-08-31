@@ -14,6 +14,8 @@
             v-model="searchForm.okrType"
             placeholder="请选择类型"
             :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
           >
             <el-option
               v-for="(item, index) in CONST.OKR_TYPE_LIST"
@@ -30,37 +32,11 @@
           <img src="@/assets/images/user/user.jpg" alt />
         </dd>
         <dd v-else class="user-name">{{cutName(userName)}}</dd>
-        <dd>{{userName}}徐佳佳</dd>
+        <dd>{{userName}}</dd>
       </dl>
-      <!-- <dl>
-        <dd>
-          <span>目标周期</span>
-          <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
-        </dd>
-        <dd>
-          <span>OKR类型</span>
-          <el-select
-            v-model="searchForm.okrType"
-            placeholder="请选择类型"
-            :popper-append-to-body="false"
-          >
-            <el-option
-              v-for="(item, index) in CONST.OKR_TYPE_LIST"
-              :key="item.id+index"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </dd>
-        <dd class="user-info">
-          <span>负责人</span>
-          <div class="user-name">{{cutName(userName)}}</div>
-          <span>{{userName}}</span>
-        </dd>
-      </dl>-->
     </div>
     <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-    <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr>
+    <!-- <change-okr :periodId="searchForm.periodId" v-else :server="server" :okrId="okrId"></change-okr> -->
   </div>
 </template>
 
@@ -68,7 +44,6 @@
 import { mapState } from 'vuex';
 import periodSelect from '@/components/periodSelect';
 import okrForm from './component/okrForm';
-import changeOKR from './component/changeOKR';
 import Server from './server';
 import CONST from './const';
 
@@ -78,7 +53,6 @@ export default {
   name: 'writeOkr',
   components: {
     'okr-form': okrForm,
-    'change-okr': changeOKR,
     'tl-periodselect': periodSelect,
   },
   props: {
@@ -135,11 +109,12 @@ export default {
       this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
       this.searchForm.periodId = JSON.parse(this.searchForm.draftParams).periodId;
       console.log('this.searchForm.periodId', this.searchForm.periodId);
-    } else if (this.writeInfo.canWrite == 'cannot') {
-      this.canWrite = false;
-      this.okrId = this.writeInfo.okrId || '';
-      this.searchForm.periodId = this.writeInfo.periodId || '';
     }
+    // else if (this.writeInfo.canWrite == 'cannot') {
+    //   this.canWrite = false;
+    //   this.okrId = this.writeInfo.okrId || '';
+    //   this.searchForm.periodId = this.writeInfo.periodId || '';
+    // }
   },
   created() {
     this.init();
