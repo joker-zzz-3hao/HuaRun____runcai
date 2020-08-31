@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <el-form v-model="formData">
+    <el-form v-if="tableList.length > 0" v-model="formData">
       <elcollapse class="collapse" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"

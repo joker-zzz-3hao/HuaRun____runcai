@@ -82,7 +82,7 @@
       </tl-okr-table>
     </div>
     <!-- 无数据时展示 -->
-    <div v-if="okrList.length == 0">暂无数据</div>
+    <div v-if="okrList[0].tableList.length == 0">暂无数据~</div>
     <el-drawer
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
