@@ -41,7 +41,6 @@
         </div>
       </div>
       <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
-      <div class="operating-panel">sdfsdf</div>
     </el-drawer>
   </div>
 </template>
