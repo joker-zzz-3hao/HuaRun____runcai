@@ -718,7 +718,6 @@ export default {
         });
       });
       Promise.all([v1, v2, v3]).then(() => {
-        console.log('验证表但通过');
         this.server.commitWeekly(params).then((res) => {
           if (res.code == 200) {
             this.$message.success('提交成功');
