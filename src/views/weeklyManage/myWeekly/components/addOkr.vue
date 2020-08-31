@@ -67,7 +67,7 @@
       </div>
       <div>
         <el-button @click="confirm">确认</el-button>
-        <el-button @click="cancel">取消</el-button>
+        <el-button @click="close">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -100,6 +100,30 @@ export default {
         return [];
       },
     },
+    myOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalMyOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalOrgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
 
   },
   data() {
@@ -107,10 +131,6 @@ export default {
       visible: false,
       loading: false,
       initUserAccount: '',
-      myOkrList: [],
-      orgOkrList: [],
-      originalMyOkrList: [],
-      originalOrgOkrList: [],
       selectedOkrList: [],
       cultureList: [],
       selectedCultureList: [],
@@ -144,9 +164,6 @@ export default {
       this.visible = true;
     },
     confirm() {
-      this.close();
-    },
-    close() {
       this.visible = false;
       this.$emit('closeOkrDialog', {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList],
@@ -156,8 +173,8 @@ export default {
         supportMyOkrObj: this.supportMyOkrObj,
       });
     },
-    cancel() {
-      this.close();
+    close() {
+      this.visible = false;
     },
     initSelectedData() {
       for (const item of this.selectedOkr) {
@@ -261,7 +278,7 @@ export default {
         }
         for (const kr of o.krList) {
           if (kr.okrDetailId == okr.okrDetailId) {
-            this.supportMyOkrObj = { o, kr: okr };
+            this.supportMyOkrObj = { o, kr };
           }
         }
       }
