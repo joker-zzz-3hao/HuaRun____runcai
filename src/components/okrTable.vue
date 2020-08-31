@@ -164,7 +164,7 @@ export default {
     opensome(item) {
       console.log('点击了面板', item);
       // 起草中打开编辑页
-      if (['6', '8'].includes(this.status)) {
+      if (['6'].includes(this.status)) {
         this.$emit('goDraft', item);
       } else {
         this.$emit('openDialog', item);

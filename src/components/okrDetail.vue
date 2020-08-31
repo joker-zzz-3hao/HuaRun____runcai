@@ -26,7 +26,7 @@
           </ul>
         </div>
         <!-- okr折叠面板 -->
-        <tl-okr-collapse :tableList="tableList" :activeList="activeList" :showParentOkr="false">
+        <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
           <template slot="head-bar" slot-scope="props">
             <button
               v-if="props.okritem.versionCount > 1"
@@ -41,7 +41,7 @@
           </template>
         </tl-okr-collapse>
       </el-tab-pane>
-      <el-tab-pane label="操作历史" name="history">
+      <el-tab-pane label="操作历史" name="history" v-if="this.okrId">
         <!-- 操作历史 -->
         <div>
           <span>操作历史</span>
@@ -71,7 +71,7 @@
       </el-tab-pane>
     </el-tabs>
     <!-- 点赞要一直浮着 -->
-    <div>
+    <div v-if="showSupport">
       <ul style="display:flex">
         <el-button v-if="showLike" @click="like()">点赞</el-button>
         <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
@@ -134,6 +134,7 @@ export default {
     },
     okrId: {
       type: String,
+      defualt: '',
     },
     CONST: {
       type: Object,
@@ -141,27 +142,45 @@ export default {
         return {};
       },
     },
+    okrItem: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    showSupport: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     // 生成数字序列（用于打开okrCollapse
-    activeList() {
-      if (this.tableList && this.tableList.length > 0) {
-        return Array.from(new Array(this.tableList.length).keys());
-      }
-      return [];
-    },
+    // activeList() {
+    //   if (this.tableList && this.tableList.length > 0) {
+    //     return Array.from(new Array(this.tableList.length).keys());
+    //   }
+    //   return [];
+    // },
   },
   created() {
   },
   methods: {
     // 查okr详情
     getokrDetail() {
-      this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
-        if (res.code == 200) {
-          this.tableList = res.data.okrDetails || [];
-          this.okrmain = res.data.okrMain || {};
-        }
-      });
+      if (this.okrId) {
+        this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+          if (res.code == 200) {
+            this.tableList = res.data.okrDetails || [];
+            this.okrmain = res.data.okrMain || {};
+          }
+        });
+      }
+      if (this.okrItem) {
+        this.formData = JSON.parse(JSON.stringify(this.okrItem));
+        this.tableList = this.formData.tableList || [];
+        this.okrmain = this.formData.okrMain || {};
+        console.log('this.tableList', this.formData);
+      }
     },
     // 点赞
     like() {
