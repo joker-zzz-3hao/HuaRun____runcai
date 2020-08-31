@@ -14,22 +14,38 @@ export default {
   data() {
     return {
       server,
+      mainDataX: [],
+      mainDataY: [],
     };
   },
+  props: {
+    mainData: {
+      type: [Object, Array],
+    },
+  },
   mounted() {
+    this.getmainData();
   },
   methods: {
-
+    getmainData() {
+      this.mainDataX = this.mainData.map((item) => item.months);
+      this.mainDataY = this.mainData.map((item) => item.okrProgress);
+      this.init();
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('okrSchedule'));
       const option = {
         xAxis: {
           type: 'category',
-          data: ['2020-07', '2020-08', '2020-09', '2020-10', '2020-11'],
+          data: that.mainDataX,
         },
+
         yAxis: [
           {
             type: 'value',
+            min: 0,
+            max: 100,
             axisLabel: {
               show: true,
               interval: 'auto',
@@ -40,18 +56,22 @@ export default {
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: [20, 100, 50, 80, 70],
+          data: that.mainDataY,
           type: 'bar',
           barWidth: 20,
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(220, 220, 220, 0.8)',
-          },
 
         }],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    mainData: {
+      handler() {
+        this.getmainData();
+      },
+      deep: true,
     },
   },
 };

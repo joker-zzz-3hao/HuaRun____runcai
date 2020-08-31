@@ -30,7 +30,7 @@
         placeholder="选择日期"
       ></el-date-picker>
 
-      <el-select v-model="calendarId" @change="changeLeek" placeholder="请选择">
+      <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
         <el-option
           :key="index"
           :value="item.calendarId"
@@ -54,9 +54,14 @@
     <div class="model">
       <div>员工情绪大屏</div>
       <div>
-        <el-select placeholder="请选择">
-          <el-option :key="1" :value="1">2020年07月 第三周</el-option>
-        </el-select>
+        <el-date-picker
+          format="yyyy-MM"
+          value-format="yyyy-MM"
+          v-model="mooddate"
+          @change="getDateMood"
+          type="month"
+          placeholder="选择日期"
+        ></el-date-picker>
       </div>
       <div id="mood"></div>
       <ul>
@@ -84,6 +89,7 @@ export default {
   },
   data() {
     return {
+      mooddate: '',
       periodId: '',
       value: '',
       server,
@@ -95,6 +101,8 @@ export default {
       echartDataY: [],
       echartDataX: [],
       tableData: [],
+      moodDataX: [],
+      moodDataY: [],
     };
   },
   computed: {
@@ -104,23 +112,24 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.initMood();
     this.getokrQuery();
   },
   methods: {
-    changeLeek() {
-      this.orgWeekly();
-    },
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
       const m = date.getMonth();
       const time = `${y}-${m}`;
       this.dateTime = time;
+      this.mooddate = time;
       this.getDate(this.dateTime);
+      this.getDateMood(this.mooddate);
     },
     getDate(date) {
       this.calendarQurey(`${date}-01`);
+    },
+    getDateMood(date) {
+      this.orgEmotion(`${date}-01`);
     },
     calendarQurey(date) {
       this.server.calendarQurey(
@@ -130,7 +139,7 @@ export default {
       ).then((res) => {
         this.dateOption = res.data;
         this.calendarId = res.data[0].calendarId;
-        this.changeLeek();
+        this.orgWeekly();
       });
     },
     orgWeekly() {
@@ -194,7 +203,7 @@ export default {
         series: [{
           name: '风险',
           type: 'line',
-          data: that.echartDataY,
+          data: that.echartDataX,
         },
         ],
       };
@@ -202,35 +211,12 @@ export default {
       myChart.setOption(option);
     },
     initMood() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('mood'));
       const option = {
-        legend: {},
-        tooltip: {},
         dataset: {
-          dimensions: ['product', '2015', '2016', '2017'],
-          source: [
-            {
-              product: '行云', 2015: 43.3, 2016: 85.8, 2017: 93.7,
-            },
-            {
-              product: '门户', 2015: 83.1, 2016: 73.4, 2017: 55.1,
-            },
-            {
-              product: '盘云', 2015: 86.4, 2016: 65.2, 2017: 82.5,
-            },
-            {
-              product: '大云', 2015: 72.4, 2016: 53.9, 2017: 39.1,
-            },
-            {
-              product: '天云', 2015: 72.4, 2016: 53.9, 2017: 39.1,
-            },
-            {
-              product: '容云', 2015: 72.4, 2016: 53.9, 2017: 39.1,
-            },
-            {
-              product: '多云', 2015: 72.4, 2016: 53.9, 2017: 39.1,
-            },
-          ],
+          dimensions: ['product', '0', '50', '100'],
+          source: that.moodDataY,
         },
         xAxis: { type: 'category' },
         yAxis: {},
@@ -245,13 +231,16 @@ export default {
 
       myChart.setOption(option);
     },
-    orgEmotion() {
+    orgEmotion(date) {
       this.server.orgEmotion({
-        calendarId: this.calendarId,
-        date: this.dateTime,
-        userId: this.userInfo.userId,
+        date,
       }).then((res) => {
-        console.log(res);
+        this.moodDataX = res.data.map((item) => item.orgName);
+        this.moodDataY = res.data.map((item) => ({
+          product: item.orgName,
+          ...item.emotionList.map((li) => ({ [li.weeklyEmotion]: li.weeklyNumber })),
+        }));
+        this.initMood();
       });
     },
   },

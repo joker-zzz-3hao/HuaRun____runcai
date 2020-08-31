@@ -2,9 +2,14 @@
   <div class="weeking">
     <div class="model">
       <div>周报动态</div>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option :key="1" :value="1">2020年07月 第三周</el-option>
-      </el-select>
+      <el-date-picker
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        v-model="teamTime"
+        @change="getteamTime"
+        type="month"
+        placeholder="选择日期"
+      ></el-date-picker>
       <div id="weeking"></div>
       <div>
         <div>进行中工作项</div>
@@ -13,28 +18,18 @@
     </div>
     <div class="model">
       <div>周报动态</div>
-      <el-table :data="tableData" :show-header="false" style="width: 100%">
-        <el-table-column prop="name" label="名称" width="100"></el-table-column>
-        <el-table-column prop="desc" label="内容"></el-table-column>
-        <el-table-column prop="date" label="日期"></el-table-column>
-      </el-table>
-    </div>
-    <div class="model">
-      <div>周报动态</div>
       <div>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option :key="1" :value="1">2020年07月 第三周</el-option>
-        </el-select>
+        <el-date-picker
+          format="yyyy-MM"
+          value-format="yyyy-MM"
+          v-model="dateTime"
+          @change="getDate"
+          type="month"
+          placeholder="选择日期"
+        ></el-date-picker>
       </div>
-      <div id="mood" style="display:inline-block"></div>
-      <div style="display:inline-block">
-        <el-table :data="submittData" border style="width: 400px;">
-          <el-table-column prop="name" label="已提交" width="100"></el-table-column>
-          <el-table-column prop="desc" label="未提交"></el-table-column>
-          <el-table-column prop="date" label="简单模式"></el-table-column>
-          <el-table-column prop="ad" label="标准模式"></el-table-column>
-        </el-table>
-      </div>
+
+      <div id="mood"></div>
     </div>
   </div>
 </template>
@@ -48,7 +43,13 @@ export default {
   name: 'weeking',
   data() {
     return {
+      moodDataY: [],
+      moodDataX: [],
+      teamDataY: [],
+      teamDataX: [],
       server,
+      dateTime: '',
+      teamTime: '',
       dateOption: [],
       value: '',
       tableData: [
@@ -91,56 +92,116 @@ export default {
     };
   },
   mounted() {
-    this.init();
-    this.initMood();
+    this.fetchData();
   },
   methods: {
-
+    fetchData() {
+      const date = new Date();
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      const time = `${y}-${m}`;
+      this.dateTime = time;
+      this.teamTime = time;
+      this.getDate(this.dateTime);
+      this.getteamTime(this.dateTime);
+    },
+    getteamTime(date) {
+      this.teamWeekly(`${date}-01`);
+    },
+    getDate(date) {
+      this.teamEmotion(`${date}-01`);
+    },
+    teamWeekly(date) {
+      this.server.teamWeekly({
+        date,
+      }).then((res) => {
+        this.teamDataX = res.data.map((item) => [
+          `${item.weekBegin}至${item.weekEnd}`,
+          item.doingNumber,
+          item.doneNumber,
+        ]);
+        console.log(this.teamDataX);
+        this.init();
+      });
+    },
+    teamEmotion(date) {
+      this.server.teamEmotion({
+        date,
+      }).then((res) => {
+        this.moodDataX = res.data.map((item) => `${item.weekBegin}至${item.weekEnd}`);
+        this.moodDataY = res.data.map((item) => ({
+          product: `${item.weekBegin}至${item.weekEnd}`,
+          ...item.emotionList.map((li) => li.weeklyNumber),
+        }));
+        this.initMood();
+      });
+    },
     init() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        tooltip: {},
+        dataset: {
+          dimensions: ['product', '2015', '2016'],
+          source: that.teamDataX,
         },
+        xAxis: { type: 'category' },
         yAxis: {
-          type: 'value',
+          min: 0,
+          max: 100,
         },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          name: '邮件营销',
-          type: 'line',
-          stack: '总量',
-        },
-        {
-          data: [120, 132, 101, 134, 90, 230, 210],
-          name: '联盟广告',
-          type: 'line',
-          stack: '总量',
-        }],
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [
+          {
+            type: 'bar',
+            barWidth: 30,
+          },
+          { type: 'bar', barWidth: 30 },
+        ],
       };
 
       myChart.setOption(option);
     },
     initMood() {
+      const that = this;
       const myChart = echarts.init(document.getElementById('mood'));
       const option = {
-        xAxis: {
-          type: 'category',
-          data: ['开心', '沮丧', '平常'],
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [{
-          data: [120, 200, 150],
-          type: 'bar',
-          showBackground: true,
-          barWidth: 30,
-          backgroundStyle: {
-            color: 'rgba(220, 220, 220, 0.8)',
+        tooltip: {
+          trigger: 'item',
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
           },
-        }],
+          formatter(params) {
+            let name = '';
+            if (params.seriesName == 0) {
+              name = '开心';
+            }
+            if (params.seriesName == 1) {
+              name = '沮丧';
+            }
+            if (params.seriesName == 2) {
+              name = '平常';
+            }
+            return `<span>${name}</span>`;
+          },
+        },
+        dataset: {
+          dimensions: ['product', '0', '50', '100'],
+          source: that.moodDataY,
+        },
+        xAxis: { type: 'category' },
+        yAxis: {
+          min: 0,
+          max: 100,
+        },
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [
+          { type: 'bar', barWidth: 30 },
+          { type: 'bar', barWidth: 30 },
+          { type: 'bar', barWidth: 30 },
+        ],
       };
 
       myChart.setOption(option);
@@ -162,7 +223,7 @@ export default {
 }
 
 #mood {
-  width: 300px;
+  width: 100%;
   height: 400px;
 }
 </style>

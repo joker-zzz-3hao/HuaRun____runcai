@@ -62,7 +62,6 @@ export default {
         this.getmainData();
       },
       deep: true,
-      immediate: true,
     },
   },
 };

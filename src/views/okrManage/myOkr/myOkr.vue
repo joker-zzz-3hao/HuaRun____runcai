@@ -82,7 +82,7 @@
       </tl-okr-table>
     </div>
     <!-- 无数据时展示 -->
-    <div v-if="okrList.length == 0">暂无数据</div>
+    <div v-if="okrList[0].tableList.length == 0">暂无数据~</div>
     <el-drawer
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
@@ -108,6 +108,7 @@
           :server="server"
           :okrId="okrId"
           :CONST="CONST"
+          :okrItem="okrItem"
         ></tl-okr-detail>
         <tl-okr-update
           v-else-if="currentView=='tl-okr-update' && myokrDrawer"
@@ -205,7 +206,8 @@ export default {
                 okrMain: {
                   userName: item.updateBy || item.createBy,
                   okrProgress: item.okrProgress,
-                  updateDate: item.updateTime || item.createTime,
+                  updateTime: item.updateTime || item.createTime,
+                  okrBelongType: okrInfo.okrBelongType,
                 },
                 id: item.id || item.approvalId,
                 params: item.paramJson,

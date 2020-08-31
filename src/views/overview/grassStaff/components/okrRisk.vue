@@ -11,19 +11,24 @@
         type="month"
         placeholder="选择日期"
       ></el-date-picker>
-
-      <el-select v-model="calendarId" @change="changeLeek" placeholder="请选择">
-        <el-option
-          :key="index"
-          :value="item.calendarId"
-          v-for="(item,index) in dateOption"
-          :label="item.weekBegin+' 至 '+item.weekEnd"
-        ></el-option>
-      </el-select>
       <el-table :data="tableData" :show-header="false" style="width: 100%">
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="desc" label="内容"></el-table-column>
-        <el-table-column prop="date" label="日期"></el-table-column>
+        <el-table-column label="周报">
+          <template slot-scope="scope">
+            <span>{{scope.row.weekBegin}}~{{scope.row.weekEnd}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="本周心情">
+          <template slot-scope="scope">
+            <span v-if="scope.row.weeklyEmotion">本周心情:{{scope.row.weeklyEmotion}}</span>
+            <span v-else>未填写</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="提交时间">
+          <template slot-scope="scope">
+            <span v-if="scope.row.updateTime">提交时间:{{scope.row.updateTime}}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -38,8 +43,8 @@ const server = new Server();
 export default {
   name: 'okrRisk',
   props: {
-    mainData: {
-      type: [Object],
+    okrData: {
+      type: [Object, Array],
     },
   },
   computed: {
@@ -51,33 +56,25 @@ export default {
     return {
       calendarId: '',
       server,
-      userWeek: '',
       dateTime: '',
       dateOption: [],
-      tableData: [
-        {
-          name: '第三周  07月20日～07月26日',
-          desc: '本周心情：    平常',
-          date: '提交时间：2020年7月26日 21:12  周五',
-        },
-        {
-          name: '第三周  07月20日～07月26日',
-          desc: '本周心情：    平常',
-          date: '提交时间：2020年7月26日 21:12  周五',
-        },
-        {
-          name: '第三周  07月20日～07月26日',
-          desc: '本周心情：    平常',
-          date: '提交时间：2020年7月26日 21:12  周五',
-        },
-      ],
+      tableData: [],
+      okrDataX: [],
     };
   },
   mounted() {
-    this.init();
     this.fetchData();
+    this.changeTime();
   },
   methods: {
+    changeTime() {
+      if (this.okrData.datas) {
+        this.okrDataX = this.okrData.datas.map((item) => [item.createDate, item.allScore]);
+      }
+
+      console.log(this.okrDataX);
+      this.init();
+    },
     changeLeek() {
       this.userWeekly();
     },
@@ -105,11 +102,10 @@ export default {
     },
     userWeekly() {
       this.server.userWeekly({
-        calendarId: this.calendarId,
-        date: this.dateTime,
+        date: `${this.dateTime}-01`,
         userId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
       }).then((res) => {
-        this.userWeek = res.data;
+        this.tableData = res.data;
       });
     },
     init() {
@@ -117,7 +113,7 @@ export default {
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         xAxis: {
-          data: that.mainData.months,
+          data: that.okrData.months,
         },
         yAxis: {
           min: 0,
@@ -125,7 +121,9 @@ export default {
           axisLabel: {
             formatter(value) {
               const texts = [];
-              if (value <= 1) {
+              if (value == 0) {
+                console.log(0);
+              } else if (value <= 1) {
                 texts.push('无风险');
               } else if (value <= 2) {
                 texts.push('风险可控');
@@ -139,12 +137,20 @@ export default {
         series: [{
           name: '风险',
           type: 'line',
-          data: [['2020-07-11', 1], 3, 2, 3, 2, 1],
+          data: that.okrDataX,
         },
         ],
       };
 
       myChart.setOption(option);
+    },
+  },
+  watch: {
+    okrData: {
+      handler() {
+        this.changeTime();
+      },
+      deep: true,
     },
   },
 };
