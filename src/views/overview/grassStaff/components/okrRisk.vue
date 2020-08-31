@@ -68,7 +68,10 @@ export default {
   },
   methods: {
     changeTime() {
-      this.okrDataX = this.okrData.datas.map((item) => [item.createDate, item.allScore]);
+      if (this.okrData.datas) {
+        this.okrDataX = this.okrData.datas.map((item) => [item.createDate, item.allScore]);
+      }
+
       console.log(this.okrDataX);
       this.init();
     },
