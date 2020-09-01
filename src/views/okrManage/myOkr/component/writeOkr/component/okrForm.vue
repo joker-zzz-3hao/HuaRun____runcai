@@ -72,6 +72,7 @@
                 placement="top"
                 popper-class="tl-tooltip-clear"
                 @click.native="deleteobject(index)"
+                v-if="formData.okrInfoList.length > 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -127,6 +128,7 @@
                 content="删除"
                 placement="top"
                 @click.native="deletekr(index,kindex)"
+                v-if="oitem.krList.length > 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
