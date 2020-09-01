@@ -176,7 +176,7 @@ export default {
       });
     },
 
-    handleCycleData(data) {
+    handleData(data) {
       this.searchForm.okrCycle = data;
       console.log('writeokrCycle', data);
     },
