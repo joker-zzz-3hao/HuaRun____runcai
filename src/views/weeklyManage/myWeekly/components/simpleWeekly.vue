@@ -461,7 +461,6 @@ export default {
           weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
           weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
         };
-        console.log(params);
         if (this.calendarId) {
           this.server.commitWeekly(params).then((res) => {
             if (res.code == 200) {
@@ -617,16 +616,38 @@ export default {
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
-              this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.kr.okrDetailProgress);
+              // 如果是详情则从详情中取值
+              if (this.weeklyData.weeklyId) {
+                // 后端数据中匹配
+                this.weeklyData.weeklyOkrVoList.forEach((element) => {
+                  if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
+                    this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
+                    this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
+                  }
+                });
+              } else {
+                this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.kr.okrDetailConfidence);
+                this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.kr.okrDetailProgress);
+              }
             } else { // o
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
-              this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.o.okrDetailId);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
-              this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
+              // 如果是详情则从详情中取值
+              if (this.weeklyData.weeklyId) {
+                // 后端数据中匹配
+                this.weeklyData.weeklyOkrVoList.forEach((element) => {
+                  if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
+                    this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
+                    this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
+                  }
+                });
+              } else {
+                this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
+                this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
+              }
             }
             this.weeklyOkrSaveList.push({
               id: data.supportMyOkrObj.kr.id || '',

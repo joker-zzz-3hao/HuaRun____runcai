@@ -72,6 +72,7 @@
                 placement="top"
                 popper-class="tl-tooltip-clear"
                 @click.native="deleteobject(index)"
+                v-if="formData.okrInfoList.length > 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -128,6 +129,7 @@
                 placement="top"
                 popper-class="tl-tooltip-clear"
                 @click.native="deletekr(index,kindex)"
+                v-if="oitem.krList.length > 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -325,27 +327,31 @@ export default {
       // eslint-disable-next-line max-len
       this.server.getUndertakeOkr({ periodId: this.periodId || this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
         if (res.code == 200) {
-          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-            this.departokrList.push({
-              typeName: '目标O',
-              okrDetailObjectKr: item.o.okrDetailObjectKr,
-              okrDetailId: item.o.okrDetailId,
-              okrDetailVersion: item.o.okrDetailVersion,
-              checkFlag: false,
-            });
-            if (item.krList && item.krList.length > 0) {
-              item.krList.forEach((krItem, index) => {
-                this.departokrList.push({
-                  typeName: `KR${index + 1}`,
-                  okrDetailObjectKr: krItem.okrDetailObjectKr,
-                  okrDetailId: krItem.okrDetailId,
-                  okrDetailVersion: krItem.okrDetailVersion,
-                  checkFlag: false,
-                });
+          // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
+          if (res.data.parentUndertakeOkrInfoResult) {
+            res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+              this.departokrList.push({
+                typeName: '目标O',
+                okrDetailObjectKr: item.o.okrDetailObjectKr,
+                okrDetailId: item.o.okrDetailId,
+                okrDetailVersion: item.o.okrDetailVersion,
+                checkFlag: false,
               });
-            }
-          });
+              if (item.krList && item.krList.length > 0) {
+                item.krList.forEach((krItem, index) => {
+                  this.departokrList.push({
+                    typeName: `KR${index + 1}`,
+                    okrDetailObjectKr: krItem.okrDetailObjectKr,
+                    okrDetailId: krItem.okrDetailId,
+                    okrDetailVersion: krItem.okrDetailVersion,
+                    checkFlag: false,
+                  });
+                });
+              }
+            });
+          } else {
+            this.departokrList = [];
+          }
           // 将可承接列表转换成字符串
           this.departokrObject = JSON.stringify(this.departokrList);
           // 给已有的o加上可承接列表
@@ -372,7 +378,7 @@ export default {
     getCultureList() {
       this.server.queryCultureList().then((res) => {
         if (res.code == 200) {
-          this.philosophyList = res.data;
+          this.philosophyList = res.data || [];
           // 将价值观列表转换成字符串
           this.philosophyObject = JSON.stringify(this.philosophyList);
           // 给已有的o加上价值观

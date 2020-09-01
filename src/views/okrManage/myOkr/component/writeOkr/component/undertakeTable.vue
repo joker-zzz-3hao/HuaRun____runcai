@@ -21,7 +21,13 @@
           <div v-else>「最新版本」</div>
         </template>
       </el-table-column>
-      <el-table-column width="150" prop="okrDetailObjectKr"></el-table-column>
+      <el-table-column width="150" prop="okrDetailObjectKr">
+        <template slot-scope="scope">
+          <div>{{scope.row.okrDetailObjectKr}}</div>
+          <!-- 变更原因 -->
+          <div v-if="!scope.row.showPhil && scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 价值观 -->
     <div v-if="showPhil">
