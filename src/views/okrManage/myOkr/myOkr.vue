@@ -197,21 +197,32 @@ export default {
           if (['6', '7', '8'].includes(this.searchForm.status)) {
             this.okrList = [];
             const draftList = res.data || [];
-            draftList.forEach((item) => {
-              let okrInfo = {};
-              okrInfo = JSON.parse(item.paramJson);
-              this.okrList.push({
-                tableList: okrInfo.okrInfoList,
-                okrMain: {
-                  userName: item.updateBy || item.createBy,
-                  okrProgress: item.okrProgress,
-                  updateTime: item.updateTime || item.createTime,
-                  okrBelongType: okrInfo.okrBelongType,
-                },
-                id: item.id || item.approvalId,
-                params: item.paramJson,
+            if (draftList.length > 0) {
+              draftList.forEach((item) => {
+                let okrInfo = {};
+                okrInfo = JSON.parse(item.paramJson);
+                this.okrList.push({
+                  tableList: okrInfo.okrInfoList,
+                  okrMain: {
+                    userName: item.updateBy || item.createBy,
+                    okrProgress: item.okrProgress || 0,
+                    updateTime: item.updateTime || item.createTime,
+                    okrBelongType: okrInfo.okrBelongType,
+                  },
+                  id: item.id || item.approvalId,
+                  params: item.paramJson,
+                });
               });
-            });
+            } else {
+              this.okrList = [{
+                tableList: [], // okr列表
+                okrMain: { // okr公共信息
+                  userName: '',
+                  okrProgress: 0,
+                  updateTime: '',
+                },
+              }];
+            }
           } else {
             this.okrList = [{
               tableList: [], // okr列表
