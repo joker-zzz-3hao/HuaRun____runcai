@@ -18,7 +18,7 @@
       </div>
       <div>
         <span>承接自</span>
-        <span style="margin-left: 10px;">KR:至少五款产品完成升级</span>
+        <span style="margin-left: 10px;">KR:{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
       </div>
     </div>
   </div>

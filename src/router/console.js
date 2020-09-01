@@ -278,6 +278,19 @@ export default [
         },
         component: () => import('@/views/taskManage/myTask/index'),
       },
+      {
+        // 价值观管理
+        path: '/worthManage',
+        name: 'worthManage',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'worthManage',
+          title: 'worthManage',
+          power: '',
+        },
+        component: () => import('@/views/worthManage/worthManage/index'),
+      },
     ],
   },
 ];

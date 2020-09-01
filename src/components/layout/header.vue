@@ -14,8 +14,8 @@
           <div class="remind-state"></div>
         </li>
         <li class="user-info">
-          <img v-if="true" src="@/assets/images/user/user.jpg" alt />
-          <div v-else class="user-name">哲民</div>
+          <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
+          <div v-else class="user-name">{{userInfo.userName}}</div>
         </li>
       </ul>
     </div>
@@ -23,8 +23,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'tlHeader',
-
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
 };
 </script>
