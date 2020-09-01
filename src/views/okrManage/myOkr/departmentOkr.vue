@@ -34,7 +34,6 @@
       <tl-okr-table
         :tableList="tableList"
         :disabled="false"
-        :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog()"
