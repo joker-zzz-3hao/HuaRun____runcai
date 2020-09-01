@@ -292,6 +292,18 @@ export default [
         },
         component: () => import('@/views/taskManage/myTask/components/createTask'),
       },
+      {
+        path: '/worthManage',
+        name: 'worthManage',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'worthManage',
+          title: 'worthManage',
+          power: '',
+        },
+        component: () => import('@/views/worthManage/worthManage/index'),
+      },
     ],
   },
 ];
