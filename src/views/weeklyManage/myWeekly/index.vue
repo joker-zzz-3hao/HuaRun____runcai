@@ -2,12 +2,12 @@
   <div class="home">
     <div>
       <el-button
-        v-if="!this.weeklyData.weeklyId ||weeklyType == '1'"
+        v-if="weeklyType == '1'||!this.weeklyData.weeklyId"
         @click="standard"
         :class="{'is-stantard':weeklyType=='1'}"
       >标准版</el-button>
       <el-button
-        v-if="!this.weeklyData.weeklyId ||weeklyType == '0'"
+        v-if="weeklyType == '0'||!this.weeklyData.weeklyId"
         @click="simple"
         :class="{'is-stantard':weeklyType=='0'}"
       >简单版</el-button>
@@ -23,6 +23,9 @@
       :orgOkrList="orgOkrList"
       :originalMyOkrList="originalMyOkrList"
       :originalOrgOkrList="originalOrgOkrList"
+      :projectList="projectList"
+      :cultureList="cultureList"
+      @initValueAllFalse="initValueAllFalse"
       v-if="weeklyType=='1'"
     ></standard-Weekly>
     <!-- 简单版 -->
@@ -34,6 +37,9 @@
       :orgOkrList="orgOkrList"
       :originalMyOkrList="originalMyOkrList"
       :originalOrgOkrList="originalOrgOkrList"
+      :projectList="projectList"
+      :cultureList="cultureList"
+      @initValueAllFalse="initValueAllFalse"
       v-else
     ></simple-weekly>
   </div>
@@ -58,12 +64,14 @@ export default {
     return {
       server,
       calendarId: '',
-      weeklyType: '1',
+      weeklyType: '',
       weeklyData: {},
       myOkrList: [],
       orgOkrList: [],
       originalMyOkrList: [],
       originalOrgOkrList: [],
+      projectList: [],
+      cultureList: [],
     };
   },
   created() {
@@ -73,6 +81,28 @@ export default {
     init() {
       this.queryTeamOrPersonalTarget('my');
       this.queryTeamOrPersonalTarget('org');
+      this.getValues();
+      // 获取项目列表
+      this.getProjectList();
+    },
+    getValues() {
+      this.server.getValues().then((res) => {
+        if (res.code == 200) {
+          this.cultureList = res.data;
+          this.initValueAllFalse();
+        }
+      });
+    },
+    getProjectList(projectName) {
+      this.server.getProjectList({
+        pageSize: 10,
+        currentPage: 1,
+        projectName: projectName || '',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.projectList = res.data.content;
+        }
+      });
     },
     queryTeamOrPersonalTarget(myOrOrg) {
       const params = {
@@ -105,14 +135,14 @@ export default {
       for (const okr of okrDetails) {
         oIndex += 1;
         okr.indexText = `目标O${oIndex}`;
-        okr.checked = false;
+        this.$set(okr, 'checked', false);
         tempResult.push(okr);
         if (okr.krList && okr.krList.length > 0) {
           let krIndex = 0;
           for (const kr of okr.krList) {
             krIndex += 1;
             kr.indexText = `KR${krIndex}`;
-            kr.checked = false;
+            this.$set(kr, 'checked', false);
             tempResult.push(kr);
           }
         }
@@ -123,7 +153,14 @@ export default {
         this.myOkrList = [...tempResult];
       }
     },
+    // 价值观选项全初始化为未选中
+    initValueAllFalse() {
+      this.cultureList.forEach((value) => {
+        this.$set(value, 'checked', false);
+      });
+    },
     getWeeklyById(item) {
+      this.weeklyData = {};
       if (item.weeklyId) {
         this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
           if (res.code == 200) {

@@ -154,7 +154,7 @@
       <el-button @click="addItem" style>新增</el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <div style="marginTop:50px">
+    <!-- <div style="marginTop:50px">
       <h1>本周感想、建议、收获</h1>
       <el-form ref="formDomThought" :rules="formData.rules" :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
@@ -201,45 +201,44 @@
           </el-table-column>
         </el-table>
       </el-form>
-
-      <!-- 下周计划 -->
-      <div style="marginTop:50px">
-        <h1>下周计划</h1>
-        <el-form :rules="formData.rules" :model="formData" ref="formDom">
-          <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
-            <el-table-column label="序号" type="index"></el-table-column>
-            <el-table-column label="工作项" prop="planContent">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'weeklyPlanSaveList.' + scope.$index + '.planContent'"
-                  :rules="formData.rules.workContent"
-                >
-                  <el-input
-                    v-model.trim="scope.row.planContent"
-                    maxlength="100"
-                    clearable
-                    placeholder="请用一句话概括某项工作，不超过100个字符"
-                  ></el-input>
-                </el-form-item>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" prop="code">
-              <template slot-scope="scope">
-                <el-dropdown @command="deletePlanItem(scope.row)">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>删除</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-form>
-        <el-button @click="addPlanItem" style>添加</el-button>
-      </div>
-    </div>
+    </div>-->
+    <!-- 下周计划 -->
+    <!-- <div style="marginTop:50px">
+      <h1>下周计划</h1>
+      <el-form :rules="formData.rules" :model="formData" ref="formDom">
+        <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
+          <el-table-column label="序号" type="index"></el-table-column>
+          <el-table-column label="工作项" prop="planContent">
+            <template slot-scope="scope">
+              <el-form-item
+                :prop="'weeklyPlanSaveList.' + scope.$index + '.planContent'"
+                :rules="formData.rules.workContent"
+              >
+                <el-input
+                  v-model.trim="scope.row.planContent"
+                  maxlength="100"
+                  clearable
+                  placeholder="请用一句话概括某项工作，不超过100个字符"
+                ></el-input>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" prop="code">
+            <template slot-scope="scope">
+              <el-dropdown @command="deletePlanItem(scope.row)">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>删除</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form>
+      <el-button @click="addPlanItem" style>添加</el-button>
+    </div>-->
     <!-- 个人OKR完成度 -->
     <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
       <h1>个人OKR完成度</h1>
@@ -311,9 +310,15 @@
     <add-okr
       ref="addOkr"
       v-if="showAddOkr"
+      :showAddOkr.sync="showAddOkr"
       :currenItemrandomId="currenItemrandomId"
       :selectedOkr="selectedOkr"
       :server="server"
+      :myOkrList="myOkrList"
+      :orgOkrList="orgOkrList"
+      :originalMyOkrList="originalMyOkrList"
+      :originalOrgOkrList="originalOrgOkrList"
+      :cultureList="cultureList"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
   </div>
@@ -373,12 +378,24 @@ export default {
         return [];
       },
     },
+    projectList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
       server,
       weeklyEmotion: '0',
-      weeklyId: '',
+      weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
       currenItemrandomId: '',
       showAddOkr: false,
@@ -414,13 +431,9 @@ export default {
         weeklyPlanSaveList: [],
         weeklyThoughtSaveList: [],
       },
-      projectList: [],
       selectedOkr: [],
-
       tempResult: [],
       weeklyOkrSaveList: [],
-      valueIdList: [], // 被选中的价值观
-      okrIdList: [], // 备选整的
       riskList: [
         {
           value: 1,
@@ -455,16 +468,92 @@ export default {
   },
   methods: {
     init() {
-      // 获取项目列表
-      this.getProjectList();
       // 本周任务初始化数据
       this.addWork();
-
       // 下周计划初始化数据
       this.addNextWeekWork();
-
       // 本周感想初始化数据
       this.addThought();
+      // 如果是已提交过的数据，初始化数据
+      this.initPage();
+      // 自动提交
+      this.commitEveryFiveMin();
+    },
+    initPage() {
+      if (this.weeklyData.weeklyId) {
+        this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
+
+        // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+        this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
+        this.setWorkTableData();
+      }
+    },
+    setOkrProcess(weeklyOkrVoList) {
+      // 将上次保存的o、kr找出来，多行支撑项
+      const supportList = [];
+      for (const okr of weeklyOkrVoList) {
+        let supportObj = {};
+        for (const o of this.originalMyOkrList) {
+          if (okr.okrDetailId == o.okrDetailId) {
+            o.id = okr.id;
+            o.weeklyId = okr.weeklyId;
+            supportObj = { o };
+          }
+          for (const kr of o.krList) {
+            if (kr.okrDetailId == okr.okrDetailId) {
+              kr.id = okr.id;
+              kr.weeklyId = okr.weeklyId;
+              supportObj = { o, kr };
+            }
+          }
+        }
+        // 每行数据的支撑项整理好了
+        supportList.push(supportObj);
+      }
+      // 将支撑项塞到列表对应行中，监听到到表格数据变化侯，会将个人okr进度反显出来
+      for (const tableItem of this.formData.weeklyWorkVoSaveList) {
+        // 遍历整理好的数据
+        for (const supportItem of supportList) {
+          // 如果仅仅是个人目标
+          if (tableItem.workOkrList.length > 0 && tableItem.workOkrList[0].okrDetailId == supportItem.o.okrDetailId) {
+            this.$set(tableItem, 'supportMyOkrObj', supportItem);
+          }
+          // 如果是个人KR
+          if (
+            supportItem.kr
+            && tableItem.workOkrList.length > 0
+            && tableItem.workOkrList[0].okrDetailId == supportItem.kr.okrDetailId) {
+            this.$set(tableItem, 'supportMyOkrObj', supportItem);
+          }
+        }
+      }
+    },
+    setWorkTableData() {
+      this.weeklyEmotion = this.weeklyData.weeklyEmotion;// 心情
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        this.$set(element, 'randomId', Math.random().toString(36).substr(3));
+        const valueIdList = [];
+        const okrIdList = [];
+        element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
+          item.okrDetailId = item.id;
+          item.okrDetailObjectKr = item.cultureName;
+          this.$set(item, 'randomId', Math.random().toString(36).substr(3));
+          valueIdList.push(item.id);
+        });
+        element.workOkrList.forEach((item) => {
+          this.$set(item, 'randomId', Math.random().toString(36).substr(3));
+          okrIdList.push(item.okrDetailId);
+        });
+        this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
+        this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
+        this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
+        this.$set(element, 'validateProjectId', element.projectId);// 校验项目
+        this.$set(element, 'valueOrOkrIds', valueIdList.join(',') + okrIdList.join(','));// 校验支撑项
+        this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
+        this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
+      });
+    },
+    commitEveryFiveMin() {
       // 五分钟自动提交页面，不要校验
       this.timer = setInterval(() => {
         const params = {
@@ -477,32 +566,18 @@ export default {
           weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
           weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
         };
-        console.log(params);
-        // this.server.commitWeekly(params).then((res) => {
-        //   if (res.code == 200) {
-        //     this.$message.success('提交成功');
-        //   }
-        // });
+        this.server.commitWeekly(params).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('提交成功');
+          }
+        });
       }, 5 * 60 * 1000);
-    },
-
-    getProjectList(projectName) {
-      this.server.getProjectList({
-        pageSize: 10,
-        currentPage: 1,
-        projectName: projectName || '',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.projectList = res.data.content;
-        }
-      });
     },
     remoteMethod(query) {
       if (query !== '') {
         this.server.getProjectList(query);
       }
     },
-
     addItem() { // 添加本地数据
       this.addWork();
     },
@@ -563,6 +638,7 @@ export default {
       data.validateProjectId = '默认项目';//
     },
     addSupportOkr(data) {
+      this.$emit('initValueAllDalse');
       this.currenItemrandomId = data.randomId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
@@ -575,11 +651,15 @@ export default {
       for (const item of this.formData.weeklyWorkVoSaveList) {
         if (item.randomId == randomId) {
           item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
+          let valueIdList = [];
+          let okrIdList = [];
           // 删除对应okr、价值观id
-          this.valueIdList = this.valueIdList.filter((id) => okr.okrDetailId != id);
-          this.okrIdList = this.okrIdList.filter((id) => okr.okrDetailId != id);
-          item.okrCultureValueIds = this.valueIdList.join(',');
-          item.okrIds = this.okrIdList.join(',');
+          valueIdList = item.valueIdList.filter((id) => okr.okrDetailId != id);
+          okrIdList = item.okrIdList.filter((id) => okr.okrDetailId != id);
+          item.okrCultureValueIds = valueIdList.join(',');
+          item.okrIds = okrIdList.join(',');
+          this.$set(item, 'okrIdList', okrIdList);
+          this.$set(item, 'valueIdList', valueIdList);
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 删掉对应的支撑项
@@ -589,19 +669,19 @@ export default {
     },
 
     closeOkrDialog(selectedData) {
+      const valueIdList = [];
+      const okrIdList = [];
       for (const item of this.formData.weeklyWorkVoSaveList) {
         if (item.randomId == selectedData.currenItemrandomId) {
           // 给列表赋值，价值观、任务项，用于提交
-          this.valueIdList = [];
-          this.okrIdList = [];
           selectedData.selectedCulture.forEach((value) => {
-            this.valueIdList.push(value.okrDetailId);
+            valueIdList.push(value.okrDetailId);
           });
           selectedData.selectedOkr.forEach((okr) => {
-            this.okrIdList.push(okr.okrDetailId);
+            okrIdList.push(okr.okrDetailId);
           });
-          item.okrCultureValueIds = this.valueIdList.join(',');
-          item.okrIds = this.okrIdList.join(',');
+          item.okrCultureValueIds = valueIdList.join(',');
+          item.okrIds = okrIdList.join(',');
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 给列表赋值，价值观、任务项，用于展示
@@ -717,7 +797,11 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
               this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
             }
-            this.weeklyOkrSaveList.push({ ...data.supportMyOkrObj });
+            this.weeklyOkrSaveList.push({
+              id: data.supportMyOkrObj.kr.id || '',
+              weeklyId: data.supportMyOkrObj.kr.weeklyId || '',
+              ...data.supportMyOkrObj,
+            });
           }
         }
       },

@@ -8,9 +8,9 @@
   <div>
     <el-dialog
       :append-to-body="true"
-      :visible="visible"
-      v-if="visible"
-      @close="close"
+      :visible.sync="visible"
+      :before-close="close"
+      @closed="closed"
       title="支撑OKR/价值观"
       :close-on-click-modal="false"
     >
@@ -81,7 +81,6 @@ export default {
   components: {
   },
   props: {
-
     server: {
       type: Object,
       default() {
@@ -124,6 +123,12 @@ export default {
         return [];
       },
     },
+    cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
 
   },
   data() {
@@ -132,7 +137,7 @@ export default {
       loading: false,
       initUserAccount: '',
       selectedOkrList: [],
-      cultureList: [],
+      // cultureList: [],
       selectedCultureList: [],
       supportMyOkrObj: {},
       selectOkrList: [],
@@ -143,22 +148,19 @@ export default {
     };
   },
   created() {
+
+  },
+  mounted() {
     this.init();
   },
-  mounted() {},
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    okrAndCulture() {
-      return [...this.myOkrList, ...this.orgOkrList];
-    },
   },
   methods: {
     init() {
-      this.queryTeamOrPersonalTarget('my');
-      this.queryTeamOrPersonalTarget('org');
-      this.getValues();
+      this.initSelectedData();
     },
     show() {
       this.visible = true;
@@ -175,6 +177,9 @@ export default {
     },
     close() {
       this.visible = false;
+    },
+    closed() {
+      this.$emit('update:showAddOkr', false);
     },
     initSelectedData() {
       for (const item of this.selectedOkr) {
@@ -200,7 +205,7 @@ export default {
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
             // 反显
-            culture.checked = true;
+            this.$set(culture, 'checked', true);
             // 赋值已选项
             this.selectedCultureList.push({
               okrDetailId: culture.id,
@@ -209,62 +214,7 @@ export default {
           }
         }
       }
-    },
-    queryTeamOrPersonalTarget(myOrOrg) {
-      const params = {
-        myOrOrg,
-        status: '1',
-        orgId: this.userInfo.orgId,
-      };
-      this.server.queryTeamOrPersonalTarget(params).then((res) => {
-        if (res.code == 200) {
-          if (myOrOrg == 'my') {
-            // 我的目标
-            this.myOkrList = [];
-            this.originalMyOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
-          } else {
-            // 团队目标
-            this.orgOkrList = [];
-            this.originalOrgOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
-          }
-        }
-      });
-    },
-    setMyOrOrgOkrList(okrDetails, orgOrMy) {
-      let tempResult = this.myOkrList;
-      if (orgOrMy == 'org') {
-        tempResult = this.orgOkrList;
-      }
-      let oIndex = 0;
-      for (const okr of okrDetails) {
-        oIndex += 1;
-        okr.indexText = `目标O${oIndex}`;
-        okr.checked = false;
-        tempResult.push(okr);
-        if (okr.krList && okr.krList.length > 0) {
-          let krIndex = 0;
-          for (const kr of okr.krList) {
-            krIndex += 1;
-            kr.indexText = `KR${krIndex}`;
-            kr.checked = false;
-            tempResult.push(kr);
-          }
-        }
-      }
-      if (orgOrMy == 'org') {
-        this.orgOkrList = [...tempResult];
-      } else {
-        this.myOkrList = [...tempResult];
-      }
-    },
-    getValues() {
-      this.server.getValues().then((res) => {
-        if (res.code == 200) {
-          this.cultureList = res.data;
-        }
-      });
+      this.$forceUpdate();
     },
     orgOkrChange(okr) {
       this.orgOkr = this.orgSelectData.length > 0 ? [okr] : [];
@@ -296,15 +246,6 @@ export default {
     },
   },
   watch: {
-    okrAndCulture: {
-      handler(val) {
-        if (val && this.myOkrList.length > 0 && this.orgOkrList.length > 0 && this.cultureList.length > 0) {
-          if (this.selectedOkr.length > 0) {
-            this.initSelectedData();
-          }
-        }
-      },
-    },
   },
   updated() {},
   beforeDestroy() {},
