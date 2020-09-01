@@ -1,16 +1,26 @@
 <template>
   <div class="home">
-    <div style="margin-left:20px;" v-if="!showOne">
+    <div style="margin-left:20px; display: flex;" v-if="!showOne">
       <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
-    </div>
-    <div style="margin-left:20px;" v-if="!showOne">
-      <tl-department
+
+      <div @click="showCascader=!showCascader">
+        <el-input v-model="orgName"></el-input>
+      </div>
+      <el-cascader-panel
+        v-model="orgFullId"
+        :style="{display: showCascader ? '' : 'none'}"
+        :options="departmentData"
+        :show-all-levels="false"
+        @change="selectIdChange"
+        :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
+      ></el-cascader-panel>
+      <!-- <tl-department
         type="department"
         :data="departmentData"
         :initDepartment="initDepartment"
         @handleData="handleData"
         :defaultProps="departmentDefaultProps"
-      ></tl-department>
+      ></tl-department>-->
     </div>
     <!-- 返回 -->
     <div>
@@ -57,7 +67,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import department from '@/components/department';
+// import department from '@/components/department';
 import periodSelect from '@/components/periodSelect';
 import svgtree from '@/components/svgtree';
 import card from './card';
@@ -71,7 +81,7 @@ export default {
   components: {
     'tl-svgtree': svgtree,
     card,
-    'tl-department': department,
+    // 'tl-department': department,
     'tl-periodselect': periodSelect,
   },
   data() {
@@ -96,6 +106,9 @@ export default {
       showOne: false, // 是否只展示一棵树
       orgId: '',
       periodList: [],
+      orgFullId: '',
+      orgFullIdList: [],
+      showCascader: false,
     };
   },
   computed: {
@@ -115,7 +128,8 @@ export default {
       self.searchForm.okrDetailId = self.$route.params.okrDetailId || '';
       self.searchForm.periodId = self.$route.params.periodId || '';
       self.orgId = self.userInfo.orgId || '';
-      self.searchForm.orgId = self.$route.params.orgId || '';
+      self.searchForm.orgId = self.$route.params.orgId || self.userInfo.orgId || '';
+      self.orgName = self.userInfo.orgName || '';
       if (!self.showOne) {
         // 查询周期
         self.server.getOkrCycleList().then((res) => {
@@ -203,10 +217,37 @@ export default {
       console.log('writeokrCycle', data);
       this.getmaps();
     },
-    handleData(data) {
-      this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
-      this.orgId = '';
+    // handleData(data) {
+    //   this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
+    //   this.orgId = '';
+    //   this.getmaps();
+    // },
+    // 选择部门
+    selectIdChange(data) {
+      this.showCascader = false;
+      this.orgFullId = data[data.length - 1];
+      this.orgFullIdList = this.orgFullId.split(':');
+      this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      // const orgId = this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      this.searchForm.orgId = this.orgFullIdList[this.orgFullIdList.length - 1];
+
+      console.log(this.orgFullId);
+      console.log(this.orgFullIdList);
+      // console.log(this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1));
+      this.getOrgName(this.departmentData, 0);
       this.getmaps();
+    },
+    // 显示部门名
+    getOrgName(data, index) {
+      data.forEach((item) => {
+        if (this.orgFullIdList[index] == item.orgId) {
+          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
+            this.getOrgName(item.children, index + 1);
+          } else if ((index + 1) == this.orgFullIdList.length) {
+            this.orgName = item.orgName;
+          }
+        }
+      });
     },
     // 当点击根节点，收起其他已打开的树
     handleTree(data) {

@@ -121,6 +121,8 @@ export default {
     treeData(val) {
       if (val && val.length > 0) {
         this.initData(JSON.parse(JSON.stringify(val)));
+        console.log('tree', val);
+        this.$forceUpdate();
       }
     },
   },
@@ -159,15 +161,18 @@ export default {
       data.forEach((v) => {
         if (v[this.fatherId]) {
           const p = keys[v[this.fatherId]]; // p为v的上一级
-          p.children = p.children || []; // 创建p的子节点数组
-          p.children.push(v); // 把当前节点放到p的子节点数组里
-          v.parent = p;
-          v.deep = p.deep + 1; // 深度为p的深度+1
-          // v.left = v.deep * 150 + 10;
-          v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
-          v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
-          v.open = v.deep < 1; // 除根节点默认open为false
-          v.show = v.deep < 2; // 大于2层默认show为false
+          console.log('nodev', v);
+          if (p) {
+            p.children = p.children || []; // 创建p的子节点数组
+            p.children.push(v); // 把当前节点放到p的子节点数组里
+            v.parent = p;
+            v.deep = p.deep + 1; // 深度为p的深度+1
+            // v.left = v.deep * 150 + 10;
+            v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
+            v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
+            v.open = v.deep < 1; // 除根节点默认open为false
+            v.show = v.deep < 2; // 大于2层默认show为false
+          }
         } else {
           root = v;
           v.open = true;
