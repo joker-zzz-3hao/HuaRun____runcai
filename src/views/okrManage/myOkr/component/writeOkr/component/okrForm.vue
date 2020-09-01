@@ -48,8 +48,10 @@
                         v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
                         @click="openUndertake(index)"
                       >
-                        <a>{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}</a>
-                        <a>{{oitem.cultureName}}</a>
+                        <a
+                          v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr"
+                        >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}</a>
+                        <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
                       </p>
                       <el-button
                         plain
@@ -67,12 +69,13 @@
               </div>
               <el-tooltip
                 class="icon-clear"
+                :class="{'is-disabled': formData.okrInfoList.length === 1}"
                 effect="dark"
                 content="删除"
                 placement="top"
                 popper-class="tl-tooltip-clear"
                 @click.native="formData.okrInfoList.length > 1 && deleteobject(index)"
-                :disabled="formData.okrInfoList.length <= 1"
+                :disabled="formData.okrInfoList.length == 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -124,12 +127,13 @@
               </div>
               <el-tooltip
                 class="icon-clear"
+                :class="{'is-disabled': oitem.krList.length === 1}"
                 effect="dark"
                 content="删除"
                 placement="top"
                 popper-class="tl-tooltip-clear"
                 @click.native="oitem.krList.length > 1 && deletekr(index,kindex)"
-                :disabled="oitem.krList.length <= 1"
+                :disabled="oitem.krList.length == 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -144,9 +148,19 @@
         </el-button>
       </el-scrollbar>
     </div>
-    <el-button v-if="isnew" @click="summit()">创建目标</el-button>
-    <el-button v-if="isnew && searchForm.okrStatus != '8'" @click="saveDraft()">保存为草稿</el-button>
-    <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button>
+    <div class="operating-panel">
+      <div class="flex-auto">
+        <el-button
+          plain
+          v-if="isnew && searchForm.okrStatus != '8'"
+          @click="saveDraft()"
+          class="tl-btn amt-border-fadeout"
+        >保存为草稿</el-button>
+      </div>
+      <el-button type="primary" v-if="isnew" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
+      <el-button plain class="tl-btn amt-border-fadeout">取消</el-button>
+    </div>
+    <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
     <el-drawer
       title="关联承接项"

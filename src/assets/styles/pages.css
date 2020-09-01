@@ -180,21 +180,22 @@
   height: 100%;
 }
 
-.create-okr .el-scrollbar .el-scrollbar__view {
-  padding: 0 20px 30px 0;
+.create-okr .okr-info .el-scrollbar .el-scrollbar__view {
+  padding: 0 20px 0 0;
 }
 
 .create-okr .okr-info {
   height: 100%;
-  height: calc(100% - 140px);
+  height: calc(100% - 170px);
 }
 
 .create-okr .el-drawer__body {
   margin: 10px 0 0 0;
-  width: 800px;
+  width: 850px;
 }
 
 .create-okr .tl-diy-timeline {
+  margin: 0 0 30px 0;
   height: 100%;
 }
 
@@ -262,7 +263,7 @@
 }
 
 .create-okr .timeline-list .item-group .el-form-item {
-  flex: 0 0 27%;
+  flex: 0 0 28%;
 }
 
 .create-okr .timeline-list .item-group .el-form-item:last-child {
@@ -284,7 +285,7 @@
 }
 
 .create-okr .list-add {
-  margin: 30px 0 0 0;
+  margin: 30px 0 0 20px;
 }
 
 

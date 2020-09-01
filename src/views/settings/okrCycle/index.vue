@@ -20,7 +20,7 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="periodName" label="OKR周期名称" min-width="180">
+            <el-table-column prop="periodName" label="OKR周期名称" min-width="240">
               <template slot-scope="scope">
                 <em>{{scope.row.periodName}}</em>
                 <span v-if="scope.row.checkStatus=='1'">默认周期</span>
