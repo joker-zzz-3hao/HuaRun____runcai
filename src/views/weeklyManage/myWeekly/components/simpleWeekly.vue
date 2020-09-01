@@ -150,6 +150,7 @@
           <div>
             <span>KR</span>
             <span style="marginLeft:15px">{{item.kr.okrDetailObjectKr}}</span>
+            <span style="marginLeft:15px">被工作项{{}}支持</span>
             <span style="marginLeft:15px">
               风险状态
               <el-button :class="{'no-risk':item.confidenceAfter == 1}"></el-button>
@@ -178,7 +179,7 @@
         <div v-else>
           <div>
             目标
-            <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}</span>
+            <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}被工作项支持</span>
             <span style="marginLeft:15px">
               当前进度
               <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
@@ -548,9 +549,9 @@ export default {
       }
     },
     closeOkrDialog(selectedData) {
-      const valueIdList = [];
-      const okrIdList = [];
       for (const item of this.formData.weeklyWorkVoSaveList) {
+        const valueIdList = [];
+        const okrIdList = [];
         // 本地数据、后端数据
         if (item.randomId == selectedData.currenItemrandomId || item.workId == selectedData.currenItemrandomId) {
           // 给列表赋值，价值观、任务项，用于提交
@@ -563,6 +564,8 @@ export default {
           });
           item.okrCultureValueIds = valueIdList.join(',');
           item.okrIds = okrIdList.join(',');
+          this.$set(item, 'valueIdList', valueIdList);
+          this.$set(item, 'okrIdList', okrIdList);
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 给列表赋值，价值观、任务项，用于展示

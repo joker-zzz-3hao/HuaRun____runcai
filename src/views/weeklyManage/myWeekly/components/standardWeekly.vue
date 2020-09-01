@@ -676,18 +676,20 @@ export default {
           item.okrIds = okrIdList.join(',');
           this.$set(item, 'okrIdList', okrIdList);
           this.$set(item, 'valueIdList', valueIdList);
+
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 删掉对应的支撑项
+          // item.selectedOkr = selectedData.selectedOkrAndCulture;
           delete item.supportMyOkrObj;
         }
       }
     },
 
     closeOkrDialog(selectedData) {
-      const valueIdList = [];
-      const okrIdList = [];
       for (const item of this.formData.weeklyWorkVoSaveList) {
+        const valueIdList = [];
+        const okrIdList = [];
         if (item.randomId == selectedData.currenItemrandomId) {
           // 给列表赋值，价值观、任务项，用于提交
           selectedData.selectedCulture.forEach((value) => {
@@ -698,6 +700,8 @@ export default {
           });
           item.okrCultureValueIds = valueIdList.join(',');
           item.okrIds = okrIdList.join(',');
+          this.$set(item, 'valueIdList', valueIdList);
+          this.$set(item, 'okrIdList', okrIdList);
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 给列表赋值，价值观、任务项，用于展示
