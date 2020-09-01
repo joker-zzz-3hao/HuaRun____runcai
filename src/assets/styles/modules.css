@@ -818,6 +818,15 @@
   border-radius: 2px;
   height: 32px;
   line-height: unset;
+  color: #879099;
+}
+
+.tl-tooltip-clear.is-dark {
+  background: #7e7e7e;
+}
+
+.tl-tooltip-clear.is-dark .popper__arrow::after {
+  border-top-color: #7e7e7e;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -1034,6 +1043,75 @@
 .tl-diy-timeline .el-form-item__content,
 .tl-diy-timeline .el-form-item__label {
   line-height: unset;
+}
+
+.tl-diy-timeline .tl-form .el-form-item__label {
+  padding: 0 20px 0 0;
+}
+
+.tl-diy-timeline .tl-form .el-form-item {
+  margin: 0 0 24px 0;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child .el-form-item__content {
+  flex: unset;
+}
+
+/* tl-diy-popover */
+.tl-diy-popover {
+  display: flex;
+}
+
+.tl-diy-popover .el-popover {
+  padding: 10px 0;
+}
+
+.tl-diy-popover li,
+.tl-diy-popover .el-popover__reference {
+  display: flex;
+  align-items: center;
+}
+
+.tl-diy-popover li {
+  padding: 0 20px;
+  height: 32px;
+}
+
+.tl-diy-popover .state-grid {
+  margin: 0 10px 0 0;
+  display: flex;
+}
+
+.tl-diy-popover .state-grid div {
+  margin: 0 2px 0 0;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: #e5e9ee;
+  border-radius: 2px;
+}
+
+.tl-diy-popover .state-grid .is-no-risk {
+  background: #4ccd79;
+}
+
+.tl-diy-popover .state-grid .is-risks {
+  background: #ffbc20;
+}
+
+.tl-diy-popover .state-grid .is-uncontrollable {
+  background: #fb4c59;
+}
+
+.tl-diy-popover .el-popover__reference i {
+  margin: 0 0 0 30px;
+  color: #c4cbd2;
+  transform: rotate(0deg);
+  transition: all .3s ease-out;
+}
+
+.tl-diy-popover .el-popover__reference i.is-show {
+  transform: rotate(180deg);
 }
 
 /* ========================================================公共页面布局组件================================================================== */

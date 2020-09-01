@@ -182,7 +182,7 @@
 
 .create-okr .okr-info {
   height: 100%;
-  height: calc(100% - 120px);
+  height: calc(100% - 140px);
 }
 
 .create-okr .el-drawer__body {
@@ -195,7 +195,7 @@
 }
 
 .create-okr .allocation-info {
-  margin: 0 20px 0 0;
+  margin: 0 20px 20px 0;
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -243,7 +243,13 @@
 }
 
 .create-okr .timeline-list .icon-clear {
-  margin: 0 10px 0 20px;
+  margin: 40px 20px 0 20px;
+  color: #bcc4cc;
+  transition: all .3s ease-out;
+}
+
+.create-okr .timeline-list .icon-clear:hover {
+  color: #685df1;
 }
 
 .create-okr .timeline-list dd {
@@ -256,8 +262,12 @@
 }
 
 .create-okr .timeline-list .item-group .el-form-item {
-  display: flex;
-  align-items: center;
+  flex: 0 0 26%;
+}
+
+.create-okr .timeline-list .item-group .el-form-item:last-child {
+  flex: 1 1 auto;
+  justify-content: flex-end;
 }
 
 .create-okr .timeline-list .tl-input-number {
@@ -266,6 +276,11 @@
 
 .create-okr .timeline-list .item-group .tl-btn {
   height: 30px;
+}
+
+.create-okr .timeline-list .list-title,
+.create-okr .timeline-list .el-form-item__label {
+  color: #4d5155;
 }
 
 
