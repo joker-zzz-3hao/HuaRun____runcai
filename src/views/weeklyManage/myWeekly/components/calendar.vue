@@ -60,6 +60,9 @@ export default {
   created() {
     // 获取每月日历
     this.getWeek();
+    this.$busOn('refreshCalendar', () => {
+      this.getWeek();
+    });
   },
   mounted() {},
   computed: {
@@ -84,6 +87,7 @@ export default {
             week.btnType = '';
           });
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
+
           this.selectCurrentWeek();
         }
       });

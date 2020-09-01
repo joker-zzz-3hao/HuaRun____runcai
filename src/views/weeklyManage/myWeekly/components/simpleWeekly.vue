@@ -208,9 +208,15 @@
     <add-okr
       ref="addOkr"
       v-if="showAddOkr"
+      :showAddOkr.sync="showAddOkr"
       :currenItemrandomId="currenItemrandomId"
       :selectedOkr="selectedOkr"
       :server="server"
+      :myOkrList="myOkrList"
+      :orgOkrList="orgOkrList"
+      :originalMyOkrList="originalMyOkrList"
+      :originalOrgOkrList="originalOrgOkrList"
+      :cultureList="cultureList"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
   </div>
@@ -273,7 +279,18 @@ export default {
         return [];
       },
     },
-
+    projectList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -306,12 +323,9 @@ export default {
         },
         weeklyWorkVoSaveList: [],
       },
-      projectList: [],
       weekList: [{}],
       selectedOkr: [],
       weeklyOkrSaveList: [],
-      valueIdList: [], // 被选中的价值观
-      okrIdList: [], // 备选整的
       riskList: [
         {
           value: 1,
@@ -354,8 +368,6 @@ export default {
   },
   methods: {
     init() {
-      // 获取项目列表
-      this.getProjectList();
       // 本周任务初始化数据
       this.addWork();
       // 如果是已提交过的数据，初始化数据
@@ -365,27 +377,10 @@ export default {
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
-        this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;
-
+        this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
         this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
-
-        // 反显支撑项TODO:列表中支撑项数据没保存  删除一条数据  校验失败
-        this.formData.weeklyWorkVoSaveList.forEach((element) => {
-          const okrCultureValueIdList = [];
-          const okrIdList = [];
-          element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
-            item.okrDetailId = item.id;
-            item.okrDetailObjectKr = item.cultureName;
-            okrCultureValueIdList.push(item.id);
-          });
-          element.workOkrList.forEach((item) => {
-            okrIdList.push(item.okrDetailId);
-          });
-          this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
-          this.$set(element, 'validateProjectId', element.projectId);// 校验项目
-          this.$set(element, 'valueOrOkrIds', okrCultureValueIdList.join(',') + okrIdList.join(','));// 校验支撑项
-        });
+        this.setWorkTableData();
       }
     },
     setOkrProcess(weeklyOkrVoList) {
@@ -409,7 +404,6 @@ export default {
         }
         // 每行数据的支撑项整理好了
         supportList.push(supportObj);
-        debugger;
       }
       // 将支撑项塞到列表对应行中，监听到到表格数据变化侯，会将个人okr进度反显出来
       for (const tableItem of this.formData.weeklyWorkVoSaveList) {
@@ -428,8 +422,31 @@ export default {
           }
         }
       }
-
-      console.log(this.formData.weeklyWorkVoSaveList);
+    },
+    setWorkTableData() {
+      this.weeklyEmotion = this.weeklyData.weeklyEmotion;// 心情
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        this.$set(element, 'randomId', Math.random().toString(36).substr(3));
+        const valueIdList = [];
+        const okrIdList = [];
+        element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
+          item.okrDetailId = item.id;
+          item.okrDetailObjectKr = item.cultureName;
+          this.$set(item, 'randomId', Math.random().toString(36).substr(3));
+          valueIdList.push(item.id);
+        });
+        element.workOkrList.forEach((item) => {
+          this.$set(item, 'randomId', Math.random().toString(36).substr(3));
+          okrIdList.push(item.okrDetailId);
+        });
+        this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
+        this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
+        this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
+        this.$set(element, 'validateProjectId', element.projectId);// 校验项目
+        this.$set(element, 'valueOrOkrIds', valueIdList.join(',') + okrIdList.join(','));// 校验支撑项
+        this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
+        this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
+      });
     },
     commitEveryFiveMin() {
       // 五分钟自动提交页面，无需校验页面必填项
@@ -446,11 +463,11 @@ export default {
         };
         console.log(params);
         if (this.calendarId) {
-          // this.server.commitWeekly(params).then((res) => {
-          //   if (res.code == 200) {
-          //     this.$message.success('提交成功');
-          //   }
-          // });
+          this.server.commitWeekly(params).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('提交成功');
+            }
+          });
         }
       }, 5 * 60 * 1000);
     },
@@ -471,17 +488,7 @@ export default {
         validateProjectId: '', // 用于校验项目是否选中
       });
     },
-    getProjectList(projectName) {
-      this.server.getProjectList({
-        pageSize: 10,
-        currentPage: 1,
-        projectName: projectName || '',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.projectList = res.data.content;
-        }
-      });
-    },
+
     remoteMethod(query) {
       if (query !== '') {
         this.server.getProjectList(query);
@@ -494,9 +501,16 @@ export default {
       week.projectId = week.validateProjectId;
     },
     deleteItem(item) {
-      // 本地数据
+      // 本地数据、后端数据
       this.formData.weeklyWorkVoSaveList = this.formData.weeklyWorkVoSaveList.filter(
-        (thisWeek) => thisWeek.randomId != item.randomId,
+        (thisWeek) => {
+          if (item.randomId) {
+            return thisWeek.randomId != item.randomId;
+          } if (item.workId) {
+            return thisWeek.workId != item.workId;
+          }
+          return thisWeek;
+        },
       );
     },
     selectTempPro(data) {
@@ -504,6 +518,7 @@ export default {
       data.validateProjectId = '默认项目';//
     },
     addSupportOkr(data) {
+      this.$emit('initValueAllFalse');
       this.currenItemrandomId = data.randomId || data.workId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
@@ -517,12 +532,16 @@ export default {
         // 本地数据、后端数据
         if (item.randomId == randomId || item.workId == okr.workId) {
           item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
+          let valueIdList = [];
+          let okrIdList = [];
           // 删除对应okr、价值观id
-          this.valueIdList = this.valueIdList.filter((id) => okr.okrDetailId != id);
-          this.okrIdList = this.okrIdList.filter((id) => okr.okrDetailId != id);
-          item.okrCultureValueIds = this.valueIdList.join(',');
-          item.okrIds = this.okrIdList.join(',');
+          valueIdList = item.valueIdList.filter((id) => okr.okrDetailId != id);
+          okrIdList = item.okrIdList.filter((id) => okr.okrDetailId != id);
+          item.okrCultureValueIds = valueIdList.join(',');
+          item.okrIds = okrIdList.join(',');
           // 添加该字段用于校验支撑项
+          this.$set(item, 'okrIdList', okrIdList);
+          this.$set(item, 'valueIdList', valueIdList);
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 删掉对应的支撑项
           delete item.supportMyOkrObj;
@@ -530,20 +549,21 @@ export default {
       }
     },
     closeOkrDialog(selectedData) {
+      const valueIdList = [];
+      const okrIdList = [];
       for (const item of this.formData.weeklyWorkVoSaveList) {
         // 本地数据、后端数据
         if (item.randomId == selectedData.currenItemrandomId || item.workId == selectedData.currenItemrandomId) {
           // 给列表赋值，价值观、任务项，用于提交
-          this.valueIdList = [];
-          this.okrIdList = [];
+
           selectedData.selectedCulture.forEach((value) => {
-            this.valueIdList.push(value.okrDetailId);
+            valueIdList.push(value.okrDetailId);
           });
           selectedData.selectedOkr.forEach((okr) => {
-            this.okrIdList.push(okr.okrDetailId);
+            okrIdList.push(okr.okrDetailId);
           });
-          item.okrCultureValueIds = this.valueIdList.join(',');
-          item.okrIds = this.okrIdList.join(',');
+          item.okrCultureValueIds = valueIdList.join(',');
+          item.okrIds = okrIdList.join(',');
           // 添加该字段用于校验支撑项
           this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
           // 给列表赋值，价值观、任务项，用于展示
@@ -569,6 +589,8 @@ export default {
           this.server.commitWeekly(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');
+              // 刷新日历数据
+              this.$busEmit('refreshCalendar');
             }
           });
         }
@@ -593,7 +615,6 @@ export default {
         this.weeklyOkrSaveList = [];
         for (const data of tableData) {
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
-            debugger;
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.kr.okrDetailConfidence);
@@ -608,13 +629,12 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
             }
             this.weeklyOkrSaveList.push({
-              id: data.supportMyOkrObj.id || '',
-              weeklyId: data.supportMyOkrObj.weeklyId || '',
+              id: data.supportMyOkrObj.kr.id || '',
+              weeklyId: data.supportMyOkrObj.kr.weeklyId || '',
               ...data.supportMyOkrObj,
-            });// TODO:缺少weeklyId，id
+            });
           }
         }
-        console.log(this.weeklyOkrSaveList);
       },
       deep: true,
     },

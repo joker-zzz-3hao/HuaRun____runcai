@@ -1,13 +1,16 @@
+/* eslint-disable operator-linebreak */
 import Vue from 'vue';
 
 const $bus = new Vue();
 export default {
   methods: {
     hasPower(power) {
-      const userPowers = (this.$store.state.common.userInfo.privilegeList || []).map((item) => item.privilegeCode);
+      const userPowers = (this.$store.state.common.userInfo.privilegeList || []).map((item) => item
+        .privilegeCode);
       if (typeof power == 'string') {
         return !!userPowers.includes(power) || userPowers.includes('admin');
-      } if (Array.isArray(power)) {
+      }
+      if (Array.isArray(power)) {
         let result = true;
         if (!userPowers.includes('admin')) {
           power.forEach((item) => {
@@ -29,7 +32,9 @@ export default {
     },
     // 查询域名
     getOrigin() {
-      const origin = window.location.origin ? window.location.origin : window.location.href.split('/#')[0];
+      const origin = window.location.origin ? window.location.origin : window.location.href.split(
+        '/#',
+      )[0];
       return origin;
     },
     // 查询链接参数
@@ -45,9 +50,9 @@ export default {
     },
     // 直接下载nginx上资源
     downloadDoc(docName, locale) {
-      const url = locale == 'N'
-        ? `${process.env.API.VUE_APP_PORTAL}/resource/${docName}`
-        : `${process.env.API.VUE_APP_PORTAL}/resource/${this.localRead('locale')}/${docName}`;
+      const url = locale == 'N' ?
+        `${process.env.API.VUE_APP_PORTAL}/resource/${docName}` :
+        `${process.env.API.VUE_APP_PORTAL}/resource/${this.localRead('locale')}/${docName}`;
       window.open(url);
     },
     // 清除cookie
@@ -57,9 +62,12 @@ export default {
       if (keys) {
         // eslint-disable-next-line no-plusplus
         for (let i = keys.length; i--;) {
-          document.cookie = `${keys[i]}=0;path=/;expires=${new Date(0).toUTCString()}`; // 清除当前域名下的,例如：m.kevis.com
-          document.cookie = `${keys[i]}=0;path=/;domain=${document.domain};expires=${new Date(0).toUTCString()}`; // 清除当前域名下的，例如 .m.kevis.com
-          document.cookie = `${keys[i]}=0;path=/;domain=kevis.com;expires=${new Date(0).toUTCString()}`; // 清除一级域名下的或指定的，例如 .kevis.com
+          document.cookie =
+            `${keys[i]}=0;path=/;expires=${new Date(0).toUTCString()}`; // 清除当前域名下的,例如：m.kevis.com
+          document.cookie =
+            `${keys[i]}=0;path=/;domain=${document.domain};expires=${new Date(0).toUTCString()}`; // 清除当前域名下的，例如 .m.kevis.com
+          document.cookie =
+            `${keys[i]}=0;path=/;domain=kevis.com;expires=${new Date(0).toUTCString()}`; // 清除一级域名下的或指定的，例如 .kevis.com
         }
       }
     },
@@ -98,7 +106,8 @@ export default {
       for (const k in opt) {
         ret = new RegExp(`(${k})`).exec(fmt);
         if (ret) {
-          fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, '0')));
+          fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1]
+            .length, '0')));
         }
       }
       return fmt;
@@ -153,7 +162,8 @@ export default {
           return `${content.map((item) => `
             <dd>${item}</dd>
           `).join('')}`;
-        } if (typeof content === 'string') {
+        }
+        if (typeof content === 'string') {
           return `<dd>${content}</dd>`;
         }
       }
@@ -255,6 +265,12 @@ export default {
       obj.msgType = 'waiting';
       obj.customClass = 'waiting';
       return this.$xmsgbox(obj);
+    },
+    $busOn(eventName, callback = () => {}) {
+      $bus.$on(eventName, callback);
+    },
+    $busEmit(eventName, params = {}) {
+      $bus.$emit(eventName, params);
     },
   },
 };

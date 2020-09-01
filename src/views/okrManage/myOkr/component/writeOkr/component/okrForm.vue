@@ -2,7 +2,7 @@
   <div class="okr-info">
     <div class="tl-diy-timeline">
       <el-scrollbar>
-        <el-form :model="formData" ref="dataForm">
+        <el-form :model="formData" ref="dataForm" class="tl-form">
           <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
             <dt>
               <div class="list-info">
@@ -43,15 +43,18 @@
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
-                    <el-form-item label="承接自" @click.native="openUndertake(index)">
-                      <div
-                        class="sdf"
+                    <el-form-item label="承接自">
+                      <p
                         v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
-                      >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}{{oitem.cultureName}}</div>
+                        @click="openUndertake(index)"
+                      >
+                        <a>{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}</a>
+                        <a>{{oitem.cultureName}}</a>
+                      </p>
                       <el-button
                         plain
                         icon="el-icon-plus"
-                        @click="handleDelete"
+                        @click.native="openUndertake(index)"
                         class="tl-btn amt-border-slip"
                         v-else
                       >
@@ -62,9 +65,16 @@
                   </div>
                 </div>
               </div>
-              <div class="icon-clear" @click="deleteobject(index)">
+              <el-tooltip
+                class="icon-clear"
+                effect="dark"
+                content="删除"
+                placement="top"
+                popper-class="tl-tooltip-clear"
+                @click.native="deleteobject(index)"
+              >
                 <i class="el-icon-minus"></i>
-              </div>
+              </el-tooltip>
             </dt>
             <dd v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
               <div class="list-info">
@@ -111,9 +121,15 @@
                   </div>
                 </div>
               </div>
-              <div class="icon-clear" @click="deletekr(index,kindex)">
+              <el-tooltip
+                class="icon-clear"
+                effect="dark"
+                content="删除"
+                placement="top"
+                @click.native="deletekr(index,kindex)"
+              >
                 <i class="el-icon-minus"></i>
-              </div>
+              </el-tooltip>
             </dd>
             <el-button @click="addkr(index)" class="sub-list-add">+（加kr）</el-button>
           </dl>
