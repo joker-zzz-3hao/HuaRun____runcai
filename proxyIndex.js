@@ -2,7 +2,7 @@ const apiList = {
   mock: 'https://portal-test.crcloud.com',
   sit: 'https://cr-talent-dev.crcloud.com',
   // sit: 'http://10.200.197.21:8080',
-  pre: 'https://portal-pre.crcloud.com',
+  uat: 'https://cr-talent-uat.crcloud.com',
   prod: 'https://portal-prod.crcloud.com',
 };
 const api = apiList[process.env.VUE_APP_NODE_ENV];
