@@ -140,7 +140,7 @@
             </dd>
             <dd style="display:flex">
               <span>风险状态</span>
-              <div v-for="item in new Array(3)" :key="item"></div>
+              <span>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
             </dd>
             <!-- </dl> -->
             <!-- 可在折叠面板body处添加内容 -->

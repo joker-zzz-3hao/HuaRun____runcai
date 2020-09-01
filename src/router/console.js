@@ -279,7 +279,20 @@ export default [
         component: () => import('@/views/taskManage/myTask/index'),
       },
       {
-        // 价值观管理
+        // 任务管理
+        // 我的任务
+        path: '/createTask',
+        name: 'createTask',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myTask',
+          title: 'createTask',
+          power: '',
+        },
+        component: () => import('@/views/taskManage/myTask/components/createTask'),
+      },
+      {
         path: '/worthManage',
         name: 'worthManage',
         meta: {

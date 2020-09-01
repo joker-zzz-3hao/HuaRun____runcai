@@ -154,7 +154,7 @@
       <el-button @click="addItem" style>新增</el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <!-- <div style="marginTop:50px">
+    <div style="marginTop:50px">
       <h1>本周感想、建议、收获</h1>
       <el-form ref="formDomThought" :rules="formData.rules" :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
@@ -201,9 +201,9 @@
           </el-table-column>
         </el-table>
       </el-form>
-    </div>-->
+    </div>
     <!-- 下周计划 -->
-    <!-- <div style="marginTop:50px">
+    <div style="marginTop:50px">
       <h1>下周计划</h1>
       <el-form :rules="formData.rules" :model="formData" ref="formDom">
         <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
@@ -238,7 +238,7 @@
         </el-table>
       </el-form>
       <el-button @click="addPlanItem" style>添加</el-button>
-    </div>-->
+    </div>
     <!-- 个人OKR完成度 -->
     <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
       <h1>个人OKR完成度</h1>
@@ -464,7 +464,6 @@ export default {
         return okr;
       };
     },
-
   },
   methods: {
     init() {
@@ -485,7 +484,12 @@ export default {
 
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
         this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
+        // 反显周报列表数据
         this.setWorkTableData();
+        // 反显本周感想
+        this.setThoughts();
+        // 反显下周计划
+        this.setNextWeekPlan();
       }
     },
     setOkrProcess(weeklyOkrVoList) {
@@ -551,6 +555,18 @@ export default {
         this.$set(element, 'valueOrOkrIds', valueIdList.join(',') + okrIdList.join(','));// 校验支撑项
         this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
         this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
+      });
+    },
+    setThoughts() {
+      this.formData.weeklyThoughtSaveList = this.weeklyData.weeklyThoughtList;
+      this.formData.weeklyThoughtSaveList.forEach((thought) => {
+        thought.randomId = Math.random().toString(36).substr(3);
+      });
+    },
+    setNextWeekPlan() {
+      this.formData.weeklyPlanSaveList = this.weeklyData.weeklyPlanList;
+      this.formData.weeklyPlanSaveList.forEach((plan) => {
+        plan.randomId = Math.random().toString(36).substr(3);
       });
     },
     commitEveryFiveMin() {
@@ -758,27 +774,29 @@ export default {
     'formData.weeklyWorkVoSaveList': {
       handler(tableData) {
         // *****************将本周未完成任务自动同步至下周计划*************
-        // 先清空本周未完成任务同步至下周任务数据
-        for (const data of this.tempResult) {
-          this.formData.weeklyPlanSaveList = this.formData.weeklyPlanSaveList.filter(
-            (element) => element.randomId != data.randomId,
-          );
-        }
-        // 清空临时数据
-        this.tempResult = [];
-        for (const item of tableData) {
-          // 将未完成的任务自动同步至下周
-          if (item.workProgress < 100 && item.workContent) {
-            this.tempResult.push({
-              planContent: item.workContent,
-              planId: '',
-              weeklyId: '',
-              randomId: item.randomId,
-            });
+        // 先清空本周未完成任务同步至下周任务数据(周边那你编辑时不需要)
+        if (!this.weeklyData.weeklyId) {
+          for (const data of this.tempResult) {
+            this.formData.weeklyPlanSaveList = this.formData.weeklyPlanSaveList.filter(
+              (element) => element.randomId != data.randomId,
+            );
           }
+          // 清空临时数据
+          this.tempResult = [];
+          for (const item of tableData) {
+            // 将未完成的任务自动同步至下周
+            if (item.workProgress < 100 && item.workContent) {
+              this.tempResult.push({
+                planContent: item.workContent,
+                planId: '',
+                weeklyId: '',
+                randomId: item.randomId,
+              });
+            }
+          }
+          // 合并数组;
+          this.formData.weeklyPlanSaveList = [...this.tempResult, ...this.formData.weeklyPlanSaveList];
         }
-        // 合并数组;
-        this.formData.weeklyPlanSaveList = [...this.tempResult, ...this.formData.weeklyPlanSaveList];
         // *****************将本周关联的个人目标、okr同步至个人okr完成度*************
         // 将weeklyWorkVoSaveList中的支撑项读出来,放入个人okr完成度中
         this.weeklyOkrSaveList = [];
@@ -786,16 +804,38 @@ export default {
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
-              this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.kr.okrDetailProgress);
+              // 如果是详情则从详情中取值
+              if (this.weeklyData.weeklyId) {
+                // 后端数据中匹配
+                this.weeklyData.weeklyOkrVoList.forEach((element) => {
+                  if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
+                    this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
+                    this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
+                  }
+                });
+              } else {
+                this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.kr.okrDetailConfidence);
+                this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.kr.okrDetailProgress);
+              }
             } else { // o
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
-              this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.o.okrDetailId);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
-              this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
+              // 如果是详情则从详情中取值
+              if (this.weeklyData.weeklyId) {
+                // 后端数据中匹配
+                this.weeklyData.weeklyOkrVoList.forEach((element) => {
+                  if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
+                    this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
+                    this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
+                  }
+                });
+              } else {
+                this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
+                this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
+              }
             }
             this.weeklyOkrSaveList.push({
               id: data.supportMyOkrObj.kr.id || '',

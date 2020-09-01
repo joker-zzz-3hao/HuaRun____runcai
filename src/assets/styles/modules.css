@@ -115,13 +115,32 @@
 
 .tl-btn.el-button--text,
 .tl-btn.el-button--text:focus,
-.tl-btn .el-button--text:hover {
+.tl-btn .el-button--text:hover,
+.tl-form .tl-btn.el-button--text:hover,
+.tl-form .tl-btn.el-button--text:hover i,
+.tl-form + .tl-btn.el-button--text:hover,
+.tl-form + .tl-btn.el-button--text:hover i {
   color: #685df1;
+}
+
+.tl-form .tl-btn.el-button--text,
+.tl-form + .tl-btn.el-button--text {
+  color: #879099;
+  font-weight: normal;
+  transition: all .4s ease-out;
+}
+
+.tl-form .tl-btn.el-button--text i,
+.tl-form + .tl-btn.el-button--text i {
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  color: #acb6bf;
+  transition: all .4s ease-out;
 }
 
 .tl-dialog .tl-btn,
 .tl-drawer .tl-btn {
-  width: 90px;
+  min-width: 90px;
   height: 40px;
 }
 
@@ -821,15 +840,29 @@
   color: #879099;
 }
 
+/* tl-tooltip */
+.tl-tooltip-clear {
+  padding: 8px 10px;
+  border-radius: 2px;
+}
+
 .tl-tooltip-clear.is-dark {
   background: #7e7e7e;
 }
 
+.tl-tooltip-clear.is-dark .popper__arrow,
 .tl-tooltip-clear.is-dark .popper__arrow::after {
   border-top-color: #7e7e7e;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
+/* 边框 */
+.dotted-line.el-button--text {
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
+}
+
 /* 提示文案组件 */
 .text-tip,
 .text-tip::before,
@@ -1056,6 +1089,29 @@
 .tl-diy-timeline .item-group .el-form-item:last-child .el-form-item__content {
   flex: unset;
 }
+
+.tl-diy-timeline .item-group .el-form-item:last-child p {
+  display: flex;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a {
+  color: #879099;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a:hover {
+  color: #685df1;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a:first-child {
+  margin: 0 10px 0 0;
+  display: block;
+  width: 190px;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 
 /* tl-diy-popover */
 .tl-diy-popover {

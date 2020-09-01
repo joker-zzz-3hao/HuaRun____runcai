@@ -71,7 +71,8 @@
                 content="删除"
                 placement="top"
                 popper-class="tl-tooltip-clear"
-                @click.native="deleteobject(index)"
+                @click.native="formData.okrInfoList.length > 1 && deleteobject(index)"
+                :disabled="formData.okrInfoList.length <= 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -126,15 +127,21 @@
                 effect="dark"
                 content="删除"
                 placement="top"
-                @click.native="deletekr(index,kindex)"
+                popper-class="tl-tooltip-clear"
+                @click.native="oitem.krList.length > 1 && deletekr(index,kindex)"
+                :disabled="oitem.krList.length <= 1"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
             </dd>
-            <el-button @click="addkr(index)" class="sub-list-add">+（加kr）</el-button>
+            <el-button type="text" @click="addkr(index)" class="tl-btn sub-list-add">
+              <i class="el-icon-plus"></i>添加关键结果
+            </el-button>
           </dl>
         </el-form>
-        <el-button @click="addobject()" class="list-add">+添加目标</el-button>
+        <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
+          <i class="el-icon-plus"></i>添加目标
+        </el-button>
       </el-scrollbar>
     </div>
     <el-button v-if="isnew" @click="summit()">创建目标</el-button>
@@ -320,27 +327,31 @@ export default {
       // eslint-disable-next-line max-len
       this.server.getUndertakeOkr({ periodId: this.periodId || this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
         if (res.code == 200) {
-          this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-          res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-            this.departokrList.push({
-              typeName: '目标O',
-              okrDetailObjectKr: item.o.okrDetailObjectKr,
-              okrDetailId: item.o.okrDetailId,
-              okrDetailVersion: item.o.okrDetailVersion,
-              checkFlag: false,
-            });
-            if (item.krList && item.krList.length > 0) {
-              item.krList.forEach((krItem, index) => {
-                this.departokrList.push({
-                  typeName: `KR${index + 1}`,
-                  okrDetailObjectKr: krItem.okrDetailObjectKr,
-                  okrDetailId: krItem.okrDetailId,
-                  okrDetailVersion: krItem.okrDetailVersion,
-                  checkFlag: false,
-                });
+          // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
+          if (res.data.parentUndertakeOkrInfoResult) {
+            res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+              this.departokrList.push({
+                typeName: '目标O',
+                okrDetailObjectKr: item.o.okrDetailObjectKr,
+                okrDetailId: item.o.okrDetailId,
+                okrDetailVersion: item.o.okrDetailVersion,
+                checkFlag: false,
               });
-            }
-          });
+              if (item.krList && item.krList.length > 0) {
+                item.krList.forEach((krItem, index) => {
+                  this.departokrList.push({
+                    typeName: `KR${index + 1}`,
+                    okrDetailObjectKr: krItem.okrDetailObjectKr,
+                    okrDetailId: krItem.okrDetailId,
+                    okrDetailVersion: krItem.okrDetailVersion,
+                    checkFlag: false,
+                  });
+                });
+              }
+            });
+          } else {
+            this.departokrList = [];
+          }
           // 将可承接列表转换成字符串
           this.departokrObject = JSON.stringify(this.departokrList);
           // 给已有的o加上可承接列表
@@ -367,7 +378,7 @@ export default {
     getCultureList() {
       this.server.queryCultureList().then((res) => {
         if (res.code == 200) {
-          this.philosophyList = res.data;
+          this.philosophyList = res.data || [];
           // 将价值观列表转换成字符串
           this.philosophyObject = JSON.stringify(this.philosophyList);
           // 给已有的o加上价值观
