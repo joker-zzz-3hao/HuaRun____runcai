@@ -40,7 +40,7 @@
           <em>已自动保存</em>
         </div>
       </div>
-      <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <tl-writeokr v-if="createokrDrawer" :userName="userInfo.userName"></tl-writeokr>
     </el-drawer>
   </div>
 </template>
