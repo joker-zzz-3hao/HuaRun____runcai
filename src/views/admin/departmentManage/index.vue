@@ -469,6 +469,7 @@ export default {
     },
     tenantId: {
       handler(newValue) {
+        this.globalOrgId = '';
         this.tenantId = newValue;
         this.tenantList.forEach((element) => {
           if (element.tenantId == newValue) {

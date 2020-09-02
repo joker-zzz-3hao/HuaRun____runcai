@@ -767,7 +767,7 @@ export default {
     sad() {
       this.weeklyEmotion = 100;
     },
-    renderHeader(h, { column, $index }) {
+    renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
       return h('div', [// h即为cerateElement的简写
         h('span', { style: { color: 'red' } }, '*'),
@@ -776,11 +776,6 @@ export default {
           // 表示内容
           domProps: {
             innerHTML: column.label,
-          },
-          on: {
-            click: () => {
-              console.log(`${column.label}   ${$index}`);
-            },
           },
         }),
 
