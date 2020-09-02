@@ -124,7 +124,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import periodSelect from '@/components/periodSelect';
+// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
@@ -138,7 +138,7 @@ const server = new Server();
 export default {
   name: 'myOkr',
   components: {
-    'tl-periodselect': periodSelect,
+    // 'tl-periodselect': periodSelect,
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
