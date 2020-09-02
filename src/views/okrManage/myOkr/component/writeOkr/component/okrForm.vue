@@ -195,7 +195,7 @@ import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 
 // 自动保存时间 30秒
-const TIME_INTERVAL = 10 * 1000;
+const TIME_INTERVAL = 30 * 1000;
 
 export default {
   name: 'orkForm',
@@ -352,6 +352,7 @@ export default {
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
                 typeName: '目标O',
+                okrKind: 'o',
                 okrDetailObjectKr: item.o.okrDetailObjectKr,
                 okrDetailId: item.o.okrDetailId,
                 okrDetailVersion: item.o.okrDetailVersion,
@@ -361,6 +362,7 @@ export default {
                 item.krList.forEach((krItem, index) => {
                   this.departokrList.push({
                     typeName: `KR${index + 1}`,
+                    okrKind: 'k',
                     okrDetailObjectKr: krItem.okrDetailObjectKr,
                     okrDetailId: krItem.okrDetailId,
                     okrDetailVersion: krItem.okrDetailVersion,

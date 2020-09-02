@@ -7,11 +7,13 @@
           src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
         ></el-avatar>
         <div v-if="!userInfo.headerUrl">
-          <el-image
-            style="width: 100px; height: 100px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="fill"
-          ></el-image>
+          <tl-upload
+            :isUploadHead="true"
+            :imgWidth="199"
+            :imgHeight="199"
+            :files="[img]"
+            @change="returnParams"
+          ></tl-upload>
           <div @click="setHeader">设置图像</div>
         </div>
       </div>
@@ -79,6 +81,7 @@ import { mapState } from 'vuex';
 import validateMixin from '@/mixin/validateMixin';
 import Cryptojs from '@/lib/cryptojs';
 import { loginOut } from '@/lib/util';
+import upload from '@/components/uploadImg';
 import Server from './server';
 
 const server = new Server();
@@ -96,9 +99,14 @@ export default {
         newPwd: '',
         confirmPwd: '',
       },
+      img: {
+        url: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+        resourceId: '',
+      },
     };
   },
   components: {
+    'tl-upload': upload,
   },
   computed: {
     ...mapState('common', {
@@ -130,7 +138,23 @@ export default {
         }
       });
     },
-    setHeader() {},
+    returnParams(params) {
+      if (!params.url) {
+        return;
+      }
+      const param = {
+        headUr: params.url,
+        resourceId: params.resourceId,
+      };
+      this.server.uploadUserHead(param).then((response) => {
+        if (response.code == 200) {
+          this.$message.success('头像上传成功');
+          this.init();
+        }
+      });
+    },
+    setHeader() {
+    },
   },
 };
 </script>
