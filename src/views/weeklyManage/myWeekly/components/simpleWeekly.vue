@@ -10,7 +10,7 @@
       <el-form :rules="formData.rules" :model="formData" ref="formDom">
         <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column :label="workItem" prop="workContent">
+          <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workContent'"
@@ -26,12 +26,12 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="进度" prop="workProgress">
+          <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-slider v-model="scope.row.workProgress" :step="1" show-input></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="推进工时" prop="workTime">
+          <el-table-column width="220" label="推进工时" prop="workTime" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-input-number
                 v-model.trim="scope.row.workTime"
@@ -41,7 +41,7 @@
               ></el-input-number>h
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectId">
+          <el-table-column label="关联项目" prop="projectId" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
@@ -75,7 +75,7 @@
               <div></div>
             </template>
           </el-table-column>
-          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds">
+          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
@@ -590,7 +590,25 @@ export default {
     sad() {
       this.weeklyEmotion = 100;
     },
+    renderHeader(h, { column, $index }) {
+      // 这里在最外层插入一个div标签
+      return h('div', [// h即为cerateElement的简写
+        h('span', { style: { color: 'red' } }, '*'),
+        // 在div里面插入span
+        h('span', {
+          // 表示内容
+          domProps: {
+            innerHTML: column.label,
+          },
+          on: {
+            click: () => {
+              console.log(`${column.label}   ${$index}`);
+            },
+          },
+        }),
 
+      ]);
+    },
   },
   watch: {
     'formData.weeklyWorkVoSaveList': {
