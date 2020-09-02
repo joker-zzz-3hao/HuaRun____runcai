@@ -1,26 +1,39 @@
 <template>
   <div class="home">
     <div style="margin-left:20px; display: flex;" v-if="!showOne">
-      <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
-
-      <div @click="showCascader=!showCascader">
-        <el-input v-model="orgName"></el-input>
-      </div>
-      <el-cascader-panel
-        v-model="orgFullId"
-        :style="{display: showCascader ? '' : 'none'}"
-        :options="departmentData"
-        :show-all-levels="false"
-        @change="selectIdChange"
-        :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
-      ></el-cascader-panel>
-      <!-- <tl-department
-        type="department"
-        :data="departmentData"
-        :initDepartment="initDepartment"
-        @handleData="handleData"
-        :defaultProps="departmentDefaultProps"
-      ></tl-department>-->
+      <dl>
+        <dd>
+          <el-select
+            v-model="searchForm.periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              v-for="item in periodList"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl>
+        <dd>
+          <div @click="showCascader=!showCascader">
+            <el-input v-model="orgName"></el-input>
+          </div>
+          <el-cascader-panel
+            v-model="orgFullId"
+            :style="{display: showCascader ? '' : 'none'}"
+            :options="departmentData"
+            :show-all-levels="false"
+            @change="selectIdChange"
+            :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
+          ></el-cascader-panel>
+        </dd>
+      </dl>
     </div>
     <!-- 返回 -->
     <div>
@@ -68,7 +81,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 // import department from '@/components/department';
-import periodSelect from '@/components/periodSelect';
 import svgtree from '@/components/svgtree';
 import card from './card';
 import Server from '../server';
@@ -81,8 +93,6 @@ export default {
   components: {
     'tl-svgtree': svgtree,
     card,
-    // 'tl-department': department,
-    'tl-periodselect': periodSelect,
   },
   data() {
     return {
@@ -92,6 +102,7 @@ export default {
       searchForm: {
         orgId: '',
         periodId: '',
+        okrCycle: {},
       },
       cycleData: [],
       departmentData: [],
@@ -131,18 +142,22 @@ export default {
       self.searchForm.orgId = self.$route.params.orgId || self.userInfo.orgId || '';
       self.orgName = self.userInfo.orgName || '';
       if (!self.showOne) {
-        // 查询周期
-        self.server.getOkrCycleList().then((res) => {
-          if (res.code == 200) {
-            this.periodList = res.data || [];
-          }
-        });
+        self.getOkrCycleList();
         self.getOrgTable();
       } else {
         self.getmaps();
       }
     },
-
+    getOkrCycleList() {
+      // 查询周期
+      this.server.getOkrCycleList().then((res) => {
+        if (res.code == 200) {
+          this.periodList = res.data || [];
+          this.searchForm.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+        }
+      });
+    },
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -266,6 +281,17 @@ export default {
     },
     goback() {
       this.$router.back(-1);
+    },
+  },
+  watch: {
+    'searchForm.periodId': {
+      handler(newVal) {
+        if (newVal) {
+          this.searchForm.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId === newVal,
+          )[0] || {};
+        }
+      },
     },
   },
 };

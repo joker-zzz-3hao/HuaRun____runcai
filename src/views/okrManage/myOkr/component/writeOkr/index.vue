@@ -11,14 +11,12 @@
             popper-class="tl-select-dropdown"
             class="tl-select"
           >
-            <el-option-group v-for="group in cycleList" :key="group.label" :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.periodId"
-                :label="item.periodName"
-                :value="item.periodId"
-              ></el-option>
-            </el-option-group>
+            <el-option
+              v-for="item in periodList"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
           </el-select>
         </dd>
       </dl>
@@ -33,7 +31,7 @@
             class="tl-select"
           >
             <el-option
-              v-for="(item, index) in CONST.OKR_TYPE_LIST"
+              v-for="(item, index) in okrTypeList"
               :key="item.id+index"
               :label="item.name"
               :value="item.id"
@@ -88,7 +86,7 @@ export default {
         userId: '',
         tenantId: '',
         timecycle: '',
-        okrCycle: '',
+        okrCycle: {},
         okrType: null,
         okrStatus: '',
         draftParams: '',
@@ -96,31 +94,22 @@ export default {
       },
       canWrite: true, // true写okr false changeokr
       periodList: [],
-      cycleList: [{
-        label: '当前的OKR周期',
-        options: [],
-      }, {
-        label: '历史OKR周期',
-        options: [],
-      }],
-      periodId: '',
-      okrCycle: {},
     };
   },
   computed: {
     ...mapState('common', {
       roleCode: (state) => state.roleCode,
     }),
-    // okrTypeList() {
-    //   console.log('roleCode', this.roleCode);
-    //   if (this.roleCode.includes('ORG_ADMIN')) {
-    //     return this.CONST.OKR_TYPE_LIST.filter(
-    //       (item) => item.id != 3,
-    //     );
-    //   } return this.CONST.OKR_TYPE_LIST.filter(
-    //     (item) => item.id == 2,
-    //   );
-    // },
+    okrTypeList() {
+      console.log('roleCode', this.roleCode);
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return this.CONST.OKR_TYPE_LIST.filter(
+          (item) => item.id == 1,
+        );
+      } return this.CONST.OKR_TYPE_LIST.filter(
+        (item) => item.id == 2,
+      );
+    },
   },
   mounted() {
     if (this.writeInfo.canWrite == 'draft') {
@@ -150,35 +139,12 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
-          // 分组
-          this.periodList.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              this.cycleList.forEach((citem) => {
-                if (citem.label == '历史OKR周期') {
-                  citem.options.push(item);
-                }
-              });
-            } else if (item.checkStatus == '1') {
-              this.cycleList.forEach((citem) => {
-                if (citem.label == '当前的OKR周期') {
-                  citem.options.push(item);
-                }
-                if (!this.searchForm.periodId) {
-                  this.searchForm.periodId = item.periodId;
-                  this.okrCycle = item;
-                }
-              });
-            }
-          });
+          this.searchForm.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.searchForm.okrCycle.periodId;
         }
       });
     },
 
-    handleData(data) {
-      this.searchForm.okrCycle = data;
-      console.log('writeokrCycle', data);
-    },
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
@@ -188,11 +154,9 @@ export default {
     'searchForm.periodId': {
       handler(newVal) {
         if (newVal) {
-          this.okrCycle = this.periodList.filter(
+          this.searchForm.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
-          )[0] || this.okrCycle;
-          // this.$emit('handleData', this.okrCycle);
-          this.handleData(this.okrCycle);
+          )[0] || {};
         }
       },
     },

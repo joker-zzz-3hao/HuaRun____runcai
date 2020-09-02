@@ -3,7 +3,20 @@
     <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
       <el-form-item>
         <p>周期</p>
-        <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+        <el-select
+          v-model="formData.periodId"
+          placeholder="请选择目标周期"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in periodList"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <p>审批状态</p>
@@ -91,7 +104,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import periodSelect from '@/components/periodSelect';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -100,7 +112,6 @@ const server = new Server();
 export default {
   name: 'okrApprovalList',
   components: {
-    'tl-periodselect': periodSelect,
   },
   props: {},
   data() {
@@ -117,8 +128,9 @@ export default {
         total: 0,
         pageSize: 10,
         currentPage: 1,
+        okrCycle: {}, // 当前选择的周期
       },
-      okrCycle: {}, // 当前选择的周期
+
       periodList: [], // 周期列表
     };
   },
@@ -139,6 +151,8 @@ export default {
       self.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           self.periodList = res.data;
+          self.formData.okrCycle = self.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          self.formData.periodId = self.formData.okrCycle.periodId;
         }
       });
     },
@@ -170,11 +184,6 @@ export default {
     goUndertake() {
       this.go('undertakeMaps');
     },
-    handleCycleData(data) {
-      this.okrCycle = data;
-      this.formData.periodId = data.periodId;
-      this.searchList();
-    },
   },
   watch: {
     okrApprovalStep: {
@@ -185,6 +194,17 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    'formData.periodId': {
+      handler(newVal) {
+        if (newVal) {
+          this.formData.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId === newVal,
+          )[0] || {};
+          this.formData.periodId = this.formData.okrCycle.periodId;
+          this.searchList();
+        }
+      },
     },
   },
 };
