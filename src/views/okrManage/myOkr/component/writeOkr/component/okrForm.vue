@@ -189,7 +189,8 @@ import confidenceSelect from '@/components/confidenceSelect';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 
-const TIME_INTERVAL = 5 * 1000;
+// 自动保存时间 30秒
+const TIME_INTERVAL = 10 * 1000;
 
 export default {
   name: 'orkForm',
@@ -260,14 +261,14 @@ export default {
     }
   },
   created() {
-    if (this.searchForm.okrStatus == '6' || this.searchForm.okrStatus == '8') {
+    if (this.searchForm.okrStatus == '6') {
       this.getOkrDraftById();
     }
-    // TODO:自动保存
-    // this.autosave();
+    // 自动保存
+    this.autosave();
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer']),
+    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer', 'setShowAuto']),
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
@@ -277,7 +278,7 @@ export default {
     // 自动保存
     autosave() {
       this.timedInterval = setInterval(() => {
-        this.saveDraft();
+        this.autoSaveDraft();
       }, TIME_INTERVAL);
     },
     // 增加kr
@@ -521,6 +522,28 @@ export default {
       this.setCreateokrDrawer(false);
       this.setMyokrDrawer(false);
     },
+    autoSaveDraft() {
+      if (this.formData.okrInfoList.length > 0) {
+        this.formData.okrInfoList.forEach((oitem) => {
+          if (oitem.departokrList) {
+            delete oitem.departokrList;
+            delete oitem.philosophyList;
+          }
+        });
+        this.formData.okrBelongType = this.searchForm.okrType;
+        this.formData.periodId = this.searchForm.okrCycle.periodId;
+        this.formData.okrDraftId = this.searchForm.draftId;
+        this.server.saveOkrDraft(this.formData).then((res) => {
+          if (res.code == 200) {
+            this.searchForm.draftId = res.data.id;
+            this.setShowAuto(true);
+            this.timedShow = setInterval(() => {
+              this.setShowAuto(false);
+            }, 3000);
+          }
+        });
+      }
+    },
   },
   watch: {
     'searchForm.okrCycle': {
@@ -547,6 +570,7 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timedInterval);
+    clearInterval(this.timedShow);
   },
 };
 </script>
