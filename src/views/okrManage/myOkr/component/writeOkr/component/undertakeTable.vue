@@ -6,28 +6,31 @@
           <em>{{departmentName}}{{periodName}}OKR</em>
           <span>(单选)</span>
         </dt>
-        <dd v-for="(item,index) in departokrList" :key="item.id">
-          <el-checkbox
-            v-model="item.checkFlag"
-            @change="selectDepartokr(index,item)"
-            class="tl-checkbox"
-          ></el-checkbox>
-          {{item.typeName}}{{item.okrDetailObjectKr}}
-        </dd>
+        <el-radio-group v-model="radioDepart">
+          <dd v-for="(item,index) in departokrList" :key="item.id">
+            <el-radio
+              v-model="item.checkFlag"
+              @change="selectDepartokr(index,item)"
+              class="tl-radio"
+              :label="index"
+            >{{item.typeName}}{{item.okrDetailObjectKr}}</el-radio>
+          </dd>
+        </el-radio-group>
       </dl>
       <dl v-if="showPhil">
         <dt>
           <em>公司管理价值观</em>
           <span>(单选)</span>
         </dt>
-        <dd v-for="(item,index) in philosophyList" :key="item.id">
-          <el-checkbox
-            v-model="item.checkFlag"
-            @change="selectphilosophy(index,item)"
-            class="tl-checkbox"
-          ></el-checkbox>
-          {{item.cultureDesc}}
-        </dd>
+        <el-radio-group v-model="radioPhil">
+          <dd v-for="(item,index) in philosophyList" :key="index">
+            <el-radio
+              @change="selectphilosophy(index,item)"
+              class="tl-radio"
+              :label="index"
+            >{{item.cultureDesc}}</el-radio>
+          </dd>
+        </el-radio-group>
       </dl>
       <!--
     <el-table :data="departokrList">
@@ -95,6 +98,8 @@ export default {
       selectDepartRow: {},
       selectPhilRow: {},
       departmentName: '',
+      radioPhil: '',
+      radioDepart: '',
     };
   },
   created() {
@@ -122,11 +127,12 @@ export default {
     },
     // 选择关联的价值观
     selectphilosophy(index, row) {
+      console.log('raion', this.radioPhil);
       this.philosophyList.forEach((item, i) => {
         if (index != i) {
           this.philosophyList[i].checkFlag = false;
         }
-        console.log(i, this.philosophyList[i].checkFlag);
+        // console.log(i, this.philosophyList[i].checkFlag);
       });
       this.selectPhilRow = row;
       this.$forceUpdate();
