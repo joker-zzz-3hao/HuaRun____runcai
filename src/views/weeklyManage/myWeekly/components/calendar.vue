@@ -26,7 +26,7 @@
         :key="index"
         @click="seclectBtn(item)"
         :type="item.btnType"
-        :disabled="item.cannotCommit"
+        :disabled="!item.canClick"
       >
         {{getWeekItem(item,index)}}
         <el-checkbox
@@ -85,10 +85,10 @@ export default {
         if (res.code == 200) {
           this.weekList = res.data;
           const current = new Date();
-          // let currentWeek = {};
+          let currentWeekIndex;
+
           this.weekList.forEach((week) => {
             week.btnType = '';
-
             // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
             let beg = new Date(week.weekBegin);
             let end = new Date(week.weekEnd);
@@ -96,13 +96,22 @@ export default {
             end = end.setHours(end.getHours() + 16);
             if (current >= beg && current <= end) {
               // 当前周
-              // currentWeek = week;
+              currentWeekIndex = this.weekList.indexOf(week);
             }
           });
-          // 本周之后的周不可点击
-
-          // 本周、上周之前不可可点击、不可编辑
-
+          // 本周之后的周不可点击,上周之前不可编辑TODO:编辑控制还未做
+          for (let i = 0; i < this.weekList.length; i += 1) {
+            if (i > currentWeekIndex) {
+              this.weekList[i].canClick = false;
+              this.weekList[i].canEdit = false;
+            } else if (i < currentWeekIndex - 1) {
+              this.weekList[i].canClick = true;
+              this.weekList[i].canEdit = false;
+            } else {
+              this.weekList[i].canClick = true;
+              this.weekList[i].canEdit = true;
+            }
+          }
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
         }

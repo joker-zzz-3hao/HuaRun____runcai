@@ -88,6 +88,12 @@ export default {
         return 'create';
       },
     },
+    tenantId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -158,6 +164,7 @@ export default {
     },
     saveDepart() {
       const params = {
+        tenantId: this.tenantId,
         orgFullId: this.formData.orgIdList.join(':'),
         orgParentId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
         orgName: this.formData.orgName,
