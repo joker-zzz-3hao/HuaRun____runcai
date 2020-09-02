@@ -322,6 +322,28 @@
   background: #685df1;
 }
 
+.associated-undertaking .dl-list .kind-o,
+.associated-undertaking .dl-list .kind-k {
+  display: flex;
+  align-items: center;
+  margin: 0 8px 0 0;
+  padding: 0 5px;
+  height: 18px;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.associated-undertaking .dl-list .kind-o {
+  background: #f0effe;
+  color: #685df1;
+}
+
+.associated-undertaking .dl-list .kind-k {
+  padding: 0 9px;
+  background: #acb6bf;
+  color: #fff;
+}
+
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */

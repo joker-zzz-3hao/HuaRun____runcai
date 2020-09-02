@@ -12,7 +12,8 @@
             @change="selectDepartokr(index,item)"
             class="tl-checkbox"
           ></el-checkbox>
-          {{item.typeName}}{{item.okrDetailObjectKr}}
+          <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
+          <em>{{item.okrDetailObjectKr}}</em>
         </dd>
       </dl>
       <dl v-if="showPhil">
