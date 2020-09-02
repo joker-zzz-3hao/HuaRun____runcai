@@ -177,8 +177,8 @@
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
         :periodName="periodName"
       ></undertake-table>
-      <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      <el-button @click="innerDrawer = false">取 消</el-button>
+      <el-button type="primary" @click="summitUndertake()">确定</el-button>
+      <el-button @click="innerDrawer = false">取消</el-button>
     </el-drawer>
   </div>
 </template>
