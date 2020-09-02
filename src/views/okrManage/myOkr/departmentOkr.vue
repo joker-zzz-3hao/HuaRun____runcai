@@ -184,7 +184,7 @@ export default {
     },
     openDialog(val) {
       this.okrItem = val;
-      this.drawerTitle = 'OKR详情';
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
       this.myokrDrawer = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();

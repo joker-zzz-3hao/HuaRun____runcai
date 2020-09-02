@@ -4,7 +4,10 @@
       <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
       <span>{{node.okrDetailObjectKr}}</span>
       <span>
-        <el-button v-if="!node.okrParentId" @click="goDetail(node)">对齐</el-button>
+        <el-button
+          v-if="!node.okrParentId && node.userName ===userInfo.userName"
+          @click="goDetail(node)"
+        >对齐</el-button>
       </span>
     </div>
     <div class="node_des">
@@ -30,7 +33,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import CONST from '../const';
 
 export default {
@@ -52,9 +55,13 @@ export default {
     };
   },
   mounted() {
-    console.log(`node:${this.node.okrParentId}`);
+    console.log(`node:${this.node.userName}`);
   },
-  computed: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   methods: {
     ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
     goDetail(node) {

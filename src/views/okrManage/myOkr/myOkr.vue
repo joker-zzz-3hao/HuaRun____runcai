@@ -176,6 +176,7 @@ export default {
   computed: {
     ...mapState('common', {
       myokrDrawer: (state) => state.myokrDrawer,
+      userInfo: (state) => state.userInfo,
     }),
   },
   created() {
@@ -244,7 +245,8 @@ export default {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
-      this.drawerTitle = 'OKR详情';
+      // this.drawerTitle = 'OKR详情';
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
 
       this.setMyokrDrawer(true);
       this.$nextTick(() => {
@@ -263,7 +265,7 @@ export default {
     },
     goChangeOkr() {
       // TODO: 弹框标题
-      this.drawerTitle = `${this.okrList[0].okrMain.orgName + this.okrList[0].okrMain.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
