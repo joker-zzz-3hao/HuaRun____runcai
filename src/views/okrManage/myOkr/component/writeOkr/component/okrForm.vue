@@ -158,7 +158,7 @@
         >保存为草稿</el-button>
       </div>
       <el-button type="primary" v-if="isnew" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button v-if="isnew" plain class="tl-btn amt-border-fadeout" @click="close()">取消</el-button>
     </div>
     <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
@@ -467,8 +467,7 @@ export default {
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
-              this.setCreateokrDrawer(false);
-              this.setMyokrDrawer(false);
+              this.close();
             } else if (res.code == 30000) {
               this.$xconfirm({
                 content: '',
@@ -498,8 +497,7 @@ export default {
           if (res.code == 200) {
             this.$message('已保存');
             this.$refs.dataForm.resetFields();
-            this.setCreateokrDrawer(false);
-            this.setMyokrDrawer(false);
+            this.close();
           }
         });
       }
@@ -514,10 +512,14 @@ export default {
           if (res.code == 200) {
             this.$message('提交成功~');
             // 关闭抽屉
-            this.setMyokrDrawer(false);
+            this.close();
           }
         });
       }).catch(() => {});
+    },
+    close() {
+      this.setCreateokrDrawer(false);
+      this.setMyokrDrawer(false);
     },
   },
   watch: {
