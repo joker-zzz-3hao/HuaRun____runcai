@@ -1,1 +1,13 @@
-.browser {}
+@-moz-document url-prefix() {
+  #talent > .el-scrollbar .el-scrollbar__wrap {
+    padding: 0 28px 0 0;
+    overflow-y: scroll;
+    width: 102%;
+  }
+
+  .tl-diy-timeline .el-scrollbar__wrap {
+    padding: 0 20px 0 0;
+    overflow-y: scroll;
+    width: 102%;
+  }
+}
