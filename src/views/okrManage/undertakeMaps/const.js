@@ -2,6 +2,10 @@ const OKR_TYPE_MAP = {
   0: 'O',
   1: 'KR',
 };
+const OKR_KIND_MAP = {
+  1: '部门',
+  2: '个人',
+};
 const OKR_TYPE_NAME_MAP = {
   0: '目标O',
   1: '关键结果KR',
@@ -28,4 +32,5 @@ export default {
   CONFIDENCE_MAP,
   OPERATE_TYPE_MAP,
   OKR_TYPE_NAME_MAP,
+  OKR_KIND_MAP,
 };

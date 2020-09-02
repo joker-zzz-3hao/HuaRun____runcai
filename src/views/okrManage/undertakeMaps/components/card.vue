@@ -5,7 +5,7 @@
       <span>{{node.okrDetailObjectKr}}</span>
       <span>
         <el-button
-          v-if="!node.okrParentId && node.userName ===userInfo.userName"
+          v-if="!node.okrParentId && node.userId ===userInfo.userId"
           @click="goDetail(node)"
         >对齐</el-button>
       </span>
@@ -20,7 +20,8 @@
         <span>负责人</span>
         {{node.userName}}
       </div>
-      <div></div>
+      <!-- okr类型 -->
+      <div>{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</div>
       <!-- <div>{{node.open}}</div> -->
       <!-- 数量 -->
       <div>{{node.children?node.children.length:0}}</div>
