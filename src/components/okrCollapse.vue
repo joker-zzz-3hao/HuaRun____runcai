@@ -50,7 +50,7 @@
                   ></el-progress>
                 </span>
               </li>
-              <!-- 有承接项时 -->
+              <!-- 变更有承接项时 -->
               <li v-if="showParentOkr && item.okrParentId">
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
@@ -70,7 +70,7 @@
                   </el-popover>
                 </span>
               </li>
-              <!-- 无承接项时 -->
+              <!-- 变更or创建无承接项时 -->
               <li v-else-if="showParentOkr">
                 <a @click="goUndertake(index,'new')">
                   <span
@@ -78,6 +78,11 @@
                   >{{item.undertakeOkrVo.undertakeOkrContent}}{{item.cultureName}}</span>
                   <span v-else>+关联</span>
                 </a>
+              </li>
+              <!-- 详情 -->
+              <li v-else-if="item.okrParentId">
+                <span>目标承接自</span>
+                <span>{{item.parentObjectKr}}</span>
               </li>
             </ul>
             <!-- 可在折叠面板title处添加内容 -->

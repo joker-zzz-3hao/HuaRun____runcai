@@ -26,7 +26,7 @@
           </ul>
         </div>
         <!-- okr折叠面板 -->
-        <tl-okr-collapse :tableList="tableList" :showParentOkr="true">
+        <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
           <template slot="head-bar" slot-scope="props">
             <button
               v-if="props.okritem.versionCount > 1"
