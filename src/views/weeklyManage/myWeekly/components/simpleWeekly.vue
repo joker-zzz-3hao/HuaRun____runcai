@@ -150,7 +150,7 @@
           <div>
             <span>KR</span>
             <span style="marginLeft:15px">{{item.kr.okrDetailObjectKr}}</span>
-            <span style="marginLeft:15px">被工作项{{}}支持</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.kr)}}支持</span>
             <span style="marginLeft:15px">
               风险状态
               <el-button :class="{'no-risk':item.confidenceAfter == 1}"></el-button>
@@ -179,7 +179,8 @@
         <div v-else>
           <div>
             目标
-            <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}被工作项支持</span>
+            <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支持</span>
             <span style="marginLeft:15px">
               当前进度
               <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
@@ -349,7 +350,6 @@ export default {
     this.init();
   },
   computed: {
-
     setOkrStyle() {
       return (okr) => {
         if (okr && okr.length > 5) {
@@ -358,12 +358,17 @@ export default {
         return okr;
       };
     },
-    isChecked() {
-      return (weeklyId) => {
-        if (weeklyId) {
-          return true;
-        }
-        return false;
+    itemIndex() {
+      return (okr) => {
+        const result = [];
+        this.formData.weeklyWorkVoSaveList.forEach((item) => {
+          item.selectedOkr.forEach((element) => {
+            if (okr.okrDetailId == element.okrDetailId) {
+              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+            }
+          });
+        });
+        return result.join('、');
       };
     },
   },
@@ -466,6 +471,10 @@ export default {
           this.server.commitWeekly(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');
+              // 跟下次俺个人okr数据
+              this.$emit('refreshMyOkr');
+              // 刷新日历数据
+              this.$busEmit('refreshCalendar');
             }
           });
         }
@@ -518,7 +527,6 @@ export default {
       data.validateProjectId = '默认项目';//
     },
     addSupportOkr(data) {
-      this.$emit('initValueAllFalse');
       this.currenItemrandomId = data.randomId || data.workId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
@@ -593,6 +601,8 @@ export default {
               this.$message.success('提交成功');
               // 刷新日历数据
               this.$busEmit('refreshCalendar');
+              // 更新个人okr数据
+              this.$emit('refreshMyOkr');
             }
           });
         }
@@ -615,14 +625,14 @@ export default {
         // *****************将本周关联的个人目标、okr同步至个人okr完成度*************
         // 将weeklyWorkVoSaveList中的支撑项读出来,放入个人okr完成度中
         this.weeklyOkrSaveList = [];
+        const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
-              this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
+              this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              // 如果是详情则从详情中取值
-              if (this.weeklyData.weeklyId) {
+              if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyData.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
@@ -635,30 +645,40 @@ export default {
                 this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.kr.okrDetailProgress);
               }
             } else { // o
-              this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.o.okrDetailId);
+              // this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
-              // 如果是详情则从详情中取值
-              if (this.weeklyData.weeklyId) {
+              if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyData.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
-                    this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
+                    // this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
                     this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
                   }
                 });
               } else {
-                this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
+                // this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
                 this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
               }
             }
-            this.weeklyOkrSaveList.push({
-              id: data.supportMyOkrObj.kr.id || '',
-              weeklyId: data.supportMyOkrObj.kr.weeklyId || '',
+            tempWeeklyOkrSaveList.push({
+              id: data.supportMyOkrObj.kr ? data.supportMyOkrObj.kr.id : '',
+              weeklyId: data.supportMyOkrObj.kr ? data.supportMyOkrObj.kr.weeklyId : '',
               ...data.supportMyOkrObj,
             });
           }
         }
+        // 去重
+        const result = [];
+        const obj = {};
+        for (let i = 0; i < tempWeeklyOkrSaveList.length; i += 1) {
+          if (!obj[tempWeeklyOkrSaveList[i].okrDetailId]) {
+            result.push(tempWeeklyOkrSaveList[i]);
+            obj[tempWeeklyOkrSaveList[i].okrDetailId] = true;
+          }
+        }
+        this.weeklyOkrSaveList = result;
+        this.$forceUpdate();
       },
       deep: true,
     },

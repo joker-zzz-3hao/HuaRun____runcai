@@ -25,7 +25,7 @@
       :originalOrgOkrList="originalOrgOkrList"
       :projectList="projectList"
       :cultureList="cultureList"
-      @initValueAllFalse="initValueAllFalse"
+      @refreshMyOkr="refreshMyOkr"
       v-if="weeklyType=='1'"
     ></standard-Weekly>
     <!-- 简单版 -->
@@ -39,7 +39,7 @@
       :originalOrgOkrList="originalOrgOkrList"
       :projectList="projectList"
       :cultureList="cultureList"
-      @initValueAllFalse="initValueAllFalse"
+      @refreshMyOkr="refreshMyOkr"
       v-else
     ></simple-weekly>
   </div>
@@ -85,11 +85,14 @@ export default {
       // 获取项目列表
       this.getProjectList();
     },
+    refreshMyOkr() {
+      debugger;
+      this.queryTeamOrPersonalTarget('my');
+    },
     getValues() {
       this.server.getValues().then((res) => {
         if (res.code == 200) {
           this.cultureList = res.data;
-          this.initValueAllFalse();
         }
       });
     },
@@ -152,12 +155,6 @@ export default {
       } else {
         this.myOkrList = [...tempResult];
       }
-    },
-    // 价值观选项全初始化为未选中
-    initValueAllFalse() {
-      this.cultureList.forEach((value) => {
-        this.$set(value, 'checked', false);
-      });
     },
     getWeeklyById(item) {
       this.weeklyData = {};
