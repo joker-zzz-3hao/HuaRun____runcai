@@ -316,6 +316,18 @@ export default [
         },
         component: () => import('@/views/notice/index'),
       },
+      {
+        path: '/personConfig',
+        name: 'personConfig',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'personConfig',
+          title: 'personConfig',
+          power: '',
+        },
+        component: () => import('@/views/personConfig/index'),
+      },
     ],
   },
 ];
