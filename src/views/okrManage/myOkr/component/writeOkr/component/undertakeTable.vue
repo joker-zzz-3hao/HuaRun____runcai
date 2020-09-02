@@ -6,28 +6,37 @@
           <em>{{departmentName}}{{periodName}}OKR</em>
           <span>(单选)</span>
         </dt>
-        <dd v-for="(item,index) in departokrList" :key="item.id">
-          <el-checkbox
-            v-model="item.checkFlag"
-            @change="selectDepartokr(index,item)"
-            class="tl-checkbox"
-          ></el-checkbox>
-          <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
-          <em>{{item.okrDetailObjectKr}}</em>
+        <dd>
+          <el-radio-group v-model="radioDepart">
+            <el-radio
+              v-model="item.checkFlag"
+              @change="selectDepartokr(index,item)"
+              class="tl-radio"
+              :label="index"
+              v-for="(item,index) in departokrList"
+              :key="item.id"
+            >
+              <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
+              <em>{{item.okrDetailObjectKr}}</em>
+            </el-radio>
+          </el-radio-group>
         </dd>
       </dl>
-      <dl v-if="showPhil">
-        <dt>
+      <dl v-if="showPhil" class="dl-list">
+        <dt class="list-title">
           <em>公司管理价值观</em>
           <span>(单选)</span>
         </dt>
-        <dd v-for="(item,index) in philosophyList" :key="item.id">
-          <el-checkbox
-            v-model="item.checkFlag"
-            @change="selectphilosophy(index,item)"
-            class="tl-checkbox"
-          ></el-checkbox>
-          {{item.cultureDesc}}
+        <dd>
+          <el-radio-group v-model="radioPhil">
+            <el-radio
+              @change="selectphilosophy(index,item)"
+              class="tl-radio"
+              :label="index"
+              v-for="(item,index) in philosophyList"
+              :key="index"
+            >{{item.cultureDesc}}</el-radio>
+          </el-radio-group>
         </dd>
       </dl>
       <!--
@@ -96,6 +105,8 @@ export default {
       selectDepartRow: {},
       selectPhilRow: {},
       departmentName: '',
+      radioPhil: '',
+      radioDepart: '',
     };
   },
   created() {
@@ -123,11 +134,12 @@ export default {
     },
     // 选择关联的价值观
     selectphilosophy(index, row) {
+      console.log('raion', this.radioPhil);
       this.philosophyList.forEach((item, i) => {
         if (index != i) {
           this.philosophyList[i].checkFlag = false;
         }
-        console.log(i, this.philosophyList[i].checkFlag);
+        // console.log(i, this.philosophyList[i].checkFlag);
       });
       this.selectPhilRow = row;
       this.$forceUpdate();
