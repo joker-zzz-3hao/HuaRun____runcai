@@ -72,6 +72,19 @@ export default [
         },
         component: () => import('@/views/settings/okrCycle/index'),
       },
+      {
+        // 设置价值观
+        path: '/setWorth',
+        name: 'setWorth',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'okrPermissions',
+          title: 'setWorth',
+          power: '',
+        },
+        component: () => import('@/views/settings/setWorth/index'),
+      },
     ],
   },
 ];
