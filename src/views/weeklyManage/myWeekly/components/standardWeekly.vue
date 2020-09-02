@@ -450,10 +450,8 @@ export default {
           label: '失控',
         },
       ],
-      timer: null,
     };
   },
-
   created() {
     this.init();
   },
@@ -490,8 +488,6 @@ export default {
       this.addThought();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
-      // 自动提交
-      this.commitEveryFiveMin();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -584,30 +580,6 @@ export default {
         plan.randomId = Math.random().toString(36).substr(3);
       });
     },
-    commitEveryFiveMin() {
-      // 五分钟自动提交页面，不要校验
-      this.timer = setInterval(() => {
-        const params = {
-          calendarId: this.calendarId,
-          weeklyEmotion: this.weeklyEmotion,
-          weeklyId: this.weeklyId,
-          weeklyType: this.weeklyType,
-          weeklyOkrSaveList: this.weeklyOkrSaveList,
-          weeklyPlanSaveList: this.formData.weeklyPlanSaveList,
-          weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
-          weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
-        };
-        this.server.commitWeekly(params).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('提交成功');
-            // 刷新日历数据
-            this.$busEmit('refreshCalendar');
-            // 更新个人okr数据
-            this.$emit('refreshMyOkr');
-          }
-        });
-      }, 5 * 60 * 1000);
-    },
     remoteMethod(query) {
       if (query !== '') {
         this.server.getProjectList(query);
@@ -670,7 +642,7 @@ export default {
     },
     selectTempPro(data) {
       data.projectId = '';
-      data.validateProjectId = '默认项目';//
+      data.validateProjectId = '临时项目';//
     },
     addSupportOkr(data) {
       this.currenItemrandomId = data.randomId;
@@ -884,9 +856,6 @@ export default {
       },
       deep: true,
     },
-  },
-  beforeDestroy() {
-    clearInterval(this.timer);
   },
 };
 </script>
