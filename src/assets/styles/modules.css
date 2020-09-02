@@ -1096,7 +1096,7 @@
 .tl-diy-timeline .timeline-list dd::before {
   position: absolute;
   top: 22px;
-  bottom: 0;
+  bottom: 10px;
   left: 5px;
   content: '';
   width: 1px;
@@ -1675,11 +1675,6 @@
   line-height: unset;
 }
 
-.cont-area .operating-panel .el-button {
-  min-width: 90px;
-  height: 40px;
-}
-
 .operating-area .tl-input-search {
   min-width: 270px;
 }
@@ -1697,14 +1692,6 @@
   font-weight: 600;
 }
 
-.cont-area {
-  padding: 30px;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .console-layout .cont-area {
   display: unset;
   padding: 0;
@@ -1712,6 +1699,7 @@
 
 .settings-layout .cont-area,
 .admin-layout .cont-area {
+  padding: 30px;
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;

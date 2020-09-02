@@ -5,9 +5,22 @@
     width: 102%;
   }
 
-  .tl-diy-timeline .el-scrollbar__wrap {
+  .diy-drawer .el-scrollbar__wrap {
     padding: 0 20px 0 0;
     overflow-y: scroll;
     width: 102%;
   }
+}
+
+_::-webkit-full-page-media, _:future, :root .associated-undertaking .el-drawer__body {
+  overflow: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root .associated-undertaking .el-scrollbar {
+  margin: 0;
+  height: 100%;
+}
+
+_::-webkit-full-page-media, _:future, :root .associated-undertaking .operating-panel {
+  margin: 30px 0 0 0;
 }
