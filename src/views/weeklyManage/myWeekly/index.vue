@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <h1>我的周报</h1>
     <div>
       <el-button
         v-if="weeklyType == '1'||!this.weeklyData.weeklyId"
@@ -14,34 +15,36 @@
     </div>
     <!-- 日期 -->
     <calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></calendar>
-    <!-- 标准版 -->
-    <standard-Weekly
-      :weeklyData="weeklyData"
-      :weeklyType="weeklyType"
-      :calendarId="calendarId"
-      :myOkrList="myOkrList"
-      :orgOkrList="orgOkrList"
-      :originalMyOkrList="originalMyOkrList"
-      :originalOrgOkrList="originalOrgOkrList"
-      :projectList="projectList"
-      :cultureList="cultureList"
-      @refreshMyOkr="refreshMyOkr"
-      v-if="weeklyType=='1'"
-    ></standard-Weekly>
-    <!-- 简单版 -->
-    <simple-weekly
-      :weeklyData="weeklyData"
-      :weeklyType="weeklyType"
-      :calendarId="calendarId"
-      :myOkrList="myOkrList"
-      :orgOkrList="orgOkrList"
-      :originalMyOkrList="originalMyOkrList"
-      :originalOrgOkrList="originalOrgOkrList"
-      :projectList="projectList"
-      :cultureList="cultureList"
-      @refreshMyOkr="refreshMyOkr"
-      v-else
-    ></simple-weekly>
+    <div v-if="newPage">
+      <!-- 标准版 -->
+      <standard-Weekly
+        :weeklyData="weeklyData"
+        :weeklyType="weeklyType"
+        :calendarId="calendarId"
+        :myOkrList="myOkrList"
+        :orgOkrList="orgOkrList"
+        :originalMyOkrList="originalMyOkrList"
+        :originalOrgOkrList="originalOrgOkrList"
+        :projectList="projectList"
+        :cultureList="cultureList"
+        @refreshMyOkr="refreshMyOkr"
+        v-if="weeklyType=='1'"
+      ></standard-Weekly>
+      <!-- 简单版 -->
+      <simple-weekly
+        :weeklyData="weeklyData"
+        :weeklyType="weeklyType"
+        :calendarId="calendarId"
+        :myOkrList="myOkrList"
+        :orgOkrList="orgOkrList"
+        :originalMyOkrList="originalMyOkrList"
+        :originalOrgOkrList="originalOrgOkrList"
+        :projectList="projectList"
+        :cultureList="cultureList"
+        @refreshMyOkr="refreshMyOkr"
+        v-else
+      ></simple-weekly>
+    </div>
   </div>
 </template>
 
@@ -63,6 +66,7 @@ export default {
   data() {
     return {
       server,
+      newPage: false,
       calendarId: '',
       weeklyType: '',
       weeklyData: {},
@@ -86,7 +90,6 @@ export default {
       this.getProjectList();
     },
     refreshMyOkr() {
-      debugger;
       this.queryTeamOrPersonalTarget('my');
     },
     getValues() {
@@ -157,17 +160,26 @@ export default {
       }
     },
     getWeeklyById(item) {
-      this.weeklyData = {};
-      if (item.weeklyId) {
-        this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
-          if (res.code == 200) {
-            this.weeklyType = String(res.data.weeklyType);
-            this.weeklyData = res.data;
-          }
-        });
-      } else {
-        this.weeklyType = '1';
-      }
+      // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
+      this.queryTeamOrPersonalTarget('my');
+      this.newPage = false;
+      this.$nextTick(() => {
+        this.weeklyData = {};
+        if (item.weeklyId) {
+          this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
+            if (res.code == 200) {
+              this.weeklyType = String(res.data.weeklyType);
+              this.weeklyData = res.data;
+            }
+            this.newPage = true;
+            this.$forceUpdate();
+          });
+        } else {
+          this.weeklyType = '1';
+          this.newPage = true;
+          this.$forceUpdate();
+        }
+      });
     },
     setCalendarId(id) {
       this.calendarId = id;
