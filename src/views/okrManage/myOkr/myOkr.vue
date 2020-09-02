@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div>
+    <div class="cont-panel">
       <!-- 选择状态 -->
-      <dl>
+      <dl style="display:flex">
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>
       </dl>
       <!-- 选择周期 -->
-      <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+      <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
     </div>
     <!-- 状态为审批中需展示温馨提示 -->
     <div v-if="searchForm.status=='7'">
