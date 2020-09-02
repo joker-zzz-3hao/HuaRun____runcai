@@ -162,7 +162,9 @@ export default {
       this.getmainData();
     },
     getqueryMyOkr() {
-      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.orgId }).then((res) => {
+      this.server.queryMyOkr({
+        myOrOrg: 'org', status: '1', orgId: this.orgId, type: 'INDEX',
+      }).then((res) => {
         if (res.code == 200) {
           this.orgUser = res.data.orgUser;
           this.orgTable = res.data.orgTable;

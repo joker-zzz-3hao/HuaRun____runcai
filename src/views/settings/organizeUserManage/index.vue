@@ -23,9 +23,9 @@
           <span>
             <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
             <div @mouseleave="outDepart(data)" v-show="data.isShow">
-              <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
-              <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>
-              <div style="marginLeft:250px" @click="deleteDepart(data)">删除</div>
+              <div style="marginLeft:250px" @click.stop="createDepart(data)">创建部门</div>
+              <div style="marginLeft:250px" @click.stop="updateDepart(data)">编辑部门</div>
+              <div style="marginLeft:250px" @click.stop="deleteDepart(data)">删除</div>
             </div>
           </span>
         </span>
@@ -79,6 +79,7 @@
         <el-button @click="searchList">查询</el-button>
       </div>
       <div>
+        <el-button @click="showAddRoule">添加部门负责人</el-button>
         <el-button @click="createDepart">创建部门</el-button>
         <el-button @click="createOrEditUser">创建用户</el-button>
         <el-button @click="batchImport">批量导入</el-button>
@@ -97,9 +98,15 @@
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="agentOrgName" label="代理部门">
+              <template slot-scope="scope">
+                <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="setLeader(scope.row)" style="cursor: pointer;">
+                <div @click="showexistEdit(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>设置</span>
@@ -181,11 +188,28 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></edit-user>
+    <create-departOrg
+      v-if="exist"
+      :exist.sync="exist"
+      :title="'添加部门负责人'"
+      :treeData="treeData"
+      @createLeader="createLeader"
+    ></create-departOrg>
+    <edit-departOrg
+      v-if="existEdit"
+      :exist.sync="existEdit"
+      :title="'添加部门负责人'"
+      :rowData="rowData"
+      @createLeader="createLeader"
+      @searchList="searchList"
+    ></edit-departOrg>
   </div>
 </template>
 
 <script>
 import createDepart from './components/createDepartment';
+import createDepartOrg from './components/createDepartOrg';
+import editDepartOrg from './components/editDepartOrg';
 import createUser from './components/createUser';
 import editUser from './components/editUser';
 import Server from './server';
@@ -199,9 +223,14 @@ export default {
     'create-department': createDepart,
     'create-user': createUser,
     'edit-user': editUser,
+    'create-departOrg': createDepartOrg,
+    'edit-departOrg': editDepartOrg,
   },
   data() {
     return {
+      exist: false,
+      existEdit: false,
+      rowData: [],
       server,
       CONST,
       globalOrgId: '',
@@ -237,9 +266,25 @@ export default {
     this.getOrgTree();
   },
   methods: {
+    showAddRoule() {
+      this.exist = true;
+    },
+    showexistEdit(row) {
+      this.rowData = row;
+      this.existEdit = true;
+    },
     filterNode(value, data) {
       if (!value) return true;
       return data.orgName.indexOf(value) !== -1;
+    },
+    createLeader(user) {
+      this.server.setDepartLeader({
+        tenantId: this.tenantId, userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.searchList();
+        }
+      });
     },
     getOrgTree() {
       this.server.getOrg().then((res) => {
@@ -413,7 +458,7 @@ export default {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
       const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
       this.$confirm(title).then(() => {
-        this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
+        this.server[option]({ userId: user.userId, orgId: user.leader ? user.leader : user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
           }

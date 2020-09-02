@@ -1,6 +1,8 @@
 <template>
   <div class="okrSchedule">
+    <div>OKR当前进度</div>
     <div id="okrSchedule"></div>
+    <div>OKR进度更新次数</div>
     <div id="okrCountUpdate"></div>
   </div>
 </template>
@@ -31,7 +33,7 @@ export default {
     checkData() {
       this.mainDataX = this.mainData.map((item) => item.okrProgress);
       this.mainDataY = this.mainData.map((item) => item.orgName);
-      this.mainCount = this.mainData.map((item) => item.okrChangeCount);
+      this.mainCount = this.mainData.map((item) => item.okrProgressUpdateCount);
       this.init();
       this.initCount();
     },
@@ -40,9 +42,10 @@ export default {
       const myChart = echarts.init(document.getElementById('okrSchedule'));
       const option = {
         tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow',
+          trigger: 'item',
+          position: 'right',
+          formatter(params) {
+            return `<span>当前进度${params.value}%</span>`;
           },
         },
 
@@ -72,6 +75,7 @@ export default {
             type: 'bar',
             barWidth: 20,
             data: that.mainDataX,
+
           },
         ],
       };
@@ -82,9 +86,15 @@ export default {
       const that = this;
       const myChart = echarts.init(document.getElementById('okrCountUpdate'));
       const option = {
+
+        axisLine: {
+
+          symbol: ['none', 'arrow'],
+        },
         xAxis: {
           type: 'category',
           data: that.mainDataY,
+
         },
         yAxis: [
           {
@@ -97,7 +107,25 @@ export default {
           data: that.mainCount,
           type: 'bar',
           barWidth: 20,
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: { // 数值样式
+                  color: 'black',
+                  fontSize: 12,
 
+                },
+                formatter(params) {
+                  if (params.value == 0) {
+                    return '';
+                  }
+                  return `${params.value}次`;
+                },
+              },
+            },
+          },
         }],
       };
 

@@ -10,20 +10,14 @@
     class="tl-dialog"
   >
     <el-form ref="form" :model="form" label-width="110px" class="tl-form">
-      <el-form-item
-        label="当前部门"
-        prop="orgIdList"
-        :rules="[{required:true,message:'请选择上级部门',trigger:'blur'}]"
-      >
-        <el-cascader
-          v-model="form.orgIdList"
-          :options="treeData"
-          :show-all-levels="false"
-          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
-          @change="selectIdChange"
-        ></el-cascader>
+      <el-form-item label="当前部门">
+        <em>{{rowData.orgName}}</em>
       </el-form-item>
-      <el-form-item label="选择成员" class="tl-label-self">
+      <el-form-item label="选择成员" :inline="true" class="tl-label-self" v-if="cancelUser">
+        <el-input v-model="rowData.userName" :disabled="cancelUser"></el-input>
+        <el-button :disabled="!cancelUser" @click="cancelSet">取消设置</el-button>
+      </el-form-item>
+      <el-form-item label="选择成员" class="tl-label-self" v-if="!cancelUser">
         <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
       </el-form-item>
     </el-form>
@@ -46,8 +40,8 @@ export default {
       type: String,
       required: true,
     },
-    rouleType: {
-      type: Boolean,
+    rowData: {
+      type: Object,
       required: true,
     },
     treeData: {
@@ -63,6 +57,7 @@ export default {
       form: {
         region: [],
       },
+      cancelUser: true,
       listUser: [],
       dialogTableVisible: false,
       dialogVisible: false,
@@ -73,10 +68,26 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
+    if (this.rowData.leader) {
+      this.cancelUser = true;
+    } else {
+      this.cancelUser = false;
+    }
   },
   methods: {
     init() {
       this.setOrgIdList(this.globalOrgId);
+    },
+    cancelSet() {
+      const user = this.rowData;
+      const option = 'removeDepartLeder';
+      // const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
+      this.server[option]({ userId: user.userId, orgId: user.leader ? user.leader : user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
+        if (res.code == 200) {
+          this.cancelUser = false;
+          this.$emit('searchList');
+        }
+      });
     },
     setOrgIdList(orgId) {
       if (!orgId) { // 无orgId默认使用顶级租户的orgId
@@ -119,9 +130,17 @@ export default {
     },
     selectMb(data) {
       this.listUser = data;
+      console.log(data);
     },
     submit() {
-      this.$emit('createLeader', { orgId: this.form.orgIdList.pop(), userId: this.listUser[0].userId });
+      const user = this.rowData;
+      const option = 'setDepartLeader';
+      // const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
+      this.server[option]({ userId: this.listUser[0].userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
+        if (res.code == 200) {
+          this.$emit('searchList');
+        }
+      });
       this.close();
     },
     close() {

@@ -5,20 +5,13 @@ const mockData = {
   // 查询周期
   'POST /gateway/talent-query/okr/query/period': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'ARRAY|2': [{
-        'id|+1': 1,
-        'okrCycleName|1': ['2020年上半年(01-01～06-30)', '2020年下半年(07-01～12-30)'], // 产品名称
-        okrCycleCode: /[a-z][A-Z][A-Z][A-Z][0-9]/, // 产品编码
-        checkStatus: 1,
-        createTime: '2020-08-04 14:49:10',
-        endTime: '2020-12-31 14:51:38',
-        periodDesc: '2020下半年',
-        periodId: 'asdasdasd',
-        periodName: '2020下半年（2020.7.1-2020.12.31）',
-        periodType: 1,
-        startTime: '2020-07-01 14:51:33',
-        tenantId: '88888888',
-        updateTime: null,
+      ARRAY: [{
+        periodId: '1207232499984850944', tenantId: 'CR0011000054', periodName: '2020上半年OKR', periodDesc: '', periodType: 1, checkStatus: 0, createTime: '2020-08-20 15:44:50', updateTime: '2020-08-31 15:20:09', startTime: '2020-08-31 16:00:00', endTime: '2020-12-30 16:00:00', draftingStartTime: '2020-08-29 16:00:00', approvalEndTime: '2020-08-30 16:00:00', selfAssessReminderTime: '2020-12-30 16:00:00',
+      }, {
+        periodId: '1221490107795259392', tenantId: 'CR0011000054', periodName: '测试的周期', periodDesc: '', periodType: 1, checkStatus: 0, createTime: '2020-08-25 11:00:42', updateTime: '2020-08-31 15:13:58', startTime: '2020-07-31 16:00:00', endTime: '2020-08-30 16:00:00', draftingStartTime: '2020-08-01 16:00:00', approvalEndTime: '2020-08-06 16:00:00', selfAssessReminderTime: '2020-08-30 16:00:00',
+      }, {
+        periodId: '1240066906512007168', tenantId: 'CR0011000054', periodName: '2002年第4季度OKR', periodDesc: '', periodType: 1, checkStatus: 1, createTime: '2020-08-31 17:11:38', updateTime: '2020-08-31 17:16:14', startTime: '2020-08-29 16:00:00', endTime: '2020-09-29 16:00:00', draftingStartTime: '2020-08-29 16:00:00', approvalEndTime: '2020-08-30 16:00:00', selfAssessReminderTime: '2020-08-31 16:00:00',
+
       }],
     })));
   },
