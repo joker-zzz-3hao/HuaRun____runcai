@@ -2,8 +2,8 @@
   <div class="home">
     <keep-alive>
       <tl-undertake-maps v-if="undertakeMapsStep == '1'"></tl-undertake-maps>
-      <tl-undertake-detail v-if="undertakeMapsStep == '2'"></tl-undertake-detail>
     </keep-alive>
+    <tl-undertake-detail v-if="undertakeMapsStep == '2'"></tl-undertake-detail>
   </div>
 </template>
 

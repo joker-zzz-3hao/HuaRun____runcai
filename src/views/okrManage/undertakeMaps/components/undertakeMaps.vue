@@ -227,11 +227,10 @@ export default {
         });
       }
     },
-    handleCycleData(data) {
-      this.searchForm.periodId = data.periodId;
-      console.log('writeokrCycle', data);
-      this.getmaps();
-    },
+    // handleCycleData(data) {
+    //   this.searchForm.periodId = data.periodId;
+    //   console.log('writeokrCycle', data);
+    // },
     // handleData(data) {
     //   this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
     //   this.orgId = '';
@@ -290,6 +289,7 @@ export default {
           this.searchForm.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
           )[0] || {};
+          this.getmaps();
         }
       },
     },
