@@ -244,13 +244,14 @@
 }
 
 .create-okr .timeline-list .icon-clear {
-  margin: 40px 20px 0 20px;
+  margin: 40px 0 0 20px;
   color: #bcc4cc;
   transition: all .3s ease-out;
 }
 
 .create-okr .timeline-list .icon-clear:hover {
   color: #685df1;
+  background: #f0effe;
 }
 
 .create-okr .timeline-list dd {
@@ -263,7 +264,7 @@
 }
 
 .create-okr .timeline-list .item-group .el-form-item {
-  flex: 0 0 28%;
+  flex: 0 0 26%;
 }
 
 .create-okr .timeline-list .item-group .el-form-item:last-child {

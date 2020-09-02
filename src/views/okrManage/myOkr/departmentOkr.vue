@@ -37,7 +37,6 @@
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog()"
-        :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button

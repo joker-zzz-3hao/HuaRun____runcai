@@ -20,7 +20,9 @@
         <span>负责人</span>
         {{node.userName}}
       </div>
-      <div>{{node.open}}</div>
+      <div></div>
+      <!-- <div>{{node.open}}</div> -->
+      <!-- 数量 -->
       <div>{{node.children?node.children.length:0}}</div>
     </div>
     <!-- <div class="showTips" :class="node.children ? 'havechild' : ''">

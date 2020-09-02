@@ -20,7 +20,6 @@
               ></el-option>
             </el-option-group>
           </el-select>
-          <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
         </dd>
       </dl>
       <dl>
