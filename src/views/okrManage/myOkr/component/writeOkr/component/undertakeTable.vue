@@ -77,11 +77,16 @@ export default {
     };
   },
   created() {
-    this.departmentName = this.userInfo.orgParentName || '部门';
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.departmentName = this.userInfo.orgParentName || '部门';
+    } else {
+      this.departmentName = this.userInfo.orgName || '部门';
+    }
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   methods: {
