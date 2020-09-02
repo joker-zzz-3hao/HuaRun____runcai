@@ -278,7 +278,7 @@ export default {
     // 自动保存
     autosave() {
       this.timedInterval = setInterval(() => {
-        this.autoSaveDraft();
+        this.saveDraft('auto');
       }, TIME_INTERVAL);
     },
     // 增加kr
@@ -482,8 +482,15 @@ export default {
         }
       });
     },
+
     // 保存草稿
-    saveDraft() {
+    saveDraft(type = '') {
+      if (this.formData.okrInfoList.length == 1
+      && this.formData.okrInfoList[0].okrDetailObjectKr == ''
+      && this.formData.okrInfoList[0].krList[0].okrDetailObjectKr == ''
+      ) {
+        return;
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
           if (oitem.departokrList) {
@@ -496,9 +503,17 @@ export default {
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
           if (res.code == 200) {
-            this.$message('已保存');
-            this.$refs.dataForm.resetFields();
-            this.close();
+            if (type) {
+              this.searchForm.draftId = res.data.id;
+              this.setShowAuto(true);
+              this.timedShow = setInterval(() => {
+                this.setShowAuto(false);
+              }, 3000);
+            } else {
+              this.$message('已保存');
+              this.$refs.dataForm.resetFields();
+              this.close();
+            }
           }
         });
       }
@@ -521,28 +536,6 @@ export default {
     close() {
       this.setCreateokrDrawer(false);
       this.setMyokrDrawer(false);
-    },
-    autoSaveDraft() {
-      if (this.formData.okrInfoList.length > 0) {
-        this.formData.okrInfoList.forEach((oitem) => {
-          if (oitem.departokrList) {
-            delete oitem.departokrList;
-            delete oitem.philosophyList;
-          }
-        });
-        this.formData.okrBelongType = this.searchForm.okrType;
-        this.formData.periodId = this.searchForm.okrCycle.periodId;
-        this.formData.okrDraftId = this.searchForm.draftId;
-        this.server.saveOkrDraft(this.formData).then((res) => {
-          if (res.code == 200) {
-            this.searchForm.draftId = res.data.id;
-            this.setShowAuto(true);
-            this.timedShow = setInterval(() => {
-              this.setShowAuto(false);
-            }, 3000);
-          }
-        });
-      }
     },
   },
   watch: {
