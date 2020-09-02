@@ -10,7 +10,7 @@
       <el-form :rules="formData.rules" :model="formData" ref="formDom">
         <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="workContent">
+          <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workContent'"
@@ -26,12 +26,12 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="进度" prop="workProgress">
+          <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-slider v-model="scope.row.workProgress" :step="1" show-input></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="推进工时" prop="workTime">
+          <el-table-column width="220" label="推进工时" prop="workTime" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-input-number
                 v-model.trim="scope.row.workTime"
@@ -41,7 +41,7 @@
               ></el-input-number>h
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectId">
+          <el-table-column label="关联项目" prop="projectId" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
@@ -75,7 +75,7 @@
               <div></div>
             </template>
           </el-table-column>
-          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds">
+          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
@@ -342,10 +342,8 @@ export default {
           label: '失控',
         },
       ],
-      timer: null,
     };
   },
-
   created() {
     this.init();
   },
@@ -357,6 +355,9 @@ export default {
         }
         return okr;
       };
+    },
+    workItem() {
+      return '工作项';
     },
     itemIndex() {
       return (okr) => {
@@ -378,8 +379,6 @@ export default {
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
-      // 自动提交
-      this.commitEveryFiveMin();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -454,32 +453,6 @@ export default {
         this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
       });
     },
-    commitEveryFiveMin() {
-      // 五分钟自动提交页面，无需校验页面必填项
-      this.timer = setInterval(() => {
-        const params = {
-          calendarId: this.calendarId,
-          weeklyEmotion: this.weeklyEmotion,
-          weeklyId: this.weeklyId,
-          weeklyType: this.weeklyType,
-          weeklyOkrSaveList: this.weeklyOkrSaveList,
-          weeklyPlanSaveList: this.formData.weeklyPlanSaveList,
-          weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
-          weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
-        };
-        if (this.calendarId) {
-          this.server.commitWeekly(params).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('提交成功');
-              // 跟下次俺个人okr数据
-              this.$emit('refreshMyOkr');
-              // 刷新日历数据
-              this.$busEmit('refreshCalendar');
-            }
-          });
-        }
-      }, 5 * 60 * 1000);
-    },
     addWork() {
       this.formData.weeklyWorkVoSaveList.push({
         okrCultureValueIds: '',
@@ -524,7 +497,7 @@ export default {
     },
     selectTempPro(data) {
       data.projectId = '';
-      data.validateProjectId = '默认项目';//
+      data.validateProjectId = '临时项目';//
     },
     addSupportOkr(data) {
       this.currenItemrandomId = data.randomId || data.workId;
@@ -617,7 +590,19 @@ export default {
     sad() {
       this.weeklyEmotion = 100;
     },
-
+    renderHeader(h, { column }) {
+      // 这里在最外层插入一个div标签
+      return h('div', [// h即为cerateElement的简写
+        h('span', { style: { color: 'red' } }, '*'),
+        // 在div里面插入span
+        h('span', {
+          // 表示内容
+          domProps: {
+            innerHTML: column.label,
+          },
+        }),
+      ]);
+    },
   },
   watch: {
     'formData.weeklyWorkVoSaveList': {
@@ -682,9 +667,6 @@ export default {
       },
       deep: true,
     },
-  },
-  beforeDestroy() {
-    clearInterval(this.timer);
   },
 };
 </script>

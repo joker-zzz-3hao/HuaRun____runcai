@@ -163,13 +163,16 @@
     <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
     <el-drawer
-      title="关联承接项"
+      :wrapperClosable="false"
       :visible.sync="innerDrawer"
       :modal="false"
-      :wrapperClosable="false"
       :append-to-body="true"
+      custom-class="diy-drawer associated-undertaking"
       class="tl-drawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">关联承接项</div>
+      </div>
       <undertake-table
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -177,8 +180,10 @@
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
         :periodName="periodName"
       ></undertake-table>
-      <el-button type="primary" @click="summitUndertake()">确定</el-button>
-      <el-button @click="innerDrawer = false">取消</el-button>
+      <div class="operating-panel">
+        <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
+        <el-button @click="innerDrawer = false" plain class="tl-btn amt-border-fadeout">取消</el-button>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -189,7 +194,8 @@ import confidenceSelect from '@/components/confidenceSelect';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 
-const TIME_INTERVAL = 5 * 1000;
+// 自动保存时间 30秒
+const TIME_INTERVAL = 30 * 1000;
 
 export default {
   name: 'orkForm',
@@ -260,14 +266,14 @@ export default {
     }
   },
   created() {
-    if (this.searchForm.okrStatus == '6' || this.searchForm.okrStatus == '8') {
+    if (this.searchForm.okrStatus == '6') {
       this.getOkrDraftById();
     }
-    // TODO:自动保存
-    // this.autosave();
+    // 自动保存
+    this.autosave();
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer']),
+    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer', 'setShowAuto']),
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
@@ -277,7 +283,7 @@ export default {
     // 自动保存
     autosave() {
       this.timedInterval = setInterval(() => {
-        this.saveDraft();
+        this.saveDraft('auto');
       }, TIME_INTERVAL);
     },
     // 增加kr
@@ -346,6 +352,7 @@ export default {
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
                 typeName: '目标O',
+                okrKind: 'o',
                 okrDetailObjectKr: item.o.okrDetailObjectKr,
                 okrDetailId: item.o.okrDetailId,
                 okrDetailVersion: item.o.okrDetailVersion,
@@ -355,6 +362,7 @@ export default {
                 item.krList.forEach((krItem, index) => {
                   this.departokrList.push({
                     typeName: `KR${index + 1}`,
+                    okrKind: 'k',
                     okrDetailObjectKr: krItem.okrDetailObjectKr,
                     okrDetailId: krItem.okrDetailId,
                     okrDetailVersion: krItem.okrDetailVersion,
@@ -481,8 +489,15 @@ export default {
         }
       });
     },
+
     // 保存草稿
-    saveDraft() {
+    saveDraft(type = '') {
+      if (this.formData.okrInfoList.length == 1
+      && this.formData.okrInfoList[0].okrDetailObjectKr == ''
+      && this.formData.okrInfoList[0].krList[0].okrDetailObjectKr == ''
+      ) {
+        return;
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
           if (oitem.departokrList) {
@@ -495,9 +510,17 @@ export default {
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
           if (res.code == 200) {
-            this.$message('已保存');
-            this.$refs.dataForm.resetFields();
-            this.close();
+            if (type) {
+              this.searchForm.draftId = res.data.id;
+              this.setShowAuto(true);
+              this.timedShow = setInterval(() => {
+                this.setShowAuto(false);
+              }, 3000);
+            } else {
+              this.$message('已保存');
+              this.$refs.dataForm.resetFields();
+              this.close();
+            }
           }
         });
       }
@@ -547,6 +570,7 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timedInterval);
+    clearInterval(this.timedShow);
   },
 };
 </script>

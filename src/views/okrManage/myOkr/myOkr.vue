@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div>
+    <div class="cont-panel">
       <!-- 选择状态 -->
-      <dl>
+      <dl style="display:flex">
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>
       </dl>
       <!-- 选择周期 -->
-      <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+      <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
     </div>
     <!-- 状态为审批中需展示温馨提示 -->
     <div v-if="searchForm.status=='7'">
@@ -124,7 +124,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import periodSelect from '@/components/periodSelect';
+// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
@@ -138,7 +138,7 @@ const server = new Server();
 export default {
   name: 'myOkr',
   components: {
-    'tl-periodselect': periodSelect,
+    // 'tl-periodselect': periodSelect,
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,

@@ -340,10 +340,12 @@ export default {
         this.initDepartment = depart;
         this.globalOrgId = depart.orgId;
       }
-      this.showcreateDepart = true;
-      this.$nextTick(() => {
-        this.$refs.createDepart.show();
-      });
+      if (this.treeData.length > 0) {
+        this.showcreateDepart = true;
+        this.$nextTick(() => {
+          this.$refs.createDepart.show();
+        });
+      }
     },
     updateDepart(depart) {
       this.departOptionType = 'edit';
@@ -467,6 +469,7 @@ export default {
     },
     tenantId: {
       handler(newValue) {
+        this.globalOrgId = '';
         this.tenantId = newValue;
         this.tenantList.forEach((element) => {
           if (element.tenantId == newValue) {

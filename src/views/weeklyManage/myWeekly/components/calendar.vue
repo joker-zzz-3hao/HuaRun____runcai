@@ -26,6 +26,7 @@
         :key="index"
         @click="seclectBtn(item)"
         :type="item.btnType"
+        :disabled="item.cannotCommit"
       >
         {{getWeekItem(item,index)}}
         <el-checkbox
@@ -83,11 +84,26 @@ export default {
       this.server.getCalendar({ date: this.monthDate }).then((res) => {
         if (res.code == 200) {
           this.weekList = res.data;
+          const current = new Date();
+          // let currentWeek = {};
           this.weekList.forEach((week) => {
             week.btnType = '';
-          });
-          // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
 
+            // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
+            let beg = new Date(week.weekBegin);
+            let end = new Date(week.weekEnd);
+            beg = beg.setHours(beg.getHours() - 8);
+            end = end.setHours(end.getHours() + 16);
+            if (current >= beg && current <= end) {
+              // 当前周
+              // currentWeek = week;
+            }
+          });
+          // 本周之后的周不可点击
+
+          // 本周、上周之前不可可点击、不可编辑
+
+          // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
         }
       });

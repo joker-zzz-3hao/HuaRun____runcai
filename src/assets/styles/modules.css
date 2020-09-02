@@ -786,6 +786,10 @@
   content: unset;
 }
 
+.tl-select-dropdown .el-select-dropdown__list {
+  padding: 16px 0;
+}
+
 .tl-select-dropdown .el-select-group__title {
   padding: 0 20px;
   font-size: 14px;
@@ -861,6 +865,11 @@
   border: 1px dashed transparent;
   background: linear-gradient(#fff,#fff) padding-box,
   repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
+}
+
+.dotted-line.el-button--text:hover {
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#685df1 0, #685df1 0.4em,#fff 0,#fff 0.6em);
 }
 
 /* 提示文案组件 */
@@ -1073,12 +1082,49 @@
 }
 
 /* timeline */
+.tl-diy-timeline .timeline-list {
+  margin: 0 0 30px 0;
+}
+
 .tl-diy-timeline .timeline-list dt,
 .tl-diy-timeline .timeline-list dd {
   padding: 0 0 0 20px;
+  position: relative;
 }
 
+.tl-diy-timeline .timeline-list dt::before,
+.tl-diy-timeline .timeline-list dd::before {
+  position: absolute;
+  top: 22px;
+  bottom: 10px;
+  left: 5px;
+  content: '';
+  width: 1px;
+  border-left: 1px solid transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.2em,#fff 0,#fff 0.3em);
+}
 
+.tl-diy-timeline .list-title {
+  position: relative;
+}
+
+.tl-diy-timeline .list-title::before {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(76,205,121,0.16);
+  border: 2px solid #4ccd79;
+}
+
+.tl-diy-timeline .timeline-list dd .list-title::before {
+  background: rgba(104,93,241,0.16);
+  border: 2px solid #685df1;
+}
 
 
 .tl-diy-timeline .el-form-item__content,
@@ -1143,7 +1189,7 @@
 }
 
 .tl-diy-popover .el-popover {
-  padding: 10px 0;
+  padding: 16px 0;
 }
 
 .tl-diy-popover li,
@@ -1154,7 +1200,7 @@
 
 .tl-diy-popover li {
   padding: 0 20px;
-  height: 32px;
+  height: 40px;
   background: #fff;
   transition: all .4s ease-out;
 }
@@ -1629,11 +1675,6 @@
   line-height: unset;
 }
 
-.cont-area .operating-panel .el-button {
-  min-width: 90px;
-  height: 40px;
-}
-
 .operating-area .tl-input-search {
   min-width: 270px;
 }
@@ -1651,12 +1692,14 @@
   font-weight: 600;
 }
 
-.cont-area {
+.console-layout .cont-area {
+  display: unset;
+  padding: 0;
+}
+
+.settings-layout .cont-area,
+.admin-layout .cont-area {
   padding: 30px;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;
@@ -1669,6 +1712,12 @@
 
 .operating-panel .flex-auto {
   flex: 1;
+}
+
+.cont-panel {
+  background: #fff;
+  box-shadow: 0 0 14px 0 #f4f6f8;
+  border-radius: 4px;
 }
 
 .table-pagination {

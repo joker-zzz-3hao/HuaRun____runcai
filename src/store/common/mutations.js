@@ -47,4 +47,8 @@ export default {
   setRoleCode: (state, roleCode = {}) => {
     state.roleCode = roleCode;
   },
+  // 设置用户角色
+  setShowAuto: (state, showAuto = {}) => {
+    state.showAuto = showAuto;
+  },
 };
