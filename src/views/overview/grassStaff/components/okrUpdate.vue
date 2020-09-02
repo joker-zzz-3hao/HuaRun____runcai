@@ -32,6 +32,13 @@ export default {
       const that = this;
       const myChart = echarts.init(document.getElementById('okrUpdate'));
       const option = {
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            return `<div>更新次数${params.value}</div>`;
+          },
+        },
         xAxis: {
           type: 'category',
           data: that.mainDataX,

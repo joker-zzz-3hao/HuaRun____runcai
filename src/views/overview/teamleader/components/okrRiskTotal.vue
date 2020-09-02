@@ -1,6 +1,18 @@
 <template>
   <div class="okrRiskTotal">
-    <div id="okrRiskTotal"></div>
+    <div id="okrRiskTotal" @click="dialogVisible=true"></div>
+    <el-dialog title="okr列表" :visible.sync="dialogVisible">
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="date" label="负责人" width="180"></el-table-column>
+        <el-table-column prop="name" label="周期" width="180"></el-table-column>
+        <el-table-column prop="address" label="OKR状态"></el-table-column>
+        <el-table-column prop="address" label="当前进度">
+          <template slot-scope="scope">
+            <el-progress :percentage="scope.row.ratio"></el-progress>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -16,13 +28,17 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
       aroundData: [],
+      okrdata: [],
     };
   },
   mounted() {
     this.cheMainData();
+    console.log(this.tableData);
   },
   methods: {
+
     cheMainData() {
       this.aroundData = this.tableData.map((item) => ({ value: item.count, name: item.ratio }));
       this.init();

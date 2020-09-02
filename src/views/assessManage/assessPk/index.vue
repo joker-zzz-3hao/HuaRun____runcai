@@ -1,11 +1,19 @@
 <template>
-  <div class="home">润才之旅正式开始……</div>
+  <div class="home">
+    <leaderPK v-if="true"></leaderPK>
+    <personPK v-if="false"></personPK>
+  </div>
 </template>
 
 <script>
+import leaderPK from './components/leaderPK';
+import personPK from './components/personPK';
+
 export default {
-  name: 'myAssess',
+  name: 'assessManagementIndex',
   components: {
+    leaderPK,
+    personPK,
   },
 };
 </script>

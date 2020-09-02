@@ -71,8 +71,6 @@ export default {
       if (this.okrData.datas) {
         this.okrDataX = this.okrData.datas.map((item) => [item.createDate, item.allScore]);
       }
-
-      console.log(this.okrDataX);
       this.init();
     },
     changeLeek() {
@@ -114,6 +112,13 @@ export default {
       const option = {
         xAxis: {
           data: that.okrData.months,
+        },
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            return `${params.value}%`;
+          },
         },
         yAxis: {
           min: 0,

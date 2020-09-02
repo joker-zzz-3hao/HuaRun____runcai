@@ -120,7 +120,7 @@ export default {
           item.doingNumber,
           item.doneNumber,
         ]);
-        console.log(this.teamDataX);
+
         this.init();
       });
     },
@@ -140,9 +140,19 @@ export default {
       const that = this;
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
-        tooltip: {},
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            console.log(params);
+            return `<div>进行中的工作项${params.data[1]}</div><div>已完成的工作项${params.data[2]}</div>`;
+          },
+        },
+        legend: {
+          data: ['进行中的工作项', '已完成的工作项'],
+        },
         dataset: {
-          dimensions: ['product', '2015', '2016'],
+          dimensions: ['product', '进行中的工作项', '已完成的工作项'],
           source: that.teamDataX,
         },
         xAxis: { type: 'category' },
@@ -169,23 +179,28 @@ export default {
       const option = {
         tooltip: {
           trigger: 'item',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-          },
+          position: 'top',
           formatter(params) {
-            let name = '';
-            if (params.seriesName == 0) {
-              name = '开心';
-            }
-            if (params.seriesName == 1) {
-              name = '沮丧';
-            }
-            if (params.seriesName == 2) {
-              name = '平常';
-            }
-            return `<span>${name}</span>`;
+            return `<div>沮丧${params.data['0']}</div>
+            <div>平常${params.data['50'] ? params.data['50'] : 0}</div>
+            <div>开心${params.data['100'] ? params.data['50'] : 0}</div>`;
           },
         },
+        legend: {
+          data: ['0', '50', '100'],
+          formatter(params) {
+            if (params == '0') {
+              return '沮丧';
+            }
+            if (params == '50') {
+              return '平常';
+            }
+            if (params == '100') {
+              return '开心';
+            }
+          },
+        },
+
         dataset: {
           dimensions: ['product', '0', '50', '100'],
           source: that.moodDataY,
@@ -193,7 +208,7 @@ export default {
         xAxis: { type: 'category' },
         yAxis: {
           min: 0,
-          max: 100,
+          max: 50,
         },
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.

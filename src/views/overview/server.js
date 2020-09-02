@@ -58,4 +58,13 @@ export default class Server extends ServerBase {
   teamWeekly(param) {
     return this._ajaxPost('gateway/weekly-service//weekly/statistic/teamWeekly', param);
   }
+
+  // 查okr列表
+  getmyOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
+
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
 }

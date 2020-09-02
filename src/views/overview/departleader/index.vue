@@ -40,7 +40,6 @@
       </div>
     </div>
     <div class="creatOkr">
-      <div>OKR当前进度</div>
       <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
@@ -125,7 +124,9 @@ export default {
       return name.substring(0, 1);
     },
     getqueryMyOkr() {
-      this.server.queryMyOkr({ myOrOrg: 'org', status: '1', orgId: this.userInfo.orgId }).then((res) => {
+      this.server.queryMyOkr({
+        myOrOrg: 'org', status: '1', orgId: this.userInfo.orgId, type: 'INDEX',
+      }).then((res) => {
         if (res.code == 200) {
           this.orgTable = res.data.orgTable;
           this.orgUser = res.data.orgUser;

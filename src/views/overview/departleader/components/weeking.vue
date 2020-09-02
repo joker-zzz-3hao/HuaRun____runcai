@@ -12,11 +12,11 @@
       </el-select>
       <div id="weeking"></div>
       <ul>
-        <li
-          v-for="(item,index) in orgTable"
-          @click="changIdAction(item.id)"
-          :key="index"
-        >{{item.orgName}}</li>
+        <li v-for="(item,index) in orgTable" :key="index" @click="changIdAction(item.orgId)">
+          {{
+          item.orgName
+          }}
+        </li>
       </ul>
     </div>
     <div class="model">
@@ -93,7 +93,7 @@ export default {
       periodId: '',
       value: '',
       server,
-      userId: '',
+      orgId: '',
       calendarId: '',
       dateTime: '',
       options: [],
@@ -152,25 +152,64 @@ export default {
       });
     },
     changIdAction(id) {
-      this.userId = id;
+      this.orgId = id;
       this.getriskStatistics();
     },
     getokrQuery() {
       this.server.okrQuery().then((res) => {
         this.options = res.data.content;
         this.periodId = this.options[0].periodId;
+        this.orgId = this.orgTable[0].orgId;
         this.getriskStatistics();
       });
     },
     getriskStatistics() {
       this.server.riskStatistics({
         periodId: this.periodId,
-        orgId: this.userInfo.orgId,
-        userId: this.userId,
+        orgId: this.orgId,
         personOrOrg: 'org',
       }).then((res) => {
-        this.echartDataY = res.data.datas.map((item) => item.allScore);
-        this.echartDataX = res.data.months;
+        this.echartDataX = [];
+        const startDate = `${res.data.months[0]}-01`;
+
+        const endtDate = `${res.data.months.pop()}-01`;
+        const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
+        const oneDay = 24 * 3600 * 1000;
+        let startche = +new Date(startDate);
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < cheTime / oneDay; i++) {
+          // eslint-disable-next-line no-const-assign
+          startche += oneDay;
+          const now = new Date(startche);
+          let months = '';
+          let day = '';
+          if (now.getMonth() < 9) {
+            months = `0${now.getMonth() + 1}`;
+          } else {
+            months = now.getMonth() + 1;
+          }
+          if (now.getDate() < 11) {
+            day = `0${now.getDate() - 1}`;
+          } else {
+            day = now.getDate() - 1;
+          }
+          this.echartDataX.push([now.getFullYear(), months, day].join('-'));
+        }
+        if (res.data.datas) {
+          this.echartDataY = {
+            type: 'line',
+            symbol: 'circle',
+            showAllSymbol: true,
+            data: res.data.datas.map((item) => [item.createDate, item.allScore]),
+          };
+        } else {
+          this.echartDataY = {
+            type: 'line',
+            symbol: 'circle',
+            showAllSymbol: true,
+            data: [],
+          };
+        }
         this.init();
       });
     },
@@ -181,6 +220,10 @@ export default {
         xAxis: {
           data: that.echartDataX,
         },
+        legend: {
+          data: that.orgTable.map((item) => item.orgName),
+        },
+
         yAxis: {
           min: 0,
           max: 4,
@@ -200,12 +243,11 @@ export default {
             },
           },
         },
-        series: [{
-          name: '风险',
-          type: 'line',
-          data: that.echartDataX,
-        },
+        tooltip: {},
+        series: [
+          that.echartDataY,
         ],
+
       };
 
       myChart.setOption(option);
@@ -215,11 +257,37 @@ export default {
       const myChart = echarts.init(document.getElementById('mood'));
       const option = {
         dataset: {
-          dimensions: ['product', '0', '50', '100'],
           source: that.moodDataY,
         },
+        legend: {
+          data: ['0', '50', '100'],
+          formatter(params) {
+            if (params == '0') {
+              return '沮丧';
+            }
+            if (params == '50') {
+              return '平常';
+            }
+            if (params == '100') {
+              return '开心';
+            }
+          },
+        },
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            console.log(params);
+            return `<div>沮丧${params.data[1]}</div>
+            <div>平常${params.data[2] ? params.data[2] : 0}</div>
+            <div>开心${params.data[3] ? params.data[3] : 0}</div>`;
+          },
+        },
         xAxis: { type: 'category' },
-        yAxis: {},
+        yAxis: {
+          min: 0,
+          max: 50,
+        },
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
@@ -236,10 +304,11 @@ export default {
         date,
       }).then((res) => {
         this.moodDataX = res.data.map((item) => item.orgName);
-        this.moodDataY = res.data.map((item) => ({
-          product: item.orgName,
-          ...item.emotionList.map((li) => ({ [li.weeklyEmotion]: li.weeklyNumber })),
-        }));
+        this.moodDataY = res.data.map((item) => ([
+          item.orgName,
+          ...item.emotionList.map((li) => (li.weeklyNumber)),
+        ]));
+        this.moodDataY = [['product', '0', '50', '100'], ...this.moodDataY];
         this.initMood();
       });
     },

@@ -64,7 +64,6 @@
         <el-button @click="searchList">查询</el-button>
       </div>
       <div>
-        <el-button @click="showAddRoule">添加部门负责人</el-button>
         <el-button @click="createDepart">创建部门</el-button>
         <el-button @click="createOrEditUser">创建用户</el-button>
         <el-button @click="batchImport">批量导入</el-button>
@@ -83,12 +82,7 @@
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="agentOrgName" label="代理部门">
-              <template slot-scope="scope">
-                <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
+
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div @click="setLeader(scope.row)" style="cursor: pointer;">
@@ -186,20 +180,12 @@
         @closeUserDialog="closeUserDialog"
       ></edit-user>
     </el-drawer>
-    <create-departOrg
-      v-if="exist"
-      :exist.sync="exist"
-      :title="'添加部门负责人'"
-      :treeData="treeData"
-      @createLeader="createLeader"
-    ></create-departOrg>
   </div>
 </template>
 
 <script>
 import createDepart from './components/createDepartment';
 import createUser from './components/createUser';
-import createDepartOrg from './components/createDepartOrg';
 import editUser from './components/editUser';
 import Server from './server';
 import CONST from './const';
@@ -212,7 +198,6 @@ export default {
     'create-department': createDepart,
     'create-user': createUser,
     'edit-user': editUser,
-    'create-departOrg': createDepartOrg,
   },
   data() {
     return {
