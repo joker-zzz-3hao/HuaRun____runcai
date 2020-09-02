@@ -34,11 +34,9 @@
       <tl-okr-table
         :tableList="tableList"
         :disabled="false"
-        :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog()"
-        :showParentOkr="false"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
@@ -185,7 +183,7 @@ export default {
     },
     openDialog(val) {
       this.okrItem = val;
-      this.drawerTitle = 'OKR详情';
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
       this.myokrDrawer = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();

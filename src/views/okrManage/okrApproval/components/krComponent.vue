@@ -19,9 +19,7 @@
       </div>
       <div class="display-flex">
         <div>风险状态</div>
-        <div v-for="item in new Array(3)" :key="item">
-          <tl-riskStatus :status="krData.okrDetailConfidence"></tl-riskStatus>
-        </div>
+        <div v-for="item in new Array(3)" :key="item"></div>
         <span>{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</span>
       </div>
     </div>
@@ -29,7 +27,6 @@
 </template>
 
 <script>
-import riskStatus from '@/components/riskStatus';
 import process from '@/components/process';
 import CONST from '../const';
 
@@ -41,7 +38,6 @@ export default {
     };
   },
   components: {
-    'tl-riskStatus': riskStatus,
     'tl-process': process,
   },
   props: {

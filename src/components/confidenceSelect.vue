@@ -1,27 +1,45 @@
 <template>
-  <div>
+  <div class="tl-diy-popover">
     <el-popover
       placement="bottom"
       width="200"
       trigger="click"
       :append-to-body="false"
       v-model="visible"
+      :visible-arrow="false"
+      @show="show"
+      @hide="hide"
     >
       <ul>
-        <li v-for="citem in CONST.CONFIDENCE" :key="citem.value">
-          <div @click="handleClick(citem.value)">
-            <div v-for="item in new Array(3)" :key="item">
-              <tl-riskStatus :status="citem.value"></tl-riskStatus>
-            </div>
-            <span>{{citem.label}}</span>
+        <li v-for="citem in CONST.CONFIDENCE" :key="citem.value" @click="handleClick(citem.value)">
+          <div class="state-grid">
+            <div
+              :class="{
+              'is-no-risk': citem.value == 1,
+              'is-risks': citem.value == 2,
+              'is-uncontrollable': citem.value == 3
+              }"
+            ></div>
+            <div :class="{'is-risks': citem.value == 2,'is-uncontrollable': citem.value == 3}"></div>
+            <div :class="{'is-uncontrollable': citem.value == 3}"></div>
           </div>
+          <div class="state-txt">{{citem.label}}</div>
         </li>
       </ul>
       <div slot="reference">
-        <div v-for="item in new Array(3)" :key="item">
-          <tl-riskStatus :status="modelVal"></tl-riskStatus>
+        <div class="state-grid">
+          <div
+            :class="{
+              'is-no-risk': modelVal == 1,
+              'is-risks': modelVal == 2,
+              'is-uncontrollable': modelVal == 3
+              }"
+          ></div>
+          <div :class="{'is-risks': modelVal == 2,'is-uncontrollable': modelVal == 3}"></div>
+          <div :class="{'is-uncontrollable': modelVal == 3}"></div>
         </div>
-        <span>{{CONST.CONFIDENCE_MAP[modelVal]}}</span>
+        <div class="state-txt">{{CONST.CONFIDENCE_MAP[modelVal]}}</div>
+        <i class="el-icon-caret-bottom" :class="{'is-show': isShow}"></i>
       </div>
     </el-popover>
   </div>
@@ -29,18 +47,17 @@
 
 <script>
 
-import riskStatus from '@/components/riskStatus';
 import CONST from './const';
 
 export default {
   name: 'confidenceSelect',
   components: {
-    'tl-riskStatus': riskStatus,
   },
   data() {
     return {
       CONST,
       visible: false,
+      isShow: false,
     };
   },
   model: {
@@ -58,9 +75,12 @@ export default {
       this.$emit('change', value);
       this.visible = false;
     },
+    show() {
+      this.isShow = true;
+    },
+    hide() {
+      this.isShow = false;
+    },
   },
 };
 </script>
-
-<style>
-</style>

@@ -176,12 +176,36 @@
 }
 
 /* 创建okr */
+.create-okr {
+  height: 100%;
+}
+
+.create-okr .okr-info .el-scrollbar .el-scrollbar__view {
+  padding: 0 20px 0 0;
+}
+
+.create-okr .okr-info {
+  height: 100%;
+  height: calc(100% - 170px);
+}
+
 .create-okr .el-drawer__body {
   margin: 10px 0 0 0;
-  width: 900px;
+  width: 850px;
+}
+
+.associated-undertaking .el-drawer__body {
+  margin: 10px 0 0 0;
+  width: 620px;
+}
+
+.create-okr .tl-diy-timeline {
+  margin: 0 0 30px 0;
+  height: 100%;
 }
 
 .create-okr .allocation-info {
+  margin: 0 20px 20px 0;
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -207,6 +231,97 @@
 .create-okr .allocation-info dd:last-child {
   margin: 0;
 }
+
+.tl-drawer .create-okr .el-drawer__body {
+  overflow: hidden;
+}
+
+.create-okr .el-scrollbar {
+  height: 100%;
+}
+
+.create-okr .timeline-list dt {
+  display: flex;
+}
+
+.create-okr .timeline-list .list-info {
+  flex: 1;
+}
+
+.create-okr .timeline-list .icon-clear {
+  margin: 40px 0 0 20px;
+  color: #bcc4cc;
+  transition: all .3s ease-out;
+}
+
+.create-okr .timeline-list .icon-clear:hover {
+  color: #685df1;
+  background: #f0effe;
+}
+
+.create-okr .timeline-list dd {
+  display: flex;
+}
+
+.create-okr .timeline-list .item-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-okr .timeline-list .item-group .el-form-item {
+  flex: 0 0 26%;
+}
+
+.create-okr .timeline-list .item-group .el-form-item:last-child {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.create-okr .timeline-list .tl-input-number {
+  margin: 0 10px 0 0;
+}
+
+.create-okr .timeline-list .item-group .tl-btn {
+  height: 30px;
+}
+
+.create-okr .timeline-list .list-title,
+.create-okr .timeline-list .el-form-item__label {
+  color: #4d5155;
+}
+
+.create-okr .list-add {
+  margin: 30px 0 0 20px;
+}
+
+.associated-undertaking .el-scrollbar {
+  margin: 0 0 30px 0;
+}
+
+.associated-undertaking .dl-list .list-title,
+.associated-undertaking .dl-list dd {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+}
+
+.associated-undertaking .dl-list .list-title em {
+  font-weight: 500;
+}
+
+.associated-undertaking .dl-list .list-title span {
+  margin: 0 0 0 10px;
+  color: #acb6bf;
+}
+
+.associated-undertaking .dl-list .list-title::before {
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: #685df1;
+}
+
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */

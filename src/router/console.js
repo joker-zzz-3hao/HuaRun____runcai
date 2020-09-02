@@ -278,6 +278,56 @@ export default [
         },
         component: () => import('@/views/taskManage/myTask/index'),
       },
+      {
+        // 任务管理
+        // 我的任务
+        path: '/createTask',
+        name: 'createTask',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myTask',
+          title: 'createTask',
+          power: '',
+        },
+        component: () => import('@/views/taskManage/myTask/components/createTask'),
+      },
+      {
+        path: '/worthManage',
+        name: 'worthManage',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'worthManage',
+          title: 'worthManage',
+          power: '',
+        },
+        component: () => import('@/views/worthManage/worthManage/index'),
+      },
+      {
+        path: '/notice',
+        name: 'notice',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'notice',
+          title: 'notice',
+          power: '',
+        },
+        component: () => import('@/views/notice/index'),
+      },
+      {
+        path: '/personConfig',
+        name: 'personConfig',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'personConfig',
+          title: 'personConfig',
+          power: '',
+        },
+        component: () => import('@/views/personConfig/index'),
+      },
     ],
   },
 ];

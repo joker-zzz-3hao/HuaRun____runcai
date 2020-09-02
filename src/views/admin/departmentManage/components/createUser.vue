@@ -222,6 +222,7 @@ export default {
         loginPwd: this.Cryptojs.encrypt(this.formData.loginPwd),
         orgFullId: this.formData.orgIdList.join(':'),
         tenantName: this.formData.tenantName,
+        tenantId: this.tenantId,
         userAccount: this.formData.userAccount,
         userMail: this.formData.userMail,
         userMobile: this.formData.userMobile,

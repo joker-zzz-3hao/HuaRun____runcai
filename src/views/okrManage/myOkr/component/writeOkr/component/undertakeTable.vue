@@ -1,10 +1,35 @@
 <template>
-  <div>
-    <!-- okr -->
-    <div>
-      <span>{{departmentName}}{{periodName}}OKR</span>
-      <span>（单选）</span>
-    </div>
+  <el-scrollbar>
+    <div class="cont-box">
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>{{departmentName}}{{periodName}}OKR</em>
+          <span>(单选)</span>
+        </dt>
+        <dd v-for="(item,index) in departokrList" :key="item.id">
+          <el-checkbox
+            v-model="item.checkFlag"
+            @change="selectDepartokr(index,item)"
+            class="tl-checkbox"
+          ></el-checkbox>
+          {{item.typeName}}{{item.okrDetailObjectKr}}
+        </dd>
+      </dl>
+      <dl v-if="showPhil">
+        <dt>
+          <em>公司管理价值观</em>
+          <span>(单选)</span>
+        </dt>
+        <dd v-for="(item,index) in philosophyList" :key="item.id">
+          <el-checkbox
+            v-model="item.checkFlag"
+            @change="selectphilosophy(index,item)"
+            class="tl-checkbox"
+          ></el-checkbox>
+          {{item.cultureDesc}}
+        </dd>
+      </dl>
+      <!--
     <el-table :data="departokrList">
       <el-table-column>
         <template slot-scope="scope">
@@ -21,13 +46,14 @@
           <div v-else>「最新版本」</div>
         </template>
       </el-table-column>
-      <el-table-column width="150" prop="okrDetailObjectKr"></el-table-column>
+      <el-table-column width="150" prop="okrDetailObjectKr">
+        <template slot-scope="scope">
+          <div>{{scope.row.okrDetailObjectKr}}</div>
+          <div v-if="!scope.row.showPhil && scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
+        </template>
+      </el-table-column>
     </el-table>
-    <!-- 价值观 -->
-    <div v-if="showPhil">
-      <span>公司管理价值观</span>
-      <span>（单选）</span>
-    </div>
+
     <el-table v-if="showPhil" :data="philosophyList">
       <el-table-column>
         <template slot-scope="scope">
@@ -38,8 +64,9 @@
         </template>
       </el-table-column>
       <el-table-column width="300" prop="cultureDesc"></el-table-column>
-    </el-table>
-  </div>
+      </el-table>-->
+    </div>
+  </el-scrollbar>
 </template>
 
 <script>
@@ -71,11 +98,16 @@ export default {
     };
   },
   created() {
-    this.departmentName = this.userInfo.orgParentName || '部门';
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.departmentName = this.userInfo.orgParentName || '部门';
+    } else {
+      this.departmentName = this.userInfo.orgName || '部门';
+    }
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   methods: {

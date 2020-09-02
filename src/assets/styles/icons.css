@@ -1,1 +1,10 @@
-.icons {}
+.icon-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #e5e9ee;
+  border-radius: 50%;
+  cursor: pointer;
+}

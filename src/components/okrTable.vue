@@ -55,9 +55,7 @@
               </li>
               <li>
                 <!-- okrDetailConfidence -->
-                <div v-for="item in new Array(3)" :key="item">
-                  <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
-                </div>
+                <div v-for="item in new Array(3)" :key="item"></div>
                 <span>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
               </li>
             </ul>
@@ -72,7 +70,6 @@
 </template>
 
 <script>
-import riskStatus from '@/components/riskStatus';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 
@@ -87,7 +84,6 @@ export default {
   components: {
     elcollapse,
     elcollapseitem,
-    'tl-riskStatus': riskStatus,
   },
   data() {
     return {

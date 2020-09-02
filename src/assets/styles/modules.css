@@ -115,13 +115,32 @@
 
 .tl-btn.el-button--text,
 .tl-btn.el-button--text:focus,
-.tl-btn .el-button--text:hover {
+.tl-btn .el-button--text:hover,
+.tl-form .tl-btn.el-button--text:hover,
+.tl-form .tl-btn.el-button--text:hover i,
+.tl-form + .tl-btn.el-button--text:hover,
+.tl-form + .tl-btn.el-button--text:hover i {
   color: #685df1;
+}
+
+.tl-form .tl-btn.el-button--text,
+.tl-form + .tl-btn.el-button--text {
+  color: #879099;
+  font-weight: normal;
+  transition: all .4s ease-out;
+}
+
+.tl-form .tl-btn.el-button--text i,
+.tl-form + .tl-btn.el-button--text i {
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  color: #acb6bf;
+  transition: all .4s ease-out;
 }
 
 .tl-dialog .tl-btn,
 .tl-drawer .tl-btn {
-  width: 90px;
+  min-width: 90px;
   height: 40px;
 }
 
@@ -628,8 +647,7 @@
 
 .tl-drawer + .v-modal,
 .el-popup-parent--hidden .v-modal {
-  background: unset;
-  opacity: unset;
+  opacity: .1;
   z-index: 2000 !important;
 }
 
@@ -768,6 +786,10 @@
   content: unset;
 }
 
+.tl-select-dropdown .el-select-dropdown__list {
+  padding: 16px 0;
+}
+
 .tl-select-dropdown .el-select-group__title {
   padding: 0 20px;
   font-size: 14px;
@@ -793,7 +815,63 @@
   background: #f4f6f8;
 }
 
+/* tl-input-number */
+.tl-input-number,
+.tl-input-number .el-input {
+  line-height: unset;
+  width: 92px;
+}
+
+.tl-input-number.is-controls-right .el-input-number__decrease {
+  border-radius: 0 0 2px;
+  border-left: 1px solid #d5dde3;
+  line-height: 16px;
+  width: 24px;
+}
+
+.tl-input-number.is-controls-right .el-input-number__increase {
+  border-radius: 0 0 2px;
+  border-bottom: 1px solid #d5dde3;
+  line-height: 15px;
+  width: 24px;
+}
+
+.tl-input-number .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+  height: 32px;
+  line-height: unset;
+  color: #879099;
+}
+
+/* tl-tooltip */
+.tl-tooltip-clear {
+  padding: 8px 10px;
+  border-radius: 2px;
+}
+
+.tl-tooltip-clear.is-dark {
+  background: #7e7e7e;
+}
+
+.tl-tooltip-clear.is-dark .popper__arrow,
+.tl-tooltip-clear.is-dark .popper__arrow::after {
+  border-top-color: #7e7e7e;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
+/* 边框 */
+.dotted-line.el-button--text {
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
+}
+
+.dotted-line.el-button--text:hover {
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#685df1 0, #685df1 0.4em,#fff 0,#fff 0.6em);
+}
+
 /* 提示文案组件 */
 .text-tip,
 .text-tip::before,
@@ -1001,6 +1079,171 @@
 .txt-list li em {
   flex: 1;
   margin: 0 16px 0 0;
+}
+
+/* timeline */
+.tl-diy-timeline .timeline-list {
+  margin: 0 0 30px 0;
+}
+
+.tl-diy-timeline .timeline-list dt,
+.tl-diy-timeline .timeline-list dd {
+  padding: 0 0 0 20px;
+  position: relative;
+}
+
+.tl-diy-timeline .timeline-list dt::before,
+.tl-diy-timeline .timeline-list dd::before {
+  position: absolute;
+  top: 22px;
+  bottom: 10px;
+  left: 5px;
+  content: '';
+  width: 1px;
+  border-left: 1px solid transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.2em,#fff 0,#fff 0.3em);
+}
+
+.tl-diy-timeline .list-title {
+  position: relative;
+}
+
+.tl-diy-timeline .list-title::before {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(76,205,121,0.16);
+  border: 2px solid #4ccd79;
+}
+
+.tl-diy-timeline .timeline-list dd .list-title::before {
+  background: rgba(104,93,241,0.16);
+  border: 2px solid #685df1;
+}
+
+
+.tl-diy-timeline .el-form-item__content,
+.tl-diy-timeline .el-form-item__label {
+  line-height: unset;
+}
+
+.tl-diy-timeline .tl-form .el-form-item__label {
+  padding: 0 20px 0 0;
+}
+
+.tl-diy-timeline .tl-form .el-form-item {
+  margin: 0 0 24px 0;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child .el-form-item__content {
+  flex: unset;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p {
+  display: flex;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a {
+  color: #879099;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a:hover {
+  color: #685df1;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a:first-child {
+  display: block;
+  max-width: 190px;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tl-diy-timeline .item-group .el-form-item:last-child p a + a {
+  margin: 0 0 0 10px;
+}
+
+.tl-diy-timeline .timeline-list .icon-clear:focus {
+  outline: unset;
+}
+
+.tl-diy-timeline .timeline-list .icon-clear.is-disabled {
+  cursor: not-allowed;
+  color: #bcc4cc;
+}
+
+.tl-diy-timeline .timeline-list .icon-clear.is-disabled:hover {
+  color: #bcc4cc;
+}
+
+/* tl-diy-popover */
+.tl-diy-popover {
+  display: flex;
+  cursor: pointer;
+}
+
+.tl-diy-popover .el-popover {
+  padding: 16px 0;
+}
+
+.tl-diy-popover li,
+.tl-diy-popover .el-popover__reference {
+  display: flex;
+  align-items: center;
+}
+
+.tl-diy-popover li {
+  padding: 0 20px;
+  height: 40px;
+  background: #fff;
+  transition: all .4s ease-out;
+}
+
+.tl-diy-popover li:hover {
+  background: #f4f6f8;
+}
+
+.tl-diy-popover .state-grid {
+  margin: 0 10px 0 0;
+  display: flex;
+}
+
+.tl-diy-popover .state-grid div {
+  margin: 0 2px 0 0;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: #e5e9ee;
+  border-radius: 2px;
+}
+
+.tl-diy-popover .state-grid .is-no-risk {
+  background: #4ccd79;
+}
+
+.tl-diy-popover .state-grid .is-risks {
+  background: #ffbc20;
+}
+
+.tl-diy-popover .state-grid .is-uncontrollable {
+  background: #fb4c59;
+}
+
+.tl-diy-popover .el-popover__reference i {
+  margin: 0 0 0 30px;
+  color: #c4cbd2;
+  transform: rotate(0deg);
+  transition: all .3s ease-out;
+}
+
+.tl-diy-popover .el-popover__reference i.is-show {
+  transform: rotate(180deg);
 }
 
 /* ========================================================公共页面布局组件================================================================== */
@@ -1432,11 +1675,6 @@
   line-height: unset;
 }
 
-.cont-area .operating-panel .el-button {
-  min-width: 90px;
-  height: 40px;
-}
-
 .operating-area .tl-input-search {
   min-width: 270px;
 }
@@ -1454,12 +1692,14 @@
   font-weight: 600;
 }
 
-.cont-area {
+.console-layout .cont-area {
+  display: unset;
+  padding: 0;
+}
+
+.settings-layout .cont-area,
+.admin-layout .cont-area {
   padding: 30px;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;
@@ -1468,6 +1708,16 @@
 .operating-panel {
   display: flex;
   justify-content: flex-end;
+}
+
+.operating-panel .flex-auto {
+  flex: 1;
+}
+
+.cont-panel {
+  background: #fff;
+  box-shadow: 0 0 14px 0 #f4f6f8;
+  border-radius: 4px;
 }
 
 .table-pagination {

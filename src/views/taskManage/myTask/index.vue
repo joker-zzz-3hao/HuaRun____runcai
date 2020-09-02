@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <!-- 按钮组 -->
+    <div>
+      <el-button @click="goCreateTask">添加任务</el-button>
+    </div>
     <!-- 搜索框 -->
     <div>
       <tl-searchbar></tl-searchbar>

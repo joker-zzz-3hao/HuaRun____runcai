@@ -35,12 +35,12 @@
     >
       <div slot="title" class="flex-sb">
         <div class="drawer-title">创建OKR</div>
-        <div class="icon-save">
+        <div class="icon-save" v-if="showAuto">
           <i></i>
           <em>已自动保存</em>
         </div>
       </div>
-      <tl-writeokr v-if="createokrDrawer" :userName="userName"></tl-writeokr>
+      <tl-writeokr ref="writeokr" v-if="createokrDrawer" :userName="userInfo.userName"></tl-writeokr>
     </el-drawer>
   </div>
 </template>
@@ -78,6 +78,7 @@ export default {
       createokrDrawer: (state) => state.createokrDrawer,
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
+      showAuto: (state) => state.showAuto,
     }),
   },
   created() {

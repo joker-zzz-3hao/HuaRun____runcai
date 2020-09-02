@@ -50,7 +50,7 @@
                   ></el-progress>
                 </span>
               </li>
-              <!-- 有承接项时 -->
+              <!-- 变更有承接项时 -->
               <li v-if="showParentOkr && item.okrParentId">
                 <span>目标承接自</span>
                 <span>{{item.parentObjectKr}}</span>
@@ -70,7 +70,7 @@
                   </el-popover>
                 </span>
               </li>
-              <!-- 无承接项时 -->
+              <!-- 变更or创建无承接项时 -->
               <li v-else-if="showParentOkr">
                 <a @click="goUndertake(index,'new')">
                   <span
@@ -78,6 +78,11 @@
                   >{{item.undertakeOkrVo.undertakeOkrContent}}{{item.cultureName}}</span>
                   <span v-else>+关联</span>
                 </a>
+              </li>
+              <!-- 详情 -->
+              <li v-else-if="item.okrParentId">
+                <span>目标承接自</span>
+                <span>{{item.parentObjectKr}}</span>
               </li>
             </ul>
             <!-- 可在折叠面板title处添加内容 -->
@@ -140,9 +145,7 @@
             </dd>
             <dd style="display:flex">
               <span>风险状态</span>
-              <div v-for="item in new Array(3)" :key="item">
-                <tl-riskStatus :status="kritem.okrDetailConfidence"></tl-riskStatus>
-              </div>
+              <span>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
             </dd>
             <!-- </dl> -->
             <!-- 可在折叠面板body处添加内容 -->
@@ -218,7 +221,6 @@
 </template>
 
 <script>
-import riskStatus from '@/components/riskStatus';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
@@ -230,8 +232,6 @@ export default {
   components: {
     elcollapse,
     elcollapseitem,
-    'tl-riskStatus': riskStatus,
-
   },
   data() {
     return {

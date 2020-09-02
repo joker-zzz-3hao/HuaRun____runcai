@@ -218,6 +218,7 @@ export default {
         orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
         orgFullId: this.formData.orgIdList.join(':'),
         tenantName: this.formData.tenantName,
+        tenantId: this.tenantId,
         userAccount: this.formData.userAccount,
         userMail: this.formData.userMail,
         userMobile: this.formData.userMobile,

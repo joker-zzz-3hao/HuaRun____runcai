@@ -2,9 +2,6 @@ const OKR_TYPE_LIST = [{
   name: '个人', id: 2,
 }, {
   name: '部门', id: 1,
-},
-{
-  name: '公司', id: 3,
 }];
 const OKR_TYPE_MAP = {
   1: '部门',

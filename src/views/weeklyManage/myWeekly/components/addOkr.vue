@@ -8,9 +8,9 @@
   <div>
     <el-dialog
       :append-to-body="true"
-      :visible="visible"
-      v-if="visible"
-      @close="close"
+      :visible.sync="visible"
+      :before-close="close"
+      @closed="closed"
       title="支撑OKR/价值观"
       :close-on-click-modal="false"
     >
@@ -35,7 +35,7 @@
             v-for="teamTarget in orgOkrList"
             :label="teamTarget.okrDetailId"
             :key="teamTarget.okrDetailId"
-            @change="orgOkrChange(teamTarget)"
+            @change="orgOkrChange"
           >
             {{teamTarget.indexText}}
             {{teamTarget.okrDetailObjectKr}}
@@ -49,7 +49,7 @@
             v-for="personalTarget in myOkrList"
             :label="personalTarget.okrDetailId"
             :key="personalTarget.okrDetailId"
-            @change="personalOkrChange(personalTarget)"
+            @change="personalOkrChange"
           >
             {{personalTarget.indexText}}
             {{personalTarget.okrDetailObjectKr}}
@@ -58,16 +58,18 @@
       </div>
       <div>
         <h4>公司价值观</h4>
-        <div v-for="culture in cultureList" :key="culture.id">
+        <el-checkbox-group v-model="valueSelectData">
           <el-checkbox
-            v-model="culture.checked"
-            @change="cultureChange(culture)"
+            v-for="culture in cultureList"
+            :label="culture.id"
+            :key="culture.id"
+            @change="cultureChange"
           >{{culture.cultureName}}</el-checkbox>
-        </div>
+        </el-checkbox-group>
       </div>
       <div>
         <el-button @click="confirm">确认</el-button>
-        <el-button @click="cancel">取消</el-button>
+        <el-button @click="close">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -81,7 +83,6 @@ export default {
   components: {
   },
   props: {
-
     server: {
       type: Object,
       default() {
@@ -100,6 +101,36 @@ export default {
         return [];
       },
     },
+    myOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalMyOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalOrgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
 
   },
   data() {
@@ -107,46 +138,37 @@ export default {
       visible: false,
       loading: false,
       initUserAccount: '',
-      myOkrList: [],
-      orgOkrList: [],
-      originalMyOkrList: [],
-      originalOrgOkrList: [],
       selectedOkrList: [],
-      cultureList: [],
+      // cultureList: [],
       selectedCultureList: [],
       supportMyOkrObj: {},
       selectOkrList: [],
-      orgSelectData: [],
-      personalSelectData: [],
+      orgSelectData: [], // 团队目标
+      personalSelectData: [], // 个人目标
+      valueSelectData: [], // 价值观
       orgOkr: [],
       personalOkr: [],
     };
   },
   created() {
+
+  },
+  mounted() {
     this.init();
   },
-  mounted() {},
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    okrAndCulture() {
-      return [...this.myOkrList, ...this.orgOkrList];
-    },
   },
   methods: {
     init() {
-      this.queryTeamOrPersonalTarget('my');
-      this.queryTeamOrPersonalTarget('org');
-      this.getValues();
+      this.initSelectedData();
     },
     show() {
       this.visible = true;
     },
     confirm() {
-      this.close();
-    },
-    close() {
       this.visible = false;
       this.$emit('closeOkrDialog', {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList],
@@ -156,10 +178,14 @@ export default {
         supportMyOkrObj: this.supportMyOkrObj,
       });
     },
-    cancel() {
-      this.close();
+    close() {
+      this.visible = false;
+    },
+    closed() {
+      this.$emit('update:showAddOkr', false);
     },
     initSelectedData() {
+      this.valueSelectData = [];
       for (const item of this.selectedOkr) {
         // 匹配个人okr
         for (const okr of this.myOkrList) {
@@ -168,6 +194,17 @@ export default {
             this.personalSelectData = [okr.okrDetailId];
             // 赋值已选项
             this.personalOkr = [okr];
+            // ************支撑项初始化*****************
+            for (const o of this.originalMyOkrList) {
+              if (okr.okrDetailId == o.okrDetailId) {
+                this.supportMyOkrObj = { o };
+              }
+              for (const kr of o.krList) {
+                if (kr.okrDetailId == okr.okrDetailId) {
+                  this.supportMyOkrObj = { o, kr };
+                }
+              }
+            }
           }
         }
         // 匹配团队okr
@@ -183,7 +220,7 @@ export default {
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
             // 反显
-            culture.checked = true;
+            this.valueSelectData.push(item.okrDetailId);
             // 赋值已选项
             this.selectedCultureList.push({
               okrDetailId: culture.id,
@@ -192,102 +229,59 @@ export default {
           }
         }
       }
+
+      this.$forceUpdate();
     },
-    queryTeamOrPersonalTarget(myOrOrg) {
-      const params = {
-        myOrOrg,
-        status: '1',
-        orgId: this.userInfo.orgId,
-      };
-      this.server.queryTeamOrPersonalTarget(params).then((res) => {
-        if (res.code == 200) {
-          if (myOrOrg == 'my') {
-            // 我的目标
-            this.myOkrList = [];
-            this.originalMyOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
-          } else {
-            // 团队目标
-            this.orgOkrList = [];
-            this.originalOrgOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+    orgOkrChange(isSelected) {
+      if (isSelected) {
+        this.orgOkrList.forEach((element) => {
+          if (element.okrDetailId == this.orgSelectData) {
+            this.orgOkr = [element];
           }
-        }
-      });
-    },
-    setMyOrOrgOkrList(okrDetails, orgOrMy) {
-      let tempResult = this.myOkrList;
-      if (orgOrMy == 'org') {
-        tempResult = this.orgOkrList;
-      }
-      let oIndex = 0;
-      for (const okr of okrDetails) {
-        oIndex += 1;
-        okr.indexText = `目标O${oIndex}`;
-        okr.checked = false;
-        tempResult.push(okr);
-        if (okr.krList && okr.krList.length > 0) {
-          let krIndex = 0;
-          for (const kr of okr.krList) {
-            krIndex += 1;
-            kr.indexText = `KR${krIndex}`;
-            kr.checked = false;
-            tempResult.push(kr);
-          }
-        }
-      }
-      if (orgOrMy == 'org') {
-        this.orgOkrList = [...tempResult];
-      } else {
-        this.myOkrList = [...tempResult];
-      }
-    },
-    getValues() {
-      this.server.getValues().then((res) => {
-        if (res.code == 200) {
-          this.cultureList = res.data;
-        }
-      });
-    },
-    orgOkrChange(okr) {
-      this.orgOkr = this.orgSelectData.length > 0 ? [okr] : [];
-    },
-    personalOkrChange(okr) {
-      this.personalOkr = this.personalSelectData.length > 0 ? [okr] : [];
-      // 如果是选中kr，则需要将父级目标带到周报页面，用于展示在个人okr完成度部分
-      for (const o of this.originalMyOkrList) {
-        if (okr.okrDetailId == o.okrDetailId) {
-          this.supportMyOkrObj = { o };
-        }
-        for (const kr of o.krList) {
-          if (kr.okrDetailId == okr.okrDetailId) {
-            this.supportMyOkrObj = { o, kr: okr };
-          }
-        }
-      }
-    },
-    cultureChange(culture) {
-      if (culture.checked) {
-        this.selectedCultureList.push({
-          okrDetailId: culture.id,
-          okrDetailObjectKr: culture.cultureName,
         });
       } else {
-        this.selectedCultureList = this.selectedCultureList.filter((item) => item.okrDetailId != culture.id);
+        this.orgOkr = [];
       }
+    },
+    personalOkrChange(isSelected) {
+      if (isSelected) {
+        this.myOkrList.forEach((element) => {
+          if (element.okrDetailId == this.personalSelectData) {
+            this.personalOkr = [element];
+          }
+        });
+        // 如果是选中kr，则需要将父级目标带到周报页面，用于展示在个人okr完成度部分
+        for (const o of this.originalMyOkrList) {
+          if (this.personalOkr[0].okrDetailId == o.okrDetailId) {
+            this.supportMyOkrObj = { o };
+          }
+          for (const kr of o.krList) {
+            if (kr.okrDetailId == this.personalOkr[0].okrDetailId) {
+              this.supportMyOkrObj = { o, kr };
+            }
+          }
+        }
+      } else {
+        this.personalOkr = [];
+        this.supportMyOkrObj = {};
+      }
+    },
+    cultureChange() {
+      this.selectedCultureList = [];
+      this.valueSelectData.forEach((element) => {
+        this.cultureList.forEach((item) => {
+          if (element == item.id) {
+            this.selectedCultureList.push({
+              okrDetailId: item.id,
+              okrDetailObjectKr: item.cultureName,
+            });
+          }
+        });
+      });
       this.$forceUpdate();
     },
   },
   watch: {
-    okrAndCulture: {
-      handler(val) {
-        if (val && this.myOkrList.length > 0 && this.orgOkrList.length > 0 && this.cultureList.length > 0) {
-          if (this.selectedOkr.length > 0) {
-            this.initSelectedData();
-          }
-        }
-      },
-    },
   },
   updated() {},
   beforeDestroy() {},

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div>
+    <div class="cont-panel">
       <!-- 选择状态 -->
-      <dl>
+      <dl style="display:flex">
         <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
           <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
         </dd>
       </dl>
       <!-- 选择周期 -->
-      <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
+      <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
     </div>
     <!-- 状态为审批中需展示温馨提示 -->
     <div v-if="searchForm.status=='7'">
@@ -57,7 +57,6 @@
       <tl-okr-table
         :tableList="item.tableList"
         :disabled="false"
-        :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
         @openDialog="openDialog(item)"
@@ -125,7 +124,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import periodSelect from '@/components/periodSelect';
+// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
@@ -139,7 +138,7 @@ const server = new Server();
 export default {
   name: 'myOkr',
   components: {
-    'tl-periodselect': periodSelect,
+    // 'tl-periodselect': periodSelect,
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
@@ -177,6 +176,7 @@ export default {
   computed: {
     ...mapState('common', {
       myokrDrawer: (state) => state.myokrDrawer,
+      userInfo: (state) => state.userInfo,
     }),
   },
   created() {
@@ -198,21 +198,32 @@ export default {
           if (['6', '7', '8'].includes(this.searchForm.status)) {
             this.okrList = [];
             const draftList = res.data || [];
-            draftList.forEach((item) => {
-              let okrInfo = {};
-              okrInfo = JSON.parse(item.paramJson);
-              this.okrList.push({
-                tableList: okrInfo.okrInfoList,
-                okrMain: {
-                  userName: item.updateBy || item.createBy,
-                  okrProgress: item.okrProgress,
-                  updateTime: item.updateTime || item.createTime,
-                  okrBelongType: okrInfo.okrBelongType,
-                },
-                id: item.id || item.approvalId,
-                params: item.paramJson,
+            if (draftList.length > 0) {
+              draftList.forEach((item) => {
+                let okrInfo = {};
+                okrInfo = JSON.parse(item.paramJson);
+                this.okrList.push({
+                  tableList: okrInfo.okrInfoList,
+                  okrMain: {
+                    userName: item.updateBy || item.createBy,
+                    okrProgress: item.okrProgress || 0,
+                    updateTime: item.updateTime || item.createTime,
+                    okrBelongType: okrInfo.okrBelongType,
+                  },
+                  id: item.id || item.approvalId,
+                  params: item.paramJson,
+                });
               });
-            });
+            } else {
+              this.okrList = [{
+                tableList: [], // okr列表
+                okrMain: { // okr公共信息
+                  userName: '',
+                  okrProgress: 0,
+                  updateTime: '',
+                },
+              }];
+            }
           } else {
             this.okrList = [{
               tableList: [], // okr列表
@@ -234,7 +245,8 @@ export default {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
-      this.drawerTitle = 'OKR详情';
+      // this.drawerTitle = 'OKR详情';
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
 
       this.setMyokrDrawer(true);
       this.$nextTick(() => {
@@ -253,7 +265,7 @@ export default {
     },
     goChangeOkr() {
       // TODO: 弹框标题
-      this.drawerTitle = `${this.okrList[0].okrMain.orgName + this.okrList[0].okrMain.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,

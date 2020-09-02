@@ -6,6 +6,7 @@ export default {
     return window.$ajax.get(infoUrl).then((response) => {
       if (response.data.code == 200) {
         if (response.data.data.roleList && response.data.data.roleList.length) {
+          console.log('getuser');
           commit('setRoleCode', response.data.data.roleList.map((item) => item.roleCode));
         }
         commit('setUserInfo', response.data.data);

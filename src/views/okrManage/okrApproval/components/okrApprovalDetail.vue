@@ -33,7 +33,8 @@
     <div style="margin-top: 20px;">
       <p>OKR信息信息</p>
       <!-- <tl-okr-collapse :tableList="tableList"></tl-okr-collapse> -->
-      <tl-okrItem :tableList="tableList"></tl-okrItem>
+      <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
+      <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
     </div>
     <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
       <p>审核</p>
@@ -99,6 +100,7 @@ import { mapState, mapMutations } from 'vuex';
 // import okrCollapse from '@/components/okrCollapse';
 import CONST from '@/lib/const';
 import okrItem from './okrItem';
+import createOkrComponent from './createOkrComponent';
 import Server from '../server';
 
 const server = new Server();
@@ -122,7 +124,7 @@ export default {
   },
   components: {
     'tl-okrItem': okrItem,
-    // 'tl-okr-collapse': okrCollapse,
+    'tl-create-okrComponent': createOkrComponent,
   },
   props: {},
   computed: {
@@ -157,7 +159,8 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        attachId: this.data.approvalId,
+        userId: this.data.createUser,
+        periodId: this.data.periodId,
       }).then((res) => {
         if (res.code == '200') {
           this.cycleList = res.data.content;
