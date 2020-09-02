@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cont-box">
     <!-- okr -->
     <div>
       <span>{{departmentName}}{{periodName}}OKR</span>

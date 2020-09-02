@@ -179,24 +179,24 @@ export default {
             } else {
               let index = 0;
               allTreeData.forEach((item) => {
-                item.okrParentId = null;
-                this.svgList[index] = [];
-                this.svgList[index].push(item);
                 if (item.krContinueList && item.krContinueList.length > 0) {
+                  item.okrParentId = null;
+                  this.svgList[index] = [];
+                  this.svgList[index].push(item);
                   this.svgList[index] = this.svgList[index].concat(item.krContinueList);
                   delete item.krContinueList;
+                  index += 1;
                 }
-                index += 1;
                 if (item.krList && item.krList.length > 0) {
                   item.krList.forEach((kritem) => {
-                    kritem.okrParentId = null;
-                    this.svgList[index] = [];
-                    this.svgList[index].push(kritem);
                     if (kritem.krContinueList && kritem.krContinueList.length > 0) {
+                      kritem.okrParentId = null;
+                      this.svgList[index] = [];
+                      this.svgList[index].push(kritem);
                       this.svgList[index] = this.svgList[index].concat(kritem.krContinueList);
                       delete kritem.krContinueList;
+                      index += 1;
                     }
-                    index += 1;
                   });
                   delete item.krList;
                 }
