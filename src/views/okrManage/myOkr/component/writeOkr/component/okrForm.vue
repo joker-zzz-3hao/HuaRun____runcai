@@ -45,7 +45,7 @@
                     </el-form-item>
                     <el-form-item label="承接自">
                       <p
-                        v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
+                        v-if="oitem.undertakeOkrVo.undertakeOkrDetailId || oitem.cultureId"
                         @click="openUndertake(index)"
                       >
                         <a
@@ -381,10 +381,12 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
               // 如果是草稿，选中已保存的承接项
-              if (['6', '8'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
+              if (['6'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
-                    pitem.checkFlag = true;
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
+                    console.log('草稿', pitem.undertakeOkrObjectKr);
+                    // item.undertakeOkrVo.undertakeOkrObjectKr = pitem.undertakeOkrObjectKr;
                   }
                 });
               }
@@ -408,10 +410,11 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
-              if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
+              if (['6'].includes(this.searchForm.okrStatus) && item.cultureId) {
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
-                    pitem.checkFlag = true;
+                    this.$set(item, 'cultureName', pitem.cultureName);
+                    // item.cultureName = pitem.cultureName;
                   }
                 });
               }
