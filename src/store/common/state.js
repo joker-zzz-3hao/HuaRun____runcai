@@ -12,4 +12,5 @@ export default {
   undertakePeriodId: '', // 承接地图周期id
   roleCode: [], // 用户角色
   showAuto: false,
+  setOrgId: '',
 };

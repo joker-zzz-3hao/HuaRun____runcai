@@ -81,7 +81,6 @@ export default {
   props: {
     orgTable: {
       type: [String, Object, Array],
-      require: true,
     },
   },
   data() {
@@ -105,6 +104,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   mounted() {
@@ -145,10 +145,9 @@ export default {
       this.server.orgWeekly({
         calendarId: this.calendarId,
         date: this.dateTime,
-        userId: this.userInfo.userId,
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.tableData = res.data;
-        console.log(this.tableData);
       });
     },
     changIdAction(id) {
@@ -171,8 +170,7 @@ export default {
       }).then((res) => {
         this.echartDataX = [];
         const startDate = `${res.data.months[0]}-01`;
-
-        const endtDate = `${res.data.months.pop()}-01`;
+        const endtDate = `${res.data.months.pop()}-31`;
         const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
         const oneDay = 24 * 3600 * 1000;
         let startche = +new Date(startDate);
@@ -188,10 +186,10 @@ export default {
           } else {
             months = now.getMonth() + 1;
           }
-          if (now.getDate() < 11) {
-            day = `0${now.getDate() - 1}`;
+          if (now.getDate() < 10) {
+            day = `0${now.getDate()}`;
           } else {
-            day = now.getDate() - 1;
+            day = now.getDate();
           }
           this.echartDataX.push([now.getFullYear(), months, day].join('-'));
         }
@@ -226,23 +224,24 @@ export default {
 
         yAxis: {
           min: 0,
-          max: 4,
+          max: 7,
           axisLabel: {
             formatter(value) {
               const texts = [];
               if (value == 0) {
                 console.log(1);
-              } else if (value <= 1) {
+              } else if (value == 1) {
                 texts.push('无风险');
-              } else if (value <= 2) {
+              } else if (value == 4) {
                 texts.push('风险可控');
-              } else if (value <= 3) {
+              } else if (value == 7) {
                 texts.push('失控');
               }
               return texts;
             },
           },
         },
+        dataZoom: { show: true },
         tooltip: {},
         series: [
           that.echartDataY,

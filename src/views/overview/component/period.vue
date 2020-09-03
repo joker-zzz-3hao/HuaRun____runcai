@@ -1,6 +1,14 @@
 <template>
   <div class="personPage">
-    <el-button v-if="showBack" @click="$router.back()">返回</el-button>
+    <el-button v-if="showBack&&$route.query.id" @click="$router.back()">返回</el-button>
+    <el-select v-model="depart" placeholder="请选择" @change="selectOrg">
+      <el-option
+        v-for="item in userInfo.orgList"
+        :key="item.orgId"
+        :label="item.orgName"
+        :value="item.orgId"
+      ></el-option>
+    </el-select>
     <el-select v-model="value" placeholder="请选择" @change="selectPeriod">
       <el-option
         v-for="item in options"
@@ -13,6 +21,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import Server from '../server';
 
 const server = new Server();
@@ -25,6 +34,7 @@ export default {
       server,
       options: [],
       value: '',
+      depart: '',
     };
   },
   props: {
@@ -34,9 +44,18 @@ export default {
     },
   },
   mounted() {
+    this.depart = this.userInfo.orgList[0].orgId;
+    this.setOrg(this.userInfo.orgList[0].orgId);
     this.getokrQuery();
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
+    }),
+  },
   methods: {
+    ...mapMutations('common', ['setOrg']),
     getokrQuery() {
       this.server.okrQuery().then((res) => {
         if (res.code == 200) {
@@ -48,6 +67,9 @@ export default {
     },
     selectPeriod(value) {
       this.$emit('getPeriod', value);
+    },
+    selectOrg(value) {
+      this.setOrg(value);
     },
   },
 };

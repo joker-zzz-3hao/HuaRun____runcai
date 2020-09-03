@@ -50,6 +50,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   data() {
@@ -65,7 +66,7 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.changeTime();
+  //  this.changeTime();
   },
   methods: {
     changeTime() {
@@ -73,7 +74,7 @@ export default {
       this.echartDataX = [];
       const startDate = `${echartData.months[0]}-01`;
 
-      const endtDate = `${echartData.months.pop()}-01`;
+      const endtDate = `${echartData.months.pop()}-31`;
       const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
       const oneDay = 24 * 3600 * 1000;
       let startche = +new Date(startDate);
@@ -89,7 +90,7 @@ export default {
         } else {
           months = now.getMonth() + 1;
         }
-        if (now.getDate() < 11) {
+        if (now.getDate() < 10) {
           day = `0${now.getDate() - 1}`;
         } else {
           day = now.getDate() - 1;
@@ -142,7 +143,7 @@ export default {
     userWeekly() {
       this.server.userWeekly({
         date: `${this.dateTime}-01`,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
+        userId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
       }).then((res) => {
         this.tableData = res.data;
       });
@@ -163,17 +164,17 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 4,
+          max: 7,
           axisLabel: {
             formatter(value) {
               const texts = [];
               if (value == 0) {
                 console.log(0);
-              } else if (value <= 1) {
+              } else if (value == 1) {
                 texts.push('无风险');
-              } else if (value <= 2) {
+              } else if (value == 4) {
                 texts.push('风险可控');
-              } else if (value <= 3) {
+              } else if (value == 7) {
                 texts.push('失控');
               }
               return texts;
