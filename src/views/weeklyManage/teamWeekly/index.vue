@@ -79,8 +79,21 @@
               label="感想"
             ></el-table-column>
             <el-table-column v-if="formData.queryType == '2'" fixed prop="planContent" label="下周计划"></el-table-column>
-            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="有进展的KR"></el-table-column>
-            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="所属O"></el-table-column>
+            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="有进展的KR">
+              <template slot-scope="scope">
+                <div>{{scope.row.pokrDetailObjectKr ? scope.row.okrDetailObjectKr : '--'}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="所属O">
+              <template slot-scope="scope">
+                <div>{{scope.row.pokrDetailObjectKr ? scope.row.pokrDetailObjectKr : scope.row.pokrDetailObjectKr}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="本周变化">
+              <template slot-scope="scope">
+                <div>{{scope.row.progressAfter - scope.row.progressBefor }}</div>
+              </template>
+            </el-table-column>
             <el-table-column fixed label="角色" v-if="!formData.queryType">
               <template slot-scope="scope">
                 <span>{{scope.row.isadmin == '0'?'部门负责人':'--'}}</span>
