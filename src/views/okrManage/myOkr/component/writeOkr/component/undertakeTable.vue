@@ -7,14 +7,14 @@
           <span>(单选)</span>
         </dt>
         <dd>
-          <el-radio-group v-model="radioDepart">
+          <el-radio-group v-model="selectRadioDepart">
             <el-radio
               v-model="item.checkFlag"
               @change="selectDepartokr(index,item)"
               class="tl-radio"
-              :label="index"
+              :label="item.okrDetailId"
               v-for="(item,index) in departokrList"
-              :key="item.id"
+              :key="item.okrDetailId"
             >
               <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
               <em>{{item.okrDetailObjectKr}}</em>
@@ -28,13 +28,13 @@
           <span>(单选)</span>
         </dt>
         <dd>
-          <el-radio-group v-model="radioPhil">
+          <el-radio-group v-model="selectRadioPhil">
             <el-radio
               @change="selectphilosophy(index,item)"
               class="tl-radio"
-              :label="index"
+              :label="item.id"
               v-for="(item,index) in philosophyList"
-              :key="index"
+              :key="item.id"
             >{{item.cultureDesc}}</el-radio>
           </el-radio-group>
         </dd>
@@ -99,14 +99,21 @@ export default {
       type: String,
       default: '',
     },
+    selectRadioDepart: {
+      type: String,
+      default: '',
+    },
+    selectRadioPhil: {
+      type: String,
+      default: '',
+    },
+
   },
   data() {
     return {
       selectDepartRow: {},
       selectPhilRow: {},
       departmentName: '',
-      radioPhil: '',
-      radioDepart: '',
     };
   },
   created() {
@@ -125,24 +132,11 @@ export default {
   methods: {
     // 选择关联的okr
     selectDepartokr(index, row) {
-      this.departokrList.forEach((item, i) => {
-        if (index != i) {
-          this.departokrList[i].checkFlag = false;
-        }
-      });
       this.selectDepartRow = row;
     },
     // 选择关联的价值观
     selectphilosophy(index, row) {
-      console.log('raion', this.radioPhil);
-      this.philosophyList.forEach((item, i) => {
-        if (index != i) {
-          this.philosophyList[i].checkFlag = false;
-        }
-        // console.log(i, this.philosophyList[i].checkFlag);
-      });
       this.selectPhilRow = row;
-      this.$forceUpdate();
     },
   },
   watch: {

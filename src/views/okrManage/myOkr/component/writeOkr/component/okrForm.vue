@@ -179,6 +179,8 @@
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
         :periodName="periodName"
+        :selectRadioDepart.sync="formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
+        :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
       ></undertake-table>
       <div class="operating-panel">
         <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
@@ -356,7 +358,6 @@ export default {
                 okrDetailObjectKr: item.o.okrDetailObjectKr,
                 okrDetailId: item.o.okrDetailId,
                 okrDetailVersion: item.o.okrDetailVersion,
-                checkFlag: false,
               });
               if (item.krList && item.krList.length > 0) {
                 item.krList.forEach((krItem, index) => {
@@ -366,7 +367,6 @@ export default {
                     okrDetailObjectKr: krItem.okrDetailObjectKr,
                     okrDetailId: krItem.okrDetailId,
                     okrDetailVersion: krItem.okrDetailVersion,
-                    checkFlag: false,
                   });
                 });
               }
@@ -424,8 +424,10 @@ export default {
     },
     openUndertake(index) {
       // 选择o的序号，打开关联承接弹框
+      // 选择radioDepart radioPhil
       this.selectIndex = index;
       this.innerDrawer = true;
+      console.log('openUndertake', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
     },
     // 提交关联，给选中的o加上承接项和价值观
     summitUndertake() {
@@ -433,12 +435,12 @@ export default {
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
       // 承接项的id、版本、名称
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.okrDetailObjectKr || '';
       // TODO:价值观的id
-      this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
-      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
+      this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
       this.innerDrawer = false;
     },
     // 提交表单
