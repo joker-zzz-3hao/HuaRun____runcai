@@ -51,38 +51,46 @@
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="userName" label="员工" min-width="140">
               <template slot-scope="scope">
-                <div>
+                <div style="display:flex;">
                   <div class="user-info">
-                    <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                    <img v-if="scope.row.headImageUrl" :src="scope.row.headImageUrl" alt />
                     <div
                       v-else-if="scope.row.userName"
                       class="user-name"
                     >{{scope.row.userName.substring(scope.row.userName.length-2)}}</div>
+                  </div>
+                  <div>
+                    <div>{{scope.row.userName}}</div>
+                    <div>{{scope.row.orgName}}</div>
                   </div>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="cultureName" label="支撑价值观" min-width="180"></el-table-column>
             <el-table-column prop="workContent" label="工作项" min-width="120"></el-table-column>
-            <el-table-column prop="updateTime" label="评分" min-width="160"></el-table-column>
-            <el-table-column prop="updateTime" label="评分时间" min-width="160"></el-table-column>
+            <el-table-column prop="score" label="评分" min-width="160"></el-table-column>
+            <el-table-column prop="scoreTime" label="评分时间" min-width="160"></el-table-column>
             <el-table-column prop="updateTime" label="支撑时间" min-width="160"></el-table-column>
             <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button @click="goWeekly(scope.row)" type="text" class="tl-btn">查看周报</el-button>
-                <el-button @click="goWeekly(scope.row)" type="text" class="tl-btn">评分</el-button>
-                <el-button @click="goWeekly(scope.row)" type="text" class="tl-btn">评分详情</el-button>
+                <el-button @click="score(scope.row)" type="text" class="tl-btn">评分</el-button>
+                <el-button @click="detail(scope.row)" type="text" class="tl-btn">评分详情</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
     </div>
+    <tl-score v-if="scoreExist" ref="score" :server="server" @success="closedScore"></tl-score>
+    <tl-detail v-if="scoreDetailExist" ref="scoreDetail" :server="server"></tl-detail>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import score from './components/score';
+import detail from './components/detail';
 import Server from '../server';
 import CONST from '../const';
 
@@ -104,21 +112,27 @@ export default {
       },
       tableData: [],
       worthList: [],
+      scoreWorthList: [],
       departmentData: [],
       orgFullIdList: [],
       showCascader: false,
+      scoreExist: false,
+      scoreDetailExist: false,
     };
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-score': score,
+    'tl-detail': detail,
   },
   mixins: [global],
   mounted() {
     this.server.queryCultureList().then((res) => {
       if (res.code == '200') {
         this.worthList = res.data;
+        this.scoreWorthList = res.data;
         if (this.worthList.length > 0) {
-          this.worthList.push({
+          this.worthList.unshift({
             id: '',
             cultureName: '全部',
           });
@@ -177,8 +191,32 @@ export default {
     changeSearch() {
       this.searchList();
     },
+    score(data) {
+      const self = this;
+      self.scoreExist = true;
+      self.$nextTick(() => {
+        self.$refs.score.show(data);
+      });
+    },
+    detail(data) {
+      const self = this;
+      self.scoreDetailExist = true;
+      self.$nextTick(() => {
+        self.$refs.scoreDetail.show(data);
+      });
+    },
+    closedScore() {
+      this.scoreExist = false;
+      this.searchList();
+    },
+    scoreDetal() {},
     goWeekly(data) {
-      console.log(data);
+      this.$router.push({
+        name: 'myWeekly',
+        query: {
+          weeklyId: data.weeklyId,
+        },
+      });
     },
   },
 
