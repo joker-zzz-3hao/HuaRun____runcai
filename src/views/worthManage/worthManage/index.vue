@@ -2,7 +2,7 @@
   <div class="role-type">
     <div class="operating-area">
       <div class="page-title">价值观事件簿</div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item label="组织">
             <div @click="showCascader=!showCascader">

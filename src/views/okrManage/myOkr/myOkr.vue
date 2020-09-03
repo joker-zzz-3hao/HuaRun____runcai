@@ -1,32 +1,35 @@
 <template>
   <div>
-    <dl>
-      <dt>目标周期</dt>
-      <dd>
-        <el-select
-          v-model="searchForm.periodId"
-          placeholder="请选择目标周期"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in periodList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
-      </dd>
-    </dl>
-    <!-- 选择状态 -->
-    <!-- {'is-select':searchForm.status == item.id} -->
-    <dl style="display:flex">
-      <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
-        <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
-      </dd>
-    </dl>
-
+    <div class="operating-box">
+      <dl class="dl-item">
+        <dt>目标周期</dt>
+        <dd>
+          <el-select
+            v-model="searchForm.periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              v-for="item in periodList"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="dl-item">
+        <dt>状态</dt>
+        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
+          <el-button
+            @click="searchOkr(item.id)"
+            :class="{'is-select':searchForm.status == item.id}"
+          >{{item.name}}</el-button>
+        </dd>
+      </dl>
+    </div>
     <div v-for="(item) in okrList" :key="item.id">
       <div class="tl-card-panel">
         <div class="card-panel-head">

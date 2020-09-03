@@ -14,7 +14,7 @@
           </ul>
           <div class="border-slip"></div>
         </div>
-        <div class="operating-panel">
+        <div class="operating-box">
           <el-button
             type="primary"
             icon="el-icon-plus"

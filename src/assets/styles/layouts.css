@@ -72,7 +72,7 @@
   justify-content: space-between;
 }
 
-.cont-area .operating-panel .el-button {
+.cont-area .operating-box .el-button {
   min-width: 90px;
   height: 40px;
 }
