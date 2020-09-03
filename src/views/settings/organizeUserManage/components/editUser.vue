@@ -89,7 +89,7 @@
           ></el-cascader>
         </el-form-item>
       </el-form>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" :loading="loading" @click="saveUser" class="tl-btn amt-bg-slip">确定</el-button>
         <el-button plain :disabled="loading" @click="cancel" class="tl-btn amt-border-fadeout">取消</el-button>
       </div>

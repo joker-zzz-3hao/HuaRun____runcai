@@ -79,7 +79,7 @@
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
       ></tl-undertaketable>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" @click="summitUndertake()">确 定</el-button>
         <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
         <el-button @click="innerDrawer = false">取 消</el-button>
