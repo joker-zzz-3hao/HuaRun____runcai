@@ -89,8 +89,7 @@ export default {
   },
 
   mounted() {
-    this.CONST.SCORE_LIST.splice(0, 1);
-    this.labelList = this.CONST.SCORE_LIST;
+    this.labelList = this.CONST.SCORE_VALUE;
   },
   computed: {},
   methods: {

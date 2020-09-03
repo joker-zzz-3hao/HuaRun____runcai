@@ -172,6 +172,9 @@ export default {
           if (res.data) {
             this.departmentData.push(res.data);
             this.formData.orgFullId = this.departmentData[0].orgFullId;
+            this.orgFullIdList = this.formData.orgFullId.split(':');
+            this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+            this.getOrgName(this.departmentData, 0);
             this.searchList();
           }
         }
