@@ -126,6 +126,7 @@ export default {
         periodId: '',
       },
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
+      okrPeriod: {},
     };
   },
   components: {
@@ -159,8 +160,8 @@ export default {
       if (this.searchForm.periodId) {
         this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
           if (res.code == 200) {
-            this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
             if (res.data.parentUndertakeOkrInfoResult) {
+              this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
               res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
                 this.departokrList.push({
                   typeName: '目标O',
