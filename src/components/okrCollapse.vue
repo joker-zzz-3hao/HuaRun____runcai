@@ -72,12 +72,24 @@
               </li>
               <!-- 变更or创建无承接项时 -->
               <li v-else-if="showParentOkr">
-                <a @click="goUndertake(index,'new')">
-                  <span
-                    v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                  >{{item.undertakeOkrVo.undertakeOkrContent}}{{item.cultureName}}</span>
-                  <span v-else>+关联</span>
-                </a>
+                <p
+                  @click="goUndertake(index,'new')"
+                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                >
+                  <a
+                    v-if="item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent"
+                  >{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                  <a v-if="item.cultureName">{{item.cultureName}}</a>
+                </p>
+                <el-button
+                  plain
+                  icon="el-icon-plus"
+                  @click.native="goUndertake(index,'new')"
+                  v-else
+                >
+                  关联
+                  <span class="lines"></span>
+                </el-button>
               </li>
               <!-- 详情 -->
               <li v-else-if="item.okrParentId">

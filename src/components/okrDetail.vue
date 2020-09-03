@@ -53,7 +53,7 @@
               placement="top"
             >
               <div v-if="activity.operateType==5">
-                <sapn>张三{{activity.userName}}</sapn>
+                <span>张三{{activity.userName}}</span>
                 <span>更新</span>
                 <span>xxx</span>
                 <span>进度为</span>

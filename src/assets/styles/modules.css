@@ -1246,6 +1246,12 @@
   transform: rotate(180deg);
 }
 
+.tl-card-panel {
+  background: #fff;
+  box-shadow: 0 0 14px 0 #f4f6f8;
+  border-radius: 4px;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -1668,8 +1674,8 @@
 
 
 /* 主内容区--路由区 */
-.operating-area .operating-panel .el-button,
-.operating-area .operating-panel .el-input__inner {
+.operating-area .operating-box .el-button,
+.operating-area .operating-box .el-input__inner {
   height: 36px;
   border-radius: 2px;
   line-height: unset;
@@ -1705,19 +1711,13 @@
   background: #fff;
 }
 
-.operating-panel {
+.operating-box {
   display: flex;
   justify-content: flex-end;
 }
 
-.operating-panel .flex-auto {
+.operating-box .flex-auto {
   flex: 1;
-}
-
-.cont-panel {
-  background: #fff;
-  box-shadow: 0 0 14px 0 #f4f6f8;
-  border-radius: 4px;
 }
 
 .table-pagination {

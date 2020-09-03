@@ -45,7 +45,7 @@
                     </el-form-item>
                     <el-form-item label="承接自">
                       <p
-                        v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr || oitem.cultureName"
+                        v-if="oitem.undertakeOkrVo.undertakeOkrDetailId || oitem.cultureId"
                         @click="openUndertake(index)"
                       >
                         <a
@@ -148,7 +148,7 @@
         </el-button>
       </el-scrollbar>
     </div>
-    <div class="operating-panel">
+    <div class="operating-box">
       <div class="flex-auto">
         <el-button
           plain
@@ -179,8 +179,10 @@
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
         :periodName="periodName"
+        :selectRadioDepart.sync="formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
+        :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
       ></undertake-table>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
         <el-button @click="innerDrawer = false" plain class="tl-btn amt-border-fadeout">取消</el-button>
       </div>
@@ -356,7 +358,6 @@ export default {
                 okrDetailObjectKr: item.o.okrDetailObjectKr,
                 okrDetailId: item.o.okrDetailId,
                 okrDetailVersion: item.o.okrDetailVersion,
-                checkFlag: false,
               });
               if (item.krList && item.krList.length > 0) {
                 item.krList.forEach((krItem, index) => {
@@ -366,7 +367,6 @@ export default {
                     okrDetailObjectKr: krItem.okrDetailObjectKr,
                     okrDetailId: krItem.okrDetailId,
                     okrDetailVersion: krItem.okrDetailVersion,
-                    checkFlag: false,
                   });
                 });
               }
@@ -381,10 +381,12 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
               // 如果是草稿，选中已保存的承接项
-              if (['6', '8'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
+              if (['6'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
-                    pitem.checkFlag = true;
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
+                    console.log('草稿', pitem.undertakeOkrObjectKr);
+                    // item.undertakeOkrVo.undertakeOkrObjectKr = pitem.undertakeOkrObjectKr;
                   }
                 });
               }
@@ -408,10 +410,11 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
-              if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
+              if (['6'].includes(this.searchForm.okrStatus) && item.cultureId) {
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
-                    pitem.checkFlag = true;
+                    this.$set(item, 'cultureName', pitem.cultureName);
+                    // item.cultureName = pitem.cultureName;
                   }
                 });
               }
@@ -424,8 +427,10 @@ export default {
     },
     openUndertake(index) {
       // 选择o的序号，打开关联承接弹框
+      // 选择radioDepart radioPhil
       this.selectIndex = index;
       this.innerDrawer = true;
+      console.log('openUndertake', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
     },
     // 提交关联，给选中的o加上承接项和价值观
     summitUndertake() {
@@ -433,12 +438,12 @@ export default {
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
       // 承接项的id、版本、名称
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.okrDetailObjectKr || '';
       // TODO:价值观的id
-      this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
-      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
+      this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
       this.innerDrawer = false;
     },
     // 提交表单

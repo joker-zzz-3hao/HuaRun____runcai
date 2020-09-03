@@ -72,7 +72,7 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <div class="operating-panel">
+    <div class="operating-box">
       <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">保存</el-button>
       <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>

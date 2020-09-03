@@ -2,7 +2,7 @@
   <div class="menu-manage">
     <div class="operating-area">
       <div class="page-title">菜单管理</div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-select
           v-model="status"
           :popper-append-to-body="false"

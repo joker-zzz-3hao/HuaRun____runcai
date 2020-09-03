@@ -2,7 +2,7 @@
   <div class="role-type">
     <div class="operating-area">
       <div class="page-title">消息通知</div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-radio-group v-model="messageType" @change="change">

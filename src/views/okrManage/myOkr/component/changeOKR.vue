@@ -59,23 +59,31 @@
     </div>
 
     <el-drawer
-      title="关联承接项"
       :visible.sync="innerDrawer"
       :modal="false"
       :wrapperClosable="false"
       :append-to-body="true"
+      custom-class="diy-drawer associated-undertaking"
       class="tl-drawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">关联承接项</div>
+      </div>
       <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"
         :departokrList="tableList[this.selectIndex].departokrList"
         :philosophyList="tableList[this.selectIndex].philosophyList"
         :showPhil="undertakeType=='new'"
+        :selectRadioDepart.sync="selectRadioDepart"
+        :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
+        :periodName="okrPeriod.periodName"
       ></tl-undertaketable>
-      <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-      <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
-      <el-button @click="innerDrawer = false">取 消</el-button>
+      <div class="operating-box">
+        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+        <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
+        <el-button @click="innerDrawer = false">取 消</el-button>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -118,6 +126,8 @@ export default {
         periodId: '',
       },
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
+      okrPeriod: {},
+      selectRadioDepart: '',
     };
   },
   components: {
@@ -134,8 +144,9 @@ export default {
     },
   },
   mounted() {
-    this.okrId = this.writeInfo.okrId || '';
+    this.searchForm.okrId = this.writeInfo.okrId || '';
     this.searchForm.periodId = this.writeInfo.periodId;
+    console.log('this.writeInfo', this.writeInfo);
   },
   created() {
     // this.getCultureList();
@@ -150,27 +161,31 @@ export default {
       if (this.searchForm.periodId) {
         this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
           if (res.code == 200) {
-            this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-            res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-              this.departokrList.push({
-                typeName: '目标O',
-                okrDetailObjectKr: item.o.okrDetailObjectKr,
-                okrDetailId: item.o.okrDetailId,
-                okrDetailVersion: item.o.okrDetailVersion,
-                checkFlag: false,
-              });
-              if (item.krList && item.krList.length > 0) {
-                item.krList.forEach((krItem, index) => {
-                  this.departokrList.push({
-                    typeName: `KR${index}`,
-                    okrDetailObjectKr: krItem.okrDetailObjectKr,
-                    okrDetailId: krItem.okrDetailId,
-                    okrDetailVersion: krItem.okrDetailVersion,
-                    checkFlag: false,
-                  });
+            if (res.data.parentUndertakeOkrInfoResult) {
+              this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+              res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+                this.departokrList.push({
+                  typeName: '目标O',
+                  okrKind: 'o',
+                  okrDetailObjectKr: item.o.okrDetailObjectKr,
+                  okrDetailId: item.o.okrDetailId,
+                  okrDetailVersion: item.o.okrDetailVersion,
                 });
-              }
-            });
+                if (item.krList && item.krList.length > 0) {
+                  item.krList.forEach((krItem, index) => {
+                    this.departokrList.push({
+                      typeName: `KR${index}`,
+                      okrKind: 'k',
+                      okrDetailObjectKr: krItem.okrDetailObjectKr,
+                      okrDetailId: krItem.okrDetailId,
+                      okrDetailVersion: krItem.okrDetailVersion,
+                    });
+                  });
+                }
+              });
+            } else {
+              this.departokrList = [];
+            }
             // 将可承接列表转换成字符串
             this.departokrObject = JSON.stringify(this.departokrList);
           }
@@ -180,7 +195,6 @@ export default {
     // 查公司价值观
     getCultureList() {
       this.server.queryCultureList().then((res) => {
-        console.log('getCultureList', res);
         if (res.code == 200) {
           this.philosophyList = res.data;
           this.philosophyList.forEach((item) => {
@@ -199,7 +213,6 @@ export default {
       }));
 
       const undertakeP = new Promise(((resolve) => {
-        console.log('this.departokrObject');
         this.searchOkr();
         resolve('p2 data');
       }));
@@ -207,7 +220,7 @@ export default {
       Promise.all([detialP, undertakeP]).then((results) => {
         console.log(results); // ["p1 data", ""p2 data""]
 
-        this.server.getokrDetail({ okrId: this.okrId }).then((res) => {
+        this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
           if (res.code == 200) {
             this.tableList = res.data.okrDetails;
             this.okrmain = res.data.okrMain;
@@ -236,9 +249,16 @@ export default {
         if (res.code == 200) {
           const modifyUndertakeList = res.data.modifyUndertakeList || [];
           modifyUndertakeList.forEach((item) => {
-            item.typeName = item.okrDetailType === 1 ? '关键结果KR' : '目标O';
+            item.typeName = item.okrDetailType === 1 ? 'KR' : '目标O';
+            item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
-            item.checkFlag = item.currentOption;
+            if (item.currentOption) {
+              okritem.undertakeOkrVo = {};
+              // 用
+              okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              console.log('选中', item);
+            }
           });
           // 将承接项添加到列表里
           okritem.departokrList = res.data.modifyUndertakeList;
@@ -257,6 +277,9 @@ export default {
           undertakeOkrVersion: '',
         };
       }
+      this.selectRadioDepart = this.undertakeType == 'new'
+        ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
+        : this.tableList[this.selectIndex].currentOption;
       this.innerDrawer = true;
     },
     // 忽略
@@ -265,6 +288,9 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.tableList[this.selectIndex].okrParentId || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.tableList[this.selectIndex].parentObjectKr || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.tableList[this.selectIndex].okrDetailParentVersion || '';
+      // 关闭关联承接抽屉并刷新
+      this.innerDrawer = false;
+      this.$refs.okrCollapse.updateokrCollapse();
     },
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
@@ -272,12 +298,12 @@ export default {
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
       // eslint-disable-next-line max-len
       // 承接项id、版本、名称
-      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailId : '';
-      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailObjectKr : '';
-      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.checkFlag ? this.selectDepartRow.okrDetailVersion : '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.okrDetailObjectKr || '';
+      this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
 
-      this.tableList[this.selectIndex].cultureId = this.selectPhilRow.checkFlag ? this.selectPhilRow.id : '';
-      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.checkFlag ? this.selectPhilRow.cultureDesc : '';
+      this.tableList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
+      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
       console.log('关联', this.selectDepartRow);
       // 关闭关联承接抽屉并刷新
       this.innerDrawer = false;
@@ -424,7 +450,7 @@ export default {
     },
     writeInfo: {
       handler() {
-        this.okrId = this.writeInfo.okrId || '';
+        this.searchForm.okrId = this.writeInfo.okrId || '';
         this.searchForm.periodId = this.writeInfo.periodId;
         this.getokrDetail();
       },

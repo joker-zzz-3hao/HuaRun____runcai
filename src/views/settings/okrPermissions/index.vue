@@ -2,7 +2,7 @@
   <div class="okr-permissions">
     <div class="operating-area">
       <div class="page-title">设置OKR</div>
-      <div class="operating-panel"></div>
+      <div class="operating-box"></div>
     </div>
     <div class="cont-area">
       <div class="cont-panel">
@@ -33,7 +33,7 @@
           </dd>
         </dl>
       </div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button
           type="primary"
           :disabled="BtnDisabled"

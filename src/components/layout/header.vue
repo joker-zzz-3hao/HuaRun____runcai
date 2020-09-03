@@ -23,7 +23,7 @@
       </ul>
       <ul class="person-select">
         <li @click="go('personalCenter')">个人中心</li>
-        <li>个人设置</li>
+        <li @click="go('')">个人设置</li>
         <li @click="loginOut">退出登录</li>
       </ul>
     </div>
