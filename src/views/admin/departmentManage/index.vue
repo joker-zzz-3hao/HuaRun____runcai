@@ -140,6 +140,7 @@
     <create-department
       ref="createDepart"
       v-if="showcreateDepart"
+      :tenantId="tenantId"
       :treeData="treeData"
       :departOptionType="departOptionType"
       :initDepartment="initDepartment"

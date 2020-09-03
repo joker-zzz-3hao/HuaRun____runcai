@@ -14,7 +14,7 @@
       >简单版</el-button>
     </div>
     <!-- 日期 -->
-    <calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></calendar>
+    <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
     <div v-if="newPage">
       <!-- 标准版 -->
       <standard-Weekly
@@ -61,7 +61,7 @@ export default {
   components: {
     'standard-Weekly': standardWeekly,
     'simple-weekly': simpleWeekly,
-    calendar,
+    'tl-calendar': calendar,
   },
   data() {
     return {
