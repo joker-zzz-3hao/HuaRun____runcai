@@ -94,7 +94,31 @@ export default {
         xAxis: {
           type: 'category',
           data: that.mainDataY,
-
+          axisLabel: {
+            interval: 0,
+            // rotate: 40  ,//斜体展示
+            formatter(value) {
+              let ret = '';// 拼接加\n返回的类目项
+              const maxLength = 4;// 每项显示文字个数
+              const valLength = value.length;// X轴类目项的文字个数
+              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+              if (rowN > 1)// 如果类目项的文字大于3,
+              // eslint-disable-next-line brace-style
+              {
+                // eslint-disable-next-line no-plusplus
+                for (let i = 0; i < rowN; i++) {
+                  let temp = '';// 每次截取的字符串
+                  const start = i * maxLength;// 开始截取的位置
+                  const end = start + maxLength;// 结束截取的位置
+                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+                  temp = `${value.substring(start, end)}\n`;
+                  ret += temp; // 拼接最终的字符串
+                }
+                return ret;
+              }
+              return value;
+            },
+          },
         },
         yAxis: [
           {
@@ -102,6 +126,7 @@ export default {
             show: false,
           },
         ],
+
         series: [{
           // eslint-disable-next-line max-len
           data: that.mainCount,

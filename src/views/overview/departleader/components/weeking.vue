@@ -38,18 +38,20 @@
           :label="item.weekBegin+' 至 '+item.weekEnd"
         ></el-option>
       </el-select>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="orgName" label="部门"></el-table-column>
-        <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
-        <el-table-column label="标准/简单模式">
-          <template slot-scope="scope">
-            <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
-        <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
-        <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
-      </el-table>
+      <div>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="orgName" label="部门"></el-table-column>
+          <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
+          <el-table-column label="标准/简单模式">
+            <template slot-scope="scope">
+              <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
+          <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
+          <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
+        </el-table>
+      </div>
     </div>
     <div class="model">
       <div>员工情绪大屏</div>
@@ -64,11 +66,6 @@
         ></el-date-picker>
       </div>
       <div id="mood"></div>
-      <ul>
-        <li>开心</li>
-        <li>沮丧</li>
-        <li>平常</li>
-      </ul>
     </div>
   </div>
 </template>
@@ -139,7 +136,9 @@ export default {
       ).then((res) => {
         this.dateOption = res.data;
         this.calendarId = res.data[0].calendarId;
-        this.orgWeekly();
+        this.$nextTick(() => {
+          this.orgWeekly();
+        });
       });
     },
     orgWeekly() {
@@ -149,6 +148,7 @@ export default {
         userId: this.userInfo.userId,
       }).then((res) => {
         this.tableData = res.data;
+        console.log(this.tableData);
       });
     },
     changIdAction(id) {

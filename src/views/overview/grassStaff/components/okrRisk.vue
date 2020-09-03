@@ -44,7 +44,7 @@ export default {
   name: 'okrRisk',
   props: {
     okrData: {
-      type: [Object, Array],
+      type: [Object, Array, String],
     },
   },
   computed: {
@@ -59,7 +59,8 @@ export default {
       dateTime: '',
       dateOption: [],
       tableData: [],
-      okrDataX: [],
+      echartDataX: [],
+      echartDataY: [],
     };
   },
   mounted() {
@@ -68,8 +69,48 @@ export default {
   },
   methods: {
     changeTime() {
-      if (this.okrData.datas) {
-        this.okrDataX = this.okrData.datas.map((item) => [item.createDate, item.allScore]);
+      const echartData = JSON.parse(JSON.stringify(this.okrData));
+      this.echartDataX = [];
+      const startDate = `${echartData.months[0]}-01`;
+
+      const endtDate = `${echartData.months.pop()}-01`;
+      const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
+      const oneDay = 24 * 3600 * 1000;
+      let startche = +new Date(startDate);
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < cheTime / oneDay; i++) {
+        // eslint-disable-next-line no-const-assign
+        startche += oneDay;
+        const now = new Date(startche);
+        let months = '';
+        let day = '';
+        if (now.getMonth() < 9) {
+          months = `0${now.getMonth() + 1}`;
+        } else {
+          months = now.getMonth() + 1;
+        }
+        if (now.getDate() < 11) {
+          day = `0${now.getDate() - 1}`;
+        } else {
+          day = now.getDate() - 1;
+        }
+        this.echartDataX.push([now.getFullYear(), months, day].join('-'));
+      }
+
+      if (echartData.datas) {
+        this.echartDataY = {
+          type: 'line',
+          symbol: 'circle',
+          showAllSymbol: true,
+          data: echartData.datas.map((item) => [item.createDate, item.allScore]),
+        };
+      } else {
+        this.echartDataY = {
+          type: 'line',
+          symbol: 'circle',
+          showAllSymbol: true,
+          data: [],
+        };
       }
       this.init();
     },
@@ -111,7 +152,7 @@ export default {
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         xAxis: {
-          data: that.okrData.months,
+          data: that.echartDataX,
         },
         tooltip: {
           trigger: 'item',
@@ -139,11 +180,8 @@ export default {
             },
           },
         },
-        series: [{
-          name: '风险',
-          type: 'line',
-          data: that.okrDataX,
-        },
+        series: [
+          that.echartDataY,
         ],
       };
 
