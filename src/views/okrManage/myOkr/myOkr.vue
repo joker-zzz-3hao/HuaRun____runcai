@@ -1,6 +1,25 @@
 <template>
   <div>
     <!-- 选择周期 -->
+    <dl>
+      <dt>目标周期</dt>
+      <dd>
+        <el-select
+          v-model="searchForm.periodId"
+          placeholder="请选择目标周期"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in periodList"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
+          ></el-option>
+        </el-select>
+      </dd>
+    </dl>
     <!-- 选择状态 -->
     <dl style="display:flex">
       <dd v-for="item in CONST.STATUS_LIST" :key="item.id">

@@ -248,9 +248,14 @@ export default {
         if (res.code == 200) {
           const modifyUndertakeList = res.data.modifyUndertakeList || [];
           modifyUndertakeList.forEach((item) => {
-            item.typeName = item.okrDetailType === 1 ? '关键结果KR' : '目标O';
+            item.typeName = item.okrDetailType === 1 ? 'KR' : '目标O';
+            item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
-            item.checkFlag = item.currentOption;
+            if (item.currentOption) {
+              okritem.undertakeOkrVo = {};
+              okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              console.log('选中', item);
+            }
           });
           // 将承接项添加到列表里
           okritem.departokrList = res.data.modifyUndertakeList;

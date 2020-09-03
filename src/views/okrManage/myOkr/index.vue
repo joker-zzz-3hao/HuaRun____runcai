@@ -82,8 +82,8 @@ export default {
     }),
   },
   created() {
-    if (this.roleCode.includes('ORG_ADMIN')) {
-      this.departmentName = this.userInfo.orgParentName || '部门';
+    if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+      this.departmentName = this.userInfo.orgParentName;
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
     }
