@@ -148,7 +148,7 @@
         </el-button>
       </el-scrollbar>
     </div>
-    <div class="operating-panel">
+    <div class="operating-box">
       <div class="flex-auto">
         <el-button
           plain
@@ -182,7 +182,7 @@
         :selectRadioDepart.sync="formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
         :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
       ></undertake-table>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
         <el-button @click="innerDrawer = false" plain class="tl-btn amt-border-fadeout">取消</el-button>
       </div>

@@ -1,74 +1,64 @@
 <template>
-  <el-drawer
+  <el-dialog
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
-    :modal="false"
     :visible.sync="dialogTableVisible"
-    class="tl-drawer"
+    class="tl-dialog"
   >
-    <div class="modelCreate">
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="租户名称" prop="tenantName">
-          <span>{{form.tenantName}}</span>
-        </el-form-item>
-        <el-form-item label="企业ID" prop="tenantId">
-          <span>{{form.tenantId}}</span>
-        </el-form-item>
-        <el-form-item label="申请人" prop="applyUser">
-          <el-input maxlength="64" v-model="form.applyUser" placeholder="请输入申请人" class="tl-input"></el-input>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="mobilePhone">
-          <el-input
-            v-model="form.mobilePhone"
-            placeholder="请输入联系电话"
-            class="tl-input"
-            maxlength="11"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="开放菜单功能">
-          <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              <span>{{item.data.functionName}}</span>
-              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
-            </div>
-            <div class="postMenu">
-              <el-popover placement="bottom-end" trigger="click">
-                <el-cascader-panel
-                  @change="handleCheckChange"
-                  ref="treeMenu"
-                  v-model="selectArr"
-                  :options="data"
-                  :props="{ multiple: true, label:'functionName',value:'functionId',children:'children'}"
-                  node-key="id"
-                ></el-cascader-panel>
-                <div>
-                  <el-button type="text" @click="saveTree">确认</el-button>
-                  <el-button type="text" @click="clearNodeAll">清空</el-button>
-                </div>
-                <div slot="reference">
-                  <i class="el-icon-circle-plus-outline"></i>
-                </div>
-              </el-popover>
-            </div>
+    <el-form ref="form" :model="form" :rules="rules" label-width="110px" class="tl-form">
+      <el-form-item label="租户名称" prop="tenantName">
+        <el-input v-model="form.tenantName" maxlength="64" class="tl-input" placeholder="请输入租户名称"></el-input>
+      </el-form-item>
+      <el-form-item label="企业ID" prop="tenantId">
+        <el-input maxlength="64" class="tl-input" v-model="form.tenantId" placeholder="请输入企业ID"></el-input>
+      </el-form-item>
+      <el-form-item label="申请人" prop="applyUser">
+        <el-input maxlength="64" class="tl-input" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话" prop="mobilePhone">
+        <el-input v-model="form.mobilePhone" class="tl-input" placeholder="请输入联系电话" maxlength="11"></el-input>
+      </el-form-item>
+      <el-form-item label="开放菜单功能">
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+            <span>{{item.data.functionName}}</span>
+            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
-        </el-form-item>
-      </el-form>
-      <div class="operating-box">
-        <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
-        <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
-      </div>
+          <div>
+            <el-popover placement="bottom" trigger="click">
+              <el-cascader-panel
+                @change="handleCheckChange"
+                ref="treeMenu"
+                v-model.lazy="selectArr"
+                :options="data"
+                :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
+                node-key="value"
+              ></el-cascader-panel>
+              <div>
+                <el-button type="text" @click="saveTree">确认</el-button>
+                <el-button type="text" @click="clearNodeAll">清空</el-button>
+              </div>
+              <div slot="reference">
+                <i class="el-icon-circle-plus-outline"></i>
+              </div>
+            </el-popover>
+          </div>
+        </div>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
     </div>
-  </el-drawer>
+  </el-dialog>
 </template>
 <script>
-
 import Server from '../server';
 
 const server = new Server();
-
 export default {
   name: 'createTenant',
   props: {
@@ -88,11 +78,11 @@ export default {
   },
   data() {
     return {
-      server,
-      visible: false,
-      showMenu: false,
-      selectArr: [],
+      list: [],
       menuTreeList: [],
+      server,
+      showMenu: false,
+      selectList: [],
       form: {
         tenantName: '',
         applyUser: '',
@@ -102,7 +92,6 @@ export default {
         status: 'O',
         startTime: '',
         endTime: '',
-
       },
       rules: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
@@ -130,20 +119,22 @@ export default {
             message: '请输入联系电话',
             trigger: 'blur',
           },
-
+          {
+            pattern: /^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/,
+            message: '手机号格式不对',
+            trigger: 'blur',
+          },
         ],
-
       },
       dialogTableVisible: false,
       dialogVisible: false,
       data: [],
-      list: [],
-      selectList: [],
+      selectArr: [],
     };
   },
   mounted() {
     this.dialogTableVisible = true;
-    // 判断租户ID存在请求租户详情接口
+
     this.getqueryMenu();
   },
   methods: {
@@ -196,63 +187,23 @@ export default {
           }
         });
       });
-      this.selectList = this.list;
     },
     boolCheck(item, node) {
       return item.some((li) => li === node.data.functionId);
     },
-    selectCheckList() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-    },
-
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.queryMenu()
         .then((res) => {
           this.data = res.data;
-          this.getTenant();
         });
     },
-
-    // 获取租户信息
-    getTenant() {
-      this.server.getTenant({ tenantId: this.tenantId })
-        .then((res) => {
-          this.form.tenantName = res.data.tenantName;
-          this.form.applyUser = res.data.applyUser;
-          this.form.mobilePhone = res.data.mobilePhone;
-          this.form.tenantId = res.data.tenantId;
-          this.form.status = res.data.status;
-          this.selectArr = res.data.menuItems;
-          this.$nextTick(() => {
-            this.selectCheckList();
-            let arr = [];
-            this.selectArr.forEach((item) => {
-              arr = arr.concat(item);
-            });
-            this.selectList = Array.from(new Set(arr));
-          });
-        });
-    },
-
     // 校验数据填写格式
     validateForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
-          this.pudateForm();
+          this.creatForm();
         } else {
           return false;
         }
@@ -266,10 +217,10 @@ export default {
       });
       this.list = Array.from(new Set(arr));
     },
-    // 提交编辑数据
-    pudateForm() {
+    // 提交创建数据
+    creatForm() {
       this.form.menuTree = this.selectList.map((item) => ({ functionId: item }));
-      this.server.updateTenant({
+      this.server.insertTenant({
         tenantName: this.form.tenantName,
         tenantId: this.form.tenantId,
         applyUser: this.form.applyUser,
@@ -282,14 +233,11 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.$emit('getTenantList');
-            this.$message.success(res.msg);
+            this.$message.success('创建成功');
             this.closed();
-          } else {
-            this.$message.error(res.msg);
           }
         });
     },
-
     close() {
       this.dialogTableVisible = false;
     },
@@ -300,13 +248,5 @@ export default {
       this.dialogVisible = !this.dialogVisible;
     },
   },
-
 };
 </script>
-<style  scoped>
-.modelCreate {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 620px;
-}
-</style>

@@ -33,18 +33,18 @@ export default {
       self.systemList = [];
       self.talentList = [];
       self.userInfo.privilegeList.forEach((item) => {
-        switch (item.functionCode) {
+        switch (item.classTag) {
           // 租户管理员
           case 'TENANT':
             item.children.forEach((tItem) => {
               self.classTagList = [];
-              self.classTagList.push(tItem.functionCode);
+              self.classTagList.push(tItem.classTag);
               self.eventsList = ['moveMenu', 'leaveMenu'];
               self.subMenuList = [];
               if (tItem.children && tItem.children.length > 0) {
                 tItem.children.forEach((cItem) => {
                   self.subMenuClassList = [];
-                  self.subMenuClassList.push(cItem.functionCode);
+                  self.subMenuClassList.push(cItem.classTag);
                   self.subMenuList.push({
                     subMenuTitle: cItem.functionName,
                     subClassTag: self.subMenuClassList,
@@ -68,14 +68,14 @@ export default {
           case 'sys_system':
             item.children.forEach((tItem) => {
               self.classTagList = [];
-              self.classTagList.push(tItem.functionCode);
+              self.classTagList.push(tItem.classTag);
               self.eventsList = ['moveMenu', 'leaveMenu'];
               self.subMenuList = [];
               if (tItem.children && tItem.children.length > 0) {
                 self.eventsList.unshift('isExtend');
                 tItem.children.forEach((cItem) => {
                   self.subMenuClassList = [];
-                  self.subMenuClassList.push(cItem.functionCode);
+                  self.subMenuClassList.push(cItem.classTag);
                   self.subMenuList.push({
                     subMenuTitle: cItem.functionName,
                     subClassTag: self.subMenuClassList,
@@ -97,14 +97,14 @@ export default {
           // 润才
           default:
             self.classTagList = [];
-            self.classTagList.push(item.functionCode);
+            self.classTagList.push(item.classTag);
             self.eventsList = ['moveMenu', 'leaveMenu'];
             self.subMenuList = [];
             if (item.children && item.children.length > 0) {
               self.eventsList.unshift('isExtend');
               item.children.forEach((cItem) => {
                 self.subMenuClassList = [];
-                self.subMenuClassList.push(cItem.functionCode);
+                self.subMenuClassList.push(cItem.classTag);
                 self.subMenuList.push({
                   subMenuTitle: cItem.functionName,
                   subClassTag: self.subMenuClassList,

@@ -75,11 +75,11 @@
         :departokrList="tableList[this.selectIndex].departokrList"
         :philosophyList="tableList[this.selectIndex].philosophyList"
         :showPhil="undertakeType=='new'"
-        :selectRadioDepart.sync="tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
+        :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
       ></tl-undertaketable>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" @click="summitUndertake()">确 定</el-button>
         <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
         <el-button @click="innerDrawer = false">取 消</el-button>
@@ -127,6 +127,7 @@ export default {
       },
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
       okrPeriod: {},
+      selectRadioDepart: '',
     };
   },
   components: {
@@ -248,9 +249,16 @@ export default {
         if (res.code == 200) {
           const modifyUndertakeList = res.data.modifyUndertakeList || [];
           modifyUndertakeList.forEach((item) => {
-            item.typeName = item.okrDetailType === 1 ? '关键结果KR' : '目标O';
+            item.typeName = item.okrDetailType === 1 ? 'KR' : '目标O';
+            item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
-            item.checkFlag = item.currentOption;
+            if (item.currentOption) {
+              okritem.undertakeOkrVo = {};
+              // 用
+              okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              console.log('选中', item);
+            }
           });
           // 将承接项添加到列表里
           okritem.departokrList = res.data.modifyUndertakeList;
@@ -269,6 +277,9 @@ export default {
           undertakeOkrVersion: '',
         };
       }
+      this.selectRadioDepart = this.undertakeType == 'new'
+        ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
+        : this.tableList[this.selectIndex].currentOption;
       this.innerDrawer = true;
     },
     // 忽略

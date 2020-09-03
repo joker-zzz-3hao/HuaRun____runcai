@@ -2,7 +2,7 @@
   <div class="tenant-management">
     <div class="operating-area">
       <div class="page-title">租户管理</div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-input

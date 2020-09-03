@@ -2,7 +2,7 @@
   <div class="member-manage">
     <div class="operating-area">
       <div class="page-title">成员管理</div>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button
           type="primary"
           icon="el-icon-plus"

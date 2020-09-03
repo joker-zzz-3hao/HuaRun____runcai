@@ -305,6 +305,18 @@ export default [
         component: () => import('@/views/worthManage/worthManage/index'),
       },
       {
+        path: '/worthStatistics',
+        name: 'worthStatistics',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'worthManage',
+          title: 'worthStatistics',
+          power: '',
+        },
+        component: () => import('@/views/worthManage/worthStatistics/index'),
+      },
+      {
         path: '/notice',
         name: 'notice',
         meta: {

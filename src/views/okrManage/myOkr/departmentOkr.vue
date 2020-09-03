@@ -1,8 +1,26 @@
 <template>
   <div>
     <!-- 选择周期 -->
-    <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect>
-
+    <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
+    <dl>
+      <dt>目标周期</dt>
+      <dd>
+        <el-select
+          v-model="searchForm.periodId"
+          placeholder="请选择目标周期"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in periodList"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
+          ></el-option>
+        </el-select>
+      </dd>
+    </dl>
     <div v-if="tableList.length>0">
       <!-- 公共信息 -->
       <div>
@@ -61,6 +79,7 @@
         <ul style="display:flex">
           <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
             <div class="user-name">{{cutName(item.userName)}}</div>
+            <div>{{item.userName}}</div>
           </li>
         </ul>
       </div>
@@ -71,6 +90,7 @@
         <ul style="display:flex">
           <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
             <div class="user-name">{{cutName(item.orgName)}}</div>
+            <div>{{item.orgName}}</div>
           </li>
         </ul>
       </div>
@@ -96,7 +116,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import periodSelect from '@/components/periodSelect';
+// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import Server from './server';
@@ -107,7 +127,7 @@ const server = new Server();
 export default {
   name: 'departmentOkr',
   components: {
-    'tl-periodselect': periodSelect,
+    // 'tl-periodselect': periodSelect,
     'tl-okr-table': okrTable,
     'tl-okr-detail': okrDetail,
   },
@@ -117,6 +137,7 @@ export default {
       CONST,
       searchForm: {
         status: '1',
+        periodId: '',
       },
       tableList: [], // okr列表
       memberList: [], // 成员列表
@@ -147,9 +168,12 @@ export default {
   },
   created() {
     this.getOkrCycleList();
-    if (this.roleCode.includes('ORG_ADMIN')) {
-      this.departmentName = this.userInfo.orgParentName || '部门';
-    } else { this.departmentName = this.userInfo.orgName || '部门'; }
+    if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+      this.departmentName = this.userInfo.orgParentName;
+    } else {
+      this.departmentName = this.userInfo.orgName || '部门';
+    }
+    console.log(this.departmentName);
   },
   methods: {
     searchOkr() { // 默认搜索进行时
@@ -197,18 +221,23 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
     },
-    handleCycleData(data) {
-      this.okrCycle = data;
-    },
+    // handleCycleData(data) {
+    //   this.okrCycle = data;
+    // },
   },
   watch: {
-    'okrCycle.periodId': {
+    'searchForm.periodId': {
       handler(newVal) {
         console.log('get', newVal);
         if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId === newVal,
+          )[0] || {};
           this.searchOkr();
         }
       },

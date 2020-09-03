@@ -67,10 +67,10 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      return `${origin}/gateway/crcloud-cert/resource/upload`;
+      return `${origin}/gateway/system-service/sys/attachment/upload`;
     },
     headers() {
-      return { crctoken: localStorage.token };
+      return { token: localStorage.token };
     },
     fileList() {
       return this.files[0].url;
