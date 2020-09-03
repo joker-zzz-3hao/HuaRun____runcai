@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 选择周期 -->
     <dl>
       <dt>目标周期</dt>
       <dd>
@@ -27,7 +26,7 @@
       </dd>
     </dl>
 
-    <div v-for="(item, index) in okrList" :key="index">
+    <div v-for="(item) in okrList" :key="item.id">
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <!-- 基本信息 -->
