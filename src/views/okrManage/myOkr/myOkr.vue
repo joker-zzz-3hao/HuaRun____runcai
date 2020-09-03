@@ -159,6 +159,7 @@ export default {
       }],
       searchForm: {
         status: '1',
+        periodId: '',
       },
       dialogExist: false,
       currentView: '', // 弹框组件
@@ -304,18 +305,20 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
     },
-    handleCycleData(data) {
-      this.okrCycle = data;
-    },
   },
   watch: {
-    'okrCycle.periodId': {
+    'searchForm.periodId': {
       handler(newVal) {
         console.log('get', newVal);
         if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId == newVal,
+          )[0] || {};
           this.searchOkr();
         }
       },
