@@ -20,6 +20,7 @@
       </dd>
     </dl>
     <!-- 选择状态 -->
+    <!-- {'is-select':searchForm.status == item.id} -->
     <dl style="display:flex">
       <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
         <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
