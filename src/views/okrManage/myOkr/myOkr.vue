@@ -1,87 +1,91 @@
 <template>
   <div>
-    <div class="cont-panel">
-      <!-- 选择状态 -->
-      <dl style="display:flex">
-        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
-          <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
-        </dd>
-      </dl>
-      <!-- 选择周期 -->
-      <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
-    </div>
-    <!-- 状态为审批中需展示温馨提示 -->
-    <div v-if="searchForm.status=='7'">
-      <el-alert type="warning">
-        <div slot="title">
-          <i>温馨提示icon</i>
-          <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
-        </div>
-      </el-alert>
-    </div>
-    <!-- okr模块 只有起草中是有多个 -->
+    <!-- 选择周期 -->
+    <!-- 选择状态 -->
+    <dl style="display:flex">
+      <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
+        <el-button @click="searchOkr(item.id)">{{item.name}}</el-button>
+      </dd>
+    </dl>
+
     <div v-for="(item, index) in okrList" :key="index">
-      <!-- 基本信息 -->
-      <div v-if="item.tableList.length>0">
-        <div>{{okrCycle.periodName}}OKR</div>
-        <ul class="okrMain" style>
-          <li>
-            <span>更新时间</span>
-            <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
-          </li>
-          <li>
-            <span>状态</span>
-            <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-          </li>
-          <li>
-            <span>负责人</span>
-            <span>{{item.okrMain.userName}}</span>
-          </li>
-          <li>
-            <span>OKR进度</span>
-            <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
-          </li>
-        </ul>
-        <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <!-- 基本信息 -->
+          <div v-if="item.tableList.length>0">
+            <div>{{okrCycle.periodName}}OKR</div>
+            <ul class="okrMain" style>
+              <li>
+                <span>更新时间</span>
+                <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
+              </li>
+              <li>
+                <span>状态</span>
+                <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
+              </li>
+              <li>
+                <span>负责人</span>
+                <span>{{item.okrMain.userName}}</span>
+              </li>
+              <li>
+                <span>OKR进度</span>
+                <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
+              </li>
+            </ul>
+            <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
+          </div>
+          <!-- 表头 -->
+          <div v-if="item.tableList.length>0">
+            <ul class="tablehead">
+              <li>权重</li>
+              <li>进度</li>
+              <li>风险状态</li>
+              <li>承接地图</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-panel-body">
+          <!-- okr面板 -->
+          <tl-okr-table
+            :tableList="item.tableList"
+            :disabled="false"
+            :showOKRInfoLabel="true"
+            :status="searchForm.status"
+            @openDialog="openDialog(item)"
+            @goDraft="goDraft(item)"
+          >
+            <template slot="head-bar" slot-scope="props">
+              <el-button
+                v-if="props.okritem.continueCount>0"
+                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              <el-button
+                v-if="searchForm.status=='1'"
+                @click.stop="openUpdate('tl-okr-update',props.okritem)"
+              >更新进度</el-button>
+            </template>
+            <template slot="body-bar" slot-scope="props">
+              <el-button
+                v-if="props.okritem.continueCount>0"
+                @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              >承接地图icon{{props.okritem.continueCount}}</el-button>
+            </template>
+          </tl-okr-table>
+        </div>
       </div>
-      <!-- 表头 -->
-      <div v-if="item.tableList.length>0">
-        <ul class="tablehead">
-          <li>权重</li>
-          <li>进度</li>
-          <li>风险状态</li>
-          <li>承接地图</li>
-        </ul>
+      <!-- 状态为审批中需展示温馨提示 -->
+      <div v-if="searchForm.status=='7'">
+        <el-alert type="warning">
+          <div slot="title">
+            <i>温馨提示icon</i>
+            <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
+          </div>
+        </el-alert>
       </div>
-      <!-- okr面板 -->
-      <tl-okr-table
-        :tableList="item.tableList"
-        :disabled="false"
-        :showOKRInfoLabel="true"
-        :status="searchForm.status"
-        @openDialog="openDialog(item)"
-        @goDraft="goDraft(item)"
-      >
-        <template slot="head-bar" slot-scope="props">
-          <el-button
-            v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
-          <el-button
-            v-if="searchForm.status=='1'"
-            @click.stop="openUpdate('tl-okr-update',props.okritem)"
-          >更新进度</el-button>
-        </template>
-        <template slot="body-bar" slot-scope="props">
-          <el-button
-            v-if="props.okritem.continueCount>0"
-            @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
-        </template>
-      </tl-okr-table>
+      <!-- 无数据时展示 -->
+      <div v-else>暂无数据~</div>
     </div>
-    <!-- 无数据时展示 -->
-    <div v-if="okrList[0].tableList.length == 0">暂无数据~</div>
+
     <el-drawer
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
