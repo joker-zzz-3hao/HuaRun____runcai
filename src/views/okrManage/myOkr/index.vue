@@ -24,36 +24,18 @@
         </div>
       </div>
     </div>
-    <el-drawer
-      :wrapperClosable="false"
-      :modal-append-to-body="true"
-      :append-to-body="true"
-      :visible.sync="createokrDrawer"
-      :before-close="handleClose"
-      custom-class="diy-drawer create-okr"
-      class="tl-drawer"
-    >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">创建OKR</div>
-        <div class="icon-save" v-if="showAuto">
-          <i></i>
-          <em>已自动保存</em>
-        </div>
-      </div>
-      <tl-writeokr ref="writeokr" v-if="createokrDrawer" :userName="userInfo.userName"></tl-writeokr>
-      <div class="operating-box">
-        <div class="flex-auto">
-          <el-button plain @click="saveDraft()" class="tl-btn amt-border-fadeout">保存为草稿</el-button>
-        </div>
-        <el-button type="primary" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
-        <el-button plain class="tl-btn amt-border-fadeout" @click="close()">取消</el-button>
-      </div>
-    </el-drawer>
+    <tl-writeokr
+      ref="writeokr"
+      v-if="writeokrExist"
+      :exist.sync="writeokrExist"
+      :userName="userInfo.userName"
+      @success="searchOkr(searchForm.status)"
+    ></tl-writeokr>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 
@@ -78,14 +60,13 @@ export default {
           toName: 'departmentOkr',
         },
       ],
+      writeokrExist: false,
     };
   },
   computed: {
     ...mapState('common', {
-      createokrDrawer: (state) => state.createokrDrawer,
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
-      showAuto: (state) => state.showAuto,
     }),
   },
   created() {
@@ -106,17 +87,16 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-    ...mapMutations('common', ['setCreateokrDrawer']),
     goRoutesss(tab, event) {
       console.log(tab);
       console.log(event);
       this.go(this.activeName);
     },
     goWriteOkr() {
-      this.setCreateokrDrawer(true);
-    },
-    handleClose() {
-      this.setCreateokrDrawer(false);
+      this.writeokrExist = true;
+      this.$nextTick(() => {
+        this.$refs.writeokr.showOkrDialog();
+      });
     },
     borderSlip(item, index, name) {
       const borderWidth = document.querySelector('.border-slip');
@@ -129,6 +109,7 @@ export default {
     },
   },
   watch: {
+
   },
 };
 </script>
