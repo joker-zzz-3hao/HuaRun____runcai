@@ -158,7 +158,7 @@ const mockData = {
         userName: 'lxq',
         userId: '0123',
         updateTime: '2020-08-06',
-        okrProgress: '40',
+        okrProgress: 40,
       },
       'okrDetails|3': [
         {
@@ -166,7 +166,7 @@ const mockData = {
           'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
           'userName|1': ['心荃', '滕炜'],
           okrWeight: 40,
-          okrDetailProgress: 30,
+          okrDetailProgress: 50,
           parentObjectKr: '华润云',
           'krList|5': [
             {
@@ -176,7 +176,7 @@ const mockData = {
               okrWeight: 40,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              okrDetailConfidence: '1',
+              'okrDetailConfidence|1': [1, 2, 3],
             },
           ],
         },

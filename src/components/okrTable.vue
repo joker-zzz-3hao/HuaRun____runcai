@@ -15,13 +15,10 @@
               <div>{{kritem.okrWeight}}%</div>
               <!-- 进度 -->
               <div>
-                <tl-process :data="kritem.okrDetailProgress"></tl-process>
+                <tl-process :data="[kritem.okrDetailProgress]"></tl-process>
               </div>
               <!-- 风险状态 -->
-              <div>
-                <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
-                {{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}
-              </div>
+              <div>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
               <!-- 承接地图 -->
               <div>
                 <slot name="body-bar" :okritem="kritem"></slot>
@@ -41,7 +38,7 @@
         </el-table-column>
         <el-table-column prop="okrDetailProgress" label="进度" width="120">
           <template slot-scope="scope">
-            <tl-process :data="scope.row.okrDetailProgress"></tl-process>
+            <tl-process :data="[scope.row.okrDetailProgress]"></tl-process>
           </template>
         </el-table-column>
         <el-table-column label="风险状态" width="120"></el-table-column>
