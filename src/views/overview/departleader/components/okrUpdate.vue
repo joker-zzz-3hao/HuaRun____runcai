@@ -23,7 +23,7 @@ export default {
       const option = {
         xAxis: {
           type: 'category',
-          data: ['马', '为', '丁', '撒', '比', '腾', '王', '丁', '的', '额', '娃', '是', '磊', '特', '尔', '化', '王', 'aa', '菲', '出', '唱', 'vf', '周', 's', '景', '索', '头'],
+          data: [],
         },
         yAxis: [
           {
@@ -33,7 +33,7 @@ export default {
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: [20, 100, 50, 80, 70, 90, 30, 20, 100, 50, 80, 70, 90, 30, 10, 100, 50, 80, 70, 100, 30, 20, 100, 50, 80, 70, 90, 30],
+          data: [],
           type: 'bar',
           barWidth: 20,
           showBackground: true,

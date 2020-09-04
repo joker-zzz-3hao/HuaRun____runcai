@@ -4,10 +4,6 @@
     <div class="creatOkr">
       <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
       <em v-else>{{userInfo.userName}}</em>
-      <div v-if="false">
-        <img style="width:100px;height:100px;display:block;border:1px solid black;" src alt srcset />
-        <el-button type="primary">创建OKR</el-button>
-      </div>
       <tl-org-page :periodId="periodId"></tl-org-page>
       <div>
         <ul style="display:flex;flex-direction: row;">
@@ -65,7 +61,7 @@
           </el-table-column>
         </el-table>
         <div style="display:inline-block">
-          <tl-okr-risk-total :tableData="tableData"></tl-okr-risk-total>
+          <tl-okr-risk-total :tableData="tableData" :mainData="mainData"></tl-okr-risk-total>
         </div>
         <ul style="display:inline-block">
           <li v-for="(item,index) in tableData" :key="index">{{item.riskName}} {{item.ratio+'%'}}</li>

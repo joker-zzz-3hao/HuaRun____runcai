@@ -129,7 +129,6 @@ export default {
         myOrOrg: 'org', status: '1', orgId: this.setOrgId, type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          console.log(res.data);
           this.orgTable = res.data.orgTable;
           this.orgUser = res.data.orgUser;
         }
