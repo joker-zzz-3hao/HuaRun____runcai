@@ -92,11 +92,13 @@
             @openDialog="openDialog(item)"
             @goDraft="goDraft(item)"
           >
-            <template slot="head-bar" slot-scope="props">
+            <template slot="head-undertake" slot-scope="props">
               <el-button
                 v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >承接地图icon{{props.okritem.continueCount}}</el-button>
+            </template>
+            <template slot="weight-bar" slot-scope="props">
               <el-button
                 v-if="searchForm.status=='1'"
                 @click.stop="openUpdate('tl-okr-update',props.okritem)"
@@ -131,6 +133,7 @@
           :writeInfo="writeInfo"
         ></tl-writeokr>
         <tl-changeokr
+          ref="changeokr"
           v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
           @handleClose="handleClose"
           :writeInfo="writeInfo"

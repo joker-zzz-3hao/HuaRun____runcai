@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- 选择周期 -->
-    <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
     <dl>
       <dt>目标周期</dt>
       <dd>
@@ -56,7 +54,7 @@
         :status="searchForm.status"
         @openDialog="openDialog()"
       >
-        <template slot="head-bar" slot-scope="props">
+        <template slot="head-undertake" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
