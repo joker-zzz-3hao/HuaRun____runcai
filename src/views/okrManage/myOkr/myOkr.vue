@@ -147,6 +147,7 @@
       ref="tl-changeokr"
       :exist.sync="changeokrExist"
       :writeInfo="writeInfo"
+      :drawerTitle="drawerTitle"
       @success="searchOkr(searchForm.status)"
     ></tl-changeokr>
     <tl-okr-detail
@@ -156,6 +157,7 @@
       :okrId="okrId"
       :CONST="CONST"
       :okrItem="okrItem"
+      :drawerTitle="drawerTitle"
     ></tl-okr-detail>
     <tl-okr-update
       ref="tl-okr-update"
@@ -299,7 +301,7 @@ export default {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
-      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}`;
       this.detailExist = true;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
@@ -316,7 +318,7 @@ export default {
     },
     // 打开变更
     goChangeOkr() {
-      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
