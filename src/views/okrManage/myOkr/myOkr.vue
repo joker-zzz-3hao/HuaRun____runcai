@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="operating-box">
+    <div class="operating-panel">
       <dl class="dl-item">
         <dt>目标周期</dt>
         <dd>
@@ -22,21 +22,37 @@
       </dl>
       <dl class="dl-item">
         <dt>状态</dt>
-        <dd v-for="item in CONST.STATUS_LIST" :key="item.id">
-          <el-button
-            @click="searchOkr(item.id)"
-            :class="{'is-select':searchForm.status == item.id}"
-          >{{item.name}}</el-button>
+        <dd class="tl-diy-tabs">
+          <ul class="tab-list">
+            <li
+              v-for="(item,idx) in CONST.STATUS_LIST"
+              :key="item.id"
+              @click="borderSlip(item,idx)"
+              :class="{'is-focus': searchForm.status == item.id}"
+            >
+              <em @click="searchOkr(item.id)">{{item.name}}</em>
+            </li>
+          </ul>
+          <div class="border-slip"></div>
         </dd>
       </dl>
     </div>
-    <div v-for="(item) in okrList" :key="item.id">
-      <div class="tl-card-panel">
+    <div v-for="(item) in okrList" :key="item.id" class="cont-panel">
+      <!-- 状态为审批中需展示温馨提示 -->
+      <div v-if="searchForm.status=='7'">
+        <el-alert type="warning">
+          <div slot="title">
+            <i>温馨提示icon</i>
+            <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
+          </div>
+        </el-alert>
+      </div>
+      <div v-if="item.tableList.length>0" class="tl-card-panel">
         <div class="card-panel-head">
           <!-- 基本信息 -->
-          <div v-if="item.tableList.length>0">
+          <div>
             <div>{{okrCycle.periodName}}OKR</div>
-            <ul class="okrMain" style>
+            <ul>
               <li>
                 <span>更新时间</span>
                 <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
@@ -76,11 +92,13 @@
             @openDialog="openDialog(item)"
             @goDraft="goDraft(item)"
           >
-            <template slot="head-bar" slot-scope="props">
+            <template slot="head-undertake" slot-scope="props">
               <el-button
                 v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >承接地图icon{{props.okritem.continueCount}}</el-button>
+            </template>
+            <template slot="weight-bar" slot-scope="props">
               <el-button
                 v-if="searchForm.status=='1'"
                 @click.stop="openUpdate('tl-okr-update',props.okritem)"
@@ -95,17 +113,9 @@
           </tl-okr-table>
         </div>
       </div>
-      <!-- 状态为审批中需展示温馨提示 -->
-      <div v-if="searchForm.status=='7'">
-        <el-alert type="warning">
-          <div slot="title">
-            <i>温馨提示icon</i>
-            <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
-          </div>
-        </el-alert>
+      <div v-else class="tl-card-panel no-data">
+        <div class="bg-no-data">暂无数据</div>
       </div>
-      <!-- 无数据时展示 -->
-      <div v-else>暂无数据~</div>
     </div>
 
     <el-drawer
@@ -123,6 +133,7 @@
           :writeInfo="writeInfo"
         ></tl-writeokr>
         <tl-changeokr
+          ref="changeokr"
           v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
           @handleClose="handleClose"
           :writeInfo="writeInfo"
@@ -150,7 +161,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
@@ -164,7 +174,6 @@ const server = new Server();
 export default {
   name: 'myOkr',
   components: {
-    // 'tl-periodselect': periodSelect,
     'tl-okr-detail': okrDetail,
     'tl-okr-update': okrUpdate,
     'tl-okr-table': okrTable,
@@ -184,7 +193,7 @@ export default {
         },
       }],
       searchForm: {
-        status: '1',
+        status: '0',
         periodId: '',
       },
       dialogExist: false,
@@ -208,6 +217,11 @@ export default {
   },
   created() {
     this.getOkrCycleList();
+  },
+  mounted() {
+    const liWidth = document.querySelectorAll('.tab-list li');
+    const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
@@ -335,6 +349,13 @@ export default {
           this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
+    },
+    borderSlip(item, index) {
+      const borderWidth = document.querySelector('.border-slip');
+      const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
+      const liWidth = document.querySelectorAll('.tab-list li');
+      borderWidth.style.left = `${selfLeft}px`;
+      borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
     },
   },
   watch: {

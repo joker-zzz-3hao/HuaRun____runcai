@@ -95,7 +95,28 @@
       </div>
     </el-form>
     <!-- 右侧 -->
-    <div></div>
+    <div>
+      <el-tabs>
+        <el-tab-pane label="操作历史" name="history">
+          <!--  -->
+          <ul>
+            <li
+              v-for="item in historyList"
+              :key="item.id"
+            >{{item.name}}添加任务{{item.title}}{{item.time}}</li>
+          </ul>
+        </el-tab-pane>
+        <el-tab-pane label="进度更新说明" name="update">
+          <ul>
+            <li v-for="item in updateList" :key="item.id">
+              <span>进度更新为：{{item.process}}%</span>
+              <span>进度更新说明：{{item.reason}}</span>
+              <span>操作人：{{item.name}}</span>
+            </li>
+          </ul>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 
@@ -117,6 +138,12 @@ export default {
         processVal: '',
         processNum: 0,
       },
+      historyList: [{
+        name: '张三', title: '关于润才平台产品市场竞品调研', reason: '因11111任务属于错误输入的任务', time: '1小时前',
+      }],
+      updateList: [{
+        name: '李四', reason: '因11111任务属于错误输入的任务', process: 20,
+      }],
     };
   },
 };

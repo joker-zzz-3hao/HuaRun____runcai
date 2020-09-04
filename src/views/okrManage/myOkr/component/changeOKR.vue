@@ -253,9 +253,10 @@ export default {
             item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
             if (item.currentOption) {
-              okritem.undertakeOkrVo = {};
-              // 用
-              okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              // okritem.undertakeOkrVo = {};
+              // okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              // okritem.undertakeOkrVo.undertakeOkrContent = item.okrDetailId;
+              // okritem.undertakeOkrVo.undertakeOkrVersion = item.okrDetailId;
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
               console.log('选中', item);
             }
@@ -350,6 +351,7 @@ export default {
             undertakeOkrContent: item.parentObjectKr,
             undertakeOkrVersion: item.okrDetailParentVersion,
           };
+          console.log('原有承接', undertakeOkr);
           // 无承接
         } else {
           undertakeOkr = null;

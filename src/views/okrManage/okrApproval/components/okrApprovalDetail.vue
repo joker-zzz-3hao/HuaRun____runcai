@@ -31,7 +31,7 @@
       </div>
     </div>
     <div style="margin-top: 20px;">
-      <p>OKR信息信息</p>
+      <p>OKR信息</p>
       <!-- <tl-okr-collapse :tableList="tableList"></tl-okr-collapse> -->
       <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
       <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
@@ -163,7 +163,7 @@ export default {
         periodId: this.data.periodId,
       }).then((res) => {
         if (res.code == '200') {
-          this.cycleList = res.data.content;
+          this.cycleList = res.data;
         }
       });
     },

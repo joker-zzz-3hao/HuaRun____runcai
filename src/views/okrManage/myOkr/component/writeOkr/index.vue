@@ -1,55 +1,57 @@
 <template>
-  <div class="create-okr">
-    <div v-if="canWrite" class="allocation-info">
-      <dl>
-        <dt>目标周期</dt>
-        <dd>
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <dl>
-        <dt>OKR类型</dt>
-        <dd>
-          <el-select
-            v-model="searchForm.okrType"
-            placeholder="请选择类型"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="(item, index) in okrTypeList"
-              :key="item.id+index"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <dl class="user-info">
-        <dt>负责人</dt>
-        <dd v-if="true">
-          <img src="@/assets/images/user/user.jpg" alt />
-        </dd>
-        <dd v-else class="user-name">{{cutName(userName)}}</dd>
-        <dd>{{userName}}</dd>
-      </dl>
+  <el-scrollbar>
+    <div class="create-okr">
+      <div v-if="canWrite" class="allocation-info">
+        <dl>
+          <dt>目标周期</dt>
+          <dd>
+            <el-select
+              v-model="searchForm.periodId"
+              placeholder="请选择目标周期"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in periodList"
+                :key="item.periodId"
+                :label="item.periodName"
+                :value="item.periodId"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl>
+          <dt>OKR类型</dt>
+          <dd>
+            <el-select
+              v-model="searchForm.okrType"
+              placeholder="请选择类型"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in okrTypeList"
+                :key="item.id+index"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="user-info">
+          <dt>负责人</dt>
+          <dd v-if="true">
+            <img src="@/assets/images/user/user.jpg" alt />
+          </dd>
+          <dd v-else class="user-name">{{cutName(userName)}}</dd>
+          <dd>{{userName}}</dd>
+        </dl>
+      </div>
+      <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
     </div>
-    <okr-form v-if="canWrite" :searchForm="searchForm" :server="server" :canWrite="canWrite"></okr-form>
-  </div>
+  </el-scrollbar>
 </template>
 
 <script>
