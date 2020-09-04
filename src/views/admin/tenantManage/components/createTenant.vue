@@ -28,7 +28,7 @@
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <div>
-            <el-popover placement="bottom" trigger="click">
+            <el-popover placement="bottom" trigger="click" v-model="postMenu">
               <el-cascader-panel
                 @change="handleCheckChange"
                 ref="treeMenu"
@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       list: [],
+      postMenu: false,
       menuTreeList: [],
       server,
       showMenu: false,
@@ -153,6 +154,7 @@ export default {
         }
       });
       this.selectList = this.list;
+      this.postMenu = false;
     },
     clearNodeAll() {
       this.$refs.treeMenu.clearCheckedNodes();

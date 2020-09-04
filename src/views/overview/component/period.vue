@@ -43,7 +43,7 @@ export default {
       default: false,
     },
   },
-  mounted() {
+  created() {
     this.depart = this.userInfo.orgList[0].orgId;
     this.setOrg(this.userInfo.orgList[0].orgId);
     this.getokrQuery();
@@ -61,6 +61,7 @@ export default {
         if (res.code == 200) {
           this.options = res.data.content;
           this.value = this.options[0].periodId;
+
           this.$emit('getPeriod', this.value);
         }
       });

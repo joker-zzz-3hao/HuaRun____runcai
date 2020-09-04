@@ -8,7 +8,7 @@
         <img style="width:100px;height:100px;display:block;border:1px solid black;" src alt srcset />
         <el-button type="primary">创建OKR</el-button>
       </div>
-      <tl-org-page></tl-org-page>
+      <tl-org-page :periodId="periodId"></tl-org-page>
       <div>
         <ul style="display:flex;flex-direction: row;">
           <template v-if="orgTable">
@@ -109,13 +109,13 @@ export default {
       server,
       orgUser: [],
       tableData: [],
-      period: '',
+      periodId: '',
       mainData: [],
       orgId: '',
       orgTable: [],
     };
   },
-  created() {
+  mounted() {
     if (this.$route.query.id) {
       this.orgId = this.$route.query.id;
     } else {
@@ -133,7 +133,7 @@ export default {
     },
     getokrData() {
       this.server.okrData({
-        periodId: this.period,
+        periodId: this.periodId,
         orgId: this.orgId,
       }).then((res) => {
         this.mainData = res.data;
@@ -141,7 +141,7 @@ export default {
     },
     getokrRisk() {
       this.server.okrRisk({
-        periodId: this.period,
+        periodId: this.periodId,
         orgId: this.orgId,
       }).then((res) => {
         this.tableData = res.data;
@@ -149,15 +149,15 @@ export default {
     },
     getmainData() {
       this.server.mainData({
-        periodId: this.period,
+        periodId: this.periodId,
         orgId: this.orgId,
       }).then((res) => {
         console.log(res);
       });
     },
     // eslint-disable-next-line no-shadow
-    getPeriod(period) {
-      this.period = period;
+    getPeriod(periodId) {
+      this.periodId = periodId;
       this.getokrRisk();
       this.getokrData();
       this.getmainData();
