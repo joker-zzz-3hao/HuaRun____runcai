@@ -133,21 +133,18 @@
 
     <tl-writeokr
       ref="tl-writeokr"
-      v-if="writeokrExist"
       :exist.sync="writeokrExist"
       :writeInfo="writeInfo"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
       ref="tl-changeokr"
-      v-if="changeokrExist"
       :exist.sync="changeokrExist"
       :writeInfo="writeInfo"
       @success="searchOkr(searchForm.status)"
     ></tl-changeokr>
     <tl-okr-detail
       ref="tl-okr-detail"
-      v-if="detailExist"
       :exist.sync="detailExist"
       :server="server"
       :okrId="okrId"
@@ -156,7 +153,6 @@
     ></tl-okr-detail>
     <tl-okr-update
       ref="tl-okr-update"
-      v-if="updateExist"
       :exist.sync="updateExist"
       :server="server"
       :okrId="okrId"

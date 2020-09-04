@@ -1,13 +1,21 @@
 <template>
   <div class="home">
     <div style="display: flex;">
-      <div style="margin-left:20px;" v-if="cycleData.length>0 && showDepartmentSelect">
-        <department
-          :data="cycleData"
-          type="cycleListSelect"
-          @handleData="handleCycleData"
-          :defaultProps="cycleDefaultProps"
-        ></department>
+      <div style="margin-left:20px;" v-if="showDepartmentSelect">
+        <el-select
+          v-model="periodId"
+          placeholder="请选择目标周期"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in periodList"
+            :key="item.periodId"
+            :label="item.periodName"
+            :value="item.periodId"
+          ></el-option>
+        </el-select>
       </div>
       <div style="margin-left:20px;" v-if="showDepartmentSelect">
         <!-- <el-cascader
@@ -73,28 +81,19 @@
     </div>
     <tl-mission ref="mission"></tl-mission>
     <!-- okr详情 -->
-    <el-drawer
-      :wrapperClosable="false"
-      :append-to-body="true"
-      class="tl-drawer"
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
-      :before-close="handleClose"
-    >
-      <tl-okr-detail
-        v-if="myokrDrawer"
-        ref="okrdetail"
-        :server="server"
-        :okrId="okrId"
-        :CONST="CONST"
-        :showSupport="true"
-      ></tl-okr-detail>
-    </el-drawer>
+
+    <tl-okr-detail
+      :exist.sync="detailExist"
+      ref="okrdetail"
+      :server="server"
+      :okrId="okrId"
+      :CONST="CONST"
+      :showSupport="true"
+    ></tl-okr-detail>
   </div>
 </template>
 
 <script>
-import department from '@/components/department';
 import svgtree from '@/components/svgtree';
 import okrDetail from '@/components/okrDetail';
 import card from './components/card';
@@ -127,41 +126,14 @@ export default {
       orgFullId: '',
       showOkrMap: true,
       showDepartmentSelect: true,
-      departmentDefaultProps: {
-        children: 'children',
-        label: 'orgName',
-        id: 'orgId',
-      },
-      cycleDefaultProps: {
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: {
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-      },
-      dialogExist: false,
       okrId: '',
       searchData: [],
-      myokrDrawer: false,
       drawerTitle: 'OKR详情',
+      detailExist: false,
+      periodId: '',
     };
   },
   components: {
-    department,
     svgtree,
     card,
     'tl-mission': mission,
@@ -183,26 +155,14 @@ export default {
       const self = this;
       // 查询周期
       self.server.getOkrCycleList().then((res) => {
-        if (res.data.length > 0) {
-          res.data.forEach((item) => {
-            // checkStatus为0时是历史周期，1为当前周期
-            if (item.checkStatus == '0') {
-              self.cycleObj.old.children.push(item);
-            } else if (item.checkStatus == '1') {
-              self.cycleObj.current.children.push(item);
-            }
-          });
-          self.pushCycleObj('current');
-          self.pushCycleObj('old');
+        if (res.code == 200) {
+          this.periodList = res.data || [];
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.periodId = this.okrCycle.periodId;
         }
       });
       // 查询组织树
       self.getOrgTable();
-    },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
     },
     getOkrTree() {
       if (this.okrCycle.periodId && this.orgFullId) {
@@ -294,13 +254,25 @@ export default {
     showDetail(okrId) {
       this.okrId = okrId;
       this.drawerTitle = 'OKR详情';
-      this.myokrDrawer = true;
+      this.detailExist = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();
       });
     },
-    handleClose() {
-      this.myokrDrawer = false;
+
+  },
+  watch: {
+    periodId: {
+      handler(newVal) {
+        if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId == newVal,
+          )[0] || {};
+          this.getOkrTree();
+        }
+      },
+      immediate: true,
+      deep: true,
     },
   },
 };

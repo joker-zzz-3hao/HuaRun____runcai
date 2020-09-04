@@ -10,7 +10,8 @@
     @close="closed"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">创建OKR</div>
+      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
+      <div v-else class="drawer-title">创建OKR</div>
       <div class="icon-save" v-if="showAuto">
         <i></i>
         <em>已自动保存</em>
