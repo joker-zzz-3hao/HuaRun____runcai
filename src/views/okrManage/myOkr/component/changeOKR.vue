@@ -1,89 +1,100 @@
 <template>
   <div>
-    <!-- 公共信息 -->
-    <div>
-      <ul>
-        <li>
-          <span>目标类型</span>
-          <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
-        </li>
-        <li>
-          <span>负责人</span>
-          <span>{{okrmain.userName}}</span>
-        </li>
-        <li>
-          <span>更新时间</span>
-          <span>{{okrmain.updateTime||okrmain.createTime}}</span>
-        </li>
-        <li>
-          <span>进度</span>
-          <span>
-            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <!-- okr折叠面板 -->
-    <tl-okrcollapse
-      ref="okrCollapse"
-      :tableList="tableList"
-      :canWrite="true"
-      :showOKRInfoLabel="true"
-      @openUndertake="openUndertakepage"
-    ></tl-okrcollapse>
-    <!-- 新增okr -->
-    <tl-okrform
-      ref="okrform"
-      :searchForm="searchForm"
-      :server="server"
-      :canWrite="true"
-      :isnew="false"
-      :periodId="searchForm.periodId"
-    ></tl-okrform>
-    <!-- 变更原因 -->
-    <div>
-      <span>变更原因</span>
-      <el-form :model="reason" ref="reasonForm">
-        <el-form-item
-          prop="modifyReason"
-          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
-        >
-          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
-    <!-- 提交 -->
-    <div>
-      <el-button @click="validateForm">提交</el-button>
-      <el-button @click="goback">取消</el-button>
-    </div>
-
     <el-drawer
-      :visible.sync="innerDrawer"
-      :modal="false"
+      :title="drawerTitle"
+      :visible.sync="myokrDrawer"
       :wrapperClosable="false"
       :append-to-body="true"
-      custom-class="diy-drawer associated-undertaking"
+      :modal-append-to-body="true"
       class="tl-drawer"
+      @close="closed"
+      :before-close="close"
     >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">关联承接项</div>
+      <!-- 公共信息 -->
+      <div>
+        <ul>
+          <li>
+            <span>目标类型</span>
+            <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
+          </li>
+          <li>
+            <span>负责人</span>
+            <span>{{okrmain.userName}}</span>
+          </li>
+          <li>
+            <span>更新时间</span>
+            <span>{{okrmain.updateTime||okrmain.createTime}}</span>
+          </li>
+          <li>
+            <span>进度</span>
+            <span>
+              <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
+            </span>
+          </li>
+        </ul>
       </div>
-      <tl-undertaketable
-        v-if="selectIndex !== ''"
-        ref="undertake"
-        :departokrList="tableList[this.selectIndex].departokrList"
-        :philosophyList="tableList[this.selectIndex].philosophyList"
-        :showPhil="undertakeType=='new'"
-        :selectRadioDepart.sync="selectRadioDepart"
-        :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
-        :periodName="okrPeriod.periodName"
-      ></tl-undertaketable>
-      <div class="operating-box">
-        <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-        <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
-        <el-button @click="innerDrawer = false">取 消</el-button>
+      <!-- okr折叠面板 -->
+      <tl-okrcollapse
+        ref="okrCollapse"
+        :tableList="tableList"
+        :canWrite="true"
+        :showOKRInfoLabel="true"
+        @openUndertake="openUndertakepage"
+      ></tl-okrcollapse>
+      <!-- 新增okr -->
+      <tl-okrform
+        ref="okrform"
+        :searchForm="searchForm"
+        :server="server"
+        :canWrite="true"
+        :isnew="false"
+        :periodId="searchForm.periodId"
+      ></tl-okrform>
+      <!-- 变更原因 -->
+      <div>
+        <span>变更原因</span>
+        <el-form :model="reason" ref="reasonForm">
+          <el-form-item
+            prop="modifyReason"
+            :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+          >
+            <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+          </el-form-item>
+        </el-form>
       </div>
+      <!-- 提交 -->
+      <div>
+        <el-button @click="validateForm">提交</el-button>
+        <el-button @click="close">取消</el-button>
+      </div>
+
+      <el-drawer
+        :visible.sync="innerDrawer"
+        :modal="false"
+        :wrapperClosable="false"
+        :append-to-body="true"
+        custom-class="diy-drawer associated-undertaking"
+        class="tl-drawer"
+      >
+        <div slot="title" class="flex-sb">
+          <div class="drawer-title">关联承接项</div>
+        </div>
+        <tl-undertaketable
+          v-if="selectIndex !== ''"
+          ref="undertake"
+          :departokrList="tableList[this.selectIndex].departokrList"
+          :philosophyList="tableList[this.selectIndex].philosophyList"
+          :showPhil="undertakeType=='new'"
+          :selectRadioDepart.sync="selectRadioDepart"
+          :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
+          :periodName="okrPeriod.periodName"
+        ></tl-undertaketable>
+        <div class="operating-box">
+          <el-button type="primary" @click="summitUndertake()">确 定</el-button>
+          <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
+          <el-button @click="innerDrawer = false">取 消</el-button>
+        </div>
+      </el-drawer>
     </el-drawer>
   </div>
 </template>
@@ -128,6 +139,8 @@ export default {
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
       okrPeriod: {},
       selectRadioDepart: '',
+      drawerTitle: '变更',
+      myokrDrawer: false,
     };
   },
   components: {
@@ -149,13 +162,21 @@ export default {
     console.log('this.writeInfo', this.writeInfo);
   },
   created() {
-    // this.getCultureList();
-    // this.$nextTick(() => {
-    //   this.getokrDetail();
-    // });
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
+    showOkrDialog() {
+      this.searchForm.okrId = this.writeInfo.okrId || '';
+      this.searchForm.periodId = this.writeInfo.periodId;
+      this.getokrDetail();
+      this.myokrDrawer = true;
+    },
+    closed() {
+      this.$emit('update:exist', false);
+    },
+    close() {
+      this.myokrDrawer = false;
+    },
     // 按周期查可关联承接的okr
     searchOkr() {
       if (this.searchForm.periodId) {
@@ -227,6 +248,8 @@ export default {
             this.okrMainId = res.data.okrMain.okrId;
             // this.voteUser = res.data.voteUser;
             this.tableList.forEach((item) => {
+              item.departokrList = JSON.parse(this.departokrObject) || [];
+              item.philosophyList = JSON.parse(this.philosophyObject) || [];
               if (item.parentUpdate) {
                 // 关联承接变更接口
                 this.getOkrModifyUndertakeOkrList(item);
@@ -289,7 +312,13 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.tableList[this.selectIndex].okrParentId || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.tableList[this.selectIndex].parentObjectKr || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.tableList[this.selectIndex].okrDetailParentVersion || '';
+      // 清除小叹号
+      this.tableList[this.selectIndex].hasUpdate = true;
+      // 选中
+      this.tableList[this.selectIndex].currentOption = this.tableList[this.selectIndex].okrParentId
+      + this.tableList[this.selectIndex].okrDetailParentVersion;
       // 关闭关联承接抽屉并刷新
+
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
     },
@@ -305,6 +334,11 @@ export default {
 
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
       this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      // 清除小叹号
+      this.tableList[this.selectIndex].hasUpdate = true;
+      // 选中
+      this.tableList[this.selectIndex].currentOption = this.selectDepartRow.okrDetailId
+      + this.selectDepartRow.okrDetailVersion;
       console.log('关联', this.selectDepartRow);
       // 关闭关联承接抽屉并刷新
       this.innerDrawer = false;
@@ -426,39 +460,27 @@ export default {
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
-          this.setMyokrDrawer(false);
+          this.close();
+          this.$emit('success');
         } else if (res.code === 30000) {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
     },
-    goback() {
-      this.setMyokrDrawer(false);
-    },
-
   },
   watch: {
-    tableList: {
-      handler() {
-        // 添加承接列表
-        if (this.tableList.length > 0) {
-          this.tableList.forEach((item) => {
-            item.departokrList = JSON.parse(this.departokrObject) || [];
-            item.philosophyList = JSON.parse(this.philosophyObject) || [];
-          });
-        }
-      },
-      deep: true,
-    },
-    writeInfo: {
-      handler() {
-        this.searchForm.okrId = this.writeInfo.okrId || '';
-        this.searchForm.periodId = this.writeInfo.periodId;
-        this.getokrDetail();
-      },
-      deep: true,
-      immediate: true,
-    },
+    // tableList: {
+    //   handler(newVal) {
+    //     // 添加承接列表
+    //     if (newVal) {
+    //       this.tableList.forEach((item) => {
+    //         item.departokrList = JSON.parse(this.departokrObject) || [];
+    //         item.philosophyList = JSON.parse(this.philosophyObject) || [];
+    //       });
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
 };
 </script>

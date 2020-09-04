@@ -50,9 +50,20 @@
                   ></el-progress>
                 </span>
               </li>
+              <!-- 变更 -->
+              <li
+                v-if="showParentOkr
+                && item.okrParentId
+                && item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+              >
+                <p @click="goUndertake(index,'change')">
+                  <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                </p>
+              </li>
               <!-- 变更有承接项时 -->
-              <li v-if="showParentOkr && item.okrParentId">
-                <span>目标承接自</span>
+              <li v-else-if="showParentOkr && item.okrParentId">
+                <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
                 <span v-if="canWrite && item.parentUpdate">
@@ -93,7 +104,7 @@
               </li>
               <!-- 详情 -->
               <li v-else-if="item.okrParentId">
-                <span>目标承接自</span>
+                <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
               </li>
             </ul>

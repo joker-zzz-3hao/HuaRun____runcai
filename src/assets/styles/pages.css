@@ -191,31 +191,49 @@
   max-width: 196px;
 }
 
-/* 创建okr */
-/* .create-okr {
-  height: 100%;
-} */
-
-.create-okr .el-scrollbar .el-scrollbar__view {
-  padding: 0 20px 0 0;
+.card-panel-head .okr-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #26282b;
 }
 
-.create-okr .el-scrollbar .el-scrollbar__view:first-child {
-  /* height: 100%; */
+.my-okr .card-panel-head {
+  padding: 10px 0;
 }
 
-.create-okr .okr-info {
-  /* flex: 1; */
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between; */
-}
-
-.create-okr .operating-box {
+.my-okr .card-panel-head .update-time {
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 0;
+  top: 60px;
+}
+
+.my-okr .card-panel-head .update-time em {
+  color: #bcc4cc;
+  font-size: 12px;
+
+}
+
+.my-okr .card-panel-head .okr-change {
+  cursor: pointer;
+}
+
+.my-okr .card-panel-head .okr-change em,
+.my-okr .card-panel-head .okr-change i {
+  transition: all .4s ease-out;
+}
+
+.my-okr .card-panel-head .okr-change:hover em,
+.my-okr .card-panel-head .okr-change:hover i {
+  color: #685df1;
+}
+
+/* 创建okr */
+.create-okr .create-okr {
+  padding: 0 30px 0 0;
+}
+
+.create-okr .el-drawer__body > .el-scrollbar {
+  margin: 0 0 30px 0;
 }
 
 .create-okr .el-drawer__body {
@@ -228,12 +246,8 @@
   width: 620px;
 }
 
-.create-okr .tl-diy-timeline {
-  margin: 0 0 30px 0;
-}
-
 .create-okr .allocation-info {
-  margin: 0 20px 20px 0;
+  margin: 0 0 20px 0;
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -319,7 +333,7 @@
 }
 
 .create-okr .list-add {
-  margin: 30px 0 0 20px;
+  width: 100%;
 }
 
 .associated-undertaking .el-scrollbar {

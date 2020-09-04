@@ -148,18 +148,6 @@
         <i class="el-icon-plus"></i>添加目标
       </el-button>
     </div>
-    <div class="operating-box">
-      <div class="flex-auto">
-        <el-button
-          plain
-          v-if="isnew && searchForm.okrStatus != '8'"
-          @click="saveDraft()"
-          class="tl-btn amt-border-fadeout"
-        >保存为草稿</el-button>
-      </div>
-      <el-button type="primary" v-if="isnew" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
-      <el-button v-if="isnew" plain class="tl-btn amt-border-fadeout" @click="close()">取消</el-button>
-    </div>
     <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
     <el-drawer
@@ -182,6 +170,10 @@
         :selectRadioDepart.sync="formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
         :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
       ></undertake-table>
+      <div class="operating-box">
+        <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
+        <el-button @click="innerDrawer = false" plain class="tl-btn amt-border-fadeout">取消</el-button>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -271,7 +263,7 @@ export default {
     this.autosave();
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer', 'setShowAuto']),
+    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
@@ -476,6 +468,7 @@ export default {
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
+              this.setokrSuccess(true);
               this.close();
             } else if (res.code == 30000) {
               this.$xconfirm({
@@ -520,6 +513,7 @@ export default {
             } else {
               this.$message('已保存');
               this.$refs.dataForm.resetFields();
+              this.setokrSuccess(true);
               this.close();
             }
           }
@@ -543,7 +537,6 @@ export default {
     },
     close() {
       this.setCreateokrDrawer(false);
-      this.setMyokrDrawer(false);
     },
   },
   watch: {

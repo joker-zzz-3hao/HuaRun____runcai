@@ -49,41 +49,57 @@
       </div>
       <div v-if="item.tableList.length>0" class="tl-card-panel">
         <div class="card-panel-head">
-          <!-- 基本信息 -->
-          <div>
-            <div>{{okrCycle.periodName}}OKR</div>
-            <ul>
-              <li>
-                <span>更新时间</span>
-                <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
-              </li>
-              <li>
-                <span>状态</span>
-                <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-              </li>
-              <li>
-                <span>负责人</span>
-                <span>{{item.okrMain.userName}}</span>
-              </li>
-              <li>
-                <span>OKR进度</span>
-                <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
-              </li>
-            </ul>
-            <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
-          </div>
-          <!-- 表头 -->
-          <div v-if="item.tableList.length>0">
-            <ul class="tablehead">
-              <li>权重</li>
-              <li>进度</li>
-              <li>风险状态</li>
-              <li>承接地图</li>
-            </ul>
-          </div>
+          <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+          <dl class="okr-state">
+            <dt>
+              <i class="el-icon-set-up"></i>
+              <em>状态</em>
+            </dt>
+            <dd>
+              <i></i>
+              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            </dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <i class="el-icon-user"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{item.okrMain.userName}}</dd>
+          </dl>
+          <dl class="okr-progress">
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>OKR进度</em>
+            </dt>
+            <dd>
+              <el-progress
+                type="circle"
+                :percentage="parseInt(item.okrMain.okrProgress, 10)"
+                width="60"
+                stroke-width="5"
+                color="#4ccd79"
+                class="tl-progress"
+              ></el-progress>
+            </dd>
+          </dl>
+          <dl v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+            <dt>
+              <i class="el-icon-edit-outline"></i>
+              <em>变更</em>
+            </dt>
+          </dl>
+          <dl class="update-time">
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>
+              <em>{{item.okrMain.updateTime || item.okrMain.createTime}}</em>
+            </dd>
+          </dl>
         </div>
         <div class="card-panel-body">
-          <!-- okr面板 -->
           <tl-okr-table
             :tableList="item.tableList"
             :disabled="false"
@@ -99,10 +115,7 @@
               >承接地图icon{{props.okritem.continueCount}}</el-button>
             </template>
             <template slot="weight-bar" slot-scope="props">
-              <el-button
-                v-if="searchForm.status=='1'"
-                @click.stop="openUpdate('tl-okr-update',props.okritem)"
-              >更新进度</el-button>
+              <el-button v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">更新进度</el-button>
             </template>
             <template slot="body-bar" slot-scope="props">
               <el-button
@@ -118,49 +131,44 @@
       </div>
     </div>
 
-    <el-drawer
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
-      :before-close="handleClose"
-      :wrapperClosable="false"
-      :append-to-body="true"
-      class="tl-drawer"
-    >
-      <div>
-        <tl-writeokr
-          v-if="currentView=='tl-writeokr' && myokrDrawer && writeInfo.canWrite"
-          @handleClose="handleClose"
-          :writeInfo="writeInfo"
-        ></tl-writeokr>
-        <tl-changeokr
-          ref="changeokr"
-          v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
-          @handleClose="handleClose"
-          :writeInfo="writeInfo"
-        ></tl-changeokr>
-        <tl-okr-detail
-          v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
-          ref="tl-okr-detail"
-          :server="server"
-          :okrId="okrId"
-          :CONST="CONST"
-          :okrItem="okrItem"
-        ></tl-okr-detail>
-        <tl-okr-update
-          v-else-if="currentView=='tl-okr-update' && myokrDrawer"
-          ref="tl-okr-update"
-          :server="server"
-          :okrId="okrId"
-          :okrItem="okrItem"
-          :periodId="okrCycle.periodId"
-        ></tl-okr-update>
-      </div>
-    </el-drawer>
+    <tl-writeokr
+      ref="tl-writeokr"
+      v-if="writeokrExist"
+      :exist.sync="writeokrExist"
+      :writeInfo="writeInfo"
+      @success="searchOkr(searchForm.status)"
+    ></tl-writeokr>
+    <tl-changeokr
+      ref="tl-changeokr"
+      v-if="changeokrExist"
+      :exist.sync="changeokrExist"
+      :writeInfo="writeInfo"
+      @success="searchOkr(searchForm.status)"
+    ></tl-changeokr>
+    <tl-okr-detail
+      ref="tl-okr-detail"
+      v-if="detailExist"
+      :exist.sync="detailExist"
+      :server="server"
+      :okrId="okrId"
+      :CONST="CONST"
+      :okrItem="okrItem"
+    ></tl-okr-detail>
+    <tl-okr-update
+      ref="tl-okr-update"
+      v-if="updateExist"
+      :exist.sync="updateExist"
+      :server="server"
+      :okrId="okrId"
+      :okrItem="okrItem"
+      :periodId="okrCycle.periodId"
+      @success="searchOkr(searchForm.status)"
+    ></tl-okr-update>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrUpdate from './component/okrUpdate';
@@ -196,7 +204,6 @@ export default {
         status: '0',
         periodId: '',
       },
-      dialogExist: false,
       currentView: '', // 弹框组件
       okrId: '',
       okrItem: {},
@@ -207,12 +214,17 @@ export default {
       drawerTitle: '创建okr',
       okrCycle: {}, // 当前选择的周期
       periodList: [], // 周期列表
+      writeokrExist: false,
+      changeokrExist: false,
+      detailExist: false,
+      updateExist: false,
     };
   },
   computed: {
     ...mapState('common', {
       myokrDrawer: (state) => state.myokrDrawer,
       userInfo: (state) => state.userInfo,
+      okrSuccess: (state) => state.okrSuccess,
     }),
   },
   created() {
@@ -224,7 +236,6 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer']),
     searchOkr(status) {
       this.searchForm.status = status || this.searchForm.status;
 
@@ -286,26 +297,23 @@ export default {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
-      // this.drawerTitle = 'OKR详情';
       this.drawerTitle = `${this.okrCycle.periodName}OKR`;
-
-      this.setMyokrDrawer(true);
+      this.detailExist = true;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
       });
     },
     // 打开更新进度
-    openUpdate(componentName, val) {
+    openUpdate(val) {
       this.okrItem = val;
-      this.drawerTitle = '更新进度';
-      this.currentView = componentName;
-      this.setMyokrDrawer(true);
+      this.currentView = 'tl-okr-update';
+      this.updateExist = true;
       this.$nextTick(() => {
-        this.$refs[componentName].showOkrDialog();
+        this.$refs[this.currentView].showOkrDialog();
       });
     },
+    // 打开变更
     goChangeOkr() {
-      // TODO: 弹框标题
       this.drawerTitle = `${this.okrCycle.periodName}OKR`;
       this.writeInfo = {
         canWrite: 'cannot',
@@ -313,8 +321,12 @@ export default {
         periodId: this.okrCycle.periodId,
       };
       this.currentView = 'tl-changeokr';
-      this.setMyokrDrawer(true);
+      this.changeokrExist = true;
+      this.$nextTick(() => {
+        this.$refs[this.currentView].showOkrDialog();
+      });
     },
+    // 打开编辑
     goDraft(item) {
       this.drawerTitle = '编辑';
       this.writeInfo = {
@@ -325,11 +337,10 @@ export default {
         okrCycle: this.okrCycle,
       };
       this.currentView = 'tl-writeokr';
-      this.setMyokrDrawer(true);
-    },
-    handleClose() {
-      this.currentView = '';
-      this.setMyokrDrawer(false);
+      this.writeokrExist = true;
+      this.$nextTick(() => {
+        this.$refs[this.currentView].showOkrDialog();
+      });
     },
     // 跳到承接地图
     goUndertakeMaps(id, name) {
@@ -372,9 +383,9 @@ export default {
       immediate: true,
       deep: true,
     },
-    myokrDrawer: {
+    okrSuccess: {
       handler(newVal) {
-        if (newVal === false) {
+        if (newVal) {
           this.searchOkr();
         }
       },

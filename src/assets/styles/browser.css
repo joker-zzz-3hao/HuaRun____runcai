@@ -16,12 +16,13 @@ _::-webkit-full-page-media, _:future, :root .associated-undertaking .el-drawer__
   overflow: hidden;
 }
 
-_::-webkit-full-page-media, _:future, :root .associated-undertaking .el-scrollbar {
+_::-webkit-full-page-media, _:future, :root .associated-undertaking .el-scrollbar,.create-okr .el-drawer__body > .el-scrollbar {
   margin: 0;
   height: 100%;
 }
 
-_::-webkit-full-page-media, _:future, :root .associated-undertaking .operating-box {
+_::-webkit-full-page-media, _:future, :root .associated-undertaking .operating-box,
+.create-okr .operating-box {
   margin: 30px 0 0 0;
 }
 
