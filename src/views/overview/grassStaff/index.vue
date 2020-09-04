@@ -15,7 +15,7 @@
     </div>
     <div class="create">
       <div>OKR风险状态统计</div>
-      <tl-okr-risk :okrData="okrData"></tl-okr-risk>
+      <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@
 import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
-import okrRisk from './components/okrRisk';
+import okrRiskTotal from './components/okrRiskTotal';
 import period from '../component/period';
 import Server from '../server';
 
@@ -34,7 +34,7 @@ export default {
   components: {
     'tl-okr-schedule': okrSchedule,
     'tl-okr-update': okrUpdate,
-    'tl-okr-risk': okrRisk,
+    'tl-okr-risk-total': okrRiskTotal,
     'tl-period': period,
   },
   data() {

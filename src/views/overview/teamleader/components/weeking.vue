@@ -11,10 +11,10 @@
         placeholder="选择日期"
       ></el-date-picker>
       <div id="weeking"></div>
-      <div>
+      <!-- <div>
         <div>进行中工作项</div>
         <div>已完成工作项</div>
-      </div>
+      </div>-->
     </div>
     <div class="model">
       <div>周报互动记录</div>

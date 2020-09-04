@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     getmainData() {
-      this.mainDataY = this.mainData.map((item) => item.okrProgressUpdateCount);
+      this.mainDataY = this.mainData.map((item) => item.updateProgressCount);
       this.mainDataX = this.mainData.map((item) => item.userName);
       this.init();
     },

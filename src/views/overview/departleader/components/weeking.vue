@@ -2,17 +2,29 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <el-select placeholder="请选择" v-model="periodId" @change="getriskStatistics">
-        <el-option
-          v-for="item in options"
-          :key="item.id"
-          :value="item.periodId"
-          :label="item.periodName"
-        ></el-option>
-      </el-select>
+      <div>
+        <el-select
+          placeholder="请选择"
+          class="selectTime"
+          v-model="periodId"
+          @change="getriskStatistics"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :value="item.periodId"
+            :label="item.periodName"
+          ></el-option>
+        </el-select>
+      </div>
       <div id="weeking"></div>
-      <ul>
-        <li v-for="(item,index) in orgTable" :key="index" @click="changIdAction(item.orgId)">
+      <ul class="departList">
+        <li
+          v-for="(item,index) in orgTable"
+          :key="index"
+          :class="{ 'active':active==index }"
+          @click="changIdAction(item.orgId,index)"
+        >
           {{
           item.orgName
           }}
@@ -99,6 +111,7 @@ export default {
       tableData: [],
       moodDataX: [],
       moodDataY: [],
+      active: 0,
     };
   },
   computed: {
@@ -150,8 +163,14 @@ export default {
         this.tableData = res.data;
       });
     },
-    changIdAction(id) {
+    changIdAction(id, index) {
       this.orgId = id;
+      // if (this.active[index]) {
+      //   this.$set(this.active, index, false);
+      // } else {
+      //   this.$set(this.active, index, true);
+      // }
+      this.active = index;
       this.getriskStatistics();
     },
     getokrQuery() {
@@ -316,8 +335,9 @@ export default {
 </script>
 <style  scoped>
 #weeking {
-  width: 100%;
+  width: 70%;
   height: 400px;
+  display: inline-block;
 }
 
 .model {
@@ -326,9 +346,14 @@ export default {
   background: white;
   margin-bottom: 30px;
 }
-
+.active {
+  color: blue;
+}
 #mood {
   width: 100%;
   height: 400px;
+}
+.departList {
+  display: inline-block;
 }
 </style>

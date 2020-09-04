@@ -7,7 +7,7 @@
         <img style="width:100px;height:100px;display:block;border:1px solid black;" src alt srcset />
         <el-button type="primary">创建OKR</el-button>
       </div>
-      <tl-org-page></tl-org-page>
+      <tl-org-page :periodId="periodId"></tl-org-page>
       <div>
         <ul style="display:flex;flex-direction: row;">
           <template v-if="orgTable">
@@ -96,7 +96,7 @@ export default {
     return {
       server,
       orgTable: [],
-      period: '',
+      periodId: '',
       mainData: [],
       orgUser: [],
     };
@@ -107,7 +107,7 @@ export default {
       setOrgId: (state) => state.setOrgId,
     }),
   },
-  created() {
+  mounted() {
     this.getqueryMyOkr();
   },
 
@@ -117,8 +117,8 @@ export default {
       this.$router.push({ name: 'teamleader', query: { id, name: chename } });
     },
     // eslint-disable-next-line no-shadow
-    getPeriod(period) {
-      this.period = period;
+    getPeriod(periodId) {
+      this.periodId = periodId;
       this.getmainData();
     },
     checkName(name) {
@@ -137,7 +137,7 @@ export default {
     },
     getmainData() {
       this.server.mainData({
-        periodId: this.period,
+        periodId: this.periodId,
         orgId: this.setOrgId,
       }).then((res) => {
         this.mainData = res.data;
