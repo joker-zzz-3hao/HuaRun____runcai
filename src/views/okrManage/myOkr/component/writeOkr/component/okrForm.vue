@@ -263,7 +263,7 @@ export default {
     this.autosave();
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer', 'setCreateokrDrawer', 'setShowAuto']),
+    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
@@ -468,6 +468,7 @@ export default {
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
+              this.setokrSuccess(true);
               this.close();
             } else if (res.code == 30000) {
               this.$xconfirm({
@@ -512,6 +513,7 @@ export default {
             } else {
               this.$message('已保存');
               this.$refs.dataForm.resetFields();
+              this.setokrSuccess(true);
               this.close();
             }
           }
@@ -535,7 +537,6 @@ export default {
     },
     close() {
       this.setCreateokrDrawer(false);
-      this.setMyokrDrawer(false);
     },
   },
   watch: {

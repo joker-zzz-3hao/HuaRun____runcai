@@ -13,4 +13,5 @@ export default {
   roleCode: [], // 用户角色
   showAuto: false,
   setOrgId: '',
+  okrSuccess: false,
 };
