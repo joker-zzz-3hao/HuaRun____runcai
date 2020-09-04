@@ -79,7 +79,7 @@
                 width="60"
                 stroke-width="5"
                 color="#4ccd79"
-                class="tl-progress"
+                class="tl-progress-circle"
               ></el-progress>
             </dd>
           </dl>
@@ -95,11 +95,6 @@
               </div>
             </dt>
           </dl>
-          <!-- <dl class="okr-delete">
-            <dt>
-
-            </dt>
-          </dl>-->
           <dl class="update-time">
             <dt>
               <i class="el-icon-timer"></i>

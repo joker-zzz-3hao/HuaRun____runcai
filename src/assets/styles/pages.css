@@ -213,17 +213,20 @@
 
 }
 
-.my-okr .card-panel-head .okr-change {
+.my-okr .card-panel-head .okr-change,
+.my-okr .card-panel-head .okr-delete {
   cursor: pointer;
 }
 
-.my-okr .card-panel-head .okr-change em,
-.my-okr .card-panel-head .okr-change i {
+.my-okr .card-panel-head dt em,
+.my-okr .card-panel-head dt i {
   transition: all .4s ease-out;
 }
 
 .my-okr .card-panel-head .okr-change:hover em,
-.my-okr .card-panel-head .okr-change:hover i {
+.my-okr .card-panel-head .okr-change:hover i,
+.my-okr .card-panel-head .okr-delete:hover em,
+.my-okr .card-panel-head .okr-delete:hover i {
   color: #685df1;
 }
 

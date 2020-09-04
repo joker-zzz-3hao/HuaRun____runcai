@@ -2,43 +2,55 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-if="tableList.length > 0" v-model="formData" class="tl-form">
-      <el-table :data="tableList" @row-click="opensome()" class="tl-table">
-        <el-table-column type="expand" width="50" class="detail">
+      <el-table :data="tableList" @row-click="opensome" class="tl-table">
+        <el-table-column type="expand" width="50">
           <template slot-scope="scope">
-            <div v-for="kritem in scope.row.krList" :key="kritem.krId" @click="opensome(kritem)">
-              <!-- kr名称 -->
-              <div>
-                <em>KR</em>
-                {{kritem.okrDetailObjectKr}}
-              </div>
-              <!-- 权重 -->
-              <div>{{kritem.okrWeight}}%</div>
-              <!-- 进度 -->
-              <div>
+            <dl
+              v-for="kritem in scope.row.krList"
+              :key="kritem.krId"
+              @click="opensome(kritem)"
+              class="sub-tr"
+            >
+              <dt>KR</dt>
+              <dd class="okr-o">{{kritem.okrDetailObjectKr}}</dd>
+              <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
+              <dd class="okr-progress">
                 <tl-process :data="[kritem.okrDetailProgress]"></tl-process>
-              </div>
-              <!-- 风险状态 -->
-              <div>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
-              <!-- 承接地图 -->
-              <div>
+              </dd>
+              <dd class="okr-risk">
+                <div class="state-grid">
+                  <div
+                    :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
+                    'is-risks': kritem.okrDetailConfidence == 2,
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                  ></div>
+                  <div
+                    :class="{'is-risks': kritem.okrDetailConfidence == 2,
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                  ></div>
+                  <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
+                </div>
+                <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+              </dd>
+              <dd class="okr-undertake">
                 <slot name="body-bar" :okritem="kritem"></slot>
-              </div>
-            </div>
+              </dd>
+            </dl>
           </template>
         </el-table-column>
         <!-- 目标O名称 无label -->
-        <el-table-column prop="okrDetailObjectKr" width="220" class="detail">
+        <el-table-column prop="okrDetailObjectKr" width="220">
           <template slot-scope="scope">
             <em>目标</em>
             {{scope.row.okrDetailObjectKr}}
           </template>
         </el-table-column>
-        <el-table-column prop="okrWeight" label="权重" width="120">
+        <el-table-column prop="okrWeight" label="权重" width="60">
           <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
         </el-table-column>
-        <el-table-column prop="okrDetailProgress" label="进度" width="120">
+        <el-table-column prop="okrDetailProgress" label="进度" width="140">
           <template slot-scope="scope">
-            <tl-process :data="[scope.row.okrDetailProgress]"></tl-process>
+            <tl-process :data="scope.row.okrDetailProgress"></tl-process>
           </template>
         </el-table-column>
         <el-table-column label="风险状态" width="120"></el-table-column>

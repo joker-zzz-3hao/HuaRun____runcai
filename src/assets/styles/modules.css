@@ -315,6 +315,53 @@
   color: #879099;
 }
 
+.tl-table .el-table__expanded-cell {
+  padding: 0 0 0 30px;
+}
+
+.tl-table .sub-tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+
+.tl-table .sub-tr dd {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.tl-table .sub-tr dt {
+  flex: 1;
+}
+
+.tl-table .sub-tr .state-grid {
+  margin: 0 10px 0 0;
+  display: flex;
+}
+
+.tl-table .sub-tr .state-grid div {
+  margin: 0 2px 0 0;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: #e5e9ee;
+  border-radius: 2px;
+}
+
+.tl-table .sub-tr .state-grid .is-no-risk {
+  background: #4ccd79;
+}
+
+.tl-table .sub-tr .state-grid .is-risks {
+  background: #ffbc20;
+}
+
+.tl-table .sub-tr .state-grid .is-uncontrollable {
+  background: #fb4c59;
+}
+
 .tl-table .el-table--border::after,
 .tl-table .el-table--group::after,
 .tl-table::before {
@@ -860,14 +907,39 @@
 }
 
 /* tl-progress */
-.tl-progress .el-progress__text {
+.tl-progress-circle .el-progress__text {
   color: #4ccd79;
   font-size: 13px !important;
   font-weight: 500;
 }
 
-.tl-progress .el-progress-circle__track {
+.tl-progress-circle .el-progress-circle__track {
   stroke:rgba(76,205,121,0.10);
+}
+
+.tl-progress-bar {
+  display: flex;
+  align-items: center;
+}
+
+.tl-progress-bar .progress-bg {
+  position: relative;
+  margin: 0 0 0 2px;
+  width: 16px;
+  height: 5px;
+  background: #e5e9ee;
+}
+
+.tl-progress-bar .current-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #685df1;
+}
+
+.tl-progress-bar .progress-number {
+  margin: 0 0 0 12px;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
