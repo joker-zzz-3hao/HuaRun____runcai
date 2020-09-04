@@ -83,12 +83,23 @@
               ></el-progress>
             </dd>
           </dl>
-          <dl v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+          <dl>
             <dt>
-              <i class="el-icon-edit-outline"></i>
-              <em>变更</em>
+              <div v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+                <i class="el-icon-edit-outline"></i>
+                <em>变更</em>
+              </div>
+              <div class="okr-delete">
+                <i class="el-icon-delete"></i>
+                <em>删除</em>
+              </div>
             </dt>
           </dl>
+          <!-- <dl class="okr-delete">
+            <dt>
+
+            </dt>
+          </dl>-->
           <dl class="update-time">
             <dt>
               <i class="el-icon-timer"></i>
