@@ -52,16 +52,22 @@
               :timestamp="activity.createTime"
               placement="top"
             >
-              <div v-if="activity.operateType==5">
-                <span>张三{{activity.userName}}</span>
-                <span>更新</span>
-                <span>xxx</span>
-                <span>进度为</span>
-                <span>{{activity.afterProgress}}%，</span>
-                <span v-if="activity.afterConfidence">风险状态修改为</span>
-                <span
-                  v-if="activity.afterConfidence"
-                >{{CONST.CONFIDENCE_MAP[activity.afterConfidence]}}。</span>
+              <div v-if="activity.operateType=='update'">
+                <span>{{userName}}</span>
+                <span>{{activity.operateTypeCn}}</span>
+                <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                  <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                  <span
+                    v-if="uitem.updateContents.okrDetailObjectKr"
+                  >{{uitem.updateContents.okrDetailObjectKr}}</span>
+                  <span
+                    v-if="uitem.updateContents.afterProgress"
+                  >进度为{{uitem.updateContents.afterProgress}}%，</span>
+                  <span
+                    v-if="uitem.updateContents.afterConfidence"
+                  >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}。</span>
+                </div>
+
                 <span v-if="activity.remark">说明：</span>
                 <span v-if="activity.remark">{{activity.remark}}。</span>
               </div>
@@ -117,6 +123,7 @@ export default {
       innerDrawer: false,
       activeName: 'detail',
       okrDetailId: '',
+      userName: '张三',
     };
   },
   components: {
@@ -209,21 +216,20 @@ export default {
       this.server.okrOperationHistory({
         currentPage: 1,
         okrMainId: this.okrId,
-        pageSize: 100,
+        pageSize: 10,
       }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.cycleList = res.data.content;
+          this.userName = res.data.userName || '';
+          console.log(res.data.userName);
+          this.cycleList = res.data.contentVoList || [];
+
           this.cycleList.forEach((item) => {
-            console.log(item.content);
-            const contents = JSON.parse(item.content);
-            item.contents = contents;
-            // 更新进度
-            if (item.operateType == 5) {
-              item.beforeProgress = contents.beforeProgress;
-              item.afterProgress = contents.afterProgress;
-              item.afterConfidence = contents.afterConfidence;
-              item.remark = contents.remark;
+            if (item.okrDetailId && item.okrDetailId.length > 0) {
+              item.okrDetailId.forEach((uitem) => {
+                const contents = JSON.parse(uitem.updateJsonStr);
+                uitem.updateContents = contents;
+              });
             }
           });
         }

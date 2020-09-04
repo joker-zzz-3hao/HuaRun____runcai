@@ -2,76 +2,65 @@
   <div>
     <!-- okr折叠面板 -->
     <el-form v-if="tableList.length > 0" v-model="formData">
-      <elcollapse class="collapse" v-model="activeList">
-        <elcollapseitem
-          ref="okrcoll"
-          v-for="(item, index) in tableList"
-          :key="item.detailId+index"
-          :name="index"
-          :disabled="disabled"
-        >
-          <template slot="title">
-            <ul @click="opensome(item)" class="detail">
-              <li>
-                <span v-if="showOKRInfoLabel">目标</span>
-                <span>{{item.okrDetailObjectKr}}</span>
-              </li>
-              <li class="hideEdit">
-                <span>{{item.okrWeight}}%</span>
-              </li>
-              <li>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(item.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
-              </li>
-            </ul>
-            <!-- 可在折叠面板title处添加内容 -->
-            <slot name="head-bar" :okritem="item"></slot>
+      <el-table :data="tableList" @row-click="opensome()">
+        <el-table-column type="expand" width="50" class="detail">
+          <template slot-scope="scope">
+            <div v-for="kritem in scope.row.krList" :key="kritem.krId" @click="opensome(kritem)">
+              <!-- kr名称 -->
+              <div>
+                <em>KR</em>
+                {{kritem.okrDetailObjectKr}}
+              </div>
+              <!-- 权重 -->
+              <div>{{kritem.okrWeight}}%</div>
+              <!-- 进度 -->
+              <div class="progresswidth">
+                <el-progress
+                  :stroke-width="10"
+                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
+                ></el-progress>
+              </div>
+              <!-- 风险状态 -->
+              <div>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+              <!-- 承接地图 -->
+              <div>
+                <slot name="body-bar" :okritem="kritem"></slot>
+              </div>
+            </div>
           </template>
-          <div
-            @click="opensome(item)"
-            v-for="(kritem, krIndex) in item.krList"
-            :key="kritem.detailId+krIndex"
-            style="display:flex"
-          >
-            <ul class="detail">
-              <li>
-                <span v-if="showOKRInfoLabel">KR</span>
-                <span>{{kritem.okrDetailObjectKr}}</span>
-              </li>
-              <li class="hideEdit">
-                <span>{{kritem.okrWeight}}%</span>
-              </li>
-              <li>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
-              </li>
-              <li>
-                <!-- okrDetailConfidence -->
-                <div v-for="item in new Array(3)" :key="item"></div>
-                <span>{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
-              </li>
-            </ul>
-            <!-- 可在折叠面板body处添加内容 -->
-            <slot name="body-bar" :okritem="kritem"></slot>
-          </div>
-          <slot name="addkr-bar" :oitem="item"></slot>
-        </elcollapseitem>
-      </elcollapse>
+        </el-table-column>
+        <!-- 目标O名称 无label -->
+        <el-table-column prop="okrDetailObjectKr" width="220" class="detail">
+          <template slot-scope="scope">
+            <em>目标</em>
+            {{scope.row.okrDetailObjectKr}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="okrWeight" label="权重" width="120">
+          <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
+        </el-table-column>
+        <el-table-column prop="okrDetailProgress" label="进度" width="120">
+          <template slot-scope="scope">
+            <el-progress :stroke-width="10" :percentage="parseInt(scope.row.okrDetailProgress, 10)"></el-progress>
+          </template>
+        </el-table-column>
+        <el-table-column label="风险状态" width="120"></el-table-column>
+        <el-table-column label="承接地图" width="120">
+          <template slot-scope="scope">
+            <slot name="head-undertake" :okritem="scope.row"></slot>
+          </template>
+        </el-table-column>
+        <el-table-column label="更新进度" width="120">
+          <template slot-scope="scope">
+            <slot name="weight-bar" :okritem="scope.row"></slot>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-form>
   </div>
 </template>
 
 <script>
-import elcollapse from '@/components/collapse/collapse';
-import elcollapseitem from '@/components/collapse/collapse-item';
 
 const CONFIDENCE_MAP = {
   1: '无风险',
@@ -82,8 +71,7 @@ const CONFIDENCE_MAP = {
 export default {
   name: 'okrTable',
   components: {
-    elcollapse,
-    elcollapseitem,
+
   },
   data() {
     return {
@@ -157,13 +145,13 @@ export default {
     updateokrCollapse() {
       this.$forceUpdate();
     },
-    opensome(item) {
-      console.log('点击了面板', item);
+    opensome(row) {
+      console.log('点击了面板', row);
       // 起草中打开编辑页
       if (['6'].includes(this.status)) {
-        this.$emit('goDraft', item);
+        this.$emit('goDraft', row);
       } else {
-        this.$emit('openDialog', item);
+        this.$emit('openDialog', row);
       }
     },
   },

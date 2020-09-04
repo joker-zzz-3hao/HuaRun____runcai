@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <el-form :model="formData" ref="changeForm">
+    <el-form :model="formData" ref="changeForm" v-if="formData.tableList.length > 0">
       <elcollapse class="collapse" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
@@ -249,16 +249,20 @@ export default {
     return {
       CONST,
       okrmain: {},
-      formData: {},
+      formData: { tableList: [] },
       innerActiveList: [],
     };
   },
   props: {
     tableList: {
       type: Array,
+      default() {
+        return [];
+      },
     },
     okrid: {
       type: String,
+      default: '',
     },
     // 默认展开的序号数组
     // 如果 disabled为true，需传入activeList

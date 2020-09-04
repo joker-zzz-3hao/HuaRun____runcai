@@ -55,6 +55,10 @@ const OKR_TYPE_LIST = [{
   name: '公司', id: 3,
 }];
 
+const OKR_KIND_MAP = {
+  0: '目标',
+  1: '关键结果',
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
@@ -62,4 +66,5 @@ export default {
   OKR_TYPE_MAP,
   STATUS_LIST_MAP,
   OKR_TYPE_LIST,
+  OKR_KIND_MAP,
 };
