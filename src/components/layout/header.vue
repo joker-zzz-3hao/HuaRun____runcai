@@ -53,7 +53,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .area-right:hover .person-select {
   display: block;
 }

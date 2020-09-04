@@ -24,3 +24,7 @@ _::-webkit-full-page-media, _:future, :root .associated-undertaking .el-scrollba
 _::-webkit-full-page-media, _:future, :root .associated-undertaking .operating-box {
   margin: 30px 0 0 0;
 }
+
+_::-webkit-full-page-media, _:future, :root .my-okr .operating-panel .tl-select {
+  width: 189px;
+}

@@ -175,18 +175,47 @@
   background: #fff;
 }
 
-/* 创建okr */
-.create-okr {
-  height: 100%;
+.my-okr .cont-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.create-okr .okr-info .el-scrollbar .el-scrollbar__view {
+.my-okr .cont-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-okr .operating-panel .tl-select {
+  max-width: 196px;
+}
+
+/* 创建okr */
+/* .create-okr {
+  height: 100%;
+} */
+
+.create-okr .el-scrollbar .el-scrollbar__view {
   padding: 0 20px 0 0;
 }
 
+.create-okr .el-scrollbar .el-scrollbar__view:first-child {
+  /* height: 100%; */
+}
+
 .create-okr .okr-info {
-  height: 100%;
-  height: calc(100% - 170px);
+  /* flex: 1; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+}
+
+.create-okr .operating-box {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .create-okr .el-drawer__body {
@@ -201,7 +230,6 @@
 
 .create-okr .tl-diy-timeline {
   margin: 0 0 30px 0;
-  height: 100%;
 }
 
 .create-okr .allocation-info {
@@ -367,6 +395,8 @@
   background: #acb6bf;
   color: #fff;
 }
+
+
 
 
 /* =========================================================租户管理================================================================== */
