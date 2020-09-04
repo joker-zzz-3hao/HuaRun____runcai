@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <el-form v-if="tableList.length > 0" v-model="formData">
-      <el-table :data="tableList" @row-click="opensome()">
+    <el-form v-if="tableList.length > 0" v-model="formData" class="tl-form">
+      <el-table :data="tableList" @row-click="opensome()" class="tl-table">
         <el-table-column type="expand" width="50" class="detail">
           <template slot-scope="scope">
             <div v-for="kritem in scope.row.krList" :key="kritem.krId" @click="opensome(kritem)">

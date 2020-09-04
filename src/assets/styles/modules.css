@@ -859,6 +859,17 @@
   border-top-color: #7e7e7e;
 }
 
+/* tl-progress */
+.tl-progress .el-progress__text {
+  color: #4ccd79;
+  font-size: 13px !important;
+  font-weight: 500;
+}
+
+.tl-progress .el-progress-circle__track {
+  stroke:rgba(76,205,121,0.10);
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */
 .dotted-line.el-button--text {
@@ -1254,8 +1265,10 @@
   transform: rotate(180deg);
 }
 
+/* tl-card-panel */
 .tl-card-panel {
   margin: 0 0 25px 0;
+  padding: 30px;
   background: #fff;
   box-shadow: 0 0 14px 0 #f4f6f8;
   border-radius: 4px;
@@ -1270,6 +1283,46 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.card-panel-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-panel-head dl,
+.card-panel-head dt {
+  display: flex;
+  align-items: center;
+}
+
+.card-panel-head dt {
+  color: #acb6bf;
+}
+
+.card-panel-head dd {
+  margin: 0 0 0 20px;
+  color: #4d5155;
+}
+
+.card-panel-head dl i {
+  margin: 0 6px 0 0;
+}
+
+.card-panel-body .el-table::before {
+  width: unset;
+}
+
+.card-panel-body .el-table__header-wrapper .el-table__header,
+.card-panel-body .el-table__body-wrapper .el-table__body {
+  width: 100% !important;
+}
+
+.card-panel-body .tl-table th {
+  font-weight: 500;
+  color: #b5bec6;
 }
 
 /* ========================================================公共页面布局组件================================================================== */

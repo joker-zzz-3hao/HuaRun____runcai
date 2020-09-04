@@ -49,41 +49,57 @@
       </div>
       <div v-if="item.tableList.length>0" class="tl-card-panel">
         <div class="card-panel-head">
-          <!-- 基本信息 -->
-          <div>
-            <div>{{okrCycle.periodName}}OKR</div>
-            <ul>
-              <li>
-                <span>更新时间</span>
-                <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
-              </li>
-              <li>
-                <span>状态</span>
-                <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-              </li>
-              <li>
-                <span>负责人</span>
-                <span>{{item.okrMain.userName}}</span>
-              </li>
-              <li>
-                <span>OKR进度</span>
-                <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
-              </li>
-            </ul>
-            <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
-          </div>
-          <!-- 表头 -->
-          <div v-if="item.tableList.length>0">
-            <ul class="tablehead">
-              <li>权重</li>
-              <li>进度</li>
-              <li>风险状态</li>
-              <li>承接地图</li>
-            </ul>
-          </div>
+          <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+          <dl class="okr-state">
+            <dt>
+              <i class="el-icon-set-up"></i>
+              <em>状态</em>
+            </dt>
+            <dd>
+              <i></i>
+              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            </dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <i class="el-icon-user"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{item.okrMain.userName}}</dd>
+          </dl>
+          <dl class="okr-progress">
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>OKR进度</em>
+            </dt>
+            <dd>
+              <el-progress
+                type="circle"
+                :percentage="parseInt(item.okrMain.okrProgress, 10)"
+                width="60"
+                stroke-width="5"
+                color="#4ccd79"
+                class="tl-progress"
+              ></el-progress>
+            </dd>
+          </dl>
+          <dl v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+            <dt>
+              <i class="el-icon-edit-outline"></i>
+              <em>变更</em>
+            </dt>
+          </dl>
+          <dl class="update-time">
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>
+              <em>{{item.okrMain.updateTime || item.okrMain.createTime}}</em>
+            </dd>
+          </dl>
         </div>
         <div class="card-panel-body">
-          <!-- okr面板 -->
           <tl-okr-table
             :tableList="item.tableList"
             :disabled="false"
