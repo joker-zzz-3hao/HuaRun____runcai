@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="model">
-      <div>周报动态</div>
+      <div>周报互动记录</div>
       <div>
         <el-date-picker
           format="yyyy-MM"
@@ -30,6 +30,18 @@
       </div>
 
       <div id="mood"></div>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="orgName" label="部门"></el-table-column>
+        <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
+        <el-table-column label="标准/简单模式">
+          <template slot-scope="scope">
+            <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
+        <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
+        <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -53,21 +65,6 @@ export default {
       dateOption: [],
       value: '',
       tableData: [
-        {
-          name: '陆涛',
-          desc: '完成了工作项：「与传统PAAS、网络安全服务部沟通堡垒机外网访问的需求编写',
-          date: '2020年7月21日',
-        },
-        {
-          name: '陆涛',
-          desc: '完成了工作项：「与传统PAAS、网络安全服务部沟通堡垒机外网访问的需求编写',
-          date: '2020年7月21日',
-        },
-        {
-          name: '陆涛',
-          desc: '完成了工作项：「与传统PAAS、网络安全服务部沟通堡垒机外网访问的需求编写',
-          date: '2020年7月21日',
-        },
       ],
       submittData: [
         {

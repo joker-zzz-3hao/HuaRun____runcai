@@ -71,12 +71,7 @@
                     }})"
                   class="tl-btn"
                 >成员管理</el-button>
-                <el-button
-                  @click="putRoule(scope.row)"
-                  type="text"
-                  v-if="scope.row.roleType=='CREATION'"
-                  class="tl-btn"
-                >编辑</el-button>
+                <el-button @click="putRoule(scope.row)" type="text" class="tl-btn">编辑</el-button>
                 <el-button
                   type="text"
                   @click="handleDelete(scope.row.roleId)"

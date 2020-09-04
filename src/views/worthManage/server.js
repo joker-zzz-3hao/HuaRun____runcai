@@ -12,4 +12,12 @@ export default class Server extends ServerBase {
   getOrgTable(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
+
+  score(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/score', param);
+  }
+
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
 }

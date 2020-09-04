@@ -101,6 +101,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   data() {
@@ -118,7 +119,7 @@ export default {
     if (this.$route.query.id) {
       this.orgId = this.$route.query.id;
     } else {
-      this.orgId = this.userInfo.orgId;
+      this.orgId = this.setOrgId;
     }
     this.getqueryMyOkr();
   },
@@ -135,7 +136,7 @@ export default {
         periodId: this.period,
         orgId: this.orgId,
       }).then((res) => {
-        console.log(res);
+        this.mainData = res.data;
       });
     },
     getokrRisk() {
@@ -151,7 +152,7 @@ export default {
         periodId: this.period,
         orgId: this.orgId,
       }).then((res) => {
-        this.mainData = res.data;
+        console.log(res);
       });
     },
     // eslint-disable-next-line no-shadow

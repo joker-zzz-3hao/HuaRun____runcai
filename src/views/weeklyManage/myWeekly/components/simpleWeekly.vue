@@ -31,13 +31,13 @@
               <el-slider v-model="scope.row.workProgress" :step="1" show-input></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="推进工时" prop="workTime" :render-header="renderHeader">
+          <el-table-column width="220" label="投入工时" prop="workTime" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-input-number
                 v-model.trim="scope.row.workTime"
                 controls-position="right"
                 :min="1"
-                :max="1000"
+                :max="80"
               ></el-input-number>h
             </template>
           </el-table-column>
@@ -198,11 +198,11 @@
       <span>
         请选择本周心情
         <el-button @click="happy">开心</el-button>
-        <span :class="{'text-color-red': weeklyEmotion==0}">开心</span>
+        <span :class="{'text-color-red': weeklyEmotion==100}">开心</span>
         <el-button @click="common">平常</el-button>
         <span :class="{'text-color-red': weeklyEmotion==50}">平常</span>
         <el-button @click="sad">沮丧</el-button>
-        <span :class="{'text-color-red': weeklyEmotion==100}">沮丧</span>
+        <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
       <el-button style="marginLeft:65px" @click="commitWeekly">提交</el-button>
     </div>
@@ -297,7 +297,7 @@ export default {
   data() {
     return {
       server,
-      weeklyEmotion: '0',
+      weeklyEmotion: '100',
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
       currenItemrandomId: '',
@@ -582,13 +582,13 @@ export default {
       });
     },
     happy() {
-      this.weeklyEmotion = 0;
+      this.weeklyEmotion = 100;
     },
     common() {
       this.weeklyEmotion = 50;
     },
     sad() {
-      this.weeklyEmotion = 100;
+      this.weeklyEmotion = 0;
     },
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签

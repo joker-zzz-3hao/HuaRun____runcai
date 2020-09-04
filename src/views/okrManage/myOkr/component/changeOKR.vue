@@ -75,7 +75,7 @@
         :departokrList="tableList[this.selectIndex].departokrList"
         :philosophyList="tableList[this.selectIndex].philosophyList"
         :showPhil="undertakeType=='new'"
-        :selectRadioDepart.sync="tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
+        :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
       ></tl-undertaketable>
@@ -127,6 +127,7 @@ export default {
       },
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
       okrPeriod: {},
+      selectRadioDepart: '',
     };
   },
   components: {
@@ -253,7 +254,9 @@ export default {
             // 是否为当前选中
             if (item.currentOption) {
               okritem.undertakeOkrVo = {};
+              // 用
               okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
+              okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
               console.log('选中', item);
             }
           });
@@ -274,6 +277,9 @@ export default {
           undertakeOkrVersion: '',
         };
       }
+      this.selectRadioDepart = this.undertakeType == 'new'
+        ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
+        : this.tableList[this.selectIndex].currentOption;
       this.innerDrawer = true;
     },
     // 忽略

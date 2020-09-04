@@ -177,15 +177,27 @@
     </div>
     <div>员工自评</div>
     <div>总计评分： 120</div>
-    <div>在专业贡献上要关注运营领域，关注财会领域，关注底层云计算业务领域的参与和理解，能否从产品角度有思考；在个人成长方面，关注跨团队沟通协作的能力，统筹需求方与己方研发团队工作安排与协调，职业素养等</div>
-    <div>
-      附件名称附件名称附件名称附件名称.jpg
-      <el-button type="text">查看</el-button>
-      <el-button type="text">下载</el-button>
+    <div class="person">
+      <div style="width:50px;">总结：</div>
+      <div>
+        <div>在专业贡献上要关注运营领域，关注财会领域，关注底层云计算业务领域的参与和理解，能否从产品角度有思考；在个人成长方面，关注跨团队沟通协作的能力，统筹需求方与己方研发团队工作安排与协调，职业素养等</div>
+        <div class>
+          附件名称附件名称附件名称附件名称.jpg
+          <el-button type="text">查看</el-button>
+          <el-button type="text">下载</el-button>
+        </div>
+        <div class>
+          附件名称附件名称附件名称附件名称.word
+          <el-button type="text">查看</el-button>
+        </div>
+      </div>
     </div>
+    <div>评估人点评</div>
+    <div>总计评分： 110</div>
     <div>
-      附件名称附件名称附件名称附件名称.word
-      <el-button type="text">查看</el-button>
+      <el-input type="textarea" v-model="form.desc" placeholder="
+请输入您要点评的内容，不超过500字符"></el-input>
+      <el-button>确认</el-button>
     </div>
   </div>
 </template>
@@ -193,6 +205,11 @@
 <script>
 export default {
   name: 'assessManagementIndex',
+  data() {
+    return {
+      form: {},
+    };
+  },
   components: {
   },
 };
@@ -204,6 +221,11 @@ export default {
   justify-content: space-between;
   flex-direction: row;
   border-bottom: 1px solid saddlebrown;
+}
+.main {
+  width: 100%;
+  background: white;
+  margin: 30px 0;
 }
 .image {
   width: 50px;
@@ -229,6 +251,9 @@ export default {
 }
 .mt {
   margin-left: 70px;
+}
+.mapmarg {
+  margin-left: 50px;
 }
 .omart {
   display: inline-block;

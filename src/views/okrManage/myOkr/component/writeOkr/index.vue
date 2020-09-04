@@ -96,6 +96,7 @@ export default {
       },
       canWrite: true, // true写okr false changeokr
       periodList: [],
+      temPeriod: '',
     };
   },
   computed: {
@@ -119,8 +120,8 @@ export default {
       this.searchForm.draftParams = this.writeInfo.draftParams || '';
       this.searchForm.draftId = this.writeInfo.draftId || '';
       this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
-      this.searchForm.periodId = JSON.parse(this.searchForm.draftParams).periodId;
-      console.log('this.searchForm.periodId', this.searchForm.periodId);
+      this.temPeriod = JSON.parse(this.searchForm.draftParams).periodId;
+      console.log('this.searchForm.periodId', this.temPeriod);
     }
     // else if (this.writeInfo.canWrite == 'cannot') {
     //   this.canWrite = false;
@@ -142,7 +143,11 @@ export default {
         if (res.code == 200) {
           this.periodList = res.data || [];
           this.searchForm.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+          if (this.temPeriod) {
+            this.searchForm.periodId = this.temPeriod;
+          } else {
+            this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+          }
         }
       });
     },

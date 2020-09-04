@@ -38,18 +38,20 @@
           :label="item.weekBegin+' 至 '+item.weekEnd"
         ></el-option>
       </el-select>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="orgName" label="部门"></el-table-column>
-        <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
-        <el-table-column label="标准/简单模式">
-          <template slot-scope="scope">
-            <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
-        <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
-        <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
-      </el-table>
+      <div>
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="orgName" label="部门"></el-table-column>
+          <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
+          <el-table-column label="标准/简单模式">
+            <template slot-scope="scope">
+              <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
+          <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
+          <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
+        </el-table>
+      </div>
     </div>
     <div class="model">
       <div>员工情绪大屏</div>
@@ -64,11 +66,6 @@
         ></el-date-picker>
       </div>
       <div id="mood"></div>
-      <ul>
-        <li>开心</li>
-        <li>沮丧</li>
-        <li>平常</li>
-      </ul>
     </div>
   </div>
 </template>
@@ -84,7 +81,6 @@ export default {
   props: {
     orgTable: {
       type: [String, Object, Array],
-      require: true,
     },
   },
   data() {
@@ -108,6 +104,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   mounted() {
@@ -139,14 +136,16 @@ export default {
       ).then((res) => {
         this.dateOption = res.data;
         this.calendarId = res.data[0].calendarId;
-        this.orgWeekly();
+        this.$nextTick(() => {
+          this.orgWeekly();
+        });
       });
     },
     orgWeekly() {
       this.server.orgWeekly({
         calendarId: this.calendarId,
         date: this.dateTime,
-        userId: this.userInfo.userId,
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.tableData = res.data;
       });
@@ -171,8 +170,7 @@ export default {
       }).then((res) => {
         this.echartDataX = [];
         const startDate = `${res.data.months[0]}-01`;
-
-        const endtDate = `${res.data.months.pop()}-01`;
+        const endtDate = `${res.data.months.pop()}-31`;
         const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
         const oneDay = 24 * 3600 * 1000;
         let startche = +new Date(startDate);
@@ -188,10 +186,10 @@ export default {
           } else {
             months = now.getMonth() + 1;
           }
-          if (now.getDate() < 11) {
-            day = `0${now.getDate() - 1}`;
+          if (now.getDate() < 10) {
+            day = `0${now.getDate()}`;
           } else {
-            day = now.getDate() - 1;
+            day = now.getDate();
           }
           this.echartDataX.push([now.getFullYear(), months, day].join('-'));
         }
@@ -226,23 +224,24 @@ export default {
 
         yAxis: {
           min: 0,
-          max: 4,
+          max: 7,
           axisLabel: {
             formatter(value) {
               const texts = [];
               if (value == 0) {
                 console.log(1);
-              } else if (value <= 1) {
+              } else if (value == 1) {
                 texts.push('无风险');
-              } else if (value <= 2) {
+              } else if (value == 4) {
                 texts.push('风险可控');
-              } else if (value <= 3) {
+              } else if (value == 7) {
                 texts.push('失控');
               }
               return texts;
             },
           },
         },
+        dataZoom: { show: true },
         tooltip: {},
         series: [
           that.echartDataY,

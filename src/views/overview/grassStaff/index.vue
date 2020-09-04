@@ -41,7 +41,7 @@ export default {
     return {
       period: '',
       server,
-      mainData: {},
+      mainData: [],
       userWeek: [],
       calendarId: '',
       dateTime: '',
@@ -51,6 +51,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   methods: {
@@ -63,8 +64,8 @@ export default {
     getokrStatistics() {
       this.server.okrStatistics({
         periodId: this.period,
-        user: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
-        userId: '',
+        user: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        userId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
       }).then((res) => {
         this.mainData = res.data;
       });
@@ -72,7 +73,7 @@ export default {
     riskStatistics() {
       this.server.riskStatistics({
         periodId: this.period,
-        orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         personOrOrg: 'org',
       }).then((res) => {
         this.okrData = res.data;

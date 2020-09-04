@@ -28,21 +28,29 @@ export default {
     };
   },
   mounted() {
-    // this.getidentity();
+    this.getidentity();
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   methods: {
-
     getidentity() {
       this.server.identity({
         user: this.userInfo.userId,
-        orgId: this.userInfo.orgId,
+        orgId: this.setOrgId,
       }).then((res) => {
-        console.log(res);
+        if (res.data.identityType == 'org') {
+          this.$router.replace({ name: 'departleader' });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.replace({ name: 'teamleader' });
+          return false;
+        }
+        this.$router.replace({ name: 'grassStaff' });
       });
     },
   },

@@ -51,4 +51,8 @@ export default {
   setShowAuto: (state, showAuto = {}) => {
     state.showAuto = showAuto;
   },
+  // 切换部门
+  setOrg: (state, setOrgId = {}) => {
+    state.setOrgId = setOrgId;
+  },
 };

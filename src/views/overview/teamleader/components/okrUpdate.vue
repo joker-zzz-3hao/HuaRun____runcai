@@ -26,7 +26,7 @@ export default {
   methods: {
     getmainData() {
       this.mainDataY = this.mainData.map((item) => item.okrProgressUpdateCount);
-      this.mainDataX = this.mainData.map((item) => item.orgName);
+      this.mainDataX = this.mainData.map((item) => item.userName);
       this.init();
     },
     init() {
@@ -36,12 +36,28 @@ export default {
         xAxis: {
           type: 'category',
           data: that.mainDataX,
+          axisLabel: {
+            interval: 0,
+            formatter(value) {
+              // x轴的文字改为竖版显示
+              const str = value.split('');
+              return str.join('\n');
+            },
+          },
+        },
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            return `<div>更新次数${params.value}次</div>`;
+          },
         },
         yAxis: [
           {
             type: 'value',
             show: true,
             max: 100,
+            min: 0,
           },
         ],
         series: [{

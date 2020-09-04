@@ -81,22 +81,7 @@
             <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
-
-            <el-table-column min-width="100px" align="left" label="部门负责人">
-              <template slot-scope="scope">
-                <div @click="setLeader(scope.row)" style="cursor: pointer;">
-                  <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
-                    <i v-if="scope.row.leader" class="el-icon-user-solid">
-                      <span>设置</span>
-                    </i>
-                  </el-tooltip>
-                  <i v-if="!scope.row.leader" class="el-icon-user">
-                    <span>设置</span>
-                  </i>
-                </div>
-              </template>
-            </el-table-column>
+            <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
@@ -140,6 +125,7 @@
     <create-department
       ref="createDepart"
       v-if="showcreateDepart"
+      :tenantId="tenantId"
       :treeData="treeData"
       :departOptionType="departOptionType"
       :initDepartment="initDepartment"

@@ -104,6 +104,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
   created() {
@@ -125,9 +126,10 @@ export default {
     },
     getqueryMyOkr() {
       this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.userInfo.orgId, type: 'INDEX',
+        myOrOrg: 'org', status: '1', orgId: this.setOrgId, type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
+          console.log(res.data);
           this.orgTable = res.data.orgTable;
           this.orgUser = res.data.orgUser;
         }
@@ -136,7 +138,7 @@ export default {
     getmainData() {
       this.server.mainData({
         periodId: this.period,
-        orgId: this.userInfo.orgId,
+        orgId: this.setOrgId,
       }).then((res) => {
         this.mainData = res.data;
       });

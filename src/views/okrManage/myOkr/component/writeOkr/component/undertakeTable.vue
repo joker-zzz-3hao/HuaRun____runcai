@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar>
     <div class="cont-box">
-      <dl class="dl-list">
+      <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">
           <em>{{departmentName}}{{periodName}}OKR</em>
           <span>(单选)</span>
@@ -9,7 +9,6 @@
         <dd>
           <el-radio-group v-model="selectRadioDepart">
             <el-radio
-              v-model="item.checkFlag"
               @change="selectDepartokr(index,item)"
               class="tl-radio"
               :label="item.okrDetailId"
@@ -22,6 +21,7 @@
           </el-radio-group>
         </dd>
       </dl>
+
       <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">
           <em>公司管理价值观</em>
@@ -36,6 +36,29 @@
               v-for="(item,index) in philosophyList"
               :key="item.id"
             >{{item.cultureDesc}}</el-radio>
+          </el-radio-group>
+        </dd>
+      </dl>
+      <dl v-else class="dl-list">
+        <dt class="list-title">
+          <em>{{departmentName}}{{periodName}}OKR</em>
+          <span>(单选)</span>
+        </dt>
+        <dd>
+          <el-radio-group v-model="selectRadioDepart">
+            <el-radio
+              @change="selectDepartokr(index,item)"
+              class="tl-radio"
+              :label="item.okrDetailId+item.okrDetailVersion"
+              v-for="(item,index) in departokrList"
+              :key="item.okrDetailId"
+            >
+              <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
+              <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」</em>
+              <em v-else>「最新版本」</em>
+              <em>{{item.okrDetailObjectKr}}</em>
+              <em v-if="item.modifyReason">变更原因：{{item.modifyReason}}</em>
+            </el-radio>
           </el-radio-group>
         </dd>
       </dl>
