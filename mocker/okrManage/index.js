@@ -169,6 +169,7 @@ const mockData = {
           okrWeight: 40,
           okrDetailProgress: 50,
           parentObjectKr: '华润云',
+          continueCount: 2,
           'krList|5': [
             {
               'detailId|': ['1233', '1234'],
@@ -178,6 +179,7 @@ const mockData = {
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
               'okrDetailConfidence|1': [1, 2, 3],
+              continueCount: 2,
             },
           ],
         },
