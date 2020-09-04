@@ -289,7 +289,13 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.tableList[this.selectIndex].okrParentId || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.tableList[this.selectIndex].parentObjectKr || '';
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.tableList[this.selectIndex].okrDetailParentVersion || '';
+      // 清除小叹号
+      this.tableList[this.selectIndex].hasUpdate = true;
+      // 选中
+      this.tableList[this.selectIndex].currentOption = this.tableList[this.selectIndex].okrParentId
+      + this.tableList[this.selectIndex].okrDetailParentVersion;
       // 关闭关联承接抽屉并刷新
+
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
     },
@@ -305,6 +311,11 @@ export default {
 
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
       this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      // 清除小叹号
+      this.tableList[this.selectIndex].hasUpdate = true;
+      // 选中
+      this.tableList[this.selectIndex].currentOption = this.selectDepartRow.okrDetailId
+      + this.selectDepartRow.okrDetailVersion;
       console.log('关联', this.selectDepartRow);
       // 关闭关联承接抽屉并刷新
       this.innerDrawer = false;
