@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
   <div>
     <el-drawer
@@ -86,10 +87,30 @@
       </el-tabs>
       <!-- 点赞要一直浮着 -->
       <div v-if="showSupport">
-        <ul style="display:flex">
-          <el-button v-if="showLike" @click="like()">点赞</el-button>
-          <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+        <el-button @click="like()">
+          <span v-if="!supportType">点赞</span>
+          <span v-else>取消</span>
+        </el-button>
+        <ul v-if="showMore" class="ulclass">
+          <!-- 前10个 -->
+          <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
             <div class="user-name">{{cutName(item.userName)}}</div>
+            <div>{{item.userName}}</div>
+          </li>
+          <!-- 展开 -->
+          <li v-if="voteLength > 10 && showMore" class="user-info">
+            <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
+            <div>展开</div>
+          </li>
+        </ul>
+        <ul v-else class="ulclass">
+          <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+            <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
+            <div>{{item.userName}}</div>
+          </li>
+          <li class="user-info">
+            <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
+            <div>收起</div>
           </li>
         </ul>
       </div>
@@ -128,7 +149,6 @@ export default {
       canWrite: true, // true写okr false okr详情
       dialogTitle: 'OKR详情', // 弹框标题
       cycleList: [], // 操作历史
-      showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
       innerDrawer: false,
       activeName: 'detail',
@@ -136,6 +156,9 @@ export default {
       userName: '张三',
       myokrDrawer: false,
       drawerTitle: '详情',
+      showMore: true,
+      cutVoteList: [],
+      voteLength: 0,
     };
   },
   components: {
@@ -168,9 +191,10 @@ export default {
         return {};
       },
     },
+    // TODO: 详情点赞
     showSupport: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   computed: {
@@ -225,7 +249,13 @@ export default {
       this.server.getSupportList({ okrId: this.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.voteUser = res.data.supportUserList;
+          this.voteUser = res.data.supportUserList || [];
+          this.voteLength = this.voteUser.length;
+          if (this.voteLength > 10) {
+            this.cutVoteList = this.voteUser.slice(0, 9);
+          } else {
+            this.cutVoteList = this.voteUser.slice(0, this.voteLength);
+          }
         }
       });
     },
@@ -292,5 +322,15 @@ export default {
 }
 .detail {
   display: flex;
+}
+.ulclass li:nth-child(n) {
+  float: left;
+  display: inline;
+}
+.ulclass li:nth-child(10n + 1) {
+  clear: both;
+}
+.show-more {
+  display: none;
 }
 </style>

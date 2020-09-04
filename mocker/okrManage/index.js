@@ -191,7 +191,7 @@ const mockData = {
   // 用于：查点赞列表
   'POST /gateway/talent-okr/okr/okrSupport/getSupportList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'supportUserList|3': [{
+      'supportUserList|23': [{
         'userId|+1': ['0011', '0022', '0033'],
         'userName|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
       }],
