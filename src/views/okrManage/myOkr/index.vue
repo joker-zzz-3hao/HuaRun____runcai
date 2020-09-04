@@ -26,7 +26,6 @@
     </div>
     <tl-writeokr
       ref="writeokr"
-      v-if="writeokrExist"
       :exist.sync="writeokrExist"
       :userName="userInfo.userName"
       @success="searchOkr(searchForm.status)"

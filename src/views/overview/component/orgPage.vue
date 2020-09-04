@@ -1,25 +1,30 @@
 <template>
   <div>
-    <tl-okr-table
-      :tableList="tableList"
-      :disabled="false"
-      :showOKRInfoLabel="true"
-      :status="searchForm.status"
-      @openDialog="openDialog()"
-    >
-      <template slot="head-bar" slot-scope="props">
-        <el-button
-          v-if="props.okritem.continueCount>0"
-          @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-        >承接地图icon{{props.okritem.continueCount}}</el-button>
-      </template>
-      <template slot="body-bar" slot-scope="props">
-        <el-button
-          v-if="props.okritem.continueCount>0"
-          @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-        >承接地图icon{{props.okritem.continueCount}}</el-button>
-      </template>
-    </tl-okr-table>
+    <div v-show="showTable">
+      <tl-okr-table
+        :tableList="tableList"
+        :disabled="false"
+        :showOKRInfoLabel="true"
+        :status="searchForm.status"
+        @openDialog="openDialog()"
+      >
+        <template slot="head-bar" slot-scope="props">
+          <el-button
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图icon{{props.okritem.continueCount}}</el-button>
+        </template>
+        <template slot="body-bar" slot-scope="props">
+          <el-button
+            v-if="props.okritem.continueCount>0"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+          >承接地图icon{{props.okritem.continueCount}}</el-button>
+        </template>
+      </tl-okr-table>
+    </div>
+    <div v-show="tableList.length==0">
+      <el-button type="primary">创建OKR</el-button>
+    </div>
   </div>
 </template>
 
@@ -39,6 +44,7 @@ export default {
   props: ['periodId'],
   data() {
     return {
+      showTable: false,
       server,
       CONST,
       tableList: [],
@@ -76,6 +82,7 @@ export default {
       });
     },
     searchOkr() { // 默认搜索进行时
+      this.showTable = false;
       this.server.getmyOkr({
         myOrOrg: 'org',
         periodId: this.periodId,
@@ -88,6 +95,9 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.memberList = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          if (this.tableList.length > 0) {
+            this.showTable = true;
+          }
         }
       });
     },
@@ -102,3 +112,8 @@ export default {
   },
 };
 </script>
+<style  scoped>
+[v-cloak] {
+  display: none;
+}
+</style>

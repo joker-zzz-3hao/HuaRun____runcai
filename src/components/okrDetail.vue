@@ -29,9 +29,7 @@
               </li>
               <li>
                 <span>进度</span>
-                <span>
-                  <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-                </span>
+                <tl-process :data="okrmain.okrProgress"></tl-process>
               </li>
             </ul>
           </div>
@@ -116,6 +114,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import okrHistory from './okrHistory';
 
@@ -142,6 +141,7 @@ export default {
   components: {
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
+    'tl-process': process,
   },
   props: {
     dialogExist: {

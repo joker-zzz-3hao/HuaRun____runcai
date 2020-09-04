@@ -43,12 +43,7 @@
               </li>
               <li>
                 <span>当前进度</span>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(item.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
+                <tl-process :data="item.okrDetailProgress"></tl-process>
               </li>
               <!-- 变更 -->
               <li
@@ -159,12 +154,7 @@
             </dd>
             <dd>
               <span>当前进度</span>
-              <span class="progresswidth">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                ></el-progress>
-              </span>
+              <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </dd>
             <dd style="display:flex">
               <span>风险状态</span>
@@ -244,6 +234,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
@@ -255,6 +246,7 @@ export default {
   components: {
     elcollapse,
     elcollapseitem,
+    'tl-process': process,
   },
   data() {
     return {
