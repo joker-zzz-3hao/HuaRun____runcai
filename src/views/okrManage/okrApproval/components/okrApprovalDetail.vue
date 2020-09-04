@@ -163,7 +163,7 @@ export default {
         periodId: this.data.periodId,
       }).then((res) => {
         if (res.code == '200') {
-          this.cycleList = res.data.content;
+          this.cycleList = res.data;
         }
       });
     },

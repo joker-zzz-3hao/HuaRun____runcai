@@ -33,9 +33,9 @@ export default {
       self.systemList = [];
       self.talentList = [];
       self.userInfo.privilegeList.forEach((item) => {
-        switch (item.classTag) {
+        switch (item.functionCode) {
           // 租户管理员
-          case 'TENANT':
+          case 'tenant_index':
             item.children.forEach((tItem) => {
               self.classTagList = [];
               self.classTagList.push(tItem.classTag);
