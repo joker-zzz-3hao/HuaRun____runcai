@@ -56,7 +56,7 @@ export default class Server extends ServerBase {
   }
 
   teamWeekly(param) {
-    return this._ajaxPost('gateway/weekly-service//weekly/statistic/teamWeekly', param);
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/teamWeekly', param);
   }
 
   // 查okr列表
@@ -66,5 +66,9 @@ export default class Server extends ServerBase {
 
   getOkrCycleList(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
+
+  teamWeeklyCount(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/teamWeeklyCount', param);
   }
 }

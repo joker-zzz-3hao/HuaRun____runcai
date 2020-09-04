@@ -122,7 +122,9 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.getokrQuery();
+    this.$nextTick(() => {
+      this.getokrQuery();
+    });
   },
   methods: {
     fetchData() {
@@ -165,11 +167,7 @@ export default {
     },
     changIdAction(id, index) {
       this.orgId = id;
-      // if (this.active[index]) {
-      //   this.$set(this.active, index, false);
-      // } else {
-      //   this.$set(this.active, index, true);
-      // }
+
       this.active = index;
       this.getriskStatistics();
     },
@@ -188,11 +186,12 @@ export default {
         personOrOrg: 'org',
       }).then((res) => {
         this.echartDataX = [];
+
         const startDate = `${res.data.months[0]}-01`;
         const endtDate = `${res.data.months.pop()}-31`;
         const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
         const oneDay = 24 * 3600 * 1000;
-        let startche = +new Date(startDate);
+        let startche = +new Date(startDate) - oneDay;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < cheTime / oneDay; i++) {
           // eslint-disable-next-line no-const-assign
@@ -212,21 +211,16 @@ export default {
           }
           this.echartDataX.push([now.getFullYear(), months, day].join('-'));
         }
-        if (res.data.datas) {
-          this.echartDataY = {
-            type: 'line',
-            symbol: 'circle',
-            showAllSymbol: true,
-            data: res.data.datas.map((item) => [item.createDate, item.allScore]),
-          };
-        } else {
-          this.echartDataY = {
-            type: 'line',
-            symbol: 'circle',
-            showAllSymbol: true,
-            data: [],
-          };
-        }
+
+        // eslint-disable-next-line valid-typeof
+        const array = res.data.datas ? res.data.datas.filter((item) => item) : [];
+        this.echartDataY.push({
+          type: 'line',
+          symbol: 'circle',
+          showAllSymbol: true,
+          data: res.data.datas ? array.map((item) => [item.createDate, item.allScore]) : [],
+        });
+
         this.init();
       });
     },
@@ -262,9 +256,7 @@ export default {
         },
         dataZoom: { show: true },
         tooltip: {},
-        series: [
-          that.echartDataY,
-        ],
+        series: that.echartDataY,
 
       };
 

@@ -1,12 +1,17 @@
 <template>
   <div class="okrRiskTotal">
     <div id="okrRiskTotal" @click="dialogVisible=true"></div>
-    <el-dialog title="okr列表" :visible.sync="dialogVisible">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="负责人" width="180"></el-table-column>
-        <el-table-column prop="name" label="周期" width="180"></el-table-column>
+    <el-dialog
+      title="okr列表"
+      :visible.sync="dialogVisible"
+      :modal-append-to-body="false"
+      :modal="false"
+    >
+      <el-table :data="mainData" style="width: 100%">
+        <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
+        <el-table-column prop="months" label="周期" width="180"></el-table-column>
         <el-table-column prop="address" label="OKR状态"></el-table-column>
-        <el-table-column prop="address" label="当前进度">
+        <el-table-column prop="updateProgressCount" label="当前进度">
           <template slot-scope="scope">
             <el-progress :percentage="scope.row.ratio"></el-progress>
           </template>
@@ -23,6 +28,9 @@ export default {
   name: 'okrRiskTotal',
   props: {
     tableData: {
+      type: [Object, Array, String],
+    },
+    mainData: {
       type: [Object, Array, String],
     },
   },

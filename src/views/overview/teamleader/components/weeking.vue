@@ -66,26 +66,6 @@ export default {
       value: '',
       tableData: [
       ],
-      submittData: [
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-      ],
     };
   },
   mounted() {
@@ -107,6 +87,7 @@ export default {
     },
     getDate(date) {
       this.teamEmotion(`${date}-01`);
+      this.getteamWeeklyCount(`${date}-01`);
     },
     teamWeekly(date) {
       this.server.teamWeekly({
@@ -119,6 +100,13 @@ export default {
         ]);
 
         this.init();
+      });
+    },
+    getteamWeeklyCount(date) {
+      this.server.teamWeeklyCount({
+        date,
+      }).then((res) => {
+        this.tableData = res.data;
       });
     },
     teamEmotion(date) {
