@@ -139,7 +139,6 @@ export default {
       undertakeType: 'new', // 关联承接类型 new 新加关联 change 变更关联
       okrPeriod: {},
       selectRadioDepart: '',
-      drawerTitle: '变更',
       myokrDrawer: false,
     };
   },
@@ -154,6 +153,10 @@ export default {
       default() {
         return {};
       },
+    },
+    drawerTitle: {
+      type: String,
+      defualt: 'OKR变更',
     },
   },
   mounted() {

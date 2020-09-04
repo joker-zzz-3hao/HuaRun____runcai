@@ -155,7 +155,6 @@ export default {
       okrDetailId: '',
       userName: '张三',
       myokrDrawer: false,
-      drawerTitle: '详情',
       showMore: true,
       cutVoteList: [],
       voteLength: 0,
@@ -195,6 +194,10 @@ export default {
     showSupport: {
       type: Boolean,
       default: true,
+    },
+    drawerTitle: {
+      type: String,
+      defualt: 'OKR详情',
     },
   },
   computed: {

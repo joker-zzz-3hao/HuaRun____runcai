@@ -163,6 +163,7 @@ const mockData = {
       'okrDetails|3': [
         {
           'detailId|1': ['1233', '1234'],
+          'okrDetailId|1-100': 100,
           'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
           'userName|1': ['心荃', '滕炜'],
           okrWeight: 40,
