@@ -143,9 +143,8 @@
                   <span style="marginLeft:15px">被工作项{{itemIndex(item)}}支持</span>
                 </div>
               </el-col>
-              <!-- 占位 -->
-              <el-col :span="6"></el-col>
-              <el-col :span="6">
+
+              <el-col :span="7" :offset="6">
                 <div>
                   <span style="marginLeft:15px">
                     当前进度
