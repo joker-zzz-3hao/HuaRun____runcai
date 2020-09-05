@@ -1,5 +1,11 @@
 <template>
-  <el-table :data="tableList" @row-click="opensome" class="tl-table">
+  <el-table
+    :data="tableList"
+    @row-click="opensome"
+    class="tl-table"
+    row-key="okrDetailId"
+    :expand-row-keys="expands"
+  >
     <el-table-column type="expand" width="5%">
       <template slot-scope="scope">
         <dl
@@ -99,7 +105,7 @@ export default {
     },
     // 默认展开的序号数组
     // 如果 disabled为true，需传入activeList
-    activeList: {
+    expands: {
       type: Array,
       default() {
         return [];
@@ -131,8 +137,11 @@ export default {
     },
   },
   mounted() {
-    this.innerActiveList = this.activeList;
   },
+  computed: {
+
+  },
+
   created() {
 
   },
