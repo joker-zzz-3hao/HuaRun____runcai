@@ -1,6 +1,6 @@
 import {
   mapState,
-  mapMutations
+  mapMutations,
 } from 'vuex';
 
 export default {
@@ -127,7 +127,6 @@ export default {
             break;
         }
       });
-      debugger;
       self.setCrMenu(self.crList);
       self.setSystemMenu(self.systemList);
       self.setTalentMenu(self.talentList);
