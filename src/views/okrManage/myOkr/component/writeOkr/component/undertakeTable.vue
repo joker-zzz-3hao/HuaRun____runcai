@@ -54,7 +54,7 @@
               :key="item.okrDetailId"
             >
               <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
-              <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」</em>
+              <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」(当前选择)</em>
               <em v-else>「最新版本」</em>
               <em>{{item.okrDetailObjectKr}}</em>
               <em v-if="item.modifyReason">变更原因：{{item.modifyReason}}</em>

@@ -66,19 +66,18 @@
                   <span>{{activity.operateTypeCn}}</span>
                   <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
                     <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                    <span
-                      v-if="uitem.updateContents.okrDetailObjectKr"
-                    >{{uitem.updateContents.okrDetailObjectKr}}</span>
+                    <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
                     <span
                       v-if="uitem.updateContents.afterProgress"
-                    >进度为{{uitem.updateContents.afterProgress}}%，</span>
+                    >进度为{{uitem.updateContents.afterProgress}}%</span>
                     <span
                       v-if="uitem.updateContents.afterConfidence"
-                    >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}。</span>
+                    >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
                   </div>
-
-                  <span v-if="activity.remark">说明：</span>
-                  <span v-if="activity.remark">{{activity.remark}}。</span>
+                  <div v-if="activity.remark">
+                    <span>说明：</span>
+                    <span>{{activity.remark}}</span>
+                  </div>
                 </div>
               </el-timeline-item>
             </el-timeline>
