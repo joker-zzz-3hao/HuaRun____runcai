@@ -232,7 +232,8 @@ export default [{
       meta: {
         hasMainMenu: true,
         isSubMenu: true,
-        parentRoute: 'teamWeekly',
+        parentRoute: 'myWeekly',
+        belongsTo: 'teamWeekly',
         title: 'teamWeeklyInfo',
         power: '',
       },

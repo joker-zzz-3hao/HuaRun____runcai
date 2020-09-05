@@ -1,69 +1,71 @@
 <template>
-  <el-form v-if="tableList.length > 0" v-model="formData" class="tl-form">
-    <el-table :data="tableList" @row-click="opensome" class="tl-table">
-      <el-table-column type="expand" width="5%">
-        <template slot-scope="scope">
-          <dl
-            v-for="kritem in scope.row.krList"
-            :key="kritem.krId"
-            @click="opensome(kritem)"
-            class="sub-tr"
-          >
-            <dt class="okr-tag">KR</dt>
-            <dd class="okr-o-name">{{kritem.okrDetailObjectKr}}</dd>
-            <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
-            <dd class="okr-progress">
-              <tl-process :data="[kritem.okrDetailProgress]"></tl-process>
-            </dd>
-            <dd class="okr-risk">
-              <div class="state-grid">
-                <div
-                  :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
+  <el-table :data="tableList" @row-click="opensome" class="tl-table">
+    <el-table-column type="expand" width="5%">
+      <template slot-scope="scope">
+        <dl
+          v-for="kritem in scope.row.krList"
+          :key="kritem.krId"
+          @click="opensome(kritem)"
+          class="sub-tr"
+        >
+          <dd class="okr-line"></dd>
+          <dd class="okr-o-name">
+            <span>KR</span>
+            <em>{{kritem.okrDetailObjectKr}}</em>
+          </dd>
+          <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
+          <dd class="okr-progress">
+            <tl-process :data="kritem.okrDetailProgress"></tl-process>
+          </dd>
+          <dd class="okr-risk">
+            <div class="state-grid">
+              <div
+                :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
                     'is-risks': kritem.okrDetailConfidence == 2,
                     'is-uncontrollable': kritem.okrDetailConfidence == 3}"
-                ></div>
-                <div
-                  :class="{'is-risks': kritem.okrDetailConfidence == 2,
+              ></div>
+              <div
+                :class="{'is-risks': kritem.okrDetailConfidence == 2,
                     'is-uncontrollable': kritem.okrDetailConfidence == 3}"
-                ></div>
-                <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
-              </div>
-              <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
-            </dd>
-            <dd class="okr-undertake">
-              <slot name="body-bar" :okritem="kritem"></slot>
-            </dd>
-          </dl>
-        </template>
-      </el-table-column>
-      <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="38%">
-        <template slot-scope="scope">
-          <em>目标</em>
-          {{scope.row.okrDetailObjectKr}}
-        </template>
-      </el-table-column>
-      <el-table-column prop="okrWeight" label="权重" width="6%">
-        <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
-      </el-table-column>
-      <el-table-column prop="okrDetailProgress" label="进度" width="15%">
-        <template slot-scope="scope">
-          <tl-process :data="scope.row.okrDetailProgress"></tl-process>
-        </template>
-      </el-table-column>
-      <el-table-column label="风险状态" width="15%"></el-table-column>
-      <el-table-column label="承接地图" width="8%">
-        <template slot-scope="scope">
-          <slot name="head-undertake" :okritem="scope.row"></slot>
-        </template>
-      </el-table-column>
-      <el-table-column label="更新进度" width="8%">
-        <template slot-scope="scope">
-          <slot name="weight-bar" :okritem="scope.row"></slot>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-form>
+              ></div>
+              <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
+            </div>
+            <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+          </dd>
+          <dd class="okr-undertake">
+            <slot name="body-bar" :okritem="kritem"></slot>
+          </dd>
+          <dd class="okr-update"></dd>
+        </dl>
+      </template>
+    </el-table-column>
+    <!-- 目标O名称 无label -->
+    <el-table-column prop="okrDetailObjectKr" width="43%">
+      <template slot-scope="scope">
+        <span>目标</span>
+        <em>{{scope.row.okrDetailObjectKr}}</em>
+      </template>
+    </el-table-column>
+    <el-table-column prop="okrWeight" label="权重" width="6%">
+      <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
+    </el-table-column>
+    <el-table-column prop="okrDetailProgress" label="进度" width="15%">
+      <template slot-scope="scope">
+        <tl-process :data="scope.row.okrDetailProgress"></tl-process>
+      </template>
+    </el-table-column>
+    <el-table-column label="风险状态" width="15%"></el-table-column>
+    <el-table-column label="承接地图" width="8%">
+      <template slot-scope="scope">
+        <slot name="head-undertake" :okritem="scope.row"></slot>
+      </template>
+    </el-table-column>
+    <el-table-column label="更新进度" width="8%">
+      <template slot-scope="scope">
+        <slot name="weight-bar" :okritem="scope.row"></slot>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script>
