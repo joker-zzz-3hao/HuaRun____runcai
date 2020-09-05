@@ -65,7 +65,7 @@
               <i class="el-icon-user"></i>
               <em>负责人</em>
             </dt>
-            <dd>{{item.okrMain.userName}}</dd>
+            <dd>{{userInfo.userName}}</dd>
           </dl>
           <dl class="okr-progress">
             <dt>
