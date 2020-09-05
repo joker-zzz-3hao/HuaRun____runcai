@@ -120,7 +120,13 @@
             <el-table-column fixed prop="updateTime" label="更新时间" v-if="!formData.queryType"></el-table-column>
             <el-table-column fixed="right" label="操作" width="130">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="weeklyInfo(scope.row)">查看</el-button>
+                <el-button
+                  v-if="scope.row.weeklyId"
+                  type="text"
+                  size="small"
+                  @click="weeklyInfo(scope.row.weeklyId)"
+                >查看</el-button>
+                <span v-else>--</span>
               </template>
             </el-table-column>
           </el-table>
@@ -239,7 +245,9 @@ export default {
         }
       });
     },
-    weeklyInfo() {},
+    weeklyInfo(weeklyId) {
+      this.go('teamWeeklyInfo', { query: { weeklyId, orgId: this.formData.orgId } });
+    },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组
       const queue = [...this.treeData];
