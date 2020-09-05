@@ -179,17 +179,33 @@
     <!-- 点赞 -->
     <div style="marginTop:50px">
       <div v-show="showOptions">
-        <span style="marginLeft:10px" @click="support('1')">点赞</span>
-        <span style="marginLeft:10px" @click="support('2')">加油</span>
-        <span style="marginLeft:10px" @click="support('3')">祝贺</span>
-        <span style="marginLeft:10px" @click="support('4')">赞同</span>
-        <span style="marginLeft:10px" @click="support('5')">比心</span>
+        <span
+          :class="{'support-is-selected': weeklySupport.supported == 1}"
+          style="marginLeft:10px"
+          @click="support(1)"
+        >点赞</span>
+        <span
+          :class="{'support-is-selected': weeklySupport.supported == 2}"
+          style="marginLeft:10px"
+          @click="support(2)"
+        >加油</span>
+        <span
+          :class="{'support-is-selected': weeklySupport.supported == 3}"
+          style="marginLeft:10px"
+          @click="support(3)"
+        >祝贺</span>
+        <span
+          :class="{'support-is-selected': weeklySupport.supported == 4}"
+          style="marginLeft:10px"
+          @click="support(4)"
+        >赞同</span>
+        <span
+          :class="{'support-is-selected': weeklySupport.supported == 5}"
+          style="marginLeft:10px"
+          @click="support(5)"
+        >比心</span>
       </div>
-      <el-button
-        @mouseleave.native="closeOptionsDia"
-        @mouseenter.native="showOptionsDia"
-        @click="support('1')"
-      >点赞({{supportCount}})</el-button>
+      <el-button @mouseenter.native="showOptionsDia" @click="support(1)">点赞({{supportCount}})</el-button>
     </div>
   </div>
 </template>
@@ -277,23 +293,31 @@ export default {
       const params = {
         weeklyId: this.$route.query.weeklyId,
         supported: type,
-        id: '',
+        id: '', // 没点过赞
       };
       // 被点赞过
       if (this.weeklySupport && this.weeklySupport.id) {
+        if (type == this.weeklySupport.supported) { // 已点赞，取消点赞
+          params.supported = 0;
+        }
         params.id = this.weeklySupport.id;
       }
-      this.server.support(params);
+      this.server.support(params).then((res) => {
+        if (res.code == 200) {
+          this.showOptions = false;
+          this.queryWeekly();
+        }
+      });
     },
     supportDefault() {},
     showOptionsDia() {
       this.showOptions = true;
     },
-    closeOptionsDia() {
-      setTimeout(() => {
-        this.showOptions = false;
-      }, 1000);
-    },
+    // closeOptionsDia() {
+    //   setTimeout(() => {
+    //     this.showOptions = false;
+    //   }, 1000);
+    // },
     format(percentage) {
       return percentage === 100 ? '完成' : `${percentage}%`;
     },
@@ -322,5 +346,8 @@ export default {
 }
 .risk-cannot-be-controlled {
   background: red;
+}
+.support-is-selected {
+  color: red;
 }
 </style>
