@@ -432,15 +432,18 @@ export default {
         }
       },
     },
-    '$route.name': {
-      handler(newVal) {
-        const routeIndex = newVal == 'myOkr' ? 0 : 1;
-        const liWidth = document.querySelectorAll('.tab-list li');
-        const borderWidth = document.querySelector('.border-slip');
-        borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-      },
-      immediate: true,
-    },
+    // '$route.name': {
+    //   handler(newVal) {
+    //     const routeIndex = newVal == 'myOkr' ? 0 : 1;
+    //     const liWidth = document.querySelectorAll('.tab-list li');
+    //     const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
+    //     const borderWidth = document.querySelector('.border-slip');
+    //     borderWidth.style.left = `${selfLeft}px`;
+    //     borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+    //     console.log('rote', routeIndex, this.$route.name);
+    //   },
+    //   immediate: true,
+    // },
   },
 };
 </script>
