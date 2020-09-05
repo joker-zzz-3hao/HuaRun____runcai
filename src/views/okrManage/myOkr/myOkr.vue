@@ -117,6 +117,7 @@
             :status="searchForm.status"
             @openDialog="openDialog(item)"
             @goDraft="goDraft(item)"
+            :expands="expands"
           >
             <template slot="head-undertake" slot-scope="props">
               <el-button
@@ -234,6 +235,9 @@ export default {
       userInfo: (state) => state.userInfo,
       okrSuccess: (state) => state.okrSuccess,
     }),
+    expands() {
+      return [this.okrList[0].tableList[0].okrDetailId];
+    },
   },
   created() {
     this.getOkrCycleList();
@@ -259,9 +263,13 @@ export default {
             this.okrList = [];
             const draftList = res.data || [];
             if (draftList.length > 0) {
-              draftList.forEach((item) => {
+              draftList.forEach((item, index) => {
                 let okrInfo = {};
                 okrInfo = JSON.parse(item.paramJson);
+                // 起草中默认展开第一个
+                if (index == 0) {
+                  okrInfo.okrInfoList[0].okrDetailId = 'draft01';
+                }
                 this.okrList.push({
                   tableList: okrInfo.okrInfoList,
                   okrMain: {
