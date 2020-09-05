@@ -7,7 +7,7 @@
       :append-to-body="true"
       :modal-append-to-body="true"
       class="tl-drawer"
-      @close="closed"
+      @closed="closed"
       :before-close="close"
     >
       <el-form :model="formData" ref="dataForm">

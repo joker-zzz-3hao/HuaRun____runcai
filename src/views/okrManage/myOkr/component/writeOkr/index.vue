@@ -7,11 +7,11 @@
     custom-class="diy-drawer create-okr"
     class="tl-drawer"
     :before-close="close"
-    @close="closed"
+    @closed="closed"
   >
     <div slot="title" class="flex-sb">
       <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
-      <div v-else class="drawer-title">创建OKR</div>
+      <div v-else class="drawer-title">创建OKR{{writeInfo.canWrite}}</div>
       <div class="icon-save" v-if="showAuto">
         <i></i>
         <em>已自动保存</em>
@@ -19,7 +19,7 @@
     </div>
     <el-scrollbar>
       <div class="create-okr">
-        <div v-if="canWrite" class="allocation-info">
+        <div class="allocation-info">
           <dl>
             <dt>目标周期</dt>
             <dd>
@@ -59,7 +59,7 @@
             </dd>
           </dl>
           <dl class="user-info">
-            <dt>负责人</dt>
+            <dt>负责人{{writeInfo.canWrite}}</dt>
             <dd v-if="true">
               <img src="@/assets/images/user/user.jpg" alt />
             </dd>
@@ -67,7 +67,7 @@
             <dd>{{userName}}</dd>
           </dl>
         </div>
-        <okr-form ref="okrform" :searchForm="searchForm" :server="server"></okr-form>
+        <okr-form v-if="createokrDrawer" ref="okrform" :searchForm="searchForm" :server="server"></okr-form>
       </div>
     </el-scrollbar>
     <div class="operating-box">
@@ -132,7 +132,6 @@ export default {
       createokrDrawer: (state) => state.createokrDrawer,
     }),
     okrTypeList() {
-      console.log('roleCode', this.roleCode);
       if (this.roleCode.includes('ORG_ADMIN')) {
         return this.CONST.OKR_TYPE_LIST.filter(
           (item) => item.id == 1,
@@ -143,19 +142,6 @@ export default {
     },
   },
   mounted() {
-    if (this.writeInfo.canWrite == 'draft') {
-      this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
-      this.searchForm.draftParams = this.writeInfo.draftParams || '';
-      this.searchForm.draftId = this.writeInfo.draftId || '';
-      this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
-      this.temPeriod = JSON.parse(this.searchForm.draftParams).periodId;
-      console.log('this.searchForm.periodId', this.temPeriod);
-    }
-    // else if (this.writeInfo.canWrite == 'cannot') {
-    //   this.canWrite = false;
-    //   this.okrId = this.writeInfo.okrId || '';
-    //   this.searchForm.periodId = this.writeInfo.periodId || '';
-    // }
   },
   created() {
   },
@@ -177,6 +163,14 @@ export default {
       if (this.roleCode.includes('ORG_ADMIN')) {
         this.searchForm.okrType = 1;
       } else { this.searchForm.okrType = 2; }
+      console.log('打开okrfrom', this.writeInfo.canWrite);
+      if (this.writeInfo.canWrite == 'draft') {
+        this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
+        this.searchForm.draftParams = this.writeInfo.draftParams || '';
+        this.searchForm.draftId = this.writeInfo.draftId || '';
+        this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
+        this.temPeriod = JSON.parse(this.searchForm.draftParams).periodId;
+      }
       // 周期
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {

@@ -66,7 +66,6 @@ export default {
   },
   props: {
     modelVal: {
-      type: String,
       default: '1',
     },
   },
