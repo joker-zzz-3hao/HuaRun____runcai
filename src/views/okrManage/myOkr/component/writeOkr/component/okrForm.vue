@@ -68,13 +68,13 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled': formData.okrInfoList.length === 1}"
+              :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-clear"
-              @click.native="formData.okrInfoList.length > 1 && deleteobject(index)"
-              :disabled="formData.okrInfoList.length == 1"
+              @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
+              :disabled="isnew && formData.okrInfoList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
@@ -126,13 +126,13 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled': oitem.krList.length === 1}"
+              :class="{'is-disabled':isnew && oitem.krList.length === 1}"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-clear"
-              @click.native="oitem.krList.length > 1 && deletekr(index,kindex)"
-              :disabled="oitem.krList.length == 1"
+              @click.native="(!isnew || oitem.krList.length > 1) && deletekr(index,kindex)"
+              :disabled="isnew && oitem.krList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
