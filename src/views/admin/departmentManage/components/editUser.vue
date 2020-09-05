@@ -70,7 +70,7 @@
           v-model="formData.orgIdList"
           :options="treeData"
           :show-all-levels="false"
-          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
+          :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree' }"
           @change="selectIdChange"
         ></el-cascader>
       </el-form-item>

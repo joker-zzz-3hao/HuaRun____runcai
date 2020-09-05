@@ -68,13 +68,29 @@
             </el-table-column>
             <el-table-column prop="cultureName" label="支撑价值观" min-width="180"></el-table-column>
             <el-table-column prop="workContent" label="工作项" min-width="120"></el-table-column>
-            <el-table-column prop="score" label="评分" min-width="160"></el-table-column>
+            <el-table-column prop="score" label="评价" min-width="160">
+              <template slot-scope="scope">
+                <span v-if="scope.row.score">{{CONST.SCORE_MAP[scope.row.score]}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="scoreTime" label="评分时间" min-width="160"></el-table-column>
             <el-table-column prop="updateTime" label="支撑时间" min-width="160"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+            <el-table-column fixed="right" label="操作" width="220">
               <template slot-scope="scope">
                 <el-button @click="goWeekly(scope.row)" type="text" class="tl-btn">查看周报</el-button>
-                <el-button @click="score(scope.row)" type="text" class="tl-btn">评分</el-button>
+                <el-button
+                  v-if="!scope.row.score"
+                  @click="score(scope.row,'create')"
+                  type="text"
+                  class="tl-btn"
+                >评价</el-button>
+                <el-button
+                  v-if="scope.row.score"
+                  @click="score(scope.row,'edit')"
+                  type="text"
+                  class="tl-btn"
+                >修改评价</el-button>
                 <el-button @click="detail(scope.row)" type="text" class="tl-btn">评分详情</el-button>
               </template>
             </el-table-column>
@@ -194,11 +210,11 @@ export default {
     changeSearch() {
       this.searchList();
     },
-    score(data) {
+    score(data, type) {
       const self = this;
       self.scoreExist = true;
       self.$nextTick(() => {
-        self.$refs.score.show(data);
+        self.$refs.score.show(data, type);
       });
     },
     detail(data) {

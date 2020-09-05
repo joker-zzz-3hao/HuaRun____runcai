@@ -20,4 +20,14 @@ export default class Server extends ServerBase {
   lookQuickly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/look', param);
   }
+
+  // 查询周报
+  queryWeekly(param) {
+    return this._ajaxPost(`gateway/weekly-service/weekly/get?weeklyId=${param.weeklyId}`, param);
+  }
+
+  // 点赞
+  support(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/support', param);
+  }
 }

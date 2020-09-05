@@ -819,7 +819,6 @@ export default {
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              // 如果是详情则从详情中取值
               if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyData.weeklyOkrVoList.forEach((element) => {
@@ -837,7 +836,7 @@ export default {
               // this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
               // 如果是详情则从详情中取值
-              if (data.supportMyOkrObj.kr.id) {
+              if (data.supportMyOkrObj.o.id) {
                 // 后端数据中匹配
                 this.weeklyData.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
