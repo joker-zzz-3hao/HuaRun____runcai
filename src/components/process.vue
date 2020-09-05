@@ -1,9 +1,9 @@
 <template>
-  <div style="display: flex;">
-    <div class="parent-class" v-for="item in processList" :key="item.id">
-      <div class="children-class" :style="item.width"></div>
+  <div class="tl-progress-bar">
+    <div class="progress-bg" v-for="item in processList" :key="item.id">
+      <div class="current-progress" :style="item.width"></div>
     </div>
-    <div>{{data}}%</div>
+    <div class="progress-number">{{data}}%</div>
   </div>
 </template>
 
@@ -18,10 +18,7 @@ export default {
   components: {},
   props: {
     data: {
-      type: Array,
-      default() {
-        return [];
-      },
+      default: 0,
     },
   },
   mounted() {
@@ -32,11 +29,11 @@ export default {
     for (let i = 0; i < 5; i += 1) {
       if (i < a) {
         self.processList.push({
-          width: 'width: 30px;',
+          width: 'width: 16px;',
         });
       } else if (i == a) {
         self.processList.push({
-          width: `width: ${(b / 20) * 30}px`,
+          width: `width: ${(b / 20) * 16}px`,
         });
       } else {
         self.processList.push({
@@ -49,18 +46,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.parent-class {
-  width: 30px;
-  height: 10px;
-  position: relative;
-  margin-left: 10px;
-}
-.children-class {
-  height: 10px;
-  position: absolute;
-  top: 0;
-  left: 0px;
-  background-color: slateblue;
-}
-</style>

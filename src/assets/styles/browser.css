@@ -29,3 +29,9 @@ _::-webkit-full-page-media, _:future, :root .associated-undertaking .operating-b
 _::-webkit-full-page-media, _:future, :root .my-okr .operating-panel .tl-select {
   width: 189px;
 }
+
+@media screen and (min-width:1367px) {
+  .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
+    left: -60px;
+  }
+}

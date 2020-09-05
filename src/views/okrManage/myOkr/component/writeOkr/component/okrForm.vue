@@ -68,13 +68,13 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled': formData.okrInfoList.length === 1}"
+              :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-clear"
-              @click.native="formData.okrInfoList.length > 1 && deleteobject(index)"
-              :disabled="formData.okrInfoList.length == 1"
+              @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
+              :disabled="isnew && formData.okrInfoList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
@@ -126,13 +126,13 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled': oitem.krList.length === 1}"
+              :class="{'is-disabled':isnew && oitem.krList.length === 1}"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-clear"
-              @click.native="oitem.krList.length > 1 && deletekr(index,kindex)"
-              :disabled="oitem.krList.length == 1"
+              @click.native="(!isnew || oitem.krList.length > 1) && deletekr(index,kindex)"
+              :disabled="isnew && oitem.krList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
@@ -235,17 +235,9 @@ export default {
       type: Object,
       required: true,
     },
-    canWrite: {
-      type: Boolean,
-      default: true,
-    },
     isnew: {
       type: Boolean,
       default: true,
-    },
-    periodId: {
-      type: String,
-      default: '',
     },
   },
   mounted() {
@@ -267,6 +259,7 @@ export default {
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
+      console.log('获取暂存的草稿', JSON.parse(this.searchForm.draftParams));
       this.searchOkr();
       this.getCultureList();
     },
@@ -325,20 +318,16 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
-      if (this.formData.okrInfoList.length < 1) {
-        this.$message('至少有一个目标');
-        return;
-      }
       this.formData.okrInfoList.splice(oindex, 1);
     },
     // 查可关联承接的okr
     searchOkr() {
-      console.log('变更时点添加', this.periodId);
       // eslint-disable-next-line max-len
-      this.server.getUndertakeOkr({ periodId: this.periodId || this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
         if (res.code == 200) {
           // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
           if (res.data.parentUndertakeOkrInfoResult) {
+            this.departokrList = [];
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
                 typeName: '目标O',
@@ -373,7 +362,6 @@ export default {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
-                    console.log('草稿', pitem.undertakeOkrObjectKr);
                     // item.undertakeOkrVo.undertakeOkrObjectKr = pitem.undertakeOkrObjectKr;
                   }
                 });
@@ -459,12 +447,14 @@ export default {
             this.$message.error('结果KR权重值总和必须为100');
             return;
           }
+          if (this.searchForm.okrCycle.periodId) {
+            this.formData.periodId = this.searchForm.okrCycle.periodId;
+          } else {
+            this.$message.error('请选择目标周期');
+          }
           this.formData.okrBelongType = this.searchForm.okrType;
-          this.formData.periodId = this.searchForm.okrCycle.periodId;
           this.formData.okrDraftId = this.searchForm.draftId;
-          console.log('提交结果', this.formData);
           this.server.addokr(this.formData).then((res) => {
-            console.log(res);
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
@@ -473,7 +463,7 @@ export default {
             } else if (res.code == 30000) {
               this.$xconfirm({
                 content: '',
-                title: '当前周期已提交提交，是否保存为草稿？',
+                title: '当前周期已提交，是否保存为草稿？',
               }).then(() => {
               // 提交确认弹窗
                 this.saveDraft();
@@ -492,6 +482,11 @@ export default {
       ) {
         return;
       }
+      if (this.searchForm.okrCycle.periodId) {
+        this.formData.periodId = this.searchForm.okrCycle.periodId;
+      } else {
+        this.$message.error('请选择目标周期');
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
           if (oitem.departokrList) {
@@ -500,7 +495,6 @@ export default {
           }
         });
         this.formData.okrBelongType = this.searchForm.okrType;
-        this.formData.periodId = this.searchForm.okrCycle.periodId;
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
           if (res.code == 200) {
@@ -520,21 +514,7 @@ export default {
         });
       }
     },
-    deleteDraft() {
-      this.$xconfirm({
-        content: '请问您是否确定删除？',
-        title: '如果您要确定删除，该OKR将无法恢复',
-      }).then(() => {
-        // 提交确认弹窗
-        this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
-          if (res.code == 200) {
-            this.$message('提交成功~');
-            // 关闭抽屉
-            this.close();
-          }
-        });
-      }).catch(() => {});
-    },
+
     close() {
       this.setCreateokrDrawer(false);
     },
@@ -545,16 +525,15 @@ export default {
         if (newVal && newVal.periodId) {
           this.searchOkr();
           this.getCultureList();
-          console.log('周期', newVal);
           this.periodName = newVal.periodName;
         }
       },
       deep: true,
       immediate: true,
     },
-    'searchForm.okrStatus': {
-      handler(newVal) {
-        if (newVal == '6' || newVal == '8') {
+    searchForm: {
+      handler() {
+        if (this.searchForm.okrStatus == '6') {
           this.getOkrDraftById();
         }
       },

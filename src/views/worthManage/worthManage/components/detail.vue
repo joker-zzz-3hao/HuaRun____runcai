@@ -14,8 +14,8 @@
       class="tl-drawer"
     >
       <div>
-        <div v-if="data.score">{{CONST.SCORE_MAP[data.score]}}</div>
-        <div v-else>{{data.scoreLabel}}</div>
+        <div>{{CONST.SCORE_MAP[data.score]}}</div>
+        <div>{{data.scoreLabel}}</div>
         <div>{{data.scoreDesc}}</div>
       </div>
     </el-dialog>

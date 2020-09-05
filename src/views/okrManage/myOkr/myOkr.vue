@@ -65,7 +65,7 @@
               <i class="el-icon-user"></i>
               <em>负责人</em>
             </dt>
-            <dd>{{item.okrMain.userName}}</dd>
+            <dd>{{userInfo.userName}}</dd>
           </dl>
           <dl class="okr-progress">
             <dt>
@@ -75,18 +75,28 @@
             <dd>
               <el-progress
                 type="circle"
-                :percentage="parseInt(item.okrMain.okrProgress, 10)"
-                width="60"
-                stroke-width="5"
+                :percentage="item.okrMain.okrProgress"
+                :width="60"
+                :stroke-width="5"
                 color="#4ccd79"
-                class="tl-progress"
+                class="tl-progress-circle"
               ></el-progress>
             </dd>
           </dl>
-          <dl v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+          <dl>
             <dt>
-              <i class="el-icon-edit-outline"></i>
-              <em>变更</em>
+              <div v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+                <i class="el-icon-edit-outline"></i>
+                <em>变更</em>
+              </div>
+              <div
+                v-if="['6'].includes(searchForm.status)"
+                @click="deleteDraft(item.id)"
+                class="okr-delete"
+              >
+                <i class="el-icon-delete"></i>
+                <em>删除</em>
+              </div>
             </dt>
           </dl>
           <dl class="update-time">
@@ -107,21 +117,30 @@
             :status="searchForm.status"
             @openDialog="openDialog(item)"
             @goDraft="goDraft(item)"
+            :expands="expands"
           >
             <template slot="head-undertake" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
             <template slot="weight-bar" slot-scope="props">
-              <el-button v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">更新进度</el-button>
+              <template v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">
+                <i class="el-icon-refresh"></i>
+              </template>
             </template>
             <template slot="body-bar" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
           </tl-okr-table>
         </div>
@@ -133,31 +152,33 @@
 
     <tl-writeokr
       ref="tl-writeokr"
-      v-if="writeokrExist"
       :exist.sync="writeokrExist"
+      v-if="writeokrExist"
       :writeInfo="writeInfo"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
       ref="tl-changeokr"
-      v-if="changeokrExist"
       :exist.sync="changeokrExist"
+      v-if="changeokrExist"
       :writeInfo="writeInfo"
+      :drawerTitle="drawerTitle"
       @success="searchOkr(searchForm.status)"
     ></tl-changeokr>
     <tl-okr-detail
       ref="tl-okr-detail"
-      v-if="detailExist"
       :exist.sync="detailExist"
+      v-if="detailExist"
       :server="server"
       :okrId="okrId"
       :CONST="CONST"
       :okrItem="okrItem"
+      :drawerTitle="drawerTitle"
     ></tl-okr-detail>
     <tl-okr-update
       ref="tl-okr-update"
-      v-if="updateExist"
       :exist.sync="updateExist"
+      v-if="updateExist"
       :server="server"
       :okrId="okrId"
       :okrItem="okrItem"
@@ -226,6 +247,9 @@ export default {
       userInfo: (state) => state.userInfo,
       okrSuccess: (state) => state.okrSuccess,
     }),
+    expands() {
+      return [this.okrList[0].tableList[0].okrDetailId];
+    },
   },
   created() {
     this.getOkrCycleList();
@@ -251,9 +275,13 @@ export default {
             this.okrList = [];
             const draftList = res.data || [];
             if (draftList.length > 0) {
-              draftList.forEach((item) => {
+              draftList.forEach((item, index) => {
                 let okrInfo = {};
                 okrInfo = JSON.parse(item.paramJson);
+                // 起草中默认展开第一个
+                if (index == 0) {
+                  okrInfo.okrInfoList[0].okrDetailId = 'draft01';
+                }
                 this.okrList.push({
                   tableList: okrInfo.okrInfoList,
                   okrMain: {
@@ -297,7 +325,7 @@ export default {
       this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
-      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}`;
       this.detailExist = true;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
@@ -314,7 +342,7 @@ export default {
     },
     // 打开变更
     goChangeOkr() {
-      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
+      this.drawerTitle = `${this.okrCycle.periodName}`;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
@@ -360,6 +388,21 @@ export default {
           this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
+    },
+    deleteDraft(draftId) {
+      this.$xconfirm({
+        content: '请问您是否确定删除？',
+        title: '如果您要确定删除，该OKR将无法恢复',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {
+          if (res.code == 200) {
+            this.$message('删除成功');
+            this.searchOkr('6');
+            // 关闭抽屉
+          }
+        });
+      }).catch(() => {});
     },
     borderSlip(item, index) {
       const borderWidth = document.querySelector('.border-slip');

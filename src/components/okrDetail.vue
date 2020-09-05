@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
   <div>
     <el-drawer
@@ -7,7 +8,7 @@
       :modal-append-to-body="true"
       :append-to-body="true"
       class="tl-drawer"
-      @close="closed"
+      @closed="closed"
       :before-close="close"
     >
       <el-tabs v-model="activeName">
@@ -29,9 +30,7 @@
               </li>
               <li>
                 <span>进度</span>
-                <span>
-                  <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-                </span>
+                <tl-process :data="okrmain.okrProgress"></tl-process>
               </li>
             </ul>
           </div>
@@ -67,19 +66,18 @@
                   <span>{{activity.operateTypeCn}}</span>
                   <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
                     <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                    <span
-                      v-if="uitem.updateContents.okrDetailObjectKr"
-                    >{{uitem.updateContents.okrDetailObjectKr}}</span>
+                    <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
                     <span
                       v-if="uitem.updateContents.afterProgress"
-                    >进度为{{uitem.updateContents.afterProgress}}%，</span>
+                    >进度为{{uitem.updateContents.afterProgress}}%</span>
                     <span
                       v-if="uitem.updateContents.afterConfidence"
-                    >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}。</span>
+                    >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
                   </div>
-
-                  <span v-if="activity.remark">说明：</span>
-                  <span v-if="activity.remark">{{activity.remark}}。</span>
+                  <div v-if="activity.remark">
+                    <span>说明：</span>
+                    <span>{{activity.remark}}</span>
+                  </div>
                 </div>
               </el-timeline-item>
             </el-timeline>
@@ -88,10 +86,30 @@
       </el-tabs>
       <!-- 点赞要一直浮着 -->
       <div v-if="showSupport">
-        <ul style="display:flex">
-          <el-button v-if="showLike" @click="like()">点赞</el-button>
-          <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+        <el-button @click="like()">
+          <span v-if="!supportType">点赞</span>
+          <span v-else>取消</span>
+        </el-button>
+        <ul v-if="showMore" class="ulclass">
+          <!-- 前10个 -->
+          <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
             <div class="user-name">{{cutName(item.userName)}}</div>
+            <div>{{item.userName}}</div>
+          </li>
+          <!-- 展开 -->
+          <li v-if="voteLength > 10 && showMore" class="user-info">
+            <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
+            <div>展开</div>
+          </li>
+        </ul>
+        <ul v-else class="ulclass">
+          <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+            <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
+            <div>{{item.userName}}</div>
+          </li>
+          <li class="user-info">
+            <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
+            <div>收起</div>
           </li>
         </ul>
       </div>
@@ -116,6 +134,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import okrHistory from './okrHistory';
 
@@ -129,19 +148,21 @@ export default {
       canWrite: true, // true写okr false okr详情
       dialogTitle: 'OKR详情', // 弹框标题
       cycleList: [], // 操作历史
-      showLike: true, // okr地图查看详情可点赞
       supportType: 0, // 点赞1 取消赞0
       innerDrawer: false,
       activeName: 'detail',
       okrDetailId: '',
       userName: '张三',
       myokrDrawer: false,
-      drawerTitle: '详情',
+      showMore: true,
+      cutVoteList: [],
+      voteLength: 0,
     };
   },
   components: {
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
+    'tl-process': process,
   },
   props: {
     dialogExist: {
@@ -168,9 +189,14 @@ export default {
         return {};
       },
     },
+    // TODO: 详情点赞
     showSupport: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    drawerTitle: {
+      type: String,
+      defualt: 'OKR详情',
     },
   },
   computed: {
@@ -225,7 +251,13 @@ export default {
       this.server.getSupportList({ okrId: this.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.voteUser = res.data.supportUserList;
+          this.voteUser = res.data.supportUserList || [];
+          this.voteLength = this.voteUser.length;
+          if (this.voteLength > 10) {
+            this.cutVoteList = this.voteUser.slice(0, 9);
+          } else {
+            this.cutVoteList = this.voteUser.slice(0, this.voteLength);
+          }
         }
       });
     },
@@ -292,5 +324,15 @@ export default {
 }
 .detail {
   display: flex;
+}
+.ulclass li:nth-child(n) {
+  float: left;
+  display: inline;
+}
+.ulclass li:nth-child(10n + 1) {
+  clear: both;
+}
+.show-more {
+  display: none;
 }
 </style>
