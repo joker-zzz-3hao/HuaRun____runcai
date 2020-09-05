@@ -31,7 +31,7 @@ _::-webkit-full-page-media, _:future, :root .my-okr .operating-panel .tl-select 
 }
 
 @media screen and (min-width:1367px) {
-  .page-register .panel-wrap {
-    padding: 20px 0 30px 0;
+  .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
+    left: -60px;
   }
 }

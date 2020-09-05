@@ -46,7 +46,7 @@
       </template>
     </el-table-column>
     <!-- 目标O名称 无label -->
-    <el-table-column prop="okrDetailObjectKr" width="43%">
+    <el-table-column prop="okrDetailObjectKr" width="42%">
       <template slot-scope="scope">
         <span>目标</span>
         <em>{{scope.row.okrDetailObjectKr}}</em>
@@ -55,7 +55,7 @@
     <el-table-column prop="okrWeight" label="权重" width="6%">
       <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
     </el-table-column>
-    <el-table-column prop="okrDetailProgress" label="进度" width="15%">
+    <el-table-column prop="okrDetailProgress" label="进度" width="16%">
       <template slot-scope="scope">
         <tl-process :data="scope.row.okrDetailProgress"></tl-process>
       </template>
