@@ -225,11 +225,11 @@ export default [{
       component: () => import('@/views/weeklyManage/teamWeekly/index'),
     },
     {
-
       // 团队周报详情
       path: '/teamWeeklyInfo',
       name: 'teamWeeklyInfo',
       meta: {
+        belongsTo: 'teamWeekly',
         hasMainMenu: true,
         isSubMenu: true,
         parentRoute: 'teamWeekly',

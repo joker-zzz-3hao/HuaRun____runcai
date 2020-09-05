@@ -1,4 +1,7 @@
-import { mapState, mapMutations } from 'vuex';
+import {
+  mapState,
+  mapMutations
+} from 'vuex';
 
 export default {
   data() {
@@ -64,7 +67,7 @@ export default {
               });
             });
             break;
-          // 系统管理员
+            // 系统管理员
           case 'sys_system':
             item.children.forEach((tItem) => {
               self.classTagList = [];
@@ -94,7 +97,7 @@ export default {
               });
             });
             break;
-          // 润才
+            // 润才
           default:
             self.classTagList = [];
             self.classTagList.push(item.classTag);
@@ -124,6 +127,7 @@ export default {
             break;
         }
       });
+      debugger;
       self.setCrMenu(self.crList);
       self.setSystemMenu(self.systemList);
       self.setTalentMenu(self.talentList);
