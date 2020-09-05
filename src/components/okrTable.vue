@@ -8,14 +8,9 @@
   >
     <el-table-column type="expand" width="5%">
       <template slot-scope="scope">
-        <dl
-          v-for="kritem in scope.row.krList"
-          :key="kritem.krId"
-          @click="opensome(kritem)"
-          class="sub-tr"
-        >
+        <dl v-for="kritem in scope.row.krList" :key="kritem.krId" class="sub-tr">
           <dd class="okr-line"></dd>
-          <dd class="okr-o-name">
+          <dd class="okr-o-name" @click="opensome(kritem)">
             <span>KR</span>
             <em>{{kritem.okrDetailObjectKr}}</em>
           </dd>

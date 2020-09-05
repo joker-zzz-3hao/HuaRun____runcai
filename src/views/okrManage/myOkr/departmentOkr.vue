@@ -93,22 +93,16 @@
         </ul>
       </div>
     </div>
-    <el-drawer
-      :wrapperClosable="false"
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
-      :before-close="handleClose"
-      :append-to-body="true"
-      class="tl-drawer"
-    >
-      <tl-okr-detail
-        v-if="myokrDrawer"
-        ref="okrdetail"
-        :server="server"
-        :okrId="okrId"
-        :CONST="CONST"
-      ></tl-okr-detail>
-    </el-drawer>
+
+    <tl-okr-detail
+      :exist.sync="detailExist"
+      v-if="detailExist"
+      ref="okrdetail"
+      :server="server"
+      :okrId="okrId"
+      :CONST="CONST"
+      :drawerTitle="drawerTitle"
+    ></tl-okr-detail>
   </div>
 </template>
 
@@ -149,6 +143,7 @@ export default {
       drawerTitle: 'OKR详情',
       okrCycle: {}, // 当前选择的周期
       periodList: [], // 周期列表
+      detailExist: false,
     };
   },
   props: {
@@ -206,14 +201,12 @@ export default {
     openDialog(val) {
       this.okrItem = val;
       this.drawerTitle = `${this.okrCycle.periodName}OKR`;
-      this.myokrDrawer = true;
+      this.detailExist = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();
       });
     },
-    handleClose() {
-      this.myokrDrawer = false;
-    },
+
     // 周期
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
@@ -241,6 +234,15 @@ export default {
       },
       immediate: true,
       deep: true,
+    },
+    '$route.name': {
+      handler(newVal) {
+        const routeIndex = newVal == 'myOkr' ? 0 : 1;
+        const liWidth = document.querySelectorAll('.tab-list li');
+        const borderWidth = document.querySelector('.border-slip');
+        borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+      },
+      immediate: true,
     },
   },
 };

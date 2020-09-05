@@ -84,9 +84,11 @@ export default {
     });
   },
   mounted() {
+    const routeIndex = this.$route.name == 'myOkr' ? 0 : 1;
     const liWidth = document.querySelectorAll('.tab-list li');
     const borderWidth = document.querySelector('.border-slip');
-    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
+    borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+    console.log('rote', routeIndex, this.$route.name);
   },
   methods: {
     goRoutesss(tab, event) {
@@ -114,7 +116,16 @@ export default {
     },
   },
   watch: {
-
+    '$route.name': {
+      handler(newVal) {
+        const routeIndex = newVal == 'myOkr' ? 0 : 1;
+        const liWidth = document.querySelectorAll('.tab-list li');
+        const borderWidth = document.querySelector('.border-slip');
+        borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+        console.log('rote', routeIndex, this.$route.name);
+      },
+      immediate: true,
+    },
   },
 };
 </script>
