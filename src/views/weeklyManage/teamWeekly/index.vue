@@ -128,7 +128,7 @@
                   v-if="scope.row.weeklyId"
                   type="text"
                   size="small"
-                  @click="weeklyInfo(scope.row.weeklyId)"
+                  @click="weeklyInfo(scope.row)"
                 >查看</el-button>
                 <span v-else>--</span>
               </template>
@@ -249,8 +249,8 @@ export default {
         }
       });
     },
-    weeklyInfo(weeklyId) {
-      this.go('teamWeeklyInfo', { query: { weeklyId, orgId: this.formData.orgId } });
+    weeklyInfo(weekly) {
+      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
     },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组

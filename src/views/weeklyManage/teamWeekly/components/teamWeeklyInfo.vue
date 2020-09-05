@@ -10,11 +10,11 @@
     <div>
       <span>当前周报</span>
       <span>
-        <el-avatar :size="30" :src="userInfo.headerUrl" @error="errorHandler">
+        <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
           <img src="@/assets/images/login-error.png" />
         </el-avatar>
       </span>
-      <span>{{userInfo.userName}}</span>
+      <span>{{$route.query.userName}}</span>
     </div>
     <div>
       <!-- 本周工作项 -->
@@ -85,9 +85,9 @@
       <!-- 个人okr完成度 -->
       <div v-if="weeklyOkrVoList.length > 0" style="marginTop:50px">
         <h2>个人okr完成度</h2>
-        <div v-for="item in weeklyOkrVoList" :key="item.okrdetailId">
+        <div v-for="item in weeklyOkrVoList" :key="item.okrDetailId">
           <!-- 目标+KR -->
-          <div v-if="item.parentOkrDetail.okrDetailId">
+          <div v-if="item.parentOkrDetail&&item.parentOkrDetail.okrDetailId">
             <el-row :gutter="20">
               <el-col :span="20">
                 <div>
@@ -282,7 +282,7 @@ export default {
           this.weeklyOkrVoList = res.data.weeklyOkrVoList;
           this.visitUserNameList = res.data.visitUserNameList;
           this.supportCount = res.data.supportCount;
-          this.weeklySupport = res.data.weeklySupport;
+          this.weeklySupport = res.data.weeklySupport || {};
         }
       });
     },
