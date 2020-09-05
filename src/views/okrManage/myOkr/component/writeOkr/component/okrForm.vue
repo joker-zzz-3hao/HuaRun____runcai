@@ -235,17 +235,9 @@ export default {
       type: Object,
       required: true,
     },
-    canWrite: {
-      type: Boolean,
-      default: true,
-    },
     isnew: {
       type: Boolean,
       default: true,
-    },
-    periodId: {
-      type: String,
-      default: '',
     },
   },
   mounted() {
@@ -333,9 +325,10 @@ export default {
     },
     // 查可关联承接的okr
     searchOkr() {
-      console.log('变更时点添加', this.periodId);
+      console.log('this.formData.periodId', this.formData.periodId);
+      console.log('this.searchForm.periodId', this.searchForm.periodId);
       // eslint-disable-next-line max-len
-      this.server.getUndertakeOkr({ periodId: this.periodId || this.formData.periodId || this.searchForm.periodId || this.searchForm.okrCycle.periodId }).then((res) => {
+      this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
         if (res.code == 200) {
           // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
           if (res.data.parentUndertakeOkrInfoResult) {
@@ -474,7 +467,7 @@ export default {
             } else if (res.code == 30000) {
               this.$xconfirm({
                 content: '',
-                title: '当前周期已提交提交，是否保存为草稿？',
+                title: '当前周期已提交，是否保存为草稿？',
               }).then(() => {
               // 提交确认弹窗
                 this.saveDraft();
@@ -521,21 +514,7 @@ export default {
         });
       }
     },
-    deleteDraft() {
-      this.$xconfirm({
-        content: '请问您是否确定删除？',
-        title: '如果您要确定删除，该OKR将无法恢复',
-      }).then(() => {
-        // 提交确认弹窗
-        this.server.deleteOkrDraft({ okrDraftId: this.searchForm.draftId }).then((res) => {
-          if (res.code == 200) {
-            this.$message('提交成功~');
-            // 关闭抽屉
-            this.close();
-          }
-        });
-      }).catch(() => {});
-    },
+
     close() {
       this.setCreateokrDrawer(false);
     },

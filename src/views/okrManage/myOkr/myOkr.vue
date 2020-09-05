@@ -75,7 +75,7 @@
             <dd>
               <el-progress
                 type="circle"
-                :percentage="parseInt(item.okrMain.okrProgress, 10)"
+                :percentage="item.okrMain.okrProgress"
                 width="60"
                 stroke-width="5"
                 color="#4ccd79"
@@ -89,7 +89,11 @@
                 <i class="el-icon-edit-outline"></i>
                 <em>变更</em>
               </div>
-              <div class="okr-delete">
+              <div
+                v-if="['6'].includes(searchForm.status)"
+                @click="deleteDraft(item.id)"
+                class="okr-delete"
+              >
                 <i class="el-icon-delete"></i>
                 <em>删除</em>
               </div>
@@ -364,6 +368,21 @@ export default {
           this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
+    },
+    deleteDraft(draftId) {
+      this.$xconfirm({
+        content: '请问您是否确定删除？',
+        title: '如果您要确定删除，该OKR将无法恢复',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {
+          if (res.code == 200) {
+            this.$message('删除成功');
+            this.searchOkr('6');
+            // 关闭抽屉
+          }
+        });
+      }).catch(() => {});
     },
     borderSlip(item, index) {
       const borderWidth = document.querySelector('.border-slip');

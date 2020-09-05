@@ -67,13 +67,7 @@
             <dd>{{userName}}</dd>
           </dl>
         </div>
-        <okr-form
-          ref="okrform"
-          v-if="canWrite"
-          :searchForm="searchForm"
-          :server="server"
-          :canWrite="canWrite"
-        ></okr-form>
+        <okr-form ref="okrform" :searchForm="searchForm" :server="server"></okr-form>
       </div>
     </el-scrollbar>
     <div class="operating-box">
