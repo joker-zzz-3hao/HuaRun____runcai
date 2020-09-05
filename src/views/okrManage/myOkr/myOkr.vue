@@ -76,8 +76,8 @@
               <el-progress
                 type="circle"
                 :percentage="item.okrMain.okrProgress"
-                width="60"
-                stroke-width="5"
+                :width="60"
+                :stroke-width="5"
                 color="#4ccd79"
                 class="tl-progress-circle"
               ></el-progress>
@@ -145,12 +145,14 @@
     <tl-writeokr
       ref="tl-writeokr"
       :exist.sync="writeokrExist"
+      v-if="writeokrExist"
       :writeInfo="writeInfo"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
       ref="tl-changeokr"
       :exist.sync="changeokrExist"
+      v-if="changeokrExist"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
       @success="searchOkr(searchForm.status)"
@@ -158,6 +160,7 @@
     <tl-okr-detail
       ref="tl-okr-detail"
       :exist.sync="detailExist"
+      v-if="detailExist"
       :server="server"
       :okrId="okrId"
       :CONST="CONST"
@@ -167,6 +170,7 @@
     <tl-okr-update
       ref="tl-okr-update"
       :exist.sync="updateExist"
+      v-if="updateExist"
       :server="server"
       :okrId="okrId"
       :okrItem="okrItem"

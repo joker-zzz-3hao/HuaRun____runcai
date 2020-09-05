@@ -7,7 +7,7 @@
       :append-to-body="true"
       :modal-append-to-body="true"
       class="tl-drawer"
-      @close="closed"
+      @closed="closed"
       :before-close="close"
     >
       <!-- 公共信息 -->

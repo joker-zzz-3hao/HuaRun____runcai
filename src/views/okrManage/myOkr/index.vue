@@ -27,7 +27,9 @@
     <tl-writeokr
       ref="writeokr"
       :exist.sync="writeokrExist"
+      v-if="writeokrExist"
       :userName="userInfo.userName"
+      :writeInfo="writeInfo"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
   </div>
@@ -60,6 +62,7 @@ export default {
         },
       ],
       writeokrExist: false,
+      writeInfo: {},
     };
   },
   computed: {
@@ -92,6 +95,9 @@ export default {
       this.go(this.activeName);
     },
     goWriteOkr() {
+      this.writeInfo = {
+        canWrite: 'new',
+      };
       this.writeokrExist = true;
       this.$nextTick(() => {
         this.$refs.writeokr.showOkrDialog();

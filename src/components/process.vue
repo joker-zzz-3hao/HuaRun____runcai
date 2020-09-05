@@ -18,10 +18,7 @@ export default {
   components: {},
   props: {
     data: {
-      type: Array,
-      default() {
-        return [];
-      },
+      default: 0,
     },
   },
   mounted() {

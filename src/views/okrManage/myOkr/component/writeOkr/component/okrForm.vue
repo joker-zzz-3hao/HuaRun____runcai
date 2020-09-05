@@ -259,6 +259,7 @@ export default {
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
+      console.log('获取暂存的草稿', JSON.parse(this.searchForm.draftParams));
       this.searchOkr();
       this.getCultureList();
     },
@@ -317,16 +318,10 @@ export default {
     },
     // 删除o
     deleteobject(oindex) {
-      if (this.formData.okrInfoList.length < 1) {
-        this.$message('至少有一个目标');
-        return;
-      }
       this.formData.okrInfoList.splice(oindex, 1);
     },
     // 查可关联承接的okr
     searchOkr() {
-      console.log('this.formData.periodId', this.formData.periodId);
-      console.log('this.searchForm.periodId', this.searchForm.periodId);
       // eslint-disable-next-line max-len
       this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
         if (res.code == 200) {
@@ -367,7 +362,6 @@ export default {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
-                    console.log('草稿', pitem.undertakeOkrObjectKr);
                     // item.undertakeOkrVo.undertakeOkrObjectKr = pitem.undertakeOkrObjectKr;
                   }
                 });
@@ -456,9 +450,7 @@ export default {
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.periodId = this.searchForm.okrCycle.periodId;
           this.formData.okrDraftId = this.searchForm.draftId;
-          console.log('提交结果', this.formData);
           this.server.addokr(this.formData).then((res) => {
-            console.log(res);
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
               this.$refs.dataForm.resetFields();
@@ -525,16 +517,15 @@ export default {
         if (newVal && newVal.periodId) {
           this.searchOkr();
           this.getCultureList();
-          console.log('周期', newVal);
           this.periodName = newVal.periodName;
         }
       },
       deep: true,
       immediate: true,
     },
-    'searchForm.okrStatus': {
-      handler(newVal) {
-        if (newVal == '6' || newVal == '8') {
+    searchForm: {
+      handler() {
+        if (this.searchForm.okrStatus == '6') {
           this.getOkrDraftById();
         }
       },
