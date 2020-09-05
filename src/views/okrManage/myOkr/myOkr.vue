@@ -56,7 +56,7 @@
               <em>状态</em>
             </dt>
             <dd>
-              <i></i>
+              <i class="el-icon-sunny"></i>
               <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
             </dd>
           </dl>

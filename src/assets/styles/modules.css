@@ -1547,7 +1547,8 @@
   align-items: center;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span,
+.card-panel-body .tl-table .sub-tr .okr-o-name span {
   margin: 0 6px 0 0;
   width: 32px;
   height: 18px;
@@ -1558,9 +1559,26 @@
   border-radius: 2px;
 }
 
+.card-panel-body .tl-table .sub-tr .okr-o-name span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #acb6bf;
+  color: #fff;
+}
+
+.card-panel-body .tl-table .sub-tr .okr-o-name em {
+  flex: 1;
+  color: #7a828a;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all .4s ease-out;
+}
+
 .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em {
   flex: 1;
-  width: calc(43% - 60px);
+  width: calc(42% - 60px);
   color: #26282a;
   overflow: hidden;
   white-space: nowrap;
@@ -1582,13 +1600,15 @@
 }
 
 .card-panel-body .tl-table .el-table__row td:nth-child(6),
-.card-panel-body .tl-table .el-table__row td:nth-child(7) i {
+.card-panel-body .tl-table .el-table__row td:nth-child(7) i,
+.card-panel-body .tl-table .sub-tr .okr-undertake {
   cursor: pointer;
   transition: all .4s ease-out;
 }
 
 .card-panel-body .tl-table .el-table__row td:nth-child(6):hover,
-.card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover {
+.card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover,
+.card-panel-body .tl-table .sub-tr .okr-undertake:hover {
   color: #685df1;
 }
 

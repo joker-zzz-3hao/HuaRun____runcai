@@ -30,6 +30,7 @@ export default {
             type: 'value',
             show: true,
           },
+
         ],
         series: [{
           // eslint-disable-next-line max-len

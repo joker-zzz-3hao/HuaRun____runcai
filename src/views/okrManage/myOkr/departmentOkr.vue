@@ -23,23 +23,50 @@
     </div>
     <div class="cont-panel">
       <div v-if="tableList.length>0" class="tl-card-panel">
-        <!-- 公共信息 -->
         <div class="card-panel-head">
-          <div>{{okrCycle.periodName}}OKR</div>
-          <ul class="okrMain">
-            <li>
-              <span>状态：</span>
-              <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-            </li>
-            <li>
-              <span>负责人</span>
-              <span>{{okrMain.userName}}</span>
-            </li>
-            <li>
-              <span>OKR进度</span>
-              <el-progress type="circle" :percentage="parseInt(okrMain.okrProgress, 10) || 0"></el-progress>
-            </li>
-          </ul>
+          <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+          <dl class="okr-state">
+            <dt>
+              <i class="el-icon-set-up"></i>
+              <em>状态</em>
+            </dt>
+            <dd>
+              <i class="el-icon-sunny"></i>
+              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            </dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <i class="el-icon-user"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{okrMain.userName}}</dd>
+          </dl>
+          <dl class="okr-progress">
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>OKR进度</em>
+            </dt>
+            <dd>
+              <el-progress
+                type="circle"
+                :percentage="parseInt(okrMain.okrProgress, 10) || 0"
+                :width="60"
+                :stroke-width="5"
+                color="#4ccd79"
+                class="tl-progress-circle"
+              ></el-progress>
+            </dd>
+          </dl>
+          <dl class="update-time">
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>
+              <em>{{okrMain.updateTime || okrMain.createTime}}</em>
+            </dd>
+          </dl>
         </div>
         <div class="card-panel-body">
           <tl-okr-table
@@ -50,16 +77,22 @@
             @openDialog="openDialog()"
           >
             <template slot="head-undertake" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
             <template slot="body-bar" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
           </tl-okr-table>
         </div>
@@ -67,12 +100,7 @@
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>
-    </div>
-
-    <!-- 展示头像 -->
-    <div>
-      <!-- 基层员工视图 -->
-      <div v-if="memberList.length>0">
+      <div v-if="memberList.length>0" class="tl-card-panel">
         <span>{{departmentName}}成员OKR</span>
         <ul style="display:flex">
           <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
@@ -81,9 +109,7 @@
           </li>
         </ul>
       </div>
-
-      <!-- 部门负责人视图 -->
-      <div v-if="orgTable.length>0">
+      <div v-if="orgTable.length>0" class="tl-card-panel">
         <span>{{departmentName}}</span>
         <ul style="display:flex">
           <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
@@ -108,7 +134,6 @@
 
 <script>
 import { mapState } from 'vuex';
-// import periodSelect from '@/components/periodSelect';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import Server from './server';
@@ -119,7 +144,6 @@ const server = new Server();
 export default {
   name: 'departmentOkr',
   components: {
-    // 'tl-periodselect': periodSelect,
     'tl-okr-table': okrTable,
     'tl-okr-detail': okrDetail,
   },
@@ -167,6 +191,11 @@ export default {
       this.departmentName = this.userInfo.orgName || '部门';
     }
     console.log(this.departmentName);
+  },
+  mounted() {
+    const liWidth = document.querySelectorAll('.tab-list li');
+    const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.width = `${liWidth[1].offsetWidth}px`;
   },
   methods: {
     searchOkr() { // 默认搜索进行时

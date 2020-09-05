@@ -6,7 +6,7 @@
         :disabled="false"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog()"
+        @openDialog="openDialog"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button

@@ -1,14 +1,14 @@
 <template>
   <div class="personPage">
     <el-button v-if="showBack&&$route.query.id" @click="$router.back()">返回</el-button>
-    <el-select v-model="depart" placeholder="请选择" @change="selectOrg">
+    <!-- <el-select v-model="depart" placeholder="请选择" @change="selectOrg">
       <el-option
         v-for="item in userInfo.orgList"
         :key="item.orgId"
         :label="item.orgName"
         :value="item.orgId"
       ></el-option>
-    </el-select>
+    </el-select>-->
     <el-select v-model="value" placeholder="请选择" @change="selectPeriod">
       <el-option
         v-for="item in options"
