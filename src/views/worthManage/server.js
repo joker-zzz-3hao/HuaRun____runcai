@@ -5,6 +5,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/weekly-service/weekly/events', param);
   }
 
+  orgCulture(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/orgCulture', param);
+  }
+
   queryCultureList(param) {
     return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
@@ -19,5 +23,9 @@ export default class Server extends ServerBase {
 
   getOkrCycleList(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
+
+  tenantCultureScore(param) {
+    return this._ajaxPost('gateway/weekly-service/weekly/statistic/tenantCultureScore', param);
   }
 }
