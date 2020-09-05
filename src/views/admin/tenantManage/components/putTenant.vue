@@ -87,6 +87,13 @@ export default {
     },
   },
   data() {
+    const validatePhone = (value, callback) => {
+      if (!(/^([0-9]{3,4}-)?[0-9]{7,8}$/.test(value))) {
+        callback(new Error('请输入正确手机号'));
+      }
+      // callback();
+    };
+
     return {
       postMenu: false,
       server,
@@ -105,6 +112,7 @@ export default {
         endTime: '',
 
       },
+
       rules: {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
           {
@@ -131,7 +139,7 @@ export default {
             message: '请输入联系电话',
             trigger: 'blur',
           },
-
+          { validator: validatePhone, trigger: 'blur' },
         ],
 
       },

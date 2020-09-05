@@ -47,24 +47,14 @@
         <em>OKR承接与变更统计</em>
       </div>
       <div>
-        <table border="1">
-          <tr>
-            <td></td>
-            <td v-for="(item,index) in mainData" :key="index">{{item.orgName}}</td>
-          </tr>
-          <tr>
-            <td>承接数</td>
-            <td v-for="(item,index) in mainData" :key="index">{{item.okrContinueCount}}</td>
-          </tr>
-          <tr>
-            <td>变更数</td>
-            <td v-for="(item,index) in mainData" :key="index">{{item.okrChangeCount}}</td>
-          </tr>
-          <tr>
-            <td>总人数</td>
-            <td v-for="(item,index) in mainData" :key="index">{{item.personCount}}</td>
-          </tr>
-        </table>
+        <ul class="flex">
+          <li v-for="(item,index) in mainData" :key="index">
+            <dd>{{item.orgName}}</dd>
+            <dd>承接数:{{item.okrContinueCount}}</dd>
+            <dd>变更数:{{item.okrChangeCount}}</dd>
+            <dd>总人数:{{item.personCount}}</dd>
+          </li>
+        </ul>
       </div>
     </div>
     <tl-weeking :orgTable="orgTable"></tl-weeking>
@@ -146,6 +136,10 @@ export default {
 };
 </script>
 <style  scoped>
+.flex {
+  display: flex;
+  flex-direction: row;
+}
 .creatOkr {
   width: 100%;
   min-height: 200px;

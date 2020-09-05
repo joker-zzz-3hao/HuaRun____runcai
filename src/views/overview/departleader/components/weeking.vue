@@ -3,12 +3,7 @@
     <div class="model">
       <div>OKR风险状态统计</div>
       <div>
-        <el-select
-          placeholder="请选择"
-          class="selectTime"
-          v-model="periodId"
-          @change="getriskStatistics"
-        >
+        <el-select placeholder="请选择" class="selectTime" v-model="periodId" @change="changeTime">
           <el-option
             v-for="item in options"
             :key="item.id"
@@ -22,8 +17,8 @@
         <li
           v-for="(item,index) in orgTable"
           :key="index"
-          :class="{ 'active':active==index }"
-          @click="changIdAction(item.orgId,index)"
+          :class="{'active':active[item.orgId] }"
+          @click="changIdAction(item.orgId)"
         >
           {{
           item.orgName
@@ -111,7 +106,7 @@ export default {
       tableData: [],
       moodDataX: [],
       moodDataY: [],
-      active: 0,
+      active: {},
     };
   },
   computed: {
@@ -165,10 +160,15 @@ export default {
         this.tableData = res.data;
       });
     },
-    changIdAction(id, index) {
+    changIdAction(id) {
       this.orgId = id;
+      if (this.active[id]) {
+        this.$set(this.active, id, false);
+      } else {
+        this.$set(this.active, id, true);
+      }
 
-      this.active = index;
+      console.log(this.active);
       this.getriskStatistics();
     },
     getokrQuery() {
@@ -178,6 +178,11 @@ export default {
         this.orgId = this.orgTable[0].orgId;
         this.getriskStatistics();
       });
+    },
+    changeTime() {
+      this.echartDataY = [];
+      this.active = {};
+      this.getriskStatistics();
     },
     getriskStatistics() {
       this.server.riskStatistics({
@@ -214,12 +219,46 @@ export default {
 
         // eslint-disable-next-line valid-typeof
         const array = res.data.datas ? res.data.datas.filter((item) => item) : [];
-        this.echartDataY.push({
-          type: 'line',
-          symbol: 'circle',
-          showAllSymbol: true,
-          data: res.data.datas ? array.map((item) => [item.createDate, item.allScore]) : [],
-        });
+        const boolId = this.echartDataY.some((item) => item.orgId == this.orgId);
+        if (!boolId) {
+          this.echartDataY.push({
+            orgId: this.orgId,
+            type: 'line',
+            symbol: 'circle',
+            showAllSymbol: true,
+            symbolSize: 7,
+            data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
+          });
+        }
+        if (!this.active[this.orgId]) {
+          this.echartDataY.forEach((item, index) => {
+            if (item.orgId == this.orgId) {
+              this.echartDataY[index] = {
+                orgId: this.orgId,
+                type: 'line',
+                symbol: 'circle',
+                symbolSize: 7,
+                showAllSymbol: true,
+                data: [],
+              };
+            }
+          });
+        } else {
+          this.echartDataY.forEach((item, index) => {
+            if (item.orgId == this.orgId) {
+              this.echartDataY[index] = {
+                orgId: this.orgId,
+                type: 'line',
+                symbol: 'circle',
+                showAllSymbol: true,
+                symbolSize: 7,
+                data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
+              };
+            }
+          });
+        }
+
+        console.log(this.echartDataY);
 
         this.init();
       });
@@ -230,6 +269,18 @@ export default {
       const option = {
         xAxis: {
           data: that.echartDataX,
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
         },
         legend: {
           data: that.orgTable.map((item) => item.orgName),
@@ -238,7 +289,21 @@ export default {
         yAxis: {
           min: 0,
           max: 7,
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+
+          },
           axisLabel: {
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
             formatter(value) {
               const texts = [];
               if (value == 0) {
@@ -254,7 +319,6 @@ export default {
             },
           },
         },
-        dataZoom: { show: true },
         tooltip: {},
         series: that.echartDataY,
 
@@ -270,6 +334,7 @@ export default {
           source: that.moodDataY,
         },
         legend: {
+          bottom: 'bottom',
           data: ['0', '50', '100'],
           formatter(params) {
             if (params == '0') {
@@ -293,17 +358,63 @@ export default {
             <div>开心${params.data[3] ? params.data[3] : 0}</div>`;
           },
         },
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLabel: {
+            interval: 0,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
+        },
         yAxis: {
           min: 0,
           max: 50,
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
         },
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
-          { type: 'bar' },
-          { type: 'bar' },
-          { type: 'bar' },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#FFBC20' },
+            },
+          },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#3F7DFF' },
+            },
+          },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#FB4C59' },
+            },
+          },
         ],
       };
 

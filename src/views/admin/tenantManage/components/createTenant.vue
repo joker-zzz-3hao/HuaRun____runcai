@@ -98,7 +98,7 @@ export default {
         tenantName: [{ required: true, message: '请输入租户名称', trigger: 'blur' },
           {
             pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
-            message: '请输入中文或者字母',
+            message: '仅支持输入中文或者字母',
             trigger: 'blur',
           },
 
@@ -106,12 +106,18 @@ export default {
         applyUser: [{ required: true, message: '请输入申请人名称', trigger: 'blur' },
           {
             pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
-            message: '请输入中文或者字母',
+            message: '仅支持输入中文或者字母',
             trigger: 'blur',
           },
         ],
         tenantId: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
+
+        },
+        {
+          pattern: !/[\u4E00-\u9FA5\uF900-\uFA2D]/,
+          message: '不支持中文',
+          trigger: 'blur',
         },
         ],
         mobilePhone: [

@@ -31,8 +31,8 @@ export default {
   },
   methods: {
     checkData() {
-      this.mainDataX = this.mainData.map((item) => item.okrProgress);
-      this.mainDataY = this.mainData.map((item) => item.orgName);
+      this.mainDataY = this.mainData.map((item) => item.okrProgress);
+      this.mainDataX = this.mainData.map((item) => item.orgName);
       this.mainCount = this.mainData.map((item) => item.okrProgressUpdateCount);
       this.init();
       this.initCount();
@@ -56,25 +56,91 @@ export default {
           containLabel: true,
         },
         xAxis: {
+          boundaryGap: false,
+          data: that.mainDataX,
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+
+          },
+          axisLabel: {
+            interval: 0,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+            formatter(value) {
+              let ret = '';// 拼接加\n返回的类目项
+              const maxLength = 4;// 每项显示文字个数
+              const valLength = value.length;// X轴类目项的文字个数
+              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+              if (rowN > 1)// 如果类目项的文字大于3,
+              // eslint-disable-next-line brace-style
+              {
+                // eslint-disable-next-line no-plusplus
+                for (let i = 0; i < rowN; i++) {
+                  let temp = '';// 每次截取的字符串
+                  const start = i * maxLength;// 开始截取的位置
+                  const end = start + maxLength;// 结束截取的位置
+                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+                  temp = `${value.substring(start, end)}\n`;
+                  ret += temp; // 拼接最终的字符串
+                }
+                return ret;
+              }
+              return value;
+            },
+          },
+        },
+        yAxis: {
           type: 'value',
-          boundaryGap: [0, 0.01],
           max: 100,
-          splitNumber: 10,
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
           axisLabel: {
             show: true,
             interval: 'auto',
             formatter: '{value} %',
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
           },
-        },
-        yAxis: {
-          type: 'category',
-          data: that.mainDataY,
+
         },
         series: [
           {
-            type: 'bar',
-            barWidth: 20,
-            data: that.mainDataX,
+            type: 'line',
+            smooth: true,
+            symbolSize: 10,
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#3F7DFF',
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(100,178,237,0.1)',
+                  },
+                  ],
+                ),
+              },
+            },
+            data: that.mainDataY,
+            itemStyle: {
+              color: '#3F7DFF',
+            },
 
           },
         ],
@@ -88,14 +154,24 @@ export default {
       const option = {
 
         axisLine: {
-
           symbol: ['none', 'arrow'],
+
         },
         xAxis: {
           type: 'category',
-          data: that.mainDataY,
+          data: that.mainDataX,
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
           axisLabel: {
             interval: 0,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
             // rotate: 40  ,//斜体展示
             formatter(value) {
               let ret = '';// 拼接加\n返回的类目项
@@ -122,8 +198,26 @@ export default {
         },
         yAxis: [
           {
+            splitLine: {
+              show: false,
+            },
             type: 'value',
-            show: false,
+            show: true,
+            min: 0,
+            max: 100,
+            axisLine: {
+              lineStyle: {
+                color: '#F4F6F8', // 颜色
+                width: 1, // 粗细
+              },
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#879099', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
+            },
           },
         ],
 
@@ -131,11 +225,16 @@ export default {
           // eslint-disable-next-line max-len
           data: that.mainCount,
           type: 'bar',
-          barWidth: 20,
+          barWidth: 10,
+          showBackground: true,
+          backgroundStyle: {
+            color: '#F4F6F8',
+          },
           itemStyle: {
             normal: {
+              color: '#FFBC20',
               label: {
-                show: true,
+                show: false,
                 position: 'top',
                 textStyle: { // 数值样式
                   color: 'black',
