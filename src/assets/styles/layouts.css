@@ -107,3 +107,7 @@
 .dl-item + .dl-item:last-child {
   margin: 0;
 }
+
+i + em {
+  margin: 0 0 0 6px;
+}

@@ -316,29 +316,87 @@
 }
 
 .tl-table .el-table__expanded-cell {
-  padding: 0 0 0 30px;
+  padding: 0;
 }
 
 .tl-table .sub-tr {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 48px;
 }
 
-.tl-table .sub-tr dd {
-  flex: 1;
-  display: flex;
-  align-items: center;
+.tl-table .sub-tr::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  content: '';
+  width: 25px;
+  background: #fff;
+  z-index: 5;
 }
 
-.tl-table .sub-tr dt {
-  flex: 1;
+.tl-table .sub-tr dd {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
 }
 
 .tl-table .sub-tr .state-grid {
   margin: 0 10px 0 0;
   display: flex;
+}
+
+.tl-table .sub-tr .okr-line {
+  position: relative;
+  flex: 0 0 5%;
+  width: 5%;
+  height: 1px;
+  background: #e8ecf0;
+}
+
+.tl-table .sub-tr .okr-line::before {
+  position: absolute;
+  right: 0;
+  top: -2px;
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8ecf0;
+  z-index: 8;
+}
+
+.tl-table .sub-tr .okr-o-name {
+  flex: 0 0 43%;
+  width: 43%;
+}
+
+.tl-table .sub-tr .okr-proportion {
+  flex: 0 0 6%;
+  width: 6%;
+  font-weight: 500;
+}
+
+.tl-table .sub-tr .okr-progress {
+  flex: 0 0 15%;
+  width: 15%;
+}
+
+.tl-table .sub-tr .okr-risk {
+  flex: 0 0 15%;
+  width: 15%;
+}
+
+.tl-table .sub-tr .okr-undertake {
+  flex: 0 0 8%;
+  width: 8%;
+}
+
+.tl-table .sub-tr .okr-update {
+  flex: 0 0 8%;
+  width: 8%;
 }
 
 .tl-table .sub-tr .state-grid div {
@@ -371,6 +429,11 @@
 .tl-table td {
   border-bottom: 1px solid #e5e9ee;
   color: #4d5155;
+}
+
+.tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.tl-table .el-table__body-wrapper .el-table__body .expanded > td {
+  background: #f7f9fa;
 }
 
 .tl-table th.is-leaf {
@@ -940,6 +1003,8 @@
 
 .tl-progress-bar .progress-number {
   margin: 0 0 0 12px;
+  color: #26282a;
+  font-weight: 500;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -1379,10 +1444,6 @@
   color: #4d5155;
 }
 
-.card-panel-head dl i {
-  margin: 0 6px 0 0;
-}
-
 .card-panel-body .el-table::before {
   width: unset;
 }
@@ -1395,6 +1456,120 @@
 .card-panel-body .tl-table th {
   font-weight: 500;
   color: #b5bec6;
+}
+
+.card-panel-body .tl-table .el-table__row td {
+  height: 60px;
+}
+
+.card-panel-body .tl-table .el-table__row td:first-child,
+.card-panel-body .tl-table .el-table__expanded-cell {
+  position: relative;
+}
+
+.card-panel-body .tl-table .el-table__row.expanded td:first-child::before {
+  position: absolute;
+  left: 23px;
+  top: 44px;
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8ecf0;
+  z-index: 6;
+}
+
+.card-panel-body .tl-table .el-table__row.expanded td:first-child::after {
+  position: absolute;
+  top: 46px;
+  bottom: 0;
+  left: 25px;
+  content: '';
+  width: 1px;
+  background: #e8ecf0;
+  z-index: 5;
+}
+
+.card-panel-body .tl-table .el-table__expanded-cell::before {
+  position: absolute;
+  left: 25px;
+  bottom: 23px;
+  top: 0;
+  content: '';
+  width: 1px;
+  background: #e8ecf0;
+  z-index: 7;
+}
+
+.card-panel-body .tl-table .el-table__row td:first-child .cell,
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
+  padding: 0;
+}
+
+.card-panel-body .tl-table .el-table__body-wrapper .el-table__expand-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 0 16px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e4e9ed;
+}
+
+.card-panel-body .tl-table .el-table__body-wrapper .el-table__expand-icon .el-icon {
+  position: unset;
+  margin: 0;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
+  display: flex;
+  align-items: center;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
+  margin: 0 6px 0 0;
+  width: 32px;
+  height: 18px;
+  background: #f0effe;
+  font-size: 12px;
+  color: #685df1;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em {
+  flex: 1;
+  width: calc(43% - 60px);
+  color: #26282a;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all .4s ease-out;
+}
+
+.card-panel-body .tl-table .el-table__row.expanded td:nth-child(2) .cell em {
+  color: #685df1;
+}
+
+.card-panel-body .sub-tr .tl-progress-bar .progress-number {
+  color: #929ba3;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(3) .cell {
+  color: #26282a;
+  font-weight: 500;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(6),
+.card-panel-body .tl-table .el-table__row td:nth-child(7) i {
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(6):hover,
+.card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover {
+  color: #685df1;
 }
 
 /* ========================================================公共页面布局组件================================================================== */

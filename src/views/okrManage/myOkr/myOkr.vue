@@ -119,19 +119,27 @@
             @goDraft="goDraft(item)"
           >
             <template slot="head-undertake" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
             <template slot="weight-bar" slot-scope="props">
-              <el-button v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">更新进度</el-button>
+              <template v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">
+                <i class="el-icon-refresh"></i>
+              </template>
             </template>
             <template slot="body-bar" slot-scope="props">
-              <el-button
+              <template
                 v-if="props.okritem.continueCount>0"
                 @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >承接地图icon{{props.okritem.continueCount}}</el-button>
+              >
+                <i class="el-icon-link"></i>
+                <em>{{props.okritem.continueCount}}</em>
+              </template>
             </template>
           </tl-okr-table>
         </div>
