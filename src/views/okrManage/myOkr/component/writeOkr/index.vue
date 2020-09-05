@@ -11,7 +11,7 @@
   >
     <div slot="title" class="flex-sb">
       <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
-      <div v-else class="drawer-title">创建OKR{{writeInfo.canWrite}}</div>
+      <div v-else class="drawer-title">创建OKR</div>
       <div class="icon-save" v-if="showAuto">
         <i></i>
         <em>已自动保存</em>
@@ -59,7 +59,7 @@
             </dd>
           </dl>
           <dl class="user-info">
-            <dt>负责人{{writeInfo.canWrite}}</dt>
+            <dt>负责人</dt>
             <dd v-if="true">
               <img src="@/assets/images/user/user.jpg" alt />
             </dd>

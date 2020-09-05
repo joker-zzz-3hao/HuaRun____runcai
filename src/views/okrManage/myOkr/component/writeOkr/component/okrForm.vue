@@ -447,8 +447,12 @@ export default {
             this.$message.error('结果KR权重值总和必须为100');
             return;
           }
+          if (this.searchForm.okrCycle.periodId) {
+            this.formData.periodId = this.searchForm.okrCycle.periodId;
+          } else {
+            this.$message.error('请选择目标周期');
+          }
           this.formData.okrBelongType = this.searchForm.okrType;
-          this.formData.periodId = this.searchForm.okrCycle.periodId;
           this.formData.okrDraftId = this.searchForm.draftId;
           this.server.addokr(this.formData).then((res) => {
             if (res.code == 200) {
@@ -478,6 +482,11 @@ export default {
       ) {
         return;
       }
+      if (this.searchForm.okrCycle.periodId) {
+        this.formData.periodId = this.searchForm.okrCycle.periodId;
+      } else {
+        this.$message.error('请选择目标周期');
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((oitem) => {
           if (oitem.departokrList) {
@@ -486,7 +495,6 @@ export default {
           }
         });
         this.formData.okrBelongType = this.searchForm.okrType;
-        this.formData.periodId = this.searchForm.okrCycle.periodId;
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
           if (res.code == 200) {

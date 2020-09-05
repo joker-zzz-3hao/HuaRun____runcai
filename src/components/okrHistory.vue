@@ -13,7 +13,6 @@
       <el-table-column prop="versionName">
         <template slot-scope="scope">
           <div>{{scope.row.versionName}}</div>
-          <div v-if="scope.row.isTrue != 1">(当前选择)</div>
         </template>
       </el-table-column>
       <el-table-column prop="objectName">
