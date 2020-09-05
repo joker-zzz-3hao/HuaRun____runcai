@@ -16,7 +16,11 @@
       <div>
         <div style="display: flex;">
           <div v-for="item in labelList" :key="item.value">
-            <el-button @click="selectWorth(item)" type="primary" round>{{item.label}}</el-button>
+            <el-button
+              :class="item.select ? 'red' : 'green'"
+              @click="selectWorth(item)"
+              round
+            >{{item.label}}</el-button>
           </div>
         </div>
         <div v-if="worthName && scoreId != '50'">
@@ -43,7 +47,12 @@
                 @keyup.enter.native="handleInputConfirm"
                 @blur="handleInputConfirm"
               ></el-input>
-              <el-button v-else class="button-new-tag" size="small" @click="showInput">新增标签</el-button>
+              <el-button
+                v-else-if="!inputVisible && otherLabelList.length==0"
+                class="button-new-tag"
+                size="small"
+                @click="showInput"
+              >新增标签</el-button>
             </div>
           </div>
         </div>
@@ -93,7 +102,23 @@ export default {
   },
   computed: {},
   methods: {
-    show(data) {
+    show(data, type) {
+      if (type == 'edit') {
+        this.scoreId = data.score;
+        this.description = data.scoreDesc;
+        if (this.scoreId == '50') {
+          this.otherLabelList.push({
+            label: data.scoreLabel,
+          });
+        }
+        this.labelList.forEach((item) => {
+          if (item.value == data.score) {
+            item.select = true;
+          } else {
+            item.select = false;
+          }
+        });
+      }
       this.data = data;
       this.showScore = true;
     },
@@ -141,3 +166,11 @@ export default {
   watch: {},
 };
 </script>
+<style scoped>
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
+}
+</style>
