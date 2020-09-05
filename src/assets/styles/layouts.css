@@ -77,9 +77,33 @@
   height: 40px;
 }
 
+.operating-panel {
+  display: flex;
+  align-items: center;
+}
+
+.operating-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.operating-box .flex-auto {
+  flex: 1;
+}
+
 .flex-sb {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+.dl-item {
+  margin: 0 60px 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.dl-item + .dl-item:last-child {
+  margin: 0;
 }

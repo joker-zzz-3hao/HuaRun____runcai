@@ -2,17 +2,29 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <el-select placeholder="请选择" v-model="periodId" @change="getriskStatistics">
-        <el-option
-          v-for="item in options"
-          :key="item.id"
-          :value="item.periodId"
-          :label="item.periodName"
-        ></el-option>
-      </el-select>
+      <div>
+        <el-select
+          placeholder="请选择"
+          class="selectTime"
+          v-model="periodId"
+          @change="getriskStatistics"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :value="item.periodId"
+            :label="item.periodName"
+          ></el-option>
+        </el-select>
+      </div>
       <div id="weeking"></div>
-      <ul>
-        <li v-for="(item,index) in orgTable" :key="index" @click="changIdAction(item.orgId)">
+      <ul class="departList">
+        <li
+          v-for="(item,index) in orgTable"
+          :key="index"
+          :class="{ 'active':active==index }"
+          @click="changIdAction(item.orgId,index)"
+        >
           {{
           item.orgName
           }}
@@ -99,6 +111,7 @@ export default {
       tableData: [],
       moodDataX: [],
       moodDataY: [],
+      active: 0,
     };
   },
   computed: {
@@ -109,7 +122,9 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.getokrQuery();
+    this.$nextTick(() => {
+      this.getokrQuery();
+    });
   },
   methods: {
     fetchData() {
@@ -150,8 +165,10 @@ export default {
         this.tableData = res.data;
       });
     },
-    changIdAction(id) {
+    changIdAction(id, index) {
       this.orgId = id;
+
+      this.active = index;
       this.getriskStatistics();
     },
     getokrQuery() {
@@ -169,11 +186,12 @@ export default {
         personOrOrg: 'org',
       }).then((res) => {
         this.echartDataX = [];
+
         const startDate = `${res.data.months[0]}-01`;
         const endtDate = `${res.data.months.pop()}-31`;
         const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
         const oneDay = 24 * 3600 * 1000;
-        let startche = +new Date(startDate);
+        let startche = +new Date(startDate) - oneDay;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < cheTime / oneDay; i++) {
           // eslint-disable-next-line no-const-assign
@@ -193,21 +211,16 @@ export default {
           }
           this.echartDataX.push([now.getFullYear(), months, day].join('-'));
         }
-        if (res.data.datas) {
-          this.echartDataY = {
-            type: 'line',
-            symbol: 'circle',
-            showAllSymbol: true,
-            data: res.data.datas.map((item) => [item.createDate, item.allScore]),
-          };
-        } else {
-          this.echartDataY = {
-            type: 'line',
-            symbol: 'circle',
-            showAllSymbol: true,
-            data: [],
-          };
-        }
+
+        // eslint-disable-next-line valid-typeof
+        const array = res.data.datas ? res.data.datas.filter((item) => item) : [];
+        this.echartDataY.push({
+          type: 'line',
+          symbol: 'circle',
+          showAllSymbol: true,
+          data: res.data.datas ? array.map((item) => [item.createDate, item.allScore]) : [],
+        });
+
         this.init();
       });
     },
@@ -243,9 +256,7 @@ export default {
         },
         dataZoom: { show: true },
         tooltip: {},
-        series: [
-          that.echartDataY,
-        ],
+        series: that.echartDataY,
 
       };
 
@@ -316,8 +327,9 @@ export default {
 </script>
 <style  scoped>
 #weeking {
-  width: 100%;
+  width: 70%;
   height: 400px;
+  display: inline-block;
 }
 
 .model {
@@ -326,9 +338,14 @@ export default {
   background: white;
   margin-bottom: 30px;
 }
-
+.active {
+  color: blue;
+}
 #mood {
   width: 100%;
   height: 400px;
+}
+.departList {
+  display: inline-block;
 }
 </style>

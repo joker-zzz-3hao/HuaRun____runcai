@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- okr折叠面板 -->
-    <el-form :model="formData" ref="changeForm">
+    <el-form :model="formData" ref="changeForm" v-if="formData.tableList.length > 0">
       <elcollapse class="collapse" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
@@ -43,16 +43,22 @@
               </li>
               <li>
                 <span>当前进度</span>
-                <span class="progresswidth">
-                  <el-progress
-                    :stroke-width="10"
-                    :percentage="parseInt(item.okrDetailProgress, 10)"
-                  ></el-progress>
-                </span>
+                <tl-process :data="item.okrDetailProgress"></tl-process>
+              </li>
+              <!-- 变更 -->
+              <li
+                v-if="showParentOkr
+                && item.okrParentId
+                && item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+              >
+                <p @click="goUndertake(index,'change')">
+                  <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                </p>
               </li>
               <!-- 变更有承接项时 -->
-              <li v-if="showParentOkr && item.okrParentId">
-                <span>目标承接自</span>
+              <li v-else-if="showParentOkr && item.okrParentId">
+                <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
                 <span v-if="canWrite && item.parentUpdate">
@@ -93,7 +99,7 @@
               </li>
               <!-- 详情 -->
               <li v-else-if="item.okrParentId">
-                <span>目标承接自</span>
+                <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
               </li>
             </ul>
@@ -148,12 +154,7 @@
             </dd>
             <dd>
               <span>当前进度</span>
-              <span class="progresswidth">
-                <el-progress
-                  :stroke-width="10"
-                  :percentage="parseInt(kritem.okrDetailProgress, 10)"
-                ></el-progress>
-              </span>
+              <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </dd>
             <dd style="display:flex">
               <span>风险状态</span>
@@ -233,6 +234,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
@@ -244,21 +246,26 @@ export default {
   components: {
     elcollapse,
     elcollapseitem,
+    'tl-process': process,
   },
   data() {
     return {
       CONST,
       okrmain: {},
-      formData: {},
+      formData: { tableList: [] },
       innerActiveList: [],
     };
   },
   props: {
     tableList: {
       type: Array,
+      default() {
+        return [];
+      },
     },
     okrid: {
       type: String,
+      default: '',
     },
     // 默认展开的序号数组
     // 如果 disabled为true，需传入activeList

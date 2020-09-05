@@ -1,112 +1,36 @@
 <template>
   <div>
-    <div v-for="(item, index) in okrList" :key="index">
-      <!-- 基本信息 -->
-      <div v-if="item.tableList.length>0">
-        <div>{{okrCycle.periodName}}OKR</div>
-        <ul class="okrMain" style>
-          <li>
-            <span>更新时间</span>
-            <span>{{item.okrMain.updateTime || item.okrMain.createTime}}</span>
-          </li>
-          <li>
-            <span>状态</span>
-            <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-          </li>
-          <li>
-            <span>负责人</span>
-            <span>{{item.okrMain.userName}}</span>
-          </li>
-          <li>
-            <span>OKR进度</span>
-            <el-progress type="circle" :percentage="parseInt(item.okrMain.okrProgress, 10)"></el-progress>
-          </li>
-        </ul>
-        <el-button v-if="['1'].includes(searchForm.status)" @click="goChangeOkr">变更</el-button>
-      </div>
-      <!-- 表头 -->
-      <div v-if="item.tableList.length>0">
-        <ul class="tablehead">
-          <li>权重</li>
-          <li>进度</li>
-          <li>风险状态</li>
-          <li>承接地图</li>
-        </ul>
-      </div>
-      <!-- okr面板 -->
+    <div v-show="showTable">
       <tl-okr-table
-        :tableList="item.tableList"
+        :tableList="tableList"
         :disabled="false"
-        :activeList="[0]"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog(item)"
-        @goDraft="goDraft(item)"
+        @openDialog="openDialog()"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
-          <el-button
-            v-if="searchForm.status=='1'"
-            @click.stop="openUpdate('tl-okr-update',props.okritem)"
-          >更新进度</el-button>
         </template>
         <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
-            @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>
       </tl-okr-table>
     </div>
-    <!-- 无数据时展示 -->
-    <div v-if="okrList[0].tableList.length == 0">暂无数据~</div>
-    <el-drawer
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
-      :before-close="handleClose"
-      :wrapperClosable="false"
-      :append-to-body="true"
-      class="tl-drawer"
-    >
-      <div>
-        <tl-writeokr
-          v-if="currentView=='tl-writeokr' && myokrDrawer && writeInfo.canWrite"
-          @handleClose="handleClose"
-          :writeInfo="writeInfo"
-        ></tl-writeokr>
-        <tl-changeokr
-          v-if="currentView=='tl-changeokr' && myokrDrawer && writeInfo.canWrite"
-          @handleClose="handleClose"
-          :writeInfo="writeInfo"
-        ></tl-changeokr>
-        <tl-okr-detail
-          v-else-if="currentView=='tl-okr-detail' && myokrDrawer"
-          ref="tl-okr-detail"
-          :server="server"
-          :okrId="okrId"
-          :CONST="CONST"
-          :okrItem="okrItem"
-        ></tl-okr-detail>
-        <tl-okr-update
-          v-else-if="currentView=='tl-okr-update' && myokrDrawer"
-          ref="tl-okr-update"
-          :server="server"
-          :okrId="okrId"
-          :okrItem="okrItem"
-          :periodId="okrCycle.periodId"
-        ></tl-okr-update>
-      </div>
-    </el-drawer>
+    <div v-show="tableList.length==0">
+      <el-button type="primary">创建OKR</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
-import okrDetail from '@/components/okrDetail';
 import Server from '../server';
 import CONST from '../const';
 
@@ -115,21 +39,15 @@ const server = new Server();
 export default {
   name: 'myOkr',
   components: {
-    'tl-okr-detail': okrDetail,
     'tl-okr-table': okrTable,
   },
+  props: ['periodId'],
   data() {
     return {
+      showTable: false,
       server,
       CONST,
-      okrList: [{
-        tableList: [], // okr列表
-        okrMain: { // okr公共信息
-          userName: '',
-          okrProgress: 0,
-          updateTime: '',
-        },
-      }],
+      tableList: [],
       searchForm: {
         status: '1',
       },
@@ -148,109 +66,13 @@ export default {
   },
   computed: {
     ...mapState('common', {
-      myokrDrawer: (state) => state.myokrDrawer,
+      setOrgId: (state) => state.setOrgId,
     }),
   },
-  created() {
-    this.getOkrCycleList();
+  mounted() {
+    this.searchOkr();
   },
   methods: {
-    ...mapMutations('common', ['setMyokrDrawer']),
-    searchOkr(status) {
-      this.searchForm.status = status || this.searchForm.status;
-
-      this.server.getmyOkr({
-        myOrOrg: 'my',
-        periodId: this.okrCycle.periodId,
-        status: this.searchForm.status,
-
-      }).then((res) => {
-        if (res.code == 200) {
-          // 如果是草稿、退回、审批中回显json串
-          if (['6', '7', '8'].includes(this.searchForm.status)) {
-            this.okrList = [];
-            const draftList = res.data || [];
-            draftList.forEach((item) => {
-              let okrInfo = {};
-              okrInfo = JSON.parse(item.paramJson);
-              this.okrList.push({
-                tableList: okrInfo.okrInfoList,
-                okrMain: {
-                  userName: item.updateBy || item.createBy,
-                  okrProgress: item.okrProgress,
-                  updateTime: item.updateTime || item.createTime,
-                  okrBelongType: okrInfo.okrBelongType,
-                },
-                id: item.id || item.approvalId,
-                params: item.paramJson,
-              });
-            });
-          } else {
-            this.okrList = [{
-              tableList: [], // okr列表
-              okrMain: { // okr公共信息
-                userName: '',
-                okrProgress: 0,
-                updateTime: '',
-              },
-            }];
-            this.okrList[0].tableList = res.data.okrDetails || [];
-            this.okrList[0].okrMain = res.data.okrMain || {};
-            this.okrId = this.okrList[0].okrMain.okrId || '';
-          }
-        }
-      });
-    },
-    // 打开详情
-    openDialog(val) {
-      this.writeInfo.canWrite = false;
-      this.currentView = 'tl-okr-detail';
-      this.okrItem = val;
-      this.drawerTitle = 'OKR详情';
-
-      this.setMyokrDrawer(true);
-      this.$nextTick(() => {
-        this.$refs[this.currentView].showOkrDialog();
-      });
-    },
-    // 打开更新进度
-    openUpdate(componentName, val) {
-      this.okrItem = val;
-      this.drawerTitle = '更新进度';
-      this.currentView = componentName;
-      this.setMyokrDrawer(true);
-      this.$nextTick(() => {
-        this.$refs[componentName].showOkrDialog();
-      });
-    },
-    goChangeOkr() {
-      // TODO: 弹框标题
-      this.drawerTitle = `${this.okrList[0].okrMain.orgName + this.okrList[0].okrMain.periodName}OKR`;
-      this.writeInfo = {
-        canWrite: 'cannot',
-        okrId: this.okrId,
-        periodId: this.okrCycle.periodId,
-      };
-      this.currentView = 'tl-changeokr';
-      this.setMyokrDrawer(true);
-    },
-    goDraft(item) {
-      this.drawerTitle = '编辑';
-      this.writeInfo = {
-        canWrite: 'draft',
-        draftParams: item.params,
-        draftId: item.id,
-        okrStatus: this.searchForm.status,
-        okrCycle: this.okrCycle,
-      };
-      this.currentView = 'tl-writeokr';
-      this.setMyokrDrawer(true);
-    },
-    handleClose() {
-      this.currentView = '';
-      this.setMyokrDrawer(false);
-    },
-    // 跳到承接地图
     goUndertakeMaps(id, name) {
       this.$router.push({
         name: 'undertakeMaps',
@@ -259,36 +81,39 @@ export default {
         },
       });
     },
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
+    searchOkr() { // 默认搜索进行时
+      this.showTable = false;
+      this.server.getmyOkr({
+        myOrOrg: 'org',
+        periodId: this.periodId,
+        status: this.searchForm.status,
+        orgId: this.setOrgId,
+      }).then((res) => {
         if (res.code == 200) {
-          this.periodList = res.data || [];
+          this.tableList = res.data.okrDetails || [];
+          this.okrMain = res.data.okrMain || {};
+          this.okrId = this.okrMain.okrId || '';
+          this.memberList = res.data.orgUser || [];
+          this.orgTable = res.data.orgTable || [];
+          if (this.tableList.length > 0) {
+            this.showTable = true;
+          }
         }
       });
     },
-    handleCycleData(data) {
-      this.okrCycle = data;
-    },
   },
   watch: {
-    'okrCycle.periodId': {
-      handler(newVal) {
-        console.log('get', newVal);
-        if (newVal) {
-          this.searchOkr();
-        }
+    periodId: {
+      handler() {
+        this.searchOkr();
       },
-      immediate: true,
       deep: true,
-    },
-    myokrDrawer: {
-      handler(newVal) {
-        if (newVal === false) {
-          this.searchOkr();
-        }
-      },
     },
   },
 };
 </script>
+<style  scoped>
+[v-cloak] {
+  display: none;
+}
+</style>

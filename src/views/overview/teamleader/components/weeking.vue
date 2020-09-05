@@ -11,10 +11,10 @@
         placeholder="选择日期"
       ></el-date-picker>
       <div id="weeking"></div>
-      <div>
+      <!-- <div>
         <div>进行中工作项</div>
         <div>已完成工作项</div>
-      </div>
+      </div>-->
     </div>
     <div class="model">
       <div>周报互动记录</div>
@@ -66,26 +66,6 @@ export default {
       value: '',
       tableData: [
       ],
-      submittData: [
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-        {
-          name: '112',
-          desc: '11',
-          date: '12',
-          ad: '12',
-        },
-      ],
     };
   },
   mounted() {
@@ -107,6 +87,7 @@ export default {
     },
     getDate(date) {
       this.teamEmotion(`${date}-01`);
+      this.getteamWeeklyCount(`${date}-01`);
     },
     teamWeekly(date) {
       this.server.teamWeekly({
@@ -119,6 +100,13 @@ export default {
         ]);
 
         this.init();
+      });
+    },
+    getteamWeeklyCount(date) {
+      this.server.teamWeeklyCount({
+        date,
+      }).then((res) => {
+        this.tableData = res.data;
       });
     },
     teamEmotion(date) {

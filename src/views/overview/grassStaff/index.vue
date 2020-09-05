@@ -4,6 +4,7 @@
     <div class="create">
       <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
       <em v-else>{{userInfo.userName}}</em>
+      <tl-org-page :periodId="periodId"></tl-org-page>
     </div>
     <div class="create">
       <div>OKR当前进度数据</div>
@@ -15,7 +16,7 @@
     </div>
     <div class="create">
       <div>OKR风险状态统计</div>
-      <tl-okr-risk :okrData="okrData"></tl-okr-risk>
+      <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
     </div>
   </div>
 </template>
@@ -24,22 +25,24 @@
 import { mapState } from 'vuex';
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
-import okrRisk from './components/okrRisk';
+import okrRiskTotal from './components/okrRiskTotal';
 import period from '../component/period';
+import orgPage from '../component/orgPage';
 import Server from '../server';
 
 const server = new Server();
 export default {
   name: 'overview',
   components: {
+    'tl-org-page': orgPage,
     'tl-okr-schedule': okrSchedule,
     'tl-okr-update': okrUpdate,
-    'tl-okr-risk': okrRisk,
+    'tl-okr-risk-total': okrRiskTotal,
     'tl-period': period,
   },
   data() {
     return {
-      period: '',
+      periodId: '',
       server,
       mainData: [],
       userWeek: [],
@@ -56,14 +59,14 @@ export default {
   },
   methods: {
     // eslint-disable-next-line no-shadow
-    getPeriod(period) {
-      this.period = period;
+    getPeriod(periodId) {
+      this.periodId = periodId;
       this.getokrStatistics();
       this.riskStatistics();
     },
     getokrStatistics() {
       this.server.okrStatistics({
-        periodId: this.period,
+        periodId: this.periodId,
         user: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         userId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
       }).then((res) => {
@@ -72,7 +75,7 @@ export default {
     },
     riskStatistics() {
       this.server.riskStatistics({
-        periodId: this.period,
+        periodId: this.periodId,
         orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         personOrOrg: 'org',
       }).then((res) => {

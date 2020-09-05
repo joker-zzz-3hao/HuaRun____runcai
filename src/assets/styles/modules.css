@@ -315,6 +315,53 @@
   color: #879099;
 }
 
+.tl-table .el-table__expanded-cell {
+  padding: 0 0 0 30px;
+}
+
+.tl-table .sub-tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+
+.tl-table .sub-tr dd {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.tl-table .sub-tr dt {
+  flex: 1;
+}
+
+.tl-table .sub-tr .state-grid {
+  margin: 0 10px 0 0;
+  display: flex;
+}
+
+.tl-table .sub-tr .state-grid div {
+  margin: 0 2px 0 0;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: #e5e9ee;
+  border-radius: 2px;
+}
+
+.tl-table .sub-tr .state-grid .is-no-risk {
+  background: #4ccd79;
+}
+
+.tl-table .sub-tr .state-grid .is-risks {
+  background: #ffbc20;
+}
+
+.tl-table .sub-tr .state-grid .is-uncontrollable {
+  background: #fb4c59;
+}
+
 .tl-table .el-table--border::after,
 .tl-table .el-table--group::after,
 .tl-table::before {
@@ -859,6 +906,42 @@
   border-top-color: #7e7e7e;
 }
 
+/* tl-progress */
+.tl-progress-circle .el-progress__text {
+  color: #4ccd79;
+  font-size: 13px !important;
+  font-weight: 500;
+}
+
+.tl-progress-circle .el-progress-circle__track {
+  stroke:rgba(76,205,121,0.10);
+}
+
+.tl-progress-bar {
+  display: flex;
+  align-items: center;
+}
+
+.tl-progress-bar .progress-bg {
+  position: relative;
+  margin: 0 0 0 2px;
+  width: 16px;
+  height: 5px;
+  background: #e5e9ee;
+}
+
+.tl-progress-bar .current-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #685df1;
+}
+
+.tl-progress-bar .progress-number {
+  margin: 0 0 0 12px;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */
 .dotted-line.el-button--text {
@@ -1031,8 +1114,12 @@
   transition: all .4s ease-out;
 }
 
+.tl-diy-tabs .tab-list li:last-child {
+  margin: 0 !important;
+}
+
 .tl-diy-tabs .tab-list .is-focus {
-  color: #685df1;
+  color: #685df1 !important;
 }
 
 .tl-diy-tabs .border-slip {
@@ -1103,6 +1190,10 @@
   border-left: 1px solid transparent;
   background: linear-gradient(#fff,#fff) padding-box,
   repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.2em,#fff 0,#fff 0.3em);
+}
+
+.tl-diy-timeline .timeline-list dd:last-child::before {
+  content: unset;
 }
 
 .tl-diy-timeline .list-title {
@@ -1246,10 +1337,64 @@
   transform: rotate(180deg);
 }
 
+/* tl-card-panel */
 .tl-card-panel {
+  margin: 0 0 25px 0;
+  padding: 30px;
   background: #fff;
   box-shadow: 0 0 14px 0 #f4f6f8;
   border-radius: 4px;
+}
+
+.tl-card-panel:last-child {
+  margin: 0;
+}
+
+.tl-card-panel.no-data {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-panel-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-panel-head dl,
+.card-panel-head dt {
+  display: flex;
+  align-items: center;
+}
+
+.card-panel-head dt {
+  color: #acb6bf;
+}
+
+.card-panel-head dd {
+  margin: 0 0 0 20px;
+  color: #4d5155;
+}
+
+.card-panel-head dl i {
+  margin: 0 6px 0 0;
+}
+
+.card-panel-body .el-table::before {
+  width: unset;
+}
+
+.card-panel-body .el-table__header-wrapper .el-table__header,
+.card-panel-body .el-table__body-wrapper .el-table__body {
+  width: 100% !important;
+}
+
+.card-panel-body .tl-table th {
+  font-weight: 500;
+  color: #b5bec6;
 }
 
 /* ========================================================公共页面布局组件================================================================== */
@@ -1674,6 +1819,27 @@
 
 
 /* 主内容区--路由区 */
+/* 前台 */
+.operating-panel .tl-diy-tabs .tab-list li {
+  height: 40px;
+  font-weight: normal;
+  color: #4d5155;
+}
+
+.operating-panel .dl-item dt {
+  margin: 0 20px 0 0;
+  color: #acb6bf;
+}
+
+.operating-panel .tl-diy-tabs .border-slip {
+  height: 1px;
+}
+
+.operating-box {
+  flex: 0 0 40px;
+}
+
+/* 后台 */
 .operating-area .operating-box .el-button,
 .operating-area .operating-box .el-input__inner {
   height: 36px;
@@ -1709,15 +1875,6 @@
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;
-}
-
-.operating-box {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.operating-box .flex-auto {
-  flex: 1;
 }
 
 .table-pagination {

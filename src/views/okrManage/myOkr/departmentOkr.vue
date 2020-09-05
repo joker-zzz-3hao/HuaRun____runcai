@@ -1,76 +1,74 @@
 <template>
   <div>
-    <!-- 选择周期 -->
-    <!-- <tl-periodselect :periodList="periodList" @handleData="handleCycleData"></tl-periodselect> -->
-    <dl>
-      <dt>目标周期</dt>
-      <dd>
-        <el-select
-          v-model="searchForm.periodId"
-          placeholder="请选择目标周期"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in periodList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
-      </dd>
-    </dl>
-    <div v-if="tableList.length>0">
-      <!-- 公共信息 -->
-      <div>
-        <div>{{okrCycle.periodName}}OKR</div>
-        <ul class="okrMain">
-          <li>
-            <span>状态：</span>
-            <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
-          </li>
-          <li>
-            <span>负责人</span>
-            <span>{{okrMain.userName}}</span>
-          </li>
-          <li>
-            <span>OKR进度</span>
-            <el-progress type="circle" :percentage="parseInt(okrMain.okrProgress, 10) || 0"></el-progress>
-          </li>
-        </ul>
-      </div>
-      <!-- 表头 -->
-      <div>
-        <ul style="display:flex">
-          <li>权重</li>
-          <li>进度</li>
-          <li>风险状态</li>
-          <li>承接地图</li>
-        </ul>
-      </div>
-      <tl-okr-table
-        :tableList="tableList"
-        :disabled="false"
-        :showOKRInfoLabel="true"
-        :status="searchForm.status"
-        @openDialog="openDialog()"
-      >
-        <template slot="head-bar" slot-scope="props">
-          <el-button
-            v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
-        </template>
-        <template slot="body-bar" slot-scope="props">
-          <el-button
-            v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
-        </template>
-      </tl-okr-table>
+    <div class="operating-panel">
+      <dl class="dl-item">
+        <dt>目标周期</dt>
+        <dd>
+          <el-select
+            v-model="searchForm.periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              v-for="item in periodList"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
     </div>
-    <div v-else>暂无数据~</div>
+    <div class="cont-panel">
+      <div v-if="tableList.length>0" class="tl-card-panel">
+        <!-- 公共信息 -->
+        <div class="card-panel-head">
+          <div>{{okrCycle.periodName}}OKR</div>
+          <ul class="okrMain">
+            <li>
+              <span>状态：</span>
+              <span>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</span>
+            </li>
+            <li>
+              <span>负责人</span>
+              <span>{{okrMain.userName}}</span>
+            </li>
+            <li>
+              <span>OKR进度</span>
+              <el-progress type="circle" :percentage="parseInt(okrMain.okrProgress, 10) || 0"></el-progress>
+            </li>
+          </ul>
+        </div>
+        <div class="card-panel-body">
+          <tl-okr-table
+            :tableList="tableList"
+            :disabled="false"
+            :showOKRInfoLabel="true"
+            :status="searchForm.status"
+            @openDialog="openDialog()"
+          >
+            <template slot="head-undertake" slot-scope="props">
+              <el-button
+                v-if="props.okritem.continueCount>0"
+                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              >承接地图icon{{props.okritem.continueCount}}</el-button>
+            </template>
+            <template slot="body-bar" slot-scope="props">
+              <el-button
+                v-if="props.okritem.continueCount>0"
+                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              >承接地图icon{{props.okritem.continueCount}}</el-button>
+            </template>
+          </tl-okr-table>
+        </div>
+      </div>
+      <div v-else class="tl-card-panel no-data">
+        <div class="bg-no-data">暂无数据</div>
+      </div>
+    </div>
+
     <!-- 展示头像 -->
     <div>
       <!-- 基层员工视图 -->

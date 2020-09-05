@@ -158,16 +158,18 @@ const mockData = {
         userName: 'lxq',
         userId: '0123',
         updateTime: '2020-08-06',
-        okrProgress: '40',
+        okrProgress: 40,
       },
       'okrDetails|3': [
         {
           'detailId|1': ['1233', '1234'],
+          'okrDetailId|1-100': 100,
           'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
           'userName|1': ['心荃', '滕炜'],
           okrWeight: 40,
-          okrDetailProgress: 30,
+          okrDetailProgress: 50,
           parentObjectKr: '华润云',
+          continueCount: 2,
           'krList|5': [
             {
               'detailId|': ['1233', '1234'],
@@ -176,7 +178,8 @@ const mockData = {
               okrWeight: 40,
               okrDetailProgress: 30,
               parentObjectKr: '华润云',
-              okrDetailConfidence: '1',
+              'okrDetailConfidence|1': [1, 2, 3],
+              continueCount: 2,
             },
           ],
         },
@@ -191,7 +194,7 @@ const mockData = {
   // 用于：查点赞列表
   'POST /gateway/talent-okr/okr/okrSupport/getSupportList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
-      'supportUserList|3': [{
+      'supportUserList|23': [{
         'userId|+1': ['0011', '0022', '0033'],
         'userName|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
       }],
@@ -199,17 +202,42 @@ const mockData = {
   },
   // author：林心荃
   // 用于：查操作历史
-  // 'POST /gateway/talent-query/okr/query/okrOperationHistory': (req, res) => {
-  //   res.send(mockUtil.getSuccessData(Mock.mock({
-  //     'records|3': [{
-  //       'date|+1': ['8月12日', '8月11日', '8月10日'],
-  //       'createTime|1': ['16:45', '06:15', '20:05'],
-  //       'createBy|1': ['心荃', '滕炜', '陈翔', '主任', '陆涛'],
-  //       operateType: 0,
-  //       content: '@csentence(10, 20)',
-  //     }],
-  //   })));
-  // },
+  'POST /gateway/talent-okr/okr/okrOperateHistory/getOkrHistory': (req, res) => {
+    res.send(mockUtil.getSuccessData(Mock.mock({
+      userId: '1221377442212904960',
+      userName: '智慧普通',
+      contentVoList: [
+        {
+          remark: null,
+          createTime: '2020-09-03 17:41:04',
+          operateType: 'update',
+          operateTypeCn: '更新',
+          okrDetailId: [
+            {
+              type: 0,
+              updateJsonStr: '{"okrDetailObjectKr":"我是一个o","beforeProgress":"100","afterProgress":"20","remark":"更新为风险可控"}',
+            },
+            {
+              type: 1,
+              updateJsonStr: '{"okrDetailObjectKr":"我是一个kr","beforeProgress":"0","beforeConfidence":"1","afterProgress":"20","remark":"更新为风险可控","afterConfidence":"2"}',
+            },
+          ],
+        },
+        {
+          remark: null,
+          createTime: '2020-09-03 17:30:34',
+          operateType: 'update',
+          operateTypeCn: '更新',
+          okrDetailId: [
+            {
+              type: 0,
+              updateJsonStr: '{"okrDetailObjectKr":"我是一个o","beforeProgress":"0","afterProgress":"100"}',
+            },
+          ],
+        },
+      ],
+    })));
+  },
   // author：林心荃
   // 用于：查价值观
   'POST /gateway/talent-okr/okr/cultureValue/queryCultureList': (req, res) => {

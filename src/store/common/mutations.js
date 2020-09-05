@@ -55,4 +55,8 @@ export default {
   setOrg: (state, setOrgId = {}) => {
     state.setOrgId = setOrgId;
   },
+  // 切换部门
+  setokrSuccess: (state, okrSuccess = {}) => {
+    state.okrSuccess = okrSuccess;
+  },
 };

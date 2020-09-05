@@ -8,3 +8,11 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+.bg-no-data {
+  width: 300px;
+  height: 200px;
+  background: #f4f6f8;
+  text-align: center;
+  vertical-align: middle;
+}
