@@ -8,7 +8,7 @@
       :modal-append-to-body="true"
       :append-to-body="true"
       class="tl-drawer"
-      @close="closed"
+      @closed="closed"
       :before-close="close"
     >
       <el-tabs v-model="activeName">
