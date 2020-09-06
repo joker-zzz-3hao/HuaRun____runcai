@@ -100,23 +100,38 @@
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>
-      <div v-if="memberList.length>0" class="tl-card-panel">
-        <span>{{departmentName}}成员OKR</span>
-        <ul style="display:flex">
-          <li class="user-info" v-for="(item,index) in memberList" :key="item.userId+index">
-            <div class="user-name">{{cutName(item.userName)}}</div>
-            <div>{{item.userName}}</div>
-          </li>
-        </ul>
-      </div>
-      <div v-if="orgTable.length>0" class="tl-card-panel">
-        <span>{{departmentName}}</span>
-        <ul style="display:flex">
-          <li class="user-info" v-for="(item,index) in orgTable" :key="item.orgId+index">
-            <div class="user-name">{{cutName(item.orgName)}}</div>
-            <div>{{item.orgName}}</div>
-          </li>
-        </ul>
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="pannel-title">
+            <template v-if="memberList.length>0">
+              <em>{{departmentName}}</em>
+              <span>成员OKR</span>
+            </template>
+            <template v-if="orgTable.length>0">
+              <em>{{departmentName}}</em>
+            </template>
+          </div>
+        </div>
+        <div class="card-panel-body">
+          <template v-if="memberList.length>0">
+            <dl v-for="(item,index) in memberList" :key="item.userId+index">
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <div class="user-name">{{cutName(item.userName)}}</div>
+              </dt>
+              <dd>{{item.userName}}</dd>
+            </dl>
+          </template>
+          <template v-if="orgTable.length>0">
+            <dl v-for="(item,index) in orgTable" :key="item.orgId+index">
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <div class="user-name">{{cutName(item.orgName)}}</div>
+              </dt>
+              <dd>{{item.orgName}}</dd>
+            </dl>
+          </template>
+        </div>
       </div>
     </div>
     <el-drawer

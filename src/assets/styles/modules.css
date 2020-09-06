@@ -379,7 +379,7 @@
   height: 1px;
 }
 
-.tl-table .sub-tr .okr-o-name {
+.tl-table .sub-tr .okr-kr-name {
   padding: 0 0 0 40px;
   flex: 0 0 42%;
   width: 42%;
@@ -1542,13 +1542,18 @@
   margin: 0;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell,
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
   display: flex;
   align-items: center;
 }
 
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
+  justify-content: center;
+}
+
 .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span,
-.card-panel-body .tl-table .sub-tr .okr-o-name span {
+.card-panel-body .tl-table .sub-tr .okr-kr-name span {
   margin: 0 6px 0 0;
   width: 32px;
   height: 18px;
@@ -1559,7 +1564,7 @@
   border-radius: 2px;
 }
 
-.card-panel-body .tl-table .sub-tr .okr-o-name span {
+.card-panel-body .tl-table .sub-tr .okr-kr-name span {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1567,7 +1572,7 @@
   color: #fff;
 }
 
-.card-panel-body .tl-table .sub-tr .okr-o-name em {
+.card-panel-body .tl-table .sub-tr .okr-kr-name em {
   flex: 1;
   color: #7a828a;
   overflow: hidden;

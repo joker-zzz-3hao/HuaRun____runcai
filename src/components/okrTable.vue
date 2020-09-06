@@ -15,7 +15,7 @@
           class="sub-tr"
         >
           <dd class="okr-line"></dd>
-          <dd class="okr-o-name">
+          <dd class="okr-kr-name">
             <span>KR</span>
             <em>{{kritem.okrDetailObjectKr}}</em>
           </dd>
