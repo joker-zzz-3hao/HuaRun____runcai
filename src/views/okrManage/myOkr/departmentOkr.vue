@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="department-okr">
     <div class="operating-panel">
       <dl class="dl-item">
         <dt>目标周期</dt>
@@ -112,14 +112,48 @@
             </template>
           </div>
         </div>
-        <div class="card-panel-body">
+        <div class="card-panel-body img-list">
           <template v-if="memberList.length>0">
             <dl v-for="(item,index) in memberList" :key="item.userId+index">
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-                <div class="user-name">{{cutName(item.userName)}}</div>
+                <div class="user-name">
+                  <em>{{cutName(item.userName)}}</em>
+                </div>
               </dt>
               <dd>{{item.userName}}</dd>
+            </dl>
+            <dl>
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <img src="@/assets/images/user/user3.jpg" alt />
+                <!-- <div class="user-name">娜丽</div> -->
+              </dt>
+              <dd>欧阳娜丽</dd>
+            </dl>
+            <dl>
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <img src="@/assets/images/user/user8.jpg" alt />
+                <!-- <div class="user-name">娜丽</div> -->
+              </dt>
+              <dd>西毒欧阳锋</dd>
+            </dl>
+            <dl>
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <img src="@/assets/images/user/user5.jpg" alt />
+                <!-- <div class="user-name">娜丽</div> -->
+              </dt>
+              <dd>北丐洪七公</dd>
+            </dl>
+            <dl>
+              <dt class="user-info">
+                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+                <img src="@/assets/images/user/user2.jpg" alt />
+                <!-- <div class="user-name">娜丽</div> -->
+              </dt>
+              <dd>南帝段正淳</dd>
             </dl>
           </template>
           <template v-if="orgTable.length>0">

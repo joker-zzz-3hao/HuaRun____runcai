@@ -15,10 +15,9 @@
         </li>
         <li class="user-info">
           <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
-          <div
-            v-else-if="userInfo.userName"
-            class="user-name"
-          >{{userInfo.userName.substring(userInfo.userName.length-2)}}</div>
+          <div v-else-if="userInfo.userName" class="user-name">
+            <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+          </div>
         </li>
       </ul>
       <ul class="person-select">
