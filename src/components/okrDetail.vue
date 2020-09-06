@@ -1,136 +1,216 @@
 /* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
-  <div>
+  <el-drawer
+    :title="drawerTitle"
+    :visible.sync="myokrDrawer"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    custom-class="diy-drawer okr-detail"
+    class="tl-drawer"
+    @closed="closed"
+    :before-close="close"
+  >
+    <!-- <div slot="title" class="flex-sb">
+      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
+      <div v-else class="drawer-title">创建OKR</div>
+    </div>-->
+    <el-tabs v-model="activeName" class="tl-tabs">
+      <el-tab-pane label="详情" name="detail">
+        <div class="brief-info">
+          <ul>
+            <li>
+              <span>目标类型</span>
+              <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
+            </li>
+            <li>
+              <span>负责人</span>
+              <span>{{okrmain.userName}}</span>
+            </li>
+            <li>
+              <span>更新时间</span>
+              <span>{{okrmain.updateTime || okrmain.createTime}}</span>
+            </li>
+            <li>
+              <span>进度</span>
+              <tl-process :data="okrmain.okrProgress"></tl-process>
+            </li>
+          </ul>
+        </div>
+        <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
+          <template slot="head-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+          <template slot="body-bar" slot-scope="props">
+            <button
+              v-if="props.okritem.versionCount > 1"
+              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >历史版本</button>
+          </template>
+        </tl-okr-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="操作历史" name="history" v-if="this.okrId">
+        <!-- 操作历史 -->
+        <div>
+          <span>操作历史</span>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in cycleList"
+              :key="index"
+              :timestamp="activity.createTime"
+              placement="top"
+            >
+              <div v-if="activity.operateType=='update'">
+                <span>{{userName}}</span>
+                <span>{{activity.operateTypeCn}}</span>
+                <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                  <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                  <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
+                  <span
+                    v-if="uitem.updateContents.afterProgress"
+                  >进度为{{uitem.updateContents.afterProgress}}%</span>
+                  <span
+                    v-if="uitem.updateContents.afterConfidence"
+                  >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
+                </div>
+                <div v-if="activity.remark">
+                  <span>说明：</span>
+                  <span>{{activity.remark}}</span>
+                </div>
+              </div>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <!-- 点赞要一直浮着 -->
+    <div v-if="showSupport" class="img-list">
+      <dl>
+        <dt class="user-info" @click="like()">
+          <div class="user-name">
+            <em></em>
+          </div>
+        </dt>
+        <dd v-if="!supportType">点赞</dd>
+        <dd v-else>取消</dd>
+      </dl>
+      <!-- <el-button @click="like()">
+        <span v-if="!supportType">点赞</span>
+        <span v-else>取消</span>
+      </el-button>-->
+      <template v-if="showMore">
+        <dl v-for="(item,index) in cutVoteList" :key="item.userId+index">
+          <dt class="user-info">
+            <div class="user-name">
+              <em>{{cutName(item.userName)}}</em>
+            </div>
+          </dt>
+          <dd>{{item.userName}}</dd>
+        </dl>
+        <dl v-if="voteLength > 10 && showMore" class="show-more">
+          <dt class="user-info">
+            <div class="user-name">
+              <em @click="showMore=!showMore">{{voteLength}}+</em>
+            </div>
+          </dt>
+          <dd>更多</dd>
+        </dl>
+      </template>
+      <template v-else>
+        <dl v-for="(item,index) in voteUser" :key="item.userId+index">
+          <dt class="user-info" :class="{'show-more':showMore}">
+            <div class="user-name">
+              <em>{{cutName(item.userName)}}</em>
+            </div>
+          </dt>
+          <dd>{{item.userName}}</dd>
+        </dl>
+        <dl>
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <img src="@/assets/images/user/user3.jpg" alt />
+            <!-- <div class="user-name">娜丽</div> -->
+          </dt>
+          <dd>欧阳娜丽</dd>
+        </dl>
+        <dl>
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <img src="@/assets/images/user/user8.jpg" alt />
+            <!-- <div class="user-name">娜丽</div> -->
+          </dt>
+          <dd>西毒欧阳锋</dd>
+        </dl>
+        <dl>
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <img src="@/assets/images/user/user5.jpg" alt />
+            <!-- <div class="user-name">娜丽</div> -->
+          </dt>
+          <dd>北丐洪七公</dd>
+        </dl>
+        <dl>
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <img src="@/assets/images/user/user2.jpg" alt />
+            <!-- <div class="user-name">娜丽</div> -->
+          </dt>
+          <dd>南帝段正淳</dd>
+        </dl>
+        <dl>
+          <dt class="user-info" :class="{'show-more':showMore}">
+            <div class="user-name">
+              <em @click="showMore=!showMore"></em>
+            </div>
+          </dt>
+          <dd>收起</dd>
+        </dl>
+      </template>
+      <!-- <el-button @click="like()">
+        <span v-if="!supportType">点赞</span>
+        <span v-else>取消</span>
+      </el-button>
+      <ul v-if="showMore" class="ulclass">
+        <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
+          <div class="user-name">{{cutName(item.userName)}}</div>
+          <div>{{item.userName}}</div>
+        </li>
+        <li v-if="voteLength > 10 && showMore" class="user-info">
+          <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
+          <div>展开</div>
+        </li>
+      </ul>
+      <ul v-else class="ulclass">
+        <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
+          <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
+          <div>{{item.userName}}</div>
+        </li>
+        <li class="user-info">
+          <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
+          <div>收起</div>
+        </li>
+      </ul>-->
+    </div>
     <el-drawer
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
+      title="历史版本"
+      :modal="false"
       :wrapperClosable="false"
-      :modal-append-to-body="true"
       :append-to-body="true"
       class="tl-drawer"
-      @closed="closed"
-      :before-close="close"
+      :visible.sync="innerDrawer"
     >
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="详情" name="detail">
-          <!-- 公共信息 -->
-          <div>
-            <ul>
-              <li>
-                <span>目标类型</span>
-                <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
-              </li>
-              <li>
-                <span>负责人</span>
-                <span>{{okrmain.userName}}</span>
-              </li>
-              <li>
-                <span>更新时间</span>
-                <span>{{okrmain.updateTime || okrmain.createTime}}</span>
-              </li>
-              <li>
-                <span>进度</span>
-                <tl-process :data="okrmain.okrProgress"></tl-process>
-              </li>
-            </ul>
-          </div>
-          <!-- okr折叠面板 -->
-          <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
-            <template slot="head-bar" slot-scope="props">
-              <button
-                v-if="props.okritem.versionCount > 1"
-                @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >历史版本</button>
-            </template>
-            <template slot="body-bar" slot-scope="props">
-              <button
-                v-if="props.okritem.versionCount > 1"
-                @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >历史版本</button>
-            </template>
-          </tl-okr-collapse>
-        </el-tab-pane>
-        <el-tab-pane label="操作历史" name="history" v-if="this.okrId">
-          <!-- 操作历史 -->
-          <div>
-            <span>操作历史</span>
-            <el-timeline>
-              <el-timeline-item
-                v-for="(activity, index) in cycleList"
-                :key="index"
-                :timestamp="activity.createTime"
-                placement="top"
-              >
-                <div v-if="activity.operateType=='update'">
-                  <span>{{userName}}</span>
-                  <span>{{activity.operateTypeCn}}</span>
-                  <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                    <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                    <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
-                    <span
-                      v-if="uitem.updateContents.afterProgress"
-                    >进度为{{uitem.updateContents.afterProgress}}%</span>
-                    <span
-                      v-if="uitem.updateContents.afterConfidence"
-                    >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
-                  </div>
-                  <div v-if="activity.remark">
-                    <span>说明：</span>
-                    <span>{{activity.remark}}</span>
-                  </div>
-                </div>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-      <!-- 点赞要一直浮着 -->
-      <div v-if="showSupport">
-        <el-button @click="like()">
-          <span v-if="!supportType">点赞</span>
-          <span v-else>取消</span>
-        </el-button>
-        <ul v-if="showMore" class="ulclass">
-          <!-- 前10个 -->
-          <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
-            <div class="user-name">{{cutName(item.userName)}}</div>
-            <div>{{item.userName}}</div>
-          </li>
-          <!-- 展开 -->
-          <li v-if="voteLength > 10 && showMore" class="user-info">
-            <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
-            <div>展开</div>
-          </li>
-        </ul>
-        <ul v-else class="ulclass">
-          <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
-            <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
-            <div>{{item.userName}}</div>
-          </li>
-          <li class="user-info">
-            <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
-            <div>收起</div>
-          </li>
-        </ul>
-      </div>
-      <el-drawer
-        title="历史版本"
-        :modal="false"
-        :wrapperClosable="false"
-        :append-to-body="true"
-        class="tl-drawer"
-        :visible.sync="innerDrawer"
-      >
-        <tl-okr-history
-          v-if="innerDrawer"
-          ref="tl-okr-history"
-          :server="server"
-          :okrDetailId="okrDetailId"
-          :okrmain="okrmain"
-        ></tl-okr-history>
-      </el-drawer>
+      <tl-okr-history
+        v-if="innerDrawer"
+        ref="tl-okr-history"
+        :server="server"
+        :okrDetailId="okrDetailId"
+        :okrmain="okrmain"
+      ></tl-okr-history>
     </el-drawer>
-  </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -310,7 +390,7 @@ export default {
 </script>
 
 <style>
-.collapse span,
+/* .collapse span,
 .collapsetitle span {
   margin-left: 10px;
 }
@@ -332,6 +412,7 @@ export default {
 .ulclass li:nth-child(10n + 1) {
   clear: both;
 }
+ */
 .show-more {
   display: none;
 }

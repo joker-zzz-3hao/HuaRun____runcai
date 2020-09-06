@@ -51,7 +51,7 @@
               <el-progress
                 type="circle"
                 :percentage="parseInt(okrMain.okrProgress, 10) || 0"
-                :width="60"
+                :width="70"
                 :stroke-width="5"
                 color="#4ccd79"
                 class="tl-progress-circle"
@@ -160,7 +160,9 @@
             <dl v-for="(item,index) in orgTable" :key="item.orgId+index">
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-                <div class="user-name">{{cutName(item.orgName)}}</div>
+                <div class="user-name">
+                  <em>{{cutName(item.orgName)}}</em>
+                </div>
               </dt>
               <dd>{{item.orgName}}</dd>
             </dl>

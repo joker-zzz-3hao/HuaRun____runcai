@@ -1019,6 +1019,80 @@
   font-weight: 500;
 }
 
+/* tabs */
+.tl-tabs .el-tabs__item {
+  padding: 12px 20px;
+  height: unset;
+  line-height: unset;
+  color: #879099;
+}
+
+.tl-tabs .el-tabs__item.is-top:nth-child(2) {
+  padding-left: 10px;
+}
+
+.tl-tabs .el-tabs__item.is-active {
+   color: #685df1;
+}
+
+.tl-tabs .el-tabs__active-bar {
+  height: 3px;
+  background: #685df1;
+}
+
+.tl-tabs .el-tabs__nav-wrap::after {
+  height: 1px;
+  background: #e8ecf0;
+}
+
+.tl-tabs .el-tabs__active-bar::before,
+.tl-tabs .el-tabs__active-bar::after {
+  position: absolute;
+  top: 0;
+  content: '';
+  height: 3px;
+  width: 10px;
+  background: #685df1;
+}
+
+.tl-tabs .el-tabs__active-bar::before {
+  left: -10px;
+}
+
+.tl-tabs .el-tabs__active-bar::after {
+  right: -10px;
+}
+
+/* .tl-tabs .el-tabs__header::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+  width: 50px;
+  height: 1px;
+  background: #000;
+  z-index: 999;
+} */
+
+/* .tl-tabs .el-tabs__header::before,
+.tl-tabs .el-tabs__header::after {
+  position: absolute;
+  bottom: 0;
+  content: '';
+  height: 1px;
+  width: 50px;
+  background: #e8ecf0;
+  z-index: 99;
+}
+
+.tl-tabs .el-tabs__header::before {
+  left: -30px;
+}
+
+.tl-tabs .el-tabs__header::after {
+  right: -30px;
+} */
+
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */
 .dotted-line.el-button--text {
@@ -1622,10 +1696,35 @@
   color: #685df1;
 }
 
-.tl-card-panel .img-list dl {
+/* img-list */
+.img-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+.img-list dl {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 72px;
+}
+
+.img-list dt {
+  margin: 10px 0 8px 0;
+}
+
+.img-list dd {
+  color: #879099;
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: inline-block;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 /* ========================================================公共页面布局组件================================================================== */
