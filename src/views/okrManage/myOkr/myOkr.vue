@@ -255,9 +255,9 @@ export default {
     this.getOkrCycleList();
   },
   mounted() {
-    const liWidth = document.querySelectorAll('.tab-list li');
-    const borderWidth = document.querySelector('.border-slip');
-    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
+    // const liWidth = document.querySelectorAll('.tab-list li');
+    // const borderWidth = document.querySelector('.border-slip');
+    // borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
     searchOkr(status) {
@@ -322,7 +322,6 @@ export default {
     },
     // 打开详情
     openDialog(val) {
-      this.writeInfo.canWrite = false;
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
       this.drawerTitle = `${this.okrCycle.periodName}`;
@@ -433,6 +432,18 @@ export default {
         }
       },
     },
+    // '$route.name': {
+    //   handler(newVal) {
+    //     const routeIndex = newVal == 'myOkr' ? 0 : 1;
+    //     const liWidth = document.querySelectorAll('.tab-list li');
+    //     const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
+    //     const borderWidth = document.querySelector('.border-slip');
+    //     borderWidth.style.left = `${selfLeft}px`;
+    //     borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+    //     console.log('rote', routeIndex, this.$route.name);
+    //   },
+    //   immediate: true,
+    // },
   },
 };
 </script>
