@@ -310,6 +310,11 @@
 }
 
 /* table */
+.tl-table.el-table__header,
+.tl-table .el-table__body {
+  width: 100% !important;
+}
+
 .tl-table th {
   font-weight: normal;
   color: #879099;

@@ -1,6 +1,6 @@
 <template>
   <div class="tl-table-fix">
-    <ul class="tl-thead">
+    <!-- <ul class="tl-thead">
       <li></li>
       <li></li>
       <li>权重</li>
@@ -8,7 +8,7 @@
       <li>风险状态</li>
       <li>承接地图</li>
       <li>更新进度</li>
-    </ul>
+    </ul>-->
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
