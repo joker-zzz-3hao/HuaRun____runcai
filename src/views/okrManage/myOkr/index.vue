@@ -90,7 +90,8 @@ export default {
     const borderWidth = document.querySelector('.border-slip');
     borderWidth.style.left = `${selfLeft}px`;
     borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-    console.log('rote', routeIndex, this.$route.name);
+    this.currentIndex = routeIndex;
+    console.log('rote', this.currentIndex, routeIndex, this.$route.name);
   },
   methods: {
     goRoutesss(tab, event) {
@@ -126,7 +127,6 @@ export default {
         const borderWidth = document.querySelector('.border-slip');
         borderWidth.style.left = `${selfLeft}px`;
         borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-        console.log('rote', routeIndex, this.$route.name);
       },
       immediate: true,
     },
