@@ -95,10 +95,6 @@
         <dd v-if="!supportType">点赞</dd>
         <dd v-else>取消</dd>
       </dl>
-      <!-- <el-button @click="like()">
-        <span v-if="!supportType">点赞</span>
-        <span v-else>取消</span>
-      </el-button>-->
       <template v-if="showMore">
         <dl v-for="(item,index) in cutVoteList" :key="item.userId+index">
           <dt class="user-info">
@@ -167,30 +163,6 @@
           <dd>收起</dd>
         </dl>
       </template>
-      <!-- <el-button @click="like()">
-        <span v-if="!supportType">点赞</span>
-        <span v-else>取消</span>
-      </el-button>
-      <ul v-if="showMore" class="ulclass">
-        <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
-          <div class="user-name">{{cutName(item.userName)}}</div>
-          <div>{{item.userName}}</div>
-        </li>
-        <li v-if="voteLength > 10 && showMore" class="user-info">
-          <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
-          <div>展开</div>
-        </li>
-      </ul>
-      <ul v-else class="ulclass">
-        <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
-          <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
-          <div>{{item.userName}}</div>
-        </li>
-        <li class="user-info">
-          <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
-          <div>收起</div>
-        </li>
-      </ul>-->
     </div>
     <el-drawer
       title="历史版本"
