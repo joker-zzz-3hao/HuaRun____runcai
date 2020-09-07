@@ -3,7 +3,11 @@
     <div class="page-title">团队周报</div>
     <div class="operating-area">
       <div>
-        <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="refreshPageList"></tl-calendar>
+        <tl-calendar
+          @setCalendarId="setCalendarId"
+          @getWeeklyById="refreshPageList"
+          :isFromTeam="true"
+        ></tl-calendar>
       </div>
       <div>
         <el-cascader
@@ -96,7 +100,7 @@
             </el-table-column>
             <el-table-column fixed label="角色" v-if="!formData.queryType">
               <template slot-scope="scope">
-                <span>{{scope.row.isadmin == '0'?'部门负责人':'--'}}</span>
+                <span>{{scope.row.isadmin == '1'?'部门负责人':'--'}}</span>
                 <!-- 团队成员 -->
               </template>
             </el-table-column>
