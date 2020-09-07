@@ -310,7 +310,7 @@
 }
 
 /* table */
-.tl-table.el-table__header,
+.tl-table .el-table__header,
 .tl-table .el-table__body {
   width: 100% !important;
 }
