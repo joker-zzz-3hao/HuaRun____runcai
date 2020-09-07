@@ -5,36 +5,6 @@
       <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
       <em v-else>{{userInfo.userName}}</em>
       <tl-org-page :periodId="periodId"></tl-org-page>
-      <div>
-        <ul style="display:flex;flex-direction: row;">
-          <template v-if="orgTable">
-            <li
-              class="user-info"
-              v-for="(item,index) in orgTable"
-              :key="index"
-              @click="goToDep(item.orgId,item.orgName)"
-            >
-              <div>
-                <div class="user-name">{{checkName(item.orgName)}}</div>
-                <div>{{item.orgName}}</div>
-              </div>
-            </li>
-          </template>
-          <template v-if="orgUser">
-            <li
-              class="user-info"
-              v-for="(item,index) in orgUser"
-              :key="index"
-              @click="goToDep(item.userId,item.userName)"
-            >
-              <div>
-                <div class="user-name">{{checkName(item.userName)}}</div>
-                <div>{{item.userName}}</div>
-              </div>
-            </li>
-          </template>
-        </ul>
-      </div>
     </div>
     <div class="creatOkr">
       <div>OKR当前进度</div>
@@ -51,7 +21,12 @@
       </div>
       <div>
         <div style="display:inline-block">
-          <tl-okr-risk-total :tableData="tableData" :mainData="mainData"></tl-okr-risk-total>
+          <tl-okr-risk-total
+            :tableData="tableData"
+            :mainData="mainData"
+            :periodId="periodId"
+            :setOrgId="setOrgId"
+          ></tl-okr-risk-total>
         </div>
       </div>
     </div>

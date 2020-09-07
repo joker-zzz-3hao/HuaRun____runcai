@@ -16,7 +16,7 @@
           <tl-process :data="oData.okrDetailProgress"></tl-process>
         </div>
       </div>
-      <div>
+      <div v-if="oData.undertakeOkrVo">
         <span>承接自</span>
         <span style="margin-left: 10px;">KR:{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
       </div>

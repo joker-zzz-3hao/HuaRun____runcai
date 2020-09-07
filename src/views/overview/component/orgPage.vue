@@ -45,7 +45,7 @@
         </dd>
       </dl>
     </div>
-    <div v-show="showTable">
+    <div v-if="tableList.length>0">
       <tl-okr-table
         :tableList="tableList"
         :disabled="false"
@@ -66,8 +66,53 @@
         </template>
       </tl-okr-table>
     </div>
-    <div v-show="tableList.length==0">
-      <el-button type="primary">创建OKR</el-button>
+    <div v-else class="tl-card-panel no-data">
+      <el-button type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
+    </div>
+    <div class="tl-card-panel">
+      <div class="card-panel-head">
+        <!-- <div class="pannel-title">
+          <template v-if="orgUser&&this.$route.name!=='grassStaff'">
+            <em>{{departmentName}}</em>
+            <span>成员OKR</span>
+          </template>
+          <template v-if="orgTable">
+            <em>{{departmentName}}</em>
+          </template>
+        </div>-->
+      </div>
+      <div class="card-panel-body img-list">
+        <template v-if="orgUser">
+          <dl
+            v-for="(item,index) in orgUser"
+            :key="item.userId+index"
+            @click="goToDep(item.userId,item.userName)"
+          >
+            <dt class="user-info">
+              <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+              <div class="user-name">
+                <em>{{cutName(item.userName)}}</em>
+              </div>
+            </dt>
+            <dd>{{item.userName}}</dd>
+          </dl>
+        </template>
+        <template v-if="orgTable">
+          <dl
+            v-for="(item,index) in orgTable"
+            :key="item.orgId+index"
+            @click="goToDep(item.orgId,item.orgName)"
+          >
+            <dt class="user-info">
+              <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+              <div class="user-name">
+                <em>{{cutName(item.orgName)}}</em>
+              </div>
+            </dt>
+            <dd>{{item.orgName}}</dd>
+          </dl>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -93,6 +138,8 @@ export default {
       CONST,
       okrMain: '',
       tableList: [],
+      orgTable: [],
+      orgUser: [],
       searchForm: {
         status: '1',
       },
@@ -116,6 +163,9 @@ export default {
   },
   mounted() {
     this.searchOkr();
+    if (this.$route.name !== 'grassStaff') {
+      this.getqueryMyOkr();
+    }
   },
   methods: {
     goUndertakeMaps(id, name) {
@@ -125,6 +175,10 @@ export default {
           okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrId,
         },
       });
+    },
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
     },
     searchOkr() { // 默认搜索进行时
       this.showTable = false;
@@ -138,11 +192,27 @@ export default {
           this.tableList = res.data.okrDetails || [];
           this.okrMain = res.data.okrMain || {};
           this.okrId = this.okrMain.okrId || '';
-          this.memberList = res.data.orgUser || [];
-          this.orgTable = res.data.orgTable || [];
-          if (this.tableList.length > 0) {
-            this.showTable = true;
-          }
+          // this.memberList = res.data.orgUser || [];
+          // this.orgTable = res.data.orgTable || [];
+        }
+      });
+    },
+    goToDep(id, name) {
+      const chename = encodeURI(name);
+      if (this.orgTable) {
+        this.$router.push({ name: 'teamleader', query: { id, name: chename } });
+      }
+      if (this.orgUser) {
+        this.$router.push({ name: 'grassStaff', query: { id, name: chename } });
+      }
+    },
+    getqueryMyOkr() {
+      this.server.queryMyOkr({
+        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgTable;
+          this.orgUser = res.data.orgUser;
         }
       });
     },

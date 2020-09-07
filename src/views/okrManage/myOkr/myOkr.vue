@@ -263,8 +263,11 @@ export default {
     this.getOkrCycleList();
   },
   mounted() {
-    const liWidth = document.querySelectorAll('.tab-list li');
+    // 状态
+    const liWidth = document.querySelectorAll(' .tab-list li');
+    const selfLeft = document.querySelectorAll('.tab-list li')[0].offsetLeft;
     const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.left = `${selfLeft}px`;
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
@@ -278,7 +281,6 @@ export default {
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
-
       }).then((res) => {
         if (res.code == 200) {
           if (this.searchForm.status == 'all') {
@@ -470,18 +472,17 @@ export default {
         }
       },
     },
-    // '$route.name': {
-    //   handler(newVal) {
-    //     const routeIndex = newVal == 'myOkr' ? 0 : 1;
-    //     const liWidth = document.querySelectorAll('.tab-list li');
-    //     const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
-    //     const borderWidth = document.querySelector('.border-slip');
-    //     borderWidth.style.left = `${selfLeft}px`;
-    //     borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-    //     console.log('rote', routeIndex, this.$route.name);
-    //   },
-    //   immediate: true,
-    // },
+    '$route.name': {
+      handler(newVal) {
+        const routeIndex = newVal == 'myOkr' ? 0 : 1;
+        const liWidth = document.querySelectorAll('.operating-area .tab-list li');
+        const selfLeft = document.querySelectorAll('.operating-area .tab-list li')[routeIndex].offsetLeft;
+        const borderWidth = document.querySelector('.operating-area .border-slip');
+        borderWidth.style.left = `${selfLeft}px`;
+        borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
+      },
+      deep: true,
+    },
   },
 };
 </script>

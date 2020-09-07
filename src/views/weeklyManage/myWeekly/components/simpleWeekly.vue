@@ -51,11 +51,12 @@
                   v-model="scope.row.validateProjectId"
                   filterable
                   placeholder="请选择项目"
+                  remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
                 >
                   <el-option
-                    v-for="item in projectList"
+                    v-for="item in thisPageProjectList"
                     :key="item.projectId"
                     :label="item.projectNameCn"
                     :value="item.projectId"
@@ -67,7 +68,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”"
+                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
                 placement="top"
               >
                 <i class="el-icon-question"></i>
@@ -75,16 +76,17 @@
               <div></div>
             </template>
           </el-table-column>
-          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
+          <el-table-column label="支撑OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
             <template slot-scope="scope">
+              <!-- 临时项目可不选择支撑项 -->
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
-                :rules="formData.rules.valueOrOkrIds"
+                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:''"
               >
                 <el-input
                   @focus="addSupportOkr(scope.row)"
                   v-model.trim="scope.row.valueOrOkrIds"
-                  placeholder="请选择所支持OKR/价值观"
+                  placeholder="请选择所支撑OKR/价值观"
                   maxlength="0"
                   v-show="scope.row.selectedOkr.length < 1"
                 ></el-input>
@@ -123,7 +125,10 @@
           </el-table-column>
           <el-table-column label="操作" prop="code">
             <template slot-scope="scope">
-              <el-dropdown @command="deleteItem(scope.row)">
+              <el-dropdown
+                @command="deleteItem(scope.row)"
+                v-if="formData.weeklyWorkVoSaveList.length > 1"
+              >
                 <span class="el-dropdown-link">
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
@@ -131,6 +136,7 @@
                   <el-dropdown-item>删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
+              <span v-else>--</span>
             </template>
           </el-table-column>
         </el-table>
@@ -150,7 +156,7 @@
           <div>
             <span>KR</span>
             <span style="marginLeft:15px">{{item.kr.okrDetailObjectKr}}</span>
-            <span style="marginLeft:15px">被工作项{{itemIndex(item.kr)}}支持</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.kr)}}支撑</span>
             <span style="marginLeft:15px">
               风险状态
               <el-button :class="{'no-risk':item.confidenceAfter == 1}"></el-button>
@@ -180,7 +186,7 @@
           <div>
             目标
             <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}</span>
-            <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支持</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支撑</span>
             <span style="marginLeft:15px">
               当前进度
               <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
@@ -204,7 +210,7 @@
         <el-button @click="sad">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
-      <el-button style="marginLeft:65px" @click="commitWeekly">提交</el-button>
+      <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     </div>
     <!-- 添加支撑项 -->
     <add-okr
@@ -293,6 +299,12 @@ export default {
         return [];
       },
     },
+    canEdit: {
+      type: Boolean,
+      default() {
+        return true;
+      },
+    },
   },
   data() {
     return {
@@ -302,6 +314,7 @@ export default {
       tableLoading: false,
       currenItemrandomId: '',
       showAddOkr: false,
+      thisPageProjectList: [],
       formData: {
         rules: {
           workContent: {
@@ -379,6 +392,7 @@ export default {
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
+      this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -454,10 +468,14 @@ export default {
       });
     },
     addWork() {
+      let defaultProjectId = '';
+      if (this.formData.weeklyWorkVoSaveList.length > 0) {
+        defaultProjectId = this.formData.weeklyWorkVoSaveList[this.formData.weeklyWorkVoSaveList.length - 1].projectId;
+      }
       this.formData.weeklyWorkVoSaveList.push({
         okrCultureValueIds: '',
         okrIds: '',
-        projectId: '',
+        projectId: defaultProjectId,
         weeklyId: '',
         workContent: '',
         workDesc: '',
@@ -467,13 +485,22 @@ export default {
         workTime: 0,
         selectedOkr: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
-        validateProjectId: '', // 用于校验项目是否选中
+        validateProjectId: defaultProjectId, // 用于校验项目是否选中
       });
+      this.$forceUpdate();
     },
 
     remoteMethod(query) {
       if (query !== '') {
-        this.server.getProjectList(query);
+        this.server.getProjectList({
+          pageSize: 20,
+          currentPage: 1,
+          projectName: query,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.thisPageProjectList = res.data.content;
+          }
+        });
       }
     },
     addItem() { // 添加本地数据
@@ -612,6 +639,10 @@ export default {
         this.weeklyOkrSaveList = [];
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
+          // 临时项目反显
+          if (data.workId && !data.projectId) {
+            data.validateProjectId = '临时项目';
+          }
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);

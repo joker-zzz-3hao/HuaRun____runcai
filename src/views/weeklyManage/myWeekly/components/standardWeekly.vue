@@ -7,7 +7,7 @@
 <template>
   <div class="home">
     <div>
-      <el-form :rules="formData.rules" :model="formData" ref="formDomPlan">
+      <el-form :rules="formData.rules" :model="formData" ref="formDom">
         <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
@@ -44,7 +44,6 @@
           <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
             <template slot-scope="scope">
               <el-slider v-model="scope.row.workProgress" :step="1" show-input></el-slider>
-              <!-- <span>{{scope.row.workProgress}}%</span> -->
             </template>
           </el-table-column>
           <el-table-column width="220" label="投入工时" prop="workTime" :render-header="renderHeader">
@@ -67,11 +66,12 @@
                   v-model="scope.row.validateProjectId"
                   filterable
                   placeholder="请选择项目"
+                  remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
                 >
                   <el-option
-                    v-for="item in projectList"
+                    v-for="item in thisPageProjectList"
                     :key="item.projectId"
                     :label="item.projectNameCn"
                     :value="item.projectId"
@@ -82,7 +82,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”"
+                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
                 placement="top"
               >
                 <i class="el-icon-question"></i>
@@ -90,17 +90,18 @@
               <div></div>
             </template>
           </el-table-column>
-          <el-table-column label="支持OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
+          <el-table-column label="支撑OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
             <!-- okrIds -->
             <template slot-scope="scope">
+              <!-- 临时项目可不选择支撑项 -->
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
-                :rules="formData.rules.valueOrOkrIds"
+                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:''"
               >
                 <el-input
                   @focus="addSupportOkr(scope.row)"
                   v-model.trim="scope.row.valueOrOkrIds"
-                  placeholder="请选择所支持OKR/价值观"
+                  placeholder="请选择所支撑OKR/价值观"
                   maxlength="0"
                   v-show="scope.row.selectedOkr.length < 1"
                 ></el-input>
@@ -137,9 +138,12 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="code">
+          <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-dropdown @command="deleteItem(scope.row)">
+              <el-dropdown
+                @command="deleteItem(scope.row)"
+                v-if="formData.weeklyWorkVoSaveList.length > 1"
+              >
                 <span class="el-dropdown-link">
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
@@ -147,6 +151,7 @@
                   <el-dropdown-item>删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
+              <span v-else>--</span>
             </template>
           </el-table-column>
         </el-table>
@@ -156,14 +161,11 @@
     <!-- 本周感想、建议、收获 -->
     <div style="marginTop:50px">
       <h1>本周感想、建议、收获</h1>
-      <el-form ref="formDomThought" :rules="formData.rules" :model="formData">
+      <el-form ref="formDomThought" :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
           <el-table-column prop="workContent">
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'weeklyThoughtSaveList.' + scope.$index + '.thoughtContent'"
-                :rules="formData.rules.workContent"
-              >
+              <el-form-item>
                 <span>
                   <el-button
                     @click="thoughtTypeChange(scope.row,0)"
@@ -181,10 +183,13 @@
                     v-model.trim="scope.row.thoughtContent"
                     style="width:60%"
                     type="textarea"
+                    maxlength="100"
+                    placeholder="请简单说一下你的感想，不超过100个字"
                   ></el-input>
                   <i
                     style="cursor:pointer"
                     class="el-icon-minus"
+                    v-if="formData.weeklyThoughtSaveList.length > 1"
                     @click="deleteThoughts(scope.row.randomId)"
                   ></i>
                   <i
@@ -205,15 +210,12 @@
     <!-- 下周计划 -->
     <div style="marginTop:50px">
       <h1>下周计划</h1>
-      <el-form :rules="formData.rules" :model="formData" ref="formDom">
+      <el-form :model="formData" ref="formDom">
         <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="planContent">
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'weeklyPlanSaveList.' + scope.$index + '.planContent'"
-                :rules="formData.rules.workContent"
-              >
+              <el-form-item>
                 <el-input
                   v-model.trim="scope.row.planContent"
                   maxlength="100"
@@ -252,7 +254,7 @@
           <div>
             <span>KR</span>
             <span style="marginLeft:15px">{{item.kr.okrDetailObjectKr}}</span>
-            <span style="marginLeft:15px">被工作项{{itemIndex(item.kr)}}支持</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.kr)}}支撑</span>
             <span style="marginLeft:15px">
               风险状态
               <el-button :class="{'no-risk':item.confidenceAfter == 1}"></el-button>
@@ -282,7 +284,7 @@
           <div>
             目标
             <span style="marginLeft:15px">{{item.o.okrDetailObjectKr}}</span>
-            <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支持</span>
+            <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支撑</span>
             <span style="marginLeft:15px">
               当前进度
               <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
@@ -306,7 +308,7 @@
         <el-button @click="sad">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
-      <el-button style="marginLeft:65px" @click="commitWeekly">提交</el-button>
+      <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     </div>
     <!-- 添加支撑项 -->
     <add-okr
@@ -392,6 +394,12 @@ export default {
         return [];
       },
     },
+    canEdit: {
+      type: Boolean,
+      default() {
+        return true;
+      },
+    },
   },
   data() {
     return {
@@ -401,6 +409,7 @@ export default {
       tableLoading: false,
       currenItemrandomId: '',
       showAddOkr: false,
+      thisPageProjectList: [],
       formData: {
         rules: {
           workContent: {
@@ -488,6 +497,7 @@ export default {
       this.addThought();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
+      this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -582,17 +592,29 @@ export default {
     },
     remoteMethod(query) {
       if (query !== '') {
-        this.server.getProjectList(query);
+        this.server.getProjectList({
+          pageSize: 20,
+          currentPage: 1,
+          projectName: query,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.thisPageProjectList = res.data.content;
+          }
+        });
       }
     },
     addItem() { // 添加本地数据
       this.addWork();
     },
     addWork() {
+      let defaultProjectId = '';
+      if (this.formData.weeklyWorkVoSaveList.length > 0) {
+        defaultProjectId = this.formData.weeklyWorkVoSaveList[this.formData.weeklyWorkVoSaveList.length - 1].projectId;
+      }
       this.formData.weeklyWorkVoSaveList.push({
         okrCultureValueIds: '',
         okrIds: '',
-        projectId: '',
+        projectId: defaultProjectId,
         weeklyId: '',
         workContent: '',
         workDesc: '',
@@ -602,7 +624,7 @@ export default {
         workTime: 0,
         selectedOkr: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
-        validateProjectId: '', // 用于校验项目是否选中
+        validateProjectId: defaultProjectId, // 用于校验项目是否选中
       });
     },
     addNextWeekWork() {
@@ -720,6 +742,13 @@ export default {
       this.$forceUpdate();
     },
     commitWeekly() {
+      // 将下周计划、感想有未填写的内容的数据删除
+      this.formData.weeklyThoughtSaveList = this.formData.weeklyThoughtSaveList.filter(
+        (thought) => !!thought.thoughtContent,
+      );
+      this.formData.weeklyPlanSaveList = this.formData.weeklyPlanSaveList.filter(
+        (plan) => !!plan.planContent,
+      );
       // 表单校验
       const params = {
         calendarId: this.calendarId,
@@ -736,17 +765,18 @@ export default {
           if (valid) resolve();
         });
       });
-      const v2 = new Promise((resolve) => {
-        this.$refs.formDomPlan.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      const v3 = new Promise((resolve) => {
-        this.$refs.formDomThought.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      Promise.all([v1, v2, v3]).then(() => {
+      // const v2 = new Promise((resolve) => {
+      //   this.$refs.formDomPlan.validate((valid) => {
+      //     if (valid) resolve();
+      //   });
+      // });
+      // const v3 = new Promise((resolve) => {
+      //   this.$refs.formDomThought.validate((valid) => {
+      //     if (valid) resolve();
+      //   });
+      // });
+      // Promise.all([v1, v2, v3]).then(() => {
+      Promise.all([v1]).then(() => {
         this.server.commitWeekly(params).then((res) => {
           if (res.code == 200) {
             this.$message.success('提交成功');
@@ -814,6 +844,10 @@ export default {
         this.weeklyOkrSaveList = [];
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
+          // 临时项目反显
+          if (data.workId && !data.projectId) {
+            data.validateProjectId = '临时项目';
+          }
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);

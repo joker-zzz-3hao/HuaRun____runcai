@@ -44,6 +44,7 @@
         :originalOrgOkrList="originalOrgOkrList"
         :projectList="projectList"
         :cultureList="cultureList"
+        :canEdit="canEdit"
         @refreshMyOkr="refreshMyOkr"
         v-if="weeklyType=='1'"
       ></standard-Weekly>
@@ -58,6 +59,7 @@
         :originalOrgOkrList="originalOrgOkrList"
         :projectList="projectList"
         :cultureList="cultureList"
+        :canEdit="canEdit"
         @refreshMyOkr="refreshMyOkr"
         v-else
       ></simple-weekly>
@@ -94,6 +96,7 @@ export default {
       originalOrgOkrList: [],
       projectList: [],
       cultureList: [],
+      canEdit: false,
     };
   },
   created() {
@@ -121,7 +124,7 @@ export default {
     },
     getProjectList(projectName) {
       this.server.getProjectList({
-        pageSize: 10,
+        pageSize: 20,
         currentPage: 1,
         projectName: projectName || '',
       }).then((res) => {
@@ -180,10 +183,11 @@ export default {
       }
     },
     getWeeklyById(item) {
+      this.canEdit = item.canEdit;
       this.weeklyTypeList = [];
       // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
       this.queryTeamOrPersonalTarget('my');
-      this.newPage = false;
+      this.newPage = false;// 清空页面实例，重新加载新页面
       this.$nextTick(() => {
         this.weeklyData = {};
         if (item.weeklyId) {

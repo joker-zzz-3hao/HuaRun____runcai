@@ -50,7 +50,7 @@
               class="tl-radio"
               :label="item.okrDetailId+item.okrDetailVersion"
               v-for="(item,index) in departokrList"
-              :key="item.okrDetailId"
+              :key="item.okrDetailId+index"
             >
               <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
               <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」(当前选择)</em>
