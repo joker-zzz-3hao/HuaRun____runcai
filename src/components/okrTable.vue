@@ -1,6 +1,6 @@
 <template>
   <div class="tl-table-fix">
-    <!-- <ul class="tl-thead">
+    <ul class="tl-thead">
       <li></li>
       <li></li>
       <li>权重</li>
@@ -8,7 +8,7 @@
       <li>风险状态</li>
       <li>承接地图</li>
       <li>更新进度</li>
-    </ul>-->
+    </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
@@ -57,25 +57,25 @@
         </template>
       </el-table-column>
       <!-- o label="权重" -->
-      <el-table-column prop="okrWeight" label="权重" width="6%">
+      <el-table-column prop="okrWeight" width="6%">
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
       <!-- o label="进度" -->
-      <el-table-column prop="okrDetailProgress" label="进度" width="16%">
+      <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
           <tl-process :data="scope.row.okrDetailProgress"></tl-process>
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column label="风险状态" width="15%"></el-table-column>
+      <el-table-column width="15%"></el-table-column>
       <!-- o label="承接地图" -->
-      <el-table-column label="承接地图" width="8%">
+      <el-table-column width="8%">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
-      <el-table-column label="更新进度" width="8%">
+      <el-table-column width="8%">
         <template slot-scope="scope">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
