@@ -19,7 +19,9 @@
         </el-table-column>
         <el-table-column label="本周心情">
           <template slot-scope="scope">
-            <span v-if="scope.row.weeklyEmotion">本周心情:{{scope.row.weeklyEmotion}}</span>
+            <span
+              v-if="scope.row.weeklyEmotion"
+            >本周心情:{{CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]}}</span>
             <span v-else>未填写</span>
           </template>
         </el-table-column>
@@ -38,6 +40,7 @@
 import echarts from 'echarts';
 import { mapState } from 'vuex';
 import Server from '../../server';
+import CONST from '../../const';
 
 const server = new Server();
 export default {
@@ -56,6 +59,7 @@ export default {
   data() {
     return {
       calendarId: '',
+      CONST,
       server,
       dateTime: '',
       dateOption: [],
@@ -99,17 +103,24 @@ export default {
       }
 
       if (echartData.datas) {
+        const echartDataFil = echartData.datas.filter((item) => item);
         this.echartDataY = {
           type: 'line',
           symbol: 'circle',
           showAllSymbol: true,
-          data: echartData.datas.map((item) => [item.createDate, item.allScore]),
+          data: echartDataFil.map((item) => [item.createDate, item.allScore]),
+          itemStyle: {
+            color: '#3F7DFF',
+          },
         };
       } else {
         this.echartDataY = {
           type: 'line',
           symbol: 'circle',
           showAllSymbol: true,
+          itemStyle: {
+            color: '#3F7DFF',
+          },
           data: [],
         };
       }
@@ -154,6 +165,19 @@ export default {
       const option = {
         xAxis: {
           data: that.echartDataX,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
         tooltip: {
           trigger: 'item',
@@ -165,6 +189,14 @@ export default {
         yAxis: {
           min: 0,
           max: 7,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#F4F6F8'],
+              width: 1,
+              type: 'solid',
+            },
+          },
           axisLabel: {
             formatter(value) {
               const texts = [];
@@ -178,6 +210,16 @@ export default {
                 texts.push('失控');
               }
               return texts;
+            },
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
             },
           },
         },

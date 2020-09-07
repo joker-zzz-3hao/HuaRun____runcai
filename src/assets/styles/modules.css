@@ -379,7 +379,7 @@
 
 .tl-table .sub-tr .okr-line::after {
   left: 0;
-  right: -25px;
+  right: -20px;
   top: 0;
   height: 1px;
 }
@@ -1649,6 +1649,7 @@
 }
 
 .card-panel-body .tl-table .sub-tr .okr-kr-name span {
+  flex: 0 0 32px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1657,12 +1658,12 @@
 }
 
 .card-panel-body .tl-table .sub-tr .okr-kr-name em {
-  flex: 1;
   color: #7a828a;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   transition: all .4s ease-out;
+  cursor: pointer;
 }
 
 .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em {
@@ -1676,6 +1677,8 @@
   cursor: pointer;
 }
 
+.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em:hover,
+.card-panel-body .tl-table .sub-tr .okr-kr-name em:hover,
 .card-panel-body .tl-table .el-table__row.expanded td:nth-child(2) .cell em {
   color: #685df1;
 }

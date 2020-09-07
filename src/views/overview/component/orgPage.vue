@@ -1,12 +1,56 @@
 <template>
   <div>
+    <div class="card-panel-head">
+      <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+      <dl class="okr-state">
+        <dt>
+          <i class="el-icon-set-up"></i>
+          <em>状态</em>
+        </dt>
+        <dd>
+          <i class="el-icon-sunny"></i>
+          <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+        </dd>
+      </dl>
+      <dl class="okr-responsible">
+        <dt>
+          <i class="el-icon-user"></i>
+          <em>负责人</em>
+        </dt>
+        <dd>{{okrMain.userName}}</dd>
+      </dl>
+      <dl class="okr-progress">
+        <dt>
+          <i class="el-icon-odometer"></i>
+          <em>OKR进度</em>
+        </dt>
+        <dd>
+          <el-progress
+            type="circle"
+            :percentage="parseInt(okrMain.okrProgress, 10) || 0"
+            :width="70"
+            :stroke-width="5"
+            color="#4ccd79"
+            class="tl-progress-circle"
+          ></el-progress>
+        </dd>
+      </dl>
+      <dl class="update-time">
+        <dt>
+          <i class="el-icon-timer"></i>
+          <em>更新时间</em>
+        </dt>
+        <dd>
+          <em>{{okrMain.updateTime || okrMain.createTime}}</em>
+        </dd>
+      </dl>
+    </div>
     <div v-show="showTable">
       <tl-okr-table
         :tableList="tableList"
         :disabled="false"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
-        @openDialog="openDialog"
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
@@ -47,6 +91,7 @@ export default {
       showTable: false,
       server,
       CONST,
+      okrMain: '',
       tableList: [],
       searchForm: {
         status: '1',

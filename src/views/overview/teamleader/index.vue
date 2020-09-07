@@ -50,22 +50,9 @@
         <span>部门成员的OKR风险状态总数，点击可以查看对应的OKR列表</span>
       </div>
       <div>
-        <el-table :data="tableData" border style="width: 400px;display:inline-block">
-          <el-table-column prop="riskName" label="KR状态"></el-table-column>
-          <el-table-column prop="count" label="数量"></el-table-column>
-          <el-table-column prop="ratio" label="占比">
-            <template slot-scope="scope">
-              <span v-if="scope.row.ratio">{{scope.row.ratio+'%'}}</span>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-        </el-table>
         <div style="display:inline-block">
           <tl-okr-risk-total :tableData="tableData" :mainData="mainData"></tl-okr-risk-total>
         </div>
-        <ul style="display:inline-block">
-          <li v-for="(item,index) in tableData" :key="index">{{item.riskName}} {{item.ratio+'%'}}</li>
-        </ul>
       </div>
     </div>
 

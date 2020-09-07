@@ -39,6 +39,20 @@ export default {
         xAxis: {
           type: 'category',
           data: that.mainDataX,
+          boundaryGap: false,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
 
         yAxis: [
@@ -46,19 +60,51 @@ export default {
             type: 'value',
             min: 0,
             max: 100,
+            splitLine: {
+              show: false,
+            },
             axisLabel: {
               show: true,
               interval: 'auto',
               formatter: '{value} %',
+              textStyle: {
+                color: '#879099', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#F4F6F8', // 颜色
+                width: 1, // 粗细
+              },
             },
             show: true,
           },
         ],
         series: [{
-          // eslint-disable-next-line max-len
+          type: 'line',
+          smooth: true,
+          symbolSize: 10,
+
+          areaStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#3F7DFF',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(100,178,237,0.1)',
+                },
+                ],
+              ),
+            },
+          },
           data: that.mainDataY,
-          type: 'bar',
-          barWidth: 20,
+          itemStyle: {
+            color: '#3F7DFF',
+          },
 
         }],
       };
