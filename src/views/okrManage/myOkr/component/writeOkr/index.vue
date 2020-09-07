@@ -63,7 +63,9 @@
             <dd v-if="true">
               <img src="@/assets/images/user/user.jpg" alt />
             </dd>
-            <dd v-else class="user-name">{{cutName(userName)}}</dd>
+            <dd v-else class="user-name">
+              <em>{{cutName(userName)}}</em>
+            </dd>
             <dd>{{userName}}</dd>
           </dl>
         </div>
