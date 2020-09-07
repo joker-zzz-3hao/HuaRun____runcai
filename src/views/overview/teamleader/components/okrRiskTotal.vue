@@ -1,6 +1,15 @@
 <template>
   <div class="okrRiskTotal">
     <div id="okrRiskTotal" @click="dialogVisible=true"></div>
+    <div class="countAll">
+      <ul>
+        <li class="count" v-for="(item,index) in tableData" :key="index">
+          <em>{{item.count}}</em>
+          <em>总数量(个)</em>
+          <el-progress :percentage="item.ratio" :show-text="false"></el-progress>
+        </li>
+      </ul>
+    </div>
     <el-dialog
       title="okr列表"
       :visible.sync="dialogVisible"
@@ -80,6 +89,22 @@ export default {
               show: false,
             },
             data: that.aroundData,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              normal: {
+                color(params) {
+                  // 自定义颜色
+                  const colorList = [
+                    '#FFBC20', '#4CCD79', '#FB4C59',
+                  ];
+                  return colorList[params.dataIndex];
+                },
+              },
+            },
           },
         ],
       };
@@ -99,8 +124,21 @@ export default {
 </script>
 <style  scoped>
 #okrRiskTotal {
-  width: 400px;
-  display: block;
-  height: 400px;
+  width: 164px;
+  display: inline-block;
+  height: 164px;
+}
+.countAll {
+  display: inline-block;
+}
+.countAll ul li {
+  display: inline-block;
+  background: #ffffff;
+  border-radius: 4px;
+  border-radius: 4px;
+}
+.count {
+  width: 284px;
+  height: 100px;
 }
 </style>

@@ -112,6 +112,7 @@ export default {
     teamEmotion(date) {
       this.server.teamEmotion({
         date,
+        userId: this.$route.query.id,
       }).then((res) => {
         this.moodDataX = res.data.map((item) => `${item.weekBegin}至${item.weekEnd}`);
         this.moodDataY = res.data.map((item) => ({
@@ -140,19 +141,63 @@ export default {
           dimensions: ['product', '进行中的工作项', '已完成的工作项'],
           source: that.teamDataX,
         },
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLabel: {
+            interval: 0,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
+        },
         yAxis: {
           min: 0,
           max: 100,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#F4F6F8'],
+              width: 1,
+              type: 'solid',
+            },
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
           {
             type: 'bar',
-            barWidth: 30,
+            barWidth: 8,
+            itemStyle: {
+              normal: { color: '#4CCD79' },
+            },
           },
-          { type: 'bar', barWidth: 30 },
+          {
+            type: 'bar',
+            barWidth: 8,
+            itemStyle: {
+              normal: { color: '#FFBC20' },
+            },
+          },
         ],
       };
 
@@ -190,17 +235,70 @@ export default {
           dimensions: ['product', '0', '50', '100'],
           source: that.moodDataY,
         },
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLabel: {
+            interval: 0,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
+        },
         yAxis: {
           min: 0,
           max: 50,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#F4F6F8'],
+              width: 1,
+              type: 'solid',
+            },
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
-          { type: 'bar', barWidth: 30 },
-          { type: 'bar', barWidth: 30 },
-          { type: 'bar', barWidth: 30 },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#FFBC20' },
+            },
+          },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#3F7DFF' },
+            },
+          },
+          {
+            type: 'bar',
+            barWidth: 7,
+            itemStyle: {
+              normal: { color: '#FB4C59' },
+            },
+          },
         ],
       };
 

@@ -42,17 +42,54 @@ export default {
         xAxis: {
           type: 'category',
           data: that.mainDataX,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
         yAxis: {
           type: 'value',
           min: 0,
           max: 100,
+          splitLine: {
+            show: false,
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
         },
         series: [{
           data: that.mainDataY,
           name: 'okr更新次数',
-          type: 'line',
+          type: 'bar',
           stack: '总量',
+          barWidth: 10,
+          showBackground: true,
+          backgroundStyle: {
+            color: '#F4F6F8',
+          },
+          itemStyle: {
+            normal: { color: '#FFBC20' },
+          },
         }],
       };
 

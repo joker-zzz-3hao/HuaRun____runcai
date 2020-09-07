@@ -38,10 +38,15 @@ export default {
           data: that.mainDataX,
           axisLabel: {
             interval: 0,
-            formatter(value) {
-              // x轴的文字改为竖版显示
-              const str = value.split('');
-              return str.join('\n');
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
             },
           },
         },
@@ -51,6 +56,7 @@ export default {
           formatter(params) {
             return `<div>更新次数${params.value}次</div>`;
           },
+
         },
         yAxis: [
           {
@@ -58,14 +64,35 @@ export default {
             show: true,
             max: 100,
             min: 0,
+            splitLine: {
+              show: false,
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#879099', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#F4F6F8', // 颜色
+                width: 1, // 粗细
+              },
+            },
           },
         ],
         series: [{
           // eslint-disable-next-line max-len
           data: that.mainDataY,
           type: 'bar',
-          barWidth: 20,
-
+          barWidth: 10,
+          showBackground: true,
+          backgroundStyle: {
+            color: '#F4F6F8',
+          },
+          itemStyle: {
+            normal: { color: '#3F7DFF' },
+          },
         }],
       };
 

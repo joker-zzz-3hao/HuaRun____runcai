@@ -29,6 +29,7 @@ import okrRiskTotal from './components/okrRiskTotal';
 import period from '../component/period';
 import orgPage from '../component/orgPage';
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 export default {
@@ -44,6 +45,7 @@ export default {
     return {
       periodId: '',
       server,
+      CONST,
       mainData: [],
       userWeek: [],
       calendarId: '',
@@ -65,19 +67,20 @@ export default {
       this.riskStatistics();
     },
     getokrStatistics() {
-      this.server.okrStatistics({
+      const form = {
         periodId: this.periodId,
-        user: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
-      }).then((res) => {
+      };
+      // eslint-disable-next-line no-unused-expressions
+      this.$route.query.id ? form.user = this.$route.query.id : form.userId = this.userInfo.userId;
+      this.server.okrStatistics(form).then((res) => {
         this.mainData = res.data;
       });
     },
     riskStatistics() {
       this.server.riskStatistics({
         periodId: this.periodId,
-        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
-        personOrOrg: 'org',
+        personOrOrg: 'person',
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.okrData = res.data;
       });

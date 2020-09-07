@@ -37,6 +37,13 @@ const CONFIDENCE_MAP = {
   2: '风险可控',
   3: '失控',
 };
+
+const WEEKLYEMOTION = {
+  0: '沮丧',
+  50: '平常',
+  100: '开心',
+};
+
 const OKR_TYPE_MAP = {
   1: '部门',
   2: '个人',
@@ -58,4 +65,5 @@ export default {
   OKR_TYPE_MAP,
   STATUS_LIST_MAP,
   OKR_TYPE_LIST,
+  WEEKLYEMOTION,
 };
