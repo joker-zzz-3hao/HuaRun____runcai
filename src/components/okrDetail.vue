@@ -1,7 +1,6 @@
 /* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
   <el-drawer
-    :title="drawerTitle"
     :visible.sync="myokrDrawer"
     :wrapperClosable="false"
     :modal-append-to-body="true"
@@ -11,10 +10,9 @@
     @closed="closed"
     :before-close="close"
   >
-    <!-- <div slot="title" class="flex-sb">
-      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
-      <div v-else class="drawer-title">创建OKR</div>
-    </div>-->
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{drawerTitle}}</div>
+    </div>
     <el-tabs v-model="activeName" class="tl-tabs">
       <el-tab-pane label="详情" name="detail">
         <div class="brief-info">

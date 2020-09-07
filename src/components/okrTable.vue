@@ -1,11 +1,5 @@
 <template>
-  <el-table
-    :data="tableList"
-    @row-click="opensome"
-    class="tl-table"
-    row-key="okrDetailId"
-    :expand-row-keys="expands"
-  >
+  <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
     <el-table-column type="expand" width="5%">
       <template slot-scope="scope">
         <dl v-for="kritem in scope.row.krList" :key="kritem.krId" class="sub-tr">
@@ -43,8 +37,8 @@
     <!-- 目标O名称 无label -->
     <el-table-column prop="okrDetailObjectKr" width="42%">
       <template slot-scope="scope">
-        <span>目标</span>
-        <em>{{scope.row.okrDetailObjectKr}}</em>
+        <span @click="opensome(scope.row)">目标</span>
+        <em @click="opensome(scope.row)">{{scope.row.okrDetailObjectKr}}</em>
       </template>
     </el-table-column>
     <el-table-column prop="okrWeight" label="权重" width="6%">
