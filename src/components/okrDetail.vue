@@ -159,7 +159,7 @@
         <dl>
           <dt class="user-info" :class="{'show-more':showMore}">
             <div class="user-name">
-              <em @click="showMore=!showMore"></em>
+              <em @click="showMore=!showMore" class="el-icon-d-arrow-left"></em>
             </div>
           </dt>
           <dd>收起</dd>
