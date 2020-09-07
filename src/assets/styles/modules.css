@@ -1068,35 +1068,87 @@
   right: -10px;
 }
 
-/* .tl-tabs .el-tabs__header::before {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  content: '';
-  width: 50px;
-  height: 1px;
-  background: #000;
-  z-index: 999;
-} */
-
-/* .tl-tabs .el-tabs__header::before,
-.tl-tabs .el-tabs__header::after {
-  position: absolute;
-  bottom: 0;
-  content: '';
-  height: 1px;
-  width: 50px;
-  background: #e8ecf0;
-  z-index: 99;
+/* tl-collapse */
+.tl-collapse.el-collapse {
+  border: unset;
 }
 
-.tl-tabs .el-tabs__header::before {
+.tl-collapse .el-collapse-item {
+  margin: 20px 0 30px 30px;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
+  border-radius: 2px;
+}
+
+.tl-collapse .el-collapse-item__header {
+  margin: 0 0 20px 0;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: unset;
+  color: #4d5155;
+  height: unset;
+  line-height: unset;
+  cursor: default;
+}
+
+.tl-collapse .el-collapse-item__header.is-active {
+  background: #fff;
+  box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
+  border-radius: 2px;
+}
+
+.tl-collapse .el-collapse-item__content {
+  padding: 0;
+  color: #4d5155;
+  line-height: unset;
+}
+
+.tl-collapse .el-collapse-item__wrap {
+  padding: 0 20px 20px 20px;
+  border-bottom: unset;
+}
+
+
+.tl-collapse .collpase-icon {
+  margin: 0 10px 0 0;
+  position: absolute;
   left: -30px;
+  top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e4e9ed;
 }
 
-.tl-tabs .el-tabs__header::after {
-  right: -30px;
-} */
+.tl-collapse .el-collapse-item__arrow {
+  margin: 0;
+}
+
+.tl-collapse .collpase-panel {
+  width: 100%;
+  cursor: default;
+}
+
+.tl-collapse .el-collapse-item__header.focusing {
+  cursor: default;
+}
+
+.tl-collapse .el-collapse-item__header.focusing:focus:not(:hover) {
+  color: #4d5155;
+}
+
+.tl-collapse .collpase-panel dt,
+.tl-collapse .collpase-panel dd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */

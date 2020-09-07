@@ -37,7 +37,7 @@
         </dd>
       </dl>
     </div>
-    <div v-for="(item) in okrList" :key="item.id" class="cont-panel">
+    <div class="cont-panel">
       <!-- 状态为审批中需展示温馨提示 -->
       <div v-if="searchForm.status=='7'">
         <el-alert type="warning">
@@ -47,109 +47,112 @@
           </div>
         </el-alert>
       </div>
-      <div v-if="item.tableList && item.tableList.length > 0" class="tl-card-panel">
-        <div class="card-panel-head">
-          <div class="okr-title">{{okrCycle.periodName}}OKR</div>
-          <dl class="okr-state">
-            <dt>
-              <i class="el-icon-set-up"></i>
-              <em>状态</em>
-            </dt>
-            <dd>
-              <i class="el-icon-sunny"></i>
-              <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
-              <!-- <em v-else>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em> -->
-            </dd>
-          </dl>
-          <dl class="okr-responsible">
-            <dt>
-              <i class="el-icon-user"></i>
-              <em>负责人</em>
-            </dt>
-            <dd>{{userInfo.userName}}</dd>
-          </dl>
-          <dl class="okr-progress">
-            <dt>
-              <i class="el-icon-odometer"></i>
-              <em>OKR进度</em>
-            </dt>
-            <dd>
-              <el-progress
-                type="circle"
-                :percentage="item.okrMain.okrProgress"
-                :width="60"
-                :stroke-width="5"
-                color="#4ccd79"
-                class="tl-progress-circle"
-              ></el-progress>
-            </dd>
-          </dl>
-          <dl>
-            <dt>
-              <div
-                v-if="['1',1].includes(item.okrMain.status)"
-                @click="goChangeOkr(item)"
-                class="okr-change"
-              >
-                <i class="el-icon-edit-outline"></i>
-                <em>变更</em>
-              </div>
-              <div
-                v-if="['6'].includes(item.okrMain.status)"
-                @click="deleteDraft(item.id)"
-                class="okr-delete"
-              >
-                <i class="el-icon-delete"></i>
-                <em>删除</em>
-              </div>
-            </dt>
-          </dl>
-          <dl class="update-time">
-            <dt>
-              <i class="el-icon-timer"></i>
-              <em>更新时间</em>
-            </dt>
-            <dd>
-              <em>{{item.okrMain.updateTime || item.okrMain.createTime}}</em>
-            </dd>
-          </dl>
+      <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
+        <div v-for="(item) in okrList" :key="item.id" class="tl-card-panel">
+          <div class="card-panel-head">
+            <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+            <dl class="okr-state">
+              <dt>
+                <i class="el-icon-set-up"></i>
+                <em>状态</em>
+              </dt>
+              <dd>
+                <i class="el-icon-sunny"></i>
+                <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
+                <!-- <em v-else>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em> -->
+              </dd>
+            </dl>
+            <dl class="okr-responsible">
+              <dt>
+                <i class="el-icon-user"></i>
+                <em>负责人</em>
+              </dt>
+              <dd>{{userInfo.userName}}</dd>
+            </dl>
+            <dl class="okr-progress">
+              <dt>
+                <i class="el-icon-odometer"></i>
+                <em>OKR进度</em>
+              </dt>
+              <dd>
+                <el-progress
+                  type="circle"
+                  :percentage="item.okrMain.okrProgress"
+                  :width="60"
+                  :stroke-width="5"
+                  color="#4ccd79"
+                  class="tl-progress-circle"
+                ></el-progress>
+              </dd>
+            </dl>
+            <dl>
+              <dt>
+                <div
+                  v-if="['1',1].includes(item.okrMain.status)"
+                  @click="goChangeOkr(item)"
+                  class="okr-change"
+                >
+                  <i class="el-icon-edit-outline"></i>
+                  <em>变更</em>
+                </div>
+                <div
+                  v-if="['6'].includes(item.okrMain.status)"
+                  @click="deleteDraft(item.id)"
+                  class="okr-delete"
+                >
+                  <i class="el-icon-delete"></i>
+                  <em>删除</em>
+                </div>
+              </dt>
+            </dl>
+            <dl class="update-time">
+              <dt>
+                <i class="el-icon-timer"></i>
+                <em>更新时间</em>
+              </dt>
+              <dd>
+                <em>{{item.okrMain.updateTime || item.okrMain.createTime}}</em>
+              </dd>
+            </dl>
+          </div>
+          <div class="card-panel-body">
+            <tl-okr-table
+              :tableList="item.tableList"
+              :disabled="false"
+              :showOKRInfoLabel="true"
+              :status="item.okrMain.status"
+              @openDialog="openDialog(item)"
+              @goDraft="goDraft(item)"
+              :expands="expands"
+            >
+              <template slot="head-undertake" slot-scope="props">
+                <div
+                  v-if="props.okritem.continueCount>0"
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                >
+                  <i class="el-icon-link"></i>
+                  <em>{{props.okritem.continueCount}}</em>
+                </div>
+              </template>
+              <template slot="weight-bar" slot-scope="props">
+                <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
+                  <i class="el-icon-refresh"></i>
+                </div>
+              </template>
+              <template slot="body-bar" slot-scope="props">
+                <div
+                  v-if="props.okritem.continueCount>0"
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                >
+                  <i class="el-icon-link"></i>
+                  <em>{{props.okritem.continueCount}}</em>
+                </div>
+              </template>
+            </tl-okr-table>
+          </div>
         </div>
-        <div class="card-panel-body">
-          <tl-okr-table
-            :tableList="item.tableList"
-            :disabled="false"
-            :showOKRInfoLabel="true"
-            :status="item.okrMain.status"
-            @openDialog="openDialog(item)"
-            @goDraft="goDraft(item)"
-            :expands="expands"
-          >
-            <template slot="head-undertake" slot-scope="props">
-              <div
-                v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >
-                <i class="el-icon-link"></i>
-                <em>{{props.okritem.continueCount}}</em>
-              </div>
-            </template>
-            <template slot="weight-bar" slot-scope="props">
-              <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
-                <i class="el-icon-refresh"></i>
-              </div>
-            </template>
-            <template slot="body-bar" slot-scope="props">
-              <div
-                v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-              >
-                <i class="el-icon-link"></i>
-                <em>{{props.okritem.continueCount}}</em>
-              </div>
-            </template>
-          </tl-okr-table>
-        </div>
-      </div>
+      </template>
+
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>

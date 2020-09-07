@@ -1,32 +1,33 @@
 <template>
-  <div>
-    <!-- okr折叠面板 -->
-    <el-form :model="formData" ref="changeForm" v-if="formData.tableList.length > 0">
-      <elcollapse class="collapse" v-model="activeList">
-        <elcollapseitem
-          ref="okrcoll"
-          v-for="(item, index) in formData.tableList"
-          :key="item.okrDetailId+index"
-          :name="index"
-          :disabled="disabled"
-        >
-          <template slot="title">
-            <div class="hideEdit">
-              <span v-if="showOKRInfoLabel">目标：</span>
-              <el-form-item
-                style="display:inline-block"
-                v-if="canWrite && item.showTitleEdit"
-                :prop="'tableList.' + index + '.okrDetailObjectKr'"
-                :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
-              >
-                <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
-              </el-form-item>
-              <span v-else>{{item.okrDetailObjectKr}}</span>
-              <!-- 做成hover -->
-              <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
-            </div>
-            <ul class="detail">
-              <li class="hideEdit">
+  <el-form :model="formData" ref="changeForm" v-if="formData.tableList.length > 0" class="tl-form">
+    <elcollapse v-model="activeList" class="tl-collapse">
+      <elcollapseitem
+        ref="okrcoll"
+        v-for="(item, index) in formData.tableList"
+        :key="item.okrDetailId+index"
+        :name="index"
+        :disabled="disabled"
+      >
+        <template slot="title">
+          <dl class="collpase-panel">
+            <dt>
+              <span>目标</span>
+              <div>
+                <em>{{item.okrDetailObjectKr}}</em>
+                <el-form-item
+                  style="display:inline-block"
+                  v-if="canWrite && item.showTitleEdit"
+                  :prop="'tableList.' + index + '.okrDetailObjectKr'"
+                  :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+                >
+                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
+                </el-form-item>
+                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
+              </div>
+              <slot name="head-bar" :okritem="item"></slot>
+            </dt>
+            <dd>
+              <div>
                 <span>权重</span>
                 <el-form-item v-if="canWrite && item.showWeightEdit">
                   <el-input-number
@@ -40,13 +41,13 @@
                 </el-form-item>
                 <span v-else>{{item.okrWeight}}%</span>
                 <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showWeightEdit')"></i>
-              </li>
-              <li>
+              </div>
+              <div>
                 <span>当前进度</span>
                 <tl-process :data="item.okrDetailProgress"></tl-process>
-              </li>
+              </div>
               <!-- 变更 -->
-              <li
+              <div
                 v-if="showParentOkr
                 && item.okrParentId
                 && item.undertakeOkrVo
@@ -55,9 +56,9 @@
                 <p @click="goUndertake(index,'change')">
                   <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
                 </p>
-              </li>
+              </div>
               <!-- 变更有承接项时 -->
-              <li v-else-if="showParentOkr && item.okrParentId">
+              <div v-else-if="showParentOkr && item.okrParentId">
                 <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
@@ -75,9 +76,9 @@
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
                 </span>
-              </li>
+              </div>
               <!-- 变更or创建无承接项时 -->
-              <li v-else-if="showParentOkr">
+              <div v-else-if="showParentOkr">
                 <p
                   @click="goUndertake(index,'new')"
                   v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
@@ -96,23 +97,23 @@
                   关联
                   <span class="lines"></span>
                 </el-button>
-              </li>
+              </div>
               <!-- 详情 -->
-              <li v-else-if="item.okrParentId">
+              <div v-else-if="item.okrParentId">
                 <span>承接自</span>
                 <span>{{item.parentObjectKr}}</span>
-              </li>
-            </ul>
-            <!-- 可在折叠面板title处添加内容 -->
-            <slot name="head-bar" :okritem="item"></slot>
-          </template>
-          <dl
-            v-for="(kritem, krIndex) in item.krList"
-            :key="kritem.okrDetailId+krIndex"
-            class="detail"
-          >
-            <dd class="hideEdit">
-              <span v-if="showOKRInfoLabel">KR</span>
+              </div>
+            </dd>
+          </dl>
+        </template>
+        <dl
+          v-for="(kritem, krIndex) in item.krList"
+          :key="kritem.okrDetailId+krIndex"
+          class="collpase-panel"
+        >
+          <dt>
+            <span>KR</span>
+            <div>
               <el-form-item
                 style="display:inline-block"
                 v-if="canWrite && kritem.showTitleEdit"
@@ -125,15 +126,16 @@
                 <span>{{krIndex+1}}</span>
                 {{kritem.okrDetailObjectKr}}
               </span>
-              <!-- 做成hover -->
               <i
                 v-if="canWrite"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
-            </dd>
-            <!-- <dl class="detail"> -->
-            <dd class="hideEdit">
+            </div>
+            <slot name="body-bar" :okritem="kritem"></slot>
+          </dt>
+          <dd>
+            <div>
               <span>权重</span>
               <el-form-item v-if="canWrite && kritem.showWeightEdit">
                 <el-input-number
@@ -151,86 +153,74 @@
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showWeightEdit')"
               ></i>
-            </dd>
-            <dd>
+            </div>
+            <div>
               <span>当前进度</span>
               <tl-process :data="kritem.okrDetailProgress"></tl-process>
-            </dd>
-            <dd style="display:flex">
+            </div>
+            <div>
               <span>风险状态</span>
               <span>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
+            </div>
+          </dd>
+        </dl>
+        <template v-if="item.newkrList">
+          <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
+            <dt>
+              <span>KR</span>
+              <el-form-item
+                :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+              >
+                <!-- 不强制刷新无法输入 -->
+                <el-input
+                  placeholder="请输入关键结果"
+                  v-model="newItem.okrDetailObjectKr"
+                  @input="updateokrCollapse"
+                ></el-input>
+              </el-form-item>
+              <el-button @click="deletekr(item,kindex)">删kr</el-button>
+            </dt>
+            <dd>
+              <el-form-item label="权重">
+                <el-input-number
+                  v-model="newItem.okrWeight"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                ></el-input-number>
+              </el-form-item>
+              <el-form-item label="当前进度">
+                <el-input-number
+                  v-model="newItem.okrDetailProgress"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                ></el-input-number>
+              </el-form-item>
+              <el-form-item label="风险状态">
+                <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
+                  <el-radio-group v-model="newItem.okrDetailConfidence" @change="updateokrCollapse">
+                    <el-radio-button
+                      v-for="citem in CONST.CONFIDENCE"
+                      :key="citem.value"
+                      :label="citem.value"
+                    >{{citem.label}}</el-radio-button>
+                  </el-radio-group>
+                  <el-button slot="reference">{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
+                </el-popover>
+              </el-form-item>
             </dd>
-            <!-- </dl> -->
-            <!-- 可在折叠面板body处添加内容 -->
-            <slot name="body-bar" :okritem="kritem"></slot>
           </dl>
-          <div v-if="item.newkrList">
-            <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex">
-              <dt>KR</dt>
-              <dd class="objectdd">
-                <el-form-item
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
-                >
-                  <!-- 不强制刷新无法输入 -->
-                  <el-input
-                    placeholder="请输入关键结果"
-                    v-model="newItem.okrDetailObjectKr"
-                    @input="updateokrCollapse"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="权重">
-                  <el-input-number
-                    v-model="newItem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="当前进度">
-                  <el-input-number
-                    v-model="newItem.okrDetailProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                  ></el-input-number>
-                </el-form-item>
-                <el-form-item label="风险状态">
-                  <el-popover
-                    placement="bottom"
-                    width="400"
-                    trigger="click"
-                    :append-to-body="false"
-                  >
-                    <el-radio-group
-                      v-model="newItem.okrDetailConfidence"
-                      @change="updateokrCollapse"
-                    >
-                      <el-radio-button
-                        v-for="citem in CONST.CONFIDENCE"
-                        :key="citem.value"
-                        :label="citem.value"
-                      >{{citem.label}}</el-radio-button>
-                    </el-radio-group>
-                    <el-button
-                      slot="reference"
-                    >{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                  </el-popover>
-                </el-form-item>
-                <el-button @click="deletekr(item,kindex)">删kr</el-button>
-              </dd>
-            </dl>
-          </div>
-          <div style="display:none">{{item.newkrList}}</div>
-          <el-button v-if="canWrite" @click="addkr(item,'kr')">增加kr</el-button>
-          <!-- <slot name="addkr-bar" :oitem="item"></slot> -->
-        </elcollapseitem>
-      </elcollapse>
-    </el-form>
-  </div>
+        </template>
+        <!-- <div style="display:none">{{item.newkrList}}</div> -->
+        <el-button v-if="canWrite" @click="addkr(item,'kr')">增加kr</el-button>
+      </elcollapseitem>
+    </elcollapse>
+  </el-form>
 </template>
 
 <script>

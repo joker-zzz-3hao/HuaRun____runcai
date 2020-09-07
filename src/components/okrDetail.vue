@@ -16,40 +16,54 @@
       <el-tab-pane label="详情" name="detail">
         <div class="dl-list">
           <dl>
-            <dt>目标类型</dt>
+            <dt>
+              <i class="el-icon-s-flag"></i>
+              <em>目标类型</em>
+            </dt>
             <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
           </dl>
-          <!-- <ul>
-            <li>
-              <span>目标类型</span>
-              <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
-            </li>
-            <li>
-              <span>负责人</span>
-              <span>{{okrmain.userName}}</span>
-            </li>
-            <li>
-              <span>更新时间</span>
-              <span>{{okrmain.updateTime || okrmain.createTime}}</span>
-            </li>
-            <li>
-              <span>进度</span>
+          <dl>
+            <dt>
+              <i class="el-icon-s-custom"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{okrmain.userName}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>进度</em>
+            </dt>
+            <dd>
               <tl-process :data="okrmain.okrProgress"></tl-process>
-            </li>
-          </ul>-->
+            </dd>
+          </dl>
         </div>
         <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
           <template slot="head-bar" slot-scope="props">
-            <button
+            <div
               v-if="props.okritem.versionCount > 1"
               @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-            >历史版本</button>
+              class="history-version"
+            >
+              <i class="el-icon-time"></i>
+            </div>
           </template>
           <template slot="body-bar" slot-scope="props">
-            <button
+            <div
               v-if="props.okritem.versionCount > 1"
               @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-            >历史版本</button>
+              class="history-version"
+            >
+              <i class="el-icon-time"></i>
+            </div>
           </template>
         </tl-okr-collapse>
       </el-tab-pane>
@@ -118,7 +132,7 @@
       </template>
       <template v-else>
         <dl v-for="(item,index) in voteUser" :key="item.userId+index">
-          <dt class="user-info" :class="{'show-more':showMore}">
+          <dt class="user-info">
             <div class="user-name">
               <em>{{cutName(item.userName)}}</em>
             </div>
@@ -157,8 +171,8 @@
           </dt>
           <dd>南帝段正淳</dd>
         </dl>
-        <dl>
-          <dt class="user-info" :class="{'show-more':showMore}">
+        <dl class="is-fold">
+          <dt class="user-info">
             <div class="user-name">
               <em @click="showMore=!showMore" class="el-icon-d-arrow-left"></em>
             </div>
