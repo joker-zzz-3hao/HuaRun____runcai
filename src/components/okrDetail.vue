@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import process from '@/components/process';
+// import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import okrHistory from './okrHistory';
 
@@ -215,7 +215,7 @@ export default {
   components: {
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
-    'tl-process': process,
+    // 'tl-process': process,
   },
   props: {
     dialogExist: {
