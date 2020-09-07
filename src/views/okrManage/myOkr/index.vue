@@ -84,14 +84,12 @@ export default {
     });
   },
   mounted() {
-    const routeIndex = this.$route.name == 'myOkr' ? 0 : 1;
-    const liWidth = document.querySelectorAll('.tab-list li');
-    // const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
-    const borderWidth = document.querySelector('.border-slip');
-    // borderWidth.style.left = `${selfLeft}px`;
-    borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-    this.currentIndex = routeIndex;
-    console.log('rote', this.currentIndex, routeIndex, this.$route.name);
+    this.currentIndex = this.$route.name == 'myOkr' ? 0 : 1;
+    const borderWidth = document.querySelector('.operating-area .border-slip');
+    const selfLeft = document.querySelectorAll('.operating-area .tab-list li')[this.currentIndex].offsetLeft;
+    const liWidth = document.querySelectorAll('.operating-area .tab-list li');
+    borderWidth.style.left = `${selfLeft}px`;
+    borderWidth.style.width = `${liWidth[this.currentIndex].offsetWidth}px`;
   },
   methods: {
     goRoutesss(tab, event) {
@@ -114,22 +112,13 @@ export default {
       const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
+      console.log('index', document.querySelectorAll('.border-slip'));
+      console.log(index, name);
       this.currentIndex = index;
       this.go(name);
     },
   },
   watch: {
-    '$route.name': {
-      handler(newVal) {
-        const routeIndex = newVal == 'myOkr' ? 0 : 1;
-        const liWidth = document.querySelectorAll('.tab-list li');
-        const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
-        const borderWidth = document.querySelector('.border-slip');
-        borderWidth.style.left = `${selfLeft}px`;
-        borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
-      },
-      immediate: true,
-    },
   },
 };
 </script>
