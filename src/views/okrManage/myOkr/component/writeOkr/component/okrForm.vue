@@ -406,7 +406,13 @@ export default {
       // 选择radioDepart radioPhil
       this.selectIndex = index;
       this.innerDrawer = true;
-      console.log('openUndertake', this.formData.okrInfoList[this.selectIndex].undertakeOkrVo);
+      if (!this.formData.okrInfoList[this.selectIndex].departokrList
+      || !this.formData.okrInfoList[this.selectIndex].philosophyList) {
+        console.log('消失了');
+        this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.departokrObject);
+        this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.philosophyObject);
+      }
+      console.log('openUndertake', this.formData.okrInfoList[this.selectIndex].departokrList);
     },
     // 提交关联，给选中的o加上承接项和价值观
     summitUndertake() {
@@ -488,12 +494,12 @@ export default {
         this.$message.error('请选择目标周期');
       }
       if (this.formData.okrInfoList.length > 0) {
-        this.formData.okrInfoList.forEach((oitem) => {
-          if (oitem.departokrList) {
-            delete oitem.departokrList;
-            delete oitem.philosophyList;
-          }
-        });
+        // this.formData.okrInfoList.forEach((oitem) => {
+        //   if (oitem.departokrList) {
+        //     delete oitem.departokrList;
+        //     delete oitem.philosophyList;
+        //   }
+        // });
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
