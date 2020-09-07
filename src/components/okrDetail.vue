@@ -1,7 +1,5 @@
-/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
   <el-drawer
-    :title="drawerTitle"
     :visible.sync="myokrDrawer"
     :wrapperClosable="false"
     :modal-append-to-body="true"
@@ -11,14 +9,17 @@
     @closed="closed"
     :before-close="close"
   >
-    <!-- <div slot="title" class="flex-sb">
-      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
-      <div v-else class="drawer-title">创建OKR</div>
-    </div>-->
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{drawerTitle}}</div>
+    </div>
     <el-tabs v-model="activeName" class="tl-tabs">
       <el-tab-pane label="详情" name="detail">
-        <div class="brief-info">
-          <ul>
+        <div class="dl-list">
+          <dl>
+            <dt>目标类型</dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+          </dl>
+          <!-- <ul>
             <li>
               <span>目标类型</span>
               <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
@@ -35,7 +36,7 @@
               <span>进度</span>
               <tl-process :data="okrmain.okrProgress"></tl-process>
             </li>
-          </ul>
+          </ul>-->
         </div>
         <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
           <template slot="head-bar" slot-scope="props">
@@ -91,16 +92,12 @@
       <dl>
         <dt class="user-info" @click="like()">
           <div class="user-name">
-            <em></em>
+            <em class="el-icon-star-on"></em>
           </div>
         </dt>
         <dd v-if="!supportType">点赞</dd>
         <dd v-else>取消</dd>
       </dl>
-      <!-- <el-button @click="like()">
-        <span v-if="!supportType">点赞</span>
-        <span v-else>取消</span>
-      </el-button>-->
       <template v-if="showMore">
         <dl v-for="(item,index) in cutVoteList" :key="item.userId+index">
           <dt class="user-info">
@@ -163,36 +160,12 @@
         <dl>
           <dt class="user-info" :class="{'show-more':showMore}">
             <div class="user-name">
-              <em @click="showMore=!showMore"></em>
+              <em @click="showMore=!showMore" class="el-icon-d-arrow-left"></em>
             </div>
           </dt>
           <dd>收起</dd>
         </dl>
       </template>
-      <!-- <el-button @click="like()">
-        <span v-if="!supportType">点赞</span>
-        <span v-else>取消</span>
-      </el-button>
-      <ul v-if="showMore" class="ulclass">
-        <li class="user-info" v-for="(item,index) in cutVoteList" :key="item.userId+index">
-          <div class="user-name">{{cutName(item.userName)}}</div>
-          <div>{{item.userName}}</div>
-        </li>
-        <li v-if="voteLength > 10 && showMore" class="user-info">
-          <div class="user-name" @click="showMore=!showMore">{{voteLength}}+</div>
-          <div>展开</div>
-        </li>
-      </ul>
-      <ul v-else class="ulclass">
-        <li class="user-info" v-for="(item,index) in voteUser" :key="item.userId+index">
-          <div :class="{'show-more':showMore}" class="user-name">{{cutName(item.userName)}}</div>
-          <div>{{item.userName}}</div>
-        </li>
-        <li class="user-info">
-          <div :class="{'show-more':showMore}" class="user-name" @click="showMore=!showMore">收起</div>
-          <div>收起</div>
-        </li>
-      </ul>-->
     </div>
     <el-drawer
       title="历史版本"

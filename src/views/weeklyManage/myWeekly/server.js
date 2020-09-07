@@ -30,4 +30,9 @@ export default class Server extends ServerBase {
   commitWeekly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/save', param);
   }
+
+  // 查询周报配置是简单版还是标准版
+  getTypeConfig(param) {
+    return this._ajaxPost('gateway/system-service/sys/config/query', param);
+  }
 }

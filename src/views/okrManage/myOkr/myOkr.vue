@@ -120,27 +120,27 @@
             :expands="expands"
           >
             <template slot="head-undertake" slot-scope="props">
-              <template
+              <div
                 v-if="props.okritem.continueCount>0"
-                @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i class="el-icon-link"></i>
                 <em>{{props.okritem.continueCount}}</em>
-              </template>
+              </div>
             </template>
             <template slot="weight-bar" slot-scope="props">
-              <template v-if="searchForm.status=='1'" @click.stop="openUpdate(props.okritem)">
+              <div v-if="searchForm.status=='1'" @click="openUpdate(props.okritem)">
                 <i class="el-icon-refresh"></i>
-              </template>
+              </div>
             </template>
             <template slot="body-bar" slot-scope="props">
-              <template
+              <div
                 v-if="props.okritem.continueCount>0"
-                @click.stop="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i class="el-icon-link"></i>
                 <em>{{props.okritem.continueCount}}</em>
-              </template>
+              </div>
             </template>
           </tl-okr-table>
         </div>
@@ -255,9 +255,9 @@ export default {
     this.getOkrCycleList();
   },
   mounted() {
-    // const liWidth = document.querySelectorAll('.tab-list li');
-    // const borderWidth = document.querySelector('.border-slip');
-    // borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
+    const liWidth = document.querySelectorAll('.tab-list li');
+    const borderWidth = document.querySelector('.border-slip');
+    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
     searchOkr(status) {

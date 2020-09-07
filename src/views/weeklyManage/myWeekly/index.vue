@@ -1,17 +1,34 @@
 <template>
   <div class="home">
     <h1>我的周报</h1>
-    <div>
-      <el-button
-        v-if="weeklyType == '1'||!this.weeklyData.weeklyId"
-        @click="standard"
-        :class="{'is-stantard':weeklyType=='1'}"
-      >标准版</el-button>
-      <el-button
-        v-if="weeklyType == '0'||!this.weeklyData.weeklyId"
-        @click="simple"
-        :class="{'is-stantard':weeklyType=='0'}"
-      >简单版</el-button>
+    <!-- 此v-if控制标签闪烁 -->
+    <div v-if="weeklyTypeList.length > 0">
+      <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
+      <div v-if="!this.weeklyData.weeklyId">
+        <el-button
+          v-if="weeklyType == '1'|| weeklyTypeList.includes('1')"
+          @click="standard"
+          :class="{'is-stantard':weeklyType=='1'}"
+        >标准版</el-button>
+        <el-button
+          v-if="weeklyType == '2'|| weeklyTypeList.includes('2')"
+          @click="simple"
+          :class="{'is-stantard':weeklyType=='2'}"
+        >简单版</el-button>
+      </div>
+      <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
+      <div v-if="this.weeklyData.weeklyId">
+        <el-button
+          v-if="weeklyType == '1'"
+          @click="standard"
+          :class="{'is-stantard':weeklyType=='1'}"
+        >标准版</el-button>
+        <el-button
+          v-if="weeklyType == '2'"
+          @click="simple"
+          :class="{'is-stantard':weeklyType=='2'}"
+        >简单版</el-button>
+      </div>
     </div>
     <!-- 日期 -->
     <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
@@ -69,6 +86,7 @@ export default {
       newPage: false,
       calendarId: '',
       weeklyType: '',
+      weeklyTypeList: [],
       weeklyData: {},
       myOkrList: [],
       orgOkrList: [],
@@ -88,6 +106,8 @@ export default {
       this.getValues();
       // 获取项目列表
       this.getProjectList();
+      // 读取该用户配置（简单版还是标准版），
+      // this.getTypeConfig();
     },
     refreshMyOkr() {
       this.queryTeamOrPersonalTarget('my');
@@ -160,6 +180,7 @@ export default {
       }
     },
     getWeeklyById(item) {
+      this.weeklyTypeList = [];
       // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
       this.queryTeamOrPersonalTarget('my');
       this.newPage = false;
@@ -172,12 +193,27 @@ export default {
               this.weeklyData = res.data;
             }
             this.newPage = true;
+            this.getTypeConfig();// 在这调用，防止俩标签闪烁
             this.$forceUpdate();
           });
         } else {
           this.weeklyType = '1';
           this.newPage = true;
+          this.getTypeConfig();// 在这调用，防止俩标签闪烁
           this.$forceUpdate();
+        }
+      });
+    },
+    getTypeConfig() {
+      this.server.getTypeConfig({
+        sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
+      }).then((res) => {
+        if (res.code == 200) {
+          if (res.data.length > 0) {
+            this.weeklyTypeList = res.data[0].configItemCode.split(',');
+          } else {
+            this.weeklyTypeList = ['1', '2'];
+          }
         }
       });
     },
@@ -188,7 +224,7 @@ export default {
       this.weeklyType = '1';
     },
     simple() {
-      this.weeklyType = '0';
+      this.weeklyType = '2';
     },
     handleClick() {},
   },

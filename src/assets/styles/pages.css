@@ -457,8 +457,9 @@
   padding: 0 0 30px 0;
 }
 
-.tl-drawer .okr-detail .el-tabs .el-tabs__content,
-.tl-drawer .okr-detail .el-tabsel-tabs__nav-scroll {
+.okr-detail .el-drawer__header,
+.okr-detail .el-tabs__nav-wrap,
+.okr-detail .el-tabs .el-tabs__content {
   padding: 0 30px;
 }
 
@@ -478,6 +479,15 @@
 
 .okr-detail .img-list dl:last-child dd {
   margin: 0 6px 0 0;
+}
+
+.okr-detail .img-list .user-name .el-icon-d-arrow-left {
+  transform: rotate(90deg);
+  font-size: 16px;
+}
+
+.okr-detail .img-list .user-name .el-icon-star-on {
+  font-size: 20px;
 }
 
 

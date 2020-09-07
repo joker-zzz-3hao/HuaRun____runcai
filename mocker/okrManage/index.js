@@ -126,7 +126,8 @@ const mockData = {
           'okrDetailObjectKr|1': ['定个小目标', '定大目标', '走上人生巅峰'],
           okrWeight: 50,
           okrDetailProgress: 70,
-          parentObjectKr: '华润云',
+          parentObjectKr: '定个小目标',
+          okrParentId: '1222018079536250882',
           'parentUpdate|1': [true, false],
           'krList|2': [
             {
@@ -135,7 +136,8 @@ const mockData = {
               'userName|1': ['心荃', '滕炜'],
               okrWeight: 50,
               okrDetailProgress: 30,
-              parentObjectKr: '华润云',
+              parentObjectKr: '定个小目标',
+              okrParentId: '1222018079536250882',
               okrDetailConfidence: '1',
             },
           ],
