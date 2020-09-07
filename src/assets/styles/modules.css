@@ -1668,6 +1668,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   transition: all .4s ease-out;
+  cursor: pointer;
 }
 
 .card-panel-body .tl-table .el-table__row.expanded td:nth-child(2) .cell em {
@@ -1694,6 +1695,54 @@
 .card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover,
 .card-panel-body .tl-table .sub-tr .okr-undertake:hover {
   color: #685df1;
+}
+
+.tl-table-fix {
+  position: relative;
+}
+
+.tl-table-fix .tl-thead {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+}
+
+.tl-table-fix .tl-thead li {
+  padding: 0 10px;
+  color: #b5bec6;
+  font-weight: 500;
+}
+
+.tl-table-fix .tl-thead li:nth-child(1) {
+  width: 5%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(2) {
+  width: 42%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(3) {
+  width: 6%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(4) {
+  width: 16%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(5) {
+  width: 15%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(6) {
+  width: 8%;
+}
+
+.tl-table-fix .tl-thead li:nth-child(7) {
+  width: 8%;
 }
 
 /* img-list */

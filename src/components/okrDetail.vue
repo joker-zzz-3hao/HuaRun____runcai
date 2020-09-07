@@ -1,4 +1,3 @@
-/* eslint-disable vue/no-use-v-if-with-v-for */
 <template>
   <el-drawer
     :visible.sync="myokrDrawer"
@@ -15,8 +14,12 @@
     </div>
     <el-tabs v-model="activeName" class="tl-tabs">
       <el-tab-pane label="详情" name="detail">
-        <div class="brief-info">
-          <ul>
+        <div class="dl-list">
+          <dl>
+            <dt>目标类型</dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+          </dl>
+          <!-- <ul>
             <li>
               <span>目标类型</span>
               <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
@@ -33,7 +36,7 @@
               <span>进度</span>
               <tl-process :data="okrmain.okrProgress"></tl-process>
             </li>
-          </ul>
+          </ul>-->
         </div>
         <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
           <template slot="head-bar" slot-scope="props">
@@ -89,7 +92,7 @@
       <dl>
         <dt class="user-info" @click="like()">
           <div class="user-name">
-            <em></em>
+            <em class="el-icon-star-on"></em>
           </div>
         </dt>
         <dd v-if="!supportType">点赞</dd>
