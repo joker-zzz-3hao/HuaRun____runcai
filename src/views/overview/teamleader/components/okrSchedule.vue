@@ -36,12 +36,17 @@ export default {
         xAxis: {
           type: 'category',
           data: that.mainDataX,
+          axisLine: {
+            lineStyle: {
+              color: '#F4F6F8', // 颜色
+              width: 1, // 粗细
+            },
+          },
           axisLabel: {
             interval: 0,
-            formatter(value) {
-              // x轴的文字改为竖版显示
-              const str = value.split('');
-              return str.join('\n');
+            textStyle: {
+              color: '#879099', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
             },
           },
         },
@@ -56,20 +61,38 @@ export default {
           {
             type: 'value',
             max: 100,
+            splitLine: {
+              show: false,
+            },
             axisLabel: {
               show: true,
               interval: 'auto',
               formatter: '{value} %',
+              textStyle: {
+                color: '#879099', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
             },
-            show: true,
+            axisLine: {
+              lineStyle: {
+                color: '#F4F6F8', // 颜色
+                width: 1, // 粗细
+              },
+            },
           },
         ],
         series: [{
           // eslint-disable-next-line max-len
           data: that.mainDataY,
           type: 'bar',
-          barWidth: 20,
-
+          barWidth: 10,
+          showBackground: true,
+          backgroundStyle: {
+            color: '#F4F6F8',
+          },
+          itemStyle: {
+            normal: { color: '#FFBC20' },
+          },
         }],
       };
 

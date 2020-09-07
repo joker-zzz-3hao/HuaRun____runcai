@@ -1,6 +1,6 @@
 const STATUS_LIST = [
   {
-    name: '全部', id: '0',
+    name: '全部', id: 'all',
   }, {
     name: '进行中', id: '1',
   }, {
@@ -19,7 +19,7 @@ const STATUS_LIST = [
     name: '已退回', id: '8',
   }];
 const STATUS_LIST_MAP = {
-  0: '全部',
+  all: '全部',
   1: '进行中',
   2: '考核中',
   3: '已完成',

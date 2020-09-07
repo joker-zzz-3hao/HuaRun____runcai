@@ -15,9 +15,9 @@
           <dl v-for="kritem in scope.row.krList" :key="kritem.krId" class="sub-tr">
             <dd class="okr-line"></dd>
             <!-- kr名称 -->
-            <dd class="okr-kr-name" @click="opensome(kritem)">
+            <dd class="okr-kr-name">
               <span>KR</span>
-              <em>{{kritem.okrDetailObjectKr}}</em>
+              <em @click="opensome(kritem)">{{kritem.okrDetailObjectKr}}</em>
             </dd>
             <!-- kr权重 -->
             <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>

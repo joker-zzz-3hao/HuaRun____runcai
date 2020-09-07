@@ -71,4 +71,8 @@ export default class Server extends ServerBase {
   teamWeeklyCount(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/statistic/teamWeeklyCount', param);
   }
+
+  okrRiskUserInfo(param) {
+    return this._ajaxPost(`gateway/talent-query/home/team/okrRiskUserInfo?${qs.stringify(param)}`);
+  }
 }
