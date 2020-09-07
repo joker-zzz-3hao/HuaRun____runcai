@@ -47,7 +47,7 @@
           </div>
         </el-alert>
       </div>
-      <div v-if="item.tableList.length>0" class="tl-card-panel">
+      <div v-if="item.tableList && item.tableList.length > 0" class="tl-card-panel">
         <div class="card-panel-head">
           <div class="okr-title">{{okrCycle.periodName}}OKR</div>
           <dl class="okr-state">
@@ -57,7 +57,8 @@
             </dt>
             <dd>
               <i class="el-icon-sunny"></i>
-              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+              <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
+              <!-- <em v-else>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em> -->
             </dd>
           </dl>
           <dl class="okr-responsible">
@@ -85,12 +86,16 @@
           </dl>
           <dl>
             <dt>
-              <div v-if="['1'].includes(searchForm.status)" @click="goChangeOkr" class="okr-change">
+              <div
+                v-if="['1',1].includes(item.okrMain.status)"
+                @click="goChangeOkr(item)"
+                class="okr-change"
+              >
                 <i class="el-icon-edit-outline"></i>
                 <em>变更</em>
               </div>
               <div
-                v-if="['6'].includes(searchForm.status)"
+                v-if="['6'].includes(item.okrMain.status)"
                 @click="deleteDraft(item.id)"
                 class="okr-delete"
               >
@@ -114,7 +119,7 @@
             :tableList="item.tableList"
             :disabled="false"
             :showOKRInfoLabel="true"
-            :status="searchForm.status"
+            :status="item.okrMain.status"
             @openDialog="openDialog(item)"
             @goDraft="goDraft(item)"
             :expands="expands"
@@ -129,7 +134,7 @@
               </div>
             </template>
             <template slot="weight-bar" slot-scope="props">
-              <div v-if="searchForm.status=='1'" @click="openUpdate(props.okritem)">
+              <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
                 <i class="el-icon-refresh"></i>
               </div>
             </template>
@@ -155,7 +160,7 @@
       :exist.sync="writeokrExist"
       v-if="writeokrExist"
       :writeInfo="writeInfo"
-      @success="searchOkr(searchForm.status)"
+      @success="searchOkr(item.okrMain.status)"
     ></tl-writeokr>
     <tl-changeokr
       ref="tl-changeokr"
@@ -163,7 +168,7 @@
       v-if="changeokrExist"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
-      @success="searchOkr(searchForm.status)"
+      @success="searchOkr('1')"
     ></tl-changeokr>
     <tl-okr-detail
       ref="tl-okr-detail"
@@ -183,7 +188,7 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      @success="searchOkr(searchForm.status)"
+      @success="searchOkr(item.okrMain.status)"
     ></tl-okr-update>
   </div>
 </template>
@@ -222,7 +227,7 @@ export default {
         },
       }],
       searchForm: {
-        status: '0',
+        status: 'all',
         periodId: '',
       },
       currentView: '', // 弹框组件
@@ -262,7 +267,10 @@ export default {
   methods: {
     searchOkr(status) {
       this.searchForm.status = status || this.searchForm.status;
-
+      this.okrList = [{
+        tableList: [], // okr列表
+        okrMain: {},
+      }];
       this.server.getmyOkr({
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
@@ -270,49 +278,28 @@ export default {
 
       }).then((res) => {
         if (res.code == 200) {
-          // 如果是草稿、退回、审批中回显json串
-          if (['6', '7', '8'].includes(this.searchForm.status)) {
-            this.okrList = [];
+          if (this.searchForm.status == 'all') {
+            const totalList = res.data || [];
+            if (totalList.length > 0) {
+              this.okrList = [];
+              totalList.forEach((allitem) => {
+                if (['1', '2'].includes(allitem.okrStatus)) {
+                // 处理draft
+                  console.log(allitem.okrStatus, allitem.object);
+                  this.handleJSON(allitem.okrStatus, allitem.object);
+                } else {
+                  this.handleNormal(allitem.object, allitem.okrStatus);
+                }
+              });
+            }
+          } else if (['6', '7', '8'].includes(this.searchForm.status)) {
+            // 如果是草稿、退回、审批中回显json串
             const draftList = res.data || [];
             if (draftList.length > 0) {
-              draftList.forEach((item, index) => {
-                let okrInfo = {};
-                okrInfo = JSON.parse(item.paramJson);
-                // 起草中默认展开第一个
-                if (index == 0) {
-                  okrInfo.okrInfoList[0].okrDetailId = 'draft01';
-                }
-                this.okrList.push({
-                  tableList: okrInfo.okrInfoList,
-                  okrMain: {
-                    userName: item.updateBy || item.createBy,
-                    okrProgress: item.okrProgress || 0,
-                    updateTime: item.updateTime || item.createTime,
-                    okrBelongType: okrInfo.okrBelongType,
-                  },
-                  id: item.id || item.approvalId,
-                  params: item.paramJson,
-                });
-              });
-            } else {
-              this.okrList = [{
-                tableList: [], // okr列表
-                okrMain: { // okr公共信息
-                  userName: '',
-                  okrProgress: 0,
-                  updateTime: '',
-                },
-              }];
+              this.okrList = [];
+              this.handleJSON(this.searchForm.status, draftList);
             }
           } else {
-            this.okrList = [{
-              tableList: [], // okr列表
-              okrMain: { // okr公共信息
-                userName: '',
-                okrProgress: 0,
-                updateTime: '',
-              },
-            }];
             this.okrList[0].tableList = res.data.okrDetails || [];
             this.okrList[0].okrMain = res.data.okrMain || {};
             this.okrId = this.okrList[0].okrMain.okrId || '';
@@ -320,12 +307,58 @@ export default {
         }
       });
     },
+    handleJSON(okrStatus, draftList) {
+      draftList.forEach((item, index) => {
+        let okrInfo = {};
+        okrInfo = JSON.parse(item.paramJson);
+        // 起草中默认展开第一个
+        if (index == 0) {
+          okrInfo.okrInfoList[0].okrDetailId = 'draft01';
+        }
+        // 状态
+        let status = '';
+        if (this.searchForm.status == 'all') {
+          if (okrStatus == '1') {
+            status = '6';
+          } else if (item.approvalStatus == 2) {
+            status = '7';
+          } else {
+            status = '8';
+          }
+        } else {
+          status = this.searchForm.status;
+        }
+        this.okrList.push({
+          tableList: okrInfo.okrInfoList,
+          okrMain: {
+            userName: item.updateBy || item.createBy,
+            okrProgress: item.okrProgress || 0,
+            updateTime: item.updateTime || item.createTime,
+            okrBelongType: okrInfo.okrBelongType,
+            status,
+          },
+          id: item.id || item.approvalId,
+          params: item.paramJson,
+        });
+      });
+    },
+    handleNormal(object) {
+      // object.okrMain.status = okrStatus;
+      console.log('okrMain', object.okrMain);
+      this.okrList.push({
+        tableList: object.okrDetails || [],
+        okrMain: object.okrMain || {},
+      });
+      console.log('okrList', this.okrList);
+    },
+
     // 打开详情
     openDialog(val) {
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
       this.drawerTitle = `${this.okrCycle.periodName}`;
       this.detailExist = true;
+      this.okrId = val.okrMain.okrId;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
       });
@@ -340,8 +373,9 @@ export default {
       });
     },
     // 打开变更
-    goChangeOkr() {
+    goChangeOkr(val) {
       this.drawerTitle = `${this.okrCycle.periodName}`;
+      this.okrId = val.okrMain.okrId;
       this.writeInfo = {
         canWrite: 'cannot',
         okrId: this.okrId,
@@ -349,6 +383,7 @@ export default {
       };
       this.currentView = 'tl-changeokr';
       this.changeokrExist = true;
+      console.log('打开变更', this.okrId);
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
       });
@@ -360,7 +395,7 @@ export default {
         canWrite: 'draft',
         draftParams: item.params,
         draftId: item.id,
-        okrStatus: this.searchForm.status,
+        okrStatus: item.okrMain.status,
         okrCycle: this.okrCycle,
       };
       this.currentView = 'tl-writeokr';

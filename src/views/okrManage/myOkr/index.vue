@@ -86,9 +86,9 @@ export default {
   mounted() {
     const routeIndex = this.$route.name == 'myOkr' ? 0 : 1;
     const liWidth = document.querySelectorAll('.tab-list li');
-    const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
+    // const selfLeft = document.querySelectorAll('.tab-list li')[routeIndex].offsetLeft;
     const borderWidth = document.querySelector('.border-slip');
-    borderWidth.style.left = `${selfLeft}px`;
+    // borderWidth.style.left = `${selfLeft}px`;
     borderWidth.style.width = `${liWidth[routeIndex].offsetWidth}px`;
     this.currentIndex = routeIndex;
     console.log('rote', this.currentIndex, routeIndex, this.$route.name);
