@@ -117,7 +117,7 @@ const mockData = {
         userName: 'lxq',
         userId: '0123',
         updateTime: '2020-08-06',
-        okrProgress: '40',
+        okrProgress: 40,
       },
       'okrDetails|2': [
         {
