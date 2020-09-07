@@ -12,19 +12,38 @@
           ></el-option>
         </el-select>
       </div>
-      <div id="weeking"></div>
-      <ul class="departList">
-        <li
-          v-for="(item,index) in orgTable"
-          :key="index"
-          :class="{'active':active[item.orgId] }"
-          @click="changIdAction(item.orgId)"
-        >
-          {{
-          item.orgName
-          }}
-        </li>
-      </ul>
+      <div class="echartFlex">
+        <div style="width:50%">
+          <div id="weeking"></div>
+          <ul class="departList">
+            <li
+              v-for="(item,index) in orgTable"
+              :key="index"
+              :class="{'active':active[item.orgId] }"
+              @click="changIdAction(item.orgId)"
+            >
+              {{
+              item.orgName
+              }}
+            </li>
+          </ul>
+        </div>
+
+        <div style="width:50%">
+          <div>员工情绪大屏</div>
+          <div>
+            <el-date-picker
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              v-model="mooddate"
+              @change="getDateMood"
+              type="month"
+              placeholder="选择日期"
+            ></el-date-picker>
+          </div>
+          <div id="mood"></div>
+        </div>
+      </div>
     </div>
     <div class="model">
       <div>周报动态</div>
@@ -59,20 +78,6 @@
           <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
         </el-table>
       </div>
-    </div>
-    <div class="model">
-      <div>员工情绪大屏</div>
-      <div>
-        <el-date-picker
-          format="yyyy-MM"
-          value-format="yyyy-MM"
-          v-model="mooddate"
-          @change="getDateMood"
-          type="month"
-          placeholder="选择日期"
-        ></el-date-picker>
-      </div>
-      <div id="mood"></div>
     </div>
   </div>
 </template>
@@ -154,7 +159,7 @@ export default {
     orgWeekly() {
       this.server.orgWeekly({
         calendarId: this.calendarId,
-        date: this.dateTime,
+        date: `${this.dateTime}-01`,
         userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.tableData = res.data;
@@ -180,8 +185,10 @@ export default {
       });
     },
     changeTime() {
-      this.echartDataY = [];
       this.active = {};
+      this.$set(this.active, this.orgTable[0].orgId, true);
+      this.orgId = this.orgTable[0].orgId;
+      this.echartDataY = [];
       this.getriskStatistics();
     },
     getriskStatistics() {
@@ -229,8 +236,7 @@ export default {
             symbolSize: 7,
             data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
           });
-        }
-        if (!this.active[this.orgId]) {
+        } else if (!this.active[this.orgId]) {
           this.echartDataY.forEach((item, index) => {
             if (item.orgId == this.orgId) {
               this.echartDataY[index] = {
@@ -257,10 +263,9 @@ export default {
             }
           });
         }
-
-        console.log(this.echartDataY);
-
-        this.init();
+        this.$nextTick(() => {
+          this.init();
+        });
       });
     },
     init() {
@@ -324,7 +329,7 @@ export default {
 
       };
 
-      myChart.setOption(option);
+      myChart.setOption(option, true);
     },
     initMood() {
       const that = this;
@@ -438,9 +443,9 @@ export default {
 </script>
 <style  scoped>
 #weeking {
-  width: 70%;
+  width: 100%;
   height: 400px;
-  display: inline-block;
+  display: block;
 }
 
 .model {
@@ -452,11 +457,20 @@ export default {
 .active {
   color: blue;
 }
+.echartFlex {
+  display: flex;
+  flex-direction: row;
+}
 #mood {
   width: 100%;
   height: 400px;
+  display: block;
 }
 .departList {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+}
+.departList li {
+  margin-right: 10px;
 }
 </style>
