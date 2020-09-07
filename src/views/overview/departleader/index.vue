@@ -128,6 +128,7 @@ export default {
       this.server.mainData({
         periodId: this.periodId,
         orgId: this.setOrgId,
+        user: this.userInfo.user_id,
       }).then((res) => {
         this.mainData = res.data;
       });

@@ -67,8 +67,8 @@ export default {
     getokrStatistics() {
       this.server.okrStatistics({
         periodId: this.periodId,
-        user: this.$route.query.id ? this.$route.query.id : this.setOrgId,
-        userId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        user: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.mainData = res.data;
       });
