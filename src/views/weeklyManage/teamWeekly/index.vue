@@ -338,15 +338,19 @@ export default {
       switch (item) {
         case '1':
           this.formData.looked = true;
+          this.formData.submited = '';
           break;
         case '2':
           this.formData.looked = false;
+          this.formData.submited = '';
           break;
         case '3':
           this.formData.submited = true;
+          this.formData.looked = '';
           break;
         case '4':
           this.formData.submited = false;
+          this.formData.looked = '';
           break;
         default:
           break;
