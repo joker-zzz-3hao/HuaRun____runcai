@@ -79,7 +79,7 @@ export default {
     } else {
       this.orgId = this.setOrgId;
     }
-    this.getqueryMyOkr();
+    // this.getqueryMyOkr();
   },
   methods: {
     goToDep(id, name) {

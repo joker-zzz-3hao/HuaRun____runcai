@@ -67,7 +67,8 @@
       </tl-okr-table>
     </div>
     <div v-else class="tl-card-panel no-data">
-      <el-button type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
+      <span v-if="$route.query.id">暂无数据</span>
+      <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
     </div>
     <div class="tl-card-panel">
       <div class="card-panel-head">
@@ -86,7 +87,7 @@
           <dl
             v-for="(item,index) in orgUser"
             :key="item.userId+index"
-            @click="goToDep(item.userId,item.userName)"
+            @click="goToDep(item.userId,item.userName,item.userId,item.tenantId)"
           >
             <dt class="user-info">
               <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -101,7 +102,7 @@
           <dl
             v-for="(item,index) in orgTable"
             :key="item.orgId+index"
-            @click="goToDep(item.orgId,item.orgName)"
+            @click="goToDep(item.orgId,item.orgName,item.userId,item.tenantId)"
           >
             <dt class="user-info">
               <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -163,9 +164,9 @@ export default {
   },
   mounted() {
     this.searchOkr();
-    if (this.$route.name !== 'grassStaff') {
-      this.getqueryMyOkr();
-    }
+    //  if (this.$route.name !== 'grassStaff') {
+    this.getqueryMyOkr();
+    // }
   },
   methods: {
     goUndertakeMaps(id, name) {
@@ -183,10 +184,13 @@ export default {
     searchOkr() { // 默认搜索进行时
       this.showTable = false;
       this.server.getmyOkr({
-        myOrOrg: 'org',
         periodId: this.periodId,
         status: this.searchForm.status,
-        orgId: this.setOrgId,
+        myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
+        userId: this.$route.query.userId,
+        tenantId: this.$route.query.tenantId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails || [];
@@ -197,18 +201,33 @@ export default {
         }
       });
     },
-    goToDep(id, name) {
+    goToDep(id, name, userId, tenantId) {
       const chename = encodeURI(name);
       if (this.orgTable) {
-        this.$router.push({ name: 'teamleader', query: { id, name: chename } });
+        this.$router.push({
+          name: 'teamleader',
+          query: {
+            id, name: chename, userId, tenantId,
+          },
+        });
       }
       if (this.orgUser) {
-        this.$router.push({ name: 'grassStaff', query: { id, name: chename } });
+        this.$router.push({
+          name: 'grassStaff',
+          query: {
+            id, name: chename, userId, tenantId,
+          },
+        });
       }
     },
     getqueryMyOkr() {
       this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
+        myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
+        status: '1',
+        userId: this.$route.query.userId,
+        tenantId: this.$route.query.tenantId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
           this.orgTable = res.data.orgTable;

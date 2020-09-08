@@ -69,9 +69,6 @@ export default {
     selectPeriod(value) {
       this.$emit('getPeriod', value);
     },
-    selectOrg(value) {
-      this.setOrg(value);
-    },
   },
 };
 </script>
