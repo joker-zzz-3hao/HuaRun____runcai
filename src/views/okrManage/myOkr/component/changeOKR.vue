@@ -38,7 +38,6 @@
         ref="okrCollapse"
         :tableList="tableList"
         :canWrite="true"
-        :showOKRInfoLabel="true"
         @openUndertake="openUndertakepage"
       ></tl-okrcollapse>
       <!-- 新增okr -->
