@@ -72,7 +72,7 @@
               effect="dark"
               content="删除"
               placement="top"
-              popper-class="tl-tooltip-clear"
+              popper-class="tl-tooltip-popper"
               @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
               :disabled="isnew && formData.okrInfoList.length == 1"
             >
@@ -130,7 +130,7 @@
               effect="dark"
               content="删除"
               placement="top"
-              popper-class="tl-tooltip-clear"
+              popper-class="tl-tooltip-popper"
               @click.native="(!isnew || oitem.krList.length > 1) && deletekr(index,kindex)"
               :disabled="isnew && oitem.krList.length == 1"
             >

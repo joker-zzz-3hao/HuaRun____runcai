@@ -287,13 +287,18 @@
   margin: 0 0 30px 0;
 }
 
-.create-okr .el-drawer__body,
-.okr-detail .el-drawer__body {
+.create-okr .el-drawer__body {
   margin: 10px 0 0 0;
   width: 850px;
 }
 
-.associated-undertaking .el-drawer__body {
+.okr-detail .el-drawer__body {
+  margin: 0;
+  width: 850px;
+}
+
+.associated-undertaking .el-drawer__body,
+.history-version .el-drawer__body {
   margin: 10px 0 0 0;
   width: 620px;
 }
@@ -392,76 +397,6 @@
   margin: 0 0 30px 0;
 }
 
-.associated-undertaking .dl-list {
-  margin: 0 0 30px 0;
-  padding: 0 20px 0 0;
-}
-
-.associated-undertaking .dl-list .list-title {
-  display: flex;
-  align-items: center;
-  color: #4d5155;
-}
-
-.associated-undertaking .dl-list .list-title em {
-  font-weight: 500;
-}
-
-.associated-undertaking .dl-list .list-title span {
-  margin: 0 0 0 10px;
-  color: #acb6bf;
-}
-
-.associated-undertaking .dl-list .list-title::before {
-  margin: 0 6px 0 0;
-  content: '';
-  width: 3px;
-  height: 12px;
-  background: #685df1;
-}
-
-.associated-undertaking .dl-list .el-radio-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.associated-undertaking .dl-list .el-radio {
-  margin: 0;
-  padding: 20px 0;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px dashed transparent;
-  background: linear-gradient(#fff,#fff) padding-box,
-  repeating-linear-gradient(-45deg,#e5e9ee 0, #e5e9ee 0.4em,#fff 0,#fff 0.6em);
-}
-
-.associated-undertaking .dl-list .el-radio__label {
-  display: flex;
-  align-items: center;
-}
-
-.associated-undertaking .dl-list .kind-o,
-.associated-undertaking .dl-list .kind-k {
-  display: flex;
-  align-items: center;
-  margin: 0 8px 0 0;
-  padding: 0 5px;
-  height: 18px;
-  border-radius: 2px;
-  font-size: 12px;
-}
-
-.associated-undertaking .dl-list .kind-o {
-  background: #f0effe;
-  color: #685df1;
-}
-
-.associated-undertaking .dl-list .kind-k {
-  padding: 0 11px;
-  background: #acb6bf;
-  color: #fff;
-}
-
 /* okr-detail */
 .tl-drawer .okr-detail {
   padding: 0 0 30px 0;
@@ -526,6 +461,14 @@
 
 .okr-detail .tl-collapse .collpase-panel dt div {
   cursor: default;
+}
+
+.okr-detail .collpase-panel dd i + span + span {
+  margin: 0 10px;
+}
+
+.okr-detail .collpase-panel dd i + span + span:last-child {
+  margin: 0 0 0 10px;
 }
 
 

@@ -1,35 +1,41 @@
 <template>
-  <div>
-    <div>
-      <span>{{okrmain.orgName}}{{okrmain.periodName}}OKR</span>
-    </div>
-    <el-table :data="historyOKRList">
-      <el-table-column width="100" prop="okrDetailType">
-        <template slot-scope="scope">
-          <span v-if="scope.row.okrDetailType === 0">目标</span>
-          <span v-else>KR</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="versionName">
-        <template slot-scope="scope">
-          <div>{{scope.row.versionName}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="objectName">
-        <template slot-scope="scope">
-          <div>{{scope.row.objectName}}</div>
-          <div v-if="scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
-        </template>
-      </el-table-column>
-      <!-- 权重暂时不加 -->
-      <!-- <el-table-column prop="okrWeight">
+  <el-scrollbar>
+    <div class="cont-box">
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
+        </dt>
+        <dd>
+          <el-table :data="historyOKRList">
+            <el-table-column width="100" prop="okrDetailType">
+              <template slot-scope="scope">
+                <span v-if="scope.row.okrDetailType === 0">目标</span>
+                <span v-else>KR</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="versionName">
+              <template slot-scope="scope">
+                <div>{{scope.row.versionName}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="objectName">
+              <template slot-scope="scope">
+                <div>{{scope.row.objectName}}</div>
+                <div v-if="scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
+              </template>
+            </el-table-column>
+            <!-- 权重暂时不加 -->
+            <!-- <el-table-column prop="okrWeight">
         <template slot-scope="scope">
           <span>权重</span>
           <span>{{scope.row.okrWeight}}%</span>
         </template>
-      </el-table-column>-->
-    </el-table>
-  </div>
+            </el-table-column>-->
+          </el-table>
+        </dd>
+      </dl>
+    </div>
+  </el-scrollbar>
 </template>
 
 <script>
