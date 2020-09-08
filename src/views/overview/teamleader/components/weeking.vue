@@ -48,6 +48,7 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 import Server from '../../server';
 
 const server = new Server();
@@ -71,6 +72,11 @@ export default {
   mounted() {
     this.fetchData();
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   methods: {
     fetchData() {
       const date = new Date();
@@ -92,6 +98,7 @@ export default {
     teamWeekly(date) {
       this.server.teamWeekly({
         date,
+        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
       }).then((res) => {
         this.teamDataX = res.data.map((item) => [
           `${item.weekBegin}至${item.weekEnd}`,

@@ -3,7 +3,12 @@
     <div>
       <div style="display:inline-block">周期</div>
       <el-select v-model="value" placeholder="请选择">
-        <el-option>11</el-option>
+        <el-option
+          v-for="(item,index) in cycList"
+          :key="index+item.periodId"
+          :value="item.periodId"
+          :label="item.periodName"
+        ></el-option>
       </el-select>
       <div style="display:inline-block">考核状态</div>
       <el-select v-model="value" placeholder="请选择">
@@ -31,10 +36,16 @@
 </template>
 
 <script>
+import Server from '../../server';
+
+const server = new Server();
 export default {
   name: 'myAssess',
   data() {
     return {
+      cycList: [],
+      server,
+      periodId: '',
       value: '',
       tableData: [{
         name: '李四',
@@ -84,6 +95,27 @@ export default {
         pf: '--',
       }],
     };
+  },
+  mounted() {
+    this.orgQuarterList();
+    this.getOkrCycleList();
+  },
+  methods: {
+    orgQuarterList() {
+      this.server.orgQuarterList({
+        periodId: this.periodId,
+      }).then((res) => {
+        console.log(res);
+      });
+    },
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        this.cycList = res.data;
+        this.periodId = res.data[0].periodId;
+        this.orgQuarterList();
+      });
+    },
+
   },
   components: {
   },
