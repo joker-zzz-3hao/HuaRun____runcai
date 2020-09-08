@@ -285,6 +285,11 @@ export default {
       });
     },
     selectIdChange(data) {
+      // 清空其他查询条件
+      this.formData.looked = '';
+      this.formData.submited = '';
+      this.formData.userName = '';
+      this.submitedOrLooked = '';
       this.formData.queryType = '';
       // 根据组织查数据
       this.formData.orgId = data[data.length - 1];

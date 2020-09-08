@@ -1149,6 +1149,40 @@
   justify-content: space-between;
 }
 
+.tl-collapse .collpase-panel dd {
+  margin: 20px 0 0 0;
+  font-weight: normal;
+}
+
+.tl-collapse .collpase-panel dd div {
+  display: flex;
+  align-items: center;
+}
+
+.tl-collapse .collpase-panel dt div {
+  flex: 1;
+  font-size: 16px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  transition: all .4s ease-out;
+  cursor: pointer
+}
+
+.tl-collapse .collpase-panel .history-version {
+  margin: 0 0 0 10px;
+  flex: 0 0 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #f2f5f7;
+  cursor: pointer !important;
+}
+
 
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */
@@ -1689,7 +1723,8 @@
 }
 
 .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span,
-.card-panel-body .tl-table .sub-tr .okr-kr-name span {
+.card-panel-body .tl-table .sub-tr .okr-kr-name span,
+.tl-collapse .collpase-panel dt span {
   margin: 0 6px 0 0;
   width: 32px;
   height: 18px;
@@ -1723,8 +1758,9 @@
   width: calc(42% - 60px);
   color: #26282a;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   transition: all .4s ease-out;
   cursor: pointer;
 }
@@ -2284,8 +2320,9 @@
 }
 
 .operating-panel .dl-item dt {
-  margin: 0 20px 0 0;
+  margin: 0 10px 0 0;
   color: #acb6bf;
+  min-width: 60px;
 }
 
 .operating-panel .tl-diy-tabs .border-slip {

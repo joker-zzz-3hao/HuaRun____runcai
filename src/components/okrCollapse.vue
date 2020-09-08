@@ -13,7 +13,6 @@
             <dt>
               <span>目标</span>
               <div>
-                <em>{{item.okrDetailObjectKr}}</em>
                 <el-form-item
                   style="display:inline-block"
                   v-if="canWrite && item.showTitleEdit"
@@ -22,12 +21,14 @@
                 >
                   <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
                 </el-form-item>
+                <em v-else>{{item.okrDetailObjectKr}}</em>
                 <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
             <dd>
               <div>
+                <i></i>
                 <span>权重</span>
                 <el-form-item v-if="canWrite && item.showWeightEdit">
                   <el-input-number
