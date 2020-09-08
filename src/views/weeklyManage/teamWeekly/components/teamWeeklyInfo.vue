@@ -8,7 +8,12 @@
   <div>
     <h1>团队周报</h1>
     <div>
+      <el-button @click="goback">返回</el-button>
+    </div>
+    <div>
       <span>当前周报</span>
+      <!-- 返回 -->
+
       <span>
         <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
           <img src="@/assets/images/login-error.png" />
@@ -319,6 +324,9 @@ export default {
     // },
     format(percentage) {
       return percentage === 100 ? '完成' : `${percentage}%`;
+    },
+    goback() {
+      this.$router.go('-1');
     },
 
   },

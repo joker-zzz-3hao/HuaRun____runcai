@@ -28,14 +28,28 @@
 
           <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
             <template slot-scope="scope">
-              <el-slider v-model="scope.row.workProgress" :step="1" show-input></el-slider>
+              <el-slider
+                v-model="scope.row.workProgress"
+                :step="1"
+                @change="tableProcessChange(scope.row)"
+                show-input
+              ></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="投入工时" prop="workTime" :render-header="renderHeader">
+          <el-table-column
+            width="220"
+            label="投入工时"
+            :precision="2"
+            :step="0.1"
+            prop="workTime"
+            :render-header="renderHeader"
+          >
             <template slot-scope="scope">
               <el-input-number
-                v-model.trim="scope.row.workTime"
                 controls-position="right"
+                v-model.trim="scope.row.workTime"
+                :precision="0"
+                :step="1"
                 :min="1"
                 :max="80"
               ></el-input-number>h
@@ -173,10 +187,19 @@
             </span>
             <span style="marginLeft:15px">
               当前进度
-              <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
+              <el-slider
+                v-model="item.progressAfter"
+                :step="1"
+                @change="processChange(item)"
+                show-input
+                style="width:20%"
+              ></el-slider>
             </span>
             <span style="marginLeft:15px">
               本周变化
+              <span
+                v-show="item.progressAfter != item.progressBefor"
+              >{{item.progressAfter-item.progressBefor > 0 ? "+" : ""}}</span>
               <span>{{item.progressAfter-item.progressBefor}}%</span>
             </span>
           </div>
@@ -189,10 +212,19 @@
             <span style="marginLeft:15px">被工作项{{itemIndex(item.o)}}支撑</span>
             <span style="marginLeft:15px">
               当前进度
-              <el-slider v-model="item.progressAfter" :step="1" show-input style="width:20%"></el-slider>
+              <el-slider
+                v-model="item.progressAfter"
+                @change="processChange(item)"
+                :step="1"
+                show-input
+                style="width:20%"
+              ></el-slider>
             </span>
             <span style="marginLeft:15px">
               本周变化
+              <span
+                v-show="item.progressAfter != item.progressBefor"
+              >{{item.progressAfter-item.progressBefor > 0 ? "+" : ""}}</span>
               <span>{{item.progressAfter-item.progressBefor}}%</span>
             </span>
           </div>
@@ -629,6 +661,12 @@ export default {
           },
         }),
       ]);
+    },
+    processChange(item) {
+      item.progressAfter = Math.round(item.progressAfter);
+    },
+    tableProcessChange(item) {
+      item.workProgress = Math.round(item.workProgress);
     },
   },
   watch: {

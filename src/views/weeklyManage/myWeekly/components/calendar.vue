@@ -38,6 +38,7 @@
           disabled
         ></el-checkbox>
       </el-button>
+      <el-button @click="goCurrentWeek">回到本周</el-button>
     </div>
   </div>
 </template>
@@ -198,6 +199,9 @@ export default {
         const end = item.weekEnd.split('-').splice(1, 2).join('/');
         return `第${index + 1}周(${beg}-${end})`;
       }
+    },
+    goCurrentWeek() {
+      window.location.reload();
     },
   },
   watch: {},
