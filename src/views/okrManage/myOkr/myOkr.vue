@@ -4,8 +4,12 @@
       <dl class="dl-item">
         <dt>目标周期</dt>
         <dd>
+          <!-- multiple 多选属性 -->
+          <!-- searchForm.periodId 单选 -->
+          <!-- multperiod 多选 -->
           <el-select
-            v-model="searchForm.periodId"
+            v-model="multperiod"
+            multiple
             placeholder="请选择目标周期"
             :popper-append-to-body="false"
             popper-class="tl-select-dropdown"
@@ -247,6 +251,7 @@ export default {
       changeokrExist: false,
       detailExist: false,
       updateExist: false,
+      multperiod: [], // 多选周期
     };
   },
   computed: {
@@ -463,6 +468,15 @@ export default {
         }
       },
       immediate: true,
+      deep: true,
+    },
+    'multperiod.length': {
+      handler() {
+        this.okrCycle = this.periodList.filter(
+          (citem) => citem.periodId === this.multperiod[0],
+        )[0] || {};
+        this.searchOkr();
+      },
       deep: true,
     },
     okrSuccess: {
