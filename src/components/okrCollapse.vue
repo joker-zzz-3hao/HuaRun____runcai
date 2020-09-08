@@ -48,8 +48,7 @@
               </div>
               <!-- 变更 -->
               <div
-                v-if="showParentOkr
-                && item.okrParentId
+                v-if="item.okrParentId
                 && item.undertakeOkrVo
                 && item.undertakeOkrVo.undertakeOkrContent"
               >
@@ -57,28 +56,29 @@
                   <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
                 </p>
               </div>
-              <!-- 变更有承接项时 -->
-              <div v-else-if="showParentOkr && item.okrParentId">
+              <!-- 有承接项时 -->
+              <div v-else-if="item.okrParentId">
                 <span>承接自</span>
-                <span>{{item.parentObjectKr}}</span>
                 <!-- 是变更且有更新显示icon -->
-                <span v-if="canWrite && item.parentUpdate">
+                <span v-if="item.parentUpdate">
                   <el-popover
                     placement="top-start"
                     width="200"
                     trigger="hover"
                     :append-to-body="false"
                   >
-                    <span>
+                    <span v-if="canWrite">
                       您承接的OKR有变更，
                       <a @click="goUndertake(index,'change')">查看详情</a>
                     </span>
+                    <span v-else>您承接的OKR有变更，请在变更中处理。</span>
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
                 </span>
+                <span>{{item.parentObjectKr}}</span>
               </div>
-              <!-- 变更or创建无承接项时 -->
-              <div v-else-if="showParentOkr">
+              <!-- 变更无承接项时 -->
+              <div v-else-if="canWrite">
                 <p
                   @click="goUndertake(index,'new')"
                   v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
@@ -97,11 +97,6 @@
                   关联
                   <span class="lines"></span>
                 </el-button>
-              </div>
-              <!-- 详情 -->
-              <div v-else-if="item.okrParentId">
-                <span>承接自</span>
-                <span>{{item.parentObjectKr}}</span>
               </div>
             </dd>
           </dl>

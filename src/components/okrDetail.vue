@@ -46,7 +46,7 @@
             </dd>
           </dl>
         </div>
-        <tl-okr-collapse :tableList="tableList" :showParentOkr="false">
+        <tl-okr-collapse :tableList="tableList">
           <template slot="head-bar" slot-scope="props">
             <div
               v-if="props.okritem.versionCount > 1"
@@ -212,7 +212,6 @@ export default {
       tableList: [], // okr列表
       voteUser: [], // 点赞人列表
       okrmain: {}, // 公共信息
-      canWrite: true, // true写okr false okr详情
       dialogTitle: 'OKR详情', // 弹框标题
       cycleList: [], // 操作历史
       supportType: 0, // 点赞1 取消赞0
