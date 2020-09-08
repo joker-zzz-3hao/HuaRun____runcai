@@ -195,9 +195,9 @@ export default {
                   okrDetailVersion: item.o.okrDetailVersion,
                 });
                 if (item.krList && item.krList.length > 0) {
-                  item.krList.forEach((krItem, index) => {
+                  item.krList.forEach((krItem) => {
                     this.departokrList.push({
-                      typeName: `KR${index}`,
+                      typeName: 'KR',
                       okrKind: 'k',
                       okrDetailObjectKr: krItem.okrDetailObjectKr,
                       okrDetailId: krItem.okrDetailId,

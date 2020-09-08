@@ -285,6 +285,11 @@ export default {
       });
     },
     selectIdChange(data) {
+      // 清空其他查询条件
+      this.formData.looked = '';
+      this.formData.submited = '';
+      this.formData.userName = '';
+      this.submitedOrLooked = '';
       this.formData.queryType = '';
       // 根据组织查数据
       this.formData.orgId = data[data.length - 1];
@@ -333,15 +338,19 @@ export default {
       switch (item) {
         case '1':
           this.formData.looked = true;
+          this.formData.submited = '';
           break;
         case '2':
           this.formData.looked = false;
+          this.formData.submited = '';
           break;
         case '3':
           this.formData.submited = true;
+          this.formData.looked = '';
           break;
         case '4':
           this.formData.submited = false;
+          this.formData.looked = '';
           break;
         default:
           break;

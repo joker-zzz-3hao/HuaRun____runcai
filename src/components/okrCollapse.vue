@@ -13,7 +13,6 @@
             <dt>
               <span>目标</span>
               <div>
-                <em>{{item.okrDetailObjectKr}}</em>
                 <el-form-item
                   style="display:inline-block"
                   v-if="canWrite && item.showTitleEdit"
@@ -22,7 +21,12 @@
                 >
                   <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
                 </el-form-item>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
+                <em v-else>{{item.okrDetailObjectKr}}</em>
+                <i
+                  v-if="canWrite && !item.showTitleEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showTitleEdit')"
+                ></i>
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
@@ -41,7 +45,11 @@
                   ></el-input-number>
                 </el-form-item>
                 <em v-else>{{item.okrWeight}}%</em>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showWeightEdit')"></i>
+                <i
+                  v-if="canWrite && !item.showWeightEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showWeightEdit')"
+                ></i>
               </div>
               <div>
                 <i class="el-icon-odometer"></i>
@@ -117,7 +125,7 @@
               </el-form-item>
               <span v-else>{{kritem.okrDetailObjectKr}}</span>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showTitleEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
@@ -140,7 +148,7 @@
               </el-form-item>
               <em v-else>{{kritem.okrWeight}}%</em>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showWeightEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showWeightEdit')"
               ></i>

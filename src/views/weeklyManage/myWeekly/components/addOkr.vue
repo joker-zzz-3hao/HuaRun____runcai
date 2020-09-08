@@ -32,6 +32,7 @@
         <h4>团队目标</h4>
         <el-checkbox-group v-model="orgSelectData" :min="0" :max="1">
           <el-checkbox
+            :class="{'move-to-right':teamTarget.okrType = 'KR'}"
             v-for="teamTarget in orgOkrList"
             :label="teamTarget.okrDetailId"
             :key="teamTarget.okrDetailId"
@@ -287,3 +288,8 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+/* .move-to-right {
+  margin-left: 100px;
+} */
+</style>

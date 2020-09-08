@@ -164,14 +164,14 @@ export default {
       for (const okr of okrDetails) {
         oIndex += 1;
         okr.indexText = `目标O${oIndex}`;
-        this.$set(okr, 'checked', false);
+        this.$set(okr, 'okrType', 'O');
         tempResult.push(okr);
         if (okr.krList && okr.krList.length > 0) {
           let krIndex = 0;
           for (const kr of okr.krList) {
             krIndex += 1;
             kr.indexText = `KR${krIndex}`;
-            this.$set(kr, 'checked', false);
+            this.$set(kr, 'okrType', 'KR');
             tempResult.push(kr);
           }
         }

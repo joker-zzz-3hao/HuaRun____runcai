@@ -155,7 +155,8 @@
           </div>
         </div>
       </template>
-
+      <!-- 加载中 -->
+      <div v-else-if="loading" class="tl-card-panel"></div>
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>
@@ -166,7 +167,7 @@
       :exist.sync="writeokrExist"
       v-if="writeokrExist"
       :writeInfo="writeInfo"
-      @success="searchOkr(item.okrMain.status)"
+      @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
       ref="tl-changeokr"
@@ -194,7 +195,7 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      @success="searchOkr(item.okrMain.status)"
+      @success="searchOkr('1')"
     ></tl-okr-update>
   </div>
 </template>
@@ -251,6 +252,7 @@ export default {
       detailExist: false,
       updateExist: false,
       multperiod: [], // 多选周期
+      loading: false,
     };
   },
   computed: {
@@ -281,6 +283,7 @@ export default {
         tableList: [], // okr列表
         okrMain: {},
       }];
+      this.loading = true;
       this.server.getmyOkr({
         myOrOrg: 'my',
         periodId: this.okrCycle.periodId,
@@ -313,6 +316,7 @@ export default {
             this.okrList[0].okrMain = res.data.okrMain || {};
             this.okrId = this.okrList[0].okrMain.okrId || '';
           }
+          this.loading = false;
         }
       });
     },
@@ -330,9 +334,9 @@ export default {
           if (okrStatus == '1') {
             status = '6';
           } else if (item.approvalStatus == 2) {
-            status = '7';
-          } else {
             status = '8';
+          } else {
+            status = '7';
           }
         } else {
           status = this.searchForm.status;
@@ -346,14 +350,15 @@ export default {
             okrBelongType: okrInfo.okrBelongType,
             status,
           },
-          id: item.id || item.approvalId,
+          id: item.id,
+          approvalId: item.approvalId,
           params: item.paramJson,
+          remark: item.remark || '',
+          approvalType: item.approvalType || '',
         });
       });
     },
     handleNormal(object) {
-      // object.okrMain.status = okrStatus;
-      console.log('okrMain', object.okrMain);
       this.okrList.push({
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
@@ -399,6 +404,7 @@ export default {
     },
     // 打开编辑
     goDraft(item) {
+      console.log('打开编辑', item);
       this.drawerTitle = '编辑';
       this.writeInfo = {
         canWrite: 'draft',
@@ -406,6 +412,10 @@ export default {
         draftId: item.id,
         okrStatus: item.okrMain.status,
         okrCycle: this.okrCycle,
+        // 退回
+        approvalId: item.approvalId,
+        modifyReason: item.remark,
+        approvalType: item.approvalType, // 审批类型
       };
       this.currentView = 'tl-writeokr';
       this.writeokrExist = true;

@@ -44,7 +44,8 @@
                   </el-form-item>
                   <el-form-item label="承接自">
                     <p
-                      v-if="oitem.undertakeOkrVo.undertakeOkrDetailId || oitem.cultureId"
+                      v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
+                      || oitem.cultureId"
                       @click="openUndertake(index)"
                     >
                       <a
@@ -148,6 +149,18 @@
         <i class="el-icon-plus"></i>添加目标
       </el-button>
     </div>
+    <!-- 变更原因 -->
+    <div v-if="this.searchForm.okrStatus == '8'">
+      <span>变更原因</span>
+      <el-form :model="reason" ref="reasonForm">
+        <el-form-item
+          prop="modifyReason"
+          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+        >
+          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
     <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
     <el-drawer
@@ -225,6 +238,7 @@ export default {
       selectIndex: '', // 选择o的序号
       innerDrawer: false,
       periodName: '', // 周期名
+      reason: {},
     };
   },
   props: {
@@ -248,11 +262,13 @@ export default {
     }
   },
   created() {
-    if (this.searchForm.okrStatus == '6') {
+    if (['6', '8'].includes(this.searchForm.okrStatus)) {
       this.getOkrDraftById();
     }
+    if (this.searchForm.okrStatus != '8') {
+      this.autosave();
+    }
     // 自动保存
-    this.autosave();
   },
   methods: {
     ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
@@ -337,9 +353,9 @@ export default {
                 okrDetailVersion: item.o.okrDetailVersion,
               });
               if (item.krList && item.krList.length > 0) {
-                item.krList.forEach((krItem, index) => {
+                item.krList.forEach((krItem) => {
                   this.departokrList.push({
-                    typeName: `KR${index + 1}`,
+                    typeName: 'KR',
                     okrKind: 'k',
                     okrDetailObjectKr: krItem.okrDetailObjectKr,
                     okrDetailId: krItem.okrDetailId,
@@ -357,12 +373,13 @@ export default {
           if (this.formData.okrInfoList.length > 0) {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
+              item.undertakeOkrVo = {};
               // 如果是草稿，选中已保存的承接项
-              if (['6'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
+              if (['6', '8'].includes(this.searchForm.okrStatus)
+               && item.undertakeOkrVo.undertakeOkrDetailId) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
-                    // item.undertakeOkrVo.undertakeOkrObjectKr = pitem.undertakeOkrObjectKr;
                   }
                 });
               }
@@ -386,7 +403,7 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
-              if (['6'].includes(this.searchForm.okrStatus) && item.cultureId) {
+              if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
                     this.$set(item, 'cultureName', pitem.cultureName);
@@ -460,22 +477,12 @@ export default {
           }
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.okrDraftId = this.searchForm.draftId;
-          this.server.addokr(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('创建成功，请等待上级领导审批。');
-              this.$refs.dataForm.resetFields();
-              this.setokrSuccess(true);
-              this.close();
-            } else if (res.code == 30000) {
-              this.$xconfirm({
-                content: '',
-                title: '当前周期已提交，是否保存为草稿？',
-              }).then(() => {
-              // 提交确认弹窗
-                this.saveDraft();
-              }).catch(() => {});
-            }
-          });
+          this.formData.approvalId = this.searchForm.approvalId;
+          if (this.searchForm.approvalType == 1) {
+            this.summitChange();
+          } else {
+            this.summitNew();
+          }
         }
       });
     },
@@ -520,9 +527,57 @@ export default {
         });
       }
     },
-
+    // 关闭
     close() {
       this.setCreateokrDrawer(false);
+    },
+    // 新建okr
+    summitNew() {
+      this.server.addokr(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('创建成功，请等待上级领导审批。');
+          this.$refs.dataForm.resetFields();
+          this.setokrSuccess(true);
+          this.close();
+        } else if (res.code == 30000) {
+          this.$xconfirm({
+            content: '',
+            title: '当前周期已提交，是否保存为草稿？',
+          }).then(() => {
+            // 提交确认弹窗
+            this.saveDraft();
+          }).catch(() => {});
+        }
+      });
+    },
+    // 变更
+    summitChange() {
+      // 拼入参
+      this.formData.okrInfoList.forEach((item) => {
+        // 新增或变更承接项
+        if (item.undertakeOkrVo) {
+          item.undertakeOkr = item.undertakeOkrVo;
+          // 原有承接不改变
+        }
+      });
+
+      const formChangeData = {
+        okrInfoList: this.formData.okrInfoList,
+        periodId: this.formData.periodId,
+        okrProgress: this.formData.okrProgress,
+        modifyReason: this.reason.modifyReason,
+        okrMainId: this.formData.okrMainId,
+        okrBelongType: this.formData.okrBelongType,
+        approvalId: this.formData.approvalId,
+      };
+      this.server.modifyOkrInfo(formChangeData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+          this.close();
+        } else if (res.code === 30000) {
+          this.$message.warning('变更申请正在审批中，请勿重复提交');
+        }
+      });
     },
   },
   watch: {
@@ -539,7 +594,7 @@ export default {
     },
     searchForm: {
       handler() {
-        if (this.searchForm.okrStatus == '6') {
+        if (['6', '8'].includes(this.searchForm.okrStatus)) {
           this.getOkrDraftById();
         }
       },
