@@ -6,9 +6,9 @@
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-radio-group v-model="messageType" @change="change">
-              <el-radio-button label="0">业务通知</el-radio-button>
-              <el-radio-button label="1">系统消息</el-radio-button>
-              <el-radio-button label="2">互动消息</el-radio-button>
+              <el-radio-button label="10">业务消息</el-radio-button>
+              <el-radio-button label="20">系统消息</el-radio-button>
+              <el-radio-button label="30">互动消息</el-radio-button>
             </el-radio-group>
           </el-form-item>
           <el-form-item>
@@ -23,7 +23,7 @@
     <div class="cont-area">
       <!-- 业务通知，系统消息 -->
       <tl-crcloud-table
-        v-if="messageType=='0' || messageType=='1'"
+        v-if="messageType=='10' || messageType=='20'"
         :total="totalSystem"
         :currentPage.sync="currentPageSystem"
         :pageSize.sync="pageSizeSystem"
@@ -31,20 +31,24 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableDataSystem" class="tl-table">
-            <el-table-column prop="userName" label="通知内容" min-width="140">
+            <el-table-column prop="msgContent" label="通知内容" min-width="140">
               <template slot-scope="scope">
-                <a @click="showDetail(scope.row)">{{scope.row.userName}}</a>
+                <a @click="showDetail(scope.row)">{{scope.row.msgContent}}</a>
               </template>
             </el-table-column>
-            <el-table-column v-if="messageType=='0'" prop="updateTime" label="通知类型" min-width="160"></el-table-column>
-            <el-table-column prop="workContent" label="通知人" min-width="120"></el-table-column>
-            <el-table-column prop="cultureName" label="通知时间" min-width="180"></el-table-column>
+            <el-table-column v-if="messageType=='10'" prop="msgType" label="通知类型" min-width="160">
+              <template slot-scope="scope">
+                <span>{{CONST.MSG_MAP[scope.row.msgType]}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="sendUserId" label="通知人" min-width="120"></el-table-column>
+            <el-table-column prop="createDate" label="通知时间" min-width="180"></el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
       <!-- 互动消息 -->
       <tl-crcloud-table
-        v-if="messageType=='2'"
+        v-if="messageType=='30'"
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
@@ -52,12 +56,12 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="userName" label="通知内容" min-width="140">
+            <el-table-column prop="msgContent" label="通知内容" min-width="140">
               <template slot-scope="scope">
-                <a @click="showDetail(scope.row)">{{scope.row.userName}}</a>
+                <a @click="showDetail(scope.row)">{{scope.row.msgContent}}</a>
               </template>
             </el-table-column>
-            <el-table-column prop="updateTime" label="通知时间" min-width="160"></el-table-column>
+            <el-table-column prop="createDate" label="通知时间" min-width="160"></el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
@@ -70,14 +74,16 @@
 import crcloudTable from '@/components/crcloudTable';
 import noticeDetail from './components/noticeDetail';
 import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 export default {
   name: 'notice',
   data() {
     return {
+      CONST,
       server,
-      messageType: '0',
+      messageType: '10',
       readValue: '0',
       total: 0,
       totalSystem: 0,
@@ -101,25 +107,25 @@ export default {
   methods: {
     searchList(type) {
       let params = {};
-      if (type == '0' || type == '1') {
+      if (type == '10' || type == '20') {
         params = {
           currentPage: this.currentPageSystem,
           pageSize: this.pageSizeSystem,
         };
-      } else if (type == '2') {
+      } else if (type == '30') {
         params = {
           currentPage: this.currentPage,
           pageSize: this.pageSize,
         };
       }
-      params.messageType = this.messageType;
-      params.readValue = this.readValue;
-      this.server.weeklyEvents(params).then((res) => {
+      params.msgType = this.messageType;
+      params.readedStatus = this.readValue;
+      this.server.innermsg(params).then((res) => {
         if (res.code == '200') {
-          if (type == '0' || type == '1') {
+          if (type == '10' || type == '20') {
             this.tableDataSystem = res.data.content;
             this.totalSystem = res.data.total;
-          } else if (type == '2') {
+          } else if (type == '30') {
             this.tableData = res.data.content;
             this.total = res.data.total;
           }
