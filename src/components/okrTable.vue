@@ -175,8 +175,8 @@ export default {
     },
     opensome(row) {
       console.log('点击了面板', row);
-      // 起草中打开编辑页
-      if (['6'].includes(this.status)) {
+      // 起草中，已退回打开编辑页
+      if (['6', '8'].includes(this.status)) {
         this.$emit('goDraft', row);
       } else {
         this.$emit('openDialog', row);

@@ -248,11 +248,13 @@ export default {
     }
   },
   created() {
-    if (this.searchForm.okrStatus == '6') {
+    if (['6', '8'].includes(this.searchForm.okrStatus)) {
       this.getOkrDraftById();
     }
+    if (this.searchForm.okrStatus != '8') {
+      this.autosave();
+    }
     // 自动保存
-    this.autosave();
   },
   methods: {
     ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
@@ -358,7 +360,7 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
               // 如果是草稿，选中已保存的承接项
-              if (['6'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
+              if (['6', '8'].includes(this.searchForm.okrStatus) && item.undertakeOkrVo.undertakeOkrDetailId) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
@@ -386,7 +388,7 @@ export default {
             this.formData.okrInfoList.forEach((item) => {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
-              if (['6'].includes(this.searchForm.okrStatus) && item.cultureId) {
+              if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
                     this.$set(item, 'cultureName', pitem.cultureName);
@@ -460,6 +462,8 @@ export default {
           }
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.okrDraftId = this.searchForm.draftId;
+          this.formData.approvalId = this.searchForm.approvalId;
+          console.log(this.formData);
           this.server.addokr(this.formData).then((res) => {
             if (res.code == 200) {
               this.$message.success('创建成功，请等待上级领导审批。');
@@ -539,7 +543,7 @@ export default {
     },
     searchForm: {
       handler() {
-        if (this.searchForm.okrStatus == '6') {
+        if (['6', '8'].includes(this.searchForm.okrStatus)) {
           this.getOkrDraftById();
         }
       },
