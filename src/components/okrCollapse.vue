@@ -22,7 +22,11 @@
                   <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <em v-else>{{item.okrDetailObjectKr}}</em>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
+                <i
+                  v-if="canWrite && !item.showTitleEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showTitleEdit')"
+                ></i>
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
@@ -41,7 +45,11 @@
                   ></el-input-number>
                 </el-form-item>
                 <span v-else>{{item.okrWeight}}%</span>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showWeightEdit')"></i>
+                <i
+                  v-if="canWrite && !item.showWeightEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showWeightEdit')"
+                ></i>
               </div>
               <div>
                 <span>当前进度</span>
@@ -123,7 +131,7 @@
                 {{kritem.okrDetailObjectKr}}
               </span>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showTitleEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
@@ -145,7 +153,7 @@
               </el-form-item>
               <span v-else>{{kritem.okrWeight}}%</span>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showWeightEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showWeightEdit')"
               ></i>
