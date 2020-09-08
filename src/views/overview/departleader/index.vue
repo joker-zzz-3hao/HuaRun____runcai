@@ -68,7 +68,7 @@ export default {
     }),
   },
   mounted() {
-    this.getqueryMyOkr();
+    // this.getqueryMyOkr();
   },
 
   methods: {

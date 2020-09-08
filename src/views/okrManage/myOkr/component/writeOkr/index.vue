@@ -19,6 +19,14 @@
     </div>
     <el-scrollbar>
       <div class="create-okr">
+        <div v-if="searchForm.modifyReason">
+          <el-alert type="warning">
+            <div slot="title">
+              <div>审批退回原因：</div>
+              <div>{{searchForm.modifyReason}}</div>
+            </div>
+          </el-alert>
+        </div>
         <div class="allocation-info">
           <dl>
             <dt>目标周期</dt>
@@ -42,7 +50,8 @@
           <dl>
             <dt>OKR类型</dt>
             <dd>
-              <el-select
+              {{CONST.OKR_TYPE_MAP[searchForm.okrType]}}
+              <!-- <el-select
                 v-model="searchForm.okrType"
                 placeholder="请选择类型"
                 :popper-append-to-body="false"
@@ -55,7 +64,7 @@
                   :label="item.name"
                   :value="item.id"
                 ></el-option>
-              </el-select>
+              </el-select>-->
             </dd>
           </dl>
           <dl class="user-info">
@@ -73,7 +82,7 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <div class="flex-auto">
+      <div class="flex-auto" v-if="writeInfo.okrStatus != '8'">
         <el-button plain @click="saveDraft()" class="tl-btn amt-border-fadeout">保存为草稿</el-button>
       </div>
       <el-button type="primary" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
@@ -170,6 +179,8 @@ export default {
         this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
         this.searchForm.draftParams = this.writeInfo.draftParams || '';
         this.searchForm.draftId = this.writeInfo.draftId || '';
+        this.searchForm.approvalId = this.writeInfo.approvalId || '';
+        this.searchForm.modifyReason = this.writeInfo.modifyReason || '';
         this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
         this.temPeriod = JSON.parse(this.searchForm.draftParams).periodId;
       }
