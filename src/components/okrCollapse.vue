@@ -28,6 +28,7 @@
             </dt>
             <dd>
               <div>
+                <i></i>
                 <span>权重</span>
                 <el-form-item v-if="canWrite && item.showWeightEdit">
                   <el-input-number
