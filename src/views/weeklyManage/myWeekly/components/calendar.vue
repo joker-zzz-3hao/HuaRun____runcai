@@ -111,8 +111,8 @@ export default {
         // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
         let beg = new Date(week.weekBegin);
         let end = new Date(week.weekEnd);
-        beg = beg.setHours(beg.getHours() - 8 + 24 * 7);
-        end = end.setHours(end.getHours() + 16 + 24 * 7);
+        beg = beg.setHours(beg.getHours() - 8);
+        end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
           // 当前周
           this.currentWeekIndex = this.weekList.indexOf(week); // 月份是本月
@@ -162,8 +162,8 @@ export default {
         // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
         let beg = new Date(item.weekBegin);
         let end = new Date(item.weekEnd);
-        beg = beg.setHours(beg.getHours() - 8 + 24 * 7);
-        end = end.setHours(end.getHours() + 16 + 24 * 7);
+        beg = beg.setHours(beg.getHours() - 8);
+        end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
           currentBelongsToSelectedMonth = true;
           // 选种本周按钮
