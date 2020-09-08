@@ -71,7 +71,7 @@ export default {
         periodId: this.periodId,
       };
       // eslint-disable-next-line no-unused-expressions
-      this.$route.query.id ? form.user = this.$route.query.id : form.userId = this.userInfo.userId;
+      this.$route.query.id ? form.user = this.$route.query.id : form.user = '';
       this.server.okrStatistics(form).then((res) => {
         this.mainData = res.data;
       });

@@ -114,7 +114,11 @@
         </div>
         <div class="card-panel-body img-list">
           <template v-if="memberList.length>0">
-            <dl v-for="(item,index) in memberList" :key="item.userId+index">
+            <dl
+              v-for="(item,index) in memberList"
+              :key="item.userId+index"
+              @click="goToDep(item.userId,item.userName)"
+            >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
                 <div class="user-name">
@@ -157,7 +161,11 @@
             </dl>
           </template>
           <template v-if="orgTable.length>0">
-            <dl v-for="(item,index) in orgTable" :key="item.orgId+index">
+            <dl
+              v-for="(item,index) in orgTable"
+              :key="item.orgId+index"
+              @click="goToDep(item.orgId,item.orgName)"
+            >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
                 <div class="user-name">
@@ -278,6 +286,16 @@ export default {
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
+    },
+
+    goToDep(id, name) {
+      const chename = encodeURI(name);
+      if (this.orgTable.length > 0) {
+        this.$router.push({ name: 'teamleader', query: { id, name: chename } });
+      }
+      if (this.memberList.length > 0) {
+        this.$router.push({ name: 'grassStaff', query: { id, name: chename } });
+      }
     },
     openDialog(val) {
       this.okrItem = val;
