@@ -28,7 +28,8 @@ export default {
     };
   },
   mounted() {
-    this.getidentity();
+    // eslint-disable-next-line no-unused-expressions
+    this.$route.query.id ? '' : this.getidentity();
   },
   computed: {
     ...mapState('common', {
@@ -38,6 +39,7 @@ export default {
   },
   methods: {
     getidentity() {
+      console.log(this.$router);
       this.server.identity({
         user: this.userInfo.userId,
         orgId: this.setOrgId,
@@ -50,7 +52,9 @@ export default {
           this.$router.replace({ name: 'teamleader' });
           return false;
         }
-        this.$router.replace({ name: 'grassStaff' });
+        if (res.data.identityType == 'person') {
+          this.$router.replace({ name: 'grassStaff' });
+        }
       });
     },
   },

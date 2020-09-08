@@ -56,7 +56,7 @@
           </div>
         </el-form-item>
       </el-form>
-      <div class="operating-panel">
+      <div class="operating-box">
         <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
         <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
       </div>
