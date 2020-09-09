@@ -6,7 +6,7 @@
       </div>
       <div class>
         <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
-        <el-select v-model="orgId" @change="switchOrg">
+        <el-select v-else v-model="orgId" @change="switchOrg">
           <el-option
             v-for="item in userInfo.orgList"
             :key="item.orgId"

@@ -87,7 +87,7 @@
                 ></el-progress>
               </dd>
             </dl>
-            <dl>
+            <dl v-if="['1',1,'6'].includes(item.okrMain.status)">
               <dt>
                 <div
                   v-if="['1',1].includes(item.okrMain.status)"
