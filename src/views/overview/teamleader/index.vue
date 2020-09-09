@@ -105,30 +105,11 @@ export default {
         this.tableData = res.data;
       });
     },
-    getmainData() {
-      this.server.mainData({
-        periodId: this.periodId,
-        orgId: this.orgId,
-      }).then((res) => {
-        console.log(res);
-      });
-    },
     // eslint-disable-next-line no-shadow
     getPeriod(periodId) {
       this.periodId = periodId;
       this.getokrRisk();
       this.getokrData();
-      this.getmainData();
-    },
-    getqueryMyOkr() {
-      this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.orgId, type: 'INDEX',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.orgUser = res.data.orgUser;
-          this.orgTable = res.data.orgTable;
-        }
-      });
     },
 
   },

@@ -2,13 +2,13 @@
   <div class="home">
     <div class="header">
       <div class="person">
-        <em class="image">陆涛</em>
+        <em class="image">{{baseInfo.okrMain.userName}}</em>
         <div>
-          <div>2020年下半年OKR</div>
+          <div>{{baseInfo.okrMain.periodName}}</div>
           <div>
-            <em>负责人陆涛</em>
-            <em style="margin-left:10px">OKR进度： 12%</em>
-            <em style="margin-left:10px">上级考核： 张聪</em>
+            <em>负责人{{baseInfo.okrMain.userName}}</em>
+            <em style="margin-left:10px">OKR进度： {{baseInfo.okrMain.okrProgress}}%</em>
+            <em style="margin-left:10px">上级考核： {{baseInfo.okrMain.orgName}}</em>
           </div>
         </div>
       </div>
@@ -17,115 +17,31 @@
         <em style="margin-left:10px">上级评分--</em>
       </div>
     </div>
-    <div class="main">
+    <div class="main" v-for="(item,index) in baseInfo.okrDetails" :key="index">
       <div>
         <em>考核信息</em>
         <div class="scoreModel">
           <div class="leftinfo">
             <div>
               <div class="omart">目标O：</div>
-              <em>
-                1. 形成个别生态能力的解决方案，为下半年营收做准备
-                完成上半年营收入100万元
-              </em>
+              <em>{{item.parentObjectKr}}</em>
               <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>20% 承接自 KR：至少5款现有产品完成升级支持</em>
+                <em>权重 {{item.okrWeight}}% 进度</em>
+                <el-progress :percentage="item.okrWeight" style="width:200px;"></el-progress>
+                <em>承接自 KR：{{item.okrDetailObjectKr}}</em>
               </div>
             </div>
             <div>
               <div class="omart">关键行动KR:</div>
-              <em>1. 形成个别生态能力的解决方案，为下半年营收做准备</em>
-              <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>信心状态 可控</em>
-              </div>
-              <em class="mt">2 持续探索外部机会，寻找优质的产品引入，为下半年营收做准备</em>
-              <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>信心状态 可控</em>
-              </div>
-            </div>
-          </div>
-          <div class="leaderscore">
-            <em>上级评分</em>
-            <el-input style="width:50px"></el-input>
-          </div>
-        </div>
-      </div>
-
-      <el-collapse accordion>
-        <el-collapse-item>
-          <template slot="title">来自周报内容</template>
-          <div class="intime">共计投入工时12h</div>
-          <div>
-            <div>支撑项：KR：对现有至少1款磐云产品进行产品优化和功能升级</div>
-            <div>周报内容：完成磐云产品集成，50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符</div>
-            <div>投入工时：4h</div>
-          </div>
-          <div>
-            <div>支撑项：O：持续探索外部机会，寻找优质的产品引入，为下半年营收做准备</div>
-            <div>周报内容：完成磐云产品集成，50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符</div>
-            <div>投入工时：4h</div>
-          </div>
-          <div>
-            <div>支撑项：KR：磐云线下业务数据线上化研发支持，线下操作线上化研发支持</div>
-            <div>周报内容：完成磐云产品集成，50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符50个字符</div>
-            <div>投入工时：4h</div>
-          </div>
-          <div>自评内容</div>
-          <div>评分 90</div>
-          <div>自评说明</div>
-          <div>
-            按时交付被分派的工作任务；不满足现状，主动思考工作中仍能提高的地方层级3、通过对工作程序或工作方法等做出具体的改进，有效提高工作效
-            率和质量；层级4、主动为自己定立具有挑战性的目标并精益求精，采取具体的行动去达成。层级5、即使在看似不可能达成的情况下，积
-            极投入必要的精力与资源，全力行动，以求最大可能地达成所追求的目标；
-          </div>
-          <div>
-            附件名称附件名称附件名称附件名称.jpg
-            <el-button type="text">查看</el-button>
-            <el-button type="text">下载</el-button>
-          </div>
-          <div>
-            附件名称附件名称附件名称附件名称.word
-            <el-button type="text">查看</el-button>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
-    </div>
-    <div class="main">
-      <div>
-        <em>考核信息</em>
-        <div class="scoreModel">
-          <div class="leftinfo">
-            <div>
-              <div class="omart">目标O：</div>
-              <em>
-                1. 形成个别生态能力的解决方案，为下半年营收做准备
-                完成上半年营收入100万元
-              </em>
-              <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>20% 承接自 KR：至少5款现有产品完成升级支持</em>
-              </div>
-            </div>
-            <div>
-              <div class="omart">关键行动KR:</div>
-              <em>1. 形成个别生态能力的解决方案，为下半年营收做准备</em>
-              <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>信心状态 可控</em>
-              </div>
-              <em class="mt">2 持续探索外部机会，寻找优质的产品引入，为下半年营收做准备</em>
-              <div class="modelflex">
-                <em>权重 30% 进度</em>
-                <el-progress :percentage="50" style="width:200px;"></el-progress>
-                <em>信心状态 可控</em>
+              <div v-for="(li,i) in item.krList" :key="i">
+                <em>{{li.okrDetailObjectKr}}</em>
+                <div class="modelflex">
+                  <em>权重 {{li.okrWeight}}% 进度</em>
+                  <el-progress :percentage="item.okrWeight" style="width:200px;"></el-progress>
+                  <em v-if="li.okrDetailConfidence==1">信心状态 可控</em>
+                  <em v-if="li.okrDetailConfidence==2">信心状态 有风险</em>
+                  <em v-if="li.okrDetailConfidence==3">信心状态 失控</em>
+                </div>
               </div>
             </div>
           </div>
@@ -203,12 +119,34 @@
 </template>
 
 <script>
+import Server from '../../server';
+
+const server = new Server();
 export default {
   name: 'assessManagementIndex',
   data() {
     return {
       form: {},
+      server,
+      baseInfo: {},
     };
+  },
+  created() {
+    this.querySubordinateBasic();
+  },
+  methods: {
+    querySubordinateBasic() {
+      this.server.querySubordinateBasic({
+        periodId: this.$route.query.periodId,
+        status: '1',
+        myOrOrg: 'my',
+        userId: this.$route.query.userId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.baseInfo = res.data.data;
+        }
+      });
+    },
   },
   components: {
   },

@@ -16,6 +16,10 @@ export default class Server extends ServerBase {
   }
 
   querySubordinateBasic(param) {
-    return this._ajaxPost('gateway/talent-query/okr/examine/querySubordinateBasic', param);
+    return this._ajaxPost('gateway/talent-okr/okr/examine/querySubordinateBasic', param);
+  }
+
+  addEvaluation(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrSelfEvaluation/addEvaluation', param);
   }
 }

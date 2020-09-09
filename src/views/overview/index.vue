@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-unused-expressions
-    this.$route.query.id ? '' : this.getidentity();
+    // this.$route.query.id ? '' : this.getidentity();
   },
   computed: {
     ...mapState('common', {
@@ -39,21 +39,20 @@ export default {
   },
   methods: {
     getidentity() {
-      console.log(this.$router);
       this.server.identity({
         user: this.userInfo.userId,
         orgId: this.setOrgId,
       }).then((res) => {
         if (res.data.identityType == 'org') {
-          this.$router.replace({ name: 'departleader' });
+          this.$router.push({ name: 'departleader' });
           return false;
         }
         if (res.data.identityType == 'team') {
-          this.$router.replace({ name: 'teamleader' });
+          this.$router.push({ name: 'teamleader' });
           return false;
         }
         if (res.data.identityType == 'person') {
-          this.$router.replace({ name: 'grassStaff' });
+          this.$router.push({ name: 'grassStaff' });
         }
       });
     },

@@ -164,9 +164,6 @@ export default {
   },
   mounted() {
     this.searchOkr();
-    //  if (this.$route.name !== 'grassStaff') {
-    this.getqueryMyOkr();
-    // }
   },
   methods: {
     goUndertakeMaps(id, name) {
@@ -219,21 +216,6 @@ export default {
           },
         });
       }
-    },
-    getqueryMyOkr() {
-      this.server.queryMyOkr({
-        myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
-        status: '1',
-        userId: this.$route.query.userId,
-        tenantId: this.$route.query.tenantId,
-        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
-        type: 'INDEX',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.orgTable = res.data.orgTable;
-          this.orgUser = res.data.orgUser;
-        }
-      });
     },
   },
   watch: {

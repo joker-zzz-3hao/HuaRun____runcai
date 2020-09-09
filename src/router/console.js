@@ -17,6 +17,9 @@ export default [{
       title: 'overview',
       power: '',
     },
+    redirect: {
+      name: 'departleader',
+    },
     component: () => import('@/views/overview/index'),
     children: [{
       path: '/teamleader',
