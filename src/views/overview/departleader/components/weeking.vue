@@ -2,7 +2,7 @@
   <div class="weeking">
     <div class="model">
       <div>OKR风险状态统计</div>
-      <div>
+      <!-- <div>
         <el-select placeholder="请选择" class="selectTime" v-model="periodId" @change="changeTime">
           <el-option
             v-for="item in options"
@@ -11,7 +11,7 @@
             :label="item.periodName"
           ></el-option>
         </el-select>
-      </div>
+      </div>-->
       <div class="echartFlex">
         <div style="width:50%">
           <div id="weeking"></div>
@@ -89,16 +89,15 @@ import Server from '../../server';
 
 const server = new Server();
 export default {
-  name: 'weeking',
   props: {
-    orgTable: {
-      type: [String, Object, Array],
+    periodId: {
+      type: [String, Number],
     },
   },
+  name: 'weeking',
   data() {
     return {
       mooddate: '',
-      periodId: '',
       value: '',
       server,
       orgId: '',
@@ -112,8 +111,10 @@ export default {
       moodDataX: [],
       moodDataY: [],
       active: {},
+      orgTable: [],
     };
   },
+
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
@@ -122,9 +123,8 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.$nextTick(() => {
-      this.getokrQuery();
-    });
+
+    this.getqueryMyOkr();
   },
   methods: {
     fetchData() {
@@ -176,12 +176,17 @@ export default {
       console.log(this.active);
       this.getriskStatistics();
     },
-    getokrQuery() {
-      this.server.okrQuery().then((res) => {
-        this.options = res.data.content;
-        this.periodId = this.options[0].periodId;
-        this.orgId = this.orgTable[0].orgId;
-        this.getriskStatistics();
+    getqueryMyOkr() {
+      this.server.queryMyOkr({
+        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.orgTable = res.data.orgTable;
+          this.changeTime();
+          this.$watch('periodId', () => {
+            this.changeTime();
+          });
+        }
       });
     },
     changeTime() {

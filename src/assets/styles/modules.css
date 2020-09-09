@@ -1907,6 +1907,7 @@
 .dl-list .el-radio-group {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .diy-drawer .cont-box .dl-list dd {
@@ -1925,7 +1926,7 @@
   repeating-linear-gradient(-45deg,#e5e9ee 0, #e5e9ee 0.4em,#fff 0,#fff 0.6em);
 }
 
-.diy-drawer .cont-box .dl-list dd,
+.diy-drawer .cont-box .dl-list dd:last-child,
 .dl-list .el-radio:last-child {
   background: unset;
 }
@@ -1978,26 +1979,17 @@
   color: #685df1;
 }
 
-.dl-list .kind-o,
-.dl-list .kind-k {
-  display: flex;
-  align-items: center;
-  margin: 0 8px 0 0;
-  padding: 0 5px;
-  height: 18px;
-  border-radius: 2px;
+.tag-kind p  {
+  color: #4d5155;
+}
+
+.tag-kind p + p {
+  margin: 10px 0 0 0;
+  padding: 10px 20px;
+  background: #f4f6f8;
+  color: #879099;
   font-size: 12px;
-}
-
-.dl-list .kind-o {
-  background: #f0effe;
-  color: #685df1;
-}
-
-.dl-list .kind-k {
-  padding: 0 11px;
-  background: #acb6bf;
-  color: #fff;
+  line-height: 24px;
 }
 
 /* ========================================================公共页面布局组件================================================================== */
