@@ -98,14 +98,15 @@ export default {
       this.server.getCalendar({ date: this.monthDate }).then((res) => {
         if (res.code == 200) {
           this.weekList = res.data;
+          // 设置日历的可点击状态以及周报可编辑状态
+          this.setWeekClickOrEditStatus(val);
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
-          // 设置日历的可点击状态以及周报可编辑状态
-          this.setWeekClickOrEditStatus(val, res.data);
         }
       });
     },
     setWeekClickOrEditStatus(newMonth) {
+      this.twoWeekAreSame = false;
       this.currentWeekIndex = undefined;
       const current = new Date();
       this.weekList.forEach((week) => {
@@ -120,23 +121,27 @@ export default {
         }
       });
       // 1、本月：本周之后的周不可点击,上周之前不可编辑
-      for (let i = 0; i < this.weekList.length; i += 1) {
-        if (i > this.currentWeekIndex) { // 今天之后
-          this.weekList[i].canClick = false;
-          this.weekList[i].canEdit = false;
-        } else if (i < this.currentWeekIndex - 1) { // 两周之前
-          this.weekList[i].canClick = true;
-          this.weekList[i].canEdit = false;
-        } else { // 本周 上周
-          this.weekList[i].canClick = true;
-          this.weekList[i].canEdit = true;
+      if (new Date().getMonth() == new Date(this.weekList[2].weekBegin).getMonth()) { // 是本月逻辑
+        for (let i = 0; i < this.weekList.length; i += 1) {
+          if (i > this.currentWeekIndex) { // 今天之后
+            this.weekList[i].canClick = false;
+            this.weekList[i].canEdit = false;
+          } else if (i < this.currentWeekIndex - 1) { // 两周之前
+            this.weekList[i].canClick = true;
+            this.weekList[i].canEdit = false;
+          } else { // 本周 上周
+            this.weekList[i].canClick = true;
+            this.weekList[i].canEdit = true;
+          }
         }
       }
       // 2、下个月以及之后,月份不可选,组件已配置
-      // 3、上个月以及更早
+      // 3、上个月以及更早：
+      // a、当前周是本月第一周，是上个月最后一周
+      // b、本周不是上周最后一周
       if (new Date(newMonth) < new Date()) { // 点击了月份,且是本月以前的月份
         // 当前周是本月第一周，是上个月最后一周
-        if (this.currentWeekIndex != undefined) {
+        if (this.currentWeekIndex) { // 当前周是本月第一周，是上个月最后一周,且当前周是第一周
           for (let i = 0; i < this.weekList.length; i += 1) {
             if (i < this.weekList.length - 2) { // 前面几个不可编辑
               this.weekList[i].canClick = true;
@@ -152,6 +157,7 @@ export default {
             this.weekList[i].canEdit = false;
           }
         }
+        this.$forceUpdate();
       }
     },
     // 本周不落在选择月份中，默认选择选择月份的最后一周
@@ -176,7 +182,7 @@ export default {
         this.$forceUpdate();
       }
       if (!currentBelongsToSelectedMonth) {
-        // 选种本周按钮
+        // 选中本周按钮
         this.weekList[this.weekList.length - 1].btnType = 'success';
         this.$emit('setCalendarId', this.weekList[this.weekList.length - 1].calendarId);
         // 是否要初始化页面

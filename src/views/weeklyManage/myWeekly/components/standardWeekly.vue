@@ -217,7 +217,7 @@
     <!-- 下周计划 -->
     <div style="marginTop:50px">
       <h1>下周计划</h1>
-      <el-form :model="formData" ref="formDom">
+      <el-form :model="formData">
         <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="planContent">
