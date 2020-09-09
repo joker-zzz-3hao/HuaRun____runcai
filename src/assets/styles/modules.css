@@ -664,7 +664,7 @@
 }
 
 .tl-drawer .el-drawer {
-  padding: 0 30px 30px 30px;
+  padding: 0 2px 30px 30px;
   box-shadow: -6px 0 16px 0 rgba(0,0,0,0.04);
   width: unset !important;
 }
@@ -672,7 +672,7 @@
 .tl-drawer .el-drawer__header {
   position: relative;
   margin: 0;
-  padding: 0;
+  padding: 0 28px 0 0;
   justify-content: space-between;
   height: 50px;
   border-bottom: 1px solid #e5e9ee;
@@ -754,6 +754,10 @@
 
 .tl-drawer + .v-modal + .tl-drawer,
 .tl-drawer + .tl-drawer {
+  z-index: 2003 !important;
+}
+
+.tl-drawer + .v-modal + .tl-drawer + .tl-tooltip-popper {
   z-index: 2002 !important;
 }
 
@@ -1354,7 +1358,8 @@
   height: 100%;
 }
 
-.tl-transfer-select .el-scrollbar__wrap {
+.tl-transfer-select .el-scrollbar__wrap,
+.tl-drawer .el-scrollbar__wrap {
   overflow-y: scroll;
   overflow-x: unset;
 }
@@ -1920,7 +1925,6 @@
 
 .dl-list {
   margin: 0 0 30px 0;
-  padding: 0 20px 0 0;
 }
 
 .dl-list .list-title {
@@ -2440,6 +2444,10 @@
 
 /* 主内容区--路由区 */
 /* 前台 */
+.tl-drawer .cont-box {
+  margin: 0 28px 0 0;
+}
+
 .operating-panel .tl-diy-tabs .tab-list li {
   height: 40px;
   font-weight: normal;
@@ -2458,6 +2466,10 @@
 
 .operating-box {
   flex: 0 0 40px;
+}
+
+.tl-drawer .operating-box {
+  margin: 0 28px 0 0;
 }
 
 /* 后台 */
