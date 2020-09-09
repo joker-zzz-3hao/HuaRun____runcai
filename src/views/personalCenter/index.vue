@@ -44,13 +44,16 @@
       </div>
     </div>
     <div v-if="userInfo.userType == '1'">您当前使用的账号与密码均为LDAP账号与密码，如需修改将跳转至LDAP密码修改处</div>
-    <el-dialog title="修改密码" :visible="dialogVisible" width="30%" v-if="dialogVisible">
+    <el-dialog
+      @close="dialogVisible=false"
+      :modal-append-to-body="false"
+      title="修改密码"
+      :visible="dialogVisible"
+      width="30%"
+      v-if="dialogVisible"
+    >
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item
-          label="原始密码"
-          prop="loginPwd"
-          :rules="[{trigger: 'blur',validator:validateLoginPwd,required:true}]"
-        >
+        <el-form-item label="原始密码" prop="loginPwd">
           <el-input v-model.trim="ruleForm.loginPwd" show-password></el-input>
         </el-form-item>
         <el-form-item

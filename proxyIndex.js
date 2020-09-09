@@ -64,4 +64,10 @@ module.exports = {
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
+  '/gateway/sms-service/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    // pathRewrite: { '^/gateway': '' },
+  },
 };
