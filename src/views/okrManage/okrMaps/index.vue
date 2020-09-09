@@ -28,14 +28,29 @@
         <div @click="showCascader=!showCascader">
           <el-input v-model="test"></el-input>
         </div>
-        <el-cascader-panel
+        <!-- <el-cascader-panel
           v-model="orgFullId"
           :style="{display: showCascader ? '' : 'none'}"
           :options="departmentData"
           :show-all-levels="false"
           @change="selectIdChange"
           :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
+        ></el-cascader-panel>-->
+        <el-cascader-panel
+          v-model="orgFullIdList"
+          :style="{display: showCascader ? '' : 'none'}"
+          :options="departmentData"
+          :show-all-levels="false"
+          @change="selectIdChange"
+          :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
         ></el-cascader-panel>
+        <!-- <el-cascader
+            v-model="formData.orgIdList"
+            :options="treeData"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
+            @change="selectIdChange"
+        ></el-cascader>-->
       </div>
       <!-- 搜索框 -->
       <div>
@@ -195,9 +210,10 @@ export default {
       this.server.getOrgTable().then((res) => {
         if (res.code == '200') {
           if (res.data) {
+            this.departmentData = [];
             this.departmentData.push(res.data);
             this.orgFullId = this.departmentData[0].orgFullId;
-            this.orgFullIdList = this.formData.orgFullId.split(':');
+            this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
             this.getOkrTree();
@@ -221,9 +237,9 @@ export default {
     },
     selectIdChange(data) {
       this.showCascader = false;
-      this.orgFullId = data[data.length - 1];
-      this.orgFullIdList = this.orgFullId.split(':');
-      this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      this.orgFullId = `${data.join(':')}:`;
+      this.orgFullIdList = data;
+      // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.getOrgName(this.departmentData, 0);
       this.getOkrTree();
     },
