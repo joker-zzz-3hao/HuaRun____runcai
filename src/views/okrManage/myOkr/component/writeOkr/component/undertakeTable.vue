@@ -3,10 +3,10 @@
     <div class="cont-box">
       <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}OKR</em>
+          <em>{{departmentName}}{{periodName}}</em>
           <span>(单选)</span>
         </dt>
-        <dd>
+        <dd class="tag-kind">
           <el-radio-group v-model="selectRadioDepart">
             <el-radio
               @change="selectDepartokr(index,item)"
@@ -15,7 +15,7 @@
               v-for="(item,index) in departokrList"
               :key="item.okrDetailId"
             >
-              <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
+              <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
               <em>{{item.okrDetailObjectKr}}</em>
             </el-radio>
           </el-radio-group>
@@ -40,7 +40,7 @@
       </dl>
       <dl v-else class="dl-list">
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}OKR</em>
+          <em>{{departmentName}}{{periodName}}</em>
           <span>(单选)</span>
         </dt>
         <dd>

@@ -334,9 +334,11 @@ export default {
         // 状态
         let status = '';
         if (this.searchForm.status == 'all') {
+          // 草稿
           if (okrStatus == '1') {
             status = '6';
           } else if (item.approvalStatus == 2) {
+            // 退回
             status = '8';
           } else {
             status = '7';

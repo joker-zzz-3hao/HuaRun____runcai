@@ -32,7 +32,11 @@
             </template>
           </el-table-column>
           <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
+            <template slot-scope="scope">
+              <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+            </template>
+          </el-table-column>
           <el-table-column width="100px" align="left" label="操作">
             <template slot-scope="scope">
               <el-button type="text" @click="editDic(scope.row)">修改</el-button>

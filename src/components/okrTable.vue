@@ -144,7 +144,6 @@ export default {
       default: false,
     },
     status: {
-      type: String,
       defalut: '1',
     },
   },

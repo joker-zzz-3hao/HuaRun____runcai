@@ -5,13 +5,14 @@
         <dt class="list-title">
           <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
         </dt>
-        <dd v-for="(item) in historyOKRList" :key="item.okrDetailId">
-          <span v-if="item.okrDetailType == 0" class="kind-o">目标</span>
-          <span v-else class="kind-k">KR</span>
+        <dd v-for="(item) in historyOKRList" :key="item.okrDetailId" class="tag-kind">
+          <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
+          <span v-else class="kind-child">KR</span>
           <em>{{item.versionName}}</em>
-          <em>{{item.objectName}}</em>
-          <!-- 变更原因 -->
-          <span v-if="item.modifyReason">变更原因：{{item.modifyReason}}</span>
+          <div>
+            <p>{{item.objectName}}</p>
+            <p v-if="item.modifyReason">变更原因：{{item.modifyReason}}</p>
+          </div>
         </dd>
       </dl>
     </div>
