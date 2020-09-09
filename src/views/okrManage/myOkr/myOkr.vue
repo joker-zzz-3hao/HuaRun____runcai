@@ -30,10 +30,9 @@
             <li
               v-for="(item,idx) in CONST.STATUS_LIST"
               :key="item.id"
-              @click="borderSlip(item,idx)"
-              :class="{'is-focus': searchForm.status == item.id}"
+              :class="{'is-focus': currentIndex == idx}"
             >
-              <em @click="searchOkr(item.id)">{{item.name}}</em>
+              <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
             </li>
           </ul>
           <div class="border-slip"></div>
@@ -253,6 +252,7 @@ export default {
       updateExist: false,
       multperiod: [], // 多选周期
       loading: false,
+      currentIndex: 0,
     };
   },
   computed: {
@@ -277,8 +277,9 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-    searchOkr(status) {
+    searchOkr(status, index) {
       this.searchForm.status = status || this.searchForm.status;
+      this.borderSlip(index);
       this.okrList = [{
         tableList: [], // okr列表
         okrMain: {},
@@ -457,12 +458,13 @@ export default {
         });
       }).catch(() => {});
     },
-    borderSlip(item, index) {
+    borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
       const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
+      this.currentIndex = index;
     },
   },
   watch: {
