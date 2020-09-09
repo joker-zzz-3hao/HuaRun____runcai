@@ -83,6 +83,7 @@ router.beforeEach((to, from, next) => {
         localStorage.token = '';
         next('login');
       }
+
       // TODO:
       // else if (origin == process.env.VUE_APP_PORTAL) {
       //   window.open(process.env.VUE_APP_LOGIN, '_self');

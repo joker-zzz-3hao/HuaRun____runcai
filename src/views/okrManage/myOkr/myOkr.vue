@@ -334,9 +334,9 @@ export default {
           if (okrStatus == '1') {
             status = '6';
           } else if (item.approvalStatus == 2) {
-            status = '7';
-          } else {
             status = '8';
+          } else {
+            status = '7';
           }
         } else {
           status = this.searchForm.status;
@@ -353,7 +353,8 @@ export default {
           id: item.id,
           approvalId: item.approvalId,
           params: item.paramJson,
-          modifyReason: okrInfo.modifyReason || '',
+          remark: item.remark || '',
+          approvalType: item.approvalType || '',
         });
       });
     },
@@ -413,7 +414,8 @@ export default {
         okrCycle: this.okrCycle,
         // 退回
         approvalId: item.approvalId,
-        modifyReason: item.modifyReason,
+        modifyReason: item.remark,
+        approvalType: item.approvalType, // 审批类型
       };
       this.currentView = 'tl-writeokr';
       this.writeokrExist = true;

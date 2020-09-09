@@ -35,8 +35,8 @@
       <el-table-column prop="superiorScore" label="成员评分"></el-table-column>
       <el-table-column prop="ownScore" label="评分"></el-table-column>
       <el-table-column fixed="right" label="查看详情" width="130">
-        <template>
-          <el-button type="text" size="small">审核</el-button>
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="goToPk(scope.row.userId)">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +61,6 @@ export default {
     };
   },
   mounted() {
-    this.orgQuarterList();
     this.getOkrCycleList();
   },
   methods: {
@@ -72,7 +71,9 @@ export default {
         status: this.status,
         userName: this.userName,
       }).then((res) => {
-        this.tableData = res.data;
+        if (res.code == 200) {
+          this.tableData = res.data;
+        }
       });
     },
     getOkrCycleList() {
@@ -82,7 +83,15 @@ export default {
         this.orgQuarterList();
       });
     },
-
+    goToPk(userId) {
+      this.$router.push({
+        name: 'assessPk',
+        query: {
+          userId,
+          periodId: this.periodId,
+        },
+      });
+    },
   },
   components: {
   },

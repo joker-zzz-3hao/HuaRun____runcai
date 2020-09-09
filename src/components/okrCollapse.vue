@@ -22,13 +22,17 @@
                   <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
                 </el-form-item>
                 <em v-else>{{item.okrDetailObjectKr}}</em>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showTitleEdit')"></i>
+                <i
+                  v-if="canWrite && !item.showTitleEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showTitleEdit')"
+                ></i>
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
-            <dd>
+            <dd :class="{'has-third-child': item.okrParentId}">
               <div>
-                <i></i>
+                <i class="el-icon-medal"></i>
                 <span>权重</span>
                 <el-form-item v-if="canWrite && item.showWeightEdit">
                   <el-input-number
@@ -40,10 +44,15 @@
                     :precision="0"
                   ></el-input-number>
                 </el-form-item>
-                <span v-else>{{item.okrWeight}}%</span>
-                <i v-if="canWrite" class="el-icon-edit" @click="showInput(index,'showWeightEdit')"></i>
+                <em v-else>{{item.okrWeight}}%</em>
+                <i
+                  v-if="canWrite && !item.showWeightEdit"
+                  class="el-icon-edit"
+                  @click="showInput(index,'showWeightEdit')"
+                ></i>
               </div>
               <div>
+                <i class="el-icon-odometer"></i>
                 <span>当前进度</span>
                 <tl-process :data="item.okrDetailProgress"></tl-process>
               </div>
@@ -59,15 +68,11 @@
               </div>
               <!-- 有承接项时 -->
               <div v-else-if="item.okrParentId">
+                <i class="el-icon-attract"></i>
                 <span>承接自</span>
                 <!-- 是变更且有更新显示icon -->
-                <span v-if="item.parentUpdate">
-                  <el-popover
-                    placement="top-start"
-                    width="200"
-                    trigger="hover"
-                    :append-to-body="false"
-                  >
+                <template v-if="item.parentUpdate">
+                  <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
                     <span v-if="canWrite">
                       您承接的OKR有变更，
                       <a @click="goUndertake(index,'change')">查看详情</a>
@@ -75,8 +80,8 @@
                     <span v-else>您承接的OKR有变更，请在变更中处理。</span>
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
-                </span>
-                <span>{{item.parentObjectKr}}</span>
+                </template>
+                <em>{{item.parentObjectKr}}</em>
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
@@ -118,20 +123,18 @@
               >
                 <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr"></el-input>
               </el-form-item>
-              <span v-else>
-                <span>{{krIndex+1}}</span>
-                {{kritem.okrDetailObjectKr}}
-              </span>
+              <span v-else>{{kritem.okrDetailObjectKr}}</span>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showTitleEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showTitleEdit')"
               ></i>
             </div>
             <slot name="body-bar" :okritem="kritem"></slot>
           </dt>
-          <dd>
+          <dd :class="{'has-third-child': kritem.okrDetailConfidence}">
             <div>
+              <i class="el-icon-medal"></i>
               <span>权重</span>
               <el-form-item v-if="canWrite && kritem.showWeightEdit">
                 <el-input-number
@@ -143,20 +146,36 @@
                   :precision="0"
                 ></el-input-number>%
               </el-form-item>
-              <span v-else>{{kritem.okrWeight}}%</span>
+              <em v-else>{{kritem.okrWeight}}%</em>
               <i
-                v-if="canWrite"
+                v-if="canWrite && !kritem.showWeightEdit"
                 class="el-icon-edit"
                 @click="showKRInput(index,krIndex,'showWeightEdit')"
               ></i>
             </div>
             <div>
+              <i class="el-icon-odometer"></i>
               <span>当前进度</span>
               <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </div>
             <div>
+              <i class="el-icon-bell"></i>
               <span>风险状态</span>
-              <span>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</span>
+              <div class="state-grid">
+                <div
+                  :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
+                    'is-risks': kritem.okrDetailConfidence == 2,
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                ></div>
+                <div
+                  :class="{'is-risks': kritem.okrDetailConfidence == 2,
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                ></div>
+                <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
+              </div>
+              <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+              <!--
+              <em>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</em>-->
             </div>
           </dd>
         </dl>

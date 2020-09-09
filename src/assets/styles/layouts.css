@@ -108,6 +108,8 @@
   margin: 0;
 }
 
-i + em {
+i + em,
+i + span,
+i + span + em {
   margin: 0 0 0 6px;
 }

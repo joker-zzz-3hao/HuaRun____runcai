@@ -5,11 +5,11 @@
     </div>
     <div>
       <el-form>
-        <el-form-item label="用户在账号">
+        <el-form-item label="用户账号">
           <span>{{userInfo.userAccount}}</span>
         </el-form-item>
         <el-form-item label="用户角色">
-          <span>超级管理员</span>
+          <span>系统管理员</span>
         </el-form-item>
         <el-form-item label="账号类型">
           <span>内置用户</span>

@@ -43,7 +43,7 @@ export default {
       const option = {
         tooltip: {
           trigger: 'item',
-          position: 'right',
+          position: 'top',
           formatter(params) {
             return `<span>当前进度${params.value}%</span>`;
           },

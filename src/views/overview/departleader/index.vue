@@ -69,6 +69,7 @@ export default {
   },
   mounted() {
     // this.getqueryMyOkr();
+    this.getidentity();
   },
 
   methods: {
@@ -98,6 +99,24 @@ export default {
         user: this.userInfo.user_id,
       }).then((res) => {
         this.mainData = res.data;
+      });
+    },
+    getidentity() {
+      this.server.identity({
+        user: this.userInfo.userId,
+        orgId: this.setOrgId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.replace({ name: 'departleader' });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.replace({ name: 'teamleader' });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.replace({ name: 'grassStaff' });
+        }
       });
     },
   },

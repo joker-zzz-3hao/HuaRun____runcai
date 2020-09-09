@@ -48,22 +48,30 @@
         </div>
         <tl-okr-collapse :tableList="tableList">
           <template slot="head-bar" slot-scope="props">
-            <div
+            <el-tooltip
               v-if="props.okritem.versionCount > 1"
-              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               class="history-version"
+              effect="dark"
+              content="历史版本"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
             >
               <i class="el-icon-time"></i>
-            </div>
+            </el-tooltip>
           </template>
           <template slot="body-bar" slot-scope="props">
-            <div
+            <el-tooltip
               v-if="props.okritem.versionCount > 1"
-              @click="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               class="history-version"
+              effect="dark"
+              content="历史版本"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
             >
               <i class="el-icon-time"></i>
-            </div>
+            </el-tooltip>
           </template>
         </tl-okr-collapse>
       </el-tab-pane>
@@ -182,13 +190,16 @@
       </template>
     </div>
     <el-drawer
-      title="历史版本"
       :modal="false"
       :wrapperClosable="false"
       :append-to-body="true"
       class="tl-drawer"
+      custom-class="diy-drawer history-version"
       :visible.sync="innerDrawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">历史版本</div>
+      </div>
       <tl-okr-history
         v-if="innerDrawer"
         ref="tl-okr-history"

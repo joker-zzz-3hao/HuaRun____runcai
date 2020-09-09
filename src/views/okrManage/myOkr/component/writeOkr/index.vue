@@ -181,6 +181,7 @@ export default {
         this.searchForm.draftId = this.writeInfo.draftId || '';
         this.searchForm.approvalId = this.writeInfo.approvalId || '';
         this.searchForm.modifyReason = this.writeInfo.modifyReason || '';
+        this.searchForm.approvalType = this.writeInfo.approvalType || '';
         this.searchForm.okrType = JSON.parse(this.searchForm.draftParams).okrBelongType;
         this.temPeriod = JSON.parse(this.searchForm.draftParams).periodId;
       }

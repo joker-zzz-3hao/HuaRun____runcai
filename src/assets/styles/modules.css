@@ -348,11 +348,6 @@
   align-items: center;
 }
 
-.tl-table .sub-tr .state-grid {
-  margin: 0 10px 0 0;
-  display: flex;
-}
-
 .tl-table .sub-tr .okr-line {
   position: relative;
   flex: 0 0 5%;
@@ -414,27 +409,6 @@
 .tl-table .sub-tr .okr-update {
   flex: 0 0 8%;
   width: 8%;
-}
-
-.tl-table .sub-tr .state-grid div {
-  margin: 0 2px 0 0;
-  display: flex;
-  width: 12px;
-  height: 12px;
-  background: #e5e9ee;
-  border-radius: 2px;
-}
-
-.tl-table .sub-tr .state-grid .is-no-risk {
-  background: #4ccd79;
-}
-
-.tl-table .sub-tr .state-grid .is-risks {
-  background: #ffbc20;
-}
-
-.tl-table .sub-tr .state-grid .is-uncontrollable {
-  background: #fb4c59;
 }
 
 .tl-table .el-table--border::after,
@@ -972,17 +946,17 @@
 }
 
 /* tl-tooltip */
-.tl-tooltip-clear {
+.tl-tooltip-popper {
   padding: 8px 10px;
   border-radius: 2px;
 }
 
-.tl-tooltip-clear.is-dark {
+.tl-tooltip-popper.is-dark {
   background: #7e7e7e;
 }
 
-.tl-tooltip-clear.is-dark .popper__arrow,
-.tl-tooltip-clear.is-dark .popper__arrow::after {
+.tl-tooltip-popper.is-dark .popper__arrow,
+.tl-tooltip-popper.is-dark .popper__arrow::after {
   border-top-color: #7e7e7e;
 }
 
@@ -1082,7 +1056,7 @@
 }
 
 .tl-collapse .el-collapse-item__header {
-  margin: 0 0 20px 0;
+  margin: 0 0 26px 0;
   padding: 20px;
   flex-direction: column;
   align-items: flex-start;
@@ -1123,6 +1097,7 @@
   height: 20px;
   border-radius: 50%;
   background: #e4e9ed;
+  cursor: pointer;
 }
 
 .tl-collapse .el-collapse-item__arrow {
@@ -1132,6 +1107,10 @@
 .tl-collapse .collpase-panel {
   width: 100%;
   cursor: default;
+}
+
+.collpase-panel .state-grid {
+  margin: 0 10px;
 }
 
 .tl-collapse .el-collapse-item__header.focusing {
@@ -1159,7 +1138,32 @@
   align-items: center;
 }
 
-.tl-collapse .collpase-panel dt div {
+.tl-collapse .collpase-panel dd > div:nth-child(2) {
+  flex: 0 0 80%;
+}
+
+.tl-collapse .collpase-panel .has-third-child > div:nth-child(1) {
+  flex: 0 0 20%;
+}
+
+.tl-collapse .collpase-panel .has-third-child > div:nth-child(2) {
+  flex: 0 0 35%;
+}
+
+.tl-collapse .collpase-panel .has-third-child > div:nth-child(3) {
+  flex: 0 0 45%;
+  justify-content: flex-end;
+}
+
+.tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em {
+  max-width: calc(100% - 100px);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.tl-collapse .el-collapse-item__header .collpase-panel dt > span + div {
   flex: 1;
   font-size: 16px;
   overflow: hidden;
@@ -1168,6 +1172,10 @@
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
   cursor: pointer
+}
+
+.okr-detail .tl-collapse .el-collapse-item__header .collpase-panel dt > span + div {
+  cursor: default;
 }
 
 .tl-collapse .collpase-panel .history-version {
@@ -1183,6 +1191,25 @@
   cursor: pointer !important;
 }
 
+.tl-collapse .el-collapse-item__content .collpase-panel .history-version {
+  margin: 3px 0 0 10px;
+  align-self: start;
+}
+
+.tl-collapse .collpase-panel dd > div:first-child em {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tl-collapse .collpase-panel .tl-progress-bar {
+  margin: 0 0 0 10px;
+}
+
+.tl-collapse .collpase-panel .progress-number {
+  font-size: 14px;
+  color: #685df1;
+}
 
 /* ==========================================================常用基础组件=================================================================== */
 /* 边框 */
@@ -1542,32 +1569,6 @@
   background: #f4f6f8;
 }
 
-.tl-diy-popover .state-grid {
-  margin: 0 10px 0 0;
-  display: flex;
-}
-
-.tl-diy-popover .state-grid div {
-  margin: 0 2px 0 0;
-  display: flex;
-  width: 12px;
-  height: 12px;
-  background: #e5e9ee;
-  border-radius: 2px;
-}
-
-.tl-diy-popover .state-grid .is-no-risk {
-  background: #4ccd79;
-}
-
-.tl-diy-popover .state-grid .is-risks {
-  background: #ffbc20;
-}
-
-.tl-diy-popover .state-grid .is-uncontrollable {
-  background: #fb4c59;
-}
-
 .tl-diy-popover .el-popover__reference i {
   margin: 0 0 0 30px;
   color: #c4cbd2;
@@ -1724,7 +1725,7 @@
 
 .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span,
 .card-panel-body .tl-table .sub-tr .okr-kr-name span,
-.tl-collapse .collpase-panel dt span {
+.tl-collapse .el-collapse-item__header .collpase-panel dt span {
   margin: 0 6px 0 0;
   width: 32px;
   height: 18px;
@@ -1742,6 +1743,25 @@
   align-items: center;
   background: #acb6bf;
   color: #fff;
+}
+
+.tl-collapse .el-collapse-item__content .collpase-panel dt > span {
+  align-self: start;
+  margin: 5px 6px 0 0;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 18px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  background: #acb6bf;
+  color: #fff;
+}
+
+.tl-collapse .el-collapse-item__content .collpase-panel dt > span +div {
+  flex: 1;
 }
 
 .card-panel-body .tl-table .sub-tr .okr-kr-name em {
@@ -1870,6 +1890,113 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.state-grid {
+  margin: 0 10px 0 0;
+  display: flex;
+}
+
+.state-grid div {
+  margin: 0 2px 0 0;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background: #e5e9ee;
+  border-radius: 2px;
+}
+
+.state-grid .is-no-risk {
+  background: #4ccd79;
+}
+
+.state-grid .is-risks {
+  background: #ffbc20;
+}
+
+.state-grid .is-uncontrollable {
+  background: #fb4c59;
+}
+
+.dl-list {
+  margin: 0 0 30px 0;
+  padding: 0 20px 0 0;
+}
+
+.dl-list .list-title {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+}
+
+.dl-list .list-title em {
+  font-weight: 500;
+}
+
+.dl-list .list-title span {
+  margin: 0 0 0 10px;
+  color: #acb6bf;
+}
+
+.dl-list .list-title::before {
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: #685df1;
+}
+
+.dl-list .el-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.diy-drawer .cont-box .dl-list dd {
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e5e9ee 0, #e5e9ee 0.4em,#fff 0,#fff 0.6em);
+}
+
+.dl-list .el-radio {
+  margin: 0;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff,#fff) padding-box,
+  repeating-linear-gradient(-45deg,#e5e9ee 0, #e5e9ee 0.4em,#fff 0,#fff 0.6em);
+}
+
+.diy-drawer .cont-box .dl-list dd,
+.dl-list .el-radio:last-child {
+  background: unset;
+}
+
+.dl-list .el-radio__label {
+  display: flex;
+  align-items: center;
+}
+
+.dl-list .kind-o,
+.dl-list .kind-k {
+  display: flex;
+  align-items: center;
+  margin: 0 8px 0 0;
+  padding: 0 5px;
+  height: 18px;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.dl-list .kind-o {
+  background: #f0effe;
+  color: #685df1;
+}
+
+.dl-list .kind-k {
+  padding: 0 11px;
+  background: #acb6bf;
+  color: #fff;
 }
 
 /* ========================================================公共页面布局组件================================================================== */
