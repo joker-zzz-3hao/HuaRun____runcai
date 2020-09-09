@@ -74,7 +74,8 @@ export default {
       });
     },
     cheMainData() {
-      this.aroundData = this.tableData.map((item) => ({ value: item.count, name: `${item.ratio}%`, riskCode: item.riskCode }));
+      this.aroundData = this.tableData.map((item) => ({ value: Number(item.ratio), name: `${item.ratio}%`, riskCode: item.riskCode }));
+      console.log(this.aroundData);
       if (this.tableData.length == 0) {
         this.aroundData = [{ value: 0, name: '0%', riskCode: 0 }];
       }
@@ -85,7 +86,6 @@ export default {
       const that = this;
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
-
         title: {
           text: '100%',
           left: 'center',
@@ -99,7 +99,7 @@ export default {
         graphic: {
           type: 'text',
           left: 'center',
-          top: '40%',
+          top: '45%',
           style: {
             text: '总量',
             textAlign: 'center',
@@ -112,19 +112,19 @@ export default {
           {
             name: '风险统计',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['30%', '40%'],
             avoidLabelOverlap: false,
-            label: {
-              show: true,
+            labelLine: {
+              show: false,
             },
+            label: { normal: { show: true, padding: [0, -30] } },
             emphasis: {
-              label: {
-                show: true,
-                fontSize: '30',
-                fontWeight: 'bold',
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
               },
             },
-
             data: that.aroundData,
             itemStyle: {
               emphasis: {
@@ -170,18 +170,14 @@ export default {
             name: '风险统计',
             type: 'pie',
             avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: 'center',
-            },
-
             emphasis: {
               label: {
                 show: true,
-                fontSize: '30',
+                fontSize: '14',
                 fontWeight: 'bold',
               },
             },
+
             labelLine: {
               show: false,
             },
@@ -226,19 +222,22 @@ export default {
   height: 300px;
 }
 #okrRiskTotal {
-  width: 180px;
+  width: 400px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  height: 180px;
+  height: 400px;
   z-index: 9999;
 }
 #okrRiskTotalbag {
   position: absolute;
-  width: 300px;
+  width: 350px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: inline-block;
-  height: 300px;
+  height: 350px;
   opacity: 0.1;
 }
 .countAll {
