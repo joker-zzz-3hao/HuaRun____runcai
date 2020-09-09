@@ -1,37 +1,113 @@
 <template>
-  <div>
+  <el-drawer
+    :visible.sync="myokrDrawer"
+    :wrapperClosable="false"
+    :append-to-body="true"
+    :modal-append-to-body="true"
+    class="tl-drawer"
+    custom-class="diy-drawer okr-change"
+    @closed="closed"
+    :before-close="close"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{drawerTitle}}</div>
+    </div>
+    <div>
+      <ul>
+        <li>
+          <span>目标类型</span>
+          <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
+        </li>
+        <li>
+          <span>负责人</span>
+          <span>{{okrmain.userName}}</span>
+        </li>
+        <li>
+          <span>更新时间</span>
+          <span>{{okrmain.updateTime||okrmain.createTime}}</span>
+        </li>
+        <li>
+          <span>进度</span>
+          <span>
+            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <!-- okr折叠面板 -->
+    <tl-okrcollapse
+      ref="okrCollapse"
+      :tableList="tableList"
+      :canWrite="true"
+      @openUndertake="openUndertakepage"
+    ></tl-okrcollapse>
+    <!-- 新增okr -->
+    <tl-okrform
+      ref="okrform"
+      :searchForm="searchForm"
+      :server="server"
+      :canWrite="true"
+      :isnew="false"
+      :periodId="searchForm.periodId"
+    ></tl-okrform>
+    <!-- 变更原因 -->
+    <div>
+      <span>变更原因</span>
+      <el-form :model="reason" ref="reasonForm">
+        <el-form-item
+          prop="modifyReason"
+          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+        >
+          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
+    <!-- 提交 -->
+    <div>
+      <el-button @click="validateForm">提交</el-button>
+      <el-button @click="close">取消</el-button>
+    </div>
+
     <el-drawer
-      :title="drawerTitle"
-      :visible.sync="myokrDrawer"
+      :visible.sync="innerDrawer"
+      :modal="false"
       :wrapperClosable="false"
       :append-to-body="true"
-      :modal-append-to-body="true"
+      custom-class="diy-drawer associated-undertaking"
       class="tl-drawer"
-      @closed="closed"
-      :before-close="close"
     >
       <!-- 公共信息 -->
-      <div>
-        <ul>
-          <li>
-            <span>目标类型</span>
-            <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
-          </li>
-          <li>
-            <span>负责人</span>
-            <span>{{okrmain.userName}}</span>
-          </li>
-          <li>
-            <span>更新时间</span>
-            <span>{{okrmain.updateTime||okrmain.createTime}}</span>
-          </li>
-          <li>
-            <span>进度</span>
-            <span>
-              <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-            </span>
-          </li>
-        </ul>
+      <div class="dl-list">
+        <dl>
+          <dt>
+            <i class="el-icon-s-flag"></i>
+            <em>目标类型</em>
+          </dt>
+          <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-s-custom"></i>
+            <em>负责人</em>
+          </dt>
+          <dd>{{okrmain.userName}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-timer"></i>
+            <em>更新时间</em>
+          </dt>
+          <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <em>进度</em>
+          </dt>
+          <dd>
+            <tl-process :data="okrmain.okrProgress"></tl-process>
+          </dd>
+        </dl>
       </div>
       <!-- okr折叠面板 -->
       <tl-okrcollapse
@@ -61,44 +137,27 @@
           </el-form-item>
         </el-form>
       </div>
-      <!-- 提交 -->
-      <div>
-        <el-button @click="validateForm">提交</el-button>
-        <el-button @click="close">取消</el-button>
+      <tl-undertaketable
+        v-if="selectIndex !== ''"
+        ref="undertake"
+        :departokrList="tableList[this.selectIndex].departokrList"
+        :philosophyList="tableList[this.selectIndex].philosophyList"
+        :showPhil="undertakeType=='new'"
+        :selectRadioDepart.sync="selectRadioDepart"
+        :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
+        :periodName="okrPeriod.periodName"
+      ></tl-undertaketable>
+      <div class="operating-box">
+        <el-button type="primary" @click="summitUndertake">确定</el-button>
+        <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore">忽略</el-button>
+        <el-button @click="innerDrawer = false">取消</el-button>
       </div>
-
-      <el-drawer
-        :visible.sync="innerDrawer"
-        :modal="false"
-        :wrapperClosable="false"
-        :append-to-body="true"
-        custom-class="diy-drawer associated-undertaking"
-        class="tl-drawer"
-      >
-        <div slot="title" class="flex-sb">
-          <div class="drawer-title">关联承接项</div>
-        </div>
-        <tl-undertaketable
-          v-if="selectIndex !== ''"
-          ref="undertake"
-          :departokrList="tableList[this.selectIndex].departokrList"
-          :philosophyList="tableList[this.selectIndex].philosophyList"
-          :showPhil="undertakeType=='new'"
-          :selectRadioDepart.sync="selectRadioDepart"
-          :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
-          :periodName="okrPeriod.periodName"
-        ></tl-undertaketable>
-        <div class="operating-box">
-          <el-button type="primary" @click="summitUndertake()">确 定</el-button>
-          <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore()">忽 略</el-button>
-          <el-button @click="innerDrawer = false">取 消</el-button>
-        </div>
-      </el-drawer>
     </el-drawer>
-  </div>
+  </el-drawer>
 </template>
 
 <script>
+import process from '@/components/process';
 import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
@@ -145,6 +204,7 @@ export default {
     'tl-okrcollapse': okrCollapse,
     'tl-undertaketable': undertakeTable,
     'tl-okrform': okrForm,
+    'tl-process': process,
   },
   props: {
     writeInfo: {

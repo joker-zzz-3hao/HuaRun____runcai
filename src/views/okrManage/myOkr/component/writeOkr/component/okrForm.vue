@@ -474,6 +474,7 @@ export default {
             this.formData.periodId = this.searchForm.okrCycle.periodId;
           } else {
             this.$message.error('请选择目标周期');
+            return;
           }
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.okrDraftId = this.searchForm.draftId;
@@ -499,6 +500,7 @@ export default {
         this.formData.periodId = this.searchForm.okrCycle.periodId;
       } else {
         this.$message.error('请选择目标周期');
+        return;
       }
       if (this.formData.okrInfoList.length > 0) {
         // this.formData.okrInfoList.forEach((oitem) => {

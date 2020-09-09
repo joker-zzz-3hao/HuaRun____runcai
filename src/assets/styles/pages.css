@@ -279,16 +279,13 @@
 
 
 /* 创建okr */
-.create-okr .create-okr {
-  padding: 0 30px 0 0;
-}
-
 .create-okr .el-drawer__body > .el-scrollbar {
   margin: 0 0 30px 0;
 }
 
-.create-okr .el-drawer__body {
-  margin: 10px 0 0 0;
+.create-okr .el-drawer__body,
+.okr-change .el-drawer__body {
+  margin-top: 10px;
   width: 850px;
 }
 
@@ -299,7 +296,7 @@
 
 .associated-undertaking .el-drawer__body,
 .history-version .el-drawer__body {
-  margin: 10px 0 0 0;
+  margin-top: 10px;
   width: 620px;
 }
 
@@ -479,7 +476,6 @@
 }
 
 .okr-permissions .dl-list {
-  margin: 0 0 30px 0;
   border-bottom: 1px solid #e5e9ee;
 }
 
@@ -518,5 +514,5 @@
 }
 
 .okr-cycle .tl-drawer .el-drawer__body {
-  margin: 6px 0 0 0;
+  margin-top: 6px;
 }

@@ -23,8 +23,8 @@
           <span>
             <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
             <div @mouseleave="outDepart(data)" v-show="data.isShow">
-              <div style="marginLeft:250px" @click.stop="createDepart(data)">创建部门</div>
-              <div style="marginLeft:250px" @click.stop="updateDepart(data)">编辑部门</div>
+              <div style="marginLeft:250px" @click.stop="createDepart(data,'create')">创建部门</div>
+              <div style="marginLeft:250px" @click.stop="createDepart(data,'edit')">编辑部门</div>
               <div style="marginLeft:250px" @click.stop="deleteDepart(data)">删除</div>
             </div>
           </span>
@@ -178,16 +178,6 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <edit-user
-      ref="editUser"
-      :treeData="treeData"
-      v-if="editDrawer"
-      :server="server"
-      :userId="userId"
-      :tenantName="tenantName"
-      :globalOrgId="globalOrgId"
-      @closeUserDialog="closeUserDialog"
-    ></edit-user>
     <create-departOrg
       v-if="exist"
       :exist.sync="exist"
@@ -211,7 +201,7 @@ import createDepart from './components/createDepartment';
 import createDepartOrg from './components/createDepartOrg';
 import editDepartOrg from './components/editDepartOrg';
 import createUser from './components/createUser';
-import editUser from './components/editUser';
+
 import Server from './server';
 import CONST from './const';
 
@@ -222,7 +212,6 @@ export default {
   components: {
     'create-department': createDepart,
     'create-user': createUser,
-    'edit-user': editUser,
     'create-departOrg': createDepartOrg,
     'edit-departOrg': editDepartOrg,
   },
@@ -359,20 +348,8 @@ export default {
       }
     },
     // 创建部门
-    createDepart(depart) {
-      this.departOptionType = 'create';
-      depart.isShow = false;
-      if (depart && depart.orgId) {
-        this.initDepartment = depart;
-        this.globalOrgId = depart.orgId;
-      }
-      this.showcreateDepart = true;
-      this.$nextTick(() => {
-        this.$refs.createDepart.show();
-      });
-    },
-    updateDepart(depart) {
-      this.departOptionType = 'edit';
+    createDepart(depart, type) {
+      this.departOptionType = type;
       depart.isShow = false;
       if (depart && depart.orgId) {
         this.initDepartment = depart;
@@ -389,9 +366,10 @@ export default {
         content: '是否确认删除该数据，删除将无法恢复',
 
       }).then(() => {
-        this.server.deleteDepart({ orgId: depart.orgId }).then((res) => {
+        this.server.updateOrg({ orgId: depart.orgId, orgAvailable: 1 }).then((res) => {
           if (res.code == 200) {
             this.$message.success('部门删除成功');
+            this.getOrgTree();
           }
         });
       });

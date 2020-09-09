@@ -196,14 +196,14 @@ export default {
           this.tableList = res.data.okrDetails || [];
           this.okrMain = res.data.okrMain || {};
           this.okrId = this.okrMain.okrId || '';
-          // this.memberList = res.data.orgUser || [];
-          // this.orgTable = res.data.orgTable || [];
+          this.orgUser = res.data.orgUser || [];
+          this.orgTable = res.data.orgTable || [];
         }
       });
     },
     goToDep(id, name, userId, tenantId) {
       const chename = encodeURI(name);
-      if (this.orgTable) {
+      if (this.orgTable.length > 0) {
         this.$router.push({
           name: 'teamleader',
           query: {
@@ -211,7 +211,7 @@ export default {
           },
         });
       }
-      if (this.orgUser) {
+      if (this.orgUser.length > 0) {
         this.$router.push({
           name: 'grassStaff',
           query: {

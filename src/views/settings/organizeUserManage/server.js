@@ -36,6 +36,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/system-service/sys/organization/insertOrg', param);
   }
 
+  // 编辑部门
+  updateOrg(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/updateOrg', param);
+  }
+
   // 设置部门负责人
   setDepartLeader(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/setUserRole', param);
@@ -44,11 +49,6 @@ export default class Server extends ServerBase {
   // 取消部门负责人
   removeDepartLeder(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/cancelUserRole', param);
-  }
-
-  // 删除部门
-  deleteDepart(param) {
-    return this._ajaxPost('gateway/system-service/sys/userRole/delUserRole', param);
   }
 
   queryOrgAndUser(param) {

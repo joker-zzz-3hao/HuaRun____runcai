@@ -18,7 +18,7 @@
       </div>
     </div>
     <el-scrollbar>
-      <div class="create-okr">
+      <div class="cont-box">
         <div v-if="searchForm.modifyReason">
           <el-alert type="warning">
             <div slot="title">

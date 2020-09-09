@@ -21,8 +21,12 @@
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
           <span>
-            <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
-            <div @mouseleave="outDepart(data)" v-show="data.isShow">
+            <i
+              @click="hoverDepart(data)"
+              style="margin-left:150px;z-index: 9999;position: relative;"
+              class="el-icon-more"
+            ></i>
+            <div @mouseleave.stop="outDepart(data)" v-show="data.isShow">
               <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
               <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>
               <div style="marginLeft:250px" @click="deleteDepart(data)">删除</div>
@@ -307,6 +311,7 @@ export default {
     },
     // 创建部门
     createDepart(depart) {
+      this.departOptionType = 'create';
       if (depart && depart.orgId) {
         this.initDepartment = depart;
         this.globalOrgId = depart.orgId;
@@ -336,9 +341,10 @@ export default {
         content: '是否确认删除该数据，删除将无法恢复',
 
       }).then(() => {
-        this.server.deleteDepart({ orgId: depart.orgId }).then((res) => {
+        this.server.updateOrg({ orgId: depart.orgId, orgAvailable: 1 }).then((res) => {
           if (res.code == 200) {
             this.$message.success('部门删除成功');
+            this.getOrgTree();
           }
         });
       });
