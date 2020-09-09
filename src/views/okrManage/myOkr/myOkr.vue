@@ -277,9 +277,11 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-    searchOkr(status, index) {
+    searchOkr(status = '', index = 'not') {
       this.searchForm.status = status || this.searchForm.status;
-      this.borderSlip(index);
+      if (index != 'not') {
+        this.borderSlip(index);
+      }
       this.okrList = [{
         tableList: [], // okr列表
         okrMain: {},
