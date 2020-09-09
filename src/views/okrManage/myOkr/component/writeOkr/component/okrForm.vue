@@ -346,7 +346,7 @@ export default {
             this.departokrList = [];
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
-                typeName: '目标O',
+                typeName: '目标',
                 okrKind: 'o',
                 okrDetailObjectKr: item.o.okrDetailObjectKr,
                 okrDetailId: item.o.okrDetailId,

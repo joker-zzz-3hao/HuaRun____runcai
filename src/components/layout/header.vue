@@ -4,7 +4,20 @@
       <div class="logo-bg">
         <div class="logo">logo</div>
       </div>
-      <div class="toggle-department">切换部门</div>
+      <div class="toggle-department">
+        <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
+        <el-select v-model="orgId" @change="switchOrg">
+          <el-option
+            v-for="item in userInfo.orgList"
+            :key="item.orgId"
+            :label="item.orgName"
+            :value="item.orgId"
+          >
+            <span>{{item.orgName}}</span>
+            <span v-if="item.orgId == userInfo.orgId">当前选择</span>
+          </el-option>
+        </el-select>
+      </div>
     </div>
     <div class="area-right">
       <ul class="top-menu">
@@ -34,18 +47,38 @@
 import { mapState } from 'vuex';
 import { loginOut } from '@/lib/util';
 import global from '@/mixin/global';
+import Server from '../server';
+
+const server = new Server();
 
 export default {
   name: 'tlHeader',
+  data() {
+    return {
+      server,
+      orgId: '',
+    };
+  },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
   },
+  mounted() {
+    this.orgId = this.userInfo.orgId;
+  },
   mixins: [global],
   methods: {
     loginOut() {
       loginOut();
+    },
+    switchOrg() {
+      this.server.switchorg({ orgId: this.orgId }).then((res) => {
+        if (res.code == 200) {
+          console.log(res.data);
+          window.location.reload();
+        }
+      });
     },
   },
 };

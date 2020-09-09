@@ -166,6 +166,7 @@
       :exist.sync="writeokrExist"
       v-if="writeokrExist"
       :writeInfo="writeInfo"
+      :userName="userInfo.userName"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
@@ -347,9 +348,9 @@ export default {
         this.okrList.push({
           tableList: okrInfo.okrInfoList,
           okrMain: {
-            userName: item.updateBy || item.createBy,
+            userName: this.userInfo.userName,
             okrProgress: item.okrProgress || 0,
-            updateTime: item.updateTime || item.createTime,
+            updateTime: item.updateTime || item.createTime || item.createDate || item.updateDate,
             okrBelongType: okrInfo.okrBelongType,
             status,
           },
