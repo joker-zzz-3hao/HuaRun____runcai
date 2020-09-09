@@ -301,7 +301,6 @@ export default {
               totalList.forEach((allitem) => {
                 if (['1', '2'].includes(allitem.okrStatus)) {
                 // 处理draft
-                  console.log(allitem.okrStatus, allitem.object);
                   this.handleJSON(allitem.okrStatus, allitem.object);
                 } else {
                   this.handleNormal(allitem.object, allitem.okrStatus);
@@ -328,10 +327,10 @@ export default {
       draftList.forEach((item, index) => {
         let okrInfo = {};
         okrInfo = JSON.parse(item.paramJson);
-        // 起草中默认展开第一个
-        if (index == 0) {
-          okrInfo.okrInfoList[0].okrDetailId = 'draft01';
-        }
+        // 加序号
+        okrInfo.okrInfoList.forEach((okritem, okrindex) => {
+          okritem.okrDetailId = okrStatus + index + okrindex;
+        });
         // 状态
         let status = '';
         if (this.searchForm.status == 'all') {
