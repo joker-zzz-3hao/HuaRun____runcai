@@ -75,4 +75,8 @@ export default class Server extends ServerBase {
   getOkrModifyUndertakeOkrList(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/getOkrModifyUndertakeOkrList', param);
   }
+
+  ignoreUndertake(param) {
+    return this._ajaxPost('gateway/talent-okr//okr/main/ignoreSpecifiedVersionOfOkrUndertake', param);
+  }
 }

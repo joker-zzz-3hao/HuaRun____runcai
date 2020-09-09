@@ -3,7 +3,7 @@
     <div class="cont-box">
       <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}OKR</em>
+          <em>{{departmentName}}{{periodName}}</em>
           <span>(单选)</span>
         </dt>
         <dd>
@@ -40,7 +40,7 @@
       </dl>
       <dl v-else class="dl-list">
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}OKR</em>
+          <em>{{departmentName}}{{periodName}}</em>
           <span>(单选)</span>
         </dt>
         <dd>

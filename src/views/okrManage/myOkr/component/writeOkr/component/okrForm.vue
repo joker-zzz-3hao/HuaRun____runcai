@@ -425,7 +425,6 @@ export default {
       this.innerDrawer = true;
       if (!this.formData.okrInfoList[this.selectIndex].departokrList
       || !this.formData.okrInfoList[this.selectIndex].philosophyList) {
-        console.log('消失了');
         this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.departokrObject);
         this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.philosophyObject);
       }
@@ -503,12 +502,6 @@ export default {
         return;
       }
       if (this.formData.okrInfoList.length > 0) {
-        // this.formData.okrInfoList.forEach((oitem) => {
-        //   if (oitem.departokrList) {
-        //     delete oitem.departokrList;
-        //     delete oitem.philosophyList;
-        //   }
-        // });
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
