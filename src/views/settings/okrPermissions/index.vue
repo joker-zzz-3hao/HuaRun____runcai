@@ -17,7 +17,11 @@
           </dt>
           <dt v-if="item.configTypeDetail=='O-3'">
             <em>OKR</em>
-            <span>是否开启OKR审核</span>
+            <span>制定个人OKR</span>
+          </dt>
+          <dt v-if="item.configTypeDetail=='O-4'">
+            <em>OKR</em>
+            <span>制定团队OKR</span>
           </dt>
           <dd v-if="item.configTypeDetail=='O-1'">
             <el-radio v-model="radio[index]" label="O" class="tl-radio">整个公司的人，能够互相查看彼此的周报</el-radio>
@@ -27,9 +31,17 @@
               class="tl-radio"
             >仅部门队友，能够互相查看彼此的周报( 部门队友=部门负责人+部门成员+直接下级部门负责人 )</el-radio>
           </dd>
-          <dd v-if="item.configTypeDetail=='O-2'||item.configTypeDetail=='O-3'">
-            <el-radio v-model="radio[index]" label="O" class="tl-radio">开启</el-radio>
-            <el-radio v-model="radio[index]" label="S" class="tl-radio">关闭</el-radio>
+          <dd v-if="item.configTypeDetail=='O-2'">
+            <el-radio v-model="radio[index]" label="O" class="tl-radio">开启 ( 开启后OKR在审核后可再次编辑 )</el-radio>
+            <el-radio v-model="radio[index]" label="S" class="tl-radio">关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio>
+          </dd>
+          <dd v-if="item.configTypeDetail=='O-3'">
+            <el-radio v-model="radio[index]" label="O" class="tl-radio">开启 ( 开启后员工可制定个人OKR )</el-radio>
+            <el-radio v-model="radio[index]" label="S" class="tl-radio">关闭 ( 关闭后员工不可制定个人OK )</el-radio>
+          </dd>
+          <dd v-if="item.configTypeDetail=='O-4'">
+            <el-radio v-model="radio[index]" label="O" class="tl-radio">开启 ( 开启后部门负责人可制定部门OKR )</el-radio>
+            <el-radio v-model="radio[index]" label="S" class="tl-radio">关闭 ( 关闭后部门负责人不可制定部门OKR )</el-radio>
           </dd>
         </dl>
       </div>
