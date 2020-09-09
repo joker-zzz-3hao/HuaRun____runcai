@@ -349,7 +349,7 @@ export default {
           okrMain: {
             userName: item.updateBy || item.createBy,
             okrProgress: item.okrProgress || 0,
-            updateTime: item.updateTime || item.createTime,
+            updateTime: item.updateTime || item.createTime || item.createDate || item.updateDate,
             okrBelongType: okrInfo.okrBelongType,
             status,
           },
