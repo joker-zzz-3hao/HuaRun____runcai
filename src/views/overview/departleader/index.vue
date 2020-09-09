@@ -27,7 +27,7 @@
         </ul>
       </div>
     </div>
-    <tl-weeking :orgTable="orgTable"></tl-weeking>
+    <tl-weeking :periodId="periodId"></tl-weeking>
   </div>
 </template>
 
@@ -68,7 +68,6 @@ export default {
     }),
   },
   mounted() {
-    // this.getqueryMyOkr();
     this.getidentity();
   },
 
@@ -82,21 +81,11 @@ export default {
     checkName(name) {
       return name.substring(0, 1);
     },
-    getqueryMyOkr() {
-      this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.orgTable = res.data.orgTable;
-          this.orgUser = res.data.orgUser;
-        }
-      });
-    },
     getmainData() {
       this.server.mainData({
-        periodId: this.periodId,
         orgId: this.setOrgId,
-        user: this.userInfo.user_id,
+        periodId: this.periodId,
+        user: this.userInfo.userId,
       }).then((res) => {
         this.mainData = res.data;
       });
