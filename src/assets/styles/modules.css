@@ -1718,18 +1718,6 @@
   margin: 0;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell,
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
-  display: flex;
-  align-items: center;
-}
-
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span {
-  justify-content: center;
-}
-
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell span,
-.card-panel-body .tl-table .sub-tr .okr-kr-name span,
 .tl-collapse .el-collapse-item__header .collpase-panel dt span {
   margin: 0 6px 0 0;
   width: 32px;
@@ -1741,14 +1729,6 @@
   border-radius: 2px;
 }
 
-.card-panel-body .tl-table .sub-tr .okr-kr-name span {
-  flex: 0 0 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #acb6bf;
-  color: #fff;
-}
 
 .tl-collapse .el-collapse-item__content .collpase-panel dt > span {
   align-self: start;
@@ -1769,32 +1749,6 @@
   flex: 1;
 }
 
-.card-panel-body .tl-table .sub-tr .okr-kr-name em {
-  color: #7a828a;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  transition: all .4s ease-out;
-  cursor: pointer;
-}
-
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em {
-  flex: 1;
-  width: calc(42% - 60px);
-  color: #26282a;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  transition: all .4s ease-out;
-  cursor: pointer;
-}
-
-.card-panel-body .tl-table .el-table__row td:nth-child(2) .cell em:hover,
-.card-panel-body .tl-table .sub-tr .okr-kr-name em:hover,
-.card-panel-body .tl-table .el-table__row.expanded td:nth-child(2) .cell em {
-  color: #685df1;
-}
 
 .card-panel-body .sub-tr .tl-progress-bar .progress-number {
   color: #929ba3;
@@ -1981,6 +1935,49 @@
   align-items: center;
 }
 
+.tag-kind {
+  display: flex;
+  align-items: center;
+}
+
+.tag-kind .kind-parent,
+.tag-kind .kind-child {
+  margin: 0 6px 0 0;
+  flex: 0 0 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 18px;
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.tag-kind .kind-parent {
+  background: #f0effe;
+  color: #685df1;
+}
+
+.tag-kind .kind-child {
+  background: #acb6bf;
+  color: #fff;
+}
+
+.tag-kind em {
+  color: #7a828a;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  transition: all .4s ease-out;
+  cursor: pointer;
+}
+
+.tag-kind em:hover,
+.expanded .tag-kind em {
+  color: #685df1;
+}
+
 .dl-list .kind-o,
 .dl-list .kind-k {
   display: flex;
@@ -2044,6 +2041,7 @@
 }
 
 .logo-bg {
+  margin: 0 36px 0 0;
   width: 70px;
   height: 70px;
   background: #162565;

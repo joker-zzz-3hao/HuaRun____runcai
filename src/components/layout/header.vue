@@ -4,7 +4,7 @@
       <div class="logo-bg">
         <div class="logo">logo</div>
       </div>
-      <div class>切换部门</div>
+      <div class="toggle-department">切换部门</div>
     </div>
     <div class="area-right">
       <ul class="top-menu">
