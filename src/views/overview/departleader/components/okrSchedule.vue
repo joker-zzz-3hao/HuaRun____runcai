@@ -22,6 +22,7 @@ export default {
     return {
       mainDataY: [],
       mainDataX: [],
+      mainDataYBar: [],
     };
   },
   mounted() {
@@ -34,6 +35,7 @@ export default {
       this.mainDataY = this.mainData.map((item) => item.okrProgress);
       this.mainDataX = this.mainData.map((item) => item.orgName);
       this.mainCount = this.mainData.map((item) => item.okrProgressUpdateCount);
+      this.mainDataYBar = this.mainData.map(() => 0);
       this.init();
       this.initCount();
     },
@@ -143,10 +145,38 @@ export default {
             },
 
           },
+          {
+            type: 'bar',
+            barWidth: '50',
+            color: 'rgba(255,255,255,0.64)',
+            itemStyle: {
+              normal: {
+                color: 'rgba(255,255,255,0.64)',
+                shadowBlur: 400,
+                shadowColor: 'rgba(0,0,0,0.50)',
+              },
+            },
+            data: that.mainDataYBar,
+          },
         ],
       };
-
+      if (myChart._$handlers.mousemove) {
+        myChart._$handlers.mousemove.length = 0;
+      }
+      if (myChart._$handlers.mouseout) {
+        myChart._$handlers.mouseout.length = 0;
+      }
       myChart.setOption(option);
+      myChart.on('mousemove', 'series.line', (params) => {
+        option.series[1].data[params.dataIndex] = that.mainDataY[params.dataIndex] + 20;
+        console.log(params);
+        myChart.setOption(option);
+      });
+      myChart.on('mouseout', 'series.line', (params) => {
+        option.series[1].data[params.dataIndex] = 0;
+        console.log(params);
+        myChart.setOption(option);
+      });
     },
     initCount() {
       const that = this;
