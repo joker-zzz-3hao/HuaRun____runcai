@@ -149,6 +149,7 @@ export default {
       myokrDrawer: false,
       detialP: {},
       undertakeP: {},
+      originalList: [],
     };
   },
   components: {
@@ -295,6 +296,7 @@ export default {
             this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
               if (res.code == 200) {
                 this.tableList = res.data.okrDetails;
+                this.originalList = res.data.okrDetails.slice(0);
                 this.okrmain = res.data.okrMain;
                 this.okrMainId = res.data.okrMain.okrId;
                 // this.voteUser = res.data.voteUser;
@@ -410,6 +412,31 @@ export default {
     },
 
     validateForm() {
+      // 校验是否有更改
+      let hasChange = true;
+      for (let index = 0; index < this.originalList.length; index += 1) {
+        console.log('承接', this.tableList[index].okrDetailObjectKr, this.originalList[index].okrDetailObjectKr);
+        if (this.originalList[index].okrDetailObjectKr != this.tableList[index].okrDetailObjectKr) {
+          hasChange = false;
+          console.log('承接', this.tableList[index].okrDetailObjectKr);
+          break;
+        }
+        if (this.originalList[index].okrWeight != this.tableList[index].okrWeight) {
+          hasChange = false;
+          break;
+        }
+        if (this.tableList[index].undertakeOkrVo) {
+          hasChange = false;
+          break;
+        }
+      }
+      if (hasChange) {
+        this.$xwarning({
+          title: '没有已修改的变更项，请勿提交',
+          content: '',
+        });
+        return;
+      }
       // 校验表单
       const okrformValid = this.$refs.okrform.$refs.dataForm;
       const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
