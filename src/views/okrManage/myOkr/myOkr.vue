@@ -155,7 +155,10 @@
         </div>
       </template>
       <!-- 加载中 -->
-      <div v-else-if="loading" class="tl-card-panel"></div>
+      <div v-else-if="loading" class="tl-card-panel no-data">
+        <i class="el-icon-loading"></i>
+        <em>加载中...</em>
+      </div>
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>
@@ -175,7 +178,7 @@
       v-if="changeokrExist"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
-      @success="searchOkr('1')"
+      @success="searchOkr(searchForm.status)"
     ></tl-changeokr>
     <tl-okr-detail
       ref="tl-okr-detail"
@@ -195,7 +198,7 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      @success="searchOkr('1')"
+      @success="searchOkr(searchForm.status)"
     ></tl-okr-update>
   </div>
 </template>
@@ -515,3 +518,30 @@ export default {
   },
 };
 </script>
+<style scoped>
+.loading-box {
+  text-align: center;
+}
+
+.loading-box div {
+  width: 8px;
+  height: 8px;
+  background: #ff6f4b;
+  border-radius: 100%;
+  margin: 2px 5px;
+  display: inline-block;
+  animation-fill-mode: both;
+}
+
+.loading-box div:nth-child(1) {
+  animation: scale 0.75s -0.24s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+}
+
+.loading-box div:nth-child(2) {
+  animation: scale 0.75s -0.12s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+}
+
+.loading-box div:nth-child(3) {
+  animation: scale 0.75s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+}
+</style>

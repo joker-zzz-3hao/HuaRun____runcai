@@ -230,9 +230,9 @@ export default {
         }],
       },
       departokrList: [], // 可关联承接的okr
-      departokrObject: '', // 可关联承接的okr
+      departokrObject: '{}', // 可关联承接的okr
       philosophyList: [], // 价值观
-      philosophyObject: '', // 价值观
+      philosophyObject: '{}', // 价值观
       okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号

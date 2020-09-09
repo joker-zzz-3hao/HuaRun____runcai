@@ -74,7 +74,7 @@
             :disabled="false"
             :showOKRInfoLabel="true"
             :status="searchForm.status"
-            @openDialog="openDialog()"
+            @openDialog="openDialog"
           >
             <template slot="head-undertake" slot-scope="props">
               <template
