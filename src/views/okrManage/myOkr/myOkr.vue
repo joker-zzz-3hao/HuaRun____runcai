@@ -87,7 +87,7 @@
                 ></el-progress>
               </dd>
             </dl>
-            <dl>
+            <dl v-if="['1',1,'6'].includes(item.okrMain.status)">
               <dt>
                 <div
                   v-if="['1',1].includes(item.okrMain.status)"
@@ -166,6 +166,7 @@
       :exist.sync="writeokrExist"
       v-if="writeokrExist"
       :writeInfo="writeInfo"
+      :userName="userInfo.userName"
       @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
     <tl-changeokr
@@ -300,7 +301,6 @@ export default {
               totalList.forEach((allitem) => {
                 if (['1', '2'].includes(allitem.okrStatus)) {
                 // 处理draft
-                  console.log(allitem.okrStatus, allitem.object);
                   this.handleJSON(allitem.okrStatus, allitem.object);
                 } else {
                   this.handleNormal(allitem.object, allitem.okrStatus);
@@ -327,10 +327,10 @@ export default {
       draftList.forEach((item, index) => {
         let okrInfo = {};
         okrInfo = JSON.parse(item.paramJson);
-        // 起草中默认展开第一个
-        if (index == 0) {
-          okrInfo.okrInfoList[0].okrDetailId = 'draft01';
-        }
+        // 加序号
+        okrInfo.okrInfoList.forEach((okritem, okrindex) => {
+          okritem.okrDetailId = okrStatus + index + okrindex;
+        });
         // 状态
         let status = '';
         if (this.searchForm.status == 'all') {
@@ -347,9 +347,9 @@ export default {
         this.okrList.push({
           tableList: okrInfo.okrInfoList,
           okrMain: {
-            userName: item.updateBy || item.createBy,
+            userName: this.userInfo.userName,
             okrProgress: item.okrProgress || 0,
-            updateTime: item.updateTime || item.createTime,
+            updateTime: item.updateTime || item.createTime || item.createDate || item.updateDate,
             okrBelongType: okrInfo.okrBelongType,
             status,
           },

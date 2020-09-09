@@ -31,7 +31,12 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-button @click="remindWriteWeekly" icon="el-icon-phone">提醒写周报</el-button>
+        <!-- 按钮显示逻辑添加
+        1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
+        2、当组织切换时不显示该按钮
+        3、不是部门负责人不显示该按钮
+        -->
+        <el-button v-show="showRemindBtn" @click="remindWriteWeekly" icon="el-icon-phone">提醒写周报</el-button>
       </div>
       <div class="operating-panel">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
@@ -169,6 +174,8 @@ export default {
       tableData: [],
       orgIdList: [],
       treeData: [],
+      canEdit: false,
+      showRemindBtn: false,
       formData: {
         calendarId: '',
         looked: '',
@@ -229,6 +236,19 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    severalData() {
+      let isLeader = false;
+      this.userInfo.roleList.forEach((role) => {
+        if (role.roleCode == 'ORG_ADMIN') {
+          isLeader = true;
+        }
+      });
+      return {
+        canEdit: this.canEdit,
+        orgId: this.formData.orgId,
+        isLeader,
+      };
+    },
   },
   methods: {
     init() {
@@ -309,9 +329,9 @@ export default {
       this.formData.calendarId = id;
     },
     remindWriteWeekly() {
-      this.server.remindWriteWeekly().then((res) => {
+      this.server.remindWriteWeekly({ calendarId: this.formData.calendarId }).then((res) => {
         if (res.code == 200) {
-          this.$message.success('提醒成功');
+          this.$message({ type: 'success', message: '周保提醒已发送，相关团队成员已收到', duration: 4000 });
         }
       });
     },
@@ -357,7 +377,10 @@ export default {
       }
       this.refreshPageList();
     },
-    refreshPageList() {
+    refreshPageList(calender) {
+      if (calender.calendarId) {
+        this.canEdit = calender.canEdit;
+      }
       if (this.formData.queryType) {
         this.server.lookQuickly(this.formData).then((res) => {
           if (res.code == 200) {
@@ -370,6 +393,18 @@ export default {
       } else {
         this.getTeamWeekly();
       }
+    },
+  },
+  watch: {
+    severalData: {
+      handler(val) {
+        if (val) {
+          //  1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
+          // 2、当组织切换至别的部门时不显示该按钮:
+          // 3、不是部门负责人不显示该按钮:
+          this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId && val.isLeader;
+        }
+      },
     },
   },
 

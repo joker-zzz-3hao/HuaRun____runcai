@@ -15,8 +15,8 @@
           <dl v-for="kritem in scope.row.krList" :key="kritem.krId" class="sub-tr">
             <dd class="okr-line"></dd>
             <!-- kr名称 -->
-            <dd class="okr-kr-name">
-              <span>KR</span>
+            <dd class="okr-kr-name tag-kind">
+              <span class="kind-child">KR</span>
               <em @click="opensome(kritem)">{{kritem.okrDetailObjectKr}}</em>
             </dd>
             <!-- kr权重 -->
@@ -52,8 +52,10 @@
       <!-- 目标O名称 无label -->
       <el-table-column prop="okrDetailObjectKr" width="42%">
         <template slot-scope="scope">
-          <span @click="opensome(scope.row)">目标</span>
-          <em @click="opensome(scope.row)">{{scope.row.okrDetailObjectKr}}</em>
+          <div @click="opensome(scope.row)" class="tag-kind">
+            <span class="kind-parent">目标</span>
+            <em>{{scope.row.okrDetailObjectKr}}</em>
+          </div>
         </template>
       </el-table-column>
       <!-- o label="权重" -->

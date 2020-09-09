@@ -13,7 +13,7 @@ export default class Server extends ServerBase {
 
   // 提醒写周报
   remindWriteWeekly(param) {
-    return this._ajaxPost('gateway/weekly-service/weekly/query', param);
+    return this._ajaxPost('gateway/weekly-service/weekly/notice', param);
   }
 
   // 周报速看

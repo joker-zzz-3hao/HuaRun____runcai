@@ -248,7 +248,7 @@ export default {
               this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
               res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
                 this.departokrList.push({
-                  typeName: '目标O',
+                  typeName: '目标',
                   okrKind: 'o',
                   okrDetailObjectKr: item.o.okrDetailObjectKr,
                   okrDetailId: item.o.okrDetailId,
@@ -334,7 +334,7 @@ export default {
         if (res.code == 200) {
           const modifyUndertakeList = res.data.modifyUndertakeList || [];
           modifyUndertakeList.forEach((item) => {
-            item.typeName = item.okrDetailType === 1 ? 'KR' : '目标O';
+            item.typeName = item.okrDetailType === 1 ? 'KR' : '目标';
             item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
             if (item.currentOption) {
