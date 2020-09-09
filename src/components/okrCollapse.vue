@@ -14,7 +14,6 @@
               <span>目标</span>
               <div>
                 <el-form-item
-                  style="display:inline-block"
                   v-if="canWrite && item.showTitleEdit"
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
                   :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
@@ -362,29 +361,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.collapse span,
-.collapsetitle span {
-  margin-left: 10px;
-}
-
-.collapsetitle {
-  margin-left: 250px;
-}
-.progresswidth {
-  width: 150px;
-  display: inline-block;
-}
-.detail,
-.detail li {
-  display: flex;
-}
-
-.hideEdit .el-icon-edit {
-  opacity: 0;
-}
-.hideEdit:hover .el-icon-edit {
-  opacity: 1;
-}
-</style>

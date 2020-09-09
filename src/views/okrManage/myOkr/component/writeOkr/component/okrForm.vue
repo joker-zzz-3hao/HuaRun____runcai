@@ -603,17 +603,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.objectdd,
-.objectdd div {
-  display: inline-block;
-}
-.okuang {
-  margin: 10px;
-  border: 1px solid rgb(190, 190, 190);
-}
-.el-drawer__body {
-  overflow: auto;
-}
-</style>
