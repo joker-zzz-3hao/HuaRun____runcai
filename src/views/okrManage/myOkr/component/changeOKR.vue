@@ -71,12 +71,12 @@
             </el-form-item>
           </el-form>
         </div>
-        <div>
-          <el-button @click="validateForm">提交</el-button>
-          <el-button @click="close">取消</el-button>
-        </div>
       </div>
     </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="validateForm" class="tl-btn amt-bg-slip">提交</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+    </div>
 
     <el-drawer
       :visible.sync="innerDrawer"
@@ -547,6 +547,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
