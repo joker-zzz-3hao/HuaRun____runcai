@@ -5,33 +5,13 @@
         <dt class="list-title">
           <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
         </dt>
-        <dd>
-          <el-table :data="historyOKRList">
-            <el-table-column width="100" prop="okrDetailType">
-              <template slot-scope="scope">
-                <span v-if="scope.row.okrDetailType === 0">目标</span>
-                <span v-else>KR</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="versionName">
-              <template slot-scope="scope">
-                <div>{{scope.row.versionName}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="objectName">
-              <template slot-scope="scope">
-                <div>{{scope.row.objectName}}</div>
-                <div v-if="scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
-              </template>
-            </el-table-column>
-            <!-- 权重暂时不加 -->
-            <!-- <el-table-column prop="okrWeight">
-        <template slot-scope="scope">
-          <span>权重</span>
-          <span>{{scope.row.okrWeight}}%</span>
-        </template>
-            </el-table-column>-->
-          </el-table>
+        <dd v-for="(item) in historyOKRList" :key="item.okrDetailId">
+          <em v-if="item.okrDetailType == 0" class="kind-o">目标</em>
+          <em v-else class="kind-k">KR</em>
+          <em>{{item.versionName}}</em>
+          <em>{{item.objectName}}</em>
+          <!-- 变更原因 -->
+          <span v-if="item.modifyReason">变更原因：{{item.modifyReason}}</span>
         </dd>
       </dl>
     </div>

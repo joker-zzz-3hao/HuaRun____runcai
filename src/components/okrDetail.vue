@@ -269,7 +269,7 @@ export default {
     // TODO: 详情点赞
     showSupport: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     drawerTitle: {
       type: String,
