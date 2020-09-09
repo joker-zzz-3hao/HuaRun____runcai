@@ -4,7 +4,7 @@
       <div class="logo-bg">
         <div class="logo">logo</div>
       </div>
-      <div class>
+      <div class="toggle-department">
         <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
         <el-select v-else v-model="orgId" @change="switchOrg">
           <el-option
