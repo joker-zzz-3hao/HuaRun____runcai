@@ -10,7 +10,7 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      title="创建部门"
+      :title="departOptionType=='create'?'创建部门':'编辑部门'"
       :close-on-click-modal="false"
     >
       <el-form ref="departForm" :model="formData">
@@ -163,15 +163,19 @@ export default {
         orgName: this.formData.orgName,
         orgSort: this.formData.orgSort,
       };
+
       if (this.departOptionType == 'edit') {
         params.orgId = this.initDepartment.orgId;
       }
       this.$refs.departForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.createOrg(params).then((res) => {
+          let urlApi;
+          // eslint-disable-next-line no-unused-expressions
+          this.departOptionType == 'create' ? urlApi = 'createOrg' : urlApi = 'updateOrg';
+          this.server[urlApi](params).then((res) => {
             if (res.code == 200) {
-              this.$message.success('部门创建成功');
+              this.$message.success(res.msg);
               this.close('refreshPage');
             }
             this.loading = false;
