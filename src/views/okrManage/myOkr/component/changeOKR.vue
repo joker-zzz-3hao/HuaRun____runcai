@@ -76,8 +76,66 @@
       custom-class="diy-drawer associated-undertaking"
       class="tl-drawer"
     >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">关联承接项</div>
+      <!-- 公共信息 -->
+      <div class="dl-list">
+        <dl>
+          <dt>
+            <i class="el-icon-s-flag"></i>
+            <em>目标类型</em>
+          </dt>
+          <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-s-custom"></i>
+            <em>负责人</em>
+          </dt>
+          <dd>{{okrmain.userName}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-timer"></i>
+            <em>更新时间</em>
+          </dt>
+          <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+        </dl>
+        <dl>
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <em>进度</em>
+          </dt>
+          <dd>
+            <tl-process :data="okrmain.okrProgress"></tl-process>
+          </dd>
+        </dl>
+      </div>
+      <!-- okr折叠面板 -->
+      <tl-okrcollapse
+        ref="okrCollapse"
+        :tableList="tableList"
+        :canWrite="true"
+        @openUndertake="openUndertakepage"
+      ></tl-okrcollapse>
+      <!-- 新增okr -->
+      <tl-okrform
+        ref="okrform"
+        :searchForm="searchForm"
+        :server="server"
+        :canWrite="true"
+        :isnew="false"
+        :periodId="searchForm.periodId"
+      ></tl-okrform>
+      <!-- 变更原因 -->
+      <div>
+        <span>变更原因</span>
+        <el-form :model="reason" ref="reasonForm">
+          <el-form-item
+            prop="modifyReason"
+            :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+          >
+            <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+          </el-form-item>
+        </el-form>
       </div>
       <tl-undertaketable
         v-if="selectIndex !== ''"
@@ -99,6 +157,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
@@ -145,6 +204,7 @@ export default {
     'tl-okrcollapse': okrCollapse,
     'tl-undertaketable': undertakeTable,
     'tl-okrform': okrForm,
+    'tl-process': process,
   },
   props: {
     writeInfo: {
