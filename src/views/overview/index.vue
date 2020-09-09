@@ -38,24 +38,7 @@ export default {
     }),
   },
   methods: {
-    getidentity() {
-      this.server.identity({
-        user: this.userInfo.userId,
-        orgId: this.setOrgId,
-      }).then((res) => {
-        if (res.data.identityType == 'org') {
-          this.$router.push({ name: 'departleader' });
-          return false;
-        }
-        if (res.data.identityType == 'team') {
-          this.$router.push({ name: 'teamleader' });
-          return false;
-        }
-        if (res.data.identityType == 'person') {
-          this.$router.push({ name: 'grassStaff' });
-        }
-      });
-    },
+
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card-panel-head">
-      <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+      <div class="okr-title">{{okrCycle.periodName}}</div>
       <dl class="okr-state">
         <dt>
           <i class="el-icon-set-up"></i>
@@ -162,6 +162,9 @@ export default {
       setOrgId: (state) => state.setOrgId,
     }),
   },
+  created() {
+    this.getOkrCycleList();
+  },
   mounted() {
     this.searchOkr();
   },
@@ -170,7 +173,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.periodId, orgId: this.okrId,
         },
       });
     },
@@ -217,12 +220,29 @@ export default {
         });
       }
     },
+    // 周期
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        if (res.code == 200) {
+          this.periodList = res.data || [];
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.okrCycle.periodId;
+        }
+      });
+    },
   },
   watch: {
     periodId: {
-      handler() {
-        this.searchOkr();
+      handler(newVal) {
+        console.log('get', newVal);
+        if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId === newVal,
+          )[0] || {};
+          this.searchOkr();
+        }
       },
+      immediate: true,
       deep: true,
     },
   },

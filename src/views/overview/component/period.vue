@@ -57,10 +57,10 @@ export default {
   methods: {
     ...mapMutations('common', ['setOrg']),
     getokrQuery() {
-      this.server.okrQuery().then((res) => {
+      this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
-          this.options = res.data.content;
-          this.value = this.options[0].periodId;
+          this.options = res.data;
+          this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
 
           this.$emit('getPeriod', this.value);
         }
