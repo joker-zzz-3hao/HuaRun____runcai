@@ -6,8 +6,8 @@
           <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
         </dt>
         <dd v-for="(item) in historyOKRList" :key="item.okrDetailId">
-          <em v-if="item.okrDetailType == 0" class="kind-o">目标</em>
-          <em v-else class="kind-k">KR</em>
+          <span v-if="item.okrDetailType == 0" class="kind-o">目标</span>
+          <span v-else class="kind-k">KR</span>
           <em>{{item.versionName}}</em>
           <em>{{item.objectName}}</em>
           <!-- 变更原因 -->
