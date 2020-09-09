@@ -1,5 +1,9 @@
 /* ==================================================================Element 重置样式=============================================================================== */
 /* 滚动条 */
+.el-scrollbar {
+  height: 100%;
+}
+
 .el-scrollbar__bar {
   z-index: 50;
 }
@@ -1352,10 +1356,6 @@
 .tl-transfer-select .tl-checkbox .el-checkbox__label {
   color: #4d5155;
   font-size: 14px;
-}
-
-.tl-transfer-select .el-scrollbar {
-  height: 100%;
 }
 
 .tl-transfer-select .el-scrollbar__wrap,

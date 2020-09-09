@@ -5,7 +5,12 @@
         <dt class="list-title">
           <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
         </dt>
-        <dd v-for="(item) in historyOKRList" :key="item.okrDetailId" class="tag-kind">
+        <dd
+          v-for="(item) in historyOKRList"
+          :key="item.okrDetailId"
+          class="tag-kind"
+          :class="{'has-reason': item.modifyReason}"
+        >
           <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
           <span v-else class="kind-child">KR</span>
           <em>{{item.versionName}}</em>
