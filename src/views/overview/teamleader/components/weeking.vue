@@ -98,7 +98,7 @@ export default {
     teamWeekly(date) {
       this.server.teamWeekly({
         date,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        orgId: this.$route.query.id,
       }).then((res) => {
         this.teamDataX = res.data.map((item) => [
           `${item.weekBegin}至${item.weekEnd}`,
@@ -112,7 +112,7 @@ export default {
     getteamWeeklyCount(date) {
       this.server.teamWeeklyCount({
         date,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        orgId: this.$route.query.id,
       }).then((res) => {
         this.tableData = res.data;
       });
@@ -120,7 +120,7 @@ export default {
     teamEmotion(date) {
       this.server.teamEmotion({
         date,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        orgId: this.$route.query.id,
       }).then((res) => {
         this.moodDataX = res.data.map((item) => `${item.weekBegin}至${item.weekEnd}`);
         this.moodDataY = res.data.map((item) => ({

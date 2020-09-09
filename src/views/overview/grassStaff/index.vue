@@ -80,7 +80,7 @@ export default {
       this.server.riskStatistics({
         periodId: this.periodId,
         personOrOrg: 'person',
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        userId: this.$route.query.id,
       }).then((res) => {
         this.okrData = res.data;
       });

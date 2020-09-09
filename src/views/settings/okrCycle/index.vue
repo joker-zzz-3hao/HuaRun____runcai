@@ -66,7 +66,7 @@
                 <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="checkStatus" label="状态" min-width="120">
+            <!-- <el-table-column prop="checkStatus" label="状态" min-width="120">
               <template slot-scope="scope">
                 <el-switch
                   v-model.trim="scope.row.periodType"
@@ -77,7 +77,7 @@
                   class="tl-switch"
                 ></el-switch>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column fixed="right" label="操作" width="60">
               <template slot-scope="scope">
                 <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>

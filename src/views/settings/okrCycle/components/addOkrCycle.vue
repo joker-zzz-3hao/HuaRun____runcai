@@ -70,12 +70,12 @@
           <el-radio label="0" class="tl-radio">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="OKR周期状态" prop="periodType">
+      <!-- <el-form-item label="OKR周期状态" prop="periodType">
         <el-radio-group v-model="form.periodType" class="tl-radio-group">
           <el-radio label="1" class="tl-radio">开启</el-radio>
           <el-radio label="0" class="tl-radio">关闭</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
