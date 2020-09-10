@@ -81,15 +81,15 @@
             <div v-else-if="currentIndex===1" class="tab-cont">
               <dl>
                 <dt>
-                  <div class="operate-time">{{cycleList[0].createTime}}</div>
+                  <div class="operate-time">{{cycleFirst.createTime}}</div>
                   <div class="operate-cont">
                     <div class="operate-type">
                       <em>{{userName}}</em>
-                      <span>{{cycleList[0].operateTypeCn}}</span>
+                      <span>{{cycleFirst.operateTypeCn}}</span>
                     </div>
                     <div
                       class="operate-kind"
-                      v-for="uitem in cycleList[0].okrDetailId"
+                      v-for="uitem in cycleFirst.okrDetailId"
                       :key="uitem.id"
                     >
                       <div class="kind-type">
@@ -107,9 +107,9 @@
                         </p>
                       </div>
                     </div>
-                    <div class="operate-reason" v-if="cycleList[0].remark">
+                    <div class="operate-reason" v-if="cycleFirst.remark">
                       <span>说明：</span>
-                      <em>{{cycleList[0].remark}}</em>
+                      <em>{{cycleFirst.remark}}</em>
                     </div>
                   </div>
                 </dt>
@@ -296,6 +296,7 @@ export default {
       cutVoteList: [],
       voteLength: 0,
       currentIndex: 0,
+      cycleFirst: {},
     };
   },
   components: {
@@ -422,6 +423,7 @@ export default {
               });
             }
           });
+          this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
         }
       });
     },
