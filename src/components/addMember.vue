@@ -33,10 +33,6 @@ export default {
       type: String,
       required: true,
     },
-    rouleType: {
-      type: Boolean,
-      required: true,
-    },
   },
   data() {
     return {
