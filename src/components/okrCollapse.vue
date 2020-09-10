@@ -80,7 +80,7 @@
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
                 </template>
-                <em>{{item.parentObjectKr}}</em>
+                <em @click="canWrite && goUndertake(index,'change')">{{item.parentObjectKr}}</em>
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
