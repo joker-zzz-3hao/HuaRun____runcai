@@ -62,7 +62,6 @@ export default {
           {
             type: 'value',
             show: true,
-            max: 100,
             min: 0,
             splitLine: {
               show: false,

@@ -13,7 +13,7 @@ const STATUS_LIST = [{
 }, {
   name: '审批中', id: '7',
 }, {
-  name: '已退回', id: '8',
+  name: '被退回', id: '8',
 }];
 const STATUS_LIST_MAP = {
   1: '进行中',
@@ -23,7 +23,7 @@ const STATUS_LIST_MAP = {
   5: '未开始',
   6: '起草中',
   7: '审批中',
-  8: '已退回',
+  8: '被退回',
 };
 const CONFIDENCE = [{
   label: '无风险', value: '1',

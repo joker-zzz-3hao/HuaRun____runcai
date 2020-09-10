@@ -12,13 +12,13 @@ const CYCLE_MAP = {
 const APPROVAL_STATUS_LIST = [
   { label: '待审批', value: '0' },
   { label: '已审批', value: '1' },
-  { label: '已退回', value: '2' },
+  { label: '被退回', value: '2' },
   { label: '全部', value: '' },
 ];
 const APPROVAL_STATUS_MAP = {
   0: '待审批',
   1: '已审批',
-  2: '已退回',
+  2: '被退回',
   3: '全部',
 };
 const APPROVAL_TYPE_LIST = [
