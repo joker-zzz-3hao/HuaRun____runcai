@@ -26,16 +26,18 @@
       <dl class="dl-item">
         <dt>状态</dt>
         <dd class="tl-diy-tabs">
-          <ul class="tab-list">
-            <li
-              v-for="(item,idx) in CONST.STATUS_LIST"
-              :key="item.id"
-              :class="{'is-focus': currentIndex == idx}"
-            >
-              <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
-            </li>
-          </ul>
-          <div class="border-slip"></div>
+          <div class="tab-menus">
+            <ul class="tab-list">
+              <li
+                v-for="(item,idx) in CONST.STATUS_LIST"
+                :key="item.id"
+                :class="{'is-focus': currentIndex == idx}"
+              >
+                <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
+              </li>
+            </ul>
+            <div class="border-slip"></div>
+          </div>
         </dd>
       </dl>
     </div>
@@ -518,30 +520,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.loading-box {
-  text-align: center;
-}
-
-.loading-box div {
-  width: 8px;
-  height: 8px;
-  background: #ff6f4b;
-  border-radius: 100%;
-  margin: 2px 5px;
-  display: inline-block;
-  animation-fill-mode: both;
-}
-
-.loading-box div:nth-child(1) {
-  animation: scale 0.75s -0.24s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
-}
-
-.loading-box div:nth-child(2) {
-  animation: scale 0.75s -0.12s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
-}
-
-.loading-box div:nth-child(3) {
-  animation: scale 0.75s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
-}
-</style>

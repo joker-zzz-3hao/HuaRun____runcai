@@ -14,7 +14,6 @@
               <span>目标</span>
               <div>
                 <el-form-item
-                  style="display:inline-block"
                   v-if="canWrite && item.showTitleEdit"
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
                   :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
@@ -81,7 +80,13 @@
                     <i class="el-icon-warning" slot="reference"></i>
                   </el-popover>
                 </template>
-                <em>{{item.parentObjectKr}}</em>
+                <!-- 变更可点 -->
+                <em
+                  v-if="item.parentUpdate && canWrite"
+                  @click="goUndertake(index,'change')"
+                >{{item.parentObjectKr}}</em>
+                <!-- 详情不可点 -->
+                <em v-else>{{item.parentObjectKr}}</em>
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
@@ -362,29 +367,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.collapse span,
-.collapsetitle span {
-  margin-left: 10px;
-}
-
-.collapsetitle {
-  margin-left: 250px;
-}
-.progresswidth {
-  width: 150px;
-  display: inline-block;
-}
-.detail,
-.detail li {
-  display: flex;
-}
-
-.hideEdit .el-icon-edit {
-  opacity: 0;
-}
-.hideEdit:hover .el-icon-edit {
-  opacity: 1;
-}
-</style>

@@ -12,70 +12,70 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
     </div>
-    <div class="dl-list">
-      <dl>
-        <dt>
-          <i class="el-icon-s-flag"></i>
-          <em>目标类型</em>
-        </dt>
-        <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
-      </dl>
-      <dl>
-        <dt>
-          <i class="el-icon-s-custom"></i>
-          <em>负责人</em>
-        </dt>
-        <dd>{{okrmain.userName}}</dd>
-      </dl>
-      <dl>
-        <dt>
-          <i class="el-icon-timer"></i>
-          <em>更新时间</em>
-        </dt>
-        <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
-      </dl>
-      <dl>
-        <dt>
-          <i class="el-icon-odometer"></i>
-          <em>进度</em>
-        </dt>
-        <dd>
-          <tl-process :data="okrmain.okrProgress"></tl-process>
-        </dd>
-      </dl>
-    </div>
-    <!-- okr折叠面板 -->
-    <tl-okrcollapse
-      ref="okrCollapse"
-      :tableList="tableList"
-      :canWrite="true"
-      @openUndertake="openUndertakepage"
-    ></tl-okrcollapse>
-    <!-- 新增okr -->
-    <tl-okrform
-      ref="okrform"
-      :searchForm="searchForm"
-      :server="server"
-      :canWrite="true"
-      :isnew="false"
-      :periodId="searchForm.periodId"
-    ></tl-okrform>
-    <!-- 变更原因 -->
-    <div>
-      <span>变更原因</span>
-      <el-form :model="reason" ref="reasonForm">
-        <el-form-item
-          prop="modifyReason"
-          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
-        >
-          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
-    <!-- 提交 -->
-    <div>
-      <el-button @click="validateForm">提交</el-button>
-      <el-button @click="close">取消</el-button>
+    <el-scrollbar>
+      <div class="cont-box">
+        <div class="dl-list">
+          <dl>
+            <dt>
+              <i class="el-icon-s-flag"></i>
+              <em>OKR类型</em>
+            </dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-s-custom"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{okrmain.userName}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>进度</em>
+            </dt>
+            <dd>
+              <tl-process :data="okrmain.okrProgress"></tl-process>
+            </dd>
+          </dl>
+        </div>
+        <tl-okrcollapse
+          ref="okrCollapse"
+          :tableList="tableList"
+          :canWrite="true"
+          @openUndertake="openUndertakepage"
+        ></tl-okrcollapse>
+        <tl-okrform
+          ref="okrform"
+          :searchForm="searchForm"
+          :server="server"
+          :canWrite="true"
+          :isnew="false"
+          :periodId="searchForm.periodId"
+        ></tl-okrform>
+        <div>
+          <span>变更原因</span>
+          <el-form :model="reason" ref="reasonForm">
+            <el-form-item
+              prop="modifyReason"
+              :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+            >
+              <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="validateForm" class="tl-btn amt-bg-slip">提交</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
 
     <el-drawer
@@ -95,6 +95,7 @@
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
+        :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
         <el-button type="primary" @click="summitUndertake">确定</el-button>
@@ -149,6 +150,8 @@ export default {
       myokrDrawer: false,
       detialP: {},
       undertakeP: {},
+      originalObject: '{}',
+      currentOption: '',
     };
   },
   components: {
@@ -186,7 +189,6 @@ export default {
     },
     closed() {
       this.$emit('update:exist', false);
-      this.$emit('success');
     },
     close() {
       this.myokrDrawer = false;
@@ -294,6 +296,7 @@ export default {
           if (results) {
             this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
               if (res.code == 200) {
+                this.originalObject = JSON.stringify(res.data.okrDetails);
                 this.tableList = res.data.okrDetails;
                 this.okrmain = res.data.okrMain;
                 this.okrMainId = res.data.okrMain.okrId;
@@ -330,6 +333,7 @@ export default {
             // 是否为当前选中
             if (item.currentOption) {
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              this.currentOption = item.okrDetailId;
               console.log('选中', item);
             }
           });
@@ -410,6 +414,51 @@ export default {
     },
 
     validateForm() {
+      // 校验是否有更改
+      let hasChange = true;
+      const originalList = JSON.parse(this.originalObject);
+      for (let index = 0; index < originalList.length; index += 1) {
+        if (originalList[index].okrDetailObjectKr != this.tableList[index].okrDetailObjectKr) {
+          hasChange = false;
+          break;
+        }
+        if (originalList[index].okrWeight != this.tableList[index].okrWeight) {
+          hasChange = false;
+          break;
+        }
+        if (this.tableList[index].undertakeOkrVo) {
+          hasChange = false;
+          break;
+        }
+        if (this.tableList[index].newkrList && this.tableList[index].newkrList.length > 0) {
+          hasChange = false;
+          break;
+        }
+        console.log('originalList[index]', originalList[index]);
+        console.log('this.tableList[index]', this.tableList[index]);
+        for (let krindex = 0; krindex < originalList[index].krList.length; krindex += 1) {
+          console.log(krindex);
+          // console.log('kr', originalList[index].krList[krindex], this.tableList[index].krList[krindex]);
+          if (originalList[index].krList[krindex].okrDetailObjectKr
+          != this.tableList[index].krList[krindex].okrDetailObjectKr) {
+            hasChange = false;
+            break;
+          }
+          if (originalList[index].krList[krindex].okrWeight
+          != this.tableList[index].krList[krindex].okrWeight) {
+            hasChange = false;
+            break;
+          }
+        }
+      }
+
+      if (hasChange) {
+        this.$xwarning({
+          title: '没有已修改的变更项，请勿提交',
+          content: '',
+        });
+        return;
+      }
       // 校验表单
       const okrformValid = this.$refs.okrform.$refs.dataForm;
       const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
@@ -525,6 +574,7 @@ export default {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.close();
+          this.$emit('success');
         } else if (res.code === 30000) {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
@@ -547,6 +597,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

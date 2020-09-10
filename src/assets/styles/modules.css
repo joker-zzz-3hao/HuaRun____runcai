@@ -1,5 +1,9 @@
 /* ==================================================================Element 重置样式=============================================================================== */
 /* 滚动条 */
+.el-scrollbar {
+  height: 100%;
+}
+
 .el-scrollbar__bar {
   z-index: 50;
 }
@@ -739,11 +743,19 @@
   color: #685df1;
 }
 
+.tl-drawer .diy-drawer .el-drawer__body {
+  overflow: hidden;
+}
+
 .tl-drawer .el-drawer__body {
   margin: 30px 0 0 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.tl-drawer .el-drawer__body > .el-scrollbar {
+  margin: 0 0 30px 0;
 }
 
 .tl-drawer + .v-modal,
@@ -1354,10 +1366,6 @@
   font-size: 14px;
 }
 
-.tl-transfer-select .el-scrollbar {
-  height: 100%;
-}
-
 .tl-transfer-select .el-scrollbar__wrap,
 .tl-drawer .el-scrollbar__wrap {
   overflow-y: scroll;
@@ -1366,8 +1374,20 @@
 
 /* tabs */
 .tl-diy-tabs {
+  height: 100%;
+}
+
+.tl-diy-tabs .tab-menus {
   position: relative;
   height: 100%;
+}
+
+.tl-diy-tabs .tab-menus::after {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+  height: 1px;
 }
 
 .tl-diy-tabs .tab-list {

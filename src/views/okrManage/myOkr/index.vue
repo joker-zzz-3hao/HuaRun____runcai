@@ -4,15 +4,17 @@
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="tl-diy-tabs">
-          <ul class="tab-list">
-            <li
-              v-for="(item,idx) in tabsList"
-              :key="item.menuTitle"
-              @click="borderSlip(item,idx,item.toName)"
-              :class="{'is-focus': currentIndex === idx}"
-            >{{item.menuTitle}}</li>
-          </ul>
-          <div class="border-slip"></div>
+          <div class="tab-menus">
+            <ul class="tab-list">
+              <li
+                v-for="(item,idx) in tabsList"
+                :key="item.menuTitle"
+                @click="borderSlip(item,idx,item.toName)"
+                :class="{'is-focus': currentIndex === idx}"
+              >{{item.menuTitle}}</li>
+            </ul>
+            <div class="border-slip"></div>
+          </div>
         </div>
         <div class="operating-box">
           <el-button

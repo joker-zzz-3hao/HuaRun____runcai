@@ -265,7 +265,7 @@ export default {
     if (['6', '8'].includes(this.searchForm.okrStatus)) {
       this.getOkrDraftById();
     }
-    if (this.searchForm.okrStatus != '8') {
+    if (this.searchForm.okrStatus != '8' && this.isnew) {
       this.autosave();
     }
     // 自动保存
@@ -603,17 +603,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.objectdd,
-.objectdd div {
-  display: inline-block;
-}
-.okuang {
-  margin: 10px;
-  border: 1px solid rgb(190, 190, 190);
-}
-.el-drawer__body {
-  overflow: auto;
-}
-</style>
