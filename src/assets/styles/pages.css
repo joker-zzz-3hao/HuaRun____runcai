@@ -324,10 +324,6 @@
   margin: 0;
 }
 
-.tl-drawer .create-okr .el-drawer__body {
-  overflow: hidden;
-}
-
 .create-okr .timeline-list dt {
   display: flex;
 }
@@ -417,6 +413,10 @@
 
 .okr-detail .el-drawer__header {
   padding: 0 28px 0 30px;
+}
+
+.okr-detail .tab-menus {
+  height: 40px;
 }
 
 .okr-detail .img-list {

@@ -14,10 +14,9 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
-        自己的滑动组件
         <tl-tabs :current.sync="currentIndex">
           <template slot="tabs-cont">
-            <div v-if="currentIndex===0">
+            <div v-if="currentIndex===0" class="tabs-cont">
               <div class="dl-list">
                 <dl>
                   <dt>
@@ -79,7 +78,7 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="currentIndex===1">
+            <div v-else-if="currentIndex===1" class="tabs-cont">
               <span>操作历史</span>
               <el-timeline>
                 <el-timeline-item
