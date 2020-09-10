@@ -10,7 +10,7 @@
       >
         <template slot="title">
           <dl class="collpase-panel">
-            <dt>
+            <dt :class="{'is-edit': canWrite && item.showTitleEdit}">
               <span>目标</span>
               <div>
                 <el-form-item
@@ -18,7 +18,7 @@
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
                   :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
                 >
-                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr"></el-input>
+                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr" class="tl-input"></el-input>
                 </el-form-item>
                 <em v-else>{{item.okrDetailObjectKr}}</em>
                 <i
@@ -29,7 +29,9 @@
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
-            <dd :class="{'has-third-child': item.okrParentId}">
+            <dd
+              :class="{'has-third-child': item.okrParentId,'is-edit': canWrite && item.showWeightEdit}"
+            >
               <div>
                 <i class="el-icon-medal"></i>
                 <span>权重</span>
@@ -41,7 +43,8 @@
                     :max="100"
                     :step="1"
                     :precision="0"
-                  ></el-input-number>
+                    class="tl-input-number"
+                  ></el-input-number>%
                 </el-form-item>
                 <em v-else>{{item.okrWeight}}%</em>
                 <i
@@ -103,6 +106,7 @@
                   plain
                   icon="el-icon-plus"
                   @click.native="goUndertake(index,'new')"
+                  class="tl-btn amt-border-slip"
                   v-else
                 >
                   关联
@@ -116,17 +120,17 @@
           v-for="(kritem, krIndex) in item.krList"
           :key="kritem.okrDetailId+krIndex"
           class="collpase-panel"
+          :class="{'has-third-child': kritem.okrDetailConfidence}"
         >
-          <dt>
+          <dt :class="{'is-edit': canWrite && kritem.showTitleEdit}">
             <span>KR</span>
             <div>
               <el-form-item
-                style="display:inline-block"
                 v-if="canWrite && kritem.showTitleEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.okrDetailObjectKr'"
                 :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
               >
-                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr"></el-input>
+                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr" class="tl-input"></el-input>
               </el-form-item>
               <span v-else>{{kritem.okrDetailObjectKr}}</span>
               <i
@@ -137,7 +141,9 @@
             </div>
             <slot name="body-bar" :okritem="kritem"></slot>
           </dt>
-          <dd :class="{'has-third-child': kritem.okrDetailConfidence}">
+          <dd
+            :class="{'has-third-child': kritem.okrDetailConfidence,'is-edit': canWrite && kritem.showWeightEdit}"
+          >
             <div>
               <i class="el-icon-medal"></i>
               <span>权重</span>
@@ -149,6 +155,7 @@
                   :max="100"
                   :step="1"
                   :precision="0"
+                  class="tl-input-number"
                 ></el-input-number>%
               </el-form-item>
               <em v-else>{{kritem.okrWeight}}%</em>
@@ -179,8 +186,6 @@
                 <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
               </div>
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
-              <!--
-              <em>{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</em>-->
             </div>
           </dd>
         </dl>
@@ -188,17 +193,30 @@
           <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
             <dt>
               <span>KR</span>
-              <el-form-item
-                :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+              <div>
+                <el-form-item
+                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+                >
+                  <!-- 不强制刷新无法输入 -->
+                  <el-input
+                    placeholder="请输入关键结果"
+                    v-model="newItem.okrDetailObjectKr"
+                    @input="updateokrCollapse"
+                    class="tl-input"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <el-tooltip
+                class="icon-clear"
+                :class="{'is-disabled': false}"
+                effect="dark"
+                content="删除"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+                @click="deletekr(item,kindex)"
               >
-                <!-- 不强制刷新无法输入 -->
-                <el-input
-                  placeholder="请输入关键结果"
-                  v-model="newItem.okrDetailObjectKr"
-                  @input="updateokrCollapse"
-                ></el-input>
-              </el-form-item>
-              <el-button @click="deletekr(item,kindex)">删kr</el-button>
+                <i class="el-icon-minus"></i>
+              </el-tooltip>
             </dt>
             <dd>
               <el-form-item label="权重">
@@ -236,8 +254,14 @@
             </dd>
           </dl>
         </template>
-        <!-- <div style="display:none">{{item.newkrList}}</div> -->
-        <el-button v-if="canWrite" @click="addkr(item,'kr')">增加kr</el-button>
+        <el-button
+          type="text"
+          v-if="canWrite"
+          @click="addkr(item,'kr')"
+          class="tl-btn sub-list-add"
+        >
+          <i class="el-icon-plus"></i>添加关键结果
+        </el-button>
       </elcollapseitem>
     </elcollapse>
   </el-form>

@@ -116,6 +116,7 @@
 i + em,
 i + span,
 i + span + em,
-span + em + em:last-of-type {
+span + em + em:last-of-type,
+i + span + em + i {
   margin: 0 0 0 6px;
 }
