@@ -15,7 +15,11 @@
           <el-table-column prop="okrProgress" label="进度" width="180"></el-table-column>
           <el-table-column prop="okrDetailObjectKr" label="目标（O）" width="180"></el-table-column>
           <el-table-column prop="krCount" label="关键结果（KR）" width="180"></el-table-column>
-          <el-table-column prop="name" label="状态" width="180"></el-table-column>
+          <el-table-column prop="status" label="状态" width="180">
+            <template slot-scope="scope">
+              <span>{{CONST.TABLE_STATUS_MAP[scope.row.status]}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </crcloud-table>
@@ -23,10 +27,14 @@
 </template>
 
 <script>
+import CONST from '../const';
+
 export default {
   name: 'okrTable',
   data() {
-    return {};
+    return {
+      CONST,
+    };
   },
   components: {},
   props: {

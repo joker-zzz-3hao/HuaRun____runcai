@@ -211,7 +211,7 @@ export default {
       addTeamExist: false,
       teamData: {},
       baseInfo: {},
-      weeklyMode: ['1', '2'],
+      weeklyMode: ['1'],
       teamSelect: '',
       circleList: [],
       teamTreeData: [],
