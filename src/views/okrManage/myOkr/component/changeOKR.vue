@@ -12,60 +12,70 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
     </div>
-    <div>
-      <ul>
-        <li>
-          <span>目标类型</span>
-          <span>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</span>
-        </li>
-        <li>
-          <span>负责人</span>
-          <span>{{okrmain.userName}}</span>
-        </li>
-        <li>
-          <span>更新时间</span>
-          <span>{{okrmain.updateTime||okrmain.createTime}}</span>
-        </li>
-        <li>
-          <span>进度</span>
-          <span>
-            <el-progress :stroke-width="10" :percentage="parseInt(okrmain.okrProgress, 10)"></el-progress>
-          </span>
-        </li>
-      </ul>
-    </div>
-    <!-- okr折叠面板 -->
-    <tl-okrcollapse
-      ref="okrCollapse"
-      :tableList="tableList"
-      :canWrite="true"
-      @openUndertake="openUndertakepage"
-    ></tl-okrcollapse>
-    <!-- 新增okr -->
-    <tl-okrform
-      ref="okrform"
-      :searchForm="searchForm"
-      :server="server"
-      :canWrite="true"
-      :isnew="false"
-      :periodId="searchForm.periodId"
-    ></tl-okrform>
-    <!-- 变更原因 -->
-    <div>
-      <span>变更原因</span>
-      <el-form :model="reason" ref="reasonForm">
-        <el-form-item
-          prop="modifyReason"
-          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
-        >
-          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
-    <!-- 提交 -->
-    <div>
-      <el-button @click="validateForm">提交</el-button>
-      <el-button @click="close">取消</el-button>
+    <el-scrollbar>
+      <div class="cont-box">
+        <div class="dl-list">
+          <dl>
+            <dt>
+              <i class="el-icon-s-flag"></i>
+              <em>OKR类型</em>
+            </dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-s-custom"></i>
+              <em>负责人</em>
+            </dt>
+            <dd>{{okrmain.userName}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-timer"></i>
+              <em>更新时间</em>
+            </dt>
+            <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+          </dl>
+          <dl>
+            <dt>
+              <i class="el-icon-odometer"></i>
+              <em>进度</em>
+            </dt>
+            <dd>
+              <tl-process :data="okrmain.okrProgress"></tl-process>
+            </dd>
+          </dl>
+        </div>
+        <tl-okrcollapse
+          ref="okrCollapse"
+          :tableList="tableList"
+          :canWrite="true"
+          @openUndertake="openUndertakepage"
+        ></tl-okrcollapse>
+        <tl-okrform
+          ref="okrform"
+          :searchForm="searchForm"
+          :server="server"
+          :canWrite="true"
+          :isnew="false"
+          :periodId="searchForm.periodId"
+        ></tl-okrform>
+        <div>
+          <span>变更原因</span>
+          <el-form :model="reason" ref="reasonForm">
+            <el-form-item
+              prop="modifyReason"
+              :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+            >
+              <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="validateForm" class="tl-btn amt-bg-slip">提交</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
 
     <el-drawer
@@ -76,67 +86,6 @@
       custom-class="diy-drawer associated-undertaking"
       class="tl-drawer"
     >
-      <!-- 公共信息 -->
-      <div class="dl-list">
-        <dl>
-          <dt>
-            <i class="el-icon-s-flag"></i>
-            <em>目标类型</em>
-          </dt>
-          <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
-        </dl>
-        <dl>
-          <dt>
-            <i class="el-icon-s-custom"></i>
-            <em>负责人</em>
-          </dt>
-          <dd>{{okrmain.userName}}</dd>
-        </dl>
-        <dl>
-          <dt>
-            <i class="el-icon-timer"></i>
-            <em>更新时间</em>
-          </dt>
-          <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
-        </dl>
-        <dl>
-          <dt>
-            <i class="el-icon-odometer"></i>
-            <em>进度</em>
-          </dt>
-          <dd>
-            <tl-process :data="okrmain.okrProgress"></tl-process>
-          </dd>
-        </dl>
-      </div>
-      <!-- okr折叠面板 -->
-      <tl-okrcollapse
-        ref="okrCollapse"
-        :tableList="tableList"
-        :canWrite="true"
-        @openUndertake="openUndertakepage"
-      ></tl-okrcollapse>
-      <!-- 新增okr -->
-      <tl-okrform
-        ref="okrform"
-        :searchForm="searchForm"
-        :server="server"
-        :canWrite="true"
-        :isnew="false"
-        :periodId="searchForm.periodId"
-      ></tl-okrform>
-      <!-- 变更原因 -->
-      <div>
-        <span>变更原因</span>
-        <el-form :model="reason" ref="reasonForm">
-          <el-form-item
-            prop="modifyReason"
-            :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
-          >
-            <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
       <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -146,6 +95,7 @@
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
+        :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
         <el-button type="primary" @click="summitUndertake">确定</el-button>
@@ -178,9 +128,9 @@ export default {
       tableList: [], // okr列表
       okrmain: {}, // 公共信息
       departokrList: [], // 可关联承接的okr
-      departokrObject: '',
+      departokrObject: '{}',
       philosophyList: [], // 价值观
-      philosophyObject: {},
+      philosophyObject: '{}',
       selectDeletedId: '',
       reason: {
         modifyReason: '', // 变更原因
@@ -198,6 +148,10 @@ export default {
       okrPeriod: {},
       selectRadioDepart: '',
       myokrDrawer: false,
+      detialP: {},
+      undertakeP: {},
+      originalObject: '{}',
+      currentOption: '',
     };
   },
   components: {
@@ -242,84 +196,124 @@ export default {
     // 按周期查可关联承接的okr
     searchOkr() {
       if (this.searchForm.periodId) {
-        this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
-          if (res.code == 200) {
-            if (res.data.parentUndertakeOkrInfoResult) {
-              this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-              res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-                this.departokrList.push({
-                  typeName: '目标',
-                  okrKind: 'o',
-                  okrDetailObjectKr: item.o.okrDetailObjectKr,
-                  okrDetailId: item.o.okrDetailId,
-                  okrDetailVersion: item.o.okrDetailVersion,
-                });
-                if (item.krList && item.krList.length > 0) {
-                  item.krList.forEach((krItem) => {
-                    this.departokrList.push({
-                      typeName: 'KR',
-                      okrKind: 'k',
-                      okrDetailObjectKr: krItem.okrDetailObjectKr,
-                      okrDetailId: krItem.okrDetailId,
-                      okrDetailVersion: krItem.okrDetailVersion,
-                    });
+        this.undertakeP = new Promise(((resolve) => {
+          this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
+            if (res.code == 200) {
+              if (res.data.parentUndertakeOkrInfoResult) {
+                this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+                res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+                  this.departokrList.push({
+                    typeName: '目标',
+                    okrKind: 'o',
+                    okrDetailObjectKr: item.o.okrDetailObjectKr,
+                    okrDetailId: item.o.okrDetailId,
+                    okrDetailVersion: item.o.okrDetailVersion,
                   });
-                }
-              });
-            } else {
-              this.departokrList = [];
+                  if (item.krList && item.krList.length > 0) {
+                    item.krList.forEach((krItem) => {
+                      this.departokrList.push({
+                        typeName: 'KR',
+                        okrKind: 'k',
+                        okrDetailObjectKr: krItem.okrDetailObjectKr,
+                        okrDetailId: krItem.okrDetailId,
+                        okrDetailVersion: krItem.okrDetailVersion,
+                      });
+                    });
+                  }
+                });
+              } else {
+                this.departokrList = [];
+              }
+              // 将可承接列表转换成字符串
+              this.departokrObject = JSON.stringify(this.departokrList);
+              console.log('可关联承接的okr');
             }
-            // 将可承接列表转换成字符串
-            this.departokrObject = JSON.stringify(this.departokrList);
-          }
-        });
+          });
+          resolve('可关联承接的okr');
+        }));
       }
     },
     // 查公司价值观
     getCultureList() {
-      this.server.queryCultureList().then((res) => {
-        if (res.code == 200) {
-          this.philosophyList = res.data;
-          this.philosophyList.forEach((item) => {
-            item.checkFlag = false;
-          });
-          // 将价值观列表转换成字符串
-          this.philosophyObject = JSON.stringify(this.philosophyList);
-        }
-      });
+
     },
     // 查okr详情
     getokrDetail() {
-      const detialP = new Promise(((resolve) => {
-        this.getCultureList();
-        resolve('p1 data');
-      }));
+      if (this.searchForm.periodId) {
+        const undertakeP = new Promise(((resolve) => {
+          this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
+            if (res.code == 200) {
+              if (res.data.parentUndertakeOkrInfoResult) {
+                this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
+                res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
+                  this.departokrList.push({
+                    typeName: '目标',
+                    okrKind: 'o',
+                    okrDetailObjectKr: item.o.okrDetailObjectKr,
+                    okrDetailId: item.o.okrDetailId,
+                    okrDetailVersion: item.o.okrDetailVersion,
+                  });
+                  if (item.krList && item.krList.length > 0) {
+                    item.krList.forEach((krItem) => {
+                      this.departokrList.push({
+                        typeName: 'KR',
+                        okrKind: 'k',
+                        okrDetailObjectKr: krItem.okrDetailObjectKr,
+                        okrDetailId: krItem.okrDetailId,
+                        okrDetailVersion: krItem.okrDetailVersion,
+                      });
+                    });
+                  }
+                });
+              } else {
+                this.departokrList = [];
+              }
+              // 将可承接列表转换成字符串
+              this.departokrObject = JSON.stringify(this.departokrList);
+              resolve(res.code);
+            } else {
+              resolve('not');
+            }
+          });
+        }));
+        const detialP = new Promise(((resolve) => {
+          this.server.queryCultureList().then((res) => {
+            if (res.code == 200) {
+              this.philosophyList = res.data;
+              this.philosophyList.forEach((item) => {
+                item.checkFlag = false;
+              });
+              // 将价值观列表转换成字符串
+              this.philosophyObject = JSON.stringify(this.philosophyList);
+              resolve(res.code);
+            } else {
+              resolve('not');
+            }
+          });
+        }));
 
-      const undertakeP = new Promise(((resolve) => {
-        this.searchOkr();
-        resolve('p2 data');
-      }));
-
-      Promise.all([detialP, undertakeP]).then((results) => {
-        console.log(results); // ["p1 data", ""p2 data""]
-
-        this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
-          if (res.code == 200) {
-            this.tableList = res.data.okrDetails;
-            this.okrmain = res.data.okrMain;
-            this.okrMainId = res.data.okrMain.okrId;
-            // this.voteUser = res.data.voteUser;
-            this.tableList.forEach((item) => {
-              item.departokrList = JSON.parse(this.departokrObject) || [];
-              item.philosophyList = JSON.parse(this.philosophyObject) || [];
-              if (item.parentUpdate) {
-                // 关联承接变更接口
-                this.getOkrModifyUndertakeOkrList(item);
+        Promise.all([detialP, undertakeP]).then((results) => {
+          if (results) {
+            this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
+              if (res.code == 200) {
+                this.originalObject = JSON.stringify(res.data.okrDetails);
+                this.tableList = res.data.okrDetails;
+                this.okrmain = res.data.okrMain;
+                this.okrMainId = res.data.okrMain.okrId;
+                // this.voteUser = res.data.voteUser;
+                this.tableList.forEach((item) => {
+                  item.departokrList = JSON.parse(this.departokrObject) || [];
+                  item.philosophyList = JSON.parse(this.philosophyObject) || [];
+                  if (item.parentUpdate) {
+                    // 关联承接变更接口
+                    this.getOkrModifyUndertakeOkrList(item);
+                  }
+                });
               }
             });
           }
         });
-      });
+      }
     },
     // 可变更的关联承接项
     getOkrModifyUndertakeOkrList(okritem) {
@@ -338,11 +332,8 @@ export default {
             item.okrKind = item.okrDetailType === 1 ? 'k' : 'o';
             // 是否为当前选中
             if (item.currentOption) {
-              // okritem.undertakeOkrVo = {};
-              // okritem.undertakeOkrVo.undertakeOkrDetailId = item.okrDetailId;
-              // okritem.undertakeOkrVo.undertakeOkrContent = item.okrDetailId;
-              // okritem.undertakeOkrVo.undertakeOkrVersion = item.okrDetailId;
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              this.currentOption = item.okrDetailId;
               console.log('选中', item);
             }
           });
@@ -366,6 +357,11 @@ export default {
       this.selectRadioDepart = this.undertakeType == 'new'
         ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
         : this.tableList[this.selectIndex].currentOption;
+
+      // 打开前判断下有无数据
+      if (!this.tableList[this.selectIndex].departokrList) {
+        console.log('无数据');
+      }
       this.innerDrawer = true;
     },
     // 忽略
@@ -383,6 +379,16 @@ export default {
 
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
+      const undertakeOkrVo = {
+        okrDetailId: this.tableList[this.selectIndex].okrDetailId,
+        undertakeOkrDetailId: this.tableList[this.selectIndex].okrParentId,
+        undertakeOkrVersion: this.tableList[this.selectIndex].okrDetailParentVersion,
+      };
+      this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
+        if (res.code == 200) {
+          console.log('提交成功');
+        }
+      });
     },
     // 提交关联，给选中的o加上承接项
     summitUndertake() {
@@ -408,6 +414,51 @@ export default {
     },
 
     validateForm() {
+      // 校验是否有更改
+      let hasChange = true;
+      const originalList = JSON.parse(this.originalObject);
+      for (let index = 0; index < originalList.length; index += 1) {
+        if (originalList[index].okrDetailObjectKr != this.tableList[index].okrDetailObjectKr) {
+          hasChange = false;
+          break;
+        }
+        if (originalList[index].okrWeight != this.tableList[index].okrWeight) {
+          hasChange = false;
+          break;
+        }
+        if (this.tableList[index].undertakeOkrVo) {
+          hasChange = false;
+          break;
+        }
+        if (this.tableList[index].newkrList && this.tableList[index].newkrList.length > 0) {
+          hasChange = false;
+          break;
+        }
+        console.log('originalList[index]', originalList[index]);
+        console.log('this.tableList[index]', this.tableList[index]);
+        for (let krindex = 0; krindex < originalList[index].krList.length; krindex += 1) {
+          console.log(krindex);
+          // console.log('kr', originalList[index].krList[krindex], this.tableList[index].krList[krindex]);
+          if (originalList[index].krList[krindex].okrDetailObjectKr
+          != this.tableList[index].krList[krindex].okrDetailObjectKr) {
+            hasChange = false;
+            break;
+          }
+          if (originalList[index].krList[krindex].okrWeight
+          != this.tableList[index].krList[krindex].okrWeight) {
+            hasChange = false;
+            break;
+          }
+        }
+      }
+
+      if (hasChange) {
+        this.$xwarning({
+          title: '没有已修改的变更项，请勿提交',
+          content: '',
+        });
+        return;
+      }
       // 校验表单
       const okrformValid = this.$refs.okrform.$refs.dataForm;
       const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
@@ -546,6 +597,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

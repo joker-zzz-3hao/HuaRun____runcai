@@ -144,7 +144,6 @@ export default {
       default: false,
     },
     status: {
-      type: String,
       defalut: '1',
     },
   },
@@ -190,31 +189,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.collapse span,
-.collapsetitle span {
-  margin-left: 10px;
-}
-
-.collapsetitle {
-  margin-left: 250px;
-}
-.progresswidth {
-  width: 150px;
-  display: inline-block;
-}
-.detail,
-.detail li {
-  display: inline-flex;
-}
-.hideEdit {
-  display: inline-flex;
-}
-.hideEdit .el-icon-edit {
-  opacity: 0;
-}
-.hideEdit:hover .el-icon-edit {
-  opacity: 1;
-}
-</style>

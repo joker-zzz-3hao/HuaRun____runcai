@@ -24,7 +24,7 @@
     <div class="cont-panel">
       <div v-if="tableList.length>0" class="tl-card-panel">
         <div class="card-panel-head">
-          <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+          <div class="okr-title">{{okrCycle.periodName}}</div>
           <dl class="okr-state">
             <dt>
               <i class="el-icon-set-up"></i>
@@ -74,7 +74,7 @@
             :disabled="false"
             :showOKRInfoLabel="true"
             :status="searchForm.status"
-            @openDialog="openDialog()"
+            @openDialog="openDialog"
           >
             <template slot="head-undertake" slot-scope="props">
               <template
@@ -299,7 +299,7 @@ export default {
     },
     openDialog(val) {
       this.okrItem = val;
-      this.drawerTitle = `${this.okrCycle.periodName}OKR`;
+      this.drawerTitle = this.okrCycle.periodName;
       this.detailExist = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();

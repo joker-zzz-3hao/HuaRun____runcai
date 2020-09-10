@@ -230,9 +230,9 @@ export default {
         }],
       },
       departokrList: [], // 可关联承接的okr
-      departokrObject: '', // 可关联承接的okr
+      departokrObject: '{}', // 可关联承接的okr
       philosophyList: [], // 价值观
-      philosophyObject: '', // 价值观
+      philosophyObject: '{}', // 价值观
       okrPeriod: {}, // 周期
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号
@@ -265,7 +265,7 @@ export default {
     if (['6', '8'].includes(this.searchForm.okrStatus)) {
       this.getOkrDraftById();
     }
-    if (this.searchForm.okrStatus != '8') {
+    if (this.searchForm.okrStatus != '8' && this.isnew) {
       this.autosave();
     }
     // 自动保存
@@ -425,7 +425,6 @@ export default {
       this.innerDrawer = true;
       if (!this.formData.okrInfoList[this.selectIndex].departokrList
       || !this.formData.okrInfoList[this.selectIndex].philosophyList) {
-        console.log('消失了');
         this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.departokrObject);
         this.formData.okrInfoList[this.selectIndex].departokrList = JSON.parse(this.philosophyObject);
       }
@@ -503,12 +502,6 @@ export default {
         return;
       }
       if (this.formData.okrInfoList.length > 0) {
-        // this.formData.okrInfoList.forEach((oitem) => {
-        //   if (oitem.departokrList) {
-        //     delete oitem.departokrList;
-        //     delete oitem.philosophyList;
-        //   }
-        // });
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.okrDraftId = this.searchForm.draftId;
         this.server.saveOkrDraft(this.formData).then((res) => {
@@ -610,17 +603,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.objectdd,
-.objectdd div {
-  display: inline-block;
-}
-.okuang {
-  margin: 10px;
-  border: 1px solid rgb(190, 190, 190);
-}
-.el-drawer__body {
-  overflow: auto;
-}
-</style>
