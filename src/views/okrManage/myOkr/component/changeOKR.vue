@@ -18,7 +18,7 @@
           <dl>
             <dt>
               <i class="el-icon-s-flag"></i>
-              <em>目标类型</em>
+              <em>OKR类型</em>
             </dt>
             <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
           </dl>
@@ -95,6 +95,7 @@
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
+        :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
         <el-button type="primary" @click="summitUndertake">确定</el-button>
@@ -149,7 +150,8 @@ export default {
       myokrDrawer: false,
       detialP: {},
       undertakeP: {},
-      originalList: [],
+      originalObject: '{}',
+      currentOption: '',
     };
   },
   components: {
@@ -187,7 +189,6 @@ export default {
     },
     closed() {
       this.$emit('update:exist', false);
-      this.$emit('success');
     },
     close() {
       this.myokrDrawer = false;
@@ -295,8 +296,8 @@ export default {
           if (results) {
             this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
               if (res.code == 200) {
+                this.originalObject = JSON.stringify(res.data.okrDetails);
                 this.tableList = res.data.okrDetails;
-                this.originalList = res.data.okrDetails.slice(0);
                 this.okrmain = res.data.okrMain;
                 this.okrMainId = res.data.okrMain.okrId;
                 // this.voteUser = res.data.voteUser;
@@ -332,6 +333,7 @@ export default {
             // 是否为当前选中
             if (item.currentOption) {
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              this.currentOption = item.okrDetailId;
               console.log('选中', item);
             }
           });
@@ -414,14 +416,13 @@ export default {
     validateForm() {
       // 校验是否有更改
       let hasChange = true;
-      for (let index = 0; index < this.originalList.length; index += 1) {
-        console.log('承接', this.tableList[index].okrDetailObjectKr, this.originalList[index].okrDetailObjectKr);
-        if (this.originalList[index].okrDetailObjectKr != this.tableList[index].okrDetailObjectKr) {
+      const originalList = JSON.parse(this.originalObject);
+      for (let index = 0; index < originalList.length; index += 1) {
+        if (originalList[index].okrDetailObjectKr != this.tableList[index].okrDetailObjectKr) {
           hasChange = false;
-          console.log('承接', this.tableList[index].okrDetailObjectKr);
           break;
         }
-        if (this.originalList[index].okrWeight != this.tableList[index].okrWeight) {
+        if (originalList[index].okrWeight != this.tableList[index].okrWeight) {
           hasChange = false;
           break;
         }
@@ -429,7 +430,28 @@ export default {
           hasChange = false;
           break;
         }
+        if (this.tableList[index].newkrList && this.tableList[index].newkrList.length > 0) {
+          hasChange = false;
+          break;
+        }
+        console.log('originalList[index]', originalList[index]);
+        console.log('this.tableList[index]', this.tableList[index]);
+        for (let krindex = 0; krindex < originalList[index].krList.length; krindex += 1) {
+          console.log(krindex);
+          // console.log('kr', originalList[index].krList[krindex], this.tableList[index].krList[krindex]);
+          if (originalList[index].krList[krindex].okrDetailObjectKr
+          != this.tableList[index].krList[krindex].okrDetailObjectKr) {
+            hasChange = false;
+            break;
+          }
+          if (originalList[index].krList[krindex].okrWeight
+          != this.tableList[index].krList[krindex].okrWeight) {
+            hasChange = false;
+            break;
+          }
+        }
       }
+
       if (hasChange) {
         this.$xwarning({
           title: '没有已修改的变更项，请勿提交',
@@ -552,6 +574,7 @@ export default {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.close();
+          this.$emit('success');
         } else if (res.code === 30000) {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }

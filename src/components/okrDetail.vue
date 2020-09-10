@@ -21,7 +21,7 @@
                 <dl>
                   <dt>
                     <i class="el-icon-s-flag"></i>
-                    <em>目标类型</em>
+                    <em>OKR类型</em>
                   </dt>
                   <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
                 </dl>
