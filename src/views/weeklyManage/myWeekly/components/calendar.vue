@@ -119,7 +119,18 @@ export default {
           // 当前周
           this.weekIndex = this.weekList.indexOf(week); // 月份是本月
           // 如果查询的月份是本月，则将数据保存给currentMonthWeekList，并确认本周是本月第几周
-          if (this.monthDate == this.dateFormat('YYYY-mm-dd', new Date())) {
+          // 1、选择月份是当前月份；
+          // 2、选择月份是当前月份，但是跟最后一条数据的最后一天不是一个月。需要兼容
+          // 当前时间落在了最后一周内 this.weekIndex == this.weekList.length - 1
+          // 最后一周是跨了两个月new Date(this.weekList[this.weekList.length-1].weekEnd).getMonth()
+          // - new Date(this.weekList[this.weekList.length-1].weekEnd).weekBegin() == 1
+          // 且是时间所在月跟该周的最后一天是同一个月份 new Date().getMonth()
+          // == new Date(this.weekList[this.weekList.length-1].weekEnd).weekBegin()
+          if (new Date(this.monthDate).getMonth() == new Date().getMonth()
+          || (this.weekIndex == this.weekList.length - 1
+           && new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth()
+            - new Date(this.weekList[this.weekList.length - 1].weekEnd).weekBegin() == 1
+           && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).weekBegin())) {
             this.currentMonthWeekList = [...this.weekList];
             this.currentWeekIndex = this.weekList.indexOf(week);
           }
@@ -127,18 +138,18 @@ export default {
       });
       // 1、本月：本周之后的周不可点击,上周之前不可编辑
       if (new Date().getMonth() == new Date(this.weekList[2].weekBegin).getMonth()) {
-        this.setCurrentWeekData();
+        this.setCurrentMonthData();
       }
       // 2、下个月以及之后,月份不可选,组件已配置
       // 3、上个月以及更早,选择的是之前的月份
       if (new Date(newMonth).getMonth() < new Date(this.currentMonthWeekList[2].weekBegin).getMonth()) {
-        this.setPreviousWeekData();
+        this.setPreviousMonthData();
       }
       this.$forceUpdate();
     },
-    setCurrentWeekData() {
+    setCurrentMonthData() {
       for (let i = 0; i < this.weekList.length; i += 1) {
-        if (i > this.weekIndex) { // 今天之后
+        if (i > this.weekIndex) { // 本周之后
           this.weekList[i].canClick = false;
           this.weekList[i].canEdit = false;
         } else if (i < this.weekIndex - 1) { // 两周之前
@@ -150,7 +161,7 @@ export default {
         }
       }
     },
-    setPreviousWeekData() { // 1、选中月是上个月
+    setPreviousMonthData() { // 1、选中月是上个月
       if (new Date(this.currentMonthWeekList[2].weekBegin).getMonth() - new Date(this.monthDate).getMonth() == 1) {
         // 1、 上个月最后一周是本月第一周
         // 被选择月份的最后一周的数据跟本月第一周数据相同
