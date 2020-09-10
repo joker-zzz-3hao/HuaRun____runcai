@@ -51,7 +51,34 @@
           :tableList="tableList"
           :canWrite="true"
           @openUndertake="openUndertakepage"
-        ></tl-okrcollapse>
+        >
+          <template slot="head-bar" slot-scope="props">
+            <el-tooltip
+              v-if="props.okritem.versionCount > 1"
+              class="history-version"
+              effect="dark"
+              content="历史版本"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >
+              <i class="el-icon-time"></i>
+            </el-tooltip>
+          </template>
+          <template slot="body-bar" slot-scope="props">
+            <el-tooltip
+              v-if="props.okritem.versionCount > 1"
+              class="history-version"
+              effect="dark"
+              content="历史版本"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >
+              <i class="el-icon-time"></i>
+            </el-tooltip>
+          </template>
+        </tl-okrcollapse>
         <tl-okrform
           ref="okrform"
           :searchForm="searchForm"
@@ -103,6 +130,25 @@
         <el-button @click="innerDrawer = false">取消</el-button>
       </div>
     </el-drawer>
+    <el-drawer
+      :modal="false"
+      :wrapperClosable="false"
+      :append-to-body="true"
+      class="tl-drawer"
+      custom-class="diy-drawer history-version"
+      :visible.sync="historyDrawer"
+    >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">历史版本</div>
+      </div>
+      <tl-okr-history
+        v-if="historyDrawer"
+        ref="tl-okr-history"
+        :server="server"
+        :okrDetailId="okrDetailId"
+        :okrmain="okrmain"
+      ></tl-okr-history>
+    </el-drawer>
   </el-drawer>
 </template>
 
@@ -111,6 +157,7 @@ import process from '@/components/process';
 import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
+import okrHistory from '@/components/okrHistory';
 import okrForm from './writeOkr/component/okrForm';
 import undertakeTable from './writeOkr/component/undertakeTable';
 import CONST from '../const';
@@ -152,6 +199,7 @@ export default {
       undertakeP: {},
       originalObject: '{}',
       currentOption: '',
+      historyDrawer: false,
     };
   },
   components: {
@@ -159,6 +207,7 @@ export default {
     'tl-undertaketable': undertakeTable,
     'tl-okrform': okrForm,
     'tl-process': process,
+    'tl-okr-history': okrHistory,
   },
   props: {
     writeInfo: {
@@ -579,6 +628,12 @@ export default {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
+    },
+    // 打开历史版本
+    openHistory(id, name) {
+      console.log(name);
+      this.okrDetailId = id;
+      this.historyDrawer = true;
     },
   },
   watch: {
