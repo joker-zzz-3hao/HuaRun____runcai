@@ -12,103 +12,163 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
     </div>
-    <el-tabs v-model="activeName" class="tl-tabs">
-      <el-tab-pane label="详情" name="detail">
-        <div class="dl-list">
-          <dl>
-            <dt>
-              <i class="el-icon-s-flag"></i>
-              <em>目标类型</em>
-            </dt>
-            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
-          </dl>
-          <dl>
-            <dt>
-              <i class="el-icon-s-custom"></i>
-              <em>负责人</em>
-            </dt>
-            <dd>{{okrmain.userName}}</dd>
-          </dl>
-          <dl>
-            <dt>
-              <i class="el-icon-timer"></i>
-              <em>更新时间</em>
-            </dt>
-            <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
-          </dl>
-          <dl>
-            <dt>
-              <i class="el-icon-odometer"></i>
-              <em>进度</em>
-            </dt>
-            <dd>
-              <tl-process :data="okrmain.okrProgress"></tl-process>
-            </dd>
-          </dl>
-        </div>
-        <tl-okr-collapse :tableList="tableList">
-          <template slot="head-bar" slot-scope="props">
-            <el-tooltip
-              v-if="props.okritem.versionCount > 1"
-              class="history-version"
-              effect="dark"
-              content="历史版本"
-              placement="top"
-              popper-class="tl-tooltip-popper"
-              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-            >
-              <i class="el-icon-time"></i>
-            </el-tooltip>
-          </template>
-          <template slot="body-bar" slot-scope="props">
-            <el-tooltip
-              v-if="props.okritem.versionCount > 1"
-              class="history-version"
-              effect="dark"
-              content="历史版本"
-              placement="top"
-              popper-class="tl-tooltip-popper"
-              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-            >
-              <i class="el-icon-time"></i>
-            </el-tooltip>
-          </template>
-        </tl-okr-collapse>
-      </el-tab-pane>
-      <el-tab-pane label="操作历史" name="history" v-if="this.okrId">
-        <!-- 操作历史 -->
-        <div>
-          <span>操作历史</span>
-          <el-timeline>
-            <el-timeline-item
-              v-for="(activity, index) in cycleList"
-              :key="index"
-              :timestamp="activity.createTime"
-              placement="top"
-            >
-              <div v-if="activity.operateType=='update'">
-                <span>{{userName}}</span>
-                <span>{{activity.operateTypeCn}}</span>
-                <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                  <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                  <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
-                  <span
-                    v-if="uitem.updateContents.afterProgress"
-                  >进度为{{uitem.updateContents.afterProgress}}%</span>
-                  <span
-                    v-if="uitem.updateContents.afterConfidence"
-                  >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
-                </div>
-                <div v-if="activity.remark">
-                  <span>说明：</span>
-                  <span>{{activity.remark}}</span>
-                </div>
+    <el-scrollbar>
+      <div class="cont-box">
+        <tl-tabs :current.sync="currentIndex">
+          <template slot="tab-cont">
+            <div v-if="currentIndex===0" class="tab-cont">
+              <div class="dl-list">
+                <dl>
+                  <dt>
+                    <i class="el-icon-s-flag"></i>
+                    <em>OKR类型</em>
+                  </dt>
+                  <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+                </dl>
+                <dl>
+                  <dt>
+                    <i class="el-icon-s-custom"></i>
+                    <em>负责人</em>
+                  </dt>
+                  <dd>{{okrmain.userName}}</dd>
+                </dl>
+                <dl>
+                  <dt>
+                    <i class="el-icon-timer"></i>
+                    <em>更新时间</em>
+                  </dt>
+                  <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+                </dl>
+                <dl>
+                  <dt>
+                    <i class="el-icon-odometer"></i>
+                    <em>进度</em>
+                  </dt>
+                  <dd>
+                    <tl-process :data="okrmain.okrProgress"></tl-process>
+                  </dd>
+                </dl>
               </div>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+              <tl-okr-collapse :tableList="tableList">
+                <template slot="head-bar" slot-scope="props">
+                  <el-tooltip
+                    v-if="props.okritem.versionCount > 1"
+                    class="history-version"
+                    effect="dark"
+                    content="历史版本"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                    @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  >
+                    <i class="el-icon-time"></i>
+                  </el-tooltip>
+                </template>
+                <template slot="body-bar" slot-scope="props">
+                  <el-tooltip
+                    v-if="props.okritem.versionCount > 1"
+                    class="history-version"
+                    effect="dark"
+                    content="历史版本"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                    @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  >
+                    <i class="el-icon-time"></i>
+                  </el-tooltip>
+                </template>
+              </tl-okr-collapse>
+            </div>
+            <div v-else-if="currentIndex===1" class="tab-cont">
+              <dl>
+                <dt>
+                  <div class="operate-time">{{cycleFirst.createTime}}</div>
+                  <div class="operate-cont">
+                    <div class="operate-type">
+                      <em>{{userName}}</em>
+                      <span>{{cycleFirst.operateTypeCn}}</span>
+                    </div>
+                    <div
+                      class="operate-kind"
+                      v-for="uitem in cycleFirst.okrDetailId"
+                      :key="uitem.id"
+                    >
+                      <div class="kind-type">
+                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                        <em>{{uitem.okrDetailObjectKr}}</em>
+                      </div>
+                      <div class="kind-cont">
+                        <p v-if="uitem.updateContents.afterProgress"></p>
+                        <span>进度为</span>
+                        <em>{{uitem.updateContents.afterProgress}}</em>
+                        <span>%</span>
+                        <p v-if="uitem.updateContents.afterConfidence">
+                          <span>风险状态修改为</span>
+                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="operate-reason" v-if="cycleFirst.remark">
+                      <span>说明：</span>
+                      <em>{{cycleFirst.remark}}</em>
+                    </div>
+                  </div>
+                </dt>
+                <dd v-for="activity in cycleList" :key="activity.id">
+                  <div class="operate-time">{{activity.createTime}}</div>
+                  <div class="operate-cont">
+                    <div class="operate-type">
+                      <em>{{userName}}</em>
+                      <span>{{activity.operateTypeCn}}</span>
+                    </div>
+                    <div class="operate-kind" v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                      <div class="kind-type">
+                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                        <em>{{uitem.okrDetailObjectKr}}</em>
+                      </div>
+                      <div class="kind-cont">
+                        <p v-if="uitem.updateContents.afterProgress"></p>
+                        <span>进度为</span>
+                        <em>{{uitem.updateContents.afterProgress}}</em>
+                        <span>%</span>
+                        <p v-if="uitem.updateContents.afterConfidence">
+                          <span>风险状态修改为</span>
+                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="operate-reason" v-if="activity.remark">
+                      <span>说明：</span>
+                      <em>{{activity.remark}}</em>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+              <!-- <el-timeline>
+                <el-timeline-item :timestamp="activity.createTime" placement="top">
+                  <div v-if="activity.operateType=='update'">
+
+                    <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                      <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                      <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
+                      <span
+                        v-if="uitem.updateContents.afterProgress"
+                      >进度为{{uitem.updateContents.afterProgress}}%</span>
+                      <span
+                        v-if="uitem.updateContents.afterConfidence"
+                      >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
+                    </div>
+                    <div v-if="activity.remark">
+                      <span>说明：</span>
+                      <span>{{activity.remark}}</span>
+                    </div>
+                  </div>
+                </el-timeline-item>
+              </el-timeline>-->
+            </div>
+          </template>
+        </tl-tabs>
+      </div>
+    </el-scrollbar>
     <!-- 点赞要一直浮着 -->
     <div v-if="showSupport" class="img-list">
       <dl>
@@ -214,6 +274,7 @@
 <script>
 import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
+import tabs from '@/components/tabs';
 import okrHistory from './okrHistory';
 
 export default {
@@ -234,12 +295,15 @@ export default {
       showMore: true,
       cutVoteList: [],
       voteLength: 0,
+      currentIndex: 0,
+      cycleFirst: {},
     };
   },
   components: {
     'tl-okr-history': okrHistory,
     'tl-okr-collapse': okrCollapse,
     'tl-process': process,
+    'tl-tabs': tabs,
   },
   props: {
     dialogExist: {
@@ -359,6 +423,7 @@ export default {
               });
             }
           });
+          this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
         }
       });
     },

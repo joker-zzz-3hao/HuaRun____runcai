@@ -26,16 +26,18 @@
       <dl class="dl-item">
         <dt>状态</dt>
         <dd class="tl-diy-tabs">
-          <ul class="tab-list">
-            <li
-              v-for="(item,idx) in CONST.STATUS_LIST"
-              :key="item.id"
-              :class="{'is-focus': currentIndex == idx}"
-            >
-              <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
-            </li>
-          </ul>
-          <div class="border-slip"></div>
+          <div class="tab-menus">
+            <ul class="tab-list">
+              <li
+                v-for="(item,idx) in CONST.STATUS_LIST"
+                :key="item.id"
+                :class="{'is-focus': currentIndex == idx}"
+              >
+                <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
+              </li>
+            </ul>
+            <div class="border-slip"></div>
+          </div>
         </dd>
       </dl>
     </div>
@@ -155,7 +157,10 @@
         </div>
       </template>
       <!-- 加载中 -->
-      <div v-else-if="loading" class="tl-card-panel"></div>
+      <div v-else-if="loading" class="tl-card-panel no-data">
+        <i class="el-icon-loading"></i>
+        <em>加载中...</em>
+      </div>
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data">暂无数据</div>
       </div>
@@ -175,7 +180,7 @@
       v-if="changeokrExist"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
-      @success="searchOkr('1')"
+      @success="searchOkr(searchForm.status)"
     ></tl-changeokr>
     <tl-okr-detail
       ref="tl-okr-detail"
@@ -195,7 +200,7 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      @success="searchOkr('1')"
+      @success="searchOkr(searchForm.status)"
     ></tl-okr-update>
   </div>
 </template>

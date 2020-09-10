@@ -378,7 +378,7 @@ export default {
       this.refreshPageList();
     },
     refreshPageList(calender) {
-      if (calender.calendarId) {
+      if (calender && calender.calendarId) {
         this.canEdit = calender.canEdit;
       }
       if (this.formData.queryType) {

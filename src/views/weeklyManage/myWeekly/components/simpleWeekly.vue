@@ -137,7 +137,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="code">
+          <el-table-column prop="code">
             <template slot-scope="scope">
               <el-dropdown
                 @command="deleteItem(scope.row)"
@@ -155,7 +155,7 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <el-button @click="addItem" style>新增</el-button>
+      <el-button @click="addItem" style>添加</el-button>
     </div>
     <!-- 个人OKR完成度 -->
     <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
@@ -319,12 +319,12 @@ export default {
         return [];
       },
     },
-    projectList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+    // projectList: {
+    //   type: Array,
+    //   default() {
+    //     return [];
+    //   },
+    // },
     cultureList: {
       type: Array,
       default() {
@@ -424,7 +424,8 @@ export default {
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
-      this.thisPageProjectList = [...this.projectList];
+      // this.thisPageProjectList = [...this.projectList];
+      this.remoteMethod();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -523,17 +524,17 @@ export default {
     },
 
     remoteMethod(query) {
-      if (query !== '') {
-        this.server.getProjectList({
-          pageSize: 20,
-          currentPage: 1,
-          projectName: query,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.thisPageProjectList = res.data.content;
-          }
-        });
-      }
+      // if (query !== '') {
+      this.server.getProjectList({
+        pageSize: 20,
+        currentPage: 1,
+        projectName: query,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.thisPageProjectList = res.data.content;
+        }
+      });
+      // }
     },
     addItem() { // 添加本地数据
       this.addWork();

@@ -3,15 +3,20 @@
     <div class="cont-box">
       <dl class="dl-list">
         <dt class="list-title">
-          <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
+          <em>{{okrmain.orgName}}{{okrmain.periodName}}</em>
         </dt>
-        <dd v-for="(item) in historyOKRList" :key="item.okrDetailId" class="tag-kind">
+        <dd
+          v-for="(item) in historyOKRList"
+          :key="item.okrDetailId"
+          class="tag-kind"
+          :class="{'has-reason': item.remark}"
+        >
           <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
           <span v-else class="kind-child">KR</span>
           <em>{{item.versionName}}</em>
           <div>
             <p>{{item.objectName}}</p>
-            <p v-if="item.modifyReason">变更原因：{{item.modifyReason}}</p>
+            <p v-if="item.remark">变更原因：{{item.remark}}</p>
           </div>
         </dd>
       </dl>
@@ -73,6 +78,7 @@ export default {
               okrWeight: oitem.okrWeight, // 权重
               okrDetailParentObjectKr: oitem.okrDetailParentObjectKr, // 承接的okr
               okrDetailParentVersion: oitem.okrDetailParentVersion, // 承接的版本
+              remark: oitem.remark,
             });
           });
         }

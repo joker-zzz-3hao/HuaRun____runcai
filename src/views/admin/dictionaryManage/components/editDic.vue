@@ -7,7 +7,7 @@
 <template>
   <div>
     <div>
-      <el-form ref="dicForm" :model="formData">
+      <el-form ref="dicForm" :model="formData" label-width="80px">
         <el-form-item
           label="字典编号"
           prop="code"
@@ -95,7 +95,7 @@
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime">
             <template slot-scope="scope">
-              <span>{{scope.row.createTime ?scope.row.createTime :'--' }}</span>
+              <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="code">

@@ -14,6 +14,6 @@ export default class Server extends ServerBase {
   }
 
   okrOperationHistory(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrOperationHistory', param);
+    return this._ajaxPost('gateway/talent-okr/okr/okrOperateHistory/getOkrApproveHistory', param);
   }
 }
