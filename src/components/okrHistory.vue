@@ -3,7 +3,7 @@
     <div class="cont-box">
       <dl class="dl-list">
         <dt class="list-title">
-          <em>{{okrmain.orgName}}{{okrmain.periodName}}OKR</em>
+          <em>{{okrmain.orgName}}{{okrmain.periodName}}</em>
         </dt>
         <dd
           v-for="(item) in historyOKRList"

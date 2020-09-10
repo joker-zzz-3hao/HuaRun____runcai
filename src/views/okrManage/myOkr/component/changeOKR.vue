@@ -95,6 +95,7 @@
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
+        :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
         <el-button type="primary" @click="summitUndertake">确定</el-button>
@@ -150,6 +151,7 @@ export default {
       detialP: {},
       undertakeP: {},
       originalObject: '{}',
+      currentOption: '',
     };
   },
   components: {
@@ -331,6 +333,7 @@ export default {
             // 是否为当前选中
             if (item.currentOption) {
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
+              this.currentOption = item.okrDetailId;
               console.log('选中', item);
             }
           });
