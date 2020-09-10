@@ -145,7 +145,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column>
             <template slot-scope="scope">
               <el-dropdown
                 @command="deleteItem(scope.row)"
@@ -163,7 +163,7 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <el-button @click="addItem" style>新增</el-button>
+      <el-button @click="addItem" style>添加</el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
     <div style="marginTop:50px">
@@ -232,7 +232,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="code">
+          <el-table-column prop="code">
             <template slot-scope="scope">
               <el-dropdown @command="deletePlanItem(scope.row)">
                 <span class="el-dropdown-link">
