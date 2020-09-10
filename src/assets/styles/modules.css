@@ -1375,19 +1375,21 @@
 /* tabs */
 .tl-diy-tabs {
   height: 100%;
-}
+} 
 
 .tl-diy-tabs .tab-menus {
   position: relative;
   height: 100%;
 }
 
-.tl-diy-tabs .tab-menus::after {
+.diy-drawer .tl-diy-tabs .tab-menus::after {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
   content: '';
   height: 1px;
+  background: #e8ecf0;
 }
 
 .tl-diy-tabs .tab-list {
@@ -1423,6 +1425,10 @@
   height: 3px;
   background: #685df1;
   transition: all .2s ease-out;
+}
+
+.diy-drawer .tl-diy-tabs .border-slip {
+  bottom: 1px;
 }
 
 /* 标记 */

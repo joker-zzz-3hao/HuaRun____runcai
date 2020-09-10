@@ -11,7 +11,7 @@
       </ul>
       <div class="border-slip"></div>
     </div>
-    <slot name="tabs-cont"></slot>
+    <slot name="tab-cont"></slot>
   </div>
 </template>
 

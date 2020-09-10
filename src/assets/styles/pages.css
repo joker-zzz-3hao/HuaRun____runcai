@@ -415,8 +415,17 @@
   padding: 0 28px 0 30px;
 }
 
+.okr-detail .cont-box {
+  margin: 0;
+}
+
 .okr-detail .tab-menus {
+  padding: 0 0 0 30px;
   height: 40px;
+}
+
+.okr-detail .tab-cont {
+  padding: 20px 28px 0 30px;
 }
 
 .okr-detail .img-list {
