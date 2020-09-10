@@ -53,7 +53,7 @@
           >
             <el-input
               type="textarea"
-              placeholder="请输入退回原因，不超过100个字符"
+              placeholder="请输入审核意见，不超过100个字符"
               v-model.trim="ruleForm.refuseInfo"
               :maxlength="100"
             ></el-input>
@@ -75,19 +75,10 @@
           :key="item.id"
         >
           <div style="display: flex;">
-            <div>
-              <div
-                v-if="item.remark && JSON.parse(item.remark).approvalStatus == '0'"
-              >{{JSON.parse(item.remark).createName}}</div>
-              <div v-else>{{JSON.parse(item.remark).approveName}}</div>
-            </div>
-            <div
-              v-if="item.remark"
-            >{{`「${CONST.APPROVAL_HISTROY_MAP[JSON.parse(item.remark).approvalStatus]}」`}}</div>
-            <div v-if="item.remark && JSON.parse(item.remark).approvalStatus == '2'">意见</div>
-            <div
-              v-if="item.remark && JSON.parse(item.remark).approvalStatus == '2'"
-            >{{`「${item.content}」`}}</div>
+            <div>{{item.userName}}</div>
+            <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
+            <div v-if="item.reason">意见</div>
+            <div v-if="item.reason">{{`「${item.reason}」`}}</div>
           </div>
         </el-timeline-item>
       </el-timeline>
@@ -159,15 +150,25 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        userId: this.data.createUser,
-        periodId: this.data.periodId,
+        okrMainId: this.data.okrMainId,
+        approvalId: this.data.approvalId,
       }).then((res) => {
         if (res.code == '200') {
-          this.cycleList = res.data.content;
+          this.cycleList = res.data;
+          this.cycleList.forEach((item) => {
+            const contents = JSON.parse(item.remark);
+            item.approvalStatus = contents.approvalStatus;
+          });
         }
       });
     },
     backList() {
+      this.setOkrApprovalStep('1');
+    },
+    // 取消
+    resetForm() {
+      this.ruleForm.approvalStatus = '1';
+      this.ruleForm.refuseInfo = '';
       this.setOkrApprovalStep('1');
     },
   },
