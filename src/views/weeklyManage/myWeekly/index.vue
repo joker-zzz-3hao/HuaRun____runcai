@@ -6,14 +6,14 @@
       <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
       <div v-if="!this.weeklyData.weeklyId">
         <el-button
-          v-if="weeklyType == '1'|| weeklyTypeList.includes('1')"
+          v-if="weeklyTypeList.includes('1')"
           @click="standard"
-          :class="{'is-stantard':weeklyType=='1'}"
+          :class="{'is-stantard':weeklyTypeList.includes('1')}"
         >标准版</el-button>
         <el-button
-          v-if="weeklyType == '2'|| weeklyTypeList.includes('2')"
+          v-if="weeklyTypeList.includes('2')"
           @click="simple"
-          :class="{'is-stantard':weeklyType=='2'}"
+          :class="{'is-stantard': !weeklyTypeList.includes('1')}"
         >简单版</el-button>
       </div>
       <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
@@ -42,11 +42,10 @@
         :orgOkrList="orgOkrList"
         :originalMyOkrList="originalMyOkrList"
         :originalOrgOkrList="originalOrgOkrList"
-        :projectList="projectList"
         :cultureList="cultureList"
         :canEdit="canEdit"
         @refreshMyOkr="refreshMyOkr"
-        v-if="weeklyType=='1'"
+        v-if="weeklyType == '1'"
       ></standard-Weekly>
       <!-- 简单版 -->
       <simple-weekly
@@ -57,7 +56,6 @@
         :orgOkrList="orgOkrList"
         :originalMyOkrList="originalMyOkrList"
         :originalOrgOkrList="originalOrgOkrList"
-        :projectList="projectList"
         :cultureList="cultureList"
         :canEdit="canEdit"
         @refreshMyOkr="refreshMyOkr"
@@ -94,7 +92,6 @@ export default {
       orgOkrList: [],
       originalMyOkrList: [],
       originalOrgOkrList: [],
-      projectList: [],
       cultureList: [],
       canEdit: false,
     };
@@ -107,10 +104,6 @@ export default {
       this.queryTeamOrPersonalTarget('my');
       this.queryTeamOrPersonalTarget('org');
       this.getValues();
-      // 获取项目列表
-      this.getProjectList();
-      // 读取该用户配置（简单版还是标准版），
-      // this.getTypeConfig();
     },
     refreshMyOkr() {
       this.queryTeamOrPersonalTarget('my');
@@ -122,17 +115,7 @@ export default {
         }
       });
     },
-    getProjectList(projectName) {
-      this.server.getProjectList({
-        pageSize: 20,
-        currentPage: 1,
-        projectName: projectName || '',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.projectList = res.data.content;
-        }
-      });
-    },
+
     queryTeamOrPersonalTarget(myOrOrg) {
       const params = {
         myOrOrg,
@@ -201,14 +184,13 @@ export default {
             this.$forceUpdate();
           });
         } else {
-          this.weeklyType = '1';
           this.newPage = true;
-          this.getTypeConfig();// 在这调用，防止俩标签闪烁
+          this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
           this.$forceUpdate();
         }
       });
     },
-    getTypeConfig() {
+    getTypeConfig(writeStatus) {
       this.server.getTypeConfig({
         sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
       }).then((res) => {
@@ -217,6 +199,14 @@ export default {
             this.weeklyTypeList = res.data[0].configItemCode.split(',');
           } else {
             this.weeklyTypeList = ['1', '2'];
+          }
+        }
+        // 未提交周报时，给周报模式赋值
+        if (writeStatus && writeStatus == 'noWrite') {
+          if (this.weeklyTypeList.includes('1')) {
+            this.weeklyType = '1';
+          } else {
+            this.weeklyType = '2';
           }
         }
       });

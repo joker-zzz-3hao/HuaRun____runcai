@@ -1,51 +1,64 @@
 <template>
-  <div class="data-dictionary">
-    <div>数据字典</div>
-    <!-- <div slot="searchBar"> -->
-    <el-form @keyup.enter.native="searchList()">
-      <el-form-item>
-        <el-input v-model="keyWord" placeholder="输入字典编号/名称" maxlength="50" clearable></el-input>
-      </el-form-item>
-    </el-form>
-    <!-- </div>
-    <div slot="actionBar">-->
-    <div>
-      <el-button @click="createDic">新增字典</el-button>
-    </div>
-    <div>
-      <el-button @click="searchList">查询</el-button>
-    </div>
-    <!-- </div> -->
-    <crcloud-table
-      :total="total"
-      :pageSize.sync="pageSize"
-      :currentPage.sync="currentPage"
-      @searchList="searchList"
-    >
-      <div slot="tableContainer">
-        <el-table ref="dicTable" v-loading="loading" :data="tableData">
-          <el-table-column min-width="100px" align="left" prop="code" label="字典编号"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="name" label="字典名称"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="enabledFlag" label="状态">
-            <template slot-scope="scope">
-              <div>{{scope.row.enabledFlag == "Y" ? '启用' : '停用'}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
-          <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
-            <template slot-scope="scope">
-              <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column width="100px" align="left" label="操作">
-            <template slot-scope="scope">
-              <el-button type="text" @click="editDic(scope.row)">修改</el-button>
-              <el-button type="text" @click="deleteDic(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+  <div class="tenant-management">
+    <div class="operating-area">
+      <div class="page-title">数据字典管理</div>
+      <div class="operating-box">
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form-item>
+            <el-input
+              v-model="keyWord"
+              placeholder="输入字典编号/名称"
+              maxlength="50"
+              class="tl-input-search"
+              @keyup.enter.native="searchList"
+              clearable
+              @clear="clear"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          class="tl-btn amt-bg-slip"
+          @click="createDic"
+        >新增字典</el-button>
       </div>
-    </crcloud-table>
+    </div>
+    <div class="cont-area">
+      <crcloud-table
+        :total="total"
+        :pageSize.sync="pageSize"
+        :currentPage.sync="currentPage"
+        @searchList="searchList"
+      >
+        <div slot="tableContainer">
+          <el-table ref="dicTable" v-loading="loading" :data="tableData">
+            <el-table-column min-width="100px" align="left" prop="code" label="字典编号"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="name" label="字典名称"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="enabledFlag" label="状态">
+              <template slot-scope="scope">
+                <div>{{scope.row.enabledFlag == "Y" ? '启用' : '停用'}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
+              <template slot-scope="scope">
+                <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column width="130px" align="left" label="操作">
+              <template slot-scope="scope">
+                <el-button type="text" @click="editDic(scope.row)">修改</el-button>
+                <el-button type="text" @click="info(scope.row)">详情</el-button>
+                <el-button type="text" @click="deleteDic(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </crcloud-table>
+    </div>
     <tl-create-dic
       ref="createDic"
       v-if="showDicDialog"
@@ -71,12 +84,22 @@
         @closeDicDialog="closeDicDialog"
       ></tl-edit-dic>
     </el-drawer>
+    <tl-info
+      v-if="showinfo"
+      :exist.sync="showinfo"
+      :title="'详情'"
+      :server="server"
+      :codeId="codeId"
+      @closeDicDialog="closeDicDialog"
+      :before-close="closeDicDialog"
+    ></tl-info>
   </div>
 </template>
 
 <script>
 import createDic from './components/createDic';
 import editDic from './components/editDic';
+import info from './components/info';
 import Server from './server';
 
 const server = new Server();
@@ -86,12 +109,14 @@ export default {
   components: {
     'tl-create-dic': createDic,
     'tl-edit-dic': editDic,
+    'tl-info': info,
   },
   data() {
     return {
       server,
       showDicDialog: false,
       showEditDicDialog: false,
+      showinfo: false,
       keyWord: '',
       currentPage: 1,
       pageSize: 10,
@@ -142,6 +167,13 @@ export default {
       }
       this.showEditDicDialog = true;
     },
+    info(dic) {
+      if (dic.codeId) {
+        this.codeId = String(dic.codeId);
+        this.optionType = 'edit';
+      }
+      this.showinfo = true;
+    },
     deleteDic(dic) {
       this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
         this.server.deleteDic({ codeId: dic.codeId }).then((res) => {
@@ -159,6 +191,9 @@ export default {
       }
       this.showDicDialog = false;
       this.showEditDicDialog = false;
+    },
+    clear() {
+      this.searchList();
     },
   },
 };

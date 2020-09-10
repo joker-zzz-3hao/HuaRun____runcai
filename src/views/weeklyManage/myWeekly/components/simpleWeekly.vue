@@ -319,12 +319,12 @@ export default {
         return [];
       },
     },
-    projectList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+    // projectList: {
+    //   type: Array,
+    //   default() {
+    //     return [];
+    //   },
+    // },
     cultureList: {
       type: Array,
       default() {
@@ -424,7 +424,8 @@ export default {
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
-      this.thisPageProjectList = [...this.projectList];
+      // this.thisPageProjectList = [...this.projectList];
+      this.remoteMethod();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
@@ -523,17 +524,17 @@ export default {
     },
 
     remoteMethod(query) {
-      if (query !== '') {
-        this.server.getProjectList({
-          pageSize: 20,
-          currentPage: 1,
-          projectName: query,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.thisPageProjectList = res.data.content;
-          }
-        });
-      }
+      // if (query !== '') {
+      this.server.getProjectList({
+        pageSize: 20,
+        currentPage: 1,
+        projectName: query,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.thisPageProjectList = res.data.content;
+        }
+      });
+      // }
     },
     addItem() { // 添加本地数据
       this.addWork();
