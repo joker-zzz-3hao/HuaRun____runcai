@@ -77,7 +77,10 @@
           <div style="display: flex;">
             <div>{{item.userName}}</div>
             <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
-            <div v-if="item.reason">意见</div>
+            <div v-if="item.reason">
+              <span v-if="item.approvalStatus === 0">变更原因</span>
+              <span v-else>意见</span>
+            </div>
             <div v-if="item.reason">{{`「${item.reason}」`}}</div>
           </div>
         </el-timeline-item>

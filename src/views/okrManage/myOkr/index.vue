@@ -77,7 +77,7 @@ export default {
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
     } else {
-      this.departmentName = '润联科技';
+      this.departmentName = this.userInfo.orgName || '部门';
     }
     this.tabsList.forEach((item) => {
       if (item.toName == 'departmentOkr') {
