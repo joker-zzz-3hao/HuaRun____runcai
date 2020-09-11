@@ -468,7 +468,7 @@
 }
 
 .history-version .dl-list dd {
-  height: 50px;
+  padding: 20px 0;
 }
 
 .okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change {
