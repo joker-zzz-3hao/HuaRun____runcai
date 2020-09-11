@@ -85,6 +85,26 @@
         <el-form-item label="进度更新原因说明" prop="reason">
           <el-input type="textarea" :rows="2" placeholder="请输入进度更新原因" v-model="formData.reason"></el-input>
         </el-form-item>
+        <!-- <quillEditor
+          v-model.trim="formData.msgContent"
+          ref="myQuillEditor"
+          @change="lengthChange"
+          :options="editorOption"
+        ></quillEditor>-->
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          multiple
+          :limit="3"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
       </div>
       <!-- 按钮 -->
       <div>
@@ -121,7 +141,10 @@
 </template>
 
 <script>
-
+// import 'quill/dist/quill.core.css';// require styles 引入样式
+// import 'quill/dist/quill.snow.css';
+// import 'quill/dist/quill.bubble.css';
+// import quillEditor from 'vue-quill-editor';// 引入ue富文本组件vue-quill-editor
 import CONST from '../const';
 
 export default {
@@ -145,6 +168,9 @@ export default {
         name: '李四', reason: '因11111任务属于错误输入的任务', process: 20,
       }],
     };
+  },
+  components: {
+    // quillEditor,
   },
 };
 </script>

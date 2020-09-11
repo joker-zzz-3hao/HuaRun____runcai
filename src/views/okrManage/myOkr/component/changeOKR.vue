@@ -483,11 +483,11 @@ export default {
           hasChange = false;
           break;
         }
-        console.log('originalList[index]', originalList[index]);
-        console.log('this.tableList[index]', this.tableList[index]);
+        if (this.$refs.okrform.formData.okrInfoList.length > 0) {
+          hasChange = false;
+          break;
+        }
         for (let krindex = 0; krindex < originalList[index].krList.length; krindex += 1) {
-          console.log(krindex);
-          // console.log('kr', originalList[index].krList[krindex], this.tableList[index].krList[krindex]);
           if (originalList[index].krList[krindex].okrDetailObjectKr
           != this.tableList[index].krList[krindex].okrDetailObjectKr) {
             hasChange = false;
