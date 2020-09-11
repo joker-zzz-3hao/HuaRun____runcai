@@ -196,6 +196,7 @@
               <div>
                 <el-form-item
                   :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
+                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
                 >
                   <!-- 不强制刷新无法输入 -->
                   <el-input

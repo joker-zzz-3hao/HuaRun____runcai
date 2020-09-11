@@ -70,7 +70,8 @@ export default {
     },
     // 关键结果kr校验
     validateKRName(rule, value, callback) {
-      console.log('validateKRName', value);
+      console.log('validateKRName', rule);
+      value = this.getValue(rule);
       if (!value) {
         callback('请填写关键结果KR名称');
       } else if (value.length > 50) {
@@ -78,6 +79,39 @@ export default {
       } else {
         callback();
       }
+    },
+    getValue(rule) {
+      const model = this.formData;
+      let path = rule.field;
+      if (path.indexOf(':') !== -1) {
+        path = path.replace(/:/, '.');
+      }
+      return this.getPropByPath(model, path, true).v;
+    },
+    getPropByPath(obj, path, strict) {
+      let tempObj = obj;
+      path = path.replace(/\[(\w+)\]/g, '.$1');
+      path = path.replace(/^\./, '');
+
+      const keyArr = path.split('.');
+      let i = 0;
+      for (let len = keyArr.length; i < len - 1; i += 1) {
+        if (!tempObj && !strict) break;
+        const key = keyArr[i];
+        if (key in tempObj) {
+          tempObj = tempObj[key];
+        } else {
+          if (strict) {
+            throw new Error('please transfer a valid prop path to form item!');
+          }
+          break;
+        }
+      }
+      return {
+        o: tempObj,
+        k: keyArr[i],
+        v: tempObj ? tempObj[keyArr[i]] : null,
+      };
     },
   },
 };

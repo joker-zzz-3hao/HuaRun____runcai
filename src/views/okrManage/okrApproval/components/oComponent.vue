@@ -17,8 +17,12 @@
         </div>
       </div>
       <div v-if="oData.undertakeOkrVo">
-        <span>承接自</span>
-        <span style="margin-left: 10px;">KR:{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
+        <span v-if="oData.undertakeOkrVo.undertakeOkrContent">承接自</span>
+        <span style="margin-left: 10px;">{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
+      </div>
+      <div v-if="oData.undertakeOkrDto">
+        <span v-if="oData.undertakeOkrDto.undertakeOkrContent">承接自</span>
+        <span style="margin-left: 10px;">{{oData.undertakeOkrDto.undertakeOkrContent}}</span>
       </div>
     </div>
   </div>
