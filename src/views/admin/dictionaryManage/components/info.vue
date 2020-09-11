@@ -15,52 +15,49 @@
     size="35%"
     :modal="false"
     :visible.sync="visible"
+    :wrapperClosable="false"
     class="tl-drawer"
   >
+    <div class="modelCreate">
+      <el-form ref="dicForm" label-width="80px">
+        <el-form-item label="字典编号">
+          <span>{{dicInfo.code}}</span>
+        </el-form-item>
+        <el-form-item label="字典名称">
+          <span>{{dicInfo.name}}</span>
+        </el-form-item>
+        <el-form-item label="状态">
+          <span>{{dicInfo.enabledFlag == "Y" ?"启用" :"停用"}}</span>
+        </el-form-item>
+        <el-form-item label="备注">
+          <span>{{dicInfo.description}}</span>
+        </el-form-item>
+      </el-form>
+      <el-table ref="dicTable" v-loading="tableLoading" :data="dicInfo.subList">
+        <el-table-column label="字典键" prop="value"></el-table-column>
+        <el-table-column label="字典值" prop="meaning"></el-table-column>
+        <el-table-column label="字典排序" prop="orderSeq"></el-table-column>
+        <el-table-column label="状态" prop="enabledFlag">
+          <template slot-scope="scope">
+            <el-switch
+              active-value="Y"
+              inactive-value="N"
+              v-model="scope.row.enabledFlag"
+              active-color="#13ce66"
+              disabled
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注" prop="description"></el-table-column>
+        <el-table-column label="创建时间" prop="createTime">
+          <template slot-scope="scope">
+            <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div>
-      <div>
-        <el-form ref="dicForm" label-width="80px">
-          <el-form-item label="字典编号">
-            <span>{{dicInfo.code}}</span>
-          </el-form-item>
-          <el-form-item label="字典名称">
-            <span>{{dicInfo.name}}</span>
-          </el-form-item>
-          <el-form-item label="状态">
-            <span>{{dicInfo.enabledFlag == "Y" ?"启用" :"停用"}}</span>
-          </el-form-item>
-          <el-form-item label="备注">
-            <span>{{dicInfo.description}}</span>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div>
-        <el-table ref="dicTable" v-loading="tableLoading" :data="dicInfo.subList">
-          <el-table-column label="字典键" prop="value"></el-table-column>
-          <el-table-column label="字典值" prop="meaning"></el-table-column>
-          <el-table-column label="字典排序" prop="orderSeq"></el-table-column>
-          <el-table-column label="状态" prop="enabledFlag">
-            <template slot-scope="scope">
-              <el-switch
-                active-value="Y"
-                inactive-value="N"
-                v-model="scope.row.enabledFlag"
-                active-color="#13ce66"
-                disabled
-              ></el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column label="备注" prop="description"></el-table-column>
-          <el-table-column label="创建时间" prop="createTime">
-            <template slot-scope="scope">
-              <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div>
-        <el-button @click="cancel">确定</el-button>
-      </div>
+      <el-button @click="cancel">确定</el-button>
     </div>
   </el-drawer>
 </template>
@@ -124,10 +121,10 @@ export default {
     },
     cancel() {
       this.visible = false;
-      // this.$emit('closeDicDialog', { refreshPage: false });
+      this.$emit('closeDicDialog', { refreshPage: false });
     },
     closed() {
-      this.$emit('update:showinfo', false);
+      this.$emit('update:showEditDicDialog', false);
     },
   },
   watch: {},
@@ -135,3 +132,9 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.el-avatar,
+.el-drawer {
+  overflow: auto;
+}
+</style>

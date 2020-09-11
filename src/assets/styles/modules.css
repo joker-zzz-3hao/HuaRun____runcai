@@ -961,6 +961,16 @@
   color: #879099;
 }
 
+.tl-input-number .el-input-number__decrease:hover,
+.tl-input-number .el-input-number__increase:hover {
+  color: #685df1;
+}
+
+.tl-input-number .el-input-number__decrease:hover:not(.is-disabled)~.el-input .el-input__inner:not(.is-disabled),
+.tl-input-number .el-input-number__increase:hover:not(.is-disabled)~.el-input .el-input__inner:not(.is-disabled) {
+  border-color: #685df1;
+}
+
 /* tl-tooltip */
 .tl-tooltip-popper {
   padding: 8px 10px;
@@ -1120,6 +1130,11 @@
   margin: 0;
 }
 
+.collpase-panel dd > div i:first-child,
+.collpase-panel dd > div i:first-child + span {
+  color: #acb6bf;
+}
+
 .tl-collapse .collpase-panel {
   width: 100%;
   cursor: default;
@@ -1154,20 +1169,33 @@
   align-items: center;
 }
 
+.tl-collapse .collpase-panel dd > div:nth-child(1) {
+  flex: 0 0 23%;
+}
+
 .tl-collapse .collpase-panel dd > div:nth-child(2) {
-  flex: 0 0 80%;
+  flex: 0 0 77%;
+}
+
+.okr-change .tl-collapse .collpase-panel dd > div:nth-child(2) {
+  flex: 0 0 31%;
+}
+
+.okr-change .tl-collapse .collpase-panel dd > div:nth-child(3) {
+  flex: 0 0 46%;
+  justify-content: flex-end;
 }
 
 .tl-collapse .collpase-panel .has-third-child > div:nth-child(1) {
-  flex: 0 0 20%;
+  flex: 0 0 23%;
 }
 
 .tl-collapse .collpase-panel .has-third-child > div:nth-child(2) {
-  flex: 0 0 35%;
+  flex: 0 0 31%;
 }
 
 .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) {
-  flex: 0 0 45%;
+  flex: 0 0 46%;
   justify-content: flex-end;
 }
 
@@ -1225,6 +1253,61 @@
 .tl-collapse .collpase-panel .progress-number {
   font-size: 14px;
   color: #685df1;
+}
+
+.collpase-panel dd i + span + span {
+  margin: 0 10px;
+}
+
+.collpase-panel dd i + span + span a {
+  color: #685df1;
+}
+
+.collpase-panel dd div:last-child p {
+  display: flex;
+}
+
+.collpase-panel dd div:last-child p a {
+  color: #879099;
+}
+
+.collpase-panel dd div:last-child p a:hover {
+  color: #685df1;
+}
+
+.collpase-panel dd div:last-child p a:first-child {
+  display: block;
+  max-width: 190px;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.collpase-panel dd div:last-child p a + a {
+  margin: 0 0 0 10px;
+}
+
+.collpase-panel dt > div i,
+.collpase-panel dd > div:first-child i:nth-child(4) {
+  margin: 0 0 0 10px;
+  color: #acb6bf;
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.collpase-panel dt > div i:hover,
+.collpase-panel dd > div:first-child i:nth-child(4):hover {
+  color: #685df1;
+}
+
+.collpase-panel .el-tooltip {
+  margin: 0 0 0 10px;
+}
+
+/* tl-textarea */
+.tl-textarea .el-textarea__inner {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -1477,6 +1560,7 @@
 .tl-diy-timeline .timeline-list dd {
   padding: 0 0 0 20px;
   position: relative;
+  display: flex;
 }
 
 .tl-diy-timeline .timeline-list dt::before,
@@ -1494,6 +1578,21 @@
 
 .tl-diy-timeline .timeline-list dd:last-child::before {
   content: unset;
+}
+
+.timeline-list .list-info {
+  flex: 1;
+}
+
+.timeline-list .icon-clear {
+  margin: 40px 0 0 20px;
+  color: #bcc4cc;
+  transition: all .3s ease-out;
+}
+
+.timeline-list .icon-clear:hover {
+  color: #685df1;
+  background: #f0effe;
 }
 
 .tl-diy-timeline .list-title {
@@ -1517,6 +1616,23 @@
   border: 2px solid #685df1;
 }
 
+.timeline-list .item-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeline-list .item-group .el-form-item {
+  flex: 0 0 26%;
+}
+
+.timeline-list .item-group .el-form-item:last-child {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.timeline-list .item-group .tl-btn {
+  height: 30px;
+}
 
 .tl-diy-timeline .el-form-item__content,
 .tl-diy-timeline .el-form-item__label {
@@ -1571,6 +1687,10 @@
 
 .tl-diy-timeline .timeline-list .icon-clear.is-disabled:hover {
   color: #bcc4cc;
+}
+
+.tl-diy-timeline .list-add {
+  width: 100%;
 }
 
 /* tl-diy-popover */
@@ -1744,7 +1864,7 @@
   margin: 0;
 }
 
-.tl-collapse .el-collapse-item__header .collpase-panel dt span {
+.el-collapse-item__header .collpase-panel dt span {
   margin: 0 6px 0 0;
   width: 32px;
   height: 18px;
@@ -1755,10 +1875,9 @@
   border-radius: 2px;
 }
 
-
-.tl-collapse .el-collapse-item__content .collpase-panel dt > span {
+.el-collapse-item__content .collpase-panel dt > span {
   align-self: start;
-  margin: 5px 6px 0 0;
+  margin: 2px 6px 0 0;
   flex: 0 0 32px;
   width: 32px;
   height: 18px;
@@ -1771,10 +1890,34 @@
   color: #fff;
 }
 
-.tl-collapse .el-collapse-item__content .collpase-panel dt > span +div {
+.el-collapse-item__content .collpase-panel dt {
+  min-height: 22px;
+}
+
+.el-collapse-item__content .collpase-panel dt > span +div {
   flex: 1;
 }
 
+.el-collapse-item__content .collpase-panel dd:last-child {
+  margin-bottom: 10px;
+}
+
+.collpase-panel.has-third-child + dl dt span {
+  align-self: start;
+  margin-top: 11px;
+}
+
+.collpase-panel.has-third-child + dl .el-tooltip {
+  margin-bottom: 24px;
+}
+
+.collpase-panel.has-third-child + dl dd {
+  margin-top: 0;
+}
+
+.collpase-panel.has-third-child + dl dd .el-form-item {
+  margin: 0;
+}
 
 .card-panel-body .sub-tr .tl-progress-bar .progress-number {
   color: #929ba3;
@@ -2462,6 +2605,15 @@
 /* 前台 */
 .tl-drawer .cont-box {
   margin: 0 28px 0 0;
+}
+
+.cont-box .change-reason {
+  margin: 20px 0 0 0;
+}
+
+.cont-box .change-reason dt {
+  margin: 0 0 10px 0;
+  color: #879099;
 }
 
 .operating-panel .tl-diy-tabs .tab-list li {

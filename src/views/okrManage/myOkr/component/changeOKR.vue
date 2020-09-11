@@ -87,17 +87,26 @@
           :isnew="false"
           :periodId="searchForm.periodId"
         ></tl-okrform>
-        <div>
-          <span>变更原因</span>
-          <el-form :model="reason" ref="reasonForm">
-            <el-form-item
-              prop="modifyReason"
-              :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
-            >
-              <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
+        <dl class="change-reason">
+          <dt>变更原因</dt>
+          <dd>
+            <el-form :model="reason" ref="reasonForm">
+              <el-form-item
+                prop="modifyReason"
+                :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+              >
+                <el-input
+                  maxlength="200"
+                  type="textarea"
+                  v-model="reason.modifyReason"
+                  :rows="3"
+                  resize="none"
+                  class="tl-textarea"
+                ></el-input>
+              </el-form-item>
+            </el-form>
+          </dd>
+        </dl>
       </div>
     </el-scrollbar>
     <div class="operating-box">
@@ -126,8 +135,8 @@
       ></tl-undertaketable>
       <div class="operating-box">
         <el-button type="primary" @click="summitUndertake">确定</el-button>
-        <el-button v-if="undertakeType=='change'" type="primary" @click="summitIgnore">忽略</el-button>
-        <el-button @click="innerDrawer = false">取消</el-button>
+        <el-button type="primary" @click="summitIgnore" v-if="undertakeType=='change'">忽略</el-button>
+        <el-button plain @click="innerDrawer = false">取消</el-button>
       </div>
     </el-drawer>
     <el-drawer
@@ -483,11 +492,11 @@ export default {
           hasChange = false;
           break;
         }
-        console.log('originalList[index]', originalList[index]);
-        console.log('this.tableList[index]', this.tableList[index]);
+        if (this.$refs.okrform.formData.okrInfoList.length > 0) {
+          hasChange = false;
+          break;
+        }
         for (let krindex = 0; krindex < originalList[index].krList.length; krindex += 1) {
-          console.log(krindex);
-          // console.log('kr', originalList[index].krList[krindex], this.tableList[index].krList[krindex]);
           if (originalList[index].krList[krindex].okrDetailObjectKr
           != this.tableList[index].krList[krindex].okrDetailObjectKr) {
             hasChange = false;
