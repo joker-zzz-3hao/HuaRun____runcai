@@ -44,8 +44,7 @@ export default {
     },
   },
   created() {
-    this.depart = this.userInfo.orgList[0].orgId;
-    this.setOrg(this.userInfo.orgList[0].orgId);
+    this.setOrg(this.userInfo.orgId);
     this.getokrQuery();
   },
   computed: {

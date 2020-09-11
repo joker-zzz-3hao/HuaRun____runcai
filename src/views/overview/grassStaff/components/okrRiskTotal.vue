@@ -193,7 +193,6 @@ export default {
             } if (params.value[1] == 7) {
               return `${params.value[0]},失控`;
             }
-            return '失控';
           },
         },
         yAxis: {

@@ -60,12 +60,13 @@ export default {
     }),
   },
   methods: {
-    // eslint-disable-next-line no-shadow
+    // 切换周期修改主页数据
     getPeriod(periodId) {
       this.periodId = periodId;
       this.getokrStatistics();
       this.riskStatistics();
     },
+    // 获去普通员工okr进度与更新统计
     getokrStatistics() {
       const form = {
         periodId: this.periodId,
@@ -82,7 +83,9 @@ export default {
         personOrOrg: 'person',
         userId: this.$route.query.id,
       }).then((res) => {
-        this.okrData = res.data;
+        if (res.code == 200) {
+          this.okrData = res.data;
+        }
       });
     },
   },
