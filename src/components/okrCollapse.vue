@@ -71,7 +71,7 @@
               <!-- 有承接项时 -->
               <div v-else-if="item.okrParentId">
                 <i class="el-icon-attract"></i>
-                <span>承接自</span>
+                <span>关联父目标</span>
                 <!-- 是变更且有更新显示icon -->
                 <template v-if="item.parentUpdate">
                   <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
