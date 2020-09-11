@@ -252,6 +252,17 @@ export default [{
     },
     component: () => import('@/views/teamsManage/index'),
   },
+  {
+    // 价值观管理
+    path: '/valuesManage',
+    name: 'valuesManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'projectManage',
+    },
+    component: () => import('@/views/projectManage/index'),
+  },
   // {
   //   // 项目管理
   //   path: '/projectManage',

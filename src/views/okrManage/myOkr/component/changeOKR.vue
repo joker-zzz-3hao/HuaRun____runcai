@@ -134,9 +134,16 @@
         :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
-        <el-button type="primary" @click="summitUndertake">确定</el-button>
-        <el-button type="primary" @click="summitIgnore" v-if="undertakeType=='change'">忽略</el-button>
-        <el-button plain @click="innerDrawer = false">取消</el-button>
+        <div class="flex-auto">
+          <el-button
+            plain
+            @click="summitIgnore"
+            v-if="undertakeType=='change'"
+            class="tl-btn amt-border-fadeout"
+          >忽略</el-button>
+        </div>
+        <el-button type="primary" @click="summitUndertake" class="tl-btn amt-bg-slip">确定</el-button>
+        <el-button plain @click="innerDrawer = false" class="tl-btn amt-border-fadeout">取消</el-button>
       </div>
     </el-drawer>
     <el-drawer
