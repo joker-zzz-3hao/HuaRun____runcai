@@ -326,11 +326,11 @@
     <div style="marginTop:50px">
       <span>
         请选择本周心情
-        <el-button @click="happy">开心</el-button>
+        <el-button @click="setEmotion(100)">开心</el-button>
         <span :class="{'text-color-red': weeklyEmotion==100}">开心</span>
-        <el-button @click="common">平常</el-button>
+        <el-button @click="setEmotion(50)">平常</el-button>
         <span :class="{'text-color-red': weeklyEmotion==50}">平常</span>
-        <el-button @click="sad">沮丧</el-button>
+        <el-button @click="setEmotion(0)">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
       <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
@@ -814,14 +814,8 @@ export default {
         });
       });
     },
-    happy() {
-      this.weeklyEmotion = 100;
-    },
-    common() {
-      this.weeklyEmotion = 50;
-    },
-    sad() {
-      this.weeklyEmotion = 0;
+    setEmotion(type) {
+      this.weeklyEmotion = type;
     },
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
