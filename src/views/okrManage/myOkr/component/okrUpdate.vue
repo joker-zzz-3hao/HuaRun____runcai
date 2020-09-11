@@ -21,16 +21,18 @@
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
-                    <div class="list-title">目标名称</div>
+                    <div class="list-title">目标O</div>
                     <div class="list-cont">{{formData.okrDetailObjectKr}}</div>
-                    <div class="item-group">
-                      <el-form-item label="当前进度">
+                    <div class="list-cont">
+                      <el-form-item>
                         <el-slider
                           v-model="formData.okrDetailProgress"
                           show-input
                           :step="1"
                           @change="changeProgress(formData)"
+                          style="width:300px"
                         ></el-slider>
+                        <span>%</span>
                       </el-form-item>
                     </div>
                   </div>
@@ -39,14 +41,16 @@
                   <div class="list-info">
                     <div class="list-title">关键结果{{kindex+1}}</div>
                     <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
-                    <div class="item-group">
+                    <div class="list-cont">
                       <el-form-item label="当前进度">
                         <el-slider
                           v-model="kitem.okrDetailProgress"
                           show-input
                           :step="1"
                           @change="changeProgress(kitem)"
+                          style="width:300px"
                         ></el-slider>
+                        <span>%</span>
                       </el-form-item>
                       <el-form-item label="风险状态">
                         <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>

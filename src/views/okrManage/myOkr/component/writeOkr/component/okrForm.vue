@@ -150,7 +150,7 @@
       </el-button>
     </div>
     <!-- 变更原因 -->
-    <div v-if="this.searchForm.okrStatus == '8'">
+    <div v-if="searchForm.approvalType == 1 ">
       <span>变更原因</span>
       <el-form :model="reason" ref="reasonForm">
         <el-form-item
