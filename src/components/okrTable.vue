@@ -6,8 +6,8 @@
       <li>权重</li>
       <li>进度</li>
       <li>风险状态</li>
-      <li>承接地图</li>
-      <li>更新进度</li>
+      <li v-if="!overview">承接地图</li>
+      <li v-if="!overview">更新进度</li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
@@ -121,6 +121,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    overview: {
+      type: Boolean,
+      default() {
+        return false;
       },
     },
     // disabled(不能收起：true;能收起展开：false)

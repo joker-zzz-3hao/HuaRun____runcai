@@ -132,7 +132,7 @@ export default {
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
-      const m = date.getMonth();
+      const m = date.getMonth() + 1;
       const time = `${y}-${m}`;
       this.dateTime = time;
       this.mooddate = time;

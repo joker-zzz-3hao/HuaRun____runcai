@@ -83,7 +83,7 @@ export default {
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
-      const m = date.getMonth();
+      const m = date.getMonth() + 1;
       const time = `${y}-${m}`;
       this.dateTime = time;
       this.teamTime = time;
@@ -169,7 +169,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100,
           splitLine: {
             show: true,
             lineStyle: {
@@ -263,7 +262,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 50,
           splitLine: {
             show: true,
             lineStyle: {

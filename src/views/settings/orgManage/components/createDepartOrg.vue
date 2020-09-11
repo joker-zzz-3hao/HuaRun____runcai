@@ -138,6 +138,7 @@ export default {
       }
     },
     submit() {
+      console.log(this.form.orgIdList);
       this.$emit('createLeader', { orgId: this.form.orgIdList.pop(), userId: this.listUser[0].userId });
       this.close();
     },

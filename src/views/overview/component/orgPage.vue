@@ -38,6 +38,7 @@
     </div>
     <div v-if="tableList.length>0">
       <tl-okr-table
+        :overview="true"
         :tableList="tableList"
         :disabled="false"
         :showOKRInfoLabel="true"

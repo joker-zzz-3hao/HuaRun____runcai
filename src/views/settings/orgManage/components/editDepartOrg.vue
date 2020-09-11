@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item label="选择成员" :inline="true" class="tl-label-self" v-if="cancelUser">
         <el-input v-model="rowData.userName" :disabled="cancelUser"></el-input>
-        <el-button :disabled="!cancelUser" @click="cancelSet">取消设置</el-button>
+        <el-button :disabled="!cancelUser" @click="alertCancel">取消设置</el-button>
       </el-form-item>
       <el-form-item label="选择成员" class="tl-label-self" v-if="!cancelUser">
         <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
@@ -87,6 +87,11 @@ export default {
           this.cancelUser = false;
           this.$emit('searchList');
         }
+      });
+    },
+    alertCancel() {
+      this.$xconfirm({ title: '是否取消部门负责人？', content: '' }).then(() => {
+        this.cancelSet();
       });
     },
     setOrgIdList(orgId) {
