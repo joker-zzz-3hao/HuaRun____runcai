@@ -331,7 +331,7 @@ export default {
     remindWriteWeekly() {
       this.server.remindWriteWeekly({ calendarId: this.formData.calendarId }).then((res) => {
         if (res.code == 200) {
-          this.$message({ type: 'success', message: '周保提醒已发送，相关团队成员已收到', duration: 4000 });
+          this.$message({ type: 'success', message: '周报提醒已发送，相关团队成员已收到', duration: 4000 });
         }
       });
     },
