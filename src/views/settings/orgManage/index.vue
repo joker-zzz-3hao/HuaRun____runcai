@@ -81,7 +81,7 @@
       <div>
         <el-button @click="showAddRoule">添加部门负责人</el-button>
         <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createOrEditUser">创建用户</el-button>
+        <el-button @click="createUser">创建用户</el-button>
         <el-button @click="batchImport">批量导入</el-button>
       </div>
       <!-- </div> -->
@@ -148,8 +148,9 @@
                 <el-button
                   type="text"
                   v-if="scope.row.userType=='2'"
-                  @click="createOrEditUser(scope.row)"
+                  @click="editUser(scope.row)"
                 >编辑</el-button>
+                <el-button type="text" v-if="scope.row.userType=='2'" @click="info(scope.row)">详情</el-button>
                 <div v-else>--</div>
               </template>
             </el-table-column>
@@ -178,6 +179,28 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
+    <!-- 编辑用户 -->
+    <tl-edit-user
+      v-if="showEditUser"
+      :exist.sync="showEditUser"
+      :treeData="treeData"
+      :server="server"
+      :userId="userId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      @closeUserDialog="closeUserDialog"
+    ></tl-edit-user>
+    <!-- 用户详情 -->
+    <tl-user-info
+      v-if="showUserInfo"
+      :exist.sync="showUserInfo"
+      :treeData="treeData"
+      :server="server"
+      :userId="userId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      @closeUserDialog="closeUserDialog"
+    ></tl-user-info>
     <create-departOrg
       v-if="exist"
       :exist.sync="exist"
@@ -198,6 +221,8 @@
 
 <script>
 import createDepart from './components/createDepartment';
+import editUser from './components/editUser';
+import userInfo from './components/userInfo';
 import createDepartOrg from './components/createDepartOrg';
 import editDepartOrg from './components/editDepartOrg';
 import createUser from './components/createUser';
@@ -212,6 +237,8 @@ export default {
   components: {
     'create-department': createDepart,
     'create-user': createUser,
+    'tl-edit-user': editUser,
+    'tl-user-info': userInfo,
     'create-departOrg': createDepartOrg,
     'edit-departOrg': editDepartOrg,
   },
@@ -225,7 +252,8 @@ export default {
       globalOrgId: '',
       userId: '',
       loading: false,
-      editDrawer: false,
+      showEditUser: false,
+      showUserInfo: false,
       defaultExpandNode: [],
       filterText: '',
       showcreateDepart: false,
@@ -375,16 +403,25 @@ export default {
       });
     },
     // 创建/编辑用户
-    createOrEditUser(user) {
+    createUser() {
+      this.showCreateUser = true;
+      this.$nextTick(() => {
+        this.$refs.createUser.show();
+      });
+    },
+    editUser(user) {
       if (user.userId) {
         this.userId = user.userId;
         this.$nextTick(() => {
-          this.editDrawer = true;
+          this.showEditUser = true;
         });
-      } else {
-        this.showCreateUser = true;
+      }
+    },
+    info(user) {
+      if (user.userId) {
+        this.userId = user.userId;
         this.$nextTick(() => {
-          this.$refs.createUser.show();
+          this.showUserInfo = true;
         });
       }
     },
@@ -404,7 +441,8 @@ export default {
         this.searchList();
       }
       this.showCreateUser = false;
-      this.editDrawer = false;
+      this.showEditUser = false;
+      this.showUserInfo = false;
     },
     // 批量导入
     batchImport() {

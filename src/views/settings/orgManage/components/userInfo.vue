@@ -36,7 +36,9 @@
           <span>{{formData.tenantName}}</span>
         </el-form-item>
         <el-form-item label="所在部门">
-          <span>{{orgName}}</span>
+          <span>
+            <span>{{orgName}}</span>
+          </span>
         </el-form-item>
       </el-form>
     </div>
@@ -51,7 +53,7 @@ import Cryptojs from '@/lib/cryptojs';
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createOrEditUser',
+  name: 'createUser',
   mixins: [validateMixin],
   components: {
   },
@@ -68,18 +70,6 @@ export default {
         return {};
       },
     },
-    userId: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-    tenantId: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
     tenantName: {
       type: String,
       default() {
@@ -92,30 +82,35 @@ export default {
         return '';
       },
     },
+    userId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
       Cryptojs,
-      loading: false,
       visible: false,
-      isEditPwd: false,
+      loading: false,
       initUserAccount: '',
-      pwdLabel: '用户密码',
       orgName: '',
       formData: {
         userName: '', // 用户名称
+        loginPwd: '', // 密码
+        confirmPwd: '',
         userMobile: '', // 手机
         userMail: '', // 邮箱
         userStatus: '0', // 状态 0有效50：禁用
         orgId: '', // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
-        userType: 2, // 创建用户
-        loginPwd: '', // 密码
+        userType: 2,
         newPwd: '',
-        confirmPwd: '',
         orgIdList: [],
       },
+
     };
   },
   created() {
@@ -125,6 +120,7 @@ export default {
   computed: {},
   methods: {
     init() {
+      this.setOrgIdList(this.globalOrgId);
       this.server.getUserInfo({ userId: this.userId }).then((res) => {
         if (res.code == 200) {
           this.formData.userName = res.data.userName;
@@ -134,7 +130,6 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
-          this.formData.loginPwd = '******';
           this.orgName = res.data.orgName;
           this.setOrgIdList(res.data.orgId);
         }
@@ -160,7 +155,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
-      this.orgIdList = [];
+      this.formData.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -175,68 +170,23 @@ export default {
       }
     },
 
-    saveUser() {
-      const params = {
-        userId: this.userId,
-        orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
-        orgFullId: this.formData.orgIdList.join(':'),
-        tenantName: this.formData.tenantName,
-        tenantId: this.tenantId,
-        userAccount: this.formData.userAccount,
-        userMail: this.formData.userMail,
-        userMobile: this.formData.userMobile,
-        userName: this.formData.userName,
-        userStatus: this.formData.userStatus,
-        userType: this.formData.userType,
-      };
-      if (this.isEditPwd) {
-        params.loginPwd = this.Cryptojs.encrypt(this.formData.loginPwd);
-        params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);
-      } else if (!this.isEditPwd && params.loginPwd && params.newPwd) {
-        delete params.loginPwd;
-        delete params.newPwd;
-      }
-      this.$refs.userForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.server.updateOrgUser(params).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('用户编辑成功');
-              this.$emit('closeUserDialog', { refreshPage: true });
-            }
-            this.loading = false;
-          });
-        }
-      });
-    },
-    cancel() {
-      this.$emit('closeUserDialog', { refreshPage: false });
+    handleData(date) {
+      this.formData.orgId = date.orgId;
     },
     closed() {
-      this.$emit('update:infoDrawer', false);
+      this.$emit('update:showUserInfo', false);
     },
-    editPwd() {
-      this.pwdLabel = '原始密码';
-      this.formData.loginPwd = '';
-      this.isEditPwd = true;
-    },
-    cancelEditPwd() {
-      this.pwdLabel = '用户密码';
-      this.formData.loginPwd = '******';
-      this.isEditPwd = false;
+    cancel() {
+      this.visible = false;
+      this.$emit('closeUserDialog', { refreshPage: false });
     },
     selectIdChange(data) {
       this.formData.orgIdList = data;
     },
+
   },
   watch: {},
   updated() {},
   beforeDestroy() {},
 };
 </script>
-<style lang="css">
-.el-avatar,
-.el-drawer {
-  overflow: auto;
-}
-</style>
