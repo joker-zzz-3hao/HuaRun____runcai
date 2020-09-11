@@ -67,23 +67,14 @@
       :optionType="optionType"
       @closeDicDialog="closeDicDialog"
     ></tl-create-dic>
-    <el-drawer
-      :modal="false"
-      :append-to-body="false"
-      :wrapperClosable="false"
-      :visible.sync="showEditDicDialog"
+    <tl-edit-dic
       v-if="showEditDicDialog"
-      title="编辑字典"
-      :before-close="closeDicDialog"
-    >
-      <tl-edit-dic
-        v-if="showEditDicDialog"
-        :server="server"
-        :codeId="codeId"
-        :optionType="optionType"
-        @closeDicDialog="closeDicDialog"
-      ></tl-edit-dic>
-    </el-drawer>
+      :exist.sync="showEditDicDialog"
+      :server="server"
+      :codeId="codeId"
+      :optionType="optionType"
+      @closeDicDialog="closeDicDialog"
+    ></tl-edit-dic>
     <tl-info
       v-if="showinfo"
       :exist.sync="showinfo"
@@ -91,7 +82,6 @@
       :server="server"
       :codeId="codeId"
       @closeDicDialog="closeDicDialog"
-      :before-close="closeDicDialog"
     ></tl-info>
   </div>
 </template>
@@ -159,6 +149,7 @@ export default {
       });
     },
     editDic(dic) {
+      debugger;
       if (dic.codeId) {
         this.codeId = String(dic.codeId);
         this.optionType = 'edit';
@@ -170,7 +161,6 @@ export default {
     info(dic) {
       if (dic.codeId) {
         this.codeId = String(dic.codeId);
-        this.optionType = 'edit';
       }
       this.showinfo = true;
     },
@@ -191,6 +181,7 @@ export default {
       }
       this.showDicDialog = false;
       this.showEditDicDialog = false;
+      this.showinfo = false;
     },
     clear() {
       this.searchList();

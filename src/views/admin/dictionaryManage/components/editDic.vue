@@ -5,8 +5,20 @@
   备注：
 -->
 <template>
-  <div>
-    <div>
+  <el-drawer
+    :modal-append-to-body="false"
+    :before-close="cancel"
+    @closed="closed"
+    :close-on-click-modal="false"
+    title="编辑字典"
+    direction="rtl"
+    size="35%"
+    :modal="false"
+    :visible.sync="visible"
+    :wrapperClosable="false"
+    class="tl-drawer"
+  >
+    <div class="modelCreate">
       <el-form ref="dicForm" :model="formData" label-width="80px">
         <el-form-item
           label="字典编号"
@@ -41,9 +53,6 @@
           <el-input v-model.trim="formData.description" maxlength="100" clearable></el-input>
         </el-form-item>
       </el-form>
-    </div>
-    <div>
-      <el-button @click="addItem">新增</el-button>
       <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
         <el-table ref="dicTable" v-loading="tableLoading" :data="formTableData.tableData">
           <el-table-column label="字典键" prop="value">
@@ -104,13 +113,14 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button @click="addItem">新增</el-button>
       </el-form>
+      <div>
+        <el-button :loading="loading" @click="save">确定</el-button>
+        <el-button :disabled="loading" @click="cancel">取消</el-button>
+      </div>
     </div>
-    <div>
-      <el-button :loading="loading" @click="save">确定</el-button>
-      <el-button :disabled="loading" @click="cancel">取消</el-button>
-    </div>
-  </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -180,7 +190,9 @@ export default {
   created() {
     this.init();
   },
-  mounted() {},
+  mounted() {
+    this.visible = true;
+  },
   computed: {},
   methods: {
     init() {
@@ -205,14 +217,13 @@ export default {
         });
       }
     },
-    show() {
-      this.visible = true;
-    },
     close(status) {
       this.visible = false;
       this.$emit('closeDicDialog', { refreshPage: status == 'refreshPage' });
     },
-
+    closed() {
+      this.$emit('update:showEditDicDialog', false);
+    },
     save() {
       let successTip = '新增成功';
       if (this.optionType == 'edit') {
@@ -273,9 +284,16 @@ export default {
     dataChange(dicItem) {
       dicItem.enabledFlag = dicItem.enabledFlag == 'Y' ? 'N' : 'Y';
     },
+
   },
   watch: {},
   updated() {},
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.el-avatar,
+.el-drawer {
+  overflow: auto;
+}
+</style>

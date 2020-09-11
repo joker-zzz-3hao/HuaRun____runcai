@@ -149,17 +149,11 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <el-drawer
-      :modal="false"
-      :wrapperClosable="false"
-      :append-to-body="false"
-      :visible.sync="editDrawer"
-      v-if="editDrawer"
+    <!-- <el-drawer
       title="编辑用户"
       :before-close="closeUserDialog"
     >
       <edit-user
-        ref="createUser"
         :treeData="treeData"
         :server="server"
         :optionType="optionType"
@@ -169,7 +163,19 @@
         :globalOrgId="globalOrgId"
         @closeUserDialog="closeUserDialog"
       ></edit-user>
-    </el-drawer>
+    </el-drawer>-->
+    <tl-edit-dic
+      v-if="editDrawer"
+      :exist.sync="editDrawer"
+      :server="server"
+      :userId="userId"
+      :tenantId="tenantId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      :optionType="optionType"
+      :treeData="treeData"
+      @closeUserDialog="closeUserDialog"
+    ></tl-edit-dic>
   </div>
 </template>
 
@@ -351,6 +357,7 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
+      debugger;
       if (user.userId) {
         this.optionType = 'edit';
         this.userId = user.userId;
