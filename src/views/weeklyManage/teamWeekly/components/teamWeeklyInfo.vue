@@ -38,7 +38,11 @@
               <span>{{scope.row.workTime}}h</span>
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectNameCn"></el-table-column>
+          <el-table-column label="关联项目" prop="projectNameCn">
+            <template slot-scope="scope">
+              <span>{{scope.row.projectNameCn ? scope.row.projectNameCn :'临时项目'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="支持OKR/价值观">
             <template slot-scope="scope">
               <span
