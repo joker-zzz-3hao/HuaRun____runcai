@@ -115,9 +115,9 @@
         </el-table>
         <el-button @click="addItem">新增</el-button>
       </el-form>
-      <div>
-        <el-button :loading="loading" @click="save">确定</el-button>
-        <el-button :disabled="loading" @click="cancel">取消</el-button>
+      <div class="operating-box">
+        <el-button class="tl-btn amt-bg-slip" :loading="loading" @click="save">确定</el-button>
+        <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
       </div>
     </div>
   </el-drawer>
