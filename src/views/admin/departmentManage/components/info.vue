@@ -40,8 +40,8 @@
         </el-form-item>
       </el-form>
     </div>
-    <div>
-      <el-button type="primary" :loading="loading" @click="cancel">确定</el-button>
+    <div class="operating-box">
+      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="cancel">确定</el-button>
     </div>
   </el-drawer>
 </template>

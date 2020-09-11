@@ -56,8 +56,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <div>
-      <el-button @click="cancel">确定</el-button>
+    <div class="operating-box">
+      <el-button class="tl-btn amt-bg-slip" @click="cancel">确定</el-button>
     </div>
   </el-drawer>
 </template>
