@@ -149,7 +149,6 @@ export default {
       });
     },
     editDic(dic) {
-      debugger;
       if (dic.codeId) {
         this.codeId = String(dic.codeId);
         this.optionType = 'edit';

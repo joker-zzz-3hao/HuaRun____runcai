@@ -164,7 +164,7 @@
         @closeUserDialog="closeUserDialog"
       ></edit-user>
     </el-drawer>-->
-    <tl-edit-dic
+    <tl-edit-user
       v-if="editDrawer"
       :exist.sync="editDrawer"
       :server="server"
@@ -175,7 +175,7 @@
       :optionType="optionType"
       :treeData="treeData"
       @closeUserDialog="closeUserDialog"
-    ></tl-edit-dic>
+    ></tl-edit-user>
   </div>
 </template>
 
@@ -193,7 +193,7 @@ export default {
   components: {
     'create-department': createDepart,
     'create-user': createUser,
-    'edit-user': editUser,
+    'tl-edit-user': editUser,
   },
   data() {
     return {
@@ -357,7 +357,6 @@ export default {
     },
     // 创建/编辑用户
     createOrEditUser(user) {
-      debugger;
       if (user.userId) {
         this.optionType = 'edit';
         this.userId = user.userId;
