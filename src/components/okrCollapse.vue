@@ -246,7 +246,7 @@
                       ></el-input-number>
                     </el-form-item>
                     <el-form-item label="风险状态">
-                      <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                      <tl-confidence v-model="newItem.okrDetailConfidence"></tl-confidence>
                       <!-- <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
                   <el-radio-group v-model="newItem.okrDetailConfidence" @change="updateokrCollapse">
                     <el-radio-button
@@ -279,6 +279,7 @@
 
 <script>
 import process from '@/components/process';
+import confidenceSelect from '@/components/confidenceSelect';
 import validateMixin from '@/mixin/validateMixin';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
@@ -288,6 +289,7 @@ export default {
   name: 'okrCollapse',
   mixins: [validateMixin],
   components: {
+    'tl-confidence': confidenceSelect,
     elcollapse,
     elcollapseitem,
     'tl-process': process,
