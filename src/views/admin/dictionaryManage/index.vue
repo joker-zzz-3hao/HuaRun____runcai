@@ -45,7 +45,7 @@
             <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
               <template slot-scope="scope">
-                <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+                <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
               </template>
             </el-table-column>
             <el-table-column width="130px" align="left" label="操作">

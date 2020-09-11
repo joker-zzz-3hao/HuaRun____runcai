@@ -27,7 +27,7 @@
         <el-table ref="workTable" :data="weeklyWorkVoList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="workContent"></el-table-column>-
-          <el-table-column label="内容" prop="workDesc"></el-table-column>
+          <el-table-column label="内容" prop="workDesc" v-if="weeklyType == '1'"></el-table-column>
           <el-table-column width="100" label="进度" prop="workProgress">
             <template slot-scope="scope">
               <span>{{scope.row.workProgress}}%</span>
