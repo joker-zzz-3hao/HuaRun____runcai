@@ -162,6 +162,7 @@
     <create-department
       ref="createDepart"
       v-if="showcreateDepart"
+      :exist.sync="showcreateDepart"
       :departOptionType="departOptionType"
       :treeData="treeData"
       :initDepartment="initDepartment"
@@ -220,13 +221,13 @@
 </template>
 
 <script>
+
 import createDepart from './components/createDepartment';
 import editUser from './components/editUser';
 import userInfo from './components/userInfo';
 import createDepartOrg from './components/createDepartOrg';
 import editDepartOrg from './components/editDepartOrg';
 import createUser from './components/createUser';
-
 import Server from './server';
 import CONST from './const';
 
@@ -384,9 +385,9 @@ export default {
         this.globalOrgId = depart.orgId;
       }
       this.showcreateDepart = true;
-      this.$nextTick(() => {
-        this.$refs.createDepart.show(depart);
-      });
+      // this.$nextTick(() => {
+      //   this.$refs.createDepart.show(depart);
+      // });
     },
     deleteDepart(depart) {
       this.$xconfirm({
