@@ -16,7 +16,10 @@
 
       <span>
         <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
-          <img src="@/assets/images/login-error.png" />
+          <!-- <img src="@/assets/images/login-error.png" /> -->
+          <div v-if="userInfo.userName" class="user-name">
+            <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+          </div>
         </el-avatar>
       </span>
       <span>{{$route.query.userName}}</span>
@@ -27,7 +30,7 @@
         <el-table ref="workTable" :data="weeklyWorkVoList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="workContent"></el-table-column>-
-          <el-table-column label="内容" prop="workDesc"></el-table-column>
+          <el-table-column label="内容" prop="workDesc" v-if="weeklyType == '1'"></el-table-column>
           <el-table-column width="100" label="进度" prop="workProgress">
             <template slot-scope="scope">
               <span>{{scope.row.workProgress}}%</span>
@@ -38,33 +41,42 @@
               <span>{{scope.row.workTime}}h</span>
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectNameCn"></el-table-column>
+          <el-table-column label="关联项目" prop="projectNameCn">
+            <template slot-scope="scope">
+              <span>{{scope.row.projectNameCn ? scope.row.projectNameCn :'临时项目'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="支持OKR/价值观">
             <template slot-scope="scope">
-              <span
-                style="marginLeft:8px"
-                v-for="value in scope.row.okrCultureValueList"
-                :key="value.id"
+              <div
+                v-if="scope.row.okrCultureValueList.length > 0 || scope.row.workOkrList.length > 0"
               >
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="value.cultureName"
-                  placement="top-end"
+                <span
+                  style="marginLeft:8px"
+                  v-for="value in scope.row.okrCultureValueList"
+                  :key="value.id"
                 >
-                  <span>{{setOkrStyle(value.cultureName)}}</span>
-                </el-tooltip>
-              </span>
-              <span style="marginLeft:8px" v-for="value in scope.row.workOkrList" :key="value.id">
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="value.okrDetailObjectKr"
-                  placement="top-end"
-                >
-                  <span>{{setOkrStyle(value.okrDetailObjectKr)}}</span>
-                </el-tooltip>
-              </span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="value.cultureName"
+                    placement="top-end"
+                  >
+                    <span>{{setOkrStyle(value.cultureName)}}</span>
+                  </el-tooltip>
+                </span>
+                <span style="marginLeft:8px" v-for="value in scope.row.workOkrList" :key="value.id">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="value.okrDetailObjectKr"
+                    placement="top-end"
+                  >
+                    <span>{{setOkrStyle(value.okrDetailObjectKr)}}</span>
+                  </el-tooltip>
+                </span>
+              </div>
+              <div v-else>--</div>
             </template>
           </el-table-column>
         </el-table>
@@ -174,7 +186,10 @@
         <h2>谁浏览了</h2>
         <span style="marginLeft:10px" v-for="user in visitUserNameList" :key="user">
           <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
-            <img src="@/assets/images/login-error.png" />
+            <!-- <img src="@/assets/images/login-error.png" /> -->
+            <div v-if="userInfo.userName" class="user-name">
+              <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+            </div>
           </el-avatar>
           <span>{{user.userName}}</span>
         </span>

@@ -76,7 +76,13 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/okr/main/getOkrModifyUndertakeOkrList', param);
   }
 
+  // 忽略
   ignoreUndertake(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/ignoreSpecifiedVersionOfOkrUndertake', param);
+  }
+
+  // 权限校验
+  checkPrivilege(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/checkOkrOperatePrivilege', param);
   }
 }

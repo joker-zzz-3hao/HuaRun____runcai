@@ -128,7 +128,7 @@
             </el-table-column>
             <el-table-column fixed prop="updateTime" label="更新时间" v-if="!formData.queryType">
               <template slot-scope="scope">
-                <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.updateTime) )}}</div>
+                <div>{{scope.row.updateTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.updateTime) ):'--'}}</div>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="130">
@@ -331,7 +331,7 @@ export default {
     remindWriteWeekly() {
       this.server.remindWriteWeekly({ calendarId: this.formData.calendarId }).then((res) => {
         if (res.code == 200) {
-          this.$message({ type: 'success', message: '周保提醒已发送，相关团队成员已收到', duration: 4000 });
+          this.$message({ type: 'success', message: '周报提醒已发送，相关团队成员已收到', duration: 4000 });
         }
       });
     },
