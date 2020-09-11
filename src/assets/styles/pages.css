@@ -471,11 +471,11 @@
   height: 50px;
 }
 
-.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em:last-of-type {
+.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change {
   cursor: pointer;
 }
 
-.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em:last-of-type:hover {
+.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change:hover {
   color: #685df1;
 }
 
@@ -487,9 +487,19 @@
   height: 32px;
 }
 
+.okr-change .el-collapse-item__content .collpase-panel dd:last-child {
+  margin-bottom: 10px;
+}
+
 /* 编辑状态 */
-.collpase-panel dt .el-form-item {
+.collpase-panel.has-third-child ~ .collpase-panel dt,
+.collpase-panel dt.is-edit {
   margin: 0 0 24px 0;
+  height: 40px;
+}
+
+.collpase-panel dt.is-edit .el-form-item {
+  margin: 0;
 }
 
 .collpase-panel dd.is-edit > div:first-child i:first-child,

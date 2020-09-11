@@ -603,7 +603,7 @@
 
 .tl-form .el-form-item__label {
   float: unset;
-  padding: 6px 20px 0 0;
+  padding: 6px 10px 0 0;
   line-height: unset;
   vertical-align: unset;
 }
@@ -1136,6 +1136,8 @@
 }
 
 .tl-collapse .collpase-panel {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   cursor: default;
 }
@@ -1157,6 +1159,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 26px;
 }
 
 .tl-collapse .collpase-panel dd {
@@ -1233,11 +1236,6 @@
   border-radius: 50%;
   background-color: #f2f5f7;
   cursor: pointer !important;
-}
-
-.tl-collapse .el-collapse-item__content .collpase-panel .history-version {
-  margin: 3px 0 0 10px;
-  align-self: start;
 }
 
 .tl-collapse .collpase-panel dd > div:first-child em {
@@ -1876,8 +1874,7 @@
 }
 
 .el-collapse-item__content .collpase-panel dt > span {
-  align-self: start;
-  margin: 2px 6px 0 0;
+  margin: 0 6px 0 0;
   flex: 0 0 32px;
   width: 32px;
   height: 18px;
@@ -1890,33 +1887,29 @@
   color: #fff;
 }
 
-.el-collapse-item__content .collpase-panel dt {
-  min-height: 22px;
-}
-
 .el-collapse-item__content .collpase-panel dt > span +div {
   flex: 1;
 }
 
-.el-collapse-item__content .collpase-panel dd:last-child {
-  margin-bottom: 10px;
+.collpase-panel.has-third-child ~ dl {
+  margin-top: 20px;
 }
 
-.collpase-panel.has-third-child + dl dt span {
+.collpase-panel.has-third-child ~ dl dt span {
   align-self: start;
   margin-top: 11px;
 }
 
-.collpase-panel.has-third-child + dl .el-tooltip {
-  margin-bottom: 24px;
-}
-
-.collpase-panel.has-third-child + dl dd {
+.collpase-panel.has-third-child ~ dl dd {
   margin-top: 0;
 }
 
-.collpase-panel.has-third-child + dl dd .el-form-item {
+.collpase-panel.has-third-child ~ dl dd .el-form-item {
   margin: 0;
+}
+
+.collpase-panel.has-third-child ~ dl dd .el-form-item__content {
+  flex: unset;
 }
 
 .card-panel-body .sub-tr .tl-progress-bar .progress-number {
