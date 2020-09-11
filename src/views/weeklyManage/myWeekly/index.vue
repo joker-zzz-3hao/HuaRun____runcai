@@ -8,12 +8,12 @@
         <el-button
           v-if="weeklyTypeList.includes('1')"
           @click="standard"
-          :class="{'is-stantard':weeklyTypeList.includes('1')}"
+          :class="{'is-stantard':weeklyType=='1' && weeklyTypeList.includes('1')  }"
         >标准版</el-button>
         <el-button
           v-if="weeklyTypeList.includes('2')"
           @click="simple"
-          :class="{'is-stantard': !weeklyTypeList.includes('1')}"
+          :class="{'is-stantard':weeklyType=='2' && weeklyTypeList.includes('2')}"
         >简单版</el-button>
       </div>
       <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
