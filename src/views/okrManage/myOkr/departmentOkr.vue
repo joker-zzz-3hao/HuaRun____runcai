@@ -75,6 +75,7 @@
             :showOKRInfoLabel="true"
             :status="searchForm.status"
             @openDialog="openDialog"
+            :expands="expands"
           >
             <template slot="head-undertake" slot-scope="props">
               <template
@@ -241,6 +242,9 @@ export default {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
     }),
+    expands() {
+      return [this.tableList[0].okrDetailId];
+    },
   },
   created() {
     this.getOkrCycleList();
