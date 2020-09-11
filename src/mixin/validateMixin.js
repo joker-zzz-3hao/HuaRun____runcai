@@ -36,7 +36,7 @@ export default {
     validateConfirmPwd(rule, value, callback) {
       if (value == '' || value == undefined || value == null) {
         callback('请输入确认密码');
-      } else if (value != this.ruleForm.confirmPwd) {
+      } else if (value != this.ruleForm.newPwd) {
         callback('两次输入的密码不一致，请重新输入');
       } else if (/[\u4E00-\u9FA5]/g.test(value)) {
         callback('不支持设置中文');

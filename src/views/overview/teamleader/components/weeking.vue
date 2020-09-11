@@ -7,6 +7,7 @@
         value-format="yyyy-MM"
         v-model="teamTime"
         @change="getteamTime"
+        :clearable="false"
         type="month"
         placeholder="选择日期"
       ></el-date-picker>
@@ -25,6 +26,7 @@
           v-model="dateTime"
           @change="getDate"
           type="month"
+          :clearable="false"
           placeholder="选择日期"
         ></el-date-picker>
       </div>
