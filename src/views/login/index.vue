@@ -34,7 +34,7 @@
                 @mouseout="mouseout('input-txt')"
                 class="remove-current"
               ></div>
-              <div class="error-msg">您输入的账户名或密码有误！</div>
+              <div class="error-msg">{{errorMessage || '您输入的账户名或密码有误！'}}</div>
               <div class="prompt-info">账户名</div>
             </dd>
             <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd}">
@@ -50,6 +50,7 @@
                 ref="input-pwd"
                 class="tl-input-line"
                 :class="{'amt-line-elastic': focusName == 'input-pwd'}"
+                @keyup.native.enter="login"
               ></el-input>
               <div
                 @click="removePwd"
@@ -101,6 +102,7 @@ export default {
       isInputPwd: false,
       isLoginError: false,
       mouseRef: '',
+      errorMessage: '',
     };
   },
   computed: {
@@ -127,7 +129,8 @@ export default {
         } else {
           self.isLoginError = true;
           self.focusName = '';
-          self.$message.error(res.msg);
+          self.errorMessage = res.msg;
+          // self.$message.error(res.msg);
         }
       });
     },
