@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :modal-append-to-body="false"
+    :append-to-body="true"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
@@ -26,7 +26,7 @@
         <el-input
           maxlength="50"
           v-model="listUserName"
-          clearable
+          :clearable="false"
           @focus.stop="selectUserName"
           @clear.stop="clearUser"
         ></el-input>
