@@ -96,18 +96,22 @@ export default {
     borderWidth.style.width = `${liWidth[this.currentIndex].offsetWidth}px`;
   },
   methods: {
-    goRoutesss(tab, event) {
-      console.log(tab);
-      console.log(event);
-      this.go(this.activeName);
-    },
     goWriteOkr() {
-      this.writeInfo = {
-        canWrite: 'new',
-      };
-      this.writeokrExist = true;
-      this.$nextTick(() => {
-        this.$refs.writeokr.showOkrDialog();
+      // 调用接口校验是否可创建
+      this.server.checkPrivilege({ operateType: 'add' }).then((res) => {
+        if (res.code == 200 && res.data) {
+          if (res.data.validFlag) {
+            this.writeInfo = {
+              canWrite: 'new',
+            };
+            this.writeokrExist = true;
+            this.$nextTick(() => {
+              this.$refs.writeokr.showOkrDialog();
+            });
+          } else {
+            this.$message.error(res.data.remark);
+          }
+        }
       });
     },
     borderSlip(item, index, name) {
