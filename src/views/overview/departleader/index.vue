@@ -3,10 +3,6 @@
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
     <div class="creatOkr">
       <div>{{userInfo.userName}}</div>
-      <div v-if="false">
-        <img style="width:100px;height:100px;display:block;border:1px solid black;" src alt srcset />
-        <el-button type="primary">创建OKR</el-button>
-      </div>
       <tl-org-page :periodId="periodId"></tl-org-page>
     </div>
     <div class="creatOkr">
@@ -73,23 +69,25 @@ export default {
 
   methods: {
 
-    // eslint-disable-next-line no-shadow
+    // 切换周期
     getPeriod(periodId) {
       this.periodId = periodId;
       this.getmainData();
     },
+    // 截取名字第一个字
     checkName(name) {
       return name.substring(0, 1);
     },
+    // 获取主页okr进度与更新次数统计 this.$route.query.id如果为部门负责人或团队负责人则为orgId,普通员工为userId
     getmainData() {
       this.server.mainData({
-        orgId: this.setOrgId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         periodId: this.periodId,
-        user: this.userInfo.userId,
       }).then((res) => {
         this.mainData = res.data;
       });
     },
+    // 认证身份跳转对应身份首页
     getidentity() {
       this.server.identity({
         user: this.userInfo.userId,

@@ -24,7 +24,7 @@
         <li @click="go('notice')">
           <i></i>
           <em>通知</em>
-          <div class="badge">9</div>
+          <div v-if="!(totalMeaasge == '0')" class="badge">{{totalMeaasge}}</div>
           <div class="remind-state"></div>
         </li>
         <li class="user-info">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { loginOut } from '@/lib/util';
 import global from '@/mixin/global';
 import Server from '../server';
@@ -62,13 +62,23 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      totalMeaasge: (state) => state.totalMeaasge,
     }),
   },
   mounted() {
     this.orgId = this.userInfo.orgId;
+    this.init();
   },
   mixins: [global],
   methods: {
+    ...mapMutations('common', ['setTotalMeaasge']),
+    init() {
+      this.server.unread().then((res) => {
+        if (res.code == '200') {
+          this.setTotalMeaasge(res.data);
+        }
+      });
+    },
     loginOut() {
       loginOut();
     },

@@ -16,4 +16,8 @@ export default class Server extends ServerBase {
   queryOrgAndUser(param) {
     return this._ajaxPost('gateway/system-service/sys/organization/queryOrgAndUser', param);
   }
+
+  unread(param) {
+    return this._ajaxPost('gateway/sms-service/innermsg/unread', param);
+  }
 }

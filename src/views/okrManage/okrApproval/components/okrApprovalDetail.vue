@@ -11,8 +11,8 @@
           <span>{{data.userName}}</span>
         </div>
         <div>
-          <span>直接审批者：</span>
-          <span>{{data.approveUser}}</span>
+          <span>审批者：</span>
+          <span>{{data.approveUserName}}</span>
         </div>
         <div>
           <span>OKR周期：</span>

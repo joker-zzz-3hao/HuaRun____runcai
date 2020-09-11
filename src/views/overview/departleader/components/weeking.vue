@@ -37,8 +37,8 @@
               value-format="yyyy-MM"
               v-model="mooddate"
               @change="getDateMood"
-              type="month"
               :clearable="false"
+              type="month"
               placeholder="选择日期"
             ></el-date-picker>
           </div>
@@ -53,6 +53,7 @@
         value-format="yyyy-MM"
         v-model="dateTime"
         @change="getDate"
+        :clearable="false"
         type="month"
         placeholder="选择日期"
       ></el-date-picker>
@@ -161,7 +162,7 @@ export default {
       this.server.orgWeekly({
         calendarId: this.calendarId,
         date: `${this.dateTime}-01`,
-        userId: this.$route.query.id ? this.$route.query.id : this.userInfo.userId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
       }).then((res) => {
         this.tableData = res.data;
       });
@@ -330,7 +331,17 @@ export default {
             },
           },
         },
-        tooltip: {},
+        tooltip: {
+          formatter(params) {
+            if (params.value[1] == 1) {
+              return `${params.value[0]},无风险`;
+            } if (params.value[1] == 4) {
+              return `${params.value[0]},风险可控`;
+            } if (params.value[1] == 7) {
+              return `${params.value[0]},失控`;
+            }
+          },
+        },
         series: that.echartDataY,
 
       };
@@ -433,6 +444,7 @@ export default {
     orgEmotion(date) {
       this.server.orgEmotion({
         date,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
       }).then((res) => {
         this.moodDataX = res.data.map((item) => item.orgName);
         this.moodDataY = res.data.map((item) => ([

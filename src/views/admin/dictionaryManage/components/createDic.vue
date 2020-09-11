@@ -50,7 +50,6 @@
         </el-form>
       </div>
       <div>
-        <el-button @click="addItem">新增</el-button>
         <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
           <el-table v-loading="tableLoading" :data="formTableData.tableData">
             <el-table-column label="字典键" prop="value">
@@ -111,6 +110,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-button @click="addItem">新增</el-button>
         </el-form>
       </div>
       <div>
