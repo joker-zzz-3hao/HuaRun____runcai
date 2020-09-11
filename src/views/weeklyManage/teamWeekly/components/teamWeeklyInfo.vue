@@ -16,7 +16,10 @@
 
       <span>
         <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
-          <img src="@/assets/images/login-error.png" />
+          <!-- <img src="@/assets/images/login-error.png" /> -->
+          <div v-if="userInfo.userName" class="user-name">
+            <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+          </div>
         </el-avatar>
       </span>
       <span>{{$route.query.userName}}</span>
@@ -183,7 +186,10 @@
         <h2>谁浏览了</h2>
         <span style="marginLeft:10px" v-for="user in visitUserNameList" :key="user">
           <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
-            <img src="@/assets/images/login-error.png" />
+            <!-- <img src="@/assets/images/login-error.png" /> -->
+            <div v-if="userInfo.userName" class="user-name">
+              <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+            </div>
           </el-avatar>
           <span>{{user.userName}}</span>
         </span>
