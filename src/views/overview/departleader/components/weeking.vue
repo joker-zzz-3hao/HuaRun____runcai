@@ -38,6 +38,7 @@
               v-model="mooddate"
               @change="getDateMood"
               type="month"
+              :clearable="false"
               placeholder="选择日期"
             ></el-date-picker>
           </div>
@@ -386,7 +387,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 50,
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色

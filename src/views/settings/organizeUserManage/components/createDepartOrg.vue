@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    @click.native="closeshowMember"
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
@@ -24,7 +23,15 @@
         ></el-cascader>
       </el-form-item>
       <el-form-item label="选择成员" class="tl-label-self">
-        <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
+        <el-input
+          maxlength="50"
+          v-model="listUserName"
+          clearable
+          @focus.stop="selectUserName"
+          @clear.stop="clearUser"
+        ></el-input>
+        <span @click.stop="closeshowMember">关闭</span>
+        <tl-select-member @click.native.stop @getMember="selectMb" v-show="showSelect"></tl-select-member>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -59,6 +66,8 @@ export default {
       form: {
         region: [],
       },
+      showSelect: false,
+      listUserName: '',
       listUser: [],
       dialogTableVisible: false,
       dialogVisible: false,
@@ -73,6 +82,12 @@ export default {
   methods: {
     init() {
       this.setOrgIdList(this.globalOrgId);
+    },
+    selectUserName() {
+      this.showSelect = true;
+    },
+    clearUser() {
+      this.showSelect = false;
     },
     setOrgIdList(orgId) {
       if (!orgId) { // 无orgId默认使用顶级租户的orgId
@@ -115,6 +130,12 @@ export default {
     },
     selectMb(data) {
       this.listUser = data;
+      console.log(data);
+      if (data.length > 0) {
+        this.listUserName = data[0].userName;
+      } else {
+        this.listUserName = '';
+      }
     },
     submit() {
       this.$emit('createLeader', { orgId: this.form.orgIdList.pop(), userId: this.listUser[0].userId });
@@ -130,7 +151,7 @@ export default {
       this.dialogVisible = !this.dialogVisible;
     },
     closeshowMember() {
-      this.dialogVisible = false;
+      this.showSelect = false;
     },
   },
 };

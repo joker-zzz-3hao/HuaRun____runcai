@@ -117,7 +117,7 @@
             <dl
               v-for="(item,index) in memberList"
               :key="item.userId+index"
-              @click="goToDep(item.userId,item.userName)"
+              @click="goToDep(item.userId,item.userName,item.userId,item.tenantId)"
             >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -164,7 +164,7 @@
             <dl
               v-for="(item,index) in orgTable"
               :key="item.orgId+index"
-              @click="goToDep(item.orgId,item.orgName)"
+              @click="goToDep(item.orgId,item.orgName,item.userId,item.tenantId)"
             >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -288,13 +288,23 @@ export default {
       return userName.substring(nameLength - 2, nameLength);
     },
 
-    goToDep(id, name) {
+    goToDep(id, name, userId, tenantId) {
       const chename = encodeURI(name);
       if (this.orgTable.length > 0) {
-        this.$router.push({ name: 'teamleader', query: { id, name: chename } });
+        this.$router.push({
+          name: 'teamleader',
+          query: {
+            id, name: chename, userId, tenantId,
+          },
+        });
       }
       if (this.memberList.length > 0) {
-        this.$router.push({ name: 'grassStaff', query: { id, name: chename } });
+        this.$router.push({
+          name: 'grassStaff',
+          query: {
+            id, name: chename, userId, tenantId,
+          },
+        });
       }
     },
     openDialog(val) {

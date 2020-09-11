@@ -8,4 +8,12 @@ export default class Server extends ServerBase {
   addOrUpdate(param) {
     return this._ajaxPost('gateway/system-service/sys/config/addOrUpdate', param);
   }
+
+  rootOrgQuery(param) {
+    return this._ajaxPost('gateway/system-service/sys/rootOrg/query', param);
+  }
+
+  rootOrgSave(param) {
+    return this._ajaxPost('gateway/system-service/sys/rootOrg/save', param);
+  }
 }
