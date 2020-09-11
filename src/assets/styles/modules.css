@@ -1911,6 +1911,14 @@
   margin-bottom: 24px;
 }
 
+.collpase-panel.has-third-child + dl dd {
+  margin-top: 0;
+}
+
+.collpase-panel.has-third-child + dl dd .el-form-item {
+  margin: 0;
+}
+
 .card-panel-body .sub-tr .tl-progress-bar .progress-number {
   color: #929ba3;
 }

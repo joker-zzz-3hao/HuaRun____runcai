@@ -5,81 +5,100 @@
   备注：
 -->
 <template>
-  <div>
-    <el-form ref="userForm" :model="formData" label-width="80px">
-      <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
-        <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
-      </el-form-item>
-      <el-form-item
-        label="用户账号"
-        prop="userAccount"
-        :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
-      </el-form-item>
-      <el-form-item
-        :label="pwdLabel"
-        prop="loginPwd"
-        :rules="[
+  <el-drawer
+    :modal-append-to-body="false"
+    :before-close="cancel"
+    @closed="closed"
+    :close-on-click-modal="false"
+    title="编辑用户"
+    direction="rtl"
+    size="35%"
+    :modal="false"
+    :visible.sync="visible"
+    :wrapperClosable="false"
+    class="tl-drawer"
+  >
+    <div>
+      <el-form ref="userForm" :model="formData" label-width="80px">
+        <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
+          <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          label="用户账号"
+          prop="userAccount"
+          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          :label="pwdLabel"
+          prop="loginPwd"
+          :rules="[
           {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
-      >
-        <el-input :disabled="!isEditPwd " v-model.trim="formData.loginPwd" show-password clearable></el-input>
-        <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
-        <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
-      </el-form-item>
-      <el-form-item
-        v-if="isEditPwd"
-        label="新密码"
-        prop="newPwd"
-        :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
-      </el-form-item>
-      <el-form-item
-        v-if="isEditPwd"
-        label="确认密码"
-        prop="confirmPwd"
-        :rules="[
+        >
+          <el-input
+            :disabled="!isEditPwd "
+            v-model.trim="formData.loginPwd"
+            show-password
+            clearable
+          ></el-input>
+          <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
+          <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
+        </el-form-item>
+        <el-form-item
+          v-if="isEditPwd"
+          label="新密码"
+          prop="newPwd"
+          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          v-if="isEditPwd"
+          label="确认密码"
+          prop="confirmPwd"
+          :rules="[
           {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
-      </el-form-item>
-      <el-form-item
-        label="手机号"
-        prop="userMobile"
-        :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.userMobile" clearable></el-input>
-      </el-form-item>
-      <el-form-item
-        label="电子邮箱"
-        prop="userMail"
-        :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
-      >
-        <el-input v-model.trim="formData.userMail" clearable></el-input>
-      </el-form-item>
-      <el-form-item label="所属租户">
-        <el-input v-model.trim="formData.tenantName" disabled></el-input>
-      </el-form-item>
-      <el-form-item
-        label="所在部门"
-        prop="orgIdList"
-        :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-      >
-        <el-cascader
-          v-model="formData.orgIdList"
-          :options="treeData"
-          :show-all-levels="false"
-          :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree' }"
-          @change="selectIdChange"
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item prop="sortIndex">
-        <el-button :loading="loading" @click="saveUser">确定</el-button>
-        <el-button :disabled="loading" @click="cancel">取消</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+        >
+          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          label="手机号"
+          prop="userMobile"
+          :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userMobile" clearable></el-input>
+        </el-form-item>
+        <el-form-item
+          label="电子邮箱"
+          prop="userMail"
+          :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
+        >
+          <el-input v-model.trim="formData.userMail" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="所属租户">
+          <el-input v-model.trim="formData.tenantName" disabled></el-input>
+        </el-form-item>
+        <el-form-item
+          label="所在部门"
+          prop="orgIdList"
+          :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
+        >
+          <el-cascader
+            v-model="formData.orgIdList"
+            :options="treeData"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree' }"
+            @change="selectIdChange"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item prop="sortIndex">
+          <el-button :loading="loading" @click="saveUser">确定</el-button>
+          <el-button :disabled="loading" @click="cancel">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -139,6 +158,7 @@ export default {
     return {
       Cryptojs,
       loading: false,
+      visible: false,
       isEditPwd: false,
       initUserAccount: '',
       pwdLabel: '用户密码',
@@ -165,6 +185,7 @@ export default {
   computed: {},
   methods: {
     init() {
+      this.visible = true;
       this.server.getUserInfo({ userId: this.userId }).then((res) => {
         if (res.code == 200) {
           this.formData.userName = res.data.userName;
@@ -249,6 +270,9 @@ export default {
     cancel() {
       this.$emit('closeUserDialog', { refreshPage: false });
     },
+    closed() {
+      this.$emit('update:editDrawer', false);
+    },
     editPwd() {
       this.pwdLabel = '原始密码';
       this.formData.loginPwd = '';
@@ -268,3 +292,9 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.el-avatar,
+.el-drawer {
+  overflow: auto;
+}
+</style>

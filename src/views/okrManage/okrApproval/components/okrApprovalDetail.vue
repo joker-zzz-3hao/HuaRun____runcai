@@ -11,7 +11,7 @@
           <span>{{data.userName}}</span>
         </div>
         <div>
-          <span>直接审批者：</span>
+          <span>审批者：</span>
           <span>{{data.approveUserName}}</span>
         </div>
         <div>

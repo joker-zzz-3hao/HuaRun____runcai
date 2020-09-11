@@ -39,6 +39,7 @@
           <el-form-item label="设置审批人：" :inline="true">
             <el-input
               v-model="spUser.userName"
+              :disabled="true"
               placeholder="请设置公司OKR（根组织OKR）审批人"
               style="width:350px"
               class="tl-input"
@@ -51,6 +52,7 @@
           <el-form-item label="设置审批人：" :inline="true" prop>
             <el-input
               v-model="khUser.userName"
+              :disabled="true"
               placeholder="请设置公司OKR（根组织OKR）审批人"
               style="width:350px"
               class="tl-input"
@@ -128,8 +130,8 @@ export default {
       setOkrUser: '',
       okrkhUser: '',
       selectList: [],
-      spUser: { type: '0' },
-      khUser: { type: '1' },
+      spUser: { type: '0', userName: '', userId: '' },
+      khUser: { type: '1', userName: '', userId: '' },
     };
   },
   computed: {
@@ -198,10 +200,12 @@ export default {
     rootOrgQuery() {
       this.server.rootOrgQuery().then((res) => {
         if (res.code == 200) {
-          // eslint-disable-next-line prefer-destructuring
-          this.spUser = res.data.filter((item) => item.type == '0')[0];
-          // eslint-disable-next-line prefer-destructuring
-          this.khUser = res.data.filter((item) => item.type == '1')[0];
+          if (res.data.length > 0) {
+            // eslint-disable-next-line prefer-destructuring
+            this.spUser = res.data.filter((item) => item.type == '0')[0];
+            // eslint-disable-next-line prefer-destructuring
+            this.khUser = res.data.filter((item) => item.type == '1')[0];
+          }
         }
       });
     },

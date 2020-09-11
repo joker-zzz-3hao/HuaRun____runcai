@@ -272,6 +272,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import tabs from '@/components/tabs';
@@ -341,6 +342,9 @@ export default {
     },
   },
   computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   created() {
   },
@@ -389,15 +393,22 @@ export default {
     },
     // 查点赞列表
     getSupportList() {
-      this.server.getSupportList({ okrId: this.okrId }).then((res) => {
+      const self = this;
+      self.server.getSupportList({ okrId: self.okrId }).then((res) => {
         console.log(res.code);
         if (res.code == 200) {
-          this.voteUser = res.data.supportUserList || [];
-          this.voteLength = this.voteUser.length;
-          if (this.voteLength > 10) {
-            this.cutVoteList = this.voteUser.slice(0, 9);
+          self.voteUser = res.data.supportUserList || [];
+          self.voteLength = self.voteUser.length;
+          // 如果已经点赞过就显示取消
+          self.voteUser.forEach((item) => {
+            if (item.userId == self.userInfo.userId) {
+              self.supportType = 1;
+            }
+          });
+          if (self.voteLength > 10) {
+            self.cutVoteList = self.voteUser.slice(0, 9);
           } else {
-            this.cutVoteList = this.voteUser.slice(0, this.voteLength);
+            self.cutVoteList = self.voteUser.slice(0, self.voteLength);
           }
         }
       });

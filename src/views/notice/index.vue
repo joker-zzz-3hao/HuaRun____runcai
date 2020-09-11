@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import noticeDetail from './components/noticeDetail';
 import Server from './server';
@@ -105,6 +106,7 @@ export default {
   },
   mixins: [global],
   methods: {
+    ...mapMutations('common', ['setTotalMeaasge']),
     searchList(type) {
       let params = {};
       if (type == '10' || type == '20') {
@@ -140,6 +142,19 @@ export default {
       this.searchList(this.messageType);
     },
     showDetail(data) {
+      if (data.readedStatus == '0') {
+        this.server.readed({
+          msgIds: data.msgId,
+        }).then((response) => {
+          if (response.code == '200') {
+            this.server.unread().then((res) => {
+              if (res.code == '200') {
+                this.setTotalMeaasge(res.data);
+              }
+            });
+          }
+        });
+      }
       this.detailExist = true;
       this.$nextTick(() => {
         this.$refs.detail.show(data);
