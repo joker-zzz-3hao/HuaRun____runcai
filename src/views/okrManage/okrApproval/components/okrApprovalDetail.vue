@@ -12,7 +12,7 @@
         </div>
         <div>
           <span>直接审批者：</span>
-          <span>{{data.approveUser}}</span>
+          <span>{{data.approveUserName}}</span>
         </div>
         <div>
           <span>OKR周期：</span>
