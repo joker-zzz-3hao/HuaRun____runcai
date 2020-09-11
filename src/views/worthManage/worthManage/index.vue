@@ -176,10 +176,11 @@ export default {
     },
     selectIdChange(data) {
       this.showCascader = false;
-      this.orgFullId = data[data.length - 1];
-      this.orgFullIdList = this.orgFullId.split(':');
+      this.formData.orgFullId = data[data.length - 1];
+      this.orgFullIdList = this.formData.orgFullId.split(':');
       this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.getOrgName(this.departmentData, 0);
+      this.searchList();
     },
     getOrgTable() {
       // 查询组织树
