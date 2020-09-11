@@ -45,30 +45,35 @@
           </el-table-column>
           <el-table-column label="支持OKR/价值观">
             <template slot-scope="scope">
-              <span
-                style="marginLeft:8px"
-                v-for="value in scope.row.okrCultureValueList"
-                :key="value.id"
+              <div
+                v-if="scope.row.okrCultureValueList.length > 0 || scope.row.workOkrList.length > 0"
               >
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="value.cultureName"
-                  placement="top-end"
+                <span
+                  style="marginLeft:8px"
+                  v-for="value in scope.row.okrCultureValueList"
+                  :key="value.id"
                 >
-                  <span>{{setOkrStyle(value.cultureName)}}</span>
-                </el-tooltip>
-              </span>
-              <span style="marginLeft:8px" v-for="value in scope.row.workOkrList" :key="value.id">
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="value.okrDetailObjectKr"
-                  placement="top-end"
-                >
-                  <span>{{setOkrStyle(value.okrDetailObjectKr)}}</span>
-                </el-tooltip>
-              </span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="value.cultureName"
+                    placement="top-end"
+                  >
+                    <span>{{setOkrStyle(value.cultureName)}}</span>
+                  </el-tooltip>
+                </span>
+                <span style="marginLeft:8px" v-for="value in scope.row.workOkrList" :key="value.id">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="value.okrDetailObjectKr"
+                    placement="top-end"
+                  >
+                    <span>{{setOkrStyle(value.okrDetailObjectKr)}}</span>
+                  </el-tooltip>
+                </span>
+              </div>
+              <div v-else>--</div>
             </template>
           </el-table-column>
         </el-table>
