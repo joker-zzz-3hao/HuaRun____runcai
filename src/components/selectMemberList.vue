@@ -28,7 +28,7 @@
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                @change="checkMember($event,item)"
+                @change="true?checkOneMember($event,item):checkMember($event,item)"
                 v-model="value[item.id]"
                 v-if="item.type=='USER'"
               >
@@ -46,10 +46,11 @@
           </ul>
         </el-scrollbar>
       </div>
-      <!-- <div class="selected-target">
+      <div class="selected-target" v-if="false">
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
+            <em>{{roulelist.length}}</em>人
           </div>
           <div class="clear" @click="clearMember">清空</div>
         </div>
@@ -65,12 +66,12 @@
             </li>
           </ul>
         </el-scrollbar>
-      </div>-->
+      </div>
     </div>
   </div>
 </template>
 <script>
-import Server from '../server';
+import Server from './server';
 
 const server = new Server();
 export default {
@@ -129,6 +130,24 @@ export default {
       this.$emit('getMember', this.member);
     },
     checkMember(node, data) {
+      if (node) {
+        this.roulelist.push({
+          userName: data.name,
+          userId: data.id,
+          roleId: this.$route.query.roleId,
+          orgId: data.parentId,
+        });
+      } else {
+        this.roulelist.forEach((item, index) => {
+          if (item.userId == data.id) {
+            this.roulelist.splice(index, 1);
+          }
+        });
+      }
+      this.member = this.roulelist;
+      this.$emit('getMember', this.member);
+    },
+    checkOneMember(node, data) {
       this.value[data.id] = node;
       // eslint-disable-next-line guard-for-in
       for (const keys in this.value) {
@@ -144,9 +163,9 @@ export default {
           orgId: data.parentId,
         }];
       } else {
-        this.roulelist.forEach((item) => {
+        this.roulelist.forEach((item, index) => {
           if (item.userId == data.id) {
-            this.roulelist = [];
+            this.roulelist.splice(index, 1);
           }
         });
       }
@@ -183,7 +202,6 @@ export default {
       });
     },
     deleteMember(index, id) {
-      console.log({ value: this.value, id });
       this.$set(this.value, id, false);
       this.roulelist.splice(index, 1);
     },

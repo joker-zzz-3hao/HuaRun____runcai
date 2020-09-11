@@ -182,7 +182,13 @@ export default {
       const that = this;
       const myChart = echarts.init(document.getElementById('okrCountUpdate'));
       const option = {
-
+        tooltip: {
+          trigger: 'item',
+          position: 'top',
+          formatter(params) {
+            return `<span>更新次数${params.value}次</span>`;
+          },
+        },
         axisLine: {
           symbol: ['none', 'arrow'],
 
@@ -234,7 +240,6 @@ export default {
             type: 'value',
             show: true,
             min: 0,
-            max: 100,
             axisLine: {
               lineStyle: {
                 color: '#F4F6F8', // 颜色

@@ -14,4 +14,5 @@ export default {
   showAuto: false,
   setOrgId: '',
   okrSuccess: false,
+  totalMeaasge: 0,
 };

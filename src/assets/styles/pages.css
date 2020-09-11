@@ -324,58 +324,13 @@
   margin: 0;
 }
 
-.create-okr .timeline-list dt {
-  display: flex;
-}
-
-.create-okr .timeline-list .list-info {
-  flex: 1;
-}
-
-.create-okr .timeline-list .icon-clear {
-  margin: 40px 0 0 20px;
-  color: #bcc4cc;
-  transition: all .3s ease-out;
-}
-
-.create-okr .timeline-list .icon-clear:hover {
-  color: #685df1;
-  background: #f0effe;
-}
-
-.create-okr .timeline-list dd {
-  display: flex;
-}
-
-.create-okr .timeline-list .item-group {
-  display: flex;
-  justify-content: space-between;
-}
-
-.create-okr .timeline-list .item-group .el-form-item {
-  flex: 0 0 26%;
-}
-
-.create-okr .timeline-list .item-group .el-form-item:last-child {
-  flex: 1 1 auto;
-  justify-content: flex-end;
-}
-
 .create-okr .timeline-list .tl-input-number {
   margin: 0 10px 0 0;
-}
-
-.create-okr .timeline-list .item-group .tl-btn {
-  height: 30px;
 }
 
 .create-okr .timeline-list .list-title,
 .create-okr .timeline-list .el-form-item__label {
   color: #4d5155;
-}
-
-.create-okr .list-add {
-  width: 100%;
 }
 
 .associated-undertaking .el-scrollbar {
@@ -487,10 +442,6 @@
   cursor: default;
 }
 
-.okr-detail .collpase-panel dd i + span + span {
-  margin: 0 10px;
-}
-
 .okr-detail .collpase-panel dd i + span + span:last-child {
   margin: 0 0 0 10px;
 }
@@ -518,6 +469,42 @@
 
 .history-version .dl-list dd {
   height: 50px;
+}
+
+.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em:last-of-type {
+  cursor: pointer;
+}
+
+.okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em:last-of-type:hover {
+  color: #685df1;
+}
+
+.okr-change .tl-collapse .collpase-panel dd {
+  height: 32px;
+}
+
+.okr-change .collpase-panel .el-button {
+  height: 32px;
+}
+
+/* 编辑状态 */
+.collpase-panel dt .el-form-item {
+  margin: 0 0 24px 0;
+}
+
+.collpase-panel dd.is-edit > div:first-child i:first-child,
+.collpase-panel dt .el-input,
+.collpase-panel dt.is-edit + dd  {
+  margin: 0;
+}
+
+.collpase-panel dt.is-edit span {
+  align-self: start;
+  margin-top: 11px;
+}
+
+.collpase-panel dd.is-edit .el-form-item {
+  margin: 0 0 0 10px;
 }
 
 

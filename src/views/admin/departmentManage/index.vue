@@ -9,6 +9,7 @@
       </el-input>
       <el-tree
         ref="organizeTree"
+        style="height:300px"
         :data="treeData"
         node-key="orgId"
         :default-expanded-keys="defaultExpandNode"
@@ -18,14 +19,14 @@
         :highlight-current="true"
         :filter-node-method="filterNode"
       >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span
+          class="custom-tree-node"
+          slot-scope="{ node, data }"
+          style="z-index: 9999;position: absolute;"
+        >
           <span>{{ node.label }}</span>
           <span>
-            <i
-              @click="hoverDepart(data)"
-              style="margin-left:150px;z-index: 9999;position: relative;"
-              class="el-icon-more"
-            ></i>
+            <i @click="hoverDepart(data)" style="margin-left:150px;" class="el-icon-more"></i>
             <div @mouseleave.stop="outDepart(data)" v-show="data.isShow">
               <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
               <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>

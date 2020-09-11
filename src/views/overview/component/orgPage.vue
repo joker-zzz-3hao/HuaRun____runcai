@@ -35,15 +35,6 @@
           ></el-progress>
         </dd>
       </dl>
-      <dl class="update-time">
-        <dt>
-          <i class="el-icon-timer"></i>
-          <em>更新时间</em>
-        </dt>
-        <dd>
-          <em>{{okrMain.updateTime || okrMain.createTime}}</em>
-        </dd>
-      </dl>
     </div>
     <div v-if="tableList.length>0">
       <tl-okr-table
@@ -54,6 +45,7 @@
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
+            v-show="$route.name !== 'grassStaff'"
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
@@ -61,6 +53,7 @@
         <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
+            v-show="$route.name !== 'grassStaff'"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>

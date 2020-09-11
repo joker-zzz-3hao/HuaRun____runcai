@@ -49,8 +49,8 @@
                       @click="openUndertake(index)"
                     >
                       <a
-                        v-if="oitem.undertakeOkrVo.undertakeOkrObjectKr"
-                      >{{oitem.undertakeOkrVo.undertakeOkrObjectKr}}</a>
+                        v-if="oitem.undertakeOkrVo.undertakeOkrContent"
+                      >{{oitem.undertakeOkrVo.undertakeOkrContent}}</a>
                       <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
                     </p>
                     <el-button
@@ -127,13 +127,13 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled':isnew && oitem.krList.length === 1}"
+              :class="{'is-disabled':oitem.krList.length === 1}"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-popper"
-              @click.native="(!isnew || oitem.krList.length > 1) && deletekr(index,kindex)"
-              :disabled="isnew && oitem.krList.length == 1"
+              @click.native="(oitem.krList.length > 1) && deletekr(index,kindex)"
+              :disabled="oitem.krList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
@@ -379,7 +379,7 @@ export default {
                && item.undertakeOkrVo.undertakeOkrDetailId) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
-                    this.$set(item.undertakeOkrVo, 'undertakeOkrObjectKr', pitem.okrDetailObjectKr);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
                   }
                 });
               }
@@ -438,7 +438,7 @@ export default {
       // 承接项的id、版本、名称
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
-      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrObjectKr = this.selectDepartRow.okrDetailObjectKr || '';
+      this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.okrDetailObjectKr || '';
       // TODO:价值观的id
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
       this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';

@@ -8,4 +8,16 @@ export default class Server extends ServerBase {
   switchorg(param) {
     return this._ajaxPost('gateway/account-service/switch/org', param);
   }
+
+  fuzzyQueryUser(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/fuzzyQueryUser', param);
+  }
+
+  queryOrgAndUser(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/queryOrgAndUser', param);
+  }
+
+  unread(param) {
+    return this._ajaxPost('gateway/sms-service/innermsg/unread', param);
+  }
 }

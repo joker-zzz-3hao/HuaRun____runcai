@@ -9,6 +9,7 @@
         v-model="dateTime"
         @change="getDate"
         type="month"
+        :clearable="false"
         placeholder="选择日期"
       ></el-date-picker>
       <el-table :data="tableData" :show-header="false" style="width: 100%">
@@ -81,7 +82,7 @@ export default {
       const endtDate = `${echartData.months.pop()}-31`;
       const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
       const oneDay = 24 * 3600 * 1000;
-      let startche = +new Date(startDate);
+      let startche = +new Date(startDate) - oneDay;
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < cheTime / oneDay; i++) {
         // eslint-disable-next-line no-const-assign
@@ -94,10 +95,10 @@ export default {
         } else {
           months = now.getMonth() + 1;
         }
-        if (now.getDate() < 10) {
-          day = `0${now.getDate() - 1}`;
+        if (now.getDate() < 9) {
+          day = `0${now.getDate()}`;
         } else {
-          day = now.getDate() - 1;
+          day = now.getDate();
         }
         this.echartDataX.push([now.getFullYear(), months, day].join('-'));
       }
@@ -107,6 +108,7 @@ export default {
         this.echartDataY = {
           type: 'line',
           symbol: 'circle',
+          symbolSize: 10,
           showAllSymbol: true,
           data: echartDataFil.map((item) => [item.createDate, item.allScore]),
           itemStyle: {
@@ -116,6 +118,7 @@ export default {
       } else {
         this.echartDataY = {
           type: 'line',
+          symbolSize: 10,
           symbol: 'circle',
           showAllSymbol: true,
           itemStyle: {
@@ -183,7 +186,14 @@ export default {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            return `${params.value}%`;
+            if (params.value[1] == 1) {
+              return `${params.value[0]},无风险`;
+            } if (params.value[1] == 4) {
+              return `${params.value[0]},风险可控`;
+            } if (params.value[1] == 7) {
+              return `${params.value[0]},失控`;
+            }
+            return '失控';
           },
         },
         yAxis: {

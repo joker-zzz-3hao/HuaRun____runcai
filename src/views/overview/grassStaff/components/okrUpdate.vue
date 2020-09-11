@@ -25,7 +25,7 @@ export default {
   methods: {
     getmainData() {
       this.mainDataX = this.mainData.map((item) => item.months);
-      this.mainDataY = this.mainData.map((item) => item.okrProgress);
+      this.mainDataY = this.mainData.map((item) => item.updateProgressCount);
       this.init();
     },
     init() {
@@ -59,7 +59,6 @@ export default {
         yAxis: {
           type: 'value',
           min: 0,
-          max: 100,
           splitLine: {
             show: false,
           },

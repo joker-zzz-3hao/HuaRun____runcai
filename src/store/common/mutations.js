@@ -31,6 +31,10 @@ export default {
   setUserInfo: (state, userInfo = {}) => {
     state.userInfo = userInfo;
   },
+  // 系统管理菜单
+  setTotalMeaasge: (state, totalMeaasge = 0) => {
+    state.totalMeaasge = totalMeaasge;
+  },
   // 我的okr抽屉
   setMyokrDrawer: (state, myokrDrawer = {}) => {
     state.myokrDrawer = myokrDrawer;
