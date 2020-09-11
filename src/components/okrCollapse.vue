@@ -214,7 +214,7 @@
                 content="删除"
                 placement="top"
                 popper-class="tl-tooltip-popper"
-                @click="deletekr(item,kindex)"
+                @click.native="deletekr(item,kindex)"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -245,18 +245,12 @@
                         class="tl-input-number"
                       ></el-input-number>
                     </el-form-item>
+                    <!-- 强制刷新 -->
                     <el-form-item label="风险状态">
-                      <tl-confidence v-model="newItem.okrDetailConfidence"></tl-confidence>
-                      <!-- <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
-                  <el-radio-group v-model="newItem.okrDetailConfidence" @change="updateokrCollapse">
-                    <el-radio-button
-                      v-for="citem in CONST.CONFIDENCE"
-                      :key="citem.value"
-                      :label="citem.value"
-                    >{{citem.label}}</el-radio-button>
-                  </el-radio-group>
-                  <el-button slot="reference">{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                      </el-popover>-->
+                      <tl-confidence
+                        v-model="newItem.okrDetailConfidence"
+                        @change="updateokrCollapse"
+                      ></tl-confidence>
                     </el-form-item>
                   </div>
                 </div>
@@ -384,6 +378,7 @@ export default {
     },
     // 删除kr
     deletekr(okritem, krindex) {
+      console.log(okritem.newkrList);
       okritem.newkrList.splice(krindex, 1);
       this.$forceUpdate();
     },
