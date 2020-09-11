@@ -150,17 +150,11 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <el-drawer
-      :modal="false"
-      :wrapperClosable="false"
-      :append-to-body="false"
-      :visible.sync="editDrawer"
-      v-if="editDrawer"
+    <!-- <el-drawer
       title="编辑用户"
       :before-close="closeUserDialog"
     >
       <edit-user
-        ref="createUser"
         :treeData="treeData"
         :server="server"
         :optionType="optionType"
@@ -170,7 +164,19 @@
         :globalOrgId="globalOrgId"
         @closeUserDialog="closeUserDialog"
       ></edit-user>
-    </el-drawer>
+    </el-drawer>-->
+    <tl-edit-user
+      v-if="editDrawer"
+      :exist.sync="editDrawer"
+      :server="server"
+      :userId="userId"
+      :tenantId="tenantId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      :optionType="optionType"
+      :treeData="treeData"
+      @closeUserDialog="closeUserDialog"
+    ></tl-edit-user>
   </div>
 </template>
 
@@ -188,7 +194,7 @@ export default {
   components: {
     'create-department': createDepart,
     'create-user': createUser,
-    'edit-user': editUser,
+    'tl-edit-user': editUser,
   },
   data() {
     return {

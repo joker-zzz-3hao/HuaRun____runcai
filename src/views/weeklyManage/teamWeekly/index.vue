@@ -59,7 +59,7 @@
             <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
-              v-model="formData.userName"
+              v-model="formData.queryUserId"
               placeholder="请输入成员姓名"
               class="tl-input-search"
             >
@@ -183,7 +183,7 @@ export default {
         projectName: '',
         queryType: '',
         submited: '',
-        userName: '',
+        queryUserId: '',
         pageSize: 10,
         currentPage: 1,
       },
@@ -274,7 +274,7 @@ export default {
       });
     },
     weeklyInfo(weekly) {
-      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
+      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, queryUserId: weekly.queryUserId, headerUrl: weekly.headerUrl } });
     },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组
@@ -308,7 +308,7 @@ export default {
       // 清空其他查询条件
       this.formData.looked = '';
       this.formData.submited = '';
-      this.formData.userName = '';
+      this.formData.queryUserId = '';
       this.submitedOrLooked = '';
       this.formData.queryType = '';
       // 根据组织查数据
