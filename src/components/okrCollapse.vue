@@ -219,28 +219,34 @@
               </el-tooltip>
             </dt>
             <dd>
-              <el-form-item label="权重">
-                <el-input-number
-                  v-model="newItem.okrWeight"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                ></el-input-number>
-              </el-form-item>
-              <el-form-item label="当前进度">
-                <el-input-number
-                  v-model="newItem.okrDetailProgress"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                ></el-input-number>
-              </el-form-item>
-              <el-form-item label="风险状态">
-                <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
+              <div class="list-info">
+                <div class="list-cont">
+                  <div class="item-group">
+                    <el-form-item label="权重">
+                      <el-input-number
+                        v-model="newItem.okrWeight"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="当前进度">
+                      <el-input-number
+                        v-model="newItem.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="风险状态">
+                      <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                      <!-- <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
                   <el-radio-group v-model="newItem.okrDetailConfidence" @change="updateokrCollapse">
                     <el-radio-button
                       v-for="citem in CONST.CONFIDENCE"
@@ -249,8 +255,11 @@
                     >{{citem.label}}</el-radio-button>
                   </el-radio-group>
                   <el-button slot="reference">{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                </el-popover>
-              </el-form-item>
+                      </el-popover>-->
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
             </dd>
           </dl>
         </template>
