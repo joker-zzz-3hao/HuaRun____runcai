@@ -185,7 +185,6 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.visible = true;
       this.server.getUserInfo({ userId: this.userId }).then((res) => {
         if (res.code == 200) {
           this.formData.userName = res.data.userName;
@@ -198,6 +197,7 @@ export default {
           this.formData.loginPwd = '******';
           this.setOrgIdList(res.data.orgId);
         }
+        this.visible = true;
       });
     },
     setOrgIdList(orgId) {
