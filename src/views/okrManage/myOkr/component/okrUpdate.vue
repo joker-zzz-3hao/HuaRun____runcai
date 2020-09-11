@@ -145,7 +145,7 @@ export default {
       this.server.summitUpdate(this.summitForm).then((res) => {
         console.log('detail', res.code);
         if (res.code == 200) {
-          this.$message('提交成功~');
+          this.$message('更新成功');
           this.$emit('success');
           this.close();
         }

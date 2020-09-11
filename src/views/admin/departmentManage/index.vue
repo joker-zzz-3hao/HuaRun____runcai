@@ -119,6 +119,7 @@
                   v-if="scope.row.userType=='2'"
                   @click="createOrEditUser(scope.row)"
                 >编辑</el-button>
+                <el-button type="text" v-if="scope.row.userType=='2'" @click="info(scope.row)">详情</el-button>
                 <div v-else>--</div>
               </template>
             </el-table-column>
@@ -150,21 +151,7 @@
       :globalOrgId="globalOrgId"
       @closeUserDialog="closeUserDialog"
     ></create-user>
-    <!-- <el-drawer
-      title="编辑用户"
-      :before-close="closeUserDialog"
-    >
-      <edit-user
-        :treeData="treeData"
-        :server="server"
-        :optionType="optionType"
-        :userId="userId"
-        :tenantId="tenantId"
-        :tenantName="tenantName"
-        :globalOrgId="globalOrgId"
-        @closeUserDialog="closeUserDialog"
-      ></edit-user>
-    </el-drawer>-->
+    <!-- 编辑用户 -->
     <tl-edit-user
       v-if="editDrawer"
       :exist.sync="editDrawer"
@@ -177,6 +164,19 @@
       :treeData="treeData"
       @closeUserDialog="closeUserDialog"
     ></tl-edit-user>
+    <!-- 查看用户详情 -->
+    <tl-user-info
+      v-if="infoDrawer"
+      :exist.sync="infoDrawer"
+      :server="server"
+      :userId="userId"
+      :tenantId="tenantId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      :optionType="optionType"
+      :treeData="treeData"
+      @closeUserDialog="closeUserDialog"
+    ></tl-user-info>
   </div>
 </template>
 
@@ -184,6 +184,7 @@
 import createDepart from './components/createDepartment';
 import createUser from './components/createUser';
 import editUser from './components/editUser';
+import info from './components/info';
 import Server from './server';
 import CONST from './const';
 
@@ -195,6 +196,7 @@ export default {
     'create-department': createDepart,
     'create-user': createUser,
     'tl-edit-user': editUser,
+    'tl-user-info': info,
   },
   data() {
     return {
@@ -205,6 +207,7 @@ export default {
       userId: '',
       loading: false,
       editDrawer: false,
+      infoDrawer: false,
       showOrg: false,
       defaultExpandNode: [],
       tenantList: [],
@@ -370,6 +373,13 @@ export default {
         });
       }
     },
+    // 查看详情
+    info(user) {
+      if (user.userId) {
+        this.userId = user.userId;
+        this.infoDrawer = true;
+      }
+    },
     // 关闭弹窗
     closeOrgDialog(data) {
       // 需要刷新则刷新页面;
@@ -390,6 +400,7 @@ export default {
       }
       this.showCreateUser = false;
       this.editDrawer = false;
+      this.infoDrawer = false;
     },
     // 批量导入
     batchImport() {

@@ -461,7 +461,7 @@ export default {
         this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {
           if (res.code == 200) {
             this.$message('删除成功');
-            this.searchOkr('6');
+            this.searchOkr(this.searchForm.status);
             // 关闭抽屉
           }
         });

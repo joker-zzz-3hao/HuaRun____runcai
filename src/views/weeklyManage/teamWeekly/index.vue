@@ -274,7 +274,7 @@ export default {
       });
     },
     weeklyInfo(weekly) {
-      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, queryUserId: weekly.queryUserId, headerUrl: weekly.headerUrl } });
+      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
     },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组

@@ -42,7 +42,7 @@
                     ></el-input-number>
                     <span>%</span>
                   </el-form-item>
-                  <el-form-item label="承接自">
+                  <el-form-item label="关联父目标">
                     <p
                       v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
                       || oitem.cultureId"

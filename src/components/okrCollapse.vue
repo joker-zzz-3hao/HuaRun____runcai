@@ -71,7 +71,7 @@
               <!-- 有承接项时 -->
               <div v-else-if="item.okrParentId">
                 <i class="el-icon-attract"></i>
-                <span>承接自</span>
+                <span>关联父目标</span>
                 <!-- 是变更且有更新显示icon -->
                 <template v-if="item.parentUpdate">
                   <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
@@ -87,6 +87,7 @@
                 <em
                   v-if="item.parentUpdate && canWrite"
                   @click="goUndertake(index,'change')"
+                  :class="{'is-change': item.parentUpdate && canWrite}"
                 >{{item.parentObjectKr}}</em>
                 <!-- 详情不可点 -->
                 <em v-else>{{item.parentObjectKr}}</em>
@@ -229,7 +230,7 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>
+                ></el-input-number>%
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-input-number
@@ -240,20 +241,10 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>
+                ></el-input-number>%
               </el-form-item>
               <el-form-item label="风险状态">
                 <tl-confidence v-model="newItem.okrDetailConfidence" @change="updateokrCollapse"></tl-confidence>
-                <!-- <el-popover placement="bottom" width="400" trigger="click" :append-to-body="false">
-                  <el-radio-group v-model="newItem.okrDetailConfidence" @change="updateokrCollapse">
-                    <el-radio-button
-                      v-for="citem in CONST.CONFIDENCE"
-                      :key="citem.value"
-                      :label="citem.value"
-                    >{{citem.label}}</el-radio-button>
-                  </el-radio-group>
-                  <el-button slot="reference">{{CONST.CONFIDENCE_MAP[newItem.okrDetailConfidence]}}</el-button>
-                </el-popover>-->
               </el-form-item>
             </dd>
           </dl>

@@ -5,22 +5,20 @@
   备注：
 -->
 <template>
-  <el-drawer
-    :modal-append-to-body="false"
-    :before-close="cancel"
-    @closed="closed"
-    :close-on-click-modal="false"
-    title="编辑用户"
-    direction="rtl"
-    size="35%"
-    :modal="false"
-    :visible.sync="visible"
-    :wrapperClosable="false"
-    class="tl-drawer"
-  >
-    <div>
+  <div>
+    <el-dialog
+      :append-to-body="true"
+      :visible="visible"
+      @close="close"
+      title="创建用户"
+      :close-on-click-modal="false"
+    >
       <el-form ref="userForm" :model="formData" label-width="80px">
-        <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
+        <el-form-item
+          label="用户名称"
+          prop="userName"
+          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
+        >
           <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
         </el-form-item>
         <el-form-item
@@ -31,34 +29,18 @@
           <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
         </el-form-item>
         <el-form-item
-          :label="pwdLabel"
+          label="用户密码"
           prop="loginPwd"
           :rules="[
-          {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
+          {required:true,validator:validatePwd,trigger:'blur'}]"
         >
-          <el-input
-            :disabled="!isEditPwd "
-            v-model.trim="formData.loginPwd"
-            show-password
-            clearable
-          ></el-input>
-          <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
+          <el-input v-model.trim="formData.loginPwd" show-password clearable></el-input>
         </el-form-item>
         <el-form-item
-          v-if="isEditPwd"
-          label="新密码"
-          prop="newPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="isEditPwd"
           label="确认密码"
           prop="confirmPwd"
           :rules="[
-          {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
+          {required:true,validator: validateConfirmPwd,trigger:'blur'}]"
         >
           <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
         </el-form-item>
@@ -88,17 +70,17 @@
             v-model="formData.orgIdList"
             :options="treeData"
             :show-all-levels="false"
-            :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree' }"
+            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
             @change="selectIdChange"
           ></el-cascader>
         </el-form-item>
+        <el-form-item prop="sortIndex">
+          <el-button :loading="loading" @click="saveUser">确定</el-button>
+          <el-button :disabled="loading" @click="cancel">取消</el-button>
+        </el-form-item>
       </el-form>
-    </div>
-    <div>
-      <el-button type="primary" :loading="loading" @click="saveUser">确定</el-button>
-      <el-button :disabled="loading" @click="cancel">取消</el-button>
-    </div>
-  </el-drawer>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -106,7 +88,7 @@ import Cryptojs from '@/lib/cryptojs';
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createOrEditUser',
+  name: 'createUser',
   mixins: [validateMixin],
   components: {
   },
@@ -121,18 +103,6 @@ export default {
       type: Object,
       default() {
         return {};
-      },
-    },
-    userId: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-    tenantId: {
-      type: String,
-      default() {
-        return '';
       },
     },
     tenantName: {
@@ -151,25 +121,24 @@ export default {
   data() {
     return {
       Cryptojs,
-      loading: false,
       visible: false,
-      isEditPwd: false,
+      loading: false,
       initUserAccount: '',
-      pwdLabel: '用户密码',
       formData: {
         userName: '', // 用户名称
+        loginPwd: '', // 密码
+        confirmPwd: '',
         userMobile: '', // 手机
         userMail: '', // 邮箱
         userStatus: '0', // 状态 0有效50：禁用
         orgId: '', // 用户所在部门ID
         userAccount: '',
         tenantName: this.tenantName,
-        userType: 2, // 创建用户
-        loginPwd: '', // 密码
+        userType: 2,
         newPwd: '',
-        confirmPwd: '',
         orgIdList: [],
       },
+
     };
   },
   created() {
@@ -179,20 +148,7 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.server.getUserInfo({ userId: this.userId }).then((res) => {
-        if (res.code == 200) {
-          this.formData.userName = res.data.userName;
-          this.formData.userAccount = res.data.userAccount;
-          this.initUserAccount = res.data.userAccount;
-          this.formData.userMobile = res.data.userMobile;
-          this.formData.userMail = res.data.userMail;
-          this.formData.userStatus = res.data.userStatus;
-          this.formData.tenantName = res.data.tenantName;
-          this.formData.loginPwd = '******';
-          this.setOrgIdList(res.data.orgId);
-        }
-        this.visible = true;
-      });
+      this.setOrgIdList(this.globalOrgId);
     },
     setOrgIdList(orgId) {
       // 遍历嵌套数组，转换为一维数组
@@ -213,7 +169,7 @@ export default {
           queue.push(...next.sonTree);
         }
       }
-      this.orgIdList = [];
+      this.formData.orgIdList = [];
       this.getOrgIdList(result, orgId);
       this.formData.orgIdList.reverse();
     },
@@ -227,13 +183,23 @@ export default {
         }
       }
     },
+    show() {
+      this.visible = true;
+    },
+    close(status) {
+      this.visible = false;
+      this.$emit('closeUserDialog', { refreshPage: status == 'refreshPage' });
+    },
+    handleData(date) {
+      this.formData.orgId = date.orgId;
+    },
     saveUser() {
+      // delete this.formData.confirmPwd;
       const params = {
-        userId: this.userId,
         orgId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        loginPwd: this.Cryptojs.encrypt(this.formData.loginPwd),
         orgFullId: this.formData.orgIdList.join(':'),
         tenantName: this.formData.tenantName,
-        tenantId: this.tenantId,
         userAccount: this.formData.userAccount,
         userMail: this.formData.userMail,
         userMobile: this.formData.userMobile,
@@ -241,20 +207,13 @@ export default {
         userStatus: this.formData.userStatus,
         userType: this.formData.userType,
       };
-      if (this.isEditPwd) {
-        params.loginPwd = this.Cryptojs.encrypt(this.formData.loginPwd);
-        params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);
-      } else if (!this.isEditPwd && params.loginPwd && params.newPwd) {
-        delete params.loginPwd;
-        delete params.newPwd;
-      }
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.updateOrgUser(params).then((res) => {
+          this.server.createUser(params).then((res) => {
             if (res.code == 200) {
-              this.$message.success('用户编辑成功');
-              this.$emit('closeUserDialog', { refreshPage: true });
+              this.$message.success('用户创建成功');
+              this.close('refreshPage');
             }
             this.loading = false;
           });
@@ -262,33 +221,15 @@ export default {
       });
     },
     cancel() {
-      this.$emit('closeUserDialog', { refreshPage: false });
-    },
-    closed() {
-      this.$emit('update:editDrawer', false);
-    },
-    editPwd() {
-      this.pwdLabel = '原始密码';
-      this.formData.loginPwd = '';
-      this.isEditPwd = true;
-    },
-    cancelEditPwd() {
-      this.pwdLabel = '用户密码';
-      this.formData.loginPwd = '******';
-      this.isEditPwd = false;
+      this.close();
     },
     selectIdChange(data) {
       this.formData.orgIdList = data;
     },
+
   },
   watch: {},
   updated() {},
   beforeDestroy() {},
 };
 </script>
-<style lang="css">
-.el-avatar,
-.el-drawer {
-  overflow: auto;
-}
-</style>

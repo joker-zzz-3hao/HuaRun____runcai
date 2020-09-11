@@ -10,7 +10,7 @@
     :before-close="cancel"
     @closed="closed"
     :close-on-click-modal="false"
-    title="编辑用户"
+    title="用户详情"
     direction="rtl"
     size="35%"
     :modal="false"
@@ -20,83 +20,28 @@
   >
     <div>
       <el-form ref="userForm" :model="formData" label-width="80px">
-        <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
-          <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
+        <el-form-item>
+          <span>{{formData.userName}}</span>
         </el-form-item>
-        <el-form-item
-          label="用户账号"
-          prop="userAccount"
-          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
+        <el-form-item label="用户账号">
+          <span>{{formData.userAccount}}</span>
         </el-form-item>
-        <el-form-item
-          :label="pwdLabel"
-          prop="loginPwd"
-          :rules="[
-          {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
-        >
-          <el-input
-            :disabled="!isEditPwd "
-            v-model.trim="formData.loginPwd"
-            show-password
-            clearable
-          ></el-input>
-          <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
+        <el-form-item label="手机号">
+          <span>{{formData.userMobile}}</span>
         </el-form-item>
-        <el-form-item
-          v-if="isEditPwd"
-          label="新密码"
-          prop="newPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="isEditPwd"
-          label="确认密码"
-          prop="confirmPwd"
-          :rules="[
-          {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
-        </el-form-item>
-        <el-form-item
-          label="手机号"
-          prop="userMobile"
-          :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.userMobile" clearable></el-input>
-        </el-form-item>
-        <el-form-item
-          label="电子邮箱"
-          prop="userMail"
-          :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
-        >
-          <el-input v-model.trim="formData.userMail" clearable></el-input>
+        <el-form-item label="电子邮箱">
+          <span>{{formData.userMail}}</span>
         </el-form-item>
         <el-form-item label="所属租户">
-          <el-input v-model.trim="formData.tenantName" disabled></el-input>
+          <span>{{formData.tenantName}}</span>
         </el-form-item>
-        <el-form-item
-          label="所在部门"
-          prop="orgIdList"
-          :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
-        >
-          <el-cascader
-            v-model="formData.orgIdList"
-            :options="treeData"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree' }"
-            @change="selectIdChange"
-          ></el-cascader>
+        <el-form-item label="所在部门">
+          <span>{{orgName}}</span>
         </el-form-item>
       </el-form>
     </div>
     <div>
-      <el-button type="primary" :loading="loading" @click="saveUser">确定</el-button>
-      <el-button :disabled="loading" @click="cancel">取消</el-button>
+      <el-button type="primary" :loading="loading" @click="cancel">确定</el-button>
     </div>
   </el-drawer>
 </template>
@@ -156,6 +101,7 @@ export default {
       isEditPwd: false,
       initUserAccount: '',
       pwdLabel: '用户密码',
+      orgName: '',
       formData: {
         userName: '', // 用户名称
         userMobile: '', // 手机
@@ -189,6 +135,7 @@ export default {
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
           this.formData.loginPwd = '******';
+          this.orgName = res.data.orgName;
           this.setOrgIdList(res.data.orgId);
         }
         this.visible = true;
@@ -227,6 +174,7 @@ export default {
         }
       }
     },
+
     saveUser() {
       const params = {
         userId: this.userId,
@@ -265,7 +213,7 @@ export default {
       this.$emit('closeUserDialog', { refreshPage: false });
     },
     closed() {
-      this.$emit('update:editDrawer', false);
+      this.$emit('update:infoDrawer', false);
     },
     editPwd() {
       this.pwdLabel = '原始密码';
