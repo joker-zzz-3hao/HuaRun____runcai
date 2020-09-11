@@ -304,6 +304,7 @@ export default [{
     },
     component: () => import('@/views/taskManage/myTask/components/createTask'),
   },
+  // 价值观事件簿
   {
     path: '/worthManage',
     name: 'worthManage',
@@ -316,6 +317,7 @@ export default [{
     },
     component: () => import('@/views/worthManage/worthManage/index'),
   },
+  // 价值观统计
   {
     path: '/worthStatistics',
     name: 'worthStatistics',
@@ -328,6 +330,7 @@ export default [{
     },
     component: () => import('@/views/worthManage/worthStatistics/index'),
   },
+  // 消息通知
   {
     path: '/notice',
     name: 'notice',
@@ -340,6 +343,7 @@ export default [{
     },
     component: () => import('@/views/notice/index'),
   },
+  // 个人设置
   {
     path: '/personConfig',
     name: 'personConfig',

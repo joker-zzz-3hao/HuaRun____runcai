@@ -60,7 +60,21 @@
     >
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
-          <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="userName" label="姓名" width="220">
+            <template slot-scope="scope">
+              <div style="display: flex;">
+                <div>
+                  <el-avatar
+                    src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+                  ></el-avatar>
+                </div>
+                <div>
+                  <div>{{scope.row.userName}}</div>
+                  <div>{{scope.row.orgName}}</div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
           <el-table-column prop="approvalStatus" label="审批状态" width="150">
             <template slot-scope="scope">
