@@ -20,6 +20,7 @@
             </el-radio>
           </el-radio-group>
         </dd>
+        <dd class="tag-kind" v-if="departokrList.length">暂无可承接的父目标</dd>
       </dl>
       <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">

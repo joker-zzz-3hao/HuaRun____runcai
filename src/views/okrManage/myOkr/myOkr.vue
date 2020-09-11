@@ -398,18 +398,26 @@ export default {
     },
     // 打开变更
     goChangeOkr(val) {
-      this.drawerTitle = `${this.okrCycle.periodName}`;
-      this.okrId = val.okrMain.okrId;
-      this.writeInfo = {
-        canWrite: 'cannot',
-        okrId: this.okrId,
-        periodId: this.okrCycle.periodId,
-      };
-      this.currentView = 'tl-changeokr';
-      this.changeokrExist = true;
-      console.log('打开变更', this.okrId);
-      this.$nextTick(() => {
-        this.$refs[this.currentView].showOkrDialog();
+      this.server.checkPrivilege({ operateType: 'modify' }).then((res) => {
+        if (res.code == 200 && res.data) {
+          if (res.data.validFlag) {
+            this.drawerTitle = `${this.okrCycle.periodName}`;
+            this.okrId = val.okrMain.okrId;
+            this.writeInfo = {
+              canWrite: 'cannot',
+              okrId: this.okrId,
+              periodId: this.okrCycle.periodId,
+            };
+            this.currentView = 'tl-changeokr';
+            this.changeokrExist = true;
+            console.log('打开变更', this.okrId);
+            this.$nextTick(() => {
+              this.$refs[this.currentView].showOkrDialog();
+            });
+          } else {
+            this.$message.error(res.data.remark);
+          }
+        }
       });
     },
     // 打开编辑

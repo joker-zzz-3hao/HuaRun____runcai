@@ -83,10 +83,10 @@
     </el-scrollbar>
     <div class="operating-box">
       <div class="flex-auto" v-if="writeInfo.okrStatus != '8'">
-        <el-button plain @click="saveDraft()" class="tl-btn amt-border-fadeout">保存为草稿</el-button>
+        <el-button plain @click="saveDraft" class="tl-btn amt-border-fadeout">保存为草稿</el-button>
       </div>
-      <el-button type="primary" @click="summit()" class="tl-btn amt-bg-slip">创建目标</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close()">取消</el-button>
+      <el-button type="primary" @click="summit" class="tl-btn amt-bg-slip">创建目标</el-button>
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
     </div>
   </el-drawer>
 </template>

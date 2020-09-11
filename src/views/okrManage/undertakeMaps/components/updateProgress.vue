@@ -18,7 +18,12 @@
             <span>{{okrForm.okrWeight}}</span>
           </el-form-item>
           <el-form-item label="当前进度">
-            <el-slider v-model="okrForm.okrDetailProgress" show-input :step="1"></el-slider>
+            <el-slider
+              v-model="okrForm.okrDetailProgress"
+              show-input
+              :step="1"
+              @change="changeProgress(okrForm)"
+            ></el-slider>
           </el-form-item>
           <el-form-item label="风险状态" v-if="okrForm.okrDetailConfidence">
             <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
@@ -114,6 +119,10 @@ export default {
     },
     closed() {
       this.$emit('update:dialogExist', false);
+    },
+    // 取整
+    changeProgress(item) {
+      item.okrDetailProgress = Math.round(item.okrDetailProgress);
     },
   },
   watch: {
