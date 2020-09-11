@@ -61,7 +61,6 @@
       <div slot="tableContainer">
         <el-table :data="tableData" max-height="600" :empty-text="emptyText">
           <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
-          <el-table-column prop="userName" label="角色" width="120"></el-table-column>
           <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
           <el-table-column prop="approvalStatus" label="审批状态" width="150">
             <template slot-scope="scope">
