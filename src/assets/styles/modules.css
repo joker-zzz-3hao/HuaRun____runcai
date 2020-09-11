@@ -278,6 +278,10 @@
   border-radius: 2px;
 }
 
+.tl-radio .el-radio__inner:focus {
+  outline: unset;
+}
+
 .tl-radio .el-radio__input.is-checked .el-radio__inner {
   background: #fff;
   border-color: #685df1;
@@ -295,6 +299,10 @@
 
 .tl-radio .el-radio__input.is-checked + .el-radio__label {
   color: #4d5155;
+}
+
+.tl-radio.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
+  box-shadow: unset;
 }
 
 /* switch */
@@ -2139,6 +2147,10 @@
 .tag-kind em:hover,
 .expanded .tag-kind em {
   color: #685df1;
+}
+
+.tag-kind > div {
+  flex: 1;
 }
 
 .tag-kind p  {
