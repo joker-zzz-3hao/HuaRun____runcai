@@ -608,12 +608,18 @@ export default {
       this.formData.weeklyThoughtSaveList.forEach((thought) => {
         thought.randomId = Math.random().toString(36).substr(3);
       });
+      if (this.formData.weeklyThoughtSaveList) {
+        this.addThought();
+      }
     },
     setNextWeekPlan() {
       this.formData.weeklyPlanSaveList = this.weeklyData.weeklyPlanList;
       this.formData.weeklyPlanSaveList.forEach((plan) => {
         plan.randomId = Math.random().toString(36).substr(3);
       });
+      if (this.formData.weeklyPlanSaveList.length < 1) {
+        this.addPlanItem();
+      }
     },
     remoteMethod(query) {
       // if (query !== '') {
