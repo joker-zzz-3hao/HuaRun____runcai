@@ -168,9 +168,9 @@
     <!-- 本周感想、建议、收获 -->
     <div style="marginTop:50px">
       <h1>本周感想、建议、收获</h1>
-      <el-form ref="formDomThought" :model="formData">
+      <el-form :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
-          <el-table-column prop="workContent">
+          <el-table-column>
             <template slot-scope="scope">
               <el-form-item>
                 <span>
@@ -218,9 +218,9 @@
     <div style="marginTop:50px">
       <h1>下周计划</h1>
       <el-form :model="formData">
-        <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
+        <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="planContent">
+          <el-table-column label="工作项">
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
@@ -819,7 +819,7 @@ export default {
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
       return h('div', [// h即为cerateElement的简写
-        h('span', { style: { color: 'red' } }, '*'),
+        h(column ? 'span' : '', { style: { color: 'red' } }, '*'),
         // 在div里面插入span
         h('span', {
           // 表示内容
