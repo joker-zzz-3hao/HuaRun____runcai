@@ -54,7 +54,7 @@
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="(item) in okrList" :key="item.id" class="tl-card-panel">
           <div class="card-panel-head">
-            <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+            <div class="okr-title">{{okrCycle.periodName}}</div>
             <dl class="okr-state">
               <dt>
                 <i class="el-icon-set-up"></i>

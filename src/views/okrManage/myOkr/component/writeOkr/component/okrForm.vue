@@ -330,7 +330,6 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
-      console.log('addobject增加o', this.departokrObject);
     },
     // 删除o
     deleteobject(oindex) {
@@ -343,6 +342,7 @@ export default {
         if (res.code == 200) {
           // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
           if (res.data.parentUndertakeOkrInfoResult) {
+            this.selectIndex = '';
             this.departokrList = [];
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
