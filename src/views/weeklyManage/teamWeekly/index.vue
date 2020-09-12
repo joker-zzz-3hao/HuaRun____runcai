@@ -12,6 +12,7 @@
       <div>
         <el-cascader
           v-model="orgIdList"
+          ref="cascader"
           :options="treeData"
           :show-all-levels="false"
           :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
@@ -47,6 +48,7 @@
               placeholder="全部"
               clearable
               @clear="clearSubmitOrLooked"
+              :disabled="!!formData.queryType"
             >
               <el-option
                 v-for="item in submitedOrLookedList"
@@ -67,7 +69,7 @@
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
             </el-input>-->
             <el-select
-              v-model="formData.queryUserId"
+              v-model.trim="formData.queryUserId"
               filterable
               placeholder="请输入成员姓名"
               remote
@@ -102,7 +104,7 @@
         @searchList="refreshPageList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" style="width: 100%">
+          <el-table :data="tableData" style="width: 100%" v-if="tableLoading">
             <el-table-column fixed prop="userName" label="姓名"></el-table-column>
             <el-table-column fixed prop="orgName" label="所在团队"></el-table-column>
             <el-table-column v-if="formData.queryType == '0'" fixed prop="workContent" label="工作项"></el-table-column>
@@ -202,6 +204,7 @@ export default {
       userList: [],
       canEdit: false,
       showRemindBtn: false,
+      tableLoading: false,
       formData: {
         calendarId: '',
         looked: '',
@@ -285,6 +288,7 @@ export default {
       this.getOrgTree();
     },
     getTeamWeekly() {
+      this.tableLoading = false;
       const params = {
         ...this.formData,
       };
@@ -297,6 +301,7 @@ export default {
         } else {
           this.$message.error(res.msg);
         }
+        this.tableLoading = true;
       });
     },
     weeklyInfo(weekly) {
@@ -341,6 +346,7 @@ export default {
       this.formData.orgId = data[data.length - 1];
       this.orgIdList = data;
       this.getTeamWeekly();
+      this.$refs.cascader.dropDownVisible = false;
     },
     getOrgTree() {
       this.server.getOrg({}).then((res) => {
@@ -364,6 +370,7 @@ export default {
       });
     },
     lookChange(queryType) {
+      this.tableLoading = false;
       this.formData.queryType = queryType;
       if (queryType) {
         this.server.lookQuickly(this.formData).then((res) => {
@@ -373,6 +380,7 @@ export default {
             this.formData.currentPage = res.data.currentPage;
             this.formData.pageSize = res.data.pageSize;
           }
+          this.tableLoading = true;
         });
       } else {
         this.getTeamWeekly();
@@ -383,27 +391,29 @@ export default {
       this.getTeamWeekly();
     },
     submitedOrLookedChange(item) {
-      switch (item) {
-        case '1':
-          this.formData.looked = true;
-          this.formData.submited = '';
-          break;
-        case '2':
-          this.formData.looked = false;
-          this.formData.submited = '';
-          break;
-        case '3':
-          this.formData.submited = true;
-          this.formData.looked = '';
-          break;
-        case '4':
-          this.formData.submited = false;
-          this.formData.looked = '';
-          break;
-        default:
-          break;
+      if (item) {
+        switch (item) {
+          case '1':
+            this.formData.looked = true;
+            this.formData.submited = '';
+            break;
+          case '2':
+            this.formData.looked = false;
+            this.formData.submited = '';
+            break;
+          case '3':
+            this.formData.submited = true;
+            this.formData.looked = '';
+            break;
+          case '4':
+            this.formData.submited = false;
+            this.formData.looked = '';
+            break;
+          default:
+            break;
+        }
+        this.refreshPageList();
       }
-      this.refreshPageList();
     },
     clearSubmitOrLooked() {
       this.formData.submited = '';
@@ -411,6 +421,7 @@ export default {
       this.refreshPageList();
     },
     refreshPageList(calender) {
+      this.tableLoading = false;
       if (calender && calender.calendarId) {
         this.canEdit = calender.canEdit;
       }
@@ -422,6 +433,7 @@ export default {
             this.formData.currentPage = res.data.currentPage;
             this.formData.pageSize = res.data.pageSize;
           }
+          this.tableLoading = true;
         });
       } else {
         this.getTeamWeekly();
@@ -432,7 +444,7 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.treeData[0].orgId,
-        keyWord: name,
+        keyWord: name.trim(),
       }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data.content;
