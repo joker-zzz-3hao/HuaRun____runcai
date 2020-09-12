@@ -237,6 +237,7 @@ export default {
         beg = beg.setHours(beg.getHours() - 8);
         end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
+          // 如果该周是两周前，且周报未填写，则需要提示该周报不能补写
           currentBelongsToSelectedMonth = true;
           // 选种本周按钮
           item.btnType = 'success';

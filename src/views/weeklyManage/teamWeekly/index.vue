@@ -46,6 +46,7 @@
               @change="submitedOrLookedChange"
               placeholder="全部"
               clearable
+              @clear="clearSubmitOrLooked"
             >
               <el-option
                 v-for="item in submitedOrLookedList"
@@ -375,6 +376,11 @@ export default {
         default:
           break;
       }
+      this.refreshPageList();
+    },
+    clearSubmitOrLooked() {
+      this.formData.submited = '';
+      this.formData.looked = '';
       this.refreshPageList();
     },
     refreshPageList(calender) {
