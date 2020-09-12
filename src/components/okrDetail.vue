@@ -104,6 +104,22 @@
                           </div>
                           <div v-if="uitem.updateContents.afterConfidence">
                             <span>风险状态为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                            </div>
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
                           </div>
                         </li>
