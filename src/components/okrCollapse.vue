@@ -64,6 +64,8 @@
                 && item.undertakeOkrVo
                 && item.undertakeOkrVo.undertakeOkrContent"
               >
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
                 <p @click="goUndertake(index,'change')">
                   <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
                 </p>
@@ -94,6 +96,13 @@
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
+                <i
+                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                  class="el-icon-attract"
+                ></i>
+                <span
+                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                >关联父目标</span>
                 <p
                   @click="goUndertake(index,'new')"
                   v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"

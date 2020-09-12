@@ -25,9 +25,12 @@
       <!-- okr类型 -->
       <div>{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</div>
       <!-- 圆圈 -->
-      <div v-if="node.open">-</div>
-      <!-- 数量 -->
-      <div v-else>{{node.children?node.children.length:0}}</div>
+      <div v-if="node.children">
+        <!-- 展开时显示减号 -->
+        <div v-if="node.open">-</div>
+        <!-- 收起时显示数量 -->
+        <div v-else>{{node.children.length}}</div>
+      </div>
     </div>
   </div>
 </template>

@@ -62,42 +62,6 @@
           </el-radio-group>
         </dd>
       </dl>
-      <!--
-    <el-table :data="departokrList">
-      <el-table-column>
-        <template slot-scope="scope">
-          <el-checkbox
-            v-model="scope.row.checkFlag"
-            @change="selectDepartokr(scope.$index, scope.row)"
-          ></el-checkbox>
-        </template>
-      </el-table-column>
-      <el-table-column width="150" prop="typeName"></el-table-column>
-      <el-table-column v-if="!showPhil" width="150" prop="okrDetailVersion">
-        <template slot-scope="scope">
-          <div v-if="scope.row.currentOption">「历史版本{{scope.row.okrDetailVersion}}」</div>
-          <div v-else>「最新版本」</div>
-        </template>
-      </el-table-column>
-      <el-table-column width="150" prop="okrDetailObjectKr">
-        <template slot-scope="scope">
-          <div>{{scope.row.okrDetailObjectKr}}</div>
-          <div v-if="!scope.row.showPhil && scope.row.modifyReason">变更原因：{{scope.row.modifyReason}}</div>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-table v-if="showPhil" :data="philosophyList">
-      <el-table-column>
-        <template slot-scope="scope">
-          <el-checkbox
-            v-model="scope.row.checkFlag"
-            @change="selectphilosophy(scope.$index, scope.row)"
-          ></el-checkbox>
-        </template>
-      </el-table-column>
-      <el-table-column width="300" prop="cultureDesc"></el-table-column>
-      </el-table>-->
     </div>
   </el-scrollbar>
 </template>
