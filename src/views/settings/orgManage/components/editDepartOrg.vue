@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     @click.native="closeshowMember"
-    :modal-append-to-body="false"
+    :append-to-body="true"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"

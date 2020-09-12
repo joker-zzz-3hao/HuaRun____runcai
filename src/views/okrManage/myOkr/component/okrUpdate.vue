@@ -6,54 +6,82 @@
       :wrapperClosable="false"
       :append-to-body="true"
       :modal-append-to-body="true"
+      custom-class="diy-drawer"
       class="tl-drawer"
       @closed="closed"
       :before-close="close"
     >
-      <el-form :model="formData" ref="dataForm">
-        <dl class="okuang">
-          <dt>目标O</dt>
-          <dd class="objectdd">
-            <el-form-item>
-              <span>{{formData.okrDetailObjectKr}}</span>
-            </el-form-item>
-            <!-- <el-form-item label="权重">
-            <span>{{formData.okrWeight}}%</span>
-            </el-form-item>-->
-            <el-form-item label="当前进度">
-              <el-slider v-model="formData.okrDetailProgress" show-input :step="1"></el-slider>
-            </el-form-item>
-          </dd>
-          <dd>
-            <dl v-for="(kitem, kindex) in formData.krList" :key="kindex">
-              <dt>关键结果{{kindex+1}}</dt>
-              <dd class="objectdd">
-                <el-form-item>
-                  <span>{{kitem.okrDetailObjectKr}}</span>
-                </el-form-item>
-                <!-- <el-form-item label="权重">
-                <span>{{kitem.okrWeight}}%</span>
-                </el-form-item>-->
-                <el-form-item label="当前进度">
-                  <el-slider v-model="kitem.okrDetailProgress" show-input :step="1"></el-slider>
-                </el-form-item>
-                <el-form-item label="风险状态">
-                  <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
-                </el-form-item>
-              </dd>
-            </dl>
-          </dd>
-        </dl>
-        <dl>
-          <dd>
-            <el-form-item label="更新说明">
-              <el-input maxlength="200" v-model="formData.updateexplain"></el-input>
-            </el-form-item>
-          </dd>
-        </dl>
-      </el-form>
-      <el-button @click="summitUpdate">确定</el-button>
-      <el-button @click="close">取消</el-button>
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">{{drawerTitle}}</div>
+      </div>
+      <el-scrollbar>
+        <div class="okr-info">
+          <div class="tl-diy-timeline">
+            <el-form :model="formData" ref="dataForm" class="tl-form">
+              <dl class="timeline-list">
+                <dt>
+                  <div class="list-info">
+                    <div class="list-title">目标O</div>
+                    <div class="list-cont">{{formData.okrDetailObjectKr}}</div>
+                    <div class="list-cont">
+                      <el-form-item>
+                        <el-slider
+                          v-model="formData.okrDetailProgress"
+                          show-input
+                          :step="1"
+                          @change="changeProgress(formData)"
+                          style="width:300px"
+                        ></el-slider>
+                        <span>%</span>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </dt>
+                <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
+                  <div class="list-info">
+                    <div class="list-title">关键结果{{kindex+1}}</div>
+                    <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
+                    <div class="list-cont">
+                      <el-form-item label="当前进度">
+                        <el-slider
+                          v-model="kitem.okrDetailProgress"
+                          show-input
+                          :step="1"
+                          @change="changeProgress(kitem)"
+                          style="width:300px"
+                        ></el-slider>
+                        <span>%</span>
+                      </el-form-item>
+                      <el-form-item label="风险状态">
+                        <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+              <dl class="change-reason">
+                <dt>更新说明</dt>
+                <dd>
+                  <el-form-item>
+                    <el-input
+                      maxlength="200"
+                      type="textarea"
+                      :rows="3"
+                      resize="none"
+                      v-model="formData.updateexplain"
+                      class="tl-textarea"
+                    ></el-input>
+                  </el-form-item>
+                </dd>
+              </dl>
+            </el-form>
+          </div>
+        </div>
+      </el-scrollbar>
+      <div class="operating-box">
+        <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitUpdate">确定</el-button>
+        <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -151,7 +179,10 @@ export default {
         }
       });
     },
-
+    // 取整
+    changeProgress(item) {
+      item.okrDetailProgress = Math.round(item.okrDetailProgress);
+    },
   },
   watch: {
   },

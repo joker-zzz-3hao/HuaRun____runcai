@@ -384,7 +384,8 @@
 }
 
 .okr-detail .img-list {
-  padding: 0 0 0 6px;
+  padding: 10px 0 0 6px;
+  border-top: 1px solid #e5e9ee;
 }
 
 .okr-detail .img-list dl {
@@ -471,6 +472,37 @@
   padding: 20px 0;
 }
 
+.okr-detail .timeline-list .list-title {
+  color: #acb6bf;
+}
+
+.okr-detail .timeline-list .list-cont {
+  padding: 20px 0 20px 60px;
+}
+
+.okr-detail .timeline-list .list-title::before {
+  width: 8px;
+  height: 8px;
+  background: #e5e9ee;
+  border: 2px solid #fff;
+  box-shadow: 0 0 3px 0 #E6E6E6;
+}
+
+.okr-detail .timeline-list dt .list-title::before {
+  background: #685df1;
+}
+
+.okr-detail .timeline-list dd .list-title::before {
+  background: #e5e9ee;
+  border: 2px solid #fff;
+}
+
+.okr-detail .timeline-list dt::before,
+.okr-detail .timeline-list dd::before {
+  background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.3em,#fff 0,#fff 0.5em);
+}
+
+/* okr-change */
 .okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change {
   cursor: pointer;
 }

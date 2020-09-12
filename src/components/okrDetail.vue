@@ -78,92 +78,81 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="currentIndex===1" class="tab-cont">
-              <dl>
+            <div v-else-if="currentIndex===1" class="tab-cont tl-diy-timeline">
+              <dl class="timeline-list">
                 <dt>
-                  <div class="operate-time">{{cycleFirst.createTime}}</div>
-                  <div class="operate-cont">
-                    <div class="operate-type">
-                      <em>{{userName}}</em>
-                      <span>{{cycleFirst.operateTypeCn}}</span>
-                    </div>
-                    <div
-                      class="operate-kind"
-                      v-for="uitem in cycleFirst.okrDetailId"
-                      :key="uitem.id"
-                    >
-                      <div class="kind-type">
-                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                        <em>{{uitem.okrDetailObjectKr}}</em>
+                  <div class="list-info">
+                    <div class="list-title">{{cycleFirst.createTime}}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <em>{{userName}}</em>
+                        <span>{{cycleFirst.operateTypeCn}}</span>
                       </div>
-                      <div class="kind-cont">
-                        <p v-if="uitem.updateContents.afterProgress"></p>
-                        <span>进度为</span>
-                        <em>{{uitem.updateContents.afterProgress}}</em>
-                        <span>%</span>
-                        <p v-if="uitem.updateContents.afterConfidence">
-                          <span>风险状态修改为</span>
-                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                        </p>
+                      <div
+                        class="operate-kind"
+                        v-for="uitem in cycleFirst.okrDetailId"
+                        :key="uitem.id"
+                      >
+                        <div class="kind-type">
+                          <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                          <em>{{uitem.okrDetailObjectKr}}</em>
+                        </div>
+                        <div class="kind-cont">
+                          <p v-if="uitem.updateContents.afterProgress">
+                            <span>进度为</span>
+                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <span>%</span>
+                          </p>
+
+                          <p v-if="uitem.updateContents.afterConfidence">
+                            <span>风险状态修改为</span>
+                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="operate-reason" v-if="cycleFirst.remark">
-                      <span>说明：</span>
-                      <em>{{cycleFirst.remark}}</em>
+                      <div class="operate-reason" v-if="cycleFirst.remark">
+                        <span>说明：</span>
+                        <em>{{cycleFirst.remark}}</em>
+                      </div>
                     </div>
                   </div>
                 </dt>
                 <dd v-for="activity in cycleList" :key="activity.id">
-                  <div class="operate-time">{{activity.createTime}}</div>
-                  <div class="operate-cont">
-                    <div class="operate-type">
-                      <em>{{userName}}</em>
-                      <span>{{activity.operateTypeCn}}</span>
-                    </div>
-                    <div class="operate-kind" v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                      <div class="kind-type">
-                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                        <em>{{uitem.okrDetailObjectKr}}</em>
+                  <div class="list-info">
+                    <div class="list-title">{{activity.createTime}}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <em>{{userName}}</em>
+                        <span>{{activity.operateTypeCn}}</span>
                       </div>
-                      <div class="kind-cont">
-                        <p v-if="uitem.updateContents.afterProgress"></p>
-                        <span>进度为</span>
-                        <em>{{uitem.updateContents.afterProgress}}</em>
-                        <span>%</span>
-                        <p v-if="uitem.updateContents.afterConfidence">
-                          <span>风险状态修改为</span>
-                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                        </p>
+                      <div
+                        class="operate-kind"
+                        v-for="uitem in activity.okrDetailId"
+                        :key="uitem.id"
+                      >
+                        <div class="kind-type">
+                          <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                          <em>{{uitem.okrDetailObjectKr}}</em>
+                        </div>
+                        <div class="kind-cont">
+                          <p v-if="uitem.updateContents.afterProgress"></p>
+                          <span>进度为</span>
+                          <em>{{uitem.updateContents.afterProgress}}</em>
+                          <span>%</span>
+                          <p v-if="uitem.updateContents.afterConfidence">
+                            <span>风险状态修改为</span>
+                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div class="operate-reason" v-if="activity.remark">
-                      <span>说明：</span>
-                      <em>{{activity.remark}}</em>
+                      <div class="operate-reason" v-if="activity.remark">
+                        <span>说明：</span>
+                        <em>{{activity.remark}}</em>
+                      </div>
                     </div>
                   </div>
                 </dd>
               </dl>
-              <!-- <el-timeline>
-                <el-timeline-item :timestamp="activity.createTime" placement="top">
-                  <div v-if="activity.operateType=='update'">
-
-                    <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                      <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                      <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
-                      <span
-                        v-if="uitem.updateContents.afterProgress"
-                      >进度为{{uitem.updateContents.afterProgress}}%</span>
-                      <span
-                        v-if="uitem.updateContents.afterConfidence"
-                      >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
-                    </div>
-                    <div v-if="activity.remark">
-                      <span>说明：</span>
-                      <span>{{activity.remark}}</span>
-                    </div>
-                  </div>
-                </el-timeline-item>
-              </el-timeline>-->
             </div>
           </template>
         </tl-tabs>
