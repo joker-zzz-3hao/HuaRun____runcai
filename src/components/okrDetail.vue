@@ -86,7 +86,11 @@
                     <div class="list-cont">
                       <div
                         class="operate-type"
-                        :class="{'is-create':sdfsfs,'is-modify':sdfsfs,'is-update':sdfsfs,'is-undertake':sdfsfs,}"
+                        :class="{
+                        'is-create':cycleFirst.operateType == 'add',
+                        'is-modify':cycleFirst.operateType == 'modify',
+                        'is-update':cycleFirst.operateType == 'update',
+                        }"
                       >
                         <em>{{userName}}</em>
                         <span>{{cycleFirst.operateTypeCn}}</span>

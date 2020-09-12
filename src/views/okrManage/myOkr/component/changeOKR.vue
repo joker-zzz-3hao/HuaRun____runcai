@@ -444,10 +444,17 @@ export default {
 
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
+      // 取忽略的最新版本
+      let newVersion = '';
+      this.tableList[this.selectIndex].departokrList.forEach((item) => {
+        if (item.okrDetailId == this.tableList[this.selectIndex].okrParentId && !item.currentOption) {
+          newVersion = item.okrDetailVersion;
+        }
+      });
       const undertakeOkrVo = {
         okrDetailId: this.tableList[this.selectIndex].okrDetailId,
         undertakeOkrDetailId: this.tableList[this.selectIndex].okrParentId,
-        undertakeOkrVersion: this.tableList[this.selectIndex].okrDetailParentVersion,
+        undertakeOkrVersion: newVersion,
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {

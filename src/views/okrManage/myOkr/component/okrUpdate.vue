@@ -21,7 +21,7 @@
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
-                    <div class="list-title">目标O</div>
+                    <div class="list-title">目标</div>
                     <div class="list-cont">{{formData.okrDetailObjectKr}}</div>
                     <div class="list-cont">
                       <el-form-item>
@@ -39,7 +39,7 @@
                 </dt>
                 <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
                   <div class="list-info">
-                    <div class="list-title">关键结果{{kindex+1}}</div>
+                    <div class="list-title">关键结果</div>
                     <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
                     <div class="list-cont">
                       <el-form-item label="当前进度">
