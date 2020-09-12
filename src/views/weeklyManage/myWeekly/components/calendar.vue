@@ -273,7 +273,7 @@ export default {
       }
     },
     goCurrentWeek() {
-      window.location.reload();
+      this.getWeek(this.dateFormat('YYYY-mm-dd', new Date()));
     },
   },
   watch: {},
