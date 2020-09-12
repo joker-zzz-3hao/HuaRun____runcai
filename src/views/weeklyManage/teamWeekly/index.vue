@@ -57,7 +57,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input
+            <!-- <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
               v-model="formData.queryUserId"
@@ -65,7 +65,31 @@
               class="tl-input-search"
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
-            </el-input>
+            </el-input>-->
+            <el-select
+              v-model="formData.queryUserId"
+              filterable
+              placeholder="请输入成员姓名"
+              remote
+              :remote-method="remoteMethod"
+              @change="nameChange"
+            >
+              <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+                <span style="float:left">
+                  <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                    </div>
+                  </el-avatar>
+                </span>
+                <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-form>
       </div>
@@ -175,6 +199,7 @@ export default {
       tableData: [],
       orgIdList: [],
       treeData: [],
+      userList: [],
       canEdit: false,
       showRemindBtn: false,
       formData: {
@@ -323,6 +348,8 @@ export default {
           this.treeData = res.data;
           // 将用户所属组织初始化给组织树下拉框
           this.setInitOrg();
+          // 初始化下拉框用户列表
+          this.remoteMethod();
         }
       });
     },
@@ -399,6 +426,32 @@ export default {
       } else {
         this.getTeamWeekly();
       }
+    },
+    remoteMethod(name) {
+      this.server.getUserListByOrgId({
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.treeData[0].orgId,
+        keyWord: name,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content;
+        }
+      });
+    },
+    nameChange(userId) {
+      // 将该用户所属部门初始化到组织树里面
+      this.userList.forEach((user) => {
+        if (userId == user.userId) {
+          this.formData.orgId = user.orgId;
+          this.setInitOrg();
+        }
+      });
+      // 刷新周报列表数据;
+      this.refreshPageList();
+    },
+    errorHandler() {
+      return true;
     },
   },
   watch: {
