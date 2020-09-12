@@ -342,6 +342,7 @@ export default {
         if (res.code == 200) {
           // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
           if (res.data.parentUndertakeOkrInfoResult) {
+            this.selectIndex = '';
             this.departokrList = [];
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({

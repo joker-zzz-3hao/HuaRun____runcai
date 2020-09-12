@@ -47,7 +47,7 @@
         <dd>
           <el-radio-group v-model="selectRadioDepart">
             <el-radio
-              @change="selectDepartokr(index,item)"
+              @change="selectChangeOkr(index,item)"
               class="tl-radio"
               :label="item.okrDetailId+item.okrDetailVersion"
               v-for="(item,index) in departokrList"
@@ -138,7 +138,9 @@ export default {
         this.selectDepartRow = row;
       }
     },
-
+    selectChangeOkr(index, row) {
+      this.selectDepartRow = row;
+    },
     // 选择关联的价值观
     selectphilosophy(e, index, row) {
       // 原生click会执行两次，第一次在label等，第二次在input
