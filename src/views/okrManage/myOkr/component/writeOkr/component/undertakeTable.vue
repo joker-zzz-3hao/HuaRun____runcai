@@ -7,9 +7,9 @@
           <span>(单选)</span>
         </dt>
         <dd class="tag-kind">
-          <el-radio-group v-model="selectRadioDepart">
+          <el-radio-group v-model="modelDepart">
             <el-radio
-              @change="selectDepartokr(index,item)"
+              @click.native="selectDepartokr($event,index,item)"
               class="tl-radio"
               :label="item.okrDetailId"
               v-for="(item,index) in departokrList"
@@ -20,7 +20,7 @@
             </el-radio>
           </el-radio-group>
         </dd>
-        <dd class="tag-kind" v-if="departokrList.length">暂无可承接的父目标</dd>
+        <dd class="tag-kind" v-if="departokrList.length < 1">暂无可承接的父目标</dd>
       </dl>
       <dl v-if="showPhil" class="dl-list">
         <dt class="list-title">
@@ -28,9 +28,9 @@
           <span>(单选)</span>
         </dt>
         <dd>
-          <el-radio-group v-model="selectRadioPhil">
+          <el-radio-group v-model="modelPhil">
             <el-radio
-              @change="selectphilosophy(index,item)"
+              @click.native="selectphilosophy($event,index,item)"
               class="tl-radio"
               :label="item.id"
               v-for="(item,index) in philosophyList"
@@ -102,9 +102,13 @@ export default {
   },
   data() {
     return {
-      selectDepartRow: {},
-      selectPhilRow: {},
+      selectDepartRow: {}, // 选择的部门okr
+      selectDepartIndex: '', // 当前选择的序号
+      selectPhilRow: {}, // 选择的价值观
+      selectPhilIndex: '', // 当前价值观序号
       departmentName: '',
+      modelDepart: '', // 中转prop
+      modelPhil: '', // 中转prop
     };
   },
   created() {
@@ -122,15 +126,45 @@ export default {
   },
   methods: {
     // 选择关联的okr
-    selectDepartokr(index, row) {
-      this.selectDepartRow = row;
+    selectDepartokr(e, index, row) {
+      // 原生click会执行两次，第一次在label等，第二次在input
+      if (e.target.tagName != 'INPUT') return;
+      if (this.selectDepartIndex === index) {
+        this.selectDepartIndex = '';
+        this.modelDepart = '';
+        this.selectDepartRow = '';
+      } else {
+        this.selectDepartIndex = index;
+        this.selectDepartRow = row;
+      }
     },
+
     // 选择关联的价值观
-    selectphilosophy(index, row) {
-      this.selectPhilRow = row;
+    selectphilosophy(e, index, row) {
+      // 原生click会执行两次，第一次在label等，第二次在input
+      if (e.target.tagName != 'INPUT') return;
+      if (this.selectPhilIndex === index) {
+        this.selectPhilIndex = '';
+        this.modelPhil = '';
+        this.selectPhilRow = '';
+      } else {
+        this.selectPhilIndex = index;
+        this.selectPhilRow = row;
+      }
     },
   },
   watch: {
+    selectRadioDepart: {
+      handler() {
+        this.modelDepart = this.selectRadioDepart;
+        console.log('如果为空会触发吗', this.selectRadioDepart);
+      },
+    },
+    selectRadioPhil: {
+      handler() {
+        this.modelPhil = this.selectRadioPhil;
+      },
+    },
   },
 };
 </script>

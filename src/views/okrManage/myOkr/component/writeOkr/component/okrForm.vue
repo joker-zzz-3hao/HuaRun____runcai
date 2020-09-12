@@ -330,7 +330,6 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
-      console.log('addobject增加o', this.departokrObject);
     },
     // 删除o
     deleteobject(oindex) {

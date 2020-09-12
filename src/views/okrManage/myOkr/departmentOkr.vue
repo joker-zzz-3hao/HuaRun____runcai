@@ -78,22 +78,22 @@
             :expands="expands"
           >
             <template slot="head-undertake" slot-scope="props">
-              <template
+              <div
                 v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i class="el-icon-link"></i>
                 <em>{{props.okritem.continueCount}}</em>
-              </template>
+              </div>
             </template>
             <template slot="body-bar" slot-scope="props">
-              <template
+              <div
                 v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i class="el-icon-link"></i>
                 <em>{{props.okritem.continueCount}}</em>
-              </template>
+              </div>
             </template>
           </tl-okr-table>
         </div>
