@@ -275,7 +275,6 @@ export default {
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
-      console.log('获取暂存的草稿', JSON.parse(this.searchForm.draftParams));
       this.searchOkr();
       this.getCultureList();
     },
@@ -373,13 +372,21 @@ export default {
           if (this.formData.okrInfoList.length > 0) {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
-              item.undertakeOkrVo = {};
+              item.undertakeOkrVo = item.undertakeOkrVo || {};
+              item.undertakeOkrDto = item.undertakeOkrDto || {};
               // 如果是草稿，选中已保存的承接项
               if (['6', '8'].includes(this.searchForm.okrStatus)
-               && item.undertakeOkrVo.undertakeOkrDetailId) {
+               && (item.undertakeOkrVo.undertakeOkrDetailId || item.undertakeOkrDto.undertakeOkrDetailId)) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrDetailId', pitem.okrDetailId);
+                  }
+                  if (item.undertakeOkrDto.undertakeOkrDetailId == pitem.okrDetailId) {
+                    this.$set(item, 'undertakeOkrVo', item.undertakeOkrDto);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrDetailId', pitem.okrDetailId);
+                    this.$forceUpdate();
                   }
                 });
               }

@@ -373,7 +373,6 @@ export default {
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
       });
-      console.log('okrList', this.okrList);
     },
 
     // 打开详情
@@ -410,7 +409,6 @@ export default {
             };
             this.currentView = 'tl-changeokr';
             this.changeokrExist = true;
-            console.log('打开变更', this.okrId);
             this.$nextTick(() => {
               this.$refs[this.currentView].showOkrDialog();
             });
@@ -487,7 +485,6 @@ export default {
   watch: {
     'searchForm.periodId': {
       handler(newVal) {
-        console.log('get', newVal);
         if (newVal) {
           this.okrCycle = this.periodList.filter(
             (citem) => citem.periodId == newVal,
