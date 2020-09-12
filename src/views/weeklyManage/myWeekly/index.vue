@@ -1,66 +1,74 @@
 <template>
-  <div class="home">
-    <h1>我的周报</h1>
-    <!-- 此v-if控制标签闪烁 -->
-    <div v-if="weeklyTypeList.length > 0">
-      <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
-      <div v-if="!this.weeklyData.weeklyId">
-        <el-button
-          v-if="weeklyTypeList.includes('1')"
-          @click="standard"
-          :class="{'is-stantard':weeklyType=='1' && weeklyTypeList.includes('1')  }"
-        >标准版</el-button>
-        <el-button
-          v-if="weeklyTypeList.includes('2')"
-          @click="simple"
-          :class="{'is-stantard':weeklyType=='2' && weeklyTypeList.includes('2')}"
-        >简单版</el-button>
-      </div>
-      <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
-      <div v-if="this.weeklyData.weeklyId">
-        <el-button
-          v-if="weeklyType == '1'"
-          @click="standard"
-          :class="{'is-stantard':weeklyType=='1'}"
-        >标准版</el-button>
-        <el-button
-          v-if="weeklyType == '2'"
-          @click="simple"
-          :class="{'is-stantard':weeklyType=='2'}"
-        >简单版</el-button>
+  <div class="my-weekly">
+    <div class="operating-area">
+      <div class="page-title">我的周报</div>
+      <div class="operating-box" v-if="weeklyTypeList.length > 0">
+        <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
+        <template v-if="!this.weeklyData.weeklyId">
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            v-if="weeklyTypeList.includes('1')"
+            @click="standard"
+          >标准版</el-button>
+          <el-button
+            plain
+            class="tl-btn amt-border-slip"
+            v-if="weeklyTypeList.includes('2')"
+            @click="simple"
+          >
+            简单版
+            <span class="lines"></span>
+          </el-button>
+        </template>
+        <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
+        <template v-if="this.weeklyData.weeklyId">
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            v-if="weeklyType == '1'"
+            @click="standard"
+          >标准版</el-button>
+          <el-button plain class="tl-btn amt-border-slip" v-if="weeklyType == '2'" @click="simple">
+            简单版
+            <span class="lines"></span>
+          </el-button>
+        </template>
       </div>
     </div>
-    <!-- 日期 -->
-    <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
-    <div v-if="newPage">
-      <!-- 标准版 -->
-      <standard-Weekly
-        :weeklyData="weeklyData"
-        :weeklyType="weeklyType"
-        :calendarId="calendarId"
-        :myOkrList="myOkrList"
-        :orgOkrList="orgOkrList"
-        :originalMyOkrList="originalMyOkrList"
-        :originalOrgOkrList="originalOrgOkrList"
-        :cultureList="cultureList"
-        :canEdit="canEdit"
-        @refreshMyOkr="refreshMyOkr"
-        v-if="weeklyType == '1'"
-      ></standard-Weekly>
-      <!-- 简单版 -->
-      <simple-weekly
-        :weeklyData="weeklyData"
-        :weeklyType="weeklyType"
-        :calendarId="calendarId"
-        :myOkrList="myOkrList"
-        :orgOkrList="orgOkrList"
-        :originalMyOkrList="originalMyOkrList"
-        :originalOrgOkrList="originalOrgOkrList"
-        :cultureList="cultureList"
-        :canEdit="canEdit"
-        @refreshMyOkr="refreshMyOkr"
-        v-else
-      ></simple-weekly>
+    <div class="cont-area">
+      <!-- 日期 -->
+      <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
+      <div v-if="newPage">
+        <!-- 标准版 -->
+        <standard-Weekly
+          :weeklyData="weeklyData"
+          :weeklyType="weeklyType"
+          :calendarId="calendarId"
+          :myOkrList="myOkrList"
+          :orgOkrList="orgOkrList"
+          :originalMyOkrList="originalMyOkrList"
+          :originalOrgOkrList="originalOrgOkrList"
+          :cultureList="cultureList"
+          :canEdit="canEdit"
+          @refreshMyOkr="refreshMyOkr"
+          v-if="weeklyType == '1'"
+        ></standard-Weekly>
+        <!-- 简单版 -->
+        <simple-weekly
+          :weeklyData="weeklyData"
+          :weeklyType="weeklyType"
+          :calendarId="calendarId"
+          :myOkrList="myOkrList"
+          :orgOkrList="orgOkrList"
+          :originalMyOkrList="originalMyOkrList"
+          :originalOrgOkrList="originalOrgOkrList"
+          :cultureList="cultureList"
+          :canEdit="canEdit"
+          @refreshMyOkr="refreshMyOkr"
+          v-else
+        ></simple-weekly>
+      </div>
     </div>
   </div>
 </template>

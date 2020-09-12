@@ -1,22 +1,16 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年08月31日 10:41:36
-  备注：
--->
 <template>
   <div>
-    <div style="display: inline; list-style-type:none;padding: 5px 5px;">
-      <el-date-picker
-        v-model="monthDate"
-        type="month"
-        placeholder="选择月"
-        value-format="yyyy-MM-dd"
-        :picker-options="afterDisabled"
-        @change="getWeek"
-        :clearable="false"
-      ></el-date-picker>
-    </div>
+    <el-date-picker
+      v-model="monthDate"
+      type="month"
+      placeholder="选择月"
+      value-format="yyyy-MM-dd"
+      :picker-options="afterDisabled"
+      @change="getWeek"
+      :clearable="false"
+      popper-class="tl-month-popper"
+      class="tl-month-editor"
+    ></el-date-picker>
     <!-- 选择周 -->
     <div
       v-if="weekList.length > 0 "

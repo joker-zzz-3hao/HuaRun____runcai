@@ -480,6 +480,49 @@
   padding: 20px 0 20px 40px;
 }
 
+.okr-detail .timeline-list .operate-type {
+  align-self: start;
+}
+
+.okr-detail .timeline-list .operate-type em {
+  margin: 0 10px 0 0;
+  color: #222426;
+}
+
+.okr-detail .timeline-list .operate-type span {
+  color: #879099;
+}
+
+.okr-detail .timeline-list .operate-kind li,
+.okr-detail .timeline-list .operate-kind li div {
+  display: flex;
+  align-items: center;
+}
+
+.okr-detail .timeline-list .operate-kind li {
+  margin: 10px 0;
+  justify-content: space-between;
+}
+
+.okr-detail .timeline-list .operate-kind li > div {
+  margin: 0 0 0 20px;
+  color: #222426;
+}
+
+.okr-detail .timeline-list .operate-kind li > div:first-child {
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.okr-detail .timeline-list .operate-kind li > div span {
+  margin: 0 10px 0 0;
+  color: #879099;
+}
+
 .okr-detail .timeline-list .list-title::before {
   width: 8px;
   height: 8px;
@@ -547,6 +590,13 @@
 
 .collpase-panel dd.is-edit .el-form-item {
   margin: 0 0 0 10px;
+}
+
+/* 周报 */
+.my-weekly .cont-area {
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
 }
 
 
