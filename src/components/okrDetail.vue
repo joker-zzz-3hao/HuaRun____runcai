@@ -84,32 +84,46 @@
                   <div class="list-info">
                     <div class="list-title">{{cycleFirst.createTime}}</div>
                     <div class="list-cont">
-                      <div class="operate-type">
+                      <div
+                        class="operate-type"
+                        :class="{'is-create':sdfsfs,'is-modify':sdfsfs,'is-update':sdfsfs,'is-undertake':sdfsfs,}"
+                      >
                         <em>{{userName}}</em>
                         <span>{{cycleFirst.operateTypeCn}}</span>
                       </div>
-                      <div
-                        class="operate-kind"
-                        v-for="uitem in cycleFirst.okrDetailId"
-                        :key="uitem.id"
-                      >
-                        <div class="kind-type">
-                          <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                          <em>{{uitem.okrDetailObjectKr}}</em>
-                        </div>
-                        <div class="kind-cont">
-                          <p v-if="uitem.updateContents.afterProgress">
-                            <span>进度为</span>
+                      <ul class="operate-kind">
+                        <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                          <div>
+                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterProgress">
+                            <span>进度更新为</span>
                             <em>{{uitem.updateContents.afterProgress}}</em>
                             <span>%</span>
-                          </p>
-
-                          <p v-if="uitem.updateContents.afterConfidence">
-                            <span>风险状态修改为</span>
+                          </div>
+                          <div v-if="uitem.updateContents.afterConfidence">
+                            <span>风险状态为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                            </div>
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                          </p>
-                        </div>
-                      </div>
+                          </div>
+                        </li>
+                      </ul>
                       <div class="operate-reason" v-if="cycleFirst.remark">
                         <span>说明：</span>
                         <em>{{cycleFirst.remark}}</em>
@@ -125,26 +139,39 @@
                         <em>{{userName}}</em>
                         <span>{{activity.operateTypeCn}}</span>
                       </div>
-                      <div
-                        class="operate-kind"
-                        v-for="uitem in activity.okrDetailId"
-                        :key="uitem.id"
-                      >
-                        <div class="kind-type">
-                          <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                          <em>{{uitem.okrDetailObjectKr}}</em>
-                        </div>
-                        <div class="kind-cont">
-                          <p v-if="uitem.updateContents.afterProgress"></p>
-                          <span>进度为</span>
-                          <em>{{uitem.updateContents.afterProgress}}</em>
-                          <span>%</span>
-                          <p v-if="uitem.updateContents.afterConfidence">
+                      <ul class="operate-kind">
+                        <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                          <div>
+                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterProgress">
+                            <span>进度更新为</span>
+                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="uitem.updateContents.afterConfidence">
                             <span>风险状态修改为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                            </div>
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                          </p>
-                        </div>
-                      </div>
+                          </div>
+                        </li>
+                      </ul>
                       <div class="operate-reason" v-if="activity.remark">
                         <span>说明：</span>
                         <em>{{activity.remark}}</em>
