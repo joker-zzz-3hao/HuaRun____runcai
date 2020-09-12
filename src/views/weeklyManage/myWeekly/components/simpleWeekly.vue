@@ -420,19 +420,19 @@ export default {
   },
   methods: {
     init() {
+      this.remoteMethod();
       // 本周任务初始化数据
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
       // this.thisPageProjectList = [...this.projectList];
-      this.remoteMethod();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
+        this.setWorkTableData();
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
         this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
-        this.setWorkTableData();
       }
     },
     setOkrProcess(weeklyOkrVoList) {
