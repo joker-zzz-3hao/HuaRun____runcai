@@ -599,6 +599,100 @@
   background: #fff;
 }
 
+.calendar-select,
+.weekly-select {
+  display: flex;
+  align-items: center;
+}
+
+.weekly-select {
+  margin: 0 0 0 15px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.weekly-select .el-button {
+  border-color: #e5e9ee;
+  border-radius: 2px;
+}
+
+.weekly-select .el-button,
+.weekly-select .el-button + .el-button {
+  margin: 5px 15px;
+}
+
+.weekly-select .el-button--success,
+.weekly-select .el-button--success.is-plain:focus,
+.weekly-select .el-button--success.is-plain:hover {
+  background: #f9f8fe;
+  border-color: #685df1;
+}
+
+.weekly-select .el-button.is-active,
+.weekly-select .el-button.is-plain:active,
+.weekly-select .el-button.is-plain:focus,
+.weekly-select .el-button.is-plain:hover {
+  border-color: #e5e9ee;
+}
+
+.weekly-cont .el-table__body-wrapper .el-slider--with-input,
+.weekly-cont .el-table__body-wrapper .el-form-item {
+  flex: 1;
+}
+
+.weekly-cont .tl-select {
+  width: 100%;
+}
+
+.weekly-cont .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.weekly-cont .el-select .el-input.is-focus .el-input__inner {
+  border-color: #685df1;
+}
+
+.weekly-cont .el-select-dropdown__item.selected {
+  color: #685df1;
+}
+
+.weekly-cont .tl-table .el-table__body .cell {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.weekly-cont .tl-table .el-table__body .cell .el-form-item {
+  margin: 0;
+  width: 100%;
+}
+
+.weekly-cont .tl-table.flex td {
+  vertical-align: top;
+}
+
+.weekly-cont .tl-table.flex .el-table__body td:nth-child(5) .cell {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select {
+  margin: 10px 0 0 0;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select a {
+  font-size: 12px;
+  color: #879099;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select a:hover {
+  color: #685df1;
+}
+
+.weekly-cont .tl-input,
+.weekly-cont .tl-slider .el-slider__input {
+  margin: 0;
+}
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */

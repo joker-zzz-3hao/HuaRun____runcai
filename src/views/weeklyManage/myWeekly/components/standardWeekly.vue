@@ -1,14 +1,13 @@
-<!--与原型不一致的地方
-1、进度条，直接显示进度条，且可滑动
-2、关联项目直接使用下拉框
-3、
-
--->
 <template>
   <div class="home">
     <div>
-      <el-form :rules="formData.rules" :model="formData" ref="formDom">
-        <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
+      <el-form :rules="formData.rules" :model="formData" ref="formDom" class="tl-form">
+        <el-table
+          ref="workTable"
+          v-loading="tableLoading"
+          :data="formData.weeklyWorkVoSaveList"
+          class="tl-table"
+        >
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
             <template slot-scope="scope">
@@ -163,10 +162,10 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <el-button @click="addItem" style>添加</el-button>
+      <el-button @click="addItem">添加</el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <div style="marginTop:50px">
+    <div>
       <h1>本周感想、建议、收获</h1>
       <el-form :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
@@ -215,7 +214,7 @@
       </el-form>
     </div>
     <!-- 下周计划 -->
-    <div style="marginTop:50px">
+    <div>
       <h1>下周计划</h1>
       <el-form :model="formData">
         <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">

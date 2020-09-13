@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="calendar-select">
     <el-date-picker
       v-model="monthDate"
       type="month"
@@ -12,17 +12,15 @@
       class="tl-month-editor"
     ></el-date-picker>
     <!-- 选择周 -->
-    <div
-      v-if="weekList.length > 0 "
-      style="display: inline; list-style-type:none;padding: 5px 5px;"
-    >
+    <div v-if="weekList.length > 0 " class="weekly-select">
       <el-button
-        style="display: inline; list-style-type:none;padding: 5px 5px;"
+        plain
         v-for="(item,index) in weekList"
         :key="index"
         @click="seclectBtn(item)"
         :type="item.btnType"
         :disabled="!item.canClick"
+        class="tl-btn"
       >
         {{getWeekItem(item,index)}}
         <el-checkbox
@@ -33,7 +31,7 @@
           disabled
         ></el-checkbox>
       </el-button>
-      <el-button @click="goCurrentWeek">回到本周</el-button>
+      <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>
     </div>
   </div>
 </template>

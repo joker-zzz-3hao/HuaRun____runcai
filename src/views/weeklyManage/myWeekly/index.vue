@@ -39,7 +39,7 @@
     <div class="cont-area">
       <!-- 日期 -->
       <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
-      <div v-if="newPage">
+      <div class="weekly-area">
         <!-- 标准版 -->
         <standard-Weekly
           :weeklyData="weeklyData"
