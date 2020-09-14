@@ -5,7 +5,7 @@
     :append-to-body="true"
     :modal-append-to-body="true"
     class="tl-drawer"
-    custom-class="diy-drawer okr-change"
+    custom-class="custom-drawer okr-change"
     @closed="closed"
     :before-close="close"
   >
@@ -119,7 +119,7 @@
       :modal="false"
       :wrapperClosable="false"
       :append-to-body="true"
-      custom-class="diy-drawer associated-undertaking"
+      custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
       <tl-undertaketable
@@ -151,7 +151,7 @@
       :wrapperClosable="false"
       :append-to-body="true"
       class="tl-drawer"
-      custom-class="diy-drawer history-version"
+      custom-class="custom-drawer history-version"
       :visible.sync="historyDrawer"
     >
       <div slot="title" class="flex-sb">

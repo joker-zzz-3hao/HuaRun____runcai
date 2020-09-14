@@ -694,6 +694,18 @@
   margin: 0;
 }
 
+.my-weekly .operating-area .tl-custom-btn {
+  height: 30px;
+}
+
+.my-weekly .operating-area .tl-custom-btn:nth-child(1) {
+  border-radius: 2px 0 0 2px;
+}
+
+.my-weekly .operating-area .tl-custom-btn:nth-child(2) {
+  border-radius: 0 2px 2px 0;
+}
+
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */
 .okr-permissions .operating-area {

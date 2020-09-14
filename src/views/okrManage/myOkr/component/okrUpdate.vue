@@ -6,7 +6,7 @@
       :wrapperClosable="false"
       :append-to-body="true"
       :modal-append-to-body="true"
-      custom-class="diy-drawer"
+      custom-class="custom-drawer"
       class="tl-drawer"
       @closed="closed"
       :before-close="close"
@@ -16,7 +16,7 @@
       </div>
       <el-scrollbar>
         <div class="okr-info">
-          <div class="tl-diy-timeline">
+          <div class="tl-custom-timeline">
             <el-form :model="formData" ref="dataForm" class="tl-form">
               <dl class="timeline-list">
                 <dt>

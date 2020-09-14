@@ -1,6 +1,6 @@
 <template>
   <div class="okr-info">
-    <div class="tl-diy-timeline">
+    <div class="tl-custom-timeline">
       <el-form :model="formData" ref="dataForm" class="tl-form">
         <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
           <dt>
@@ -168,7 +168,7 @@
       :visible.sync="innerDrawer"
       :modal="false"
       :append-to-body="true"
-      custom-class="diy-drawer associated-undertaking"
+      custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
       <div slot="title" class="flex-sb">

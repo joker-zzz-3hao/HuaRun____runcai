@@ -3,8 +3,16 @@
     <div class="operating-area">
       <div class="page-title">我的周报</div>
       <div class="operating-box" v-if="weeklyTypeList.length > 0">
+        <div
+          class="tl-custom-btn"
+          v-for="(item,idx) in versions"
+          :key="item.id"
+          :class="{'is-select': versionIndex == idx}"
+        >
+          <em>{{item.name}}</em>
+        </div>
         <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
-        <template v-if="!this.weeklyData.weeklyId">
+        <!-- <template v-if="!this.weeklyData.weeklyId">
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -20,9 +28,9 @@
             简单版
             <span class="lines"></span>
           </el-button>
-        </template>
+        </template>-->
         <!-- 周报提交后，只能展示一个，根据weeklyType展示 -->
-        <template v-if="this.weeklyData.weeklyId">
+        <!-- <template v-if="this.weeklyData.weeklyId">
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -33,7 +41,7 @@
             简单版
             <span class="lines"></span>
           </el-button>
-        </template>
+        </template>-->
       </div>
     </div>
     <div class="cont-area">
@@ -102,6 +110,15 @@ export default {
       originalOrgOkrList: [],
       cultureList: [],
       canEdit: false,
+      versions: [
+        {
+          name: '标准版',
+        },
+        {
+          name: '简单版',
+        },
+      ],
+      versionIndex: 0,
     };
   },
   created() {

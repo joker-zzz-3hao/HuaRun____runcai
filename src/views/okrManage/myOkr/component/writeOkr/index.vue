@@ -4,7 +4,7 @@
     :modal-append-to-body="true"
     :append-to-body="true"
     :visible.sync="createokrDrawer"
-    custom-class="diy-drawer create-okr"
+    custom-class="custom-drawer create-okr"
     class="tl-drawer"
     :before-close="close"
     @closed="closed"

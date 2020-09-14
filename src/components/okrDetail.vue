@@ -4,7 +4,7 @@
     :wrapperClosable="false"
     :modal-append-to-body="true"
     :append-to-body="true"
-    custom-class="diy-drawer okr-detail"
+    custom-class="custom-drawer okr-detail"
     class="tl-drawer"
     @closed="closed"
     :before-close="close"
@@ -78,7 +78,7 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="currentIndex===1" class="tab-cont tl-diy-timeline">
+            <div v-else-if="currentIndex===1" class="tab-cont tl-custom-timeline">
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
@@ -274,7 +274,7 @@
       :wrapperClosable="false"
       :append-to-body="true"
       class="tl-drawer"
-      custom-class="diy-drawer history-version"
+      custom-class="custom-drawer history-version"
       :visible.sync="innerDrawer"
     >
       <div slot="title" class="flex-sb">

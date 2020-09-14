@@ -25,7 +25,7 @@
       </dl>
       <dl class="dl-item">
         <dt>状态</dt>
-        <dd class="tl-diy-tabs">
+        <dd class="tl-custom-tabs">
           <div class="tab-menus">
             <ul class="tab-list">
               <li
