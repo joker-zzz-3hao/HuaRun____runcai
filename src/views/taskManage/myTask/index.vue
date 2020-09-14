@@ -44,12 +44,19 @@
         </el-table>
       </div>
     </tl-crcloud-table>
+    <tl-assignment
+      ref="assignment"
+      v-if="existAssignment"
+      :existAssignment.sync="existAssignment"
+      :server="server"
+    ></tl-assignment>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
 import searchbar from './components/searchbar';
+import assignment from './components/assignment';
 import Server from './server';
 
 const server = new Server();
@@ -59,6 +66,7 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
     'tl-searchbar': searchbar,
+    'tl-assignment': assignment,
   },
   data() {
     return {
@@ -68,6 +76,7 @@ export default {
       pageSizes: 1,
       totalpage: 0,
       tableData: [],
+      showAssignment: false,
     };
   },
   created() {
@@ -83,7 +92,10 @@ export default {
 
     },
     handleAssign() {
-
+      this.existAssignment = true;
+      this.$nextTick(() => {
+        this.$refs.assignment.show();
+      });
     },
     handleMove() {
 
