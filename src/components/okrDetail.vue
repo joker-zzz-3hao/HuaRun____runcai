@@ -129,7 +129,10 @@
                         </li>
                       </ul>
                       <ul v-else-if="cycleFirst.operateType == 'add'">
-                        <li></li>
+                        <li>OKR</li>
+                      </ul>
+                      <ul v-else-if="cycleFirst.operateType == 'modify'">
+                        <li>OKR</li>
                       </ul>
                       <div class="operate-reason" v-if="cycleFirst.remark">
                         <span>说明：</span>
