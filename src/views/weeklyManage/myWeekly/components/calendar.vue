@@ -40,6 +40,7 @@
           <em>未开放</em>
         </div>-->
         <el-tooltip
+          v-if="!item.weeklyId && !item.noOpen && !canEdit"
           class
           effect="dark"
           content="已超过两周，不可再提交周报"

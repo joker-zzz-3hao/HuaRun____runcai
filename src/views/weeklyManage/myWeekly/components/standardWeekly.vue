@@ -202,7 +202,9 @@
     <!-- 本周感想、建议、收获 -->
     <div>
       <h1>本周感想、建议、收获</h1>
-      <el-form :model="formData">
+      <i v-show="!thoughtOpen" @click="openThought" class="el-icon-plus"></i>
+      <i v-show="thoughtOpen" @click="closeThought" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="thoughtOpen">
         <el-table :data="formData.weeklyThoughtSaveList">
           <el-table-column>
             <template slot-scope="scope">
@@ -251,7 +253,9 @@
     <!-- 下周计划 -->
     <div>
       <h1>下周计划</h1>
-      <el-form :model="formData">
+      <i v-show="!planOpen" @click="openPlan" class="el-icon-plus"></i>
+      <i v-show="planOpen" @click="closePlan" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="planOpen">
         <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项">
@@ -279,8 +283,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button @click="addPlanItem" style>添加</el-button>
       </el-form>
-      <el-button @click="addPlanItem" style>添加</el-button>
     </div>
     <!-- 个人OKR完成度 -->
     <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
@@ -518,6 +522,8 @@ export default {
           label: '失控',
         },
       ],
+      thoughtOpen: false,
+      planOpen: false,
     };
   },
   created() {
@@ -877,6 +883,18 @@ export default {
       if (!status) {
         this.remoteMethod();
       }
+    },
+    openThought() {
+      this.thoughtOpen = true;
+    },
+    closeThought() {
+      this.thoughtOpen = false;
+    },
+    openPlan() {
+      this.planOpen = true;
+    },
+    closePlan() {
+      this.planOpen = false;
     },
   },
   watch: {

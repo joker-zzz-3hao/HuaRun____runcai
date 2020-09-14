@@ -37,13 +37,12 @@
             min-width="300"
           >
             <template slot-scope="scope">
-              <el-slider
+              <el-input-number
                 v-model="scope.row.workProgress"
-                :step="1"
-                @change="tableProcessChange(scope.row)"
-                show-input
-                class="tl-slider"
-              ></el-slider>
+                controls-position="right"
+                :min="0"
+                :max="100"
+              ></el-input-number>
             </template>
           </el-table-column>
           <el-table-column
