@@ -735,9 +735,6 @@ export default {
       this.currenItemrandomId = data.randomId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
-      this.$nextTick(() => {
-        this.$refs.addOkr.show();
-      });
     },
     deleteOkr(okr, randomId) {
       // 删除已选择的价值观、okr

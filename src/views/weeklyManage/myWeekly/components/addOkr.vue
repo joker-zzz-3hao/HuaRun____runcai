@@ -1,13 +1,18 @@
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :visible.sync="visible"
-      :before-close="close"
-      @closed="closed"
-      title="支撑OKR/价值观"
-      :close-on-click-modal="false"
-    >
+  <el-drawer
+    :modal-append-to-body="false"
+    :before-close="close"
+    @closed="closed"
+    :close-on-click-modal="false"
+    title="支撑OKR/价值观"
+    direction="rtl"
+    size="35%"
+    :modal="false"
+    :visible.sync="visible"
+    :wrapperClosable="false"
+    class="tl-drawer"
+  >
+    <div>
       <div>
         <!-- <span>选择团队</span>
         <el-select v-model="team">
@@ -24,7 +29,7 @@
       </div>
       <div>
         <h4>团队目标</h4>
-        <el-checkbox-group v-model="orgSelectData" :min="0" :max="1">
+        <el-checkbox-group v-model="orgSelectData">
           <el-checkbox
             :class="{'move-to-right':teamTarget.okrType = 'KR'}"
             v-for="teamTarget in orgOkrList"
@@ -39,7 +44,7 @@
       </div>
       <div>
         <h4>个人目标</h4>
-        <el-checkbox-group v-model="personalSelectData" :min="0" :max="1">
+        <el-checkbox-group v-model="personalSelectData">
           <el-checkbox
             v-for="personalTarget in myOkrList"
             :label="personalTarget.okrDetailId"
@@ -62,12 +67,12 @@
           >{{culture.cultureName}}</el-checkbox>
         </el-checkbox-group>
       </div>
-      <div>
-        <el-button @click="confirm">确认</el-button>
-        <el-button @click="close">取消</el-button>
-      </div>
-    </el-dialog>
-  </div>
+    </div>
+    <div class="operating-box">
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
+      <el-button class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -158,10 +163,8 @@ export default {
   },
   methods: {
     init() {
-      this.initSelectedData();
-    },
-    show() {
       this.visible = true;
+      this.initSelectedData();
     },
     confirm() {
       this.visible = false;
@@ -229,6 +232,7 @@ export default {
     },
     orgOkrChange(isSelected) {
       if (isSelected) {
+        this.personalSelectData = [this.personalSelectData[this.personalSelectData.length - 1]];// 单选控制
         this.orgOkrList.forEach((element) => {
           if (element.okrDetailId == this.orgSelectData) {
             this.orgOkr = [element];
@@ -240,6 +244,7 @@ export default {
     },
     personalOkrChange(isSelected) {
       if (isSelected) {
+        this.personalSelectData = [this.personalSelectData[this.personalSelectData.length - 1]];// 单选控制
         this.myOkrList.forEach((element) => {
           if (element.okrDetailId == this.personalSelectData) {
             this.personalOkr = [element];
