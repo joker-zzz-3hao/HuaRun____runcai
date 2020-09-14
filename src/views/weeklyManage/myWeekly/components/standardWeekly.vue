@@ -1,15 +1,20 @@
 <template>
-  <div class="home">
-    <div>
+  <div class="write-weekly">
+    <div class="weekly-cont">
       <el-form :rules="formData.rules" :model="formData" ref="formDom" class="tl-form">
         <el-table
           ref="workTable"
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
-          class="tl-table"
+          class="tl-table flex"
         >
-          <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
+          <el-table-column label="序号" type="index" width="55"></el-table-column>
+          <el-table-column
+            label="工作项"
+            prop="workContent"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workContent'"
@@ -20,11 +25,12 @@
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
             </template>
           </el-table-column>-
-          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader">
+          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader" min-width="300">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workDesc'"
@@ -36,21 +42,33 @@
                   maxlength="1000"
                   clearable
                   placeholder="请描述具体工作内容"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
+          <el-table-column
+            label="进度"
+            prop="workProgress"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-slider
                 v-model="scope.row.workProgress"
                 @change="tableProcessChange(scope.row)"
                 :step="1"
                 show-input
+                class="tl-slider"
               ></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="投入工时" prop="workTime" :render-header="renderHeader">
+          <el-table-column
+            label="投入工时"
+            prop="workTime"
+            :render-header="renderHeader"
+            min-width="130"
+          >
             <template slot-scope="scope">
               <el-input-number
                 controls-position="right"
@@ -59,10 +77,17 @@
                 :step="1"
                 :min="1"
                 :max="80"
-              ></el-input-number>h
+                class="tl-input-number"
+              ></el-input-number>
+              <span>h</span>
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectId" :render-header="renderHeader">
+          <el-table-column
+            label="关联项目"
+            prop="projectId"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
@@ -76,6 +101,8 @@
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
                   @visible-change="visibleChange"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in thisPageProjectList"
@@ -85,19 +112,26 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <a style="cursor:pointer" @click="selectTempPro(scope.row)">临时项目</a>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
-                placement="top"
-              >
-                <i class="el-icon-question"></i>
-              </el-tooltip>
-              <div></div>
+              <div class="default-select">
+                <a @click="selectTempPro(scope.row)">临时项目</a>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="支撑OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
+          <el-table-column
+            label="支撑OKR/价值观"
+            prop="valueOrOkrIds"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <!-- okrIds -->
             <template slot-scope="scope">
               <!-- 临时项目可不选择支撑项 -->
@@ -145,7 +179,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column>
+          <el-table-column fixed="right" width="50">
             <template slot-scope="scope">
               <el-dropdown
                 @command="deleteItem(scope.row)"
