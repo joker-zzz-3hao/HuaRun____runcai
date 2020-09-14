@@ -103,7 +103,7 @@ export default {
     },
     submitMember() {
       this.server.setTeamAdminRole({
-        roleCode: 'TEAM_HEAD',
+        roleCode: 'TEAM_ADMIN',
         orgId: this.baseInfo.orgId,
         userId: this.chargeMember.userId,
       }).then((res) => {
