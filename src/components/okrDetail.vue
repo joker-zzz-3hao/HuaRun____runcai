@@ -141,27 +141,32 @@
                         <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
                           <div>
                             <span
-                              v-if="!uitem.updateContents"
+                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
                             >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
                             <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em>{{uitem.okrDetailObjectKr}}</em>
+                            <em
+                              v-if="uitem.updateContents.beforeName"
+                            >{{uitem.updateContents.beforeName}}</em>
+                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
                           </div>
-                          <div v-if="uitem.updateContents && uitem.updateContents.afterName">
-                            <span>名称由</span>
-                            <em>{{uitem.updateContents.beforeName}}</em>
-                            <span>变更为</span>
+                          <div v-if="uitem.updateContents.afterName">
+                            <span>名称变更为</span>
                             <em>{{uitem.updateContents.afterName}}</em>
                           </div>
-                          <div v-if="uitem.updateContents && uitem.updateContents.beforeWeight">
+                          <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
                             <em>{{uitem.updateContents.beforeWeight}}</em>
                             <span>变更为</span>
                             <em>{{uitem.updateContents.afterWeight}}</em>
                           </div>
-                          <div
-                            v-if="uitem.updateContents && uitem.updateContents.afterUndertakeName"
-                          >
-                            <span>承接自</span>
+                          <div v-if="uitem.updateContents.beforeUndertakeName">
+                            <span>关联父目标由</span>
+                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                          </div>
+                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                            <span>关联父目标</span>
                             <em>{{uitem.updateContents.afterUndertakeName}}</em>
                           </div>
                         </li>
@@ -226,27 +231,32 @@
                         <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
                           <div>
                             <span
-                              v-if="!uitem.updateContents"
+                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
                             >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
                             <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em>{{uitem.okrDetailObjectKr}}</em>
+                            <em
+                              v-if="uitem.updateContents.beforeName"
+                            >{{uitem.updateContents.beforeName}}</em>
+                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
                           </div>
-                          <div v-if="uitem.updateContents && uitem.updateContents.afterName">
-                            <span>名称由</span>
-                            <em>{{uitem.updateContents.beforeName}}</em>
-                            <span>变更为</span>
+                          <div v-if="uitem.updateContents.afterName">
+                            <span>名称变更为</span>
                             <em>{{uitem.updateContents.afterName}}</em>
                           </div>
-                          <div v-if="uitem.updateContents && uitem.updateContents.beforeWeight">
+                          <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
                             <em>{{uitem.updateContents.beforeWeight}}</em>
                             <span>变更为</span>
                             <em>{{uitem.updateContents.afterWeight}}</em>
                           </div>
-                          <div
-                            v-if="uitem.updateContents && uitem.updateContents.afterUndertakeName"
-                          >
-                            <span>承接自</span>
+                          <div v-if="uitem.updateContents.beforeUndertakeName">
+                            <span>关联父目标由</span>
+                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                          </div>
+                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                            <span>关联父目标</span>
                             <em>{{uitem.updateContents.afterUndertakeName}}</em>
                           </div>
                         </li>
@@ -504,7 +514,7 @@ export default {
               if (item.okrDetailId && item.okrDetailId.length > 0) {
                 item.okrDetailId.forEach((uitem) => {
                   const contents = JSON.parse(uitem.updateJsonStr);
-                  uitem.updateContents = contents;
+                  uitem.updateContents = contents || {};
                 });
               }
             });
