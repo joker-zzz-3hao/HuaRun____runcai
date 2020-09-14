@@ -12,8 +12,42 @@
       class="tl-month-editor"
     ></el-date-picker>
     <!-- 选择周 -->
-    <div v-if="weekList.length > 0 " class="weekly-select">
-      <el-button
+    <ul v-if="weekList.length > 0 " class="weekly-select">
+      <li v-for="(item,index) in weekList" :key="index" @click="seclectBtn(item)">
+        <div class="period-time">{{getWeekItem(item,index)}}</div>
+        <div class="period-state" :class="{'is-submit':sdfsds,'is-unopen':sdfsds}">
+          <div class="icon-bg">
+            <i></i>
+            <!-- <i :class="{'el-icon-check': yitijiao}"></i>
+            <i :class="{'el-icon-check': weitijiao}"></i>-->
+          </div>
+          <em>未提交</em>
+          <!-- <em>已提交</em>
+          <em>未开放</em>-->
+        </div>
+        <!-- <div class="period-state">
+          <div class="icon-bg">
+            <i class="el-icon-check"></i>
+          </div>
+          <em>已提交</em>
+        </div>-->
+        <!-- <div class="period-state">
+          <div class="icon-bg">
+            <i></i>
+          </div>
+          <em>未开放</em>
+        </div>-->
+        <el-tooltip
+          class
+          effect="dark"
+          content="已超过两周，不可再提交周报"
+          placement="top"
+          popper-class="tl-tooltip-popper"
+        >
+          <i></i>
+        </el-tooltip>
+      </li>
+      <!-- <el-button
         plain
         v-for="(item,index) in weekList"
         :key="index"
@@ -32,8 +66,8 @@
         ></el-checkbox>
         <span v-if="!item.weeklyId && !item.canEdit">已超过两周，不可再提交周报</span>
       </el-button>
-      <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>
-    </div>
+      <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>-->
+    </ul>
   </div>
 </template>
 
