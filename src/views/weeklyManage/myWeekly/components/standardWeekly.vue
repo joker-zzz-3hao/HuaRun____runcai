@@ -75,6 +75,7 @@
                   remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
+                  @visible-change="visibleChange"
                 >
                   <el-option
                     v-for="item in thisPageProjectList"
@@ -840,6 +841,11 @@ export default {
     },
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
+    },
+    visibleChange(status) {
+      if (!status) {
+        this.remoteMethod();
+      }
     },
   },
   watch: {

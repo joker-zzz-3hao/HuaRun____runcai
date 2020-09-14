@@ -566,7 +566,6 @@ export default {
       this.addWork();
     },
     projectChange(week) {
-      debugger;
       week.projectId = week.validateProjectId;
     },
     deleteItem(item) {
