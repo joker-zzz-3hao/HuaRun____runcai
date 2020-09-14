@@ -458,24 +458,26 @@ export default {
           // 校验权重比例
           let opercent = 0;
           let keypercent = 0;
-          this.formData.okrInfoList.forEach((oitem) => {
-            opercent += oitem.okrWeight;
-            keypercent = 0;
-            oitem.krList.forEach((kitem) => {
-              keypercent += kitem.okrWeight;
+          try {
+            this.formData.okrInfoList.forEach((oitem) => {
+              opercent += oitem.okrWeight;
+              keypercent = 0;
+              oitem.krList.forEach((kitem) => {
+                keypercent += kitem.okrWeight;
+              });
+              if (keypercent != 100) {
+                this.$message.error('结果KR权重值总和必须为100');
+                throw Error();
+              }
             });
-            delete oitem.departokrList;
-            delete oitem.philosophyList;
-          });
+            if (opercent != 100) {
+              this.$message.error('目标O权重值总和必须为100');
+              throw Error();
+            }
+          } catch (e) {
+            return;
+          }
 
-          if (opercent != 100) {
-            this.$message.error('目标O权重值总和必须为100');
-            return;
-          }
-          if (keypercent != 100) {
-            this.$message.error('结果KR权重值总和必须为100');
-            return;
-          }
           if (this.searchForm.okrCycle.periodId) {
             this.formData.periodId = this.searchForm.okrCycle.periodId;
           } else {

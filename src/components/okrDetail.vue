@@ -299,6 +299,7 @@
             <div class="user-name">
               <em>{{cutName(item.userName)}}</em>
             </div>
+            <!-- <img src="@/assets/images/user/user3.jpg" alt /> -->
           </dt>
           <dd>{{item.userName}}</dd>
         </dl>

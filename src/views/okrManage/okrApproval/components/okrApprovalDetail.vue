@@ -47,6 +47,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
+            v-if="ruleForm.approvalStatus=='2'"
             label="审核意见"
             prop="refuseInfo"
             :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审核意见'}]"
