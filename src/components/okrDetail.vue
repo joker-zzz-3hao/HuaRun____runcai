@@ -12,7 +12,7 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
     </div>
-    <el-scrollbar>
+    <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">
         <tl-tabs :current.sync="currentIndex">
           <template slot="tab-cont">
@@ -392,6 +392,8 @@ export default {
       currentIndex: 0,
       cycleFirst: {},
       periodName: '',
+      currentPage: 1,
+      status: 1,
     };
   },
   components: {
@@ -442,6 +444,11 @@ export default {
   },
   created() {
   },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.onScroll, true);
+    });
+  },
   methods: {
     showOkrDialog() {
       this.getokrDetail();
@@ -469,7 +476,6 @@ export default {
         this.tableList = this.formData.tableList || [];
         this.okrmain = this.formData.okrMain || {};
         // this.okrId = this.formData.okrMain.okrMainId;
-        console.log('this.tableList', this.formData);
       }
     },
     // 点赞
@@ -480,7 +486,6 @@ export default {
         supportType: this.supportType,
       }).then((res) => {
         if (res.code == 200) {
-          console.log(res.code);
           this.getSupportList();
         }
       });
@@ -489,7 +494,6 @@ export default {
     getSupportList() {
       const self = this;
       self.server.getSupportList({ okrId: self.okrId }).then((res) => {
-        console.log(res.code);
         if (res.code == 200) {
           self.voteUser = res.data.supportUserList || [];
           self.voteLength = self.voteUser.length;
@@ -513,9 +517,8 @@ export default {
         this.server.okrOperationHistory({
           currentPage: 1,
           okrMainId: this.okrId,
-          pageSize: 10,
+          pageSize: 10 * this.currentPage,
         }).then((res) => {
-          console.log(res.code);
           if (res.code == 200) {
             this.userName = res.data.userName || '';
             this.periodName = res.data.periodName || '';
@@ -530,6 +533,7 @@ export default {
               }
             });
             this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
+            this.status = 1;
           }
         });
       }
@@ -551,42 +555,33 @@ export default {
       }
       return '';
     },
-    // // 获取滚动条当前的位置
-    // getScrollTop() {
-    //   let scrollTop = 0;
-    //   if (document.documentElement && document.documentElement.scrollTop) {
-    //     scrollTop = document.documentElement.scrollTop;
-    //   } else if (document.body) {
-    //     scrollTop = document.body.scrollTop;
-    //   }
-    //   return scrollTop;
-    // },
-    // // 获取当前可视范围的高度
-    // getClientHeight() {
-    //   let clientHeight = 0;
-    //   if (document.body.clientHeight && document.documentElement.clientHeight) {
-    //     clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
-    //   } else {
-    //     clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
-    //   }
-    //   return clientHeight;
-    // },
+    // 获取滚动条当前的位置
+    getScrollTop() {
+      let scrollTop = 0;
+      scrollTop = this.$refs.detailscrollbar.wrap.scrollTop;
 
-    // // 获取文档完整的高度
-    // getScrollHeight() {
-    //   return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-    // },
-    // // 滚动事件触发下拉加载
-    // onScroll() {
-    //   if (this.getScrollHeight() - this.getClientHeight() - this.getScrollTop() <= 0) {
-    //     if (this.status === 1) {
-    //       this.status = 0;
-    //       // 页码，分页用，默认第一页
-    //       this.deliverParams.page += 1;
-    //       // 调用请求函数
-    //     }
-    //   }
-    // },
+      return scrollTop;
+    },
+    // 获取当前可视范围的高度
+    getClientHeight() {
+      let clientHeight = 0;
+
+      clientHeight = this.$refs.detailscrollbar.$el.offsetWidth;
+      return clientHeight;
+    },
+
+    // 滚动事件触发下拉加载
+    onScroll() {
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage) {
+        if (this.status === 1) {
+          this.status = 0;
+          // 页码，分页用，默认第一页
+          this.currentPage += 1;
+          // 调用请求函数
+          this.getOperationHistory();
+        }
+      }
+    },
   },
   watch: {
 
