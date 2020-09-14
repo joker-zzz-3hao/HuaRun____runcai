@@ -83,7 +83,11 @@
         <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
         <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
           <template slot="treecard" slot-scope="node">
-            <card :node="node" @showDetail="showDetail(node.node.okrId)"></card>
+            <card
+              :node="node"
+              @showDetail.stop="showDetail(node.node.okrId)"
+              @takeOvierview="takeOvierview(node)"
+            ></card>
           </template>
         </svgtree>
       </div>
@@ -275,7 +279,39 @@ export default {
         this.$refs.okrdetail.showOkrDialog();
       });
     },
-
+    takeOvierview({ node }) {
+      this.server.identity({
+        orgId: node.orgId,
+        user: node.userId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: node.userId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+        }
+      });
+    },
   },
   watch: {
     periodId: {

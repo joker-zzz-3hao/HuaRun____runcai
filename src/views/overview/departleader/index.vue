@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="home" v-show="showOver">
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
     <div class="creatOkr">
-      <div>{{userInfo.userName}}</div>
+      <!-- <div>{{userInfo.userName}}</div> -->
       <tl-org-page :periodId="periodId"></tl-org-page>
     </div>
     <div class="creatOkr">
@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      showOver: false,
       server,
       orgTable: [],
       periodId: '',
@@ -64,7 +65,8 @@ export default {
     }),
   },
   mounted() {
-    this.getidentity();
+    // eslint-disable-next-line no-unused-expressions
+    this.$route.query.id ? this.showOver = true : this.getidentity();
   },
 
   methods: {
@@ -95,14 +97,17 @@ export default {
       }).then((res) => {
         if (res.data.identityType == 'org') {
           this.$router.replace({ name: 'departleader' });
+          this.showOver = true;
           return false;
         }
         if (res.data.identityType == 'team') {
           this.$router.replace({ name: 'teamleader' });
+          this.showOver = true;
           return false;
         }
         if (res.data.identityType == 'person') {
           this.$router.replace({ name: 'grassStaff' });
+          this.showOver = true;
         }
       });
     },

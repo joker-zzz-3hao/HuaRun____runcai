@@ -45,7 +45,9 @@ export default {
   methods: {
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
+      this.$emit('takeOvierview');
     },
+
   },
   watch: {},
 };

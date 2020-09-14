@@ -2,8 +2,8 @@
   <div class="home">
     <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     <div class="creatOkr">
-      <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
-      <em v-else>{{userInfo.userName}}</em>
+      <!-- <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
+      <em v-else>{{userInfo.userName}}</em>-->
       <tl-org-page :periodId="periodId"></tl-org-page>
     </div>
     <div class="creatOkr">
