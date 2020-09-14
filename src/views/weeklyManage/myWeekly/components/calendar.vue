@@ -30,6 +30,7 @@
           :label="item.weeklyId ? '已提交' : '未提交'"
           disabled
         ></el-checkbox>
+        <span v-if="!item.weeklyId && !item.canEdit">已超过两周，不可再提交周报</span>
       </el-button>
       <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>
     </div>

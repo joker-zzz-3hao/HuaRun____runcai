@@ -85,6 +85,7 @@
                   remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
+                  @visible-change="visibleChange"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
                 >
@@ -565,6 +566,7 @@ export default {
       this.addWork();
     },
     projectChange(week) {
+      debugger;
       week.projectId = week.validateProjectId;
     },
     deleteItem(item) {
@@ -693,6 +695,11 @@ export default {
     },
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
+    },
+    visibleChange(status) {
+      if (!status) {
+        this.remoteMethod();
+      }
     },
   },
   watch: {
