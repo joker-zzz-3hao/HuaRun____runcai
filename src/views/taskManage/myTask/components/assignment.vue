@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年08月04日 15:38:15
-  备注：
--->
 <template>
   <div>
     <el-dialog
@@ -83,6 +77,7 @@ export default {
       CONST,
       formData: {},
       executorList: [],
+      visible: false,
     };
   },
   created() {
@@ -102,7 +97,7 @@ export default {
       this.visible = false;
     },
     closed() {
-      this.$emit('update:showAddOkr', false);
+      this.$emit('update:existAssignment', false);
     },
   },
   watch: {

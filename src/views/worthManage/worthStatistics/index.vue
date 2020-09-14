@@ -231,6 +231,7 @@ export default {
             console.log(res);
             this.xData = [];
             this.yData = [];
+            this.yObj = [];
             if (res.data.length > 0) {
               // 取x轴
               res.data[0].cultureList.forEach((cItem) => {

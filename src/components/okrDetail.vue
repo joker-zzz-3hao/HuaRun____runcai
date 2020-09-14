@@ -12,7 +12,7 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
     </div>
-    <el-scrollbar>
+    <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">
         <tl-tabs :current.sync="currentIndex">
           <template slot="tab-cont">
@@ -78,7 +78,7 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="currentIndex===1" class="tab-cont tl-custom-timeline">
+            <div v-else-if="okrId && currentIndex===1" class="tab-cont tl-custom-timeline">
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
@@ -94,7 +94,9 @@
                       >
                         <em>{{userName}}</em>
                         <span>{{cycleFirst.operateTypeCn}}</span>
+                        <span v-if="cycleFirst.operateType == 'add'">OKR</span>
                       </div>
+                      <!-- 更新进度操作记录 -->
                       <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
                         <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
                           <div>
@@ -128,11 +130,52 @@
                           </div>
                         </li>
                       </ul>
-                      <ul v-else-if="cycleFirst.operateType == 'add'">
-                        <li>OKR</li>
+                      <!-- 新增操作记录 -->
+                      <ul v-else-if="cycleFirst.operateType == 'add'" class="operate-kind">
+                        <li>
+                          <div>
+                            <span>OKR</span>
+                            <em>{{periodName}}</em>
+                          </div>
+                        </li>
                       </ul>
-                      <ul v-else-if="cycleFirst.operateType == 'modify'">
-                        <li>OKR</li>
+                      <!-- 变更操作记录 -->
+                      <ul v-else-if="cycleFirst.operateType == 'modify'" class="operate-kind">
+                        <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                          <!-- o或kr名称 -->
+                          <div>
+                            <span
+                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
+                            >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em
+                              v-if="uitem.updateContents.beforeName"
+                            >{{uitem.updateContents.beforeName}}</em>
+                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterName">
+                            <span>名称变更为</span>
+                            <em>{{uitem.updateContents.afterName}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.beforeWeight">
+                            <span>权重由</span>
+                            <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <span>%</span>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterWeight}}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="uitem.updateContents.beforeUndertakeName">
+                            <span>关联父目标由</span>
+                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                          </div>
+                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                            <span>关联父目标</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                          </div>
+                        </li>
                       </ul>
                       <div class="operate-reason" v-if="cycleFirst.remark">
                         <span>说明：</span>
@@ -149,7 +192,8 @@
                         <em>{{userName}}</em>
                         <span>{{activity.operateTypeCn}}</span>
                       </div>
-                      <ul class="operate-kind">
+                      <!-- 更新进度操作记录 -->
+                      <ul v-if="activity.operateType == 'update'" class="operate-kind">
                         <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
                           <div>
                             <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
@@ -179,6 +223,52 @@
                               ></div>
                             </div>
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                          </div>
+                        </li>
+                      </ul>
+                      <!-- 新增操作记录 -->
+                      <ul v-else-if="activity.operateType == 'add'" class="operate-kind">
+                        <li>
+                          <div>
+                            <span>OKR</span>
+                            <em>{{periodName}}</em>
+                          </div>
+                        </li>
+                      </ul>
+                      <!-- 变更操作记录 -->
+                      <ul v-else-if="activity.operateType == 'modify'" class="operate-kind">
+                        <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                          <div>
+                            <span
+                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
+                            >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em
+                              v-if="uitem.updateContents.beforeName"
+                            >{{uitem.updateContents.beforeName}}</em>
+                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterName">
+                            <span>名称变更为</span>
+                            <em>{{uitem.updateContents.afterName}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.beforeWeight">
+                            <span>权重由</span>
+                            <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <span>%</span>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterWeight}}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="uitem.updateContents.beforeUndertakeName">
+                            <span>关联父目标由</span>
+                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                          </div>
+                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                            <span>关联父目标</span>
+                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
                           </div>
                         </li>
                       </ul>
@@ -230,6 +320,7 @@
             <div class="user-name">
               <em>{{cutName(item.userName)}}</em>
             </div>
+            <!-- <img src="@/assets/images/user/user3.jpg" alt /> -->
           </dt>
           <dd>{{item.userName}}</dd>
         </dl>
@@ -240,30 +331,6 @@
             <!-- <div class="user-name">娜丽</div> -->
           </dt>
           <dd>欧阳娜丽</dd>
-        </dl>
-        <dl>
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <img src="@/assets/images/user/user8.jpg" alt />
-            <!-- <div class="user-name">娜丽</div> -->
-          </dt>
-          <dd>西毒欧阳锋</dd>
-        </dl>
-        <dl>
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <img src="@/assets/images/user/user5.jpg" alt />
-            <!-- <div class="user-name">娜丽</div> -->
-          </dt>
-          <dd>北丐洪七公</dd>
-        </dl>
-        <dl>
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <img src="@/assets/images/user/user2.jpg" alt />
-            <!-- <div class="user-name">娜丽</div> -->
-          </dt>
-          <dd>南帝段正淳</dd>
         </dl>
         <dl class="is-fold">
           <dt class="user-info">
@@ -324,6 +391,9 @@ export default {
       voteLength: 0,
       currentIndex: 0,
       cycleFirst: {},
+      periodName: '',
+      currentPage: 1,
+      status: 1,
     };
   },
   components: {
@@ -374,6 +444,14 @@ export default {
   },
   created() {
   },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.onScroll, true);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll, true);
+  },
   methods: {
     showOkrDialog() {
       this.getokrDetail();
@@ -396,12 +474,11 @@ export default {
             this.okrmain = res.data.okrMain || {};
           }
         });
-      }
-      if (this.okrItem) {
+      } else if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
         this.tableList = this.formData.tableList || [];
         this.okrmain = this.formData.okrMain || {};
-        console.log('this.tableList', this.formData);
+        // this.okrId = this.formData.okrMain.okrMainId;
       }
     },
     // 点赞
@@ -412,7 +489,6 @@ export default {
         supportType: this.supportType,
       }).then((res) => {
         if (res.code == 200) {
-          console.log(res.code);
           this.getSupportList();
         }
       });
@@ -421,7 +497,6 @@ export default {
     getSupportList() {
       const self = this;
       self.server.getSupportList({ okrId: self.okrId }).then((res) => {
-        console.log(res.code);
         if (res.code == 200) {
           self.voteUser = res.data.supportUserList || [];
           self.voteLength = self.voteUser.length;
@@ -441,28 +516,30 @@ export default {
     },
     // TODO:查全部pageSize要传大点
     getOperationHistory() {
-      this.server.okrOperationHistory({
-        currentPage: 1,
-        okrMainId: this.okrId,
-        pageSize: 10,
-      }).then((res) => {
-        console.log(res.code);
-        if (res.code == 200) {
-          this.userName = res.data.userName || '';
-          console.log(res.data.userName);
-          this.cycleList = res.data.contentVoList || [];
+      if (this.okrId) {
+        this.server.okrOperationHistory({
+          currentPage: 1,
+          okrMainId: this.okrId,
+          pageSize: 10 * this.currentPage,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.userName = res.data.userName || '';
+            this.periodName = res.data.periodName || '';
+            this.cycleList = res.data.contentVoList || [];
 
-          this.cycleList.forEach((item) => {
-            if (item.okrDetailId && item.okrDetailId.length > 0) {
-              item.okrDetailId.forEach((uitem) => {
-                const contents = JSON.parse(uitem.updateJsonStr);
-                uitem.updateContents = contents;
-              });
-            }
-          });
-          this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
-        }
-      });
+            this.cycleList.forEach((item) => {
+              if (item.okrDetailId && item.okrDetailId.length > 0) {
+                item.okrDetailId.forEach((uitem) => {
+                  const contents = JSON.parse(uitem.updateJsonStr);
+                  uitem.updateContents = contents || {};
+                });
+              }
+            });
+            this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
+            this.status = 1;
+          }
+        });
+      }
     },
 
     // 打开历史版本
@@ -481,6 +558,34 @@ export default {
       }
       return '';
     },
+    // 获取滚动条当前的位置
+    getScrollTop() {
+      let scrollTop = 0;
+      scrollTop = this.$refs.detailscrollbar.wrap.scrollTop;
+
+      return scrollTop;
+    },
+    // 获取当前可视范围的高度
+    getClientHeight() {
+      let clientHeight = 0;
+
+      clientHeight = this.$refs.detailscrollbar.$el.offsetWidth;
+      return clientHeight;
+    },
+
+    // 滚动事件触发下拉加载
+    onScroll() {
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage) {
+        if (this.status === 1) {
+          this.status = 0;
+          // 页码，分页用，默认第一页
+          this.currentPage += 1;
+          // 调用请求函数
+          this.getOperationHistory();
+        }
+      }
+    },
+
   },
   watch: {
 

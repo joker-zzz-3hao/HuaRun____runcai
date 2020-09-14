@@ -54,15 +54,6 @@
           </div>
         </div>
       </div>
-      <!-- 待后续需要改成下方再显示 -->
-      <!-- <ul class="management-platform">
-        <li>
-          <i></i>
-        </li>
-        <li>
-          <i></i>
-        </li>
-      </ul>-->
     </div>
   </div>
 </template>
@@ -134,7 +125,6 @@ export default {
     moveMenu(itemIndex) {
       this.menuIndex = itemIndex;
       this.zIndex = true;
-      console.log(555);
     },
     leaveMenu() {
       this.menuIndex = '';
@@ -143,10 +133,8 @@ export default {
     changeIndex() {
       if (!this.changeZindex) {
         this.changeZindex = true;
-        console.log(11111);
         if (this.isMainMenu) {
           this.isMainMenu = false;
-          console.log(333);
         }
       }
     },

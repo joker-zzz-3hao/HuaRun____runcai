@@ -458,7 +458,7 @@ export default {
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {
-          console.log('提交成功');
+          this.$message.success('提交成功');
         }
       });
     },
