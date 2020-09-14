@@ -146,12 +146,16 @@ export default {
             // 我的目标
             this.myOkrList = [];
             this.originalMyOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
+            if (this.originalMyOkrList.length > 0) {
+              this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
+            }
           } else {
             // 团队目标
             this.orgOkrList = [];
             this.originalOrgOkrList = res.data.okrDetails;
-            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+            if (this.originalOrgOkrList) {
+              this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+            }
           }
         }
       });

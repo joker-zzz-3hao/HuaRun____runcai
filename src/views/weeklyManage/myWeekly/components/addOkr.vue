@@ -29,7 +29,26 @@
       </div>
       <div>
         <h4>团队目标</h4>
-        <el-checkbox-group v-model="orgSelectData">
+        <dl class="dl-list">
+          <dd class="tag-kind">
+            <el-radio-group v-model="orgSelectData">
+              <el-radio
+                class="tl-radio"
+                v-for="(teamTarget,index) in orgOkrList"
+                :label="teamTarget.okrDetailId"
+                :key="teamTarget.okrDetailId"
+                @click.native="selectOrgOkr($event,index,teamTarget)"
+              >
+                <span
+                  :class="teamTarget.okrType == 'O' ? 'kind-parent':'kind-child'"
+                >{{teamTarget.indexText}}</span>
+                <em>{{teamTarget.okrDetailObjectKr}}</em>
+              </el-radio>
+            </el-radio-group>
+          </dd>
+          <dd class="tag-kind" v-if="orgOkrList.length < 1">暂无可承接的团队目标</dd>
+        </dl>
+        <!-- <el-checkbox-group v-model="orgSelectData">
           <el-checkbox
             :class="{'move-to-right':teamTarget.okrType = 'KR'}"
             v-for="teamTarget in orgOkrList"
@@ -40,11 +59,30 @@
             {{teamTarget.indexText}}
             {{teamTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group>-->
       </div>
       <div>
         <h4>个人目标</h4>
-        <el-checkbox-group v-model="personalSelectData">
+        <dl class="dl-list">
+          <dd class="tag-kind">
+            <el-radio-group v-model="personalSelectData">
+              <el-radio
+                class="tl-radio"
+                v-for="(personalTarget,index) in myOkrList"
+                :label="personalTarget.okrDetailId"
+                :key="personalTarget.okrDetailId"
+                @click.native="selectMyOkr($event,index,personalTarget)"
+              >
+                <span
+                  :class="personalTarget.okrType == 'O' ? 'kind-parent':'kind-child'"
+                >{{personalTarget.indexText}}</span>
+                <em>{{personalTarget.okrDetailObjectKr}}</em>
+              </el-radio>
+            </el-radio-group>
+          </dd>
+          <dd class="tag-kind" v-if="myOkrList.length < 1">暂无可承接的个人目标</dd>
+        </dl>
+        <!-- <el-checkbox-group v-model="personalSelectData">
           <el-checkbox
             v-for="personalTarget in myOkrList"
             :label="personalTarget.okrDetailId"
@@ -54,13 +92,14 @@
             {{personalTarget.indexText}}
             {{personalTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group>-->
       </div>
       <div>
         <h4>公司价值观</h4>
         <el-checkbox-group v-model="valueSelectData">
           <el-checkbox
             v-for="culture in cultureList"
+            class="tl-checkbox"
             :label="culture.id"
             :key="culture.id"
             @change="cultureChange"
@@ -139,12 +178,13 @@ export default {
       loading: false,
       initUserAccount: '',
       selectedOkrList: [],
-      // cultureList: [],
+      selectOrgIndex: undefined,
+      selectMyIndex: undefined,
       selectedCultureList: [],
       supportMyOkrObj: {},
       selectOkrList: [],
-      orgSelectData: [], // 团队目标
-      personalSelectData: [], // 个人目标
+      orgSelectData: '', // 团队目标
+      personalSelectData: '', // 个人目标
       valueSelectData: [], // 价值观
       orgOkr: [],
       personalOkr: [],
@@ -189,7 +229,7 @@ export default {
         for (const okr of this.myOkrList) {
           if (item.okrDetailId == okr.okrDetailId) {
             // 反显
-            this.personalSelectData = [okr.okrDetailId];
+            this.personalSelectData = okr.okrDetailId;
             // 赋值已选项
             this.personalOkr = [okr];
             // ************支撑项初始化*****************
@@ -209,7 +249,7 @@ export default {
         for (const okr of this.orgOkrList) {
           if (item.okrDetailId == okr.okrDetailId) {
             // 反显
-            this.orgSelectData = [okr.okrDetailId];
+            this.orgSelectData = okr.okrDetailId;
             // 赋值已选项
             this.orgOkr = [okr];
           }
@@ -230,21 +270,46 @@ export default {
 
       this.$forceUpdate();
     },
-    orgOkrChange(isSelected) {
-      if (isSelected) {
-        this.personalSelectData = [this.personalSelectData[this.personalSelectData.length - 1]];// 单选控制
+    // orgOkrChange(okr) {
+    // if (okr) {
+    //   this.orgSelectData = okr;// 单选控制
+    //   this.orgOkrList.forEach((element) => {
+    //     if (element.okrDetailId == this.orgSelectData) {
+    //       this.orgOkr = [element];
+    //     }
+    //   });
+    // } else {
+    //   this.orgOkr = [];
+    // }
+    // },
+    // 选择关联的okr
+    selectOrgOkr(e, index, okr) {
+      // 原生click会执行两次，第一次在label等，第二次在input
+      if (e.target.tagName != 'INPUT') return;
+      if (this.selectOrgIndex === index) {
+        this.selectOrgIndex = '';
+        this.orgOkr = [];
+        this.orgSelectData = '';
+      } else {
+        this.orgSelectData = okr.okrDetailId;// 单选控制
         this.orgOkrList.forEach((element) => {
           if (element.okrDetailId == this.orgSelectData) {
             this.orgOkr = [element];
           }
         });
-      } else {
-        this.orgOkr = [];
+        this.selectOrgIndex = index;
       }
     },
-    personalOkrChange(isSelected) {
-      if (isSelected) {
-        this.personalSelectData = [this.personalSelectData[this.personalSelectData.length - 1]];// 单选控制
+    selectMyOkr(e, index, okr) {
+      if (e.target.tagName != 'INPUT') return;
+      if (this.selectMyIndex === index) { // 取消选中
+        this.selectMyIndex = undefined;
+        this.personalOkr = [];
+        this.supportMyOkrObj = {};
+        this.personalSelectData = '';
+      } else { // 选中
+        this.selectMyIndex = index;
+        this.personalSelectData = okr.okrDetailId;// 单选控制
         this.myOkrList.forEach((element) => {
           if (element.okrDetailId == this.personalSelectData) {
             this.personalOkr = [element];
@@ -261,11 +326,32 @@ export default {
             }
           }
         }
-      } else {
-        this.personalOkr = [];
-        this.supportMyOkrObj = {};
       }
     },
+    // personalOkrChange(isSelected) {
+    //   if (isSelected) {
+    //     this.personalSelectData = [this.personalSelectData[this.personalSelectData.length - 1]];// 单选控制
+    //     this.myOkrList.forEach((element) => {
+    //       if (element.okrDetailId == this.personalSelectData) {
+    //         this.personalOkr = [element];
+    //       }
+    //     });
+    //     // 如果是选中kr，则需要将父级目标带到周报页面，用于展示在个人okr完成度部分
+    //     for (const o of this.originalMyOkrList) {
+    //       if (this.personalOkr[0].okrDetailId == o.okrDetailId) {
+    //         this.supportMyOkrObj = { o };
+    //       }
+    //       for (const kr of o.krList) {
+    //         if (kr.okrDetailId == this.personalOkr[0].okrDetailId) {
+    //           this.supportMyOkrObj = { o, kr };
+    //         }
+    //       }
+    //     }
+    //   } else {
+    //     this.personalOkr = [];
+    //     this.supportMyOkrObj = {};
+    //   }
+    // },
     cultureChange() {
       this.selectedCultureList = [];
       this.valueSelectData.forEach((element) => {
@@ -288,7 +374,8 @@ export default {
 };
 </script>
 <style lang="css">
-/* .move-to-right {
-  margin-left: 100px;
-} */
+.el-avatar,
+.el-drawer {
+  overflow: auto;
+}
 </style>

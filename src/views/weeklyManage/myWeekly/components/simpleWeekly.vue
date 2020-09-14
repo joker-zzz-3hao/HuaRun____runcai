@@ -121,7 +121,7 @@
               <!-- 临时项目可不选择支撑项 -->
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
-                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:''"
+                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:{}"
               >
                 <el-input
                   @focus="addSupportOkr(scope.row)"
@@ -261,15 +261,15 @@
     <div class="week-mood">
       <span>
         请选择本周心情
-        <el-button @click="happy">开心</el-button>
+        <el-button @click="setEmotion(100)">开心</el-button>
         <span :class="{'text-color-red': weeklyEmotion==100}">开心</span>
-        <el-button @click="common">平常</el-button>
+        <el-button @click="setEmotion(50)">平常</el-button>
         <span :class="{'text-color-red': weeklyEmotion==50}">平常</span>
-        <el-button @click="sad">沮丧</el-button>
+        <el-button @click="setEmotion(0)">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
-      <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     </div>
+    <el-button style="marginTop:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     <!-- 添加支撑项 -->
     <add-okr
       ref="addOkr"
@@ -664,14 +664,8 @@ export default {
         }
       });
     },
-    happy() {
-      this.weeklyEmotion = 100;
-    },
-    common() {
-      this.weeklyEmotion = 50;
-    },
-    sad() {
-      this.weeklyEmotion = 0;
+    setEmotion(type) {
+      this.weeklyEmotion = type;
     },
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签

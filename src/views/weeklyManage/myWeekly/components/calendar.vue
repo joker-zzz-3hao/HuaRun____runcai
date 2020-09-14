@@ -15,15 +15,17 @@
     <ul v-if="weekList.length > 0 " class="weekly-select">
       <li v-for="(item,index) in weekList" :key="index" @click="seclectBtn(item)">
         <div class="period-time">{{getWeekItem(item,index)}}</div>
-        <div class="period-state" :class="{'is-submit':sdfsds,'is-unopen':sdfsds}">
+        <div
+          class="period-state"
+          :class="{'is-submit':item.weeklyId,'is-unopen':!item.weeklyId && !item.noOpen}"
+        >
           <div class="icon-bg">
-            <i></i>
-            <!-- <i :class="{'el-icon-check': yitijiao}"></i>
-            <i :class="{'el-icon-check': weitijiao}"></i>-->
+            <!-- <i v-if="item.noOpen"></i> -->
+            <i :class="{'el-icon-check': !item.noOpen}"></i>
           </div>
-          <em>未提交</em>
-          <!-- <em>已提交</em>
-          <em>未开放</em>-->
+          <em v-if="!!item.weeklyId">已提交</em>
+          <em v-if="!item.weeklyId && !item.noOpen">未提交</em>
+          <em v-if="item.noOpen">未开放</em>
         </div>
         <!-- <div class="period-state">
           <div class="icon-bg">
@@ -178,13 +180,16 @@ export default {
       for (let i = 0; i < this.weekList.length; i += 1) {
         if (i > this.weekIndex) { // 本周之后
           this.weekList[i].canClick = false;
-          this.weekList[i].canEdit = true;// true是为了控制之后的周不显示文案（两周前不可补写文案）
+          this.weekList[i].canEdit = false;// true是为了控制之后的周不显示文案（两周前不可补写文案）
+          this.weekList[i].noOpen = true;
         } else if (i < this.weekIndex - 1) { // 两周之前
           this.weekList[i].canClick = true;
           this.weekList[i].canEdit = false;
+          this.weekList[i].noOpen = false;
         } else { // 本周 上周
           this.weekList[i].canClick = true;
           this.weekList[i].canEdit = true;
+          this.weekList[i].noOpen = false;
         }
       }
     },
@@ -198,6 +203,7 @@ export default {
             this.weekList.forEach((week) => {
               week.canEdit = false;
               week.canClick = true;
+              week.noOpen = false;
             });
             // 2、如果本周是第二周，则上个月最后一周可编辑
           } else if (this.currentWeekIndex == 1) {
@@ -205,9 +211,11 @@ export default {
               if (i == this.weekList.length - 1) {
                 this.weekList[i].canEdit = true;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               } else {
                 this.weekList[i].canEdit = false;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               }
             }
             // 3、如果本周是第一周，则上个月后两周可编辑
@@ -216,9 +224,11 @@ export default {
               if (i > this.weekList.length - 3) {
                 this.weekList[i].canEdit = true;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               } else {
                 this.weekList[i].canEdit = false;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               }
             }
           }
@@ -230,6 +240,7 @@ export default {
             this.weekList.forEach((week) => {
               week.canEdit = false;
               week.canClick = true;
+              week.noOpen = true;
             });
             //  2、如果本周是第一周，则上个月最后一周可编辑
           } else {
@@ -237,9 +248,11 @@ export default {
               if (i == this.weekList.length - 1) {
                 this.weekList[i].canEdit = true;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               } else {
                 this.weekList[i].canEdit = false;
                 this.weekList[i].canClick = true;
+                this.weekList[i].noOpen = false;
               }
             }
           }
@@ -249,6 +262,7 @@ export default {
         this.weekList.forEach((week) => {
           week.canEdit = false;
           week.canClick = true;
+          week.noOpen = false;
         });
       }
     },

@@ -367,8 +367,8 @@
         <el-button @click="setEmotion(0)">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
-      <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     </div>
+    <el-button style="marginTop:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     <!-- 添加支撑项 -->
     <add-okr
       ref="addOkr"
