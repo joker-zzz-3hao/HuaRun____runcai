@@ -510,6 +510,22 @@ export default {
         this.$message.error('请选择目标周期');
         return;
       }
+      // 校验是否有更改
+      let hasChange = true;
+      this.formData.okrInfoList.forEach((item) => {
+        if (item.okrDetailObjectKr) {
+          hasChange = false;
+          return;
+        }
+        item.krList.forEach((kritem) => {
+          if (kritem.okrDetailObjectKr) {
+            hasChange = false;
+          }
+        });
+      });
+      if (hasChange) {
+        return;
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.okrDraftId = this.searchForm.draftId;
@@ -518,9 +534,9 @@ export default {
             if (type) {
               this.searchForm.draftId = res.data.id;
               this.setShowAuto(true);
-              this.timedShow = setInterval(() => {
-                this.setShowAuto(false);
-              }, 3000);
+              // this.timedShow = setInterval(() => {
+              //   this.setShowAuto(false);
+              // }, 3000);
             } else {
               this.$message('已保存');
               this.$refs.dataForm.resetFields();

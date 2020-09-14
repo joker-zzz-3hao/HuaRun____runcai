@@ -449,6 +449,9 @@ export default {
       window.addEventListener('scroll', this.onScroll, true);
     });
   },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll, true);
+  },
   methods: {
     showOkrDialog() {
       this.getokrDetail();
@@ -582,6 +585,7 @@ export default {
         }
       }
     },
+
   },
   watch: {
 
