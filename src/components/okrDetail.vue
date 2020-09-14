@@ -96,6 +96,7 @@
                         <span>{{cycleFirst.operateTypeCn}}</span>
                         <span v-if="cycleFirst.operateType == 'add'">OKR</span>
                       </div>
+                      <!-- 更新进度操作记录 -->
                       <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
                         <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
                           <div>
@@ -129,6 +130,7 @@
                           </div>
                         </li>
                       </ul>
+                      <!-- 新增操作记录 -->
                       <ul v-else-if="cycleFirst.operateType == 'add'" class="operate-kind">
                         <li>
                           <div>
@@ -137,8 +139,10 @@
                           </div>
                         </li>
                       </ul>
+                      <!-- 变更操作记录 -->
                       <ul v-else-if="cycleFirst.operateType == 'modify'" class="operate-kind">
                         <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                          <!-- o或kr名称 -->
                           <div>
                             <span
                               v-if="JSON.stringify(uitem.updateContents)=='{}'"
@@ -156,8 +160,10 @@
                           <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
                             <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <span>%</span>
                             <span>变更为</span>
                             <em>{{uitem.updateContents.afterWeight}}</em>
+                            <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.beforeUndertakeName">
                             <span>关联父目标由</span>
@@ -186,6 +192,7 @@
                         <em>{{userName}}</em>
                         <span>{{activity.operateTypeCn}}</span>
                       </div>
+                      <!-- 更新进度操作记录 -->
                       <ul v-if="activity.operateType == 'update'" class="operate-kind">
                         <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
                           <div>
@@ -219,6 +226,7 @@
                           </div>
                         </li>
                       </ul>
+                      <!-- 新增操作记录 -->
                       <ul v-else-if="activity.operateType == 'add'" class="operate-kind">
                         <li>
                           <div>
@@ -227,6 +235,7 @@
                           </div>
                         </li>
                       </ul>
+                      <!-- 变更操作记录 -->
                       <ul v-else-if="activity.operateType == 'modify'" class="operate-kind">
                         <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
                           <div>
@@ -246,8 +255,10 @@
                           <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
                             <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <span>%</span>
                             <span>变更为</span>
                             <em>{{uitem.updateContents.afterWeight}}</em>
+                            <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.beforeUndertakeName">
                             <span>关联父目标由</span>
