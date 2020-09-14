@@ -144,7 +144,7 @@ export default {
       for (let i = 0; i < this.weekList.length; i += 1) {
         if (i > this.weekIndex) { // 本周之后
           this.weekList[i].canClick = false;
-          this.weekList[i].canEdit = false;
+          this.weekList[i].canEdit = true;// true是为了控制之后的周不显示文案（两周前不可补写文案）
         } else if (i < this.weekIndex - 1) { // 两周之前
           this.weekList[i].canClick = true;
           this.weekList[i].canEdit = false;
