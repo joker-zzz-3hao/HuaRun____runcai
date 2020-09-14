@@ -1392,8 +1392,10 @@
   align-items: center;
   height: 36px;
   background: #fff;
+  color: #879099;
   border-radius: 2px;
   min-width: 70px;
+  transition: all .4s ease-out;
 }
 
 .tl-custom-btn.is-select {

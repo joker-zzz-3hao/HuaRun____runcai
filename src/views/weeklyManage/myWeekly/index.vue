@@ -7,7 +7,7 @@
           class="tl-custom-btn"
           v-for="(item,idx) in versions"
           :key="item.id"
-          :class="{'is-select': versionIndex == idx}"
+          :class="{'is-select': versionIndex == idx,'is-version': weeklyTypeList.length = 1}"
         >
           <em>{{item.name}}</em>
         </div>
