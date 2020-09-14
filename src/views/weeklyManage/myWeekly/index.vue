@@ -5,11 +5,12 @@
       <div class="operating-box" v-if="weeklyTypeList.length > 0">
         <div
           class="tl-custom-btn"
-          v-for="(item,idx) in versions"
-          :key="item.id"
-          :class="{'is-select': versionIndex == idx,'is-version': weeklyTypeList.length = 1}"
+          v-for="item in weeklyTypeList"
+          :key="item"
+          :class="{'is-select': weeklyType == item,'is-version': weeklyTypeList.length == 1}"
+          @click="setWeeklyType(item)"
         >
-          <em>{{item.name}}</em>
+          <em>{{item == '1' ? '标准版':'简单版'}}</em>
         </div>
         <!-- 周报未提交时，根据weeklyTypeList数据展示标准版、简单版其中的一个或者两个； -->
         <!-- <template v-if="!this.weeklyData.weeklyId">
@@ -102,7 +103,7 @@ export default {
       newPage: false,
       calendarId: '',
       weeklyType: '',
-      weeklyTypeList: [],
+      // weeklyTypeList: [],
       weeklyData: {},
       myOkrList: [],
       orgOkrList: [],
@@ -110,15 +111,7 @@ export default {
       originalOrgOkrList: [],
       cultureList: [],
       canEdit: false,
-      versions: [
-        {
-          name: '标准版',
-        },
-        {
-          name: '简单版',
-        },
-      ],
-      versionIndex: 0,
+      weeklyTypeList: [],
     };
   },
   created() {
@@ -227,13 +220,16 @@ export default {
           }
         }
         // 未提交周报时，给周报模式赋值
-        if (writeStatus && writeStatus == 'noWrite') {
+        if (writeStatus && writeStatus == 'noWrite') { // 没提交周报
           if (this.weeklyTypeList.includes('1')) {
             this.weeklyType = '1';
           } else {
             this.weeklyType = '2';
           }
+        } else { // 提交了周报
+          this.weeklyTypeList = [this.weeklyType];
         }
+        this.$forceUpdate();
       });
     },
     setCalendarId(id) {
@@ -244,6 +240,9 @@ export default {
     },
     simple() {
       this.weeklyType = '2';
+    },
+    setWeeklyType(data) {
+      this.weeklyType = data;
     },
     handleClick() {},
   },
