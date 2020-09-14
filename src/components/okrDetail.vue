@@ -95,7 +95,7 @@
                         <em>{{userName}}</em>
                         <span>{{cycleFirst.operateTypeCn}}</span>
                       </div>
-                      <ul class="operate-kind">
+                      <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
                         <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
                           <div>
                             <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
@@ -127,6 +127,9 @@
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
                           </div>
                         </li>
+                      </ul>
+                      <ul v-else-if="cycleFirst.operateType == 'add'">
+                        <li></li>
                       </ul>
                       <div class="operate-reason" v-if="cycleFirst.remark">
                         <span>说明：</span>
