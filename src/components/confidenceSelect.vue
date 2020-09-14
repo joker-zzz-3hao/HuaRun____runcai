@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-diy-popover">
+  <div class="tl-custom-popover">
     <el-popover
       placement="bottom"
       width="200"

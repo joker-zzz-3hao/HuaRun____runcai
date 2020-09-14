@@ -4,7 +4,7 @@
     :modal-append-to-body="true"
     :append-to-body="true"
     :visible.sync="createokrDrawer"
-    custom-class="diy-drawer create-okr"
+    custom-class="custom-drawer create-okr"
     class="tl-drawer"
     :before-close="close"
     @closed="closed"
@@ -174,7 +174,6 @@ export default {
       if (this.roleCode.includes('ORG_ADMIN')) {
         this.searchForm.okrType = 1;
       } else { this.searchForm.okrType = 2; }
-      console.log('打开okrfrom', this.writeInfo.canWrite);
       if (this.writeInfo.canWrite == 'draft') {
         this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
         this.searchForm.draftParams = this.writeInfo.draftParams || '';

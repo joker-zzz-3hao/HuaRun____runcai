@@ -5,7 +5,7 @@
     width: 102%;
   }
 
-  .diy-drawer .el-scrollbar__wrap {
+  .custom-drawer .el-scrollbar__wrap {
     padding: 0 20px 0 0;
     overflow-y: scroll;
     width: 102%;

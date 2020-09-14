@@ -25,7 +25,7 @@
       </dl>
       <dl class="dl-item">
         <dt>状态</dt>
-        <dd class="tl-diy-tabs">
+        <dd class="tl-custom-tabs">
           <div class="tab-menus">
             <ul class="tab-list">
               <li
@@ -54,7 +54,7 @@
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="(item) in okrList" :key="item.id" class="tl-card-panel">
           <div class="card-panel-head">
-            <div class="okr-title">{{okrCycle.periodName}}OKR</div>
+            <div class="okr-title">{{okrCycle.periodName}}</div>
             <dl class="okr-state">
               <dt>
                 <i class="el-icon-set-up"></i>
@@ -374,7 +374,6 @@ export default {
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
       });
-      console.log('okrList', this.okrList);
     },
 
     // 打开详情
@@ -411,7 +410,6 @@ export default {
             };
             this.currentView = 'tl-changeokr';
             this.changeokrExist = true;
-            console.log('打开变更', this.okrId);
             this.$nextTick(() => {
               this.$refs[this.currentView].showOkrDialog();
             });
@@ -488,7 +486,6 @@ export default {
   watch: {
     'searchForm.periodId': {
       handler(newVal) {
-        console.log('get', newVal);
         if (newVal) {
           this.okrCycle = this.periodList.filter(
             (citem) => citem.periodId == newVal,

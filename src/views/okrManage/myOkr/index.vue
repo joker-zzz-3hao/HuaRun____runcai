@@ -3,7 +3,7 @@
     <router-view class="cont-area"></router-view>
     <div class="operating-area">
       <div class="operating-area-inside">
-        <div class="tl-diy-tabs">
+        <div class="tl-custom-tabs">
           <div class="tab-menus">
             <ul class="tab-list">
               <li

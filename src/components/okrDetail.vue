@@ -4,7 +4,7 @@
     :wrapperClosable="false"
     :modal-append-to-body="true"
     :append-to-body="true"
-    custom-class="diy-drawer okr-detail"
+    custom-class="custom-drawer okr-detail"
     class="tl-drawer"
     @closed="closed"
     :before-close="close"
@@ -78,92 +78,112 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="currentIndex===1" class="tab-cont">
-              <dl>
+            <div v-else-if="currentIndex===1" class="tab-cont tl-custom-timeline">
+              <dl class="timeline-list">
                 <dt>
-                  <div class="operate-time">{{cycleFirst.createTime}}</div>
-                  <div class="operate-cont">
-                    <div class="operate-type">
-                      <em>{{userName}}</em>
-                      <span>{{cycleFirst.operateTypeCn}}</span>
-                    </div>
-                    <div
-                      class="operate-kind"
-                      v-for="uitem in cycleFirst.okrDetailId"
-                      :key="uitem.id"
-                    >
-                      <div class="kind-type">
-                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                        <em>{{uitem.okrDetailObjectKr}}</em>
+                  <div class="list-info">
+                    <div class="list-title">{{cycleFirst.createTime}}</div>
+                    <div class="list-cont">
+                      <div
+                        class="operate-type"
+                        :class="{
+                        'is-create':cycleFirst.operateType == 'add',
+                        'is-modify':cycleFirst.operateType == 'modify',
+                        'is-update':cycleFirst.operateType == 'update',
+                        }"
+                      >
+                        <em>{{userName}}</em>
+                        <span>{{cycleFirst.operateTypeCn}}</span>
                       </div>
-                      <div class="kind-cont">
-                        <p v-if="uitem.updateContents.afterProgress"></p>
-                        <span>进度为</span>
-                        <em>{{uitem.updateContents.afterProgress}}</em>
-                        <span>%</span>
-                        <p v-if="uitem.updateContents.afterConfidence">
-                          <span>风险状态修改为</span>
-                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                        </p>
+                      <ul class="operate-kind">
+                        <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                          <div>
+                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterProgress">
+                            <span>进度更新为</span>
+                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="uitem.updateContents.afterConfidence">
+                            <span>风险状态为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                            </div>
+                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="operate-reason" v-if="cycleFirst.remark">
+                        <span>说明：</span>
+                        <em>{{cycleFirst.remark}}</em>
                       </div>
-                    </div>
-                    <div class="operate-reason" v-if="cycleFirst.remark">
-                      <span>说明：</span>
-                      <em>{{cycleFirst.remark}}</em>
                     </div>
                   </div>
                 </dt>
                 <dd v-for="activity in cycleList" :key="activity.id">
-                  <div class="operate-time">{{activity.createTime}}</div>
-                  <div class="operate-cont">
-                    <div class="operate-type">
-                      <em>{{userName}}</em>
-                      <span>{{activity.operateTypeCn}}</span>
-                    </div>
-                    <div class="operate-kind" v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                      <div class="kind-type">
-                        <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                        <em>{{uitem.okrDetailObjectKr}}</em>
+                  <div class="list-info">
+                    <div class="list-title">{{activity.createTime}}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <em>{{userName}}</em>
+                        <span>{{activity.operateTypeCn}}</span>
                       </div>
-                      <div class="kind-cont">
-                        <p v-if="uitem.updateContents.afterProgress"></p>
-                        <span>进度为</span>
-                        <em>{{uitem.updateContents.afterProgress}}</em>
-                        <span>%</span>
-                        <p v-if="uitem.updateContents.afterConfidence">
-                          <span>风险状态修改为</span>
-                          <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                        </p>
+                      <ul class="operate-kind">
+                        <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                          <div>
+                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
+                            <em>{{uitem.okrDetailObjectKr}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.afterProgress">
+                            <span>进度更新为</span>
+                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="uitem.updateContents.afterConfidence">
+                            <span>风险状态修改为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{
+                                'is-risks': uitem.updateContents.afterConfidence == 2,
+                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                              <div
+                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                              ></div>
+                            </div>
+                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="operate-reason" v-if="activity.remark">
+                        <span>说明：</span>
+                        <em>{{activity.remark}}</em>
                       </div>
-                    </div>
-                    <div class="operate-reason" v-if="activity.remark">
-                      <span>说明：</span>
-                      <em>{{activity.remark}}</em>
                     </div>
                   </div>
                 </dd>
               </dl>
-              <!-- <el-timeline>
-                <el-timeline-item :timestamp="activity.createTime" placement="top">
-                  <div v-if="activity.operateType=='update'">
-
-                    <div v-for="uitem in activity.okrDetailId" :key="uitem.id">
-                      <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                      <span v-if="uitem.okrDetailObjectKr">{{uitem.okrDetailObjectKr}}</span>
-                      <span
-                        v-if="uitem.updateContents.afterProgress"
-                      >进度为{{uitem.updateContents.afterProgress}}%</span>
-                      <span
-                        v-if="uitem.updateContents.afterConfidence"
-                      >风险状态修改为{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</span>
-                    </div>
-                    <div v-if="activity.remark">
-                      <span>说明：</span>
-                      <span>{{activity.remark}}</span>
-                    </div>
-                  </div>
-                </el-timeline-item>
-              </el-timeline>-->
             </div>
           </template>
         </tl-tabs>
@@ -254,7 +274,7 @@
       :wrapperClosable="false"
       :append-to-body="true"
       class="tl-drawer"
-      custom-class="diy-drawer history-version"
+      custom-class="custom-drawer history-version"
       :visible.sync="innerDrawer"
     >
       <div slot="title" class="flex-sb">

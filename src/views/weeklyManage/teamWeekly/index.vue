@@ -12,6 +12,7 @@
       <div>
         <el-cascader
           v-model="orgIdList"
+          ref="cascader"
           :options="treeData"
           :show-all-levels="false"
           :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
@@ -46,6 +47,8 @@
               @change="submitedOrLookedChange"
               placeholder="全部"
               clearable
+              @clear="clearSubmitOrLooked"
+              :disabled="!!formData.queryType"
             >
               <el-option
                 v-for="item in submitedOrLookedList"
@@ -56,7 +59,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input
+            <!-- <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
               v-model="formData.queryUserId"
@@ -64,7 +67,31 @@
               class="tl-input-search"
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
-            </el-input>
+            </el-input>-->
+            <el-select
+              v-model.trim="formData.queryUserId"
+              filterable
+              placeholder="请输入成员姓名"
+              remote
+              :remote-method="remoteMethod"
+              @change="nameChange"
+            >
+              <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+                <span style="float:left">
+                  <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                    </div>
+                  </el-avatar>
+                </span>
+                <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-form>
       </div>
@@ -77,7 +104,7 @@
         @searchList="refreshPageList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" style="width: 100%">
+          <el-table :data="tableData" style="width: 100%" v-if="tableLoading">
             <el-table-column fixed prop="userName" label="姓名"></el-table-column>
             <el-table-column fixed prop="orgName" label="所在团队"></el-table-column>
             <el-table-column v-if="formData.queryType == '0'" fixed prop="workContent" label="工作项"></el-table-column>
@@ -174,8 +201,10 @@ export default {
       tableData: [],
       orgIdList: [],
       treeData: [],
+      userList: [],
       canEdit: false,
       showRemindBtn: false,
+      tableLoading: false,
       formData: {
         calendarId: '',
         looked: '',
@@ -259,6 +288,7 @@ export default {
       this.getOrgTree();
     },
     getTeamWeekly() {
+      this.tableLoading = false;
       const params = {
         ...this.formData,
       };
@@ -271,6 +301,7 @@ export default {
         } else {
           this.$message.error(res.msg);
         }
+        this.tableLoading = true;
       });
     },
     weeklyInfo(weekly) {
@@ -315,6 +346,7 @@ export default {
       this.formData.orgId = data[data.length - 1];
       this.orgIdList = data;
       this.getTeamWeekly();
+      this.$refs.cascader.dropDownVisible = false;
     },
     getOrgTree() {
       this.server.getOrg({}).then((res) => {
@@ -322,6 +354,8 @@ export default {
           this.treeData = res.data;
           // 将用户所属组织初始化给组织树下拉框
           this.setInitOrg();
+          // 初始化下拉框用户列表
+          this.remoteMethod();
         }
       });
     },
@@ -336,6 +370,7 @@ export default {
       });
     },
     lookChange(queryType) {
+      this.tableLoading = false;
       this.formData.queryType = queryType;
       if (queryType) {
         this.server.lookQuickly(this.formData).then((res) => {
@@ -345,6 +380,7 @@ export default {
             this.formData.currentPage = res.data.currentPage;
             this.formData.pageSize = res.data.pageSize;
           }
+          this.tableLoading = true;
         });
       } else {
         this.getTeamWeekly();
@@ -355,29 +391,37 @@ export default {
       this.getTeamWeekly();
     },
     submitedOrLookedChange(item) {
-      switch (item) {
-        case '1':
-          this.formData.looked = true;
-          this.formData.submited = '';
-          break;
-        case '2':
-          this.formData.looked = false;
-          this.formData.submited = '';
-          break;
-        case '3':
-          this.formData.submited = true;
-          this.formData.looked = '';
-          break;
-        case '4':
-          this.formData.submited = false;
-          this.formData.looked = '';
-          break;
-        default:
-          break;
+      if (item) {
+        switch (item) {
+          case '1':
+            this.formData.looked = true;
+            this.formData.submited = '';
+            break;
+          case '2':
+            this.formData.looked = false;
+            this.formData.submited = '';
+            break;
+          case '3':
+            this.formData.submited = true;
+            this.formData.looked = '';
+            break;
+          case '4':
+            this.formData.submited = false;
+            this.formData.looked = '';
+            break;
+          default:
+            break;
+        }
+        this.refreshPageList();
       }
+    },
+    clearSubmitOrLooked() {
+      this.formData.submited = '';
+      this.formData.looked = '';
       this.refreshPageList();
     },
     refreshPageList(calender) {
+      this.tableLoading = false;
       if (calender && calender.calendarId) {
         this.canEdit = calender.canEdit;
       }
@@ -389,10 +433,37 @@ export default {
             this.formData.currentPage = res.data.currentPage;
             this.formData.pageSize = res.data.pageSize;
           }
+          this.tableLoading = true;
         });
       } else {
         this.getTeamWeekly();
       }
+    },
+    remoteMethod(name) {
+      this.server.getUserListByOrgId({
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.treeData[0].orgId,
+        keyWord: name.trim(),
+      }).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content;
+        }
+      });
+    },
+    nameChange(userId) {
+      // 将该用户所属部门初始化到组织树里面
+      this.userList.forEach((user) => {
+        if (userId == user.userId) {
+          this.formData.orgId = user.orgId;
+          this.setInitOrg();
+        }
+      });
+      // 刷新周报列表数据;
+      this.refreshPageList();
+    },
+    errorHandler() {
+      return true;
     },
   },
   watch: {

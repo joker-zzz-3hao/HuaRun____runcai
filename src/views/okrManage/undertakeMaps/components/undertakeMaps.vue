@@ -57,7 +57,7 @@
         direction="col"
         fatherId="okrParentId"
         childId="okrDetailId"
-        :colAlign="true"
+        :colAlign="false"
       >
         <div slot="treecard" slot-scope="props">
           <card :node="props.node"></card>
@@ -71,11 +71,10 @@
         :treeData="item"
         :svgId="'svg'+index"
         ref="svgTree"
-        :curveness="false"
         direction="col"
         fatherId="okrParentId"
         childId="okrDetailId"
-        :colAlign="true"
+        :colAlign="false"
         @handleTree="handleTree"
       >
         <div slot="treecard" slot-scope="props">

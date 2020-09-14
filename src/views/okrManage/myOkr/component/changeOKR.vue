@@ -5,7 +5,7 @@
     :append-to-body="true"
     :modal-append-to-body="true"
     class="tl-drawer"
-    custom-class="diy-drawer okr-change"
+    custom-class="custom-drawer okr-change"
     @closed="closed"
     :before-close="close"
   >
@@ -119,7 +119,7 @@
       :modal="false"
       :wrapperClosable="false"
       :append-to-body="true"
-      custom-class="diy-drawer associated-undertaking"
+      custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
       <tl-undertaketable
@@ -134,9 +134,16 @@
         :currentOption="currentOption"
       ></tl-undertaketable>
       <div class="operating-box">
-        <el-button type="primary" @click="summitUndertake">确定</el-button>
-        <el-button type="primary" @click="summitIgnore" v-if="undertakeType=='change'">忽略</el-button>
-        <el-button plain @click="innerDrawer = false">取消</el-button>
+        <div class="flex-auto">
+          <el-button
+            plain
+            @click="summitIgnore"
+            v-if="undertakeType=='change'"
+            class="tl-btn amt-border-fadeout"
+          >忽略</el-button>
+        </div>
+        <el-button type="primary" @click="summitUndertake" class="tl-btn amt-bg-slip">确定</el-button>
+        <el-button plain @click="innerDrawer = false" class="tl-btn amt-border-fadeout">取消</el-button>
       </div>
     </el-drawer>
     <el-drawer
@@ -144,7 +151,7 @@
       :wrapperClosable="false"
       :append-to-body="true"
       class="tl-drawer"
-      custom-class="diy-drawer history-version"
+      custom-class="custom-drawer history-version"
       :visible.sync="historyDrawer"
     >
       <div slot="title" class="flex-sb">
@@ -437,10 +444,17 @@ export default {
 
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
+      // 取忽略的最新版本
+      let newVersion = '';
+      this.tableList[this.selectIndex].departokrList.forEach((item) => {
+        if (item.okrDetailId == this.tableList[this.selectIndex].okrParentId && !item.currentOption) {
+          newVersion = item.okrDetailVersion;
+        }
+      });
       const undertakeOkrVo = {
         okrDetailId: this.tableList[this.selectIndex].okrDetailId,
         undertakeOkrDetailId: this.tableList[this.selectIndex].okrParentId,
-        undertakeOkrVersion: this.tableList[this.selectIndex].okrDetailParentVersion,
+        undertakeOkrVersion: newVersion,
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {

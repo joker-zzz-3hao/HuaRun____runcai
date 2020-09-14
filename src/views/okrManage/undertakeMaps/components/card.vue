@@ -1,8 +1,10 @@
 <template>
   <div class="text">
     <div class="node_title">
-      <span>{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
-      <span>{{node.okrDetailObjectKr}}</span>
+      <span
+        :class="node.okrDetailType == 'o' ? 'kind-parent':'kind-child'"
+      >{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
+      <em>{{node.okrDetailObjectKr}}</em>
       <span>
         <el-button
           v-if="!node.okrParentId && node.userId ===userInfo.userId"
@@ -14,7 +16,7 @@
       <div></div>
       <div>
         <span>进度</span>
-        <span>{{node.okrDetailProgress}}%</span>
+        <tl-process :data="node.okrDetailProgress"></tl-process>
       </div>
       <div>
         <span>负责人</span>
@@ -22,26 +24,27 @@
       </div>
       <!-- okr类型 -->
       <div>{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</div>
-      <!-- <div>{{node.open}}</div> -->
-      <!-- 数量 -->
-      <div>{{node.children?node.children.length:0}}</div>
+      <!-- 圆圈 -->
+      <div v-if="node.children">
+        <!-- 展开时显示减号 -->
+        <div v-if="node.open">-</div>
+        <!-- 收起时显示数量 -->
+        <div v-else>{{node.children.length}}</div>
+      </div>
     </div>
-    <!-- <div class="showTips" :class="node.children ? 'havechild' : ''">
-      <a class="tips_icon icon_edit">
-        <i v-if="node.open" class="el-icon-minus"></i>
-        <i v-else class="el-icon-plus"></i>
-      </a>
-    </div>-->
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import process from '@/components/process';
 import CONST from '../const';
 
 export default {
   name: 'card',
-  components: {},
+  components: {
+    'tl-process': process,
+  },
   props: {
     node: {
       type: Object,

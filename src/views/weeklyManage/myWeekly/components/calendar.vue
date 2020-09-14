@@ -1,34 +1,26 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年08月31日 10:41:36
-  备注：
--->
 <template>
-  <div>
-    <div style="display: inline; list-style-type:none;padding: 5px 5px;">
-      <el-date-picker
-        v-model="monthDate"
-        type="month"
-        placeholder="选择月"
-        value-format="yyyy-MM-dd"
-        :picker-options="afterDisabled"
-        @change="getWeek"
-        :clearable="false"
-      ></el-date-picker>
-    </div>
+  <div class="calendar-select">
+    <el-date-picker
+      v-model="monthDate"
+      type="month"
+      placeholder="选择月"
+      value-format="yyyy-MM-dd"
+      :picker-options="afterDisabled"
+      @change="getWeek"
+      :clearable="false"
+      popper-class="tl-month-popper"
+      class="tl-month-editor"
+    ></el-date-picker>
     <!-- 选择周 -->
-    <div
-      v-if="weekList.length > 0 "
-      style="display: inline; list-style-type:none;padding: 5px 5px;"
-    >
+    <div v-if="weekList.length > 0 " class="weekly-select">
       <el-button
-        style="display: inline; list-style-type:none;padding: 5px 5px;"
+        plain
         v-for="(item,index) in weekList"
         :key="index"
         @click="seclectBtn(item)"
         :type="item.btnType"
         :disabled="!item.canClick"
+        class="tl-btn"
       >
         {{getWeekItem(item,index)}}
         <el-checkbox
@@ -38,8 +30,9 @@
           :label="item.weeklyId ? '已提交' : '未提交'"
           disabled
         ></el-checkbox>
+        <span v-if="!item.weeklyId && !item.canEdit">已超过两周，不可再提交周报</span>
       </el-button>
-      <el-button @click="goCurrentWeek">回到本周</el-button>
+      <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>
     </div>
   </div>
 </template>
@@ -151,7 +144,7 @@ export default {
       for (let i = 0; i < this.weekList.length; i += 1) {
         if (i > this.weekIndex) { // 本周之后
           this.weekList[i].canClick = false;
-          this.weekList[i].canEdit = false;
+          this.weekList[i].canEdit = true;// true是为了控制之后的周不显示文案（两周前不可补写文案）
         } else if (i < this.weekIndex - 1) { // 两周之前
           this.weekList[i].canClick = true;
           this.weekList[i].canEdit = false;
@@ -237,6 +230,7 @@ export default {
         beg = beg.setHours(beg.getHours() - 8);
         end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
+          // 如果该周是两周前，且周报未填写，则需要提示该周报不能补写
           currentBelongsToSelectedMonth = true;
           // 选种本周按钮
           item.btnType = 'success';
@@ -272,7 +266,7 @@ export default {
       }
     },
     goCurrentWeek() {
-      window.location.reload();
+      this.getWeek(this.dateFormat('YYYY-mm-dd', new Date()));
     },
   },
   watch: {},

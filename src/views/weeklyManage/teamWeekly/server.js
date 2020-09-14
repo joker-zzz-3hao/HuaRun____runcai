@@ -30,4 +30,9 @@ export default class Server extends ServerBase {
   support(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/support', param);
   }
+
+  // 查询组织包含的用户列表
+  getUserListByOrgId(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/listUserPage', param);
+  }
 }

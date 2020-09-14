@@ -384,7 +384,8 @@
 }
 
 .okr-detail .img-list {
-  padding: 0 0 0 6px;
+  padding: 10px 0 0 6px;
+  border-top: 1px solid #e5e9ee;
 }
 
 .okr-detail .img-list dl {
@@ -471,6 +472,80 @@
   padding: 20px 0;
 }
 
+.okr-detail .timeline-list .list-title {
+  color: #acb6bf;
+}
+
+.okr-detail .timeline-list .list-cont {
+  padding: 20px 0 20px 40px;
+}
+
+.okr-detail .timeline-list .operate-type {
+  align-self: start;
+}
+
+.okr-detail .timeline-list .operate-type em {
+  margin: 0 10px 0 0;
+  color: #222426;
+}
+
+.okr-detail .timeline-list .operate-type span {
+  color: #879099;
+}
+
+.okr-detail .timeline-list .operate-kind li,
+.okr-detail .timeline-list .operate-kind li div {
+  display: flex;
+  align-items: center;
+}
+
+.okr-detail .timeline-list .operate-kind li {
+  margin: 10px 0;
+  justify-content: space-between;
+}
+
+.okr-detail .timeline-list .operate-kind li > div {
+  margin: 0 0 0 20px;
+  color: #222426;
+}
+
+.okr-detail .timeline-list .operate-kind li > div:first-child {
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.okr-detail .timeline-list .operate-kind li > div span {
+  margin: 0 10px 0 0;
+  color: #879099;
+}
+
+.okr-detail .timeline-list .list-title::before {
+  width: 8px;
+  height: 8px;
+  background: #e5e9ee;
+  border: 2px solid #fff;
+  box-shadow: 0 0 3px 0 #E6E6E6;
+}
+
+.okr-detail .timeline-list dt .list-title::before {
+  background: #685df1;
+}
+
+.okr-detail .timeline-list dd .list-title::before {
+  background: #e5e9ee;
+  border: 2px solid #fff;
+}
+
+.okr-detail .timeline-list dt::before,
+.okr-detail .timeline-list dd::before {
+  background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.3em,#fff 0,#fff 0.5em);
+}
+
+/* okr-change */
 .okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change {
   cursor: pointer;
 }
@@ -517,6 +592,119 @@
   margin: 0 0 0 10px;
 }
 
+/* 周报 */
+.my-weekly .cont-area {
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.calendar-select,
+.weekly-select {
+  display: flex;
+  align-items: center;
+}
+
+.weekly-select {
+  margin: 0 0 0 15px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.weekly-select .el-button {
+  border-color: #e5e9ee;
+  border-radius: 2px;
+}
+
+.weekly-select .el-button,
+.weekly-select .el-button + .el-button {
+  margin: 5px 15px;
+}
+
+.weekly-select .el-button--success,
+.weekly-select .el-button--success.is-plain:focus,
+.weekly-select .el-button--success.is-plain:hover {
+  background: #f9f8fe;
+  border-color: #685df1;
+}
+
+.weekly-select .el-button.is-active,
+.weekly-select .el-button.is-plain:active,
+.weekly-select .el-button.is-plain:focus,
+.weekly-select .el-button.is-plain:hover {
+  border-color: #e5e9ee;
+}
+
+.weekly-cont .el-table__body-wrapper .el-slider--with-input,
+.weekly-cont .el-table__body-wrapper .el-form-item {
+  flex: 1;
+}
+
+.weekly-cont .tl-select {
+  width: 100%;
+}
+
+.weekly-cont .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.weekly-cont .el-select .el-input.is-focus .el-input__inner {
+  border-color: #685df1;
+}
+
+.weekly-cont .el-select-dropdown__item.selected {
+  color: #685df1;
+}
+
+.weekly-cont .tl-table .el-table__body .cell {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.weekly-cont .tl-table .el-table__body .cell .el-form-item {
+  margin: 0;
+  width: 100%;
+}
+
+.weekly-cont .tl-table.flex td {
+  vertical-align: top;
+}
+
+.weekly-cont .tl-table.flex .el-table__body td:nth-child(5) .cell {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select {
+  margin: 10px 0 0 0;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select a {
+  font-size: 12px;
+  color: #879099;
+}
+
+.weekly-cont .tl-table.flex .el-table__body .default-select a:hover {
+  color: #685df1;
+}
+
+.weekly-cont .tl-input,
+.weekly-cont .tl-slider .el-slider__input {
+  margin: 0;
+}
+
+.my-weekly .operating-area .tl-custom-btn {
+  height: 30px;
+}
+
+.my-weekly .operating-area .tl-custom-btn:nth-child(1) {
+  border-radius: 2px 0 0 2px;
+}
+
+.my-weekly .operating-area .tl-custom-btn:nth-child(2) {
+  border-radius: 0 2px 2px 0;
+}
 
 /* =========================================================租户管理================================================================== */
 /* OKR设置 */

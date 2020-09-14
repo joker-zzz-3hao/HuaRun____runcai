@@ -1,14 +1,13 @@
-<!--与原型不一致的地方
-1、进度条，直接显示进度条，且可滑动
-2、关联项目直接使用下拉框
-3、
-
--->
 <template>
   <div class="home">
     <div>
-      <el-form :rules="formData.rules" :model="formData" ref="formDom">
-        <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
+      <el-form :rules="formData.rules" :model="formData" ref="formDom" class="tl-form">
+        <el-table
+          ref="workTable"
+          v-loading="tableLoading"
+          :data="formData.weeklyWorkVoSaveList"
+          class="tl-table"
+        >
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
             <template slot-scope="scope">
@@ -76,6 +75,7 @@
                   remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
+                  @visible-change="visibleChange"
                 >
                   <el-option
                     v-for="item in thisPageProjectList"
@@ -163,14 +163,14 @@
           </el-table-column>
         </el-table>
       </el-form>
-      <el-button @click="addItem" style>添加</el-button>
+      <el-button @click="addItem">添加</el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <div style="marginTop:50px">
+    <div>
       <h1>本周感想、建议、收获</h1>
-      <el-form ref="formDomThought" :model="formData">
+      <el-form :model="formData">
         <el-table :data="formData.weeklyThoughtSaveList">
-          <el-table-column prop="workContent">
+          <el-table-column>
             <template slot-scope="scope">
               <el-form-item>
                 <span>
@@ -215,12 +215,12 @@
       </el-form>
     </div>
     <!-- 下周计划 -->
-    <div style="marginTop:50px">
+    <div>
       <h1>下周计划</h1>
       <el-form :model="formData">
-        <el-table ref="dicTable" v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
+        <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="planContent">
+          <el-table-column label="工作项">
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
@@ -514,6 +514,7 @@ export default {
   },
   methods: {
     init() {
+      this.remoteMethod();
       // 本周任务初始化数据
       this.addWork();
       // 下周计划初始化数据
@@ -523,20 +524,18 @@ export default {
       // 如果是已提交过的数据，初始化数据
       this.initPage();
       // this.thisPageProjectList = [...this.projectList];
-      this.remoteMethod();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
-
-        // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
-        this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
         // 反显周报列表数据
         this.setWorkTableData();
         // 反显本周感想
         this.setThoughts();
         // 反显下周计划
         this.setNextWeekPlan();
+        // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+        this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
       }
     },
     setOkrProcess(weeklyOkrVoList) {
@@ -609,12 +608,18 @@ export default {
       this.formData.weeklyThoughtSaveList.forEach((thought) => {
         thought.randomId = Math.random().toString(36).substr(3);
       });
+      if (this.formData.weeklyThoughtSaveList) {
+        this.addThought();
+      }
     },
     setNextWeekPlan() {
       this.formData.weeklyPlanSaveList = this.weeklyData.weeklyPlanList;
       this.formData.weeklyPlanSaveList.forEach((plan) => {
         plan.randomId = Math.random().toString(36).substr(3);
       });
+      if (this.formData.weeklyPlanSaveList.length < 1) {
+        this.addPlanItem();
+      }
     },
     remoteMethod(query) {
       // if (query !== '') {
@@ -820,7 +825,7 @@ export default {
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
       return h('div', [// h即为cerateElement的简写
-        h('span', { style: { color: 'red' } }, '*'),
+        h(column ? 'span' : '', { style: { color: 'red' } }, '*'),
         // 在div里面插入span
         h('span', {
           // 表示内容
@@ -836,6 +841,11 @@ export default {
     },
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
+    },
+    visibleChange(status) {
+      if (!status) {
+        this.remoteMethod();
+      }
     },
   },
   watch: {

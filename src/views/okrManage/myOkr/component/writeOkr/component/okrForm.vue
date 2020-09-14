@@ -1,6 +1,6 @@
 <template>
   <div class="okr-info">
-    <div class="tl-diy-timeline">
+    <div class="tl-custom-timeline">
       <el-form :model="formData" ref="dataForm" class="tl-form">
         <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
           <dt>
@@ -150,7 +150,7 @@
       </el-button>
     </div>
     <!-- 变更原因 -->
-    <div v-if="this.searchForm.okrStatus == '8'">
+    <div v-if="searchForm.approvalType == 1 ">
       <span>变更原因</span>
       <el-form :model="reason" ref="reasonForm">
         <el-form-item
@@ -168,7 +168,7 @@
       :visible.sync="innerDrawer"
       :modal="false"
       :append-to-body="true"
-      custom-class="diy-drawer associated-undertaking"
+      custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
       <div slot="title" class="flex-sb">
@@ -275,7 +275,6 @@ export default {
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
-      console.log('获取暂存的草稿', JSON.parse(this.searchForm.draftParams));
       this.searchOkr();
       this.getCultureList();
     },
@@ -330,7 +329,6 @@ export default {
         departokrList: this.departokrObject ? JSON.parse(this.departokrObject) : [],
         philosophyList: this.philosophyObject ? JSON.parse(this.philosophyObject) : [],
       });
-      console.log('addobject增加o', this.departokrObject);
     },
     // 删除o
     deleteobject(oindex) {
@@ -343,6 +341,7 @@ export default {
         if (res.code == 200) {
           // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
           if (res.data.parentUndertakeOkrInfoResult) {
+            this.selectIndex = '';
             this.departokrList = [];
             res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
               this.departokrList.push({
@@ -373,13 +372,21 @@ export default {
           if (this.formData.okrInfoList.length > 0) {
             this.formData.okrInfoList.forEach((item) => {
               item.departokrList = JSON.parse(this.departokrObject);
-              item.undertakeOkrVo = {};
+              item.undertakeOkrVo = item.undertakeOkrVo || {};
+              item.undertakeOkrDto = item.undertakeOkrDto || {};
               // 如果是草稿，选中已保存的承接项
               if (['6', '8'].includes(this.searchForm.okrStatus)
-               && item.undertakeOkrVo.undertakeOkrDetailId) {
+               && (item.undertakeOkrVo.undertakeOkrDetailId || item.undertakeOkrDto.undertakeOkrDetailId)) {
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrDetailId', pitem.okrDetailId);
+                  }
+                  if (item.undertakeOkrDto.undertakeOkrDetailId == pitem.okrDetailId) {
+                    this.$set(item, 'undertakeOkrVo', item.undertakeOkrDto);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
+                    this.$set(item.undertakeOkrVo, 'undertakeOkrDetailId', pitem.okrDetailId);
+                    this.$forceUpdate();
                   }
                 });
               }

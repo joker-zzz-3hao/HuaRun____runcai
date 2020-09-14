@@ -1,16 +1,20 @@
-<!--与原型不一致的地方
-1、进度条，直接显示进度条，且可滑动
-2、关联项目直接使用下拉框
-3、
-
--->
 <template>
-  <div class="home">
-    <div>
-      <el-form :rules="formData.rules" :model="formData" ref="formDom">
-        <el-table ref="workTable" v-loading="tableLoading" :data="formData.weeklyWorkVoSaveList">
-          <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
+  <div class="write-weekly">
+    <div class="weekly-cont">
+      <el-form :rules="formData.rules" :model="formData" ref="formDom" class="tl-form">
+        <el-table
+          ref="workTable"
+          v-loading="tableLoading"
+          :data="formData.weeklyWorkVoSaveList"
+          class="tl-table flex"
+        >
+          <el-table-column label="序号" type="index" width="55"></el-table-column>
+          <el-table-column
+            label="工作项"
+            prop="workContent"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workContent'"
@@ -21,28 +25,34 @@
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
             </template>
           </el-table-column>
-
-          <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
+          <el-table-column
+            label="进度"
+            prop="workProgress"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-slider
                 v-model="scope.row.workProgress"
                 :step="1"
                 @change="tableProcessChange(scope.row)"
                 show-input
+                class="tl-slider"
               ></el-slider>
             </template>
           </el-table-column>
           <el-table-column
-            width="220"
             label="投入工时"
             :precision="2"
             :step="0.1"
             prop="workTime"
             :render-header="renderHeader"
+            min-width="130"
           >
             <template slot-scope="scope">
               <el-input-number
@@ -52,10 +62,17 @@
                 :step="1"
                 :min="1"
                 :max="80"
-              ></el-input-number>h
+                class="tl-input-number"
+              ></el-input-number>
+              <span>h</span>
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectId" :render-header="renderHeader">
+          <el-table-column
+            label="关联项目"
+            prop="projectId"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
@@ -68,6 +85,9 @@
                   remote
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
+                  @visible-change="visibleChange"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in thisPageProjectList"
@@ -77,20 +97,26 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-
-              <a style="cursor:pointer" @click="selectTempPro(scope.row)">临时项目</a>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
-                placement="top"
-              >
-                <i class="el-icon-question"></i>
-              </el-tooltip>
-              <div></div>
+              <div class="default-select">
+                <a @click="selectTempPro(scope.row)">临时项目</a>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="支撑OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
+          <el-table-column
+            label="支撑OKR/价值观"
+            prop="valueOrOkrIds"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <!-- 临时项目可不选择支撑项 -->
               <el-form-item
@@ -116,6 +142,7 @@
                       effect="dark"
                       :content="item.okrDetailObjectKr"
                       placement="top-end"
+                      popper-class="tl-tooltip-popper"
                     >
                       <span>
                         {{setOkrStyle(item.okrDetailObjectKr)}}
@@ -137,7 +164,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column prop="code">
+          <el-table-column prop="code" fixed="right" width="50">
             <template slot-scope="scope">
               <el-dropdown
                 @command="deleteItem(scope.row)"
@@ -158,7 +185,7 @@
       <el-button @click="addItem" style>添加</el-button>
     </div>
     <!-- 个人OKR完成度 -->
-    <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
+    <div v-if="weeklyOkrSaveList.length > 0" class="degree-completion">
       <h1>个人OKR完成度</h1>
       <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
         <!-- 目标+KR -->
@@ -192,7 +219,6 @@
                 :step="1"
                 @change="processChange(item)"
                 show-input
-                style="width:20%"
               ></el-slider>
             </span>
             <span style="marginLeft:15px">
@@ -232,7 +258,7 @@
       </div>
     </div>
     <!-- 本周心情 -->
-    <div style="marginTop:50px">
+    <div class="week-mood">
       <span>
         请选择本周心情
         <el-button @click="happy">开心</el-button>
@@ -420,19 +446,19 @@ export default {
   },
   methods: {
     init() {
+      this.remoteMethod();
       // 本周任务初始化数据
       this.addWork();
       // 如果是已提交过的数据，初始化数据
       this.initPage();
       // this.thisPageProjectList = [...this.projectList];
-      this.remoteMethod();
     },
     initPage() {
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
+        this.setWorkTableData();
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
         this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
-        this.setWorkTableData();
       }
     },
     setOkrProcess(weeklyOkrVoList) {
@@ -668,6 +694,11 @@ export default {
     },
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
+    },
+    visibleChange(status) {
+      if (!status) {
+        this.remoteMethod();
+      }
     },
   },
   watch: {

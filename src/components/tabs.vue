@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-diy-tabs">
+  <div class="tl-custom-tabs">
     <div class="tab-menus">
       <ul class="tab-list">
         <li
@@ -36,9 +36,9 @@ export default {
   },
   mounted() {
     // 状态
-    const liWidth = document.querySelectorAll('.diy-drawer .tab-list li');
-    const selfLeft = document.querySelectorAll('.diy-drawer .tab-list li')[0].offsetLeft;
-    const borderWidth = document.querySelector('.diy-drawer .border-slip');
+    const liWidth = document.querySelectorAll('.custom-drawer .tab-list li');
+    const selfLeft = document.querySelectorAll('.custom-drawer .tab-list li')[0].offsetLeft;
+    const borderWidth = document.querySelector('.custom-drawer .border-slip');
     borderWidth.style.left = `${selfLeft}px`;
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
     console.log(liWidth);
@@ -51,11 +51,11 @@ export default {
   },
   methods: {
     borderSlip(item, index) {
-      const borderWidth = document.querySelector('.diy-drawer .border-slip');
-      console.log(document.querySelectorAll('.diy-drawer .tab-list li')[0]);
+      const borderWidth = document.querySelector('.custom-drawer .border-slip');
+      console.log(document.querySelectorAll('.custom-drawer .tab-list li')[0]);
       console.log(index);
-      const selfLeft = document.querySelectorAll('.diy-drawer .tab-list li')[index].offsetLeft;
-      const liWidth = document.querySelectorAll('.diy-drawer .tab-list li');
+      const selfLeft = document.querySelectorAll('.custom-drawer .tab-list li')[index].offsetLeft;
+      const liWidth = document.querySelectorAll('.custom-drawer .tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
