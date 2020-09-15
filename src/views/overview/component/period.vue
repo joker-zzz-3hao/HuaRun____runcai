@@ -1,6 +1,6 @@
 <template>
   <div class="personPage">
-    <el-button v-if="showBack&&$route.query.id" @click="$router.back()">返回</el-button>
+    <el-button v-if="$route.query.id" @click="back()">返回</el-button>
     <!-- <el-select v-model="depart" placeholder="请选择" @change="selectOrg">
       <el-option
         v-for="item in userInfo.orgList"
@@ -47,6 +47,7 @@ export default {
     this.setOrg(this.userInfo.orgId);
     this.getokrQuery();
   },
+  inject: ['reload'],
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
@@ -55,6 +56,10 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setOrg']),
+    back() {
+      this.$router.back();
+      this.reload();
+    },
     getokrQuery() {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {

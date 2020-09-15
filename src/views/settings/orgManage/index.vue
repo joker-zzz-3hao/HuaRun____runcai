@@ -282,6 +282,7 @@ export default {
     return {
       exist: false,
       existEdit: false,
+      isShow: false,
       rowData: [],
       server,
       CONST,

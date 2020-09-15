@@ -128,7 +128,9 @@ export default {
       this.server.getOrg()
         .then((res) => {
           this.data = res.data;
-          this.changeOrgId(this.rowData.agentOrg);
+          if (this.rowData.agentOrg) {
+            this.changeOrgId(this.rowData.agentOrg);
+          }
         });
     },
     submitForm() {
@@ -151,6 +153,11 @@ export default {
         roleCode: 'ORG_ADMIN',
       }).then((res) => {
         console.log(res);
+        if (res.code == 200) {
+          this.$message.success(res.msg);
+          this.$emit('searchList');
+          this.closed();
+        }
       });
     },
     close() {
