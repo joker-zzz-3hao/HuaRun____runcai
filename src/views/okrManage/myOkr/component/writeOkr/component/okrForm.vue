@@ -5,7 +5,7 @@
         <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
           <dt>
             <div class="list-info">
-              <div class="list-title">目标名称</div>
+              <div class="list-title">目标名称{{index+1}}</div>
               <div class="list-cont">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
@@ -550,6 +550,7 @@ export default {
     // 关闭
     close() {
       this.setCreateokrDrawer(false);
+      this.setShowAuto(false);
     },
     // 新建okr
     summitNew() {

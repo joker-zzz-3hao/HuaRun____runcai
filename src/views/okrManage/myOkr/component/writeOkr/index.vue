@@ -157,7 +157,7 @@ export default {
   created() {
   },
   methods: {
-    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer']),
+    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
     showOkrDialog() {
       this.init();
       this.setCreateokrDrawer(true);
@@ -165,6 +165,7 @@ export default {
     },
     closed() {
       this.$emit('update:exist', false);
+      this.setShowAuto(false);
     },
     close() {
       this.setCreateokrDrawer(false);
