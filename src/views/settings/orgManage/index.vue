@@ -117,12 +117,14 @@
             <el-table-column min-width="120" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
                 <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
-                <span v-else>--</span>
+                <span v-else>
+                  <el-button type="text" @click="showexistEdit">设置</el-button>
+                </span>
               </template>
             </el-table-column>
             <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="showexistEdit(scope.row)" style="cursor: pointer;">
+                <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>设置</span>
@@ -413,9 +415,9 @@ export default {
         this.globalOrgId = depart.orgId;
       }
       this.showcreateDepart = true;
-      // this.$nextTick(() => {
-      //   this.$refs.createDepart.show(depart);
-      // });
+      this.$nextTick(() => {
+        this.$refs.createDepart.show(depart);
+      });
     },
     deleteDepart(depart) {
       this.$xconfirm({

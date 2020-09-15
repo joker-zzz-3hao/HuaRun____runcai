@@ -24,25 +24,16 @@
             <span>{{item.data.functionName}}</span>
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
-          <el-popover placement="bottom-end" trigger="click">
-            <div class="postMenu">
-              <el-cascader-panel
-                @change="handleCheckChange"
-                ref="treeMenu"
-                v-model="selectArr"
-                :options="data"
-                :props="{ multiple: true, value:'functionId', label:'functionName',children:'children' }"
-                node-key="id"
-              ></el-cascader-panel>
-              <div>
-                <el-button type="text" @click="saveTree">确认</el-button>
-                <el-button type="text" @click="clearNodeAll">清空</el-button>
-              </div>
-            </div>
-            <div slot="reference">
-              <i class="el-icon-circle-plus-outline"></i>
-            </div>
-          </el-popover>
+          <div class="postMenu">
+            <el-tree
+              @check-change="handleCheckChange"
+              ref="treeMenu"
+              :data="data"
+              show-checkbox
+              :props="{ multiple: true, id:'functionId', label:'functionName',children:'children' }"
+              node-key="functionId"
+            ></el-tree>
+          </div>
         </div>
       </el-form-item>
     </el-form>
@@ -111,78 +102,8 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    saveTree() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-      this.selectList = this.list;
-    },
-    clearNode(node) {
-      const deleteArr = this.selectArr;
-      deleteArr.forEach((item, index) => {
-        if (this.boolCheck(item, node)) {
-          deleteArr.splice(index, 1);
-        }
-      });
-      this.selectArr = [...deleteArr, []];
-      let arr = [];
-      this.selectArr.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
-
-      this.$nextTick(() => {
-        const keys = this.$refs.treeMenu.getCheckedNodes();
-        // eslint-disable-next-line array-callback-return
-        const keyCheck = keys.map((item) => {
-          if (item.children.length == 0) {
-            return item;
-          }
-        });
-        // eslint-disable-next-line array-callback-return
-        this.menuTreeList = keyCheck.filter((item) => {
-          if (item) {
-            return item;
-          }
-        });
-      });
-      this.selectList = this.list;
-    },
-    boolCheck(item, node) {
-      return item.some((li) => li === node.data.functionId);
-    },
-    getCheckName() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-    },
-    handleCheckChange(data) {
-      console.log(data);
-      let arr = [];
-      data.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
+    handleCheckChange() {
+      this.list = this.$refs.treeMenu.getCheckedKeys();
     },
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -205,21 +126,6 @@ export default {
       this.server.getRole({
         roleId: this.roleInfo.roleId,
         roleCode: this.roleInfo.roleCode,
-      }).then((res) => {
-        this.form = {
-          roleCode: res.data.roleCode,
-          roleName: res.data.roleName,
-        };
-        console.log(res.data.menuTree);
-        this.selectArr = res.data.menuTree;
-        this.$nextTick(() => {
-          this.getCheckName();
-          let arr = [];
-          this.selectArr.forEach((item) => {
-            arr = arr.concat(item);
-          });
-          this.selectList = Array.from(new Set(arr));
-        });
       });
     },
     updateRole() {

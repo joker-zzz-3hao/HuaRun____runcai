@@ -19,11 +19,7 @@
         :highlight-current="true"
         :filter-node-method="filterNode"
       >
-        <span
-          class="custom-tree-node"
-          slot-scope="{ node, data }"
-          style="z-index: 9999;position: absolute;"
-        >
+        <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
           <span>
             <i @click="hoverDepart(data)" style="margin-left:150px;" class="el-icon-more"></i>
@@ -232,6 +228,7 @@ export default {
       defaultProps: {
         children: 'sonTree',
         label: 'orgName',
+        orgId: 'orgId',
       },
     };
   },

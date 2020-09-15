@@ -66,7 +66,7 @@
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-notice-detail v-if="detailExist" ref="detail"></tl-notice-detail>
+    <tl-notice-detail v-if="detailExist" ref="detail" @close="close"></tl-notice-detail>
   </div>
 </template>
 
@@ -139,6 +139,9 @@ export default {
       this.currentPageSystem = 1;
       this.pageSize = 10;
       this.pageSizeSystem = 10;
+      this.searchList(this.messageType);
+    },
+    close() {
       this.searchList(this.messageType);
     },
     showDetail(data) {

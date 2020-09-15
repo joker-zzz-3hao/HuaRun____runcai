@@ -74,6 +74,7 @@
               placeholder="请输入成员姓名"
               remote
               :remote-method="remoteMethod"
+              @visible-change="visibleChange"
               @change="nameChange"
             >
               <el-option
@@ -444,12 +445,17 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.treeData[0].orgId,
-        keyWord: name.trim(),
+        keyWord: name ? name.trim() : '',
       }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data.content;
         }
       });
+    },
+    visibleChange(name) {
+      if (!name) {
+        this.remoteMethod();
+      }
     },
     nameChange(userId) {
       // 将该用户所属部门初始化到组织树里面
