@@ -156,6 +156,7 @@ export default {
         currentPage: this.currentPage,
       }).then((res) => {
         this.tableData = res.data.content;
+        this.totalpage = res.data.total;
       });
     },
     addOkr() {

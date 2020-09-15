@@ -116,9 +116,12 @@
             <el-table-column min-width="120" align="left" prop="orgName" label="所属部门"></el-table-column>
             <el-table-column min-width="120" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
-                <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
+                <span
+                  v-if="scope.row.agentOrg"
+                  @click="showexistEdit(scope.row)"
+                >{{changeOrgAndId(scope.row.agentOrg)}}</span>
                 <span v-else>
-                  <el-button type="text" @click="showexistEdit">设置</el-button>
+                  <el-button type="text" @click="showexistEdit(scope.row)">设置</el-button>
                 </span>
               </template>
             </el-table-column>
@@ -316,6 +319,11 @@ export default {
   methods: {
     showAddRoule() {
       this.exist = true;
+    },
+    changeOrgAndId(data) {
+      const list = data.split(',');
+      const orgName = list.map((item) => item.split('/')[0]);
+      return orgName.join(',');
     },
     showexistEdit(row) {
       this.rowData = row;

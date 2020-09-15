@@ -103,12 +103,6 @@ export default {
         ],
         tenantId: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
-
-        },
-        {
-          pattern: !/[\u4E00-\u9FA5\uF900-\uFA2D]/,
-          message: '不支持中文',
-          trigger: 'blur',
         },
         ],
         mobilePhone: [

@@ -29,6 +29,7 @@
         <el-date-picker
           type="date"
           v-model="form.draftingStartTime"
+          value-format="yyyy-MM-dd"
           placeholder="请设置起草开始时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -40,6 +41,7 @@
           v-model="form.approvalEndTime"
           placeholder="请设置审批结束时间"
           popper-class="tl-date-popper"
+          value-format="yyyy-MM-dd"
           class="tl-date-editor"
         ></el-date-picker>
       </el-form-item>
@@ -49,6 +51,7 @@
           @change="getTime"
           type="daterange"
           range-separator="-"
+          value-format="yyyy-MM-dd"
           start-placeholder="请设置开始日期"
           end-placeholder="请设置结束日期"
           popper-class="tl-range-popper"
@@ -59,6 +62,7 @@
         <el-date-picker
           type="date"
           v-model="form.selfAssessReminderTime"
+          value-format="yyyy-MM-dd"
           placeholder="请设置自评举证时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -159,7 +163,13 @@ export default {
       this.form.endTime = date[1];
     },
     addOrUpdate() {
-      this.server.addOrUpdate(this.form).then((res) => {
+      const { form } = this;
+      form.startTime = new Date(this.form.startTime);
+      form.selfAssessReminderTime = new Date(this.form.selfAssessReminderTime);
+      form.endTime = new Date(this.form.endTime);
+      form.approvalEndTime = new Date(this.form.approvalEndTime);
+      form.draftingStartTime = new Date(this.form.draftingStartTime);
+      this.server.addOrUpdate(form).then((res) => {
         if (res.code == 200) {
           this.$emit('getTableList');
           this.$message.success(res.msg);

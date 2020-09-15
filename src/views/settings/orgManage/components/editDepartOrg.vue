@@ -18,13 +18,13 @@
       class="tl-form"
     >
       <el-form-item label="当前部门">
-        <span>门户</span>
+        <span>{{rowData.orgName}}</span>
       </el-form-item>
 
       <el-form-item label="菜单权限">
         <div class="menuTreeList">
           <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-            <span>{{item.data.orgName}}</span>
+            <span>{{item.label}}</span>
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <el-popover placement="bottom" trigger="click">
@@ -35,7 +35,14 @@
                 ref="treeMenu"
                 v-model="selectArr"
                 :options="data"
-                :props="{ multiple: true,value:'orgId',children:'sonTree',label:'orgName',checkStrictly:true,emitPath:false }"
+                :props="{
+                  multiple: true,
+                  value:'orgId',
+                  children:'sonTree',
+                  label:'orgName',
+                  checkStrictly:true,
+                  emitPath:false
+                  }"
                 node-key="id"
               ></el-cascader-panel>
               <div>
@@ -69,13 +76,14 @@ export default {
       type: String,
       required: true,
     },
-    roleInfo: {
+    rowData: {
       type: [Object, String],
       required: false,
     },
   },
   data() {
     return {
+      listOrgId: '',
       server,
       labelPosition: 'left',
       menuTreeList: [],
@@ -117,112 +125,41 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    handleCheckChange(data) {
+      console.log(data);
+    },
     saveTree() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-      this.selectList = this.list;
+      const node = this.$refs.treeMenu.getCheckedNodes();
+      this.menuTreeList = node;
+    },
+    changeOrgId(data) {
+      const list = data.split(',');
+      const orgId = list.map((item) => item.split('/')[1]);
+      this.selectArr = orgId;
     },
     clearNodeAll() {
       this.$refs.treeMenu.clearCheckedNodes();
       this.menuTreeList = [];
-      this.selectList = [];
     },
-    clearNode(node) {
-      const deleteArr = this.selectArr;
-      deleteArr.forEach((item, index) => {
-        if (this.boolCheck(item, node)) {
-          deleteArr.splice(index, 1);
-        }
-      });
-      this.selectArr = [...deleteArr, []];
-      let arr = [];
-      this.selectArr.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
-      this.$nextTick(() => {
-        const keys = this.$refs.treeMenu.getCheckedNodes();
-        // eslint-disable-next-line array-callback-return
-        const keyCheck = keys.map((item) => {
-          if (item.children.length == 0) {
-            return item;
-          }
-        });
-        // eslint-disable-next-line array-callback-return
-        this.menuTreeList = keyCheck.filter((item) => {
-          if (item) {
-            return item;
-          }
-        });
-      });
-    },
-    boolCheck(item, node) {
-      return item.some((li) => li === node.data.orgId);
-    },
-    getCheckName() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-    },
-    handleCheckChange(data) {
-      console.log(data);
-      let arr = [];
-      data.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
-    },
+
     getqueryMenu() {
       this.server.getOrg()
         .then((res) => {
           this.data = res.data;
+          this.changeOrgId(this.rowData.agentOrg);
         });
     },
     submitForm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
-          this.addRole();
+          console.log(1);
         } else {
           return false;
         }
       });
     },
-    addRole() {
-      const { form } = this;
-      this.form.functionList = this.selectList.map((item) => ({ orgId: item }));
-      form.roleType = 'CREATION';
-      this.server.addRole(form).then((res) => {
-        if (res.code == 200) {
-          this.$emit('getSearchList');
-          this.$message.success(res.msg);
-          this.closed();
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
-    },
+
     close() {
       this.dialogTableVisible = false;
     },
