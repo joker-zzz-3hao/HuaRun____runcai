@@ -10,7 +10,7 @@
         <span>{{node.node.krCount}}</span>
       </div>
       <div>
-        <el-progress :percentage="node.node.okrProgress" :color="customColor"></el-progress>
+        <tl-process :data="node.node.okrProgress"></tl-process>
       </div>
     </div>
     <div style="display: flex;justify-content: space-between;" @click="takeOvierview(node)">
@@ -21,9 +21,13 @@
 </template>
 
 <script>
+import process from '@/components/process';
+
 export default {
   name: 'card',
-  components: {},
+  components: {
+    'tl-process': process,
+  },
   props: {
     node: {
       type: Object,
