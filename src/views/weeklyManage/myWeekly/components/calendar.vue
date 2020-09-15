@@ -300,6 +300,9 @@ export default {
       }
     },
     seclectBtn(item) {
+      if (item.noOpen) {
+        return;
+      }
       this.$emit('setCalendarId', item.calendarId);
       this.weekList.forEach((week) => {
         week.btnType = '';
