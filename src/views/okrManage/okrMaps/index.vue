@@ -1,7 +1,33 @@
 <template>
-  <div class="home">
-    <div style="display: flex;">
-      <div style="margin-left:20px;" v-if="showDepartmentSelect">
+  <div class="okr-maps">
+    <div class="cont-area"></div>
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div class="tl-custom-tabs">
+          <div class="tab-menus">
+            <ul class="tab-list">
+              <li
+                v-for="(item,idx) in tabsList"
+                :key="item.menuTitle"
+                @click="borderSlip(item,idx,item.toName)"
+                :class="{'is-focus': currentIndex === idx}"
+              >{{item.menuTitle}}</li>
+            </ul>
+            <div class="border-slip"></div>
+          </div>
+        </div>
+        <div class="operating-box">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="goWriteOkr"
+            class="tl-btn amt-bg-slip"
+          >创建OKR</el-button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div v-if="showDepartmentSelect">
         <el-select
           v-model="periodId"
           placeholder="请选择目标周期"
@@ -85,7 +111,7 @@
           <template slot="treecard" slot-scope="node">
             <card
               :node="node"
-              @showDetail.stop="showDetail(node.node.okrId)"
+              @showDetail="showDetail(node.node.okrId)"
               @takeOvierview="takeOvierview(node)"
             ></card>
           </template>

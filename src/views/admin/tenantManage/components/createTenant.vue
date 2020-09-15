@@ -204,6 +204,7 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange(data) {
+      console.log(this.$refs.treeMenu);
       let arr = [];
       data.forEach((item) => {
         arr = arr.concat(item);

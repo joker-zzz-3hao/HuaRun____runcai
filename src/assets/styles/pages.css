@@ -138,7 +138,8 @@
   z-index: 21;
 }
 
-.my-okr .operating-area {
+.my-okr .operating-area,
+.okr-maps .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -148,7 +149,8 @@
   z-index: 10;
 }
 
-.my-okr .operating-area-inside {
+.my-okr .operating-area-inside,
+.okr-maps .operating-area-inside {
   padding: 0 30px 0 206px;
   display: flex;
   justify-content: space-between;
@@ -163,11 +165,13 @@
   left: 70px;
 }
 
-.is-shrink + .my-okr .operating-area .operating-area-inside {
+.is-shrink + .my-okr .operating-area .operating-area-inside,
+.is-shrink + .okr-maps .operating-area .operating-area-inside {
   padding: 0 30px 0 46px;
 }
 
-.my-okr .operating-area-inside::before {
+.my-okr .operating-area-inside::before,
+.okr-maps .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -749,8 +753,8 @@
 
 .organize-management .department-tree {
   padding: 20px;
-  flex: 0 0 324px;
-  width: 324px;
+  flex: 0 0 430px;
+  width: 430px;
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   background: #fff;
@@ -761,7 +765,7 @@
   border: 1px solid #e5e9ee;
   border-radius: 4px;
   margin: 0 0 0 16px;
-  width: calc(100% - 340px);
+  width: calc(100% - 446px);
   background: #fff;
 }
 

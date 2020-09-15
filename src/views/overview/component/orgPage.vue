@@ -160,7 +160,9 @@ export default {
     this.getOkrCycleList();
   },
   mounted() {
-    this.searchOkr();
+    this.$nextTick(() => {
+      this.searchOkr();
+    });
   },
   methods: {
     goUndertakeMaps(id, name) {
@@ -221,6 +223,25 @@ export default {
           this.periodList = res.data || [];
           this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
           this.searchForm.periodId = this.okrCycle.periodId;
+        }
+      });
+    },
+    // 认证身份跳转对应身份首页
+    getidentity(user) {
+      this.server.identity({
+        user: user.userId,
+        orgId: user.orgId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.push({ name: 'departleader' });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.push({ name: 'teamleader' });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.push({ name: 'grassStaff' });
         }
       });
     },

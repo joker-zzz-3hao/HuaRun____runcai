@@ -1391,6 +1391,10 @@
 }
 
 /* tl-tree */
+.tl-tree.el-tree {
+  color: #4d5155;
+}
+
 .tl-tree.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
   background-color: #fff;
 }
@@ -1399,20 +1403,26 @@
   height: 46px;
 }
 
-.tl-tree .el-tree-node__content:hover {
-  background: #f8fafb;
+.tl-tree .el-tree-node__content:hover,
+.tl-tree .el-tree-node:focus>.el-tree-node__content {
+  background: transparent;
 }
 
-.tl-tree .el-tree-node > .el-tree-node__content,
-.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children {
+.tl-tree > .el-tree-node.is-expanded,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded {
   position: relative;
 }
 
-.tl-tree .el-tree-node > .el-tree-node__content::before,
-.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children::before {
+.tl-tree > .el-tree-node.is-expanded::before,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before {
   position: absolute;
-  left: 12px;
-  top: 30px;
+  left: 7px;
+  top: 38px;
   bottom: 0;
   content: '';
   width: 1px;
@@ -1420,14 +1430,31 @@
   z-index: 1;
 }
 
-.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children::before {
-  top: 0;
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before {
+  left: 43px;
 }
 
-.tl-tree .el-tree-node > .el-tree-node__content::after {
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before {
+  left: 79px;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before {
+  left: 115px;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::before {
+  height: 1px;
+  width: 34px;
+  top: 23px;
+}
+
+.tl-tree > .el-tree-node.is-expanded::after,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after,
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after {
   position: absolute;
-  left: 10px;
-  top: 26px;
+  left: 5px;
+  top: 36px;
   content: '';
   width: 5px;
   height: 5px;
@@ -1436,13 +1463,188 @@
   z-index: 2;
 }
 
-.tl-tree .custom-tree-node {
-  margin: 0 0 0 10px;
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after {
+  left: 41px;
 }
 
-.tl-tree .el-tree-node__children .el-tree-node__content {
-  margin: 0 0 0 50px;
-  padding: 0 !important;
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after {
+  left: 77px;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after {
+  left: 113px;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node.is-expanded::after {
+  top: 21px;
+  left: 145px;
+}
+
+.tl-tree .el-tree-node__expand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e4e9ed;
+}
+
+.tl-tree .el-tree-node__expand-icon.is-leaf {
+  background: transparent;
+}
+
+.el-tree-node__content>.el-tree-node__expand-icon {
+  padding: 0;
+}
+
+.tl-tree .tree-title {
+  flex: 1;
+  margin: 0 0 0 10px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.tl-tree .tree-title:hover {
+  cursor: pointer;
+  background: #f8fafb;
+}
+
+.tl-tree > .el-tree-node > .el-tree-node__content .tree-title {
+  font-weight: 500;
+}
+
+.tl-tree .tree-operating-box {
+  position: relative;
+}
+
+.tl-tree .operating-box-popup {
+  display: none;
+  position: absolute;
+}
+
+.tree-operating-box .el-icon-more {
+  transform: rotate(-90deg);
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__content {
+  padding: 0 0 0 36px !important;
+  position: relative;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node:last-child .el-tree-node__content::after {
+  position: absolute;
+  left: 6px;
+  top: 24px;
+  content: '';
+  width: 3px;
+  height: 22px;
+  background: #fff;
+  z-index: 5;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__content {
+  padding: 0 0 0 72px !important;
+  position: relative;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node:last-child .el-tree-node__content::after {
+  position: absolute;
+  left: 42px;
+  top: 24px;
+  content: '';
+  width: 3px;
+  height: 22px;
+  background: #fff;
+  z-index: 5;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__content {
+  padding: 0 0 0 108px !important;
+  position: relative;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node:last-child .el-tree-node__content::after {
+  position: absolute;
+  left: 78px;
+  top: 24px;
+  content: '';
+  width: 3px;
+  height: 22px;
+  background: #fff;
+  z-index: 5;
+}
+
+.tl-tree .el-tree-node .el-tree-node__content .is-leaf + .tree-title::before {
+  width: 50px;
+}
+
+.tl-tree .el-tree-node .el-tree-node__content .is-leaf + .tree-title::after {
+  left: -7px;
+}
+
+.tl-tree .tree-title {
+  position: relative;
+}
+
+.tl-tree .tree-title::before {
+  position: absolute;
+  left: -55px;
+  top: 23px;
+  content: '';
+  height: 1px;
+  width: 18px;
+  background: #e8ecf0;
+  z-index: 1;
+}
+
+.tl-tree .tree-title::after {
+  position: absolute;
+  left: -39px;
+  top: 21px;
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8ecf0;
+  z-index: 2;
+}
+
+.tl-tree > .el-tree-node > .el-tree-node__content .tree-title::before,
+.tl-tree > .el-tree-node > .el-tree-node__content .tree-title::after {
+  content: unset;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node  .el-tree-node__children > .el-tree-node .el-tree-node__content {
+  padding: 0 0 0 128px !important;
+  position: relative;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node  .el-tree-node__children > .el-tree-node .el-tree-node__content::after {
+  position: absolute;
+  left: 114px;
+  top: 24px;
+  content: '';
+  width: 3px;
+  height: 22px;
+  background: #fff;
+  z-index: 5;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node  .el-tree-node__children > .el-tree-node .el-tree-node__content .tree-title::before {
+  left: -39px;
+  width: 33px;
+}
+
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node  .el-tree-node__children > .el-tree-node .el-tree-node__content .tree-title::after {
+  left: -8px;
+}
+
+.tl-tree .el-tree-node.is-current .tree-title {
+  color: #685df1;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
