@@ -165,6 +165,18 @@
                             <em>{{uitem.updateContents.afterWeight}}</em>
                             <span>%</span>
                           </div>
+                          <div v-if="uitem.updateContents.beforeCheckQuota">
+                            <span>考核指标由</span>
+                            <em>{{uitem.updateContents.beforeCheckQuota}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterCheckQuota}}</em>
+                          </div>
+                          <div v-if="uitem.updateContents.beforeJudgeMethod">
+                            <span>衡量办法由</span>
+                            <em>{{uitem.updateContents.beforeJudgeMethod}}</em>
+                            <span>变更为</span>
+                            <em>{{uitem.updateContents.afterJudgeMethod}}</em>
+                          </div>
                           <div v-if="uitem.updateContents.beforeUndertakeName">
                             <span>关联父目标由</span>
                             <em>{{uitem.updateContents.beforeUndertakeName}}</em>
