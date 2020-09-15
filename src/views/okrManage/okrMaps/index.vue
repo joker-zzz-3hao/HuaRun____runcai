@@ -150,6 +150,7 @@ export default {
       drawerTitle: 'OKR详情',
       detailExist: false,
       periodId: '',
+      periodList: [],
     };
   },
   components: {
