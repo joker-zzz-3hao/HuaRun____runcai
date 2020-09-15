@@ -87,10 +87,11 @@
           :highlight-current="true"
           :filter-node-method="filterNode"
           class="tl-tree"
+          :render-after-expand="false"
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <div class="tree-operating-box">
+            <div class="tree-operating-box" :class="{'is-selected':isShow}">
               <i @click="hoverDepart(data)" class="el-icon-more"></i>
               <ul class="operating-box-popup">
                 <li @click.stop="createDepart(data,'create')">创建部门</li>

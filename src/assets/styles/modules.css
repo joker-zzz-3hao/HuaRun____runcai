@@ -1206,9 +1206,8 @@
   flex: 0 0 31%;
 }
 
-/* change by 心荃 46=》33 */
 .okr-change .tl-collapse .collpase-panel dd > div:nth-child(3) {
-  flex: 0 0 33%;
+  flex: 0 0 46%;
   justify-content: flex-end;
 }
 
@@ -1220,9 +1219,8 @@
   flex: 0 0 31%;
 }
 
-/* 心荃改了46%=》33% */
 .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) {
-  flex: 0 0 33%;
+  flex: 0 0 46%;
   justify-content: flex-end;
 }
 
@@ -1645,6 +1643,11 @@
 
 .tl-tree .el-tree-node.is-current .tree-title {
   color: #685df1;
+}
+
+/* tl-cascader */
+.tl-cascader .el-icon-arrow-down::before {
+  content: "\e790";
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -2523,6 +2526,15 @@
   height: 20px;
   border-radius: 50%;
   background: #d5dde3;
+}
+
+.toggle-view {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-view i {
+  margin: 0 10px;
 }
 
 /* ========================================================公共页面布局组件================================================================== */

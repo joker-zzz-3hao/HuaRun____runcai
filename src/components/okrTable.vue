@@ -7,7 +7,7 @@
       <li v-if="!overview">承接地图</li>
       <li>风险状态</li>
       <li>进度</li>
-      <li v-if="!overview && showUpdate">更新进度与风险</li>
+      <li v-if="!overview && showUpdate">更新进展</li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
