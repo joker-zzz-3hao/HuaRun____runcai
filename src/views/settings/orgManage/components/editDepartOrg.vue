@@ -21,7 +21,7 @@
         <span>{{rowData.orgName}}</span>
       </el-form-item>
 
-      <el-form-item label="菜单权限">
+      <el-form-item label="代理部门">
         <div class="menuTreeList">
           <div class="postMenu">
             <el-cascader-panel
