@@ -88,17 +88,17 @@
           :filter-node-method="filterNode"
           class="tl-tree"
         >
-          <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{ node.label }}</span>
-            <span>
-              <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
-              <div @mouseleave="outDepart(data)" v-show="data.isShow">
-                <div @click.stop="createDepart(data,'create')">创建部门</div>
-                <div @click.stop="createDepart(data,'edit')">编辑部门</div>
-                <div @click.stop="deleteDepart(data)">删除</div>
-              </div>
-            </span>
-          </span>
+          <div class="tree-title" slot-scope="{ node, data }">
+            <em>{{ node.label }}</em>
+            <div class="tree-operating-box">
+              <i @click="hoverDepart(data)" class="el-icon-more"></i>
+              <ul class="operating-box-popup">
+                <li @click.stop="createDepart(data,'create')">创建部门</li>
+                <li @click.stop="createDepart(data,'edit')">编辑部门</li>
+                <li @click.stop="deleteDepart(data)">删除</li>
+              </ul>
+            </div>
+          </div>
         </el-tree>
       </div>
       <crcloud-table
