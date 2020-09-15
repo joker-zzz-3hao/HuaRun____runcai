@@ -87,6 +87,7 @@
           :highlight-current="true"
           :filter-node-method="filterNode"
           class="tl-tree"
+          :render-after-expand="false"
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
