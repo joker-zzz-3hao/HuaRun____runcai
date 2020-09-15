@@ -23,32 +23,18 @@
 
       <el-form-item label="菜单权限">
         <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-            <span>{{item.label}}</span>
-            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
-          </div>
-          <el-popover placement="bottom" trigger="click">
-            <div class="postMenu">
-              <el-cascader-panel
-                change-on-select
-                @change="handleCheckChange"
-                ref="treeMenu"
-                v-model="selectArr"
-                :options="data"
-                :props="{ multiple: true,value:'orgId',children:'sonTree',
+          <div class="postMenu">
+            <el-cascader-panel
+              change-on-select
+              @change="handleCheckChange"
+              ref="treeMenu"
+              v-model="selectArr"
+              :options="data"
+              :props="{ multiple: true,value:'orgId',children:'sonTree',
                 label:'orgName',checkStrictly:true,emitPath:false }"
-                node-key="id"
-              ></el-cascader-panel>
-              <div>
-                <el-button type="text" @click="saveTree">确认</el-button>
-                <el-button type="text" @click="clearNodeAll">清空</el-button>
-              </div>
-            </div>
-
-            <div slot="reference">
-              <i class="el-icon-circle-plus-outline"></i>
-            </div>
-          </el-popover>
+              node-key="id"
+            ></el-cascader-panel>
+          </div>
         </div>
       </el-form-item>
     </el-form>
@@ -78,6 +64,7 @@ export default {
   data() {
     return {
       listOrgId: '',
+      orgIdList: [],
       server,
       labelPosition: 'left',
       menuTreeList: [],
@@ -129,6 +116,7 @@ export default {
     changeOrgId(data) {
       const list = data.split(',');
       const orgId = list.map((item) => item.split('/')[1]);
+      this.orgIdList = orgId.map((item) => ({ orgId: item }));
       this.selectArr = orgId;
     },
     clearNodeAll() {
@@ -147,13 +135,24 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-unused-expressions
-          console.log(1);
+          this.setLeader();
         } else {
           return false;
         }
       });
     },
-
+    setLeader() {
+      const newOrgIdList = this.selectArr.map((item) => ({ orgId: item }));
+      const { orgIdList } = this;
+      this.server.setDepartLeader({
+        userId: this.rowData.userId,
+        orgIdList,
+        newOrgIdList,
+        roleCode: 'ORG_ADMIN',
+      }).then((res) => {
+        console.log(res);
+      });
+    },
     close() {
       this.dialogTableVisible = false;
     },

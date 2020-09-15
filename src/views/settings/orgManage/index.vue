@@ -115,9 +115,10 @@
             <el-table-column min-width="150" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
             <el-table-column min-width="120" align="left" prop="userMobile" label="手机号"></el-table-column>
             <el-table-column min-width="120" align="left" prop="orgName" label="所属部门"></el-table-column>
-            <el-table-column min-width="120" align="left" prop="agentOrgName" label="代理部门">
+            <el-table-column min-width="130" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
                 <span
+                  type="text"
                   v-if="scope.row.agentOrg"
                   @click="showexistEdit(scope.row)"
                 >{{changeOrgAndId(scope.row.agentOrg)}}</span>
@@ -131,7 +132,7 @@
                 <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
-                      <span>设置</span>
+                      <span>取消</span>
                     </i>
                   </el-tooltip>
                   <i v-if="!scope.row.leader" class="el-icon-user">
@@ -324,6 +325,9 @@ export default {
     changeOrgAndId(data) {
       const list = data.split(',');
       const orgName = list.map((item) => item.split('/')[0]);
+      if (orgName.length > 2) {
+        return `${orgName[0]},${orgName[1]}...`;
+      }
       return orgName.join(',');
     },
     showexistEdit(row) {
@@ -514,7 +518,7 @@ export default {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
       const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
       this.$confirm(title).then(() => {
-        this.server[option]({ userId: user.userId, orgId: user.leader ? user.leader : user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
+        this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {
             this.searchList();
           }

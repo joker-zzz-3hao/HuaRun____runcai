@@ -128,6 +128,7 @@ export default {
 
     this.getqueryMyOkr();
   },
+
   methods: {
     fetchData() {
       const date = new Date();
@@ -177,7 +178,6 @@ export default {
         this.$set(this.active, id, true);
       }
 
-      console.log(this.active);
       this.getriskStatistics();
     },
     getqueryMyOkr() {

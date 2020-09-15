@@ -113,14 +113,6 @@ export default {
     },
 
   },
-  watch: {
-    '$route.query.id': {
-      handler() {
-        this.getokrRisk();
-        this.getokrData();
-      },
-    },
-  },
 };
 </script>
 <style  scoped>

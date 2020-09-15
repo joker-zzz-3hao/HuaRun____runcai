@@ -3,7 +3,7 @@
     <!-- <tl-teamleader v-if="false"></tl-teamleader>
     <tl-grass-staff v-if="false"></tl-grass-staff>
     <tl-depart-leader v-if="true"></tl-depart-leader>-->
-    <router-view />
+    <router-view v-if="isRouterAlive" />
   </div>
 </template>
 
@@ -22,9 +22,15 @@ export default {
     // 'tl-grass-staff': grassStaff,
     // 'tl-depart-leader': departleader,
   },
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
     return {
       server,
+      isRouterAlive: true,
     };
   },
   mounted() {
@@ -38,7 +44,12 @@ export default {
     }),
   },
   methods: {
-
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => {
+        this.isRouterAlive = true;
+      });
+    },
   },
 };
 </script>

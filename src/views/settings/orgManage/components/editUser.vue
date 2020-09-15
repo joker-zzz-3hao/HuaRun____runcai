@@ -8,7 +8,7 @@
   <div>
     <el-drawer
       :modal="false"
-      :append-to-body="false"
+      :append-to-body="true"
       :wrapperClosable="false"
       title="编辑用户"
       :before-close="closeDrawer"
@@ -16,7 +16,11 @@
       class="tl-drawer"
     >
       <el-form ref="userForm" :model="formData" label-width="132px" class="tl-form">
-        <el-form-item prop="userName" :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]">
+        <el-form-item
+          prop="userName"
+          label="用户名称"
+          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
+        >
           <el-input v-model.trim="formData.userName" maxlength="50" clearable class="tl-input"></el-input>
         </el-form-item>
         <el-form-item

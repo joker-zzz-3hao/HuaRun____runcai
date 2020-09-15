@@ -1,16 +1,43 @@
 <template>
   <div class="okr-maps">
-    <div class="cont-area"></div>
+    <div class="cont-area">
+      <div v-if="showDepartmentSelect">
+        <!-- OKR树 -->
+        <div v-if="showOkrMap">
+          <!-- <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth> -->
+          <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
+            <template slot="treecard" slot-scope="node">
+              <card
+                :node="node"
+                @showDetail="showDetail(node.node.okrId)"
+                @takeOvierview="takeOvierview(node)"
+              ></card>
+            </template>
+          </svgtree>
+        </div>
+        <!-- OKR表格 -->
+        <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
+      </div>
+      <div v-if="!showDepartmentSelect">
+        <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>
+      </div>
+      <tl-mission ref="mission"></tl-mission>
+    </div>
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <el-input placeholder="请输入关键词" v-model="keyword" @keyup.enter.native="search">
+          <el-input
+            placeholder="请输入关键词"
+            v-model="keyword"
+            @keyup.enter.native="search"
+            class="tl-input"
+          >
             <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
           </el-input>
-          <dl class="dl-item">
+          <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>周期</dt>
             <dd>
-              <div v-if="showDepartmentSelect">
+              <div>
                 <el-select
                   v-model="periodId"
                   placeholder="请选择目标周期"
@@ -38,64 +65,45 @@
                 :show-all-levels="false"
                 :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
                 @change="selectIdChange"
+                class="tl-cascader"
               ></el-cascader>
             </dd>
           </dl>
-          <!-- <el-button
-            type="primary"
-            icon="el-icon-plus"
-            @click="goWriteOkr"
-            class="tl-btn amt-bg-slip"
-          >创建OKR</el-button>-->
+          <div class="toggle-view" v-if="showDepartmentSelect">
+            <i
+              class="el-icon-s-grid"
+              :class="showOkrMap ? 'is-select' : ''"
+              @click="showOkrMap = true"
+            ></i>
+            <i
+              class="el-icon-menu"
+              :class="!showOkrMap ? 'select' : ''"
+              @click="showOkrMap = false"
+            ></i>
+          </div>
+          <!-- <el-button>树展示</el-button>
+          <el-button>表格展示</el-button>-->
+          <!-- type传1表示使命愿景，2表示战略 -->
+          <!-- <el-button @click="showMission(1,'华润使命·愿景')">
+              公司使命愿景
+              <i class="el-icon-arrow-right el-icon--right"></i>
+            </el-button>
+            <el-button @click="showMission(2,'华润发展战略')">
+              公司战略
+              <i class="el-icon-arrow-right el-icon--right"></i>
+          </el-button>-->
+          <el-button
+            plain
+            @click="showDepartmentSelect = !showDepartmentSelect"
+            v-if="!showDepartmentSelect"
+            class="tl-btn amt-border-slip"
+          >
+            返回
+            <span class="lines"></span>
+          </el-button>
         </div>
       </div>
     </div>
-    <div>
-      <!-- 搜索框 -->
-      <div></div>
-      <!-- 视图切换，公司使命 -->
-      <div v-if="showDepartmentSelect">
-        <el-button :class="showOkrMap ? 'select' : ''" @click="showOkrMap = true">树展示</el-button>
-        <el-button :class="!showOkrMap ? 'select' : ''" @click="showOkrMap = false">表格展示</el-button>
-        <!-- type传1表示使命愿景，2表示战略 -->
-        <el-button @click="showMission(1,'华润使命·愿景')">
-          公司使命愿景
-          <i class="el-icon-arrow-right el-icon--right"></i>
-        </el-button>
-        <el-button @click="showMission(2,'华润发展战略')">
-          公司战略
-          <i class="el-icon-arrow-right el-icon--right"></i>
-        </el-button>
-      </div>
-      <!-- 返回 -->
-      <div v-if="!showDepartmentSelect">
-        <el-button @click="showDepartmentSelect = !showDepartmentSelect">返回</el-button>
-      </div>
-    </div>
-    <!-- 组织树显示 -->
-    <div v-if="showDepartmentSelect">
-      <!-- OKR树 -->
-      <div v-if="showOkrMap">
-        <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
-        <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData">
-          <template slot="treecard" slot-scope="node">
-            <card
-              :node="node"
-              @showDetail="showDetail(node.node.okrId)"
-              @takeOvierview="takeOvierview(node)"
-            ></card>
-          </template>
-        </svgtree>
-      </div>
-      <!-- OKR表格 -->
-      <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
-    </div>
-    <!-- 搜索框显示 -->
-    <div v-if="!showDepartmentSelect">
-      <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>
-    </div>
-    <tl-mission ref="mission"></tl-mission>
-    <!-- okr详情 -->
 
     <tl-okr-detail
       :exist.sync="detailExist"

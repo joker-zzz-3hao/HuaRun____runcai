@@ -148,7 +148,7 @@
   right: 0;
   background: #fff;
   height: 50px;
-  z-index: 10;
+  z-index: 99;
 }
 
 .my-okr .operating-area-inside,
@@ -597,6 +597,48 @@
 
 .collpase-panel dd.is-edit .el-form-item {
   margin: 0 0 0 10px;
+}
+
+/* okr-maps */
+.okr-maps .operating-area .tl-input {
+  margin: 3px 0 0 0;
+  width: 200px;
+}
+
+.okr-maps .operating-area .el-input__inner {
+  border: transparent;
+}
+
+.okr-maps .operating-area .el-icon-search {
+  line-height: unset;
+  width: 18px;
+}
+
+.okr-maps .operating-area .el-icon-search:before {
+  font-size: 16px;
+}
+
+.okr-maps .operating-area .el-input .el-input__prefix {
+  display: flex;
+  align-items: center;
+}
+
+.okr-maps .operating-area .dl-item {
+  margin: 0 0 0 20px;
+}
+
+.okr-maps .operating-area .dl-item dt  {
+  margin: 0 10px 0 0;
+  color: #4d5155;
+}
+
+.okr-maps .tl-select .el-input__inner,
+.okr-maps .tl-cascader .el-input__inner {
+  background: #f4f6f8;
+}
+
+.okr-maps .toggle-view {
+  margin: 0 0 0 20px;
 }
 
 /* 周报 */
