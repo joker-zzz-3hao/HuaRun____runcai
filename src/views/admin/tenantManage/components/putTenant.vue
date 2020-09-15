@@ -35,23 +35,14 @@
               <i class="el-icon-error" @click.stop="clearNode(item)"></i>
             </div>
             <div class="postMenu">
-              <el-popover placement="bottom-end" trigger="click" v-model="postMenu">
-                <el-cascader-panel
-                  @change="handleCheckChange"
-                  ref="treeMenu"
-                  v-model="selectArr"
-                  :options="data"
-                  :props="{ multiple: true, label:'functionName',value:'functionId',children:'children'}"
-                  node-key="id"
-                ></el-cascader-panel>
-                <div>
-                  <el-button type="text" @click="saveTree">确认</el-button>
-                  <el-button type="text" @click="clearNodeAll">清空</el-button>
-                </div>
-                <div slot="reference">
-                  <i class="el-icon-circle-plus-outline"></i>
-                </div>
-              </el-popover>
+              <el-tree
+                @check-change="handleCheckChange"
+                ref="treeMenu"
+                show-checkbox
+                :data="data"
+                :props="{ multiple: true, label:'functionName',id:'functionId',children:'children'}"
+                node-key="functionId"
+              ></el-tree>
             </div>
           </div>
         </el-form-item>

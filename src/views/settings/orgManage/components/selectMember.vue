@@ -1,6 +1,6 @@
 <template>
   <div class="tl-item-cont">
-    <el-input
+    <!-- <el-input
       placeholder="输入用户名称/LDAP账号"
       minlength="64"
       @keyup.native="fuzzyQueryUser()"
@@ -8,12 +8,12 @@
       class="tl-input-search"
     >
       <i class="el-icon-search" slot="prefix"></i>
-    </el-input>
+    </el-input>-->
     <div class="tl-transfer-select">
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em>
+            <!-- <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em> -->
             <em
               :class="light==item.id?'is-subset':''"
               v-for="(item,index) in selectList"
@@ -38,10 +38,10 @@
                 </div>
                 <em>{{item.name}}</em>
               </el-checkbox>
-              <div v-else class="flex-sb">
+              <!-- <div v-else class="flex-sb">
                 <em>{{item.name}}</em>
                 <i class="el-icon-arrow-right"></i>
-              </div>
+              </div>-->
             </li>
           </ul>
         </el-scrollbar>
@@ -75,6 +75,11 @@ import Server from '../server';
 const server = new Server();
 export default {
   name: 'selectMember',
+  props: {
+    orgInfo: {
+      type: [Object, String],
+    },
+  },
   data() {
     return {
       server,
@@ -93,7 +98,10 @@ export default {
   },
   mounted() {
     this.dialogTableVisible = true;
-    this.getqueryOrgAndUser({});
+    console.log(this.orgInfo);
+    this.orgInfo.id = this.orgInfo.orgId;
+    this.orgInfo.level = 2;
+    this.getqueryOrgAndUser(this.orgInfo);
   },
   methods: {
     checkName(name) {
