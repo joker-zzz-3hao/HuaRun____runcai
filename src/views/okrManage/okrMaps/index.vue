@@ -36,39 +36,14 @@
     </div>
     <div>
       <div v-if="showDepartmentSelect">
-        <!-- <el-cascader
-          v-model="orgFullId"
-          :options="departmentData"
-          :show-all-levels="false"
-          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
-          @change="selectIdChange"
-        ></el-cascader>-->
-        <div @click="showCascader=!showCascader">
-          <el-input v-model="test"></el-input>
-        </div>
-        <!-- <el-cascader-panel
-          v-model="orgFullId"
-          :style="{display: showCascader ? '' : 'none'}"
-          :options="departmentData"
-          :show-all-levels="false"
-          @change="selectIdChange"
-          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
-        ></el-cascader-panel>-->
-        <el-cascader-panel
+        <el-cascader
           v-model="orgFullIdList"
-          :style="{display: showCascader ? '' : 'none'}"
+          ref="cascader"
           :options="departmentData"
           :show-all-levels="false"
-          @change="selectIdChange"
           :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
-        ></el-cascader-panel>
-        <!-- <el-cascader
-            v-model="formData.orgIdList"
-            :options="treeData"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
-            @change="selectIdChange"
-        ></el-cascader>-->
+          @change="selectIdChange"
+        ></el-cascader>
       </div>
       <!-- 搜索框 -->
       <div>
