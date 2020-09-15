@@ -3,47 +3,39 @@
     <div class="cont-area"></div>
     <div class="operating-area">
       <div class="operating-area-inside">
-        <div class="tl-custom-tabs">
-          <div class="tab-menus">
-            <ul class="tab-list">
-              <li
-                v-for="(item,idx) in tabsList"
-                :key="item.menuTitle"
-                @click="borderSlip(item,idx,item.toName)"
-                :class="{'is-focus': currentIndex === idx}"
-              >{{item.menuTitle}}</li>
-            </ul>
-            <div class="border-slip"></div>
-          </div>
-        </div>
         <div class="operating-box">
-          <el-button
+          <dl class="dl-item">
+            <dt>周期</dt>
+            <dd>
+              <div v-if="showDepartmentSelect">
+                <el-select
+                  v-model="periodId"
+                  placeholder="请选择目标周期"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                >
+                  <el-option
+                    v-for="item in periodList"
+                    :key="item.periodId"
+                    :label="item.periodName"
+                    :value="item.periodId"
+                  ></el-option>
+                </el-select>
+              </div>
+            </dd>
+          </dl>
+          <!-- <el-button
             type="primary"
             icon="el-icon-plus"
             @click="goWriteOkr"
             class="tl-btn amt-bg-slip"
-          >创建OKR</el-button>
+          >创建OKR</el-button>-->
         </div>
       </div>
     </div>
     <div>
       <div v-if="showDepartmentSelect">
-        <el-select
-          v-model="periodId"
-          placeholder="请选择目标周期"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in periodList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
-      </div>
-      <div style="margin-left:20px;" v-if="showDepartmentSelect">
         <!-- <el-cascader
           v-model="orgFullId"
           :options="departmentData"
