@@ -413,9 +413,9 @@ export default {
         this.globalOrgId = depart.orgId;
       }
       this.showcreateDepart = true;
-      // this.$nextTick(() => {
-      //   this.$refs.createDepart.show(depart);
-      // });
+      this.$nextTick(() => {
+        this.$refs.createDepart.show(depart);
+      });
     },
     deleteDepart(depart) {
       this.$xconfirm({
