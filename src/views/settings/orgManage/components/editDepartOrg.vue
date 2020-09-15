@@ -1,152 +1,226 @@
 <template>
   <el-dialog
     @click.native="closeshowMember"
-    :append-to-body="true"
+    :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
-    :title="title"
+    title="设置代理部门"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
   >
-    <el-form ref="form" :model="form" label-width="110px" class="tl-form">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="100px"
+      :label-position="labelPosition"
+      class="tl-form"
+    >
       <el-form-item label="当前部门">
-        <em>{{rowData.orgName}}</em>
+        <span>门户</span>
       </el-form-item>
-      <el-form-item label="选择成员" :inline="true" class="tl-label-self" v-if="cancelUser">
-        <el-input v-model="rowData.userName" :disabled="cancelUser"></el-input>
-        <el-button :disabled="!cancelUser" @click="alertCancel">取消设置</el-button>
-      </el-form-item>
-      <el-form-item label="选择成员" class="tl-label-self" v-if="!cancelUser">
-        <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
+
+      <el-form-item label="菜单权限">
+        <div class="menuTreeList">
+          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
+            <span>{{item.data.orgName}}</span>
+            <i class="el-icon-error" @click.stop="clearNode(item)"></i>
+          </div>
+          <el-popover placement="bottom" trigger="click">
+            <div class="postMenu">
+              <el-cascader-panel
+                change-on-select
+                @change="handleCheckChange"
+                ref="treeMenu"
+                v-model="selectArr"
+                :options="data"
+                :props="{ multiple: true,value:'orgId',children:'sonTree',label:'orgName',checkStrictly:true }"
+                node-key="id"
+              ></el-cascader-panel>
+              <div>
+                <el-button type="text" @click="saveTree">确认</el-button>
+                <el-button type="text" @click="clearNodeAll">清空</el-button>
+              </div>
+            </div>
+
+            <div slot="reference">
+              <i class="el-icon-circle-plus-outline"></i>
+            </div>
+          </el-popover>
+        </div>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import selectMember from './selectMember';
 import Server from '../server';
 
 const server = new Server();
 export default {
-  name: 'addMember',
+  name: 'home',
   props: {
     title: {
       type: String,
       required: true,
     },
-    rowData: {
-      type: Object,
-      required: true,
-    },
-    treeData: {
-      type: Array,
-      default() {
-        return [];
-      },
+    roleInfo: {
+      type: [Object, String],
+      required: false,
     },
   },
   data() {
     return {
       server,
+      labelPosition: 'left',
+      menuTreeList: [],
+      selectArr: [],
+      list: [],
+      showMenu: false,
       form: {
-        region: [],
+        roleCode: '',
+        roleName: '',
+        functionList: [],
       },
-      cancelUser: true,
-      listUser: [],
       dialogTableVisible: false,
       dialogVisible: false,
+      data: [],
+      selectList: [],
+      rules: {
+        roleCode: [
+          { required: true, message: '请输入角色编号', trigger: 'blur' },
+          {
+            pattern: /^[0-9a-zA-Z]+$/,
+            message: '请输入数字或者英文字母',
+            trigger: 'blur',
+          },
+        ],
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' },
+          {
+            pattern: /^[\u0391-\uFFE5A-Za-z]+$/,
+            message: '只允许输入中文或者字母',
+            trigger: 'blur',
+          },
+        ],
+      },
     };
   },
-  components: {
-    'tl-select-member': selectMember,
-  },
+
   mounted() {
     this.dialogTableVisible = true;
-    if (this.rowData.leader) {
-      this.cancelUser = true;
-    } else {
-      this.cancelUser = false;
-    }
+    this.getqueryMenu();
   },
   methods: {
-    init() {
-      this.setOrgIdList(this.globalOrgId);
-    },
-    cancelSet() {
-      const user = this.rowData;
-      const option = 'removeDepartLeder';
-      // const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
-      this.server[option]({ userId: user.userId, orgId: user.leader ? user.leader : user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
-        if (res.code == 200) {
-          this.cancelUser = false;
-          this.$emit('searchList');
+    saveTree() {
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item;
         }
       });
-    },
-    alertCancel() {
-      this.$xconfirm({ title: '是否取消部门负责人？', content: '' }).then(() => {
-        this.cancelSet();
-      });
-    },
-    setOrgIdList(orgId) {
-      if (!orgId) { // 无orgId默认使用顶级租户的orgId
-        orgId = this.treeData[0].orgId;
-      }
-      // 遍历嵌套数组，转换为一维数组
-      const queue = [...this.treeData];
-      const result = [];
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const next = queue.shift();
-        if (!next) {
-          break;
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
         }
-        result.push({
-          orgId: next.orgId,
-          orgName: next.orgName,
-          orgParentId: next.orgParentId,
+      });
+      this.selectList = this.list;
+    },
+    clearNodeAll() {
+      this.$refs.treeMenu.clearCheckedNodes();
+      this.menuTreeList = [];
+      this.selectList = [];
+    },
+    clearNode(node) {
+      const deleteArr = this.selectArr;
+      deleteArr.forEach((item, index) => {
+        if (this.boolCheck(item, node)) {
+          deleteArr.splice(index, 1);
+        }
+      });
+      this.selectArr = [...deleteArr, []];
+      let arr = [];
+      this.selectArr.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+      this.$nextTick(() => {
+        const keys = this.$refs.treeMenu.getCheckedNodes();
+        // eslint-disable-next-line array-callback-return
+        const keyCheck = keys.map((item) => {
+          if (item.children.length == 0) {
+            return item;
+          }
         });
-        if (Array.isArray(next.sonTree)) {
-          queue.push(...next.sonTree);
-        }
-      }
-      this.formData.orgIdList = [];
-      this.getOrgIdList(result, orgId);
-      this.formData.orgIdList.reverse();
+        // eslint-disable-next-line array-callback-return
+        this.menuTreeList = keyCheck.filter((item) => {
+          if (item) {
+            return item;
+          }
+        });
+      });
     },
-    getOrgIdList(result, orgId) {
-      let orgParentId = '';
-      for (const org of result) {
-        if (org.orgId == orgId) {
-          orgParentId = org.orgParentId;
-          this.formData.orgIdList.push(org.orgId);
-          this.getOrgIdList(result, orgParentId);
-        }
-      }
+    boolCheck(item, node) {
+      return item.some((li) => li === node.data.orgId);
     },
-    selectIdChange(data) {
-      this.form.orgIdList = data;
-    },
-    selectMb(data) {
-      this.listUser = data;
-      console.log(data);
-    },
-    submit() {
-      const user = this.rowData;
-      const option = 'setDepartLeader';
-      // const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
-      this.server[option]({ userId: this.listUser[0].userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
-        if (res.code == 200) {
-          this.$emit('searchList');
+    getCheckName() {
+      const keys = this.$refs.treeMenu.getCheckedNodes();
+      // eslint-disable-next-line array-callback-return
+      const keyCheck = keys.map((item) => {
+        if (item.children.length == 0) {
+          return item;
         }
       });
-      this.close();
+      // eslint-disable-next-line array-callback-return
+      this.menuTreeList = keyCheck.filter((item) => {
+        if (item) {
+          return item;
+        }
+      });
+    },
+    handleCheckChange(data) {
+      let arr = [];
+      data.forEach((item) => {
+        arr = arr.concat(item);
+      });
+      this.list = Array.from(new Set(arr));
+    },
+    getqueryMenu() {
+      this.server.getOrg()
+        .then((res) => {
+          this.data = res.data;
+        });
+    },
+    submitForm() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          // eslint-disable-next-line no-unused-expressions
+          this.addRole();
+        } else {
+          return false;
+        }
+      });
+    },
+    addRole() {
+      const { form } = this;
+      this.form.functionList = this.selectList.map((item) => ({ orgId: item }));
+      form.roleType = 'CREATION';
+      this.server.addRole(form).then((res) => {
+        if (res.code == 200) {
+          this.$emit('getSearchList');
+          this.$message.success(res.msg);
+          this.closed();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
     },
     close() {
       this.dialogTableVisible = false;

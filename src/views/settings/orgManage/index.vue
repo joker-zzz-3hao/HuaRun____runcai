@@ -79,7 +79,6 @@
         <el-button @click="searchList">查询</el-button>
       </div>
       <div>
-        <el-button @click="showAddRoule">添加部门负责人</el-button>
         <el-button @click="createDepart">创建部门</el-button>
         <el-button @click="createUser">创建用户</el-button>
         <el-button @click="batchImport">批量导入</el-button>
@@ -101,12 +100,14 @@
             <el-table-column min-width="100px" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
                 <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
-                <span v-else>--</span>
+                <span v-else>
+                  <el-button type="text" @click="showexistEdit">设置</el-button>
+                </span>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="showexistEdit(scope.row)" style="cursor: pointer;">
+                <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>设置</span>
