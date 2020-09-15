@@ -43,7 +43,7 @@ export default class Server extends ServerBase {
 
   // 搜索框查询
   search(param) {
-    return this._ajaxPost('gateway/talent-query/okr/outside/search', param);
+    return this._ajaxPost('gateway/talent-query/okr/search', param);
   }
 
   // 点赞
