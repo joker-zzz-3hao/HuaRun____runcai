@@ -78,11 +78,7 @@
       </div>
       <div class="card-panel-body img-list">
         <template v-if="orgUser">
-          <dl
-            v-for="(item,index) in orgUser"
-            :key="item.userId+index"
-            @click="goToDep(item.userId,item.userName,item.userId,item.tenantId)"
-          >
+          <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
             <dt class="user-info">
               <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
               <div class="user-name">
@@ -93,11 +89,7 @@
           </dl>
         </template>
         <template v-if="orgTable">
-          <dl
-            v-for="(item,index) in orgTable"
-            :key="item.orgId+index"
-            @click="goToDep(item.orgId,item.orgName,item.userId,item.tenantId)"
-          >
+          <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
             <dt class="user-info">
               <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
               <div class="user-name">
@@ -151,6 +143,7 @@ export default {
       periodList: [], // 周期列表
     };
   },
+  inject: ['reload'],
   computed: {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
@@ -233,15 +226,35 @@ export default {
         orgId: user.orgId,
       }).then((res) => {
         if (res.data.identityType == 'org') {
-          this.$router.push({ name: 'departleader' });
+          const chename = encodeURI(user.orgName);
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
+          this.reload();
           return false;
         }
         if (res.data.identityType == 'team') {
-          this.$router.push({ name: 'teamleader' });
+          const chename = encodeURI(user.orgName || user.userName);
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
+          this.reload();
           return false;
         }
         if (res.data.identityType == 'person') {
-          this.$router.push({ name: 'grassStaff' });
+          const chename = encodeURI(user.userName);
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: user.userId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
         }
       });
     },
