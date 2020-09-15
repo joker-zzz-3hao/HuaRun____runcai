@@ -11,7 +11,6 @@
         role="button"
         :id="`el-collapse-head-${id}`"
         :tabindex="disabled ? undefined : 0"
-        @keyup.space.enter.stop="handleEnterClick"
         :class="{
           'focusing': focusing,
           'is-active': isActive
