@@ -76,6 +76,7 @@
               :remote-method="remoteMethod"
               @visible-change="visibleChange"
               @change="nameChange"
+              clearable
             >
               <el-option
                 v-for="item in userList"
@@ -585,13 +586,18 @@ export default {
       }
     },
     nameChange(userId) {
+      if (userId) {
       // 将该用户所属部门初始化到组织树里面
-      this.userList.forEach((user) => {
-        if (userId == user.userId) {
-          this.formData.orgId = user.orgId;
-          this.setInitOrg();
-        }
-      });
+        this.userList.forEach((user) => {
+          if (userId == user.userId) {
+            this.formData.orgId = user.orgId;
+            this.setInitOrg();
+          }
+        });
+      } else {
+        this.formData.orgId = this.userInfo.orgId;
+        this.setInitOrg();
+      }
       // 刷新周报列表数据;
       this.refreshPageList();
     },
