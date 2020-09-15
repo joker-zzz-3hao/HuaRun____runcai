@@ -1,7 +1,7 @@
 <template>
-  <div style="width: 216px" @click.stop="goDetail(node.node.okrId)">
+  <div style="width: 216px">
     <div>
-      <div>
+      <div @click.stop="goDetail(node.node.okrId)">
         <p>{{node.node.okrDetailObjectKr}}</p>
       </div>
       <div>
@@ -13,7 +13,7 @@
         <el-progress :percentage="node.node.okrProgress" :color="customColor"></el-progress>
       </div>
     </div>
-    <div style="display: flex;justify-content: space-between;">
+    <div style="display: flex;justify-content: space-between;" @click="takeOvierview(node)">
       <div>负责人：{{node.node.userName}}</div>
       <div>{{node.node.orgName}} ></div>
     </div>
@@ -45,9 +45,10 @@ export default {
   methods: {
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
-      this.$emit('takeOvierview');
     },
-
+    takeOvierview(node) {
+      this.$emit('takeOvierview', node);
+    },
   },
   watch: {},
 };
