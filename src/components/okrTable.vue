@@ -7,7 +7,7 @@
       <li v-if="!overview">承接地图</li>
       <li>风险状态</li>
       <li>进度</li>
-      <li v-if="!overview">更新进度与风险</li>
+      <li v-if="!overview && showUpdate">更新进度与风险</li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
@@ -41,9 +41,8 @@
               </div>
               <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </dd>
-
             <!-- kr进度 -->
-            <dd class="okr-progress">
+            <dd class="okr-progress" v-if="showUpdate">
               <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </dd>
             <dd class="okr-update"></dd>
@@ -79,7 +78,7 @@
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
-      <el-table-column width="8%">
+      <el-table-column width="8%" v-if="showUpdate">
         <template slot-scope="scope">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
@@ -147,9 +146,9 @@ export default {
       default: true,
     },
     // 是否显示label
-    showOKRInfoLabel: {
+    showUpdate: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     status: {
       defalut: '1',

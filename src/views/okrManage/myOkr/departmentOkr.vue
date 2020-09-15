@@ -72,7 +72,7 @@
           <tl-okr-table
             :tableList="tableList"
             :disabled="false"
-            :showOKRInfoLabel="true"
+            :showUpdate="false"
             :status="searchForm.status"
             @openDialog="openDialog"
             :expands="expands"

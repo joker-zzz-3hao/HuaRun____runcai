@@ -19,7 +19,7 @@
           </el-select>
         </dd>
       </dl>
-      <dl>
+      <!-- <dl>
         <dd>
           <el-cascader
             v-model="orgFullId"
@@ -29,19 +29,9 @@
             @change="selectIdChange"
             :placeholder="orgName"
           ></el-cascader>
-          <!-- <div @click="showCascader=!showCascader">
-            <el-input v-model="orgName"></el-input>
-          </div>
-          <el-cascader-panel
-            v-model="orgFullId"
-            :style="{display: showCascader ? '' : 'none'}"
-            :options="departmentData"
-            :show-all-levels="false"
-            @change="selectIdChange"
-            :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
-          ></el-cascader-panel>-->
+
         </dd>
-      </dl>
+      </dl>-->
     </div>
     <!-- 返回 -->
     <div>
@@ -234,15 +224,7 @@ export default {
         });
       }
     },
-    // handleCycleData(data) {
-    //   this.searchForm.periodId = data.periodId;
-    //   console.log('writeokrCycle', data);
-    // },
-    // handleData(data) {
-    //   this.searchForm.orgId = this.orgId ? this.orgId : data.orgId;
-    //   this.orgId = '';
-    //   this.getmaps();
-    // },
+
     // 选择部门
     selectIdChange(data) {
       console.log('选择部门', data);
@@ -252,11 +234,6 @@ export default {
       this.orgFullIdList = orgFullId.split(':');
       this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.searchForm.orgId = this.orgFullIdList[this.orgFullIdList.length - 1];
-
-      console.log(this.searchForm.orgId);
-      // console.log(this.orgFullIdList);
-      // console.log(this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1));
-      // this.getOrgName(this.departmentData, 0);
       this.getmaps();
     },
     // 显示部门名

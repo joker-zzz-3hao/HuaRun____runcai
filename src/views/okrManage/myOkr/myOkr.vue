@@ -123,7 +123,6 @@
             <tl-okr-table
               :tableList="item.tableList"
               :disabled="false"
-              :showOKRInfoLabel="true"
               :status="item.okrMain.status"
               @openDialog="openDialog(item)"
               @goDraft="goDraft(item)"

@@ -406,11 +406,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    // 是否显示label
-    showOKRInfoLabel: {
-      type: Boolean,
-      default: false,
-    },
+
   },
   mounted() {
     this.innerActiveList = this.activeList;
