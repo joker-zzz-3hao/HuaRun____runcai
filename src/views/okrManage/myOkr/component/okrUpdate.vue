@@ -62,8 +62,12 @@
               <dl class="change-reason">
                 <dt>更新说明</dt>
                 <dd>
-                  <el-form-item>
+                  <el-form-item
+                    prop="updateexplain"
+                    :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+                  >
                     <el-input
+                      placeholder="请输入更新说明"
                       maxlength="200"
                       type="textarea"
                       :rows="3"
@@ -151,31 +155,35 @@ export default {
       }
     },
     summitUpdate() {
-      this.summitForm = {
-        oupdateProcessDto: {
-          detailId: this.formData.detailId,
-          okrDetailProgress: this.formData.okrDetailProgress,
-        },
-        remark: this.formData.updateexplain,
-        periodId: this.periodId,
-      };
-      if (this.formData.krList && this.formData.krList.length > 0) {
-        this.summitForm.krUpdateProcessDtos = [];
-        this.formData.krList.forEach((item) => {
-          this.summitForm.krUpdateProcessDtos.push({
-            detailId: item.detailId,
-            okrDetailConfidence: item.okrDetailConfidence,
-            okrDetailProgress: item.okrDetailProgress,
-          });
-        });
-      }
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          this.summitForm = {
+            oupdateProcessDto: {
+              detailId: this.formData.detailId,
+              okrDetailProgress: this.formData.okrDetailProgress,
+            },
+            remark: this.formData.updateexplain,
+            periodId: this.periodId,
+          };
+          if (this.formData.krList && this.formData.krList.length > 0) {
+            this.summitForm.krUpdateProcessDtos = [];
+            this.formData.krList.forEach((item) => {
+              this.summitForm.krUpdateProcessDtos.push({
+                detailId: item.detailId,
+                okrDetailConfidence: item.okrDetailConfidence,
+                okrDetailProgress: item.okrDetailProgress,
+              });
+            });
+          }
 
-      this.server.summitUpdate(this.summitForm).then((res) => {
-        console.log('detail', res.code);
-        if (res.code == 200) {
-          this.$message('更新成功');
-          this.$emit('success');
-          this.close();
+          this.server.summitUpdate(this.summitForm).then((res) => {
+            console.log('detail', res.code);
+            if (res.code == 200) {
+              this.$message('更新成功');
+              this.$emit('success');
+              this.close();
+            }
+          });
         }
       });
     },

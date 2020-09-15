@@ -304,10 +304,6 @@ export default {
         }));
       }
     },
-    // 查公司价值观
-    getCultureList() {
-
-    },
     // 查okr详情
     getokrDetail() {
       if (this.searchForm.periodId) {
