@@ -1,103 +1,120 @@
 <template>
   <div class="organize-management">
-    <div class="org-header">
-      <div>组织管理</div>
+    <div class="operating-area">
+      <div class="page-title">组织管理</div>
+      <div class="operating-box">
+        <div class="flex-auto">
+          <el-form @keyup.enter.native="searchList()" class="tl-form">
+            <el-form-item>
+              <el-select
+                v-model.trim="searchData.userType"
+                placeholder="用户类型"
+                :popper-append-to-body="false"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in CONST.USER_TYPE_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-select
+                v-model.trim="searchData.userStatus"
+                placeholder="用户状态"
+                :popper-append-to-body="false"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in CONST.USER_STATUS_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                placeholder="输入用户姓名/账号/手机号"
+                v-model.trim="searchData.keyWord"
+                clearable
+                class="tl-input"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button plain class="tl-btn" @click="searchList">查询</el-button>
+        </div>
+        <div class="operating-right">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="createUser"
+            class="tl-btn amt-bg-slip"
+          >创建用户</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="createDepart"
+            class="tl-btn amt-bg-slip"
+          >创建部门</el-button>
+          <el-button plain icon="el-icon-minus" @click="batchImport" class="tl-btn amt-border-slip">
+            批量导入
+            <span class="lines"></span>
+          </el-button>
+          <!-- <el-button @click="showAddRoule">添加部门负责人</el-button> -->
+        </div>
+      </div>
     </div>
-    <div class="org-left-side">
-      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText" clearable>
-        <i class="el-icon-search el-input__icon" slot="prefix"></i>
-      </el-input>
-      <el-tree
-        ref="organizeTree"
-        :data="treeData"
-        node-key="orgId"
-        :default-expanded-keys="defaultExpandNode"
-        :props="defaultProps"
-        @node-click="searchList"
-        :expand-on-click-node="false"
-        :highlight-current="true"
-        :filter-node-method="filterNode"
-      >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ node.label }}</span>
-          <span>
-            <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
-            <div @mouseleave="outDepart(data)" v-show="data.isShow">
-              <div style="marginLeft:250px" @click.stop="createDepart(data,'create')">创建部门</div>
-              <div style="marginLeft:250px" @click.stop="createDepart(data,'edit')">编辑部门</div>
-              <div style="marginLeft:250px" @click.stop="deleteDepart(data)">删除</div>
-            </div>
+    <div class="cont-area">
+      <div class="department-tree">
+        <el-input placeholder="输入部门名称" v-model="filterText" clearable class="tl-input">
+          <i class="el-icon-search el-input__icon" slot="prefix"></i>
+        </el-input>
+        <el-tree
+          ref="organizeTree"
+          :data="treeData"
+          node-key="orgId"
+          :default-expanded-keys="defaultExpandNode"
+          :props="defaultProps"
+          @node-click="searchList"
+          :expand-on-click-node="false"
+          :highlight-current="true"
+          :filter-node-method="filterNode"
+          class="tl-tree"
+        >
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span>
+              <i @click="hoverDepart(data)" style="marginLeft:150px" class="el-icon-more"></i>
+              <div @mouseleave="outDepart(data)" v-show="data.isShow">
+                <div @click.stop="createDepart(data,'create')">创建部门</div>
+                <div @click.stop="createDepart(data,'edit')">编辑部门</div>
+                <div @click.stop="deleteDepart(data)">删除</div>
+              </div>
+            </span>
           </span>
-        </span>
-      </el-tree>
-    </div>
-    <div class="org-right-side">
-      <!-- <div slot="searchBar"> -->
-      <el-form @keyup.enter.native="searchList()">
-        <el-form-item>
-          <el-select
-            v-model.trim="searchData.userType"
-            placeholder="用户类型"
-            :popper-append-to-body="false"
-            clearable
-          >
-            <el-option
-              v-for="item in CONST.USER_TYPE_LIST"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-select
-            v-model.trim="searchData.userStatus"
-            placeholder="用户状态"
-            :popper-append-to-body="false"
-            clearable
-          >
-            <el-option
-              v-for="item in CONST.USER_STATUS_LIST"
-              :key="item.key"
-              :label="item.label"
-              :value="item.key"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            placeholder="输入用户姓名/账号/手机号"
-            v-model.trim="searchData.keyWord"
-            style="width:300px"
-            clearable
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <!-- </div>
-      <div slot="actionBar">-->
-      <div>
-        <el-button @click="searchList">查询</el-button>
+        </el-tree>
       </div>
-      <div>
-        <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createUser">创建用户</el-button>
-        <el-button @click="batchImport">批量导入</el-button>
-      </div>
-      <!-- </div> -->
       <crcloud-table
         :total="total"
         :pageSize.sync="pageSize"
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
-        <div slot="tableContainer">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="orgName" label="所属部门"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="agentOrgName" label="代理部门">
+        <div slot="tableContainer" class="table-container">
+          <el-table ref="orgTable" v-loading="loading" :data="tableData" class="tl-table">
+            <el-table-column min-width="200" align="left" prop="userId" label="用户ID"></el-table-column>
+            <el-table-column min-width="150" align="left" prop="userName" label="用户姓名"></el-table-column>
+            <el-table-column min-width="150" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
+            <el-table-column min-width="120" align="left" prop="userMobile" label="手机号"></el-table-column>
+            <el-table-column min-width="120" align="left" prop="orgName" label="所属部门"></el-table-column>
+            <el-table-column min-width="120" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
                 <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
                 <span v-else>
@@ -105,7 +122,7 @@
                 </span>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" label="部门负责人">
+            <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
                 <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
@@ -119,7 +136,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
+            <el-table-column min-width="100" align="left" prop="userStatus" label="状态">
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
                 <div v-if="scope.row.userType=='1'">--</div>
@@ -128,30 +145,42 @@
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
-                    active-color="#13ce66"
                     :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
+                    class="tl-switch"
                   ></el-switch>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
+            <el-table-column min-width="120" align="left" prop="userType" label="用户类型">
               <template slot-scope="scope">
                 <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间">
+            <el-table-column min-width="180" align="left" prop="createTime" label="创建时间">
               <template slot-scope="scope">
                 <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
+            <el-table-column
+              width="100px"
+              align="left"
+              prop="corpGroupName"
+              label="操作"
+              fixed="right"
+            >
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   v-if="scope.row.userType=='2'"
                   @click="editUser(scope.row)"
+                  class="tl-btn"
                 >编辑</el-button>
-                <el-button type="text" v-if="scope.row.userType=='2'" @click="info(scope.row)">详情</el-button>
+                <el-button
+                  type="text"
+                  v-if="scope.row.userType=='2'"
+                  @click="info(scope.row)"
+                  class="tl-btn"
+                >详情</el-button>
                 <div v-else>--</div>
               </template>
             </el-table-column>
@@ -386,9 +415,9 @@ export default {
         this.globalOrgId = depart.orgId;
       }
       this.showcreateDepart = true;
-      // this.$nextTick(() => {
-      //   this.$refs.createDepart.show(depart);
-      // });
+      this.$nextTick(() => {
+        this.$refs.createDepart.show(depart);
+      });
     },
     deleteDepart(depart) {
       this.$xconfirm({
@@ -497,18 +526,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.org-header {
-  height: 100px;
-}
-.org-left-side {
-  width: 400px;
-  height: 600px;
-}
-.org-right-side {
-  width: 80%;
-  height: 90%;
-  position: absolute;
-  left: 400px;
-}
-</style>

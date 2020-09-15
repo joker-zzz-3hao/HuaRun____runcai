@@ -35,7 +35,7 @@
                 ref="treeMenu"
                 v-model="selectArr"
                 :options="data"
-                :props="{ multiple: true,value:'orgId',children:'sonTree',label:'orgName',checkStrictly:true }"
+                :props="{ multiple: true,value:'orgId',children:'sonTree',label:'orgName',checkStrictly:true,emitPath:false }"
                 node-key="id"
               ></el-cascader-panel>
               <div>
@@ -186,6 +186,7 @@ export default {
       });
     },
     handleCheckChange(data) {
+      console.log(data);
       let arr = [];
       data.forEach((item) => {
         arr = arr.concat(item);
