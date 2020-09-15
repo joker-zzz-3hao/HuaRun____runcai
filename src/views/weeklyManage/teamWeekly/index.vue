@@ -167,16 +167,59 @@
                     </div>
                   </el-avatar>
                   <span>{{weekly.userName}}</span>
-                  <div>{{weekly.orgName}}</div>
+                  <span>{{weekly.orgName}}</span>
                 </span>
                 <!-- 任务项 -->
-                <span v-if="formData.queryType == '0'">{{weekly.workContent}}</span>
+                <span v-if="formData.queryType == '0'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">{{work.workContent}}</li>
+                  </ul>
+                </span>
                 <!-- 感想 -->
-                <span v-if="formData.queryType == '1'">{{weekly.workContent}}</span>
+                <span v-if="formData.queryType == '1'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">{{work.thoughtContent}}</li>
+                  </ul>
+                </span>
                 <!-- 下周计划 -->
-                <span v-if="formData.queryType == '2'">{{weekly.planContent}}</span>
+                <span v-if="formData.queryType == '2'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">{{work.planContent}}</li>
+                  </ul>
+                </span>
                 <!-- 有进度的okr -->
-                <span v-if="formData.queryType == '3'">okr</span>
+                <span v-if="formData.queryType == '3'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">
+                      <!-- 目标 -->
+                      <span v-if="work.okrDetailType == 0">
+                        <span>目标</span>
+                        <span>{{work.okrDetailObjectKr}}</span>
+                        <span>
+                          本次更新进度 {{work.progressAfter - work.progressBefor > 0 ? '+' :''}}
+                          {{work.progressAfter - work.progressBefor }}%
+                        </span>
+                      </span>
+                      <!-- KR -->
+                      <span v-else>
+                        <ul>
+                          <li>
+                            <span>目标</span>
+                            <span>{{work.pokrDetailObjectKr}}</span>
+                          </li>
+                          <li>
+                            <span>KR</span>
+                            <span>{{work.okrDetailObjectKr}}</span>
+                            <span>
+                              本次更新进度 {{work.progressAfter - work.progressBefor > 0 ? '+' :''}}
+                              {{work.progressAfter - work.progressBefor }}%
+                            </span>
+                          </li>
+                        </ul>
+                      </span>
+                    </li>
+                  </ul>
+                </span>
               </el-card>
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
