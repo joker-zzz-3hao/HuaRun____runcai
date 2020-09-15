@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import okrApprovalList from './components/okrApprovalList';
 import okrApprovalDetail from './components/okrApprovalDetail';
 
@@ -27,8 +27,12 @@ export default {
     }),
   },
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.setOkrApprovalStep('1');
+  },
+  methods: {
+    ...mapMutations('common', ['setOkrApprovalStep']),
+  },
   watch: {},
 };
 </script>

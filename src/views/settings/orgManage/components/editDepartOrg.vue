@@ -35,14 +35,8 @@
                 ref="treeMenu"
                 v-model="selectArr"
                 :options="data"
-                :props="{
-                  multiple: true,
-                  value:'orgId',
-                  children:'sonTree',
-                  label:'orgName',
-                  checkStrictly:true,
-                  emitPath:false
-                  }"
+                :props="{ multiple: true,value:'orgId',children:'sonTree',
+                label:'orgName',checkStrictly:true,emitPath:false }"
                 node-key="id"
               ></el-cascader-panel>
               <div>
