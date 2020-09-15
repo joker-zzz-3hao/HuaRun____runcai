@@ -458,7 +458,7 @@ export default {
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {
-          console.log('提交成功');
+          this.$message.success('提交成功');
         }
       });
     },
@@ -642,6 +642,10 @@ export default {
       }
 
       console.log('拼起来后', this.formData);
+      // this.$xconfirm({
+      //   content: '',
+      //   title: '如果您要确定删除，该OKR将无法恢复',
+      // }).then(() => {
       this.server.modifyOkrInfo(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
@@ -651,6 +655,7 @@ export default {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
+      // }).catch(() => {});
     },
     // 打开历史版本
     openHistory(id, name) {

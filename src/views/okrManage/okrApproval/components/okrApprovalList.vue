@@ -63,10 +63,13 @@
           <el-table-column prop="userName" label="姓名" width="220">
             <template slot-scope="scope">
               <div style="display: flex;">
-                <div>
-                  <el-avatar
-                    src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
-                  ></el-avatar>
+                <div v-if="scope.row.headUrl">
+                  <el-avatar :src="scope.row.headUrl"></el-avatar>
+                </div>
+                <div v-else-if="scope.row.userName" class="user-info">
+                  <div class="user-name">
+                    <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
+                  </div>
                 </div>
                 <div>
                   <div>{{scope.row.userName}}</div>
@@ -78,6 +81,9 @@
           <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
           <el-table-column prop="approvalStatus" label="审批状态" width="150">
             <template slot-scope="scope">
+              <i class v-if="scope.row.approvalStatus == '0'"></i>
+              <i class v-else-if="scope.row.approvalStatus == '1'"></i>
+              <i class v-else-if="scope.row.approvalStatus == '2'"></i>
               <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
             </template>
           </el-table-column>
@@ -88,7 +94,7 @@
           </el-table-column>
           <el-table-column prop="okrProgress" label="OKR进度" width="300">
             <template slot-scope="scope">
-              <span>{{scope.row.okrProgress}}%</span>
+              <tl-process :data="scope.row.okrProgress"></tl-process>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>
@@ -117,6 +123,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import process from '@/components/process';
 import CONST from '@/lib/const';
 import Server from '../server';
 
@@ -125,6 +132,7 @@ const server = new Server();
 export default {
   name: 'okrApprovalList',
   components: {
+    'tl-process': process,
   },
   props: {},
   data() {

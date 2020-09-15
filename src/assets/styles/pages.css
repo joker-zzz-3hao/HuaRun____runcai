@@ -600,7 +600,9 @@
 }
 
 .calendar-select,
-.weekly-select {
+.weekly-select,
+.weekly-select li,
+.weekly-select .period-state {
   display: flex;
   align-items: center;
 }
@@ -611,28 +613,42 @@
   justify-content: flex-start;
 }
 
-.weekly-select .el-button {
-  border-color: #e5e9ee;
+.weekly-select li {
+  position: relative;
+  justify-content: space-between;
+  margin: 5px 15px;
+  padding: 0 10px;
+  height: 40px;
+  border: 1px #e5e9ee solid;
   border-radius: 2px;
 }
 
-.weekly-select .el-button,
-.weekly-select .el-button + .el-button {
-  margin: 5px 15px;
+.weekly-select .period-time {
+  color: #4d5155;
 }
 
-.weekly-select .el-button--success,
-.weekly-select .el-button--success.is-plain:focus,
-.weekly-select .el-button--success.is-plain:hover {
-  background: #f9f8fe;
-  border-color: #685df1;
+.weekly-select .period-state {
+  margin: 0 0 0 10px;
+  color: #879099;
+  font-size: 12px;
 }
 
-.weekly-select .el-button.is-active,
-.weekly-select .el-button.is-plain:active,
-.weekly-select .el-button.is-plain:focus,
-.weekly-select .el-button.is-plain:hover {
-  border-color: #e5e9ee;
+.weekly-select .icon-bg {
+  width: 14px;
+  height: 14px;
+}
+
+.weekly-select .icon-bg i {
+  margin: 2px 1px 0 0;
+  font-size: 12px;
+}
+
+.weekly-select .el-tooltip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .weekly-cont .el-table__body-wrapper .el-slider--with-input,
@@ -665,10 +681,6 @@
 .weekly-cont .tl-table .el-table__body .cell .el-form-item {
   margin: 0;
   width: 100%;
-}
-
-.weekly-cont .tl-table.flex td {
-  vertical-align: top;
 }
 
 .weekly-cont .tl-table.flex .el-table__body td:nth-child(5) .cell {
@@ -707,6 +719,61 @@
 }
 
 /* =========================================================租户管理================================================================== */
+/* 部门管理 */
+.organize-management .operating-area .operating-box {
+  justify-content: space-between;
+  margin: 0 0 0 50px;
+}
+.organize-management .operating-area .el-form {
+  display: flex;
+  align-items: center;
+}
+
+.organize-management .operating-area .el-form .el-form-item,
+.organize-management .operating-area .el-input,
+.organize-management .department-tree .el-input {
+  margin: 0;
+}
+
+.organize-management .operating-area .flex-auto .is-plain {
+  margin: 0 0 0 10px;
+  background: #f0effe;
+}
+
+.settings-layout .organize-management .cont-area {
+  padding: 0;
+  flex-direction: row;
+  border-color: transparent;
+  background: transparent;
+}
+
+.organize-management .department-tree {
+  padding: 20px;
+  flex: 0 0 324px;
+  width: 324px;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.organize-management .table-pagination {
+  padding: 20px;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+  margin: 0 0 0 16px;
+  width: calc(100% - 340px);
+  background: #fff;
+}
+
+.organize-management .department-tree .el-input__inner {
+  background: #f4f6f8;
+  border-color: #f4f6f8;
+}
+
+.organize-management .department-tree .el-input {
+  margin-bottom: 10px;
+}
+
 /* OKR设置 */
 .okr-permissions .operating-area {
   height: 36px;

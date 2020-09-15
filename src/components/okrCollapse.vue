@@ -11,7 +11,7 @@
         <template slot="title">
           <dl class="collpase-panel" :class="{'has-third-child': item.okrParentId}">
             <dt :class="{'is-edit': canWrite && item.showTitleEdit}">
-              <span>目标</span>
+              <span>目标{{index+1}}</span>
               <div>
                 <el-form-item
                   v-if="canWrite && item.showTitleEdit"
@@ -133,7 +133,7 @@
           :class="{'has-third-child': kritem.okrDetailConfidence}"
         >
           <dt :class="{'is-edit': canWrite && kritem.showTitleEdit}">
-            <span>KR</span>
+            <span>KR{{krIndex+1}}</span>
             <div>
               <el-form-item
                 v-if="canWrite && kritem.showTitleEdit"
@@ -202,7 +202,7 @@
         <template v-if="item.newkrList">
           <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
             <dt>
-              <span>KR</span>
+              <span>KR{{item.krList.length+kindex+1}}</span>
               <div>
                 <el-form-item
                   :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"

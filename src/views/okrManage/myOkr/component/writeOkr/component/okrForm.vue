@@ -5,7 +5,7 @@
         <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
           <dt>
             <div class="list-info">
-              <div class="list-title">目标名称</div>
+              <div class="list-title">目标名称{{index+1}}</div>
               <div class="list-cont">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
@@ -458,24 +458,26 @@ export default {
           // 校验权重比例
           let opercent = 0;
           let keypercent = 0;
-          this.formData.okrInfoList.forEach((oitem) => {
-            opercent += oitem.okrWeight;
-            keypercent = 0;
-            oitem.krList.forEach((kitem) => {
-              keypercent += kitem.okrWeight;
+          try {
+            this.formData.okrInfoList.forEach((oitem) => {
+              opercent += oitem.okrWeight;
+              keypercent = 0;
+              oitem.krList.forEach((kitem) => {
+                keypercent += kitem.okrWeight;
+              });
+              if (keypercent != 100) {
+                this.$message.error('结果KR权重值总和必须为100');
+                throw Error();
+              }
             });
-            delete oitem.departokrList;
-            delete oitem.philosophyList;
-          });
+            if (opercent != 100) {
+              this.$message.error('目标O权重值总和必须为100');
+              throw Error();
+            }
+          } catch (e) {
+            return;
+          }
 
-          if (opercent != 100) {
-            this.$message.error('目标O权重值总和必须为100');
-            return;
-          }
-          if (keypercent != 100) {
-            this.$message.error('结果KR权重值总和必须为100');
-            return;
-          }
           if (this.searchForm.okrCycle.periodId) {
             this.formData.periodId = this.searchForm.okrCycle.periodId;
           } else {
@@ -508,6 +510,22 @@ export default {
         this.$message.error('请选择目标周期');
         return;
       }
+      // 校验是否有更改
+      let hasChange = true;
+      this.formData.okrInfoList.forEach((item) => {
+        if (item.okrDetailObjectKr) {
+          hasChange = false;
+          return;
+        }
+        item.krList.forEach((kritem) => {
+          if (kritem.okrDetailObjectKr) {
+            hasChange = false;
+          }
+        });
+      });
+      if (hasChange) {
+        return;
+      }
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrBelongType = this.searchForm.okrType;
         this.formData.okrDraftId = this.searchForm.draftId;
@@ -516,9 +534,9 @@ export default {
             if (type) {
               this.searchForm.draftId = res.data.id;
               this.setShowAuto(true);
-              this.timedShow = setInterval(() => {
-                this.setShowAuto(false);
-              }, 3000);
+              // this.timedShow = setInterval(() => {
+              //   this.setShowAuto(false);
+              // }, 3000);
             } else {
               this.$message('已保存');
               this.$refs.dataForm.resetFields();
@@ -532,6 +550,7 @@ export default {
     // 关闭
     close() {
       this.setCreateokrDrawer(false);
+      this.setShowAuto(false);
     },
     // 新建okr
     summitNew() {

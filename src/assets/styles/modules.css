@@ -888,6 +888,10 @@
   color: #4d5155;
 }
 
+.tl-select .el-input__icon {
+  line-height: unset;
+}
+
 .tl-select .el-icon-arrow-up::before {
   content: "\e78f";
 }
@@ -1384,6 +1388,61 @@
   border-radius: 2px;
 }
 
+/* tl-tree */
+.tl-tree.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+  background-color: #fff;
+}
+
+.tl-tree .el-tree-node__content {
+  height: 46px;
+}
+
+.tl-tree .el-tree-node__content:hover {
+  background: #f8fafb;
+}
+
+.tl-tree .el-tree-node > .el-tree-node__content,
+.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children {
+  position: relative;
+}
+
+.tl-tree .el-tree-node > .el-tree-node__content::before,
+.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children::before {
+  position: absolute;
+  left: 12px;
+  top: 30px;
+  bottom: 0;
+  content: '';
+  width: 1px;
+  background: #e8ecf0;
+  z-index: 1;
+}
+
+.tl-tree .el-tree-node > .el-tree-node__content + .el-tree-node__children::before {
+  top: 0;
+}
+
+.tl-tree .el-tree-node > .el-tree-node__content::after {
+  position: absolute;
+  left: 10px;
+  top: 26px;
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8ecf0;
+  z-index: 2;
+}
+
+.tl-tree .custom-tree-node {
+  margin: 0 0 0 10px;
+}
+
+.tl-tree .el-tree-node__children .el-tree-node__content {
+  margin: 0 0 0 50px;
+  padding: 0 !important;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* tl-custom-btn */
 .tl-custom-btn {
@@ -1392,8 +1451,10 @@
   align-items: center;
   height: 36px;
   background: #fff;
+  color: #879099;
   border-radius: 2px;
   min-width: 70px;
+  transition: all .4s ease-out;
 }
 
 .tl-custom-btn.is-select {
@@ -2250,6 +2311,16 @@
   line-height: 24px;
 }
 
+.icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d5dde3;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -2719,10 +2790,6 @@
 
 .operating-panel .tl-custom-tabs .border-slip {
   height: 1px;
-}
-
-.operating-box {
-  flex: 0 0 40px;
 }
 
 .tl-drawer .operating-box {

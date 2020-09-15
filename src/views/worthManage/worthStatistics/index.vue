@@ -19,12 +19,21 @@
           </el-form-item>
           <el-form-item label="周期">
             <div style="margin-left:20px;" v-if="cycleData.length>0">
-              <department
-                :data="cycleData"
-                type="cycleListSelect"
-                @handleData="handleCycleData"
-                :defaultProps="cycleDefaultProps"
-              ></department>
+              <el-select
+                v-model="periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                @change="handleCycleData"
+              >
+                <el-option
+                  v-for="item in cycleData"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
             </div>
           </el-form-item>
         </el-form>
@@ -50,12 +59,21 @@
             <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
               <el-form-item label="周期">
                 <div style="margin-left:20px;" v-if="cycleData.length>0">
-                  <department
-                    :data="cycleData"
-                    type="cycleListSelect"
-                    @handleData="handleWorthData"
-                    :defaultProps="cycleDefaultProps"
-                  ></department>
+                  <el-select
+                    v-model="worthPeriodId"
+                    placeholder="请选择目标周期"
+                    :popper-append-to-body="false"
+                    popper-class="tl-select-dropdown"
+                    class="tl-select"
+                    @change="handleWorthData"
+                  >
+                    <el-option
+                      v-for="item in cycleData"
+                      :key="item.periodId"
+                      :label="item.periodName"
+                      :value="item.periodId"
+                    ></el-option>
+                  </el-select>
                 </div>
               </el-form-item>
             </el-form>
@@ -95,7 +113,6 @@
 <script>
 import crcloudTable from '@/components/crcloudTable';
 import echarts from 'echarts';
-import department from '@/components/department';
 import CONST from '../const';
 import Server from '../server';
 
@@ -116,27 +133,6 @@ export default {
       orgFullId: '',
       orgId: '',
       cycleData: [],
-      cycleDefaultProps: {
-        children: 'children',
-        label: 'periodName',
-        id: 'periodId',
-      },
-      cycleObj: {
-        old: {
-          checkStatus: 0,
-          children: [],
-          periodName: '历史OKR周期',
-          okrCycleType: '0',
-          periodId: '0',
-        },
-        current: {
-          checkStatus: 1,
-          children: [],
-          periodName: '当前的OKR周期',
-          okrCycleType: '0',
-          periodId: '1',
-        },
-      },
       xData: [],
       yData: [],
       department: '',
@@ -145,27 +141,23 @@ export default {
       okrCycle: {},
       worthCycle: {},
       worthList: {},
+      periodId: '',
+      worthPeriodId: '',
     };
   },
   components: {
     'tl-crcloud-table': crcloudTable,
-    department,
   },
   mounted() {
     const self = this;
     self.getOrgTable();
     self.server.getOkrCycleList().then((res) => {
-      if (res.data.length > 0) {
-        res.data.forEach((item) => {
-          // checkStatus为0时是历史周期，1为当前周期
-          if (item.checkStatus == '0') {
-            self.cycleObj.old.children.push(item);
-          } else if (item.checkStatus == '1') {
-            self.cycleObj.current.children.push(item);
-          }
-        });
-        self.pushCycleObj('current');
-        self.pushCycleObj('old');
+      this.cycleData = res.data;
+      if (this.cycleData.length > 0) {
+        this.periodId = this.cycleData[0].periodId;
+        this.handleCycleData(this.periodId);
+        this.worthPeriodId = this.cycleData[0].periodId;
+        this.handleWorthData(this.worthPeriodId);
       }
     });
   },
@@ -215,11 +207,6 @@ export default {
         this.tableData = params.data.detail;
       });
     },
-    pushCycleObj(key) {
-      if (this.cycleObj[key].children.length > 0) {
-        this.cycleData.push(this.cycleObj[key]);
-      }
-    },
     searchOrgCulture() {
       if (this.okrCycle.startTime && this.orgId) {
         this.server.orgCulture({
@@ -231,6 +218,7 @@ export default {
             console.log(res);
             this.xData = [];
             this.yData = [];
+            this.yObj = [];
             if (res.data.length > 0) {
               // 取x轴
               res.data[0].cultureList.forEach((cItem) => {
@@ -262,12 +250,20 @@ export default {
       }
     },
     handleCycleData(data) {
-      this.okrCycle = data;
-      this.searchOrgCulture();
+      this.cycleData.forEach((item) => {
+        if (item.periodId == data) {
+          this.okrCycle = item;
+          this.searchOrgCulture();
+        }
+      });
     },
     handleWorthData(data) {
-      this.worthCycle = data;
-      this.queryWorth();
+      this.cycleData.forEach((item) => {
+        if (item.periodId == data) {
+          this.worthCycle = item;
+          this.queryWorth();
+        }
+      });
     },
     queryWorth() {
       this.server.tenantCultureScore({

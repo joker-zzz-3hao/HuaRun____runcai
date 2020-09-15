@@ -1,15 +1,20 @@
 <template>
-  <div class="home">
-    <div>
+  <div class="write-weekly">
+    <div class="weekly-cont">
       <el-form :rules="formData.rules" :model="formData" ref="formDom" class="tl-form">
         <el-table
           ref="workTable"
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
-          class="tl-table"
+          class="tl-table flex"
         >
-          <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="workContent" :render-header="renderHeader">
+          <el-table-column label="序号" type="index" width="55"></el-table-column>
+          <el-table-column
+            label="工作项"
+            prop="workContent"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workContent'"
@@ -20,11 +25,12 @@
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
             </template>
           </el-table-column>-
-          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader">
+          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader" min-width="300">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workDesc'"
@@ -36,21 +42,33 @@
                   maxlength="1000"
                   clearable
                   placeholder="请描述具体工作内容"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="进度" prop="workProgress" :render-header="renderHeader">
+          <el-table-column
+            label="进度"
+            prop="workProgress"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-slider
                 v-model="scope.row.workProgress"
                 @change="tableProcessChange(scope.row)"
                 :step="1"
                 show-input
+                class="tl-slider"
               ></el-slider>
             </template>
           </el-table-column>
-          <el-table-column width="220" label="投入工时" prop="workTime" :render-header="renderHeader">
+          <el-table-column
+            label="投入工时"
+            prop="workTime"
+            :render-header="renderHeader"
+            min-width="130"
+          >
             <template slot-scope="scope">
               <el-input-number
                 controls-position="right"
@@ -59,10 +77,17 @@
                 :step="1"
                 :min="1"
                 :max="80"
-              ></el-input-number>h
+                class="tl-input-number"
+              ></el-input-number>
+              <span>h</span>
             </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="projectId" :render-header="renderHeader">
+          <el-table-column
+            label="关联项目"
+            prop="projectId"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
@@ -76,6 +101,8 @@
                   :remote-method="remoteMethod"
                   @change="projectChange(scope.row)"
                   @visible-change="visibleChange"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in thisPageProjectList"
@@ -85,19 +112,26 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <a style="cursor:pointer" @click="selectTempPro(scope.row)">临时项目</a>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
-                placement="top"
-              >
-                <i class="el-icon-question"></i>
-              </el-tooltip>
-              <div></div>
+              <div class="default-select">
+                <a @click="selectTempPro(scope.row)">临时项目</a>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="支撑OKR/价值观" prop="valueOrOkrIds" :render-header="renderHeader">
+          <el-table-column
+            label="支撑OKR/价值观"
+            prop="valueOrOkrIds"
+            :render-header="renderHeader"
+            min-width="300"
+          >
             <!-- okrIds -->
             <template slot-scope="scope">
               <!-- 临时项目可不选择支撑项 -->
@@ -145,7 +179,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column>
+          <el-table-column fixed="right" width="50">
             <template slot-scope="scope">
               <el-dropdown
                 @command="deleteItem(scope.row)"
@@ -168,7 +202,9 @@
     <!-- 本周感想、建议、收获 -->
     <div>
       <h1>本周感想、建议、收获</h1>
-      <el-form :model="formData">
+      <i v-show="!thoughtOpen" @click="openThought" class="el-icon-plus"></i>
+      <i v-show="thoughtOpen" @click="closeThought" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="thoughtOpen">
         <el-table :data="formData.weeklyThoughtSaveList">
           <el-table-column>
             <template slot-scope="scope">
@@ -217,7 +253,9 @@
     <!-- 下周计划 -->
     <div>
       <h1>下周计划</h1>
-      <el-form :model="formData">
+      <i v-show="!planOpen" @click="openPlan" class="el-icon-plus"></i>
+      <i v-show="planOpen" @click="closePlan" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="planOpen">
         <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项">
@@ -245,8 +283,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button @click="addPlanItem" style>添加</el-button>
       </el-form>
-      <el-button @click="addPlanItem" style>添加</el-button>
     </div>
     <!-- 个人OKR完成度 -->
     <div style="marginTop:50px" v-if="weeklyOkrSaveList.length > 0">
@@ -333,8 +371,8 @@
         <el-button @click="setEmotion(0)">沮丧</el-button>
         <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
       </span>
-      <el-button style="marginLeft:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     </div>
+    <el-button style="marginTop:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>
     <!-- 添加支撑项 -->
     <add-okr
       ref="addOkr"
@@ -484,6 +522,8 @@ export default {
           label: '失控',
         },
       ],
+      thoughtOpen: false,
+      planOpen: false,
     };
   },
   created() {
@@ -701,9 +741,6 @@ export default {
       this.currenItemrandomId = data.randomId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
-      this.$nextTick(() => {
-        this.$refs.addOkr.show();
-      });
     },
     deleteOkr(okr, randomId) {
       // 删除已选择的价值观、okr
@@ -846,6 +883,18 @@ export default {
       if (!status) {
         this.remoteMethod();
       }
+    },
+    openThought() {
+      this.thoughtOpen = true;
+    },
+    closeThought() {
+      this.thoughtOpen = false;
+    },
+    openPlan() {
+      this.planOpen = true;
+    },
+    closePlan() {
+      this.planOpen = false;
     },
   },
   watch: {

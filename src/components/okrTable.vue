@@ -12,11 +12,11 @@
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
-          <dl v-for="kritem in scope.row.krList" :key="kritem.krId" class="sub-tr">
+          <dl v-for="(kritem,krindex) in scope.row.krList" :key="kritem.krId" class="sub-tr">
             <dd class="okr-line"></dd>
             <!-- kr名称 -->
             <dd class="okr-kr-name tag-kind">
-              <span class="kind-child">KR</span>
+              <span class="kind-child">KR{{krindex+1}}</span>
               <em @click="opensome(kritem)">{{kritem.okrDetailObjectKr}}</em>
             </dd>
             <!-- kr权重 -->
@@ -53,7 +53,7 @@
       <el-table-column prop="okrDetailObjectKr" width="42%">
         <template slot-scope="scope">
           <div @click="opensome(scope.row)" class="tag-kind">
-            <span class="kind-parent">目标</span>
+            <span class="kind-parent">目标{{scope.$index+1}}</span>
             <em>{{scope.row.okrDetailObjectKr}}</em>
           </div>
         </template>

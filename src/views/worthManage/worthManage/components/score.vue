@@ -17,7 +17,7 @@
         <div style="display: flex;">
           <div v-for="item in labelList" :key="item.value">
             <el-button
-              :class="item.select ? 'red' : 'green'"
+              :class="worthName == item.label ? 'red' : 'green'"
               @click="selectWorth(item)"
               round
             >{{item.label}}</el-button>
@@ -103,6 +103,10 @@ export default {
   computed: {},
   methods: {
     show(data, type) {
+      this.worthName = '';
+      this.scoreId = '';
+      this.description = '';
+      this.otherLabelList = [];
       if (type == 'edit') {
         this.scoreId = data.score;
         this.description = data.scoreDesc;
@@ -113,9 +117,7 @@ export default {
         }
         this.labelList.forEach((item) => {
           if (item.value == data.score) {
-            item.select = true;
-          } else {
-            item.select = false;
+            this.worthName = item.label;
           }
         });
       }
@@ -154,7 +156,7 @@ export default {
         id: this.data.id,
         score: this.scoreId,
         scoreDesc: this.description,
-        scoreLabel: this.otherLabel,
+        scoreLabel: this.otherLabelList[0].label,
       }).then((res) => {
         if (res.code == '200') {
           this.$emit('success');
