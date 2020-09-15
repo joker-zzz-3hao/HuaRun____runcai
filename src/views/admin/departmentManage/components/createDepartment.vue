@@ -28,6 +28,7 @@
         >
           <el-cascader
             v-model="formData.orgIdList"
+            ref="departCascader"
             :options="treeData"
             :show-all-levels="false"
             :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
@@ -194,6 +195,7 @@ export default {
     },
     selectIdChange(data) {
       this.formData.orgIdList = data;
+      this.$refs.departCascader.dropDownVisible = false;
     },
   },
   watch: {},
