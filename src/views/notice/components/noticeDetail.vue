@@ -14,10 +14,16 @@
       class="tl-drawer"
     >
       <div>
-        <div>{{data.userName}}</div>
+        <div>{{data.msgContent}}</div>
         <div style="display:flex;justify-content: space-between;">
-          <div>{{data.cultureName}}</div>
-          <div>{{data.cultureName}}</div>
+          <div>
+            <span>通知人：</span>
+            <span>{{data.sendUserId}}</span>
+          </div>
+          <div>
+            <span>通知时间：</span>
+            <span>{{data.createDate}}</span>
+          </div>
         </div>
       </div>
     </el-drawer>
@@ -50,6 +56,7 @@ export default {
     },
     closed() {
       this.showDetail = false;
+      this.$emit('close');
     },
   },
   watch: {},
