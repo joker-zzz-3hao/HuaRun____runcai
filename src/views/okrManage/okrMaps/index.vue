@@ -53,7 +53,8 @@
       </div>
       <!-- 视图切换，公司使命 -->
       <div v-if="showDepartmentSelect">
-        <el-button @click="showOkrMap = !showOkrMap">视图切换</el-button>
+        <el-button :class="showOkrMap ? 'select' : ''" @click="showOkrMap = true">树展示</el-button>
+        <el-button :class="!showOkrMap ? 'select' : ''" @click="showOkrMap = false">表格展示</el-button>
         <!-- type传1表示使命愿景，2表示战略 -->
         <el-button @click="showMission(1,'华润使命·愿景')">
           公司使命愿景
