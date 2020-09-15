@@ -238,6 +238,7 @@ export default {
       this.orgFullId = `${data.join(':')}:`;
       this.orgFullIdList = data;
       // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
       this.getOkrTree();
     },
