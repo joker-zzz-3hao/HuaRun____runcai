@@ -4,6 +4,9 @@
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
+          <el-input placeholder="请输入关键词" v-model="keyword" @keyup.enter.native="search">
+            <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
+          </el-input>
           <dl class="dl-item">
             <dt>周期</dt>
             <dd>
@@ -25,6 +28,19 @@
               </div>
             </dd>
           </dl>
+          <dl class="dl-item" v-if="showDepartmentSelect">
+            <dt>组织</dt>
+            <dd>
+              <el-cascader
+                v-model="orgFullIdList"
+                ref="cascader"
+                :options="departmentData"
+                :show-all-levels="false"
+                :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
+                @change="selectIdChange"
+              ></el-cascader>
+            </dd>
+          </dl>
           <!-- <el-button
             type="primary"
             icon="el-icon-plus"
@@ -35,22 +51,8 @@
       </div>
     </div>
     <div>
-      <div v-if="showDepartmentSelect">
-        <el-cascader
-          v-model="orgFullIdList"
-          ref="cascader"
-          :options="departmentData"
-          :show-all-levels="false"
-          :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
-          @change="selectIdChange"
-        ></el-cascader>
-      </div>
       <!-- 搜索框 -->
-      <div>
-        <el-input placeholder="请输入关键词" v-model="keyword" @keyup.enter.native="search">
-          <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
-        </el-input>
-      </div>
+      <div></div>
       <!-- 视图切换，公司使命 -->
       <div v-if="showDepartmentSelect">
         <el-button @click="showOkrMap = !showOkrMap">视图切换</el-button>
