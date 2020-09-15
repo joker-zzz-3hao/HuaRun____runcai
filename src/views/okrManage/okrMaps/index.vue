@@ -111,7 +111,7 @@
           <template slot="treecard" slot-scope="node">
             <card
               :node="node"
-              @showDetail.stop="showDetail(node.node.okrId)"
+              @showDetail="showDetail(node.node.okrId)"
               @takeOvierview="takeOvierview(node)"
             ></card>
           </template>
@@ -176,6 +176,7 @@ export default {
       drawerTitle: 'OKR详情',
       detailExist: false,
       periodId: '',
+      periodList: [],
     };
   },
   components: {

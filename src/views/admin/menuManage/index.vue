@@ -50,6 +50,18 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
+            <el-table-column prop="icon" label="icon名称">
+              <template slot-scope="scope">
+                <span v-if="scope.row.icon">{{scope.row.icon}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="title" label="标题名称">
+              <template slot-scope="scope">
+                <span v-if="scope.row.title">{{scope.row.title}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="functionName" label="菜单名称">
               <template slot-scope="scope">
                 <span v-if="scope.row.functionName">{{scope.row.functionName}}</span>

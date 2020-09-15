@@ -22,6 +22,14 @@
         <div v-for="item in new Array(3)" :key="item"></div>
         <span>{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</span>
       </div>
+      <div>
+        <span>考核指标</span>
+        <em>{{krData.checkQuota}}</em>
+      </div>
+      <div>
+        <span>衡量方法</span>
+        <em>{{krData.judgeMethod}}</em>
+      </div>
     </div>
   </div>
 </template>

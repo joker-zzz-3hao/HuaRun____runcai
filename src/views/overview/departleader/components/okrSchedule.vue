@@ -167,14 +167,13 @@ export default {
         myChart._$handlers.mouseout.length = 0;
       }
       myChart.setOption(option);
+      myChart.resize();
       myChart.on('mousemove', 'series.line', (params) => {
         option.series[1].data[params.dataIndex] = that.mainDataY[params.dataIndex] + 20;
-        console.log(params);
         myChart.setOption(option);
       });
       myChart.on('mouseout', 'series.line', (params) => {
         option.series[1].data[params.dataIndex] = 0;
-        console.log(params);
         myChart.setOption(option);
       });
     },
@@ -289,6 +288,7 @@ export default {
       };
 
       myChart.setOption(option);
+      myChart.resize();
     },
   },
   watch: {

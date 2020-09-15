@@ -154,8 +154,8 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        okrMainId: this.data.okrMainId,
-        // approvalId: this.data.approvalId,
+        // okrMainId: this.data.okrMainId,
+        approvalId: this.data.approvalId,
       }).then((res) => {
         if (res.code == '200') {
           this.cycleList = res.data;

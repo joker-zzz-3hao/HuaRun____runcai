@@ -74,6 +74,7 @@
               placeholder="请输入成员姓名"
               remote
               :remote-method="remoteMethod"
+              @visible-change="visibleChange"
               @change="nameChange"
             >
               <el-option
@@ -102,8 +103,86 @@
         :currentPage.sync="formData.currentPage"
         :pageSize.sync="formData.pageSize"
         @searchList="refreshPageList"
+        v-if="tableLoading"
       >
         <div slot="tableContainer" class="table-container">
+          <ul v-if="!isQuickLook">
+            <li
+              v-for="weekly in tableData"
+              :key="weekly.userId"
+              @click="weeklyInfo(weekly)"
+              style="cursor:pointer;width:320px;height:200px;float:left;marginLeft:10px"
+            >
+              <el-card>
+                <div>
+                  <el-avatar :size="30" :src="weekly.headerUrl" @error="errorHandler">
+                    <div v-if="weekly.userName" class="user-name">
+                      <em>{{weekly.userName.substring(weekly.userName.length-2)}}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{weekly.userName}}{{weekly.isadmin == '1'?'(部门负责人)':''}}</span>
+                  <span v-if="weekly.weeklyId">
+                    <i class="el-icon-circle-check"></i>已提交
+                  </span>
+                  <span v-else>
+                    <i class="el-icon-warning-outline"></i>未提交
+                  </span>
+                  <div>{{weekly.orgName}}</div>
+                </div>
+                <div>
+                  <div>
+                    本周心情
+                    <span v-if="weekly.weeklyEmotion == 0">
+                      <i class="el-icon-user"></i> 沮丧
+                    </span>
+                    <span v-else-if="weekly.weeklyEmotion == 50">
+                      <i class="el-icon-user"></i>平常
+                    </span>
+                    <span v-else-if="weekly.weeklyEmotion == 100">
+                      <i class="el-icon-user"></i>开心
+                    </span>
+                    <span v-else>--</span>
+                  </div>
+                  <div>
+                    更新时间
+                    <span>{{weekly.updateTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(weekly.updateTime) ):'--'}}</span>
+                  </div>
+                </div>
+              </el-card>
+            </li>
+            <li v-if="tableData.length < 1">暂无数据</li>
+          </ul>
+          <ul v-else>
+            <li
+              v-for="weekly in tableData"
+              :key="weekly.userId"
+              @click="weeklyInfo(weekly)"
+              style="cursor:pointer;"
+            >
+              <el-card>
+                <span>
+                  <el-avatar :size="30" :src="weekly.headerUrl" @error="errorHandler">
+                    <div v-if="weekly.userName" class="user-name">
+                      <em>{{weekly.userName.substring(weekly.userName.length-2)}}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{weekly.userName}}</span>
+                  <div>{{weekly.orgName}}</div>
+                </span>
+                <!-- 任务项 -->
+                <span v-if="formData.queryType == '0'">{{weekly.workContent}}</span>
+                <!-- 感想 -->
+                <span v-if="formData.queryType == '1'">{{weekly.workContent}}</span>
+                <!-- 下周计划 -->
+                <span v-if="formData.queryType == '2'">{{weekly.planContent}}</span>
+                <!-- 有进度的okr -->
+                <span v-if="formData.queryType == '3'">okr</span>
+              </el-card>
+            </li>
+            <li v-if="tableData.length < 1">暂无数据</li>
+          </ul>
+        </div>
+        <!-- <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" style="width: 100%" v-if="tableLoading">
             <el-table-column fixed prop="userName" label="姓名"></el-table-column>
             <el-table-column fixed prop="orgName" label="所在团队"></el-table-column>
@@ -133,7 +212,6 @@
             <el-table-column fixed label="角色" v-if="!formData.queryType">
               <template slot-scope="scope">
                 <span>{{scope.row.isadmin == '1'?'部门负责人':'--'}}</span>
-                <!-- 团队成员 -->
               </template>
             </el-table-column>
             <el-table-column fixed prop="weeklyId" label="状态" v-if="!formData.queryType">
@@ -170,7 +248,7 @@
               </template>
             </el-table-column>
           </el-table>
-        </div>
+        </div>-->
       </crcloud-table>
     </div>
     <tl-create-tenant
@@ -205,6 +283,7 @@ export default {
       canEdit: false,
       showRemindBtn: false,
       tableLoading: false,
+      isQuickLook: false,
       formData: {
         calendarId: '',
         looked: '',
@@ -302,10 +381,15 @@ export default {
           this.$message.error(res.msg);
         }
         this.tableLoading = true;
+        this.isQuickLook = false;
       });
     },
     weeklyInfo(weekly) {
-      this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
+      if (weekly.weeklyId) {
+        this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
+      } else {
+        this.$message.warning('该用户周报还未提交');
+      }
     },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组
@@ -381,6 +465,7 @@ export default {
             this.formData.pageSize = res.data.pageSize;
           }
           this.tableLoading = true;
+          this.isQuickLook = true;
         });
       } else {
         this.getTeamWeekly();
@@ -444,12 +529,17 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.treeData[0].orgId,
-        keyWord: name.trim(),
+        keyWord: name ? name.trim() : '',
       }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data.content;
         }
       });
+    },
+    visibleChange(name) {
+      if (!name) {
+        this.remoteMethod();
+      }
     },
     nameChange(userId) {
       // 将该用户所属部门初始化到组织树里面

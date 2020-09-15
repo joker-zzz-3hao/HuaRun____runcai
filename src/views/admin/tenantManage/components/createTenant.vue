@@ -28,23 +28,14 @@
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <div>
-            <el-popover placement="bottom" trigger="click" v-model="postMenu">
-              <el-cascader-panel
-                @change="handleCheckChange"
-                ref="treeMenu"
-                v-model.lazy="selectArr"
-                :options="data"
-                :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
-                node-key="value"
-              ></el-cascader-panel>
-              <div>
-                <el-button type="text" @click="saveTree">确认</el-button>
-                <el-button type="text" @click="clearNodeAll">清空</el-button>
-              </div>
-              <div slot="reference">
-                <i class="el-icon-circle-plus-outline"></i>
-              </div>
-            </el-popover>
+            <el-tree
+              @check-change="handleCheckChange"
+              ref="treeMenu"
+              :data="data"
+              show-checkbox
+              :props="{ multiple: true,label:'functionName',id:'functionId',children:'children' }"
+              node-key="functionId"
+            ></el-tree>
           </div>
         </div>
       </el-form-item>
@@ -112,12 +103,6 @@ export default {
         ],
         tenantId: [{
           required: true, message: '请输入企业ID', trigger: 'blur',
-
-        },
-        {
-          pattern: !/[\u4E00-\u9FA5\uF900-\uFA2D]/,
-          message: '不支持中文',
-          trigger: 'blur',
         },
         ],
         mobilePhone: [
@@ -219,6 +204,7 @@ export default {
     },
     // 获取选中tree key值 展示选中
     handleCheckChange(data) {
+      console.log(this.$refs.treeMenu);
       let arr = [];
       data.forEach((item) => {
         arr = arr.concat(item);

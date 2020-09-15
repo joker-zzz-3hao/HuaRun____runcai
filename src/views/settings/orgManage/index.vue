@@ -116,13 +116,18 @@
             <el-table-column min-width="120" align="left" prop="orgName" label="所属部门"></el-table-column>
             <el-table-column min-width="120" align="left" prop="agentOrgName" label="代理部门">
               <template slot-scope="scope">
-                <span v-if="scope.row.agentOrgName">{{scope.row.agentOrgName}}</span>
-                <span v-else>--</span>
+                <span
+                  v-if="scope.row.agentOrg"
+                  @click="showexistEdit(scope.row)"
+                >{{changeOrgAndId(scope.row.agentOrg)}}</span>
+                <span v-else>
+                  <el-button type="text" @click="showexistEdit(scope.row)">设置</el-button>
+                </span>
               </template>
             </el-table-column>
             <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="showexistEdit(scope.row)" style="cursor: pointer;">
+                <div @click="setLeader(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>设置</span>
@@ -315,6 +320,11 @@ export default {
     showAddRoule() {
       this.exist = true;
     },
+    changeOrgAndId(data) {
+      const list = data.split(',');
+      const orgName = list.map((item) => item.split('/')[0]);
+      return orgName.join(',');
+    },
     showexistEdit(row) {
       this.rowData = row;
       this.existEdit = true;
@@ -413,9 +423,9 @@ export default {
         this.globalOrgId = depart.orgId;
       }
       this.showcreateDepart = true;
-      // this.$nextTick(() => {
-      //   this.$refs.createDepart.show(depart);
-      // });
+      this.$nextTick(() => {
+        this.$refs.createDepart.show(depart);
+      });
     },
     deleteDepart(depart) {
       this.$xconfirm({

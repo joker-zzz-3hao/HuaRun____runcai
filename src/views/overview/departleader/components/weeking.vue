@@ -143,7 +143,9 @@ export default {
       this.calendarQurey(`${date}-01`);
     },
     getDateMood(date) {
-      this.orgEmotion(`${date}-01`);
+      this.$nextTick(() => {
+        this.orgEmotion(`${date}-01`);
+      });
     },
     calendarQurey(date) {
       this.server.calendarQurey(
@@ -347,10 +349,11 @@ export default {
       };
 
       myChart.setOption(option, true);
+      myChart.resize();
     },
     initMood() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('mood'));
+      const myChartmood = echarts.init(document.getElementById('mood'));
       const option = {
         dataset: {
           source: that.moodDataY,
@@ -374,7 +377,6 @@ export default {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            console.log(params);
             return `<div>沮丧${params.data[1]}</div>
             <div>平常${params.data[2] ? params.data[2] : 0}</div>
             <div>开心${params.data[3] ? params.data[3] : 0}</div>`;
@@ -439,7 +441,8 @@ export default {
         ],
       };
 
-      myChart.setOption(option);
+      myChartmood.setOption(option);
+      myChartmood.resize();
     },
     orgEmotion(date) {
       this.server.orgEmotion({

@@ -181,6 +181,9 @@ export default {
             labelLine: {
               show: false,
             },
+            label: {
+              show: false,
+            },
             data: that.aroundData,
             itemStyle: {
               emphasis: {

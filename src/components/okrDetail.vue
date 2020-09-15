@@ -496,23 +496,25 @@ export default {
     // 查点赞列表
     getSupportList() {
       const self = this;
-      self.server.getSupportList({ okrId: self.okrId }).then((res) => {
-        if (res.code == 200) {
-          self.voteUser = res.data.supportUserList || [];
-          self.voteLength = self.voteUser.length;
-          // 如果已经点赞过就显示取消
-          self.voteUser.forEach((item) => {
-            if (item.userId == self.userInfo.userId) {
-              self.supportType = 1;
+      if (self.okrId) {
+        self.server.getSupportList({ okrId: self.okrId }).then((res) => {
+          if (res.code == 200) {
+            self.voteUser = res.data.supportUserList || [];
+            self.voteLength = self.voteUser.length;
+            // 如果已经点赞过就显示取消
+            self.voteUser.forEach((item) => {
+              if (item.userId == self.userInfo.userId) {
+                self.supportType = 1;
+              }
+            });
+            if (self.voteLength > 10) {
+              self.cutVoteList = self.voteUser.slice(0, 9);
+            } else {
+              self.cutVoteList = self.voteUser.slice(0, self.voteLength);
             }
-          });
-          if (self.voteLength > 10) {
-            self.cutVoteList = self.voteUser.slice(0, 9);
-          } else {
-            self.cutVoteList = self.voteUser.slice(0, self.voteLength);
           }
-        }
-      });
+        });
+      }
     },
     // TODO:查全部pageSize要传大点
     getOperationHistory() {

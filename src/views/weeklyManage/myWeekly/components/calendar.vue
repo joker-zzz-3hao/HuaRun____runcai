@@ -15,17 +15,29 @@
     <ul v-if="weekList.length > 0 " class="weekly-select">
       <li v-for="(item,index) in weekList" :key="index" @click="seclectBtn(item)">
         <div class="period-time">{{getWeekItem(item,index)}}</div>
-        <div
-          class="period-state"
-          :class="{'is-submit':item.weeklyId,'is-unopen':!item.weeklyId && !item.noOpen}"
-        >
-          <div class="icon-bg">
-            <!-- <i v-if="item.noOpen"></i> -->
-            <i :class="{'el-icon-check': !item.noOpen}"></i>
+        <div v-if="!isFromTeam">
+          <div
+            class="period-state"
+            :class="{'is-submit':item.weeklyId,'is-unopen':!item.weeklyId && !item.noOpen}"
+          >
+            <div class="icon-bg">
+              <!-- <i v-if="item.noOpen"></i> -->
+              <i :class="{'el-icon-check': !item.noOpen}"></i>
+            </div>
+            <em v-if="!!item.weeklyId">已提交</em>
+            <em v-if="!item.weeklyId && !item.noOpen">未提交</em>
+            <em v-if="item.noOpen">未开放</em>
           </div>
-          <em v-if="!!item.weeklyId">已提交</em>
-          <em v-if="!item.weeklyId && !item.noOpen">未提交</em>
-          <em v-if="item.noOpen">未开放</em>
+          <el-tooltip
+            v-if="!item.weeklyId && !item.noOpen && !canEdit"
+            class
+            effect="dark"
+            content="已超过两周，不可再提交周报"
+            placement="top"
+            popper-class="tl-tooltip-popper"
+          >
+            <i></i>
+          </el-tooltip>
         </div>
         <!-- <div class="period-state">
           <div class="icon-bg">
@@ -39,16 +51,6 @@
           </div>
           <em>未开放</em>
         </div>-->
-        <el-tooltip
-          v-if="!item.weeklyId && !item.noOpen && !canEdit"
-          class
-          effect="dark"
-          content="已超过两周，不可再提交周报"
-          placement="top"
-          popper-class="tl-tooltip-popper"
-        >
-          <i></i>
-        </el-tooltip>
       </li>
       <!-- <el-button
         plain
