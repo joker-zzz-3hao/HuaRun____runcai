@@ -155,13 +155,37 @@
               <el-form-item label="风险状态">
                 <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
               </el-form-item>
-
-              <el-popover
+              <el-form-item
+                label="考核指标"
+                :prop="'okrInfoList.' + index + '.krList.' + kindex + '.checkQuota'"
+                :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+              >
+                <el-input
+                  placeholder="请输入考核指标"
+                  v-model="kitem.checkQuota"
+                  maxlength="50"
+                  class="tl-input"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                label="衡量办法"
+                :prop="'okrInfoList.' + index + '.krList.' + kindex + '.judgeMethod'"
+                :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+              >
+                <el-input
+                  placeholder="请输入衡量办法"
+                  v-model="kitem.judgeMethod"
+                  maxlength="50"
+                  class="tl-input"
+                ></el-input>
+              </el-form-item>
+              <!-- <el-popover
                 placement="bottom"
                 width="400"
                 trigger="click"
                 :append-to-body="false"
                 :visible-arrow="false"
+                v-model="kitem.visibleQuota"
               >
                 <el-form-item
                   label="考核指标"
@@ -187,10 +211,15 @@
                     class="tl-input"
                   ></el-input>
                 </el-form-item>
+                <el-button
+                  type="primary"
+                  class="tl-btn amt-bg-slip"
+                  @click="kitem.visibleQuota = false"
+                >确认</el-button>
                 <div slot="reference">
-                  <div>考核指标、衡量办法></div>
+                  <a>考核指标、衡量办法></a>
                 </div>
-              </el-popover>
+              </el-popover>-->
             </dd>
           </dl>
           <dl>
@@ -300,7 +329,7 @@ export default {
       innerDrawer: false,
       periodName: '', // 周期名
       reason: {},
-      visible: false, // 考核的弹窗
+      visibleQuota: false, // 考核的弹窗
     };
   },
   props: {

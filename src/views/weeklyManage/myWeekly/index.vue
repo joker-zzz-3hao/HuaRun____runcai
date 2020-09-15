@@ -2,7 +2,7 @@
   <div class="my-weekly">
     <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <div class="operating-box" v-if="weeklyTypeList.length > 0">
+      <div class="operating-box" v-if="weeklyTypeList.length > 0 ">
         <div
           class="tl-custom-btn"
           v-for="item in weeklyTypeList"
@@ -48,7 +48,7 @@
     <div class="cont-area">
       <!-- 日期 -->
       <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
-      <div class="weekly-area">
+      <div class="weekly-area" v-if="newPage">
         <!-- 标准版 -->
         <standard-Weekly
           :weeklyData="weeklyData"
@@ -192,25 +192,26 @@ export default {
       this.weeklyTypeList = [];
       // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
       this.queryTeamOrPersonalTarget('my');
-      this.newPage = false;// 清空页面实例，重新加载新页面
-      this.$nextTick(() => {
-        this.weeklyData = {};
-        if (item.weeklyId) {
-          this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
-            if (res.code == 200) {
-              this.weeklyType = String(res.data.weeklyType);
-              this.weeklyData = res.data;
-            }
+      this.weeklyData = {};
+      if (item.weeklyId) {
+        this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
+          if (res.code == 200) {
+            this.weeklyType = String(res.data.weeklyType);
+            this.weeklyData = res.data;
+          }
+          this.newPage = false;// 清空页面实例，重新加载新页面
+          this.$nextTick(() => {
             this.newPage = true;
-            this.getTypeConfig();// 在这调用，防止俩标签闪烁
-            this.$forceUpdate();
           });
-        } else {
+          this.getTypeConfig();// 在这调用，防止俩标签闪烁
+        });
+      } else {
+        this.newPage = false;// 清空页面实例，重新加载新页面
+        this.$nextTick(() => {
           this.newPage = true;
-          this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
-          this.$forceUpdate();
-        }
-      });
+        });
+        this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
+      }
     },
     getTypeConfig(writeStatus) {
       this.server.getTypeConfig({

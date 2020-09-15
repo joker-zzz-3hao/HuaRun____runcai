@@ -87,14 +87,9 @@
                 </template>
                 <!-- 变更可点 -->
                 <em
-                  v-if="item.parentUpdate && canWrite"
+                  v-if="canWrite"
                   @click="goUndertake(index,'change')"
                   :class="{'is-change':canWrite}"
-                >{{item.parentObjectKr}}</em>
-                <em
-                  class="is-change"
-                  v-else-if="canWrite"
-                  @click="goUndertake(index,'new')"
                 >{{item.parentObjectKr}}</em>
                 <!-- 详情不可点 -->
                 <em v-else>{{item.parentObjectKr}}</em>
@@ -202,31 +197,46 @@
               </div>
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
-            <div v-if="canWrite">
-              <span>考核指标</span>
-              <el-form-item
-                :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
-                :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+            <div>
+              <el-popover
+                placement="bottom"
+                width="400"
+                trigger="click"
+                :append-to-body="false"
+                :visible-arrow="false"
               >
-                <el-input
-                  placeholder="请输入考核指标"
-                  v-model="kritem.checkQuota"
-                  maxlength="50"
-                  class="tl-input"
-                ></el-input>
-              </el-form-item>
-              <span>衡量办法</span>
-              <el-form-item
-                :prop="'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'"
-                :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
-              >
-                <el-input
-                  placeholder="请输入衡量办法"
-                  v-model="kritem.judgeMethod"
-                  maxlength="50"
-                  class="tl-input"
-                ></el-input>
-              </el-form-item>
+                <span>考核指标</span>
+                <el-form-item
+                  :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
+                  :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+                >
+                  <el-input
+                    v-if="canWrite"
+                    placeholder="请输入考核指标"
+                    v-model="kritem.checkQuota"
+                    maxlength="50"
+                    class="tl-input"
+                  ></el-input>
+                  <em v-else>{{kritem.checkQuota||'--'}}</em>
+                </el-form-item>
+                <span>衡量办法</span>
+                <el-form-item
+                  :prop="'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'"
+                  :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+                >
+                  <el-input
+                    v-if="canWrite"
+                    placeholder="请输入衡量办法"
+                    v-model="kritem.judgeMethod"
+                    maxlength="50"
+                    class="tl-input"
+                  ></el-input>
+                  <em v-else>{{kritem.judgeMethod||'--'}}</em>
+                </el-form-item>
+                <div slot="reference">
+                  <div>考核指标、衡量办法></div>
+                </div>
+              </el-popover>
             </div>
           </dd>
         </dl>
