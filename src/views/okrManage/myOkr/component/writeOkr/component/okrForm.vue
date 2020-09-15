@@ -11,7 +11,7 @@
           <template slot="title">
             <dl class="collpase-panel">
               <dt class="is-edit">
-                <span>目标{{index+1}}</span>
+                <span>目标{{index+1+preIndex}}</span>
                 <div>
                   <el-form-item
                     :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
@@ -314,6 +314,10 @@ export default {
     isnew: {
       type: Boolean,
       default: true,
+    },
+    preIndex: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {

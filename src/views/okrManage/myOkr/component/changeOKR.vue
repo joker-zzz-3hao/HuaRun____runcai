@@ -86,6 +86,7 @@
           :canWrite="true"
           :isnew="false"
           :periodId="searchForm.periodId"
+          :preIndex="preIndex"
         ></tl-okrform>
         <dl class="change-reason">
           <dt>变更原因</dt>
@@ -235,6 +236,11 @@ export default {
     drawerTitle: {
       type: String,
       defualt: 'OKR变更',
+    },
+  },
+  computed: {
+    preIndex() {
+      return this.tableList.length;
     },
   },
   mounted() {
