@@ -4,10 +4,10 @@
       <li></li>
       <li></li>
       <li>权重</li>
-      <li>进度</li>
-      <li>风险状态</li>
       <li v-if="!overview">承接地图</li>
-      <li v-if="!overview">更新进度</li>
+      <li>风险状态</li>
+      <li>进度</li>
+      <li v-if="!overview">更新进度与风险</li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
@@ -21,9 +21,9 @@
             </dd>
             <!-- kr权重 -->
             <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
-            <!-- kr进度 -->
-            <dd class="okr-progress">
-              <tl-process :data="kritem.okrDetailProgress"></tl-process>
+            <!-- kr承接项 -->
+            <dd class="okr-undertake">
+              <slot name="body-bar" :okritem="kritem"></slot>
             </dd>
             <!-- kr风险状态 -->
             <dd class="okr-risk">
@@ -41,9 +41,10 @@
               </div>
               <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </dd>
-            <!-- kr承接项 -->
-            <dd class="okr-undertake">
-              <slot name="body-bar" :okritem="kritem"></slot>
+
+            <!-- kr进度 -->
+            <dd class="okr-progress">
+              <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </dd>
             <dd class="okr-update"></dd>
           </dl>
@@ -62,18 +63,19 @@
       <el-table-column prop="okrWeight" width="6%">
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
-      <!-- o label="进度" -->
-      <el-table-column prop="okrDetailProgress" width="16%">
-        <template slot-scope="scope">
-          <tl-process :data="scope.row.okrDetailProgress"></tl-process>
-        </template>
-      </el-table-column>
-      <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="15%"></el-table-column>
       <!-- o label="承接地图" -->
       <el-table-column width="8%">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
+        </template>
+      </el-table-column>
+      <!-- o无风险状态 label="风险状态" -->
+      <el-table-column width="15%"></el-table-column>
+
+      <!-- o label="进度" -->
+      <el-table-column prop="okrDetailProgress" width="16%">
+        <template slot-scope="scope">
+          <tl-process :data="scope.row.okrDetailProgress"></tl-process>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->

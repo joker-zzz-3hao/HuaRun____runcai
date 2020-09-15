@@ -521,6 +521,16 @@ export default {
             hasChange = false;
             break;
           }
+          if (originalList[index].krList[krindex].checkQuota
+          != this.tableList[index].krList[krindex].checkQuota) {
+            hasChange = false;
+            break;
+          }
+          if (originalList[index].krList[krindex].judgeMethod
+          != this.tableList[index].krList[krindex].judgeMethod) {
+            hasChange = false;
+            break;
+          }
         }
       }
 
@@ -593,6 +603,8 @@ export default {
             okrWeight: kritem.okrWeight,
             okrDetailProgress: kritem.okrDetailProgress,
             okrDetailConfidence: kritem.okrDetailConfidence,
+            checkQuota: kritem.checkQuota,
+            judgeMethod: kritem.judgeMethod,
           });
         });
         // 合并新增kr

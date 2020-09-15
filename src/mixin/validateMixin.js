@@ -70,7 +70,6 @@ export default {
     },
     // 关键结果kr校验
     validateKRName(rule, value, callback) {
-      console.log('validateKRName', rule);
       value = this.getValue(rule);
       if (!value) {
         callback('请填写关键结果KR名称');

@@ -1,35 +1,24 @@
 <template>
   <div class="okr-info">
-    <el-form :model="formData" ref="dataForm" class="tl-form">
-      <elcollapse class="tl-collapse" v-model="activeList">
-        <elcollapseitem
-          ref="okrcoll"
-          v-for="(oitem,index) in formData.okrInfoList"
-          :key="oitem.id"
-          :name="index"
-        >
-          <template slot="title">
-            <dl class="collpase-panel">
-              <dt class="is-edit">
-                <span>目标{{index+1}}</span>
-                <div>
-                  <el-form-item
-                    :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
-                    :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
-                  >
-                    <el-input
-                      placeholder="请输入目标名称"
-                      v-model="oitem.okrDetailObjectKr"
-                      class="tl-input"
-                    ></el-input>
-                  </el-form-item>
-                </div>
-              </dt>
-              <dd class="is-edit has-third-child">
-                <div>
-                  <i class="el-icon-medal"></i>
-                  <span>权重</span>
-                  <el-form-item>
+    <div class="tl-custom-timeline">
+      <el-form :model="formData" ref="dataForm" class="tl-form">
+        <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
+          <dt>
+            <div class="list-info">
+              <div class="list-title">目标名称{{index+1}}</div>
+              <div class="list-cont">
+                <el-form-item
+                  :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
+                  :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+                >
+                  <el-input
+                    placeholder="请输入目标名称"
+                    v-model="oitem.okrDetailObjectKr"
+                    class="tl-input"
+                  ></el-input>
+                </el-form-item>
+                <div class="item-group">
+                  <el-form-item label="权重">
                     <el-input-number
                       v-model="oitem.okrWeight"
                       controls-position="right"
@@ -41,11 +30,7 @@
                     ></el-input-number>
                     <span>%</span>
                   </el-form-item>
-                </div>
-                <div>
-                  <i class="el-icon-odometer"></i>
-                  <span>当前进度</span>
-                  <el-form-item>
+                  <el-form-item label="当前进度">
                     <el-input-number
                       v-model="oitem.okrDetailProgress"
                       controls-position="right"
@@ -57,11 +42,7 @@
                     ></el-input-number>
                     <span>%</span>
                   </el-form-item>
-                </div>
-                <div>
-                  <el-form-item>
-                    <i class="el-icon-attract"></i>
-                    <span>关联父目标</span>
+                  <el-form-item label="关联父目标">
                     <p
                       v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
                       || oitem.cultureId"
@@ -84,25 +65,25 @@
                     </el-button>
                   </el-form-item>
                 </div>
-                <el-tooltip
-                  class="icon-clear"
-                  :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
-                  effect="dark"
-                  content="删除"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                  @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
-                  :disabled="isnew && formData.okrInfoList.length == 1"
-                >
-                  <i class="el-icon-minus"></i>
-                </el-tooltip>
-              </dd>
-            </dl>
-          </template>
-          <dl class="collpase-panel" v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
-            <dt class="is-edit">
-              <span>KR{{kindex+1}}</span>
-              <div>
+              </div>
+            </div>
+            <el-tooltip
+              class="icon-clear"
+              :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
+              effect="dark"
+              content="删除"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
+              :disabled="isnew && formData.okrInfoList.length == 1"
+            >
+              <i class="el-icon-minus"></i>
+            </el-tooltip>
+          </dt>
+          <dd v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
+            <div class="list-info">
+              <div class="list-title">关键结果{{kindex+1}}</div>
+              <div class="list-cont">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
                   :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
@@ -113,100 +94,91 @@
                     class="tl-input"
                   ></el-input>
                 </el-form-item>
-              </div>
-              <el-tooltip
-                class="icon-clear"
-                :class="{'is-disabled':oitem.krList.length === 1}"
-                effect="dark"
-                content="删除"
-                placement="top"
-                popper-class="tl-tooltip-popper"
-                @click.native="(oitem.krList.length > 1) && deletekr(index,kindex)"
-                :disabled="oitem.krList.length == 1"
-              >
-                <i class="el-icon-minus"></i>
-              </el-tooltip>
-            </dt>
-            <dd class="has-third-child">
-              <el-form-item label="权重">
-                <el-input-number
-                  v-model.trim="kitem.okrWeight"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                  class="tl-input-number"
-                ></el-input-number>
-                <span>%</span>
-              </el-form-item>
-              <el-form-item label="当前进度">
-                <el-input-number
-                  v-model.trim="kitem.okrDetailProgress"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                  class="tl-input-number"
-                ></el-input-number>
-                <span>%</span>
-              </el-form-item>
-              <el-form-item label="风险状态">
-                <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
-              </el-form-item>
+                <div class="item-group">
+                  <el-form-item label="权重">
+                    <el-input-number
+                      v-model.trim="kitem.okrWeight"
+                      controls-position="right"
+                      :min="0"
+                      :max="100"
+                      :step="1"
+                      :precision="0"
+                      class="tl-input-number"
+                    ></el-input-number>
+                    <span>%</span>
+                  </el-form-item>
+                  <el-form-item label="当前进度">
+                    <el-input-number
+                      v-model.trim="kitem.okrDetailProgress"
+                      controls-position="right"
+                      :min="0"
+                      :max="100"
+                      :step="1"
+                      :precision="0"
+                      class="tl-input-number"
+                    ></el-input-number>
+                    <span>%</span>
+                  </el-form-item>
+                  <el-form-item label="风险状态">
+                    <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                  </el-form-item>
+                  <el-popover
+                    placement="bottom"
+                    width="200"
+                    trigger="click"
+                    :append-to-body="false"
+                    :visible-arrow="false"
+                  >
+                    <el-form-item>
+                      <el-input
+                        placeholder="请输入考核指标"
+                        v-model="kitem.checkQuota"
+                        maxlength="50"
+                        class="tl-input"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-input
+                        placeholder="请输入衡量办法"
+                        v-model="kitem.judgeMethod"
+                        maxlength="50"
+                        class="tl-input"
+                      ></el-input>
+                    </el-form-item>
 
-              <el-popover
-                placement="bottom"
-                width="400"
-                trigger="click"
-                :append-to-body="false"
-                :visible-arrow="false"
-              >
-                <el-form-item
-                  label="考核指标"
-                  :prop="'okrInfoList.' + index + '.krList.' + kindex + '.checkQuota'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
-                >
-                  <el-input
-                    placeholder="请输入考核指标"
-                    v-model="kitem.checkQuota"
-                    maxlength="50"
-                    class="tl-input"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item
-                  label="衡量办法"
-                  :prop="'okrInfoList.' + index + '.krList.' + kindex + '.judgeMethod'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
-                >
-                  <el-input
-                    placeholder="请输入衡量办法"
-                    v-model="kitem.judgeMethod"
-                    maxlength="50"
-                    class="tl-input"
-                  ></el-input>
-                </el-form-item>
-                <div slot="reference">
-                  <div>考核指标、衡量办法></div>
+                    <div slot="reference">
+                      <div>考核指标、衡量办法></div>
+                    </div>
+                  </el-popover>
                 </div>
-              </el-popover>
-            </dd>
-          </dl>
-          <dl>
+              </div>
+            </div>
+            <el-tooltip
+              class="icon-clear"
+              :class="{'is-disabled':oitem.krList.length === 1}"
+              effect="dark"
+              content="删除"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+              @click.native="(oitem.krList.length > 1) && deletekr(index,kindex)"
+              :disabled="oitem.krList.length == 1"
+            >
+              <i class="el-icon-minus"></i>
+            </el-tooltip>
+          </dd>
+          <dd>
             <el-button type="text" @click="addkr(index)" class="tl-btn sub-list-add">
               <i class="el-icon-plus"></i>添加关键结果
             </el-button>
-          </dl>
-        </elcollapseitem>
-      </elcollapse>
-    </el-form>
-    <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
-      <i class="el-icon-plus"></i>添加目标
-    </el-button>
-
+          </dd>
+        </dl>
+      </el-form>
+      <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
+        <i class="el-icon-plus"></i>添加目标
+      </el-button>
+    </div>
     <!-- 变更原因 -->
-    <div v-if="searchForm.approvalType == 1">
+    <div v-if="searchForm.approvalType == 1 ">
       <span>变更原因</span>
       <el-form :model="reason" ref="reasonForm">
         <el-form-item
@@ -217,6 +189,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <!-- <el-button v-if="isnew && searchForm.okrStatus == '6'" @click="deleteDraft()">删除草稿icon</el-button> -->
     <!-- 关联承接项抽屉 -->
     <el-drawer
       :wrapperClosable="false"
@@ -249,8 +222,6 @@
 <script>
 import { mapMutations } from 'vuex';
 import confidenceSelect from '@/components/confidenceSelect';
-import elcollapse from '@/components/collapse/collapse';
-import elcollapseitem from '@/components/collapse/collapse-item';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './undertakeTable';
 
@@ -261,8 +232,6 @@ export default {
   name: 'orkForm',
   mixins: [validateMixin],
   components: {
-    elcollapse,
-    elcollapseitem,
     'undertake-table': undertakeTable,
     'tl-confidence': confidenceSelect,
   },
@@ -314,13 +283,6 @@ export default {
     isnew: {
       type: Boolean,
       default: true,
-    },
-  },
-  computed: {
-    activeList() {
-      const activeLength = this.formData.okrInfoList.length;
-      console.log([...new Array(activeLength).keys()]);
-      return [...new Array(activeLength).keys()];
     },
   },
   mounted() {
