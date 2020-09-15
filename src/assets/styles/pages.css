@@ -130,11 +130,13 @@
 }
 
 /* ==========================================================OKR管理================================================================== */
-.my-okr {
+.my-okr,
+.okr-maps {
   padding: 50px 0 0 0;
 }
 
-.is-shrink + .my-okr {
+.is-shrink + .my-okr,
+.is-shrink + .okr-maps {
   z-index: 21;
 }
 
@@ -180,7 +182,8 @@
   background: #fff;
 }
 
-.my-okr .cont-area {
+.my-okr .cont-area,
+.okr-maps .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
