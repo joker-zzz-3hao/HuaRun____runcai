@@ -18,7 +18,12 @@
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
                   :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
                 >
-                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr" class="tl-input"></el-input>
+                  <el-input
+                    placeholder="请输入目标名称"
+                    v-model="item.okrDetailObjectKr"
+                    class="tl-input"
+                    maxlength="50"
+                  ></el-input>
                 </el-form-item>
                 <em v-else>{{item.okrDetailObjectKr}}</em>
                 <i
@@ -145,7 +150,12 @@
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.okrDetailObjectKr'"
                 :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
               >
-                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr" class="tl-input"></el-input>
+                <el-input
+                  placeholder="请输入关键结果"
+                  v-model="kritem.okrDetailObjectKr"
+                  class="tl-input"
+                  maxlength="100"
+                ></el-input>
               </el-form-item>
               <span v-else>{{kritem.okrDetailObjectKr}}</span>
               <i
@@ -247,6 +257,7 @@
                     v-model="newItem.okrDetailObjectKr"
                     @input="updateokrCollapse"
                     class="tl-input"
+                    maxlength="100"
                   ></el-input>
                 </el-form-item>
               </div>
