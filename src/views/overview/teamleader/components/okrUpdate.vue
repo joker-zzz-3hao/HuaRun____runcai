@@ -6,6 +6,7 @@
 
 <script>
 import echarts from 'echarts';
+import { teamData } from '../../testData';
 
 export default {
   name: 'okrUpdate',
@@ -13,6 +14,7 @@ export default {
     return {
       mainDataY: [],
       mainDataX: [],
+      testModel: false,
     };
   },
   props: {
@@ -35,7 +37,7 @@ export default {
       const option = {
         xAxis: {
           type: 'category',
-          data: that.mainDataX,
+          data: that.testModel ? teamData.mainDatapreX : that.mainDataX,
           axisLabel: {
             interval: 0,
             textStyle: {
@@ -82,7 +84,7 @@ export default {
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: that.mainDataY,
+          data: that.testModel ? teamData.mainDatapreY : that.mainDataY,
           type: 'bar',
           barWidth: 10,
           showBackground: true,

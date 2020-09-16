@@ -90,7 +90,6 @@
               <template slot-scope="scope">
                 <el-switch
                   v-model.trim="scope.row.status"
-                  :active-text="scope.row.status=='Y'?'启用':'禁用'"
                   active-value="Y"
                   inactive-value="N"
                   @change="statusList(scope.row)"

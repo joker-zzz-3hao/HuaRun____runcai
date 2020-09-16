@@ -90,14 +90,25 @@
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <div class="tree-operating-box" :class="{'is-selected':isShow}">
+            <!-- <div class="tree-operating-box" :class="{'is-selected':isShow}">
               <i @click="hoverDepart(data)" class="el-icon-more"></i>
               <ul class="operating-box-popup">
                 <li @click.stop="createDepart(data,'create')">创建部门</li>
                 <li @click.stop="createDepart(data,'edit')">编辑部门</li>
                 <li @click.stop="deleteDepart(data)">删除</li>
               </ul>
-            </div>
+            </div>-->
+            <!-- <el-dropdown trigger="click"> -->
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <i class="el-icon-more el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="createDepart(data,'create')" command="1">创建部门</el-dropdown-item>
+                <el-dropdown-item @click.native="createDepart(data,'edit')">编辑部门</el-dropdown-item>
+                <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </el-tree>
       </div>
@@ -149,7 +160,6 @@
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
-                    :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
                     class="tl-switch"
                   ></el-switch>
                 </div>

@@ -99,7 +99,7 @@
             <dl
               v-for="(item,index) in memberList"
               :key="item.userId+index"
-              @click="goToDep(item.userId,item.userName,item.userId,item.tenantId)"
+              @click="getidentity(item)"
             >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -111,11 +111,7 @@
             </dl>
           </template>
           <template v-if="orgTable.length>0">
-            <dl
-              v-for="(item,index) in orgTable"
-              :key="item.orgId+index"
-              @click="goToDep(item.orgId,item.orgName,item.userId,item.tenantId)"
-            >
+            <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
                 <div class="user-name">
@@ -239,25 +235,46 @@ export default {
       return userName.substring(nameLength - 2, nameLength);
     },
 
-    goToDep(id, name, userId, tenantId) {
-      const chename = encodeURI(name);
-      if (this.orgTable.length > 0) {
-        this.$router.push({
-          name: 'teamleader',
-          query: {
-            id, name: chename, userId, tenantId,
-          },
-        });
-      }
-      if (this.memberList.length > 0) {
-        this.$router.push({
-          name: 'grassStaff',
-          query: {
-            id, name: chename, userId, tenantId,
-          },
-        });
-      }
+    // 认证身份跳转对应身份首页
+    getidentity(user) {
+      this.server.identity({
+        user: user.userId,
+        orgId: user.orgId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          const chename = encodeURI(user.orgName);
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
+          this.reload();
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          const chename = encodeURI(user.orgName || user.userName);
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
+          this.reload();
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          const chename = encodeURI(user.userName);
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: user.userId, name: chename, userId: user.userId, tenantId: user.tenantId,
+            },
+          });
+        }
+      });
     },
+
     openDialog(val) {
       this.okrItem = val;
       this.drawerTitle = this.okrCycle.periodName;

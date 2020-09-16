@@ -10,16 +10,10 @@
             v-for="(item,idx) in menuList"
             :key="item.id"
             :class="[item.classTag,{'is-active':item.toName === $route.meta.parentRoute},{'is-hover': menuIndex === idx}]"
+            @click="fnHandle(item.events,0,item.toName)"
           >
-            <a
-              @click="fnHandle(item.events,0,item.toName)"
-              @mouseover="fnHandle(item.events,1,idx)"
-              @mouseleave="fnHandle(item.events,2)"
-            ></a>
             <i></i>
-            <div class="text-tip">
-              <p>{{item.mainMenuTitle}}</p>
-            </div>
+            <em>{{item.mainMenuTitle}}</em>
           </li>
         </ul>
         <div class="sub-menu" :class="{'change-index': changeZindex}">
