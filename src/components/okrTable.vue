@@ -60,7 +60,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="42%">
+      <el-table-column prop="okrDetailObjectKr" width="42%" show-overflow-tooltip>
         <template slot-scope="scope">
           <div @click="opensome(scope.row)" class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
