@@ -83,11 +83,10 @@
           :default-expanded-keys="defaultExpandNode"
           :props="defaultProps"
           @node-click="searchList"
-          :expand-on-click-node="false"
+          :expand-on-click-node="true"
           :highlight-current="true"
           :filter-node-method="filterNode"
           class="tl-tree"
-          :render-after-expand="false"
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>

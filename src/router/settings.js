@@ -52,7 +52,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'okrPermissions',
+      parentRoute: 'orgManage',
       title: 'okrPermissions',
       power: '',
     },
@@ -65,7 +65,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'okrPermissions',
+      parentRoute: 'orgManage',
       title: 'okrCycle',
       power: '',
     },
@@ -78,7 +78,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'okrPermissions',
+      parentRoute: 'orgManage',
       title: 'setWorth',
       power: '',
     },

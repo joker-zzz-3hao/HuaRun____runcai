@@ -39,7 +39,7 @@
               </el-select>
             </dd>
           </dl>
-          <dl class="dl-item">
+          <dl class="dl-item" v-if="currentIndex===0">
             <dt>状态</dt>
             <dd>
               <el-select

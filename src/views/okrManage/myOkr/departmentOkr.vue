@@ -6,7 +6,7 @@
           <div class="okr-title">{{okrCycle.periodName}}</div>
           <dl class="okr-state">
             <dt>
-              <i class="el-icon-set-up"></i>
+              <!-- <i class="el-icon-set-up"></i> -->
               <em>状态</em>
             </dt>
             <dd>
@@ -16,14 +16,20 @@
           </dl>
           <dl class="okr-responsible">
             <dt>
-              <i class="el-icon-user"></i>
+              <em>OKR类型</em>
+            </dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <!-- <i class="el-icon-user"></i> -->
               <em>负责人</em>
             </dt>
             <dd>{{okrMain.userName}}</dd>
           </dl>
           <dl class="okr-progress">
             <dt>
-              <i class="el-icon-odometer"></i>
+              <!-- <i class="el-icon-odometer"></i> -->
               <em>OKR进度</em>
             </dt>
             <dd>
@@ -58,20 +64,16 @@
           >
             <template slot="head-undertake" slot-scope="props">
               <div
-                v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
-                <i class="el-icon-link"></i>
-                <em>{{props.okritem.continueCount}}</em>
+                <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
               </div>
             </template>
             <template slot="body-bar" slot-scope="props">
               <div
-                v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
-                <i class="el-icon-link"></i>
-                <em>{{props.okritem.continueCount}}</em>
+                <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
               </div>
             </template>
           </tl-okr-table>
@@ -189,7 +191,6 @@ export default {
     },
   },
   created() {
-    this.getOkrCycleList();
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
     } else {

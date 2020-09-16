@@ -1,27 +1,41 @@
 <template>
-  <el-scrollbar>
-    <div class="cont-box">
-      <dl class="dl-list">
-        <dt class="list-title">
-          <em>{{okrmain.orgName}}{{okrmain.periodName}}</em>
-        </dt>
-        <dd
-          v-for="(item) in historyOKRList"
-          :key="item.okrDetailId"
-          class="tag-kind"
-          :class="{'has-reason': item.remark}"
-        >
-          <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
-          <span v-else class="kind-child">KR</span>
-          <em>{{item.versionName}}</em>
-          <div>
-            <p>{{item.objectName}}</p>
-            <p v-if="item.remark">变更原因：{{item.remark}}</p>
-          </div>
-        </dd>
-      </dl>
+  <el-drawer
+    :modal="false"
+    :wrapperClosable="false"
+    :append-to-body="true"
+    class="tl-drawer"
+    custom-class="custom-drawer history-version"
+    :visible.sync="historDrawer"
+    @closed="closed"
+    :before-close="close"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">历史版本</div>
     </div>
-  </el-scrollbar>
+    <el-scrollbar>
+      <div class="cont-box">
+        <dl class="dl-list">
+          <dt class="list-title">
+            <em>{{okrmain.orgName}}{{okrmain.periodName}}</em>
+          </dt>
+          <dd
+            v-for="(item) in historyOKRList"
+            :key="item.okrDetailId"
+            class="tag-kind"
+            :class="{'has-reason': item.remark}"
+          >
+            <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
+            <span v-else class="kind-child">KR</span>
+            <em>{{item.versionName}}</em>
+            <div>
+              <p>{{item.objectName}}</p>
+              <p v-if="item.remark">变更原因：{{item.remark}}</p>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    </el-scrollbar>
+  </el-drawer>
 </template>
 
 <script>
@@ -55,13 +69,23 @@ export default {
       historyOKRList: [], // 历史版本okr
       dialogTitle: '历史版本', // 弹框标题
       oldOKRList: [],
+      historDrawer: false,
     };
   },
   created() {
-    this.searchOkr();
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
+    show() {
+      this.historDrawer = true;
+      this.searchOkr();
+    },
+    closed() {
+      this.$emit('update:exist', false);
+    },
+    close() {
+      this.historDrawer = false;
+    },
     searchOkr() {
       this.server.selectOkrHistoryVersion({ okrDetailId: this.okrDetailId }).then((res) => {
         if (res.code == 200) {
@@ -83,27 +107,6 @@ export default {
           });
         }
       });
-    },
-    // 选择关联的okr
-    selectDepartokr(index, row) {
-      this.departokrList.forEach((item, i) => {
-        this.departokrList[i].checkFlag = false;
-      });
-      this.departokrList[index].checkFlag = true;
-      this.selection = row;
-    },
-    // 打开弹窗
-    showOkrDialog() {
-      this.searchOkr();
-    },
-    // 关闭抽屉
-    close() {
-      this.setMyokrDrawer(false);
-    },
-    summitUpdate() {
-      this.$message('提交成功~');
-      this.close();
-      // 需刷新列表吗
     },
   },
   watch: {
