@@ -16,7 +16,7 @@
             <div class="okr-title">{{okrCycle.periodName}}</div>
             <dl class="okr-state">
               <dt>
-                <i class="el-icon-set-up"></i>
+                <!-- <i class="el-icon-set-up"></i> -->
                 <em>状态</em>
               </dt>
               <dd>
@@ -26,14 +26,20 @@
             </dl>
             <dl class="okr-responsible">
               <dt>
-                <i class="el-icon-user"></i>
+                <em>OKR类型</em>
+              </dt>
+              <dd>{{CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType]}}</dd>
+            </dl>
+            <dl class="okr-responsible">
+              <dt>
+                <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
               </dt>
               <dd>{{userInfo.userName}}</dd>
             </dl>
             <dl class="okr-progress">
               <dt>
-                <i class="el-icon-odometer"></i>
+                <!-- <i class="el-icon-odometer"></i> -->
                 <em>OKR进度</em>
               </dt>
               <dd>
