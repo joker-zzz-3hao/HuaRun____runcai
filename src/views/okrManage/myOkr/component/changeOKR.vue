@@ -411,7 +411,6 @@ export default {
     },
     // 打开承接弹窗
     openUndertakepage(data) {
-      console.log('打开承接弹窗', data);
       // 选择o的序号，打开关联承接弹框
       this.selectIndex = parseInt(data.num, 10);
       this.undertakeType = data.type;
@@ -421,13 +420,18 @@ export default {
           undertakeOkrVersion: '',
         };
       }
-      this.selectRadioDepart = this.undertakeType == 'new'
-        ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
-        : this.tableList[this.selectIndex].currentOption;
+      if (this.undertakeType == 'new') {
+        this.selectRadioDepart = this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
+          ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
+          : this.tableList[this.selectIndex].okrParentId;
+      } else {
+        this.selectRadioDepart = this.tableList[this.selectIndex].currentOption;
+      }
+      console.log('打开承接弹窗', this.selectRadioDepart);
 
       // 打开前判断下有无数据
       if (!this.tableList[this.selectIndex].departokrList) {
-        console.log('无数据');
+        this.tableList[this.selectIndex].departokrList = JSON.parse(this.departokrObject) || [];
       }
       this.innerDrawer = true;
     },
