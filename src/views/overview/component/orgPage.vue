@@ -36,7 +36,7 @@
         </dd>
       </dl>
     </div>
-    <div v-if="tableList.length>0">
+    <div v-if="tableList.length>0" class="card-panel-body">
       <tl-okr-table
         :overview="true"
         :tableList="tableList"
@@ -61,7 +61,7 @@
       </tl-okr-table>
     </div>
     <div v-else class="tl-card-panel no-data">
-      <span v-if="$route.query.id">暂无数据</span>
+      <span v-if="$route.query.id" class="bg-no-data">暂无数据</span>
       <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
     </div>
     <div class="tl-card-panel">

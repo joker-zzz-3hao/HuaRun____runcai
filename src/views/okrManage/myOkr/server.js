@@ -1,4 +1,5 @@
 import ServerBase from '@/ajax/serverBase';
+import qs from 'qs';
 
 export default class Server extends ServerBase {
   // 查okr详情
@@ -84,5 +85,9 @@ export default class Server extends ServerBase {
   // 权限校验
   checkPrivilege(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/checkOkrOperatePrivilege', param);
+  }
+
+  identity(param) {
+    return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);
   }
 }

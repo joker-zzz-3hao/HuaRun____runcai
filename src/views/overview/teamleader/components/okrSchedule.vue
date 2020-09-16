@@ -6,6 +6,7 @@
 
 <script>
 import echarts from 'echarts';
+import { teamData } from '../../testData';
 
 export default {
   name: 'okrSchedule',
@@ -18,6 +19,7 @@ export default {
     return {
       mainDataY: [],
       mainDataX: [],
+      testModel: true,
     };
   },
   mounted() {
@@ -35,7 +37,7 @@ export default {
       const option = {
         xAxis: {
           type: 'category',
-          data: that.mainDataX,
+          data: that.testModel ? teamData.mainDataX : that.mainDataX,
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色
@@ -83,7 +85,7 @@ export default {
         ],
         series: [{
           // eslint-disable-next-line max-len
-          data: that.mainDataY,
+          data: that.testModel ? teamData.mainDataY : that.mainDataY,
           type: 'bar',
           barWidth: 10,
           showBackground: true,

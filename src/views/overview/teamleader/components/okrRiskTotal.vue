@@ -8,7 +8,7 @@
       <ul>
         <li class="count" v-for="(item,index) in tableData" :key="index">
           <em>{{item.count}}</em>
-          <div>总数量(个)</div>
+          <div>{{item.riskName}}(个)</div>
           <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress>
         </li>
       </ul>

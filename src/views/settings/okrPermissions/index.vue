@@ -229,7 +229,7 @@ export default {
       },
       deep: true,
     },
-    'spUser.userInfo': {
+    'spUser.userId': {
       handler() {
         this.BtnDisabled = false;
       },
