@@ -22,7 +22,6 @@
               <dd>
                 <i class="el-icon-sunny"></i>
                 <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
-                <!-- <em v-else>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em> -->
               </dd>
             </dl>
             <dl class="okr-responsible">
@@ -104,27 +103,26 @@
               @goDraft="goDraft(item)"
               :expands="expands"
             >
+              <!-- o的承接地图 -->
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  @click="props.okritem.continueCount>0
-                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
-                  <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount|| '0'}}</em>
+                  <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
               </template>
+              <!-- kr的承接地图 -->
+              <template slot="body-bar" slot-scope="props">
+                <div
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                >
+                  <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+                </div>
+              </template>
+              <!-- o的进度更新 -->
               <template slot="weight-bar" slot-scope="props">
                 <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
                   <el-button plain class="tl-btn btn-lineheight">更新进展</el-button>
-                </div>
-              </template>
-              <template slot="body-bar" slot-scope="props">
-                <div
-                  @click="props.okritem.continueCount>0
-                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-                >
-                  <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount || '0'}}</em>
                 </div>
               </template>
               <!-- o的操作栏 -->
