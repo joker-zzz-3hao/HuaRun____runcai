@@ -126,11 +126,16 @@ export default {
       this.server.getRole({
         roleId: this.roleInfo.roleId,
         roleCode: this.roleInfo.roleCode,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.form = res.data;
+          this.$refs.treeMenu.setCheckedKeys(res.data.functionMenuTree);
+        }
       });
     },
     updateRole() {
       const { form } = this;
-      form.functionList = this.selectList.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
+      form.functionList = this.list.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
       form.roleType = 'CREATION';
       form.roleId = this.roleInfo.roleId;
       this.server.updateRole(form).then((res) => {

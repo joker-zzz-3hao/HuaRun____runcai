@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar class="settings-layout">
     <tl-header></tl-header>
-    <tl-main-area :menuList="talentMenuList"></tl-main-area>
+    <tl-main-area :menuList="crList"></tl-main-area>
   </el-scrollbar>
 </template>
 

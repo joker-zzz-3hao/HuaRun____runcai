@@ -139,76 +139,6 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    saveTree() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-      this.selectList = this.list;
-      this.postMenu = false;
-    },
-    clearNodeAll() {
-      this.$refs.treeMenu.clearCheckedNodes();
-      this.menuTreeList = [];
-      this.selectList = [];
-    },
-    clearNode(node) {
-      const deleteArr = this.selectArr;
-      deleteArr.forEach((item, index) => {
-        if (this.boolCheck(item, node)) {
-          deleteArr.splice(index, 1);
-        }
-      });
-      this.selectArr = [...deleteArr, []];
-      let arr = [];
-      this.selectArr.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
-      this.$nextTick(() => {
-        const keys = this.$refs.treeMenu.getCheckedNodes();
-        // eslint-disable-next-line array-callback-return
-        const keyCheck = keys.map((item) => {
-          if (item.children.length == 0) {
-            return item;
-          }
-        });
-        // eslint-disable-next-line array-callback-return
-        this.menuTreeList = keyCheck.filter((item) => {
-          if (item) {
-            return item;
-          }
-        });
-      });
-      this.selectList = this.list;
-    },
-    boolCheck(item, node) {
-      return item.some((li) => li === node.data.functionId);
-    },
-    selectCheckList() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-    },
 
     // 获取菜单功能树形结构
     getqueryMenu() {
@@ -228,15 +158,8 @@ export default {
           this.form.mobilePhone = res.data.mobilePhone;
           this.form.tenantId = res.data.tenantId;
           this.form.status = res.data.status;
-          this.selectArr = res.data.menuItems;
-          this.$nextTick(() => {
-            this.selectCheckList();
-            let arr = [];
-            this.selectArr.forEach((item) => {
-              arr = arr.concat(item);
-            });
-            this.selectList = Array.from(new Set(arr));
-          });
+          this.list = res.data.menuItems;
+          this.$refs.treeMenu.setCheckedKeys(res.data.menuItems);
         });
     },
 
@@ -252,16 +175,12 @@ export default {
       });
     },
     // 获取选中tree key值 展示选中
-    handleCheckChange(data) {
-      let arr = [];
-      data.forEach((item) => {
-        arr = arr.concat(item);
-      });
-      this.list = Array.from(new Set(arr));
+    handleCheckChange() {
+      this.list = this.$refs.treeMenu.getCheckedKeys();
     },
     // 提交编辑数据
     pudateForm() {
-      this.form.menuTree = this.selectList.map((item) => ({ functionId: item }));
+      this.form.menuTree = this.list.map((item) => ({ functionId: item }));
       this.server.updateTenant({
         tenantName: this.form.tenantName,
         tenantId: this.form.tenantId,

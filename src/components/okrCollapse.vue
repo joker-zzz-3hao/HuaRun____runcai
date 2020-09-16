@@ -18,7 +18,12 @@
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
                   :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
                 >
-                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr" class="tl-input"></el-input>
+                  <el-input
+                    placeholder="请输入目标名称"
+                    v-model="item.okrDetailObjectKr"
+                    class="tl-input"
+                    maxlength="50"
+                  ></el-input>
                 </el-form-item>
                 <em v-else>{{item.okrDetailObjectKr}}</em>
                 <i
@@ -66,7 +71,7 @@
               >
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index,'change')">
+                <p @click="goUndertake(index,'new')">
                   <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
                 </p>
               </div>
@@ -145,7 +150,12 @@
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.okrDetailObjectKr'"
                 :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
               >
-                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr" class="tl-input"></el-input>
+                <el-input
+                  placeholder="请输入关键结果"
+                  v-model="kritem.okrDetailObjectKr"
+                  class="tl-input"
+                  maxlength="100"
+                ></el-input>
               </el-form-item>
               <span v-else>{{kritem.okrDetailObjectKr}}</span>
               <i
@@ -202,6 +212,8 @@
               </div>
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
+          </dd>
+          <dd>
             <div v-if="canWrite">
               <span>考核指标</span>
               <el-form-item
@@ -245,6 +257,7 @@
                     v-model="newItem.okrDetailObjectKr"
                     @input="updateokrCollapse"
                     class="tl-input"
+                    maxlength="100"
                   ></el-input>
                 </el-form-item>
               </div>

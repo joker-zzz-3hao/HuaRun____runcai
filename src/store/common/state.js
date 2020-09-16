@@ -15,4 +15,6 @@ export default {
   setOrgId: '',
   okrSuccess: false,
   totalMeaasge: 0,
+  okrStatus: 'all',
+  okrCycle: {},
 };

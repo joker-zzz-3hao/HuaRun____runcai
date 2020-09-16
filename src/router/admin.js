@@ -11,7 +11,7 @@ export default [{
     name: 'tenantManage',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
+      isSubMenu: true,
       parentRoute: 'tenantManage',
       title: 'tenantManage',
       power: '',
@@ -24,8 +24,8 @@ export default [{
     name: 'userManage',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
-      parentRoute: 'userManage',
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
       title: 'userManage',
       power: '',
     },
@@ -37,8 +37,8 @@ export default [{
     name: 'departmentManage',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
-      parentRoute: 'departmentManage',
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
       title: 'departmentManage',
       power: '',
     },
@@ -50,8 +50,8 @@ export default [{
     name: 'dictionaryManage',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
-      parentRoute: 'dictionaryManage',
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
       title: 'dictionaryManage',
       power: '',
     },
@@ -63,8 +63,8 @@ export default [{
     name: 'menuManage',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
-      parentRoute: 'menuManage',
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
       title: 'menuManage',
       power: '',
     },
@@ -77,7 +77,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'sysUserManage',
+      parentRoute: 'tenantManage',
       title: 'sysUserManage',
       power: '',
     },

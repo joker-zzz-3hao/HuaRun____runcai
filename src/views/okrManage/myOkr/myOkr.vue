@@ -1,46 +1,5 @@
 <template>
   <div>
-    <div class="operating-panel">
-      <dl class="dl-item">
-        <dt>目标周期</dt>
-        <dd>
-          <!-- multiple 多选属性 -->
-          <!-- searchForm.periodId 单选 -->
-          <!-- multperiod 多选 -->
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <dl class="dl-item">
-        <dt>状态</dt>
-        <dd class="tl-custom-tabs">
-          <div class="tab-menus">
-            <ul class="tab-list">
-              <li
-                v-for="(item,idx) in CONST.STATUS_LIST"
-                :key="item.id"
-                :class="{'is-focus': currentIndex == idx}"
-              >
-                <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
-              </li>
-            </ul>
-            <div class="border-slip"></div>
-          </div>
-        </dd>
-      </dl>
-    </div>
     <div class="cont-panel">
       <!-- 状态为审批中需展示温馨提示 -->
       <div v-if="searchForm.status=='7'">
@@ -130,26 +89,33 @@
             >
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  v-if="props.okritem.continueCount>0"
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount}}</em>
+                  <em>{{props.okritem.continueCount|| '0'}}</em>
                 </div>
               </template>
               <template slot="weight-bar" slot-scope="props">
                 <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
-                  <i class="el-icon-refresh"></i>
+                  <el-button plain class="tl-btn btn-lineheight">更新进展</el-button>
                 </div>
               </template>
               <template slot="body-bar" slot-scope="props">
                 <div
-                  v-if="props.okritem.continueCount>0"
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount}}</em>
+                  <em>{{props.okritem.continueCount || '0'}}</em>
                 </div>
+              </template>
+              <template slot="moreHandle-obar" slot-scope="props">
+                <div @click="goDraft(props.okritem)">...</div>
+              </template>
+              <template slot="moreHandle-krbar" slot-scope="props">
+                <!-- <div @click="goDraft(props.okritem)">...</div> -->
+                <i class="el-icon-more"></i>
               </template>
             </tl-okr-table>
           </div>
@@ -249,8 +215,6 @@ export default {
         canWrite: '',
       },
       drawerTitle: '创建okr',
-      okrCycle: {}, // 当前选择的周期
-      periodList: [], // 周期列表
       writeokrExist: false,
       changeokrExist: false,
       detailExist: false,
@@ -265,13 +229,14 @@ export default {
       myokrDrawer: (state) => state.myokrDrawer,
       userInfo: (state) => state.userInfo,
       okrSuccess: (state) => state.okrSuccess,
+      okrStatus: (state) => state.okrStatus,
+      okrCycle: (state) => state.okrCycle,
     }),
     expands() {
       return [this.okrList[0].tableList[0].okrDetailId];
     },
   },
   created() {
-    this.getOkrCycleList();
   },
   mounted() {
     // 状态
@@ -282,7 +247,6 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-
     searchOkr(status = '', index = 'not') {
       this.searchForm.status = status || this.searchForm.status;
       if (index != 'not') {
@@ -448,16 +412,7 @@ export default {
         },
       });
     },
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.okrCycle.periodId;
-        }
-      });
-    },
+
     deleteDraft(draftId) {
       this.$xconfirm({
         content: '请问您是否确定删除？',
@@ -483,27 +438,26 @@ export default {
     },
   },
   watch: {
-    'searchForm.periodId': {
+    okrCycle: {
       handler(newVal) {
         if (newVal) {
-          this.okrCycle = this.periodList.filter(
-            (citem) => citem.periodId == newVal,
-          )[0] || {};
+          this.searchForm.periodId = newVal.periodId;
           this.searchOkr();
         }
       },
       immediate: true,
       deep: true,
     },
-    // 'multperiod.length': {
-    //   handler() {
-    //     this.okrCycle = this.periodList.filter(
-    //       (citem) => citem.periodId === this.multperiod[0],
-    //     )[0] || {};
-    //     this.searchOkr();
-    //   },
-    //   deep: true,
-    // },
+    okrStatus: {
+      handler(newVal) {
+        if (newVal) {
+          this.searchForm.status = newVal;
+          this.searchOkr(newVal);
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
     okrSuccess: {
       handler(newVal) {
         if (newVal) {

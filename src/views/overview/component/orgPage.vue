@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="showLoad">
     <div class="card-panel-head">
       <div class="okr-title">{{okrCycle.periodName}}</div>
       <dl class="okr-state">
@@ -46,7 +46,7 @@
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
-            v-show="$route.name !== 'grassStaff'"
+            v-show="false"
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
@@ -54,7 +54,7 @@
         <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
-            v-show="$route.name !== 'grassStaff'"
+            v-show="false"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>
@@ -127,6 +127,7 @@ export default {
       tableList: [],
       orgTable: [],
       orgUser: [],
+      showLoad: false,
       searchForm: {
         status: '1',
       },
@@ -187,6 +188,7 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.orgUser = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          this.showLoad = true;
         }
       });
     },
