@@ -354,6 +354,18 @@ export default [{
     },
     component: () => import('@/views/notice/index'),
   },
+  {
+    path: '/note',
+    name: 'note',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'note',
+      title: 'note',
+      power: '',
+    },
+    component: () => import('@/views/note/index'),
+  },
   // 个人设置
   {
     path: '/personConfig',
