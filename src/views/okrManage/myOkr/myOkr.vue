@@ -106,7 +106,8 @@
               <!-- o的承接地图 -->
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
@@ -114,7 +115,8 @@
               <!-- kr的承接地图 -->
               <template slot="body-bar" slot-scope="props">
                 <div
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
