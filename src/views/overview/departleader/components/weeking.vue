@@ -114,6 +114,7 @@ export default {
       moodDataY: [],
       active: {},
       orgTable: [],
+      testModel: false,
     };
   },
 

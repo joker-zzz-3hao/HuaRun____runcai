@@ -1,46 +1,5 @@
 <template>
   <div>
-    <div class="operating-panel">
-      <dl class="dl-item">
-        <dt>目标周期</dt>
-        <dd>
-          <!-- multiple 多选属性 -->
-          <!-- searchForm.periodId 单选 -->
-          <!-- multperiod 多选 -->
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <dl class="dl-item">
-        <dt>状态</dt>
-        <dd class="tl-custom-tabs">
-          <div class="tab-menus">
-            <ul class="tab-list">
-              <li
-                v-for="(item,idx) in CONST.STATUS_LIST"
-                :key="item.id"
-                :class="{'is-focus': currentIndex == idx}"
-              >
-                <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
-              </li>
-            </ul>
-            <div class="border-slip"></div>
-          </div>
-        </dd>
-      </dl>
-    </div>
     <div class="cont-panel">
       <!-- 状态为审批中需展示温馨提示 -->
       <div v-if="searchForm.status=='7'">
@@ -139,7 +98,7 @@
               </template>
               <template slot="weight-bar" slot-scope="props">
                 <div v-if="item.okrMain.status=='1'" @click="openUpdate(props.okritem)">
-                  <i class="el-icon-refresh"></i>
+                  <el-button plain class="tl-btn btn-lineheight">更新进展</el-button>
                 </div>
               </template>
               <template slot="body-bar" slot-scope="props">
@@ -155,7 +114,8 @@
                 <div @click="goDraft(props.okritem)">...</div>
               </template>
               <template slot="moreHandle-krbar" slot-scope="props">
-                <div @click="goDraft(props.okritem)">...</div>
+                <!-- <div @click="goDraft(props.okritem)">...</div> -->
+                <i class="el-icon-more"></i>
               </template>
             </tl-okr-table>
           </div>

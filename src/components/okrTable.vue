@@ -4,11 +4,14 @@
       <li></li>
       <li></li>
       <li>权重</li>
-      <li v-if="!overview">承接地图</li>
+      <li v-if="!overview">
+        <em>承接地图</em>
+      </li>
       <li>风险状态</li>
       <li>关联父目标</li>
       <li>进度</li>
-      <li v-if="!overview && showUpdate">更新进展</li>
+      <li></li>
+      <li></li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
       <el-table-column type="expand" width="5%">
@@ -43,7 +46,7 @@
               <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </dd>
             <!-- kr无关联父目标 仅占位-->
-            <dd></dd>
+            <dd class="undertake-target"></dd>
             <!-- kr进度 -->
             <dd class="okr-progress" v-if="showUpdate">
               <tl-process :data="kritem.okrDetailProgress"></tl-process>
@@ -51,7 +54,7 @@
             <!-- kr无更新进度 仅占位-->
             <dd class="okr-update"></dd>
             <!-- kr更多操作 -->
-            <dd>
+            <dd class="okr-operating">
               <template slot-scope="scope">
                 <slot name="moreHandle-krbar" :okritem="scope.row"></slot>
               </template>
@@ -60,7 +63,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="42%" show-overflow-tooltip>
+      <el-table-column prop="okrDetailObjectKr" width="20%" show-overflow-tooltip>
         <template slot-scope="scope">
           <div @click="opensome(scope.row)" class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
@@ -79,9 +82,9 @@
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="15%"></el-table-column>
+      <el-table-column width="12%"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="15%"></el-table-column>
+      <el-table-column prop="parentObjectKr" width="20%"></el-table-column>
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
@@ -89,13 +92,13 @@
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
-      <el-table-column width="8%" v-if="showUpdate">
+      <el-table-column width="9%" v-if="showUpdate">
         <template slot-scope="scope">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
       <!-- label="操作"  -->
-      <el-table-column width="15%">
+      <el-table-column width="4%">
         <template slot-scope="scope">
           <slot name="moreHandle-obar" :okritem="scope.row"></slot>
         </template>
