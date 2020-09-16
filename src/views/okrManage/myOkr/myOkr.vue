@@ -16,7 +16,7 @@
             <div class="okr-title">{{okrCycle.periodName}}</div>
             <dl class="okr-state">
               <dt>
-                <i class="el-icon-set-up"></i>
+                <!-- <i class="el-icon-set-up"></i> -->
                 <em>状态</em>
               </dt>
               <dd>
@@ -26,14 +26,20 @@
             </dl>
             <dl class="okr-responsible">
               <dt>
-                <i class="el-icon-user"></i>
+                <em>OKR类型</em>
+              </dt>
+              <dd>{{CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType]}}</dd>
+            </dl>
+            <dl class="okr-responsible">
+              <dt>
+                <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
               </dt>
               <dd>{{userInfo.userName}}</dd>
             </dl>
             <dl class="okr-progress">
               <dt>
-                <i class="el-icon-odometer"></i>
+                <!-- <i class="el-icon-odometer"></i> -->
                 <em>OKR进度</em>
               </dt>
               <dd>
@@ -49,39 +55,39 @@
             </dl>
             <dl v-if="['1',1,'6',6,'7',7,'8',8].includes(item.okrMain.status)">
               <dt>
-                <el-popover
-                  placement="left"
-                  width="200"
-                  trigger="click"
-                  :append-to-body="false"
-                  :visible-arrow="false"
-                >
-                  <ul>
-                    <li v-if="['1','7',1,7].includes(item.okrMain.status)">
-                      <div @click="openDialog(item)">
-                        <em>操作历史</em>
-                      </div>
-                    </li>
-                    <li v-if="['1',1].includes(item.okrMain.status)">
-                      <div @click="goChangeOkr(item)" class="okr-change">
-                        <i class="el-icon-edit-outline"></i>
-                        <em>申请变更</em>
-                      </div>
-                    </li>
-                    <li v-if="['6'].includes(item.okrMain.status)">
-                      <div @click="deleteDraft(item.id)" class="okr-delete">
-                        <i class="el-icon-delete"></i>
-                        <em>删除</em>
-                      </div>
-                    </li>
-                    <li v-if="['6','8',6,8].includes(item.okrMain.status)">
-                      <div @click="goDraft(item)">
-                        <em>编辑</em>
-                      </div>
-                    </li>
-                  </ul>
-                  <i class="el-icon-more" slot="reference"></i>
-                </el-popover>
+                <el-dropdown :append-to-body="false">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-if="['1','7',1,7].includes(item.okrMain.status)"
+                      @click.native="openDialog(item)"
+                    >
+                      <em>操作历史</em>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="['1',1].includes(item.okrMain.status)"
+                      @click.native="goChangeOkr(item)"
+                    >
+                      <i class="el-icon-edit-outline"></i>
+                      <em>申请变更</em>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="['6',6].includes(item.okrMain.status)"
+                      @click.native="deleteDraft(item.id)"
+                    >
+                      <i class="el-icon-delete"></i>
+                      <em>删除</em>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="['6','8',6,8].includes(item.okrMain.status)"
+                      @click.native="goDraft(item)"
+                    >
+                      <em>编辑</em>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </dt>
             </dl>
             <dl class="update-time">
@@ -106,7 +112,8 @@
               <!-- o的承接地图 -->
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
@@ -114,7 +121,8 @@
               <!-- kr的承接地图 -->
               <template slot="body-bar" slot-scope="props">
                 <div
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
@@ -127,48 +135,44 @@
               </template>
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
-                <el-popover
+                <el-dropdown
                   v-if="['1','7',1,7].includes(item.okrMain.status) && props.okritem.versionCount>1"
-                  placement="left"
-                  width="200"
-                  trigger="hover"
                   :append-to-body="false"
-                  :visible-arrow="false"
                 >
-                  <ul>
-                    <li
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
                       v-if="props.okritem.versionCount>1"
-                      @click="openHistory(item.okrMain,props.okritem)"
+                      @click.native="openHistory(item.okrMain,props.okritem)"
                     >
                       <em>历史版本</em>
-                    </li>
-                  </ul>
-                  <i class="el-icon-more" slot="reference"></i>
-                </el-popover>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
-                <el-popover
+                <el-dropdown
                   v-if="['1','7',1,7].includes(item.okrMain.status)"
-                  placement="left"
-                  width="200"
-                  trigger="hover"
                   :append-to-body="false"
-                  :visible-arrow="false"
                 >
-                  <ul>
-                    <li
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
                       v-if="props.okritem.versionCount>1"
-                      @click="openHistory(item.okrMain,props.okritem)"
+                      @click.native="openHistory(item.okrMain,props.okritem)"
                     >
                       <em>历史版本</em>
-                    </li>
-                    <li @click="openCheckjudge(props.okritem)">
+                    </el-dropdown-item>
+                    <el-dropdown-item @click.native="openCheckjudge(props.okritem)">
                       <em>考核指标、衡量办法</em>
-                    </li>
-                  </ul>
-                  <i class="el-icon-more" slot="reference"></i>
-                </el-popover>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </tl-okr-table>
           </div>
