@@ -136,7 +136,7 @@
               <!-- 临时项目可不选择支撑项 -->
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'"
-                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:''"
+                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds:{}"
               >
                 <el-input
                   @focus="addSupportOkr(scope.row)"
