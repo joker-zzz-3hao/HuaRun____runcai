@@ -55,7 +55,7 @@
             </dl>
             <dl v-if="['1',1,'6',6,'7',7,'8',8].includes(item.okrMain.status)">
               <dt>
-                <el-dropdown :append-to-body="false">
+                <el-dropdown trigger="click">
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
                   </span>
@@ -112,8 +112,8 @@
               <!-- o的承接地图 -->
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  @click="props.okritem.continueCount>0
-                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  v-if="props.okritem.continueCount>0"
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
@@ -121,8 +121,8 @@
               <!-- kr的承接地图 -->
               <template slot="body-bar" slot-scope="props">
                 <div
-                  @click="props.okritem.continueCount>0
-                   && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  v-if="props.okritem.continueCount>0"
+                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
@@ -531,6 +531,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.checkjudge.show();
       });
+    },
+    handleClick() {
+      console.log();
     },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
