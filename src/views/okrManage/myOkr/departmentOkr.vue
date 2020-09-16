@@ -18,7 +18,7 @@
             <dt>
               <em>OKR类型</em>
             </dt>
-            <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType]}}</dd>
+            <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
           </dl>
           <dl class="okr-responsible">
             <dt>
