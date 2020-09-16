@@ -29,7 +29,7 @@
             <em v-if="item.noOpen">未开放</em>
           </div>
           <el-tooltip
-            v-if="!item.weeklyId && !item.noOpen && !canEdit"
+            v-if="!item.weeklyId && !item.noOpen && !item.canEdit"
             class
             effect="dark"
             content="已超过两周，不可再提交周报"
@@ -100,7 +100,10 @@ export default {
       weekIndex: undefined,
       currentMonthWeekList: [],
       afterDisabled: {
-        disabledDate: (date) => date.getTime() > new Date().getTime(),
+        disabledDate: (date) => {
+          const now = new Date('2020-01-01');
+          return date.getTime() > new Date().getTime() || now.getTime() > date.getTime();
+        },
       },
     };
   },
