@@ -201,9 +201,9 @@
     <!-- 本周感想、建议、收获 -->
     <div>
       <h1>本周感想、建议、收获</h1>
-      <i v-show="!thoughtOpen" @click="openThought" class="el-icon-plus"></i>
-      <i v-show="thoughtOpen" @click="closeThought" class="el-icon-minus"></i>
-      <el-form :model="formData" v-show="thoughtOpen">
+      <i v-show="!weeklyData.weeklyId && !thoughtOpen" @click="openThought" class="el-icon-plus"></i>
+      <i v-show="!weeklyData.weeklyId && thoughtOpen" @click="closeThought" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="weeklyData.weeklyId || thoughtOpen">
         <el-table :data="formData.weeklyThoughtSaveList">
           <el-table-column>
             <template slot-scope="scope">
@@ -252,9 +252,9 @@
     <!-- 下周计划 -->
     <div>
       <h1>下周计划</h1>
-      <i v-show="!planOpen" @click="openPlan" class="el-icon-plus"></i>
-      <i v-show="planOpen" @click="closePlan" class="el-icon-minus"></i>
-      <el-form :model="formData" v-show="planOpen">
+      <i v-show="!weeklyData.weeklyId && !planOpen" @click="openPlan" class="el-icon-plus"></i>
+      <i v-show="!weeklyData.weeklyId && planOpen" @click="closePlan" class="el-icon-minus"></i>
+      <el-form :model="formData" v-show="weeklyData.weeklyId || planOpen">
         <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
           <el-table-column label="序号" type="index"></el-table-column>
           <el-table-column label="工作项">
