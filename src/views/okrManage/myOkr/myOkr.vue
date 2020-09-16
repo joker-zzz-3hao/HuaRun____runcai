@@ -50,22 +50,34 @@
             </dl>
             <dl v-if="['1',1,'6'].includes(item.okrMain.status)">
               <dt>
-                <div
-                  v-if="['1',1].includes(item.okrMain.status)"
-                  @click="goChangeOkr(item)"
-                  class="okr-change"
+                <el-popover
+                  placement="left"
+                  width="200"
+                  trigger="click"
+                  :append-to-body="false"
+                  :visible-arrow="false"
                 >
-                  <i class="el-icon-edit-outline"></i>
-                  <em>变更</em>
-                </div>
-                <div
-                  v-if="['6'].includes(item.okrMain.status)"
-                  @click="deleteDraft(item.id)"
-                  class="okr-delete"
-                >
-                  <i class="el-icon-delete"></i>
-                  <em>删除</em>
-                </div>
+                  <ul>
+                    <li v-if="['1','7',1,7].includes(item.okrMain.status)">
+                      <div @click="openDialog(item)">
+                        <em>操作历史</em>
+                      </div>
+                    </li>
+                    <li v-if="['1',1].includes(item.okrMain.status)">
+                      <div @click="goChangeOkr(item)" class="okr-change">
+                        <i class="el-icon-edit-outline"></i>
+                        <em>申请变更</em>
+                      </div>
+                    </li>
+                    <li v-if="['6'].includes(item.okrMain.status)">
+                      <div @click="deleteDraft(item.id)" class="okr-delete">
+                        <i class="el-icon-delete"></i>
+                        <em>删除</em>
+                      </div>
+                    </li>
+                  </ul>
+                  <i class="el-icon-more" slot="reference"></i>
+                </el-popover>
               </dt>
             </dl>
             <dl class="update-time">
@@ -110,12 +122,63 @@
                   <em>{{props.okritem.continueCount || '0'}}</em>
                 </div>
               </template>
+              <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
-                <div @click="goDraft(props.okritem)">...</div>
+                <el-popover
+                  placement="left"
+                  width="250"
+                  trigger="hover"
+                  :append-to-body="false"
+                  :visible-arrow="false"
+                >
+                  <ul>
+                    <li>
+                      <div
+                        v-if="['1','7',1,7].includes(item.okrMain.status)"
+                        @click="openDialog(props.okritem)"
+                      >历史版本</div>
+                    </li>
+                    <li>
+                      <div v-if="['1','7',1,7].includes(item.okrMain.status)">考核指标、衡量办法</div>
+                    </li>
+                    <li>
+                      <div
+                        @click="deleteDraft(props.okritem.id)"
+                        v-if="['6',6].includes(item.okrMain.status)"
+                      >删除</div>
+                    </li>
+                    <li>
+                      <div
+                        @click="goDraft(props.okritem)"
+                        v-if="['6','8',6,8].includes(item.okrMain.status)"
+                      >编辑</div>
+                    </li>
+                  </ul>
+                  <i class="el-icon-more" slot="reference"></i>
+                </el-popover>
               </template>
+              <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
-                <!-- <div @click="goDraft(props.okritem)">...</div> -->
-                <i class="el-icon-more"></i>
+                <el-popover
+                  placement="left"
+                  width="250"
+                  trigger="hover"
+                  :append-to-body="false"
+                  :visible-arrow="false"
+                >
+                  <ul>
+                    <li>
+                      <div
+                        v-if="['1','7',1,7].includes(item.okrMain.status)"
+                        @click="openDialog(props.okritem)"
+                      >历史版本</div>
+                    </li>
+                    <li>
+                      <div v-if="['1','7',1,7].includes(item.okrMain.status)">考核指标、衡量办法</div>
+                    </li>
+                  </ul>
+                  <i class="el-icon-more" slot="reference"></i>
+                </el-popover>
               </template>
             </tl-okr-table>
           </div>
@@ -249,6 +312,9 @@ export default {
   methods: {
     searchOkr(status = '', index = 'not') {
       this.searchForm.status = status || this.searchForm.status;
+      if (!this.searchForm.periodId) {
+        return;
+      }
       if (index != 'not') {
         this.borderSlip(index);
       }

@@ -10,7 +10,7 @@
       <li>风险状态</li>
       <li>关联父目标</li>
       <li>进度</li>
-      <li></li>
+      <li>更新进展</li>
       <li></li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
@@ -21,7 +21,10 @@
             <!-- kr名称 -->
             <dd class="okr-kr-name tag-kind">
               <span class="kind-child">KR{{krindex+1}}</span>
-              <em @click="opensome(kritem)">{{kritem.okrDetailObjectKr}}</em>
+              <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
+                <dev slot="content">{{kritem.okrDetailObjectKr}}</dev>
+                <em>{{kritem.okrDetailObjectKr}}</em>
+              </el-tooltip>
             </dd>
             <!-- kr权重 -->
             <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
@@ -55,19 +58,20 @@
             <dd class="okr-update"></dd>
             <!-- kr更多操作 -->
             <dd class="okr-operating">
-              <template slot-scope="scope">
-                <slot name="moreHandle-krbar" :okritem="scope.row"></slot>
-              </template>
+              <slot name="moreHandle-krbar" :okritem="kritem"></slot>
             </dd>
           </dl>
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="20%" show-overflow-tooltip>
+      <el-table-column prop="okrDetailObjectKr" width="20%">
         <template slot-scope="scope">
           <div @click="opensome(scope.row)" class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
-            <em>{{scope.row.okrDetailObjectKr}}</em>
+            <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
+              <dev slot="content">{{scope.row.okrDetailObjectKr}}</dev>
+              <em>{{scope.row.okrDetailObjectKr}}</em>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
