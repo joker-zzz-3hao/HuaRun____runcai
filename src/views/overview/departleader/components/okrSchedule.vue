@@ -24,7 +24,7 @@ export default {
       mainDataY: [],
       mainDataX: [],
       mainDataYBar: [],
-      testModel: true,
+      testModel: false,
     };
   },
   mounted() {
