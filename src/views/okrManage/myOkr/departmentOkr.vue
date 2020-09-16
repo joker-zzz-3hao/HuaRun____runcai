@@ -189,7 +189,6 @@ export default {
     },
   },
   created() {
-    this.getOkrCycleList();
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
     } else {
@@ -267,6 +266,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.searchForm.periodId = newVal.periodId;
+          console.log('查部门的了');
           this.searchOkr();
         }
       },

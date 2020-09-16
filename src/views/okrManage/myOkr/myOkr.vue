@@ -128,7 +128,7 @@
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-popover
-                  v-if="['1','7',1,7].includes(item.okrMain.status)"
+                  v-if="['1','7',1,7].includes(item.okrMain.status) && props.okritem.versionCount>1"
                   placement="left"
                   width="200"
                   trigger="hover"
@@ -141,9 +141,6 @@
                       @click="openHistory(item.okrMain,props.okritem)"
                     >
                       <em>历史版本</em>
-                    </li>
-                    <li @click="openDialog(props.okritem)">
-                      <em>考核指标、衡量办法</em>
                     </li>
                   </ul>
                   <i class="el-icon-more" slot="reference"></i>
@@ -166,7 +163,7 @@
                     >
                       <em>历史版本</em>
                     </li>
-                    <li @click="openDialog(props.okritem)">
+                    <li @click="openCheckjudge(props.okritem)">
                       <em>考核指标、衡量办法</em>
                     </li>
                   </ul>
@@ -231,6 +228,12 @@
       :okrDetailId="historyId"
       :okrmain="historyTitle"
     ></tl-okr-history>
+    <tl-checkjudge
+      :exist.sync="checkjudgeExist"
+      v-if="checkjudgeExist"
+      ref="checkjudge"
+      :checkjudgeData="checkjudgeData"
+    ></tl-checkjudge>
   </div>
 </template>
 
@@ -241,6 +244,7 @@ import okrDetail from '@/components/okrDetail';
 import okrHistory from '@/components/okrHistory';
 import okrUpdate from './component/okrUpdate';
 import changeOKR from './component/changeOKR';
+import checkJudge from './component/checkJudge';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 import CONST from './const';
@@ -256,6 +260,7 @@ export default {
     'tl-writeokr': writeOkr,
     'tl-changeokr': changeOKR,
     'tl-okr-history': okrHistory,
+    'tl-checkjudge': checkJudge,
   },
   data() {
     return {
@@ -291,6 +296,8 @@ export default {
       historyExist: false,
       historyId: '',
       historyTitle: {},
+      checkjudgeExist: false,
+      checkjudgeData: {},
     };
   },
   computed: {
@@ -510,6 +517,17 @@ export default {
         this.$refs.okrhistory.show();
       });
     },
+    openCheckjudge(item) {
+      console.log('openCheckjudge', item);
+      this.checkjudgeData = {
+        checkQuota: item.checkQuota,
+        judgeMethod: item.judgeMethod,
+      };
+      this.checkjudgeExist = true;
+      this.$nextTick(() => {
+        this.$refs.checkjudge.show();
+      });
+    },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
@@ -527,8 +545,8 @@ export default {
           this.searchOkr();
         }
       },
-      immediate: true,
       deep: true,
+      immediate: true,
     },
     okrStatus: {
       handler(newVal) {
@@ -537,7 +555,6 @@ export default {
           this.searchOkr(newVal);
         }
       },
-      immediate: true,
       deep: true,
     },
     okrSuccess: {

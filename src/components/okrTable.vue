@@ -22,7 +22,7 @@
             <dd class="okr-kr-name tag-kind">
               <span class="kind-child">KR{{krindex+1}}</span>
               <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-                <dev slot="content">{{kritem.okrDetailObjectKr}}</dev>
+                <div slot="content">{{kritem.okrDetailObjectKr}}</div>
                 <em>{{kritem.okrDetailObjectKr}}</em>
               </el-tooltip>
             </dd>
@@ -69,7 +69,7 @@
           <div class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
             <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-              <dev slot="content">{{scope.row.okrDetailObjectKr}}</dev>
+              <div slot="content">{{scope.row.okrDetailObjectKr}}</div>
               <em>{{scope.row.okrDetailObjectKr}}</em>
             </el-tooltip>
           </div>
@@ -91,7 +91,7 @@
       <el-table-column prop="parentObjectKr" width="20%">
         <template slot-scope="scope">
           <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-            <dev slot="content">{{scope.row.parentObjectKr}}</dev>
+            <div slot="content">{{scope.row.parentObjectKr}}</div>
             <em>{{scope.row.parentObjectKr}}</em>
           </el-tooltip>
         </template>
