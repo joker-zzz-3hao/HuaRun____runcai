@@ -130,11 +130,11 @@
             >
               <template slot="head-undertake" slot-scope="props">
                 <div
-                  v-if="props.okritem.continueCount>0"
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount}}</em>
+                  <em>{{props.okritem.continueCount|| '0'}}</em>
                 </div>
               </template>
               <template slot="weight-bar" slot-scope="props">
@@ -144,12 +144,18 @@
               </template>
               <template slot="body-bar" slot-scope="props">
                 <div
-                  v-if="props.okritem.continueCount>0"
-                  @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                  @click="props.okritem.continueCount>0
+                  && goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
                 >
                   <i class="el-icon-link"></i>
-                  <em>{{props.okritem.continueCount}}</em>
+                  <em>{{props.okritem.continueCount || '0'}}</em>
                 </div>
+              </template>
+              <template slot="moreHandle-obar" slot-scope="props">
+                <div @click="goDraft(props.okritem)">...</div>
+              </template>
+              <template slot="moreHandle-krbar" slot-scope="props">
+                <div @click="goDraft(props.okritem)">...</div>
               </template>
             </tl-okr-table>
           </div>

@@ -6,6 +6,7 @@
       <li>权重</li>
       <li v-if="!overview">承接地图</li>
       <li>风险状态</li>
+      <li>关联父目标</li>
       <li>进度</li>
       <li v-if="!overview && showUpdate">更新进展</li>
     </ul>
@@ -41,11 +42,20 @@
               </div>
               <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </dd>
+            <!-- kr无关联父目标 仅占位-->
+            <dd></dd>
             <!-- kr进度 -->
             <dd class="okr-progress" v-if="showUpdate">
               <tl-process :data="kritem.okrDetailProgress"></tl-process>
             </dd>
+            <!-- kr无更新进度 仅占位-->
             <dd class="okr-update"></dd>
+            <!-- kr更多操作 -->
+            <dd>
+              <template slot-scope="scope">
+                <slot name="moreHandle-krbar" :okritem="scope.row"></slot>
+              </template>
+            </dd>
           </dl>
         </template>
       </el-table-column>
@@ -70,7 +80,8 @@
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
       <el-table-column width="15%"></el-table-column>
-
+      <!-- o label="关联父目标" -->
+      <el-table-column prop="parentObjectKr" width="15%"></el-table-column>
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
@@ -81,6 +92,12 @@
       <el-table-column width="8%" v-if="showUpdate">
         <template slot-scope="scope">
           <slot name="weight-bar" :okritem="scope.row"></slot>
+        </template>
+      </el-table-column>
+      <!-- label="操作"  -->
+      <el-table-column width="15%">
+        <template slot-scope="scope">
+          <slot name="moreHandle-obar" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
     </el-table>

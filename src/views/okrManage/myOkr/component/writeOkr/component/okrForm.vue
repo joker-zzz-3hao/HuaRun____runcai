@@ -21,6 +21,7 @@
                       placeholder="请输入目标名称"
                       v-model="oitem.okrDetailObjectKr"
                       class="tl-input"
+                      maxlength="50"
                     ></el-input>
                   </el-form-item>
                 </div>
@@ -111,6 +112,7 @@
                     placeholder="请输入关键结果"
                     v-model="kitem.okrDetailObjectKr"
                     class="tl-input"
+                    maxlength="100"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -155,6 +157,8 @@
               <el-form-item label="风险状态">
                 <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
               </el-form-item>
+            </dd>
+            <dd>
               <el-form-item
                 label="考核指标"
                 :prop="'okrInfoList.' + index + '.krList.' + kindex + '.checkQuota'"

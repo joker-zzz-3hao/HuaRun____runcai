@@ -57,12 +57,12 @@
       <el-form-item label="事件名" v-if="form.functionType !=='BTN'">
         <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
       </el-form-item>
-      <el-form-item label="icon" v-if="form.functionType =='PAGE'" prop="icon">
+      <!-- <el-form-item label="icon" v-if="form.functionType =='PAGE'" prop="icon">
         <el-input style="width:320px" v-model="form.icon" placeholder="请输入icon名称"></el-input>
       </el-form-item>
       <el-form-item label="标题名称" v-if="form.functionType =='PAGE'" prop="title">
         <el-input style="width:320px" v-model="form.title" placeholder="请输入标题名称"></el-input>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
     <div>
       <el-button type="primary" @click="validateForm">确定</el-button>

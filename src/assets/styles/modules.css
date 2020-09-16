@@ -1515,7 +1515,14 @@
   font-weight: 500;
 }
 
+.tl-tree .tree-title em {
+  flex: 1;
+  width: calc(100% - 26px);
+}
+
 .tl-tree .tree-operating-box {
+  margin: 0 0 0 10px;
+  flex: 0 0 16px;
   position: relative;
 }
 
@@ -1555,7 +1562,7 @@
   top: 24px;
   content: '';
   width: 3px;
-  height: 22px;
+  height: calc(100% + 22px);
   background: #fff;
   z-index: 5;
 }
@@ -1576,6 +1583,15 @@
   z-index: 5;
 }
 
+.tl-tree > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__children > .el-tree-node .el-tree-node__content .tree-title em {
+  flex: 1;
+  width: calc(100% - 26px);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .tl-tree .el-tree-node .el-tree-node__content .is-leaf + .tree-title::before {
   width: 50px;
 }
@@ -1586,6 +1602,7 @@
 
 .tl-tree .tree-title {
   position: relative;
+  width: calc(100% - 30px);
 }
 
 .tl-tree .tree-title::before {
@@ -1648,6 +1665,21 @@
 /* tl-cascader */
 .tl-cascader .el-icon-arrow-down::before {
   content: "\e790";
+}
+
+.tl-cascader-popper .el-cascader-node.in-active-path,
+.tl-cascader-popper .el-cascader-node.is-active,
+.tl-cascader-popper .el-cascader-node.is-selectable.in-checked-path {
+  color: #685df1;
+}
+
+.tl-cascader-popper .el-radio__input.is-checked .el-radio__inner {
+  border-color: #685df1;
+  background: #685df1;
+}
+
+.tl-cascader-popper .el-radio__inner:hover {
+  border-color: #685df1;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
