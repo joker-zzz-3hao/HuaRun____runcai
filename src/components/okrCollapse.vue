@@ -202,6 +202,8 @@
               </div>
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
+          </dd>
+          <dd>
             <div v-if="canWrite">
               <span>考核指标</span>
               <el-form-item

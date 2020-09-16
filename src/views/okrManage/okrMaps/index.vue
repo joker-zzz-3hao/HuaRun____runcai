@@ -4,7 +4,7 @@
       <div v-if="showDepartmentSelect">
         <!-- OKR树 -->
         <div v-if="showOkrMap">
-          <!-- <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth> -->
+          <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
           <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
             <template slot="treecard" slot-scope="node">
               <card
@@ -65,6 +65,7 @@
                 :show-all-levels="false"
                 :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
                 @change="selectIdChange"
+                popper-class="tl-cascader-popper"
                 class="tl-cascader"
               ></el-cascader>
             </dd>
@@ -104,7 +105,6 @@
         </div>
       </div>
     </div>
-
     <tl-okr-detail
       :exist.sync="detailExist"
       ref="okrdetail"

@@ -155,6 +155,8 @@
               <el-form-item label="风险状态">
                 <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
               </el-form-item>
+            </dd>
+            <dd>
               <el-form-item
                 label="考核指标"
                 :prop="'okrInfoList.' + index + '.krList.' + kindex + '.checkQuota'"
