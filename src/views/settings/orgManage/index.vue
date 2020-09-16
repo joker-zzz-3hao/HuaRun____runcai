@@ -439,7 +439,11 @@ export default {
       }
       this.showcreateDepart = true;
       this.$nextTick(() => {
-        this.$refs.createDepart.show(depart);
+        if (type == 'create') {
+          this.$refs.createDepart.show();
+        } else {
+          this.$refs.createDepart.show(depart);
+        }
       });
     },
     deleteDepart(depart) {
