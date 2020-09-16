@@ -66,7 +66,7 @@
       <!-- 目标O名称 无label -->
       <el-table-column prop="okrDetailObjectKr" width="20%">
         <template slot-scope="scope">
-          <div @click="opensome(scope.row)" class="tag-kind">
+          <div class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
             <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
               <dev slot="content">{{scope.row.okrDetailObjectKr}}</dev>
@@ -88,7 +88,14 @@
       <!-- o无风险状态 label="风险状态" -->
       <el-table-column width="12%"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="20%"></el-table-column>
+      <el-table-column prop="parentObjectKr" width="20%">
+        <template slot-scope="scope">
+          <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
+            <dev slot="content">{{scope.row.parentObjectKr}}</dev>
+            <em>{{scope.row.parentObjectKr}}</em>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">

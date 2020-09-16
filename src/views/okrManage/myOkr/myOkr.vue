@@ -48,7 +48,7 @@
                 ></el-progress>
               </dd>
             </dl>
-            <dl v-if="['1',1,'6'].includes(item.okrMain.status)">
+            <dl v-if="['1',1,'6',6,'7',7,'8',8].includes(item.okrMain.status)">
               <dt>
                 <el-popover
                   placement="left"
@@ -73,6 +73,11 @@
                       <div @click="deleteDraft(item.id)" class="okr-delete">
                         <i class="el-icon-delete"></i>
                         <em>删除</em>
+                      </div>
+                    </li>
+                    <li v-if="['6','8',6,8].includes(item.okrMain.status)">
+                      <div @click="goDraft(item)">
+                        <em>编辑</em>
                       </div>
                     </li>
                   </ul>
@@ -125,33 +130,19 @@
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-popover
+                  v-if="['1','7',1,7].includes(item.okrMain.status)"
                   placement="left"
-                  width="250"
+                  width="200"
                   trigger="hover"
                   :append-to-body="false"
                   :visible-arrow="false"
                 >
                   <ul>
-                    <li>
-                      <div
-                        v-if="['1','7',1,7].includes(item.okrMain.status)"
-                        @click="openDialog(props.okritem)"
-                      >历史版本</div>
+                    <li v-if="props.okritem.versionCount>1" @click="openDialog(props.okritem)">
+                      <em>历史版本</em>
                     </li>
-                    <li>
-                      <div v-if="['1','7',1,7].includes(item.okrMain.status)">考核指标、衡量办法</div>
-                    </li>
-                    <li>
-                      <div
-                        @click="deleteDraft(props.okritem.id)"
-                        v-if="['6',6].includes(item.okrMain.status)"
-                      >删除</div>
-                    </li>
-                    <li>
-                      <div
-                        @click="goDraft(props.okritem)"
-                        v-if="['6','8',6,8].includes(item.okrMain.status)"
-                      >编辑</div>
+                    <li @click="openDialog(props.okritem)">
+                      <em>考核指标、衡量办法</em>
                     </li>
                   </ul>
                   <i class="el-icon-more" slot="reference"></i>
@@ -160,21 +151,19 @@
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
                 <el-popover
+                  v-if="['1','7',1,7].includes(item.okrMain.status)"
                   placement="left"
-                  width="250"
+                  width="200"
                   trigger="hover"
                   :append-to-body="false"
                   :visible-arrow="false"
                 >
                   <ul>
-                    <li>
-                      <div
-                        v-if="['1','7',1,7].includes(item.okrMain.status)"
-                        @click="openDialog(props.okritem)"
-                      >历史版本</div>
+                    <li v-if="props.okritem.versionCount>1" @click="openDialog(props.okritem)">
+                      <em>历史版本</em>
                     </li>
-                    <li>
-                      <div v-if="['1','7',1,7].includes(item.okrMain.status)">考核指标、衡量办法</div>
+                    <li @click="openDialog(props.okritem)">
+                      <em>考核指标、衡量办法</em>
                     </li>
                   </ul>
                   <i class="el-icon-more" slot="reference"></i>
@@ -407,11 +396,12 @@ export default {
 
     // 打开详情
     openDialog(val) {
+      console.log('详情', val);
       this.currentView = 'tl-okr-detail';
       this.okrItem = val;
       this.drawerTitle = `${this.okrCycle.periodName}`;
       this.detailExist = true;
-      this.okrId = val.okrMain.okrId;
+      this.okrId = val.okrMainId || val.okrMain.okrId;
       this.$nextTick(() => {
         this.$refs[this.currentView].showOkrDialog();
       });
