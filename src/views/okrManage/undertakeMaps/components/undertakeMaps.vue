@@ -227,7 +227,6 @@ export default {
 
     // 选择部门
     selectIdChange(data) {
-      console.log('选择部门', data);
       this.orgFullId = data;
       // this.showCascader = false;
       const orgFullId = data[data.length - 1];

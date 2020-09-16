@@ -161,7 +161,6 @@ export default {
       data.forEach((v) => {
         if (v[this.fatherId]) {
           const p = keys[v[this.fatherId]]; // p为v的上一级
-          console.log('nodev', v);
           if (p) {
             p.children = p.children || []; // 创建p的子节点数组
             p.children.push(v); // 把当前节点放到p的子节点数组里
@@ -181,11 +180,20 @@ export default {
       });
       data.sort(this.compare); // 排序
       data.forEach((v) => {
+        if (v[this.fatherId]) {
+          const p = keys[v[this.fatherId]]; // p为v的上一级
+          if (p) {
+            v.deep = p.deep + 1;
+            v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
+            v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
+            v.open = v.deep < 1; // 除根节点默认open为false
+            v.show = v.deep < 2; // 大于2层默认show为false
+          }
+        }
         levels[v.deep] = levels[v.deep] || []; // 创建当前层级的数组
         levels[v.deep].push(v); // 把当前节点加到当前层级里
         v.prev = levels[v.deep][levels[v.deep].length - 2]; // 前一个节点
       });
-
       this.root = root; // 根节点
       this.list = data;
       this.levels = levels;

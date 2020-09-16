@@ -7,7 +7,7 @@
     @closed="closed"
   >
     <div slot="title">
-      <div>考核指标衡量办法</div>
+      <div>考核指标、衡量办法</div>
     </div>
     <div>
       <!-- 考核指标 -->
