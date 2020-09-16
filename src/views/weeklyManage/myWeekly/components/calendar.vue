@@ -100,7 +100,10 @@ export default {
       weekIndex: undefined,
       currentMonthWeekList: [],
       afterDisabled: {
-        disabledDate: (date) => date.getTime() > new Date().getTime(),
+        disabledDate: (date) => {
+          const now = new Date('2020-01-01');
+          return date.getTime() > new Date().getTime() || now.getTime() > date.getTime();
+        },
       },
     };
   },
