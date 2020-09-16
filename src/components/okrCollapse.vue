@@ -213,10 +213,11 @@
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
           </dd>
-          <dd>
-            <div v-if="canWrite">
+          <dd v-if="canWrite">
+            <div>
               <span>考核指标</span>
               <el-form-item
+                v-if="sdfsdfsdf"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
                 :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
               >
@@ -227,8 +228,17 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
+              <em v-else>{{cvbcvbvbx}}</em>
+              <i
+                v-if="canWrite && !kritem.showWeightEdit"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showWeightEdit')"
+              ></i>
+            </div>
+            <div>
               <span>衡量办法</span>
               <el-form-item
+                v-if="dfgdfgdfgdfg"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'"
                 :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
               >
@@ -239,6 +249,12 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
+              <em v-else>{{cvbcvbvbx}}</em>
+              <i
+                v-if="canWrite && !kritem.showWeightEdit"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showWeightEdit')"
+              ></i>
             </div>
           </dd>
         </dl>

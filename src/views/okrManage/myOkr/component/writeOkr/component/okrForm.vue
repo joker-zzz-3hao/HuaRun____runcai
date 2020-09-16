@@ -226,11 +226,9 @@
               </el-popover>-->
             </dd>
           </dl>
-          <dl>
-            <el-button type="text" @click="addkr(index)" class="tl-btn sub-list-add">
-              <i class="el-icon-plus"></i>添加关键结果
-            </el-button>
-          </dl>
+          <el-button type="text" @click="addkr(index)" class="tl-btn sub-list-add">
+            <i class="el-icon-plus"></i>添加关键结果
+          </el-button>
         </elcollapseitem>
       </elcollapse>
     </el-form>
