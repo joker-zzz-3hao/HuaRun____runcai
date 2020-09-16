@@ -2,7 +2,7 @@
   <section class="header-wrap">
     <div class="area-left">
       <div class="logo-bg">
-        <div class="logo">logo</div>
+        <div class="logo"></div>
       </div>
       <div class="toggle-department">
         <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>

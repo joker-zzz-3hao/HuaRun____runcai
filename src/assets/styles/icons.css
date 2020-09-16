@@ -1,3 +1,46 @@
+.logo {
+  width: 48px;
+  height: 48px;
+  background: url('~@/assets/images/logo@2x.png') 0 0 no-repeat;
+  background-size: 48px 48px;
+}
+
+.main-menu li i {
+  width: 30px;
+  height: 30px;
+  background: url('~@/assets/images/icon_30_y.png') 0 0 no-repeat;
+  background-size: 120px 420px;
+}
+
+.main-menu li:not(.is-active):hover i {
+  background-position-x: -30px;
+}
+
+.main-menu .workbench i {
+  background-position-y: -150px;
+}
+
+.main-menu .okr-menu i {
+  background-position-y: -180px;
+}
+
+.main-menu .weekly-menu i {
+  background-position-y: -210px;
+}
+
+.main-menu .company-menu i {
+  background-position-y: 0;
+}
+
+.main-menu .sys-menu i {
+  background-position-y: -120px;
+}
+
+
+
+
+
+
 .icon-clear {
   display: flex;
   align-items: center;
