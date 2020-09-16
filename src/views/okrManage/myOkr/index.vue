@@ -42,18 +42,20 @@
           <dl class="dl-item">
             <dt>状态</dt>
             <dd>
-              <!-- <div class="tab-menus">
-                <ul class="tab-list">
-                  <li
-                    v-for="(item,idx) in CONST.STATUS_LIST"
-                    :key="item.id"
-                    :class="{'is-focus': currentIndex == idx}"
-                  >
-                    <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
-                  </li>
-                </ul>
-                <div class="border-slip"></div>
-              </div>-->
+              <el-select
+                v-model="searchForm.status"
+                placeholder="请选择okr状态"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item) in CONST.STATUS_LIST"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
             </dd>
           </dl>
           <el-button
@@ -77,9 +79,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 
@@ -90,6 +93,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       currentIndex: 0,
       tabsList: [
@@ -104,12 +108,19 @@ export default {
       ],
       writeokrExist: false,
       writeInfo: {},
+      searchForm: {
+        status: 'all',
+        periodId: '',
+      },
+      periodList: [], // 周期列表
+      okrCycle: {}, // 当前选择的周期
     };
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
+      periodId: (state) => state.periodId,
     }),
   },
   created() {
@@ -125,6 +136,7 @@ export default {
         item.menuTitle = `${this.departmentName}OKR`;
       }
     });
+    this.getOkrCycleList();
   },
   mounted() {
     this.currentIndex = this.$route.name == 'myOkr' ? 0 : 1;
@@ -135,6 +147,7 @@ export default {
     borderWidth.style.width = `${liWidth[this.currentIndex].offsetWidth}px`;
   },
   methods: {
+    ...mapMutations('common', ['setokrStatus', 'setokrCycle']),
     goWriteOkr() {
       // 调用接口校验是否可创建
       this.server.checkPrivilege({ operateType: 'add' }).then((res) => {
@@ -153,19 +166,51 @@ export default {
         }
       });
     },
+    // 周期
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        if (res.code == 200) {
+          this.periodList = res.data || [];
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.okrCycle.periodId;
+          this.setokrCycle(this.okrCycle);
+          this.setokrPeriodId(this.searchForm.periodId);
+        }
+      });
+    },
     borderSlip(item, index, name) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
       const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
-      console.log('index', document.querySelectorAll('.border-slip'));
-      console.log(index, name);
       this.currentIndex = index;
       this.go(name);
     },
   },
   watch: {
+    'searchForm.periodId': {
+      handler(newVal) {
+        if (newVal) {
+          this.okrCycle = this.periodList.filter(
+            (citem) => citem.periodId == newVal,
+          )[0] || {};
+          this.setokrCycle(this.okrCycle);
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+    'searchForm.status': {
+      handler(newVal) {
+        if (newVal) {
+          console.log('searchForm.status', newVal);
+          this.setokrStatus(newVal);
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
 };
 </script>

@@ -63,4 +63,13 @@ export default {
   setokrSuccess: (state, okrSuccess = {}) => {
     state.okrSuccess = okrSuccess;
   },
+  // 切换OKR状态
+  setokrStatus: (state, okrStatus = {}) => {
+    state.okrStatus = okrStatus;
+  },
+
+  // 切换周期
+  setokrCycle: (state, okrCycle = {}) => {
+    state.okrCycle = okrCycle;
+  },
 };

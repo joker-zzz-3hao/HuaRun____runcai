@@ -215,8 +215,6 @@ export default {
         canWrite: '',
       },
       drawerTitle: '创建okr',
-      okrCycle: {}, // 当前选择的周期
-      periodList: [], // 周期列表
       writeokrExist: false,
       changeokrExist: false,
       detailExist: false,
@@ -224,6 +222,7 @@ export default {
       multperiod: [], // 多选周期
       loading: false,
       currentIndex: 0,
+      periodList: [], // 周期列表
     };
   },
   computed: {
@@ -231,13 +230,14 @@ export default {
       myokrDrawer: (state) => state.myokrDrawer,
       userInfo: (state) => state.userInfo,
       okrSuccess: (state) => state.okrSuccess,
+      okrStatus: (state) => state.okrStatus,
+      okrCycle: (state) => state.okrCycle,
     }),
     expands() {
       return [this.okrList[0].tableList[0].okrDetailId];
     },
   },
   created() {
-    this.getOkrCycleList();
   },
   mounted() {
     // 状态
@@ -248,7 +248,6 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-
     searchOkr(status = '', index = 'not') {
       this.searchForm.status = status || this.searchForm.status;
       if (index != 'not') {
@@ -414,16 +413,7 @@ export default {
         },
       });
     },
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.okrCycle.periodId;
-        }
-      });
-    },
+
     deleteDraft(draftId) {
       this.$xconfirm({
         content: '请问您是否确定删除？',
@@ -449,27 +439,26 @@ export default {
     },
   },
   watch: {
-    'searchForm.periodId': {
+    okrCycle: {
       handler(newVal) {
         if (newVal) {
-          this.okrCycle = this.periodList.filter(
-            (citem) => citem.periodId == newVal,
-          )[0] || {};
+          this.searchForm.periodId = newVal.periodId;
           this.searchOkr();
         }
       },
       immediate: true,
       deep: true,
     },
-    // 'multperiod.length': {
-    //   handler() {
-    //     this.okrCycle = this.periodList.filter(
-    //       (citem) => citem.periodId === this.multperiod[0],
-    //     )[0] || {};
-    //     this.searchOkr();
-    //   },
-    //   deep: true,
-    // },
+    okrStatus: {
+      handler(newVal) {
+        if (newVal) {
+          this.searchForm.status = newVal;
+          this.searchOkr(newVal);
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
     okrSuccess: {
       handler(newVal) {
         if (newVal) {
