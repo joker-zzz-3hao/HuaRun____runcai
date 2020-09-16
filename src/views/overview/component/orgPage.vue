@@ -46,7 +46,7 @@
       >
         <template slot="head-bar" slot-scope="props">
           <el-button
-            v-show="$route.name !== 'grassStaff'"
+            v-show="false"
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
@@ -54,7 +54,7 @@
         <template slot="body-bar" slot-scope="props">
           <el-button
             v-if="props.okritem.continueCount>0"
-            v-show="$route.name !== 'grassStaff'"
+            v-show="false"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
           >承接地图icon{{props.okritem.continueCount}}</el-button>
         </template>
