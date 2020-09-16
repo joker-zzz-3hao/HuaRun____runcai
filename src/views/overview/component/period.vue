@@ -1,22 +1,28 @@
 <template>
   <div class="personPage">
     <el-button v-if="$route.query.id" @click="back()">返回</el-button>
-    <!-- <el-select v-model="depart" placeholder="请选择" @change="selectOrg">
-      <el-option
-        v-for="item in userInfo.orgList"
-        :key="item.orgId"
-        :label="item.orgName"
-        :value="item.orgId"
-      ></el-option>
-    </el-select>-->
-    <el-select v-model="value" placeholder="请选择" @change="selectPeriod">
-      <el-option
-        v-for="item in options"
-        :key="item.periodId"
-        :label="item.periodName"
-        :value="item.periodId"
-      ></el-option>
-    </el-select>
+    <div class="operating-panel">
+      <dl class="dl-item">
+        <dt>目标周期</dt>
+        <dd>
+          <el-select
+            v-model="value"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+            @change="selectPeriod"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+    </div>
   </div>
 </template>
 

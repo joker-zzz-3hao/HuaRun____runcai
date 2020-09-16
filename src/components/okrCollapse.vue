@@ -71,7 +71,7 @@
               >
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index,'change')">
+                <p @click="goUndertake(index,'new')">
                   <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
                 </p>
               </div>
