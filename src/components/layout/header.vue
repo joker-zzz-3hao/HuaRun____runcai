@@ -21,6 +21,9 @@
     </div>
     <div class="area-right">
       <ul class="top-menu">
+        <li v-if="showTeam">
+          <div @click="go('teamsManage')">团队管理</div>
+        </li>
         <li @click="go('notice')">
           <i></i>
           <em>通知</em>
@@ -57,6 +60,7 @@ export default {
     return {
       server,
       orgId: '',
+      showTeam: false,
     };
   },
   computed: {
@@ -67,7 +71,12 @@ export default {
   },
   mounted() {
     this.orgId = this.userInfo.orgId;
-    this.init();
+    if (this.userInfo.userId != 'admin') { this.init(); }
+    this.userInfo.roleList.forEach((item) => {
+      if (item.roleCode == 'ORG_ADMIN') {
+        this.showTeam = true;
+      }
+    });
   },
   mixins: [global],
   methods: {
