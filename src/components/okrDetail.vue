@@ -354,25 +354,15 @@
         </dl>
       </template>
     </div>
-    <el-drawer
-      :modal="false"
-      :wrapperClosable="false"
-      :append-to-body="true"
-      class="tl-drawer"
-      custom-class="custom-drawer history-version"
-      :visible.sync="innerDrawer"
-    >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">历史版本</div>
-      </div>
-      <tl-okr-history
-        v-if="innerDrawer"
-        ref="tl-okr-history"
-        :server="server"
-        :okrDetailId="okrDetailId"
-        :okrmain="okrmain"
-      ></tl-okr-history>
-    </el-drawer>
+
+    <tl-okr-history
+      :exist.sync="innerDrawer"
+      v-if="innerDrawer"
+      ref="okrhistory"
+      :server="server"
+      :okrDetailId="okrDetailId"
+      :okrmain="okrmain"
+    ></tl-okr-history>
   </el-drawer>
 </template>
 
@@ -561,6 +551,9 @@ export default {
       console.log(name);
       this.okrDetailId = id;
       this.innerDrawer = true;
+      this.$nextTick(() => {
+        this.$refs.okrhistory.show();
+      });
     },
     cutName(userName) {
       const nameLength = userName.length;
