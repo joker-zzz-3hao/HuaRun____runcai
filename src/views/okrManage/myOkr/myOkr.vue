@@ -222,7 +222,6 @@ export default {
       multperiod: [], // 多选周期
       loading: false,
       currentIndex: 0,
-      periodList: [], // 周期列表
     };
   },
   computed: {
