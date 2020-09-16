@@ -125,7 +125,6 @@ export default {
   },
   mounted() {
     this.fetchData();
-
     this.getqueryMyOkr();
   },
 
@@ -187,6 +186,7 @@ export default {
         if (res.code == 200) {
           this.orgTable = res.data.orgTable;
           this.changeTime();
+
           this.$watch('periodId', () => {
             this.changeTime();
           });
@@ -201,6 +201,9 @@ export default {
       this.getriskStatistics();
     },
     getriskStatistics() {
+      if (!this.periodId) {
+        return false;
+      }
       this.server.riskStatistics({
         periodId: this.periodId,
         orgId: this.orgId,
