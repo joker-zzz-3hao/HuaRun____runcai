@@ -518,7 +518,7 @@ export default {
         });
       }
     },
-    // TODO:查全部pageSize要传大点
+
     getOperationHistory() {
       if (this.okrId) {
         this.server.okrOperationHistory({

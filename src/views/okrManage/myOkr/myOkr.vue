@@ -136,7 +136,10 @@
                   :visible-arrow="false"
                 >
                   <ul>
-                    <li v-if="props.okritem.versionCount>1" @click="openDialog(props.okritem)">
+                    <li
+                      v-if="props.okritem.versionCount>1"
+                      @click="openHistory(item.okrMain,props.okritem)"
+                    >
                       <em>历史版本</em>
                     </li>
                     <li @click="openDialog(props.okritem)">
@@ -157,7 +160,10 @@
                   :visible-arrow="false"
                 >
                   <ul>
-                    <li v-if="props.okritem.versionCount>1" @click="openDialog(props.okritem)">
+                    <li
+                      v-if="props.okritem.versionCount>1"
+                      @click="openHistory(item.okrMain,props.okritem)"
+                    >
                       <em>历史版本</em>
                     </li>
                     <li @click="openDialog(props.okritem)">
@@ -217,6 +223,14 @@
       :periodId="okrCycle.periodId"
       @success="searchOkr(searchForm.status)"
     ></tl-okr-update>
+    <tl-okr-history
+      :exist.sync="historyExist"
+      v-if="historyExist"
+      ref="okrhistory"
+      :server="server"
+      :okrDetailId="historyId"
+      :okrmain="historyTitle"
+    ></tl-okr-history>
   </div>
 </template>
 
@@ -224,6 +238,7 @@
 import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
+import okrHistory from '@/components/okrHistory';
 import okrUpdate from './component/okrUpdate';
 import changeOKR from './component/changeOKR';
 import writeOkr from './component/writeOkr/index';
@@ -240,6 +255,7 @@ export default {
     'tl-okr-table': okrTable,
     'tl-writeokr': writeOkr,
     'tl-changeokr': changeOKR,
+    'tl-okr-history': okrHistory,
   },
   data() {
     return {
@@ -272,6 +288,9 @@ export default {
       multperiod: [], // 多选周期
       loading: false,
       currentIndex: 0,
+      historyExist: false,
+      historyId: '',
+      historyTitle: {},
     };
   },
   computed: {
@@ -481,6 +500,15 @@ export default {
           }
         });
       }).catch(() => {});
+    },
+    openHistory(okrMain, item) {
+      console.log('lishi', item);
+      this.historyTitle = okrMain;
+      this.historyId = item.okrDetailId;
+      this.historyExist = true;
+      this.$nextTick(() => {
+        this.$refs.okrhistory.show();
+      });
     },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
