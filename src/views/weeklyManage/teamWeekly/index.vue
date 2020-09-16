@@ -573,7 +573,7 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.treeData[0].orgId,
-        keyWord: name ? name.trim() : '',
+        userName: name ? name.trim() : '',
       }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data.content;
