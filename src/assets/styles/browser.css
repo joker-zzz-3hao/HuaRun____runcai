@@ -31,59 +31,13 @@ _::-webkit-full-page-media, _:future, :root .my-okr .operating-panel .tl-select 
 }
 
 @media screen and (min-width:1367px) {
-  .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
-    left: -28px;
+  .tl-table .sub-tr .okr-kr-name::before {
+    left: -53px;
+    width: 46px;
   }
-
-  .tl-table .sub-tr::after {
-    position: absolute;
-    left: 99px;
-    top: 0;
-    bottom: 0;
-    content: '';
-    width: 12px;
-    background: #fff;
-    z-index: 5;
-  }
-
-  .tl-table .sub-tr .okr-line::before {
-    right: -20px;
-  }
-
-  .tl-table .sub-tr .okr-line::after {
-    right: -20px;
-  }
-
-  .tl-table .sub-tr .okr-kr-name {
-    padding: 0 0 0 32px;
-  }
+  
 }
 
 @media screen and (min-width:1921px) {
-  .card-panel-body .tl-table .el-table__row td:nth-child(2) .cell {
-    left: -60px;
-  }
-
-  .tl-table .sub-tr::after {
-    position: absolute;
-    left: 99px;
-    top: 0;
-    bottom: 0;
-    content: '';
-    width: 12px;
-    background: #fff;
-    z-index: 5;
-  }
-
-  .tl-table .sub-tr .okr-line::before {
-    right: 12px;
-  }
-
-  .tl-table .sub-tr .okr-line::after {
-    right: 0;
-  }
-
-  .tl-table .sub-tr .okr-kr-name {
-    padding: 0;
-  }
+  
 }

@@ -64,6 +64,7 @@
           >
             <template slot="head-undertake" slot-scope="props">
               <div
+                v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
@@ -71,6 +72,7 @@
             </template>
             <template slot="body-bar" slot-scope="props">
               <div
+                v-if="props.okritem.continueCount>0"
                 @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
               >
                 <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>

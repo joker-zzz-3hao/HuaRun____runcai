@@ -2,7 +2,7 @@
   <section class="header-wrap">
     <div class="area-left">
       <div class="logo-bg">
-        <div class="logo">logo</div>
+        <div class="logo"></div>
       </div>
       <div class="toggle-department">
         <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
@@ -30,18 +30,27 @@
           <div v-if="!(totalMeaasge == '0')" class="badge">{{totalMeaasge}}</div>
           <div class="remind-state"></div>
         </li>
-        <li class="user-info">
-          <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
-          <div v-else-if="userInfo.userName" class="user-name">
-            <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
-          </div>
+        <li>
+          <el-dropdown>
+            <div class="el-dropdown-link user-info">
+              <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
+              <div v-else-if="userInfo.userName" class="user-name">
+                <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+              </div>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="go('personalCenter')">个人中心</el-dropdown-item>
+              <el-dropdown-item @click.native="go('personConfig')">个人设置</el-dropdown-item>
+              <el-dropdown-item @click.native="loginOut">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </li>
       </ul>
-      <ul class="person-select">
+      <!-- <ul class="person-select">
         <li @click="go('personalCenter')">个人中心</li>
         <li @click="go('personConfig')">个人设置</li>
         <li @click="loginOut">退出登录</li>
-      </ul>
+      </ul>-->
     </div>
   </section>
 </template>

@@ -213,10 +213,11 @@
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
           </dd>
-          <dd>
-            <div v-if="canWrite">
+          <dd v-if="canWrite">
+            <div>
               <span>考核指标</span>
               <el-form-item
+                v-if="kritem.showCheckEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
                 :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
               >
@@ -227,8 +228,17 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
+              <em v-else>{{cvbcvbvbx}}</em>
+              <i
+                v-if="!kritem.showCheckEdit"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showCheckEdit')"
+              ></i>
+            </div>
+            <div>
               <span>衡量办法</span>
               <el-form-item
+                v-if="kritem.showJudgeEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'"
                 :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
               >
@@ -239,6 +249,12 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
+              <em v-else>{{cvbcvbvbx}}</em>
+              <i
+                v-if="!kritem.showJudgeEdit"
+                class="el-icon-edit"
+                @click="showKRInput(index,krIndex,'showJudgeEdit')"
+              ></i>
             </div>
           </dd>
         </dl>
@@ -299,41 +315,32 @@
               <el-form-item label="风险状态">
                 <tl-confidence v-model="newItem.okrDetailConfidence" @change="updateokrCollapse"></tl-confidence>
               </el-form-item>
-              <el-popover
-                placement="bottom"
-                width="400"
-                trigger="click"
-                :append-to-body="false"
-                :visible-arrow="false"
+            </dd>
+            <dd>
+              <el-form-item
+                label="考核指标"
+                :prop="'tableList.' + index + '.newkrList.' + kindex + '.checkQuota'"
+                :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
               >
-                <el-form-item
-                  label="考核指标"
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.checkQuota'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
-                >
-                  <el-input
-                    placeholder="请输入考核指标"
-                    v-model="newItem.checkQuota"
-                    maxlength="50"
-                    class="tl-input"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item
-                  label="衡量办法"
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.judgeMethod'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
-                >
-                  <el-input
-                    placeholder="请输入衡量办法"
-                    v-model="newItem.judgeMethod"
-                    maxlength="50"
-                    class="tl-input"
-                  ></el-input>
-                </el-form-item>
-                <div slot="reference">
-                  <div>考核指标、衡量办法></div>
-                </div>
-              </el-popover>
+                <el-input
+                  placeholder="请输入考核指标"
+                  v-model="newItem.checkQuota"
+                  maxlength="50"
+                  class="tl-input"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                label="衡量办法"
+                :prop="'tableList.' + index + '.newkrList.' + kindex + '.judgeMethod'"
+                :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+              >
+                <el-input
+                  placeholder="请输入衡量办法"
+                  v-model="newItem.judgeMethod"
+                  maxlength="50"
+                  class="tl-input"
+                ></el-input>
+              </el-form-item>
             </dd>
           </dl>
         </template>

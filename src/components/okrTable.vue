@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="20%">
+      <el-table-column prop="okrDetailObjectKr" width="28%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
@@ -88,7 +88,7 @@
       <!-- o无风险状态 label="风险状态" -->
       <el-table-column width="12%"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="20%">
+      <el-table-column prop="parentObjectKr" width="12%">
         <template slot-scope="scope">
           <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
             <div slot="content">{{scope.row.parentObjectKr}}</div>

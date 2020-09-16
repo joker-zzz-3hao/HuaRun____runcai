@@ -94,7 +94,8 @@
           </el-table-column>
           <el-table-column prop="okrProgress" label="OKR进度" width="300">
             <template slot-scope="scope">
-              <tl-process :data="scope.row.okrProgress"></tl-process>
+              <tl-process v-if="scope.row.approvalType == '1'" :data="scope.row.okrProgress"></tl-process>
+              <div v-else>--</div>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>

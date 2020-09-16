@@ -98,8 +98,8 @@
                 <li @click.stop="deleteDepart(data)">删除</li>
               </ul>
             </div>-->
+            <!-- <el-dropdown trigger="click"> -->
             <el-dropdown>
-              <!-- <el-dropdown> -->
               <span class="el-dropdown-link">
                 <i class="el-icon-more el-icon--right"></i>
               </span>
