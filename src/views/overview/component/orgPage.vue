@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="showLoad">
     <div class="card-panel-head">
       <div class="okr-title">{{okrCycle.periodName}}</div>
       <dl class="okr-state">
@@ -127,6 +127,7 @@ export default {
       tableList: [],
       orgTable: [],
       orgUser: [],
+      showLoad: false,
       searchForm: {
         status: '1',
       },
@@ -187,6 +188,7 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.orgUser = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          this.showLoad = true;
         }
       });
     },
