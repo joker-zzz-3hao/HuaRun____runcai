@@ -175,7 +175,7 @@ export default {
   methods: {
     addOrUpdate(row) {
       this.server.addOrUpdate({
-        functionId: row.functionId,
+        ...row,
         status: row.status,
       }).then((res) => {
         if (res.code == 200) {

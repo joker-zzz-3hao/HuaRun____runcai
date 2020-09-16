@@ -9,6 +9,7 @@
 
 <script>
 import echarts from 'echarts';
+import { mainData } from '../../testData';
 
 export default {
   name: 'okrSchedule',
@@ -23,6 +24,7 @@ export default {
       mainDataY: [],
       mainDataX: [],
       mainDataYBar: [],
+      testModel: false,
     };
   },
   mounted() {
@@ -59,7 +61,7 @@ export default {
         },
         xAxis: {
           boundaryGap: false,
-          data: that.mainDataX,
+          data: that.testModel ? mainData.mainDataX : that.mainDataX,
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色
@@ -139,7 +141,7 @@ export default {
                 ),
               },
             },
-            data: that.mainDataY,
+            data: that.testModel ? mainData.mainDataY : that.mainDataY,
             itemStyle: {
               color: '#3F7DFF',
             },
@@ -166,8 +168,12 @@ export default {
       if (myChart._$handlers.mouseout) {
         myChart._$handlers.mouseout.length = 0;
       }
+
       myChart.setOption(option);
       myChart.resize();
+      if (that.testModel) {
+        return false;
+      }
       myChart.on('mousemove', 'series.line', (params) => {
         option.series[1].data[params.dataIndex] = that.mainDataY[params.dataIndex] + 20;
         myChart.setOption(option);
@@ -194,7 +200,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: that.mainDataX,
+          data: that.testModel ? mainData.mainDataX : that.mainDataX,
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色
@@ -257,7 +263,7 @@ export default {
 
         series: [{
           // eslint-disable-next-line max-len
-          data: that.mainCount,
+          data: that.testModel ? mainData.mainCount : that.mainCount,
           type: 'bar',
           barWidth: 10,
           showBackground: true,
