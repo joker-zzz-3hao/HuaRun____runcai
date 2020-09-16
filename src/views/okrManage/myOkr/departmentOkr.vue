@@ -1,26 +1,5 @@
 <template>
   <div class="department-okr">
-    <div class="operating-panel">
-      <dl class="dl-item">
-        <dt>目标周期</dt>
-        <dd>
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-    </div>
     <div class="cont-panel">
       <div v-if="tableList.length>0" class="tl-card-panel">
         <div class="card-panel-head">
@@ -193,8 +172,6 @@ export default {
       okrId: '',
       myokrDrawer: false,
       drawerTitle: 'OKR详情',
-      okrCycle: {}, // 当前选择的周期
-      periodList: [], // 周期列表
       detailExist: false,
     };
   },
@@ -209,6 +186,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
+      okrCycle: (state) => state.okrCycle,
     }),
     expands() {
       return [this.tableList[0].okrDetailId];
@@ -287,29 +265,12 @@ export default {
         this.$refs.okrdetail.showOkrDialog();
       });
     },
-
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.okrCycle.periodId;
-        }
-      });
-    },
-    // handleCycleData(data) {
-    //   this.okrCycle = data;
-    // },
   },
   watch: {
-    'searchForm.periodId': {
+    okrCycle: {
       handler(newVal) {
-        console.log('get', newVal);
         if (newVal) {
-          this.okrCycle = this.periodList.filter(
-            (citem) => citem.periodId === newVal,
-          )[0] || {};
+          this.searchForm.periodId = newVal.periodId;
           this.searchOkr();
         }
       },
