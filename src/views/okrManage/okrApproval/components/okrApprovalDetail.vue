@@ -22,7 +22,7 @@
           <span>OKR类型：</span>
           <span>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</span>
         </div>
-        <div style="display:flex;">
+        <div style="display:flex;" v-if="data.approvalType == '1'">
           <div>OKR进度：</div>
           <div>
             <el-progress type="circle" :percentage="data.okrProgress"></el-progress>
@@ -154,8 +154,8 @@ export default {
     },
     okrOperationHistory() {
       this.server.okrOperationHistory({
-        // okrMainId: this.data.okrMainId,
-        approvalId: this.data.approvalId,
+        okrMainId: this.data.okrMainId,
+        // approvalId: this.data.approvalId,
       }).then((res) => {
         if (res.code == '200') {
           this.cycleList = res.data;
