@@ -150,7 +150,6 @@
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
-                    :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
                     class="tl-switch"
                   ></el-switch>
                 </div>

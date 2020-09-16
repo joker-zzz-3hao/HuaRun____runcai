@@ -88,6 +88,7 @@
 import echarts from 'echarts';
 import { mapState } from 'vuex';
 import Server from '../../server';
+import { mainData } from '../../testData';
 
 const server = new Server();
 export default {
@@ -114,7 +115,7 @@ export default {
       moodDataY: [],
       active: {},
       orgTable: [],
-      testModel: false,
+      testModel: true,
     };
   },
 
@@ -360,7 +361,7 @@ export default {
       const myChartmood = echarts.init(document.getElementById('mood'));
       const option = {
         dataset: {
-          source: that.moodDataY,
+          source: that.testModel ? mainData.moodData : that.moodDataY,
         },
         legend: {
           bottom: 'bottom',
