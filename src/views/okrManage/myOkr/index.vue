@@ -17,6 +17,45 @@
           </div>
         </div>
         <div class="operating-box">
+          <dl class="dl-item">
+            <dt>目标周期</dt>
+            <dd>
+              <!-- multiple 多选属性 -->
+              <!-- searchForm.periodId 单选 -->
+              <!-- multperiod 多选 -->
+              <el-select
+                v-model="searchForm.periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>状态</dt>
+            <dd>
+              <!-- <div class="tab-menus">
+                <ul class="tab-list">
+                  <li
+                    v-for="(item,idx) in CONST.STATUS_LIST"
+                    :key="item.id"
+                    :class="{'is-focus': currentIndex == idx}"
+                  >
+                    <em @click="searchOkr(item.id,idx)">{{item.name}}</em>
+                  </li>
+                </ul>
+                <div class="border-slip"></div>
+              </div>-->
+            </dd>
+          </dl>
           <el-button
             type="primary"
             icon="el-icon-plus"
