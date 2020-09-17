@@ -7,7 +7,7 @@
 <script>
 import echarts from 'echarts';
 import Server from '../../server';
-import testData, { userData } from '../../testData';
+import { userData } from '../../testData';
 
 const server = new Server();
 export default {
