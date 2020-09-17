@@ -347,7 +347,7 @@ export default [{
       name: 'notice',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'notice',
         title: 'notice',
         power: '',
@@ -360,7 +360,7 @@ export default [{
       name: 'personConfig',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'personConfig',
         title: 'personConfig',
         power: '',
@@ -374,7 +374,7 @@ export default [{
       name: 'taskProcess',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'taskProcess',
         title: 'taskProcess',
         power: '',
@@ -386,7 +386,7 @@ export default [{
       name: 'note',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'note',
         title: 'note',
         power: '',
