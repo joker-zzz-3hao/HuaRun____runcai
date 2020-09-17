@@ -21,18 +21,16 @@ export default {
   data() {
     return {
       currentIndex: 0,
-      tabMenuList: [
-        {
-          menuName: '详情',
-        },
-        {
-          menuName: '操作历史',
-        },
-      ],
+
     };
   },
   props: {
-
+    tabMenuList: {
+      type: Array,
+      defalut() {
+        return [];
+      },
+    },
   },
   mounted() {
     // 状态
