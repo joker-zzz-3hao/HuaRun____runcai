@@ -807,6 +807,8 @@
 .custom-drawer .tl-form .el-form-item__label {
   padding: 0 10px 0 0;
   width: 88px;
+  font-size: 12px;
+  color: #879099;
 }
 
 .tl-drawer .el-drawer__body {
@@ -1156,6 +1158,7 @@
 }
 
 .tl-collapse .el-collapse-item__header {
+  position: relative;
   margin: 0 0 26px 0;
   padding: 20px;
   flex-direction: column;
@@ -1207,6 +1210,7 @@
 .collpase-panel dd > div i:first-child,
 .collpase-panel dd > div i:first-child + span {
   color: #acb6bf;
+  font-size: 12px;
 }
 
 .tl-collapse .collpase-panel {
@@ -1249,6 +1253,10 @@
   flex-basis: calc(46% - 58px);
 }
 
+.tl-collapse .el-collapse-item__content .collpase-panel dd:nth-of-type(1) > div:nth-child(3) .state-txt {
+  font-size: 12px;
+}
+
 .tl-collapse .collpase-panel dd + dd {
   flex-direction: column;
   align-items: flex-start;
@@ -1257,7 +1265,16 @@
 .tl-collapse .collpase-panel dd + dd > div {
   margin: 0 0 14px 0;
   width: calc(100% - 30px);
+  font-size: 12px;
+}
 
+.tl-collapse .collpase-panel dd + dd > div span,
+.tl-collapse .collpase-panel dd + dd > div i {
+  color: #879099;
+}
+
+.tl-collapse .collpase-panel dd + dd > div em {
+  margin: 0 10px;
 }
 
 .tl-collapse .collpase-panel dd + dd .el-form-item {
@@ -1368,6 +1385,7 @@
 
 .collpase-panel dd div:last-child p a {
   color: #4d5155;
+  font-size: 12px;
 }
 
 .collpase-panel dd div:last-child p a:hover {
@@ -2353,7 +2371,7 @@
 }
 
 .el-collapse-item__header .collpase-panel dt span {
-  margin: 0 18px 0 0;
+  margin: 0 12px 0 0;
   width: 40px;
   height: 18px;
   background: #f0effe;
@@ -2364,7 +2382,7 @@
 }
 
 .el-collapse-item__content .collpase-panel dt > span {
-  margin: 0 18px 0 0;
+  margin: 0 12px 0 0;
   flex: 0 0 40px;
   width: 40px;
   height: 18px;
@@ -2389,14 +2407,17 @@
   margin-top: 20px;
 }
 
+.collpase-panel.has-third-child .has-third-child,
 .collpase-panel.has-third-child ~ dl .has-third-child {
   margin-bottom: 20px;
 }
 
+.collpase-panel.has-third-child .has-third-child + dd > div,
 .collpase-panel.has-third-child ~ dl .has-third-child + dd > div {
   margin-bottom: 24px;
 }
 
+.collpase-panel.has-third-child .has-third-child + dd > div .el-form-item__content,
 .collpase-panel.has-third-child ~ dl .has-third-child + dd > div .el-form-item__content {
   width: 100%;
 }
@@ -2406,6 +2427,7 @@
   margin-top: 11px;
 }
 
+.collpase-panel.has-third-child dd,
 .collpase-panel.has-third-child ~ dl dd {
   margin-top: 0;
 }
@@ -2415,6 +2437,7 @@
   margin: 0;
 }
 
+.collpase-panel.has-third-child dd .el-form-item__content,
 .collpase-panel.has-third-child ~ dl dd .el-form-item__content {
   flex: unset;
 }

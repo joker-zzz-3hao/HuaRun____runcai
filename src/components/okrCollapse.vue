@@ -226,7 +226,7 @@
             :class="{'is-edit': canWrite && kritem.showCheckEdit || kritem.showJudgeEdit}"
           >
             <div>
-              <em>考核指标</em>
+              <span>考核指标</span>
               <el-form-item
                 v-if="kritem.showCheckEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
