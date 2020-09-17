@@ -140,9 +140,6 @@ export default {
       self.orgName = self.userInfo.orgName || '';
       if (!self.showOne) {
         self.getOkrCycleList();
-        self.getOrgTable();
-      } else {
-        self.getmaps();
       }
     },
     getOkrCycleList() {
@@ -224,29 +221,6 @@ export default {
         });
       }
     },
-
-    // 选择部门
-    selectIdChange(data) {
-      this.orgFullId = data;
-      // this.showCascader = false;
-      const orgFullId = data[data.length - 1];
-      this.orgFullIdList = orgFullId.split(':');
-      this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
-      this.searchForm.orgId = this.orgFullIdList[this.orgFullIdList.length - 1];
-      this.getmaps();
-    },
-    // 显示部门名
-    getOrgName(data, index) {
-      data.forEach((item) => {
-        if (this.orgFullIdList[index] == item.orgId) {
-          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
-            this.getOrgName(item.children, index + 1);
-          } else if ((index + 1) == this.orgFullIdList.length) {
-            this.orgName = item.orgName;
-          }
-        }
-      });
-    },
     // 当点击根节点，收起其他已打开的树
     handleTree(data) {
       this.svgList.forEach((item, index) => {
@@ -269,6 +243,7 @@ export default {
   watch: {
     'searchForm.periodId': {
       handler(newVal) {
+        console.log('周期');
         if (newVal) {
           this.searchForm.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
@@ -276,6 +251,7 @@ export default {
           this.getmaps();
         }
       },
+      immediate: true,
     },
   },
 };
