@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import undertakeMaps from './components/undertakeMaps';
 import undertakeDetail from './components/undertakeDetail';
 import Server from './server';
@@ -33,14 +33,11 @@ export default {
       undertakeMapsStep: (state) => state.undertakeMapsStep,
     }),
   },
-  created() {
-
+  mounted() {
+    this.setUndertakeMapsStep('1');
   },
   methods: {
-    init() {
-
-    },
-
+    ...mapMutations('common', ['setUndertakeMapsStep']),
   },
 };
 </script>
