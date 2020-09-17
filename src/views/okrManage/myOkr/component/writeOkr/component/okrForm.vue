@@ -448,6 +448,7 @@ export default {
               // 如果是草稿，选中已保存的承接项
               if (['6', '8'].includes(this.searchForm.okrStatus)
                && (item.undertakeOkrVo.undertakeOkrDetailId || item.undertakeOkrDto.undertakeOkrDetailId)) {
+                this.searchForm.okrStatus = '';
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
@@ -460,6 +461,10 @@ export default {
                     this.$forceUpdate();
                   }
                 });
+              } else {
+                item.undertakeOkrVo = {};
+                item.cultureId = '';
+                item.cultureName = '';
               }
             });
           }
@@ -482,6 +487,7 @@ export default {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
               if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
+                this.searchForm.okrStatus = '';
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
                     this.$set(item, 'cultureName', pitem.cultureName);
@@ -519,7 +525,7 @@ export default {
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.okrDetailObjectKr || '';
       // 价值观的id、内容
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
-      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureName || '';
       this.innerDrawer = false;
     },
     // 提交表单

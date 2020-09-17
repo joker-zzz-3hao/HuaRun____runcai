@@ -469,7 +469,7 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
 
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
-      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureName || '';
       // 清除小叹号
       this.tableList[this.selectIndex].hasUpdate = true;
       // 选中
@@ -634,6 +634,14 @@ export default {
           opercent += oitem.okrWeight;
           keypercent = 0;
           oitem.krList.forEach((kitem) => {
+            if (!kitem.checkQuota) {
+              this.$message.error('请填写考核指标');
+              throw Error();
+            }
+            if (!kitem.judgeMethod) {
+              this.$message.error('请填写衡量办法');
+              throw Error();
+            }
             keypercent += kitem.okrWeight;
           });
           if (keypercent != 100) {

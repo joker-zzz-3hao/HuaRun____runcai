@@ -245,7 +245,7 @@ const mockData = {
   'POST /gateway/talent-okr/okr/cultureValue/queryCultureList': (req, res) => {
     res.send(mockUtil.getSuccessData(Mock.mock({
       'ARRAY|5': [{
-        'cultureDesc|+1': ['成人达已', '诚实守信', '追求极致', '勇于担当', '成人达己'],
+        'cultureName|+1': ['成人达已', '诚实守信', '追求极致', '勇于担当', '成人达己'],
         'cultureId|+1': 1,
       }],
     })));
