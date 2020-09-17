@@ -67,7 +67,8 @@
                     path:'/members',
                     query:{
                     roleId:scope.row.roleId,
-                    name:encodeURI(scope.row.roleName)
+                    name:encodeURI(scope.row.roleName),
+                    roleType:scope.row.roleType
                     }})"
                   class="tl-btn"
                 >成员管理</el-button>

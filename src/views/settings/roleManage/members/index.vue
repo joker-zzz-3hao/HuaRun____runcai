@@ -7,9 +7,16 @@
           type="primary"
           icon="el-icon-plus"
           @click="showAddRoule"
+          v-if="$route.query.roleType!=='SYSTEM'"
           class="tl-btn amt-bg-slip"
         >添加成员</el-button>
-        <el-button plain icon="el-icon-minus" @click="handleDelete" class="tl-btn amt-border-slip">
+        <el-button
+          plain
+          v-if="$route.query.roleType!=='SYSTEM'"
+          icon="el-icon-minus"
+          @click="handleDelete"
+          class="tl-btn amt-border-slip"
+        >
           移除成员
           <span class="lines"></span>
         </el-button>
