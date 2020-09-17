@@ -559,6 +559,7 @@
 /* okr-change */
 .okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change {
   cursor: pointer;
+  font-size: 12px;
 }
 
 .okr-change .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em.is-change:hover {
@@ -567,6 +568,30 @@
 
 .okr-change .tl-collapse .collpase-panel dd {
   min-height: 32px;
+}
+
+.okr-info .btn-box {
+  display: flex;
+  justify-content: center;
+}
+
+.okr-detail .el-collapse-item__header::before,
+.okr-change .el-collapse-item__header::before,
+.okr-info .el-collapse-item__header::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  content: '';
+  width: 3px;
+  background: #4ccd79;
+}
+
+.okr-detail .el-collapse-item__content .collpase-panel:not(:last-of-type),
+.okr-change .el-collapse-item__content .collpase-panel:not(:last-of-type),
+.okr-info .el-collapse-item__content .collpase-panel:not(:last-of-type) {
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
 }
 
 /* 编辑状态 */
