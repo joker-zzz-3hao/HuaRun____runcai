@@ -22,6 +22,7 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
+                  style="width:100%"
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
@@ -30,20 +31,29 @@
               </el-form-item>
             </template>
           </el-table-column>-
-          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader" min-width="300">
+          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader" min-width="400">
             <template slot-scope="scope">
               <el-form-item
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workDesc'"
                 :rules="formData.rules.workDesc"
               >
-                <el-input
+                <textarea
+                  style="width:100%"
                   type="textarea"
                   v-model.trim="scope.row.workDesc"
                   maxlength="1000"
                   clearable
                   placeholder="请描述具体工作内容"
                   class="tl-textarea"
-                ></el-input>
+                ></textarea>
+                <!-- <el-input
+                  type="textarea"
+                  v-model.trim="scope.row.workDesc"
+                  maxlength="1000"
+                  clearable
+                  placeholder="请描述具体工作内容"
+                  class="tl-textarea"
+                ></el-input>-->
               </el-form-item>
             </template>
           </el-table-column>
@@ -51,10 +61,11 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="300"
+            min-width="150"
           >
             <template slot-scope="scope">
               <el-input-number
+                style="width:100%"
                 v-model="scope.row.workProgress"
                 controls-position="right"
                 :min="0"
@@ -70,6 +81,7 @@
           >
             <template slot-scope="scope">
               <el-input-number
+                style="width:90%"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
                 :precision="0"
