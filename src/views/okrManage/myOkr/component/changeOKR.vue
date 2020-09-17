@@ -469,7 +469,7 @@ export default {
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion = this.selectDepartRow.okrDetailVersion || '';
 
       this.tableList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
-      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      this.tableList[this.selectIndex].cultureName = this.selectPhilRow.cultureName || '';
       // 清除小叹号
       this.tableList[this.selectIndex].hasUpdate = true;
       // 选中

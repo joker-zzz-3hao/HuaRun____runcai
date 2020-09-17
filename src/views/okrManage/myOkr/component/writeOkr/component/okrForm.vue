@@ -460,6 +460,10 @@ export default {
                     this.$forceUpdate();
                   }
                 });
+              } else {
+                item.undertakeOkrVo = {};
+                item.cultureId = '';
+                item.cultureName = '';
               }
             });
           }
@@ -519,7 +523,7 @@ export default {
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrContent = this.selectDepartRow.okrDetailObjectKr || '';
       // 价值观的id、内容
       this.formData.okrInfoList[this.selectIndex].cultureId = this.selectPhilRow.id || '';
-      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureDesc || '';
+      this.formData.okrInfoList[this.selectIndex].cultureName = this.selectPhilRow.cultureName || '';
       this.innerDrawer = false;
     },
     // 提交表单
