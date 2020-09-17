@@ -117,6 +117,7 @@ export default {
       this.server.okrCheck({
         checkStatus,
         okrDetailId: this.okrDetailId,
+        okrType: this.undertakeDetail.okrDetailType === 1 ? 'KR' : 'O',
       }).then((res) => {
         if (res.code == 200) {
           this.personList = res.data || [];
@@ -126,7 +127,7 @@ export default {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
                 citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
-                citem.remark = contentObject.remark || '暂无';
+                citem.remark = citem.reason || '暂无';
               });
             }
           });
