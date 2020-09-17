@@ -225,6 +225,10 @@ export default {
     },
     // 认证身份跳转对应身份首页
     getidentity(user) {
+      if (this.$route.query.userId == user.userId) {
+        this.$message.error('此为当前团队负责人');
+        return false;
+      }
       this.server.identity({
         user: user.userId,
         orgId: user.orgId,
