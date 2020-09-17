@@ -430,7 +430,7 @@ export default {
         return {};
       },
     },
-    // TODO: 详情点赞
+    // 是否点赞
     showSupport: {
       type: Boolean,
       default: false,
