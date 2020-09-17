@@ -94,7 +94,7 @@ export default {
 <style  scoped>
 .create {
   width: 100%;
-  height: 400px;
+  min-height: 400px;
   background: white;
 }
 </style>

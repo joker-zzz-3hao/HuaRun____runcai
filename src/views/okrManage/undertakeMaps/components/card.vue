@@ -69,9 +69,9 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
+    ...mapMutations('common', ['setUndertakeMapsStep', 'setundertakeDetail']),
     goDetail(node) {
-      this.undertakeMapsStep('2');
+      this.setUndertakeMapsStep('2');
       this.setundertakeDetail(node);
     },
   },

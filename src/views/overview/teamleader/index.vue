@@ -82,10 +82,6 @@ export default {
     // this.getqueryMyOkr();
   },
   methods: {
-    goToDep(id, name) {
-      const chename = encodeURI(name);
-      this.$router.push({ name: 'grassStaff', query: { id, name: chename } });
-    },
     checkName(name) {
       return name.substring(0, 1);
     },

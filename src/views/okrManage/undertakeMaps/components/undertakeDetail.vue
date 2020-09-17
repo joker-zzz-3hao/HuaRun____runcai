@@ -110,7 +110,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
+    ...mapMutations('common', ['setUndertakeMapsStep', 'setundertakeDetail']),
     okrCheck(checkStatus) {
       this.checkStatus = checkStatus;
       this.okrDetailId = this.undertakeDetail.okrDetailId || '';
@@ -144,7 +144,7 @@ export default {
       console.log('刷新列表');
     },
     goback() {
-      this.undertakeMapsStep('1');
+      this.setUndertakeMapsStep('1');
       this.setundertakeDetail({});
     },
   },

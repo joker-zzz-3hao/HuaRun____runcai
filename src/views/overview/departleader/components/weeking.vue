@@ -156,7 +156,16 @@ export default {
         },
       ).then((res) => {
         this.dateOption = res.data;
-        this.calendarId = res.data[0].calendarId;
+        // eslint-disable-next-line max-len
+        const dateArr = this.dateOption.map((item) => [new Date(item.weekBegin).getTime(), new Date(item.weekEnd).getTime()]);
+        console.log(new Date().getTime());
+        const eq = dateArr.findIndex((item) => item[0] <= new Date().getTime() && new Date().getTime() <= item[1]);
+        if (eq) {
+          this.calendarId = res.data[eq].calendarId;
+        } else {
+          this.calendarId = res.data[0].calendarId;
+        }
+
         this.$nextTick(() => {
           this.orgWeekly();
         });
@@ -248,6 +257,22 @@ export default {
             symbol: 'circle',
             showAllSymbol: true,
             symbolSize: 7,
+            itemStyle: {
+              normal: {
+                color(params) {
+                  if (params.value[1] == 1) {
+                    return '#4CCD79';
+                  }
+                  if (params.value[1] == 4) {
+                    return '#FFBC20';
+                  }
+                  if (params.value[1] == 7) {
+                    return '#FB4C59 ';
+                  }
+                },
+
+              },
+            },
             data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
           });
         } else if (!this.active[this.orgId]) {
@@ -259,6 +284,22 @@ export default {
                 symbol: 'circle',
                 symbolSize: 7,
                 showAllSymbol: true,
+                itemStyle: {
+                  normal: {
+                    color(params) {
+                      if (params.value[1] == 1) {
+                        return '#4CCD79';
+                      }
+                      if (params.value[1] == 4) {
+                        return '#FFBC20';
+                      }
+                      if (params.value[1] == 7) {
+                        return '#FB4C59 ';
+                      }
+                    },
+
+                  },
+                },
                 data: [],
               };
             }
@@ -272,6 +313,22 @@ export default {
                 symbol: 'circle',
                 showAllSymbol: true,
                 symbolSize: 7,
+                itemStyle: {
+                  normal: {
+                    color(params) {
+                      if (params.value[1] == 1) {
+                        return '#4CCD79';
+                      }
+                      if (params.value[1] == 4) {
+                        return '#FFBC20';
+                      }
+                      if (params.value[1] == 7) {
+                        return '#FB4C59 ';
+                      }
+                    },
+
+                  },
+                },
                 data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
               };
             }

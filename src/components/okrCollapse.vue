@@ -227,7 +227,7 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
-              <em v-else>{{cvbcvbvbx}}</em>
+              <em v-else>{{kritem.checkQuota}}</em>
               <i
                 v-if="!kritem.showCheckEdit"
                 class="el-icon-edit"
@@ -248,7 +248,7 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
-              <em v-else>{{cvbcvbvbx}}</em>
+              <em v-else>{{kritem.judgeMethod}}</em>
               <i
                 v-if="!kritem.showJudgeEdit"
                 class="el-icon-edit"

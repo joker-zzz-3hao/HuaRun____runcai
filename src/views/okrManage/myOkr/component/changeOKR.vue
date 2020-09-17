@@ -147,25 +147,15 @@
         <el-button plain @click="innerDrawer = false" class="tl-btn amt-border-fadeout">取消</el-button>
       </div>
     </el-drawer>
-    <el-drawer
-      :modal="false"
-      :wrapperClosable="false"
-      :append-to-body="true"
-      class="tl-drawer"
-      custom-class="custom-drawer history-version"
-      :visible.sync="historyDrawer"
-    >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">历史版本</div>
-      </div>
-      <tl-okr-history
-        v-if="historyDrawer"
-        ref="tl-okr-history"
-        :server="server"
-        :okrDetailId="okrDetailId"
-        :okrmain="okrmain"
-      ></tl-okr-history>
-    </el-drawer>
+
+    <tl-okr-history
+      v-if="historyDrawer"
+      :exist.sync="historyDrawer"
+      ref="okrhistory"
+      :server="server"
+      :okrDetailId="okrDetailId"
+      :okrmain="okrmain"
+    ></tl-okr-history>
   </el-drawer>
 </template>
 
@@ -680,6 +670,9 @@ export default {
       console.log(name);
       this.okrDetailId = id;
       this.historyDrawer = true;
+      this.$nextTick(() => {
+        this.$refs.okrhistory.show();
+      });
     },
   },
   watch: {

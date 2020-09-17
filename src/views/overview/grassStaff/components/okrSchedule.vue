@@ -7,6 +7,7 @@
 <script>
 import echarts from 'echarts';
 import Server from '../../server';
+import testData, { userData } from '../../testData';
 
 const server = new Server();
 export default {
@@ -16,6 +17,7 @@ export default {
       server,
       mainDataX: [],
       mainDataY: [],
+      testModel: true,
     };
   },
   props: {
@@ -45,7 +47,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: that.mainDataX,
+          data: that.testModel ? userData.mainDataX : that.mainDataX,
           boundaryGap: false,
           axisLabel: {
             show: true,
@@ -108,7 +110,7 @@ export default {
               ),
             },
           },
-          data: that.mainDataY,
+          data: that.testModel ? userData.mainDataY : that.mainDataY,
           itemStyle: {
             color: '#3F7DFF',
           },
@@ -132,6 +134,6 @@ export default {
 <style  scoped>
 #okrSchedule {
   width: 100%;
-  height: 400px;
+  min-height: 400px;
 }
 </style>

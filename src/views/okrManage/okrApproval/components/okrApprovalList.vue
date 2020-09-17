@@ -144,7 +144,7 @@ export default {
       emptyText: '暂无数据',
       formData: {
         periodId: '',
-        approvalStatus: '0',
+        approvalStatus: '',
         approvalType: '',
         keyword: '',
         total: 0,

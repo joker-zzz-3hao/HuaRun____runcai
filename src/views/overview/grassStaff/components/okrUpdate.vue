@@ -6,12 +6,13 @@
 
 <script>
 import echarts from 'echarts';
+import { userData } from '../../testData';
 
 export default {
   name: 'okrUpdate',
   data() {
     return {
-
+      testModel: true,
     };
   },
   props: {
@@ -41,7 +42,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: that.mainDataX,
+          data: that.testModel ? userData.mainpreDataX : that.mainDataX,
           axisLabel: {
             show: true,
             textStyle: {
@@ -77,7 +78,7 @@ export default {
           },
         },
         series: [{
-          data: that.mainDataY,
+          data: that.testModel ? userData.mainpreDataY : that.mainDataY,
           name: 'okr更新次数',
           type: 'bar',
           stack: '总量',
@@ -108,6 +109,6 @@ export default {
 <style  scoped>
 #okrUpdate {
   width: 100%;
-  height: 400px;
+  min-height: 400px;
 }
 </style>

@@ -44,19 +44,21 @@
         :showOKRInfoLabel="true"
         :status="searchForm.status"
       >
-        <template slot="head-bar" slot-scope="props">
-          <el-button
-            v-show="false"
+        <template slot="head-undertake" slot-scope="props">
+          <div
             v-if="props.okritem.continueCount>0"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
+          >
+            <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+          </div>
         </template>
         <template slot="body-bar" slot-scope="props">
-          <el-button
+          <div
             v-if="props.okritem.continueCount>0"
-            v-show="false"
             @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >承接地图icon{{props.okritem.continueCount}}</el-button>
+          >
+            <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+          </div>
         </template>
       </tl-okr-table>
     </div>
@@ -223,6 +225,10 @@ export default {
     },
     // 认证身份跳转对应身份首页
     getidentity(user) {
+      if (this.$route.query.userId == user.userId) {
+        this.$message.error('此为当前团队负责人');
+        return false;
+      }
       this.server.identity({
         user: user.userId,
         orgId: user.orgId,

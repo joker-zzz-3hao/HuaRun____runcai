@@ -29,6 +29,18 @@
             <em>{{item.versionName}}</em>
             <div>
               <p>{{item.objectName}}</p>
+              <p v-if="item.okrWeight">
+                <span>分权重</span>
+                <em>{{item.okrWeight}}%</em>
+              </p>
+              <p v-if="item.checkQuota">
+                <span>考核指标</span>
+                <em>{{item.checkQuota}}</em>
+              </p>
+              <p v-if="item.judgeMethod">
+                <span>衡量办法</span>
+                <em>{{item.judgeMethod}}</em>
+              </p>
               <p v-if="item.remark">变更原因：{{item.remark}}</p>
             </div>
           </dd>
@@ -103,6 +115,8 @@ export default {
               okrDetailParentObjectKr: oitem.okrDetailParentObjectKr, // 承接的okr
               okrDetailParentVersion: oitem.okrDetailParentVersion, // 承接的版本
               remark: oitem.remark,
+              checkQuota: oitem.checkQuota,
+              judgeMethod: oitem.judgeMethod,
             });
           });
         }
