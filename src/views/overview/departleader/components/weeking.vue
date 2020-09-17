@@ -257,6 +257,22 @@ export default {
             symbol: 'circle',
             showAllSymbol: true,
             symbolSize: 7,
+            itemStyle: {
+              normal: {
+                color(params) {
+                  if (params.value[1] == 1) {
+                    return '#4CCD79';
+                  }
+                  if (params.value[1] == 4) {
+                    return '#FFBC20';
+                  }
+                  if (params.value[1] == 7) {
+                    return '#FB4C59 ';
+                  }
+                },
+
+              },
+            },
             data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
           });
         } else if (!this.active[this.orgId]) {
@@ -268,6 +284,22 @@ export default {
                 symbol: 'circle',
                 symbolSize: 7,
                 showAllSymbol: true,
+                itemStyle: {
+                  normal: {
+                    color(params) {
+                      if (params.value[1] == 1) {
+                        return '#4CCD79';
+                      }
+                      if (params.value[1] == 4) {
+                        return '#FFBC20';
+                      }
+                      if (params.value[1] == 7) {
+                        return '#FB4C59 ';
+                      }
+                    },
+
+                  },
+                },
                 data: [],
               };
             }
@@ -281,6 +313,22 @@ export default {
                 symbol: 'circle',
                 showAllSymbol: true,
                 symbolSize: 7,
+                itemStyle: {
+                  normal: {
+                    color(params) {
+                      if (params.value[1] == 1) {
+                        return '#4CCD79';
+                      }
+                      if (params.value[1] == 4) {
+                        return '#FFBC20';
+                      }
+                      if (params.value[1] == 7) {
+                        return '#FB4C59 ';
+                      }
+                    },
+
+                  },
+                },
                 data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
               };
             }
