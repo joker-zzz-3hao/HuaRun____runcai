@@ -102,7 +102,8 @@
                     v-if="item.undertakeOkrVo
                 && item.undertakeOkrVo.undertakeOkrContent"
                   >{{item.undertakeOkrVo.undertakeOkrContent}}</a>
-                  <a>{{item.parentObjectKr}}</a>
+                  <a v-else>{{item.parentObjectKr}}</a>
+                  <a>{{item.cultureName}}</a>
                 </p>
               </div>
               <!-- 变更 原无承接 -->

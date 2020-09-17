@@ -525,6 +525,7 @@ export default {
                 self.supportType = 1;
               }
             });
+            // TODO: 显示30个赞
             if (self.voteLength > 10) {
               self.cutVoteList = self.voteUser.slice(0, 9);
             } else {
