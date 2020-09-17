@@ -12,7 +12,7 @@ export default {
   name: 'okrUpdate',
   data() {
     return {
-      testModel: true,
+      testModel: false,
     };
   },
   props: {

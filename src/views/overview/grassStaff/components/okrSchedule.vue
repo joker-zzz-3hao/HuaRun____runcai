@@ -17,7 +17,7 @@ export default {
       server,
       mainDataX: [],
       mainDataY: [],
-      testModel: true,
+      testModel: false,
     };
   },
   props: {
