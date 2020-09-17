@@ -108,6 +108,6 @@ export default {
 <style  scoped>
 #okrUpdate {
   width: 100%;
-  height: 400px;
+  min-height: 400px;
 }
 </style>
