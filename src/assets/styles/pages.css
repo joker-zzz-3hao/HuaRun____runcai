@@ -182,6 +182,10 @@
   background: #fff;
 }
 
+.my-okr .operating-box .dl-item:nth-child(2) .tl-select {
+  width: 90px;
+}
+
 .my-okr .cont-area,
 .okr-maps .cont-area {
   display: flex;
@@ -562,15 +566,7 @@
 }
 
 .okr-change .tl-collapse .collpase-panel dd {
-  height: 32px;
-}
-
-.okr-change .collpase-panel .el-button {
-  height: 32px;
-}
-
-.okr-change .el-collapse-item__content .collpase-panel dd:last-child {
-  margin-bottom: 10px;
+  min-height: 32px;
 }
 
 /* 编辑状态 */
@@ -582,11 +578,13 @@
 
 .collpase-panel dt.is-edit .el-form-item {
   margin: 0;
+  width: 100%;
 }
 
 .collpase-panel dd.is-edit > div:first-child i:first-child,
 .collpase-panel dt .el-input,
-.collpase-panel dt.is-edit + dd  {
+.collpase-panel dt.is-edit + dd,
+.collpase-panel dd .el-input  {
   margin: 0;
 }
 

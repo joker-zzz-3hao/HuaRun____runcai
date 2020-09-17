@@ -805,8 +805,8 @@
 }
 
 .custom-drawer .tl-form .el-form-item__label {
-  padding: 0 20px 0 0;
-  width: 120px;
+  padding: 0 10px 0 0;
+  width: 88px;
 }
 
 .tl-drawer .el-drawer__body {
@@ -1233,7 +1233,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 26px;
+  min-height: 26px;
 }
 
 .tl-collapse .collpase-panel dd {
@@ -1241,8 +1241,27 @@
   font-weight: normal;
 }
 
-.tl-collapse .collpase-panel dd:nth-of-type(2) {
+.tl-collapse .el-collapse-item__content .collpase-panel dd {
+  margin-left: 58px;
+}
+
+.tl-collapse .el-collapse-item__content .collpase-panel dd:nth-of-type(1) > div:nth-child(3) {
+  flex-basis: calc(46% - 58px);
+}
+
+.tl-collapse .collpase-panel dd + dd {
   flex-direction: column;
+  align-items: flex-start;
+}
+
+.tl-collapse .collpase-panel dd + dd > div {
+  margin: 0 0 14px 0;
+  width: calc(100% - 30px);
+
+}
+
+.tl-collapse .collpase-panel dd + dd .el-form-item {
+  flex: 1;
 }
 
 .tl-collapse .collpase-panel dd div {
@@ -1291,12 +1310,16 @@
 .tl-collapse .el-collapse-item__header .collpase-panel dt > span + div {
   flex: 1;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.tl-collapse .el-collapse-item__header .collpase-panel dt > span + div em {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
-  cursor: pointer
 }
 
 .okr-detail .tl-collapse .el-collapse-item__header .collpase-panel dt > span + div {
@@ -1316,7 +1339,7 @@
   cursor: pointer !important;
 }
 
-.tl-collapse .collpase-panel dd > div:first-child em {
+.tl-collapse .collpase-panel .has-third-child > div:first-child em {
   margin: 0 0 0 10px;
   font-size: 14px;
   font-weight: 500;
@@ -1344,7 +1367,7 @@
 }
 
 .collpase-panel dd div:last-child p a {
-  color: #879099;
+  color: #4d5155;
 }
 
 .collpase-panel dd div:last-child p a:hover {
@@ -1736,6 +1759,24 @@
 
 .tl-cascader-popper .el-radio__inner:hover {
   border-color: #685df1;
+}
+/* tl-dropdown */
+.el-dropdown-link:focus,
+.el-dropdown-link i:focus {
+  outline: none;
+}
+
+.el-dropdown-link i {
+  cursor: pointer;
+}
+
+.el-dropdown-menu__item {
+  color: #4d5155;
+}
+
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #f4f6f8;
+  color: #4d5155;
 }
 
 /* ==========================================================常用基础组件=================================================================== */
@@ -2336,12 +2377,28 @@
   color: #fff;
 }
 
+.collpase-panel .el-button {
+  height: 32px;
+}
+
 .el-collapse-item__content .collpase-panel dt > span +div {
   flex: 1;
 }
 
 .collpase-panel.has-third-child ~ dl {
   margin-top: 20px;
+}
+
+.collpase-panel.has-third-child ~ dl .has-third-child {
+  margin-bottom: 20px;
+}
+
+.collpase-panel.has-third-child ~ dl .has-third-child + dd > div {
+  margin-bottom: 24px;
+}
+
+.collpase-panel.has-third-child ~ dl .has-third-child + dd > div .el-form-item__content {
+  width: 100%;
 }
 
 .collpase-panel.has-third-child ~ dl dt span {
@@ -2353,6 +2410,7 @@
   margin-top: 0;
 }
 
+.collpase-panel.has-third-child dd .el-form-item,
 .collpase-panel.has-third-child ~ dl dd .el-form-item {
   margin: 0;
 }
@@ -2370,17 +2428,22 @@
   font-weight: 500;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(6),
-.card-panel-body .tl-table .el-table__row td:nth-child(7) i,
-.card-panel-body .tl-table .sub-tr .okr-undertake {
+.card-panel-body .tl-table .el-table__row td:nth-child(4) .has-undertake {
+  color: #685df1;
+  cursor: pointer;
+}
+
+.card-panel-body .tl-table .el-table__row td:nth-child(6) em,
+.card-panel-body .tl-table .el-table__row td:nth-child(7) i {
   cursor: pointer;
   transition: all .4s ease-out;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(6):hover,
+.card-panel-body .tl-table .el-table__row td:nth-child(6) em:hover,
 .card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover,
-.card-panel-body .tl-table .sub-tr .okr-undertake:hover {
+.card-panel-body .tl-table .sub-tr .okr-undertake .has-undertake {
   color: #685df1;
+  cursor: pointer;
 }
 
 .tl-table-fix {
@@ -2643,10 +2706,6 @@
 
 .operating-box .tl-btn {
   margin: 0 0 0 20px;
-}
-
-.operating-box .tl-select {
-  width: 90px;
 }
 
 /* ========================================================公共页面布局组件================================================================== */

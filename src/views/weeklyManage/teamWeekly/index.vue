@@ -98,7 +98,7 @@
         </el-form>
       </div>
     </div>
-    <div class="cont-area">
+    <div class="cont-area" v-if="openOrClose == 'O'">
       <crcloud-table
         :total="total"
         :currentPage.sync="formData.currentPage"
@@ -226,83 +226,9 @@
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
         </div>
-        <!-- <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" style="width: 100%" v-if="tableLoading">
-            <el-table-column fixed prop="userName" label="姓名"></el-table-column>
-            <el-table-column fixed prop="orgName" label="所在团队"></el-table-column>
-            <el-table-column v-if="formData.queryType == '0'" fixed prop="workContent" label="工作项"></el-table-column>
-            <el-table-column
-              v-if="formData.queryType == '1'"
-              fixed
-              prop="thoughtContent"
-              label="感想"
-            ></el-table-column>
-            <el-table-column v-if="formData.queryType == '2'" fixed prop="planContent" label="下周计划"></el-table-column>
-            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="有进展的KR">
-              <template slot-scope="scope">
-                <div>{{scope.row.pokrDetailObjectKr ? scope.row.okrDetailObjectKr : '--'}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="所属O">
-              <template slot-scope="scope">
-                <div>{{scope.row.pokrDetailObjectKr ? scope.row.pokrDetailObjectKr : scope.row.pokrDetailObjectKr}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="formData.queryType == '3'" fixed prop="orgName" label="本周变化">
-              <template slot-scope="scope">
-                <div>{{scope.row.progressAfter - scope.row.progressBefor }}</div>
-              </template>
-            </el-table-column>
-            <el-table-column fixed label="角色" v-if="!formData.queryType">
-              <template slot-scope="scope">
-                <span>{{scope.row.isadmin == '1'?'部门负责人':'--'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column fixed prop="weeklyId" label="状态" v-if="!formData.queryType">
-              <template slot-scope="scope">
-                <span>{{scope.row.weeklyId ?'已提交':'未提交'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column fixed prop="tenantBuId" label="查看类型" v-if="!formData.queryType">
-              <template slot-scope="scope">
-                <span>{{scope.row.visitId ?'已查看':'未查看'}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column fixed prop="weeklyEmotion" label="本周心情" v-if="!formData.queryType">
-              <template slot-scope="scope">
-                <span v-if="scope.row.weeklyEmotion == '100'">开心</span>
-                <span v-if="scope.row.weeklyEmotion == '50'">平常</span>
-                <span v-if="scope.row.weeklyEmotion == '0'">沮丧</span>
-              </template>
-            </el-table-column>
-            <el-table-column fixed prop="updateTime" label="更新时间" v-if="!formData.queryType">
-              <template slot-scope="scope">
-                <div>{{scope.row.updateTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.updateTime) ):'--'}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column fixed="right" label="操作" width="130">
-              <template slot-scope="scope">
-                <el-button
-                  v-if="scope.row.weeklyId"
-                  type="text"
-                  size="small"
-                  @click="weeklyInfo(scope.row)"
-                >查看</el-button>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>-->
       </crcloud-table>
     </div>
-    <tl-create-tenant
-      v-if="exist"
-      :exist.sync="exist"
-      :title="title"
-      :tenantId="tenantId"
-      @getTeamWeekly="refreshPageList"
-      :infoBool="infoBool"
-    ></tl-create-tenant>
+    <div v-if="openOrClose == 'S'">该团队周报未开放</div>
   </div>
 </template>
 
@@ -328,6 +254,7 @@ export default {
       showRemindBtn: false,
       tableLoading: false,
       isQuickLook: false,
+      openOrClose: '',
       formData: {
         calendarId: '',
         looked: '',
@@ -388,6 +315,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+
     severalData() {
       let isLeader = false;
       this.userInfo.roleList.forEach((role) => {
@@ -404,11 +332,27 @@ export default {
   },
   methods: {
     init() {
+      // 自己团队还要判断是否开发周报么?
       this.formData.orgId = this.userInfo.orgId;
       // 查询列表数据（默认查询当前用户所在团队数据）
       // this.refreshPageList();
       // 查询组织树
       this.getOrgTree();
+      // 查询该组织的周报是否开放
+      this.getTypeConfig();
+    },
+    getTypeConfig() {
+      this.server.getTypeConfig({
+        sourceId: this.formData.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
+      }).then((res) => {
+        if (res.code == 200) {
+          if (res.data.length > 0) {
+            this.openOrClose = res.data[0].configItemCode;
+          } else {
+            this.openOrClose = 'O';
+          }
+        }
+      });
     },
     getTeamWeekly() {
       this.tableLoading = false;
@@ -475,6 +419,8 @@ export default {
       this.orgIdList = data;
       this.getTeamWeekly();
       this.$refs.cascader.dropDownVisible = false;
+      // 更换组织部门后需要重新查询该部门是否开发周报
+      this.getTypeConfig();
     },
     getOrgTree() {
       this.server.getOrg({}).then((res) => {
@@ -616,6 +562,13 @@ export default {
         }
       },
     },
+    // openOrClose: {
+    //   handler(val) {
+    //     if (val == 'S') {
+    //       this.tableData = [];
+    //     }
+    //   },
+    // },
   },
 
 };
