@@ -35,4 +35,9 @@ export default class Server extends ServerBase {
   getUserListByOrgId(param) {
     return this._ajaxPost('gateway/system-service/sys/user/listUserPage', param);
   }
+
+  // 查询周报配置是开放还是未开放
+  getTypeConfig(param) {
+    return this._ajaxPost('gateway/system-service/sys/config/query', param);
+  }
 }
