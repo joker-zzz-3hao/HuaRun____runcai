@@ -27,7 +27,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="评分">
+          <el-form-item label="评价">
             <el-select v-model.trim="formData.scoreId" placeholder="请选择" @change="changeSearch">
               <el-option
                 v-for="item in CONST.SCORE_LIST"
@@ -70,11 +70,20 @@
             <el-table-column prop="workContent" label="工作项" min-width="120"></el-table-column>
             <el-table-column prop="score" label="评价" min-width="160">
               <template slot-scope="scope">
-                <span v-if="scope.row.score">{{CONST.SCORE_MAP[scope.row.score]}}</span>
+                <span
+                  v-if="scope.row.score == '50' && scope.row.scoreLabel"
+                >{{`${CONST.SCORE_MAP[scope.row.score]}(${scope.row.scoreLabel})`}}</span>
+                <span
+                  v-else-if="scope.row.score == '10'
+                  || scope.row.score == '20'
+                  || scope.row.score == '30'
+                  || scope.row.score == '40'
+                  || scope.row.score == '50'"
+                >{{CONST.SCORE_MAP[scope.row.score]}}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="scoreTime" label="评分时间" min-width="160"></el-table-column>
+            <el-table-column prop="scoreTime" label="评价时间" min-width="160"></el-table-column>
             <el-table-column prop="updateTime" label="支撑时间" min-width="160"></el-table-column>
             <el-table-column fixed="right" label="操作" width="220">
               <template slot-scope="scope">
@@ -91,7 +100,12 @@
                   type="text"
                   class="tl-btn"
                 >修改评价</el-button>
-                <el-button @click="detail(scope.row)" type="text" class="tl-btn">评分详情</el-button>
+                <el-button
+                  v-if="scope.row.score"
+                  @click="detail(scope.row)"
+                  type="text"
+                  class="tl-btn"
+                >评价详情</el-button>
               </template>
             </el-table-column>
           </el-table>
