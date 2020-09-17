@@ -9,7 +9,7 @@
         <dl class="dl-list">
           <dt>
             <em>OKR</em>
-            <span>是否可编辑</span>
+            <span>是否可变更</span>
           </dt>
           <dd>
             <el-radio v-model="radio['O-1']" label="O" class="tl-radio">开启 ( 开启后OKR在审核后可再次编辑 )</el-radio>

@@ -6,13 +6,19 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 
 export default {
   name: 'okrUpdate',
   data() {
     return {
-      testModel: false,
     };
+  },
+  computed: {
+    ...mapState('common', {
+      testModel: (state) => state.testModel,
+
+    }),
   },
   mounted() {
     this.init();

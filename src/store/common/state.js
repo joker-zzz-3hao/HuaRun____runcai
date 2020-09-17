@@ -17,4 +17,5 @@ export default {
   totalMeaasge: 0,
   okrStatus: 'all',
   okrCycle: {},
+  testModel: true,
 };
