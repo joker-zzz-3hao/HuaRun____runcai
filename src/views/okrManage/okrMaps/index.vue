@@ -106,12 +106,14 @@
       </div>
     </div>
     <tl-okr-detail
+      v-if="detailExist"
       :exist.sync="detailExist"
       ref="okrdetail"
       :server="server"
       :okrId="okrId"
       :CONST="CONST"
       :showSupport="true"
+      :drawerTitle="drawerTitle"
     ></tl-okr-detail>
   </div>
 </template>
@@ -279,7 +281,7 @@ export default {
     },
     showDetail(okrId) {
       this.okrId = okrId;
-      this.drawerTitle = 'OKR详情';
+      this.drawerTitle = this.okrCycle.periodName;
       this.detailExist = true;
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();
