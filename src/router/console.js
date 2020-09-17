@@ -347,7 +347,7 @@ export default [{
       name: 'notice',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'notice',
         title: 'notice',
         power: '',
@@ -360,7 +360,7 @@ export default [{
       name: 'personConfig',
       meta: {
         hasMainMenu: true,
-        isSubMenu: true,
+        noSubMenu: true,
         parentRoute: 'personConfig',
         title: 'personConfig',
         power: '',
