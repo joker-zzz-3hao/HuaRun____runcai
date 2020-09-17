@@ -64,48 +64,48 @@
                 <span>当前进度</span>
                 <tl-process :data="item.okrDetailProgress"></tl-process>
               </div>
-              <!-- 变更 -->
-              <div
-                v-if="item.okrParentId
-                && item.undertakeOkrVo
-                && item.undertakeOkrVo.undertakeOkrContent"
-              >
+              <!-- 变更时父目标有变更 -->
+              <div v-if="canWrite && item.parentUpdate">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index,'new')">
-                  <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
-                </p>
-              </div>
-              <!-- 有承接项时 -->
-              <div v-else-if="item.okrParentId">
-                <i class="el-icon-attract"></i>
-                <span>关联父目标</span>
-                <!-- 是变更且有更新显示icon -->
-                <template v-if="item.parentUpdate">
-                  <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
-                    <span v-if="canWrite">
-                      您承接的OKR有变更，
-                      <a @click="goUndertake(index,'change')">查看详情</a>
-                    </span>
-                    <span v-else>您承接的OKR有变更，请在变更中处理。</span>
-                    <i class="el-icon-warning" slot="reference"></i>
-                  </el-popover>
-                </template>
-                <!-- 变更可点 -->
+                <el-popover
+                  placement="top"
+                  width="200"
+                  trigger="hover"
+                  :append-to-body="false"
+                  v-if="!item.hasUpdate"
+                >
+                  <span>
+                    您关联的父目标有变更，
+                    <a @click="goUndertake(index,'change')">查看详情</a>
+                  </span>
+                  <i class="el-icon-warning" slot="reference"></i>
+                </el-popover>
                 <em
-                  v-if="item.parentUpdate && canWrite"
+                  v-if="item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+                  @click="goUndertake(index,'change')"
+                  :class="{'is-change':canWrite}"
+                >{{item.undertakeOkrVo.undertakeOkrContent}}</em>
+                <em
+                  v-else
                   @click="goUndertake(index,'change')"
                   :class="{'is-change':canWrite}"
                 >{{item.parentObjectKr}}</em>
-                <em
-                  class="is-change"
-                  v-else-if="canWrite"
-                  @click="goUndertake(index,'new')"
-                >{{item.parentObjectKr}}</em>
-                <!-- 详情不可点 -->
-                <em v-else>{{item.parentObjectKr}}</em>
               </div>
-              <!-- 变更无承接项时 -->
+              <!-- 变更 原来有承接-->
+              <div v-else-if="canWrite && item.parentObjectKr">
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <p @click="goUndertake(index,'new')">
+                  <a
+                    v-if="item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+                  >{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                  <a>{{item.parentObjectKr}}</a>
+                </p>
+              </div>
+              <!-- 变更 原无承接 -->
               <div v-else-if="canWrite">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
@@ -119,14 +119,25 @@
                   <a v-if="item.cultureName">{{item.cultureName}}</a>
                 </p>
                 <el-button
-                  type="text"
+                  plain
+                  icon="el-icon-plus"
                   @click.native="goUndertake(index,'new')"
-                  class="tl-btn dotted-line"
+                  class="tl-btn amt-border-slip"
                   v-else
                 >
-                  <i class="el-icon-plus"></i>
                   关联
+                  <span class="lines"></span>
                 </el-button>
+              </div>
+              <!-- 详情 -->
+              <div v-else-if="item.parentObjectKr">
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
+                  <span>您承接的OKR有变更，请在变更中处理。</span>
+                  <i class="el-icon-warning" slot="reference"></i>
+                </el-popover>
+                <em>{{item.parentObjectKr}}</em>
               </div>
             </dd>
           </dl>
