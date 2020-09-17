@@ -156,7 +156,16 @@ export default {
         },
       ).then((res) => {
         this.dateOption = res.data;
-        this.calendarId = res.data[0].calendarId;
+        // eslint-disable-next-line max-len
+        const dateArr = this.dateOption.map((item) => [new Date(item.weekBegin).getTime(), new Date(item.weekEnd).getTime()]);
+        console.log(new Date().getTime());
+        const eq = dateArr.findIndex((item) => item[0] <= new Date().getTime() && new Date().getTime() <= item[1]);
+        if (eq) {
+          this.calendarId = res.data[eq].calendarId;
+        } else {
+          this.calendarId = res.data[0].calendarId;
+        }
+
         this.$nextTick(() => {
           this.orgWeekly();
         });

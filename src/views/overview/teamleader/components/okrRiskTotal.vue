@@ -8,7 +8,7 @@
       <ul>
         <li class="count" v-for="(item,index) in tableData" :key="index">
           <em>{{item.count}}</em>
-          <div>{{item.riskName}}(个)</div>
+          <div class="test">{{item.riskName}}(个)</div>
           <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress>
         </li>
       </ul>
@@ -222,6 +222,7 @@ export default {
 .echartLayout {
   position: relative;
   width: 300px;
+  display: inline-block;
   height: 300px;
 }
 #okrRiskTotal {
@@ -245,12 +246,31 @@ export default {
 }
 .countAll {
   display: inline-block;
+  background: #ffffff;
+  box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
+  border-radius: 4px;
+  border-radius: 4px;
 }
 .countAll ul li {
   display: inline-block;
   background: #ffffff;
   border-radius: 4px;
   border-radius: 4px;
+  width: 280px;
+  margin-right: 40px;
+  height: 144px;
+}
+
+.countAll ul li em {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #222426;
+}
+.test {
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #acb6bf;
+  letter-spacing: 0.23px;
 }
 .count {
   width: 284px;

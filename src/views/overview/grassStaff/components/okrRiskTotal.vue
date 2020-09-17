@@ -157,7 +157,7 @@ export default {
     userWeekly() {
       this.server.userWeekly({
         date: `${this.dateTime}-01`,
-        userId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        userId: this.$route.query.id ? this.$route.query.id : '',
       }).then((res) => {
         this.tableData = res.data;
       });

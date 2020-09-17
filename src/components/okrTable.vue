@@ -4,8 +4,8 @@
       <li></li>
       <li></li>
       <li>权重</li>
-      <li v-if="!overview">
-        <em>承接地图</em>
+      <li>
+        <em v-if="$route.name!=='grassStaff'">承接地图</em>
       </li>
       <li>风险状态</li>
       <li>关联父目标</li>
