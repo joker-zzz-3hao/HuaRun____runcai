@@ -28,7 +28,7 @@
           <span>{{worthName}}</span>
         </div>
         <div v-if="scoreId=='50'">
-          <span>描述：如支撑项不符合价值观背景，亲把它归类到其它标签中</span>
+          <span>描述：如支撑项不符合价值观背景，请把它归类到其它标签中</span>
           <div>
             <div>添加：</div>
             <div>
@@ -43,6 +43,8 @@
                 v-if="inputVisible"
                 v-model="inputValue"
                 ref="saveTagInput"
+                placeholder="请输入您的描述，200个字符内"
+                maxlength="200"
                 size="small"
                 @keyup.enter.native="handleInputConfirm"
                 @blur="handleInputConfirm"
@@ -128,6 +130,7 @@ export default {
       this.showScore = false;
     },
     selectWorth(data) {
+      this.otherLabelList = [];
       this.worthName = data.label;
       this.scoreId = data.value;
     },
@@ -156,7 +159,7 @@ export default {
         id: this.data.id,
         score: this.scoreId,
         scoreDesc: this.description,
-        scoreLabel: this.otherLabelList[0].label,
+        scoreLabel: this.otherLabelList.length > 0 ? this.otherLabelList[0].label : '',
       }).then((res) => {
         if (res.code == '200') {
           this.$emit('success');

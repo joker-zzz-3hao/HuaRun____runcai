@@ -66,7 +66,7 @@ export default {
       dateOption: [],
       tableData: [],
       echartDataX: [],
-      testModel: true,
+      testModel: false,
       echartDataY: [],
     };
   },
