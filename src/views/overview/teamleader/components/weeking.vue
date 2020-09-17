@@ -52,12 +52,14 @@
 import echarts from 'echarts';
 import { mapState } from 'vuex';
 import Server from '../../server';
+import { teamData } from '../../testData';
 
 const server = new Server();
 export default {
   name: 'weeking',
   data() {
     return {
+      testData: true,
       moodDataY: [],
       moodDataX: [],
       teamDataY: [],
@@ -149,7 +151,7 @@ export default {
         },
         dataset: {
           dimensions: ['product', '进行中的工作项', '已完成的工作项'],
-          source: that.teamDataX,
+          source: that.testData ? teamData.weekX : that.teamDataX,
         },
         xAxis: {
           type: 'category',
@@ -242,7 +244,7 @@ export default {
 
         dataset: {
           dimensions: ['product', '0', '50', '100'],
-          source: that.moodDataY,
+          source: that.testData ? teamData.weekY : that.moodDataY,
         },
         xAxis: {
           type: 'category',

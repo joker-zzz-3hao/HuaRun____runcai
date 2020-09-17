@@ -42,6 +42,7 @@ import echarts from 'echarts';
 import { mapState } from 'vuex';
 import Server from '../../server';
 import CONST from '../../const';
+import { userData } from '../../testData';
 
 const server = new Server();
 export default {
@@ -66,6 +67,7 @@ export default {
       dateOption: [],
       tableData: [],
       echartDataX: [],
+      testModel: true,
       echartDataY: [],
     };
   },
