@@ -25,6 +25,18 @@
                     ></el-input>
                   </el-form-item>
                 </div>
+                <el-tooltip
+                  class="icon-clear"
+                  :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
+                  effect="dark"
+                  :content="formData.okrInfoList.length > 1 ? '删除' : '至少有一个目标'"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                  @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
+                  :disabled="!isnew && formData.okrInfoList.length == 1"
+                >
+                  <i class="el-icon-minus"></i>
+                </el-tooltip>
               </dt>
               <dd class="is-edit has-third-child">
                 <div>
@@ -74,29 +86,16 @@
                       <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
                     </p>
                     <el-button
-                      plain
-                      icon="el-icon-plus"
+                      type="text"
                       @click.native="openUndertake(index)"
-                      class="tl-btn"
+                      class="tl-btn dotted-line"
                       v-else
                     >
+                      <i class="el-icon-plus"></i>
                       关联
-                      <span class="lines"></span>
                     </el-button>
                   </el-form-item>
                 </div>
-                <el-tooltip
-                  class="icon-clear"
-                  :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
-                  effect="dark"
-                  :content="formData.okrInfoList.length > 1 ? '删除' : '至少有一个目标'"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                  @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
-                  :disabled="!isnew && formData.okrInfoList.length == 1"
-                >
-                  <i class="el-icon-minus"></i>
-                </el-tooltip>
               </dd>
             </dl>
           </template>
@@ -193,10 +192,12 @@
           </el-button>
         </elcollapseitem>
       </elcollapse>
+      <div class="btn-box">
+        <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
+          <i class="el-icon-plus"></i>添加目标
+        </el-button>
+      </div>
     </el-form>
-    <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
-      <i class="el-icon-plus"></i>添加目标
-    </el-button>
 
     <!-- 变更原因 -->
     <div v-if="searchForm.approvalType == 1">

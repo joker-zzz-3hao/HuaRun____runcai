@@ -154,9 +154,10 @@ export default {
     self.server.getOkrCycleList().then((res) => {
       this.cycleData = res.data;
       if (this.cycleData.length > 0) {
-        this.periodId = this.cycleData[0].periodId;
+        const cycObj = this.cycleData.filter((item) => item.checkStatus == '1')[0] || {};
+        this.periodId = cycObj.periodId;
         this.handleCycleData(this.periodId);
-        this.worthPeriodId = this.cycleData[0].periodId;
+        this.worthPeriodId = cycObj.periodId;
         this.handleWorthData(this.worthPeriodId);
       }
     });
