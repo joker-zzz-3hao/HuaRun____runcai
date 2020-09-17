@@ -31,7 +31,7 @@
           <div class="remind-state"></div>
         </li>
         <li>
-          <el-dropdown>
+          <el-dropdown class="tl-dropdown">
             <div class="el-dropdown-link user-info">
               <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
               <div v-else-if="userInfo.userName" class="user-name">
@@ -39,9 +39,15 @@
               </div>
             </div>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="go('personalCenter')">个人中心</el-dropdown-item>
-              <el-dropdown-item @click.native="go('personConfig')">个人设置</el-dropdown-item>
-              <el-dropdown-item @click.native="loginOut">退出登录</el-dropdown-item>
+              <el-dropdown-item @click.native="go('personalCenter')">
+                <em>个人中心</em>
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="go('personConfig')">
+                <em>个人设置</em>
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="loginOut">
+                <em>退出登录</em>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </li>

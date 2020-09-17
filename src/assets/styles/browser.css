@@ -35,9 +35,11 @@ _::-webkit-full-page-media, _:future, :root .my-okr .operating-panel .tl-select 
     left: -53px;
     width: 46px;
   }
-  
 }
 
 @media screen and (min-width:1921px) {
-  
+  .tl-table .sub-tr .okr-kr-name::before {
+    left: -95px;
+    width: 86px;
+  }
 }

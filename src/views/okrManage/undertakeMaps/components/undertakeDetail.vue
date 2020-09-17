@@ -110,13 +110,14 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('common', ['undertakeMapsStep', 'setundertakeDetail']),
+    ...mapMutations('common', ['setUndertakeMapsStep', 'setundertakeDetail']),
     okrCheck(checkStatus) {
       this.checkStatus = checkStatus;
       this.okrDetailId = this.undertakeDetail.okrDetailId || '';
       this.server.okrCheck({
         checkStatus,
         okrDetailId: this.okrDetailId,
+        okrType: this.undertakeDetail.okrDetailType === 1 ? 'KR' : 'O',
       }).then((res) => {
         if (res.code == 200) {
           this.personList = res.data || [];
@@ -126,7 +127,7 @@ export default {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
                 citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
-                citem.remark = contentObject.remark || '暂无';
+                citem.remark = citem.reason || '暂无';
               });
             }
           });
@@ -144,7 +145,7 @@ export default {
       console.log('刷新列表');
     },
     goback() {
-      this.undertakeMapsStep('1');
+      this.setUndertakeMapsStep('1');
       this.setundertakeDetail({});
     },
   },

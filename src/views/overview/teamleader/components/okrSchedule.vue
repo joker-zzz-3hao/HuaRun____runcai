@@ -19,7 +19,7 @@ export default {
     return {
       mainDataY: [],
       mainDataX: [],
-      testModel: false,
+      testModel: true,
     };
   },
   mounted() {

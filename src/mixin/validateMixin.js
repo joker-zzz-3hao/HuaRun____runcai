@@ -73,7 +73,7 @@ export default {
       value = this.getValue(rule);
       if (!value) {
         callback('请填写关键结果KR名称');
-      } else if (value.length > 50) {
+      } else if (value.length > 100) {
         callback('不能超过100个字符');
       } else {
         callback();

@@ -141,7 +141,7 @@ export default {
         params.orgName = this.formData.orgName;
         params.orgSort = this.formData.orgSort;
       } else {
-        params.orgFullId = this.formData.orgIdList.join(':');
+        params.orgFullId = this.initDepartment.orgFullId;
         params.orgParentId = this.formData.orgParentId;
         // eslint-disable-next-line no-unused-expressions
         params.orgName = this.formData.orgName;

@@ -16,7 +16,7 @@
             <div class="okr-title">{{okrCycle.periodName}}</div>
             <dl class="okr-state">
               <dt>
-                <!-- <i class="el-icon-set-up"></i> -->
+                <i class></i>
                 <em>状态</em>
               </dt>
               <dd>
@@ -70,14 +70,14 @@
                       v-if="['1',1].includes(item.okrMain.status)"
                       @click.native="goChangeOkr(item)"
                     >
-                      <i class="el-icon-edit-outline"></i>
+                      <!-- <i class="el-icon-edit-outline"></i> -->
                       <em>申请变更</em>
                     </el-dropdown-item>
                     <el-dropdown-item
                       v-if="['6',6].includes(item.okrMain.status)"
                       @click.native="deleteDraft(item.id)"
                     >
-                      <i class="el-icon-delete"></i>
+                      <!-- <i class="el-icon-delete"></i> -->
                       <em>删除</em>
                     </el-dropdown-item>
                     <el-dropdown-item
@@ -92,7 +92,7 @@
             </dl>
             <dl class="update-time">
               <dt>
-                <i class="el-icon-timer"></i>
+                <!-- <i class="el-icon-timer"></i> -->
                 <em>更新时间</em>
               </dt>
               <dd>
@@ -138,6 +138,7 @@
                 <el-dropdown
                   v-if="['1','7',1,7].includes(item.okrMain.status) && props.okritem.versionCount>1"
                   trigger="click"
+                  class="tl-dropdown"
                 >
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>

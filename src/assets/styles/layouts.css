@@ -126,6 +126,8 @@
 i + em,
 i + span,
 i + span + em,
+i + span + .el-button,
+i + span + p,
 span + em + em:last-of-type,
 i + span + em + i {
   margin: 0 0 0 6px;

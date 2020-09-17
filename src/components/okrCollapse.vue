@@ -49,7 +49,8 @@
                     :step="1"
                     :precision="0"
                     class="tl-input-number"
-                  ></el-input-number>%
+                  ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <em v-else>{{item.okrWeight}}%</em>
                 <i
@@ -63,56 +64,51 @@
                 <span>当前进度</span>
                 <tl-process :data="item.okrDetailProgress"></tl-process>
               </div>
-              <!-- 变更 -->
-              <div
-                v-if="item.okrParentId
-                && item.undertakeOkrVo
-                && item.undertakeOkrVo.undertakeOkrContent"
-              >
+              <!-- 变更时父目标有变更 -->
+              <div v-if="canWrite && item.parentUpdate">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index,'new')">
-                  <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
-                </p>
-              </div>
-              <!-- 有承接项时 -->
-              <div v-else-if="item.okrParentId">
-                <i class="el-icon-attract"></i>
-                <span>关联父目标</span>
-                <!-- 是变更且有更新显示icon -->
-                <template v-if="item.parentUpdate">
-                  <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
-                    <span v-if="canWrite">
-                      您承接的OKR有变更，
-                      <a @click="goUndertake(index,'change')">查看详情</a>
-                    </span>
-                    <span v-else>您承接的OKR有变更，请在变更中处理。</span>
-                    <i class="el-icon-warning" slot="reference"></i>
-                  </el-popover>
-                </template>
-                <!-- 变更可点 -->
+                <el-popover
+                  placement="top"
+                  width="200"
+                  trigger="hover"
+                  :append-to-body="false"
+                  v-if="!item.hasUpdate"
+                >
+                  <span>
+                    您关联的父目标有变更，
+                    <a @click="goUndertake(index,'change')">查看详情</a>
+                  </span>
+                  <i class="el-icon-warning" slot="reference"></i>
+                </el-popover>
                 <em
-                  v-if="item.parentUpdate && canWrite"
+                  v-if="item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+                  @click="goUndertake(index,'change')"
+                  :class="{'is-change':canWrite}"
+                >{{item.undertakeOkrVo.undertakeOkrContent}}</em>
+                <em
+                  v-else
                   @click="goUndertake(index,'change')"
                   :class="{'is-change':canWrite}"
                 >{{item.parentObjectKr}}</em>
-                <em
-                  class="is-change"
-                  v-else-if="canWrite"
-                  @click="goUndertake(index,'new')"
-                >{{item.parentObjectKr}}</em>
-                <!-- 详情不可点 -->
-                <em v-else>{{item.parentObjectKr}}</em>
               </div>
-              <!-- 变更无承接项时 -->
+              <!-- 变更 原来有承接-->
+              <div v-else-if="canWrite && item.parentObjectKr">
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <p @click="goUndertake(index,'new')">
+                  <a
+                    v-if="item.undertakeOkrVo
+                && item.undertakeOkrVo.undertakeOkrContent"
+                  >{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                  <a>{{item.parentObjectKr}}</a>
+                </p>
+              </div>
+              <!-- 变更 原无承接 -->
               <div v-else-if="canWrite">
-                <i
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                  class="el-icon-attract"
-                ></i>
-                <span
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                >关联父目标</span>
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
                 <p
                   @click="goUndertake(index,'new')"
                   v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
@@ -123,15 +119,25 @@
                   <a v-if="item.cultureName">{{item.cultureName}}</a>
                 </p>
                 <el-button
+                  type="text"
                   plain
-                  icon="el-icon-plus"
                   @click.native="goUndertake(index,'new')"
-                  class="tl-btn amt-border-slip"
+                  class="tl-btn dotted-line"
                   v-else
                 >
+                  <i class="el-icon-plus"></i>
                   关联
-                  <span class="lines"></span>
                 </el-button>
+              </div>
+              <!-- 详情 -->
+              <div v-else-if="item.parentObjectKr">
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
+                  <span>您承接的OKR有变更，请在变更中处理。</span>
+                  <i class="el-icon-warning" slot="reference"></i>
+                </el-popover>
+                <em>{{item.parentObjectKr}}</em>
               </div>
             </dd>
           </dl>
@@ -181,7 +187,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <em v-else>{{kritem.okrWeight}}%</em>
               <i
@@ -213,9 +220,12 @@
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
           </dd>
-          <dd v-if="canWrite">
+          <dd
+            v-if="canWrite"
+            :class="{'is-edit': canWrite && kritem.showCheckEdit || kritem.showJudgeEdit}"
+          >
             <div>
-              <span>考核指标</span>
+              <em>考核指标</em>
               <el-form-item
                 v-if="kritem.showCheckEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
@@ -260,7 +270,7 @@
         </dl>
         <template v-if="item.newkrList">
           <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
-            <dt>
+            <dt class="is-edit">
               <span>KR{{item.krList.length+kindex+1}}</span>
               <div>
                 <el-form-item
@@ -289,7 +299,7 @@
                 <i class="el-icon-minus"></i>
               </el-tooltip>
             </dt>
-            <dd>
+            <dd class="has-third-child">
               <el-form-item label="权重">
                 <el-input-number
                   v-model="newItem.okrWeight"
@@ -299,7 +309,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-input-number
@@ -310,7 +321,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <el-form-item label="风险状态">
                 <tl-confidence v-model="newItem.okrDetailConfidence" @change="updateokrCollapse"></tl-confidence>
