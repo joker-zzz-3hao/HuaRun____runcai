@@ -14,9 +14,9 @@
     </div>
     <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">
-        <tl-tabs :current.sync="currentIndex">
+        <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
           <template slot="tab-cont">
-            <div v-if="currentIndex===0" class="tab-cont">
+            <div v-if="currentIndex===0 && showSupport" class="tab-cont">
               <div class="dl-list">
                 <dl>
                   <dt>
@@ -78,7 +78,7 @@
                 </template>
               </tl-okr-collapse>
             </div>
-            <div v-else-if="okrId && currentIndex===1" class="tab-cont tl-custom-timeline">
+            <div v-else class="tab-cont tl-custom-timeline">
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
@@ -396,6 +396,7 @@ export default {
       periodName: '',
       currentPage: 1,
       status: 1,
+
     };
   },
   components: {
@@ -443,6 +444,21 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    tabMenuList() {
+      if (this.showSupport) {
+        return [
+          {
+            menuName: '详情',
+          },
+          {
+            menuName: '操作历史',
+          },
+        ];
+      }
+      return [{
+        menuName: '操作历史',
+      }];
+    },
   },
   created() {
   },

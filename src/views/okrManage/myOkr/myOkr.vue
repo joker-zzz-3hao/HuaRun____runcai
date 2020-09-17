@@ -137,7 +137,7 @@
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-dropdown
                   v-if="['1','7',1,7].includes(item.okrMain.status) && props.okritem.versionCount>1"
-                  :append-to-body="false"
+                  trigger="click"
                 >
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
@@ -154,10 +154,7 @@
               </template>
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
-                <el-dropdown
-                  v-if="['1','7',1,7].includes(item.okrMain.status)"
-                  :append-to-body="false"
-                >
+                <el-dropdown v-if="['1','7',1,7].includes(item.okrMain.status)" trigger="click">
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
                   </span>
