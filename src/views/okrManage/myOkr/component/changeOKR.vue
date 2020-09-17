@@ -634,6 +634,14 @@ export default {
           opercent += oitem.okrWeight;
           keypercent = 0;
           oitem.krList.forEach((kitem) => {
+            if (!kitem.checkQuota) {
+              this.$message.error('请填写考核指标');
+              throw Error();
+            }
+            if (!kitem.judgeMethod) {
+              this.$message.error('请填写衡量办法');
+              throw Error();
+            }
             keypercent += kitem.okrWeight;
           });
           if (keypercent != 100) {

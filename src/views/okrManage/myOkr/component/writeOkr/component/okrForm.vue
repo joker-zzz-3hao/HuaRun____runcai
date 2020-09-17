@@ -448,6 +448,7 @@ export default {
               // 如果是草稿，选中已保存的承接项
               if (['6', '8'].includes(this.searchForm.okrStatus)
                && (item.undertakeOkrVo.undertakeOkrDetailId || item.undertakeOkrDto.undertakeOkrDetailId)) {
+                this.searchForm.okrStatus = '';
                 item.departokrList.forEach((pitem) => {
                   if (item.undertakeOkrVo.undertakeOkrDetailId == pitem.okrDetailId) {
                     this.$set(item.undertakeOkrVo, 'undertakeOkrContent', pitem.okrDetailObjectKr);
@@ -486,6 +487,7 @@ export default {
               item.philosophyList = JSON.parse(this.philosophyObject);
               // 如果是草稿，选中已保存的价值观
               if (['6', '8'].includes(this.searchForm.okrStatus) && item.cultureId) {
+                this.searchForm.okrStatus = '';
                 item.philosophyList.forEach((pitem) => {
                   if (item.cultureId == pitem.id) {
                     this.$set(item, 'cultureName', pitem.cultureName);
