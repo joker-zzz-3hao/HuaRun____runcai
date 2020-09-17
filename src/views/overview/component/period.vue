@@ -1,5 +1,6 @@
 <template>
   <div class="personPage">
+    <el-button @click="changeTest">{{testModel?'真实数据':'示例数据'}}</el-button>
     <el-button v-if="$route.query.id" @click="back()">返回</el-button>
     <div class="operating-panel">
       <dl class="dl-item">
@@ -58,12 +59,19 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
   },
   methods: {
-    ...mapMutations('common', ['setOrg']),
+    ...mapMutations('common', ['setOrg', 'changeTestModel']),
     back() {
       this.$router.back();
+      this.reload();
+    },
+    changeTest() {
+      const boolTest = !this.testModel;
+      this.changeTestModel(boolTest);
+      console.log(this.testModel);
       this.reload();
     },
     getokrQuery() {

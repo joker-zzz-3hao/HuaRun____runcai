@@ -62,6 +62,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+
     }),
   },
   mounted() {

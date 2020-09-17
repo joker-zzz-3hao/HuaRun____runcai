@@ -9,6 +9,7 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 import { mainData } from '../../testData';
 
 export default {
@@ -19,12 +20,17 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapState('common', {
+      testModel: (state) => state.testModel,
+
+    }),
+  },
   data() {
     return {
       mainDataY: [],
       mainDataX: [],
       mainDataYBar: [],
-      testModel: false,
     };
   },
   mounted() {

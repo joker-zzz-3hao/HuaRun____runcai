@@ -59,7 +59,6 @@ export default {
   name: 'weeking',
   data() {
     return {
-      testData: true,
       moodDataY: [],
       moodDataX: [],
       teamDataY: [],
@@ -79,6 +78,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      testModel: (state) => state.testModel,
     }),
   },
   methods: {
@@ -151,7 +151,7 @@ export default {
         },
         dataset: {
           dimensions: ['product', '进行中的工作项', '已完成的工作项'],
-          source: that.testData ? teamData.weekX : that.teamDataX,
+          source: that.testModel ? teamData.weekX : that.teamDataX,
         },
         xAxis: {
           type: 'category',
@@ -244,7 +244,7 @@ export default {
 
         dataset: {
           dimensions: ['product', '0', '50', '100'],
-          source: that.testData ? teamData.weekY : that.moodDataY,
+          source: that.testModel ? teamData.weekY : that.moodDataY,
         },
         xAxis: {
           type: 'category',

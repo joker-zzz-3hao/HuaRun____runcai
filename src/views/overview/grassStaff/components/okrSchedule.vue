@@ -6,6 +6,7 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 import Server from '../../server';
 import { userData } from '../../testData';
 
@@ -19,6 +20,12 @@ export default {
       mainDataY: [],
       testModel: false,
     };
+  },
+  computed: {
+    ...mapState('common', {
+      testModel: (state) => state.testModel,
+
+    }),
   },
   props: {
     mainData: {

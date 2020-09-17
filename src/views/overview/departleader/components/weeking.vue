@@ -115,7 +115,6 @@ export default {
       moodDataY: [],
       active: {},
       orgTable: [],
-      testModel: false,
     };
   },
 
@@ -123,6 +122,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
   },
   mounted() {

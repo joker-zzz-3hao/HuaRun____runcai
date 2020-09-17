@@ -72,4 +72,9 @@ export default {
   setokrCycle: (state, okrCycle = {}) => {
     state.okrCycle = okrCycle;
   },
+
+  // 切换示例数据
+  changeTestModel: (state, testModel = false) => {
+    state.testModel = testModel;
+  },
 };

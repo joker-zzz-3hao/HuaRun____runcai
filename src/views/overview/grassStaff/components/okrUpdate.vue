@@ -6,14 +6,20 @@
 
 <script>
 import echarts from 'echarts';
+import { mapState } from 'vuex';
 import { userData } from '../../testData';
 
 export default {
   name: 'okrUpdate',
   data() {
     return {
-      testModel: false,
     };
+  },
+  computed: {
+    ...mapState('common', {
+      testModel: (state) => state.testModel,
+
+    }),
   },
   props: {
     mainData: {
