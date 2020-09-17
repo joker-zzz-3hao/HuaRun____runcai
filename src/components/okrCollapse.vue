@@ -119,14 +119,14 @@
                   <a v-if="item.cultureName">{{item.cultureName}}</a>
                 </p>
                 <el-button
+                  type="text"
                   plain
-                  icon="el-icon-plus"
                   @click.native="goUndertake(index,'new')"
-                  class="tl-btn amt-border-slip"
+                  class="tl-btn dotted-line"
                   v-else
                 >
+                  <i class="el-icon-plus"></i>
                   关联
-                  <span class="lines"></span>
                 </el-button>
               </div>
               <!-- 详情 -->
