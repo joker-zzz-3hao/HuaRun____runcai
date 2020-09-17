@@ -93,8 +93,8 @@
                         }"
                       >
                         <em>{{userName}}</em>
-                        <span>{{cycleFirst.operateTypeCn}}</span>
-                        <span v-if="cycleFirst.operateType == 'add'">OKR</span>
+                        <span v-if="cycleFirst.operateType == 'add'">创建了</span>
+                        <span v-else>{{cycleFirst.operateTypeCn}}</span>
                       </div>
                       <!-- 更新进度操作记录 -->
                       <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
@@ -202,7 +202,8 @@
                     <div class="list-cont">
                       <div class="operate-type">
                         <em>{{userName}}</em>
-                        <span>{{activity.operateTypeCn}}</span>
+                        <span v-if="activity.operateType == 'add'">创建了</span>
+                        <span v-else>{{activity.operateTypeCn}}</span>
                       </div>
                       <!-- 更新进度操作记录 -->
                       <ul v-if="activity.operateType == 'update'" class="operate-kind">
