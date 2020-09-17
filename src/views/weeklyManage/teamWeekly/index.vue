@@ -408,7 +408,6 @@ export default {
       });
     },
     selectIdChange(data) {
-      debugger;
       // 清空其他查询条件
       this.formData.looked = '';
       this.formData.submited = '';
