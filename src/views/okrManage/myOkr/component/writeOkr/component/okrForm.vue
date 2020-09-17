@@ -9,7 +9,7 @@
           :name="index"
         >
           <template slot="title">
-            <dl class="collpase-panel">
+            <dl class="collpase-panel has-third-child">
               <dt class="is-edit">
                 <span>目标{{index+1+preIndex}}</span>
                 <div>
@@ -77,7 +77,7 @@
                       plain
                       icon="el-icon-plus"
                       @click.native="openUndertake(index)"
-                      class="tl-btn amt-border-slip"
+                      class="tl-btn"
                       v-else
                     >
                       关联
@@ -100,7 +100,11 @@
               </dd>
             </dl>
           </template>
-          <dl class="collpase-panel" v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
+          <dl
+            class="collpase-panel has-third-child"
+            v-for="(kitem, kindex) in oitem.krList"
+            :key="kitem.id"
+          >
             <dt class="is-edit">
               <span>KR{{kindex+1}}</span>
               <div>

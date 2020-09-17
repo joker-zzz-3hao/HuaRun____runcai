@@ -49,7 +49,8 @@
                     :step="1"
                     :precision="0"
                     class="tl-input-number"
-                  ></el-input-number>%
+                  ></el-input-number>
+                  <span>%</span>
                 </el-form-item>
                 <em v-else>{{item.okrWeight}}%</em>
                 <i
@@ -106,13 +107,8 @@
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
-                <i
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                  class="el-icon-attract"
-                ></i>
-                <span
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                >关联父目标</span>
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
                 <p
                   @click="goUndertake(index,'new')"
                   v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
@@ -123,14 +119,13 @@
                   <a v-if="item.cultureName">{{item.cultureName}}</a>
                 </p>
                 <el-button
-                  plain
-                  icon="el-icon-plus"
+                  type="text"
                   @click.native="goUndertake(index,'new')"
-                  class="tl-btn amt-border-slip"
+                  class="tl-btn dotted-line"
                   v-else
                 >
+                  <i class="el-icon-plus"></i>
                   关联
-                  <span class="lines"></span>
                 </el-button>
               </div>
             </dd>
@@ -181,7 +176,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <em v-else>{{kritem.okrWeight}}%</em>
               <i
@@ -213,9 +209,12 @@
               <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </div>
           </dd>
-          <dd v-if="canWrite">
+          <dd
+            v-if="canWrite"
+            :class="{'is-edit': canWrite && kritem.showCheckEdit || kritem.showJudgeEdit}"
+          >
             <div>
-              <span>考核指标</span>
+              <em>考核指标</em>
               <el-form-item
                 v-if="kritem.showCheckEdit"
                 :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
@@ -260,7 +259,7 @@
         </dl>
         <template v-if="item.newkrList">
           <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
-            <dt>
+            <dt class="is-edit">
               <span>KR{{item.krList.length+kindex+1}}</span>
               <div>
                 <el-form-item
@@ -289,7 +288,7 @@
                 <i class="el-icon-minus"></i>
               </el-tooltip>
             </dt>
-            <dd>
+            <dd class="has-third-child">
               <el-form-item label="权重">
                 <el-input-number
                   v-model="newItem.okrWeight"
@@ -299,7 +298,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-input-number
@@ -310,7 +310,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number>
+                <span>%</span>
               </el-form-item>
               <el-form-item label="风险状态">
                 <tl-confidence v-model="newItem.okrDetailConfidence" @change="updateokrCollapse"></tl-confidence>
