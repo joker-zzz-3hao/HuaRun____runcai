@@ -89,6 +89,7 @@
 
 .operating-box {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
 }
 

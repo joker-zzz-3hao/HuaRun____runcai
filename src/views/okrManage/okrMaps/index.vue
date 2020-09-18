@@ -49,22 +49,20 @@
           <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>周期</dt>
             <dd>
-              <div>
-                <el-select
-                  v-model="periodId"
-                  placeholder="请选择目标周期"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in periodList"
-                    :key="item.periodId"
-                    :label="item.periodName"
-                    :value="item.periodId"
-                  ></el-option>
-                </el-select>
-              </div>
+              <el-select
+                v-model="periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
             </dd>
           </dl>
           <dl class="dl-item" v-if="showDepartmentSelect">
@@ -112,6 +110,35 @@
             class="tl-btn amt-border-slip"
           >
             返回
+            <span class="lines"></span>
+          </el-button>
+        </div>
+        <div class="operating-box">
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(3,'公司价值观宣导')"
+          >
+            <em>公司价值观宣导</em>
+            <span class="lines"></span>
+          </el-button>
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(1,'华润使命·愿景')"
+          >
+            <em>公司使命愿景</em>
+            <span class="lines"></span>
+          </el-button>
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(2,'华润发展战略')"
+          >
+            <em>公司战略</em>
             <span class="lines"></span>
           </el-button>
         </div>
