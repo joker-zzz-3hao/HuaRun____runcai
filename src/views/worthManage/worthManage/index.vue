@@ -232,9 +232,12 @@ export default {
     scoreDetal() {},
     goWeekly(data) {
       this.$router.push({
-        name: 'myWeekly',
+        name: 'teamWeeklyInfo',
         query: {
           weeklyId: data.weeklyId,
+          userName: data.userName,
+          orgId: data.orgId,
+          headerUrl: data.headImageUrl,
         },
       });
     },
