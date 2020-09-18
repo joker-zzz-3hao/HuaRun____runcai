@@ -4,7 +4,19 @@
       <div v-if="showDepartmentSelect" class="maps-view">
         <!-- OKR树 -->
         <div v-if="showOkrMap" class="maps-view-tree">
-          <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
+          <dl class="maps-card values-advocacy">
+            <dt @click="showMission(3,'公司价值观宣导')">
+              <em>公司价值观宣导</em>
+              <span class="el-icon-arrow-right"></span>
+            </dt>
+            <dd>
+              <em>成就客户</em>
+              <em>创新成长</em>
+              <em>成人达己</em>
+              <em>追求极致</em>
+              <em>勇于创新</em>
+            </dd>
+          </dl>
           <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
             <template slot="treecard" slot-scope="node">
               <card
@@ -124,7 +136,6 @@ import okrDetail from '@/components/okrDetail';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
-import worth from './components/worth';
 import searchTable from './components/searchTable';
 import CONST from './const';
 import Server from './server';
@@ -163,7 +174,6 @@ export default {
     svgtree,
     card,
     'tl-mission': mission,
-    'tl-worth': worth,
     'tl-okr-table': okrTable,
     'tl-search-table': searchTable,
     'tl-okr-detail': okrDetail,
