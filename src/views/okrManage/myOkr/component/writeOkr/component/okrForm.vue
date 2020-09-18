@@ -410,7 +410,9 @@ export default {
       // eslint-disable-next-line max-len
       this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
         if (res.code == 200) {
-          // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
+          // 清空选中的
+          this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = '';
+          this.formData.okrInfoList[this.selectIndex].cultureId = '';
           if (res.data.parentUndertakeOkrInfoResult) {
             this.selectIndex = '';
             this.departokrList = [];
