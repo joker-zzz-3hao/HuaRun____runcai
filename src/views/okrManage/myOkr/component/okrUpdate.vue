@@ -79,7 +79,12 @@
         </div>
       </el-scrollbar>
       <div class="operating-box">
-        <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitUpdate">确定</el-button>
+        <el-button
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          @click="summitUpdate"
+          :loading="loading"
+        >确定</el-button>
         <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
       </div>
     </el-dialog>
@@ -104,6 +109,7 @@ export default {
       },
       myokrDrawer: false,
       drawerTitle: '更新进度',
+      loading: false,
     };
   },
   props: {
@@ -171,9 +177,9 @@ export default {
               });
             });
           }
-
+          this.loading = true;
           this.server.summitUpdate(this.summitForm).then((res) => {
-            console.log('detail', res.code);
+            this.loading = false;
             if (res.code == 200) {
               this.$message('更新成功');
               this.$emit('success');

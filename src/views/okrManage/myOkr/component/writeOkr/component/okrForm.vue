@@ -295,6 +295,7 @@ export default {
       periodName: '', // 周期名
       reason: {},
       visibleQuota: false, // 考核的弹窗
+      loading: false,
     };
   },
   props: {
@@ -410,7 +411,9 @@ export default {
       // eslint-disable-next-line max-len
       this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
         if (res.code == 200) {
-          // this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity || {};
+          // 清空选中的
+          // this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = '';
+          // this.formData.okrInfoList[this.selectIndex].cultureId = '';
           if (res.data.parentUndertakeOkrInfoResult) {
             this.selectIndex = '';
             this.departokrList = [];
@@ -631,7 +634,9 @@ export default {
     },
     // 新建okr
     summitNew() {
+      this.loading = true;
       this.server.addokr(this.formData).then((res) => {
+        this.loading = false;
         if (res.code == 200) {
           this.$message.success('创建成功，请等待上级领导审批。');
           this.$refs.dataForm.resetFields();

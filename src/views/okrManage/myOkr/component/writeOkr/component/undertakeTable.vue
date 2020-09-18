@@ -159,7 +159,8 @@ export default {
     selectRadioDepart: {
       handler() {
         this.modelDepart = this.selectRadioDepart;
-        console.log('如果为空会触发吗', this.selectRadioDepart);
+        this.selectDepartRow = '';
+        this.selectPhilRow = '';
       },
       immediate: true,
     },
