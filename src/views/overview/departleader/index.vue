@@ -12,13 +12,17 @@
       <div>
         <em>OKR承接与变更统计</em>
       </div>
-      <div>
+      <div class="risk">
         <ul class="flex">
-          <li v-for="(item,index) in mainData" :key="index">
-            <dd>{{item.orgName}}</dd>
-            <dd>承接数:{{item.okrContinueCount}}</dd>
-            <dd>变更数:{{item.okrChangeCount}}</dd>
-            <dd>总人数:{{item.personCount}}</dd>
+          <li v-for="(item,index) in riskList" :key="index">
+            <dd>
+              <em>{{item.orgName}}</em>
+              <em>承接数:{{item.okrContinueCount}}</em>
+            </dd>
+            <dd>
+              <em>变更数:{{item.okrChangeCount}}</em>
+              <em>总人数:{{item.personCount}}</em>
+            </dd>
           </li>
         </ul>
       </div>
@@ -35,6 +39,7 @@ import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
 import period from '../component/period';
 import Server from '../server';
+import { mainData } from '../testData';
 
 const server = new Server();
 
@@ -56,13 +61,14 @@ export default {
       periodId: '',
       mainData: [],
       orgUser: [],
+      riskList: [],
     };
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
-
+      testModel: (state) => state.testModel,
     }),
   },
   mounted() {
@@ -88,6 +94,7 @@ export default {
         periodId: this.periodId,
       }).then((res) => {
         this.mainData = res.data;
+        this.riskList = this.testModel ? mainData.orkData.data : res.data;
       });
     },
     // 认证身份跳转对应身份首页
@@ -125,5 +132,25 @@ export default {
   min-height: 200px;
   background: white;
   margin-bottom: 30px;
+}
+
+.risk ul li {
+  background: #ffffff;
+  box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
+  border-radius: 4px;
+  border-radius: 4px;
+  width: 280px;
+  height: 114px;
+}
+
+.risk ul li dd {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.risk ul li dd em {
+  margin-top: 20px;
 }
 </style>

@@ -10,7 +10,7 @@
       <li>风险状态</li>
       <li>关联父目标</li>
       <li>进度</li>
-      <li>更新进展</li>
+      <li v-if="!overview">更新进展</li>
       <li></li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">

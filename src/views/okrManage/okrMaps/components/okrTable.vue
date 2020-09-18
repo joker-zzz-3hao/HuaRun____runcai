@@ -1,6 +1,6 @@
 <template>
   <crcloud-table :isPage="false">
-    <div slot="tableContainer">
+    <div slot="tableContainer" class="table-container">
       <el-table
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         border
@@ -8,6 +8,7 @@
         :data="treeData"
         max-height="600"
         :empty-text="emptyText"
+        class="tl-table"
       >
         <el-table-column prop="orgName" label="名称" width="180"></el-table-column>
         <el-table-column prop="userName" label="负责人" width="180"></el-table-column>

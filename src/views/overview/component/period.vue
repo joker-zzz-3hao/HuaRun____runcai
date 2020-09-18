@@ -71,7 +71,6 @@ export default {
     changeTest() {
       const boolTest = !this.testModel;
       this.changeTestModel(boolTest);
-      console.log(this.testModel);
       this.reload();
     },
     getokrQuery() {

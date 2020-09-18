@@ -8,7 +8,7 @@ export default class Server extends ServerBase {
 
   // 查询项目
   getProjectList(param) {
-    return this._ajaxPost('gateway/weekly-service/weekly/project', param);
+    return this._ajaxPost('gateway/weekly-service/project/queryName', param);
   }
 
   // 查询周报

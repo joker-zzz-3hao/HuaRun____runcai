@@ -5,8 +5,8 @@
   备注：
 -->
 <template>
-  <div>
-    <div v-if="canQueryWeekly">
+  <div v-loading="pageLoading">
+    <div v-if="openOrClose == 'OPEN'">
       <h1>团队周报</h1>
       <div>
         <el-button @click="goback">返回</el-button>
@@ -17,9 +17,8 @@
 
         <span>
           <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
-            <!-- <img src="@/assets/images/login-error.png" /> -->
-            <div v-if="userInfo.userName" class="user-name">
-              <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+            <div v-if="$route.query.userName" class="user-name">
+              <em>{{$route.query.userName.substring($route.query.userName.length-2)}}</em>
             </div>
           </el-avatar>
         </span>
@@ -217,37 +216,10 @@
       </div>
       <!-- 点赞 -->
       <div style="marginTop:50px">
-        <div v-show="showOptions">
-          <span
-            :class="{'support-is-selected': weeklySupport.supported == 1}"
-            style="marginLeft:10px"
-            @click="support(1)"
-          >点赞</span>
-          <span
-            :class="{'support-is-selected': weeklySupport.supported == 2}"
-            style="marginLeft:10px"
-            @click="support(2)"
-          >加油</span>
-          <span
-            :class="{'support-is-selected': weeklySupport.supported == 3}"
-            style="marginLeft:10px"
-            @click="support(3)"
-          >祝贺</span>
-          <span
-            :class="{'support-is-selected': weeklySupport.supported == 4}"
-            style="marginLeft:10px"
-            @click="support(4)"
-          >赞同</span>
-          <span
-            :class="{'support-is-selected': weeklySupport.supported == 5}"
-            style="marginLeft:10px"
-            @click="support(5)"
-          >比心</span>
-        </div>
-        <el-button @mouseenter.native="showOptionsDia" @click="support(1)">点赞({{supportCount}})</el-button>
+        <el-button @click="support(1)">送金条({{supportCount}})</el-button>
       </div>
     </div>
-    <div v-else>该用户所在团队未公开周报</div>
+    <div v-if="openOrClose == 'CLOSE'">该用户所在团队未公开周报</div>
   </div>
 </template>
 
@@ -265,14 +237,14 @@ export default {
   data() {
     return {
       server,
+      pageLoading: true,
       weeklyWorkVoList: [],
       weeklyThoughtList: [],
       weeklyPlanList: [],
       weeklyOkrVoList: [],
       visitUserNameList: [],
       weeklyType: '',
-      showOptions: false,
-      canQueryWeekly: false,
+      openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
       riskMap: {
@@ -313,29 +285,27 @@ export default {
   },
   methods: {
     init() {
-      // TODO:价值观需要提供orgId
-      if (this.judgePower()) {
-      // 查询周报
-        this.queryWeekly();
-      } else {
-        this.canQueryWeekly = false;
-      }
+      this.judgePower();
     },
     judgePower() {
       // 是否是本部门
-      if (this.userInfo.orgId != this.$route.query.orgId) {
+      if (!!this.$route.query.orgId && this.userInfo.orgId != this.$route.query.orgId) {
         // 该部门是否开放周报
         this.server.getTypeConfig({
           sourceId: this.$route.query.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
         }).then((res) => {
           if (res.code == 200) {
-            if (res.data.length > 0 && res.data[0].configItemCode == 'S') {
-              return false;
+            if (res.data.length > 0 && res.data[0].configItemCode == 'O') {
+              this.queryWeekly();
+            } else {
+              this.openOrClose = 'CLOSE';
+              this.pageLoading = false;
             }
           }
         });
+      } else {
+        this.queryWeekly();
       }
-      return true;
     },
     queryWeekly() {
       this.server.queryWeekly({ weeklyId: this.$route.query.weeklyId }).then((res) => {
@@ -349,7 +319,8 @@ export default {
           this.supportCount = res.data.supportCount;
           this.weeklySupport = res.data.weeklySupport || {};
         }
-        this.canQueryWeekly = true;
+        this.openOrClose = 'OPEN';
+        this.pageLoading = false;
       });
     },
     errorHandler() {
@@ -370,20 +341,10 @@ export default {
       }
       this.server.support(params).then((res) => {
         if (res.code == 200) {
-          this.showOptions = false;
           this.queryWeekly();
         }
       });
     },
-    supportDefault() {},
-    showOptionsDia() {
-      this.showOptions = true;
-    },
-    // closeOptionsDia() {
-    //   setTimeout(() => {
-    //     this.showOptions = false;
-    //   }, 1000);
-    // },
     format(percentage) {
       return percentage === 100 ? '完成' : `${percentage}%`;
     },
