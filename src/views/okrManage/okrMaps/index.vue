@@ -1,9 +1,9 @@
 <template>
   <div class="okr-maps">
     <div class="cont-area">
-      <div v-if="showDepartmentSelect" class="maps-tree-view">
+      <div v-if="showDepartmentSelect" class="maps-view">
         <!-- OKR树 -->
-        <div v-if="showOkrMap">
+        <div v-if="showOkrMap" class="maps-view-tree">
           <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
           <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
             <template slot="treecard" slot-scope="node">
@@ -16,7 +16,7 @@
           </svgtree>
         </div>
         <!-- OKR表格 -->
-        <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
+        <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData" class="maps-view-table"></tl-okr-table>
       </div>
       <div v-if="!showDepartmentSelect" class="maps-search">
         <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>

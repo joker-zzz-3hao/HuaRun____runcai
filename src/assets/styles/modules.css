@@ -1080,10 +1080,12 @@
 
 .tl-progress-bar .progress-bg {
   position: relative;
-  margin: 0 0 0 2px;
-  /* width: 16px; */
   height: 5px;
   background: #e5e9ee;
+}
+
+.tl-progress-bar .progress-bg:first-child {
+  margin-left: 0 !important;
 }
 
 .tl-progress-bar .current-progress {
@@ -3309,21 +3311,37 @@ svg {
 }
 
 .okr-info dt {
-  color: #222426;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  transition: all .4s ease-out;
-  cursor: pointer;
+  display: flex;
 }
 
-.okr-info dt:hover {
+.okr-info dt em {
+  width: 100%;
+  color: #222426;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all .4s ease-out;
+  cursor: pointer;
+
+}
+
+.okr-info dt em:hover {
   color: #685df1;
 }
 
 .okr-info .tag-kind {
   margin: 10px 0 14px 0;
+}
+
+.okr-info .tag-kind span:nth-of-type(2) {
+  margin: 0 10px 0 0;
+  font-size: 12px;
+  color: #7a828a;
+}
+
+.okr-info .tag-kind em {
+  font-size: 12px;
+  color: #7a828a;
 }
 
 .department-info {
@@ -3345,16 +3363,16 @@ svg {
 }
 
 .department-info .btn-lineheight {
+  display: flex;
   padding: 0 3px;
   height: 22px;
   min-width: 70px;
   font-size: 12px;
 }
 
-.department-info .btn-lineheight {
+.department-info .btn-lineheight span {
   width: 76px;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

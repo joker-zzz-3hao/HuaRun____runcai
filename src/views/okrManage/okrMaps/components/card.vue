@@ -1,7 +1,9 @@
 <template>
   <div class="maps-card">
     <dl class="okr-info">
-      <dt @click.stop="goDetail(node.node.okrId)">{{node.node.okrDetailObjectKr}}</dt>
+      <dt @click.stop="goDetail(node.node.okrId)">
+        <em>{{node.node.okrDetailObjectKr}}</em>
+      </dt>
       <dd class="tag-kind">
         <span class="kind-child">KR</span>
         <span>关键成果</span>
@@ -13,7 +15,7 @@
       <em>{{node.node.userName}}</em>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{node.node.orgName}}</el-button>
     </div>
-    <tl-process :data="node.node.okrProgress"></tl-process>
+    <tl-process :data="node.node.okrProgress" :width="30" :marginLeft="6"></tl-process>
   </div>
 </template>
 
