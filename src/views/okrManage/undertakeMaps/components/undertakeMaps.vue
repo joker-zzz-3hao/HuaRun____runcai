@@ -173,10 +173,10 @@ export default {
             this.svgList = [];
             if (this.showOne) {
             // 要做兼容处理
-              allTreeData.forEach((item, index) => {
-                if (index === 0) {
-                  item.okrParentId = null;
-                }
+              allTreeData.forEach((item) => {
+                // if (index === 0) {
+                //   item.okrParentId = null;
+                // }
                 this.svgList.push(item);
                 if (item.krContinueList && item.krContinueList.length > 0) {
                   this.svgList = this.svgList.concat(item.krContinueList);
