@@ -4,7 +4,7 @@
       <div v-if="showDepartmentSelect" class="maps-view">
         <!-- OKR树 -->
         <div v-if="showOkrMap" class="maps-view-tree">
-          <dl class="maps-card values-advocacy">
+          <!-- <dl class="maps-card values-advocacy">
             <dt @click="showMission(3,'公司价值观宣导')">
               <em>公司价值观宣导</em>
               <span class="el-icon-arrow-right"></span>
@@ -16,7 +16,7 @@
               <em>追求极致</em>
               <em>勇于创新</em>
             </dd>
-          </dl>
+          </dl>-->
           <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
             <template slot="treecard" slot-scope="node">
               <card
