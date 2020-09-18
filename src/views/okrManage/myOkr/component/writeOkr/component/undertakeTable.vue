@@ -44,7 +44,7 @@
           <em>{{departmentName}}{{periodName}}</em>
           <span>(单选)</span>
         </dt>
-        <dd>
+        <dd class="tag-kind">
           <el-radio-group v-model="selectRadioDepart">
             <el-radio
               @change="selectChangeOkr(index,item)"
@@ -53,11 +53,13 @@
               v-for="(item,index) in departokrList"
               :key="item.okrDetailId+index"
             >
-              <em :class="item.okrKind == 'o' ? 'kind-o':'kind-k'">{{item.typeName}}</em>
+              <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
               <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」(当前选择)</em>
               <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
-              <em>{{item.okrDetailObjectKr}}</em>
-              <em v-if="item.modifyReason">变更原因：{{item.modifyReason}}</em>
+              <div class="undertake-reason">
+                <p>{{item.okrDetailObjectKr}}</p>
+                <p v-if="item.modifyReason">{{item.modifyReason}}</p>
+              </div>
             </el-radio>
           </el-radio-group>
         </dd>
