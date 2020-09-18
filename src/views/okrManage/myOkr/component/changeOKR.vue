@@ -111,7 +111,12 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <el-button type="primary" @click="validateForm" class="tl-btn amt-bg-slip">提交</el-button>
+      <el-button
+        type="primary"
+        @click="validateForm"
+        class="tl-btn amt-bg-slip"
+        :loading="loading"
+      >提交</el-button>
       <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
     </div>
 
@@ -207,6 +212,7 @@ export default {
       originalObject: '{}',
       currentOption: '',
       historyDrawer: false,
+      loading: false,
     };
   },
   components: {
@@ -658,20 +664,17 @@ export default {
       }
 
       console.log('拼起来后', this.formData);
-      // this.$xconfirm({
-      //   content: '',
-      //   title: '如果您要确定删除，该OKR将无法恢复',
-      // }).then(() => {
+      this.loading = true;
       this.server.modifyOkrInfo(this.formData).then((res) => {
+        this.loading = false;
         if (res.code == 200) {
-          this.$message.success('提交成功');
+          this.$message.success('提交成功，请等待上级领导审批');
           this.close();
           this.$emit('success');
         } else if (res.code === 30000) {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
-      // }).catch(() => {});
     },
     // 打开历史版本
     openHistory(id, name) {
@@ -684,18 +687,6 @@ export default {
     },
   },
   watch: {
-    // tableList: {
-    //   handler(newVal) {
-    //     // 添加承接列表
-    //     if (newVal) {
-    //       this.tableList.forEach((item) => {
-    //         item.departokrList = JSON.parse(this.departokrObject) || [];
-    //         item.philosophyList = JSON.parse(this.philosophyObject) || [];
-    //       });
-    //     }
-    //   },
-    //   deep: true,
-    // },
   },
 };
 </script>
