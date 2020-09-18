@@ -25,7 +25,7 @@
           class="tl-input"
         ></el-input>
       </el-form-item>
-      <el-form-item label="起草开始时间">
+      <el-form-item label="起草开始时间" prop="draftingStartTime">
         <el-date-picker
           type="date"
           v-model="form.draftingStartTime"
@@ -35,7 +35,7 @@
           class="tl-date-editor"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="审批结束时间">
+      <el-form-item label="审批结束时间" prop="approvalEndTime">
         <el-date-picker
           type="date"
           v-model="form.approvalEndTime"
@@ -58,7 +58,7 @@
           class="tl-range-editor"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="自评举证时间">
+      <el-form-item label="自评举证时间" prop="selfAssessReminderTime">
         <el-date-picker
           type="date"
           v-model="form.selfAssessReminderTime"
@@ -129,6 +129,9 @@ export default {
         ],
         periodType: [
           { required: true, message: 'OKR周期状态', trigger: 'change' },
+        ],
+        startTime: [
+          { required: true, message: '请设置周期日期', trigger: 'change' },
         ],
       },
       form: {

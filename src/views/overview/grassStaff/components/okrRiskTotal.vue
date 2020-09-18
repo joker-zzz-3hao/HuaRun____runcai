@@ -21,7 +21,7 @@
         <el-table-column label="本周心情">
           <template slot-scope="scope">
             <span
-              v-if="scope.row.weeklyEmotion"
+              v-if="scope.row.weeklyEmotion!==null"
             >本周心情:{{CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]}}</span>
             <span v-else>未填写</span>
           </template>
@@ -42,6 +42,7 @@ import echarts from 'echarts';
 import { mapState } from 'vuex';
 import Server from '../../server';
 import CONST from '../../const';
+import { userData } from '../../testData';
 
 const server = new Server();
 export default {
@@ -55,6 +56,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
   },
   data() {
@@ -66,7 +68,6 @@ export default {
       dateOption: [],
       tableData: [],
       echartDataX: [],
-      testModel: false,
       echartDataY: [],
     };
   },
@@ -76,6 +77,7 @@ export default {
   },
   methods: {
     changeTime() {
+      const that = this;
       const echartData = JSON.parse(JSON.stringify(this.okrData));
       this.echartDataX = [];
       const startDate = `${echartData.months[0]}-01`;
@@ -111,9 +113,25 @@ export default {
           symbol: 'circle',
           symbolSize: 10,
           showAllSymbol: true,
-          data: echartDataFil.map((item) => [item.createDate, item.allScore]),
+
+          data: that.testModel ? userData.riskDataY : echartDataFil.map((item) => [item.createDate, item.allScore]),
           itemStyle: {
-            color: '#3F7DFF',
+            normal: {
+              color(params) {
+                if (params.value[1] == 1) {
+                  return '#4CCD79';
+                }
+                if (params.value[1] == 4) {
+                  return '#FFBC20';
+                }
+                if (params.value[1] == 7) {
+                  return '#FB4C59 ';
+                }
+              },
+              lineStyle: {
+                color: '#3F7DFF',
+              },
+            },
           },
         };
       } else {
@@ -124,8 +142,24 @@ export default {
           showAllSymbol: true,
           itemStyle: {
             color: '#3F7DFF',
+            normal: {
+              color(params) {
+                if (params.value[1] == 1) {
+                  return '#4CCD79';
+                }
+                if (params.value[1] == 4) {
+                  return '#FFBC20';
+                }
+                if (params.value[1] == 7) {
+                  return '#FB4C59 ';
+                }
+              },
+              lineStyle: {
+                color: '#3F7DFF',
+              },
+            },
           },
-          data: [],
+          data: that.testModel ? userData.riskDataY : [],
         };
       }
       this.init();
@@ -160,7 +194,7 @@ export default {
         date: `${this.dateTime}-01`,
         userId: this.$route.query.id ? this.$route.query.id : '',
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = this.testModel ? userData.userTable.data : res.data;
       });
     },
     init() {
@@ -168,7 +202,7 @@ export default {
       const myChart = echarts.init(document.getElementById('okrRiskTotal'));
       const option = {
         xAxis: {
-          data: that.echartDataX,
+          data: that.testModel ? userData.riskDataX : that.echartDataX,
           axisLabel: {
             show: true,
             textStyle: {

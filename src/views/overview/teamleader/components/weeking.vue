@@ -118,7 +118,7 @@ export default {
         date,
         orgId: this.$route.query.id,
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = this.testModel ? teamData.okrData.data : res.data;
       });
     },
     teamEmotion(date) {

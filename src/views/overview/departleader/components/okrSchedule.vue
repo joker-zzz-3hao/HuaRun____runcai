@@ -177,6 +177,7 @@ export default {
 
       myChart.setOption(option);
       myChart.resize();
+      window.addEventListener('resize', myChart.resize);
       if (that.testModel) {
         return false;
       }
@@ -191,7 +192,7 @@ export default {
     },
     initCount() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('okrCountUpdate'));
+      const myChartUpdate = echarts.init(document.getElementById('okrCountUpdate'));
       const option = {
         tooltip: {
           trigger: 'item',
@@ -299,8 +300,9 @@ export default {
         }],
       };
 
-      myChart.setOption(option);
-      myChart.resize();
+      myChartUpdate.setOption(option);
+      myChartUpdate.resize();
+      window.addEventListener('resize', myChartUpdate.resize);
     },
   },
   watch: {
