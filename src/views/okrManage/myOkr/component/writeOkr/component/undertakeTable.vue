@@ -35,7 +35,7 @@
               :label="item.id"
               v-for="(item,index) in philosophyList"
               :key="item.id"
-            >{{item.cultureDesc}}</el-radio>
+            >{{item.cultureName}}</el-radio>
           </el-radio-group>
         </dd>
       </dl>

@@ -1,13 +1,9 @@
 <template>
   <div>
-    <el-drawer
+    <el-dialog
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
-      :wrapperClosable="false"
-      :append-to-body="true"
-      :modal-append-to-body="true"
-      custom-class="custom-drawer"
-      class="tl-drawer"
+      :modal-append-to-body="false"
       @closed="closed"
       :before-close="close"
     >
@@ -86,7 +82,7 @@
         <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitUpdate">确定</el-button>
         <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
       </div>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 

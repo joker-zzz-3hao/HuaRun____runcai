@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="评分详情"
+      title="评价详情"
       :visible.sync="showDetail"
       :with-header="true"
       @close="closed"

@@ -31,6 +31,7 @@
             ref="departCascader"
             :options="treeData"
             :show-all-levels="false"
+            node-key="orgId"
             :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree',emitPath:false  }"
             @change="selectIdChange"
           ></el-cascader>
@@ -93,28 +94,43 @@ export default {
   data() {
     return {
       visible: false,
+      cheOrgId: '',
       loading: false,
       formData: {
         orgName: '',
         orgParentId: this.initDepartment.orgId ? this.initDepartment.orgId : this.treeData[0].orgId, // 用户所在部门ID
         orgSort: '',
-        orgFullId: '',
+        orgFullId: this.initDepartment.orgId ? this.initDepartment.orgId : this.treeData[0].orgFullId,
         orgIdList: [],
+        orgId: '',
       },
     };
   },
   created() {
-    console.log(this.initDepartment);
+    console.log(this.treeData);
     // this.setOrgIdList(this.initDepartment.orgId);
   },
-  mounted() {},
+  mounted() {
+  },
   computed: {},
   methods: {
     show(depart) {
       if (depart) {
-        this.formData.orgName = depart.orgName;
-        this.formData.orgSort = depart.orgSort;
-        this.formData.orgParentId = depart.orgParentId;
+        if (this.departOptionType == 'edit') {
+          this.formData.orgName = depart.orgName;
+          this.formData.orgSort = depart.orgSort;
+          this.formData.orgParentId = depart.orgParentId;
+
+          const orgFull = depart.orgFullId.split(':');
+          const index = orgFull.findIndex(((item) => item == depart.orgId));
+          orgFull.splice(index, 1);
+          this.formData.orgFullId = orgFull.join(':');
+          this.formData.orgId = depart.orgId;
+          this.cheOrgId = depart.orgId;
+        } else {
+          this.formData.orgFullId = depart.orgFullId;
+          this.formData.orgId = depart.orgId;
+        }
       }
       this.$nextTick(() => {
         this.visible = true;
@@ -136,12 +152,13 @@ export default {
       };
 
       if (this.departOptionType == 'edit') {
-        params.orgId = this.initDepartment.orgId;
-        params.orgFullId = this.initDepartment.orgFullId;
+        params.orgId = this.formData.orgId;
+        params.orgFullId = this.formData.orgFullId;
+        params.orgParentId = this.formData.orgParentId;
         params.orgName = this.formData.orgName;
         params.orgSort = this.formData.orgSort;
       } else {
-        params.orgFullId = this.initDepartment.orgFullId;
+        params.orgFullId = this.formData.orgFullId;
         params.orgParentId = this.formData.orgParentId;
         // eslint-disable-next-line no-unused-expressions
         params.orgName = this.formData.orgName;
@@ -167,7 +184,20 @@ export default {
       this.close();
     },
     selectIdChange(data) {
-      this.formData.orgIdList = data;
+      const node = this.$refs.departCascader.getCheckedNodes();
+      if (this.departOptionType == 'edit') {
+        if (data == this.cheOrgId) {
+          this.formData.orgParentId = '';
+          this.$message.error('不能选择自己部门');
+          return false;
+        }
+        this.formData.orgFullId = node[0].data.orgFullId;
+        this.formData.orgParentId = node[0].data.orgId;
+      } else {
+        this.formData.orgFullId = node[0].data.orgFullId;
+      }
+
+      // this.formData.orgParentId = node[0].data.orgParentId;
       this.$refs.departCascader.dropDownVisible = false;
     },
   },

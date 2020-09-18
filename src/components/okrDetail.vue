@@ -93,8 +93,9 @@
                         }"
                       >
                         <em>{{userName}}</em>
-                        <span>{{cycleFirst.operateTypeCn}}</span>
-                        <span v-if="cycleFirst.operateType == 'add'">OKR</span>
+                        <span v-if="cycleFirst.operateType == 'add'">创建了</span>
+                        <span v-else>{{cycleFirst.operateTypeCn}}</span>
+                        <em v-if="cycleFirst.operateType == 'add'">{{periodName}}</em>
                       </div>
                       <!-- 更新进度操作记录 -->
                       <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
@@ -202,7 +203,9 @@
                     <div class="list-cont">
                       <div class="operate-type">
                         <em>{{userName}}</em>
-                        <span>{{activity.operateTypeCn}}</span>
+                        <span v-if="activity.operateType == 'add'">创建了</span>
+                        <span v-else>{{activity.operateTypeCn}}</span>
+                        <em v-if="activity.operateType == 'add'">{{periodName}}</em>
                       </div>
                       <!-- 更新进度操作记录 -->
                       <ul v-if="activity.operateType == 'update'" class="operate-kind">
@@ -238,15 +241,7 @@
                           </div>
                         </li>
                       </ul>
-                      <!-- 新增操作记录 -->
-                      <ul v-else-if="activity.operateType == 'add'" class="operate-kind">
-                        <li>
-                          <div>
-                            <span>OKR</span>
-                            <em>{{periodName}}</em>
-                          </div>
-                        </li>
-                      </ul>
+
                       <!-- 变更操作记录 -->
                       <ul v-else-if="activity.operateType == 'modify'" class="operate-kind">
                         <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
@@ -525,6 +520,7 @@ export default {
                 self.supportType = 1;
               }
             });
+            // TODO: 显示30个赞
             if (self.voteLength > 10) {
               self.cutVoteList = self.voteUser.slice(0, 9);
             } else {
