@@ -1,9 +1,9 @@
 <template>
   <el-dialog
-    :modal-append-to-body="false"
+    :append-to-body="true"
     :before-close="close"
     @closed="close"
-    :close-on-click-modal="true"
+    :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
     center

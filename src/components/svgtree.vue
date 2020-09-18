@@ -2,52 +2,48 @@
 参考使用说明https://www.yuque.com/crcloud/team/vl2rkn
 -->
 <template>
-  <div>
-    <div class="draw-area" id="treeContent" ref="treeContent">
-      <div v-for="(arr, index) in levels" :key="index">
-        <!-- 通过left和top控制每个节点位置 -->
-        <div
-          v-for="(v,index) in arr"
-          v-show="!v.parent || v.parent.open"
-          class="vnode"
-          v-bind:class="{pnode: v.children && v.children.length > 0}"
-          :key="index"
-          :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'"
-          @click="toggle(v)"
-        >
-          <div>
-            <slot name="treecard" :node="v"></slot>
-          </div>
-        </div>
+  <div class="draw-area" id="treeContent" ref="treeContent">
+    <div v-for="(arr, index) in levels" :key="index">
+      <!-- 通过left和top控制每个节点位置 -->
+      <div
+        v-for="(v,index) in arr"
+        v-show="!v.parent || v.parent.open"
+        class="vnode"
+        v-bind:class="{pnode: v.children && v.children.length > 0}"
+        :key="index"
+        :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'"
+        @click="toggle(v)"
+      >
+        <slot name="treecard" :node="v"></slot>
       </div>
-      <svg :id="svgId" v-if="curveness">
-        <!-- 直线 -->
-        <line
-          class="link"
-          v-for="(link, index) in list"
-          v-show="link.deep > 0 && link.parent.open"
-          :x1="link.left + 90"
-          :y1="link.top"
-          :x2="link.parent.left + 105"
-          :y2="link.parent.top + 150"
-          :stroke="link.color ? link.color : '#aaa'"
-          :stroke-width="link.strokeWidth ? link.strokeWidth : '1px'"
-          :key="index"
-        />
-      </svg>
-
-      <svg :id="svgId" v-if="!curveness">
-        <path
-          class="link"
-          v-for="(link, index) in list"
-          v-show="link.deep > 0 && link.parent.open"
-          :d="link.path"
-          :stroke="link.color ? link.color : '#aaa'"
-          :stroke-width="link.strokeWidth ? link.strokeWidth : '1px'"
-          :key="index"
-        />
-      </svg>
     </div>
+    <svg :id="svgId" v-if="curveness">
+      <!-- 直线 -->
+      <line
+        class="link"
+        v-for="(link, index) in list"
+        v-show="link.deep > 0 && link.parent.open"
+        :x1="link.left + 90"
+        :y1="link.top"
+        :x2="link.parent.left + 105"
+        :y2="link.parent.top + 150"
+        :stroke="link.color ? link.color : '#aaa'"
+        :stroke-width="link.strokeWidth ? link.strokeWidth : '1px'"
+        :key="index"
+      />
+    </svg>
+
+    <svg :id="svgId" v-if="!curveness">
+      <path
+        class="link"
+        v-for="(link, index) in list"
+        v-show="link.deep > 0 && link.parent.open"
+        :d="link.path"
+        :stroke="link.color ? link.color : '#aaa'"
+        :stroke-width="link.strokeWidth ? link.strokeWidth : '1px'"
+        :key="index"
+      />
+    </svg>
   </div>
 </template>
 
@@ -167,7 +163,7 @@ export default {
             v.parent = p;
             v.deep = p.deep + 1; // 深度为p的深度+1
             // v.left = v.deep * 150 + 10;
-            v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
+            v.left = this.direction == 'col' ? v.deep * 100 + 10 : 0;
             v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
             v.open = v.deep < 1; // 除根节点默认open为false
             v.show = v.deep < 2; // 大于2层默认show为false
@@ -184,7 +180,7 @@ export default {
           const p = keys[v[this.fatherId]]; // p为v的上一级
           if (p) {
             v.deep = p.deep + 1;
-            v.left = this.direction == 'col' ? v.deep * 300 + 10 : 0;
+            v.left = this.direction == 'col' ? v.deep * 400 - 0 : 0;
             v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
             v.open = v.deep < 1; // 除根节点默认open为false
             v.show = v.deep < 2; // 大于2层默认show为false
@@ -306,9 +302,9 @@ export default {
       // 画线
       if (vnode.parent) {
         // 横向曲线偏移量。使曲线位于节点的中部
-        const pianyi = this.blockWidth / 4;
+        const pianyi = this.blockWidth / 6;
         // 控制曲线的宽度，曲线终点的x
-        const pLeft = vnode.parent.left + this.blockWidth - 50;
+        const pLeft = vnode.parent.left + this.blockWidth + 30;
         // 控制点的y和终点的y
         const pTop = vnode.parent.top + pianyi;
         // 控制点的x，调整曲线的形状
@@ -395,71 +391,3 @@ export default {
   },
 };
 </script>
-
-<style>
-html,
-body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  font-size: 14px;
-}
-.draw-area {
-  position: relative;
-  width: 100%;
-  /* height: calc(100vh - 100px); */
-  margin: 40px auto;
-}
-svg {
-  z-index: 0;
-}
-.vnode {
-  position: absolute;
-  z-index: 100;
-  top: 10px;
-  left: 10px;
-  height: 160px;
-  margin: 0;
-  margin-top: -10px;
-  font-size: 13px;
-  line-height: 20px;
-  border-radius: 3px;
-  background: #ffffff;
-  box-shadow: 1px 2px 10px 3px rgba(0, 0, 0, 0.08);
-  transition: top 0.3s;
-  /* cursor: pointer; */
-  width: auto;
-  /* width: 230px;
-    overflow:hidden; */
-}
-
-/* 如果有子节点。画一条红线 */
-.pnode::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: inline-block;
-  width: 216px;
-  height: 1px;
-  background: #e1244e;
-}
-.link {
-  fill-opacity: 0;
-}
-.tip {
-  z-index: 999;
-  display: block;
-  padding: 5px;
-  border: 1px solid #eee;
-  line-height: 20px;
-  border-radius: 5px;
-  background: transparent;
-}
-.vnode:hover {
-  z-index: 999;
-}
-.vnode:hover .tip {
-  display: block;
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="okr-maps">
     <div class="cont-area">
-      <div v-if="showDepartmentSelect">
+      <div v-if="showDepartmentSelect" class="maps-tree-view">
         <!-- OKR树 -->
         <div v-if="showOkrMap">
           <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
@@ -18,7 +18,7 @@
         <!-- OKR表格 -->
         <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData"></tl-okr-table>
       </div>
-      <div v-if="!showDepartmentSelect">
+      <div v-if="!showDepartmentSelect" class="maps-search">
         <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>
       </div>
       <tl-mission ref="mission"></tl-mission>
