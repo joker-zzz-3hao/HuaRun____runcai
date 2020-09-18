@@ -201,7 +201,7 @@ export default {
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
-            this.treeTableData.push(res.data);
+            this.treeTableData.push(res.data.children);
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
               res.data.okrTree.forEach((item) => {
