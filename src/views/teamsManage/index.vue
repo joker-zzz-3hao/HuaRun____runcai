@@ -10,11 +10,6 @@
         <div>团队负责人：</div>
         <div>{{baseInfo.orgLeader}}</div>
       </div>
-      <div class="display-flex">
-        <div>团队综合管理员：</div>
-        <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div>
-        <div v-else>未设置</div>
-      </div>
     </div>
     <!-- 管理设置 -->
     <div>
@@ -50,7 +45,7 @@
           <el-checkbox label="2">简单模式</el-checkbox>
         </el-checkbox-group>
       </div>
-      <div class="display-flex">
+      <!-- <div class="display-flex">
         <div>是否开启OKR审核</div>
         <div>
           <el-switch
@@ -60,7 +55,7 @@
             @change="changeOkrExamine"
           ></el-switch>
         </div>
-      </div>
+      </div>-->
     </div>
     <!-- 团队成员 -->
     <div>
