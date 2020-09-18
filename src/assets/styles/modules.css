@@ -1081,7 +1081,7 @@
 .tl-progress-bar .progress-bg {
   position: relative;
   margin: 0 0 0 2px;
-  width: 16px;
+  /* width: 16px; */
   height: 5px;
   background: #e5e9ee;
 }
