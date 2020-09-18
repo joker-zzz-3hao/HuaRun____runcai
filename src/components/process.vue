@@ -2,7 +2,7 @@
   <div class="tl-progress-bar">
     <div
       class="progress-bg"
-      :style="{width: `${width}px`}"
+      :style="{width: `${width}px`,marginLeft: `${marginLeft}px`}"
       v-for="item in processList"
       :key="item.id"
     >
@@ -29,6 +29,10 @@ export default {
     width: {
       type: Number,
       default: 16,
+    },
+    marginLeft: {
+      type: Number,
+      default: 2,
     },
   },
   mounted() {
