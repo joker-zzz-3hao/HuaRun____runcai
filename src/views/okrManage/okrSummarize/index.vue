@@ -13,6 +13,7 @@
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
+                  @change="periodChange"
                 >
                   <el-option
                     v-for="item in periodList"
@@ -44,17 +45,18 @@
             <dd>
               <div>
                 <el-select
-                  v-model="okrType"
+                  v-model="okrBelongType"
                   placeholder="全部"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
+                  @change="okrBelongTypeChange"
                 >
                   <el-option
-                    v-for="item in okrTypeList"
-                    :key="item.okrType"
-                    :label="item.okrTypeName"
-                    :value="item.okrType"
+                    v-for="item in okrBelongTypeList"
+                    :key="item.okrBelongType"
+                    :label="item.okrBelongTypeName"
+                    :value="item.okrBelongType"
                   ></el-option>
                 </el-select>
               </div>
@@ -65,17 +67,18 @@
             <dd>
               <div>
                 <el-select
-                  v-model="okrStatus"
+                  v-model="status"
                   placeholder="全部"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
+                  @change="statusChange"
                 >
                   <el-option
-                    v-for="item in okrStatusList"
-                    :key="item.okrStatus"
-                    :label="item.okrStatusName"
-                    :value="item.okrStatus"
+                    v-for="item in statusList"
+                    :key="item.status"
+                    :label="item.statusName"
+                    :value="item.status"
                   ></el-option>
                 </el-select>
               </div>
@@ -83,13 +86,13 @@
           </dl>
           <el-input
             placeholder="成员姓名"
-            v-model="keyword"
-            @keyup.enter.native="search"
+            v-model="userName "
+            @keyup.enter.native="searchList"
             class="tl-input"
           >
-            <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
+            <i slot="prefix" class="el-input__icon el-icon-search" @click="searchList"></i>
           </el-input>
-          <el-button plain class="tl-btn amt-border-slip">
+          <el-button @click="goback" plain class="tl-btn amt-border-slip">
             返回
             <span class="lines"></span>
           </el-button>
@@ -106,15 +109,15 @@
         >
           <div slot="tableContainer">
             <el-table ref="dicTable" v-loading="loading" :data="tableData">
-              <el-table-column min-width="100px" align="left" prop="code" label="姓名"></el-table-column>
-              <el-table-column min-width="100px" align="left" prop="name" label="部门"></el-table-column>
-              <el-table-column min-width="100px" align="left" prop="enabledFlag" label="okr进度">
+              <el-table-column min-width="100px" align="left" prop="userName" label="姓名"></el-table-column>
+              <el-table-column min-width="100px" align="left" prop="orgName" label="部门"></el-table-column>
+              <el-table-column min-width="100px" align="left" prop="okrProgress" label="okr进度">
                 <template slot-scope="scope">
-                  <div>{{scope.row.enabledFlag == "Y" ? '启用' : '停用'}}</div>
+                  <div>{{scope.row.okrProgress}}%</div>
                 </template>
               </el-table-column>
-              <el-table-column min-width="100px" align="left" prop="createTime" label="状态">
-                <template slot-scope="scope"></template>
+              <el-table-column min-width="100px" align="left" prop="status" label="状态">
+                <template slot-scope="scope">{{STATUS_MAP[scope.row.status]}}</template>
               </el-table-column>
             </el-table>
           </div>
@@ -135,31 +138,41 @@ export default {
   data() {
     return {
       server,
+      tableData: [],
       loading: false,
       treeData: [],
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-      okrTypeList: [{
-        okrType: '1',
-        okrTypeName: '部门',
+      okrBelongTypeList: [{
+        okrBelongType: '1',
+        okrBelongTypeName: '部门',
       }, {
-        okrType: '2',
-        okrTypeName: '个人',
+        okrBelongType: '2',
+        okrBelongTypeName: '个人',
       }],
-      okrStatusList: [
-        { okrStatus: '1', okrStatusName: '进行中' },
-        { okrStatus: '2', okrStatusName: '待审批' },
-        { okrStatus: '3', okrStatusName: '考核中' },
-        { okrStatus: '4', okrStatusName: '已完成' },
-        { okrStatus: '5', okrStatusName: '已通过' },
+      statusList: [
+        { status: '1', statusName: '进行中' },
+        { status: '0', statusName: '待审批' },
+        { status: '2', statusName: '考核中' },
+        { status: '3', statusName: '已完成' },
+        { status: '4', statusName: '已结束' },
       ],
+      STATUS_MAP: {
+        0: '待审批',
+        1: '进行中',
+        2: '考核中',
+        3: '已完成',
+        4: '已结束',
+      },
       periodId: '',
-      okrType: '',
-      okrStatus: '',
-      currentPage: '',
-      pageSize: '',
-      keyword: '',
+      okrBelongType: '',
+      status: '',
+      orgFullId: '',
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      userName: '',
       okrCycle: {},
       orgFullId: '',
 
@@ -184,10 +197,20 @@ export default {
           this.periodId = this.okrCycle.periodId;
           // 查询组织树
           this.getOrgTable();
+          this.searchList();
         }
       });
+    },
+    periodChange() {
       this.searchList();
     },
+    okrBelongTypeChange() {
+      this.searchList();
+    },
+    statusChange() {
+      this.searchList();
+    },
+
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -216,28 +239,38 @@ export default {
     },
 
     selectIdChange(data) {
+      // this.orgFullId = data[data.length - 1];
       this.orgFullId = `${data.join(':')}:`;
       this.orgFullIdList = data;
-      // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
+      this.searchList();
     },
 
     searchList(params = { currentPage: 1 }) {
+      params.periodId = this.periodId;
+      params.orgFullId = this.orgFullId;
+      params.okrBelongType = this.okrBelongType;
+      params.status = this.status;
       params.currentPage = this.currentPage;
       params.pageSize = this.pageSize;
-      params.keyWord = this.keyWord;
+      params.userName = this.userName;
       this.loading = true;
-      this.server.queryOfPage(params).then((res) => {
+      this.server.queryAllOkrList(params).then((res) => {
         if (res.code == 200) {
           this.total = res.data.total;
           this.currentPage = res.data.currentPage;
           this.pageSize = res.data.pageSize;
-          this.tableData = res.data.content;
+          // this.tableData = res.data.content;
+          this.tableData = res.data;
         }
         this.loading = false;
       });
     },
+    goback() {
+      this.$router.go('-1');
+    },
+
   },
   watch: {
 
