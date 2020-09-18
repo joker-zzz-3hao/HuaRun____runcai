@@ -84,5 +84,31 @@ export default [{
     },
     component: () => import('@/views/settings/setWorth/index'),
   },
+  // 价值观事件簿
+  {
+    path: '/worthManage',
+    name: 'worthManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'worthManage',
+      power: '',
+    },
+    component: () => import('@/views/worthManage/index'),
+  },
+    // 价值观统计
+    // {
+    //   path: '/worthStatistics',
+    //   name: 'worthStatistics',
+    //   meta: {
+    //     hasMainMenu: true,
+    //     isSubMenu: true,
+    //     parentRoute: 'orgManage',
+    //     title: 'worthStatistics',
+    //     power: '',
+    //   },
+    //   component: () => import('@/views/worthManage/worthStatistics/index'),
+    // },
   ],
 }];
