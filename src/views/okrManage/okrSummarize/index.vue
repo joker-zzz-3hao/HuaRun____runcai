@@ -174,7 +174,6 @@ export default {
       total: 0,
       userName: '',
       okrCycle: {},
-      orgFullId: '',
 
       test: '',
 
