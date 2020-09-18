@@ -156,6 +156,20 @@ export default [{
       component: () => import('@/views/okrManage/okrMaps/index'),
     },
     {
+      // OKR管理
+      // OKR汇总
+      path: '/okrSummarize',
+      name: 'okrSummarize',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'myOkr',
+        title: 'okrSummarize',
+        power: '',
+      },
+      component: () => import('@/views/okrManage/okrSummarize/index'),
+    },
+    {
       // 考核管理
       // 我的考核
       path: '/myAssess',
