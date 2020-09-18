@@ -18,7 +18,6 @@ export default {
       server,
       mainDataX: [],
       mainDataY: [],
-      testModel: false,
     };
   },
   computed: {

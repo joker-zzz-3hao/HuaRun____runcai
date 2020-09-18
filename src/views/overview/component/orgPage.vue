@@ -43,6 +43,7 @@
         :disabled="false"
         :showOKRInfoLabel="true"
         :status="searchForm.status"
+        :expands="expands"
       >
         <template slot="head-undertake" slot-scope="props">
           <div
@@ -111,6 +112,7 @@ import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import Server from '../server';
 import CONST from '../const';
+import { okrData } from '../testData';
 
 const server = new Server();
 
@@ -120,6 +122,7 @@ export default {
     'tl-okr-table': okrTable,
   },
   props: ['periodId'],
+
   data() {
     return {
       showTable: false,
@@ -150,7 +153,11 @@ export default {
   computed: {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
+    expands() {
+      return [this.tableList[0].okrDetailId];
+    },
   },
   created() {
     this.getOkrCycleList();
@@ -185,6 +192,8 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
+          // eslint-disable-next-line no-unused-expressions
+          this.testModel ? res = okrData : res;
           this.tableList = res.data.okrDetails || [];
           this.okrMain = res.data.okrMain || {};
           this.okrId = this.okrMain.okrId || '';

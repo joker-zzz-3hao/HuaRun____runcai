@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="评分"
+      title="评价"
       :visible.sync="showScore"
       :with-header="true"
       @close="closed"
@@ -32,19 +32,20 @@
           <div>
             <div>添加：</div>
             <div>
-              <el-tag
-                :key="index"
-                v-for="(lItem,index) in otherLabelList"
-                :disable-transitions="false"
-                @click="selectOtherLabel(lItem)"
-              >{{lItem.label}}</el-tag>
+              <div v-if="!inputVisible && otherLabelList.length > 0">
+                <el-tag
+                  :key="index"
+                  v-for="(lItem,index) in otherLabelList"
+                  :disable-transitions="false"
+                  @click="selectOtherLabel(lItem)"
+                >{{lItem.label}}</el-tag>
+              </div>
               <el-input
                 class="input-new-tag"
                 v-if="inputVisible"
-                v-model="inputValue"
+                v-model.trim="inputValue"
                 ref="saveTagInput"
-                placeholder="请输入您的描述，200个字符内"
-                maxlength="200"
+                maxlength="5"
                 size="small"
                 @keyup.enter.native="handleInputConfirm"
                 @blur="handleInputConfirm"
@@ -59,7 +60,13 @@
           </div>
         </div>
         <div>
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="description"></el-input>
+          <el-input
+            type="textarea"
+            maxlength="200"
+            placeholder="请输入您的描述，200个字符内"
+            :rows="2"
+            v-model.trim="description"
+          ></el-input>
         </div>
         <div>
           <el-button @click="submitScore">发送</el-button>
@@ -136,6 +143,11 @@ export default {
     },
     selectOtherLabel(data) {
       console.log(111);
+      this.inputVisible = true;
+      this.inputValue = data.label;
+      this.$nextTick(() => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
       this.otherLabel = data.label;
     },
     showInput() {
@@ -147,6 +159,7 @@ export default {
     handleInputConfirm() {
       const { inputValue } = this;
       if (inputValue) {
+        this.otherLabelList = [];
         this.otherLabelList.push({
           label: inputValue,
         });
@@ -155,6 +168,10 @@ export default {
       this.inputValue = '';
     },
     submitScore() {
+      if (this.description.length == 0) {
+        this.$message.error('请输入评价');
+        return;
+      }
       this.server.score({
         id: this.data.id,
         score: this.scoreId,
@@ -162,6 +179,7 @@ export default {
         scoreLabel: this.otherLabelList.length > 0 ? this.otherLabelList[0].label : '',
       }).then((res) => {
         if (res.code == '200') {
+          this.$message.success('评价成功');
           this.$emit('success');
           this.showScore = false;
         }

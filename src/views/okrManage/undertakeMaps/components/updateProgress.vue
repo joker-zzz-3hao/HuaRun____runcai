@@ -48,7 +48,7 @@
       </dl>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="summitUpdate">更新</el-button>
+      <el-button @click="summitUpdate" :loading="loading">更新</el-button>
     </span>
   </el-dialog>
 </template>
@@ -66,6 +66,7 @@ export default {
       dialogDetailVisible: false,
       updateexplain: '',
       formData: {},
+      loading: false,
     };
   },
   props: {
@@ -100,17 +101,19 @@ export default {
         remark: this.okrForm.updateexplain,
       };
       console.log('detail', this.summitForm);
+      this.loading = true;
       this.server.summitUpdate(this.summitForm).then((res) => {
-        console.log('detail', res.code);
-        this.$message('提交成功~');
-        this.close();
+        this.loading = false;
+        if (res.code == 200) {
+          this.$message('更新成功');
+          this.close();
+        }
       });
 
       // 需刷新列表吗
     },
     // 控制弹窗
     showOkrDialog() {
-      console.log('dakai ');
       this.dialogDetailVisible = true;
       // this.getokrDetail();
     },

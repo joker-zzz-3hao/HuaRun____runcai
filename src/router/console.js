@@ -329,32 +329,6 @@ export default [{
       },
       component: () => import('@/views/taskManage/myTask/components/createTask'),
     },
-    // 价值观事件簿
-    {
-      path: '/worthManage',
-      name: 'worthManage',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'worthManage',
-        title: 'worthManage',
-        power: '',
-      },
-      component: () => import('@/views/worthManage/worthManage/index'),
-    },
-    // 价值观统计
-    {
-      path: '/worthStatistics',
-      name: 'worthStatistics',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'worthManage',
-        title: 'worthStatistics',
-        power: '',
-      },
-      component: () => import('@/views/worthManage/worthStatistics/index'),
-    },
     // 消息通知
     {
       path: '/notice',

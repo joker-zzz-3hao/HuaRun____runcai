@@ -158,7 +158,6 @@ export default {
         this.dateOption = res.data;
         // eslint-disable-next-line max-len
         const dateArr = this.dateOption.map((item) => [new Date(item.weekBegin).getTime(), new Date(item.weekEnd).getTime()]);
-        console.log(new Date().getTime());
         const eq = dateArr.findIndex((item) => item[0] <= new Date().getTime() && new Date().getTime() <= item[1]);
         if (eq) {
           this.calendarId = res.data[eq].calendarId;
@@ -177,7 +176,7 @@ export default {
         date: `${this.dateTime}-01`,
         orgId: this.$route.query.id ? this.$route.query.id : this.userInfo.orgId,
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = this.testModel ? mainData.tableData.data : res.data;
       });
     },
     changIdAction(id) {
@@ -195,7 +194,8 @@ export default {
         myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          this.orgTable = res.data.orgTable;
+          this.orgTable = this.testModel ? mainData.orkData.data : res.data.orgTable;
+          // eslint-disable-next-line no-unused-expressions
           this.changeTime();
 
           this.$watch('periodId', () => {
@@ -344,7 +344,7 @@ export default {
       const myChart = echarts.init(document.getElementById('weeking'));
       const option = {
         xAxis: {
-          data: that.echartDataX,
+          data: that.testModel ? mainData.timeData : that.echartDataX,
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色
@@ -406,12 +406,12 @@ export default {
             }
           },
         },
-        series: that.echartDataY,
+        series: that.testModel ? mainData.lineData : that.echartDataY,
 
       };
 
       myChart.setOption(option, true);
-      myChart.resize();
+      window.addEventListener('resize', myChart.resize);
     },
     initMood() {
       const that = this;
@@ -504,7 +504,7 @@ export default {
       };
 
       myChartmood.setOption(option);
-      myChartmood.resize();
+      window.addEventListener('resize', myChartmood.resize);
     },
     orgEmotion(date) {
       this.server.orgEmotion({

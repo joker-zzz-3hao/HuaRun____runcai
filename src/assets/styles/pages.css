@@ -148,7 +148,7 @@
   right: 0;
   background: #fff;
   height: 50px;
-  z-index: 99;
+  z-index: 999;
 }
 
 .my-okr .operating-area-inside,
@@ -663,6 +663,10 @@
 
 .okr-maps .toggle-view {
   margin: 0 0 0 20px;
+}
+
+.okr-maps .tag-kind .kind-child {
+  flex-basis: 32px;
 }
 
 /* 周报 */

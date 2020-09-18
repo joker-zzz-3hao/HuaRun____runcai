@@ -216,6 +216,7 @@ export default {
           orgId: this.orgId,
         }).then((res) => {
           if (res.code == '200') {
+            this.tableData = [];
             console.log(res);
             this.xData = [];
             this.yData = [];

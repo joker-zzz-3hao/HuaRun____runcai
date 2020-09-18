@@ -83,7 +83,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="scoreTime" label="评价时间" min-width="160"></el-table-column>
+            <el-table-column prop="scoreTime" label="评价时间" min-width="160">
+              <template slot-scope="scope">
+                <span v-if="scope.row.scoreTime">{{scope.row.scoreTime}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="updateTime" label="支撑时间" min-width="160"></el-table-column>
             <el-table-column fixed="right" label="操作" width="220">
               <template slot-scope="scope">
