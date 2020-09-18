@@ -98,7 +98,7 @@
         </el-form>
       </div>
     </div>
-    <div class="cont-area" v-if="openOrClose == 'O'">
+    <div class="cont-area" v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId">
       <crcloud-table
         :total="total"
         :currentPage.sync="formData.currentPage"
@@ -228,7 +228,7 @@
         </div>
       </crcloud-table>
     </div>
-    <div v-if="openOrClose == 'S'">该团队周报未开放</div>
+    <div v-else>该团队周报未开放</div>
   </div>
 </template>
 

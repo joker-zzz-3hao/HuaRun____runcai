@@ -1,22 +1,21 @@
 <template>
-  <div style="width: 216px">
-    <div>
-      <div @click.stop="goDetail(node.node.okrId)">
-        <p>{{node.node.okrDetailObjectKr}}</p>
-      </div>
-      <div>
-        <span>KR</span>
+  <div class="maps-card">
+    <dl class="okr-info">
+      <dt @click.stop="goDetail(node.node.okrId)">
+        <em>{{node.node.okrDetailObjectKr}}</em>
+      </dt>
+      <dd class="tag-kind">
+        <span class="kind-child">KR</span>
         <span>关键成果</span>
-        <span>{{node.node.krCount}}</span>
-      </div>
-      <div>
-        <tl-process :data="node.node.okrProgress"></tl-process>
-      </div>
+        <em>{{node.node.krCount}}</em>
+      </dd>
+    </dl>
+    <div class="department-info">
+      <span>负责人</span>
+      <em>{{node.node.userName}}</em>
+      <el-button type="text" plain class="tl-btn btn-lineheight">{{node.node.orgName}}</el-button>
     </div>
-    <div style="display: flex;justify-content: space-between;" @click="takeOvierview(node)">
-      <div>负责人：{{node.node.userName}}</div>
-      <div>{{node.node.orgName}} ></div>
-    </div>
+    <tl-process :data="node.node.okrProgress" :width="30" :marginLeft="6"></tl-process>
   </div>
 </template>
 
