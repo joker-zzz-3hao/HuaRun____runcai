@@ -302,7 +302,7 @@ export default {
       // 画线
       if (vnode.parent) {
         // 横向曲线偏移量。使曲线位于节点的中部
-        const pianyi = this.blockWidth / 4;
+        const pianyi = (this.blockWidth / 4) - 4;
         // 控制曲线的宽度，曲线终点的x
         const pLeft = vnode.parent.left + this.blockWidth + 30;
         // 控制点的y和终点的y
