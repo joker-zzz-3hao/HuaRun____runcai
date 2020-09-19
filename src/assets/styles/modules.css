@@ -2818,8 +2818,8 @@
 .tag-kind p  {
   color: #4d5155;
 }
-
-.tag-kind p + p {
+/* 更改by林心荃 */
+.tag-kind.has-reason p:last-child{
   margin: 10px 0 0 0;
   padding: 10px 20px;
   background: #f4f6f8;

@@ -1,6 +1,7 @@
 <template>
   <div v-show="showLoad">
     <div v-if="tableList.length>0" class="tl-card-panel">
+      <em v-show="testModel">示例数据</em>
       <div class="card-panel-head">
         <div class="okr-title">{{okrCycle.periodName}}</div>
         <dl class="okr-state">
