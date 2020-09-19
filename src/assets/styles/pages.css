@@ -482,6 +482,17 @@
   padding: 20px 0;
 }
 
+/* 更改by林心荃 */
+.history-version .tag-kind p span {
+  font-size: 12px;
+  color: #879099;
+}
+.history-version .tag-kind p em {
+  margin:0 0 0 12px;
+  font-size: 12px;
+  color: #4D5155;
+}
+
 .okr-detail .timeline-list .list-title {
   color: #acb6bf;
 }
@@ -701,8 +712,13 @@
   flex-basis: 32px;
 }
 
+.maps-view-table .table-container {
+  min-height: calc(100vh - 243px)
+}
+
 /* 周报 */
-.my-weekly .cont-area {
+.my-weekly .cont-area,
+.okr-maps .maps-view-table {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;

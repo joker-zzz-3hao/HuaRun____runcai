@@ -33,11 +33,15 @@
                 <span>分权重</span>
                 <em>{{item.okrWeight}}%</em>
               </p>
-              <p v-if="item.checkQuota">
+              <p v-if="item.okrDetailType == 0">
+                <span>关联父目标</span>
+                <em>{{item.okrDetailParentObjectKr}}</em>
+              </p>
+              <p v-if="item.okrDetailType == 1">
                 <span>考核指标</span>
                 <em>{{item.checkQuota}}</em>
               </p>
-              <p v-if="item.judgeMethod">
+              <p v-if="item.okrDetailType == 1">
                 <span>衡量办法</span>
                 <em>{{item.judgeMethod}}</em>
               </p>
@@ -112,11 +116,11 @@ export default {
               versionName: oitem.isTrue === 1 ? '「最新版本」' : `「历史版本${oitem.okrDetailVersion}」`,
               isTrue: oitem.isTrue, // 是否为最新版本
               okrWeight: oitem.okrWeight, // 权重
-              okrDetailParentObjectKr: oitem.okrDetailParentObjectKr, // 承接的okr
+              okrDetailParentObjectKr: oitem.okrDetailParentObjectKr || '暂无', // 承接的okr
               okrDetailParentVersion: oitem.okrDetailParentVersion, // 承接的版本
               remark: oitem.remark,
-              checkQuota: oitem.checkQuota,
-              judgeMethod: oitem.judgeMethod,
+              checkQuota: oitem.checkQuota || '暂无',
+              judgeMethod: oitem.judgeMethod || '暂无',
             });
           });
         }

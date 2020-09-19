@@ -52,7 +52,7 @@
             <dd class="undertake-target"></dd>
             <!-- kr进度 -->
             <dd class="okr-progress" v-if="showUpdate">
-              <tl-process :data="kritem.okrDetailProgress"></tl-process>
+              <tl-process :data="parseInt(kritem.okrDetailProgress,10)"></tl-process>
             </dd>
             <!-- kr无更新进度 仅占位-->
             <dd class="okr-update"></dd>
@@ -107,7 +107,7 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
-          <tl-process :data="scope.row.okrDetailProgress"></tl-process>
+          <tl-process :data="parseInt(scope.row.okrDetailProgress,10)"></tl-process>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->

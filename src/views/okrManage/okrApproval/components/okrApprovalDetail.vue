@@ -34,7 +34,6 @@
     </div>
     <div style="margin-top: 20px;">
       <p>OKR信息</p>
-      <!-- <tl-okr-collapse :tableList="tableList"></tl-okr-collapse> -->
       <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
       <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
     </div>
@@ -68,26 +67,44 @@
         </el-form>
       </div>
     </div>
-    <div style="margin-top: 20px;">
-      <p>审核记录</p>
-      <el-timeline>
-        <el-timeline-item
-          :timestamp="item.createTime"
-          placement="top"
-          v-for="item in cycleList"
-          :key="item.id"
-        >
-          <div style="display: flex;">
-            <div>{{item.userName}}</div>
-            <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
-            <div v-if="item.reason">
-              <span v-if="item.approvalStatus === 0">变更原因</span>
-              <span v-else>意见</span>
+    <p>审核记录</p>
+    <div class="tl-custom-timeline">
+      <dl class="timeline-list">
+        <dt>
+          <div class="list-info">
+            <div class="list-title">{{cycleFirst.createTime}}</div>
+            <div class="list-cont">
+              <div class="operate-type">
+                <em>{{cycleFirst.userName}}</em>
+                <div
+                  v-if="cycleFirst.remark"
+                >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</div>
+                <div v-if="cycleFirst.reason">
+                  <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
+                  <span v-else>审批意见</span>
+                </div>
+                <div v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</div>
+              </div>
             </div>
-            <div v-if="item.reason">{{`「${item.reason}」`}}</div>
           </div>
-        </el-timeline-item>
-      </el-timeline>
+        </dt>
+        <dd v-for="item in cycleList" :key="item.id">
+          <div class="list-info">
+            <div class="list-title">{{item.createTime}}</div>
+            <div class="list-cont">
+              <div class="operate-type">
+                <em>{{item.userName}}</em>
+                <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
+                <div v-if="item.reason">
+                  <span v-if="item.approvalStatus === 0">变更原因</span>
+                  <span v-else>审批意见</span>
+                </div>
+                <div v-if="item.reason">{{`「${item.reason}」`}}</div>
+              </div>
+            </div>
+          </div>
+        </dd>
+      </dl>
     </div>
   </div>
 </template>
@@ -117,6 +134,7 @@ export default {
         refuseInfo: '',
       },
       cycleList: [],
+      cycleFirst: {},
     };
   },
   components: {
@@ -143,7 +161,7 @@ export default {
             refuseInfo: this.ruleForm.refuseInfo,
             approvalType: this.data.approvalType,
           }).then((res) => {
-            if (res.code == '200') {
+            if (res.code == 200) {
               this.$message.success(res.msg);
               this.ruleForm.approvalStatus = '1';
               this.ruleForm.refuseInfo = '';
@@ -159,12 +177,13 @@ export default {
         okrMainId: this.data.okrMainId,
         // approvalId: this.data.approvalId,
       }).then((res) => {
-        if (res.code == '200') {
+        if (res.code == 200) {
           this.cycleList = res.data;
           this.cycleList.forEach((item) => {
             const contents = JSON.parse(item.remark);
             item.approvalStatus = contents.approvalStatus;
           });
+          this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
         }
       });
     },
