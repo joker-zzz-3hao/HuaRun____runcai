@@ -5,8 +5,8 @@
       <el-button @click="goback">返回</el-button>
     </div>
     <!-- 更新 -->
-    <el-collapse class="tl-collapse" accordion @change="okrCheck">
-      <el-collapse-item
+    <elcollapse class="tl-collapse" accordion @change="okrCheck">
+      <elcollapseitem
         ref="okrcoll"
         v-for="okrItem in okrInfoList"
         :key="okrItem.okrDetailId"
@@ -68,8 +68,8 @@
             </el-timeline>
           </dl>
         </div>
-      </el-collapse-item>
-    </el-collapse>
+      </elcollapseitem>
+    </elcollapse>
     <tl-update-progress
       ref="tlokrupdate"
       :server="server"
@@ -82,6 +82,8 @@
 <script>
 
 import { mapState, mapMutations } from 'vuex';
+import elcollapse from '@/components/collapse/collapse';
+import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
 import updateProgress from './updateProgress';
 import Server from '../server';
@@ -92,6 +94,8 @@ const server = new Server();
 export default {
   name: 'undertakeDetail',
   components: {
+    elcollapse,
+    elcollapseitem,
     'tl-update-progress': updateProgress,
     'tl-process': process,
   },
