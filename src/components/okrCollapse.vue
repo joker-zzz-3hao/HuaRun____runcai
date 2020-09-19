@@ -134,7 +134,13 @@
               <div v-else-if="item.parentObjectKr">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
+                <el-popover
+                  v-if="item.parentUpdate"
+                  placement="top"
+                  width="200"
+                  trigger="hover"
+                  :append-to-body="false"
+                >
                   <span>您承接的OKR有变更，请在变更中处理。</span>
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>

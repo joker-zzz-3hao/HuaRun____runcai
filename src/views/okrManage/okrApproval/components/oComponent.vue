@@ -17,12 +17,20 @@
         </div>
       </div>
       <div v-if="oData.undertakeOkrVo">
-        <span v-if="oData.undertakeOkrVo.undertakeOkrContent">关联父目标</span>
-        <span style="margin-left: 10px;">{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
+        <span>关联父目标</span>
+        <span
+          v-if="oData.undertakeOkrVo.undertakeOkrContent"
+          style="margin-left: 10px;"
+        >{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
+        <span v-else>暂无</span>
       </div>
-      <div v-if="oData.undertakeOkrDto">
-        <span v-if="oData.undertakeOkrDto.undertakeOkrContent">关联父目标</span>
-        <span style="margin-left: 10px;">{{oData.undertakeOkrDto.undertakeOkrContent}}</span>
+      <div v-else>
+        <span>关联父目标</span>
+        <span
+          v-if="oData.undertakeOkrDto && oData.undertakeOkrDto.undertakeOkrContent"
+          style="margin-left: 10px;"
+        >{{oData.undertakeOkrDto.undertakeOkrContent}}</span>
+        <span v-else>暂无</span>
       </div>
     </div>
   </div>

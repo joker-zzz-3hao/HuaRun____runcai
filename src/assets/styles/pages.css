@@ -130,9 +130,8 @@
 }
 
 /* ==========================================================OKR管理================================================================== */
-.my-okr,
-.okr-maps {
-  padding: 50px 0 0 0;
+.my-okr {
+  padding: 34px 0 0 0;
 }
 
 .is-shrink + .my-okr,
@@ -623,9 +622,38 @@
 }
 
 /* okr-maps */
+.okr-maps {
+  padding: 84px 0 0 0;
+  min-height: calc(100vh - 119px);
+}
+
+.okr-maps .operating-area {
+  height: 100px;
+}
+
+.okr-maps .operating-area-inside {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  height: unset;
+}
+
+.okr-maps .operating-area-inside .operating-box {
+  flex: 0;
+  height: 50px;
+}
+
+.okr-maps .operating-area-inside .operating-box + .operating-box {
+  margin: 5px 0 0 0;
+}
+
 .okr-maps .operating-area .tl-input {
-  margin: 3px 0 0 0;
+  margin: 0;
   width: 200px;
+}
+
+.okr-maps .operating-area .tl-input .el-input__icon {
+  margin: 3px 0 0 0;
 }
 
 .okr-maps .operating-area .el-input__inner {
@@ -659,6 +687,10 @@
 .okr-maps .tl-select .el-input__inner,
 .okr-maps .tl-cascader .el-input__inner {
   background: #f4f6f8;
+}
+
+.okr-maps .tl-select-dropdown.el-popper {
+  margin-top: 12px;
 }
 
 .okr-maps .toggle-view {

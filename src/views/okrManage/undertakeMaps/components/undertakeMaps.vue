@@ -173,14 +173,14 @@ export default {
             this.svgList = [];
             if (this.showOne) {
             // 要做兼容处理
-              allTreeData.forEach((item, index) => {
-                if (index === 0) {
-                  item.okrParentId = null;
-                }
+              allTreeData.forEach((item) => {
+                // if (index === 0) {
+                //   item.okrParentId = null;
+                // }
                 this.svgList.push(item);
-                if (item.krContinueList && item.krContinueList.length > 0) {
-                  this.svgList = this.svgList.concat(item.krContinueList);
-                }
+                // if (item.krContinueList && item.krContinueList.length > 0) {
+                this.svgList = this.svgList.concat(item.krContinueList || []);
+                // }
               });
               this.svgList.forEach((item) => {
                 delete item.krContinueList;
@@ -188,14 +188,14 @@ export default {
             } else {
               let index = 0;
               allTreeData.forEach((item) => {
-                if (item.krContinueList && item.krContinueList.length > 0) {
-                  item.okrParentId = null;
-                  this.svgList[index] = [];
-                  this.svgList[index].push(item);
-                  this.svgList[index] = this.svgList[index].concat(item.krContinueList);
-                  delete item.krContinueList;
-                  index += 1;
-                }
+                // if (item.krContinueList && item.krContinueList.length > 0) {
+                item.okrParentId = null;
+                this.svgList[index] = [];
+                this.svgList[index].push(item);
+                this.svgList[index] = this.svgList[index].concat(item.krContinueList || []);
+                delete item.krContinueList;
+                index += 1;
+                // }
                 if (item.krList && item.krList.length > 0) {
                   item.krList.forEach((kritem) => {
                     if (kritem.krContinueList && kritem.krContinueList.length > 0) {
