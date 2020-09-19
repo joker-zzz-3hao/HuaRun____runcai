@@ -106,8 +106,20 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    handleCheckChange(data) {
-      console.log(data);
+    handleCheckChange() {
+      const node = this.$refs.treeMenu.getCheckedNodes()[0];
+      if (this.$refs.treeMenu.getCheckedNodes().length == 0) {
+        return false;
+      }
+      if (node.checked) {
+        this.server.queryOrgAdmin({
+          orgId: node.data.orgId,
+        }).then((res) => {
+          if (res.data.userName) {
+            this.$message.error(`当前部门已经存在负责人${res.data.userName},继续将自动替换`);
+          }
+        });
+      }
     },
     saveTree() {
       const node = this.$refs.treeMenu.getCheckedNodes();

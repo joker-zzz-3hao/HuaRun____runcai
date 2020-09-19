@@ -436,6 +436,8 @@ export default {
       if (depart && depart.orgId) {
         this.initDepartment = depart;
         this.globalOrgId = depart.orgId;
+      } else {
+        this.initDepartment = {};
       }
       this.showcreateDepart = true;
       this.$nextTick(() => {
@@ -534,7 +536,7 @@ export default {
       this.server.queryOrgAdmin({
         orgId: user.orgId,
       }).then((res) => {
-        if (res.data.userName) {
+        if (!res.data.userName) {
           this.setLeader(user);
         } else {
           const name = res.data.userName;

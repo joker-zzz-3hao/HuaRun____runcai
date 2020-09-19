@@ -1,7 +1,10 @@
 <template>
   <div class="weeking">
     <div class="model">
-      <div>OKR风险状态统计</div>
+      <div>
+        OKR风险状态统计
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <!-- <div>
         <el-select placeholder="请选择" class="selectTime" v-model="periodId" @change="changeTime">
           <el-option
@@ -30,7 +33,10 @@
         </div>
 
         <div style="width:50%">
-          <div>员工情绪大屏</div>
+          <div>
+            员工情绪大屏
+            <em v-show="testModel">(示例数据)</em>
+          </div>
           <div>
             <el-date-picker
               format="yyyy-MM"
@@ -47,7 +53,10 @@
       </div>
     </div>
     <div class="model">
-      <div>周报动态</div>
+      <div>
+        周报动态
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <el-date-picker
         format="yyyy-MM"
         value-format="yyyy-MM"
@@ -114,6 +123,7 @@ export default {
       tableData: [],
       moodDataX: [],
       moodDataY: [],
+      myChartmood: '',
       active: {},
       orgTable: [],
       pickerBeginDateBefore: {
@@ -427,7 +437,7 @@ export default {
     },
     initMood() {
       const that = this;
-      const myChartmood = echarts.init(document.getElementById('mood'));
+      this.myChartmood = echarts.init(document.getElementById('mood'));
       const option = {
         dataset: {
           source: that.testModel ? mainData.moodData : that.moodDataY,
@@ -495,29 +505,30 @@ export default {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#FFBC20' },
+
+              normal: { barBorderRadius: 5, color: '#FFBC20' },
             },
           },
           {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#3F7DFF' },
+              normal: { barBorderRadius: 5, color: '#3F7DFF' },
             },
           },
           {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#FB4C59' },
+              normal: { barBorderRadius: 5, color: '#FB4C59' },
             },
           },
         ],
       };
 
-      myChartmood.setOption(option);
-      myChartmood.resize();
-      window.addEventListener('resize', myChartmood.resize);
+      that.myChartmood.setOption(option);
+
+      window.addEventListener('resize', that.myChartmood.resize);
     },
     orgEmotion(date) {
       this.server.orgEmotion({
@@ -531,6 +542,9 @@ export default {
         ]));
         this.moodDataY = [['product', '0', '50', '100'], ...this.moodDataY];
         this.initMood();
+        this.$nextTick(() => {
+          this.myChartmood.resize();
+        });
       });
     },
   },
