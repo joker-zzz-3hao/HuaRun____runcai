@@ -104,6 +104,8 @@ export default {
       };
 
       myChart.setOption(option);
+      myChart.resize();
+      window.addEventListener('resize', myChart.resize);
     },
   },
   watch: {

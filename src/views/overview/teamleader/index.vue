@@ -44,6 +44,7 @@ import okrRiskTotal from './components/okrRiskTotal';
 import weeking from './components/weeking';
 import periodcom from '../component/period';
 import orgPage from '../component/orgPage';
+import { teamData } from '../testData';
 
 const server = new Server();
 export default {
@@ -60,6 +61,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
   },
   data() {
@@ -98,7 +100,7 @@ export default {
         periodId: this.periodId,
         orgId: this.orgId,
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = this.testModel ? teamData.roundData.data : res.data;
       });
     },
     // eslint-disable-next-line no-shadow

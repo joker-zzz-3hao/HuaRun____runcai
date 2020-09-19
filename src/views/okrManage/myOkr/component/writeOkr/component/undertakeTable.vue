@@ -47,10 +47,7 @@
                 <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
                 <div>
                   <p>{{item.okrDetailObjectKr}}</p>
-                  <p
-                    v-if="item.currentOption||currentOption.includes(item.okrDetailId)"
-                  >{{item.okrDetailObjectKr}}</p>
-                  <!-- <p v-if="item.modifyReason">{{item.modifyReason}}</p> -->
+                  <p v-if="item.modifyReason">{{item.modifyReason}}</p>
                 </div>
               </div>
             </el-radio>
@@ -169,16 +166,20 @@ export default {
   },
   watch: {
     selectRadioDepart: {
-      handler() {
-        this.modelDepart = this.selectRadioDepart;
-        this.selectDepartRow = '';
-        this.selectPhilRow = '';
+      handler(newVal) {
+        this.modelDepart = newVal;
+        if (!newVal) {
+          this.selectDepartRow = '';
+        }
       },
       immediate: true,
     },
     selectRadioPhil: {
-      handler() {
-        this.modelPhil = this.selectRadioPhil;
+      handler(newVal) {
+        this.modelPhil = newVal;
+        if (!newVal) {
+          this.selectPhilRow = '';
+        }
       },
     },
   },

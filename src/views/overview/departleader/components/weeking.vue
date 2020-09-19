@@ -54,6 +54,7 @@
         v-model="dateTime"
         @change="getDate"
         :clearable="false"
+        :picker-options="pickerBeginDateBefore"
         type="month"
         placeholder="选择日期"
       ></el-date-picker>
@@ -115,6 +116,14 @@ export default {
       moodDataY: [],
       active: {},
       orgTable: [],
+      pickerBeginDateBefore: {
+        disabledDate(time) {
+          const times = new Date();
+          const startValue = `${times.getFullYear()}-01`;
+          const startTime = new Date(startValue);
+          return time.getTime() < startTime.getTime();
+        },
+      },
     };
   },
 
@@ -131,6 +140,7 @@ export default {
   },
 
   methods: {
+
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
@@ -159,7 +169,8 @@ export default {
         // eslint-disable-next-line max-len
         const dateArr = this.dateOption.map((item) => [new Date(item.weekBegin).getTime(), new Date(item.weekEnd).getTime()]);
         const eq = dateArr.findIndex((item) => item[0] <= new Date().getTime() && new Date().getTime() <= item[1]);
-        if (eq) {
+        console.log(eq);
+        if (eq >= 0) {
           this.calendarId = res.data[eq].calendarId;
         } else {
           this.calendarId = res.data[0].calendarId;
@@ -411,6 +422,7 @@ export default {
       };
 
       myChart.setOption(option, true);
+      myChart.resize();
       window.addEventListener('resize', myChart.resize);
     },
     initMood() {
@@ -504,6 +516,7 @@ export default {
       };
 
       myChartmood.setOption(option);
+      myChartmood.resize();
       window.addEventListener('resize', myChartmood.resize);
     },
     orgEmotion(date) {
