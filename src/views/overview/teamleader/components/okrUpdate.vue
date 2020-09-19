@@ -103,6 +103,7 @@ export default {
       };
 
       myChart.setOption(option);
+      myChart.resize();
     },
   },
   watch: {

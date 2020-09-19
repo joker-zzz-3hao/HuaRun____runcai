@@ -174,7 +174,6 @@ export default {
           this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
           this.searchForm.periodId = this.okrCycle.periodId;
           this.setokrCycle(this.okrCycle);
-          this.setokrPeriodId(this.searchForm.periodId);
         }
       });
     },
