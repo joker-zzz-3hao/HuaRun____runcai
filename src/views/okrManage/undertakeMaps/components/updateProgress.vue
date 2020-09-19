@@ -6,47 +6,54 @@
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
+    class="tl-dialog"
   >
-    <el-form :model="okrForm" ref="dataForm">
-      <dl class="okuang">
-        <dt>{{okrForm.okrDetailType === 0 ? '目标名称' : '关键结果'}}</dt>
-        <dd class="objectdd">
-          <el-form-item>
-            <span>{{okrForm.okrDetailObjectKr}}</span>
-          </el-form-item>
-          <el-form-item label="权重">
-            <span>{{okrForm.okrWeight}}</span>
-          </el-form-item>
-          <el-form-item label="当前进度">
-            <el-slider
-              v-model="okrForm.okrDetailProgress"
-              show-input
-              :step="1"
-              @change="changeProgress(okrForm)"
-            ></el-slider>
-          </el-form-item>
-          <el-form-item label="风险状态" v-if="okrForm.okrDetailConfidence">
-            <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-              <el-radio-group v-model="okrForm.okrDetailConfidence">
-                <el-radio-button
-                  v-for="citem in CONST.CONFIDENCE"
-                  :key="citem.value"
-                  :label="citem.value"
-                >{{citem.label}}</el-radio-button>
-              </el-radio-group>
-              <el-button slot="reference">{{CONST.CONFIDENCE_MAP[okrForm.okrDetailConfidence||'1']}}</el-button>
-            </el-popover>
-          </el-form-item>
-        </dd>
-      </dl>
-      <dl>
-        <dd>
-          <el-form-item label="更新说明">
-            <el-input maxlength="200" v-model="okrForm.updateexplain"></el-input>
-          </el-form-item>
-        </dd>
-      </dl>
-    </el-form>
+    <div class="okr-info">
+      <div class="tl-custom-timeline">
+        <el-form :model="okrForm" ref="dataForm">
+          <dl class="okuang">
+            <dt>{{okrForm.okrDetailType === 0 ? '目标名称' : '关键结果'}}</dt>
+            <dd class="objectdd">
+              <el-form-item>
+                <span>{{okrForm.okrDetailObjectKr}}</span>
+              </el-form-item>
+              <el-form-item label="权重">
+                <span>{{okrForm.okrWeight}}</span>
+              </el-form-item>
+              <el-form-item label="当前进度">
+                <el-slider
+                  v-model="okrForm.okrDetailProgress"
+                  show-input
+                  :step="1"
+                  @change="changeProgress(okrForm)"
+                ></el-slider>
+              </el-form-item>
+              <el-form-item label="风险状态" v-if="okrForm.okrDetailConfidence">
+                <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
+                  <el-radio-group v-model="okrForm.okrDetailConfidence">
+                    <el-radio-button
+                      v-for="citem in CONST.CONFIDENCE"
+                      :key="citem.value"
+                      :label="citem.value"
+                    >{{citem.label}}</el-radio-button>
+                  </el-radio-group>
+                  <el-button
+                    slot="reference"
+                  >{{CONST.CONFIDENCE_MAP[okrForm.okrDetailConfidence||'1']}}</el-button>
+                </el-popover>
+              </el-form-item>
+            </dd>
+          </dl>
+          <dl>
+            <dd>
+              <el-form-item label="更新说明">
+                <el-input maxlength="200" v-model="okrForm.updateexplain"></el-input>
+              </el-form-item>
+            </dd>
+          </dl>
+        </el-form>
+      </div>
+    </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="summitUpdate" :loading="loading">更新</el-button>
     </span>
@@ -62,7 +69,7 @@ export default {
   data() {
     return {
       CONST,
-      dialogTitle: '更新OKR', // 弹框标题
+      dialogTitle: '更新进展', // 弹框标题
       dialogDetailVisible: false,
       updateexplain: '',
       formData: {},

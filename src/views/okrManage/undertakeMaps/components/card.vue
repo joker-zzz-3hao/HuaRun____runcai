@@ -9,7 +9,7 @@
       </dt>
       <dd>
         <el-button
-          v-if="!node.okrParentId && node.userId ===userInfo.userId"
+          v-if="node.children && node.children.length && node.userId ===userInfo.userId"
           @click="goDetail(node)"
         >对齐</el-button>
       </dd>
