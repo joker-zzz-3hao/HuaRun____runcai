@@ -93,7 +93,7 @@
                         }"
                       >
                         <em>{{userName}}</em>
-                        <span v-if="cycleFirst.operateType == 'add'">创建了</span>
+                        <span v-if="cycleFirst.operateType == 'add'">创建了OKR</span>
                         <span v-else>{{cycleFirst.operateTypeCn}}</span>
                         <em v-if="cycleFirst.operateType == 'add'">{{periodName}}</em>
                       </div>
@@ -128,15 +128,6 @@
                               ></div>
                             </div>
                             <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
-                          </div>
-                        </li>
-                      </ul>
-                      <!-- 新增操作记录 -->
-                      <ul v-else-if="cycleFirst.operateType == 'add'" class="operate-kind">
-                        <li>
-                          <div>
-                            <span>OKR</span>
-                            <em>{{periodName}}</em>
                           </div>
                         </li>
                       </ul>
@@ -203,7 +194,7 @@
                     <div class="list-cont">
                       <div class="operate-type">
                         <em>{{userName}}</em>
-                        <span v-if="activity.operateType == 'add'">创建了</span>
+                        <span v-if="activity.operateType == 'add'">创建了OKR</span>
                         <span v-else>{{activity.operateTypeCn}}</span>
                         <em v-if="activity.operateType == 'add'">{{periodName}}</em>
                       </div>

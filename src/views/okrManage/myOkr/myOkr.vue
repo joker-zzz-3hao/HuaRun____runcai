@@ -53,7 +53,7 @@
                 ></el-progress>
               </dd>
             </dl>
-            <dl v-if="['1',1,'6',6,'7',7,'8',8].includes(item.okrMain.status)">
+            <dl v-if="['1',1,'6',6,'8',8].includes(item.okrMain.status)">
               <dt>
                 <el-dropdown trigger="click">
                   <span class="el-dropdown-link">
@@ -61,18 +61,19 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      v-if="['1','7',1,7].includes(item.okrMain.status)"
-                      @click.native="openDialog(item)"
-                    >
-                      <em>操作历史</em>
-                    </el-dropdown-item>
-                    <el-dropdown-item
                       v-if="['1',1].includes(item.okrMain.status)"
                       @click.native="goChangeOkr(item)"
                     >
                       <!-- <i class="el-icon-edit-outline"></i> -->
                       <em>申请变更</em>
                     </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="['1',1].includes(item.okrMain.status)"
+                      @click.native="openDialog(item)"
+                    >
+                      <em>操作历史</em>
+                    </el-dropdown-item>
+
                     <el-dropdown-item
                       v-if="['6',6].includes(item.okrMain.status)"
                       @click.native="deleteDraft(item.id)"
