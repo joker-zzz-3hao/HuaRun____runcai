@@ -1,9 +1,10 @@
 <template>
   <el-dialog
+    :append-to-body="true"
+    :close-on-click-modal="false"
     :title="dialogTitle"
     :visible.sync="dialogDetailVisible"
     width="50%"
-    :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
     class="tl-dialog"
