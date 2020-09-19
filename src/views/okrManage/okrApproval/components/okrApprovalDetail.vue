@@ -34,7 +34,6 @@
     </div>
     <div style="margin-top: 20px;">
       <p>OKR信息</p>
-      <!-- <tl-okr-collapse :tableList="tableList"></tl-okr-collapse> -->
       <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
       <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
     </div>
@@ -143,7 +142,7 @@ export default {
             refuseInfo: this.ruleForm.refuseInfo,
             approvalType: this.data.approvalType,
           }).then((res) => {
-            if (res.code == '200') {
+            if (res.code == 200) {
               this.$message.success(res.msg);
               this.ruleForm.approvalStatus = '1';
               this.ruleForm.refuseInfo = '';
@@ -159,7 +158,7 @@ export default {
         okrMainId: this.data.okrMainId,
         // approvalId: this.data.approvalId,
       }).then((res) => {
-        if (res.code == '200') {
+        if (res.code == 200) {
           this.cycleList = res.data;
           this.cycleList.forEach((item) => {
             const contents = JSON.parse(item.remark);
