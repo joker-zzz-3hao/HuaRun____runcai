@@ -6,7 +6,12 @@
     </div>
     <div class="countAll">
       <ul>
-        <li class="count" v-for="(item,index) in tableData" :key="index">
+        <li
+          class="count"
+          v-for="(item,index) in tableData"
+          :key="index"
+          @click="okrRiskUserInfo(item.riskCode);"
+        >
           <em>{{item.count}}</em>
           <div class="test">{{item.riskName}}(个)</div>
           <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress>
@@ -76,7 +81,7 @@ export default {
     },
     cheMainData() {
       this.aroundData = this.tableData.map((item) => ({ value: Number(item.ratio), name: `${item.ratio}%`, riskCode: item.riskCode }));
-      console.log(this.aroundData);
+
       if (this.tableData.length == 0) {
         this.aroundData = [{ value: 0, name: '0%', riskCode: 0 }];
       }
@@ -150,13 +155,8 @@ export default {
       };
 
       myChart.setOption(option);
-      if (myChart._$handlers.click) {
-        myChart._$handlers.click.length = 0;
-      }
-      myChart.on('click', (param) => {
-        console.log(param);
-        that.okrRiskUserInfo(param.data.riskCode);
-      });
+      myChart.resize();
+      window.addEventListener('resize', myChart.resize);
     },
     initBag() {
       const that = this;
@@ -207,6 +207,8 @@ export default {
       };
 
       myChart2.setOption(option);
+      myChart2.resize();
+      window.addEventListener('resize', myChart2.resize);
     },
   },
   watch: {
