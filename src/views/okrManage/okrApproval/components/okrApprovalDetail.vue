@@ -5,27 +5,29 @@
     </div>
     <div style="margin-top: 20px;">
       <p>基本信息</p>
+      <p>{{data.periodName}}</p>
       <div style="display: flex;margin-top: 20px;justify-content:space-between;">
         <div>
-          <span>姓名：</span>
+          <span>被审批者</span>
           <span>{{data.userName}}</span>
         </div>
         <div>
-          <span>审批者：</span>
-          <span>{{data.approveUserName}}</span>
-        </div>
-        <div>
-          <span>OKR周期：</span>
-          <span>{{data.periodName}}</span>
-        </div>
-        <div>
-          <span>OKR类型：</span>
+          <span>OKR类型</span>
           <span>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</span>
         </div>
-        <div style="display:flex;" v-if="data.approvalType == '1'">
-          <div>OKR进度：</div>
+        <div>
+          <span>当前审批者</span>
+          <span>{{data.approveUserName}}</span>
+        </div>
+        <div style="display:flex;">
+          <div>进度</div>
           <div>
-            <el-progress type="circle" :percentage="data.okrProgress"></el-progress>
+            <el-progress
+              v-if="data.approvalType == '1'"
+              type="circle"
+              :percentage="data.okrProgress"
+            ></el-progress>
+            <span v-else>--</span>
           </div>
         </div>
       </div>
