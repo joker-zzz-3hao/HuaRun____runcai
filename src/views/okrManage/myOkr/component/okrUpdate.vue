@@ -170,7 +170,6 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
-        console.log('periodId', this.periodId);
       }
     },
     summitUpdate() {
