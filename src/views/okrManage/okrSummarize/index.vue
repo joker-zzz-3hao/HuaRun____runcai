@@ -13,7 +13,7 @@
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
-                  @change="periodChange"
+                  @change="searchList"
                 >
                   <el-option
                     v-for="item in periodList"
@@ -50,7 +50,8 @@
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
-                  @change="okrBelongTypeChange"
+                  @change="searchList"
+                  clearable
                 >
                   <el-option
                     v-for="item in okrBelongTypeList"
@@ -72,7 +73,8 @@
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
                   class="tl-select"
-                  @change="statusChange"
+                  @change="searchList"
+                  clearable
                 >
                   <el-option
                     v-for="item in statusList"
@@ -89,6 +91,8 @@
             v-model="userName "
             @keyup.enter.native="searchList"
             class="tl-input"
+            clearable
+            @clear="searchList"
           >
             <i slot="prefix" class="el-input__icon el-icon-search" @click="searchList"></i>
           </el-input>
@@ -200,16 +204,6 @@ export default {
         }
       });
     },
-    periodChange() {
-      this.searchList();
-    },
-    okrBelongTypeChange() {
-      this.searchList();
-    },
-    statusChange() {
-      this.searchList();
-    },
-
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -246,7 +240,8 @@ export default {
       this.searchList();
     },
 
-    searchList(params = { currentPage: 1 }) {
+    searchList() {
+      const params = {};
       params.periodId = this.periodId;
       params.orgFullId = this.orgFullId;
       params.okrBelongType = this.okrBelongType;
