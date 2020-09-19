@@ -10,7 +10,7 @@
         <em>{{node.node.krCount}}</em>
       </dd>
     </dl>
-    <div class="department-info">
+    <div class="department-info" @click.stop="takeOvierview(node.node)">
       <span>负责人</span>
       <em>{{node.node.userName}}</em>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{node.node.orgName}}</el-button>
