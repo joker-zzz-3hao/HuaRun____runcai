@@ -255,8 +255,8 @@ export default {
           this.total = res.data.total;
           this.currentPage = res.data.currentPage;
           this.pageSize = res.data.pageSize;
-          // this.tableData = res.data.content;
-          this.tableData = res.data;
+          this.tableData = res.data.content;
+          // this.tableData = res.data;
         }
         this.loading = false;
       });
