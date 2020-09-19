@@ -139,7 +139,7 @@
             </el-table-column>
             <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="setLeader(scope.row)" style="cursor: pointer;">
+                <div @click="queryOrgAdmin(scope.row)" style="cursor: pointer;">
                   <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>取消</span>
@@ -529,10 +529,29 @@ export default {
         }
       });
     },
+    // 检测是否已经有部门负责人
+    queryOrgAdmin(user) {
+      this.server.queryOrgAdmin({
+        orgId: user.orgId,
+      }).then((res) => {
+        if (res.data.userName) {
+          this.setLeader(user);
+        } else {
+          const name = res.data.userName;
+          this.setLeader(user, name);
+        }
+      });
+    },
     // 设置负责人
-    setLeader(user) {
+    setLeader(user, name) {
       const option = user.leader ? 'removeDepartLeder' : 'setDepartLeader';
-      const title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
+      let title;
+      if (name) {
+        title = user.leader ? `是否取消部门负责人${user.userName}?` : `当前部门已经设置${name}为部门负责人,是否设置${user.userName}为部门负责人，将覆盖？`;
+      } else {
+        title = user.leader ? `是否取消部门负责人${user.userName}?` : `是否设置${user.userName}为部门负责人？`;
+      }
+
       this.$confirm(title).then(() => {
         this.server[option]({ userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN' }).then((res) => {
           if (res.code == 200) {

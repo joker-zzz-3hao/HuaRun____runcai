@@ -7,6 +7,7 @@
         value-format="yyyy-MM"
         v-model="teamTime"
         @change="getteamTime"
+        :picker-options="pickerBeginDateBefore"
         :clearable="false"
         type="month"
         placeholder="选择日期"
@@ -70,6 +71,14 @@ export default {
       value: '',
       tableData: [
       ],
+      pickerBeginDateBefore: {
+        disabledDate(time) {
+          const times = new Date();
+          const startValue = `${times.getFullYear()}-01`;
+          const startTime = new Date(startValue);
+          return time.getTime() < startTime.getTime();
+        },
+      },
     };
   },
   mounted() {
@@ -213,6 +222,7 @@ export default {
       };
 
       myChart.setOption(option);
+      myChart.resize();
     },
     initMood() {
       const that = this;
@@ -313,6 +323,8 @@ export default {
       };
 
       myChart.setOption(option);
+      myChart.resize();
+      window.addEventListener('resize', myChart.resize);
     },
   },
 };

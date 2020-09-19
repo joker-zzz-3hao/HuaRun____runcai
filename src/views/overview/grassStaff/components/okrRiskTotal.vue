@@ -8,6 +8,7 @@
         value-format="yyyy-MM"
         v-model="dateTime"
         @change="getDate"
+        :picker-options="pickerBeginDateBefore"
         type="month"
         :clearable="false"
         placeholder="选择日期"
@@ -69,6 +70,14 @@ export default {
       tableData: [],
       echartDataX: [],
       echartDataY: [],
+      pickerBeginDateBefore: {
+        disabledDate(time) {
+          const times = new Date();
+          const startValue = `${times.getFullYear()}-01`;
+          const startTime = new Date(startValue);
+          return time.getTime() < startTime.getTime();
+        },
+      },
     };
   },
   mounted() {
