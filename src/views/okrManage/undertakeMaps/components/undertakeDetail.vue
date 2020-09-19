@@ -46,23 +46,22 @@
               >
                 <div>
                   <dd>
-                    <span>目标O{{okritem.okrDetailType}}</span>
-                    <span>{{okritem.okrContent}}</span>
+                    <span v-if="okritem.okrDetailType == 0">目标O</span>
+                    <span v-else>关键结果KR</span>
+                    <em>{{okritem.okrContent}}</em>
                   </dd>
                   <dd>
                     <span>更新说明</span>
-                    <span>{{okritem.remark}}</span>
+                    <em>{{okritem.remark}}</em>
                   </dd>
                   <dd>
                     <span>来自-</span>
-                    <span>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
+                    <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
                   </dd>
                   <dd>
-                    <span>
-                      本次更新进度
-                      <span v-if="okritem.okrDetailProgress>0">+</span>
-                    </span>
-                    <span>{{okritem.okrDetailProgress}}%</span>
+                    <span>本次更新进度</span>
+                    <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                    <em v-else>{{okritem.okrDetailProgress}}%</em>
                   </dd>
                 </div>
               </el-timeline-item>

@@ -3,7 +3,7 @@
     <dl class="okr-info">
       <dt class="tag-kind">
         <span
-          :class="node.okrDetailType == 'o' ? 'kind-parent':'kind-child'"
+          :class="node.okrDetailType == 0 ? 'kind-parent':'kind-child'"
         >{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
         <em>{{node.okrDetailObjectKr}}</em>
       </dt>

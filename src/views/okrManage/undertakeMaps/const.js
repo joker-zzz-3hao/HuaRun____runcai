@@ -1,5 +1,5 @@
 const OKR_TYPE_MAP = {
-  0: 'O',
+  0: '目标',
   1: 'KR',
 };
 const OKR_KIND_MAP = {
