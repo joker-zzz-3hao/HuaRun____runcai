@@ -367,6 +367,17 @@ export default {
           child.show = !child.show;
         });
       }
+      // 关闭其他 从第二层级开始展开是互斥的
+      const { deep } = vnode;
+      if (this.levels[deep].length > 0) {
+        // eslint-disable-next-line array-callback-return
+        this.levels[deep].map((child) => {
+          if (child != vnode) {
+            child.open = false;
+          }
+        });
+      }
+
       // 计算每个节点位置和画出svg
       if (this.direction == 'col') {
         this.calcHeight(this.root);
