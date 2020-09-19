@@ -15,7 +15,13 @@
       <em>{{node.node.userName}}</em>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{node.node.orgName}}</el-button>
     </div>
-    <tl-process :data="node.node.okrProgress" :width="30" :marginLeft="6"></tl-process>
+    <tl-process :data="node.node.okrProgress" :width="40" :marginLeft="6"></tl-process>
+    <div class="has-child" v-if="node.node.children">
+      <div class="is-extend" v-if="node.node.open">
+        <span></span>
+      </div>
+      <div v-else>{{node.node.children.length}}</div>
+    </div>
   </div>
 </template>
 

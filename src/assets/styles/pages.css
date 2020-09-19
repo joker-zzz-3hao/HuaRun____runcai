@@ -712,8 +712,13 @@
   flex-basis: 32px;
 }
 
+.maps-view-table .table-container {
+  min-height: calc(100vh - 243px)
+}
+
 /* 周报 */
-.my-weekly .cont-area {
+.my-weekly .cont-area,
+.okr-maps .maps-view-table {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
