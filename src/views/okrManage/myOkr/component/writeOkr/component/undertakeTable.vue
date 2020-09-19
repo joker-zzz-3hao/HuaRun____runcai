@@ -47,10 +47,7 @@
                 <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
                 <div>
                   <p>{{item.okrDetailObjectKr}}</p>
-                  <p
-                    v-if="item.currentOption||currentOption.includes(item.okrDetailId)"
-                  >{{item.okrDetailObjectKr}}</p>
-                  <!-- <p v-if="item.modifyReason">{{item.modifyReason}}</p> -->
+                  <p v-if="item.modifyReason">{{item.modifyReason}}</p>
                 </div>
               </div>
             </el-radio>
