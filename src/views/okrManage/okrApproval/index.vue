@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="okr-approval">
     <tl-okrApprovalList v-show="okrApprovalStep == '1'"></tl-okrApprovalList>
     <tl-okrApprovalDetail v-show="okrApprovalStep == '2'"></tl-okrApprovalDetail>
   </div>

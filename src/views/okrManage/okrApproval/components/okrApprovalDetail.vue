@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="okr-approval-detail">
     <div>
       <span @click="backList">返回</span>
     </div>
