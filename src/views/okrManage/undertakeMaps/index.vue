@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="undertake-maps">
     <keep-alive>
       <tl-undertake-maps v-if="undertakeMapsStep == '1'"></tl-undertake-maps>
     </keep-alive>

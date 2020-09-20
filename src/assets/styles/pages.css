@@ -130,17 +130,20 @@
 }
 
 /* ==========================================================OKR管理================================================================== */
-.my-okr {
-  padding: 34px 0 0 0;
+.my-okr,
+.undertake-maps {
+  padding: 50px 0 0 0;
 }
 
 .is-shrink + .my-okr,
-.is-shrink + .okr-maps {
+.is-shrink + .okr-maps,
+.is-shrink + .undertake-maps {
   z-index: 21;
 }
 
 .my-okr .operating-area,
-.okr-maps .operating-area {
+.okr-maps .operating-area,
+.undertake-maps .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -151,7 +154,8 @@
 }
 
 .my-okr .operating-area-inside,
-.okr-maps .operating-area-inside {
+.okr-maps .operating-area-inside,
+.undertake-maps .operating-area-inside {
   padding: 0 30px 0 206px;
   display: flex;
   justify-content: space-between;
@@ -167,12 +171,14 @@
 }
 
 .is-shrink + .my-okr .operating-area .operating-area-inside,
-.is-shrink + .okr-maps .operating-area .operating-area-inside {
+.is-shrink + .okr-maps .operating-area .operating-area-inside,
+.is-shrink + .undertake-maps .operating-area .operating-area-inside {
   padding: 0 30px 0 46px;
 }
 
 .my-okr .operating-area-inside::before,
-.okr-maps .operating-area-inside::before {
+.okr-maps .operating-area-inside::before,
+.undertake-maps .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -186,7 +192,8 @@
 }
 
 .my-okr .cont-area,
-.okr-maps .cont-area {
+.okr-maps .cont-area,
+.undertake-maps .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -634,8 +641,7 @@
 
 /* okr-maps */
 .okr-maps {
-  padding: 84px 0 0 0;
-  min-height: calc(100vh - 119px);
+  padding: 100px 0 0 0;
 }
 
 .okr-maps .operating-area {
@@ -714,6 +720,53 @@
 
 .maps-view-table .table-container {
   min-height: calc(100vh - 243px)
+}
+
+.okr-maps .operating-area .el-button {
+  display: flex;
+  align-items: center;
+}
+
+.okr-maps .operating-area .el-button > span {
+  margin: 0 10px 0 0;
+  order: 0;
+}
+
+.okr-maps .operating-area .el-button > i {
+  order: 1;
+}
+
+/* undertake-maps */
+.undertake-maps .draw-area {
+  padding: 0;
+  margin: 70px auto 0 auto;
+}
+
+.undertake-maps .cont-area .is-plain {
+  padding: 0;
+  background: #685df1;
+  color: #fff;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 28px;
+  min-width: unset;
+}
+
+.undertake-maps .cont-area .department-info .is-plain {
+  width: 37px;
+  height: 21px;
+  background: #f1f5f7;
+  color: #879099;
+  cursor: default;
+}
+
+.undertake-maps .cont-area .tag-kind .el-button.is-plain:hover {
+  background: #685df1;
+  color: #fff;
+}
+
+.undertake-maps .okr-info .tag-kind {
+  margin-top: 0;
 }
 
 /* 周报 */

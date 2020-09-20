@@ -6,26 +6,29 @@
           :class="node.okrDetailType == 0 ? 'kind-parent':'kind-child'"
         >{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
         <em>{{node.okrDetailObjectKr}}</em>
-      </dt>
-      <dd>
         <el-button
+          type="text"
+          plain
+          class="tl-btn btn-lineheight"
           v-if="node.children && node.children.length && node.userId ===userInfo.userId"
           @click="goDetail(node)"
         >对齐</el-button>
-      </dd>
+      </dt>
     </dl>
+    <tl-process :data="node.okrDetailProgress" :width="36" :marginLeft="6"></tl-process>
     <div class="department-info">
       <span>负责人</span>
       <em>{{node.userName}}</em>
+      <el-button
+        type="text"
+        plain
+        class="tl-btn btn-lineheight"
+      >{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</el-button>
     </div>
-    <tl-process :data="node.okrDetailProgress"></tl-process>
-    <!-- okr类型 -->
-    <div>{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</div>
-    <!-- 圆圈 -->
-    <div v-if="node.children">
-      <!-- 展开时显示减号 -->
-      <div v-if="node.open">-</div>
-      <!-- 收起时显示数量 -->
+    <div class="has-child" v-if="node.children">
+      <div class="is-extend" v-if="node.open">
+        <span></span>
+      </div>
       <div v-else>{{node.children.length}}</div>
     </div>
   </div>

@@ -10,12 +10,12 @@
         <em>{{node.node.krCount}}</em>
       </dd>
     </dl>
+    <tl-process :data="node.node.okrProgress" :width="36" :marginLeft="6"></tl-process>
     <div class="department-info" @click.stop="takeOvierview(node.node)">
       <span>负责人</span>
       <em>{{node.node.userName}}</em>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{node.node.orgName}}</el-button>
     </div>
-    <tl-process :data="node.node.okrProgress" :width="36" :marginLeft="6"></tl-process>
     <div class="has-child" v-if="node.node.children">
       <div class="is-extend" v-if="node.node.open">
         <span></span>
