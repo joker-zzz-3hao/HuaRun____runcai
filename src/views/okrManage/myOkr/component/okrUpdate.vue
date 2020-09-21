@@ -43,7 +43,7 @@
             </dt>
             <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
               <div class="list-info">
-                <div class="list-title">关键结果</div>
+                <div class="list-title">关键结果{{kindex+1}}</div>
                 <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
                 <div>
                   <el-form-item label="当前进度">
