@@ -107,6 +107,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    middlePoint: {
+      type: Number,
+      default: 71,
+    },
   },
   mounted() {
     if (this.treeData && this.treeData.length > 0) {
@@ -301,8 +305,8 @@ export default {
       }
       // 画线
       if (vnode.parent) {
-        // 横向曲线偏移量。使曲线位于节点的中部
-        const pianyi = (this.blockWidth / 4) - 4;
+        // 横向曲线偏移量。使曲线位于节点的中部，设为块高度的一半
+        const pianyi = this.middlePoint;
         // 控制曲线的宽度，曲线终点的x
         const pLeft = vnode.parent.left + this.blockWidth + 30;
         // 控制点的y和终点的y

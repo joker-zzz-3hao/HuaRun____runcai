@@ -11,6 +11,7 @@
           fatherId="okrParentId"
           childId="okrDetailId"
           :colAlign="false"
+          :middlePoint="cardHight"
         >
           <div slot="treecard" slot-scope="props">
             <card :node="props.node"></card>
@@ -29,6 +30,7 @@
           childId="okrDetailId"
           :colAlign="false"
           @handleTree="handleTree"
+          :middlePoint="cardHight"
         >
           <div slot="treecard" slot-scope="props">
             <card :node="props.node"></card>
@@ -106,6 +108,7 @@ export default {
       orgFullId: '',
       orgFullIdList: [],
       showCascader: false,
+      cardHight: 59, // 块高度的一半
     };
   },
   computed: {
