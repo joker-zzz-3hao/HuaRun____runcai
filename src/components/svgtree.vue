@@ -264,7 +264,7 @@ export default {
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
         // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        svg.setAttribute('height', this.root.height);
+        svg.setAttribute('height', this.root.height + 100);
         svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
