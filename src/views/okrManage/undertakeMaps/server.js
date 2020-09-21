@@ -1,4 +1,5 @@
 import ServerBase from '@/ajax/serverBase';
+import qs from 'qs';
 
 export default class Server extends ServerBase {
   getokrdata(param) {
@@ -50,5 +51,10 @@ export default class Server extends ServerBase {
 
   queryOAndKrList(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/queryOAndKrList', param);
+  }
+
+  // 传入orgId与userId判断首页身份
+  identity(param) {
+    return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);
   }
 }

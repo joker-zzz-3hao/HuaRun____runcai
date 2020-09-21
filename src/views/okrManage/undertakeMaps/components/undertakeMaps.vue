@@ -15,7 +15,7 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -35,7 +35,7 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -233,6 +233,39 @@ export default {
     },
     goback() {
       this.$router.back(-1);
+    },
+    takeOvierview(node = {}) {
+      this.server.identity({
+        orgId: node.orgId,
+        user: node.userId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: node.userId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+        }
+      });
     },
   },
   watch: {
