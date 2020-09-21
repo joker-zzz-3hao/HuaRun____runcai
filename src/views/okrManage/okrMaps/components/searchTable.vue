@@ -4,10 +4,10 @@
       <el-tab-pane label="OKR" name="2">
         <tl-searchOKR :searchData="searchData"></tl-searchOKR>
       </el-tab-pane>
-      <el-tab-pane label="部门管理" name="1">
+      <el-tab-pane label="部门" name="1">
         <tl-searchResult :searchData="searchData"></tl-searchResult>
       </el-tab-pane>
-      <el-tab-pane label="个人" name="3">
+      <el-tab-pane label="成员" name="3">
         <tl-searchResult :searchData="searchData"></tl-searchResult>
       </el-tab-pane>
     </el-tabs>

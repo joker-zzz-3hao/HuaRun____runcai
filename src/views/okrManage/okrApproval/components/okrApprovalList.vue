@@ -31,15 +31,19 @@
             <el-table-column prop="periodName" label="OKR周期" min-width="140"></el-table-column>
             <el-table-column prop="approvalStatus" label="审批状态" min-width="90">
               <template slot-scope="scope">
-                <i class v-if="scope.row.approvalStatus == '0'"></i>
-                <i class v-else-if="scope.row.approvalStatus == '1'"></i>
-                <i class v-else-if="scope.row.approvalStatus == '2'"></i>
+                <i
+                  :class="{'create': scope.row.approvalType=='0',
+                  'change': scope.row.approvalType=='1',
+                  'unchange': scope.row.approvalType=='1'}"
+                ></i>
                 <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="approvalType" label="审批类型" min-width="80">
               <template slot-scope="scope">
-                <span>{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
+                <span
+                  :class="{'create': scope.row.approvalType=='0','change': scope.row.approvalType=='1'}"
+                >{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="okrProgress" label="OKR进度" min-width="160">
@@ -49,7 +53,15 @@
               </template>
             </el-table-column>
             <el-table-column prop="createTime" label="提交时间" min-width="180"></el-table-column>
-            <el-table-column prop="approveTime" label="审批时间" min-width="180"></el-table-column>
+            <el-table-column prop="approveTime" label="审批时间" min-width="180">
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.approveTime"
+                  :class="{'select': scope.row.approvalDateType == '0','unselect': scope.row.approvalDateType == '1',}"
+                >{{scope.row.approveTime}}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="50">
               <template slot-scope="scope">
                 <el-button
@@ -73,12 +85,7 @@
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <el-form
-            :inline="true"
-            @submit.native.prevent
-            @keyup.enter.native="searchList"
-            class="tl-form"
-          >
+          <el-form :inline="true" @submit.native.prevent class="tl-form">
             <el-form-item>
               <p>周期</p>
               <el-select
@@ -103,6 +110,7 @@
                 :popper-append-to-body="false"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
+                @change="searchList"
               >
                 <el-option
                   v-for="(item) in CONST.APPROVAL_STATUS_LIST"
@@ -119,6 +127,7 @@
                 :popper-append-to-body="false"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
+                @change="searchList"
               >
                 <el-option
                   v-for="(item) in CONST.APPROVAL_TYPE_LIST"
@@ -134,8 +143,9 @@
                 v-model.trim="formData.keyword"
                 placeholder="请输入成员姓名"
                 class="tl-input-search"
+                @keyup.enter.native="searchList"
               >
-                <i class="el-icon-search" slot="prefix" @click.native.prevent="searchList"></i>
+                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
               </el-input>
             </el-form-item>
           </el-form>
