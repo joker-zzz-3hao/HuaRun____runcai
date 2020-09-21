@@ -10,7 +10,7 @@
         >
           <!-- OKR -->
           <template slot="title">
-            <dl>
+            <dl :class="{'is-open':okrDetailId==okrItem.okrDetailId}">
               <dt>
                 <span v-if="okrItem.okrDetailType == 0">目标</span>
                 <span v-else>KR</span>
@@ -25,10 +25,12 @@
           </template>
           <!-- 操作按钮 -->
           <div>
-            <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
-            <el-button @click="openUpdate(okrItem)">更新进展</el-button>
             <span v-if="checkStatus === 0" @click="okrCheck(okrItem.okrDetailId,1)">历史okr对齐</span>
             <span v-else @click="okrCheck(okrItem.okrDetailId,0)">返回</span>
+            <!-- 右对齐 -->
+            <span v-if="personList.length > 0">以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
+            <span v-else>暂无可对齐的支撑项</span>
+            <el-button v-if="personList.length > 0" @click="openUpdate(okrItem)">更新进展</el-button>
           </div>
           <!-- 对齐的内容 -->
           <div>
