@@ -28,9 +28,9 @@
           <span>(单选)</span>
         </dt>
         <dd class="tag-kind">
-          <el-radio-group v-model="selectRadioDepart">
+          <el-radio-group v-model="modelDepart">
             <el-radio
-              @change="selectChangeOkr(index,item)"
+              @click.native="selectDepartokr($event,index,item)"
               class="tl-radio"
               :label="item.okrDetailId+item.okrDetailVersion"
               v-for="(item,index) in departokrList"
@@ -137,8 +137,9 @@ export default {
     // 选择关联的okr
     selectDepartokr(e, index, row) {
       // 原生click会执行两次，第一次在label等，第二次在input
+      console.log('选择关联的okr', this.selectDepartIndex, index);
       if (e.target.tagName != 'INPUT') return;
-      if (this.selectDepartIndex === index) {
+      if (this.selectDepartIndex == index) {
         this.selectDepartIndex = '';
         this.modelDepart = '';
         this.selectDepartRow = '';
@@ -146,9 +147,6 @@ export default {
         this.selectDepartIndex = index;
         this.selectDepartRow = row;
       }
-    },
-    selectChangeOkr(index, row) {
-      this.selectDepartRow = row;
     },
     // 选择关联的价值观
     selectphilosophy(e, index, row) {
@@ -168,8 +166,11 @@ export default {
     selectRadioDepart: {
       handler(newVal) {
         this.modelDepart = newVal;
-        if (!newVal) {
-          this.selectDepartRow = '';
+        if (newVal) {
+          this.selectDepartRow = this.departokrList.filter(
+            (item) => item.okrDetailId == newVal
+            || item.okrDetailId + item.okrDetailVersion == newVal,
+          )[0] || {};
         }
       },
       immediate: true,
@@ -177,10 +178,13 @@ export default {
     selectRadioPhil: {
       handler(newVal) {
         this.modelPhil = newVal;
-        if (!newVal) {
-          this.selectPhilRow = '';
+        if (newVal) {
+          this.selectPhilRow = this.departokrList.filter(
+            (item) => item.id == newVal,
+          )[0] || {};
         }
       },
+      immediate: true,
     },
   },
 };
