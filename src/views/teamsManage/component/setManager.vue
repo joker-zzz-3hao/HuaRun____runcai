@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-drawer
-      title="设置团队综合管理员"
+      title="编辑团队综合管理员"
       :visible.sync="showSetManager"
       :with-header="true"
       @close="closed"
@@ -88,6 +88,8 @@ export default {
     show(data) {
       const self = this;
       self.baseInfo = data;
+      self.chargeMember.userId = data.teamUserId;
+      self.chargeMember.userName = data.teamManager;
       self.showSetManager = true;
     },
     closed() {
@@ -105,7 +107,8 @@ export default {
       this.server.setTeamAdminRole({
         roleCode: 'TEAM_ADMIN',
         orgId: this.baseInfo.orgId,
-        userId: this.chargeMember.userId,
+        newUserId: this.chargeMember.userId,
+        userId: this.baseInfo.teamUserId || null,
       }).then((res) => {
         if (res.code == '200') {
           this.showSetManager = false;
