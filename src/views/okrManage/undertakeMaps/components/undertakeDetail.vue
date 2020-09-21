@@ -153,7 +153,13 @@ export default {
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
-                citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
+                if (citem.operateType == '5') {
+                  citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
+                } else if (
+                  citem.operateType == '6'
+                ) {
+                  citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
+                }
                 citem.remark = citem.reason || '暂无';
               });
             }
