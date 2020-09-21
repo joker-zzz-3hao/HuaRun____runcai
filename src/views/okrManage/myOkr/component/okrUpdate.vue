@@ -6,7 +6,9 @@
     :visible.sync="myokrDrawer"
     @closed="closed"
     :before-close="close"
+    custom-class="update-progress"
     class="tl-dialog"
+    width="600px"
   >
     <div class="okr-info">
       <div class="tl-custom-timeline">
@@ -14,19 +16,24 @@
           <dl class="timeline-list">
             <dt>
               <div class="list-info">
-                <div class="list-title">目标O</div>
+                <div class="list-title">
+                  <span>目标O</span>
+                  <em>{{formData.okrDetailObjectKr}}</em>
+                </div>
                 <div class="list-cont">
-                  <div class="sdf">{{formData.okrDetailObjectKr}}</div>
-                  <el-form-item>
-                    <tl-process :data="parseInt(formData.okrDetailProgress,10)" :showNumber="false"></tl-process>
+                  <div class="tl-progress-group">
+                    <tl-process
+                      :data="parseInt(formData.okrDetailProgress,10)"
+                      :showNumber="false"
+                      :width="64"
+                      :marginLeft="6"
+                    ></tl-process>
                     <el-slider
                       v-model="formData.okrDetailProgress"
                       :step="1"
                       @change="changeProgress(formData)"
-                      style="width:390px"
+                      tooltip-class="slider-tooltip"
                     ></el-slider>
-                  </el-form-item>
-                  <el-form-item>
                     <el-input-number
                       v-model="formData.okrDetailProgress"
                       controls-position="right"
@@ -37,25 +44,30 @@
                       class="tl-input-number"
                     ></el-input-number>
                     <span>%</span>
-                  </el-form-item>
+                  </div>
                 </div>
               </div>
             </dt>
             <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
               <div class="list-info">
-                <div class="list-title">关键结果</div>
-                <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
-                <div>
-                  <el-form-item label="当前进度">
-                    <tl-process :data="parseInt(kitem.okrDetailProgress,10)" :showNumber="false"></tl-process>
+                <div class="list-title">
+                  <span>关键结果</span>
+                  <em>{{kitem.okrDetailObjectKr}}</em>
+                </div>
+                <div class="list-cont">
+                  <div class="tl-progress-group">
+                    <tl-process
+                      :data="parseInt(kitem.okrDetailProgress,10)"
+                      :showNumber="false"
+                      :width="64"
+                      :marginLeft="6"
+                    ></tl-process>
                     <el-slider
                       v-model="kitem.okrDetailProgress"
                       :step="1"
                       @change="changeProgress(kitem)"
-                      style="width:280px"
+                      tooltip-class="slider-tooltip"
                     ></el-slider>
-                  </el-form-item>
-                  <el-form-item>
                     <el-input-number
                       v-model="kitem.okrDetailProgress"
                       controls-position="right"
@@ -66,11 +78,10 @@
                       class="tl-input-number"
                     ></el-input-number>
                     <span>%</span>
-                  </el-form-item>
-
-                  <el-form-item label="风险状态">
+                  </div>
+                  <div class="okr-risk">
                     <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
-                  </el-form-item>
+                  </div>
                 </div>
               </div>
             </dd>
