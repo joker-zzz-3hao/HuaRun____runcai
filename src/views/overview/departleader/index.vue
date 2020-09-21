@@ -74,7 +74,7 @@ export default {
       testModel: (state) => state.testModel,
     }),
   },
-  mounted() {
+  created() {
     // eslint-disable-next-line no-unused-expressions
     this.$route.query.id ? this.showOver = true : this.getidentity();
   },
@@ -107,7 +107,7 @@ export default {
         orgId: this.setOrgId,
       }).then((res) => {
         if (res.data.identityType == 'org') {
-          this.$router.replace({ name: 'departleader' });
+          // this.$router.replace({ name: 'departleader' });
           this.showOver = true;
           return false;
         }
