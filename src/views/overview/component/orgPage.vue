@@ -162,6 +162,10 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
+  created() {
+    this.getOkrCycleList();
+    console.log(this.periodId);
+  },
   mounted() {
     this.$nextTick(() => {
       this.searchOkr();
