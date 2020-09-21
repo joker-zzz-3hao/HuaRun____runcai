@@ -375,12 +375,12 @@
     <div style="marginTop:50px">
       <span>
         请选择本周心情
-        <el-button @click="setEmotion(100)">开心</el-button>
-        <span :class="{'text-color-red': weeklyEmotion==100}">开心</span>
-        <el-button @click="setEmotion(50)">平常</el-button>
-        <span :class="{'text-color-red': weeklyEmotion==50}">平常</span>
-        <el-button @click="setEmotion(0)">沮丧</el-button>
-        <span :class="{'text-color-red': weeklyEmotion==0}">沮丧</span>
+        <el-button @click="setEmotion(100)">有收获</el-button>
+        <span :class="{'text-color-red': weeklyEmotion==100}">有收获</span>
+        <el-button @click="setEmotion(50)">还行吧</el-button>
+        <span :class="{'text-color-red': weeklyEmotion==50}">还行吧</span>
+        <el-button @click="setEmotion(0)">让我静静</el-button>
+        <span :class="{'text-color-red': weeklyEmotion==0}">让我静静</span>
       </span>
     </div>
     <el-button style="marginTop:65px" :disabled="!canEdit" @click="commitWeekly">提交</el-button>

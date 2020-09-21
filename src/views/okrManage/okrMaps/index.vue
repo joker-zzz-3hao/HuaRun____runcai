@@ -4,7 +4,19 @@
       <div v-if="showDepartmentSelect" class="maps-view">
         <!-- OKR树 -->
         <div v-if="showOkrMap" class="maps-view-tree">
-          <tl-worth @click.native="showMission(3,'公司价值观宣导')"></tl-worth>
+          <!-- <dl class="maps-card values-advocacy">
+            <dt @click="showMission(3,'公司价值观宣导')">
+              <em>公司价值观宣导</em>
+              <span class="el-icon-arrow-right"></span>
+            </dt>
+            <dd>
+              <em>成就客户</em>
+              <em>创新成长</em>
+              <em>成人达己</em>
+              <em>追求极致</em>
+              <em>勇于创新</em>
+            </dd>
+          </dl>-->
           <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
             <template slot="treecard" slot-scope="node">
               <card
@@ -37,22 +49,20 @@
           <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>周期</dt>
             <dd>
-              <div>
-                <el-select
-                  v-model="periodId"
-                  placeholder="请选择目标周期"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in periodList"
-                    :key="item.periodId"
-                    :label="item.periodName"
-                    :value="item.periodId"
-                  ></el-option>
-                </el-select>
-              </div>
+              <el-select
+                v-model="periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
             </dd>
           </dl>
           <dl class="dl-item" v-if="showDepartmentSelect">
@@ -103,6 +113,35 @@
             <span class="lines"></span>
           </el-button>
         </div>
+        <div class="operating-box">
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(3,'公司价值观宣导')"
+          >
+            <em>公司价值观宣导</em>
+            <span class="lines"></span>
+          </el-button>
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(1,'华润使命·愿景')"
+          >
+            <em>公司使命愿景</em>
+            <span class="lines"></span>
+          </el-button>
+          <el-button
+            plain
+            icon="el-icon-arrow-right"
+            class="tl-btn amt-border-slip"
+            @click="showMission(2,'华润发展战略')"
+          >
+            <em>公司战略</em>
+            <span class="lines"></span>
+          </el-button>
+        </div>
       </div>
     </div>
     <tl-okr-detail
@@ -124,7 +163,6 @@ import okrDetail from '@/components/okrDetail';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
-import worth from './components/worth';
 import searchTable from './components/searchTable';
 import CONST from './const';
 import Server from './server';
@@ -163,7 +201,6 @@ export default {
     svgtree,
     card,
     'tl-mission': mission,
-    'tl-worth': worth,
     'tl-okr-table': okrTable,
     'tl-search-table': searchTable,
     'tl-okr-detail': okrDetail,

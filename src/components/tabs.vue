@@ -39,7 +39,6 @@ export default {
     const borderWidth = document.querySelector('.custom-drawer .border-slip');
     borderWidth.style.left = `${selfLeft}px`;
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
-    console.log(liWidth);
   },
   created() {
 
@@ -50,8 +49,6 @@ export default {
   methods: {
     borderSlip(item, index) {
       const borderWidth = document.querySelector('.custom-drawer .border-slip');
-      console.log(document.querySelectorAll('.custom-drawer .tab-list li')[0]);
-      console.log(index);
       const selfLeft = document.querySelectorAll('.custom-drawer .tab-list li')[index].offsetLeft;
       const liWidth = document.querySelectorAll('.custom-drawer .tab-list li');
       borderWidth.style.left = `${selfLeft}px`;

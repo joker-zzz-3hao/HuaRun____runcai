@@ -97,12 +97,13 @@ export default {
             color: '#F4F6F8',
           },
           itemStyle: {
-            normal: { color: '#3F7DFF' },
+            normal: { barBorderRadius: 5, color: '#3F7DFF' },
           },
         }],
       };
 
       myChart.setOption(option);
+      myChart.resize();
     },
   },
   watch: {

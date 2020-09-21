@@ -1,36 +1,35 @@
 <template>
-  <div class="text">
-    <div class="node_title">
-      <span
-        :class="node.okrDetailType == 'o' ? 'kind-parent':'kind-child'"
-      >{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
-      <em>{{node.okrDetailObjectKr}}</em>
-      <span>
+  <div class="maps-card">
+    <dl class="okr-info">
+      <dt class="tag-kind">
+        <span
+          :class="node.okrDetailType == 0 ? 'kind-parent':'kind-child'"
+        >{{CONST.OKR_TYPE_MAP[node.okrDetailType]}}</span>
+        <em>{{node.okrDetailObjectKr}}</em>
         <el-button
-          v-if="!node.okrParentId && node.userId ===userInfo.userId"
-          @click="goDetail(node)"
+          type="text"
+          plain
+          class="tl-btn btn-lineheight"
+          v-if="node.children && node.children.length && node.userId ===userInfo.userId"
+          @click.stop="goDetail(node)"
         >对齐</el-button>
-      </span>
+      </dt>
+    </dl>
+    <tl-process :data="node.okrDetailProgress" :width="36" :marginLeft="6"></tl-process>
+    <div class="department-info">
+      <span>负责人</span>
+      <em>{{node.userName}}</em>
+      <el-button
+        type="text"
+        plain
+        class="tl-btn btn-lineheight"
+      >{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</el-button>
     </div>
-    <div class="node_des">
-      <div></div>
-      <div>
-        <span>进度</span>
-        <tl-process :data="node.okrDetailProgress"></tl-process>
+    <div class="has-child" v-if="node.children">
+      <div class="is-extend" v-if="node.open">
+        <span></span>
       </div>
-      <div>
-        <span>负责人</span>
-        {{node.userName}}
-      </div>
-      <!-- okr类型 -->
-      <div>{{CONST.OKR_KIND_MAP[node.okrBelongType]}}</div>
-      <!-- 圆圈 -->
-      <div v-if="node.children">
-        <!-- 展开时显示减号 -->
-        <div v-if="node.open">-</div>
-        <!-- 收起时显示数量 -->
-        <div v-else>{{node.children.length}}</div>
-      </div>
+      <div v-else>{{node.children.length}}</div>
     </div>
   </div>
 </template>
@@ -56,12 +55,9 @@ export default {
   data() {
     return {
       CONST,
-      percentage: 20,
-      customColor: '#409eff',
     };
   },
   mounted() {
-    console.log(`node:${this.node.userName}`);
   },
   computed: {
     ...mapState('common', {
@@ -78,44 +74,3 @@ export default {
   watch: {},
 };
 </script>
-<style>
-.vnode .text {
-  padding: 0 10px;
-}
-.vnode .text {
-  position: relative;
-  height: 100%;
-  max-width: 230px;
-  min-width: 216px;
-}
-
-.vnode .text .showTips {
-  position: absolute;
-  left: 225px;
-  top: 0px;
-  opacity: 0;
-}
-.vnode .text .showTips a {
-  display: inline-block;
-}
-.vnode .text .showTips .tips_icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
-  text-decoration: none;
-  padding: 3px;
-  background: #ffffff;
-  box-shadow: 1px 2px 10px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.5s ease 0s;
-  color: #777777;
-}
-.vnode .text .showTips .tips_icon:hover {
-  color: #58c2ef;
-}
-.vnode .text:hover .showTips.havechild {
-  color: #58c2ef;
-  opacity: 1;
-}
-</style>

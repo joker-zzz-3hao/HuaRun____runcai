@@ -40,7 +40,11 @@
               <div>
                 <i class="el-icon-medal"></i>
                 <span>权重</span>
-                <el-form-item v-if="canWrite && item.showWeightEdit">
+                <el-form-item
+                  v-if="canWrite && item.showWeightEdit"
+                  :prop="'tableList.' + index + '.okrWeight'"
+                  :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
+                >
                   <el-input-number
                     v-model="item.okrWeight"
                     controls-position="right"
@@ -134,7 +138,13 @@
               <div v-else-if="item.parentObjectKr">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
+                <el-popover
+                  v-if="item.parentUpdate"
+                  placement="top"
+                  width="200"
+                  trigger="hover"
+                  :append-to-body="false"
+                >
                   <span>您承接的OKR有变更，请在变更中处理。</span>
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
@@ -179,7 +189,11 @@
             <div>
               <i class="el-icon-medal"></i>
               <span>权重</span>
-              <el-form-item v-if="canWrite && kritem.showWeightEdit">
+              <el-form-item
+                v-if="canWrite && kritem.showWeightEdit"
+                :prop="'tableList.' + index + '.krList.' + krIndex + '.okrWeight'"
+                :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
+              >
                 <el-input-number
                   v-model="kritem.okrWeight"
                   controls-position="right"
@@ -301,7 +315,11 @@
               </el-tooltip>
             </dt>
             <dd class="has-third-child">
-              <el-form-item label="权重">
+              <el-form-item
+                label="权重"
+                :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrWeight'"
+                :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
+              >
                 <el-input-number
                   v-model="newItem.okrWeight"
                   controls-position="right"
@@ -340,6 +358,7 @@
                   v-model="newItem.checkQuota"
                   maxlength="50"
                   class="tl-input"
+                  @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>
               <el-form-item
@@ -352,6 +371,7 @@
                   v-model="newItem.judgeMethod"
                   maxlength="50"
                   class="tl-input"
+                  @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>
             </dd>

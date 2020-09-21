@@ -4,11 +4,12 @@
       <div v-if="item.okrDetailType == '0'">
         <!-- O -->
         <div>
+          <div>变更后</div>
           <tl-oComponent :oData="item"></tl-oComponent>
         </div>
         <!-- O历史版本 -->
         <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
-          <div>历史版本</div>
+          <div>变更前</div>
           <tl-oComponent :oData="item.historyOkr" style="margin-top: 10px;"></tl-oComponent>
         </div>
       </div>
@@ -16,11 +17,12 @@
       <!-- KR -->
       <div v-if="item.okrDetailType == '1'">
         <div>
+          <div>变更后</div>
           <tl-krComponent :krData="item"></tl-krComponent>
         </div>
         <!-- KR历史版本 -->
         <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
-          <div>历史版本</div>
+          <div>变更前</div>
           <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
         </div>
       </div>

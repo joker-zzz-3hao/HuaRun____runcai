@@ -98,12 +98,14 @@ export default {
             color: '#F4F6F8',
           },
           itemStyle: {
-            normal: { color: '#FFBC20' },
+            normal: { barBorderRadius: 5, color: '#FFBC20' },
           },
         }],
       };
 
       myChart.setOption(option);
+      myChart.resize();
+      window.addEventListener('resize', myChart.resize);
     },
   },
   watch: {

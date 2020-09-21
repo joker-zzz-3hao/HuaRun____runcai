@@ -5,12 +5,18 @@
       <li></li>
       <li>权重</li>
       <li>
-        <em v-if="$route.name!=='grassStaff'">承接地图</em>
+        <em v-if="!overview" v-show="$route.name!=='grassStaff'">承接地图</em>
       </li>
-      <li>风险状态</li>
-      <li>关联父目标</li>
+      <li>
+        <em v-if="!overview">风险状态</em>
+      </li>
+      <li>
+        <em v-if="!overview">关联父目标</em>
+      </li>
       <li>进度</li>
-      <li v-if="!overview">更新进展</li>
+      <li>
+        <em v-if="!overview">更新进展</em>
+      </li>
       <li></li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
@@ -29,11 +35,11 @@
             <!-- kr权重 -->
             <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
             <!-- kr承接项 -->
-            <dd class="okr-undertake">
+            <dd class="okr-undertake" v-if="!overview">
               <slot name="body-bar" :okritem="kritem"></slot>
             </dd>
             <!-- kr风险状态 -->
-            <dd class="okr-risk">
+            <dd class="okr-risk" v-if="!overview">
               <div class="state-grid">
                 <div
                   :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
@@ -52,7 +58,7 @@
             <dd class="undertake-target"></dd>
             <!-- kr进度 -->
             <dd class="okr-progress" v-if="showUpdate">
-              <tl-process :data="kritem.okrDetailProgress"></tl-process>
+              <tl-process :data="parseInt(kritem.okrDetailProgress,10)"></tl-process>
             </dd>
             <!-- kr无更新进度 仅占位-->
             <dd class="okr-update"></dd>
@@ -80,26 +86,34 @@
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
       <!-- o label="承接地图" -->
-      <el-table-column width="8%">
+      <el-table-column width="8%" v-if="!overview">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="12%"></el-table-column>
+      <el-table-column width="12%" v-if="!overview"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="12%">
+      <el-table-column prop="parentObjectKr" width="12%" v-if="!overview">
         <template slot-scope="scope">
-          <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-            <div slot="content">{{scope.row.parentObjectKr}}</div>
-            <em>{{scope.row.parentObjectKr}}</em>
-          </el-tooltip>
+          <el-popover
+            v-if="scope.row.parentUpdate"
+            placement="top"
+            width="200"
+            trigger="hover"
+            :append-to-body="false"
+          >
+            <span>您承接的OKR有变更，请在变更中处理。</span>
+            <i class="el-icon-warning" slot="reference"></i>
+          </el-popover>
+
+          <em>{{scope.row.parentObjectKr || '暂无'}}</em>
         </template>
       </el-table-column>
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
-          <tl-process :data="scope.row.okrDetailProgress"></tl-process>
+          <tl-process :data="parseInt(scope.row.okrDetailProgress,10)"></tl-process>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->

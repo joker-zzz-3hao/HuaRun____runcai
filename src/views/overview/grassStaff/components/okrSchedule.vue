@@ -99,7 +99,8 @@ export default {
         series: [{
           type: 'line',
           smooth: true,
-          symbolSize: 10,
+          symbol: 'circle',
+          symbolSize: 5,
 
           areaStyle: {
             normal: {
@@ -125,6 +126,18 @@ export default {
       };
 
       myChart.setOption(option);
+      if (that.testModel) {
+        return false;
+      }
+      const checkData = that.testModel ? userData.mainDataY : that.mainDataY;
+      myChart.on('mousemove', 'series.line', (params) => {
+        option.series[1].data[params.dataIndex] = checkData[params.dataIndex] + 20;
+        myChart.setOption(option);
+      });
+      myChart.on('mouseout', 'series.line', (params) => {
+        option.series[1].data[params.dataIndex] = 0;
+        myChart.setOption(option);
+      });
     },
   },
   watch: {

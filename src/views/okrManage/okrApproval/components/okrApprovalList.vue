@@ -1,124 +1,148 @@
 <template>
-  <div class="home">
-    <el-form :inline="true" @submit.native.prevent @keyup.enter.native="searchList">
-      <el-form-item>
-        <p>周期</p>
-        <el-select
-          v-model="formData.periodId"
-          placeholder="请选择目标周期"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in periodList"
-            :key="item.periodId"
-            :label="item.periodName"
-            :value="item.periodId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <p>审批状态</p>
-        <el-select v-model="formData.approvalStatus" :popper-append-to-body="false">
-          <el-option
-            v-for="(item) in CONST.APPROVAL_STATUS_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <p>审批类型</p>
-        <el-select v-model="formData.approvalType" :popper-append-to-body="false">
-          <el-option
-            v-for="(item) in CONST.APPROVAL_TYPE_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <p>成员</p>
-        <el-input v-model.trim="formData.keyword"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click.native.prevent="searchList">搜索</el-button>
-      </el-form-item>
-    </el-form>
-    <div>
-      <el-button @click="goUndertake">OKR对齐</el-button>
-    </div>
-    <crcloud-table
-      :total="formData.total"
-      :pageSize.sync="formData.pageSize"
-      :currentPage.sync="formData.currentPage"
-      @searchList="searchList"
-      layout="prev, pager, next, jumper"
-    >
-      <div slot="tableContainer">
-        <el-table :data="tableData" max-height="600" :empty-text="emptyText">
-          <el-table-column prop="userName" label="姓名" width="220">
-            <template slot-scope="scope">
-              <div style="display: flex;">
-                <div v-if="scope.row.headUrl">
-                  <el-avatar :src="scope.row.headUrl"></el-avatar>
-                </div>
-                <div v-else-if="scope.row.userName" class="user-info">
-                  <div class="user-name">
-                    <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
+  <div class="okr-approval-list">
+    <div class="cont-area">
+      <crcloud-table
+        :total="formData.total"
+        :pageSize.sync="formData.pageSize"
+        :currentPage.sync="formData.currentPage"
+        @searchList="searchList"
+        layout="prev, pager, next, jumper"
+      >
+        <div slot="tableContainer" class="table-container">
+          <el-table :data="tableData" :empty-text="emptyText" class="tl-table">
+            <el-table-column prop="userName" label="姓名" min-width="160">
+              <template slot-scope="scope">
+                <div style="display: flex;">
+                  <div v-if="scope.row.headUrl">
+                    <el-avatar :src="scope.row.headUrl"></el-avatar>
+                  </div>
+                  <div v-else-if="scope.row.userName" class="user-info">
+                    <div class="user-name">
+                      <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
+                    </div>
+                  </div>
+                  <div>
+                    <div>{{scope.row.userName}}</div>
+                    <div>{{scope.row.orgName}}</div>
                   </div>
                 </div>
-                <div>
-                  <div>{{scope.row.userName}}</div>
-                  <div>{{scope.row.orgName}}</div>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="periodName" label="OKR周期" width="300"></el-table-column>
-          <el-table-column prop="approvalStatus" label="审批状态" width="150">
-            <template slot-scope="scope">
-              <i class v-if="scope.row.approvalStatus == '0'"></i>
-              <i class v-else-if="scope.row.approvalStatus == '1'"></i>
-              <i class v-else-if="scope.row.approvalStatus == '2'"></i>
-              <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="approvalType" label="审批类型" width="150">
-            <template slot-scope="scope">
-              <span>{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="okrProgress" label="OKR进度" width="300">
-            <template slot-scope="scope">
-              <tl-process v-if="scope.row.approvalType == '1'" :data="scope.row.okrProgress"></tl-process>
-              <div v-else>--</div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="createTime" label="提交时间" width="300"></el-table-column>
-          <el-table-column prop="approveTime" label="审批时间" width="300"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="300">
-            <template slot-scope="scope">
-              <el-button
-                v-if="scope.row.approvalStatus == '0'"
-                @click.native.prevent="okrApproval(scope.row)"
-                type="text"
-                size="small"
-              >审批</el-button>
-              <el-button
-                v-else
-                @click.native.prevent="detail(scope.row)"
-                type="text"
-                size="small"
-              >查看</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+              </template>
+            </el-table-column>
+            <el-table-column prop="periodName" label="OKR周期" min-width="140"></el-table-column>
+            <el-table-column prop="approvalStatus" label="审批状态" min-width="90">
+              <template slot-scope="scope">
+                <i class v-if="scope.row.approvalStatus == '0'"></i>
+                <i class v-else-if="scope.row.approvalStatus == '1'"></i>
+                <i class v-else-if="scope.row.approvalStatus == '2'"></i>
+                <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="approvalType" label="审批类型" min-width="80">
+              <template slot-scope="scope">
+                <span>{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="okrProgress" label="OKR进度" min-width="160">
+              <template slot-scope="scope">
+                <tl-process v-if="scope.row.approvalType == '1'" :data="scope.row.okrProgress"></tl-process>
+                <div v-else>--</div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="提交时间" min-width="180"></el-table-column>
+            <el-table-column prop="approveTime" label="审批时间" min-width="180"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="50">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  v-if="scope.row.approvalStatus == '0'"
+                  @click.native.prevent="okrApproval(scope.row)"
+                  class="tl-btn"
+                >审批</el-button>
+                <el-button
+                  v-else
+                  type="text"
+                  @click.native.prevent="detail(scope.row)"
+                  class="tl-btn"
+                >查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </crcloud-table>
+    </div>
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div class="operating-box">
+          <el-form
+            :inline="true"
+            @submit.native.prevent
+            @keyup.enter.native="searchList"
+            class="tl-form"
+          >
+            <el-form-item>
+              <p>周期</p>
+              <el-select
+                v-model="formData.periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <p>审批状态</p>
+              <el-select
+                v-model="formData.approvalStatus"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item) in CONST.APPROVAL_STATUS_LIST"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <p>审批类型</p>
+              <el-select
+                v-model="formData.approvalType"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item) in CONST.APPROVAL_TYPE_LIST"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                maxlength="64"
+                v-model.trim="formData.keyword"
+                placeholder="请输入成员姓名"
+                class="tl-input-search"
+              >
+                <i class="el-icon-search" slot="prefix" @click.native.prevent="searchList"></i>
+              </el-input>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" @click="goUndertake" class="tl-btn amt-bg-slip">OKR对齐</el-button>
+        </div>
       </div>
-    </crcloud-table>
+    </div>
   </div>
 </template>
 

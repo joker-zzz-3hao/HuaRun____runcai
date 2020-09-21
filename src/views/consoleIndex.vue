@@ -1,5 +1,6 @@
 <template>
   <el-scrollbar class="console-layout">
+    <tl-assistant></tl-assistant>
     <tl-header></tl-header>
     <tl-main-area :menuList="crMenuList"></tl-main-area>
   </el-scrollbar>
@@ -9,12 +10,14 @@
 import menuList from '@/mixin/menuList';
 import tlHeader from '@/components/layout/header';
 import tlMainArea from '@/components/layout/mainArea';
+import tlAssistant from '@/components/layout/assistant';
 
 export default {
   name: 'consoleIndex',
   components: {
     tlHeader,
     tlMainArea,
+    tlAssistant,
   },
   mixins: [menuList],
   data() {

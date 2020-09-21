@@ -127,10 +127,12 @@ export default {
           this.formData.orgFullId = orgFull.join(':');
           this.formData.orgId = depart.orgId;
           this.cheOrgId = depart.orgId;
-        } else {
+        } else if (this.departOptionType == 'create') {
           this.formData.orgFullId = depart.orgFullId;
           this.formData.orgId = depart.orgId;
         }
+      } else {
+        this.formData.orgFullId = this.treeData[0].orgFullId;
       }
       this.$nextTick(() => {
         this.visible = true;

@@ -22,23 +22,6 @@
         </dd>
         <dd class="tag-kind" v-if="departokrList.length < 1">暂无可承接的父目标</dd>
       </dl>
-      <dl v-if="showPhil" class="dl-list">
-        <dt class="list-title">
-          <em>公司管理价值观</em>
-          <span>(单选)</span>
-        </dt>
-        <dd>
-          <el-radio-group v-model="modelPhil">
-            <el-radio
-              @click.native="selectphilosophy($event,index,item)"
-              class="tl-radio"
-              :label="item.id"
-              v-for="(item,index) in philosophyList"
-              :key="item.id"
-            >{{item.cultureName}}</el-radio>
-          </el-radio-group>
-        </dd>
-      </dl>
       <dl v-else class="dl-list">
         <dt class="list-title">
           <em>{{departmentName}}{{periodName}}</em>
@@ -53,14 +36,38 @@
               v-for="(item,index) in departokrList"
               :key="item.okrDetailId+index"
             >
-              <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
-              <em v-if="item.currentOption">「历史版本{{item.okrDetailVersion}}」(当前选择)</em>
-              <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
-              <div class="undertake-reason">
-                <p>{{item.okrDetailObjectKr}}</p>
-                <p v-if="item.modifyReason">{{item.modifyReason}}</p>
+              <div
+                :class="{'undertake-change':item.currentOption||currentOption.includes(item.okrDetailId)}"
+              >
+                <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
+                <em v-if="item.currentOption">
+                  <em>「历史版本{{item.okrDetailVersion}}」</em>
+                  <em>(当前选择)</em>
+                </em>
+                <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
+                <div>
+                  <p>{{item.okrDetailObjectKr}}</p>
+                  <p v-if="item.modifyReason">{{item.modifyReason}}</p>
+                </div>
               </div>
             </el-radio>
+          </el-radio-group>
+        </dd>
+      </dl>
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>公司管理价值观</em>
+          <span>(单选)</span>
+        </dt>
+        <dd>
+          <el-radio-group v-model="modelPhil">
+            <el-radio
+              @click.native="selectphilosophy($event,index,item)"
+              class="tl-radio"
+              :label="item.id"
+              v-for="(item,index) in philosophyList"
+              :key="item.id"
+            >{{item.cultureName}}</el-radio>
           </el-radio-group>
         </dd>
       </dl>
@@ -159,16 +166,20 @@ export default {
   },
   watch: {
     selectRadioDepart: {
-      handler() {
-        this.modelDepart = this.selectRadioDepart;
-        this.selectDepartRow = '';
-        this.selectPhilRow = '';
+      handler(newVal) {
+        this.modelDepart = newVal;
+        if (!newVal) {
+          this.selectDepartRow = '';
+        }
       },
       immediate: true,
     },
     selectRadioPhil: {
-      handler() {
-        this.modelPhil = this.selectRadioPhil;
+      handler(newVal) {
+        this.modelPhil = newVal;
+        if (!newVal) {
+          this.selectPhilRow = '';
+        }
       },
     },
   },

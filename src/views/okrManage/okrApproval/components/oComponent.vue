@@ -1,30 +1,35 @@
 <template>
   <!-- O的内容 -->
   <div>
-    <div class="display-flex">
-      <div>目标</div>
-      <div style="margin-left: 10px;">{{oData.okrDetailObjectKr}}</div>
-    </div>
-    <div class="display-flex" style="margin-top: 20px;justify-content: space-between;">
-      <div>
-        <span>权重</span>
-        <span style="margin-left: 10px;">{{oData.okrWeight}}%</span>
-      </div>
-      <div class="display-flex">
-        <div>进度</div>
-        <div style="margin-left: 10px;">
-          <tl-process :data="oData.okrDetailProgress"></tl-process>
+    <dl>
+      <dt>
+        <span class="kind-parent">目标</span>
+        <em>{{oData.okrDetailObjectKr}}</em>
+      </dt>
+      <dd>
+        <div>
+          <i class="el-icon-medal"></i>
+          <span>权重</span>
+          <em>{{oData.okrWeight}}%</em>
         </div>
-      </div>
-      <div v-if="oData.undertakeOkrVo">
-        <span v-if="oData.undertakeOkrVo.undertakeOkrContent">关联父目标</span>
-        <span style="margin-left: 10px;">{{oData.undertakeOkrVo.undertakeOkrContent}}</span>
-      </div>
-      <div v-if="oData.undertakeOkrDto">
-        <span v-if="oData.undertakeOkrDto.undertakeOkrContent">关联父目标</span>
-        <span style="margin-left: 10px;">{{oData.undertakeOkrDto.undertakeOkrContent}}</span>
-      </div>
-    </div>
+        <div>
+          <i class="el-icon-odometer"></i>
+          <span>进度</span>
+          <tl-process :data="parseInt(oData.okrDetailProgress,10)"></tl-process>
+        </div>
+        <div>
+          <i class="el-icon-attract"></i>
+          <span>关联父目标</span>
+          <em
+            v-if="oData.undertakeOkrDto && oData.undertakeOkrDto.undertakeOkrContent"
+          >{{oData.undertakeOkrDto.undertakeOkrContent}}</em>
+          <em
+            v-else-if="oData.undertakeOkrVo && oData.undertakeOkrVo.undertakeOkrContent"
+          >{{oData.undertakeOkrVo.undertakeOkrContent}}</em>
+          <em v-else>暂无</em>
+        </div>
+      </dd>
+    </dl>
   </div>
 </template>
 
@@ -54,8 +59,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.display-flex {
-  display: flex;
-}
-</style>

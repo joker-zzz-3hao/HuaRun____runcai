@@ -107,6 +107,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    middlePoint: {
+      type: Number,
+      default: 71,
+    },
   },
   mounted() {
     if (this.treeData && this.treeData.length > 0) {
@@ -260,7 +264,7 @@ export default {
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
         // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        svg.setAttribute('height', this.root.height);
+        svg.setAttribute('height', this.root.height + 100);
         svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
@@ -284,12 +288,13 @@ export default {
       if (!vnode) {
         vnode = this.root; // 第一次进来为根节点
       }
-      prevHeight = prevHeight || 0;
       // 使父节点top为所有子节点高度一半（居中对齐
       if (this.colAlign) {
+        prevHeight = prevHeight || 0;
         vnode.top = prevHeight + vnode.height / 2;
       } else {
         // 向上对齐
+        prevHeight = prevHeight || 100;
         vnode.top = prevHeight;
       }
       if (vnode.children && vnode.children.length > 0) {
@@ -301,8 +306,8 @@ export default {
       }
       // 画线
       if (vnode.parent) {
-        // 横向曲线偏移量。使曲线位于节点的中部
-        const pianyi = this.blockWidth / 4;
+        // 横向曲线偏移量。使曲线位于节点的中部，设为块高度的一半
+        const pianyi = this.middlePoint;
         // 控制曲线的宽度，曲线终点的x
         const pLeft = vnode.parent.left + this.blockWidth + 30;
         // 控制点的y和终点的y
@@ -367,6 +372,17 @@ export default {
           child.show = !child.show;
         });
       }
+      // 关闭其他 从第二层级开始展开是互斥的
+      const { deep } = vnode;
+      if (this.levels[deep].length > 0) {
+        // eslint-disable-next-line array-callback-return
+        this.levels[deep].map((child) => {
+          if (child != vnode) {
+            child.open = false;
+          }
+        });
+      }
+
       // 计算每个节点位置和画出svg
       if (this.direction == 'col') {
         this.calcHeight(this.root);

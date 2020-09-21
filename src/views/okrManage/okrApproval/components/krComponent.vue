@@ -1,36 +1,48 @@
 <template>
   <div>
-    <!-- KR -->
-    <div class="display-flex">
-      <div>KR</div>
-      <div style="margin-left: 10px;">{{krData.okrDetailObjectKr}}</div>
-    </div>
-    <div class="display-flex" style="margin-top: 20px;justify-content:space-between;">
-      <div>
-        <span>权重</span>
-        <span style="margin-left: 10px;">{{krData.okrWeight}}%</span>
-      </div>
-      <div class="display-flex">
-        <div>进度</div>
-        <div style="margin-left: 10px;">
-          <!-- <el-progress :percentage="krData.okrDetailProgress"></el-progress> -->
-          <tl-process :data="krData.okrDetailProgress"></tl-process>
+    <dl>
+      <dt>
+        <span class="kind-child">KR</span>
+        <em>{{krData.okrDetailObjectKr}}</em>
+      </dt>
+      <dd>
+        <div>
+          <i class="el-icon-medal"></i>
+          <span>权重</span>
+          <em>{{krData.okrWeight}}%</em>
         </div>
-      </div>
-      <div class="display-flex">
-        <div>风险状态</div>
-        <div v-for="item in new Array(3)" :key="item"></div>
-        <span>{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</span>
-      </div>
-      <div>
-        <span>考核指标</span>
-        <em>{{krData.checkQuota}}</em>
-      </div>
-      <div>
-        <span>衡量方法</span>
-        <em>{{krData.judgeMethod}}</em>
-      </div>
-    </div>
+        <div>
+          <i class="el-icon-odometer"></i>
+          <span>进度</span>
+          <tl-process :data="parseInt(krData.okrDetailProgress,10)"></tl-process>
+        </div>
+        <div>
+          <i class="el-icon-bell"></i>
+          <span>风险状态</span>
+          <div class="state-grid">
+            <div
+              :class="{'is-no-risk': krData.okrDetailConfidence == 1,
+                    'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3}"
+            ></div>
+            <div
+              :class="{'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3}"
+            ></div>
+            <div :class="{'is-uncontrollable': krData.okrDetailConfidence == 3}"></div>
+          </div>
+          <div class="state-txt">{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</div>
+        </div>
+        <div>
+          <span>考核指标</span>
+          <em>{{krData.checkQuota}}</em>
+        </div>
+        <div>
+          <span>衡量方法</span>
+          <em>{{krData.judgeMethod}}</em>
+        </div>
+      </dd>
+    </dl>
   </div>
 </template>
 
@@ -62,22 +74,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.status {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #999;
-}
-.display-flex {
-  display: flex;
-}
-.bg-green {
-  background-color: chartreuse;
-}
-.bg-yellow {
-  background-color: gold;
-}
-.bg-red {
-  background-color: red;
-}
-</style>

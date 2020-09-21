@@ -1,73 +1,76 @@
 <template>
   <div v-show="showLoad">
-    <div class="card-panel-head">
-      <div class="okr-title">{{okrCycle.periodName}}</div>
-      <dl class="okr-state">
-        <dt>
-          <i class="el-icon-set-up"></i>
-          <em>状态</em>
-        </dt>
-        <dd>
-          <i class="el-icon-sunny"></i>
-          <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
-        </dd>
-      </dl>
-      <dl class="okr-responsible">
-        <dt>
-          <i class="el-icon-user"></i>
-          <em>负责人</em>
-        </dt>
-        <dd>{{okrMain.userName}}</dd>
-      </dl>
-      <dl class="okr-progress">
-        <dt>
-          <i class="el-icon-odometer"></i>
-          <em>OKR进度</em>
-        </dt>
-        <dd>
-          <el-progress
-            type="circle"
-            :percentage="parseInt(okrMain.okrProgress, 10) || 0"
-            :width="70"
-            :stroke-width="5"
-            color="#4ccd79"
-            class="tl-progress-circle"
-          ></el-progress>
-        </dd>
-      </dl>
-    </div>
-    <div v-if="tableList.length>0" class="card-panel-body">
-      <tl-okr-table
-        :overview="true"
-        :tableList="tableList"
-        :disabled="false"
-        :showOKRInfoLabel="true"
-        :status="searchForm.status"
-        :expands="expands"
-      >
-        <template slot="head-undertake" slot-scope="props">
-          <div
-            v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >
-            <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
-          </div>
-        </template>
-        <template slot="body-bar" slot-scope="props">
-          <div
-            v-if="props.okritem.continueCount>0"
-            @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
-          >
-            <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
-          </div>
-        </template>
-      </tl-okr-table>
+    <div v-if="tableList.length>0" class="tl-card-panel">
+      <em v-show="testModel">示例数据</em>
+      <div class="card-panel-head">
+        <div class="okr-title">{{okrCycle.periodName}}</div>
+        <dl class="okr-state">
+          <dt>
+            <i class="el-icon-set-up"></i>
+            <em>状态</em>
+          </dt>
+          <dd>
+            <i class="el-icon-sunny"></i>
+            <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+          </dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dt>
+            <i class="el-icon-user"></i>
+            <em>负责人</em>
+          </dt>
+          <dd>{{okrMain.userName}}</dd>
+        </dl>
+        <dl class="okr-progress">
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <em>OKR进度</em>
+          </dt>
+          <dd>
+            <el-progress
+              type="circle"
+              :percentage="parseInt(okrMain.okrProgress, 10) || 0"
+              :width="70"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
+            ></el-progress>
+          </dd>
+        </dl>
+      </div>
+      <div class="card-panel-body">
+        <tl-okr-table
+          :overview="true"
+          :tableList="tableList"
+          :disabled="false"
+          :showOKRInfoLabel="true"
+          :status="searchForm.status"
+          :expands="expands"
+        >
+          <template slot="head-undertake" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount>0"
+              @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >
+              <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+            </div>
+          </template>
+          <template slot="body-bar" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount>0"
+              @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+            >
+              <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+            </div>
+          </template>
+        </tl-okr-table>
+      </div>
     </div>
     <div v-else class="tl-card-panel no-data">
       <span v-if="$route.query.id" class="bg-no-data">暂无数据</span>
       <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
     </div>
-    <div class="tl-card-panel">
+    <div class="tl-card-panel" v-if="orgUser.length!==0||orgTable.length!==0">
       <div class="card-panel-head">
         <!-- <div class="pannel-title">
           <template v-if="orgUser&&this.$route.name!=='grassStaff'">
@@ -159,9 +162,6 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  created() {
-    this.getOkrCycleList();
-  },
   mounted() {
     this.$nextTick(() => {
       this.searchOkr();
@@ -203,25 +203,7 @@ export default {
         }
       });
     },
-    goToDep(id, name, userId, tenantId) {
-      const chename = encodeURI(name);
-      if (this.orgTable.length > 0) {
-        this.$router.push({
-          name: 'teamleader',
-          query: {
-            id, name: chename, userId, tenantId,
-          },
-        });
-      }
-      if (this.orgUser.length > 0) {
-        this.$router.push({
-          name: 'grassStaff',
-          query: {
-            id, name: chename, userId, tenantId,
-          },
-        });
-      }
-    },
+
     // 周期
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
@@ -234,6 +216,9 @@ export default {
     },
     // 认证身份跳转对应身份首页
     getidentity(user) {
+      if (this.testModel) {
+        return false;
+      }
       if (this.$route.query.userId == user.userId) {
         this.$message.error('此为当前团队负责人');
         return false;

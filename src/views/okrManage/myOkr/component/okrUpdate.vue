@@ -1,9 +1,10 @@
 <template>
   <div>
     <el-dialog
+      :append-to-body="true"
+      :close-on-click-modal="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
-      :modal-append-to-body="false"
       @closed="closed"
       :before-close="close"
       class="tl-dialog"
@@ -18,6 +19,10 @@
                   <div class="list-cont">{{formData.okrDetailObjectKr}}</div>
                   <div class="list-cont">
                     <el-form-item>
+                      <tl-process
+                        :data="parseInt(formData.okrDetailProgress,10)"
+                        :showNumber="false"
+                      ></tl-process>
                       <el-slider
                         v-model="formData.okrDetailProgress"
                         :step="1"
@@ -46,6 +51,7 @@
                   <div class="list-cont">{{kitem.okrDetailObjectKr}}</div>
                   <div>
                     <el-form-item label="当前进度">
+                      <tl-process :data="parseInt(kitem.okrDetailProgress,10)" :showNumber="false"></tl-process>
                       <el-slider
                         v-model="kitem.okrDetailProgress"
                         :step="1"
@@ -110,12 +116,14 @@
 
 <script>
 import confidenceSelect from '@/components/confidenceSelect';
+import process from '@/components/process';
 import { mapMutations } from 'vuex';
 
 export default {
   name: 'okrUpdate',
   components: {
     'tl-confidence': confidenceSelect,
+    'tl-process': process,
   },
   data() {
     return {
@@ -170,7 +178,6 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
-        console.log('periodId', this.periodId);
       }
     },
     summitUpdate() {

@@ -23,10 +23,20 @@ const TABLE_STATUS_MAP = {
   4: '已结束',
   5: '未开始',
 };
-
+const OKR_KIND_MAP = {
+  0: '目标',
+  1: '关键结果',
+};
+const CONFIDENCE_MAP = {
+  1: '无风险',
+  2: '风险可控',
+  3: '失控',
+};
 export default {
   STATUS_MAP,
   OKR_TYPE_MAP,
   SEARCH_TYPE_LIST,
   TABLE_STATUS_MAP,
+  OKR_KIND_MAP,
+  CONFIDENCE_MAP,
 };

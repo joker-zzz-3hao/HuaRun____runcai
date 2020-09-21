@@ -10,7 +10,10 @@
     </div>
     <div class="creatOkr">
       <div>
-        <em>OKR承接与变更统计</em>
+        <em>
+          OKR承接与变更统计
+          <em v-show="testModel">(示例数据)</em>
+        </em>
       </div>
       <div class="risk">
         <ul class="flex">

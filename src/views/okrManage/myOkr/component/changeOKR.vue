@@ -128,6 +128,9 @@
       custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">关联承接项</div>
+      </div>
       <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"
@@ -242,7 +245,6 @@ export default {
   mounted() {
     this.searchForm.okrId = this.writeInfo.okrId || '';
     this.searchForm.periodId = this.writeInfo.periodId;
-    console.log('this.writeInfo', this.writeInfo);
   },
   created() {
   },
@@ -293,7 +295,6 @@ export default {
               }
               // 将可承接列表转换成字符串
               this.departokrObject = JSON.stringify(this.departokrList);
-              console.log('可关联承接的okr');
             }
           });
           resolve('可关联承接的okr');
@@ -396,8 +397,6 @@ export default {
             // 是否为当前选中
             if (item.currentOption) {
               okritem.currentOption = item.okrDetailId + item.okrDetailVersion;
-              this.currentOption = item.okrDetailId;
-              console.log('选中', item);
             }
           });
           // 将承接项添加到列表里
@@ -410,6 +409,7 @@ export default {
       // 选择o的序号，打开关联承接弹框
       this.selectIndex = parseInt(data.num, 10);
       this.undertakeType = data.type;
+
       if (!this.tableList[this.selectIndex].undertakeOkrVo) {
         this.tableList[this.selectIndex].undertakeOkrVo = {
           undertakeOkrDetailId: '',
@@ -423,7 +423,8 @@ export default {
       } else {
         this.selectRadioDepart = this.tableList[this.selectIndex].currentOption;
       }
-      console.log('打开承接弹窗', this.selectRadioDepart);
+      this.currentOption = this.tableList[this.selectIndex].okrParentId || '';
+      console.log('打开承接弹窗', this.currentOption);
 
       // 打开前判断下有无数据
       if (!this.tableList[this.selectIndex].departokrList) {
@@ -481,7 +482,6 @@ export default {
       // 选中
       this.tableList[this.selectIndex].currentOption = this.selectDepartRow.okrDetailId
       + this.selectDepartRow.okrDetailVersion;
-      console.log('关联', this.selectDepartRow);
       // 关闭关联承接抽屉并刷新
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();

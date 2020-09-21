@@ -131,17 +131,22 @@
 
 /* ==========================================================OKR管理================================================================== */
 .my-okr,
-.okr-maps {
+.undertake-maps,
+.okr-approval-list {
   padding: 50px 0 0 0;
 }
 
 .is-shrink + .my-okr,
-.is-shrink + .okr-maps {
+.is-shrink + .okr-maps,
+.is-shrink + .undertake-maps,
+.is-shrink + .okr-approval {
   z-index: 21;
 }
 
 .my-okr .operating-area,
-.okr-maps .operating-area {
+.okr-maps .operating-area,
+.undertake-maps .operating-area,
+.okr-approval .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -152,7 +157,9 @@
 }
 
 .my-okr .operating-area-inside,
-.okr-maps .operating-area-inside {
+.okr-maps .operating-area-inside,
+.undertake-maps .operating-area-inside,
+.okr-approval .operating-area-inside {
   padding: 0 30px 0 206px;
   display: flex;
   justify-content: space-between;
@@ -168,12 +175,16 @@
 }
 
 .is-shrink + .my-okr .operating-area .operating-area-inside,
-.is-shrink + .okr-maps .operating-area .operating-area-inside {
+.is-shrink + .okr-maps .operating-area .operating-area-inside,
+.is-shrink + .undertake-maps .operating-area .operating-area-inside,
+.is-shrink + .okr-approval .operating-area .operating-area-inside {
   padding: 0 30px 0 46px;
 }
 
 .my-okr .operating-area-inside::before,
-.okr-maps .operating-area-inside::before {
+.okr-maps .operating-area-inside::before,
+.undertake-maps .operating-area-inside::before,
+.okr-approval .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -187,10 +198,23 @@
 }
 
 .my-okr .cont-area,
-.okr-maps .cont-area {
+.okr-maps .cont-area,
+.undertake-maps .cont-area,
+.okr-approval .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.my-okr .operating-area-inside .el-input .el-input__inner,
+.okr-maps .operating-area-inside .el-input .el-input__inner,
+.undertake-maps .operating-area-inside .el-input .el-input__inner,
+.okr-approval .operating-area-inside .el-input .el-input__inner {
+  background: #f4f6f8;
+}
+
+.my-okr .operating-area-inside .dl-item dt {
+  margin: 0 10px 0 0;
 }
 
 .my-okr .cont-panel {
@@ -483,6 +507,17 @@
   padding: 20px 0;
 }
 
+/* 更改by林心荃 */
+.history-version .tag-kind p span {
+  font-size: 12px;
+  color: #879099;
+}
+.history-version .tag-kind p em {
+  margin:0 0 0 12px;
+  font-size: 12px;
+  color: #4D5155;
+}
+
 .okr-detail .timeline-list .list-title {
   color: #acb6bf;
 }
@@ -623,9 +658,37 @@
 }
 
 /* okr-maps */
+.okr-maps {
+  padding: 100px 0 0 0;
+}
+
+.okr-maps .operating-area {
+  height: 100px;
+}
+
+.okr-maps .operating-area-inside {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  height: unset;
+}
+
+.okr-maps .operating-area-inside .operating-box {
+  flex: 0;
+  height: 50px;
+}
+
+.okr-maps .operating-area-inside .operating-box + .operating-box {
+  margin: 5px 0 0 0;
+}
+
 .okr-maps .operating-area .tl-input {
-  margin: 3px 0 0 0;
+  margin: 0;
   width: 200px;
+}
+
+.okr-maps .operating-area .tl-input .el-input__icon {
+  margin: 3px 0 0 0;
 }
 
 .okr-maps .operating-area .el-input__inner {
@@ -661,6 +724,16 @@
   background: #f4f6f8;
 }
 
+.my-okr .tl-select-dropdown.el-popper,
+.undertake-maps .tl-select-dropdown.el-popper,
+.okr-approval .tl-select-dropdown.el-popper {
+  margin-top: 12px;
+}
+
+.okr-maps .tl-select-dropdown.el-popper {
+  margin-top: 8px;
+}
+
 .okr-maps .toggle-view {
   margin: 0 0 0 20px;
 }
@@ -669,8 +742,104 @@
   flex-basis: 32px;
 }
 
+.maps-view-table .table-container {
+  min-height: calc(100vh - 243px)
+}
+
+.okr-maps .operating-area .el-button {
+  display: flex;
+  align-items: center;
+}
+
+.okr-maps .operating-area .el-button > span {
+  margin: 0 10px 0 0;
+  order: 0;
+}
+
+.okr-maps .operating-area .el-button > i {
+  order: 1;
+}
+
+/* undertake-maps */
+.undertake-maps .draw-area {
+  padding: 0;
+  margin: 70px auto 0 auto;
+}
+
+.undertake-maps .cont-area .is-plain {
+  padding: 0;
+  background: #685df1;
+  color: #fff;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 28px;
+  min-width: unset;
+}
+
+.undertake-maps .cont-area .department-info .is-plain {
+  width: 37px;
+  height: 21px;
+  background: #f1f5f7;
+  color: #879099;
+  cursor: default;
+}
+
+.undertake-maps .cont-area .tag-kind .el-button.is-plain:hover {
+  background: #685df1;
+  color: #fff;
+}
+
+.undertake-maps .okr-info .tag-kind {
+  margin-top: 0;
+}
+
+/* okr-approval */
+.okr-approval .operating-area-inside .el-form,
+.okr-approval .operating-area-inside .el-form .el-form-item__content {
+  display: flex;
+  align-items: center;
+}
+
+.okr-approval .operating-area-inside .el-form .el-form-item__content p {
+  margin: 0 10px 0 0;
+  color: #879099;
+}
+
+.okr-approval .operating-area-inside .el-form-item {
+  margin: 0 0 0 20px;
+}
+
+.okr-approval .operating-area-inside .el-form-item:nth-of-type(2) .el-input__inner,
+.okr-approval .operating-area-inside .el-form-item:nth-of-type(3) .el-input__inner {
+  width: 100px;
+}
+
+.okr-approval .operating-area-inside .el-form-item:nth-of-type(4) .tl-input-search {
+  width: 160px;
+  min-width: unset;
+}
+
+.okr-approval .table-pagination,
+.okr-approval .okr-approval-detail {
+  flex: 1;
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.okr-approval-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-approval-list .cont-area {
+  flex: 1;
+}
+
 /* 周报 */
-.my-weekly .cont-area {
+.my-weekly .cont-area,
+.okr-maps .maps-view-table {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;

@@ -7,17 +7,26 @@
       <tl-org-page :periodId="periodId"></tl-org-page>
     </div>
     <div class="creatOkr">
-      <div>OKR当前进度</div>
+      <div>
+        OKR当前进度
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
     </div>
     <div class="creatOkr">
-      <div>OKR进度更新榜</div>
+      <div>
+        OKR进度更新榜
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <tl-okr-update :mainData="mainData"></tl-okr-update>
     </div>
     <div class="creatOkr">
       <div>
         OKR风险状态统计
-        <span>部门成员的OKR风险状态总数，点击可以查看对应的OKR列表</span>
+        <span>
+          部门成员的OKR风险状态总数，点击可以查看对应的OKR列表
+          <em v-show="testModel">(示例数据)</em>
+        </span>
       </div>
       <div>
         <div style="display:inline-block">
@@ -44,6 +53,7 @@ import okrRiskTotal from './components/okrRiskTotal';
 import weeking from './components/weeking';
 import periodcom from '../component/period';
 import orgPage from '../component/orgPage';
+import { teamData } from '../testData';
 
 const server = new Server();
 export default {
@@ -60,6 +70,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       setOrgId: (state) => state.setOrgId,
+      testModel: (state) => state.testModel,
     }),
   },
   data() {
@@ -98,7 +109,7 @@ export default {
         periodId: this.periodId,
         orgId: this.orgId,
       }).then((res) => {
-        this.tableData = res.data;
+        this.tableData = this.testModel ? teamData.roundData.data : res.data;
       });
     },
     // eslint-disable-next-line no-shadow

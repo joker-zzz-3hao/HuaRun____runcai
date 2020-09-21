@@ -1,76 +1,67 @@
 <template>
-  <div class="home">
-    <div style="margin-left:20px; display: flex;" v-if="!showOne">
-      <dl>
-        <dd>
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <!-- <dl>
-        <dd>
-          <el-cascader
-            v-model="orgFullId"
-            :options="departmentData"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true, value:'orgFullId',label:'orgName',children:'children' }"
-            @change="selectIdChange"
-            :placeholder="orgName"
-          ></el-cascader>
-
-        </dd>
-      </dl>-->
+  <div class="undertake-maps-tree">
+    <div class="cont-area">
+      <div v-if="showOne && svgList.length>0">
+        <tl-svgtree
+          :treeData="svgList"
+          svgId="svg"
+          ref="svgTree"
+          :curveness="false"
+          direction="col"
+          fatherId="okrParentId"
+          childId="okrDetailId"
+          :colAlign="false"
+          :middlePoint="cardHight"
+        >
+          <div slot="treecard" slot-scope="props">
+            <card :node="props.node"></card>
+          </div>
+        </tl-svgtree>
+      </div>
+      <div v-else-if="svgList.length>0">
+        <tl-svgtree
+          v-for="(item,index) in svgList"
+          :key="index"
+          :treeData="item"
+          :svgId="'svg'+index"
+          ref="svgTree"
+          direction="col"
+          fatherId="okrParentId"
+          childId="okrDetailId"
+          :colAlign="false"
+          @handleTree="handleTree"
+          :middlePoint="cardHight"
+        >
+          <div slot="treecard" slot-scope="props">
+            <card :node="props.node"></card>
+          </div>
+        </tl-svgtree>
+      </div>
     </div>
-    <!-- 返回 -->
-    <div>
-      <el-button v-if="showOne" @click="goback">返回</el-button>
-    </div>
-    <!-- 要展示多个 -->
-    <div v-if="showOne && svgList.length>0">
-      <tl-svgtree
-        :treeData="svgList"
-        svgId="svg"
-        ref="svgTree"
-        :curveness="false"
-        direction="col"
-        fatherId="okrParentId"
-        childId="okrDetailId"
-        :colAlign="false"
-      >
-        <div slot="treecard" slot-scope="props">
-          <card :node="props.node"></card>
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div class="operating-box">
+          <dl v-if="!showOne">
+            <dd>
+              <el-select
+                v-model="searchForm.periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <!-- <el-button v-if="showOne" @click="goback">返回</el-button> -->
         </div>
-      </tl-svgtree>
-    </div>
-    <div v-else-if="svgList.length>0">
-      <tl-svgtree
-        v-for="(item,index) in svgList"
-        :key="index"
-        :treeData="item"
-        :svgId="'svg'+index"
-        ref="svgTree"
-        direction="col"
-        fatherId="okrParentId"
-        childId="okrDetailId"
-        :colAlign="false"
-        @handleTree="handleTree"
-      >
-        <div slot="treecard" slot-scope="props">
-          <card :node="props.node"></card>
-        </div>
-      </tl-svgtree>
+      </div>
     </div>
   </div>
 </template>
@@ -117,6 +108,7 @@ export default {
       orgFullId: '',
       orgFullIdList: [],
       showCascader: false,
+      cardHight: 59, // 块高度的一半
     };
   },
   computed: {
@@ -173,14 +165,14 @@ export default {
             this.svgList = [];
             if (this.showOne) {
             // 要做兼容处理
-              allTreeData.forEach((item, index) => {
-                if (index === 0) {
-                  item.okrParentId = null;
-                }
+              allTreeData.forEach((item) => {
+                // if (index === 0) {
+                //   item.okrParentId = null;
+                // }
                 this.svgList.push(item);
-                if (item.krContinueList && item.krContinueList.length > 0) {
-                  this.svgList = this.svgList.concat(item.krContinueList);
-                }
+                // if (item.krContinueList && item.krContinueList.length > 0) {
+                this.svgList = this.svgList.concat(item.krContinueList || []);
+                // }
               });
               this.svgList.forEach((item) => {
                 delete item.krContinueList;
@@ -188,14 +180,14 @@ export default {
             } else {
               let index = 0;
               allTreeData.forEach((item) => {
-                if (item.krContinueList && item.krContinueList.length > 0) {
-                  item.okrParentId = null;
-                  this.svgList[index] = [];
-                  this.svgList[index].push(item);
-                  this.svgList[index] = this.svgList[index].concat(item.krContinueList);
-                  delete item.krContinueList;
-                  index += 1;
-                }
+                // if (item.krContinueList && item.krContinueList.length > 0) {
+                item.okrParentId = null;
+                this.svgList[index] = [];
+                this.svgList[index].push(item);
+                this.svgList[index] = this.svgList[index].concat(item.krContinueList || []);
+                delete item.krContinueList;
+                index += 1;
+                // }
                 if (item.krList && item.krList.length > 0) {
                   item.krList.forEach((kritem) => {
                     if (kritem.krContinueList && kritem.krContinueList.length > 0) {

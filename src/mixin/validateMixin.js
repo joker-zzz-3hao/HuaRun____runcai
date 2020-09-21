@@ -59,7 +59,6 @@ export default {
     },
     // 目标o校验
     validateObjectName(rule, value, callback) {
-      console.log('validateObjectName', value);
       if (!value) {
         callback('请输入目标名称');
       } else if (value.length > 50) {
@@ -111,6 +110,15 @@ export default {
         k: keyArr[i],
         v: tempObj ? tempObj[keyArr[i]] : null,
       };
+    },
+    validatePercent(rule, value, callback) {
+      if (!value) {
+        callback('请输入1~100整数');
+      } else if (value === 0) {
+        callback('不能为0');
+      } else {
+        callback();
+      }
     },
   },
 };

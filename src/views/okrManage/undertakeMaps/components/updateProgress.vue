@@ -1,68 +1,79 @@
 <template>
   <el-dialog
+    :append-to-body="true"
+    :close-on-click-modal="false"
     :title="dialogTitle"
     :visible.sync="dialogDetailVisible"
     width="50%"
-    :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
+    class="tl-dialog"
   >
-    <el-form :model="okrForm" ref="dataForm">
-      <dl class="okuang">
-        <dt>{{okrForm.okrDetailType === 0 ? '目标名称' : '关键结果'}}</dt>
-        <dd class="objectdd">
-          <el-form-item>
-            <span>{{okrForm.okrDetailObjectKr}}</span>
-          </el-form-item>
-          <el-form-item label="权重">
-            <span>{{okrForm.okrWeight}}</span>
-          </el-form-item>
-          <el-form-item label="当前进度">
-            <el-slider
-              v-model="okrForm.okrDetailProgress"
-              show-input
-              :step="1"
-              @change="changeProgress(okrForm)"
-            ></el-slider>
-          </el-form-item>
-          <el-form-item label="风险状态" v-if="okrForm.okrDetailConfidence">
-            <el-popover placement="right" width="400" trigger="click" :append-to-body="false">
-              <el-radio-group v-model="okrForm.okrDetailConfidence">
-                <el-radio-button
-                  v-for="citem in CONST.CONFIDENCE"
-                  :key="citem.value"
-                  :label="citem.value"
-                >{{citem.label}}</el-radio-button>
-              </el-radio-group>
-              <el-button slot="reference">{{CONST.CONFIDENCE_MAP[okrForm.okrDetailConfidence||'1']}}</el-button>
-            </el-popover>
-          </el-form-item>
-        </dd>
-      </dl>
-      <dl>
-        <dd>
-          <el-form-item label="更新说明">
-            <el-input maxlength="200" v-model="okrForm.updateexplain"></el-input>
-          </el-form-item>
-        </dd>
-      </dl>
-    </el-form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="summitUpdate" :loading="loading">更新</el-button>
-    </span>
+    <div class="okr-info">
+      <div class="tl-custom-timeline">
+        <el-form :model="formData" ref="dataForm" class="tl-form">
+          <dl>
+            <dt>
+              <div class="list-info">
+                <div class="list-title">{{formData.okrDetailType === 0 ? '目标O' : '关键结果'}}</div>
+                <div class="list-cont">
+                  <el-form-item>
+                    <span>{{formData.okrDetailObjectKr}}</span>
+                  </el-form-item>
+                  <el-form-item label="当前进度">
+                    <tl-process :data="parseInt(formData.okrDetailProgress,10)" :showNumber="false"></tl-process>
+                    <el-slider
+                      v-model="formData.okrDetailProgress"
+                      show-input
+                      :step="1"
+                      @change="changeProgress(formData)"
+                    ></el-slider>
+                  </el-form-item>
+                  <el-form-item label="风险状态" v-if="formData.okrDetailConfidence">
+                    <tl-confidence v-model="formData.okrDetailConfidence"></tl-confidence>
+                  </el-form-item>
+                  <el-form-item
+                    label="更新说明"
+                    prop="updateexplain"
+                    :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+                  >
+                    <el-input maxlength="200" v-model="formData.updateexplain"></el-input>
+                  </el-form-item>
+                </div>
+              </div>
+            </dt>
+          </dl>
+        </el-form>
+      </div>
+    </div>
+    <div slot="footer" class="dialog-footer">
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="summitUpdate"
+        :loading="loading"
+      >更新</el-button>
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script>
+import confidenceSelect from '@/components/confidenceSelect';
+import process from '@/components/process';
 import { mapState } from 'vuex';
 import CONST from '../const';
 
 export default {
   name: 'updateProgress',
+  components: {
+    'tl-confidence': confidenceSelect,
+    'tl-process': process,
+  },
   data() {
     return {
       CONST,
-      dialogTitle: '更新OKR', // 弹框标题
+      dialogTitle: '更新进展', // 弹框标题
       dialogDetailVisible: false,
       updateexplain: '',
       formData: {},
@@ -89,33 +100,35 @@ export default {
   },
   methods: {
     summitUpdate() {
-      console.log('this.okrForm', this.okrForm);
-      this.summitForm = {
-        detailId: this.okrForm.detailId,
-        okrDetailConfidence: this.okrForm.okrDetailConfidence || null,
-        okrDetailId: this.okrForm.okrDetailId,
-        okrDetailProgress: this.okrForm.okrDetailProgress,
-        okrMainId: this.okrForm.okrMainId,
-        // TODO: 需要从vuex取
-        periodId: this.undertakePeriodId,
-        remark: this.okrForm.updateexplain,
-      };
-      console.log('detail', this.summitForm);
-      this.loading = true;
-      this.server.summitUpdate(this.summitForm).then((res) => {
-        this.loading = false;
-        if (res.code == 200) {
-          this.$message('更新成功');
-          this.close();
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          this.summitForm = {
+            detailId: this.formData.detailId,
+            okrDetailConfidence: this.formData.okrDetailConfidence || null,
+            okrDetailId: this.formData.okrDetailId,
+            okrDetailProgress: this.formData.okrDetailProgress,
+            okrMainId: this.formData.okrMainId,
+            // TODO: 需要从vuex取
+            periodId: this.undertakePeriodId,
+            remark: this.formData.updateexplain,
+          };
+          this.loading = true;
+          this.server.summitUpdate(this.summitForm).then((res) => {
+            this.loading = false;
+            if (res.code == 200) {
+              this.$message('更新成功');
+              this.close();
+            }
+          });
         }
       });
-
-      // 需刷新列表吗
     },
     // 控制弹窗
     showOkrDialog() {
       this.dialogDetailVisible = true;
-      // this.getokrDetail();
+      if (this.okrForm) {
+        this.formData = JSON.parse(JSON.stringify(this.okrForm));
+      }
     },
     close() {
       this.dialogDetailVisible = false;
@@ -129,6 +142,7 @@ export default {
     },
   },
   watch: {
+
   },
 };
 </script>

@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    center
+    class="tl-dialog"
   >
     <!-- 使命愿景 -->
     <div v-if="type=='1'">

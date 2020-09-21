@@ -1,8 +1,14 @@
 <template>
   <div class="okrSchedule">
-    <div>OKR当前进度</div>
+    <div>
+      OKR当前进度
+      <em v-show="testModel">(示例数据)</em>
+    </div>
     <div id="okrSchedule"></div>
-    <div>OKR进度更新次数</div>
+    <div>
+      OKR进度更新次数
+      <em v-show="testModel">(示例数据)</em>
+    </div>
     <div id="okrCountUpdate"></div>
   </div>
 </template>
@@ -131,7 +137,8 @@ export default {
           {
             type: 'line',
             smooth: true,
-            symbolSize: 10,
+            symbol: 'circle',
+            symbolSize: 5,
             areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(
@@ -150,6 +157,7 @@ export default {
             data: that.testModel ? mainData.mainDataY : that.mainDataY,
             itemStyle: {
               color: '#3F7DFF',
+
             },
 
           },
@@ -277,8 +285,13 @@ export default {
           backgroundStyle: {
             color: '#F4F6F8',
           },
+
           itemStyle: {
+            emphasis: {
+              barBorderRadius: 5,
+            },
             normal: {
+              barBorderRadius: 5,
               color: '#FFBC20',
               label: {
                 show: false,
