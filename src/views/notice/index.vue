@@ -6,8 +6,7 @@
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-radio-group v-model="messageType" @change="change">
-              <el-radio-button label="10">业务消息</el-radio-button>
-              <el-radio-button label="20">系统消息</el-radio-button>
+              <el-radio-button label="10">系统消息</el-radio-button>
               <el-radio-button label="30">互动消息</el-radio-button>
             </el-radio-group>
           </el-form-item>
@@ -24,7 +23,7 @@
     <div class="cont-area">
       <!-- 业务通知，系统消息 -->
       <tl-crcloud-table
-        v-if="messageType=='10' || messageType=='20'"
+        v-if="messageType=='10'"
         :total="totalSystem"
         :currentPage.sync="currentPageSystem"
         :pageSize.sync="pageSizeSystem"
@@ -110,7 +109,7 @@ export default {
     ...mapMutations('common', ['setTotalMeaasge']),
     searchList(type) {
       let params = {};
-      if (type == '10' || type == '20') {
+      if (type == '10') {
         params = {
           currentPage: this.currentPageSystem,
           pageSize: this.pageSizeSystem,
@@ -125,7 +124,7 @@ export default {
       params.readedStatus = this.readValue;
       this.server.innermsg(params).then((res) => {
         if (res.code == '200') {
-          if (type == '10' || type == '20') {
+          if (type == '10') {
             this.tableDataSystem = res.data.content;
             this.totalSystem = res.data.total;
           } else if (type == '30') {

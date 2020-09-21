@@ -6,7 +6,6 @@
         border
         row-key="orgId"
         :data="treeData"
-        :empty-text="emptyText"
         class="tl-table"
       >
         <el-table-column prop="orgName" label="名称" min-width="180"></el-table-column>
