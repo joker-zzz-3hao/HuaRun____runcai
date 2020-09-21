@@ -288,12 +288,13 @@ export default {
       if (!vnode) {
         vnode = this.root; // 第一次进来为根节点
       }
-      prevHeight = prevHeight || 0;
       // 使父节点top为所有子节点高度一半（居中对齐
       if (this.colAlign) {
+        prevHeight = prevHeight || 0;
         vnode.top = prevHeight + vnode.height / 2;
       } else {
         // 向上对齐
+        prevHeight = prevHeight || 100;
         vnode.top = prevHeight;
       }
       if (vnode.children && vnode.children.length > 0) {
