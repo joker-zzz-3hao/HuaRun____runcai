@@ -2,7 +2,7 @@
   <div class="my-weekly">
     <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <div class="operating-box" v-if="weeklyTypeList.length > 0 ">
+      <div class="operating-box" v-if="weeklyTypeList.length > 0">
         <div
           class="tl-custom-btn"
           v-for="item in weeklyTypeList"
