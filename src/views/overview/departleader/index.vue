@@ -74,7 +74,7 @@ export default {
       testModel: (state) => state.testModel,
     }),
   },
-  created() {
+  mounted() {
     // eslint-disable-next-line no-unused-expressions
     this.$route.query.id ? this.showOver = true : this.getidentity();
   },
@@ -119,6 +119,7 @@ export default {
         if (res.data.identityType == 'person') {
           this.$router.replace({ name: 'grassStaff' });
           this.showOver = true;
+          return false;
         }
       });
     },
