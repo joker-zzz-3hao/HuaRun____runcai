@@ -66,48 +66,18 @@
               <span>h</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="关联项目"
-            prop="projectId"
-            :render-header="renderHeader"
-            min-width="300"
-          >
+          <el-table-column label="关联项目" :render-header="renderHeader" min-width="300">
             <template slot-scope="scope">
               <el-form-item
-                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.validateProjectId'"
-                :rules="formData.rules.validateProjectId"
+                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectNameCn'"
+                :rules="formData.rules.projectNameCn"
               >
-                <el-select
-                  v-model="scope.row.validateProjectId"
-                  filterable
-                  placeholder="请选择项目"
-                  remote
-                  :remote-method="remoteMethod"
-                  @change="projectChange(scope.row)"
-                  @visible-change="visibleChange"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in thisPageProjectList"
-                    :key="item.projectId"
-                    :label="item.projectNameCn"
-                    :value="item.projectId"
-                  ></el-option>
-                </el-select>
+                <el-input
+                  v-model.trim="scope.row.projectNameCn"
+                  maxlength="0"
+                  @focus="projectInputFocus(scope.row)"
+                ></el-input>
               </el-form-item>
-              <div class="default-select">
-                <a @click="selectTempPro(scope.row)">临时项目</a>
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="若您此项工作所属项目暂时没有进入OA，则可以选择该“临时项目”，支撑OKR可不填"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                >
-                  <i class="el-icon-question"></i>
-                </el-tooltip>
-              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -284,12 +254,21 @@
       :cultureList="cultureList"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
+    <select-project
+      ref="selectProject"
+      :showProjectDialog.sync="showProjectDialog"
+      v-if="showProjectDialog"
+      :server="server"
+      :randomIdForProject="randomIdForProject"
+      @closeProjectDia="closeProjectDia"
+    ></select-project>
   </div>
 </template>
 
 <script>
 
 import Server from '../server';
+import selectProject from './selectProject';
 
 import addOkr from './addOkr';
 import mixin from '../mixin';
@@ -300,6 +279,7 @@ export default {
   mixins: [mixin],
   components: {
     'add-okr': addOkr,
+    selectProject,
   },
   props: {
     calendarId: {
@@ -344,12 +324,6 @@ export default {
         return [];
       },
     },
-    // projectList: {
-    //   type: Array,
-    //   default() {
-    //     return [];
-    //   },
-    // },
     cultureList: {
       type: Array,
       default() {
@@ -371,6 +345,7 @@ export default {
       tableLoading: false,
       currenItemrandomId: '',
       showAddOkr: false,
+      showProjectDialog: false,
       thisPageProjectList: [],
       formData: {
         rules: {
@@ -380,7 +355,7 @@ export default {
             message: '请填写任务项',
             trigger: 'blur',
           },
-          validateProjectId: {
+          projectNameCn: {
             type: 'string',
             required: true,
             message: '请选择关联项目',
@@ -445,7 +420,6 @@ export default {
   },
   methods: {
     init() {
-      this.remoteMethod();
       // 本周任务初始化数据
       this.addWork();
       // 如果是已提交过的数据，初始化数据
@@ -519,21 +493,23 @@ export default {
         this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
         this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
         this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
-        this.$set(element, 'validateProjectId', element.projectId);// 校验项目
         this.$set(element, 'valueOrOkrIds', valueIdList.join(',') + okrIdList.join(','));// 校验支撑项
         this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
         this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
       });
     },
     addWork() {
-      let defaultProjectId = '';
+      let projectId = '';
+      let projectNameCn = '';
       if (this.formData.weeklyWorkVoSaveList.length > 0) {
-        defaultProjectId = this.formData.weeklyWorkVoSaveList[this.formData.weeklyWorkVoSaveList.length - 1].projectId;
+        projectId = this.formData.weeklyWorkVoSaveList[this.formData.weeklyWorkVoSaveList.length - 1].projectId;
+        projectNameCn = this.formData.weeklyWorkVoSaveList[this.formData.weeklyWorkVoSaveList.length - 1].projectNameCn;
       }
       this.formData.weeklyWorkVoSaveList.push({
         okrCultureValueIds: '',
         okrIds: '',
-        projectId: defaultProjectId,
+        projectId,
+        projectNameCn,
         weeklyId: '',
         workContent: '',
         workDesc: '',
@@ -543,29 +519,12 @@ export default {
         workTime: 0,
         selectedOkr: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
-        validateProjectId: defaultProjectId, // 用于校验项目是否选中
       });
       this.$forceUpdate();
     },
 
-    remoteMethod(query) {
-      // if (query !== '') {
-      this.server.getProjectList({
-        pageSize: 20,
-        currentPage: 1,
-        projectName: query,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.thisPageProjectList = res.data.content;
-        }
-      });
-      // }
-    },
     addItem() { // 添加本地数据
       this.addWork();
-    },
-    projectChange(week) {
-      week.projectId = week.validateProjectId;
     },
     deleteItem(item) {
       // 本地数据、后端数据
@@ -579,10 +538,6 @@ export default {
           return thisWeek;
         },
       );
-    },
-    selectTempPro(data) {
-      data.projectId = '';
-      data.validateProjectId = '临时项目';//
     },
     addSupportOkr(data) {
       this.currenItemrandomId = data.randomId || data.workId;
@@ -685,10 +640,21 @@ export default {
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
     },
-    visibleChange(status) {
-      if (!status) {
-        this.remoteMethod();
-      }
+    projectInputFocus(work) {
+      this.randomIdForProject = work.randomId;
+      this.showProjectDialog = true;
+      this.$nextTick(() => {
+        this.$refs.selectProject.show();
+      });
+    },
+    closeProjectDia(data) {
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (work.randomId == data.randomIdForProject) {
+          work.projectId = data.project.projectId;
+          work.projectNameCn = data.project.projectNameCn;
+        }
+      });
+      this.$forceUpdate();
     },
   },
   watch: {
@@ -699,10 +665,6 @@ export default {
         this.weeklyOkrSaveList = [];
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
-          // 临时项目反显
-          if (data.workId && !data.projectId) {
-            data.validateProjectId = '临时项目';
-          }
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
@@ -722,18 +684,15 @@ export default {
               }
             } else { // o
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.o.okrDetailId);
-              // this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.o.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
               if (data.supportMyOkrObj.o.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyData.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
-                    // this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
                     this.$set(data.supportMyOkrObj, 'progressBefor', element.progressBefor);
                   }
                 });
               } else {
-                // this.$set(data.supportMyOkrObj, 'confidenceBefor', data.supportMyOkrObj.o.okrDetailConfidence);
                 this.$set(data.supportMyOkrObj, 'progressBefor', data.supportMyOkrObj.o.okrDetailProgress);
               }
             }

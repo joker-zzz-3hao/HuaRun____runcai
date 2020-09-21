@@ -16,7 +16,7 @@
       </dt>
     </dl>
     <tl-process :data="node.okrDetailProgress" :width="36" :marginLeft="6"></tl-process>
-    <div class="department-info">
+    <div class="department-info" @click.stop="takeOvierview(node)">
       <span>负责人</span>
       <em>{{node.userName}}</em>
       <el-button
@@ -69,6 +69,9 @@ export default {
     goDetail(node) {
       this.setUndertakeMapsStep('2');
       this.setundertakeDetail(node);
+    },
+    takeOvierview(node) {
+      this.$emit('takeOvierview', node);
     },
   },
   watch: {},
