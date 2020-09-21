@@ -18,8 +18,8 @@
         <div v-if="baseInfo.teamManager">{{baseInfo.teamManager}}</div>
         <div v-else>
           <div>未设置</div>
-          <el-button @click="setManager">设置团队综合管理员</el-button>
         </div>
+        <el-button @click="setManager">编辑团队综合管理员</el-button>
       </div>
       <div>
         <div class="display-flex">
@@ -147,6 +147,7 @@
       :server="server"
       @closed="closedSetManager"
       :teamMembers="teamMembers"
+      :baseInfo="baseInfo"
       @setSuccess="setSuccess"
     ></tl-setManager>
     <tl-setFictitious
