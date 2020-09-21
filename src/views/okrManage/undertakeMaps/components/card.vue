@@ -11,7 +11,7 @@
           plain
           class="tl-btn btn-lineheight"
           v-if="node.children && node.children.length && node.userId ===userInfo.userId"
-          @click="goDetail(node)"
+          @click.stop="goDetail(node)"
         >对齐</el-button>
       </dt>
     </dl>

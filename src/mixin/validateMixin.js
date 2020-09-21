@@ -20,7 +20,7 @@ export default {
     },
     validateLoginPwd(rule, value, callback) {
       if (value == '' || value == undefined || value == null) {
-        callback('请输入原始密码');
+        callback('请输入新密码');
       } else if (/[\u4E00-\u9FA5]/g.test(value)) {
         callback('不支持设置中文');
       } else if (value.length < 8 || value.length > 32) {

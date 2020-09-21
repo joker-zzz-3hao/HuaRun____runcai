@@ -743,6 +743,10 @@
   padding: 0;
 }
 
+.tl-dialog .el-dialog__header {
+  margin: 0 0 20px 0;
+}
+
 .tl-dialog .el-dialog__footer {
   margin: 40px 0 0 0;
 }
@@ -2230,6 +2234,7 @@
 
 .tl-custom-timeline .list-title {
   position: relative;
+  margin: 0 0 10px 0;
 }
 
 .tl-custom-timeline .list-title::before {
@@ -2579,22 +2584,22 @@
   font-weight: 500;
 }
 
+.card-panel-body .tl-table .sub-tr .okr-undertake .has-undertake,
 .card-panel-body .tl-table .el-table__row td:nth-child(4) .has-undertake {
   color: #685df1;
   cursor: pointer;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(6) em,
-.card-panel-body .tl-table .el-table__row td:nth-child(7) i {
-  cursor: pointer;
-  transition: all .4s ease-out;
+.card-panel-body .tl-table .el-table__row td:nth-child(6) span {
+  margin: 0 6px 0 0;
 }
 
-.card-panel-body .tl-table .el-table__row td:nth-child(6) em:hover,
-.card-panel-body .tl-table .el-table__row td:nth-child(7) i:hover,
-.card-panel-body .tl-table .sub-tr .okr-undertake .has-undertake {
-  color: #685df1;
-  cursor: pointer;
+.card-panel-body .tl-table .el-table__row td:nth-child(6) em {
+  color: #4d5155;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .tl-table-fix {

@@ -8,7 +8,7 @@
     >
       <div class="current-progress" :style="item.width"></div>
     </div>
-    <div class="progress-number">{{data}}%</div>
+    <div v-if="showNumber" class="progress-number">{{data}}%</div>
   </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
     marginLeft: {
       type: Number,
       default: 2,
+    },
+    showNumber: {
+      type: Boolean,
+      default: true,
     },
   },
   mounted() {

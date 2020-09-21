@@ -14,7 +14,13 @@
       class="tl-drawer"
     >
       <div>
-        <tl-svgtree fatherId="parentId" childId="userId" :treeData="treeData" direction="col">
+        <tl-svgtree
+          fatherId="parentId"
+          childId="userId"
+          :treeData="treeData"
+          direction="col"
+          svgId="svg01"
+        >
           <template slot="treecard" slot-scope="node">
             <tl-card
               :node="node"
@@ -111,8 +117,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.display-flex {
-  display: flex;
-}
-</style>

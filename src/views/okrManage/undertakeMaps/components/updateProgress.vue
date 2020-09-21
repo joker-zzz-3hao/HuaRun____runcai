@@ -21,6 +21,7 @@
                     <span>{{formData.okrDetailObjectKr}}</span>
                   </el-form-item>
                   <el-form-item label="当前进度">
+                    <tl-process :data="parseInt(formData.okrDetailProgress,10)" :showNumber="false"></tl-process>
                     <el-slider
                       v-model="formData.okrDetailProgress"
                       show-input
@@ -59,6 +60,7 @@
 
 <script>
 import confidenceSelect from '@/components/confidenceSelect';
+import process from '@/components/process';
 import { mapState } from 'vuex';
 import CONST from '../const';
 
@@ -66,6 +68,7 @@ export default {
   name: 'updateProgress',
   components: {
     'tl-confidence': confidenceSelect,
+    'tl-process': process,
   },
   data() {
     return {
