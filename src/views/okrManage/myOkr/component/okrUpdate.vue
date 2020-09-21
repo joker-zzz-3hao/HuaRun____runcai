@@ -51,7 +51,7 @@
             <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
               <div class="list-info">
                 <div class="list-title">
-                  <span>关键结果</span>
+                  <span>关键结果{{kindex+1}}</span>
                   <em>{{kitem.okrDetailObjectKr}}</em>
                 </div>
                 <div class="list-cont">

@@ -179,7 +179,6 @@ export default {
         // eslint-disable-next-line max-len
         const dateArr = this.dateOption.map((item) => [new Date(item.weekBegin).getTime(), new Date(item.weekEnd).getTime()]);
         const eq = dateArr.findIndex((item) => item[0] <= new Date().getTime() && new Date().getTime() <= item[1]);
-        console.log(eq);
         if (eq >= 0) {
           this.calendarId = res.data[eq].calendarId;
         } else {

@@ -24,7 +24,7 @@ const CONFIDENCE_MAP = {
 };
 const OPERATE_TYPE_MAP = {
   5: 'OKR更新',
-  7: '周报更新',
+  6: '周报更新',
 };
 export default {
   OKR_TYPE_MAP,

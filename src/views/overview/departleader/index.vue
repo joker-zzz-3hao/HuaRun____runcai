@@ -107,7 +107,7 @@ export default {
         orgId: this.setOrgId,
       }).then((res) => {
         if (res.data.identityType == 'org') {
-          this.$router.replace({ name: 'departleader' });
+          // this.$router.replace({ name: 'departleader' });
           this.showOver = true;
           return false;
         }
@@ -119,6 +119,7 @@ export default {
         if (res.data.identityType == 'person') {
           this.$router.replace({ name: 'grassStaff' });
           this.showOver = true;
+          return false;
         }
       });
     },
