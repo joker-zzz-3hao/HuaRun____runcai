@@ -214,20 +214,22 @@ export default {
     },
     searchList() {
       this.tableData = [];
-      this.server.getokrApproval({
-        approvalStatus: this.formData.approvalStatus,
-        approvalType: this.formData.approvalType,
-        currentPage: this.formData.currentPage,
-        keyword: this.formData.keyword,
-        pageSize: this.formData.pageSize,
-        periodId: this.formData.periodId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.tableData = res.data.content;
-          this.formData.total = res.data.total;
-          this.formData.currentPage = res.data.currentPage;
-        }
-      });
+      if (this.formData.periodId) {
+        this.server.getokrApproval({
+          approvalStatus: this.formData.approvalStatus,
+          approvalType: this.formData.approvalType,
+          currentPage: this.formData.currentPage,
+          keyword: this.formData.keyword,
+          pageSize: this.formData.pageSize,
+          periodId: this.formData.periodId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.tableData = res.data.content;
+            this.formData.total = res.data.total;
+            this.formData.currentPage = res.data.currentPage;
+          }
+        });
+      }
     },
     okrApproval(row) {
       this.setDetailData(JSON.stringify(row));
