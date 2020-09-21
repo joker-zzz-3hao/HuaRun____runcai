@@ -106,8 +106,10 @@
             <span>您承接的OKR有变更，请在变更中处理。</span>
             <i class="el-icon-warning" slot="reference"></i>
           </el-popover>
-
-          <em>{{scope.row.parentObjectKr || '暂无'}}</em>
+          <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
+            <div slot="content">{{scope.row.parentObjectKr}}</div>
+            <em>{{scope.row.parentObjectKr || '暂无'}}</em>
+          </el-tooltip>
         </template>
       </el-table-column>
       <!-- o label="进度" -->

@@ -111,8 +111,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.display-flex {
-  display: flex;
-}
-</style>
