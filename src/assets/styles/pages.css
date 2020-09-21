@@ -275,6 +275,28 @@
   color: #685df1;
 }
 
+.update-progress .list-cont {
+  padding: 20px;
+  border: 1px solid #f4f6f8;
+}
+
+.update-progress .timeline-list dt .list-cont {
+  border-color: transparent;
+}
+
+.update-progress .timeline-list dt .current-progress {
+  background: #4ccd79;
+}
+
+.update-progress .okr-risk {
+  margin: 20px 0 0 0;
+}
+
+.update-progress .change-reason dt {
+  margin: 0 0 11px 0;
+  color: #879099;
+}
+
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
   position: relative;
@@ -632,7 +654,7 @@
 /* 编辑状态 */
 .collpase-panel.has-third-child ~ .collpase-panel dt,
 .collpase-panel dt.is-edit {
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
   height: 40px;
 }
 
@@ -763,7 +785,7 @@
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
-  margin: 70px auto 0 auto;
+  margin: 0 auto;
 }
 
 .undertake-maps .cont-area .is-plain {
@@ -791,6 +813,10 @@
 
 .undertake-maps .okr-info .tag-kind {
   margin-top: 0;
+}
+
+.undertake-maps .maps-card .tag-kind {
+  height: 28px;
 }
 
 /* okr-approval */

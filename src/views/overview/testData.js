@@ -158,7 +158,7 @@ const okrData = {
   msg: 'response.success',
   data: {
     okrMain: {
-      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 14, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '佳俊一级负责人', periodName: '2002年第4季度OKR', orgName: '佳俊一级部门',
+      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 14, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '张三', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
     },
     okrDetails: [{
       detailId: '1259957209311141889',
@@ -178,7 +178,7 @@ const okrData = {
       okrDetailParentVersion: 1,
       isTrue: 1,
       parentObjectKr: '基础平台的转化能力',
-      orgName: '佳俊分公司',
+      orgName: '华润分公司',
       parentUpdate: false,
       continueCount: 5,
       versionCount: 3,

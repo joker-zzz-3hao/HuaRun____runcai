@@ -17,6 +17,10 @@
                 <em>{{okrItem.okrDetailObjectKr}}</em>
                 <tl-process :data="okrItem.okrDetailProgress"></tl-process>
               </dt>
+              <dd>
+                <span>{{okrItem.undertakeCount}}</span>
+                <span>个支撑项可对齐</span>
+              </dd>
             </dl>
           </template>
           <!-- 操作按钮 -->
@@ -41,14 +45,22 @@
                   placement="top"
                 >
                   <div>
-                    <dd>
+                    <dd v-if="okritem.operateType == '5'">
                       <span v-if="okritem.okrDetailType == 0">目标O</span>
                       <span v-else>关键结果KR</span>
                       <em>{{okritem.okrContent}}</em>
                     </dd>
-                    <dd>
+                    <dd v-if="okritem.operateType == '5'">
                       <span>更新说明</span>
                       <em>{{okritem.remark}}</em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>周报周期</span>
+                      <em></em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>支撑项</span>
+                      <em>{{okritem.okrContent}}</em>
                     </dd>
                     <dd>
                       <span>来自-</span>
@@ -115,6 +127,7 @@ export default {
       checkStatus: 0,
       okrInfoList: [],
       choseOkrInfo: {},
+      undertakeCount: 0,
     };
   },
   created() {
@@ -135,6 +148,14 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.okrInfoList = res.data || [];
+          this.okrInfoList.forEach((item) => {
+            if (item.historyList) {
+              item.undertakeCount = 0;
+              item.historyList.forEach((hitem) => {
+                item.undertakeCount += hitem.length;
+              });
+            }
+          });
         }
       });
     },
@@ -150,10 +171,17 @@ export default {
           this.personList = res.data || [];
           this.personList.forEach((pitem) => {
             if (pitem.length > 0) {
+              this.undertakeCount += pitem.length;
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
-                citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
+                if (citem.operateType == '5') {
+                  citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
+                } else if (
+                  citem.operateType == '6'
+                ) {
+                  citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
+                }
                 citem.remark = citem.reason || '暂无';
               });
             }

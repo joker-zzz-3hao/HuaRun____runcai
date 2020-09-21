@@ -38,7 +38,7 @@ export default class Server extends ServerBase {
 
   // 查操作历史
   okrOperationHistory(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/okrOperationHistory', param);
+    return this._ajaxPost('gateway/talent-okr/okr/okrOperateHistory/getOkrHistory', param);
   }
 
   // 搜索框查询
@@ -54,5 +54,10 @@ export default class Server extends ServerBase {
   // 传入orgId与userId判断首页身份
   identity(param) {
     return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);
+  }
+
+  // 历史版本
+  selectOkrHistoryVersion(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
   }
 }

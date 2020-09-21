@@ -9,7 +9,7 @@
           <el-select
             v-model="value"
             placeholder="请选择目标周期"
-            :popper-append-to-body="false"
+            :popper-append-to-body="true"
             popper-class="tl-select-dropdown"
             class="tl-select"
             @change="selectPeriod"

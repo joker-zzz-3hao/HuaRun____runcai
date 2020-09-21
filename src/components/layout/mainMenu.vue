@@ -36,7 +36,7 @@
                 @mouseover.native="changeIndex"
                 @mouseleave.native="rmChangeIndex"
               >
-                <i></i>
+                <!-- <i></i> -->
                 <span>
                   <em>{{options.subMenuTitle}}</em>
                 </span>

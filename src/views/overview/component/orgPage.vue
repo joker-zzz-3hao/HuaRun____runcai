@@ -6,7 +6,6 @@
         <div class="okr-title">{{okrCycle.periodName}}</div>
         <dl class="okr-state">
           <dt>
-            <i class="el-icon-set-up"></i>
             <em>状态</em>
           </dt>
           <dd>
@@ -16,14 +15,18 @@
         </dl>
         <dl class="okr-responsible">
           <dt>
-            <i class="el-icon-user"></i>
+            <em>OKR类型</em>
+          </dt>
+          <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dt>
             <em>负责人</em>
           </dt>
           <dd>{{okrMain.userName}}</dd>
         </dl>
         <dl class="okr-progress">
           <dt>
-            <i class="el-icon-odometer"></i>
             <em>OKR进度</em>
           </dt>
           <dd>
@@ -249,6 +252,7 @@ export default {
               id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
             },
           });
+
           this.reload();
           return false;
         }
