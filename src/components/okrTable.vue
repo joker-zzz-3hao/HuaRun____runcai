@@ -3,14 +3,20 @@
     <ul class="tl-thead">
       <li></li>
       <li></li>
-      <li v-if="!overview">权重</li>
-      <li v-if="!overview">
-        <em v-if="$route.name!=='grassStaff'">承接地图</em>
+      <li>权重</li>
+      <li>
+        <em v-if="!overview" v-show="$route.name!=='grassStaff'">承接地图</em>
       </li>
-      <li v-if="!overview">风险状态</li>
-      <li v-if="!overview">关联父目标</li>
+      <li>
+        <em v-if="!overview">风险状态</em>
+      </li>
+      <li>
+        <em v-if="!overview">关联父目标</em>
+      </li>
       <li>进度</li>
-      <li v-if="!overview">更新进展</li>
+      <li>
+        <em v-if="!overview">更新进展</em>
+      </li>
       <li></li>
     </ul>
     <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
@@ -27,7 +33,7 @@
               </el-tooltip>
             </dd>
             <!-- kr权重 -->
-            <dd class="okr-proportion" v-if="!overview">{{kritem.okrWeight}}%</dd>
+            <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
             <!-- kr承接项 -->
             <dd class="okr-undertake" v-if="!overview">
               <slot name="body-bar" :okritem="kritem"></slot>
@@ -76,7 +82,7 @@
         </template>
       </el-table-column>
       <!-- o label="权重" -->
-      <el-table-column prop="okrWeight" width="6%" v-if="!overview">
+      <el-table-column prop="okrWeight" width="6%">
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
       <!-- o label="承接地图" -->
