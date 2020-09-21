@@ -2,7 +2,10 @@
   <div class="okrRiskTotal">
     <div id="okrRiskTotal"></div>
     <div class="model">
-      <div>周报</div>
+      <div>
+        周报
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <el-date-picker
         format="yyyy-MM"
         value-format="yyyy-MM"

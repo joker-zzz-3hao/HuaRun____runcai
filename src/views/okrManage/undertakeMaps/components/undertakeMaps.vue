@@ -1,76 +1,67 @@
 <template>
-  <div class="home">
-    <div style="margin-left:20px; display: flex;" v-if="!showOne">
-      <dl>
-        <dd>
-          <el-select
-            v-model="searchForm.periodId"
-            placeholder="请选择目标周期"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in periodList"
-              :key="item.periodId"
-              :label="item.periodName"
-              :value="item.periodId"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <!-- <dl>
-        <dd>
-          <el-cascader
-            v-model="orgFullId"
-            :options="departmentData"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true, value:'orgFullId',label:'orgName',children:'children' }"
-            @change="selectIdChange"
-            :placeholder="orgName"
-          ></el-cascader>
-
-        </dd>
-      </dl>-->
+  <div class="undertake-maps-tree">
+    <div class="cont-area">
+      <div v-if="showOne && svgList.length>0">
+        <tl-svgtree
+          :treeData="svgList"
+          svgId="svg"
+          ref="svgTree"
+          :curveness="false"
+          direction="col"
+          fatherId="okrParentId"
+          childId="okrDetailId"
+          :colAlign="false"
+          :middlePoint="cardHight"
+        >
+          <div slot="treecard" slot-scope="props">
+            <card :node="props.node"></card>
+          </div>
+        </tl-svgtree>
+      </div>
+      <div v-else-if="svgList.length>0">
+        <tl-svgtree
+          v-for="(item,index) in svgList"
+          :key="index"
+          :treeData="item"
+          :svgId="'svg'+index"
+          ref="svgTree"
+          direction="col"
+          fatherId="okrParentId"
+          childId="okrDetailId"
+          :colAlign="false"
+          @handleTree="handleTree"
+          :middlePoint="cardHight"
+        >
+          <div slot="treecard" slot-scope="props">
+            <card :node="props.node"></card>
+          </div>
+        </tl-svgtree>
+      </div>
     </div>
-    <!-- 返回 -->
-    <div>
-      <el-button v-if="showOne" @click="goback">返回</el-button>
-    </div>
-    <!-- 要展示多个 -->
-    <div v-if="showOne && svgList.length>0">
-      <tl-svgtree
-        :treeData="svgList"
-        svgId="svg"
-        ref="svgTree"
-        :curveness="false"
-        direction="col"
-        fatherId="okrParentId"
-        childId="okrDetailId"
-        :colAlign="false"
-      >
-        <div slot="treecard" slot-scope="props">
-          <card :node="props.node"></card>
+    <div class="operating-area">
+      <div class="operating-area-inside">
+        <div class="operating-box">
+          <dl v-if="!showOne">
+            <dd>
+              <el-select
+                v-model="searchForm.periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <!-- <el-button v-if="showOne" @click="goback">返回</el-button> -->
         </div>
-      </tl-svgtree>
-    </div>
-    <div v-else-if="svgList.length>0">
-      <tl-svgtree
-        v-for="(item,index) in svgList"
-        :key="index"
-        :treeData="item"
-        :svgId="'svg'+index"
-        ref="svgTree"
-        direction="col"
-        fatherId="okrParentId"
-        childId="okrDetailId"
-        :colAlign="false"
-        @handleTree="handleTree"
-      >
-        <div slot="treecard" slot-scope="props">
-          <card :node="props.node"></card>
-        </div>
-      </tl-svgtree>
+      </div>
     </div>
   </div>
 </template>
@@ -117,6 +108,7 @@ export default {
       orgFullId: '',
       orgFullIdList: [],
       showCascader: false,
+      cardHight: 59, // 块高度的一半
     };
   },
   computed: {

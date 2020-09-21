@@ -1,7 +1,10 @@
 <template>
   <div class="weeking">
     <div class="model">
-      <div>周报动态</div>
+      <div>
+        周报动态
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <el-date-picker
         format="yyyy-MM"
         value-format="yyyy-MM"
@@ -19,7 +22,10 @@
       </div>-->
     </div>
     <div class="model">
-      <div>周报互动记录</div>
+      <div>
+        周报互动记录
+        <em v-show="testModel">(示例数据)</em>
+      </div>
       <div>
         <el-date-picker
           format="yyyy-MM"
@@ -208,14 +214,14 @@ export default {
             type: 'bar',
             barWidth: 8,
             itemStyle: {
-              normal: { color: '#4CCD79' },
+              normal: { barBorderRadius: 5, color: '#4CCD79' },
             },
           },
           {
             type: 'bar',
             barWidth: 8,
             itemStyle: {
-              normal: { color: '#FFBC20' },
+              normal: { barBorderRadius: 5, color: '#FFBC20' },
             },
           },
         ],
@@ -302,21 +308,21 @@ export default {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#FFBC20' },
+              normal: { barBorderRadius: 5, color: '#FFBC20' },
             },
           },
           {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#3F7DFF' },
+              normal: { barBorderRadius: 5, color: '#3F7DFF' },
             },
           },
           {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { color: '#FB4C59' },
+              normal: { barBorderRadius: 5, color: '#FB4C59' },
             },
           },
         ],

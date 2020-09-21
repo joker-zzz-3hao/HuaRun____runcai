@@ -91,10 +91,11 @@ export default {
           barWidth: 10,
           showBackground: true,
           backgroundStyle: {
+
             color: '#F4F6F8',
           },
           itemStyle: {
-            normal: { color: '#FFBC20' },
+            normal: { barBorderRadius: 5, color: '#FFBC20' },
           },
         }],
       };

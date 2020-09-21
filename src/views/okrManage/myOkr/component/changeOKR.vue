@@ -128,6 +128,9 @@
       custom-class="custom-drawer associated-undertaking"
       class="tl-drawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">关联承接项</div>
+      </div>
       <tl-undertaketable
         v-if="selectIndex !== ''"
         ref="undertake"

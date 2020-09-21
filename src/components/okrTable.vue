@@ -3,12 +3,12 @@
     <ul class="tl-thead">
       <li></li>
       <li></li>
-      <li>权重</li>
-      <li>
+      <li v-if="!overview">权重</li>
+      <li v-if="!overview">
         <em v-if="$route.name!=='grassStaff'">承接地图</em>
       </li>
-      <li>风险状态</li>
-      <li>关联父目标</li>
+      <li v-if="!overview">风险状态</li>
+      <li v-if="!overview">关联父目标</li>
       <li>进度</li>
       <li v-if="!overview">更新进展</li>
       <li></li>
@@ -27,13 +27,13 @@
               </el-tooltip>
             </dd>
             <!-- kr权重 -->
-            <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
+            <dd class="okr-proportion" v-if="!overview">{{kritem.okrWeight}}%</dd>
             <!-- kr承接项 -->
-            <dd class="okr-undertake">
+            <dd class="okr-undertake" v-if="!overview">
               <slot name="body-bar" :okritem="kritem"></slot>
             </dd>
             <!-- kr风险状态 -->
-            <dd class="okr-risk">
+            <dd class="okr-risk" v-if="!overview">
               <div class="state-grid">
                 <div
                   :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
@@ -76,19 +76,19 @@
         </template>
       </el-table-column>
       <!-- o label="权重" -->
-      <el-table-column prop="okrWeight" width="6%">
+      <el-table-column prop="okrWeight" width="6%" v-if="!overview">
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
       <!-- o label="承接地图" -->
-      <el-table-column width="8%">
+      <el-table-column width="8%" v-if="!overview">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="12%"></el-table-column>
+      <el-table-column width="12%" v-if="!overview"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="12%">
+      <el-table-column prop="parentObjectKr" width="12%" v-if="!overview">
         <template slot-scope="scope">
           <el-popover
             v-if="scope.row.parentUpdate"

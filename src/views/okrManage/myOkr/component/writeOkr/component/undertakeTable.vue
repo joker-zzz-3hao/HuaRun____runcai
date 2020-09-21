@@ -166,16 +166,20 @@ export default {
   },
   watch: {
     selectRadioDepart: {
-      handler() {
-        this.modelDepart = this.selectRadioDepart;
-        this.selectDepartRow = '';
-        this.selectPhilRow = '';
+      handler(newVal) {
+        this.modelDepart = newVal;
+        if (!newVal) {
+          this.selectDepartRow = '';
+        }
       },
       immediate: true,
     },
     selectRadioPhil: {
-      handler() {
-        this.modelPhil = this.selectRadioPhil;
+      handler(newVal) {
+        this.modelPhil = newVal;
+        if (!newVal) {
+          this.selectPhilRow = '';
+        }
       },
     },
   },

@@ -1,9 +1,10 @@
 <template>
   <div>
     <el-dialog
+      :append-to-body="true"
+      :close-on-click-modal="false"
       :title="drawerTitle"
       :visible.sync="myokrDrawer"
-      :modal-append-to-body="false"
       @closed="closed"
       :before-close="close"
       class="tl-dialog"
@@ -170,7 +171,6 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
-        console.log('periodId', this.periodId);
       }
     },
     summitUpdate() {

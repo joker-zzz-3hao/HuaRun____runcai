@@ -42,7 +42,10 @@
                 <div>
                   <i class="el-icon-medal"></i>
                   <span>权重</span>
-                  <el-form-item>
+                  <el-form-item
+                    :prop="'okrInfoList.' + index + '.okrWeight'"
+                    :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
+                  >
                     <el-input-number
                       v-model="oitem.okrWeight"
                       controls-position="right"
@@ -132,7 +135,11 @@
               </el-tooltip>
             </dt>
             <dd class="has-third-child">
-              <el-form-item label="权重">
+              <el-form-item
+                label="权重"
+                :prop="'okrInfoList.' + index + '.krList.' + kindex +'.okrWeight'"
+                :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
+              >
                 <el-input-number
                   v-model.trim="kitem.okrWeight"
                   controls-position="right"
