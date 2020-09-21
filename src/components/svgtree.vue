@@ -264,7 +264,7 @@ export default {
         const maxHeight = this.levels.flat(Infinity).filter((item) => item.show).sort((a, b) => b.top - a.top)[0].top;
         // 获取svg的dom
         const svg = document.getElementById(this.svgId);
-        svg.setAttribute('height', this.root.height + 100);
+        svg.setAttribute('height', this.root.height + 50);
         svg.setAttribute('width', this.$refs.treeContent.scrollWidth);
         this.$emit('toggle', this.$refs.treeContent.scrollWidth, this.root.height);
       });
@@ -294,7 +294,7 @@ export default {
         vnode.top = prevHeight + vnode.height / 2;
       } else {
         // 向上对齐
-        prevHeight = prevHeight || 100;
+        prevHeight = prevHeight || 50;
         vnode.top = prevHeight;
       }
       if (vnode.children && vnode.children.length > 0) {
