@@ -214,7 +214,7 @@ import CONST from './const';
 const server = new Server();
 
 export default {
-  name: 'organizeManagement',
+  name: 'depaertManage',
   components: {
     'create-department': createDepart,
     'create-user': createUser,
