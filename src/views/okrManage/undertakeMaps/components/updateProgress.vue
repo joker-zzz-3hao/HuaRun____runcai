@@ -4,44 +4,73 @@
     :close-on-click-modal="false"
     :title="dialogTitle"
     :visible.sync="dialogDetailVisible"
-    width="50%"
     :before-close="close"
     @closed="closed"
+    custom-class="update-progress"
     class="tl-dialog"
+    width="600px"
   >
     <div class="okr-info">
       <div class="tl-custom-timeline">
         <el-form :model="formData" ref="dataForm" class="tl-form">
-          <dl>
+          <dl class="timeline-list">
             <dt>
               <div class="list-info">
-                <div class="list-title">{{formData.okrDetailType === 0 ? '目标O' : '关键结果'}}</div>
+                <div class="list-title">
+                  <em>{{formData.okrDetailType === 0 ? '目标O' : '关键结果'}}</em>
+                  <span>{{formData.okrDetailObjectKr}}</span>
+                </div>
                 <div class="list-cont">
-                  <el-form-item>
-                    <span>{{formData.okrDetailObjectKr}}</span>
-                  </el-form-item>
-                  <el-form-item label="当前进度">
-                    <tl-process :data="parseInt(formData.okrDetailProgress,10)" :showNumber="false"></tl-process>
+                  <div class="tl-progress-group">
+                    <tl-process
+                      :data="parseInt(formData.okrDetailProgress,10)"
+                      :showNumber="false"
+                      :width="64"
+                      :marginLeft="6"
+                    ></tl-process>
                     <el-slider
                       v-model="formData.okrDetailProgress"
-                      show-input
                       :step="1"
                       @change="changeProgress(formData)"
+                      tooltip-class="slider-tooltip"
                     ></el-slider>
-                  </el-form-item>
-                  <el-form-item label="风险状态" v-if="formData.okrDetailConfidence">
+                    <el-input-number
+                      v-model="formData.okrDetailProgress"
+                      controls-position="right"
+                      :min="0"
+                      :max="100"
+                      :step="1"
+                      :precision="0"
+                      class="tl-input-number"
+                    ></el-input-number>
+                    <span>%</span>
+                  </div>
+                  <div class="okr-risk" v-if="formData.okrDetailConfidence">
                     <tl-confidence v-model="formData.okrDetailConfidence"></tl-confidence>
-                  </el-form-item>
-                  <el-form-item
-                    label="更新说明"
-                    prop="updateexplain"
-                    :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
-                  >
-                    <el-input maxlength="200" v-model="formData.updateexplain"></el-input>
-                  </el-form-item>
+                  </div>
                 </div>
               </div>
             </dt>
+          </dl>
+          <dl class="change-reason">
+            <dt>更新说明</dt>
+            <dd>
+              <el-form-item
+                label="更新说明"
+                prop="updateexplain"
+                :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+              >
+                <el-input
+                  placeholder="请输入更新说明"
+                  maxlength="200"
+                  v-model="formData.updateexplain"
+                  type="textarea"
+                  :rows="3"
+                  resize="none"
+                  class="tl-textarea"
+                ></el-input>
+              </el-form-item>
+            </dd>
           </dl>
         </el-form>
       </div>
