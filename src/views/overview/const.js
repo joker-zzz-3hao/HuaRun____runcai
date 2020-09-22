@@ -39,9 +39,9 @@ const CONFIDENCE_MAP = {
 };
 
 const WEEKLYEMOTION = {
-  0: '沮丧',
-  50: '平常',
-  100: '开心',
+  0: '让我静静',
+  50: '还行吧',
+  100: '有收获',
 };
 
 const OKR_TYPE_MAP = {
