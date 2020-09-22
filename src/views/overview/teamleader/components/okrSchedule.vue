@@ -36,7 +36,7 @@ export default {
     },
     init() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('okrSchedule'));
+      const myChart = echarts.init(document.getElementById('okr-schedule'));
       const option = {
         xAxis: {
           type: 'category',
