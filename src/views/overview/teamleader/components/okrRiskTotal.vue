@@ -8,6 +8,7 @@
       <ul>
         <li
           class="count"
+          v-popover:popover4
           v-for="(item,index) in tableData"
           :key="index"
           @click="okrRiskUserInfo(item.riskCode);"
@@ -18,17 +19,12 @@
         </li>
       </ul>
     </div>
-    <el-dialog
-      title="okr列表"
-      :visible.sync="dialogVisible"
-      :modal-append-to-body="false"
-      :modal="false"
-    >
+    <el-popover ref="popover4" placement="right" trigger="click" v-model="visible">
       <el-table :data="okrData" style="width: 100%">
         <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
         <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
       </el-table>
-    </el-dialog>
+    </el-popover>
   </div>
 </template>
 
@@ -55,6 +51,7 @@ export default {
       dialogVisible: false,
       aroundData: [],
       okrData: [],
+      visible: false,
     };
   },
   mounted() {
@@ -77,6 +74,7 @@ export default {
         riskCode,
       }).then((res) => {
         this.okrData = res.data;
+        this.visible = true;
       });
     },
     cheMainData() {
