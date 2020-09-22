@@ -18,14 +18,6 @@ const mainData = {
       orgId: '1284529713665425408', orgName: 'E部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 3, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
     }, {
       orgId: '1284530366500454400', orgName: 'F部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    },
-    {
-      orgId: '1284530366500454400', orgName: 'G部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    },
-    {
-      orgId: '1284530366500454400', orgName: 'H部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    }, {
-      orgId: '1284530366500454400', orgName: 'I部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
     }],
   },
   tableData: {
