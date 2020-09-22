@@ -326,6 +326,7 @@
                 :rules="[{trigger: 'blur',validator:validatePercent, required:true}]"
               >
                 <el-input-number
+                  @input="updateokrCollapse"
                   v-model="newItem.okrWeight"
                   controls-position="right"
                   :min="0"
@@ -356,7 +357,7 @@
               <el-form-item
                 label="考核指标"
                 :prop="'tableList.' + index + '.newkrList.' + kindex + '.checkQuota'"
-                :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+                :rules="[{required:true, trigger:'blur',validator:validateCheck}]"
               >
                 <el-input
                   placeholder="请输入考核指标"
@@ -369,7 +370,7 @@
               <el-form-item
                 label="衡量办法"
                 :prop="'tableList.' + index + '.newkrList.' + kindex + '.judgeMethod'"
-                :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+                :rules="[{required:true, trigger:'blur',validator:validateJudge}]"
               >
                 <el-input
                   placeholder="请输入衡量办法"

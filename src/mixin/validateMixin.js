@@ -112,10 +112,27 @@ export default {
       };
     },
     validatePercent(rule, value, callback) {
+      value = this.getValue(rule);
       if (!value) {
         callback('请输入1~100整数');
       } else if (value === 0) {
         callback('不能为0');
+      } else {
+        callback();
+      }
+    },
+    validateCheck(rule, value, callback) {
+      value = this.getValue(rule);
+      if (!value) {
+        callback('请输入考核指标');
+      } else {
+        callback();
+      }
+    },
+    validateJudge(rule, value, callback) {
+      value = this.getValue(rule);
+      if (!value) {
+        callback('请输入衡量办法');
       } else {
         callback();
       }
