@@ -75,29 +75,27 @@
                   </el-form-item>
                 </div>
                 <div>
-                  <el-form-item>
-                    <i class="el-icon-attract"></i>
-                    <span>关联父目标</span>
-                    <p
-                      v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
+                  <i class="el-icon-attract"></i>
+                  <span>关联父目标</span>
+                  <template
+                    v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
                       || oitem.cultureId"
+                  >
+                    <em
+                      v-if="oitem.undertakeOkrVo.undertakeOkrContent"
                       @click="openUndertake(index)"
-                    >
-                      <a
-                        v-if="oitem.undertakeOkrVo.undertakeOkrContent"
-                      >{{oitem.undertakeOkrVo.undertakeOkrContent}}</a>
-                      <a v-if="oitem.cultureId">{{oitem.cultureName}}</a>
-                    </p>
-                    <el-button
-                      type="text"
-                      @click.native="openUndertake(index)"
-                      class="tl-btn dotted-line"
-                      v-else
-                    >
-                      <i class="el-icon-plus"></i>
-                      关联
-                    </el-button>
-                  </el-form-item>
+                    >{{oitem.undertakeOkrVo.undertakeOkrContent}}</em>
+                    <em v-if="oitem.cultureId" @click="openUndertake(index)">{{oitem.cultureName}}</em>
+                  </template>
+                  <el-button
+                    type="text"
+                    @click.native="openUndertake(index)"
+                    class="tl-btn dotted-line"
+                    v-else
+                  >
+                    <i class="el-icon-plus"></i>
+                    关联
+                  </el-button>
                 </div>
               </dd>
             </dl>

@@ -520,8 +520,8 @@
   color: #879099;
 }
 
-.history-version .tag-kind.has-reason > span,
-.history-version .tag-kind.has-reason > em {
+.history-version .tag-kind > span,
+.history-version .tag-kind > em {
   align-self: start;
 }
 
@@ -583,6 +583,8 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
 }
 
@@ -780,6 +782,19 @@
 
 .okr-maps .operating-area .el-button > i {
   order: 1;
+}
+
+.okr-maps .okr-info dt em {
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.okr-maps .okr-info dt em:hover {
+  color: #685df1;
+}
+
+.okr-maps .okr-info dd em {
+  width: unset;
 }
 
 /* undertake-maps */
