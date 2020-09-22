@@ -148,21 +148,31 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
   },
+  props: {
+    worthType: {
+      type: String,
+      default: '1',
+    },
+  },
   mounted() {
     const self = this;
-    self.getOrgTable();
-    self.server.getOkrCycleList().then((res) => {
-      this.cycleData = res.data;
-      if (this.cycleData.length > 0) {
-        const cycObj = this.cycleData.filter((item) => item.checkStatus == '1')[0] || {};
-        this.periodId = cycObj.periodId;
-        this.handleCycleData(this.periodId);
-        this.worthPeriodId = cycObj.periodId;
-        this.handleWorthData(this.worthPeriodId);
-      }
-    });
+    self.init();
   },
   methods: {
+    init() {
+      const self = this;
+      self.getOrgTable();
+      self.server.getOkrCycleList().then((res) => {
+        this.cycleData = res.data;
+        if (this.cycleData.length > 0) {
+          const cycObj = this.cycleData.filter((item) => item.checkStatus == '1')[0] || {};
+          this.periodId = cycObj.periodId;
+          this.handleCycleData(this.periodId);
+          this.worthPeriodId = cycObj.periodId;
+          this.handleWorthData(this.worthPeriodId);
+        }
+      });
+    },
     drawLine(id) {
       this.charts = echarts.init(document.getElementById(id));
       this.charts.setOption({
@@ -315,6 +325,15 @@ export default {
           }
         }
       });
+    },
+  },
+  watch: {
+    worthType: {
+      handler() {
+        this.init();
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

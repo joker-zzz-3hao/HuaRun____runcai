@@ -14,6 +14,6 @@ export default class Server extends ServerBase {
   }
 
   queryFocusUserOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/queryFocusUserOkr', param);
+    return this._ajaxPost(`gateway/talent-query/okr/query/queryFocusUserOkr?userId=${param.userId}`, param);
   }
 }

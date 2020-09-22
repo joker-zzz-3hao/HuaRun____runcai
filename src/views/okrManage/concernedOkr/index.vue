@@ -15,18 +15,63 @@
         :class="item.targetId == selectUserId ? 'red' : 'green'"
         @click="selectUser(item)"
       >
-        <div style="display:flex;">
-          <div>
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <div style="display:flex;" class="user-info">
+          <div v-if="item.headUrl">
+            <el-avatar :src="item.headUrl"></el-avatar>
           </div>
-          <div>{{item.userName}}</div>
+          <div v-else-if="item.userName" class="user-name">
+            <em>{{item.userName.substring(item.userName.length-2)}}</em>
+          </div>
+          <div>{{item.targetName}}</div>
           <div>{{`(${item.orgName})`}}</div>
         </div>
         <div @click="cancelFocus(item)">取消关注</div>
       </div>
     </div>
-    <div>
-      <tl-okrCollapse :tableList="tableList"></tl-okrCollapse>
+    <div v-for="item in tableList" :key="item.okrMain.okrId">
+      <div class="card-panel-head">
+        <div class="okr-title">{{item.okrMain.periodName}}</div>
+        <dl class="okr-state">
+          <dt>
+            <i class="el-icon-set-up"></i>
+            <em>状态</em>
+          </dt>
+          <dd>
+            <i class="el-icon-sunny"></i>
+            <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
+          </dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dt>
+            <i class="el-icon-user"></i>
+            <em>负责人</em>
+          </dt>
+          <dd>{{item.okrMain.userName}}</dd>
+        </dl>
+        <dl class="okr-progress">
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <em>OKR进度</em>
+          </dt>
+          <dd>
+            <el-progress
+              type="circle"
+              :percentage="parseInt(item.okrMain.okrProgress, 10) || 0"
+              :width="70"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
+            ></el-progress>
+          </dd>
+        </dl>
+      </div>
+      <tl-okr-table
+        :overview="true"
+        :tableList="item.tableList"
+        :disabled="false"
+        :showOKRInfoLabel="true"
+        :expands="expands"
+      ></tl-okr-table>
     </div>
     <tl-focus
       v-if="exist"
@@ -40,7 +85,8 @@
 </template>
 
 <script>
-import okrCollapse from '@/components/okrCollapse';
+import okrTable from '@/components/okrTable';
+import CONST from './const';
 import focus from './components/focus';
 import Server from './server';
 
@@ -49,18 +95,27 @@ const server = new Server();
 export default {
   name: 'concernedOkr',
   components: {
-    'tl-okrCollapse': okrCollapse,
+    'tl-okr-table': okrTable,
     'tl-focus': focus,
   },
   data() {
     return {
       server,
+      CONST,
       focusList: [],
       exist: false,
       param: [],
       selectUserId: '',
       tableList: [],
     };
+  },
+  computed: {
+    expands() {
+      if (this.tableList.length > 0) {
+        return [this.tableList[0].okrDetailId];
+      }
+      return [];
+    },
   },
   mounted() {
     this.init();
@@ -86,12 +141,17 @@ export default {
       });
     },
     queryOKR() {
+      this.tableList = [];
       this.server.queryFocusUserOkr({
         userId: this.selectUserId,
       }).then((response) => {
         if (response.code == '200') {
-          console.log(response);
-          this.tableList = response.data;
+          response.data.forEach((item) => {
+            this.tableList.push({
+              okrMain: item.okrMain,
+              tableList: item.okrDetails,
+            });
+          });
         }
       });
     },

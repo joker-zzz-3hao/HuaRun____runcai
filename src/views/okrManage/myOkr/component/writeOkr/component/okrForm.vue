@@ -75,29 +75,27 @@
                   </el-form-item>
                 </div>
                 <div>
-                  <el-form-item>
-                    <i class="el-icon-attract"></i>
-                    <span>关联父目标</span>
-                    <p
-                      v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
+                  <i class="el-icon-attract"></i>
+                  <span>关联父目标</span>
+                  <template
+                    v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
                       || oitem.cultureId"
+                  >
+                    <em
+                      v-if="oitem.undertakeOkrVo.undertakeOkrContent"
                       @click="openUndertake(index)"
-                    >
-                      <a
-                        v-if="oitem.undertakeOkrVo.undertakeOkrContent"
-                      >{{oitem.undertakeOkrVo.undertakeOkrContent}}</a>
-                      <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
-                    </p>
-                    <el-button
-                      type="text"
-                      @click.native="openUndertake(index)"
-                      class="tl-btn dotted-line"
-                      v-else
-                    >
-                      <i class="el-icon-plus"></i>
-                      关联
-                    </el-button>
-                  </el-form-item>
+                    >{{oitem.undertakeOkrVo.undertakeOkrContent}}</em>
+                    <em v-if="oitem.cultureId" @click="openUndertake(index)">{{oitem.cultureName}}</em>
+                  </template>
+                  <el-button
+                    type="text"
+                    @click.native="openUndertake(index)"
+                    class="tl-btn dotted-line"
+                    v-else
+                  >
+                    <i class="el-icon-plus"></i>
+                    关联
+                  </el-button>
                 </div>
               </dd>
             </dl>
@@ -231,7 +229,7 @@
         <div class="drawer-title">关联承接项</div>
       </div>
       <undertake-table
-        v-if="selectIndex !== ''"
+        v-if="selectIndex !== '' && innerDrawer"
         ref="undertake"
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
@@ -528,6 +526,7 @@ export default {
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
+      console.log(' 提交关联', this.$refs.undertake.selectDepartRow);
       // eslint-disable-next-line max-len
       // 承接项的id、版本、名称
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';

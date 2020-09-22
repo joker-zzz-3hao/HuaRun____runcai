@@ -12,9 +12,10 @@
           childId="okrDetailId"
           :colAlign="false"
           :middlePoint="cardHight"
+          :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -31,9 +32,10 @@
           :colAlign="false"
           @handleTree="handleTree"
           :middlePoint="cardHight"
+          :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -109,6 +111,7 @@ export default {
       orgFullIdList: [],
       showCascader: false,
       cardHight: 59, // 块高度的一半
+      blockHeight: 170,
     };
   },
   computed: {
@@ -230,6 +233,39 @@ export default {
     },
     goback() {
       this.$router.back(-1);
+    },
+    takeOvierview(node = {}) {
+      this.server.identity({
+        orgId: node.orgId,
+        user: node.userId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: node.userId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+            },
+          });
+        }
+      });
     },
   },
   watch: {
