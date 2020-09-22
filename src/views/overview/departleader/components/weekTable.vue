@@ -21,8 +21,6 @@
             popper-class="tl-month-popper"
             class="tl-month-editor"
           ></el-date-picker>
-        </div>
-        <div class="flex-end">
           <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
             <el-option
               :key="index"
