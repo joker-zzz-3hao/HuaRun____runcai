@@ -130,7 +130,9 @@
 }
 
 /* ===========================================================主页视图================================================================= */
-.team-view .operating-box .dl-item dt {
+.team-view .operating-box .dl-item dt,
+.staff-view .operating-box .dl-item dt,
+.department-view .operating-box .dl-item dt {
   margin: 0 10px 0 0;
 }
 
@@ -141,6 +143,12 @@
 #okr-update-staff,
 #okr-schedule-staff,
 #okr-risk-line {
+  width: 100%;
+  height: 400px;
+}
+
+#okrSchedule,
+#okrCountUpdate {
   width: 100%;
   height: 400px;
 }
@@ -240,11 +248,23 @@
   width: 73%;
 }
 
+.overview .department-view .cont-area > .tl-card-panel:nth-child(2) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.overview .department-view .cont-area > .tl-card-panel:nth-child(2) .card-panel-inside {
+  width: 48%;
+}
+
 /* ==========================================================OKR管理================================================================== */
 .my-okr,
 .undertake-maps,
 .okr-approval-list,
-.team-view {
+.team-view,
+.staff-view,
+.department-view {
   padding: 50px 0 0 0;
 }
 
@@ -260,7 +280,9 @@
 .okr-maps .operating-area,
 .undertake-maps .operating-area,
 .okr-approval .operating-area,
-.team-view .operating-area {
+.team-view .operating-area,
+.staff-view .operating-area,
+.department-view .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -274,7 +296,9 @@
 .okr-maps .operating-area-inside,
 .undertake-maps .operating-area-inside,
 .okr-approval .operating-area-inside,
-.team-view .operating-area-inside {
+.team-view .operating-area-inside,
+.staff-view .operating-area-inside,
+.department-view .operating-area-inside {
   padding: 0 30px 0 206px;
   display: flex;
   justify-content: space-between;
@@ -285,26 +309,38 @@
   transition: all .4s ease-out;
 }
 
-.team-view .operating-area-inside  {
+.team-view .operating-area-inside,
+.staff-view .operating-area-inside,
+.department-view .operating-area-inside  {
   padding: 0 30px 0 0;
 }
 
-.team-view .operating-area-inside > em {
+.team-view .operating-area-inside > em,
+.staff-view .operating-area-inside > em,
+.department-view .operating-area-inside > em {
   cursor: pointer;
 }
 
-.team-view .operating-area-inside > i {
+.team-view .operating-area-inside > i,
+.staff-view .operating-area-inside > i,
+.department-view .operating-area-inside > i {
   margin: 0 0 0 10px;
   transform: rotate(90deg);
   cursor: pointer;
 }
 
 .team-view .operating-area-inside > em:hover,
-.team-view .operating-area-inside > i:hover {
+.team-view .operating-area-inside > i:hover,
+.staff-view .operating-area-inside > em:hover,
+.staff-view .operating-area-inside > i:hover,
+.department-view .operating-area-inside > em:hover,
+.department-view .operating-area-inside > i:hover {
   color: #685df1;
 }
 
 .team-view .tl-card-panel > em,
+.staff-view .tl-card-panel > em,
+.department-view .tl-card-panel > em,
 .overview .panner-title > span:last-child {
   padding: 2px 10px;
   display: inline-block;
@@ -328,7 +364,9 @@
 .okr-maps .operating-area-inside::before,
 .undertake-maps .operating-area-inside::before,
 .okr-approval .operating-area-inside::before,
-.team-view .operating-area-inside::before {
+.team-view .operating-area-inside::before,
+.staff-view .operating-area-inside::before,
+.department-view .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -345,7 +383,9 @@
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
 .okr-approval .cont-area，
-.team-view .cont-area {
+.team-view .cont-area,
+.staff-view .cont-area,
+.department-view .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -355,7 +395,9 @@
 .okr-maps .operating-area-inside .el-input .el-input__inner,
 .undertake-maps .operating-area-inside .el-input .el-input__inner,
 .okr-approval .operating-area-inside .el-input .el-input__inner,
-.team-view .operating-area-inside .el-input .el-input__inner {
+.team-view .operating-area-inside .el-input .el-input__inner,
+.staff-view .operating-area-inside .el-input .el-input__inner,
+.department-view .operating-area-inside .el-input .el-input__inner {
   background: #f4f6f8;
 }
 
@@ -897,7 +939,9 @@
 .my-okr .tl-select-dropdown.el-popper,
 .undertake-maps .tl-select-dropdown.el-popper,
 .okr-approval .tl-select-dropdown.el-popper,
-.team-view .tl-select-dropdown.el-popper {
+.team-view .tl-select-dropdown.el-popper,
+.staff-view .tl-select-dropdown.el-popper,
+.department-view .tl-select-dropdown.el-popper {
   margin-top: 12px;
 }
 

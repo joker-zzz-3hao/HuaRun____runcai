@@ -19,41 +19,43 @@
           <em v-show="testModel">(示例数据)</em>
         </div>
       </div>
-      <div class="card-panel-body">
-        <el-date-picker
-          format="yyyy-MM"
-          value-format="yyyy-MM"
-          v-model="dateTime"
-          @change="getDate"
-          :picker-options="pickerBeginDateBefore"
-          type="month"
-          :clearable="false"
-          placeholder="选择日期"
-          popper-class="tl-month-popper"
-          class="tl-month-editor"
-        ></el-date-picker>
+      <div class="card-panel-body flex-column">
+        <div class="flex-end">
+          <el-date-picker
+            format="yyyy-MM"
+            value-format="yyyy-MM"
+            v-model="dateTime"
+            @change="getDate"
+            :picker-options="pickerBeginDateBefore"
+            type="month"
+            :clearable="false"
+            placeholder="选择日期"
+            popper-class="tl-month-popper"
+            class="tl-month-editor"
+          ></el-date-picker>
+        </div>
+        <el-table :data="tableData" :show-header="false" style="width: 100%">
+          <el-table-column label="周报">
+            <template slot-scope="scope">
+              <span>{{scope.row.weekBegin}}~{{scope.row.weekEnd}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="本周心情">
+            <template slot-scope="scope">
+              <span
+                v-if="scope.row.weeklyEmotion!==null"
+              >本周心情:{{CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]}}</span>
+              <span v-else>未填写</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="提交时间">
+            <template slot-scope="scope">
+              <span v-if="scope.row.updateTime">提交时间:{{scope.row.updateTime}}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
-      <el-table :data="tableData" :show-header="false" style="width: 100%">
-        <el-table-column label="周报">
-          <template slot-scope="scope">
-            <span>{{scope.row.weekBegin}}~{{scope.row.weekEnd}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="本周心情">
-          <template slot-scope="scope">
-            <span
-              v-if="scope.row.weeklyEmotion!==null"
-            >本周心情:{{CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]}}</span>
-            <span v-else>未填写</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="提交时间">
-          <template slot-scope="scope">
-            <span v-if="scope.row.updateTime">提交时间:{{scope.row.updateTime}}</span>
-            <span v-else>--</span>
-          </template>
-        </el-table-column>
-      </el-table>
     </div>
   </div>
 </template>

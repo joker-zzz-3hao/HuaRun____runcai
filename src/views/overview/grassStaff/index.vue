@@ -2,7 +2,6 @@
   <div class="staff-view">
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
-
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <div class="panner-title">

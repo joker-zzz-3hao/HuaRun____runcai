@@ -1,15 +1,27 @@
 <template>
-  <div class="okrSchedule">
-    <div>
-      OKR当前进度
-      <span v-show="testModel">(示例数据)</span>
+  <div class="tl-card-panel">
+    <div class="card-panel-inside">
+      <div class="card-panel-head">
+        <div class="panner-title">
+          <em>OKR当前进度</em>
+          <span v-show="testModel">(示例数据)</span>
+        </div>
+      </div>
+      <div class="card-panel-body">
+        <div id="okrSchedule"></div>
+      </div>
     </div>
-    <div id="okrSchedule"></div>
-    <div>
-      OKR进度更新次数
-      <span v-show="testModel">(示例数据)</span>
+    <div class="card-panel-inside">
+      <div class="card-panel-head">
+        <div class="panner-title">
+          <em>OKR进度更新次数</em>
+          <span v-show="testModel">(示例数据)</span>
+        </div>
+      </div>
+      <div class="card-panel-body">
+        <div id="okrCountUpdate"></div>
+      </div>
     </div>
-    <div id="okrCountUpdate"></div>
   </div>
 </template>
 
@@ -330,18 +342,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-#okrSchedule {
-  width: 50%;
-  height: 400px;
-}
-#okrCountUpdate {
-  width: 50%;
-  height: 400px;
-}
-
-.okrSchedule {
-  display: flex;
-  flex-direction: row;
-}
-</style>

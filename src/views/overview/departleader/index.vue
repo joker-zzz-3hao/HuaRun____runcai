@@ -1,13 +1,8 @@
 <template>
-  <div class="team-view">
+  <div class="department-view">
     <div class="cont-area">
-      <div class="creatOkr">
-        <!-- <div>{{userInfo.userName}}</div> -->
-        <tl-org-page :periodId="periodId"></tl-org-page>
-      </div>
-      <div class="creatOkr">
-        <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
-      </div>
+      <tl-org-page :periodId="periodId"></tl-org-page>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
       <div class="creatOkr">
         <div>
           <em>
@@ -128,35 +123,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.flex {
-  display: flex;
-  flex-direction: row;
-}
-.creatOkr {
-  width: 100%;
-  min-height: 200px;
-  background: white;
-  margin-bottom: 30px;
-}
-
-.risk ul li {
-  background: #ffffff;
-  box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
-  border-radius: 4px;
-  border-radius: 4px;
-  width: 280px;
-  height: 114px;
-}
-
-.risk ul li dd {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-}
-
-.risk ul li dd em {
-  margin-top: 20px;
-}
-</style>
