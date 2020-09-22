@@ -1,8 +1,8 @@
 <template>
   <div class="operating-area">
     <div class="operating-area-inside">
-      <el-button @click="changeTest">{{testModel?'切换到我的数据':'切换到示例数据'}}</el-button>
-      <el-button v-if="$route.query.id" @click="back()">返回</el-button>
+      <em @click="changeTest">{{testModel?'切换到我的数据':'切换到示例数据'}}</em>
+      <i class="el-icon-sort"></i>
       <div class="operating-box">
         <dl class="dl-item">
           <dt>目标周期</dt>
@@ -24,6 +24,10 @@
             </el-select>
           </dd>
         </dl>
+        <el-button plain v-if="$route.query.id" @click="back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
       </div>
     </div>
   </div>

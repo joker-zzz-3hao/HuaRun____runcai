@@ -6,7 +6,7 @@
         <div class="card-panel-head">
           <div class="panner-title">
             <em>OKR当前进度</em>
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">(示例数据)</span>
           </div>
         </div>
         <div class="card-panel-body">
@@ -17,7 +17,7 @@
         <div class="card-panel-head">
           <div class="panner-title">
             <em>OKR进度更新榜</em>
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">(示例数据)</span>
           </div>
         </div>
         <div class="card-panel-body">
@@ -29,7 +29,7 @@
           <div class="panner-title">
             <em>OKR风险状态统计</em>
             <span>部门成员的OKR风险状态总数，点击可以查看对应的OKR列表</span>
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">(示例数据)</span>
           </div>
         </div>
         <div class="card-panel-body">
