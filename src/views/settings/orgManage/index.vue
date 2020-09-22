@@ -95,7 +95,7 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data,'create')" command="1">创建部门</el-dropdown-item>
+                <el-dropdown-item @click.native="createDepart(data,'create')">创建部门</el-dropdown-item>
                 <el-dropdown-item @click.native="createDepart(data,'edit')">编辑部门</el-dropdown-item>
                 <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
               </el-dropdown-menu>
@@ -110,7 +110,7 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData" class="tl-table">
+          <el-table v-loading="loading" :data="tableData" class="tl-table">
             <el-table-column min-width="200" align="left" prop="userId" label="用户ID"></el-table-column>
             <el-table-column min-width="150" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="150" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>

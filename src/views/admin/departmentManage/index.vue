@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="cont-area">
+    <div class="cont-area" style="flex-direction: row">
       <div class="department-tree">
         <el-input placeholder="输入部门名称" v-model.trim="filterText" clearable class="tl-input">
           <i class="el-icon-search el-input__icon" slot="prefix"></i>
@@ -77,7 +77,7 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data)" command="1">创建部门</el-dropdown-item>
+                <el-dropdown-item @click.native="createDepart(data)">创建部门</el-dropdown-item>
                 <el-dropdown-item @click.native="updateDepart(data)">编辑部门</el-dropdown-item>
                 <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
               </el-dropdown-menu>
@@ -92,7 +92,7 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData" class="tl-table">
+          <el-table v-loading="loading" :data="tableData" class="tl-table">
             <el-table-column min-width="200px" align="left" prop="userId" label="用户ID"></el-table-column>
             <el-table-column min-width="150px" align="left" prop="userName" label="用户姓名"></el-table-column>
             <el-table-column min-width="150px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
