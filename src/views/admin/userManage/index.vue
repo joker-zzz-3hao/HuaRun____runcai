@@ -147,7 +147,7 @@
       @closeUserDialog="closeUserDialog"
     ></create-user>
     <!-- 用户编辑 -->
-    <el-drawer
+    <!-- <el-drawer
       :modal="false"
       :append-to-body="false"
       :wrapperClosable="false"
@@ -155,17 +155,19 @@
       v-if="editDrawer"
       title="编辑用户"
       :before-close="closeUserDialog"
-    >
-      <edit-user
-        ref="createUser"
-        :treeData="treeData"
-        :server="server"
-        :userId="userId"
-        :tenantName="tenantName"
-        :globalOrgId="globalOrgId"
-        @closeUserDialog="closeUserDialog"
-      ></edit-user>
-    </el-drawer>
+    >-->
+    <edit-user
+      v-if="editDrawer"
+      :exist.sync="editDrawer"
+      ref="createUser"
+      :treeData="treeData"
+      :server="server"
+      :userId="userId"
+      :tenantName="tenantName"
+      :globalOrgId="globalOrgId"
+      @closeUserDialog="closeUserDialog"
+    ></edit-user>
+    <!-- </el-drawer> -->
   </div>
 </template>
 
@@ -254,9 +256,6 @@ export default {
         this.editDrawer = true;
       } else {
         this.showCreateUser = true;
-        this.$nextTick(() => {
-          this.$refs.createUser.show();
-        });
       }
     },
     // 关闭弹窗
