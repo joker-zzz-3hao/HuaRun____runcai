@@ -1,88 +1,103 @@
 <template>
   <div class="organize-management">
-    <div class="org-header">
-      <div>组织管理</div>
-    </div>
-    <div class="org-left-side">
-      <el-input placeholder="输入部门名称" style="width:300px" v-model="filterText" clearable>
-        <i class="el-icon-search el-input__icon" slot="prefix"></i>
-      </el-input>
-      <el-tree
-        ref="organizeTree"
-        style="height:300px"
-        :data="treeData"
-        node-key="orgId"
-        :default-expanded-keys="defaultExpandNode"
-        :props="defaultProps"
-        @node-click="searchList"
-        :expand-on-click-node="false"
-        :highlight-current="true"
-        :filter-node-method="filterNode"
-      >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ node.label }}</span>
-          <span>
-            <i @click="hoverDepart(data)" style="margin-left:150px;" class="el-icon-more"></i>
-            <div @mouseleave.stop="outDepart(data)" v-show="data.isShow">
-              <div style="marginLeft:250px" @click="createDepart(data)">创建部门</div>
-              <div style="marginLeft:250px" @click="updateDepart(data)">编辑部门</div>
-              <div style="marginLeft:250px" @click="deleteDepart(data)">删除</div>
-            </div>
-          </span>
-        </span>
-      </el-tree>
-    </div>
-    <div class="org-right-side">
-      <!-- <div slot="searchBar"> -->
-      <el-form @keyup.enter.native="searchList()">
-        <el-form-item>
-          <el-select
-            v-model.trim="tenantId"
-            placeholder="选择租户"
-            :popper-append-to-body="false"
-            clearable
-          >
-            <el-option
-              v-for="item in tenantList"
-              :key="item.tenantId"
-              :label="item.tenantName"
-              :value="item.tenantId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            placeholder="输入用户姓名/账号/手机号"
-            v-model.trim="searchData.keyWord"
-            style="width:300px"
-            clearable
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <!-- </div>
-      <div slot="actionBar">-->
-      <div>
-        <el-button @click="searchList">查询</el-button>
+    <div class="operating-area">
+      <div class="page-title">组织管理</div>
+      <div class="operating-box">
+        <div class="flex-auto">
+          <el-form @keyup.enter.native="searchList()" class="tl-form">
+            <el-form-item>
+              <el-select
+                v-model.trim="tenantId"
+                placeholder="选择租户"
+                :popper-append-to-body="false"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in tenantList"
+                  :key="item.tenantId"
+                  :label="item.tenantName"
+                  :value="item.tenantId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                placeholder="输入用户姓名/账号/手机号"
+                v-model.trim="searchData.keyWord"
+                clearable
+                class="tl-input"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button plain class="tl-btn" @click="searchList">查询</el-button>
+        </div>
+        <div class="operating-right">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            class="tl-btn amt-bg-slip"
+            @click="createDepart"
+          >创建部门</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            class="tl-btn amt-bg-slip"
+            @click="createOrEditUser"
+          >创建用户</el-button>
+          <el-button plain icon="el-icon-minus" class="tl-btn amt-border-slip" @click="batchImport">
+            批量导入
+            <span class="lines"></span>
+          </el-button>
+        </div>
       </div>
-      <div>
-        <el-button @click="createDepart">创建部门</el-button>
-        <el-button @click="createOrEditUser">创建用户</el-button>
-        <el-button @click="batchImport">批量导入</el-button>
+    </div>
+    <div class="cont-area">
+      <div class="department-tree">
+        <el-input placeholder="输入部门名称" v-model.trim="filterText" clearable class="tl-input">
+          <i class="el-icon-search el-input__icon" slot="prefix"></i>
+        </el-input>
+        <el-tree
+          ref="organizeTree"
+          :data="treeData"
+          node-key="orgId"
+          :default-expanded-keys="defaultExpandNode"
+          :props="defaultProps"
+          @node-click="searchList"
+          :expand-on-click-node="true"
+          :highlight-current="true"
+          :filter-node-method="filterNode"
+          class="tl-tree"
+        >
+          <div class="tree-title" slot-scope="{ node, data }">
+            <em>{{ node.label }}</em>
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <i class="el-icon-more el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="createDepart(data)" command="1">创建部门</el-dropdown-item>
+                <el-dropdown-item @click.native="updateDepart(data)">编辑部门</el-dropdown-item>
+                <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </el-tree>
       </div>
-      <!-- </div> -->
       <crcloud-table
         :total="total"
         :pageSize.sync="pageSize"
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
-        <div slot="tableContainer">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="tenantName" label="所属租户"></el-table-column>
+        <div slot="tableContainer" class="table-container">
+          <el-table ref="orgTable" v-loading="loading" :data="tableData" class="tl-table">
+            <el-table-column min-width="200px" align="left" prop="userId" label="用户ID"></el-table-column>
+            <el-table-column min-width="150px" align="left" prop="userName" label="用户姓名"></el-table-column>
+            <el-table-column min-width="150px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
+            <el-table-column min-width="120px" align="left" prop="userMobile" label="手机号"></el-table-column>
+            <el-table-column min-width="120px" align="left" prop="tenantName" label="所属租户"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
@@ -108,14 +123,26 @@
                 <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="130px" align="left" prop="corpGroupName" label="操作">
+            <el-table-column
+              width="100px"
+              align="left"
+              prop="corpGroupName"
+              label="操作"
+              fixed="right"
+            >
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   v-if="scope.row.userType=='2'"
                   @click="createOrEditUser(scope.row)"
+                  class="tl-btn"
                 >编辑</el-button>
-                <el-button type="text" v-if="scope.row.userType=='2'" @click="info(scope.row)">详情</el-button>
+                <el-button
+                  type="text"
+                  v-if="scope.row.userType=='2'"
+                  @click="info(scope.row)"
+                  class="tl-btn"
+                >详情</el-button>
                 <div v-else>--</div>
               </template>
             </el-table-column>
@@ -474,18 +501,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.org-header {
-  height: 100px;
-}
-.org-left-side {
-  width: 400px;
-  height: 600px;
-}
-.org-right-side {
-  width: 80%;
-  height: 90%;
-  position: absolute;
-  left: 400px;
-}
-</style>
