@@ -13,7 +13,7 @@
       :title="departOptionType=='create'?'创建部门':'编辑部门'"
       :close-on-click-modal="false"
     >
-      <el-form ref="departForm" :model="formData">
+      <el-form ref="departForm" :model="formData" label-width="80px">
         <el-form-item
           label="部门名称"
           prop="orgName"

@@ -14,7 +14,7 @@
       :close-on-click-modal="false"
     >
       <div>
-        <el-form ref="dicForm" :model="formData">
+        <el-form ref="dicForm" :model="formData" label-width="80px">
           <el-form-item
             label="字典编号"
             prop="code"

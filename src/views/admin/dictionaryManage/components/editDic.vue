@@ -30,6 +30,7 @@
             :disabled="this.optionType == 'edit'"
             maxlength="50"
             clearable
+            style="width:90%"
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -37,7 +38,7 @@
           prop="name"
           :rules="[{required:true,validator:validateDicName,trigger:'blur'}]"
         >
-          <el-input v-model.trim="formData.name" maxlength="50" clearable></el-input>
+          <el-input v-model.trim="formData.name" maxlength="50" clearable style="width:90%"></el-input>
         </el-form-item>
         <el-form-item
           label="状态"
@@ -50,7 +51,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="description">
-          <el-input v-model.trim="formData.description" maxlength="100" clearable></el-input>
+          <el-input v-model.trim="formData.description" maxlength="100" clearable style="width:90%"></el-input>
         </el-form-item>
       </el-form>
       <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
@@ -104,7 +105,7 @@
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime">
             <template slot-scope="scope">
-              <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+              <div>{{scope.row.createTime? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="code">
