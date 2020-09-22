@@ -142,16 +142,17 @@ export default {
         orgId: this.$route.query.id,
       }).then((res) => {
         this.moodDataX = res.data.map((item) => `${item.weekBegin}至${item.weekEnd}`);
-        this.moodDataY = res.data.map((item) => ({
-          product: `${item.weekBegin}至${item.weekEnd}`,
+        this.moodDataY = res.data.map((item) => ([
+          `${item.weekBegin}至${item.weekEnd}`,
           ...item.emotionList.map((li) => li.weeklyNumber),
-        }));
+        ]));
         this.initMood();
       });
     },
     init() {
       const that = this;
       const myChart = echarts.init(document.getElementById('weeking'));
+      console.log(that.moodDataY);
       const option = {
         tooltip: {
           trigger: 'item',
@@ -238,22 +239,23 @@ export default {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            return `<div>沮丧${params.data['0']}</div>
-            <div>平常${params.data['50'] ? params.data['50'] : 0}</div>
-            <div>开心${params.data['100'] ? params.data['50'] : 0}</div>`;
+            console.log(params);
+            return `<div>让我静静${params.data[1]}</div>
+            <div>还行吧${params.data[2] ? params.data[2] : 0}</div>
+            <div>有收获${params.data[3] ? params.data[3] : 0}</div>`;
           },
         },
         legend: {
           data: ['0', '50', '100'],
           formatter(params) {
             if (params == '0') {
-              return '沮丧';
+              return '让我静静';
             }
             if (params == '50') {
-              return '平常';
+              return '还行吧';
             }
             if (params == '100') {
-              return '开心';
+              return '有收获';
             }
           },
         },

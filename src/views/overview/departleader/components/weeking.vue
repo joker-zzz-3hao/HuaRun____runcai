@@ -447,13 +447,13 @@ export default {
           data: ['0', '50', '100'],
           formatter(params) {
             if (params == '0') {
-              return '沮丧';
+              return '让我静静';
             }
             if (params == '50') {
-              return '平常';
+              return '还行吧';
             }
             if (params == '100') {
-              return '开心';
+              return '有收获';
             }
           },
         },
@@ -461,9 +461,9 @@ export default {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            return `<div>沮丧${params.data[1]}</div>
-            <div>平常${params.data[2] ? params.data[2] : 0}</div>
-            <div>开心${params.data[3] ? params.data[3] : 0}</div>`;
+            return `<div>让我静静${params.data[1]}</div>
+            <div>还行吧${params.data[2] ? params.data[2] : 0}</div>
+            <div>有收获${params.data[3] ? params.data[3] : 0}</div>`;
           },
         },
         xAxis: {

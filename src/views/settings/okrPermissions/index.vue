@@ -15,7 +15,7 @@
             <el-radio v-model="radio['O-1']" label="O" class="tl-radio">开启 ( 开启后OKR在审核后可再次编辑 )</el-radio>
             <el-radio v-model="radio['O-1']" label="S" class="tl-radio">关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio>
           </dd>
-          <dt>
+          <!-- <dt>
             <em>OKR</em>
             <span>制定个人OKR</span>
           </dt>
@@ -30,13 +30,13 @@
           <dd>
             <el-radio v-model="radio['O-3']" label="O" class="tl-radio">开启 ( 开启后部门负责人可制定部门OKR )</el-radio>
             <el-radio v-model="radio['O-3']" label="S" class="tl-radio">关闭 ( 关闭后部门负责人不可制定部门OKR )</el-radio>
-          </dd>
+          </dd>-->
         </dl>
         <el-form ref="form" label-width="110px">
           <dt>
             <span>公司ＯＫＲ（根组织ＯＫＲ）审批人设置</span>
           </dt>
-          <el-form-item label="设置审批人：" :inline="true">
+          <el-form-item label="设置审批人：">
             <el-input
               v-model="spUser.userName"
               :disabled="true"
@@ -49,7 +49,7 @@
           <dt>
             <span>公司ＯＫＲ（根组织ＯＫＲ）考核人设置</span>
           </dt>
-          <el-form-item label="设置审批人：" :inline="true" prop>
+          <el-form-item label="设置审批人：">
             <el-input
               v-model="khUser.userName"
               :disabled="true"

@@ -13,30 +13,32 @@
           <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
         </div>
       </div>
-      <div class="creatOkr">
-        <div>
-          OKR进度更新榜
-          <em v-show="testModel">(示例数据)</em>
-        </div>
-        <tl-okr-update :mainData="mainData"></tl-okr-update>
-      </div>
-      <div class="creatOkr">
-        <div>
-          OKR风险状态统计
-          <span>
-            部门成员的OKR风险状态总数，点击可以查看对应的OKR列表
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR进度更新榜</em>
             <em v-show="testModel">(示例数据)</em>
-          </span>
-        </div>
-        <div>
-          <div style="display:inline-block">
-            <tl-okr-risk-total
-              :tableData="tableData"
-              :mainData="mainData"
-              :periodId="periodId"
-              :setOrgId="setOrgId"
-            ></tl-okr-risk-total>
           </div>
+        </div>
+        <div class="card-panel-body">
+          <tl-okr-update :mainData="mainData"></tl-okr-update>
+        </div>
+      </div>
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR风险状态统计</em>
+            <span>部门成员的OKR风险状态总数，点击可以查看对应的OKR列表</span>
+            <em v-show="testModel">(示例数据)</em>
+          </div>
+        </div>
+        <div class="card-panel-body">
+          <tl-okr-risk-total
+            :tableData="tableData"
+            :mainData="mainData"
+            :periodId="periodId"
+            :setOrgId="setOrgId"
+          ></tl-okr-risk-total>
         </div>
       </div>
       <tl-weeking></tl-weeking>
