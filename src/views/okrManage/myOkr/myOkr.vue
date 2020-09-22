@@ -185,7 +185,7 @@
         <em>加载中...</em>
       </div>
       <div v-else class="tl-card-panel no-data">
-        <div class="bg-no-data">暂无数据</div>
+        <div class="bg-no-data"></div>
       </div>
     </div>
 
