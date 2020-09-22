@@ -34,15 +34,60 @@
               </template>
               <a v-else @click="okrCheck(okrItem.okrDetailId,0)">返回</a>
             </dt>
-            <dd v-if="personList.length > 0">
+            <dd v-if="personList.length > 0 || okrItem.undertakeCount > 0">
               <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
               <el-button type="primary" @click="openUpdate(okrItem)" class="tl-btn amt-bg-slip">更新进展</el-button>
             </dd>
             <dd v-else>暂无可对齐的支撑项</dd>
           </dl>
           <!-- 对齐的内容 -->
-          <div>
+          <div v-if="checkStatus === 1">
             <dl v-for="(pitem) in personList" :key="pitem.id">
+              <dt>
+                <span>{{pitem[0].userName}}</span>
+                <span>({{pitem.length}})</span>
+              </dt>
+              <el-timeline>
+                <el-timeline-item
+                  v-for="(okritem, okrindex) in pitem"
+                  :key="okrindex"
+                  :timestamp="okritem.createTime"
+                  placement="top"
+                >
+                  <div>
+                    <dd v-if="okritem.operateType == '5'">
+                      <span v-if="okritem.okrDetailType == 0">目标O</span>
+                      <span v-else>关键结果KR</span>
+                      <em>{{okritem.okrContent}}</em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '5'">
+                      <span>更新说明</span>
+                      <em>{{okritem.remark}}</em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>周报周期</span>
+                      <em></em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>支撑项</span>
+                      <em>{{okritem.okrContent}}</em>
+                    </dd>
+                    <dd>
+                      <span>来自-</span>
+                      <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
+                    </dd>
+                    <dd>
+                      <span>本次更新进度</span>
+                      <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                      <em v-else>{{okritem.okrDetailProgress}}%</em>
+                    </dd>
+                  </div>
+                </el-timeline-item>
+              </el-timeline>
+            </dl>
+          </div>
+          <div v-else>
+            <dl v-for="(pitem) in okrItem.historyList" :key="pitem.id">
               <dt>
                 <span>{{pitem[0].userName}}</span>
                 <span>({{pitem.length}})</span>
@@ -163,6 +208,21 @@ export default {
               item.undertakeCount = 0;
               item.historyList.forEach((hitem) => {
                 item.undertakeCount += hitem.length;
+                if (hitem.length > 0) {
+                  this.undertakeCount += hitem.length;
+                  hitem.forEach((citem) => {
+                    const contentObject = JSON.parse(citem.content) || {};
+                    // eslint-disable-next-line max-len
+                    if (citem.operateType == '5') {
+                      citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
+                    } else if (
+                      citem.operateType == '6'
+                    ) {
+                      citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
+                    }
+                    citem.remark = citem.reason || '暂无';
+                  });
+                }
               });
             }
           });
