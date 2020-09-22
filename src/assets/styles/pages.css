@@ -248,33 +248,82 @@
   width: 73%;
 }
 
-.overview .department-view .cont-area > .tl-card-panel:nth-child(2) {
+.overview .department-view .cont-area > .tl-card-panel:nth-child(2),
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.overview .department-view .cont-area > .tl-card-panel:nth-child(2) .card-panel-inside {
+.overview .department-view .cont-area > .tl-card-panel:nth-child(2) .card-panel-insidem,
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) .card-panel-inside {
   width: 48%;
 }
 
+.department-view .tl-card-panel-group {
+  margin: 20px 0 0 0;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .department-view .tl-card-panel-group dl {
-  padding: 14px;
+  position: relative;
+  padding: 14px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 200px;
+  width: 190px;
+}
+
+.department-view .tl-card-panel-group dl::before {
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  bottom: 14px;
+  content: '';
+  width: 3px;
+  background: #000;
 }
 
 .department-view .tl-card-panel-group dt {
-  flex: 0 0 100px;
+  flex: 0 0 60px;
+  font-size: 16px;
   overflow: hidden;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.department-view .tl-card-panel-group dt,
+.department-view .tl-card-panel-group dd {
+  margin: 10px 0;
+}
+
+.department-view .tl-card-panel-group dt {
+  position: relative;
+}
+
+.department-view .tl-card-panel-group dt::before {
+  position: absolute;
+}
+
+.department-view .tl-card-panel-group dd span {
+  margin: 0 10px 0 0;
+  font-size: 12px;
+  color: #acb6bf;
+}
+
+.department-view .tl-card-panel-group dd em {
+  font-family: DINAlternate-Bold;
+  font-size: 14px;
+  color: #222426;
+}
+
+.department-view .tl-card-panel-group dd:nth-of-type(1) em {
+  font-size: 26px;
 }
 
 /* ==========================================================OKR管理================================================================== */
