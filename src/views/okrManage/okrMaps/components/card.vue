@@ -1,16 +1,21 @@
 <template>
   <div class="maps-card">
-    <dl class="okr-info">
-      <dt @click.stop="goDetail(node.node.okrId)">
+    <dl class="okr-info" @click.stop="goDetail(node.node.okrId)">
+      <dt>
         <em>{{node.node.okrDetailObjectKr}}</em>
       </dt>
       <dd class="tag-kind">
-        <span class="kind-child">KR</span>
+        <!-- <span class="kind-child">KR</span> -->
         <span>关键成果</span>
         <em>{{node.node.krCount}}</em>
       </dd>
     </dl>
-    <tl-process :data="node.node.okrProgress" :width="36" :marginLeft="6"></tl-process>
+    <tl-process
+      @click.stop="goDetail(node.node.okrId)"
+      :data="node.node.okrProgress"
+      :width="36"
+      :marginLeft="6"
+    ></tl-process>
     <div class="department-info" @click.stop="takeOvierview(node.node)">
       <span>负责人</span>
       <em>{{node.node.userName}}</em>

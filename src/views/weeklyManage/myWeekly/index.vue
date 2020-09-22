@@ -1,6 +1,17 @@
 <template>
   <div class="my-weekly">
-    <div>
+    <div v-if="!showReal" class="show-pic">
+      <div class="pic-one">
+        <img src="~@/assets/images/demoPic/myweekly01.png" />
+      </div>
+      <div class="pic-two">
+        <img src="~@/assets/images/demoPic/myweekly02.png" />
+      </div>
+      <div class="pic-three">
+        <img src="~@/assets/images/demoPic/myweekly03.png" />
+      </div>
+    </div>
+    <div v-if="showReal">
       <div class="page-title">我的周报</div>
       <!-- <div class="operating-box" :class="{'visibility-hidden': weeklyTypeList.length > 0 }"> -->
       <div class="operating-box" v-if="weeklyTypeList.length > 0">
@@ -15,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="cont-area" v-show="weeklyTypeList.length > 0">
+    <div v-if="showReal" class="cont-area" v-show="weeklyTypeList.length > 0">
       <!-- 日期 -->
       <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
       <div class="weekly-area" v-if="newPage">
@@ -82,6 +93,7 @@ export default {
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
+      showReal: false, // 展示示例图片 false
     };
   },
   created() {
@@ -234,5 +246,34 @@ export default {
 }
 .is-simple {
   background: green;
+}
+.show-pic {
+  display: flex;
+  flex-direction: column;
+}
+.pic-one {
+  background: url("~@/assets/images/demoPic/myweekly01.png") no-repeat;
+  /* background-size: cover; */
+  background-size: 100%;
+  flex: 1;
+}
+.pic-one img,
+.pic-two img,
+.pic-three img {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+}
+.pic-two {
+  background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
+  /* background-size: cover; */
+  background-size: 100%;
+  flex: 1;
+}
+.pic-three {
+  background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
+  /* background-size: cover; */
+  background-size: 100%;
+  flex: 1;
 }
 </style>

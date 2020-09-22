@@ -73,7 +73,7 @@
     </div>
     <div class="cont-area">
       <div class="department-tree">
-        <el-input placeholder="输入部门名称" v-model="filterText" clearable class="tl-input">
+        <el-input placeholder="输入部门名称" v-model.trim="filterText" clearable class="tl-input">
           <i class="el-icon-search el-input__icon" slot="prefix"></i>
         </el-input>
         <el-tree
@@ -90,15 +90,6 @@
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <!-- <div class="tree-operating-box" :class="{'is-selected':isShow}">
-              <i @click="hoverDepart(data)" class="el-icon-more"></i>
-              <ul class="operating-box-popup">
-                <li @click.stop="createDepart(data,'create')">创建部门</li>
-                <li @click.stop="createDepart(data,'edit')">编辑部门</li>
-                <li @click.stop="deleteDepart(data)">删除</li>
-              </ul>
-            </div>-->
-            <!-- <el-dropdown trigger="click"> -->
             <el-dropdown>
               <span class="el-dropdown-link">
                 <i class="el-icon-more el-icon--right"></i>
@@ -278,7 +269,7 @@ import CONST from './const';
 const server = new Server();
 
 export default {
-  name: 'organizeManagement',
+  name: 'orgManage',
   components: {
     'create-department': createDepart,
     'create-user': createUser,
