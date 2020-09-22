@@ -18,13 +18,13 @@
           <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress>
         </li>
       </ul>
+      <el-popover ref="popover4" placement="right-end" trigger="click" v-model="visible">
+        <el-table :data="okrData" style="width: 100%">
+          <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
+          <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
+        </el-table>
+      </el-popover>
     </div>
-    <el-popover ref="popover4" placement="right" trigger="click" v-model="visible">
-      <el-table :data="okrData" style="width: 100%">
-        <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
-        <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
-      </el-table>
-    </el-popover>
   </div>
 </template>
 
@@ -140,7 +140,7 @@ export default {
                 color(params) {
                   // 自定义颜色
                   const colorList = [
-                    '#FFBC20', '#4CCD79', '#FB4C59',
+                    '#4CCD79', '#FFBC20', '#FB4C59',
                   ];
                   return colorList[params.dataIndex];
                 },
@@ -194,7 +194,7 @@ export default {
                 color(params) {
                   // 自定义颜色
                   const colorList = [
-                    '#FFBC20', '#4CCD79', '#FB4C59',
+                    '#4CCD79', '#FFBC20', '#FB4C59',
                   ];
                   return colorList[params.dataIndex];
                 },

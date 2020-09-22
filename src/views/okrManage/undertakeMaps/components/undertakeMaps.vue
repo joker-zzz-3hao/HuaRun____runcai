@@ -15,7 +15,7 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node" @takeOvierview="takeOvierview"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview(props.node)"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -35,7 +35,7 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node" @takeOvierview="takeOvierview"></card>
+            <card :node="props.node" @takeOvierview="takeOvierview(props.node)"></card>
           </div>
         </tl-svgtree>
       </div>
@@ -234,7 +234,7 @@ export default {
     goback() {
       this.$router.back(-1);
     },
-    takeOvierview(node = {}) {
+    takeOvierview(node) {
       this.server.identity({
         orgId: node.orgId,
         user: node.userId,
@@ -261,7 +261,7 @@ export default {
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: node.userId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+              id: node.userId, name: encodeURI(node.userName), userId: node.userId, tenantId: node.tenantId,
             },
           });
         }
