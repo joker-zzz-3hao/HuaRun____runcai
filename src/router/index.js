@@ -5,7 +5,6 @@ import {
 } from '@/lib/util';
 // getOrigin,
 import VueRouter from 'vue-router';
-import qs from 'qs';
 import loginJs from './login';
 import consoleJs from './console';
 import settingsJs from './settings';
@@ -98,21 +97,39 @@ router.beforeEach((to, from, next) => {
       if (!hasPower(to.meta.power)) {
         next('/exception403');
       } else if (to.name == 'overview') {
-        const url = `gateway/talent-query/home/person/identity?${qs.stringify({
-          user: window.$store.getters['common/userInfo'].userId,
-          orgId: window.$store.getters['common/userInfo'].orgId,
-        })}`;
-        window.$ajax.post(url).then((res) => {
-          if (res.data.data.identityType == 'org') {
+        if (window.$store.getters['common/getIdentity'].data) {
+          console.log(window.$store.getters['common/getIdentity']);
+          const { identityType } = window.$store.getters['common/getIdentity'].data;
+          console.log(identityType);
+          if (identityType == 'org') {
             next('/departleader');
           }
-          if (res.data.data.identityType == 'team') {
+          if (identityType == 'team') {
             next('/teamleader');
           }
-          if (res.data.data.identityType == 'person') {
+          if (identityType == 'person') {
             next('/grassStaff');
           }
-        });
+        } else {
+          console.log(window.$store.getters['common/userInfo']);
+          window.$store.dispatch('common/getUserType', {
+            user: window.$store.getters['common/userInfo'].userId,
+            orgId: window.$store.getters['common/userInfo'].orgId,
+          }).then((res) => {
+            console.log(res);
+            const { identityType } = res.data;
+            console.log(identityType);
+            if (identityType == 'org') {
+              next('/departleader');
+            }
+            if (identityType == 'team') {
+              next('/teamleader');
+            }
+            if (identityType == 'person') {
+              next('/grassStaff');
+            }
+          });
+        }
       } else {
         next();
       }
