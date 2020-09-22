@@ -20,7 +20,7 @@
   >
     <div>
       <el-form ref="userForm" :model="formData" label-width="80px">
-        <el-form-item>
+        <el-form-item label="用户名称">
           <span>{{formData.userName}}</span>
         </el-form-item>
         <el-form-item label="用户账号">
