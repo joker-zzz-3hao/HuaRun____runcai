@@ -159,7 +159,8 @@
 .my-okr .operating-area-inside,
 .okr-maps .operating-area-inside,
 .undertake-maps .operating-area-inside,
-.okr-approval .operating-area-inside {
+.okr-approval .operating-area-inside,
+.team-view .operating-area-inside {
   padding: 0 30px 0 206px;
   display: flex;
   justify-content: space-between;
@@ -200,7 +201,8 @@
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
-.okr-approval .cont-area {
+.okr-approval .cont-area，
+.team-view .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
