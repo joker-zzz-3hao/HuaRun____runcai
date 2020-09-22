@@ -2,12 +2,16 @@
   <div class="team-view">
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
-      <div class="creatOkr">
-        <div>
-          OKR当前进度
-          <em v-show="testModel">(示例数据)</em>
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR当前进度</em>
+            <em v-show="testModel">(示例数据)</em>
+          </div>
         </div>
-        <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
+        <div class="card-panel-body">
+          <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
+        </div>
       </div>
       <div class="creatOkr">
         <div>

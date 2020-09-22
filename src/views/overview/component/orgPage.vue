@@ -42,7 +42,6 @@
             </dd>
           </dl>
         </div>
-
         <div class="card-panel-body">
           <tl-okr-table
             :overview="true"
@@ -60,43 +59,27 @@
           <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
         </div>
       </template>
-    </div>
-
-    <div class="tl-card-panel" v-if="orgUser.length!==0||orgTable.length!==0">
-      <div class="card-panel-head">
-        <!-- <div class="pannel-title">
-          <template v-if="orgUser&&this.$route.name!=='grassStaff'">
-            <em>{{departmentName}}</em>
-            <span>成员OKR</span>
-          </template>
-          <template v-if="orgTable">
-            <em>{{departmentName}}</em>
-          </template>
-        </div>-->
+      <div class="card-panel-body img-list" v-if="orgUser">
+        <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <div class="user-name">
+              <em>{{cutName(item.userName)}}</em>
+            </div>
+          </dt>
+          <dd>{{item.userName}}</dd>
+        </dl>
       </div>
-      <div class="card-panel-body img-list">
-        <template v-if="orgUser">
-          <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
-            <dt class="user-info">
-              <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-              <div class="user-name">
-                <em>{{cutName(item.userName)}}</em>
-              </div>
-            </dt>
-            <dd>{{item.userName}}</dd>
-          </dl>
-        </template>
-        <template v-if="orgTable">
-          <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
-            <dt class="user-info">
-              <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-              <div class="user-name">
-                <em>{{cutName(item.orgName)}}</em>
-              </div>
-            </dt>
-            <dd>{{item.orgName}}</dd>
-          </dl>
-        </template>
+      <div class="card-panel-body img-list" v-if="orgTable">
+        <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <div class="user-name">
+              <em>{{cutName(item.orgName)}}</em>
+            </div>
+          </dt>
+          <dd>{{item.orgName}}</dd>
+        </dl>
       </div>
     </div>
   </div>

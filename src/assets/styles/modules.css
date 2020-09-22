@@ -2610,6 +2610,10 @@
   align-items: center;
 }
 
+.card-panel-body ~ .card-panel-body {
+  margin: 20px 0 0 0;
+}
+
 .card-panel-body .el-table::before {
   width: unset;
 }
@@ -2883,6 +2887,7 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 .state-grid {
