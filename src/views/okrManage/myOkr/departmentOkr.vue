@@ -69,6 +69,7 @@
               >
                 <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
               </div>
+              <div v-else>暂无</div>
             </template>
             <template slot="body-bar" slot-scope="props">
               <div
@@ -77,6 +78,7 @@
               >
                 <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
               </div>
+              <div v-else>暂无</div>
             </template>
           </tl-okr-table>
         </div>
