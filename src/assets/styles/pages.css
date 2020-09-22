@@ -197,6 +197,18 @@
   color: #acb6bf;
 }
 
+.okr-risk-total .tl-card-panel-group dl:nth-of-type(1) .current-progress {
+  background: #4ccd79;
+}
+
+.okr-risk-total .tl-card-panel-group dl:nth-of-type(2) .current-progress {
+  background: #ffbc20;
+}
+
+.okr-risk-total .tl-card-panel-group dl:nth-of-type(3) .current-progress {
+  background: #fb4c59;
+}
+
 .weeking .card-panel-body {
   position: relative;
 }
@@ -263,6 +275,30 @@
 
 .team-view .operating-area-inside  {
   padding: 0 30px 0 0;
+}
+
+.team-view .operating-area-inside > em {
+  cursor: pointer;
+}
+
+.team-view .operating-area-inside > i {
+  margin: 0 0 0 10px;
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+
+.team-view .operating-area-inside > em:hover,
+.team-view .operating-area-inside > i:hover {
+  color: #685df1;
+}
+
+.team-view .tl-card-panel > em,
+.overview .panner-title > span:last-child {
+  padding: 2px 10px;
+  display: inline-block;
+  background: #685df1;
+  border-radius: 4px;
+  color: #fff;
 }
 
 .no-sub-menu + .my-okr .operating-area {

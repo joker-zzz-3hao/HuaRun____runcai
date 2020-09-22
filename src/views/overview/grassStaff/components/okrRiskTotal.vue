@@ -4,7 +4,7 @@
     <div class="model">
       <div>
         周报
-        <em v-show="testModel">(示例数据)</em>
+        <span v-show="testModel">(示例数据)</span>
       </div>
       <el-date-picker
         format="yyyy-MM"

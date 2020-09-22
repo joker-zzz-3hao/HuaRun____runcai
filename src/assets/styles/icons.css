@@ -40,6 +40,14 @@
   background-position-y: -120px;
 }
 
+.main-menu .task-menu i {
+  background-position-y: -90px;
+}
+
+.main-menu .note-menu i {
+  background-position-y: -240px;
+}
+
 
 
 

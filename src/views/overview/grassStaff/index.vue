@@ -9,21 +9,21 @@
       <div class="create">
         <div>
           OKR当前进度数据
-          <em v-show="testModel">(示例数据)</em>
+          <span v-show="testModel">(示例数据)</span>
         </div>
         <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
       </div>
       <div class="create">
         <div>
           进度更新次数趋势
-          <em v-show="testModel">(示例数据)</em>
+          <span v-show="testModel">(示例数据)</span>
         </div>
         <tl-okr-update :mainData="mainData"></tl-okr-update>
       </div>
       <div class="create">
         <div>
           OKR风险状态统计
-          <em v-show="testModel">(示例数据)</em>
+          <span v-show="testModel">(示例数据)</span>
         </div>
         <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
       </div>

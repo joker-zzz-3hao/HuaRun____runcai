@@ -3,7 +3,7 @@
     <div class="model">
       <div>
         OKR风险状态统计
-        <em v-show="testModel">(示例数据)</em>
+        <span v-show="testModel">(示例数据)</span>
       </div>
       <!-- <div>
         <el-select placeholder="请选择" class="selectTime" v-model="periodId" @change="changeTime">
@@ -35,7 +35,7 @@
         <div style="width:50%">
           <div>
             员工情绪大屏
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">(示例数据)</span>
           </div>
           <div>
             <el-date-picker
@@ -55,7 +55,7 @@
     <div class="model">
       <div>
         周报动态
-        <em v-show="testModel">(示例数据)</em>
+        <span v-show="testModel">(示例数据)</span>
       </div>
       <el-date-picker
         format="yyyy-MM"

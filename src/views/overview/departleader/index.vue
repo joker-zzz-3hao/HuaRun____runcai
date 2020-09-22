@@ -12,7 +12,7 @@
         <div>
           <em>
             OKR承接与变更统计
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">(示例数据)</span>
           </em>
         </div>
         <div class="risk">

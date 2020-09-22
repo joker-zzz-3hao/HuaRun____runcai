@@ -2,12 +2,12 @@
   <div class="okrSchedule">
     <div>
       OKR当前进度
-      <em v-show="testModel">(示例数据)</em>
+      <span v-show="testModel">(示例数据)</span>
     </div>
     <div id="okrSchedule"></div>
     <div>
       OKR进度更新次数
-      <em v-show="testModel">(示例数据)</em>
+      <span v-show="testModel">(示例数据)</span>
     </div>
     <div id="okrCountUpdate"></div>
   </div>
