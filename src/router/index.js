@@ -5,6 +5,7 @@ import {
 } from '@/lib/util';
 // getOrigin,
 import VueRouter from 'vue-router';
+import qs from 'qs';
 import loginJs from './login';
 import consoleJs from './console';
 import settingsJs from './settings';
@@ -96,6 +97,22 @@ router.beforeEach((to, from, next) => {
       // 无权限跳转至403页面
       if (!hasPower(to.meta.power)) {
         next('/exception403');
+      } else if (to.name == 'overview') {
+        const url = `gateway/talent-query/home/person/identity?${qs.stringify({
+          user: window.$store.getters['common/userInfo'].userId,
+          orgId: window.$store.getters['common/userInfo'].orgId,
+        })}`;
+        window.$ajax.post(url).then((res) => {
+          if (res.data.data.identityType == 'org') {
+            next('/departleader');
+          }
+          if (res.data.data.identityType == 'team') {
+            next('/teamleader');
+          }
+          if (res.data.data.identityType == 'person') {
+            next('/grassStaff');
+          }
+        });
       } else {
         next();
       }

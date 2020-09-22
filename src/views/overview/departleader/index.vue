@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-show="showOver">
+  <div class="home">
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
     <div class="creatOkr">
       <!-- <div>{{userInfo.userName}}</div> -->
@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-unused-expressions
-    this.$route.query.id ? this.showOver = true : this.getidentity();
+    // this.$route.query.id ? this.showOver = true : this.getidentity();
   },
 
   methods: {

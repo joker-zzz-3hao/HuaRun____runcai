@@ -314,7 +314,9 @@ export default {
       };
 
       myChartUpdate.setOption(option);
+
       myChartUpdate.resize();
+
       window.addEventListener('resize', myChartUpdate.resize);
     },
   },

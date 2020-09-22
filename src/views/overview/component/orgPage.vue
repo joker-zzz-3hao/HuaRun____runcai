@@ -3,7 +3,7 @@
     <div v-if="tableList.length>0" class="tl-card-panel">
       <em v-show="testModel">示例数据</em>
       <div class="card-panel-head">
-        <div class="okr-title">{{okrCycle.periodName}}</div>
+        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrCycle.periodName}}</div>
         <dl class="okr-state">
           <dt>
             <em>状态</em>
@@ -241,7 +241,9 @@ export default {
               id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
             },
           });
-          this.reload();
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'departleader' ? this.reload() : '';
+
           return false;
         }
         if (res.data.identityType == 'team') {
@@ -253,7 +255,9 @@ export default {
             },
           });
 
-          this.reload();
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'teamleader' ? this.reload() : '';
+
           return false;
         }
         if (res.data.identityType == 'person') {
