@@ -129,24 +129,32 @@
   margin: 0 5px;
 }
 
+/* ===========================================================主页视图================================================================= */
+.team-view .operating-box .dl-item dt {
+  margin: 0 10px 0 0;
+}
+
 /* ==========================================================OKR管理================================================================== */
 .my-okr,
 .undertake-maps,
-.okr-approval-list {
+.okr-approval-list,
+.team-view {
   padding: 50px 0 0 0;
 }
 
 .is-shrink + .my-okr,
 .is-shrink + .okr-maps,
 .is-shrink + .undertake-maps,
-.is-shrink + .okr-approval {
+.is-shrink + .okr-approval,
+.no-sub-menu + .overview {
   z-index: 21;
 }
 
 .my-okr .operating-area,
 .okr-maps .operating-area,
 .undertake-maps .operating-area,
-.okr-approval .operating-area {
+.okr-approval .operating-area,
+.team-view .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -171,6 +179,10 @@
   transition: all .4s ease-out;
 }
 
+.team-view .operating-area-inside  {
+  padding: 0 30px 0 0;
+}
+
 .no-sub-menu + .my-okr .operating-area {
   left: 70px;
 }
@@ -185,7 +197,8 @@
 .my-okr .operating-area-inside::before,
 .okr-maps .operating-area-inside::before,
 .undertake-maps .operating-area-inside::before,
-.okr-approval .operating-area-inside::before {
+.okr-approval .operating-area-inside::before,
+.team-view .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -211,7 +224,8 @@
 .my-okr .operating-area-inside .el-input .el-input__inner,
 .okr-maps .operating-area-inside .el-input .el-input__inner,
 .undertake-maps .operating-area-inside .el-input .el-input__inner,
-.okr-approval .operating-area-inside .el-input .el-input__inner {
+.okr-approval .operating-area-inside .el-input .el-input__inner,
+.team-view .operating-area-inside .el-input .el-input__inner {
   background: #f4f6f8;
 }
 
@@ -752,7 +766,8 @@
 
 .my-okr .tl-select-dropdown.el-popper,
 .undertake-maps .tl-select-dropdown.el-popper,
-.okr-approval .tl-select-dropdown.el-popper {
+.okr-approval .tl-select-dropdown.el-popper,
+.team-view .tl-select-dropdown.el-popper {
   margin-top: 12px;
 }
 

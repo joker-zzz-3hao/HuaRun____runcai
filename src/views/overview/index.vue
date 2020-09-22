@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="overview">
     <router-view v-if="isRouterAlive" />
   </div>
 </template>
