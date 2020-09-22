@@ -37,7 +37,7 @@ export default {
   beforeDestroy() {},
 };
 </script>
-<style lang="css" stylus>
+<style lang="css" scoped>
 .pic-noteIndex {
   background: url("~@/assets/images/demoPic/noteIndex.png") no-repeat;
   background-size: 100%;
