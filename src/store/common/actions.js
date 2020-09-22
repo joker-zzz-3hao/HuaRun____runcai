@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 export default {
   // 获取用户信息
   getUserInfo({ dispatch, commit }) {
@@ -21,8 +23,20 @@ export default {
     return window.$ajax.post(infoUrl).then((response) => {
       if (response.data.code == 200) {
         commit('setUserInfo', {});
+        commit('setIdentity', {});
         return response.data;
       }
+    });
+  },
+
+  getUserType({ commit }, params) {
+    const url = `gateway/talent-query/home/person/identity?${qs.stringify({
+      user: params.user,
+      orgId: params.orgId,
+    })}`;
+    return window.$ajax.post(url).then((response) => {
+      commit('setIdentity', response.data);
+      return response.data;
     });
   },
 };

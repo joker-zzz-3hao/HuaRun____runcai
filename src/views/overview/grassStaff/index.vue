@@ -88,6 +88,9 @@ export default {
       });
     },
     riskStatistics() {
+      if (!this.periodId) {
+        return false;
+      }
       this.server.riskStatistics({
         periodId: this.periodId,
         personOrOrg: 'person',

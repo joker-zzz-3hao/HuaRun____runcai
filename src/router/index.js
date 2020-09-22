@@ -96,6 +96,40 @@ router.beforeEach((to, from, next) => {
       // 无权限跳转至403页面
       if (!hasPower(to.meta.power)) {
         next('/exception403');
+      } else if (to.name == 'overview') {
+        if (window.$store.getters['common/getIdentity'].data) {
+          console.log(window.$store.getters['common/getIdentity']);
+          const { identityType } = window.$store.getters['common/getIdentity'].data;
+          console.log(identityType);
+          if (identityType == 'org') {
+            next('/departleader');
+          }
+          if (identityType == 'team') {
+            next('/teamleader');
+          }
+          if (identityType == 'person') {
+            next('/grassStaff');
+          }
+        } else {
+          console.log(window.$store.getters['common/userInfo']);
+          window.$store.dispatch('common/getUserType', {
+            user: window.$store.getters['common/userInfo'].userId,
+            orgId: window.$store.getters['common/userInfo'].orgId,
+          }).then((res) => {
+            console.log(res);
+            const { identityType } = res.data;
+            console.log(identityType);
+            if (identityType == 'org') {
+              next('/departleader');
+            }
+            if (identityType == 'team') {
+              next('/teamleader');
+            }
+            if (identityType == 'person') {
+              next('/grassStaff');
+            }
+          });
+        }
       } else {
         next();
       }

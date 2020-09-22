@@ -1,7 +1,7 @@
 <template>
   <div class="operating-area">
     <div class="operating-area-inside">
-      <el-button @click="changeTest">{{testModel?'真实数据':'示例数据'}}</el-button>
+      <el-button @click="changeTest">{{testModel?'切换到我的数据':'切换到示例数据'}}</el-button>
       <el-button v-if="$route.query.id" @click="back()">返回</el-button>
       <div class="operating-box">
         <dl class="dl-item">
@@ -10,7 +10,7 @@
             <el-select
               v-model="value"
               placeholder="请选择目标周期"
-              :popper-append-to-body="true"
+              :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
               @change="selectPeriod"
@@ -79,7 +79,11 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.options = res.data;
-          this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
+          if (this.options.length > 0) {
+            this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
+          } else {
+            this.value = '';
+          }
 
           this.$emit('getPeriod', this.value);
         }
