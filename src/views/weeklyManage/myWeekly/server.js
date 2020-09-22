@@ -6,7 +6,7 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
   }
 
-  // 查询项目
+  // 查询项目:旧的
   getProjectList(param) {
     return this._ajaxPost('gateway/weekly-service/project/queryName', param);
   }
@@ -34,5 +34,15 @@ export default class Server extends ServerBase {
   // 查询周报配置是简单版还是标准版
   getTypeConfig(param) {
     return this._ajaxPost('gateway/system-service/sys/config/query', param);
+  }
+
+  // 查询项目
+  queryOrgProject(param) {
+    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+  }
+
+  // 查询项目组织
+  queryOrg(param) {
+    return this._ajaxPost('gateway/weekly-service/project/org', param);
   }
 }

@@ -5,10 +5,10 @@
         <tl-worth-manage></tl-worth-manage>
       </el-tab-pane>
       <el-tab-pane label="价值观统计" name="2">
-        <tl-worth-statistics :searchData="searchData"></tl-worth-statistics>
+        <tl-worth-statistics :worthType="worthType"></tl-worth-statistics>
       </el-tab-pane>
       <el-tab-pane label="设置价值观" name="3">
-        <tl-set-worth :searchData="searchData"></tl-set-worth>
+        <tl-set-worth></tl-set-worth>
       </el-tab-pane>
     </el-tabs>
   </div>

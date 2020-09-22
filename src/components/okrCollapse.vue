@@ -96,6 +96,10 @@
                   @click="goUndertake(index,'change')"
                   :class="{'is-change':canWrite}"
                 >{{item.parentObjectKr}}</em>
+                <em
+                  @click="goUndertake(index,'change')"
+                  :class="{'is-change':canWrite}"
+                >{{item.cultureName}}</em>
               </div>
               <!-- 变更 原来有承接-->
               <div v-else-if="canWrite && item.parentObjectKr">
@@ -149,6 +153,7 @@
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
                 <em>{{item.parentObjectKr}}</em>
+                <em>{{item.cultureName}}</em>
               </div>
             </dd>
           </dl>

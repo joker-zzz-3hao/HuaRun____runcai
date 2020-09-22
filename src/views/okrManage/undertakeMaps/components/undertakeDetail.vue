@@ -10,21 +10,27 @@
         >
           <!-- OKR -->
           <template slot="title">
-            <dl>
+            <dl :class="{'is-open':okrDetailId==okrItem.okrDetailId}">
               <dt>
                 <span v-if="okrItem.okrDetailType == 0">目标</span>
                 <span v-else>KR</span>
                 <em>{{okrItem.okrDetailObjectKr}}</em>
                 <tl-process :data="okrItem.okrDetailProgress"></tl-process>
               </dt>
+              <dd>
+                <span>{{okrItem.undertakeCount}}</span>
+                <span>个支撑项可对齐</span>
+              </dd>
             </dl>
           </template>
           <!-- 操作按钮 -->
           <div>
-            <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
-            <el-button @click="openUpdate(okrItem)">更新进展</el-button>
             <span v-if="checkStatus === 0" @click="okrCheck(okrItem.okrDetailId,1)">历史okr对齐</span>
             <span v-else @click="okrCheck(okrItem.okrDetailId,0)">返回</span>
+            <!-- 右对齐 -->
+            <span v-if="personList.length > 0">以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
+            <span v-else>暂无可对齐的支撑项</span>
+            <el-button v-if="personList.length > 0" @click="openUpdate(okrItem)">更新进展</el-button>
           </div>
           <!-- 对齐的内容 -->
           <div>
@@ -41,14 +47,22 @@
                   placement="top"
                 >
                   <div>
-                    <dd>
+                    <dd v-if="okritem.operateType == '5'">
                       <span v-if="okritem.okrDetailType == 0">目标O</span>
                       <span v-else>关键结果KR</span>
                       <em>{{okritem.okrContent}}</em>
                     </dd>
-                    <dd>
+                    <dd v-if="okritem.operateType == '5'">
                       <span>更新说明</span>
                       <em>{{okritem.remark}}</em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>周报周期</span>
+                      <em></em>
+                    </dd>
+                    <dd v-if="okritem.operateType == '6'">
+                      <span>支撑项</span>
+                      <em>{{okritem.okrContent}}</em>
                     </dd>
                     <dd>
                       <span>来自-</span>
@@ -115,6 +129,7 @@ export default {
       checkStatus: 0,
       okrInfoList: [],
       choseOkrInfo: {},
+      undertakeCount: 0,
     };
   },
   created() {
@@ -135,6 +150,14 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.okrInfoList = res.data || [];
+          this.okrInfoList.forEach((item) => {
+            if (item.historyList) {
+              item.undertakeCount = 0;
+              item.historyList.forEach((hitem) => {
+                item.undertakeCount += hitem.length;
+              });
+            }
+          });
         }
       });
     },
@@ -150,6 +173,7 @@ export default {
           this.personList = res.data || [];
           this.personList.forEach((pitem) => {
             if (pitem.length > 0) {
+              this.undertakeCount += pitem.length;
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len

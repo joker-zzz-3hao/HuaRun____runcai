@@ -275,6 +275,28 @@
   color: #685df1;
 }
 
+.update-progress .list-cont {
+  padding: 20px;
+  border: 1px solid #f4f6f8;
+}
+
+.update-progress .timeline-list dt .list-cont {
+  border-color: transparent;
+}
+
+.update-progress .timeline-list dt .current-progress {
+  background: #4ccd79;
+}
+
+.update-progress .okr-risk {
+  margin: 20px 0 0 0;
+}
+
+.update-progress .change-reason dt {
+  margin: 0 0 11px 0;
+  color: #879099;
+}
+
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
   position: relative;

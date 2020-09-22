@@ -86,7 +86,7 @@
                       <a
                         v-if="oitem.undertakeOkrVo.undertakeOkrContent"
                       >{{oitem.undertakeOkrVo.undertakeOkrContent}}</a>
-                      <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
+                      <a v-if="oitem.cultureId">{{oitem.cultureName}}</a>
                     </p>
                     <el-button
                       type="text"
@@ -231,7 +231,7 @@
         <div class="drawer-title">关联承接项</div>
       </div>
       <undertake-table
-        v-if="selectIndex !== ''"
+        v-if="selectIndex !== '' && innerDrawer"
         ref="undertake"
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
@@ -528,6 +528,7 @@ export default {
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
+      console.log(' 提交关联', this.$refs.undertake.selectDepartRow);
       // eslint-disable-next-line max-len
       // 承接项的id、版本、名称
       this.formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
