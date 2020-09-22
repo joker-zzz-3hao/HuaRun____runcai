@@ -9,20 +9,18 @@
       </div>
       <div class="card-panel-body">
         <div id="week-depart"></div>
-        <div>
-          <ul class="departList">
-            <li
-              v-for="(item,index) in orgTable"
-              :key="index"
-              :class="{'active':active[item.orgId] }"
-              @click="changIdAction(item.orgId)"
-            >
-              {{
-              item.orgName
-              }}
-            </li>
-          </ul>
-        </div>
+        <ul class="data-list">
+          <li
+            v-for="(item,index) in orgTable"
+            :key="index"
+            :class="{'active':active[item.orgId] }"
+            @click="changIdAction(item.orgId)"
+          >
+            {{
+            item.orgName
+            }}
+          </li>
+        </ul>
       </div>
     </div>
     <div class="card-panel-inside">

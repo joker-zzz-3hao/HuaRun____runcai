@@ -262,6 +262,32 @@
   width: 48%;
 }
 
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) .card-panel-inside .card-panel-body {
+  flex-direction: column;
+}
+
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) .card-panel-inside .data-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) .card-panel-inside .data-list li {
+  flex: 0 0 60px;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.overview .department-view .cont-area > .tl-card-panel:nth-child(4) .card-panel-inside .data-list li.active {
+  color: #ffbc20;
+}
+
 .department-view .tl-card-panel-group {
   margin: 20px 0 0 0;
   justify-content: space-between;
