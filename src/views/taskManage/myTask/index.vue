@@ -4,7 +4,7 @@
       <div v-if="changeZhoubao==true" class="pic-myTask" @click="changeZhoubao = false">
         <!-- <img src="~@/assets/images/demoPic/myTask.png" /> -->
       </div>
-      <div v-else class="pic-zhoubao" @click="changeZhoubao = true"></div>
+      <div v-else class="pic-taskdetail" @click="changeZhoubao = true"></div>
     </div>
     <template v-if="showReal">
       <!-- 按钮组 -->
@@ -140,8 +140,8 @@ export default {
   /* background-size: cover; */
   height: calc(100vh);
 }
-.pic-zhoubao {
-  background: url("~@/assets/images/demoPic/zhoubao.png") no-repeat;
+.pic-taskdetail {
+  background: url("~@/assets/images/demoPic/taskDetail.png") no-repeat;
   background-size: 100%;
   height: calc(100vh);
 }
