@@ -15,7 +15,7 @@
       </li>
       <li>进度</li>
       <li>
-        <em v-if="!overview">更新进展</em>
+        <em v-if="!overview && showUpdate">更新进展</em>
       </li>
       <li></li>
     </ul>
@@ -35,12 +35,12 @@
             <!-- kr权重 -->
             <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
             <!-- kr承接项 -->
-            <dd class="okr-undertake" v-if="!overview">
+            <dd class="okr-undertake">
               <slot name="body-bar" :okritem="kritem"></slot>
             </dd>
             <!-- kr风险状态 -->
-            <dd class="okr-risk" v-if="!overview">
-              <div class="state-grid">
+            <dd class="okr-risk">
+              <div class="state-grid" v-if="!overview">
                 <div
                   :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
                     'is-risks': kritem.okrDetailConfidence == 2,
@@ -52,7 +52,7 @@
                 ></div>
                 <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
               </div>
-              <div class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+              <div v-if="!overview" class="state-txt">{{CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
             </dd>
             <!-- kr无关联父目标 仅占位-->
             <dd class="undertake-target"></dd>
@@ -86,16 +86,16 @@
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
       <!-- o label="承接地图" -->
-      <el-table-column width="8%" v-if="!overview">
+      <el-table-column width="8%">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="12%" v-if="!overview"></el-table-column>
+      <el-table-column width="12%"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="12%" v-if="!overview">
-        <template slot-scope="scope">
+      <el-table-column prop="parentObjectKr" width="12%">
+        <template slot-scope="scope" v-if="!overview">
           <el-popover
             v-if="scope.row.parentUpdate"
             placement="top"
@@ -125,8 +125,8 @@
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
-      <el-table-column width="9%" v-if="showUpdate">
-        <template slot-scope="scope">
+      <el-table-column width="9%">
+        <template slot-scope="scope" v-if="showUpdate">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
