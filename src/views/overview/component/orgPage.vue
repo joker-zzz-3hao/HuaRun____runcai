@@ -1,61 +1,67 @@
 <template>
   <div v-show="showLoad">
-    <div v-if="tableList.length>0" class="tl-card-panel">
+    <div class="tl-card-panel">
       <em v-show="testModel">示例数据</em>
-      <div class="card-panel-head">
-        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrCycle.periodName}}</div>
-        <dl class="okr-state">
-          <dt>
-            <em>状态</em>
-          </dt>
-          <dd>
-            <i class="el-icon-sunny"></i>
-            <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
-          </dd>
-        </dl>
-        <dl class="okr-responsible">
-          <dt>
-            <em>OKR类型</em>
-          </dt>
-          <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
-        </dl>
-        <dl class="okr-responsible">
-          <dt>
-            <em>负责人</em>
-          </dt>
-          <dd>{{okrMain.userName}}</dd>
-        </dl>
-        <dl class="okr-progress">
-          <dt>
-            <em>OKR进度</em>
-          </dt>
-          <dd>
-            <el-progress
-              type="circle"
-              :percentage="parseInt(okrMain.okrProgress, 10) || 0"
-              :width="70"
-              :stroke-width="5"
-              color="#4ccd79"
-              class="tl-progress-circle"
-            ></el-progress>
-          </dd>
-        </dl>
-      </div>
-      <div class="card-panel-body">
-        <tl-okr-table
-          :overview="true"
-          :tableList="tableList"
-          :disabled="false"
-          :showOKRInfoLabel="true"
-          :status="searchForm.status"
-          :expands="expands"
-        ></tl-okr-table>
-      </div>
+      <template v-if="tableList.length>0">
+        <div class="card-panel-head">
+          <div class="okr-title">{{testModel?'2020年下半年的OKR':okrCycle.periodName}}</div>
+          <dl class="okr-state">
+            <dt>
+              <em>状态</em>
+            </dt>
+            <dd>
+              <i class="el-icon-sunny"></i>
+              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            </dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <em>OKR类型</em>
+            </dt>
+            <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
+          </dl>
+          <dl class="okr-responsible">
+            <dt>
+              <em>负责人</em>
+            </dt>
+            <dd>{{okrMain.userName}}</dd>
+          </dl>
+          <dl class="okr-progress">
+            <dt>
+              <em>OKR进度</em>
+            </dt>
+            <dd>
+              <el-progress
+                type="circle"
+                :percentage="parseInt(okrMain.okrProgress, 10) || 0"
+                :width="70"
+                :stroke-width="5"
+                color="#4ccd79"
+                class="tl-progress-circle"
+              ></el-progress>
+            </dd>
+          </dl>
+        </div>
+
+        <div class="card-panel-body">
+          <tl-okr-table
+            :overview="true"
+            :tableList="tableList"
+            :disabled="false"
+            :showOKRInfoLabel="true"
+            :status="searchForm.status"
+            :expands="expands"
+          ></tl-okr-table>
+        </div>
+      </template>
+      <template v-else>
+        <div class="tl-card-panel no-data">
+          <span v-if="$route.query.id" class="bg-no-data">暂无数据</span>
+          <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
+        </div>
+      </template>
     </div>
-    <div v-else class="tl-card-panel no-data">
-      <span v-if="$route.query.id" class="bg-no-data">暂无数据</span>
-      <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
-    </div>
+
     <div class="tl-card-panel" v-if="orgUser.length!==0||orgTable.length!==0">
       <div class="card-panel-head">
         <!-- <div class="pannel-title">
