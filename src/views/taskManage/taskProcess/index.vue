@@ -50,9 +50,8 @@ export default {
   height: calc(100vh);
 }
 .go-back {
-  width: 100px;
-  height: 100px;
-  margin: 0 100px;
+  width: 200px;
+  height: 300px;
 }
 /* .pic-one,
 .pic-two,
