@@ -118,6 +118,7 @@
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
+                <div v-else>暂无</div>
               </template>
               <!-- kr的承接地图 -->
               <template slot="body-bar" slot-scope="props">
@@ -127,6 +128,7 @@
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
+                <div v-else>暂无</div>
               </template>
               <!-- o的进度更新 -->
               <template slot="weight-bar" slot-scope="props">

@@ -226,7 +226,7 @@
       class="tl-drawer"
     >
       <div slot="title" class="flex-sb">
-        <div class="drawer-title">关联承接项</div>
+        <div class="drawer-title">关联父目标</div>
       </div>
       <undertake-table
         v-if="selectIndex !== '' && innerDrawer"

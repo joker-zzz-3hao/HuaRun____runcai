@@ -24,6 +24,7 @@
           maxlength="64"
           placeholder="请输入OKR周期名称"
           class="tl-input"
+          style="width:90%"
         ></el-input>
       </el-form-item>
       <el-form-item label="起草开始时间" prop="draftingStartTime">
@@ -34,6 +35,7 @@
           popper-class="tl-date-popper"
           class="tl-date-editor"
           value-format="yyyy-MM-dd"
+          style="width:90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="审批结束时间" prop="approvalEndTime">
@@ -44,6 +46,7 @@
           popper-class="tl-date-popper"
           value-format="yyyy-MM-dd"
           class="tl-date-editor"
+          style="width:90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
@@ -57,6 +60,7 @@
           end-placeholder="请设置结束日期"
           popper-class="tl-range-popper"
           class="tl-range-editor"
+          style="width:90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="自评举证时间" prop="selfAssessReminderTime">
@@ -67,6 +71,7 @@
           popper-class="tl-date-popper"
           value-format="yyyy-MM-dd"
           class="tl-date-editor"
+          style="width:90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
