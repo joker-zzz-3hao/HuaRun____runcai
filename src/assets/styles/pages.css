@@ -137,7 +137,10 @@
 #okr-schedule,
 #okr-update,
 #weeking,
-#mood {
+#mood,
+#okr-update-staff,
+#okr-schedule-staff,
+#okr-risk-line {
   width: 100%;
   height: 400px;
 }
@@ -226,6 +229,15 @@
 
 .weeking .tl-month-editor .el-input__prefix .el-input__icon {
   font-size: 14px;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table .sub-tr .okr-kr-name {
+  flex: 0 0 73%;
+  width: 73%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 73%;
 }
 
 /* ==========================================================OKR管理================================================================== */
