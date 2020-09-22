@@ -2603,6 +2603,29 @@
   background: #685df1;
 }
 
+.card-panel-head .panner-title em {
+  color: #222426;
+  font-weight: 500;
+}
+
+.card-panel-head .panner-title span {
+  margin: 0 0 0 10px;
+  color: #879099;
+  font-size: 12px;
+}
+
+.tl-card-panel-group {
+  display: flex;
+  align-items: center;
+}
+
+.tl-card-panel-group dl {
+  padding: 30px 40px;
+  background: #fff;
+  box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
+  border-radius: 4px;
+}
+
 .card-panel-head dl,
 .card-panel-head dt {
   display: flex;

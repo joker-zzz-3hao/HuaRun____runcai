@@ -1,41 +1,50 @@
 <template>
-  <div class="okrRiskTotal">
-    <div class="echartLayout">
-      <div id="okrRiskTotal"></div>
-      <div id="okrRiskTotalbag"></div>
+  <div class="okr-risk-total">
+    <div class="echart-layout">
+      <div id="okr-risk-total"></div>
+      <div id="okr-risk-total-bag"></div>
     </div>
-    <div class="countAll">
-      <ul>
-        <li
-          class="count"
-          v-popover:popover4
-          v-for="(item,index) in tableData"
-          :key="index"
-          @click="okrRiskUserInfo(item.riskCode);"
-        >
-          <em>{{item.count}}</em>
-          <div class="test">{{item.riskName}}(个)</div>
-          <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress>
-        </li>
-      </ul>
+    <div class="tl-card-panel-group">
+      <dl
+        v-popover:popover4
+        v-for="(item,index) in tableData"
+        :key="index"
+        @click="okrRiskUserInfo(item.riskCode);"
+      >
+        <dt>{{item.count}}</dt>
+        <dd>{{item.riskName}}(个)</dd>
+        <dd>
+          <tl-process
+            :data="parseInt(item.ratio,10)"
+            :showNumber="false"
+            :width="30"
+            :marginLeft="6"
+          ></tl-process>
+          <el-popover ref="popover4" placement="right" trigger="click" v-model="visible">
+            <el-table :data="okrData" style="width: 100%">
+              <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
+              <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
+            </el-table>
+          </el-popover>
+          <!-- <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress> -->
+        </dd>
+      </dl>
     </div>
-    <el-popover ref="popover4" placement="right" trigger="click" v-model="visible">
-      <el-table :data="okrData" style="width: 100%">
-        <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
-        <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
-      </el-table>
-    </el-popover>
   </div>
 </template>
 
 <script>
 import echarts from 'echarts';
 import { mapState } from 'vuex';
+import process from '@/components/process';
 import Server from '../../server';
 
 const server = new Server();
 export default {
   name: 'okrRiskTotal',
+  components: {
+    'tl-process': process,
+  },
   props: {
     tableData: {
       type: [Object, Array, String],
@@ -88,7 +97,7 @@ export default {
     },
     init() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('okrRiskTotal'));
+      const myChart = echarts.init(document.getElementById('okr-risk-total'));
       const option = {
         title: {
           text: '100%',
@@ -158,7 +167,7 @@ export default {
     },
     initBag() {
       const that = this;
-      const myChart2 = echarts.init(document.getElementById('okrRiskTotalbag'));
+      const myChart2 = echarts.init(document.getElementById('okr-risk-total-bag'));
       const option = {
         tooltip: {
           trigger: 'item',
@@ -219,62 +228,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.echartLayout {
-  position: relative;
-  width: 300px;
-  display: inline-block;
-  height: 300px;
-}
-#okrRiskTotal {
-  width: 400px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  height: 400px;
-  z-index: 9999;
-}
-#okrRiskTotalbag {
-  position: absolute;
-  width: 350px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: inline-block;
-  height: 350px;
-  opacity: 0.1;
-}
-.countAll {
-  display: inline-block;
-  background: #ffffff;
-  box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
-  border-radius: 4px;
-  border-radius: 4px;
-}
-.countAll ul li {
-  display: inline-block;
-  background: #ffffff;
-  border-radius: 4px;
-  border-radius: 4px;
-  width: 280px;
-  margin-right: 40px;
-  height: 144px;
-}
-
-.countAll ul li em {
-  font-family: DINAlternate-Bold;
-  font-size: 34px;
-  color: #222426;
-}
-.test {
-  font-family: PingFangSC-Regular;
-  font-size: 14px;
-  color: #acb6bf;
-  letter-spacing: 0.23px;
-}
-.count {
-  width: 284px;
-  height: 100px;
-}
-</style>
