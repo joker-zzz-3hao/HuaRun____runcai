@@ -15,8 +15,6 @@
             :width="30"
             :marginLeft="6"
           ></tl-process>
-
-          <!-- <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress> -->
         </dd>
       </dl>
     </div>
