@@ -618,7 +618,7 @@ export default {
   background: url("~@/assets/images/demoPic/sukan.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(40vh);
+  height: calc(100vh);
 }
 
 /* .pic-one img,
