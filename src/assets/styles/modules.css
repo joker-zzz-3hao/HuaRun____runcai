@@ -1535,11 +1535,17 @@
 }
 
 .tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em {
-  max-width: calc(100% - 100px);
+  max-width: calc(100% - 126px);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
+}
+
+.tl-collapse .collpase-panel .has-third-child > div:nth-child(3) em {
+  width: unset;
 }
 
 .tl-collapse .el-collapse-item__header .collpase-panel dt > span + div {
@@ -1553,6 +1559,8 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
 }
@@ -1597,31 +1605,34 @@
   color: #685df1;
 }
 
-.collpase-panel dd div:last-child p {
+/* .collpase-panel dd div:last-child {
   display: flex;
-}
+} */
 
-.collpase-panel dd div:last-child p a {
+.collpase-panel dd div:last-child em {
   color: #4d5155;
   font-size: 12px;
+  cursor: pointer;
 }
 
-.collpase-panel dd div:last-child p a:hover {
+.collpase-panel dd div:last-child em:hover {
   color: #685df1;
 }
 
-.collpase-panel dd div:last-child p a:first-child {
-  display: block;
-  max-width: 190px;
+/* .collpase-panel dd div:last-child div em:first-child {
+  max-width: calc(100% - 126px);
   text-align: right;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
-}
+  text-overflow: -o-ellipsis-lastline;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+} */
 
-.collpase-panel dd div:last-child p a + a {
+/* .collpase-panel dd div:last-child p a + a {
   margin: 0 0 0 10px;
-}
+} */
 
 .collpase-panel dt > div i,
 .collpase-panel dd > div:first-child i:nth-child(4) {
@@ -2701,6 +2712,8 @@
 .card-panel-body .tl-table .el-table__row td:nth-child(6) em {
   color: #4d5155;
   overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -2910,6 +2923,8 @@
 .tag-kind em {
   color: #7a828a;
   overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -3598,18 +3613,16 @@ svg {
   display: flex;
 }
 
-.okr-info dt em {
+.okr-info dt em,
+.okr-info dd em {
   width: 100%;
   color: #222426;
   overflow: hidden;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
-  transition: all .4s ease-out;
-  cursor: pointer;
-}
-
-.okr-info dt em:hover {
-  color: #685df1;
+  -webkit-box-orient: vertical;
 }
 
 .okr-info .tag-kind {
@@ -3647,6 +3660,12 @@ svg {
 .department-info em {
   flex: 1;
   margin: 0 0 0 10px;
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.department-info em:hover {
+  color: #685df1;
 }
 
 .department-info .btn-lineheight {
@@ -3655,13 +3674,13 @@ svg {
   height: 22px;
   min-width: 70px;
   font-size: 12px;
-}
-
-.department-info .btn-lineheight span {
-  width: 76px;
+  width: 64px;
   overflow: hidden;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
 }
 
 .values-advocacy {
