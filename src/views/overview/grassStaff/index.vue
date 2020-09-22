@@ -1,31 +1,33 @@
 <template>
-  <div class="home">
-    <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
-    <div class="create">
-      <!-- <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
-      <em v-else>{{userInfo.userName}}</em>-->
-      <tl-org-page :periodId="periodId"></tl-org-page>
-    </div>
-    <div class="create">
-      <div>
-        OKR当前进度数据
-        <em v-show="testModel">(示例数据)</em>
+  <div class="team-view">
+    <div class="cont-area">
+      <div class="create">
+        <!-- <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
+        <em v-else>{{userInfo.userName}}</em>-->
+        <tl-org-page :periodId="periodId"></tl-org-page>
       </div>
-      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
-    </div>
-    <div class="create">
-      <div>
-        进度更新次数趋势
-        <em v-show="testModel">(示例数据)</em>
+      <div class="create">
+        <div>
+          OKR当前进度数据
+          <em v-show="testModel">(示例数据)</em>
+        </div>
+        <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
       </div>
-      <tl-okr-update :mainData="mainData"></tl-okr-update>
-    </div>
-    <div class="create">
-      <div>
-        OKR风险状态统计
-        <em v-show="testModel">(示例数据)</em>
+      <div class="create">
+        <div>
+          进度更新次数趋势
+          <em v-show="testModel">(示例数据)</em>
+        </div>
+        <tl-okr-update :mainData="mainData"></tl-okr-update>
       </div>
-      <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
+      <div class="create">
+        <div>
+          OKR风险状态统计
+          <em v-show="testModel">(示例数据)</em>
+        </div>
+        <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
+      </div>
+      <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     </div>
   </div>
 </template>

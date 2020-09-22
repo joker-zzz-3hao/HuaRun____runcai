@@ -107,7 +107,7 @@ import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import Server from '../server';
 import CONST from '../const';
-import { okrData } from '../testData';
+import { okrData, okrDataTeam, okrUser } from '../testData';
 
 const server = new Server();
 
@@ -188,7 +188,18 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           // eslint-disable-next-line no-unused-expressions
-          this.testModel ? res = okrData : res;
+          if (this.$route.name == 'teamleader') {
+            // eslint-disable-next-line no-unused-expressions
+            this.testModel ? res = okrDataTeam : res;
+          }
+          if (this.$route.name == 'departleader') {
+            // eslint-disable-next-line no-unused-expressions
+            this.testModel ? res = okrData : res;
+          }
+          if (this.$route.name == 'grassStaff') {
+            // eslint-disable-next-line no-unused-expressions
+            this.testModel ? res = okrUser : res;
+          }
           this.tableList = res.data.okrDetails || [];
           this.okrMain = res.data.okrMain || {};
           this.okrId = this.okrMain.okrId || '';

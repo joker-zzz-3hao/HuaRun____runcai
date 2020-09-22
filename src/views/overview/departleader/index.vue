@@ -1,36 +1,38 @@
 <template>
-  <div class="home">
+  <div class="team-view">
+    <div class="cont-area">
+      <div class="creatOkr">
+        <!-- <div>{{userInfo.userName}}</div> -->
+        <tl-org-page :periodId="periodId"></tl-org-page>
+      </div>
+      <div class="creatOkr">
+        <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
+      </div>
+      <div class="creatOkr">
+        <div>
+          <em>
+            OKR承接与变更统计
+            <em v-show="testModel">(示例数据)</em>
+          </em>
+        </div>
+        <div class="risk">
+          <ul class="flex">
+            <li v-for="(item,index) in riskList" :key="index">
+              <dd>
+                <em>{{item.orgName}}</em>
+                <em>承接数:{{item.okrContinueCount}}</em>
+              </dd>
+              <dd>
+                <em>变更数:{{item.okrChangeCount}}</em>
+                <em>总人数:{{item.personCount}}</em>
+              </dd>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <tl-weeking :periodId="periodId"></tl-weeking>
+    </div>
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
-    <div class="creatOkr">
-      <!-- <div>{{userInfo.userName}}</div> -->
-      <tl-org-page :periodId="periodId"></tl-org-page>
-    </div>
-    <div class="creatOkr">
-      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
-    </div>
-    <div class="creatOkr">
-      <div>
-        <em>
-          OKR承接与变更统计
-          <em v-show="testModel">(示例数据)</em>
-        </em>
-      </div>
-      <div class="risk">
-        <ul class="flex">
-          <li v-for="(item,index) in riskList" :key="index">
-            <dd>
-              <em>{{item.orgName}}</em>
-              <em>承接数:{{item.okrContinueCount}}</em>
-            </dd>
-            <dd>
-              <em>变更数:{{item.okrChangeCount}}</em>
-              <em>总人数:{{item.personCount}}</em>
-            </dd>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <tl-weeking :periodId="periodId"></tl-weeking>
   </div>
 </template>
 
