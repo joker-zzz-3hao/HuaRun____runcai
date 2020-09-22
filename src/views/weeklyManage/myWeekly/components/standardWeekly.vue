@@ -31,12 +31,9 @@
               </el-form-item>
             </template>
           </el-table-column>-
-          <el-table-column label="内容" prop="workDesc" :render-header="renderHeader" min-width="400">
+          <el-table-column label="内容" prop="workDesc" min-width="400">
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workDesc'"
-                :rules="formData.rules.workDesc"
-              >
+              <el-form-item>
                 <textarea
                   style="width:100%"
                   type="textarea"
@@ -46,14 +43,6 @@
                   placeholder="请描述具体工作内容"
                   class="tl-textarea"
                 ></textarea>
-                <!-- <el-input
-                  type="textarea"
-                  v-model.trim="scope.row.workDesc"
-                  maxlength="1000"
-                  clearable
-                  placeholder="请描述具体工作内容"
-                  class="tl-textarea"
-                ></el-input>-->
               </el-form-item>
             </template>
           </el-table-column>
@@ -588,22 +577,24 @@ export default {
         supportList.push(supportObj);
       }
       // 将支撑项塞到列表对应行中，监听到到表格数据变化侯，会将个人okr进度反显出来
-      for (const tableItem of this.formData.weeklyWorkVoSaveList) {
-        // 遍历整理好的数据
-        for (const supportItem of supportList) {
-          // 如果仅仅是个人目标
-          if (tableItem.workOkrList.length > 0 && tableItem.workOkrList[0].okrDetailId == supportItem.o.okrDetailId) {
-            this.$set(tableItem, 'supportMyOkrObj', supportItem);
-          }
-          // 如果是个人KR
-          if (
-            supportItem.kr
-            && tableItem.workOkrList.length > 0
-            && tableItem.workOkrList[0].okrDetailId == supportItem.kr.okrDetailId) {
-            this.$set(tableItem, 'supportMyOkrObj', supportItem);
-          }
-        }
-      }
+      this.formData.weeklyWorkVoSaveList.forEach((tableItem) => { // 列表行数据
+        tableItem.workOkrList.forEach((workOkr) => { // 行数据中的支撑项
+          // 遍历整理好的数据
+          supportList.forEach((supportItem) => {
+            // 如果仅仅是个人目标
+            if (workOkr.okrDetailId == supportItem.o.okrDetailId) {
+              this.$set(tableItem, 'supportMyOkrObj', supportItem);
+            }
+            // 如果是个人KR
+            if (
+              supportItem.kr
+                && tableItem.workOkrList.length > 0
+                && workOkr == supportItem.kr.okrDetailId) {
+              this.$set(tableItem, 'supportMyOkrObj', supportItem);
+            }
+          });
+        });
+      });
     },
     setWorkTableData() {
       this.weeklyEmotion = this.weeklyData.weeklyEmotion;// 心情
