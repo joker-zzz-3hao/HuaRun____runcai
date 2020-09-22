@@ -32,27 +32,21 @@
         </el-form-item>
         <el-form-item
           :label="pwdLabel"
-          prop="loginPwd"
-          :rules="[
-          {required:isEditPwd,message:'请输入原始密码',trigger:'blur'}]"
+          prop="newPwd"
+          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
         >
-          <el-input
-            :disabled="!isEditPwd "
-            v-model.trim="formData.loginPwd"
-            show-password
-            clearable
-          ></el-input>
+          <el-input :disabled="!isEditPwd " v-model.trim="formData.newPwd" show-password clearable></el-input>
           <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
           <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           v-if="isEditPwd"
           label="新密码"
           prop="newPwd"
           :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
         >
           <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item
           v-if="isEditPwd"
           label="确认密码"
@@ -160,7 +154,6 @@ export default {
         userAccount: '',
         tenantName: this.tenantName,
         userType: 2, // 创建用户
-        loginPwd: '', // 密码
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
@@ -183,7 +176,7 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
-          this.formData.loginPwd = '******';
+          this.formData.newPwd = '******';
           this.setOrgIdList(res.data.orgId);
         }
         this.showEditUser = true;
@@ -236,10 +229,8 @@ export default {
         userType: this.formData.userType,
       };
       if (this.isEditPwd) {
-        params.loginPwd = this.Cryptojs.encrypt(this.formData.loginPwd);
         params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);
-      } else if (!this.isEditPwd && params.loginPwd && params.newPwd) {
-        delete params.loginPwd;
+      } else if (!this.isEditPwd && params.newPwd) {
         delete params.newPwd;
       }
       this.$refs.userForm.validate((valid) => {
@@ -259,13 +250,13 @@ export default {
       this.$emit('closeUserDialog', { refreshPage: false });
     },
     editPwd() {
-      this.pwdLabel = '原始密码';
-      this.formData.loginPwd = '';
+      this.pwdLabel = '新密码';
+      this.formData.newPwd = '';
       this.isEditPwd = true;
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
-      this.formData.loginPwd = '******';
+      this.formData.newPwd = '******';
       this.isEditPwd = false;
     },
     selectIdChange(data) {
