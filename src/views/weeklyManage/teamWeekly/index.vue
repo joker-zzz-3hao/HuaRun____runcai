@@ -1,12 +1,15 @@
 <template>
   <div class="tenant-management">
     <div v-if="!showReal" class="show-pic">
-      <div class="pic-teamweekly01">
-        <!-- <img src="~@/assets/images/demoPic/teamweekly01.png" /> -->
+      <div v-if="changeweek==true" @click="changeweek=false">
+        <div class="pic-teamweekly01">
+          <!-- <img src="~@/assets/images/demoPic/teamweekly01.png" /> -->
+        </div>
+        <div class="pic-teamweekly02">
+          <!-- <img src="~@/assets/images/demoPic/teamweekly02.png" /> -->
+        </div>
       </div>
-      <div class="pic-teamweekly02">
-        <!-- <img src="~@/assets/images/demoPic/teamweekly02.png" /> -->
-      </div>
+      <div v-else @click="changeweek=true" class="pic-sukan"></div>
     </div>
     <template v-if="showReal">
       <div class="page-title">团队周报</div>
@@ -320,6 +323,7 @@ export default {
       ],
       submitedOrLooked: '',
       showReal: false, // 展示示例图片 false
+      changeweek: true,
     };
   },
   created() {
@@ -599,14 +603,22 @@ export default {
 }
 .pic-teamweekly01 {
   background: url("~@/assets/images/demoPic/teamweekly01.png") no-repeat;
-  background-size: cover;
-  height: 454px;
+  /* background-size: cover; */
+  background-size: 100%;
+  height: calc(30vh + 5px);
 }
 
 .pic-teamweekly02 {
   background: url("~@/assets/images/demoPic/teamweekly02.png") no-repeat;
-  background-size: cover;
-  height: 536px;
+  /* background-size: cover; */
+  background-size: 100%;
+  height: calc(40vh);
+}
+.pic-sukan {
+  background: url("~@/assets/images/demoPic/sukan.png") no-repeat;
+  /* background-size: cover; */
+  background-size: 100%;
+  height: calc(40vh);
 }
 
 /* .pic-one img,

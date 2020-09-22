@@ -253,26 +253,21 @@ export default {
 }
 .pic-myweekly01 {
   background: url("~@/assets/images/demoPic/myweekly01.png") no-repeat;
-  /* background-size: 1801px 569px; */
-  background-size: cover;
-  /* background-size: 100%; */
-  height: 569px;
-  /* flex: 1; */
+  background-size: 100%;
+  height: calc(39vh - 7px);
 }
 
 .pic-myweekly02 {
   background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
-  background-size: cover;
-  /* background-size: 100%; */
-  height: 578px;
-  /* flex: 1; */
+  /* background-size: cover; */
+  background-size: 100%;
+  height: calc(39vh - 2px);
 }
 .pic-myweekly03 {
   background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
-  background-size: cover;
-  /* background-size: 100%; */
-  height: 452px;
-  /* flex: 1; */
+  /* background-size: cover; */
+  background-size: 100%;
+  height: calc(30vh);
 }
 /* .pic-one img,
 .pic-two img,
