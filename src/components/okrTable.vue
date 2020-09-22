@@ -3,6 +3,7 @@
     <ul class="tl-thead">
       <li></li>
       <li></li>
+
       <li>权重</li>
       <li>
         <em v-if="!overview" v-show="$route.name!=='grassStaff'">承接地图</em>

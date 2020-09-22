@@ -7,6 +7,7 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
+    style="marginLeft:20%;marginRight:20%"
   >
     <!-- 使命愿景 -->
     <div v-if="type=='1'">

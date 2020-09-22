@@ -54,7 +54,7 @@
     </template>
     <template v-else>
       <div class="tl-card-panel no-data">
-        <span v-if="$route.query.id" class="bg-no-data">暂无数据</span>
+        <span v-if="$route.query.id" class="bg-no-data"></span>
         <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
       </div>
     </template>
@@ -85,7 +85,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import okrTable from '@/components/okrTable';
+import okrTable from '@/components/okrTableLittle';
 import Server from '../server';
 import CONST from '../const';
 import { okrData, okrDataTeam, okrUser } from '../testData';

@@ -200,14 +200,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.searchblock {
-  border: 1px solid #d5dde3;
-  background-color: #fff;
-  margin: 5px;
-}
-.selected {
-  background-color: rgb(131, 64, 255);
-}
-</style>
