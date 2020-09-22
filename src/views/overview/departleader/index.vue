@@ -31,6 +31,7 @@
         </div>
       </div>
       <tl-weeking :periodId="periodId"></tl-weeking>
+      <tl-weekTable :periodId="periodId"></tl-weekTable>
     </div>
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
   </div>
@@ -42,6 +43,8 @@ import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
+// eslint-disable-next-line import/no-unresolved
+import weekTable from './components/weekTable';
 import period from '../component/period';
 import Server from '../server';
 import { mainData } from '../testData';
@@ -57,6 +60,7 @@ export default {
     'tl-weeking': weeking,
     'tl-org-page': orgPage,
     'tl-period': period,
+    'tl-weekTable': weekTable,
   },
   data() {
     return {
