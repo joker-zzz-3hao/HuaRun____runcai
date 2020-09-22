@@ -326,14 +326,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.search-conditions .el-form {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.search-conditions .el-form-item {
-  margin-right: 20px;
-  min-width: 320px;
-}
-</style>

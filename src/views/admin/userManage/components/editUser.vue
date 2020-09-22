@@ -67,10 +67,11 @@
         :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
       >
         <el-cascader
+          ref="cascader"
           v-model="formData.orgIdList"
           :options="treeData"
           :show-all-levels="false"
-          :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgId',label:'orgName',children:'sonTree' }"
+          :props="{ checkStrictly: true, expandTrigger: 'click',value:'orgId',label:'orgName',children:'sonTree' }"
           @change="selectIdChange"
         ></el-cascader>
       </el-form-item>
@@ -247,6 +248,7 @@ export default {
       this.isEditPwd = false;
     },
     selectIdChange(data) {
+      this.$refs.cascader.dropDownVisible = false;
       this.formData.orgIdList = data;
     },
   },
