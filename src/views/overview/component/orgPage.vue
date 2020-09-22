@@ -85,7 +85,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import okrTable from '@/components/okrTable';
+import okrTable from '@/components/okrTableLittle';
 import Server from '../server';
 import CONST from '../const';
 import { okrData, okrDataTeam, okrUser } from '../testData';
