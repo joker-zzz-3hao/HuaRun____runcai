@@ -1,59 +1,74 @@
 <template>
-  <div class="system-user-management">
-    <div>
-      <div>用户管理</div>
+  <div class="tenant-management">
+    <div class="operating-area">
+      <div class="page-title">用户管理</div>
+      <div class="operating-box">
+        <el-form :inline="true" class="tl-form-inline" @keyup.enter.native="searchList()">
+          <el-form-item>
+            <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户" clearable>
+              <el-option
+                v-for="item in tenantList"
+                :key="item.tenantId"
+                :label="item.tenantName"
+                :value="item.tenantId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model.trim="searchForm.userType"
+              placeholder="用户类型"
+              clearable
+              @change="searchList"
+            >
+              <el-option
+                v-for="item in CONST.USER_TYPE_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model.trim="searchForm.userStatus"
+              placeholder="用户状态"
+              clearable
+              @change="searchList"
+            >
+              <el-option
+                v-for="item in CONST.USER_STATUS_LIST"
+                :key="item.key"
+                :label="item.label"
+                :value="item.key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              placeholder="输入用户姓名/账号/手机号"
+              v-model.trim="searchForm.keyWord"
+              clearable
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-button plain class="tl-btn" @click="searchList">查询</el-button>
+        <el-button
+          @click="createOrEditUser"
+          type="primary"
+          icon="el-icon-plus"
+          class="tl-btn amt-bg-slip"
+        >创建用户</el-button>
+        <el-button plain icon="el-icon-minus" class="tl-btn amt-border-slip" @click="batchImport">
+          批量导入
+          <span class="lines"></span>
+        </el-button>
+      </div>
     </div>
-    <!-- <div slot="searchBar" class="search-conditions"> -->
-    <el-form @keyup.enter.native="searchList()">
-      <el-form-item>
-        <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户" clearable>
-          <el-option
-            v-for="item in tenantList"
-            :key="item.tenantId"
-            :label="item.tenantName"
-            :value="item.tenantId"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-select v-model.trim="searchForm.userType" placeholder="用户类型" clearable>
-          <el-option
-            v-for="item in CONST.USER_TYPE_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-select v-model.trim="searchForm.userStatus" placeholder="用户状态" clearable>
-          <el-option
-            v-for="item in CONST.USER_STATUS_LIST"
-            :key="item.key"
-            :label="item.label"
-            :value="item.key"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-input
-          placeholder="输入用户姓名/账号/手机号"
-          v-model.trim="searchForm.keyWord"
-          style="width:300px"
-          clearable
-        ></el-input>
-      </el-form-item>
-    </el-form>
-    <!-- </div> -->
-    <!-- <div slot="actionBar"> -->
-    <div>
-      <el-button @click="createOrEditUser">创建用户</el-button>
-      <el-button @click="batchImport">批量导入</el-button>
-    </div>
-    <div>
-      <el-button @click="searchList">查询</el-button>
-    </div>
-    <!-- </div> -->
+
     <crcloud-table
       :total="total"
       :pageSize.sync="pageSize"
@@ -299,6 +314,9 @@ export default {
             this.tenantName = element.tenantName;
           }
         });
+        this.searchForm.userType = '';
+        this.searchForm.userStatus = '';
+        this.searchForm.keyWord = '';
         this.searchList();
         this.getOrg();
       },
@@ -308,14 +326,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.search-conditions .el-form {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.search-conditions .el-form-item {
-  margin-right: 20px;
-  min-width: 320px;
-}
-</style>

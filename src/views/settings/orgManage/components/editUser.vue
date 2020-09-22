@@ -85,6 +85,7 @@
           :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
         >
           <el-cascader
+            ref="cascader"
             v-model="formData.orgIdList"
             :options="treeData"
             :show-all-levels="false"
@@ -268,6 +269,7 @@ export default {
       this.isEditPwd = false;
     },
     selectIdChange(data) {
+      this.$refs.cascader.dropDownVisible = false;
       this.formData.orgIdList = data;
     },
     closeDrawer() {
