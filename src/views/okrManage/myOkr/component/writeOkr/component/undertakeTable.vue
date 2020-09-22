@@ -139,7 +139,7 @@ export default {
       // 原生click会执行两次，第一次在label等，第二次在input
       console.log('选择关联的okr', this.selectDepartIndex, index);
       if (e.target.tagName != 'INPUT') return;
-      if (this.selectDepartIndex == index) {
+      if (this.selectDepartIndex === index) {
         this.selectDepartIndex = '';
         this.modelDepart = '';
         this.selectDepartRow = '';
@@ -147,6 +147,7 @@ export default {
         this.selectDepartIndex = index;
         this.selectDepartRow = row;
       }
+      console.log(this.selectRadioDepart, this.modelDepart, this.selectDepartRow);
     },
     // 选择关联的价值观
     selectphilosophy(e, index, row) {
@@ -179,9 +180,10 @@ export default {
       handler(newVal) {
         this.modelPhil = newVal;
         if (newVal) {
-          this.selectPhilRow = this.departokrList.filter(
+          this.selectPhilRow = this.philosophyList.filter(
             (item) => item.id == newVal,
           )[0] || {};
+          console.log('价值观', this.selectPhilRow);
         }
       },
       immediate: true,
