@@ -107,9 +107,9 @@ const mainData = {
 };
 
 const teamData = {
-  mainDataY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40],
-  mainDataX: ['陆涛', '徐佳佳', '许哲民', '肖青', '熊彬', '欧阳娜娜', '滕伟', '曾智勇', '王伟', '文娟', '张天龙', '候敏'],
-  mainDatapreY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40],
+  mainDataY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 40, 30, 80, 40, 20, 80, 40, 40],
+  mainDataX: ['陆涛', '徐佳佳', '许哲民', '肖青', '熊彬', '欧阳娜娜', '滕伟', '曾智勇', '王伟', '文娟', '张天龙', '候敏', '陆涛', '徐佳佳', '许哲民', '肖青', '熊彬', '欧阳娜娜', '滕伟', '曾智勇', '王伟', '文娟', '张天龙', '候敏', '滕伟', '曾智勇', '王伟', '文娟', '张天龙', '候敏', '张天龙', '候敏'],
+  mainDatapreY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 40, 30, 80, 40, 20, 80, 40, 40],
   okrData: {
     code: 200,
     msg: 'response.success',
@@ -138,7 +138,32 @@ const userData = {
   mainDataY: [10, 15, 20, 30, 40, 60],
   mainpreDataX: ['2020-8', '2020-09', '2020-10', '2020-11', '2020-12', '2021-01'],
   mainpreDataY: [10, 15, 20, 30, 40, 60],
-  riskDataY: [['2020-08-01', 1], ['2020-08-07', 4], ['2020-08-14', 1], ['2020-08-21', 4], ['2020-08-28', 1], ['2020-09-05', 7]],
+  riskDataY: {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 10,
+    showAllSymbol: true,
+
+    data: [['2020-08-01', 1], ['2020-08-07', 4], ['2020-08-14', 1], ['2020-08-21', 4], ['2020-08-28', 1], ['2020-09-05', 7]],
+    itemStyle: {
+      normal: {
+        color(params) {
+          if (params.value[1] == 1) {
+            return '#4CCD79';
+          }
+          if (params.value[1] == 4) {
+            return '#FFBC20';
+          }
+          if (params.value[1] == 7) {
+            return '#FB4C59 ';
+          }
+        },
+        lineStyle: {
+          color: '#3F7DFF',
+        },
+      },
+    },
+  },
   riskDataX: ['2020-08-01', '2020-08-07', '2020-08-14', '2020-08-21', '2020-08-28', '2020-09-05'],
   userTable: {
     code: 200,
@@ -158,7 +183,7 @@ const okrData = {
   msg: 'response.success',
   data: {
     okrMain: {
-      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 14, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '张三', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
+      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '党刘军', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
     },
     okrDetails: [{
       detailId: '1259957209311141889',

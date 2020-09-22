@@ -18,4 +18,5 @@ export default {
   okrStatus: 'all',
   okrCycle: {},
   testModel: false,
+  identity: {},
 };

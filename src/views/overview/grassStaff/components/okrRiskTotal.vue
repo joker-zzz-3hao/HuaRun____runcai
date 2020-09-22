@@ -85,7 +85,11 @@ export default {
   },
   mounted() {
     this.fetchData();
-  //  this.changeTime();
+    // this.changeTime();
+    if (this.testModel) {
+      this.init();
+      return false;
+    }
   },
   methods: {
     changeTime() {
@@ -126,7 +130,7 @@ export default {
           symbolSize: 10,
           showAllSymbol: true,
 
-          data: that.testModel ? userData.riskDataY : echartDataFil.map((item) => [item.createDate, item.allScore]),
+          data: echartDataFil.map((item) => [item.createDate, item.allScore]),
           itemStyle: {
             normal: {
               color(params) {
@@ -280,7 +284,7 @@ export default {
           },
         },
         series: [
-          that.echartDataY,
+          that.testModel ? userData.riskDataY : that.echartDataY,
         ],
       };
 

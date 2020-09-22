@@ -233,6 +233,7 @@ export default {
     },
     getriskStatistics() {
       if (!this.periodId) {
+        this.init();
         return false;
       }
       this.server.riskStatistics({
@@ -436,7 +437,7 @@ export default {
     },
     initMood() {
       const that = this;
-      this.myChartmood = echarts.init(document.getElementById('mood'));
+      const myChartmood = echarts.init(document.getElementById('mood'));
       const option = {
         dataset: {
           source: that.testModel ? mainData.moodData : that.moodDataY,
@@ -525,9 +526,9 @@ export default {
         ],
       };
 
-      that.myChartmood.setOption(option);
-
-      window.addEventListener('resize', that.myChartmood.resize);
+      myChartmood.setOption(option);
+      myChartmood.resize();
+      window.addEventListener('resize', myChartmood.resize);
     },
     orgEmotion(date) {
       this.server.orgEmotion({
@@ -541,9 +542,6 @@ export default {
         ]));
         this.moodDataY = [['product', '0', '50', '100'], ...this.moodDataY];
         this.initMood();
-        this.$nextTick(() => {
-          this.myChartmood.resize();
-        });
       });
     },
   },
