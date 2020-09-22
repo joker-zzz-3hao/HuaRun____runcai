@@ -1,45 +1,54 @@
 <template>
   <div class="weeking">
-    <div class="model">
-      <div>
-        周报动态
-        <em v-show="testModel">(示例数据)</em>
+    <div class="tl-card-panel">
+      <div class="card-panel-head">
+        <div class="panner-title">
+          <em>周报动态</em>
+          <em v-show="testModel">(示例数据)</em>
+        </div>
       </div>
-      <el-date-picker
-        format="yyyy-MM"
-        value-format="yyyy-MM"
-        v-model="teamTime"
-        @change="getteamTime"
-        :picker-options="pickerBeginDateBefore"
-        :clearable="false"
-        type="month"
-        placeholder="选择日期"
-      ></el-date-picker>
-      <div id="weeking"></div>
-      <!-- <div>
-        <div>进行中工作项</div>
-        <div>已完成工作项</div>
-      </div>-->
+      <div class="card-panel-body">
+        <div class="echart-operating">
+          <el-date-picker
+            format="yyyy-MM"
+            value-format="yyyy-MM"
+            v-model="teamTime"
+            @change="getteamTime"
+            :picker-options="pickerBeginDateBefore"
+            :clearable="false"
+            type="month"
+            placeholder="选择日期"
+            popper-class="tl-month-popper"
+            class="tl-month-editor"
+          ></el-date-picker>
+        </div>
+        <div id="weeking"></div>
+      </div>
     </div>
-    <div class="model">
-      <div>
-        周报互动记录
-        <em v-show="testModel">(示例数据)</em>
+    <div class="tl-card-panel">
+      <div class="card-panel-head">
+        <div class="panner-title">
+          <em>周报互动记录</em>
+          <em v-show="testModel">(示例数据)</em>
+        </div>
       </div>
-      <div>
-        <el-date-picker
-          format="yyyy-MM"
-          value-format="yyyy-MM"
-          v-model="dateTime"
-          @change="getDate"
-          type="month"
-          :clearable="false"
-          placeholder="选择日期"
-        ></el-date-picker>
+      <div class="card-panel-body">
+        <div class="echart-operating">
+          <el-date-picker
+            format="yyyy-MM"
+            value-format="yyyy-MM"
+            v-model="dateTime"
+            @change="getDate"
+            type="month"
+            :clearable="false"
+            placeholder="选择日期"
+            popper-class="tl-month-popper"
+            class="tl-month-editor"
+          ></el-date-picker>
+        </div>
+        <div id="mood"></div>
       </div>
-
-      <div id="mood"></div>
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" class="tl-table">
         <el-table-column prop="orgName" label="部门"></el-table-column>
         <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
         <el-table-column label="标准/简单模式">
@@ -337,21 +346,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-#weeking {
-  width: 100%;
-  height: 400px;
-}
-
-.model {
-  width: 100%;
-  min-height: 200px;
-  background: white;
-  margin-bottom: 30px;
-}
-
-#mood {
-  width: 100%;
-  height: 400px;
-}
-</style>
