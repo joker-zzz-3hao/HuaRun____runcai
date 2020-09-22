@@ -5,17 +5,29 @@
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item label="组织">
-            <div @click="showCascader=!showCascader">
+            <!-- <div @click="showCascader=!showCascader">
               <el-input v-model="formData.orgName" style="width: 200px;"></el-input>
             </div>
-            <el-cascader-panel
+            <el-cascader
+              ref="cascader"
               v-model="formData.orgFullId"
               :style="{display: showCascader ? '' : 'none'}"
               :options="departmentData"
               :show-all-levels="false"
               @change="selectIdChange"
-              :props="{ checkStrictly: true, expandTrigger: 'hover',value:'orgFullId',label:'orgName',children:'children' }"
-            ></el-cascader-panel>
+              :props="{ checkStrictly: true, expandTrigger: 'click',value:'orgFullId',label:'orgName',children:'children' }"
+            ></el-cascader>-->
+            <!-- <div @click="showCascader=!showCascader">
+              <el-input v-model="formData.orgName" style="width: 200px;"></el-input>
+            </div>-->
+            <el-cascader
+              ref="cascader"
+              v-model="orgIdLIst"
+              :options="departmentData"
+              :show-all-levels="false"
+              @change="selectIdChange"
+              :props="{ checkStrictly: true, expandTrigger: 'click',value:'orgId',label:'orgName',children:'children' }"
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="价值观">
             <el-select v-model.trim="formData.worthId" placeholder="请选择" @change="changeSearch">
@@ -49,7 +61,7 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="userName" label="员工" min-width="140">
+            <el-table-column prop="userName" label="员工" min-width="170">
               <template slot-scope="scope">
                 <div style="display:flex;">
                   <div class="user-info">
@@ -61,7 +73,7 @@
                   </div>
                   <div>
                     <div>{{scope.row.userName}}</div>
-                    <div>{{scope.row.orgName}}</div>
+                    <div>{{scope.row.forgName}} - {{scope.row.orgName}}</div>
                   </div>
                 </div>
               </template>
@@ -149,8 +161,9 @@ export default {
       worthList: [],
       scoreWorthList: [],
       departmentData: [],
-      orgFullIdList: [],
-      showCascader: false,
+      // orgFullIdList: [],
+      // showCascader: false,
+      orgIdLIst: [],
       scoreExist: false,
       scoreDetailExist: false,
     };
@@ -194,11 +207,12 @@ export default {
       }
     },
     selectIdChange(data) {
-      this.showCascader = false;
-      this.formData.orgFullId = data[data.length - 1];
-      this.orgFullIdList = this.formData.orgFullId.split(':');
-      this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
-      this.getOrgName(this.departmentData, 0);
+      this.orgIdLIst = data;
+      this.$refs.cascader.dropDownVisible = false;
+      this.formData.orgFullId = data.join(':');
+      // this.orgFullIdList = this.formData.orgFullId.split(':');
+      // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+      // this.getOrgName(this.departmentData, 0);
       this.searchList();
     },
     getOrgTable() {
@@ -208,25 +222,26 @@ export default {
           if (res.data) {
             this.departmentData.push(res.data);
             this.formData.orgFullId = this.departmentData[0].orgFullId;
-            this.orgFullIdList = this.formData.orgFullId.split(':');
-            this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
-            this.getOrgName(this.departmentData, 0);
+            // this.orgFullIdList = this.formData.orgFullId.split(':');
+            // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+            this.orgIdLIst = [res.data.orgId];
+            // this.getOrgName(this.departmentData, 0);
             this.searchList();
           }
         }
       });
     },
-    getOrgName(data, index) {
-      data.forEach((item) => {
-        if (this.orgFullIdList[index] == item.orgId) {
-          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
-            this.getOrgName(item.children, index + 1);
-          } else if ((index + 1) == this.orgFullIdList.length) {
-            this.formData.orgName = item.orgName;
-          }
-        }
-      });
-    },
+    // getOrgName(data, index) {
+    //   data.forEach((item) => {
+    //     if (this.orgFullIdList[index] == item.orgId) {
+    //       if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
+    //         this.getOrgName(item.children, index + 1);
+    //       } else if ((index + 1) == this.orgFullIdList.length) {
+    //         this.formData.orgName = item.orgName;
+    //       }
+    //     }
+    //   });
+    // },
     changeSearch() {
       this.searchList();
     },
