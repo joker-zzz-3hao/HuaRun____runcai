@@ -77,4 +77,9 @@ export default {
   changeTestModel: (state, testModel = false) => {
     state.testModel = testModel;
   },
+
+  // 切换示例数据
+  setIdentity: (state, identity = {}) => {
+    state.identity = identity;
+  },
 };

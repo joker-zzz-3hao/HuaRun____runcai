@@ -105,6 +105,10 @@ export default {
       });
     },
     getokrRisk() {
+      if (!this.periodId) {
+        this.tableData = this.testModel ? teamData.roundData.data : [];
+        return false;
+      }
       this.server.okrRisk({
         periodId: this.periodId,
         orgId: this.orgId,
