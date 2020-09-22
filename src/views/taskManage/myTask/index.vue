@@ -136,12 +136,13 @@ export default {
 } */
 .pic-myTask {
   background: url("~@/assets/images/demoPic/myTask.png") no-repeat;
-  background-size: cover;
-  height: 642px;
+  background-size: 100%;
+  /* background-size: cover; */
+  height: calc(100vh);
 }
 .pic-zhoubao {
   background: url("~@/assets/images/demoPic/zhoubao.png") no-repeat;
-  background-size: cover;
-  height: 984px;
+  background-size: 100%;
+  height: calc(100vh);
 }
 </style>

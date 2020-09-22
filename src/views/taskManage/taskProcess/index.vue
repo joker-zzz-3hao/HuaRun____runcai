@@ -32,17 +32,18 @@ export default {
 }
 .pic-taskprocess {
   background: url("~@/assets/images/demoPic/taskprocess.png") no-repeat;
-  background-size: cover;
-  height: 995px;
+  background-size: 100%;
+  /* background-size: cover; */
+  height: calc(100vh);
 }
 .pic-kanban01 {
   background: url("~@/assets/images/demoPic/kanban01.png") no-repeat;
-  background-size: cover;
-  height: 467px;
+  background-size: 100%;
+  height: 354px;
 }
 .pic-kanban02 {
   background: url("~@/assets/images/demoPic/kanban02.png") no-repeat;
-  background-size: cover;
+  background-size: 100%;
   height: 528px;
 }
 /* .pic-one,

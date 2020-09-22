@@ -1,6 +1,9 @@
 <template>
   <div class="role-type">
-    <div>
+    <div v-if="!showReal">
+      <div class="pic-worthdata"></div>
+    </div>
+    <div v-if="showReal">
       <div class="page-title">价值观分布数据</div>
       <div>
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
@@ -143,6 +146,8 @@ export default {
       worthList: {},
       periodId: '',
       worthPeriodId: '',
+      showReal: false, // 展示示例图片 false
+
     };
   },
   components: {
@@ -338,3 +343,10 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.pic-worthdata {
+  background: url("~@/assets/images/demoPic/worthData.png") no-repeat;
+  background-size: 100%;
+  height: calc(100vh);
+}
+</style>

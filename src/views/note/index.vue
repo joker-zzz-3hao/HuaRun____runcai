@@ -36,7 +36,8 @@ export default {
 <style lang="css" stylus>
 .pic-noteIndex {
   background: url("~@/assets/images/demoPic/noteIndex.png") no-repeat;
-  background-size: cover;
+  background-size: 100%;
+  /* background-size: cover; */
   height: 995px;
   display: flex;
 }
@@ -52,17 +53,20 @@ export default {
 }
 .pic-detail01 {
   background: url("~@/assets/images/demoPic/detail01.png") no-repeat;
-  background-size: cover;
-  height: 642px;
+  /* background-size: cover; */
+  background-size: 100%;
+  height: 499px;
 }
 .pic-detail02 {
   background: url("~@/assets/images/demoPic/detail02.png") no-repeat;
-  background-size: cover;
-  height: 673px;
+  background-size: 100%;
+  /* background-size: cover; */
+  height: 500px;
 }
 .pic-writenote {
   background: url("~@/assets/images/demoPic/writenote.png") no-repeat;
-  background-size: cover;
-  height: 1010px;
+  background-size: 100%;
+  /* background-size: cover; */
+  height: calc(100vh);
 }
 </style>
