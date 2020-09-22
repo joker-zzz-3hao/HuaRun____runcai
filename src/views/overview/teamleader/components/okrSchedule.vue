@@ -1,7 +1,5 @@
 <template>
-  <div class="okrSchedule">
-    <div id="okrSchedule"></div>
-  </div>
+  <div id="okr-schedule"></div>
 </template>
 
 <script>
@@ -118,9 +116,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-#okrSchedule {
-  width: 100%;
-  height: 400px;
-}
-</style>

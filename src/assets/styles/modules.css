@@ -2590,6 +2590,19 @@
   align-items: center;
 }
 
+.card-panel-head .panner-title {
+  display: flex;
+  align-items: center;
+}
+
+.card-panel-head .panner-title::before {
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: #685df1;
+}
+
 .card-panel-head dl,
 .card-panel-head dt {
   display: flex;
