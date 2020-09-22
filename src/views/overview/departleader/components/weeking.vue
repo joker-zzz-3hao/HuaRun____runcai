@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="card-panel-body">
-          <div id="weeking"></div>
+          <div id="week-depart"></div>
           <div>
             <ul class="departList">
               <li
@@ -45,7 +45,7 @@
               placeholder="选择日期"
             ></el-date-picker>
           </div>
-          <div id="mood"></div>
+          <div id="mood-depart"></div>
         </div>
       </div>
     </div>
@@ -366,7 +366,7 @@ export default {
     },
     init() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('weeking'));
+      const myChart = echarts.init(document.getElementById('week-depart'));
       const option = {
         xAxis: {
           data: that.testModel ? mainData.timeData : that.echartDataX,
@@ -441,7 +441,7 @@ export default {
     },
     initMood() {
       const that = this;
-      const myChartmood = echarts.init(document.getElementById('mood'));
+      const myChartmood = echarts.init(document.getElementById('mood-depart'));
       const option = {
         dataset: {
           source: that.testModel ? mainData.moodData : that.moodDataY,
@@ -488,6 +488,9 @@ export default {
         },
         yAxis: {
           min: 0,
+          splitLine: {
+            show: false,
+          },
           axisLine: {
             lineStyle: {
               color: '#F4F6F8', // 颜色
@@ -552,35 +555,7 @@ export default {
 };
 </script>
 <style  scoped>
-#weeking {
-  width: 100%;
-  height: 400px;
-  display: block;
-}
-
-.model {
-  width: 100%;
-  min-height: 200px;
-  background: white;
-  margin-bottom: 30px;
-}
 .active {
-  color: blue;
-}
-.echartFlex {
-  display: flex;
-  flex-direction: row;
-}
-#mood {
-  width: 100%;
-  height: 400px;
-  display: block;
-}
-.departList {
-  display: flex;
-  flex-direction: row;
-}
-.departList li {
-  margin-right: 10px;
+  color: #ffbc20;
 }
 </style>
