@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <div v-if="!showReal" class="show-pic">
-      <div v-if="changeZhoubao==true" class="pic-myTask" @click="changeZhoubao = false">
+      <div class="pic-myTask" @click="handleAssign">
         <!-- <img src="~@/assets/images/demoPic/myTask.png" /> -->
       </div>
-      <div v-else class="pic-zhoubao" @click="changeZhoubao = true"></div>
+      <!-- <div v-else class="pic-taskdetail"></div> -->
     </div>
     <template v-if="showReal">
       <!-- 按钮组 -->
@@ -51,13 +51,13 @@
           </el-table>
         </div>
       </tl-crcloud-table>
-      <tl-assignment
-        ref="assignment"
-        v-if="existAssignment"
-        :existAssignment.sync="existAssignment"
-        :server="server"
-      ></tl-assignment>
     </template>
+    <tl-assignment
+      ref="assignment"
+      v-if="existAssignment"
+      :existAssignment.sync="existAssignment"
+      :server="server"
+    ></tl-assignment>
   </div>
 </template>
 
@@ -140,8 +140,8 @@ export default {
   /* background-size: cover; */
   height: calc(100vh);
 }
-.pic-zhoubao {
-  background: url("~@/assets/images/demoPic/zhoubao.png") no-repeat;
+.pic-taskdetail {
+  background: url("~@/assets/images/demoPic/taskDetail.png") no-repeat;
   background-size: 100%;
   height: calc(100vh);
 }

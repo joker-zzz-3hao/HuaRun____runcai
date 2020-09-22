@@ -2,13 +2,13 @@
   <div class="my-weekly">
     <div v-if="!showReal" class="show-pic">
       <div class="pic-myweekly01">
-        <!-- <img src="~@/assets/images/demoPic/myweekly01.png" /> -->
+        <img src="~@/assets/images/demoPic/myweekly01.png" />
       </div>
       <div class="pic-myweekly02">
-        <!-- <img src="~@/assets/images/demoPic/myweekly02.png" /> -->
+        <img src="~@/assets/images/demoPic/myweekly02.png" />
       </div>
       <div class="pic-myweekly03">
-        <!-- <img src="~@/assets/images/demoPic/myweekly03.png" /> -->
+        <img src="~@/assets/images/demoPic/myweekly03.png" />
       </div>
     </div>
     <div v-if="showReal">
@@ -248,32 +248,35 @@ export default {
   background: green;
 }
 .show-pic {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
 }
 .pic-myweekly01 {
   background: url("~@/assets/images/demoPic/myweekly01.png") no-repeat;
   background-size: 100%;
-  height: calc(39vh - 7px);
+  /* height: calc(39vh - 7px); */
+  flex: 1;
 }
 
 .pic-myweekly02 {
   background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(39vh - 2px);
+  /* height: calc(39vh - 2px); */
+  flex: 1;
 }
 .pic-myweekly03 {
   background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(30vh);
+  /* height: calc(30vh); */
+  flex: 1;
 }
-/* .pic-one img,
-.pic-two img,
-.pic-three img {
+.pic-myweekly01 img,
+.pic-myweekly02 img,
+.pic-myweekly03 img {
   display: inline-block;
   height: auto;
   max-width: 100%;
-} */
+}
 </style>

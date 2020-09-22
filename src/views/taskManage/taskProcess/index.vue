@@ -2,11 +2,14 @@
   <div class="home">
     <div v-if="!showReal" class="show-pic">
       <div v-if="changeKanban" class="pic-taskprocess" @click="changeKanban = false">
+        <div class="go-back" @click="goback"></div>
+
         <!-- <img src="~@/assets/images/demoPic/taskprocess.png" /> -->
       </div>
       <div v-else @click="changeKanban = true">
-        <div class="pic-kanban01"></div>
-        <div class="pic-kanban02"></div>
+        <div class="pic-kanban">
+          <div class="go-back" @click="goback"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +26,11 @@ export default {
       changeKanban: true,
     };
   },
+  methods: {
+    goback() {
+      this.$router.go('-1');
+    },
+  },
 };
 </script>
 <style lang="css" stylus>
@@ -36,15 +44,14 @@ export default {
   /* background-size: cover; */
   height: calc(100vh);
 }
-.pic-kanban01 {
-  background: url("~@/assets/images/demoPic/kanban01.png") no-repeat;
+.pic-kanban {
+  background: url("~@/assets/images/demoPic/kanban.png") no-repeat;
   background-size: 100%;
-  height: 354px;
+  height: calc(100vh);
 }
-.pic-kanban02 {
-  background: url("~@/assets/images/demoPic/kanban02.png") no-repeat;
-  background-size: 100%;
-  height: 528px;
+.go-back {
+  width: 200px;
+  height: 300px;
 }
 /* .pic-one,
 .pic-two,
