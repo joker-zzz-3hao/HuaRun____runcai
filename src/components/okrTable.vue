@@ -57,7 +57,7 @@
             <!-- kr无关联父目标 仅占位-->
             <dd class="undertake-target"></dd>
             <!-- kr进度 -->
-            <dd class="okr-progress" v-if="showUpdate">
+            <dd class="okr-progress">
               <tl-process :data="parseInt(kritem.okrDetailProgress,10)"></tl-process>
             </dd>
             <!-- kr无更新进度 仅占位-->
