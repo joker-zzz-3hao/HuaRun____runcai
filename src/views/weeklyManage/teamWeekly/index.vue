@@ -1,11 +1,11 @@
 <template>
   <div class="tenant-management">
     <div v-if="!showReal" class="show-pic">
-      <div class="pic-one">
-        <img src="~@/assets/images/demoPic/teamweekly01.png" />
+      <div class="pic-teamweekly01">
+        <!-- <img src="~@/assets/images/demoPic/teamweekly01.png" /> -->
       </div>
-      <div class="pic-two">
-        <img src="~@/assets/images/demoPic/teamweekly02.png" />
+      <div class="pic-teamweekly02">
+        <!-- <img src="~@/assets/images/demoPic/teamweekly02.png" /> -->
       </div>
     </div>
     <template v-if="showReal">
@@ -587,21 +587,33 @@ export default {
 
 };
 </script>
-<style lang="css">
+<style lang="css" stylus>
 .show-pic {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 .pic-one,
 .pic-two,
 .pic-three {
-  flex: 1;
+  /* flex: 1; */
 }
-.pic-one img,
+.pic-teamweekly01 {
+  background: url("~@/assets/images/demoPic/teamweekly01.png") no-repeat;
+  background-size: cover;
+  height: 454px;
+}
+
+.pic-teamweekly02 {
+  background: url("~@/assets/images/demoPic/teamweekly02.png") no-repeat;
+  background-size: cover;
+  height: 536px;
+}
+
+/* .pic-one img,
 .pic-two img,
 .pic-three img {
   display: inline-block;
   height: auto;
   max-width: 100%;
-}
+} */
 </style>

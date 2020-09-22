@@ -1,14 +1,14 @@
 <template>
   <div class="my-weekly">
     <div v-if="!showReal" class="show-pic">
-      <div class="pic-one">
-        <img src="~@/assets/images/demoPic/myweekly01.png" />
+      <div class="pic-myweekly01">
+        <!-- <img src="~@/assets/images/demoPic/myweekly01.png" /> -->
       </div>
-      <div class="pic-two">
-        <img src="~@/assets/images/demoPic/myweekly02.png" />
+      <div class="pic-myweekly02">
+        <!-- <img src="~@/assets/images/demoPic/myweekly02.png" /> -->
       </div>
-      <div class="pic-three">
-        <img src="~@/assets/images/demoPic/myweekly03.png" />
+      <div class="pic-myweekly03">
+        <!-- <img src="~@/assets/images/demoPic/myweekly03.png" /> -->
       </div>
     </div>
     <div v-if="showReal">
@@ -240,7 +240,7 @@ export default {
   },
 };
 </script>
-<style lang="css">
+<style lang="css" stylus>
 .is-stantard {
   background: green;
 }
@@ -248,32 +248,37 @@ export default {
   background: green;
 }
 .show-pic {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
-.pic-one {
+.pic-myweekly01 {
   background: url("~@/assets/images/demoPic/myweekly01.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  flex: 1;
+  /* background-size: 1801px 569px; */
+  background-size: cover;
+  /* background-size: 100%; */
+  height: 569px;
+  /* flex: 1; */
 }
-.pic-one img,
+
+.pic-myweekly02 {
+  background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
+  background-size: cover;
+  /* background-size: 100%; */
+  height: 578px;
+  /* flex: 1; */
+}
+.pic-myweekly03 {
+  background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
+  background-size: cover;
+  /* background-size: 100%; */
+  height: 452px;
+  /* flex: 1; */
+}
+/* .pic-one img,
 .pic-two img,
 .pic-three img {
   display: inline-block;
   height: auto;
   max-width: 100%;
-}
-.pic-two {
-  background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  flex: 1;
-}
-.pic-three {
-  background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  flex: 1;
-}
+} */
 </style>
