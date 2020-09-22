@@ -55,7 +55,13 @@
     <template v-else>
       <div class="tl-card-panel no-data">
         <span v-if="$route.query.id" class="bg-no-data"></span>
-        <el-button v-else type="primary" @click="$router.push('myOkr')">创建OKR</el-button>
+        <el-button
+          v-else
+          type="primary"
+          icon="el-icon-plus"
+          @click="$router.push('myOkr')"
+          class="tl-btn amt-bg-slip"
+        >创建OKR</el-button>
       </div>
     </template>
     <div class="card-panel-body img-list" v-if="orgUser">

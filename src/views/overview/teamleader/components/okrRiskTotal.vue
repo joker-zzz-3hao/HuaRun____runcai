@@ -20,8 +20,15 @@
         </dd>
       </dl>
     </div>
-    <el-dialog title="okr列表" :visible.sync="dialogVisible" width="30%" :append-to-body="true">
-      <el-table :data="okrData" style="width: 100%">
+    <el-dialog
+      title="okr列表"
+      custom-class="update-progress"
+      class="tl-dialog"
+      width="600px"
+      :visible.sync="dialogVisible"
+      :append-to-body="true"
+    >
+      <el-table class="tl-table" :data="okrData" style="width: 100%">
         <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
         <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
       </el-table>

@@ -1,43 +1,40 @@
 <template>
   <div class="weeking">
-    <div class="model">
-      <div>
-        OKR风险状态统计
-        <span v-show="testModel">(示例数据)</span>
-      </div>
-      <!-- <div>
-        <el-select placeholder="请选择" class="selectTime" v-model="periodId" @change="changeTime">
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :value="item.periodId"
-            :label="item.periodName"
-          ></el-option>
-        </el-select>
-      </div>-->
-      <div class="echartFlex">
-        <div style="width:50%">
-          <div id="weeking"></div>
-          <ul class="departList">
-            <li
-              v-for="(item,index) in orgTable"
-              :key="index"
-              :class="{'active':active[item.orgId] }"
-              @click="changIdAction(item.orgId)"
-            >
-              {{
-              item.orgName
-              }}
-            </li>
-          </ul>
-        </div>
-
-        <div style="width:50%">
-          <div>
-            员工情绪大屏
+    <div class="tl-card-panel">
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR风险状态统计</em>
             <span v-show="testModel">(示例数据)</span>
           </div>
+        </div>
+        <div class="card-panel-body">
+          <div id="weeking"></div>
           <div>
+            <ul class="departList">
+              <li
+                v-for="(item,index) in orgTable"
+                :key="index"
+                :class="{'active':active[item.orgId] }"
+                @click="changIdAction(item.orgId)"
+              >
+                {{
+                item.orgName
+                }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>员工情绪大屏</em>
+            <span v-show="testModel">(示例数据)</span>
+          </div>
+        </div>
+        <div class="card-panel-body flex-column">
+          <div class="flex-end">
             <el-date-picker
               format="yyyy-MM"
               value-format="yyyy-MM"
@@ -52,32 +49,39 @@
         </div>
       </div>
     </div>
-    <div class="model">
-      <div>
-        周报动态
-        <span v-show="testModel">(示例数据)</span>
+    <div class="tl-card-panel">
+      <div class="card-panel-head">
+        <div class="panner-title">
+          <em>周报动态</em>
+          <span v-show="testModel">(示例数据)</span>
+        </div>
       </div>
-      <el-date-picker
-        format="yyyy-MM"
-        value-format="yyyy-MM"
-        v-model="dateTime"
-        @change="getDate"
-        :clearable="false"
-        :picker-options="pickerBeginDateBefore"
-        type="month"
-        placeholder="选择日期"
-      ></el-date-picker>
-
-      <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
-        <el-option
-          :key="index"
-          :value="item.calendarId"
-          v-for="(item,index) in dateOption"
-          :label="item.weekBegin+' 至 '+item.weekEnd"
-        ></el-option>
-      </el-select>
-      <div>
-        <el-table :data="tableData" style="width: 100%">
+      <div class="card-panel-body flex-column">
+        <div class="flex-end">
+          <el-date-picker
+            format="yyyy-MM"
+            value-format="yyyy-MM"
+            v-model="dateTime"
+            @change="getDate"
+            :clearable="false"
+            :picker-options="pickerBeginDateBefore"
+            type="month"
+            placeholder="选择日期"
+            popper-class="tl-month-popper"
+            class="tl-month-editor"
+          ></el-date-picker>
+        </div>
+        <div class="flex-end">
+          <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
+            <el-option
+              :key="index"
+              :value="item.calendarId"
+              v-for="(item,index) in dateOption"
+              :label="item.weekBegin+' 至 '+item.weekEnd"
+            ></el-option>
+          </el-select>
+        </div>
+        <el-table :data="tableData" class="tl-table" style="width: 100%">
           <el-table-column prop="orgName" label="部门"></el-table-column>
           <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
           <el-table-column label="标准/简单模式">

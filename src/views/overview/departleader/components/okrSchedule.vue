@@ -4,7 +4,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>OKR当前进度</em>
-          <span v-show="testModel">(示例数据)</span>
+          <em v-show="testModel">(示例数据)</em>
         </div>
       </div>
       <div class="card-panel-body">
@@ -15,7 +15,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>OKR进度更新次数</em>
-          <span v-show="testModel">(示例数据)</span>
+          <em v-show="testModel">(示例数据)</em>
         </div>
       </div>
       <div class="card-panel-body">

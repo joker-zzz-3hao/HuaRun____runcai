@@ -111,9 +111,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-#okr-update-staff {
-  width: 100%;
-  min-height: 400px;
-}
-</style>
