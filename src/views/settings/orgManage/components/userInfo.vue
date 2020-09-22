@@ -11,8 +11,6 @@
     @closed="closed"
     :close-on-click-modal="false"
     title="用户详情"
-    direction="rtl"
-    size="35%"
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
