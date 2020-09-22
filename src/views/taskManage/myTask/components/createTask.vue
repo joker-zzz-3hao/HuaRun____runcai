@@ -91,15 +91,16 @@
           @change="lengthChange"
           :options="editorOption"
         ></quillEditor>-->
+        <!-- :on-preview="handlePreview"
+          :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+          :on-exceed="handleExceed"
+        -->
         <el-upload
           class="upload-demo"
           action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
           multiple
           :limit="3"
-          :on-exceed="handleExceed"
           :file-list="fileList"
         >
           <el-button size="small" type="primary">点击上传</el-button>
@@ -167,6 +168,7 @@ export default {
       updateList: [{
         name: '李四', reason: '因11111任务属于错误输入的任务', process: 20,
       }],
+      fileList: [],
     };
   },
   components: {

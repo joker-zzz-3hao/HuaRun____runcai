@@ -46,7 +46,7 @@
           class="tl-date-editor"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="周期开始日期" prop="dateTime">
+      <el-form-item label="周期开始日期" prop="startTime">
         <el-date-picker
           v-model="dateTime"
           @change="getTime"
