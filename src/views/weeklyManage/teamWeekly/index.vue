@@ -3,13 +3,15 @@
     <div v-if="!showReal" class="show-pic">
       <div v-if="changeweek==true" @click="changeweek=false">
         <div class="pic-teamweekly01">
-          <!-- <img src="~@/assets/images/demoPic/teamweekly01.png" /> -->
+          <img src="~@/assets/images/demoPic/teamweekly01.png" />
         </div>
         <div class="pic-teamweekly02">
-          <!-- <img src="~@/assets/images/demoPic/teamweekly02.png" /> -->
+          <img src="~@/assets/images/demoPic/teamweekly02.png" />
         </div>
       </div>
-      <div v-else @click="changeweek=true" class="pic-sukan"></div>
+      <div v-else @click="changeweek=true" class="pic-sukan">
+        <img src="~@/assets/images/demoPic/sukan.png" />
+      </div>
     </div>
     <template v-if="showReal">
       <div class="page-title">团队周报</div>
@@ -593,39 +595,38 @@ export default {
 </script>
 <style lang="css" stylus>
 .show-pic {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
 }
-.pic-one,
-.pic-two,
-.pic-three {
-  /* flex: 1; */
-}
+
 .pic-teamweekly01 {
   background: url("~@/assets/images/demoPic/teamweekly01.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(30vh + 5px);
+  /* height: calc(30vh + 5px); */
+  flex: 1;
 }
 
 .pic-teamweekly02 {
   background: url("~@/assets/images/demoPic/teamweekly02.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(40vh);
+  /* height: calc(40vh); */
+  flex: 1;
 }
 .pic-sukan {
   background: url("~@/assets/images/demoPic/sukan.png") no-repeat;
   /* background-size: cover; */
   background-size: 100%;
-  height: calc(100vh);
+  /* height: calc(100vh); */
+  flex: 1;
 }
 
-/* .pic-one img,
-.pic-two img,
-.pic-three img {
+.pic-teamweekly01 img,
+.pic-teamweekly02 img,
+.pic-sukan img {
   display: inline-block;
   height: auto;
   max-width: 100%;
-} */
+}
 </style>
