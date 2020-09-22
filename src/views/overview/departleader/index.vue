@@ -3,26 +3,31 @@
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
       <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
-      <div class="creatOkr">
-        <div>
-          <em>
-            OKR承接与变更统计
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR承接与变更统计</em>
             <span v-show="testModel">(示例数据)</span>
-          </em>
+          </div>
         </div>
-        <div class="risk">
-          <ul class="flex">
-            <li v-for="(item,index) in riskList" :key="index">
+        <div class="card-panel-body">
+          <div class="tl-card-panel-group">
+            <dl v-for="(item,index) in riskList" :key="index">
+              <dt>{{item.orgName}}</dt>
               <dd>
-                <em>{{item.orgName}}</em>
-                <em>承接数:{{item.okrContinueCount}}</em>
+                <span>总人数</span>
+                <em>{{item.personCount}}</em>
               </dd>
               <dd>
-                <em>变更数:{{item.okrChangeCount}}</em>
-                <em>总人数:{{item.personCount}}</em>
+                <span>承接数</span>
+                <em>{{item.okrContinueCount}}</em>
               </dd>
-            </li>
-          </ul>
+              <dd>
+                <span>变更数</span>
+                <em>{{item.okrChangeCount}}</em>
+              </dd>
+            </dl>
+          </div>
         </div>
       </div>
       <tl-weeking :periodId="periodId"></tl-weeking>
