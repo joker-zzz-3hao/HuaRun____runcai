@@ -10,8 +10,8 @@ export default {
         callback('长度为8-32个字符');
 
         /* eslint no-useless-escape:off */
-      } else if (!/^(?![a-z]+$)(?!\d+$)(?![^\w\s]+$)\S+$/i.test(value)) {
-        callback('数字、大小写字母及特殊字符至少包含两种');
+      } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
+        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
       } else if (/[\u4E00-\u9FA5]/g.test(value)) {
         callback('不支持中文');
       } else {
