@@ -17,7 +17,13 @@
               <em>勇于创新</em>
             </dd>
           </dl>-->
-          <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
+          <svgtree
+            v-if="this.treeData.length>0"
+            fatherId="orgParentId"
+            childId="orgId"
+            :treeData="treeData"
+            direction="col"
+          >
             <template slot="treecard" slot-scope="node">
               <card
                 :node="node"
@@ -240,6 +246,8 @@ export default {
             // OKR表格数据
             if (res.data.children.length > 0) {
               this.treeTableData.push(res.data);
+            } else {
+              this.treeTableData = [];
             }
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
@@ -249,8 +257,8 @@ export default {
                   item.orgParentId = null;
                 }
               });
-              this.treeData = res.data.okrTree;
             }
+            this.treeData = res.data.okrTree;
           }
         });
       }
