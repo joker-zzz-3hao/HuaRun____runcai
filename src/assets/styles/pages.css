@@ -1320,6 +1320,10 @@
   flex: 1;
 }
 
+.okr-approval-list .table-container {
+  min-height: calc(100vh - 260px);
+}
+
 /* 周报 */
 .my-weekly .cont-area,
 .okr-maps .maps-view-table {
