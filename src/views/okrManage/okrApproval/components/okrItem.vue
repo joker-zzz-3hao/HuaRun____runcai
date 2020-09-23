@@ -1,33 +1,26 @@
 <template>
-  <div>
-    <el-card v-for="(item,index) in tableList" :key="index" style="margin-top: 20px;">
-      <div v-if="item.okrDetailType == '0'">
-        <!-- O -->
-        <div>
-          <div>变更后</div>
-          <tl-oComponent :oData="item"></tl-oComponent>
+  <ul class="okr-change-list">
+    <template>
+      <li v-for="(item,index) in tableList" :key="index">
+        <div v-if="item.okrDetailType == '0'" class="change-group">
+          <div>
+            <tl-oComponent :oData="item"></tl-oComponent>
+          </div>
+          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
+            <tl-oComponent :oData="item.historyOkr"></tl-oComponent>
+          </div>
         </div>
-        <!-- O历史版本 -->
-        <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
-          <div>变更前</div>
-          <tl-oComponent :oData="item.historyOkr" style="margin-top: 10px;"></tl-oComponent>
+        <div v-if="item.okrDetailType == '1'" class="change-group">
+          <div>
+            <tl-krComponent :krData="item"></tl-krComponent>
+          </div>
+          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
+            <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
+          </div>
         </div>
-      </div>
-      <!-- <hr v-if="item.okrDetailType == '0'" /> -->
-      <!-- KR -->
-      <div v-if="item.okrDetailType == '1'">
-        <div>
-          <div>变更后</div>
-          <tl-krComponent :krData="item"></tl-krComponent>
-        </div>
-        <!-- KR历史版本 -->
-        <div v-if="item.historyOkr" style="margin-top: 10px;background-color: #999;">
-          <div>变更前</div>
-          <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
-        </div>
-      </div>
-    </el-card>
-  </div>
+      </li>
+    </template>
+  </ul>
 </template>
 
 <script>

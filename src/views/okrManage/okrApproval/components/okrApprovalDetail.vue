@@ -11,56 +11,62 @@
       </dd>
       <dd>
         <dl class="dl-item">
-          <dt>sdfas</dt>
-          <dd>dfgdfgdfgd</dd>
+          <dt>
+            <i class="el-icon-user"></i>
+            <span>被审批者</span>
+          </dt>
+          <dd>
+            <em>{{data.userName}}</em>
+          </dd>
         </dl>
         <dl class="dl-item">
-          <dt>sdfas</dt>
-          <dd>dfgdfgdfgd</dd>
+          <dt>
+            <i class="el-icon-s-operation"></i>
+            <span>OKR类型</span>
+          </dt>
+          <dd>
+            <em>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</em>
+          </dd>
         </dl>
         <dl class="dl-item">
-          <dt>sdfas</dt>
-          <dd>dfgdfgdfgd</dd>
+          <dt>
+            <i class="el-icon-user"></i>
+            <span>当前审批者</span>
+          </dt>
+          <dd>
+            <em>{{data.approveUserName}}</em>
+          </dd>
         </dl>
         <dl class="dl-item">
-          <dt>sdfas</dt>
-          <dd>dfgdfgdfgd</dd>
-        </dl>
-      </dd>
-    </dl>
-    <div>
-      <p></p>
-      <div>
-        <div>
-          <span>被审批者</span>
-          <span>{{data.userName}}</span>
-        </div>
-        <div>
-          <span>OKR类型</span>
-          <span>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</span>
-        </div>
-        <div>
-          <span>当前审批者</span>
-          <span>{{data.approveUserName}}</span>
-        </div>
-        <div style="display:flex;">
-          <div>进度</div>
-          <div>
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <span>进度</span>
+          </dt>
+          <dd>
             <el-progress
               v-if="data.approvalType == '1'"
               type="circle"
               :percentage="data.okrProgress"
+              :width="60"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
             ></el-progress>
-            <span v-else>--</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 20px;">
-      <p>OKR信息</p>
-      <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
-      <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
-    </div>
+            <span v-else>暂无</span>
+          </dd>
+        </dl>
+      </dd>
+    </dl>
+    <dl class="dl-card-panel">
+      <dt>
+        <em>OKR信息</em>
+      </dt>
+      <dd>
+        <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
+        <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
+      </dd>
+    </dl>
+
     <!-- 变更原因 -->
     <div v-if="data.approvalType == '1'">
       <span>变更原因：</span>

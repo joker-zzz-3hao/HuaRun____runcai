@@ -1303,6 +1303,36 @@
   min-height: calc(100vh - 260px);
 }
 
+.okr-approval-detail .dl-card-panel:first-child > dt {
+  margin: 0 0 16px 0;
+}
+
+.okr-approval-detail .dl-card-panel:first-child > dd {
+  margin: 10px 0 0 0;
+}
+
+.okr-approval-detail .dl-card-panel:first-child > dd:last-child {
+  padding: 20px;
+  background: #f4f6f8;
+}
+
+.okr-approval-detail .okr-change-list {
+  width: 100%;
+}
+
+.okr-approval-detail .okr-change-list .change-group {
+  width: 100%;
+  border: 1px solid #e5e9ee;
+}
+
+.okr-approval-detail .dl-card-panel > dt {
+  margin: 0 0 10px 0;
+}
+
+.okr-approval-detail .okr-change-list .change-group > div {
+  padding: 20px;
+}
+
 /* 周报 */
 .my-weekly .cont-area,
 .okr-maps .maps-view-table {
