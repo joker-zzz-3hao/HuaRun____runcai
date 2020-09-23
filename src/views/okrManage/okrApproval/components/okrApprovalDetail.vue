@@ -38,9 +38,9 @@
       <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
     </div>
     <!-- 变更原因 -->
-    <div>
+    <div v-if="data.approvalType == '1'">
       <span>变更原因：</span>
-      <span>{{}}</span>
+      <span>{{JSON.parse(data.paramJson).modifyReason }}</span>
     </div>
     <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
       <p>审核</p>
