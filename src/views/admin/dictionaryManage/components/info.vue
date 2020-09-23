@@ -16,7 +16,7 @@
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-dic"
   >
     <div class="modelCreate">
       <el-form ref="dicForm" label-width="80px">
@@ -57,7 +57,7 @@
       </el-table>
     </div>
     <div class="operating-box">
-      <el-button class="tl-btn amt-bg-slip" @click="cancel">确定</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="cancel">确定</el-button>
     </div>
   </el-drawer>
 </template>

@@ -4,7 +4,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>OKR风险状态统计</em>
-          <em v-show="testModel">(示例数据)</em>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body">
@@ -16,7 +16,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>周报</em>
-          <em v-show="testModel">(示例数据)</em>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body flex-column">

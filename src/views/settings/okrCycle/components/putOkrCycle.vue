@@ -8,7 +8,7 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     :modal="false"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-okr-cycle"
   >
     <el-form
       ref="form"
@@ -210,3 +210,8 @@ export default {
   },
 };
 </script>
+<style >
+.tl-drawer-okr-cycle .el-drawer {
+  width: 32% !important;
+}
+</style>
