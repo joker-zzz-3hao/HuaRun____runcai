@@ -7,7 +7,7 @@
     :title="title"
     :modal="false"
     :visible.sync="dialogTableVisible"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-tenant-edit"
   >
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
@@ -18,13 +18,18 @@
           <span>{{form.tenantId}}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
-          <el-input maxlength="64" v-model="form.applyUser" placeholder="请输入申请人" class="tl-input"></el-input>
+          <el-input
+            class="tl-input input-width"
+            maxlength="64"
+            v-model="form.applyUser"
+            placeholder="请输入申请人"
+          ></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobilePhone">
           <el-input
             v-model="form.mobilePhone"
             placeholder="请输入联系电话"
-            class="tl-input"
+            class="tl-input input-width"
             maxlength="11"
           ></el-input>
         </el-form-item>
@@ -47,10 +52,10 @@
           </div>
         </el-form-item>
       </el-form>
-      <div class="operating-box">
-        <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
-        <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
-      </div>
+    </div>
+    <div class="operating-box">
+      <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
+      <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -215,10 +220,16 @@ export default {
 
 };
 </script>
-<style  scoped>
+<style  >
 .modelCreate {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
+}
+.tl-drawer-tenant-edit .el-drawer {
+  width: 500px !important;
+}
+.input-width {
+  width: 90%;
 }
 </style>

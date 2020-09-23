@@ -9,7 +9,7 @@
     size="35%"
     :modal="false"
     :visible.sync="dialogTableVisible"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-tenant-info"
   >
     <div class="modelCreate">
       <el-form ref="form" label-width="110px">
@@ -148,10 +148,13 @@ export default {
   },
 };
 </script>
-<style  scoped>
+<style  >
 .modelCreate {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 620px;
+}
+.tl-drawer-tenant-info .el-drawer {
+  width: 400px !important;
 }
 </style>

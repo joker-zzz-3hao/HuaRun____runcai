@@ -284,6 +284,6 @@ export default {
 </script>
 <style >
 .tl-drawer-user .el-drawer {
-  width: 32% !important;
+  width: 500px !important;
 }
 </style>

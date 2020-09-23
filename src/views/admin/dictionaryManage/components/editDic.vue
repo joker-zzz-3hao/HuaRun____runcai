@@ -15,7 +15,7 @@
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer tl-drawer-dic-edit"
+    class="tl-drawer tl-drawer-dic"
   >
     <div class="modelCreate">
       <el-form ref="dicForm" :model="formData" label-width="80px">
@@ -54,7 +54,12 @@
         </el-form-item>
       </el-form>
       <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
-        <el-table ref="dicTable" v-loading="tableLoading" :data="formTableData.tableData">
+        <el-table
+          ref="dicTable"
+          v-loading="tableLoading"
+          :data="formTableData.tableData"
+          style="width:90%"
+        >
           <el-table-column label="字典键" prop="value">
             <template slot-scope="scope">
               <el-form-item
@@ -293,6 +298,6 @@ export default {
 </script>
 <style >
 .tl-drawer-dic .el-drawer {
-  width: 40% !important;
+  width: 700px !important;
 }
 </style>

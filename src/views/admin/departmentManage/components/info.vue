@@ -236,6 +236,6 @@ export default {
 </script>
 <style >
 .tl-drawer-depart-info .el-drawer {
-  width: 20% !important;
+  width: 400px !important;
 }
 </style>

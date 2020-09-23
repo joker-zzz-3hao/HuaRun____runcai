@@ -37,6 +37,11 @@
       <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
       <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
     </div>
+    <!-- 变更原因 -->
+    <div>
+      <span>变更原因：</span>
+      <span>{{}}</span>
+    </div>
     <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
       <p>审核</p>
       <div>
