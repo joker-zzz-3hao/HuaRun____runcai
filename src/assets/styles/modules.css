@@ -3122,15 +3122,42 @@
   margin: 0 0 0 20px;
 }
 
-.dl-card-panel dt {
+.dl-card-panel {
+  margin: 0 0 30px 0;
+}
+
+.dl-card-panel dt,
+.dl-card-panel dd {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.dl-card-panel dt {
+  margin: 0 20px 0 0;
+}
+
+.dl-card-panel > dt::before {
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: #685df1;
+}
+
+.dl-card-panel dd {
+  color: #4d5155;
+}
+
 .dl-card-panel dt em {
   flex: 1;
 }
+
+.dl-card-panel dt i,
+.dl-card-panel dt span {
+  color: #acb6bf;
+}
+
 
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
