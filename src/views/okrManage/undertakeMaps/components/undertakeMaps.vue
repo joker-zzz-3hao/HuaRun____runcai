@@ -39,12 +39,15 @@
           </div>
         </tl-svgtree>
       </div>
+      <div v-else>
+        <div class="bg-no-data-blue"></div>
+      </div>
     </div>
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <dl v-if="!showOne">
-            <dd>
+          <dl>
+            <dd v-if="!showOne">
               <el-select
                 v-model="searchForm.periodId"
                 placeholder="请选择目标周期"
@@ -60,8 +63,10 @@
                 ></el-option>
               </el-select>
             </dd>
+            <dd>
+              <el-button v-if="showOne" @click="goback" plain class="tl-btn amt-border-fadeout">返回</el-button>
+            </dd>
           </dl>
-          <!-- <el-button v-if="showOne" @click="goback">返回</el-button> -->
         </div>
       </div>
     </div>

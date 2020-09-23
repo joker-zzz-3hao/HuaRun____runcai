@@ -187,6 +187,9 @@ export default {
       }
     },
     summitUpdate() {
+      if (!this.formData.updateexplain) {
+        this.$message.error('请填写更新说明');
+      }
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           this.summitForm = {

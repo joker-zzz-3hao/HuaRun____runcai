@@ -14,11 +14,11 @@
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-user-info"
   >
     <div>
       <el-form ref="userForm" :model="formData" label-width="80px">
-        <el-form-item>
+        <el-form-item label="用户名称">
           <span>{{formData.userName}}</span>
         </el-form-item>
         <el-form-item label="用户账号">
@@ -144,9 +144,8 @@ export default {
   beforeDestroy() {},
 };
 </script>
-<style lang="css">
-.el-avatar,
-.el-drawer {
-  overflow: auto;
+<style >
+.tl-drawer-user-info .el-drawer {
+  width: 20% !important;
 }
 </style>

@@ -12,11 +12,10 @@
     :close-on-click-modal="false"
     title="编辑字典"
     direction="rtl"
-    size="35%"
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-dic-edit"
   >
     <div class="modelCreate">
       <el-form ref="dicForm" :model="formData" label-width="80px">
@@ -116,10 +115,10 @@
         </el-table>
         <el-button @click="addItem">新增</el-button>
       </el-form>
-      <div class="operating-box">
-        <el-button class="tl-btn amt-bg-slip" :loading="loading" @click="save">确定</el-button>
-        <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
-      </div>
+    </div>
+    <div class="operating-box">
+      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="save">确定</el-button>
+      <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -292,9 +291,8 @@ export default {
   beforeDestroy() {},
 };
 </script>
-<style lang="css">
-.el-avatar,
-.el-drawer {
-  overflow: auto;
+<style >
+.tl-drawer-dic .el-drawer {
+  width: 40% !important;
 }
 </style>

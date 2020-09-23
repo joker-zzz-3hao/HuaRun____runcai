@@ -15,7 +15,7 @@
     :modal="false"
     :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer"
+    class="tl-drawer tl-drawer-user"
   >
     <div>
       <el-form ref="userForm" :model="formData" label-width="80px">
@@ -186,7 +186,7 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
-          this.formData.newPwd = '******';
+          this.formData.newPwd = 'Wang@123456';
           this.setOrgIdList(res.data.orgId);
         }
         this.visible = true;
@@ -266,7 +266,7 @@ export default {
     },
     cancelEditPwd() {
       this.pwdLabel = '用户密码';
-      this.formData.newPwd = '******';
+      this.formData.newPwd = 'Wang@123456';
       this.isEditPwd = false;
     },
     selectIdChange(data) {
@@ -282,3 +282,8 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style >
+.tl-drawer-user .el-drawer {
+  width: 32% !important;
+}
+</style>

@@ -256,6 +256,9 @@ export default {
         this.editDrawer = true;
       } else {
         this.showCreateUser = true;
+        this.$nextTick(() => {
+          this.$refs.createUser.show();
+        });
       }
     },
     // 关闭弹窗
