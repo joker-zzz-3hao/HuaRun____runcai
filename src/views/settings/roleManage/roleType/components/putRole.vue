@@ -11,12 +11,25 @@
     :wrapperClosable="false"
     class="tl-drawer"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="tl-form">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="100px"
+      class="tl-form"
+      style="width:400px"
+    >
       <el-form-item label="角色编号" prop="roleCode">
         <em>{{form.roleCode}}</em>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>
+        <el-input
+          maxlength="64"
+          style="width:200px"
+          v-model="form.roleName"
+          placeholder="请输入角色名称"
+          class="tl-input"
+        ></el-input>
       </el-form-item>
       <el-form-item label="菜单权限">
         <div class="menuTreeList">
