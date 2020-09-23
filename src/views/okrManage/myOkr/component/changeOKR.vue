@@ -543,6 +543,9 @@ export default {
         });
         return;
       }
+      if (!this.reason.modifyReason) {
+        this.$message.error('请填写变更原因');
+      }
       // 校验表单
       const okrformValid = this.$refs.okrform.$refs.dataForm;
       const okrCollapseValid = this.$refs.okrCollapse.$refs.changeForm;
