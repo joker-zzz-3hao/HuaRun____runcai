@@ -43,52 +43,52 @@
           <!-- 对齐的内容 -->
           <div v-if="checkStatus === 1">
             <dl v-for="(pitem) in personList" :key="pitem.id">
-              <dt>
+              <dt class="undertake-name">
                 <span>{{pitem[0].userName}}</span>
                 <span>({{pitem.length}})</span>
               </dt>
-              <el-timeline>
-                <el-timeline-item
-                  v-for="(okritem, okrindex) in pitem"
-                  :key="okrindex"
-                  :timestamp="okritem.createTime"
-                  placement="top"
-                >
-                  <div>
-                    <dd v-if="okritem.operateType == '5'">
-                      <span v-if="okritem.okrDetailType == 0">目标O</span>
-                      <span v-else>关键结果KR</span>
-                      <em>{{okritem.okrContent}}</em>
-                    </dd>
-                    <dd v-if="okritem.operateType == '5'">
-                      <span>更新说明</span>
-                      <em>{{okritem.remark}}</em>
-                    </dd>
-                    <dd v-if="okritem.operateType == '6'">
-                      <span>周报周期</span>
-                      <em></em>
-                    </dd>
-                    <dd v-if="okritem.operateType == '6'">
-                      <span>支撑项</span>
-                      <em>{{okritem.okrContent}}</em>
-                    </dd>
-                    <dd>
-                      <span>来自-</span>
-                      <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
-                    </dd>
-                    <dd>
-                      <span>本次更新进度</span>
-                      <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
-                      <em v-else>{{okritem.okrDetailProgress}}%</em>
-                    </dd>
-                  </div>
-                </el-timeline-item>
-              </el-timeline>
+              <dd class="tl-custom-timeline">
+                <dl class="timeline-list">
+                  <dd v-for="(okritem) in pitem" :key="okritem.createTime">
+                    <div class="list-info">
+                      <div class="list-title">{{okritem.createTime}}</div>
+                      <div class="list-cont">
+                        <div v-if="okritem.operateType == '5'">
+                          <span v-if="okritem.okrDetailType == 0">目标O</span>
+                          <span v-else>关键结果KR</span>
+                          <em>{{okritem.okrContent}}</em>
+                        </div>
+                        <div v-if="okritem.operateType == '5'">
+                          <span>更新说明</span>
+                          <em>{{okritem.remark}}</em>
+                        </div>
+                        <div v-if="okritem.operateType == '6'">
+                          <span>周报周期</span>
+                          <em></em>
+                        </div>
+                        <div v-if="okritem.operateType == '6'">
+                          <span>支撑项</span>
+                          <em>{{okritem.okrContent}}</em>
+                        </div>
+                        <div>
+                          <span>来自-</span>
+                          <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
+                        </div>
+                        <div>
+                          <span>本次更新进度</span>
+                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                        </div>
+                      </div>
+                    </div>
+                  </dd>
+                </dl>
+              </dd>
             </dl>
           </div>
           <div v-else>
             <dl v-for="(pitem) in okrItem.historyList" :key="pitem.id">
-              <dt>
+              <dt class="undertake-name">
                 <span>{{pitem[0].userName}}</span>
                 <span>({{pitem.length}})</span>
               </dt>

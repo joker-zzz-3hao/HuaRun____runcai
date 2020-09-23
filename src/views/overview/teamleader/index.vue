@@ -16,7 +16,7 @@
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <div class="panner-title">
-            <em>更新次数排行</em>
+            <em>OKR更新次数排行</em>
             <span v-show="testModel">示例数据</span>
           </div>
         </div>

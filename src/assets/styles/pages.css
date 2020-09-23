@@ -1228,6 +1228,33 @@
   color: #685df1;
 }
 
+.undertake-maps-detail .tl-custom-timeline {
+  background-color: #fff;
+  padding: 1px 0px 10px 32px;
+}
+.undertake-maps-detail .undertake-name{
+  font-size: 14px;
+  color: #4D5155;
+  line-height: 5;
+}
+.undertake-maps-detail .timeline-list .list-title {
+  color: #acb6bf;
+}
+.undertake-maps-detail .timeline-list .list-cont{
+  padding: 5px 0 5px 20px;
+}
+.undertake-maps-detail .timeline-list .list-cont div em {
+  margin: 0 10px 0 0;
+  color: #222426;
+  font-size: 14px;
+}
+
+.undertake-maps-detail .timeline-list .list-cont div span {
+  color: #879099;
+  font-size: 14px;
+}
+
+
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,
 .okr-approval .operating-area-inside .el-form .el-form-item__content {
