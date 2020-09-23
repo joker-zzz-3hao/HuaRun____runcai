@@ -5,12 +5,7 @@
       <div id="okr-risk-total-bag"></div>
     </div>
     <div class="tl-card-panel-group">
-      <dl
-        slot="reference"
-        v-for="(item,index) in tableData"
-        :key="index"
-        @click="okrRiskUserInfo(item.riskCode);"
-      >
+      <dl v-for="(item,index) in tableData" :key="index" @click="okrRiskUserInfo(item.riskCode);">
         <dt>{{item.count}}</dt>
         <dd>{{item.riskName}}(个)</dd>
         <dd>
@@ -20,16 +15,22 @@
             :width="30"
             :marginLeft="6"
           ></tl-process>
-          <el-popover placement="right" trigger="click" v-if="visible" :append-to-body="false">
-            <el-table :data="okrData" style="width: 100%">
-              <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
-              <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
-            </el-table>
-          </el-popover>
-          <!-- <el-progress :percentage="Number(item.ratio)" :show-text="false"></el-progress> -->
         </dd>
       </dl>
     </div>
+    <el-dialog
+      title="okr列表"
+      custom-class="update-progress"
+      class="tl-dialog"
+      width="600px"
+      :visible.sync="dialogVisible"
+      :append-to-body="true"
+    >
+      <el-table class="tl-table" :data="okrData" style="width: 100%">
+        <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
+        <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 

@@ -1,52 +1,6 @@
 <template>
-  <div class="tl-card-panel">
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>OKR风险状态统计</em>
-          <span v-show="testModel">(示例数据)</span>
-        </div>
-      </div>
-      <div class="card-panel-body">
-        <div id="week-depart"></div>
-        <ul class="data-list">
-          <li
-            v-for="(item,index) in orgTable"
-            :key="index"
-            :class="{'active':active[item.orgId] }"
-            @click="changIdAction(item.orgId)"
-          >
-            {{
-            item.orgName
-            }}
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>员工情绪大屏</em>
-          <span v-show="testModel">(示例数据)</span>
-        </div>
-      </div>
-      <div class="card-panel-body flex-column">
-        <div class="flex-end">
-          <el-date-picker
-            format="yyyy-MM"
-            value-format="yyyy-MM"
-            v-model="mooddate"
-            @change="getDateMood"
-            :clearable="false"
-            type="month"
-            placeholder="选择日期"
-          ></el-date-picker>
-        </div>
-        <div id="mood-depart"></div>
-      </div>
-    </div>
-  </div>
-  <!-- <div class="tl-card-panel">
+  <div class="weeking">
+    <div class="tl-card-panel">
       <div class="card-panel-head">
         <div class="panner-title">
           <em>周报动态</em>
@@ -67,8 +21,6 @@
             popper-class="tl-month-popper"
             class="tl-month-editor"
           ></el-date-picker>
-        </div>
-        <div class="flex-end">
           <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
             <el-option
               :key="index"
@@ -91,7 +43,8 @@
           <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
         </el-table>
       </div>
-  </div>-->
+    </div>
+  </div>
 </template>
 
 <script>

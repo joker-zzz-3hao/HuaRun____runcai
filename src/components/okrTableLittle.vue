@@ -29,7 +29,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="28%">
+      <el-table-column prop="okrDetailObjectKr" width="73%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{scope.$index+1}}</span>
@@ -44,7 +44,6 @@
       <el-table-column prop="okrWeight" width="6%">
         <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
       </el-table-column>
-
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">

@@ -1,7 +1,5 @@
 <template>
-  <div class="okrSchedule">
-    <div id="okrUpdate"></div>
-  </div>
+  <div id="okr-update-staff"></div>
 </template>
 
 <script>
@@ -37,7 +35,7 @@ export default {
     },
     init() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('okrUpdate'));
+      const myChart = echarts.init(document.getElementById('okr-update-staff'));
       const option = {
         tooltip: {
           trigger: 'item',
@@ -113,9 +111,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-#okrUpdate {
-  width: 100%;
-  min-height: 400px;
-}
-</style>

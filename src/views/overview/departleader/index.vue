@@ -1,36 +1,37 @@
 <template>
-  <div class="team-view">
+  <div class="department-view">
     <div class="cont-area">
-      <div class="creatOkr">
-        <!-- <div>{{userInfo.userName}}</div> -->
-        <tl-org-page :periodId="periodId"></tl-org-page>
-      </div>
-      <div class="creatOkr">
-        <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
-      </div>
-      <div class="creatOkr">
-        <div>
-          <em>
-            OKR承接与变更统计
+      <tl-org-page :periodId="periodId"></tl-org-page>
+      <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
+      <div class="tl-card-panel">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR承接与变更统计</em>
             <span v-show="testModel">(示例数据)</span>
-          </em>
+          </div>
         </div>
-        <div class="risk">
-          <ul class="flex">
-            <li v-for="(item,index) in riskList" :key="index">
+        <div class="card-panel-body">
+          <div class="tl-card-panel-group">
+            <dl v-for="(item,index) in riskList" :key="index">
+              <dt>{{item.orgName}}</dt>
               <dd>
-                <em>{{item.orgName}}</em>
-                <em>承接数:{{item.okrContinueCount}}</em>
+                <span>总人数</span>
+                <em>{{item.personCount}}</em>
               </dd>
               <dd>
-                <em>变更数:{{item.okrChangeCount}}</em>
-                <em>总人数:{{item.personCount}}</em>
+                <span>承接数</span>
+                <em>{{item.okrContinueCount}}</em>
               </dd>
-            </li>
-          </ul>
+              <dd>
+                <span>变更数</span>
+                <em>{{item.okrChangeCount}}</em>
+              </dd>
+            </dl>
+          </div>
         </div>
       </div>
       <tl-weeking :periodId="periodId"></tl-weeking>
+      <tl-weekTable :periodId="periodId"></tl-weekTable>
     </div>
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
   </div>
@@ -42,6 +43,8 @@ import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import orgPage from '../component/orgPage';
 import weeking from './components/weeking';
+// eslint-disable-next-line import/no-unresolved
+import weekTable from './components/weekTable';
 import period from '../component/period';
 import Server from '../server';
 import { mainData } from '../testData';
@@ -57,6 +60,7 @@ export default {
     'tl-weeking': weeking,
     'tl-org-page': orgPage,
     'tl-period': period,
+    'tl-weekTable': weekTable,
   },
   data() {
     return {
@@ -128,35 +132,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.flex {
-  display: flex;
-  flex-direction: row;
-}
-.creatOkr {
-  width: 100%;
-  min-height: 200px;
-  background: white;
-  margin-bottom: 30px;
-}
-
-.risk ul li {
-  background: #ffffff;
-  box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
-  border-radius: 4px;
-  border-radius: 4px;
-  width: 280px;
-  height: 114px;
-}
-
-.risk ul li dd {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-}
-
-.risk ul li dd em {
-  margin-top: 20px;
-}
-</style>

@@ -113,6 +113,17 @@
   width: 100%;
 }
 
+.flex-end {
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
 .dl-item {
   display: flex;
   align-items: center;
@@ -121,8 +132,6 @@
 .dl-item + .dl-item:last-child {
   margin: 0;
 }
-
-
 
 i + em,
 i + span,

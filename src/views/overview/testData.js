@@ -2,7 +2,7 @@ const mainData = {
   mainDataY: [20, 30, 30, 50, 40, 50, 40, 50, 60],
   mainDataX: ['A部门', 'B部门', 'C部门', 'D部门', 'E部门', 'F部门', 'G部门', 'H部门', 'I部门'],
   mainCount: [80, 40, 20, 40, 80, 40, 20, 70, 30],
-  moodData: [['A部门', 10, 40, 30], ['B部门', 10, 30, 20], ['C部门', 10, 24, 20], ['D部门', 10, 20, 15], ['E部门', 10, 20, 10], ['F部门', 10, 30, 10], ['G部门', 10, 20, 40], ['H部门', 10, 30, 40], ['I部门', 10, 30, 40]],
+  moodData: [['A部门', 10, 40, 30], ['B部门', 10, 30, 20], ['C部门', 10, 24, 20], ['D部门', 10, 20, 15], ['E部门', 10, 20, 10], ['F部门', 10, 30, 10]],
   orkData: {
     code: 200,
     msg: 'response.success',
@@ -18,14 +18,6 @@ const mainData = {
       orgId: '1284529713665425408', orgName: 'E部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 3, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
     }, {
       orgId: '1284530366500454400', orgName: 'F部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    },
-    {
-      orgId: '1284530366500454400', orgName: 'G部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    },
-    {
-      orgId: '1284530366500454400', orgName: 'H部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
-    }, {
-      orgId: '1284530366500454400', orgName: 'I部门', orgFullId: null, orgType: 0, orgAvailable: 0, createTime: null, updateTime: null, personCount: 1, okrProgress: 0, okrProgressUpdateCount: 0, okrContinueCount: 0, okrChangeCount: 0, operateType: null, okrMainId: null,
     }],
   },
   tableData: {

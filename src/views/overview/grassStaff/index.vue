@@ -1,11 +1,7 @@
 <template>
   <div class="staff-view">
     <div class="cont-area">
-      <div class="create">
-        <!-- <em v-if="$route.query.name">{{decodeURI($route.query.name)}}</em>
-        <em v-else>{{userInfo.userName}}</em>-->
-        <tl-org-page :periodId="periodId"></tl-org-page>
-      </div>
+      <tl-org-page :periodId="periodId"></tl-org-page>
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <div class="panner-title">
@@ -24,15 +20,9 @@
         </div>
         <tl-okr-update :mainData="mainData"></tl-okr-update>
       </div>
-      <div class="tl-card-panel">
-        <div class="card-panel-head">
-          <div class="panner-title">
-            <em>OKR风险状态统计</em>
-            <em v-show="testModel">(示例数据)</em>
-          </div>
-        </div>
-        <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
-      </div>
+
+      <tl-okr-risk-total :okrData="okrData"></tl-okr-risk-total>
+
       <tl-period @getPeriod="getPeriod" :showBack="true"></tl-period>
     </div>
   </div>
@@ -112,10 +102,4 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.create {
-  width: 100%;
-  min-height: 400px;
-  background: white;
-}
-</style>
+]
