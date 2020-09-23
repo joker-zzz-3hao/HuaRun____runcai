@@ -6,7 +6,7 @@
         <div class="card-panel-head">
           <div class="panner-title">
             <em>OKR当前进度数据</em>
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">示例数据</span>
           </div>
         </div>
         <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
@@ -15,7 +15,7 @@
         <div class="card-panel-head">
           <div class="panner-title">
             <em>进度更新次数趋势</em>
-            <em v-show="testModel">(示例数据)</em>
+            <span v-show="testModel">示例数据</span>
           </div>
         </div>
         <tl-okr-update :mainData="mainData"></tl-okr-update>

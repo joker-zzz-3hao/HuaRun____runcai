@@ -7,7 +7,7 @@
         <div class="card-panel-head">
           <div class="panner-title">
             <em>OKR承接与变更统计</em>
-            <span v-show="testModel">(示例数据)</span>
+            <span v-show="testModel">示例数据</span>
           </div>
         </div>
         <div class="card-panel-body">
