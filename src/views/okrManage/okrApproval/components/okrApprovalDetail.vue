@@ -1,12 +1,36 @@
 <template>
   <div class="okr-approval-detail">
+    <dl class="dl-card-panel">
+      <dt class="card-title">
+        <em>基本信息</em>
+        <i class="el-icon-arrow-left"></i>
+        <a @click="backList">返回</a>
+      </dt>
+      <dd>
+        <em>{{data.periodName}}</em>
+      </dd>
+      <dd>
+        <dl class="dl-item">
+          <dt>sdfas</dt>
+          <dd>dfgdfgdfgd</dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>sdfas</dt>
+          <dd>dfgdfgdfgd</dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>sdfas</dt>
+          <dd>dfgdfgdfgd</dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>sdfas</dt>
+          <dd>dfgdfgdfgd</dd>
+        </dl>
+      </dd>
+    </dl>
     <div>
-      <span @click="backList">返回</span>
-    </div>
-    <div style="margin-top: 20px;">
-      <p>基本信息</p>
-      <p>{{data.periodName}}</p>
-      <div style="display: flex;margin-top: 20px;justify-content:space-between;">
+      <p></p>
+      <div>
         <div>
           <span>被审批者</span>
           <span>{{data.userName}}</span>

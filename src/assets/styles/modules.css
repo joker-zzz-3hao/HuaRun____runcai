@@ -3122,6 +3122,16 @@
   margin: 0 0 0 20px;
 }
 
+.dl-card-panel dt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dl-card-panel dt em {
+  flex: 1;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
