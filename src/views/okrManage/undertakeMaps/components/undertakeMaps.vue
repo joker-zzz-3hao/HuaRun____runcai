@@ -39,6 +39,9 @@
           </div>
         </tl-svgtree>
       </div>
+      <div v-else>
+        <div class="bg-no-data-blue"></div>
+      </div>
     </div>
     <div class="operating-area">
       <div class="operating-area-inside">
