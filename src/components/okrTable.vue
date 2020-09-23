@@ -103,7 +103,10 @@
             trigger="hover"
             :append-to-body="false"
           >
-            <span>您承接的OKR有变更，请在变更中处理。</span>
+            <span>
+              您承接的OKR有变更，请在变更中处理。
+              <a @click="opensome">申请变更</a>
+            </span>
             <i class="el-icon-warning" slot="reference"></i>
           </el-popover>
           <el-tooltip
@@ -245,14 +248,8 @@ export default {
     updateokrCollapse() {
       this.$forceUpdate();
     },
-    opensome(row) {
-      console.log('点击了面板', row);
-      // 起草中，已退回打开编辑页
-      if (['6', '8'].includes(this.status)) {
-        this.$emit('goDraft', row);
-      } else {
-        this.$emit('openDialog', row);
-      }
+    opensome() {
+      this.$emit('openchange');
     },
   },
   watch: {

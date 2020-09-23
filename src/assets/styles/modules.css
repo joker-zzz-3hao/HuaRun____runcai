@@ -2831,6 +2831,10 @@
 .card-panel-body .tl-table .el-table__row td:nth-child(6) span {
   margin: 0 6px 0 0;
 }
+/* change by 心荃 */
+.card-panel-body .tl-table .el-table__row td:nth-child(6) span a {
+  color: #685df1;
+}
 
 .card-panel-body .tl-table .el-table__row td:nth-child(6) em {
   color: #4d5155;
