@@ -10,7 +10,6 @@
                 v-model.trim="tenantId"
                 placeholder="选择租户"
                 :popper-append-to-body="false"
-                clearable
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
