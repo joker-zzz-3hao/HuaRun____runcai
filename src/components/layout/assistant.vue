@@ -1,76 +1,82 @@
 <template>
   <div class="assistant">
-    <i class="el-icon-service" @click="showDia"></i>
-    <div v-if="showDialog">
+    <el-popover placement="top" trigger="click" :append-to-body="false" width="370">
+      <div class="pic-help"></div>
+      <img slot="reference" src="~@/assets/images/demoPic/helpicon.png" />
+    </el-popover>
+
+    <div v-if="showDialog && showReal">
       <el-dialog append-to-body @close="close" :visible="showDialog">
-        <div>Hello {{userInfo.userName}}</div>
-        <div>您可以在这给你的同事发送提醒或待办任务哦~</div>
-        <div>
-          <span>发送类型</span>
-          <el-select v-model.trim="formData.noticeType">
-            <el-option
-              v-for="type in typeList"
-              :key="type.noticeType"
-              :label="type.name"
-              :value="type.noticeType"
-            ></el-option>
-          </el-select>
-        </div>
-        <div>
-          <div v-if="formData.noticeType == 1">
-            <span>发送对象</span>
-            <el-select
-              v-model.trim="formData.userId"
-              filterable
-              placeholder="请输入成员姓名"
-              remote
-              :remote-method="remoteMethod"
-              @visible-change="visibleChange"
-              clearable
-            >
+        <template v-if="showReal">
+          <div>Hello {{userInfo.userName}}</div>
+          <div>您可以在这给你的同事发送提醒或待办任务哦~</div>
+          <div>
+            <span>发送类型</span>
+            <el-select v-model.trim="formData.noticeType">
               <el-option
-                v-for="item in userList"
-                :key="item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <span style="float:left">
-                  <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                    <div v-if="item.userName" class="user-name">
-                      <em>{{item.userName.substring(item.userName.length-2)}}</em>
-                    </div>
-                  </el-avatar>
-                </span>
-                <span style="float:left;marginLeft:5px">{{item.userName}}</span>
-              </el-option>
+                v-for="type in typeList"
+                :key="type.noticeType"
+                :label="type.name"
+                :value="type.noticeType"
+              ></el-option>
             </el-select>
           </div>
-          <div v-if="formData.noticeType == 2">待办</div>
-          <div v-if="formData.noticeType == 3">
-            <div>
-              <el-radio v-model="formData.callbackType" label="1">遇到问题</el-radio>
-              <el-radio v-model="formData.callbackType" label="2">使用建议</el-radio>
+          <div>
+            <div v-if="formData.noticeType == 1">
+              <span>发送对象</span>
+              <el-select
+                v-model.trim="formData.userId"
+                filterable
+                placeholder="请输入成员姓名"
+                remote
+                :remote-method="remoteMethod"
+                @visible-change="visibleChange"
+                clearable
+              >
+                <el-option
+                  v-for="item in userList"
+                  :key="item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                  <span style="float:left">
+                    <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                      <div v-if="item.userName" class="user-name">
+                        <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                      </div>
+                    </el-avatar>
+                  </span>
+                  <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                </el-option>
+              </el-select>
             </div>
-            <div>
-              <span>选择模块</span>
-              <el-button @click="selectModule('1')">OKR</el-button>
-              <el-button @click="selectModule('2')">周报</el-button>
-              <el-button @click="selectModule('3')">系统管理</el-button>
+            <div v-if="formData.noticeType == 2">待办</div>
+            <div v-if="formData.noticeType == 3">
+              <div>
+                <el-radio v-model="formData.callbackType" label="1">遇到问题</el-radio>
+                <el-radio v-model="formData.callbackType" label="2">使用建议</el-radio>
+              </div>
+              <div>
+                <span>选择模块</span>
+                <el-button @click="selectModule('1')">OKR</el-button>
+                <el-button @click="selectModule('2')">周报</el-button>
+                <el-button @click="selectModule('3')">系统管理</el-button>
+              </div>
             </div>
           </div>
-        </div>
-        <div v-if="formData.noticeType == '1' || formData.noticeType == '3'">
-          <el-input
-            v-model="formData.noticeContent"
-            type="textarea"
-            :placeholder="formData.noticeType == '1' ? '这里请输入你想说的内容~':'请详细描述您的问题'"
-          ></el-input>
-        </div>
-        <div>
-          <el-button @click="sendMessage">
-            <i class="el-icon-position"></i> 发送内容
-          </el-button>
-        </div>
+          <div v-if="formData.noticeType == '1' || formData.noticeType == '3'">
+            <el-input
+              v-model="formData.noticeContent"
+              type="textarea"
+              :placeholder="formData.noticeType == '1' ? '这里请输入你想说的内容~':'请详细描述您的问题'"
+            ></el-input>
+          </div>
+          <div>
+            <el-button @click="sendMessage">
+              <i class="el-icon-position"></i> 发送内容
+            </el-button>
+          </div>
+        </template>
       </el-dialog>
     </div>
   </div>
@@ -113,6 +119,7 @@ export default {
           name: '发送问题反馈',
         },
       ],
+      showReal: false, // 展示示例图片 false
     };
   },
   created() {
@@ -186,3 +193,10 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.pic-help {
+  background: url("~@/assets/images/demoPic/help.png") no-repeat;
+  background-size: 100%;
+  height: 431px;
+}
+</style>
