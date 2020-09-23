@@ -68,13 +68,17 @@
     </dl>
 
     <!-- 变更原因 -->
-    <div v-if="data.approvalType == '1'">
-      <span>变更原因：</span>
-      <span>{{JSON.parse(data.paramJson).modifyReason }}</span>
-    </div>
-    <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
-      <p>审核</p>
-      <div>
+    <dl class="dl-card-panel" v-if="data.approvalType == '1'">
+      <dt>
+        <em>变更原因</em>
+      </dt>
+      <dd>{{JSON.parse(data.paramJson).modifyReason }}</dd>
+    </dl>
+    <dl class="dl-card-panel" v-if="data.approvalStatus =='0'">
+      <dt>
+        <em>审核</em>
+      </dt>
+      <dd>
         <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="审核结果" prop="approvalStatus">
             <el-radio-group v-model.trim="ruleForm.approvalStatus">
@@ -100,47 +104,55 @@
             <el-button @click="resetForm('ruleForm')">取消</el-button>
           </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <p>审核记录</p>
-    <div class="tl-custom-timeline">
-      <dl class="timeline-list">
-        <dt>
-          <div class="list-info">
-            <div class="list-title">{{cycleFirst.createTime}}</div>
-            <div class="list-cont">
-              <div class="operate-type">
-                <em>{{cycleFirst.userName}}</em>
-                <div
-                  v-if="cycleFirst.remark"
-                >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</div>
-                <div v-if="cycleFirst.reason">
-                  <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
-                  <span v-else>审批意见</span>
+      </dd>
+    </dl>
+    <dl class="dl-card-panel">
+      <dt>
+        <em>审核记录</em>
+      </dt>
+      <dd>
+        <div class="tl-custom-timeline">
+          <dl class="timeline-list">
+            <dt>
+              <div class="list-info">
+                <div class="list-title">{{cycleFirst.createTime}}</div>
+                <div class="list-cont">
+                  <div class="operate-type">
+                    <em>{{cycleFirst.userName}}</em>
+                    <div
+                      v-if="cycleFirst.remark"
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</div>
+                    <div v-if="cycleFirst.reason">
+                      <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
+                      <span v-else>审批意见</span>
+                    </div>
+                    <div v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</div>
+                  </div>
                 </div>
-                <div v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</div>
               </div>
-            </div>
-          </div>
-        </dt>
-        <dd v-for="item in cycleList" :key="item.id">
-          <div class="list-info">
-            <div class="list-title">{{item.createTime}}</div>
-            <div class="list-cont">
-              <div class="operate-type">
-                <em>{{item.userName}}</em>
-                <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
-                <div v-if="item.reason">
-                  <span v-if="item.approvalStatus === 0">变更原因</span>
-                  <span v-else>审批意见</span>
+            </dt>
+            <dd v-for="item in cycleList" :key="item.id">
+              <div class="list-info">
+                <div class="list-title">{{item.createTime}}</div>
+                <div class="list-cont">
+                  <div class="operate-type">
+                    <em>{{item.userName}}</em>
+                    <div
+                      v-if="item.remark"
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
+                    <div v-if="item.reason">
+                      <span v-if="item.approvalStatus === 0">变更原因</span>
+                      <span v-else>审批意见</span>
+                    </div>
+                    <div v-if="item.reason">{{`「${item.reason}」`}}</div>
+                  </div>
                 </div>
-                <div v-if="item.reason">{{`「${item.reason}」`}}</div>
               </div>
-            </div>
-          </div>
-        </dd>
-      </dl>
-    </div>
+            </dd>
+          </dl>
+        </div>
+      </dd>
+    </dl>
   </div>
 </template>
 
