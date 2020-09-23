@@ -473,6 +473,6 @@ export default {
 .pic-team {
   background: url("~@/assets/images/demoPic/teamManage.png") no-repeat;
   background-size: 100%;
-  height: calc(100vh);
+  height: calc(140vh);
 }
 </style>
