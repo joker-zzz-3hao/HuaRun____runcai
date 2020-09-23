@@ -1228,6 +1228,9 @@
   color: #685df1;
 }
 /* change by xinquan */
+.undertake-maps-detail .el-collapse-item__content{
+  padding-bottom: 20px;
+}
 .undertake-maps-detail .tl-custom-timeline {
   background-color: #fff;
   padding: 1px 0px 10px 32px;
@@ -1238,18 +1241,36 @@
   line-height: 5;
 }
 .undertake-maps-detail .timeline-list .list-title {
+  display: flex;
   color: #acb6bf;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.undertake-maps-detail .timeline-list .list-title div:last-child{
+  margin-right:20px;
+}
+.undertake-maps-detail .timeline-list .list-title div:last-child em{
+  font-size: 20px;
+  color: #4D5155;
+  letter-spacing: 0.31px;
+  margin-left: 11px;
 }
 .undertake-maps-detail .timeline-list .list-cont{
   padding: 5px 0 5px 20px;
+}
+.undertake-maps-detail .timeline-list .list-cont div{
+  display: flex;
 }
 .undertake-maps-detail .timeline-list .list-cont div em {
   margin: 0 10px 0 0;
   color: #222426;
   font-size: 14px;
+  flex:1;
 }
 
 .undertake-maps-detail .timeline-list .list-cont div span {
+  display: inline-block;
+  width: 100px;
   color: #879099;
   font-size: 14px;
 }

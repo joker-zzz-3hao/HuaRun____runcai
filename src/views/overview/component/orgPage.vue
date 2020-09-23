@@ -213,7 +213,11 @@ export default {
         return false;
       }
       if (this.$route.query.userId == user.userId) {
-        this.$message.error('此为当前团队负责人');
+        this.$message.success('此为当前团队负责人');
+        return false;
+      }
+      if (!user.userId) {
+        this.$message.success('该部门还未创建用户哦～');
         return false;
       }
       this.server.identity({
