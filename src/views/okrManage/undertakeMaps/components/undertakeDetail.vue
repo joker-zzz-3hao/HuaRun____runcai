@@ -51,7 +51,14 @@
                 <dl class="timeline-list">
                   <dd v-for="(okritem) in pitem" :key="okritem.createTime">
                     <div class="list-info">
-                      <div class="list-title">{{okritem.createTime}}</div>
+                      <div class="list-title">
+                        <span>{{okritem.createTime}}</span>
+                        <div>
+                          <span>本次更新进度</span>
+                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                        </div>
+                      </div>
                       <div class="list-cont">
                         <div v-if="okritem.operateType == '5'">
                           <span v-if="okritem.okrDetailType == 0">目标O</span>
@@ -71,13 +78,7 @@
                           <em>{{okritem.okrContent}}</em>
                         </div>
                         <div>
-                          <span>来自-</span>
-                          <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
-                        </div>
-                        <div>
-                          <span>本次更新进度</span>
-                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
-                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                          <span>来自-{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
                         </div>
                       </div>
                     </div>
@@ -96,7 +97,14 @@
                 <dl class="timeline-list">
                   <dd v-for="(okritem) in pitem" :key="okritem.createTime">
                     <div class="list-info">
-                      <div class="list-title">{{okritem.createTime}}</div>
+                      <div class="list-title">
+                        <div>{{okritem.createTime}}</div>
+                        <div>
+                          <span>本次更新进度</span>
+                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                        </div>
+                      </div>
                       <div class="list-cont">
                         <div v-if="okritem.operateType == '5'">
                           <span v-if="okritem.okrDetailType == 0">目标O</span>
@@ -116,13 +124,7 @@
                           <em>{{okritem.okrContent}}</em>
                         </div>
                         <div>
-                          <span>来自-</span>
-                          <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
-                        </div>
-                        <div>
-                          <span>本次更新进度</span>
-                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
-                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                          <span>来自-{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
                         </div>
                       </div>
                     </div>
