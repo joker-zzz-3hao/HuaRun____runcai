@@ -729,6 +729,36 @@
 .associated-undertaking .cont-box .dl-list dd {
   background: unset;
 }
+/* change by 心荃 */
+.associated-undertaking .undertake-change {
+  padding: 20px 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.associated-undertaking .undertake-change > em {
+  flex: 0 0 100px;
+  font-weight: 500;
+  cursor: default;
+  text-align: center;
+}
+.associated-undertaking .undertake-change > em em{
+  margin-bottom: 8px;
+}
+.associated-undertaking .undertake-change>div {
+  flex: 1;
+}
+.associated-undertaking .undertake-change p {
+  color: #4d5155;
+}
+.associated-undertaking .undertake-change p + p {
+  margin: 10px 0 0 0;
+  padding: 10px 20px;
+  background: #f4f6f8;
+  color: #879099;
+  font-size: 12px;
+  line-height: 24px;
+}
 
 /* okr-detail */
 .tl-drawer .okr-detail {

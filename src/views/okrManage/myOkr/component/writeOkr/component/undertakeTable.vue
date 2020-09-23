@@ -36,9 +36,7 @@
               v-for="(item,index) in departokrList"
               :key="item.okrDetailId+index"
             >
-              <div
-                :class="{'undertake-change':item.currentOption||currentOption.includes(item.okrDetailId)}"
-              >
+              <div v-if="currentOption.includes(item.okrDetailId)" class="undertake-change">
                 <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
                 <em v-if="item.currentOption">
                   <em>「历史版本{{item.okrDetailVersion}}」</em>
@@ -47,9 +45,16 @@
                 <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
                 <div>
                   <p>{{item.okrDetailObjectKr}}</p>
-                  <p v-if="item.modifyReason">{{item.modifyReason}}</p>
+                  <p v-if="item.modifyReason">
+                    <span>变更原因</span>
+                    {{item.modifyReason}}
+                  </p>
                 </div>
               </div>
+              <template v-else>
+                <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
+                <em>{{item.okrDetailObjectKr}}</em>
+              </template>
             </el-radio>
           </el-radio-group>
         </dd>

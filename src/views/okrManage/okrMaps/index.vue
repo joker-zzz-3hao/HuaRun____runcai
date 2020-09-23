@@ -17,7 +17,13 @@
               <em>勇于创新</em>
             </dd>
           </dl>-->
-          <svgtree fatherId="orgParentId" childId="orgId" :treeData="treeData" direction="col">
+          <svgtree
+            v-if="this.treeData.length>0"
+            fatherId="orgParentId"
+            childId="orgId"
+            :treeData="treeData"
+            direction="col"
+          >
             <template slot="treecard" slot-scope="node">
               <card
                 :node="node"
@@ -160,6 +166,7 @@
 <script>
 import svgtree from '@/components/svgtree';
 import okrDetail from '@/components/okrDetail';
+import { mapMutations } from 'vuex';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
@@ -210,6 +217,7 @@ export default {
     self.init();
   },
   methods: {
+    ...mapMutations('common', ['changeTestModel']),
     changeCascader(data) {
       this.test = data;
       this.showCascader = false;
@@ -240,6 +248,8 @@ export default {
             // OKR表格数据
             if (res.data.children.length > 0) {
               this.treeTableData.push(res.data);
+            } else {
+              this.treeTableData = [];
             }
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
@@ -249,8 +259,8 @@ export default {
                   item.orgParentId = null;
                 }
               });
-              this.treeData = res.data.okrTree;
             }
+            this.treeData = res.data.okrTree;
           }
         });
       }
@@ -327,6 +337,7 @@ export default {
       });
     },
     takeOvierview({ node }) {
+      this.changeTestModel(false);
       this.server.identity({
         orgId: node.orgId,
         user: node.userId,

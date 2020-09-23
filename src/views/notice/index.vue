@@ -27,7 +27,7 @@
         :total="totalSystem"
         :currentPage.sync="currentPageSystem"
         :pageSize.sync="pageSizeSystem"
-        @searchList="searchList('0')"
+        @searchList="searchList('10')"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableDataSystem" class="tl-table">
@@ -52,7 +52,7 @@
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
-        @searchList="searchList('2')"
+        @searchList="searchList('30')"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">

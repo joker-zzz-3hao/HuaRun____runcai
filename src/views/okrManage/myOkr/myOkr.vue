@@ -118,7 +118,7 @@
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
-                <div v-else>暂无</div>
+                <div v-else-if="showUndertake">暂无</div>
               </template>
               <!-- kr的承接地图 -->
               <template slot="body-bar" slot-scope="props">
@@ -128,7 +128,7 @@
                 >
                   <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
                 </div>
-                <div v-else>暂无</div>
+                <div v-else-if="showUndertake">暂无</div>
               </template>
               <!-- o的进度更新 -->
               <template slot="weight-bar" slot-scope="props">
@@ -312,9 +312,16 @@ export default {
       okrSuccess: (state) => state.okrSuccess,
       okrStatus: (state) => state.okrStatus,
       okrCycle: (state) => state.okrCycle,
+      roleCode: (state) => state.roleCode,
     }),
     expands() {
       return [this.okrList[0].tableList[0].okrDetailId];
+    },
+    showUndertake() {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return true;
+      }
+      return false;
     },
   },
   created() {

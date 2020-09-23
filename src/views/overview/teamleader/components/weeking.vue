@@ -4,7 +4,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>周报动态</em>
-          <span v-show="testModel">(示例数据)</span>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body">
@@ -28,8 +28,8 @@
     <div class="tl-card-panel">
       <div class="card-panel-head">
         <div class="panner-title">
-          <em>周报互动记录</em>
-          <span v-show="testModel">(示例数据)</span>
+          <em>员工情绪大屏</em>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body">
@@ -129,7 +129,7 @@ export default {
         orgId: this.$route.query.id,
       }).then((res) => {
         this.teamDataX = res.data.map((item) => [
-          `${item.weekBegin}至${item.weekEnd}`,
+          `${item.weekBegin.slice(5)} ~ ${item.weekEnd.slice(5)}`,
           item.doingNumber,
           item.doneNumber,
         ]);
@@ -145,14 +145,17 @@ export default {
         this.tableData = this.testModel ? teamData.okrData.data : res.data;
       });
     },
+    putTime(time) {
+      return time.slice(5);
+    },
     teamEmotion(date) {
       this.server.teamEmotion({
         date,
         orgId: this.$route.query.id,
       }).then((res) => {
-        this.moodDataX = res.data.map((item) => `${item.weekBegin}至${item.weekEnd}`);
+        this.moodDataX = res.data.map((item) => `${item.weekBegin.slice(5)}至${item.weekEnd.slice(5)}`);
         this.moodDataY = res.data.map((item) => ([
-          `${item.weekBegin}至${item.weekEnd}`,
+          `${item.weekBegin.slice(5)} ~ ${item.weekEnd.slice(5)}`,
           ...item.emotionList.map((li) => li.weeklyNumber),
         ]));
         this.initMood();
