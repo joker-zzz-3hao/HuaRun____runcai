@@ -5,7 +5,7 @@
       <li></li>
       <li>权重</li>
       <li>
-        <em v-if="!overview" v-show="$route.name!=='grassStaff'">承接地图</em>
+        <em v-if="!overview && showUndertake">承接地图</em>
       </li>
       <li>
         <em v-if="!overview">风险状态</em>
@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import process from '@/components/process';
 
 const CONFIDENCE_MAP = {
@@ -210,9 +211,19 @@ export default {
   mounted() {
   },
   computed: {
-
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
+    }),
+    showUndertake() {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return true;
+      } if (this.showUpdate) {
+        return false;
+      }
+      return true;
+    },
   },
-
   created() {
 
   },
