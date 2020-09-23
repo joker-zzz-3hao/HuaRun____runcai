@@ -8,106 +8,108 @@
     :before-close="close"
     custom-class="update-progress"
     class="tl-dialog"
-    width="600px"
+    width="620px"
   >
-    <div class="okr-info">
-      <div class="tl-custom-timeline">
-        <el-form :model="formData" ref="dataForm" class="tl-form">
-          <dl class="timeline-list">
-            <dt>
-              <div class="list-info">
-                <div class="list-title">
-                  <span>目标O</span>
-                  <em>{{formData.okrDetailObjectKr}}</em>
-                </div>
-                <div class="list-cont">
-                  <div class="tl-progress-group">
-                    <tl-process
-                      :data="parseInt(formData.okrDetailProgress,10)"
-                      :showNumber="false"
-                      :width="64"
-                      :marginLeft="6"
-                    ></tl-process>
-                    <el-slider
-                      v-model="formData.okrDetailProgress"
-                      :step="1"
-                      @change="changeProgress(formData)"
-                      tooltip-class="slider-tooltip"
-                    ></el-slider>
-                    <el-input-number
-                      v-model="formData.okrDetailProgress"
-                      controls-position="right"
-                      :min="0"
-                      :max="100"
-                      :step="1"
-                      :precision="0"
-                      class="tl-input-number"
-                    ></el-input-number>
-                    <span>%</span>
+    <el-scrollbar>
+      <div class="okr-info">
+        <div class="tl-custom-timeline">
+          <el-form :model="formData" ref="dataForm" class="tl-form">
+            <dl class="timeline-list">
+              <dt>
+                <div class="list-info">
+                  <div class="list-title">
+                    <span>目标O</span>
+                    <em>{{formData.okrDetailObjectKr}}</em>
+                  </div>
+                  <div class="list-cont">
+                    <div class="tl-progress-group">
+                      <tl-process
+                        :data="parseInt(formData.okrDetailProgress,10)"
+                        :showNumber="false"
+                        :width="64"
+                        :marginLeft="6"
+                      ></tl-process>
+                      <el-slider
+                        v-model="formData.okrDetailProgress"
+                        :step="1"
+                        @change="changeProgress(formData)"
+                        tooltip-class="slider-tooltip"
+                      ></el-slider>
+                      <el-input-number
+                        v-model="formData.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </dt>
-            <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
-              <div class="list-info">
-                <div class="list-title">
-                  <span>关键结果{{kindex+1}}</span>
-                  <em>{{kitem.okrDetailObjectKr}}</em>
-                </div>
-                <div class="list-cont">
-                  <div class="tl-progress-group">
-                    <tl-process
-                      :data="parseInt(kitem.okrDetailProgress,10)"
-                      :showNumber="false"
-                      :width="64"
-                      :marginLeft="6"
-                    ></tl-process>
-                    <el-slider
-                      v-model="kitem.okrDetailProgress"
-                      :step="1"
-                      @change="changeProgress(kitem)"
-                      tooltip-class="slider-tooltip"
-                    ></el-slider>
-                    <el-input-number
-                      v-model="kitem.okrDetailProgress"
-                      controls-position="right"
-                      :min="0"
-                      :max="100"
-                      :step="1"
-                      :precision="0"
-                      class="tl-input-number"
-                    ></el-input-number>
-                    <span>%</span>
+              </dt>
+              <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
+                <div class="list-info">
+                  <div class="list-title">
+                    <span>关键结果{{kindex+1}}</span>
+                    <em>{{kitem.okrDetailObjectKr}}</em>
                   </div>
-                  <div class="okr-risk">
-                    <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                  <div class="list-cont">
+                    <div class="tl-progress-group">
+                      <tl-process
+                        :data="parseInt(kitem.okrDetailProgress,10)"
+                        :showNumber="false"
+                        :width="64"
+                        :marginLeft="6"
+                      ></tl-process>
+                      <el-slider
+                        v-model="kitem.okrDetailProgress"
+                        :step="1"
+                        @change="changeProgress(kitem)"
+                        tooltip-class="slider-tooltip"
+                      ></el-slider>
+                      <el-input-number
+                        v-model="kitem.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </div>
+                    <div class="okr-risk">
+                      <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </dd>
-          </dl>
-          <dl class="change-reason">
-            <dt>更新说明</dt>
-            <dd>
-              <el-form-item
-                prop="updateexplain"
-                :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
-              >
-                <el-input
-                  placeholder="请输入更新说明"
-                  maxlength="200"
-                  type="textarea"
-                  :rows="3"
-                  resize="none"
-                  v-model="formData.updateexplain"
-                  class="tl-textarea"
-                ></el-input>
-              </el-form-item>
-            </dd>
-          </dl>
-        </el-form>
+              </dd>
+            </dl>
+            <dl class="change-reason">
+              <dt>更新说明</dt>
+              <dd>
+                <el-form-item
+                  prop="updateexplain"
+                  :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+                >
+                  <el-input
+                    placeholder="请输入更新说明"
+                    maxlength="200"
+                    type="textarea"
+                    :rows="3"
+                    resize="none"
+                    v-model="formData.updateexplain"
+                    class="tl-textarea"
+                  ></el-input>
+                </el-form-item>
+              </dd>
+            </dl>
+          </el-form>
+        </div>
       </div>
-    </div>
+    </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button
         type="primary"
