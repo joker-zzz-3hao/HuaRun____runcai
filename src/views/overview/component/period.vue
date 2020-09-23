@@ -2,7 +2,7 @@
   <div class="operating-area">
     <div class="operating-area-inside">
       <em @click="changeTest">{{testModel?'切换到我的数据':'切换到示例数据'}}</em>
-      <i class="el-icon-sort"></i>
+      <i class="el-icon-sort" @click="changeTest"></i>
       <div class="operating-box">
         <dl class="dl-item">
           <dt>目标周期</dt>

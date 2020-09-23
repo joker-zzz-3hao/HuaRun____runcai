@@ -2831,6 +2831,10 @@
 .card-panel-body .tl-table .el-table__row td:nth-child(6) span {
   margin: 0 6px 0 0;
 }
+/* change by 心荃 */
+.card-panel-body .tl-table .el-table__row td:nth-child(6) span a {
+  color: #685df1;
+}
 
 .card-panel-body .tl-table .el-table__row td:nth-child(6) em {
   color: #4d5155;
@@ -3151,11 +3155,18 @@
 }
 
 .top-menu i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 4px 0 0;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   background-color: #f2f5f7;
+}
+
+.top-menu i::before {
+  color: #879099;
 }
 
 .logo-bg {
@@ -3523,6 +3534,10 @@
   transition-delay: .48s;
 }
 
+.main-menu .sub-menu dl dd:nth-child(7) em {
+  transition-delay: .54s;
+}
+
 .main-menu .sub-menu span {
   transform: translateZ(-19px);
 }
@@ -3601,6 +3616,26 @@
 
 .tl-drawer .operating-box {
   margin: 0 28px 0 0;
+}
+
+/* 小助手 */
+.assistant {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  right: 30px;
+  bottom: 50px;
+  width: 60px;
+  height: 60px;
+  background: #685df1;
+  border-radius: 50%;
+  z-index: 50;
+}
+
+.assistant i {
+  color: #fff;
+  font-size: 34px;
 }
 
 /* 后台 */

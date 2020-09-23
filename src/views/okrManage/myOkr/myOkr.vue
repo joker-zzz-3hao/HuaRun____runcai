@@ -106,8 +106,7 @@
               :tableList="item.tableList"
               :disabled="false"
               :status="item.okrMain.status"
-              @openDialog="openDialog(item)"
-              @goDraft="goDraft(item)"
+              @openchange="goChangeOkr(item)"
               :expands="expands"
             >
               <!-- o的承接地图 -->

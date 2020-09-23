@@ -4,7 +4,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>OKR风险状态统计</em>
-          <span v-show="testModel">(示例数据)</span>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body">
@@ -27,7 +27,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>员工情绪大屏</em>
-          <span v-show="testModel">(示例数据)</span>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body flex-column">
@@ -46,52 +46,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="tl-card-panel">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>周报动态</em>
-          <span v-show="testModel">(示例数据)</span>
-        </div>
-      </div>
-      <div class="card-panel-body flex-column">
-        <div class="flex-end">
-          <el-date-picker
-            format="yyyy-MM"
-            value-format="yyyy-MM"
-            v-model="dateTime"
-            @change="getDate"
-            :clearable="false"
-            :picker-options="pickerBeginDateBefore"
-            type="month"
-            placeholder="选择日期"
-            popper-class="tl-month-popper"
-            class="tl-month-editor"
-          ></el-date-picker>
-        </div>
-        <div class="flex-end">
-          <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
-            <el-option
-              :key="index"
-              :value="item.calendarId"
-              v-for="(item,index) in dateOption"
-              :label="item.weekBegin+' 至 '+item.weekEnd"
-            ></el-option>
-          </el-select>
-        </div>
-        <el-table :data="tableData" class="tl-table" style="width: 100%">
-          <el-table-column prop="orgName" label="部门"></el-table-column>
-          <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
-          <el-table-column label="标准/简单模式">
-            <template slot-scope="scope">
-              <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
-          <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
-          <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
-        </el-table>
-      </div>
-  </div>-->
 </template>
 
 <script>
@@ -474,6 +428,27 @@ export default {
               color: '#879099', // 更改坐标轴文字颜色
               fontSize: 14, // 更改坐标轴文字大小
             },
+            formatter(value) {
+              let ret = '';// 拼接加\n返回的类目项
+              const maxLength = 4;// 每项显示文字个数
+              const valLength = value.length;// X轴类目项的文字个数
+              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+              if (rowN > 1)// 如果类目项的文字大于3,
+              // eslint-disable-next-line brace-style
+              {
+                // eslint-disable-next-line no-plusplus
+                for (let i = 0; i < rowN; i++) {
+                  let temp = '';// 每次截取的字符串
+                  const start = i * maxLength;// 开始截取的位置
+                  const end = start + maxLength;// 结束截取的位置
+                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+                  temp = `${value.substring(start, end)}\n`;
+                  ret += temp; // 拼接最终的字符串
+                }
+                return ret;
+              }
+              return value;
+            },
           },
           axisLine: {
             lineStyle: {
@@ -498,7 +473,9 @@ export default {
             textStyle: {
               color: '#879099', // 更改坐标轴文字颜色
               fontSize: 14, // 更改坐标轴文字大小
+
             },
+
           },
         },
         // Declare several bar series, each will be mapped

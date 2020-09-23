@@ -128,7 +128,7 @@ export default {
     this.init();
   },
   methods: {
-    ...mapMutations('common', ['setPeriodId']),
+    ...mapMutations('common', ['setPeriodId', 'changeTestModel']),
     init() {
       const self = this;
       // 直接赋值，为空时也会按false判断（从myokr跳传
@@ -240,6 +240,7 @@ export default {
       this.$router.back(-1);
     },
     takeOvierview(node) {
+      this.changeTestModel(false);
       this.server.identity({
         orgId: node.orgId,
         user: node.userId,

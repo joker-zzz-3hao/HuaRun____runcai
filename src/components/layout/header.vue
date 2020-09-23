@@ -25,7 +25,7 @@
           <div @click="go('teamsManage')">团队管理</div>
         </li>
         <li @click="go('notice')">
-          <i></i>
+          <i class="el-icon-bell"></i>
           <em>通知</em>
           <div v-if="!(totalMeaasge == '0')" class="badge">{{totalMeaasge}}</div>
           <div class="remind-state"></div>

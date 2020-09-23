@@ -166,6 +166,7 @@
 <script>
 import svgtree from '@/components/svgtree';
 import okrDetail from '@/components/okrDetail';
+import { mapMutations } from 'vuex';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
@@ -216,6 +217,7 @@ export default {
     self.init();
   },
   methods: {
+    ...mapMutations('common', ['changeTestModel']),
     changeCascader(data) {
       this.test = data;
       this.showCascader = false;
@@ -335,6 +337,7 @@ export default {
       });
     },
     takeOvierview({ node }) {
+      this.changeTestModel(false);
       this.server.identity({
         orgId: node.orgId,
         user: node.userId,

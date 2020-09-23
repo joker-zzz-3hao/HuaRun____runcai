@@ -36,6 +36,7 @@ export default {
     getmainData() {
       this.mainDataX = this.mainData.map((item) => item.months);
       this.mainDataY = this.mainData.map((item) => item.okrProgress);
+      this.mainDataBar = this.testModel ? userData.mainDataY.map((item) => item + 10) : this.mainDataY;
       this.init();
     },
     init() {
@@ -98,8 +99,7 @@ export default {
           type: 'line',
           smooth: true,
           symbol: 'circle',
-          symbolSize: 5,
-
+          symbolSize: 0,
           areaStyle: {
             normal: {
               color: new echarts.graphic.LinearGradient(
@@ -120,6 +120,22 @@ export default {
             color: '#3F7DFF',
           },
 
+        }, {
+          type: 'bar',
+          barWidth: '50',
+          color: 'rgba(255,255,255,0)',
+          itemStyle: {
+            normal: {
+              color: 'rgba(255,255,255,0)',
+              shadowBlur: 400,
+              shadowColor: 'rgba(0,0,0,0.50)',
+            },
+            emphasis: {
+              color: 'rgba(255,255,255,0.64)',
+            },
+          },
+
+          data: that.testModel ? userData.mainDataY : that.mainDataY,
         }],
       };
 

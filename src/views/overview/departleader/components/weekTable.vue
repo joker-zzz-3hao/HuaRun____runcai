@@ -4,7 +4,7 @@
       <div class="card-panel-head">
         <div class="panner-title">
           <em>周报动态</em>
-          <span v-show="testModel">(示例数据)</span>
+          <span v-show="testModel">示例数据</span>
         </div>
       </div>
       <div class="card-panel-body flex-column">

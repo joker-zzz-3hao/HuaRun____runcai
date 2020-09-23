@@ -1,6 +1,6 @@
 <template>
-  <div style="z-index:9999;marginLeft:800px;position: absolute;">
-    <i style="cursor:pointer" class="el-icon-position" @click="showDia"></i>
+  <div class="assistant">
+    <i class="el-icon-service" @click="showDia"></i>
     <div v-if="showDialog">
       <el-dialog append-to-body @close="close" :visible="showDialog">
         <div>Hello {{userInfo.userName}}</div>
