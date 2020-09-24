@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <el-card v-for="(item,index) in tableList" :key="index" style="margin-top: 20px;">
-      <!-- O -->
-      <div>
-        <tl-oComponent :oData="item"></tl-oComponent>
-      </div>
-      <hr v-if="item.krList.length> 0" />
-      <!-- KR -->
-      <div v-for="(kItem,kIndex) in item.krList" :key="kItem.okrDetailConfidence+kIndex">
-        <tl-krComponent :krData="kItem"></tl-krComponent>
-      </div>
-    </el-card>
-  </div>
+  <ul class="okr-change-list">
+    <li v-for="(item,index) in tableList" :key="index">
+      <tl-oComponent :oData="item" class="is-o"></tl-oComponent>
+      <tl-krComponent
+        :krData="kItem"
+        v-for="(kItem,kIndex) in item.krList"
+        :key="kItem.okrDetailConfidence+kIndex"
+        class="is-kr"
+      ></tl-krComponent>
+    </li>
+  </ul>
 </template>
 
 <script>

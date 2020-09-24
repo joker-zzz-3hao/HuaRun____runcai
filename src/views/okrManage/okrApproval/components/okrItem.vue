@@ -1,29 +1,39 @@
 <template>
   <ul class="okr-change-list">
-    <template>
-      <li v-for="(item,index) in tableList" :key="index">
-        <div v-if="item.okrDetailType == '0'" class="change-group">
-          <div>
-            <div>变更后</div>
-            <tl-oComponent :oData="item"></tl-oComponent>
-          </div>
-          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
-            <div>变更前</div>
-            <tl-oComponent :oData="item.historyOkr"></tl-oComponent>
-          </div>
-        </div>
-        <div v-if="item.okrDetailType == '1'" class="change-group">
-          <div>
-            <div>变更后</div>
-            <tl-krComponent :krData="item"></tl-krComponent>
-          </div>
-          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
-            <div>变更前</div>
-            <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
-          </div>
-        </div>
-      </li>
-    </template>
+    <li
+      v-for="(item,index) in tableList"
+      :key="index"
+      :class="item.okrDetailType == '0'? 'is-o' : 'is-kr'"
+    >
+      <div v-if="item.okrDetailType == '0'" class="change-group">
+        <template v-if="item.historyOkr">
+          <tl-oComponent :oData="item" changeType="afterchange"></tl-oComponent>
+          <tl-oComponent
+            :oData="item.historyOkr"
+            changeType="beforchange"
+            v-if="item.historyOkr"
+            :class="{'befor-change': item.historyOkr}"
+          ></tl-oComponent>
+        </template>
+        <template v-else>
+          <tl-oComponent :oData="item" changeType="newchange" class="new-change"></tl-oComponent>
+        </template>
+      </div>
+      <div v-if="item.okrDetailType == '1'" class="change-group">
+        <template v-if="item.historyOkr">
+          <tl-krComponent :krData="item" changeType="afterchange"></tl-krComponent>
+          <tl-krComponent
+            :krData="item.historyOkr"
+            v-if="item.historyOkr"
+            changeType="beforchange"
+            :class="{'befor-change': item.historyOkr}"
+          ></tl-krComponent>
+        </template>
+        <template v-else>
+          <tl-krComponent :krData="item" changeType="newchange" class="new-change"></tl-krComponent>
+        </template>
+      </div>
+    </li>
   </ul>
 </template>
 
@@ -49,7 +59,9 @@ export default {
     return {
     };
   },
-  mounted() {},
+  mounted() {
+    console.log(this.tableList);
+  },
   computed: {},
   methods: {},
   watch: {},

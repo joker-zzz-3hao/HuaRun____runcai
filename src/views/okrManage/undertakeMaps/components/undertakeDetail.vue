@@ -1,7 +1,7 @@
 <template>
   <div class="undertake-maps-detail">
     <div class="cont-area">
-      <elcollapse accordion @change="okrCheck" class="tl-collapse-other">
+      <elcollapse accordion @change="okrCheck" class="tl-collapse-other" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
           v-for="okrItem in okrInfoList"
@@ -140,6 +140,7 @@
         :server="server"
         :okrForm="choseOkrInfo"
         :dialogExist.sync="dialogExist"
+        @success="queryOAndKrList"
       ></tl-update-progress>
     </div>
     <div class="operating-area">
@@ -185,6 +186,8 @@ export default {
       okrInfoList: [],
       choseOkrInfo: {},
       undertakeCount: 0,
+      loading: true,
+      activeList: [],
     };
   },
   created() {
@@ -204,6 +207,7 @@ export default {
         periodId: this.undertakePeriodId,
       }).then((res) => {
         if (res.code == 200) {
+          this.activeList = [];
           this.okrInfoList = res.data || [];
           this.okrInfoList.forEach((item) => {
             if (item.historyList) {
@@ -232,9 +236,11 @@ export default {
       });
     },
     okrCheck(okrDetailId, checkStatus = 0) {
-      console.log(okrDetailId, checkStatus);
       this.checkStatus = checkStatus;
       this.okrDetailId = okrDetailId || '';
+      if (this.checkStatus == 0) {
+        return;
+      }
       this.server.okrCheck({
         checkStatus,
         okrDetailId: this.okrDetailId,
@@ -269,9 +275,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.tlokrupdate.showOkrDialog();
       });
-    },
-    duiqi() {
-      console.log('刷新列表');
     },
     goback() {
       this.setUndertakeMapsStep('1');

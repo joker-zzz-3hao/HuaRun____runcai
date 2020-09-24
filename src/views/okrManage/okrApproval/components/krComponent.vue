@@ -1,8 +1,11 @@
 <template>
   <dl>
-    <dt>
+    <dt class="tag-kind">
       <span class="kind-child">KR</span>
       <em>{{krData.okrDetailObjectKr}}</em>
+      <span v-if="changeType == 'beforchange'">变更前</span>
+      <span v-else-if="changeType=='afterchange'">变更后</span>
+      <span v-else-if="changeType=='newchange'">新增</span>
     </dt>
     <dd>
       <div>
@@ -32,10 +35,14 @@
         </div>
         <div class="state-txt">{{CONST.CONFIDENCE_MAP[krData.okrDetailConfidence]}}</div>
       </div>
+    </dd>
+    <dd>
       <div>
         <span>考核指标</span>
         <em>{{krData.checkQuota}}</em>
       </div>
+    </dd>
+    <dd>
       <div>
         <span>衡量方法</span>
         <em>{{krData.judgeMethod}}</em>
@@ -64,6 +71,10 @@ export default {
       default() {
         return {};
       },
+    },
+    changeType: {
+      type: String,
+      default: '',
     },
   },
   mounted() {},

@@ -1,26 +1,30 @@
 <template>
   <el-dialog
+    :append-to-body="true"
+    :close-on-click-modal="false"
     :visible.sync="dialogVisible"
-    width="50%"
-    :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
+    class="tl-dialog check-judge"
+    width="600px"
   >
-    <div slot="title">
-      <div>考核指标、衡量办法</div>
-    </div>
-    <div>
-      <!-- 考核指标 -->
-      <div>
-        <span>考核指标：</span>
+    <div slot="title" class="check-title">考核指标与衡量办法</div>
+    <dl class="check-item">
+      <dt>
+        <em>考核指标</em>
+      </dt>
+      <dd>
         <em>{{checkjudgeData.checkQuota}}</em>
-      </div>
-      <!-- 衡量办法 -->
-      <div>
-        <span>衡量办法：</span>
+      </dd>
+    </dl>
+    <dl class="check-item">
+      <dt>
+        <em>衡量办法</em>
+      </dt>
+      <dd>
         <em>{{checkjudgeData.judgeMethod}}</em>
-      </div>
-    </div>
+      </dd>
+    </dl>
   </el-dialog>
 </template>
 
