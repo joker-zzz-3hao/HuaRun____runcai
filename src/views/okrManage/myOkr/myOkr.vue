@@ -295,7 +295,7 @@ export default {
       detailExist: false,
       updateExist: false,
       multperiod: [], // 多选周期
-      loading: false,
+      loading: true,
       currentIndex: 0,
       historyExist: false,
       historyId: '',
