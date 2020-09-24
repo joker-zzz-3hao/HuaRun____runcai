@@ -85,8 +85,18 @@
                   </span>
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
+                <el-button
+                  v-if="item.hasUpdate && !item.undertakeOkrVo.undertakeOkrContent"
+                  type="text"
+                  plain
+                  @click.native="goUndertake(index,'change')"
+                  class="tl-btn dotted-line"
+                >
+                  <i class="el-icon-plus"></i>
+                  关联
+                </el-button>
                 <em
-                  v-if="item.undertakeOkrVo
+                  v-else-if="item.undertakeOkrVo
                 && item.undertakeOkrVo.undertakeOkrContent"
                   @click="goUndertake(index,'change')"
                   :class="{'is-change':canWrite}"
