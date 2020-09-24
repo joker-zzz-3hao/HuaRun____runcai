@@ -3,14 +3,14 @@
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length>0">
       <div class="card-panel-head">
-        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrCycle.periodName}}</div>
+        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrMain.periodName}}</div>
         <dl class="okr-state">
           <dt>
             <em>状态</em>
           </dt>
           <dd>
             <i class="el-icon-sunny"></i>
-            <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            <em>{{CONST.STATUS_LIST_MAP[okrMain.status]}}</em>
           </dd>
         </dl>
         <dl class="okr-responsible">
@@ -57,6 +57,7 @@
         <span v-if="$route.query.id" class="bg-no-data"></span>
         <el-button
           v-else
+          v-show="showLoad"
           type="primary"
           icon="el-icon-plus"
           @click="$router.push('myOkr')"
@@ -90,7 +91,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTableLittle';
 import Server from '../server';
 import CONST from '../const';
@@ -115,6 +116,7 @@ export default {
       orgTable: [],
       orgUser: [],
       showLoad: false,
+      fullscreenLoading: true,
       searchForm: {
         status: '1',
       },
@@ -141,15 +143,13 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  created() {
-    this.getOkrCycleList();
-  },
   mounted() {
     this.$nextTick(() => {
-      this.searchOkr();
+    //  this.searchOkr();
     });
   },
   methods: {
+    ...mapMutations('common', ['setOrg', 'changeTestModel', 'setCycleList']),
     goUndertakeMaps(id, name) {
       this.$router.push({
         name: 'undertakeMaps',
@@ -192,21 +192,13 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.orgUser = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          sessionStorage.setItem('orgTable', JSON.stringify(this.orgTable));
           this.showLoad = true;
+          this.fullscreenLoading = false;
         }
       });
     },
 
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.okrCycle.periodId;
-        }
-      });
-    },
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {

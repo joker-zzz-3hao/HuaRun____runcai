@@ -112,7 +112,7 @@ export default {
       const time = `${y}-${m}`;
       this.dateTime = time;
       this.mooddate = time;
-      this.getDate(this.dateTime);
+      // this.getDate(this.dateTime);
       this.getDateMood(this.mooddate);
     },
     getDate(date) {
@@ -164,26 +164,22 @@ export default {
       this.getriskStatistics();
     },
     getqueryMyOkr() {
-      this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.orgTable = this.testModel ? mainData.orkData.data : res.data.orgTable;
-          // eslint-disable-next-line no-unused-expressions
-          this.changeTime();
-
-          this.$watch('periodId', () => {
-            this.changeTime();
-          });
-        }
-      });
-    },
-    changeTime() {
+      // this.server.queryMyOkr({
+      //   myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
+      // }).then((res) => {
+      //   if (res.code == 200) {
+      const orgTable = sessionStorage.getItem('orgTable');
+      this.orgTable = this.testModel ? mainData.orkData.data : JSON.parse(orgTable);
       this.active = {};
       this.$set(this.active, this.orgTable[0].orgId, true);
       this.orgId = this.orgTable[0].orgId;
       this.echartDataY = [];
-      this.getriskStatistics();
+
+      this.$watch('periodId', () => {
+        this.getriskStatistics();
+      }, { immediate: true });
+      //   }
+      // });
     },
     getriskStatistics() {
       if (!this.periodId) {

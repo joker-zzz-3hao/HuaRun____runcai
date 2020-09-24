@@ -175,7 +175,8 @@ export default {
           },
         },
         legend: {
-          data: ['进行中的工作项', '已完成的工作项'],
+          // eslint-disable-next-line global-require
+          data: [{ name: '进行中的工作项' }, { name: '已完成的工作项' }],
         },
         dataset: {
           dimensions: ['product', '进行中的工作项', '已完成的工作项'],
