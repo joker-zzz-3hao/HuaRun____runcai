@@ -164,6 +164,7 @@ export default {
     },
     closed() {
       this.$emit('update:dialogExist', false);
+      this.$emit('success');
     },
     // 取整
     changeProgress(item) {
