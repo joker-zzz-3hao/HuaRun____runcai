@@ -760,6 +760,38 @@
   line-height: 24px;
 }
 
+/* check-judge 考核与衡量弹窗--change by 心荃 */
+.check-judge .check-title{
+  text-align: center;
+  font-size: 20px;
+  color: #222426;
+  letter-spacing: 0.31px;
+  font-weight: 500;
+}
+.check-judge .check-item dt{
+  font-size: 16px;
+  color: #26282A;
+  letter-spacing: 0.25px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.check-judge .check-item dt::before{
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 17px;
+  background: #685df1;
+}
+
+.check-judge .check-item dd{
+  font-size: 14px;
+  color: #879099;
+  letter-spacing: 0.22px;
+  line-height: 24px;
+  margin: 0 0 30px 10px;
+}
+
 /* okr-detail */
 .tl-drawer .okr-detail {
   padding: 0 2px 30px 0;
@@ -1658,7 +1690,7 @@
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;
-  width: 1000px;
+  width: 716px;
 }
 .create-task .task-fenlan{
   display: flex;
