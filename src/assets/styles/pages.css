@@ -1381,13 +1381,7 @@
 }
 
 .okr-approval-detail .okr-change-list li {
-  padding: 20px;
   border: 1px solid #e5e9ee;
-}
-
-.okr-approval-detail .okr-change-list li.is-o,
-.okr-approval-detail .okr-change-list li.is-kr {
-  padding: 0;
 }
 
 .okr-approval-detail .dl-card-panel > dt {
@@ -1399,8 +1393,15 @@
   padding: 20px;
 }
 
+.okr-approval-detail .okr-change-list dl.is-o,
+.okr-approval-detail .okr-change-list dl.is-kr {
+  position: relative;
+  padding: 20px;
+}
+
 .okr-approval-detail .okr-change-list .is-o .change-group dl::before,
-.okr-approval-detail .okr-change-list .is-kr .change-group dl::before {
+.okr-approval-detail .okr-change-list .is-kr .change-group dl::before,
+.okr-approval-detail .okr-change-list dl.is-o::before {
   position: absolute;
   left: -2px;
   top: -1px;
@@ -1426,47 +1427,65 @@
   margin: 14px 0 0 0;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd div {
+.okr-approval-detail .okr-change-list dd div {
   font-size: 12px;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd div > span:nth-of-type(1) {
+.okr-approval-detail .okr-change-list dd div > span:nth-of-type(1) {
   margin: 0 10px 0 0;
   color: #acb6bf;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd div > i:nth-of-type(1) {
+.okr-approval-detail .okr-change-list dd div > i:nth-of-type(1) {
   margin: 0 6px 0 0;
   color: #acb6bf;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd > div:nth-child(2),
-.okr-approval-detail .okr-change-list .change-group dd > div:nth-child(3) {
+.okr-approval-detail .okr-change-list dd:nth-of-type(1) > div:nth-child(1) {
+  flex: 0 0 300px;
+}
+
+.okr-approval-detail .okr-change-list dd:nth-of-type(1) > div:nth-child(2) {
+  flex: 0 0 200px;
+}
+
+.okr-approval-detail .okr-change-list dd:nth-of-type(1) > div:nth-child(3) {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.okr-approval-detail .okr-change-list dd > div:nth-child(2),
+.okr-approval-detail .okr-change-list dd > div:nth-child(3) {
   display: flex;
   align-items: center;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd > div:nth-child(2) .tl-progress-bar {
+.okr-approval-detail .okr-change-list dd > div:nth-child(2) .tl-progress-bar {
   margin: 0 0 0 10px;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd > div:nth-child(2) .progress-number {
+.okr-approval-detail .okr-change-list dd > div:nth-child(2) .progress-number {
   color: #685df1;
 }
 
-.okr-approval-detail .okr-change-list .change-group dt {
+.okr-approval-detail .okr-change-list dt {
   margin: 0 0 10px 0;
 }
 
-.okr-approval-detail .okr-change-list .change-group dt span {
+.okr-approval-detail .okr-change-list dt span {
   margin: 0 10px 0 0;
 }
 
-.okr-approval-detail .okr-change-list .change-group dl:not(.befor-change) {
+.okr-approval-detail .okr-change-list dl:not(.befor-change) {
   background: #f4f6f8;
 }
 
-.okr-approval-detail .okr-change-list .is-o dl dt em {
+.okr-approval-detail .okr-change-list dl.is-o,
+.okr-approval-detail .okr-change-list dl.is-kr {
+  background: unset;
+}
+
+.okr-approval-detail .okr-change-list .is-o dt em {
   margin: 0 10px 0 0;
   font-weight: 500;
   -webkit-line-clamp: unset;
