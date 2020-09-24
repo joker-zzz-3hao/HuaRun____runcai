@@ -1348,9 +1348,14 @@
   width: 100%;
 }
 
-.okr-approval-detail .okr-change-list .change-group {
-  width: 100%;
+.okr-approval-detail .okr-change-list li {
+  padding: 20px;
   border: 1px solid #e5e9ee;
+}
+
+.okr-approval-detail .okr-change-list li.is-o,
+.okr-approval-detail .okr-change-list li.is-kr {
+  padding: 0;
 }
 
 .okr-approval-detail .dl-card-panel > dt {
@@ -1362,14 +1367,19 @@
   padding: 20px;
 }
 
-.okr-approval-detail .okr-change-list .change-group dl::before {
+.okr-approval-detail .okr-change-list .is-o .change-group dl::before,
+.okr-approval-detail .okr-change-list .is-kr .change-group dl::before {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -2px;
+  top: -1px;
   bottom: 0;
   content: '';
   width: 3px;
   background: #4ccd79;
+}
+
+.okr-approval-detail .okr-change-list .is-kr .change-group dl::before {
+  background: #685df1;
 }
 
 .okr-approval-detail .okr-change-list .is-o .current-progress {
@@ -1380,7 +1390,7 @@
   content: unset;
 }
 
-.okr-approval-detail .okr-change-list .change-group dd {
+.okr-approval-detail .okr-change-list dd {
   margin: 14px 0 0 0;
 }
 
@@ -1420,11 +1430,11 @@
   margin: 0 10px 0 0;
 }
 
-.okr-approval-detail .okr-change-list dl:not(.befor-change) {
+.okr-approval-detail .okr-change-list .change-group dl:not(.befor-change) {
   background: #f4f6f8;
 }
 
-.okr-approval-detail .okr-change-list dl dt em {
+.okr-approval-detail .okr-change-list .is-o dl dt em {
   margin: 0 10px 0 0;
   font-weight: 500;
   -webkit-line-clamp: unset;
@@ -1462,10 +1472,6 @@
 .okr-approval-detail .tl-custom-timeline .list-title {
   color: #879099;
 }
-
-/* .okr-approval-detail .tl-custom-timeline dt .operate-type > em {
-  flex: unset;
-} */
 
 .okr-approval-detail .operate-type {
   display: flex;
@@ -1506,6 +1512,20 @@
 .okr-approval-detail .tl-custom-timeline .operate-type > em:nth-of-type(1),
 .okr-approval-detail .tl-custom-timeline .operate-type > span {
   align-self: start;
+}
+
+.okr-approval-detail .el-form-item__content {
+  line-height: unset;
+  display: flex;
+  align-items: center;
+}
+
+.okr-approval-detail .el-form-item__label {
+  line-height: unset;
+}
+
+.okr-approval-detail .el-form-item__content .el-radio-group {
+  margin: 3px 0 0 0;
 }
 
 /* 周报 */

@@ -22,7 +22,7 @@
         <dl class="dl-item">
           <dt>
             <i class="el-icon-s-operation"></i>
-            <span>OKR类型</span>
+            <span>审批类型</span>
           </dt>
           <dd>
             <em>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</em>
@@ -76,11 +76,11 @@
     </dl>
     <dl class="dl-card-panel" v-if="data.approvalStatus =='0'">
       <dt>
-        <em>审核</em>
+        <em>审批</em>
       </dt>
       <dd>
         <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="el-form">
-          <el-form-item label="审核结果" prop="approvalStatus">
+          <el-form-item label="审批结果" prop="approvalStatus">
             <el-radio-group v-model.trim="ruleForm.approvalStatus" class="tl-radio-group">
               <el-radio label="1" class="tl-radio">通过</el-radio>
               <el-radio label="2" class="tl-radio">退回</el-radio>
@@ -88,15 +88,18 @@
           </el-form-item>
           <el-form-item
             v-if="ruleForm.approvalStatus=='2'"
-            label="审核意见"
+            label="审批意见"
             prop="refuseInfo"
-            :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审核意见'}]"
+            :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审批意见'}]"
           >
             <el-input
               type="textarea"
-              placeholder="请输入审核意见，不超过100个字符"
+              placeholder="请输入审批意见，不超过100个字符"
               v-model.trim="ruleForm.refuseInfo"
               :maxlength="100"
+              class="tl-textarea"
+              :rows="3"
+              resize="none"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -113,7 +116,7 @@
     </dl>
     <dl class="dl-card-panel">
       <dt>
-        <em>审核记录</em>
+        <em>审批记录</em>
       </dt>
       <dd>
         <div class="tl-custom-timeline">
