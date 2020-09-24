@@ -1534,7 +1534,7 @@
 }
 
 /* 切换部门--by xinquan  */
-.toggle-department .tl-select-dropdown .el-select-dropdown__item.selected {
+.toggle-department .tl-select-dropdown .el-select-dropdown__item {
   display: flex;
   justify-content: space-between;
 }
