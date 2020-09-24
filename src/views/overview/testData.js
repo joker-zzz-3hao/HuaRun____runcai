@@ -109,6 +109,29 @@ const mainData = {
 };
 
 const teamData = {
+  okrListData: {
+    code: 200,
+    msg: 'response.success',
+    data: [{
+      userName: '刘林', okrDetailObjectKr: '完成目标', okrDetailId: '1243273803975811076', okrDetailType: '1', odetailId: '1243273803975811075',
+    }, {
+      userName: '张小萍', okrDetailObjectKr: '完成目标', okrDetailId: '1259957209311141893', okrDetailType: '1', odetailId: '1259957209311141891',
+    }, {
+      userName: '周明明', okrDetailObjectKr: '完成目标', okrDetailId: '1302737282636865543', okrDetailType: '1', odetailId: '1302737282636865541',
+    }, {
+      userName: '刘伊汶', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822281', okrDetailType: '1', odetailId: '1302758826192822279',
+    }, {
+      userName: '王逸坤', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822291', okrDetailType: '1', odetailId: '1302758826192822289',
+    }, {
+      userName: '曾伟明', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822296', okrDetailType: '1', odetailId: '1302758826192822294',
+    }, {
+      userName: '许雨', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822301', okrDetailType: '1', odetailId: '1302758826192822299',
+    }, {
+      userName: '张丽丽', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822306', okrDetailType: '1', odetailId: '1302758826192822304',
+    }, {
+      userName: '徐明', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822311', okrDetailType: '1', odetailId: '1302758826192822309',
+    }],
+  },
   // eslint-disable-next-line max-len
   mainDataY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 80, 40],
   mainDataX: ['刘林', '周明明', '张小萍', '林衣衣', '唐娅', '刘伊汶', '唐帅', '许雨', '王逸坤', '曾伟明', '张丽丽', '徐明', '车晓慧', '李林林'],
@@ -139,7 +162,7 @@ const teamData = {
 
 const userData = {
   mainDataX: ['2020-08', '2020-09', '2020-10', '2020-11', '2020-12', '2021-01'],
-  mainDataY: [10, 30, 20, 40, 40, 60],
+  mainDataY: [10, 10, 20, 40, 50, 60],
   mainpreDataX: ['2020-8', '2020-09', '2020-10', '2020-11', '2020-12', '2021-01'],
   mainpreDataY: [10, 15, 20, 30, 40, 60],
   riskDataY: {
@@ -221,15 +244,15 @@ const okrData = {
       ],
     }, {
       detailId: '1259957209311141890',
-      okrDetailId: '1259957209311141891',
-      okrMainId: '1243273803975811073',
+      okrDetailId: '12599572093211141891',
+      okrMainId: '12432738039752811073',
       okrDetailVersion: 0,
       okrDetailObjectKr: '【示例数据】第四季度保持至少90%订单续费率',
       okrDetailProgress: 10,
       okrWeight: 90,
       okrDetailConfidence: 0,
       okrDetailType: 0,
-      okrFullId: '1259957209311141891',
+      okrFullId: '12599572093111411891',
       createTime: '2020-09-07 09:59:41',
       status: 1,
       approveStatus: 0,
@@ -239,19 +262,19 @@ const okrData = {
       continueCount: 5,
       versionCount: 1,
       krList: [{
-        detailId: '1259957209311141892', okrDetailId: '1259957209311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '完成100万目标', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
+        detailId: '125995720931111421892', okrDetailId: '125995720922311141893', okrParentId: null, parentKrOId: null, okrMainId: '124327383039751811073', okrDetailVersion: 0, okrDetailObjectKr: '提高售后服务', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '125992157209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '12599517209311141891',
       }],
     }, {
-      detailId: '1259957209311141890',
-      okrDetailId: '1259957209311141891',
-      okrMainId: '1243273803975811073',
+      detailId: '125995720293121141890',
+      okrDetailId: '125995722209311141891',
+      okrMainId: '124327380391758111073',
       okrDetailVersion: 0,
       okrDetailObjectKr: '【示例数据】提高客户满意度',
       okrDetailProgress: 10,
       okrWeight: 90,
       okrDetailConfidence: 0,
       okrDetailType: 0,
-      okrFullId: '1259957209311141891',
+      okrFullId: '125995720931111141891',
       createTime: '2020-09-07 09:59:41',
       status: 1,
       approveStatus: 0,
@@ -261,13 +284,13 @@ const okrData = {
       continueCount: 5,
       versionCount: 1,
       krList: [{
-        detailId: '1259957209311141892', okrDetailId: '1259957209311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '完成100万目标', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
+        detailId: '12599572093111141892', okrDetailId: '12599572029311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '提高售后服务', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '12599571209311141891',
       }],
     }],
     orgTable: [{
-      orgId: '1233236980796686336', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: 'A部门', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233236980796686336:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 09:58:41', updateTime: '2020-08-29 09:58:41', userId: '1233259623864270848', userName: '佳俊二级负责人',
+      orgId: '12332369807196686336', orgParentId: '12332235675126628352', tenantId: 'CR10011000054', orgName: 'A部门', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233236980796686336:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 09:58:41', updateTime: '2020-08-29 09:58:41', userId: '1233259623864270848', userName: '佳俊二级负责人',
     }, {
-      orgId: '1233240313691308032', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: 'B部门', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233240313691308032:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:17', updateTime: '2020-08-29 10:00:17', userId: '1233264571666595840', userName: '佳俊部部负责人',
+      orgId: '12332403136291308032', orgParentId: '1233235675126628352', tenantId: 'CR00111000054', orgName: 'B部门', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233240313691308032:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:17', updateTime: '2020-08-29 10:00:17', userId: '1233264571666595840', userName: '佳俊部部负责人',
     }, {
       orgId: '1233241688080842752', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: 'C部门', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233241688080842752:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:57', updateTime: '2020-08-29 10:00:57', userId: '1233265980415868928', userName: '佳俊门门负责人',
     }, {
@@ -346,12 +369,12 @@ const okrDataTeam = {
       continueCount: 5,
       versionCount: 1,
       krList: [{
-        detailId: '1259957209311141892', okrDetailId: '1259957209311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '完成100万目标', okrDetailProgress: 20, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
+        detailId: '12599572093111141892', okrDetailId: '12599527209311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '提高售后服务', okrDetailProgress: 20, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
       }],
     }, {
-      detailId: '1259957209311141890',
-      okrDetailId: '1259957209311141891',
-      okrMainId: '1243273803975811073',
+      detailId: '12599572093111141890',
+      okrDetailId: '12599572093211141891',
+      okrMainId: '12432738039752811073',
       okrDetailVersion: 0,
       okrDetailObjectKr: '【示例数据】提高我们销售方式的质量',
       okrDetailProgress: 10,
@@ -368,7 +391,7 @@ const okrDataTeam = {
       continueCount: 5,
       versionCount: 1,
       krList: [{
-        detailId: '125995720931141892', okrDetailId: '125995720931141893', okrParentId: null, parentKrOId: null, okrMainId: '124323803975811073', okrDetailVersion: 0, okrDetailObjectKr: '完成100万目标', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '125995709311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
+        detailId: '125995720931141892', okrDetailId: '125995720931141893', okrParentId: null, parentKrOId: null, okrMainId: '124323803975811073', okrDetailVersion: 0, okrDetailObjectKr: '提高用户体验', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '125995709311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
       }],
     }],
     orgTable: [{
@@ -379,8 +402,6 @@ const okrDataTeam = {
       orgId: '1233241688080842752', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '周明明', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233241688080842752:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:57', updateTime: '2020-08-29 10:00:57', userId: '1233265980415868928', userName: '佳俊门门负责人',
     }, {
       orgId: '1284529713665425408', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '刘伊汶', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284529713665425408:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:38:55', updateTime: '2020-09-15 16:38:55', userId: '1284536448174145536', userName: '炜哥一负责人',
-    }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '刘伊汶', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }, {
       orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '王逸坤', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     },
@@ -397,6 +418,7 @@ const okrDataTeam = {
     }],
     orgUser: null,
   },
+
 };
 
 const okrUser = {
@@ -456,11 +478,11 @@ const okrUser = {
       continueCount: 5,
       versionCount: 1,
       krList: [{
-        detailId: '1259957209311141892', okrDetailId: '1259957209311141893', okrParentId: null, parentKrOId: null, okrMainId: '1243273803975811073', okrDetailVersion: 0, okrDetailObjectKr: '完成100万目标', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
+        detailId: '12599572209311141892', okrDetailId: '12599572209311141893', okrParentId: null, parentKrOId: null, okrMainId: '12432738103975811073', okrDetailVersion: 0, okrDetailObjectKr: '提高运营流量', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '1259957209311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
       }],
     }, {
-      detailId: '1259957209311141890',
-      okrDetailId: '1259957209311141891',
+      detailId: '12599572093111411890',
+      okrDetailId: '12599572092311141891',
       okrMainId: '1243273803975811073',
       okrDetailVersion: 0,
       okrDetailObjectKr: '【示例数据】建设专业运营团队，高质量支持 A 产品的客户运营和服务需求',

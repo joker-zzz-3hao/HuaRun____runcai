@@ -102,7 +102,7 @@ export default {
   },
   mixins: [global],
   methods: {
-    ...mapMutations('common', ['setTotalMeaasge']),
+    ...mapMutations('common', ['setTotalMeaasge', 'changeTestModel']),
     init() {
       this.server.unread().then((res) => {
         if (res.code == '200') {
@@ -111,6 +111,7 @@ export default {
       });
     },
     loginOut() {
+      this.changeTestModel(false);
       loginOut();
     },
     switchOrg() {

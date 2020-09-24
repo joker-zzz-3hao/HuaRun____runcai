@@ -9,7 +9,11 @@
         class="tl-table"
       >
         <el-table-column prop="orgName" label="名称" min-width="180"></el-table-column>
-        <el-table-column prop="userName" label="负责人" min-width="100"></el-table-column>
+        <el-table-column prop="userName" label="负责人" min-width="100">
+          <template slot-scope="scope">
+            <span @click="gotoView(scope.row)">{{scope.row.userName}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="okrProgress" label="进度" min-width="116">
           <template slot-scope="scope">
             <tl-process :data="scope.row.okrProgress"></tl-process>
@@ -51,7 +55,12 @@ export default {
   },
   mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+    gotoView() {
+    //   const data = { node: row };
+    // //  this.$emit('takeOvierview', data);
+    },
+  },
   watch: {},
 };
 </script>
