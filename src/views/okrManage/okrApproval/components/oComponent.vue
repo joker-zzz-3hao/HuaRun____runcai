@@ -1,8 +1,10 @@
 <template>
   <dl>
-    <dt>
+    <dt class="tag-kind">
       <span class="kind-parent">目标</span>
       <em>{{oData.okrDetailObjectKr}}</em>
+      <span v-if="oData.historyOkr">变更后</span>
+      <span v-else>变更前</span>
     </dt>
     <dd>
       <div>

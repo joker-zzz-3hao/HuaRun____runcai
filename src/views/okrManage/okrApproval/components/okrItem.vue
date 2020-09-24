@@ -1,26 +1,28 @@
 <template>
   <ul class="okr-change-list">
     <template>
-      <li v-for="(item,index) in tableList" :key="index">
+      <li
+        v-for="(item,index) in tableList"
+        :key="index"
+        :class="item.okrDetailType == '0'? 'is-o' : 'is-kr'"
+      >
         <div v-if="item.okrDetailType == '0'" class="change-group">
-          <div>
-            <div>变更后</div>
-            <tl-oComponent :oData="item"></tl-oComponent>
-          </div>
-          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
-            <div>变更前</div>
-            <tl-oComponent :oData="item.historyOkr"></tl-oComponent>
-          </div>
+          <tl-oComponent :oData="item" :isHistory="item.historyOkr"></tl-oComponent>
+          <tl-oComponent
+            :oData="item.historyOkr"
+            :isHistory="item.historyOkr.historyOkr"
+            v-if="item.historyOkr"
+            :class="{'befor-change': item.historyOkr}"
+          ></tl-oComponent>
         </div>
         <div v-if="item.okrDetailType == '1'" class="change-group">
-          <div>
-            <div>变更后</div>
-            <tl-krComponent :krData="item"></tl-krComponent>
-          </div>
-          <div v-if="item.historyOkr" :class="{'befor-change': item.historyOkr}">
-            <div>变更前</div>
-            <tl-krComponent :krData="item.historyOkr"></tl-krComponent>
-          </div>
+          <tl-krComponent :krData="item" :isHistory="item.historyOkr"></tl-krComponent>
+          <tl-krComponent
+            :krData="item.historyOkr"
+            v-if="item.historyOkr"
+            :isHistory="item.historyOkr.historyOkr"
+            :class="{'befor-change': item.historyOkr}"
+          ></tl-krComponent>
         </div>
       </li>
     </template>
@@ -49,7 +51,9 @@ export default {
     return {
     };
   },
-  mounted() {},
+  mounted() {
+    console.log(this.tableList);
+  },
   computed: {},
   methods: {},
   watch: {},
