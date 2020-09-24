@@ -79,11 +79,11 @@
         <em>审核</em>
       </dt>
       <dd>
-        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="el-form">
           <el-form-item label="审核结果" prop="approvalStatus">
-            <el-radio-group v-model.trim="ruleForm.approvalStatus">
-              <el-radio label="1">通过</el-radio>
-              <el-radio label="2">退回</el-radio>
+            <el-radio-group v-model.trim="ruleForm.approvalStatus" class="tl-radio-group">
+              <el-radio label="1" class="tl-radio">通过</el-radio>
+              <el-radio label="2" class="tl-radio">退回</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
@@ -100,8 +100,13 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">确认</el-button>
-            <el-button @click="resetForm('ruleForm')">取消</el-button>
+            <el-button
+              :loading="loading"
+              type="primary"
+              @click="submitForm('ruleForm')"
+              class="tl-btn amt-bg-slip"
+            >确认</el-button>
+            <el-button plain @click="resetForm('ruleForm')" class="tl-btn amt-border-fadeout">取消</el-button>
           </el-form-item>
         </el-form>
       </dd>
@@ -119,14 +124,14 @@
                 <div class="list-cont">
                   <div class="operate-type">
                     <em>{{cycleFirst.userName}}</em>
-                    <div
+                    <span
                       v-if="cycleFirst.remark"
-                    >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</div>
-                    <div v-if="cycleFirst.reason">
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</span>
+                    <template v-if="cycleFirst.reason">
                       <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
                       <span v-else>审批意见</span>
-                    </div>
-                    <div v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</div>
+                    </template>
+                    <em v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</em>
                   </div>
                 </div>
               </div>
@@ -137,14 +142,14 @@
                 <div class="list-cont">
                   <div class="operate-type">
                     <em>{{item.userName}}</em>
-                    <div
+                    <span
                       v-if="item.remark"
-                    >{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
-                    <div v-if="item.reason">
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</span>
+                    <template v-if="item.reason">
                       <span v-if="item.approvalStatus === 0">变更原因</span>
                       <span v-else>审批意见</span>
-                    </div>
-                    <div v-if="item.reason">{{`「${item.reason}」`}}</div>
+                    </template>
+                    <em v-if="item.reason">{{`「${item.reason}」`}}</em>
                   </div>
                 </div>
               </div>
