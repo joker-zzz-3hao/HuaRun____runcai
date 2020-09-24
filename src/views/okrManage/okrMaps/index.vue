@@ -4,19 +4,6 @@
       <div v-if="showDepartmentSelect" class="maps-view">
         <!-- OKR树 -->
         <div v-if="showOkrMap" class="maps-view-tree">
-          <!-- <dl class="maps-card values-advocacy">
-            <dt @click="showMission(3,'公司价值观宣导')">
-              <em>公司价值观宣导</em>
-              <span class="el-icon-arrow-right"></span>
-            </dt>
-            <dd>
-              <em>成就客户</em>
-              <em>创新成长</em>
-              <em>成人达己</em>
-              <em>追求极致</em>
-              <em>勇于创新</em>
-            </dd>
-          </dl>-->
           <svgtree
             v-if="this.treeData.length>0"
             fatherId="orgParentId"
@@ -32,6 +19,17 @@
               ></card>
             </template>
           </svgtree>
+          <!-- 加载中 -->
+          <div v-else-if="loading" class="bg-loading">
+            <i class="el-icon-loading"></i>
+            <em>加载中...</em>
+          </div>
+          <!-- 暂无数据 -->
+          <div v-else>
+            <div class="bg-no-data-blue">
+              <span>暂无数据</span>
+            </div>
+          </div>
         </div>
         <!-- OKR表格 -->
         <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData" class="maps-view-table"></tl-okr-table>
@@ -98,17 +96,6 @@
               @click="showOkrMap = false"
             ></i>
           </div>
-          <!-- <el-button>树展示</el-button>
-          <el-button>表格展示</el-button>-->
-          <!-- type传1表示使命愿景，2表示战略 -->
-          <!-- <el-button @click="showMission(1,'华润使命·愿景')">
-              公司使命愿景
-              <i class="el-icon-arrow-right el-icon--right"></i>
-            </el-button>
-            <el-button @click="showMission(2,'华润发展战略')">
-              公司战略
-              <i class="el-icon-arrow-right el-icon--right"></i>
-          </el-button>-->
           <el-button
             plain
             @click="showDepartmentSelect = !showDepartmentSelect"
@@ -202,6 +189,7 @@ export default {
       detailExist: false,
       periodId: '',
       periodList: [],
+      loading: true,
     };
   },
   components: {
@@ -238,6 +226,7 @@ export default {
     getOkrTree() {
       if (this.okrCycle.periodId && this.orgFullId) {
         this.treeTableData = [];
+        this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
           // periodId: '1204827318294274048',
@@ -262,6 +251,7 @@ export default {
             }
             this.treeData = res.data.okrTree;
           }
+          this.loading = false;
         });
       }
     },

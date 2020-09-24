@@ -46,7 +46,9 @@
       </div>
       <!-- 暂无数据 -->
       <div v-else>
-        <div class="bg-no-data-blue"></div>
+        <div class="bg-no-data-blue">
+          <span>暂无数据</span>
+        </div>
       </div>
     </div>
     <div class="operating-area">
