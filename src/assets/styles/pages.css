@@ -1520,6 +1520,25 @@
   border-radius: 0 2px 2px 0;
 }
 
+/* 创建任务--by xinquan */ 
+.create-task .el-drawer__body {
+  margin-top: 10px;
+  width: 1000px;
+}
+.create-task .task-fenlan{
+  display: flex;
+}
+.create-task .task-tab{
+  flex: 1;
+  margin-left: 50px;
+}
+
+/* 切换部门--by xinquan  */
+.toggle-department .tl-select-dropdown .el-select-dropdown__item.selected {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* =========================================================租户管理================================================================== */
 /* 部门管理 */
 .organize-management .operating-area .operating-box {
@@ -1621,17 +1640,4 @@
 
 .okr-cycle .tl-drawer .el-drawer__body {
   margin-top: 6px;
-}
-
-/* 创建任务--by xinquan */ 
-.create-task .el-drawer__body {
-  margin-top: 10px;
-  width: 1000px;
-}
-.create-task .task-fenlan{
-  display: flex;
-}
-.create-task .task-tab{
-  flex: 1;
-  margin-left: 50px;
 }
