@@ -1198,6 +1198,13 @@
 .undertake-maps .maps-card .tag-kind {
   height: 28px;
 }
+/* change by xinquan */
+.undertake-maps .bg-loading{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .undertake-maps-detail {
   flex: 1;
@@ -1589,6 +1596,25 @@
 
 .my-weekly .operating-area .tl-custom-btn:nth-child(2) {
   border-radius: 0 2px 2px 0;
+}
+
+/* 创建任务--by xinquan */ 
+.create-task .el-drawer__body {
+  margin-top: 10px;
+  width: 1000px;
+}
+.create-task .task-fenlan{
+  display: flex;
+}
+.create-task .task-tab{
+  flex: 1;
+  margin-left: 50px;
+}
+
+/* 切换部门--by xinquan  */
+.toggle-department .tl-select-dropdown .el-select-dropdown__item {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* =========================================================租户管理================================================================== */
