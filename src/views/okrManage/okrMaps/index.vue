@@ -34,7 +34,12 @@
           </svgtree>
         </div>
         <!-- OKR表格 -->
-        <tl-okr-table v-if="!showOkrMap" :treeData="treeTableData" class="maps-view-table"></tl-okr-table>
+        <tl-okr-table
+          v-if="!showOkrMap"
+          :treeData="treeTableData"
+          @takeOvierview="takeOvierview"
+          class="maps-view-table"
+        ></tl-okr-table>
       </div>
       <div v-if="!showDepartmentSelect" class="maps-search">
         <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>

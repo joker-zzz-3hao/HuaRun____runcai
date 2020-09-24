@@ -64,7 +64,7 @@
         >创建OKR</el-button>
       </div>
     </template>
-    <div class="card-panel-body img-list" v-if="orgUser">
+    <div class="card-panel-body img-list" v-if="orgUser.length>0">
       <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -75,7 +75,7 @@
         <dd>{{item.userName}}</dd>
       </dl>
     </div>
-    <div class="card-panel-body img-list" v-if="orgTable">
+    <div class="card-panel-body img-list" v-if="orgTable.length>0">
       <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
