@@ -1198,6 +1198,13 @@
 .undertake-maps .maps-card .tag-kind {
   height: 28px;
 }
+/* change by xinquan */
+.undertake-maps .bg-loading{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .undertake-maps-detail {
   flex: 1;
@@ -1351,7 +1358,39 @@
 }
 
 .okr-approval-detail .okr-change-list .change-group > div {
+  position: relative;
   padding: 20px;
+}
+
+.okr-approval-detail .okr-change-list .change-group > div::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  content: '';
+  width: 3px;
+  background: #4ccd79;
+}
+
+.okr-approval-detail .okr-change-list .change-group > div.befor-change::before {
+  content: unset;
+}
+
+.okr-approval-detail .okr-change-list .change-group dl dd > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+
+.okr-approval-detail .okr-change-list .change-group dl dd > div:nth-child(2) .tl-progress-bar {
+  margin: 0 0 0 10px;
+}
+
+.okr-approval-detail .okr-change-list .change-group dl dt {
+  margin: 0 0 10px 0;
+}
+
+.okr-approval-detail .okr-change-list .change-group dl dt span {
+  margin: 0 10px 0 0;
 }
 
 /* 周报 */
@@ -1582,4 +1621,17 @@
 
 .okr-cycle .tl-drawer .el-drawer__body {
   margin-top: 6px;
+}
+
+/* 创建任务--by xinquan */ 
+.create-task .el-drawer__body {
+  margin-top: 10px;
+  width: 1000px;
+}
+.create-task .task-fenlan{
+  display: flex;
+}
+.create-task .task-tab{
+  flex: 1;
+  margin-left: 50px;
 }
