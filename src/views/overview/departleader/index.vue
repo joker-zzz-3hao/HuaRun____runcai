@@ -1,5 +1,5 @@
 <template>
-  <div class="department-view">
+  <div class="department-view" id="department-view">
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
       <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       showOver: false,
+      fullscreenLoading: true,
       server,
       orgTable: [],
       periodId: '',
