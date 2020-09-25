@@ -39,6 +39,7 @@
 
 <script>
 import { mapState } from 'vuex';
+
 import okrSchedule from './components/okrSchedule';
 import okrUpdate from './components/okrUpdate';
 import orgPage from '../component/orgPage';
@@ -81,7 +82,6 @@ export default {
       testModel: (state) => state.testModel,
     }),
   },
-
   methods: {
 
     // 切换周期

@@ -177,6 +177,22 @@ export default {
         legend: {
           // eslint-disable-next-line global-require
           data: [{ name: '进行中的工作项' }, { name: '已完成的工作项' }],
+          formatter(name) {
+            return `${name}`;
+          },
+          padding: 5,
+          textStyle: {
+            rich: {
+              a: {
+                color: 'red',
+                lineHeight: 10,
+                backgroundColor: 'red',
+                width: 20,
+                height: 20,
+              },
+            },
+          },
+
         },
         dataset: {
           dimensions: ['product', '进行中的工作项', '已完成的工作项'],

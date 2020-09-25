@@ -56,9 +56,9 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    gotoView() {
-    //   const data = { node: row };
-    // //  this.$emit('takeOvierview', data);
+    gotoView(row) {
+      const data = { node: row };
+      this.$emit('takeOvierview', data);
     },
   },
   watch: {},
