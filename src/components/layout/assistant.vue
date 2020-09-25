@@ -1,10 +1,10 @@
 <template>
   <div class="assistant">
-    <el-popover placement="top" trigger="click" :append-to-body="false" width="370">
+    <!-- <el-popover placement="top" trigger="click" :append-to-body="false" width="370">
       <div class="pic-help" @click="showDia"></div>
       <img slot="reference" src="~@/assets/images/demoPic/helpicon.png" />
-    </el-popover>
-
+    </el-popover>-->
+    <img @click="showDia" src="~@/assets/images/demoPic/helpicon.png" />
     <div v-if="showDialog">
       <el-dialog append-to-body @close="close" :visible="showDialog">
         <div>Hello {{userInfo.userName}}</div>
