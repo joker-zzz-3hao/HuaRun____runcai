@@ -36,6 +36,7 @@
             format="yyyy-MM"
             value-format="yyyy-MM"
             v-model="mooddate"
+            :editable="false"
             @change="getDateMood"
             :clearable="false"
             type="month"

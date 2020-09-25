@@ -19,7 +19,7 @@
         <el-input maxlength="64" class="tl-input" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
       </el-form-item>
       <el-form-item label="联系电话" prop="mobilePhone">
-        <el-input v-model="form.mobilePhone" class="tl-input" placeholder="请输入联系电话" maxlength="11"></el-input>
+        <el-input v-model="form.mobilePhone" class="tl-input" placeholder="请输入联系电话" maxlength="12"></el-input>
       </el-form-item>
       <el-form-item label="开放菜单功能">
         <div class="menuTreeList">
@@ -101,19 +101,42 @@ export default {
             trigger: 'blur',
           },
         ],
-        tenantId: [{
-          required: true, message: '请输入企业ID', trigger: 'blur',
-        },
+        tenantId: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              if (!value) {
+                callback('请输入企业ID');
+              } else if (!/^\w+$/.test(value)) {
+                callback('只支持数字、字母和下划线');
+              } else {
+                callback();
+              }
+            },
+            trigger: 'blur',
+          },
+          {
+            pattern: /[^\u4E00-\u9FA5]/g,
+            message: '不允许输入汉字',
+            trigger: 'blur',
+          },
         ],
         mobilePhone: [
           {
             required: true,
-            message: '请输入联系电话',
-            trigger: 'blur',
-          },
-          {
-            pattern: /^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/,
-            message: '手机号格式不对',
+            validator: (rule, value, callback) => {
+              if (!value) {
+                callback('请输入手机号');
+              } else if (!(/^[1][3456789][0-9]{9}$/
+                .test(value) || /^[0][1-9]{2,3}-[0-9]{5,10}$/.test(value))) {
+                callback('联系电话格式不正确');
+              } else {
+                if (this.formData.loginPwd) {
+                  this.$refs.userForm.validateField('loginPwd');
+                }
+                callback();
+              }
+            },
             trigger: 'blur',
           },
         ],

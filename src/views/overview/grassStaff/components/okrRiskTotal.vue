@@ -25,6 +25,7 @@
             format="yyyy-MM"
             value-format="yyyy-MM"
             v-model="dateTime"
+            :editable="false"
             @change="getDate"
             :picker-options="pickerBeginDateBefore"
             type="month"

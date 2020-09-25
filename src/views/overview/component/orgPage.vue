@@ -60,7 +60,10 @@
           v-show="showLoad"
           type="primary"
           icon="el-icon-plus"
-          @click="$router.push('myOkr')"
+          @click="$router.push({name:'myOkr',query:{
+            openWriteOkr :true,
+            periodId
+          }})"
           class="tl-btn amt-bg-slip"
         >创建OKR</el-button>
       </div>
