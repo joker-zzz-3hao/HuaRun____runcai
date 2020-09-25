@@ -1363,6 +1363,35 @@
   min-height: calc(100vh - 260px);
 }
 
+.okr-approval-list .tl-table td {
+  height: 54px;
+}
+
+.okr-approval-list .user-name-txt {
+  margin: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-approval-list .user-name-txt em {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.okr-approval-list .user-name-txt em:first-child {
+  margin: 0 0 2px 0;
+}
+
+.okr-approval-list .user-name-txt em:last-child {
+  font-size: 12px;
+  color: #acb6bf;
+}
+
 .okr-approval-detail .dl-card-panel:first-child > dt {
   margin: 0 0 16px 0;
 }
@@ -1500,13 +1529,20 @@
   padding: 2px 10px;
   border-radius: 2px 2px 15px 2px;
   font-size: 12px;
-  background: #fee2e4;
-  color: #fb4c59;
+  background: #e4e7fe;
+  color: #685df1;
 }
 
 .okr-approval-detail .okr-change-list dl.befor-change span:last-child {
-  background: #e0e3fe;
-  color: #685df1;
+  background: #e5e9ee;
+  color: #879099;
+}
+
+.okr-approval-detail .okr-change-list dl.new-change span:last-child {
+  background: #e2f7e9;
+  color: #4ccd79;
+  min-width: 36px;
+  text-align: center;
 }
 
 .okr-approval-detail .dl-card-panel a:hover {
