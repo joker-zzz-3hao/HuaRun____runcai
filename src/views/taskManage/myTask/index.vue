@@ -98,7 +98,7 @@ export default {
       tableData: [],
       showAssignment: false,
       existAssignment: false,
-      showReal: false, // 展示示例图片 false
+      showReal: true, // 展示示例图片 false
       existCreatetask: false,
       showpage: 'myTask',
     };

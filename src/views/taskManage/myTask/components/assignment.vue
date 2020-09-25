@@ -2,11 +2,13 @@
   <div>
     <el-dialog
       :append-to-body="true"
+      :close-on-click-modal="false"
       :visible.sync="visible"
       :before-close="close"
       @closed="closed"
       title="任务"
-      :close-on-click-modal="false"
+      class="tl-dialog"
+      width="1000px"
     >
       <div v-if="!showReal" class="show-pic">
         <div class="pic-taskdetail"></div>

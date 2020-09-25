@@ -359,7 +359,7 @@ export default [{
     name: 'taskProcess',
     meta: {
       hasMainMenu: true,
-      noSubMenu: true,
+      isSubMenu: true,
       parentRoute: 'myTask',
       title: 'taskProcess',
       power: '',

@@ -112,7 +112,7 @@ export default {
       param: [],
       selectUserId: '',
       tableList: [],
-      showReal: false, // 展示示例图片 false
+      showReal: true, // 展示示例图片 false
     };
   },
   computed: {
