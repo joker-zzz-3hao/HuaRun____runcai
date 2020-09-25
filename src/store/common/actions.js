@@ -19,7 +19,7 @@ export default {
   // 登出
   ldapLogout({ dispatch, commit }) {
     console.log(dispatch);
-    const infoUrl = '/gateway/talent-gateway-service/account-service/ldapLogout';
+    const infoUrl = '/gateway/account-service/ldapLogout';
     return window.$ajax.post(infoUrl).then((response) => {
       if (response.data.code == 200) {
         commit('setUserInfo', {});
