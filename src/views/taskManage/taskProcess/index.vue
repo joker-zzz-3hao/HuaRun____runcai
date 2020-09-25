@@ -1,14 +1,5 @@
 <template>
   <div class="home">
-    <!-- <div v-if="!showReal" class="show-pic">
-      <div v-if="changeKanban" class="pic-taskprocess" @click="changeKanban = false">
-        <div class="go-back" @click="goback"></div>
-      </div>
-      <div v-else class="pic-kanban">
-        <div class="go-back" @click="goback"></div>
-        <div class="go-kanban" @click="changeKanban = true"></div>
-      </div>
-    </div>-->
     <div>
       <div>
         <div>
