@@ -1745,7 +1745,7 @@
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;
-  width: 716px;
+  width: 800px;
 }
 .create-task .task-fenlan{
   display: flex;
