@@ -4,10 +4,9 @@
       <div v-if="changeKanban" class="pic-taskprocess" @click="changeKanban = false">
         <div class="go-back" @click="goback"></div>
       </div>
-      <div v-else @click="changeKanban = true">
-        <div class="pic-kanban">
-          <div class="go-back" @click="goback"></div>
-        </div>
+      <div v-else class="pic-kanban">
+        <div class="go-back" @click="goback"></div>
+        <div class="go-kanban" @click="changeKanban = true"></div>
       </div>
     </div>-->
     <div>
@@ -222,6 +221,16 @@ export default {
 .go-back {
   width: 200px;
   height: 300px;
+  cursor: pointer;
+}
+
+.go-kanban {
+  position: absolute;
+  right: 41px;
+  top: 7px;
+  width: 114px;
+  height: 68px;
+  cursor: pointer;
 }
 /* .pic-one,
 .pic-two,

@@ -39,8 +39,16 @@
           </div>
         </tl-svgtree>
       </div>
+      <!-- 加载中 -->
+      <div v-else-if="loading" class="bg-loading">
+        <i class="el-icon-loading"></i>
+        <em>加载中...</em>
+      </div>
+      <!-- 暂无数据 -->
       <div v-else>
-        <div class="bg-no-data-blue"></div>
+        <div class="bg-no-data-blue">
+          <span>暂无数据</span>
+        </div>
       </div>
     </div>
     <div class="operating-area">
@@ -117,6 +125,7 @@ export default {
       showCascader: false,
       cardHight: 59, // 块高度的一半
       blockHeight: 170,
+      loading: true,
     };
   },
   computed: {
@@ -167,6 +176,7 @@ export default {
       this.setPeriodId(this.searchForm.periodId);
       // 查承接地图
       if (this.searchForm.orgId) {
+        this.loading = true;
         this.server.getmaps(this.searchForm).then((res) => {
           if (res.code == 200) {
             const allTreeData = res.data;
@@ -218,6 +228,7 @@ export default {
               });
             }
           }
+          this.loading = false;
         });
       }
     },

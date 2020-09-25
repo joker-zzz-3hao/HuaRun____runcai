@@ -6,7 +6,14 @@
       </div>
       <div class="toggle-department">
         <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
-        <el-select v-else v-model="orgId" @change="switchOrg">
+        <el-select
+          v-else
+          v-model="orgId"
+          @change="switchOrg"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
           <el-option
             v-for="item in userInfo.orgList"
             :key="item.orgId"
@@ -95,7 +102,7 @@ export default {
   },
   mixins: [global],
   methods: {
-    ...mapMutations('common', ['setTotalMeaasge']),
+    ...mapMutations('common', ['setTotalMeaasge', 'changeTestModel']),
     init() {
       this.server.unread().then((res) => {
         if (res.code == '200') {
@@ -104,6 +111,7 @@ export default {
       });
     },
     loginOut() {
+      this.changeTestModel(false);
       loginOut();
     },
     switchOrg() {

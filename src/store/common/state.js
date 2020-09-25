@@ -19,4 +19,5 @@ export default {
   okrCycle: {},
   testModel: false,
   identity: {},
+  cycleList: [],
 };

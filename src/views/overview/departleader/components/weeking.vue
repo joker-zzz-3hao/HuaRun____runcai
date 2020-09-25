@@ -51,6 +51,7 @@
 <script>
 import echarts from 'echarts';
 import { mapState } from 'vuex';
+import Bus from '../bus';
 import Server from '../../server';
 import { mainData } from '../../testData';
 
@@ -102,7 +103,6 @@ export default {
     this.fetchData();
     this.getqueryMyOkr();
   },
-
   methods: {
 
     fetchData() {
@@ -112,7 +112,7 @@ export default {
       const time = `${y}-${m}`;
       this.dateTime = time;
       this.mooddate = time;
-      this.getDate(this.dateTime);
+      // this.getDate(this.dateTime);
       this.getDateMood(this.mooddate);
     },
     getDate(date) {
@@ -164,26 +164,24 @@ export default {
       this.getriskStatistics();
     },
     getqueryMyOkr() {
-      this.server.queryMyOkr({
-        myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.orgTable = this.testModel ? mainData.orkData.data : res.data.orgTable;
-          // eslint-disable-next-line no-unused-expressions
-          this.changeTime();
-
-          this.$watch('periodId', () => {
-            this.changeTime();
-          });
-        }
+      // this.server.queryMyOkr({
+      //   myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
+      // }).then((res) => {
+      //   if (res.code == 200) {
+      // const orgTable = sessionStorage.getItem('orgTable');
+      Bus.$on('getOrgTable', (orgTable) => {
+        this.orgTable = this.testModel ? mainData.orkData.data : orgTable;
+        this.active = {};
+        this.$set(this.active, this.orgTable[0].orgId, true);
+        this.orgId = this.orgTable[0].orgId;
+        this.echartDataY = [];
+        this.$watch('periodId', () => {
+          this.getriskStatistics();
+        }, { immediate: true });
       });
-    },
-    changeTime() {
-      this.active = {};
-      this.$set(this.active, this.orgTable[0].orgId, true);
-      this.orgId = this.orgTable[0].orgId;
-      this.echartDataY = [];
-      this.getriskStatistics();
+
+      //   }
+      // });
     },
     getriskStatistics() {
       if (!this.periodId) {

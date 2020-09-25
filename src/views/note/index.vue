@@ -49,11 +49,13 @@ export default {
   margin: 0 13px;
   height: 400px;
   width: 400px;
+  cursor: pointer;
 }
 .click-write {
   margin: 0 13px;
   height: 400px;
   width: 400px;
+  cursor: pointer;
 }
 .pic-detail01 {
   background: url("~@/assets/images/demoPic/detail01.png") no-repeat;

@@ -83,6 +83,11 @@
           </tl-okr-table>
         </div>
       </div>
+      <!-- 加载中 -->
+      <div v-else-if="loading" class="tl-card-panel no-data">
+        <i class="el-icon-loading"></i>
+        <em>加载中...</em>
+      </div>
       <div v-else class="tl-card-panel no-data">
         <div class="bg-no-data"></div>
       </div>
@@ -175,6 +180,7 @@ export default {
       myokrDrawer: false,
       drawerTitle: 'OKR详情',
       detailExist: false,
+      loading: true,
     };
   },
   props: {
@@ -210,6 +216,7 @@ export default {
   },
   methods: {
     searchOkr() { // 默认搜索进行时
+      this.loading = true;
       this.server.getmyOkr({
         myOrOrg: 'org',
         periodId: this.okrCycle.periodId,
@@ -223,6 +230,7 @@ export default {
           this.memberList = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
         }
+        this.loading = false;
       });
     },
     goUndertakeMaps(id, name) {

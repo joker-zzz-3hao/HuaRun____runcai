@@ -1,116 +1,166 @@
 <template>
   <div class="okr-approval-detail">
-    <div>
-      <span @click="backList">返回</span>
-    </div>
-    <div style="margin-top: 20px;">
-      <p>基本信息</p>
-      <p>{{data.periodName}}</p>
-      <div style="display: flex;margin-top: 20px;justify-content:space-between;">
-        <div>
-          <span>被审批者</span>
-          <span>{{data.userName}}</span>
-        </div>
-        <div>
-          <span>OKR类型</span>
-          <span>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</span>
-        </div>
-        <div>
-          <span>当前审批者</span>
-          <span>{{data.approveUserName}}</span>
-        </div>
-        <div style="display:flex;">
-          <div>进度</div>
-          <div>
+    <dl class="dl-card-panel">
+      <dt class="card-title">
+        <em>基本信息</em>
+        <i class="el-icon-arrow-left"></i>
+        <a @click="backList">返回</a>
+      </dt>
+      <dd>
+        <em>{{data.periodName}}</em>
+      </dd>
+      <dd>
+        <dl class="dl-item">
+          <dt>
+            <i class="el-icon-user"></i>
+            <span>被审批者</span>
+          </dt>
+          <dd>
+            <em>{{data.userName}}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>
+            <i class="el-icon-s-operation"></i>
+            <span>审批类型</span>
+          </dt>
+          <dd>
+            <em>{{CONST.APPROVAL_TYPE_MAP[data.approvalType]}}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>
+            <i class="el-icon-user"></i>
+            <span>当前审批者</span>
+          </dt>
+          <dd>
+            <em>{{data.approveUserName}}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>
+            <i class="el-icon-odometer"></i>
+            <span>进度</span>
+          </dt>
+          <dd>
             <el-progress
               v-if="data.approvalType == '1'"
               type="circle"
               :percentage="data.okrProgress"
+              :width="60"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
             ></el-progress>
-            <span v-else>--</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 20px;">
-      <p>OKR信息</p>
-      <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
-      <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
-    </div>
+            <span v-else>暂无</span>
+          </dd>
+        </dl>
+      </dd>
+    </dl>
+    <dl class="dl-card-panel">
+      <dt>
+        <em>OKR信息</em>
+      </dt>
+      <dd>
+        <tl-okrItem v-if="data.approvalType == '1'" :tableList="tableList"></tl-okrItem>
+        <tl-create-okrComponent v-if="data.approvalType == '0'" :tableList="tableList"></tl-create-okrComponent>
+      </dd>
+    </dl>
+
     <!-- 变更原因 -->
-    <div v-if="data.approvalType == '1'">
-      <span>变更原因：</span>
-      <span>{{JSON.parse(data.paramJson).modifyReason }}</span>
-    </div>
-    <div v-if="data.approvalStatus =='0'" style="margin-top: 20px;">
-      <p>审核</p>
-      <div>
-        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="审核结果" prop="approvalStatus">
-            <el-radio-group v-model.trim="ruleForm.approvalStatus">
-              <el-radio label="1">通过</el-radio>
-              <el-radio label="2">退回</el-radio>
+    <dl class="dl-card-panel" v-if="data.approvalType == '1'">
+      <dt>
+        <em>变更原因</em>
+      </dt>
+      <dd>{{JSON.parse(data.paramJson).modifyReason }}</dd>
+    </dl>
+    <dl class="dl-card-panel" v-if="data.approvalStatus =='0'">
+      <dt>
+        <em>审批</em>
+      </dt>
+      <dd>
+        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="el-form">
+          <el-form-item label="审批结果" prop="approvalStatus">
+            <el-radio-group v-model.trim="ruleForm.approvalStatus" class="tl-radio-group">
+              <el-radio label="1" class="tl-radio">通过</el-radio>
+              <el-radio label="2" class="tl-radio">退回</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
             v-if="ruleForm.approvalStatus=='2'"
-            label="审核意见"
+            label="审批意见"
             prop="refuseInfo"
-            :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审核意见'}]"
+            :rules="[{required: ruleForm.approvalStatus=='2',message: '请输入审批意见'}]"
           >
             <el-input
               type="textarea"
-              placeholder="请输入审核意见，不超过100个字符"
+              placeholder="请输入审批意见，不超过100个字符"
               v-model.trim="ruleForm.refuseInfo"
               :maxlength="100"
+              class="tl-textarea"
+              :rows="3"
+              resize="none"
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">确认</el-button>
-            <el-button @click="resetForm('ruleForm')">取消</el-button>
+            <el-button
+              :loading="loading"
+              type="primary"
+              @click="submitForm('ruleForm')"
+              class="tl-btn amt-bg-slip"
+            >确认</el-button>
+            <el-button plain @click="resetForm('ruleForm')" class="tl-btn amt-border-fadeout">取消</el-button>
           </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <p>审核记录</p>
-    <div class="tl-custom-timeline">
-      <dl class="timeline-list">
-        <dt>
-          <div class="list-info">
-            <div class="list-title">{{cycleFirst.createTime}}</div>
-            <div class="list-cont">
-              <div class="operate-type">
-                <em>{{cycleFirst.userName}}</em>
-                <div
-                  v-if="cycleFirst.remark"
-                >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</div>
-                <div v-if="cycleFirst.reason">
-                  <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
-                  <span v-else>审批意见</span>
+      </dd>
+    </dl>
+    <dl class="dl-card-panel">
+      <dt>
+        <em>审批记录</em>
+      </dt>
+      <dd>
+        <div class="tl-custom-timeline">
+          <dl class="timeline-list">
+            <dt>
+              <div class="list-info">
+                <div class="list-title">{{cycleFirst.createTime}}</div>
+                <div class="list-cont">
+                  <div class="operate-type">
+                    <em>{{cycleFirst.userName}}</em>
+                    <span
+                      v-if="cycleFirst.remark"
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[cycleFirst.approvalStatus]}」`}}</span>
+                    <template v-if="cycleFirst.reason">
+                      <span v-if="cycleFirst.approvalStatus === 0">变更原因</span>
+                      <span v-else>审批意见</span>
+                    </template>
+                    <em v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</em>
+                  </div>
                 </div>
-                <div v-if="cycleFirst.reason">{{`「${cycleFirst.reason}」`}}</div>
               </div>
-            </div>
-          </div>
-        </dt>
-        <dd v-for="item in cycleList" :key="item.id">
-          <div class="list-info">
-            <div class="list-title">{{item.createTime}}</div>
-            <div class="list-cont">
-              <div class="operate-type">
-                <em>{{item.userName}}</em>
-                <div v-if="item.remark">{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</div>
-                <div v-if="item.reason">
-                  <span v-if="item.approvalStatus === 0">变更原因</span>
-                  <span v-else>审批意见</span>
+            </dt>
+            <dd v-for="item in cycleList" :key="item.id">
+              <div class="list-info">
+                <div class="list-title">{{item.createTime}}</div>
+                <div class="list-cont">
+                  <div class="operate-type">
+                    <em>{{item.userName}}</em>
+                    <span
+                      v-if="item.remark"
+                    >{{`「${CONST.APPROVAL_HISTROY_MAP[item.approvalStatus]}」`}}</span>
+                    <template v-if="item.reason">
+                      <span v-if="item.approvalStatus === 0">变更原因</span>
+                      <span v-else>审批意见</span>
+                    </template>
+                    <em v-if="item.reason">{{`「${item.reason}」`}}</em>
+                  </div>
                 </div>
-                <div v-if="item.reason">{{`「${item.reason}」`}}</div>
               </div>
-            </div>
-          </div>
-        </dd>
-      </dl>
-    </div>
+            </dd>
+          </dl>
+        </div>
+      </dd>
+    </dl>
   </div>
 </template>
 

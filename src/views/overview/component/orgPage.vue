@@ -1,16 +1,16 @@
 <template>
-  <div class="tl-card-panel" v-show="showLoad">
+  <div class="tl-card-panel" v-loading="fullscreenLoading">
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length>0">
       <div class="card-panel-head">
-        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrCycle.periodName}}</div>
+        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrMain.periodName}}</div>
         <dl class="okr-state">
           <dt>
             <em>状态</em>
           </dt>
           <dd>
             <i class="el-icon-sunny"></i>
-            <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+            <em>{{CONST.STATUS_LIST_MAP[okrMain.status]}}</em>
           </dd>
         </dl>
         <dl class="okr-responsible">
@@ -57,6 +57,7 @@
         <span v-if="$route.query.id" class="bg-no-data"></span>
         <el-button
           v-else
+          v-show="showLoad"
           type="primary"
           icon="el-icon-plus"
           @click="$router.push('myOkr')"
@@ -64,7 +65,7 @@
         >创建OKR</el-button>
       </div>
     </template>
-    <div class="card-panel-body img-list" v-if="orgUser">
+    <div class="card-panel-body img-list" v-if="orgUser.length>0">
       <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -75,7 +76,7 @@
         <dd>{{item.userName}}</dd>
       </dl>
     </div>
-    <div class="card-panel-body img-list" v-if="orgTable">
+    <div class="card-panel-body img-list" v-if="orgTable.length>0">
       <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
@@ -90,8 +91,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTableLittle';
+import Bus from '../departleader/bus';
 import Server from '../server';
 import CONST from '../const';
 import { okrData, okrDataTeam, okrUser } from '../testData';
@@ -104,7 +106,6 @@ export default {
     'tl-okr-table': okrTable,
   },
   props: ['periodId'],
-
   data() {
     return {
       showTable: false,
@@ -115,6 +116,7 @@ export default {
       orgTable: [],
       orgUser: [],
       showLoad: false,
+      fullscreenLoading: true,
       searchForm: {
         status: '1',
       },
@@ -142,14 +144,12 @@ export default {
     },
   },
   created() {
-    this.getOkrCycleList();
-  },
-  mounted() {
     this.$nextTick(() => {
-      this.searchOkr();
+    //  this.searchOkr();
     });
   },
   methods: {
+    ...mapMutations('common', ['setOrg', 'changeTestModel', 'setCycleList']),
     goUndertakeMaps(id, name) {
       this.$router.push({
         name: 'undertakeMaps',
@@ -192,28 +192,25 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.orgUser = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          Bus.$emit('getOrgTable', this.orgTable);
+          sessionStorage.setItem('orgTable', JSON.stringify(this.orgTable));
           this.showLoad = true;
+          this.fullscreenLoading = false;
         }
       });
     },
 
-    // 周期
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.okrCycle.periodId;
-        }
-      });
-    },
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {
         return false;
       }
       if (this.$route.query.userId == user.userId) {
-        this.$message.error('此为当前团队负责人');
+        this.$message.success('此为当前团队负责人');
+        return false;
+      }
+      if (!user.userId) {
+        this.$message.success('该部门还未创建用户哦～');
         return false;
       }
       this.server.identity({

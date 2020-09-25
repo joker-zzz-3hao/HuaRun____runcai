@@ -1,5 +1,5 @@
 <template>
-  <div class="department-view">
+  <div class="department-view" id="department-view">
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
       <tl-okr-schedule :mainData="mainData"></tl-okr-schedule>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       showOver: false,
+      fullscreenLoading: true,
       server,
       orgTable: [],
       periodId: '',
@@ -79,10 +80,6 @@ export default {
       setOrgId: (state) => state.setOrgId,
       testModel: (state) => state.testModel,
     }),
-  },
-  mounted() {
-    // eslint-disable-next-line no-unused-expressions
-    // this.$route.query.id ? this.showOver = true : this.getidentity();
   },
 
   methods: {
@@ -106,29 +103,7 @@ export default {
         this.riskList = this.testModel ? mainData.orkData.data : res.data;
       });
     },
-    // 认证身份跳转对应身份首页
-    getidentity() {
-      this.server.identity({
-        user: this.userInfo.userId,
-        orgId: this.setOrgId,
-      }).then((res) => {
-        if (res.data.identityType == 'org') {
-          // this.$router.replace({ name: 'departleader' });
-          this.showOver = true;
-          return false;
-        }
-        if (res.data.identityType == 'team') {
-          this.$router.replace({ name: 'teamleader' });
-          this.showOver = true;
-          return false;
-        }
-        if (res.data.identityType == 'person') {
-          this.$router.replace({ name: 'grassStaff' });
-          this.showOver = true;
-          return false;
-        }
-      });
-    },
+
   },
 };
 </script>

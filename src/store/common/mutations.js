@@ -78,8 +78,13 @@ export default {
     state.testModel = testModel;
   },
 
-  // 切换示例数据
+  // 判断主页身份
   setIdentity: (state, identity = {}) => {
     state.identity = identity;
+  },
+
+  // 获取okr周期列表
+  setCycleList: (state, cycleList = []) => {
+    state.cycleList = cycleList;
   },
 };

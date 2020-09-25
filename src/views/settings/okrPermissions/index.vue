@@ -32,9 +32,9 @@
             <el-radio v-model="radio['O-3']" label="S" class="tl-radio">关闭 ( 关闭后部门负责人不可制定部门OKR )</el-radio>
           </dd>-->
         </dl>
-        <el-form ref="form" label-width="110px">
-          <dt>
-            <span>公司ＯＫＲ（根组织ＯＫＲ）审批人设置</span>
+        <el-form ref="form" label-width="110px" class="tl-form">
+          <dt style="margin-bottom:20px">
+            <span>公司OKR ( 根组织OKR ) 审批人设置</span>
           </dt>
           <el-form-item label="设置审批人：">
             <el-input
@@ -44,20 +44,30 @@
               style="width:350px"
               class="tl-input"
             ></el-input>
-            <el-button type="primary" class="tl-btn amt-bg-slip" @click="okrspUserexist=true">设置</el-button>
+            <el-button
+              type="primary"
+              style="margin-left:20px;"
+              class="tl-btn amt-bg-slip"
+              @click="okrspUserexist=true"
+            >设置</el-button>
           </el-form-item>
-          <dt>
-            <span>公司ＯＫＲ（根组织ＯＫＲ）考核人设置</span>
+          <dt style="margin-bottom:20px">
+            <span>公司OKR ( 根组织OKR ) 考核人设置</span>
           </dt>
           <el-form-item label="设置审批人：">
             <el-input
               v-model="khUser.userName"
               :disabled="true"
               placeholder="请设置公司OKR（根组织OKR）审批人"
-              style="width:350px"
+              style="width:350px;"
               class="tl-input"
             ></el-input>
-            <el-button type="primary" class="tl-btn amt-bg-slip" @click="okrkhUserexist=true">设置</el-button>
+            <el-button
+              type="primary"
+              style="margin-left:20px;"
+              class="tl-btn amt-bg-slip"
+              @click="okrkhUserexist=true"
+            >设置</el-button>
           </el-form-item>
         </el-form>
       </div>

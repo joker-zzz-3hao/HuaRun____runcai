@@ -1,15 +1,17 @@
 <template>
   <div class="tenant-management">
     <div v-if="!showReal" class="show-pic">
-      <div v-if="changeweek==true" @click="changeweek=false">
+      <div v-if="changeweek==true">
         <div class="pic-teamweekly01">
+          <div class="click-change" @click="changeweek=false"></div>
           <img src="~@/assets/images/demoPic/teamweekly01.png" />
         </div>
         <div class="pic-teamweekly02">
           <img src="~@/assets/images/demoPic/teamweekly02.png" />
         </div>
       </div>
-      <div v-else @click="changeweek=true" class="pic-sukan">
+      <div v-else class="pic-sukan">
+        <div class="click-change" @click="changeweek=true"></div>
         <img src="~@/assets/images/demoPic/sukan.png" />
       </div>
     </div>
@@ -324,7 +326,7 @@ export default {
         },
       ],
       submitedOrLooked: '',
-      showReal: false, // 展示示例图片 false
+      showReal: true, // 展示示例图片 false
       changeweek: true,
     };
   },
@@ -628,5 +630,13 @@ export default {
   display: inline-block;
   height: auto;
   max-width: 100%;
+}
+.click-change {
+  position: absolute;
+  right: 81px;
+  top: 7px;
+  width: 200px;
+  height: 68px;
+  cursor: pointer;
 }
 </style>

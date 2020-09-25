@@ -98,7 +98,7 @@
         <template slot-scope="scope" v-if="!overview">
           <el-popover
             v-if="scope.row.parentUpdate"
-            placement="top"
+            placement="bottom"
             width="200"
             trigger="hover"
             :append-to-body="false"
@@ -117,6 +117,15 @@
           >
             <div slot="content">{{scope.row.parentObjectKr}}</div>
             <em>{{scope.row.parentObjectKr}}</em>
+          </el-tooltip>
+          <el-tooltip
+            v-else-if="scope.row.undertakeOkrDto && scope.row.undertakeOkrDto.undertakeOkrContent"
+            effect="dark"
+            placement="top"
+            popper-class="tl-tooltip-popper"
+          >
+            <div slot="content">{{scope.row.undertakeOkrDto.undertakeOkrContent}}</div>
+            <em>{{scope.row.undertakeOkrDto.undertakeOkrContent}}</em>
           </el-tooltip>
           <em v-else>暂无</em>
         </template>

@@ -1,6 +1,10 @@
 <template>
   <div class="assistant">
-    <i class="el-icon-service" @click="showDia"></i>
+    <el-popover placement="top" trigger="click" :append-to-body="false" width="370">
+      <div class="pic-help" @click="showDia"></div>
+      <img slot="reference" src="~@/assets/images/demoPic/helpicon.png" />
+    </el-popover>
+
     <div v-if="showDialog">
       <el-dialog append-to-body @close="close" :visible="showDialog">
         <div>Hello {{userInfo.userName}}</div>
@@ -113,6 +117,7 @@ export default {
           name: '发送问题反馈',
         },
       ],
+      showReal: true, // 展示示例图片 false
     };
   },
   created() {
@@ -186,3 +191,10 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.pic-help {
+  background: url("~@/assets/images/demoPic/help.png") no-repeat;
+  background-size: 100%;
+  height: 431px;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="undertake-maps-detail">
     <div class="cont-area">
-      <elcollapse accordion @change="okrCheck" class="tl-collapse-other">
+      <elcollapse accordion @change="okrCheck" class="tl-collapse-other" v-model="activeList">
         <elcollapseitem
           ref="okrcoll"
           v-for="okrItem in okrInfoList"
@@ -51,7 +51,14 @@
                 <dl class="timeline-list">
                   <dd v-for="(okritem) in pitem" :key="okritem.createTime">
                     <div class="list-info">
-                      <div class="list-title">{{okritem.createTime}}</div>
+                      <div class="list-title">
+                        <span>{{okritem.createTime}}</span>
+                        <div>
+                          <span>本次更新进度</span>
+                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                        </div>
+                      </div>
                       <div class="list-cont">
                         <div v-if="okritem.operateType == '5'">
                           <span v-if="okritem.okrDetailType == 0">目标O</span>
@@ -71,13 +78,7 @@
                           <em>{{okritem.okrContent}}</em>
                         </div>
                         <div>
-                          <span>来自-</span>
-                          <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
-                        </div>
-                        <div>
-                          <span>本次更新进度</span>
-                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
-                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                          <span>来自-{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
                         </div>
                       </div>
                     </div>
@@ -96,7 +97,14 @@
                 <dl class="timeline-list">
                   <dd v-for="(okritem) in pitem" :key="okritem.createTime">
                     <div class="list-info">
-                      <div class="list-title">{{okritem.createTime}}</div>
+                      <div class="list-title">
+                        <div>{{okritem.createTime}}</div>
+                        <div>
+                          <span>本次更新进度</span>
+                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
+                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                        </div>
+                      </div>
                       <div class="list-cont">
                         <div v-if="okritem.operateType == '5'">
                           <span v-if="okritem.okrDetailType == 0">目标O</span>
@@ -116,13 +124,7 @@
                           <em>{{okritem.okrContent}}</em>
                         </div>
                         <div>
-                          <span>来自-</span>
-                          <em>{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</em>
-                        </div>
-                        <div>
-                          <span>本次更新进度</span>
-                          <em v-if="okritem.okrDetailProgress>0">+{{okritem.okrDetailProgress}}%</em>
-                          <em v-else>{{okritem.okrDetailProgress}}%</em>
+                          <span>来自-{{CONST.OPERATE_TYPE_MAP[okritem.operateType]}}</span>
                         </div>
                       </div>
                     </div>
@@ -138,6 +140,7 @@
         :server="server"
         :okrForm="choseOkrInfo"
         :dialogExist.sync="dialogExist"
+        @success="queryOAndKrList"
       ></tl-update-progress>
     </div>
     <div class="operating-area">
@@ -183,6 +186,8 @@ export default {
       okrInfoList: [],
       choseOkrInfo: {},
       undertakeCount: 0,
+      loading: true,
+      activeList: [],
     };
   },
   created() {
@@ -202,6 +207,7 @@ export default {
         periodId: this.undertakePeriodId,
       }).then((res) => {
         if (res.code == 200) {
+          this.activeList = [];
           this.okrInfoList = res.data || [];
           this.okrInfoList.forEach((item) => {
             if (item.historyList) {
@@ -230,9 +236,11 @@ export default {
       });
     },
     okrCheck(okrDetailId, checkStatus = 0) {
-      console.log(okrDetailId, checkStatus);
       this.checkStatus = checkStatus;
       this.okrDetailId = okrDetailId || '';
+      if (this.checkStatus == 0) {
+        return;
+      }
       this.server.okrCheck({
         checkStatus,
         okrDetailId: this.okrDetailId,
@@ -267,9 +275,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.tlokrupdate.showOkrDialog();
       });
-    },
-    duiqi() {
-      console.log('刷新列表');
     },
     goback() {
       this.setUndertakeMapsStep('1');

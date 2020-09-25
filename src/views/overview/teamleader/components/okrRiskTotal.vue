@@ -39,6 +39,7 @@ import echarts from 'echarts';
 import { mapState } from 'vuex';
 import process from '@/components/process';
 import Server from '../../server';
+import { teamData } from '../../testData';
 
 const server = new Server();
 export default {
@@ -83,7 +84,7 @@ export default {
         orgId: this.setOrgId,
         riskCode,
       }).then((res) => {
-        this.okrData = res.data;
+        this.okrData = this.testModel ? teamData.okrListData.data : res.data;
         this.visible = true;
       });
     },
