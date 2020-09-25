@@ -218,10 +218,10 @@ export default {
         if (res.code == 200) {
           this.tenantList = res.data;
           this.searchForm.tenantId = this.tenantList.length > 0 ? this.tenantList[0].tenantId : '';
-          this.searchList();
+          // this.searchList();
         }
       });
-      this.getOrg();
+      // this.getOrg();
     },
     searchList(org) {
       if (org && org.orgId) { // 切换组织
@@ -311,16 +311,18 @@ export default {
   watch: {
     'searchForm.tenantId': {
       handler(newValue) {
-        this.tenantList.forEach((element) => {
-          if (element.tenantId == newValue) {
-            this.tenantName = element.tenantName;
-          }
-        });
-        this.searchForm.userType = '';
-        this.searchForm.userStatus = '';
-        this.searchForm.keyWord = '';
-        this.searchList();
-        this.getOrg();
+        if (newValue) {
+          this.tenantList.forEach((element) => {
+            if (element.tenantId == newValue) {
+              this.tenantName = element.tenantName;
+            }
+          });
+          this.searchForm.userType = '';
+          this.searchForm.userStatus = '';
+          this.searchForm.keyWord = '';
+          this.searchList();
+          this.getOrg();
+        }
       },
       deep: true,
       immediate: true,

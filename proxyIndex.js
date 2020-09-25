@@ -70,4 +70,12 @@ module.exports = {
     changeOrigin: true,
     // pathRewrite: { '^/gateway': '' },
   },
+  '/gateway/task-service/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    pathRewrite: {
+      // '^/gateway': ''
+    },
+  },
 };
