@@ -98,7 +98,7 @@
         <template slot-scope="scope" v-if="!overview">
           <el-popover
             v-if="scope.row.parentUpdate"
-            placement="top"
+            placement="bottom"
             width="200"
             trigger="hover"
             :append-to-body="false"
