@@ -10,25 +10,24 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" :empty-text="emptyText" class="tl-table">
-            <el-table-column prop="userName" label="姓名" min-width="160">
+            <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
-                <div style="display: flex;">
-                  <div v-if="scope.row.headUrl">
-                    <el-avatar :src="scope.row.headUrl"></el-avatar>
+                <img v-if="scope.row.headUrl" :src="uscope.row.headUrl" alt />
+                <div v-else-if="scope.row.userName" class="user-info">
+                  <div class="user-name">
+                    <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
                   </div>
-                  <div v-else-if="scope.row.userName" class="user-info">
-                    <div class="user-name">
-                      <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
-                    </div>
-                  </div>
-                  <div>
-                    <div>{{scope.row.userName}}</div>
-                    <div>{{scope.row.orgName}}</div>
-                  </div>
+                </div>
+                <div class="user-name-txt">
+                  <em>{{scope.row.userName}}</em>
+                  <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
+                    <div slot="content">{{scope.row.orgName}}</div>
+                    <em>{{scope.row.orgName}}</em>
+                  </el-tooltip>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="periodName" label="OKR周期" min-width="140"></el-table-column>
+            <el-table-column prop="periodName" label="OKR周期" min-width="160"></el-table-column>
             <el-table-column prop="approvalStatus" label="审批状态" min-width="90">
               <template slot-scope="scope">
                 <i
@@ -52,8 +51,8 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="提交时间" min-width="180"></el-table-column>
-            <el-table-column prop="approveTime" label="审批时间" min-width="180">
+            <el-table-column prop="createTime" label="提交时间" min-width="170"></el-table-column>
+            <el-table-column prop="approveTime" label="审批时间" min-width="170">
               <template slot-scope="scope">
                 <span
                   v-if="scope.row.approveTime"

@@ -1,10 +1,14 @@
 <template>
   <div class="home">
     <div v-if="!showReal" class="show-pic">
-      <div class="pic-myTask" @click="handleAssign">
+      <div v-if="showpage == 'myTask'" class="pic-myTask">
+        <div class="handle-assign" @click="handleAssign"></div>
+        <div class="click-week" @click="showpage = 'allweekly'"></div>
+        <div class="task-search" @click="showpage = 'tasksearch'"></div>
         <!-- <img src="~@/assets/images/demoPic/myTask.png" /> -->
       </div>
-      <!-- <div v-else class="pic-taskdetail"></div> -->
+      <div @click="showpage = 'myTask'" v-else-if="showpage == 'allweekly'" class="pic-allweekly"></div>
+      <div @click="showpage = 'myTask'" v-else-if="showpage == 'tasksearch'" class="pic-tasksearch"></div>
     </div>
     <template v-if="showReal">
       <!-- 按钮组 -->
@@ -58,6 +62,12 @@
       :existAssignment.sync="existAssignment"
       :server="server"
     ></tl-assignment>
+    <tl-createtask
+      ref="createtask"
+      v-if="existCreatetask"
+      :existAssignment.sync="existCreatetask"
+      :server="server"
+    ></tl-createtask>
   </div>
 </template>
 
@@ -65,6 +75,7 @@
 import crcloudTable from '@/components/crcloudTable';
 import searchbar from './components/searchbar';
 import assignment from './components/assignment';
+import createTask from './components/createTask';
 import Server from './server';
 
 const server = new Server();
@@ -75,6 +86,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-searchbar': searchbar,
     'tl-assignment': assignment,
+    'tl-createtask': createTask,
   },
   data() {
     return {
@@ -87,7 +99,8 @@ export default {
       showAssignment: false,
       existAssignment: false,
       showReal: false, // 展示示例图片 false
-      changeZhoubao: true,
+      existCreatetask: false,
+      showpage: 'myTask',
     };
   },
   created() {
@@ -112,7 +125,10 @@ export default {
 
     },
     goCreateTask() {
-      this.go('goCreateTask');
+      this.existCreatetask = true;
+      this.$nextTick(() => {
+        this.$refs.createtask.show();
+      });
     },
   },
 };
@@ -140,9 +156,38 @@ export default {
   /* background-size: cover; */
   height: calc(100vh);
 }
-.pic-taskdetail {
-  background: url("~@/assets/images/demoPic/taskDetail.png") no-repeat;
+.pic-allweekly {
+  background: url("~@/assets/images/demoPic/allweekly.png") no-repeat;
   background-size: 100%;
   height: calc(100vh);
+}
+.pic-tasksearch {
+  background: url("~@/assets/images/demoPic/tasksearch.png") no-repeat;
+  background-size: 101%;
+  height: calc(100vh);
+}
+.handle-assign {
+  position: absolute;
+  right: 150px;
+  top: 1px;
+  width: 100px;
+  height: 22px;
+  cursor: pointer;
+}
+.click-week {
+  position: absolute;
+  right: 27px;
+  top: 1px;
+  width: 80px;
+  height: 22px;
+  cursor: pointer;
+}
+.task-search {
+  position: absolute;
+  right: 41px;
+  top: 59px;
+  width: 114px;
+  height: 48px;
+  cursor: pointer;
 }
 </style>
