@@ -1302,9 +1302,14 @@
 }
 .undertake-maps-detail .timeline-list .list-cont div em {
   margin: 0 10px 0 0;
-  color: #222426;
+  color: #4d5155;
   font-size: 14px;
   flex:1;
+  word-break: break-all;
+}
+
+.undertake-maps-detail .timeline-list .list-cont div:last-child span {
+  font-size: 12px;
 }
 
 .undertake-maps-detail .timeline-list .list-cont div span {
@@ -1745,7 +1750,7 @@
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;
-  width: 716px;
+  width: 800px;
 }
 .create-task .task-fenlan{
   display: flex;
