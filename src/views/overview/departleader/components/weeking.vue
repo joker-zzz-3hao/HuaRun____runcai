@@ -51,6 +51,7 @@
 <script>
 import echarts from 'echarts';
 import { mapState } from 'vuex';
+import Bus from '../bus';
 import Server from '../../server';
 import { mainData } from '../../testData';
 
@@ -102,7 +103,6 @@ export default {
     this.fetchData();
     this.getqueryMyOkr();
   },
-
   methods: {
 
     fetchData() {
@@ -168,16 +168,18 @@ export default {
       //   myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
       // }).then((res) => {
       //   if (res.code == 200) {
-      const orgTable = sessionStorage.getItem('orgTable');
-      this.orgTable = this.testModel ? mainData.orkData.data : JSON.parse(orgTable);
-      this.active = {};
-      this.$set(this.active, this.orgTable[0].orgId, true);
-      this.orgId = this.orgTable[0].orgId;
-      this.echartDataY = [];
+      // const orgTable = sessionStorage.getItem('orgTable');
+      Bus.$on('getOrgTable', (orgTable) => {
+        this.orgTable = this.testModel ? mainData.orkData.data : orgTable;
+        this.active = {};
+        this.$set(this.active, this.orgTable[0].orgId, true);
+        this.orgId = this.orgTable[0].orgId;
+        this.echartDataY = [];
+        this.$watch('periodId', () => {
+          this.getriskStatistics();
+        }, { immediate: true });
+      });
 
-      this.$watch('periodId', () => {
-        this.getriskStatistics();
-      }, { immediate: true });
       //   }
       // });
     },

@@ -93,6 +93,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTableLittle';
+import Bus from '../departleader/bus';
 import Server from '../server';
 import CONST from '../const';
 import { okrData, okrDataTeam, okrUser } from '../testData';
@@ -143,7 +144,7 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  mounted() {
+  created() {
     this.$nextTick(() => {
     //  this.searchOkr();
     });
@@ -192,6 +193,7 @@ export default {
           this.okrId = this.okrMain.okrId || '';
           this.orgUser = res.data.orgUser || [];
           this.orgTable = res.data.orgTable || [];
+          Bus.$emit('getOrgTable', this.orgTable);
           sessionStorage.setItem('orgTable', JSON.stringify(this.orgTable));
           this.showLoad = true;
           this.fullscreenLoading = false;
