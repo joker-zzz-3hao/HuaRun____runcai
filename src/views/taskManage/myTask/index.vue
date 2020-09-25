@@ -163,7 +163,7 @@ export default {
 }
 .pic-tasksearch {
   background: url("~@/assets/images/demoPic/tasksearch.png") no-repeat;
-  background-size: 100%;
+  background-size: 101%;
   height: calc(100vh);
 }
 .handle-assign {
