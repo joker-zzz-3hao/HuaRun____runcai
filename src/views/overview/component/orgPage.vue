@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-card-panel" v-show="showLoad">
+  <div class="tl-card-panel" v-loading="fullscreenLoading">
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length>0">
       <div class="card-panel-head">
@@ -106,7 +106,6 @@ export default {
     'tl-okr-table': okrTable,
   },
   props: ['periodId'],
-
   data() {
     return {
       showTable: false,

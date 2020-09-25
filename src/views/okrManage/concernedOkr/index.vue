@@ -5,7 +5,7 @@
     </div>
     <template v-if="showReal">
       <div>
-        <div style="display: flex;justify-content: space-between;width: 300px;">
+        <div>
           <div>我的关注</div>
           <div @click="addFocus">
             <span>添加关注</span>
@@ -13,7 +13,6 @@
           </div>
         </div>
         <div
-          style="display: flex;justify-content: space-between;width: 300px;margin-top: 20px;"
           v-for="item in focusList"
           :key="item.id"
           :class="item.targetId == selectUserId ? 'red' : 'green'"
