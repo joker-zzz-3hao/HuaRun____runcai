@@ -10,42 +10,55 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      :title="departOptionType=='create'?'创建部门':'编辑部门'"
+      :title="departOptionType == 'create' ? '创建部门' : '编辑部门'"
       :close-on-click-modal="false"
     >
       <el-form ref="departForm" :model="formData" label-width="80px">
         <el-form-item
           label="部门名称"
           prop="orgName"
-          :rules="[{required:true,message:'请填写部门名称',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请填写部门名称', trigger: 'blur' },
+          ]"
         >
           <el-input v-model.trim="formData.orgName" clearable></el-input>
         </el-form-item>
         <el-form-item
           label="上级部门"
-          prop="orgIdList"
-          :rules="[{required:true,message:'请选择上级部门',trigger:'blur'}]"
+          prop="orgParentId"
+          :rules="[
+            { required: true, message: '请选择上级部门', trigger: 'blur' },
+          ]"
         >
           <el-cascader
-            v-model="formData.orgIdList"
+            :disabled="initDepartment.orgId == treeData[0].orgId"
+            v-model="formData.orgParentId"
             ref="departCascader"
             :options="treeData"
             :show-all-levels="false"
-            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
+            node-key="orgId"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+              emitPath: false,
+            }"
             @change="selectIdChange"
           ></el-cascader>
         </el-form-item>
         <el-form-item
           label="序号"
           prop="orgSort"
-          :rules="[{required:true,message:'请填写序号',trigger:'blur'}]"
+          :rules="[{ required: true, message: '请填写序号', trigger: 'blur' }]"
         >
           <el-input-number
             v-model.trim="formData.orgSort"
             controls-position="right"
             :min="1"
             :max="1000"
-          ></el-input-number>（用于部门显示顺序）
+          ></el-input-number
+          >（用于部门显示顺序）
         </el-form-item>
         <el-form-item prop="orgSort">
           <el-button :loading="loading" @click="saveDepart">确定</el-button>
@@ -91,66 +104,50 @@ export default {
     },
     tenantId: {
       type: String,
-      default() {
-        return '';
-      },
     },
   },
   data() {
     return {
       visible: false,
+      cheOrgId: '',
       loading: false,
       formData: {
         orgName: '',
         orgParentId: this.initDepartment.orgId ? this.initDepartment.orgId : this.treeData[0].orgId, // 用户所在部门ID
         orgSort: '',
-        orgFullId: '',
+        orgFullId: this.initDepartment.orgId ? this.initDepartment.orgId : this.treeData[0].orgFullId,
         orgIdList: [],
+        orgId: '',
       },
     };
   },
   created() {
-    this.setOrgIdList(this.initDepartment.orgId);
+    console.log(this.treeData);
+    // this.setOrgIdList(this.initDepartment.orgId);
   },
-  mounted() {},
+  mounted() {
+  },
   computed: {},
   methods: {
-    setOrgIdList(orgId) {
-      // 遍历嵌套数组，转换为一维数组
-      const queue = [...this.treeData];
-      const result = [];
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const next = queue.shift();
-        if (!next) {
-          break;
-        }
-        result.push({
-          orgId: next.orgId,
-          orgName: next.orgName,
-          orgParentId: next.orgParentId,
-        });
-        if (Array.isArray(next.sonTree)) {
-          queue.push(...next.sonTree);
-        }
-      }
-      this.getOrgIdList(result, orgId);
-      this.formData.orgIdList.reverse();
-    },
-    getOrgIdList(result, orgId) {
-      let orgParentId = '';
-      for (const org of result) {
-        if (org.orgId == orgId) {
-          orgParentId = org.orgParentId;
-          this.formData.orgIdList.push(org.orgId);
-          this.getOrgIdList(result, orgParentId);
-        }
-      }
-    },
     show(depart) {
       if (depart) {
-        this.formData.orgName = depart.orgName;
-        this.formData.orgSort = depart.orgSort;
+        if (this.departOptionType == 'edit') {
+          this.formData.orgName = depart.orgName;
+          this.formData.orgSort = depart.orgSort;
+          this.formData.orgParentId = depart.orgParentId;
+
+          const orgFull = depart.orgFullId.split(':');
+          const index = orgFull.findIndex(((item) => item == depart.orgId));
+          orgFull.splice(index, 1);
+          this.formData.orgFullId = orgFull.join(':');
+          this.formData.orgId = depart.orgId;
+          this.cheOrgId = depart.orgId;
+        } else if (this.departOptionType == 'create') {
+          this.formData.orgFullId = depart.orgFullId;
+          this.formData.orgId = depart.orgId;
+        }
+      } else {
+        this.formData.orgFullId = this.treeData[0].orgFullId;
       }
       this.$nextTick(() => {
         this.visible = true;
@@ -165,15 +162,26 @@ export default {
     },
     saveDepart() {
       const params = {
-        tenantId: this.tenantId,
-        orgFullId: this.formData.orgIdList.join(':'),
-        orgParentId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
-        orgName: this.formData.orgName,
-        orgSort: this.formData.orgSort,
+        // orgFullId: this.formData.orgIdList.join(':'),
+        // orgParentId: this.formData.orgIdList[this.formData.orgIdList.length - 1],
+        // orgName: this.formData.orgName,
+        // orgSort: this.formData.orgSort,
       };
+
       if (this.departOptionType == 'edit') {
-        params.orgId = this.initDepartment.orgId;
+        params.orgId = this.formData.orgId;
+        params.orgFullId = this.formData.orgFullId;
+        params.orgParentId = this.formData.orgParentId;
+        params.orgName = this.formData.orgName;
+        params.orgSort = this.formData.orgSort;
+      } else {
+        params.orgFullId = this.formData.orgFullId;
+        params.orgParentId = this.formData.orgParentId;
+        // eslint-disable-next-line no-unused-expressions
+        params.orgName = this.formData.orgName;
+        params.orgSort = this.formData.orgSort;
       }
+      params.tenantId = this.tenantId;
       this.$refs.departForm.validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -194,7 +202,20 @@ export default {
       this.close();
     },
     selectIdChange(data) {
-      this.formData.orgIdList = data;
+      const node = this.$refs.departCascader.getCheckedNodes();
+      if (this.departOptionType == 'edit') {
+        if (data == this.cheOrgId) {
+          this.formData.orgParentId = '';
+          this.$message.error('不能选择自己部门');
+          return false;
+        }
+        this.formData.orgFullId = node[0].data.orgFullId;
+        this.formData.orgParentId = node[0].data.orgId;
+      } else {
+        this.formData.orgFullId = node[0].data.orgFullId;
+      }
+
+      // this.formData.orgParentId = node[0].data.orgParentId;
       this.$refs.departCascader.dropDownVisible = false;
     },
   },

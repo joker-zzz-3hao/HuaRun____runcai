@@ -376,8 +376,8 @@ export default {
                   const start = i * maxLength;// 开始截取的位置
                   const end = start + maxLength;// 结束截取的位置
                   // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}\n`;
-                  ret += temp; // 拼接最终的字符串
+                  temp = `${value.substring(start, end)}...`;
+                  ret = temp; // 拼接最终的字符串
                 }
                 return ret;
               }

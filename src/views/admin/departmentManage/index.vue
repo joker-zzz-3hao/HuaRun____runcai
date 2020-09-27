@@ -38,14 +38,21 @@
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
             @click="createDepart"
-          >创建部门</el-button>
+            >创建部门</el-button
+          >
           <el-button
             type="primary"
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
             @click="createOrEditUser"
-          >创建用户</el-button>
-          <el-button plain icon="el-icon-minus" class="tl-btn amt-border-slip" @click="batchImport">
+            >创建用户</el-button
+          >
+          <el-button
+            plain
+            icon="el-icon-minus"
+            class="tl-btn amt-border-slip"
+            @click="batchImport"
+          >
             批量导入
             <span class="lines"></span>
           </el-button>
@@ -54,7 +61,12 @@
     </div>
     <div class="cont-area" style="flex-direction: row">
       <div class="department-tree">
-        <el-input placeholder="输入部门名称" v-model.trim="filterText" clearable class="tl-input">
+        <el-input
+          placeholder="输入部门名称"
+          v-model.trim="filterText"
+          clearable
+          class="tl-input"
+        >
           <i class="el-icon-search el-input__icon" slot="prefix"></i>
         </el-input>
         <el-tree
@@ -76,9 +88,15 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data)">创建部门</el-dropdown-item>
-                <el-dropdown-item @click.native="updateDepart(data)">编辑部门</el-dropdown-item>
-                <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
+                <el-dropdown-item @click.native="createDepart(data, 'create')"
+                  >创建部门</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="createDepart(data, 'edit')"
+                  >编辑部门</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="deleteDepart(data)"
+                  >删除</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -92,34 +110,83 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table v-loading="loading" :data="tableData" class="tl-table">
-            <el-table-column min-width="200px" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="150px" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="150px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="120px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="120px" align="left" prop="tenantName" label="所属租户"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
+            <el-table-column
+              min-width="200px"
+              align="left"
+              prop="userId"
+              label="用户ID"
+            ></el-table-column>
+            <el-table-column
+              min-width="150px"
+              align="left"
+              prop="userName"
+              label="用户姓名"
+            ></el-table-column>
+            <el-table-column
+              min-width="150px"
+              align="left"
+              prop="userAccount"
+              label="账号/LDAP账号"
+            ></el-table-column>
+            <el-table-column
+              min-width="120px"
+              align="left"
+              prop="userMobile"
+              label="手机号"
+            ></el-table-column>
+            <el-table-column
+              min-width="120px"
+              align="left"
+              prop="tenantName"
+              label="所属租户"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userStatus"
+              label="状态"
+            >
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
-                <div v-if="scope.row.userType=='1'">--</div>
+                <div v-if="scope.row.userType == '1'">--</div>
                 <div v-else @click.capture.stop="dataChange(scope.row)">
                   <el-switch
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
                     active-color="#13ce66"
-                    :active-text="scope.row.userStatus == '0' ? '启用' :'禁用'"
+                    :active-text="scope.row.userStatus == '0' ? '启用' : '禁用'"
                   ></el-switch>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userType"
+              label="用户类型"
+            >
               <template slot-scope="scope">
-                <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
+                <div>{{ CONST.USER_TYPE_MAP[scope.row.userType] }}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="120px" align="left" prop="createTime" label="创建时间">
+            <el-table-column
+              min-width="120px"
+              align="left"
+              prop="createTime"
+              label="创建时间"
+            >
               <template slot-scope="scope">
-                <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
+                <div>
+                  {{
+                    scope.row.createTime
+                      ? dateFormat(
+                          "YYYY-mm-dd HH:MM:SS",
+                          new Date(scope.row.createTime)
+                        )
+                      : "--"
+                  }}
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -132,16 +199,18 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType=='2'"
+                  v-if="scope.row.userType == '2'"
                   @click="createOrEditUser(scope.row)"
                   class="tl-btn"
-                >编辑</el-button>
+                  >编辑</el-button
+                >
                 <el-button
                   type="text"
-                  v-if="scope.row.userType=='2'"
+                  v-if="scope.row.userType == '2'"
                   @click="info(scope.row)"
                   class="tl-btn"
-                >详情</el-button>
+                  >详情</el-button
+                >
                 <div v-else>--</div>
               </template>
             </el-table-column>
@@ -343,18 +412,25 @@ export default {
       }
     },
     // 创建部门
-    createDepart(depart) {
-      this.departOptionType = 'create';
+    createDepart(depart, type) {
+      this.departOptionType = type;
+      depart.isShow = false;
       if (depart && depart.orgId) {
         this.initDepartment = depart;
         this.globalOrgId = depart.orgId;
+      } else {
+        this.initDepartment = {};
       }
-      if (this.treeData.length > 0) {
-        this.showcreateDepart = true;
-        this.$nextTick(() => {
+      this.showcreateDepart = true;
+      this.$nextTick(() => {
+        if (type == 'create') {
+          this.$refs.createDepart.show(depart);
+        } else if (type == 'edit') {
+          this.$refs.createDepart.show(depart);
+        } else {
           this.$refs.createDepart.show();
-        });
-      }
+        }
+      });
     },
     updateDepart(depart) {
       this.departOptionType = 'edit';

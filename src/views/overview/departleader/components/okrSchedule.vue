@@ -84,6 +84,36 @@ export default {
           bottom: '3%',
           containLabel: true,
         },
+
+        // dataZoom: [// 给x轴设置滚动条
+        //   {
+        //     start: 0, // 默认为0
+        //     end: 100 - 1500 / 31, // 默认为100
+        //     type: 'slider',
+        //     show: false,
+        //     xAxisIndex: [0],
+        //     handleSize: 0, // 滑动条的 左右2个滑动条的大小
+        //     height: 10, // 组件高度
+        //     left: '10%', // 左边的距离
+        //     right: '10%', // 右边的距离
+        //     bottom: 0, // 右边的距离
+        //     borderRadius: 5,
+        //     showDataShadow: false, // 是否显示数据阴影 默认auto
+        //     showDetail: false, // 即拖拽时候是否显示详细数值信息 默认true
+        //     realtime: true, // 是否实时更新
+        //     filterMode: 'filter',
+
+        //   },
+        //   // 下面这个属性是里面拖到
+        //   {
+        //     type: 'inside',
+        //     zoomLock: true,
+        //     show: true,
+        //     xAxisIndex: [0],
+        //     start: 0, // 默认为1
+        //     end: 100 - 1500 / 31, // 默认为100
+        //   },
+        // ],
         xAxis: {
           boundaryGap: false,
           data: that.testModel ? mainData.mainDataX : that.mainDataX,
@@ -94,6 +124,7 @@ export default {
             },
 
           },
+
           axisLabel: {
             interval: 0,
             textStyle: {
@@ -114,8 +145,8 @@ export default {
                   const start = i * maxLength;// 开始截取的位置
                   const end = start + maxLength;// 结束截取的位置
                   // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}\n`;
-                  ret += temp; // 拼接最终的字符串
+                  temp = `${value.substring(start, end)}...`;
+                  ret = temp; // 拼接最终的字符串
                 }
                 return ret;
               }
@@ -260,8 +291,8 @@ export default {
                   const start = i * maxLength;// 开始截取的位置
                   const end = start + maxLength;// 结束截取的位置
                   // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}\n`;
-                  ret += temp; // 拼接最终的字符串
+                  temp = `${value.substring(start, end)}...`;
+                  ret = temp; // 拼接最终的字符串
                 }
                 return ret;
               }
