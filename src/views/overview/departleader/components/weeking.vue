@@ -11,14 +11,12 @@
         <div id="week-depart"></div>
         <ul class="data-list">
           <li
-            v-for="(item,index) in orgTable"
+            v-for="(item, index) in orgTable"
             :key="index"
-            :class="{'active':active[item.orgId] }"
-            @click="changIdAction(item.orgId)"
+            :class="{ active: active[item.orgId] }"
+            @click="changIdAction(item.orgId, index)"
           >
-            {{
-            item.orgName
-            }}
+            {{ item.orgName }}
           </li>
         </ul>
       </div>
@@ -80,6 +78,7 @@ export default {
       moodDataX: [],
       moodDataY: [],
       myChartmood: '',
+      myChart: '',
       active: {},
       orgTable: [],
       pickerBeginDateBefore: {
@@ -104,8 +103,8 @@ export default {
     this.fetchData();
     this.getqueryMyOkr();
   },
-  methods: {
 
+  methods: {
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
@@ -154,164 +153,100 @@ export default {
         this.tableData = this.testModel ? mainData.tableData.data : res.data;
       });
     },
-    changIdAction(id) {
+    async changIdAction(id, index) {
       this.orgId = id;
+      const departData = await this.getDepartData(id);
       if (this.active[id]) {
         this.$set(this.active, id, false);
+        this.$set(this.echartDataY[index], 'data', []);
       } else {
         this.$set(this.active, id, true);
+        this.$set(this.echartDataY[index], 'data', departData);
       }
 
-      this.getriskStatistics();
+      await this.init();
     },
     getqueryMyOkr() {
-      // this.server.queryMyOkr({
-      //   myOrOrg: 'org', status: '1', orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId, type: 'INDEX',
-      // }).then((res) => {
-      //   if (res.code == 200) {
-      // const orgTable = sessionStorage.getItem('orgTable');
-      Bus.$on('getOrgTable', (orgTable) => {
+      Bus.$once('getOrgTable', (orgTable) => {
         this.orgTable = this.testModel ? mainData.orkData.data : orgTable;
         this.active = {};
-        this.$set(this.active, this.orgTable[0].orgId, true);
-        this.orgId = this.orgTable[0].orgId;
         this.echartDataY = [];
+        this.orgId = this.orgTable[0].orgId;
+        this.getInit(this.orgTable);
         this.$watch('periodId', () => {
-          this.getriskStatistics();
+          this.changIdAction(this.orgTable[0].orgId, 0);
         }, { immediate: true });
       });
-
-      //   }
-      // });
     },
-    getriskStatistics() {
+    getDepartData(orgId) {
       if (!this.periodId) {
         this.init();
         return false;
       }
-      this.server.riskStatistics({
-        periodId: this.periodId,
-        orgId: this.orgId,
-        personOrOrg: 'org',
-      }).then((res) => {
-        this.echartDataX = [];
-
-        const startDate = `${res.data.months[0]}-01`;
-        const endtDate = `${res.data.months.pop()}-31`;
-        const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
-        const oneDay = 24 * 3600 * 1000;
-        let startche = +new Date(startDate) - oneDay;
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < cheTime / oneDay; i++) {
-          // eslint-disable-next-line no-const-assign
-          startche += oneDay;
-          const now = new Date(startche);
-          let months = '';
-          let day = '';
-          if (now.getMonth() < 9) {
-            months = `0${now.getMonth() + 1}`;
-          } else {
-            months = now.getMonth() + 1;
-          }
-          if (now.getDate() < 10) {
-            day = `0${now.getDate()}`;
-          } else {
-            day = now.getDate();
-          }
-          this.echartDataX.push([now.getFullYear(), months, day].join('-'));
-        }
-
-        // eslint-disable-next-line valid-typeof
-        const array = res.data.datas ? res.data.datas.filter((item) => item) : [];
-        const boolId = this.echartDataY.some((item) => item.orgId == this.orgId);
-        if (!boolId) {
-          this.echartDataY.push({
-            orgId: this.orgId,
-            type: 'line',
-            symbol: 'circle',
-            showAllSymbol: true,
-            symbolSize: 7,
-            itemStyle: {
-              normal: {
-                color(params) {
-                  if (params.value[1] == 1) {
-                    return '#4CCD79';
-                  }
-                  if (params.value[1] == 4) {
-                    return '#FFBC20';
-                  }
-                  if (params.value[1] == 7) {
-                    return '#FB4C59 ';
-                  }
-                },
-
-              },
-            },
-            data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
-          });
-        } else if (!this.active[this.orgId]) {
-          this.echartDataY.forEach((item, index) => {
-            if (item.orgId == this.orgId) {
-              this.echartDataY[index] = {
-                orgId: this.orgId,
-                type: 'line',
-                symbol: 'circle',
-                symbolSize: 7,
-                showAllSymbol: true,
-                itemStyle: {
-                  normal: {
-                    color(params) {
-                      if (params.value[1] == 1) {
-                        return '#4CCD79';
-                      }
-                      if (params.value[1] == 4) {
-                        return '#FFBC20';
-                      }
-                      if (params.value[1] == 7) {
-                        return '#FB4C59 ';
-                      }
-                    },
-
-                  },
-                },
-                data: [],
-              };
-            }
-          });
-        } else {
-          this.echartDataY.forEach((item, index) => {
-            if (item.orgId == this.orgId) {
-              this.echartDataY[index] = {
-                orgId: this.orgId,
-                type: 'line',
-                symbol: 'circle',
-                showAllSymbol: true,
-                symbolSize: 7,
-                itemStyle: {
-                  normal: {
-                    color(params) {
-                      if (params.value[1] == 1) {
-                        return '#4CCD79';
-                      }
-                      if (params.value[1] == 4) {
-                        return '#FFBC20';
-                      }
-                      if (params.value[1] == 7) {
-                        return '#FB4C59 ';
-                      }
-                    },
-
-                  },
-                },
-                data: res.data.datas ? array.map((li) => [li.createDate, li.allScore]) : [],
-              };
-            }
-          });
-        }
-        this.$nextTick(() => {
-          this.init();
+      return new Promise((reslove) => {
+        this.server.riskStatistics({
+          periodId: this.periodId,
+          orgId,
+          personOrOrg: 'org',
+        }).then((res) => {
+          const datasY = res.data.datas ? res.data.datas.map((item) => [item.createDate, item.allScore]) : [];
+          // eslint-disable-next-line no-unused-expressions
+          this.echartDataX = [];
+          this.listTime(res.data);
+          reslove(datasY);
         });
       });
+    },
+    getInit(orgTable) {
+      this.echartDataY = orgTable.map(() => ({
+        type: 'line',
+        symbol: 'circle',
+        showAllSymbol: true,
+        symbolSize: 7,
+        itemStyle: {
+          normal: {
+            color(params) {
+              if (params.value[1] == 1) {
+                return '#4CCD79';
+              }
+              if (params.value[1] == 4) {
+                return '#FFBC20';
+              }
+              if (params.value[1] == 7) {
+                return '#FB4C59 ';
+              }
+            },
+
+          },
+        },
+        data: [],
+      }));
+    },
+    listTime(dateTime) {
+      const startDate = `${dateTime.months[0]}-01`;
+      const endtDate = `${dateTime.months.pop()}-31`;
+      const cheTime = new Date(endtDate).getTime() - new Date(startDate).getTime();
+      const oneDay = 24 * 3600 * 1000;
+      let startche = +new Date(startDate) - oneDay;
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < cheTime / oneDay; i++) {
+        // eslint-disable-next-line no-const-assign
+        startche += oneDay;
+        const now = new Date(startche);
+        let months = '';
+        let day = '';
+        if (now.getMonth() < 9) {
+          months = `0${now.getMonth() + 1}`;
+        } else {
+          months = now.getMonth() + 1;
+        }
+        if (now.getDate() < 10) {
+          day = `0${now.getDate()}`;
+        } else {
+          day = now.getDate();
+        }
+        this.echartDataX.push([now.getFullYear(), months, day].join('-'));
+      }
     },
     init() {
       const that = this;
