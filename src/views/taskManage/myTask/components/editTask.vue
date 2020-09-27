@@ -34,7 +34,9 @@
                     <el-dropdown-item @click="deleteTask"
                       >删除</el-dropdown-item
                     >
-                    <el-dropdown-item>任务归档</el-dropdown-item>
+                    <el-dropdown-item @click="filedTask"
+                      >任务归档</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -228,7 +230,7 @@
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="close"
         >确认指派</el-button
       >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="close"
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="acceptTask"
         >确认接收</el-button
       >
     </div>
@@ -423,9 +425,33 @@ export default {
       });
     },
     deleteTask() {
-      this.server.deleteTask({ taskId: this.formData.taskId }).then((res) => {
+      this.$xconfirm({
+        content: '确定要删除这个任务吗？',
+        title: '删除任务',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteTask({ taskId: this.formData.taskId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.close();
+            this.$emit('success');
+          }
+        });
+      }).catch(() => {});
+    },
+    filedTask() {
+      this.server.filedTask({ taskId: this.formData.taskId }).then((res) => {
         if (res.code == 200) {
-          this.$message.success('删除成功');
+          this.$message.success('归档成功');
+          this.close();
+          this.$emit('success');
+        }
+      });
+    },
+    acceptTask() {
+      this.server.acceptTask({ taskId: this.formData.taskId }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('接收成功');
           this.close();
           this.$emit('success');
         }

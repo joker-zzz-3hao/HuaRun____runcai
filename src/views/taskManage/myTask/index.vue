@@ -102,7 +102,9 @@
                   <el-dropdown-item @click.native="deleteTask(scope.row.taskId)"
                     >删除</el-dropdown-item
                   >
-                  <el-dropdown-item>任务归档</el-dropdown-item>
+                  <el-dropdown-item @click.native="filedTask(scope.row.taskId)"
+                    >任务归档</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </el-dropdown></template
             >
@@ -148,7 +150,7 @@
             <template slot-scope="scope">
               <el-button
                 type="text"
-                @click="handleAccept(scope.row)"
+                @click="acceptTask(scope.row.taskId)"
                 class="tl-btn"
                 >确认接收</el-button
               >
@@ -296,9 +298,6 @@ export default {
         }
       });
     },
-    handleAccept() {
-
-    },
     handleAssign(id) {
       this.existAssignment = true;
       this.$nextTick(() => {
@@ -321,9 +320,31 @@ export default {
       });
     },
     deleteTask(id) {
-      this.server.deleteTask({ taskId: id }).then((res) => {
+      this.$xconfirm({
+        content: '确定要删除这个任务吗？',
+        title: '删除任务',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteTask({ taskId: id }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.getTableList();
+          }
+        });
+      }).catch(() => {});
+    },
+    filedTask(id) {
+      this.server.filedTask({ taskId: id }).then((res) => {
         if (res.code == 200) {
-          this.$message.success('删除成功');
+          this.$message.success('归档成功');
+          this.getTableList();
+        }
+      });
+    },
+    acceptTask(id) {
+      this.server.acceptTask({ taskId: id }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('已确认接收');
           this.getTableList();
         }
       });
