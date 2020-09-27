@@ -24,7 +24,7 @@
           maxlength="64"
           placeholder="请输入OKR周期名称"
           class="tl-input"
-          style="width:90%"
+          style="width: 90%"
         ></el-input>
       </el-form-item>
       <el-form-item label="起草开始时间" prop="draftingStartTime">
@@ -35,7 +35,7 @@
           popper-class="tl-date-popper"
           class="tl-date-editor"
           value-format="yyyy-MM-dd"
-          style="width:90%"
+          style="width: 90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="审批结束时间" prop="approvalEndTime">
@@ -46,7 +46,7 @@
           popper-class="tl-date-popper"
           value-format="yyyy-MM-dd"
           class="tl-date-editor"
-          style="width:90%"
+          style="width: 90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="周期开始日期" prop="startTime">
@@ -60,7 +60,7 @@
           end-placeholder="请设置结束日期"
           popper-class="tl-range-popper"
           class="tl-range-editor"
-          style="width:90%"
+          style="width: 90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="自评举证时间" prop="selfAssessReminderTime">
@@ -71,7 +71,7 @@
           popper-class="tl-date-popper"
           value-format="yyyy-MM-dd"
           class="tl-date-editor"
-          style="width:90%"
+          style="width: 90%"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="设置为默认周期" prop="checkStatus">
@@ -82,13 +82,18 @@
       </el-form-item>
     </el-form>
     <div class="operating-box">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">保存</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+        >保存</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>
 
 <script>
+import global from '@/mixin/global';
 import Server from '../server';
 
 const server = new Server();
@@ -100,10 +105,11 @@ export default {
       required: true,
     },
     updateData: {
-      type: String,
+      type: [String, Object],
       required: false,
     },
   },
+  mixins: [global],
   data() {
     return {
       rules: {
@@ -151,7 +157,7 @@ export default {
       dialogVisible: false,
       data: [],
       labelPosition: 'left',
-      dateTime: '',
+      dateTime: [],
     };
   },
 
@@ -159,7 +165,13 @@ export default {
     this.dialogTableVisible = true;
     console.log(this.updateData);
     this.form = this.updateData;
-    this.dateTime = [this.updateData.startTime, this.updateData.endTime];
+    this.dateTime = [this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime)), this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime))];
+    this.form.startTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime));
+    this.form.selfAssessReminderTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.selfAssessReminderTime));
+    this.form.endTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime));
+    this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.approvalEndTime));
+    this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.draftingStartTime));
+    console.log(this.form);
   },
   methods: {
     getTime(date) {

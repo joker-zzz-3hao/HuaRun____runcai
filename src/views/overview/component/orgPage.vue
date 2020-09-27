@@ -1,29 +1,31 @@
 <template>
   <div class="tl-card-panel" v-loading="fullscreenLoading">
     <em v-show="testModel">示例数据</em>
-    <template v-if="tableList.length>0">
+    <template v-if="tableList.length > 0">
       <div class="card-panel-head">
-        <div class="okr-title">{{testModel?'2020年下半年的OKR':okrMain.periodName}}</div>
+        <div class="okr-title">
+          {{ testModel ? "2020年下半年的OKR" : okrMain.periodName }}
+        </div>
         <dl class="okr-state">
           <dt>
             <em>状态</em>
           </dt>
           <dd>
             <i class="el-icon-sunny"></i>
-            <em>{{CONST.STATUS_LIST_MAP[okrMain.status]}}</em>
+            <em>{{ CONST.STATUS_LIST_MAP[okrMain.status] }}</em>
           </dd>
         </dl>
         <dl class="okr-responsible">
           <dt>
             <em>OKR类型</em>
           </dt>
-          <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
+          <dd>{{ CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1] }}</dd>
         </dl>
         <dl class="okr-responsible">
           <dt>
             <em>负责人</em>
           </dt>
-          <dd>{{okrMain.userName}}</dd>
+          <dd>{{ okrMain.userName }}</dd>
         </dl>
         <dl class="okr-progress">
           <dt>
@@ -60,34 +62,48 @@
           v-show="showLoad"
           type="primary"
           icon="el-icon-plus"
-          @click="$router.push({name:'myOkr',query:{
-            openWriteOkr :true,
-            periodId
-          }})"
+          @click="
+            $router.push({
+              name: 'myOkr',
+              query: {
+                openWriteOkr: true,
+                periodId,
+              },
+            })
+          "
           class="tl-btn amt-bg-slip"
-        >创建OKR</el-button>
+          >创建OKR</el-button
+        >
       </div>
     </template>
-    <div class="card-panel-body img-list" v-if="orgUser.length>0">
-      <dl v-for="(item,index) in orgUser" :key="item.userId+index" @click="getidentity(item)">
+    <div class="card-panel-body img-list" v-if="orgUser.length > 0">
+      <dl
+        v-for="(item, index) in orgUser"
+        :key="item.userId + index"
+        @click="getidentity(item)"
+      >
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
           <div class="user-name">
-            <em>{{cutName(item.userName)}}</em>
+            <em>{{ cutName(item.userName) }}</em>
           </div>
         </dt>
-        <dd>{{item.userName}}</dd>
+        <dd>{{ item.userName }}</dd>
       </dl>
     </div>
-    <div class="card-panel-body img-list" v-if="orgTable.length>0">
-      <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
+    <div class="card-panel-body img-list" v-if="orgTable.length > 0">
+      <dl
+        v-for="(item, index) in orgTable"
+        :key="item.orgId + index"
+        @click="getidentity(item)"
+      >
         <dt class="user-info">
           <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
           <div class="user-name">
-            <em>{{cutName(item.orgName)}}</em>
+            <em>{{ cutName(item.orgName) }}</em>
           </div>
         </dt>
-        <dd>{{item.orgName}}</dd>
+        <dd>{{ item.orgName }}</dd>
       </dl>
     </div>
   </div>
@@ -147,9 +163,9 @@ export default {
     },
   },
   created() {
-    this.$nextTick(() => {
-    //  this.searchOkr();
-    });
+    if (!this.periodId) {
+      this.setList();
+    }
   },
   methods: {
     ...mapMutations('common', ['setOrg', 'changeTestModel', 'setCycleList']),
@@ -177,32 +193,32 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          // eslint-disable-next-line no-unused-expressions
-          if (this.$route.name == 'teamleader') {
-            // eslint-disable-next-line no-unused-expressions
-            this.testModel ? res = okrDataTeam : res;
-          }
-          if (this.$route.name == 'departleader') {
-            // eslint-disable-next-line no-unused-expressions
-            this.testModel ? res = okrData : res;
-          }
-          if (this.$route.name == 'grassStaff') {
-            // eslint-disable-next-line no-unused-expressions
-            this.testModel ? res = okrUser : res;
-          }
-          this.tableList = res.data.okrDetails || [];
-          this.okrMain = res.data.okrMain || {};
-          this.okrId = this.okrMain.okrId || '';
-          this.orgUser = res.data.orgUser || [];
-          this.orgTable = res.data.orgTable || [];
-          Bus.$emit('getOrgTable', this.orgTable);
-          sessionStorage.setItem('orgTable', JSON.stringify(this.orgTable));
-          this.showLoad = true;
-          this.fullscreenLoading = false;
+          this.setList(res.data);
         }
       });
     },
-
+    setList(listData = {}) {
+      if (this.$route.name == 'teamleader') {
+        // eslint-disable-next-line no-unused-expressions
+        this.testModel ? listData = okrDataTeam.data : listData;
+      }
+      if (this.$route.name == 'departleader') {
+        // eslint-disable-next-line no-unused-expressions
+        this.testModel ? listData = okrData.data : listData;
+      }
+      if (this.$route.name == 'grassStaff') {
+        // eslint-disable-next-line no-unused-expressions
+        this.testModel ? listData = okrUser.data : listData;
+      }
+      this.tableList = listData.okrDetails || [];
+      this.okrMain = listData.okrMain || {};
+      this.okrId = this.okrMain.okrId || '';
+      this.orgUser = listData.orgUser || [];
+      this.orgTable = listData.orgTable || [];
+      Bus.$emit('getOrgTable', this.orgTable);
+      this.showLoad = true;
+      this.fullscreenLoading = false;
+    },
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {
