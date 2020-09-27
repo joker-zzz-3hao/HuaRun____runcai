@@ -92,9 +92,9 @@
         </template>
       </el-table-column>
       <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="12%"></el-table-column>
+      <el-table-column width="13%"></el-table-column>
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="12%">
+      <el-table-column prop="parentObjectKr" width="11%">
         <template slot-scope="scope" v-if="!overview">
           <el-popover
             v-if="scope.row.parentUpdate"

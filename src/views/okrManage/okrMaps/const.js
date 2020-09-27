@@ -6,8 +6,8 @@ const STATUS_MAP = {
 };
 
 const OKR_TYPE_MAP = {
-  O: '目标O',
-  KR: '关键结果KR',
+  0: '目标O',
+  1: '关键结果KR',
 };
 
 const SEARCH_TYPE_LIST = [

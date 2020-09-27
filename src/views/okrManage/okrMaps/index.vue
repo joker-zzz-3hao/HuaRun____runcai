@@ -101,15 +101,6 @@
               @click="showOkrMap = false"
             ></i>
           </div>
-          <el-button
-            plain
-            @click="showDepartmentSelect = !showDepartmentSelect"
-            v-if="!showDepartmentSelect"
-            class="tl-btn amt-border-slip"
-          >
-            返回
-            <span class="lines"></span>
-          </el-button>
         </div>
         <div class="operating-box">
           <el-button
@@ -137,6 +128,15 @@
             @click="showMission(2,'华润发展战略')"
           >
             <em>公司战略</em>
+            <span class="lines"></span>
+          </el-button>
+          <el-button
+            plain
+            @click="showDepartmentSelect = !showDepartmentSelect"
+            v-if="!showDepartmentSelect"
+            class="tl-btn amt-border-slip"
+          >
+            返回
             <span class="lines"></span>
           </el-button>
         </div>

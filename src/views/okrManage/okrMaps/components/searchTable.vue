@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <el-tabs v-model="searchType" @tab-click="handleClick">
-      <el-tab-pane label="OKR" name="2">
-        <tl-searchOKR :searchData="searchData"></tl-searchOKR>
-      </el-tab-pane>
-      <el-tab-pane label="部门" name="1">
-        <tl-searchResult :searchData="searchData"></tl-searchResult>
-      </el-tab-pane>
-      <el-tab-pane label="成员" name="3">
-        <tl-searchResult :searchData="searchData"></tl-searchResult>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+  <el-tabs v-model="searchType" @tab-click="handleClick" class="tl-tabs">
+    <el-tab-pane label="OKR" name="2">
+      <tl-searchOKR :searchData="searchData"></tl-searchOKR>
+    </el-tab-pane>
+    <el-tab-pane label="部门" name="1">
+      <tl-searchResult :searchData="searchData"></tl-searchResult>
+    </el-tab-pane>
+    <el-tab-pane label="成员" name="3">
+      <tl-searchResult :searchData="searchData"></tl-searchResult>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
