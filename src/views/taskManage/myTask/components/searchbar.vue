@@ -1,23 +1,5 @@
 <template>
   <div>
-    <ul style="display: flex;">
-      <li>
-        <el-button>全部</el-button>
-      </li>
-      <li>
-        <el-button>我收到的</el-button>
-      </li>
-      <li>
-        <el-button>我创建的</el-button>
-      </li>
-      <li>
-        <el-button>我的草稿</el-button>
-      </li>
-      <li style="display: flex;">
-        <el-input placeholder="请输入任务标题"></el-input>
-        <el-button @click="search">查询</el-button>
-      </li>
-    </ul>
     <div @click="showSearchBar">
       展开更多筛选
       <i :class="arrowClass"></i>
@@ -26,33 +8,37 @@
     <!-- 更多筛选 -->
     <div v-show="arrowClass == 'el-icon-caret-bottom'">
       <!-- 筛选标签 -->
-      <div style="display: flex;">
+      <div style="display: flex">
         <span>所有筛选</span>
-        <div class="searchblock" v-for="(item, index) in searchList" :key="index">
-          <span>{{item.name}}</span>
+        <div
+          class="searchblock"
+          v-for="(item, index) in searchList"
+          :key="index"
+        >
+          <span>{{ item.name }}</span>
           <i class="el-icon-error" @click.stop="clearNode(index)"></i>
         </div>
       </div>
-      <dl style="display: flex;">
+      <dl style="display: flex">
         <dt>任务过程</dt>
         <dd
           class="searchblock"
-          :class="{'selected': item.isSelected}"
-          v-for="(item,index) in taskProcessList"
+          :class="{ selected: item.isSelected }"
+          v-for="(item, index) in taskProcessList"
           :key="index"
         >
-          <span @click="switchParent(item)">{{item.label}}</span>
+          <span @click="switchParent(item)">{{ item.label }}</span>
         </dd>
       </dl>
-      <dl style="display: flex;">
+      <dl style="display: flex">
         <dt>任务状态</dt>
         <dd
           class="searchblock"
-          :class="{'selected': item.isSelected}"
-          v-for="(item,index) in childCateList"
+          :class="{ selected: item.isSelected }"
+          v-for="(item, index) in childCateList"
           :key="index"
         >
-          <span @click="selectStatus(item)">{{item.label}}</span>
+          <span @click="selectStatus(item)">{{ item.label }}</span>
         </dd>
       </dl>
     </div>

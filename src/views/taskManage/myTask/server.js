@@ -24,4 +24,29 @@ export default class Server extends ServerBase {
   getUserListByOrgId(param) {
     return this._ajaxPost('gateway/system-service/sys/user/listUserPage', param);
   }
+
+  // 查询任务过程
+  queryProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/queryProcess', param);
+  }
+
+  // 暂存任务
+  saveTask(param) {
+    return this._ajaxPost('gateway/task-service/task/save', param);
+  }
+
+  // 暂存任务
+  deleteTask(param) {
+    return this._ajaxPost(`gateway/task-service/task/delete?taskId=${param.taskId}`, param);
+  }
+
+  // 查询我的任务
+  searchMyTask(param) {
+    return this._ajaxPost('gateway/task-service/task/selectMyTask', param);
+  }
+
+  // 查询我的任务详情
+  queryTaskDetail(param) {
+    return this._ajaxPost(`gateway/task-service/task/get?taskId=${param.taskId}`, param);
+  }
 }

@@ -1,9 +1,9 @@
 const PRIORITY_LIST = [{
-  label: '高', value: 1,
+  label: '高', value: 20,
 }, {
-  label: '中', value: 2,
+  label: '中', value: 10,
 }, {
-  label: '低', value: 3,
+  label: '低', value: 1,
 }];
 const TASK_PROCESS_LIST = [{
   label: '标准任务过程', value: 1,
