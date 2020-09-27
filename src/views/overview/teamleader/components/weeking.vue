@@ -24,6 +24,10 @@
           ></el-date-picker>
         </div>
         <div id="weeking"></div>
+        <!-- <div>
+          <em @click="legendToggleSelect('进行中的工作项')">进行中的工作项</em>
+          <em @click="legendToggleSelect('已完成的工作项')">已完成的工作项</em>
+        </div> -->
       </div>
     </div>
     <div class="tl-card-panel">
@@ -55,12 +59,22 @@
         <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
         <el-table-column label="标准/简单模式">
           <template slot-scope="scope">
-            <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+            <span
+              >{{ scope.row.weeklyType0Number }}/{{
+                scope.row.weeklyType1Number
+              }}</span
+            >
           </template>
         </el-table-column>
         <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
-        <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
-        <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
+        <el-table-column
+          prop="visitUserNumber"
+          label="浏览人数"
+        ></el-table-column>
+        <el-table-column
+          prop="orgAdminUserName"
+          label="负责人"
+        ></el-table-column>
       </el-table>
     </div>
   </div>
@@ -77,6 +91,7 @@ export default {
   name: 'weeking',
   data() {
     return {
+      myChart: '',
       moodDataY: [],
       moodDataX: [],
       teamDataY: [],
@@ -108,6 +123,13 @@ export default {
     }),
   },
   methods: {
+    legendToggleSelect(text) {
+      this.myChart.dispatchAction({
+        type: 'legendToggleSelect',
+        // 图例名称
+        name: text,
+      });
+    },
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
@@ -165,7 +187,7 @@ export default {
     },
     init() {
       const that = this;
-      const myChart = echarts.init(document.getElementById('weeking'));
+      this.myChart = echarts.init(document.getElementById('weeking'));
       console.log(that.moodDataY);
       const option = {
         tooltip: {
@@ -259,8 +281,8 @@ export default {
         ],
       };
 
-      myChart.setOption(option);
-      myChart.resize();
+      this.myChart.setOption(option);
+      this.myChart.resize();
     },
     initMood() {
       const that = this;
