@@ -117,7 +117,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="归属任务过程管理" prop="processId">
+              <el-form-item label="归属任务过程" prop="processId">
                 <el-select
                   v-model="formData.processId"
                   placeholder="请选择任务过程"
@@ -325,21 +325,22 @@ export default {
       this.getUserList();
       this.queryOkr();
       this.getProcess();
-
-      this.server.queryTaskDetail({ taskId: id }).then((res) => {
-        if (res.code == 200 && res.data) {
-          console.log(res.data);
-          this.formData = res.data;
-          if (res.data.taskBegDate) {
-            let taskBegDate = '';
-            let taskEndDate = '';
-            taskBegDate = res.data.taskBegDate.split(' ')[0] || '';
-            taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
-            this.formData.timeVal = [taskBegDate, taskEndDate];
+      if (id) {
+        this.server.queryTaskDetail({ taskId: id }).then((res) => {
+          if (res.code == 200 && res.data) {
+            console.log(res.data);
+            this.formData = res.data;
+            if (res.data.taskBegDate) {
+              let taskBegDate = '';
+              let taskEndDate = '';
+              taskBegDate = res.data.taskBegDate.split(' ')[0] || '';
+              taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
+              this.formData.timeVal = [taskBegDate, taskEndDate];
+            }
+            this.historyList = res.data.operationList;
           }
-          this.historyList = res.data.operationList;
-        }
-      });
+        });
+      }
     },
     queryOkr() {
       const params = {

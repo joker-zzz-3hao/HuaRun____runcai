@@ -88,7 +88,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="归属任务过程管理" prop="processId">
+        <el-form-item label="归属任务过程" prop="processId">
           <el-select v-model="formData.processId" placeholder="请选择任务过程">
             <el-option
               v-for="item in processList"
@@ -276,15 +276,15 @@ export default {
         }
       });
     },
-    lengthChange(data) {
-      const str = data.html.replace(/<[^>]+>/g, '');
-      this.amount = str.length;
-      this.$refs.dataForm.validateField('msgContent');
-      if (str.length > 500) {
-        this.$refs.dataForm.validateField('msgContent');
-        // this.$Message.error({ content: '内容长度最大为500', duration: 3 });
-      }
-    },
+    // lengthChange(data) {
+    //   const str = data.html.replace(/<[^>]+>/g, '');
+    //   this.amount = str.length;
+    //   this.$refs.dataForm.validateField('msgContent');
+    //   if (str.length > 500) {
+    //     this.$refs.dataForm.validateField('msgContent');
+    //     // this.$Message.error({ content: '内容长度最大为500', duration: 3 });
+    //   }
+    // },
     projectInputFocus() {
       this.showProjectDialog = true;
       this.$nextTick(() => {

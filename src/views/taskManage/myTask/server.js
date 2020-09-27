@@ -49,4 +49,14 @@ export default class Server extends ServerBase {
   queryTaskDetail(param) {
     return this._ajaxPost(`gateway/task-service/task/get?taskId=${param.taskId}`, param);
   }
+
+  // 查询任务步骤
+  queryProcessStep(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcessStep/queryProcessStep', param);
+  }
+
+  // 确认指派
+  appointSave(param) {
+    return this._ajaxPost('gateway/task-service/task/appointSave', param);
+  }
 }
