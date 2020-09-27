@@ -162,7 +162,7 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  created() {
+  beforeUpdate() {
     if (!this.periodId) {
       this.setList();
     }
