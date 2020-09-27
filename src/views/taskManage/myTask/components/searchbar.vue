@@ -4,7 +4,6 @@
       展开更多筛选
       <i :class="arrowClass"></i>
     </div>
-
     <!-- 更多筛选 -->
     <div v-show="arrowClass == 'el-icon-caret-bottom'">
       <!-- 筛选标签 -->

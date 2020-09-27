@@ -2,6 +2,8 @@
   <div class="home">
     <div>
       <div>
+        <div class="page-title">标准任务过程</div>
+        <el-button type="primary" @click="customProcess">自定义过程</el-button>
         <div>
           <ul>
             <li
@@ -9,11 +11,12 @@
               @click="selectProcess(process)"
               v-for="process in taskProcessList"
               :key="process.processId"
-            >{{process.processName}}</li>
+            >
+              {{process.processName}}
+              <i @click="customProcess(process)" class="el-icon-edit"></i>
+            </li>
           </ul>
         </div>
-        <div class="page-title">标准任务过程</div>
-        <el-button type="primary" @click="customProcess">自定义过程</el-button>
         <div class="operating-right">
           <el-button
             type="primary"
@@ -99,7 +102,13 @@
         </div>
       </div>
     </div>
-    <tl-custom-process ref="customProcess" v-if="showCustomProcess"></tl-custom-process>
+    <tl-custom-process
+      ref="customProcess"
+      :optionType="optionType"
+      :process="process"
+      @closeAddProcess="closeAddProcess"
+      v-if="showCustomProcess"
+    ></tl-custom-process>
   </div>
 </template>
 
@@ -124,6 +133,7 @@ export default {
       showReal: false, // 展示示例图片 false
       changeKanban: true,
       showCustomProcess: false,
+      process: {},
       taskTypeList: [1, 2],
       taskType: 2,
       executorList: [
@@ -176,7 +186,12 @@ export default {
     settaskType(type) {
       this.taskType = type;
     },
-    customProcess() {
+    customProcess(process) {
+      this.optionType = 'create';
+      if (process && process.processId) {
+        this.optionType = 'edit';
+        this.process = process;
+      }
       this.showCustomProcess = true;
       this.$nextTick(() => {
         this.$refs.customProcess.show();
@@ -189,7 +204,9 @@ export default {
         }
       });
     },
-
+    closeAddProcess(data) {
+      this.showCustomProcess = false;
+    },
   },
 };
 </script>

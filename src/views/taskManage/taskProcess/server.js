@@ -20,4 +20,19 @@ export default class Server extends ServerBase {
   queryTaskStep(param) {
     return this._ajaxPost('gateway/task-service/task/taskProcessStep/queryProcessStep', param);
   }
+
+  // 新增自定义任务过程
+  addProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/addProcess', param);
+  }
+
+  // 编辑自定义任务过程
+  editProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/updateProcess', param);
+  }
+
+  // 任务过程详情
+  queryProcessInfo(param) {
+    return this._ajaxPost('gateway/task-service//query', param);
+  }
 }

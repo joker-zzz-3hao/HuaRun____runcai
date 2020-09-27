@@ -19,11 +19,70 @@
         </ul>
         <div class="border-slip"></div>
       </div>
-      <slot name="tab-cont"></slot>
+      <el-input
+        placeholder="输入任务标题"
+        v-model="searchMsg"
+        maxlength="50"
+        clearable
+        class="tl-input-search"
+        @keyup.enter.native="getTableList"
+      >
+        <i class="el-icon-search" slot="prefix" @click="getTableList"></i
+      ></el-input>
+      <!-- 更多筛选 -->
+      <div @click="showSearchBar">
+        展开更多筛选
+        <i :class="arrowClass"></i>
+      </div>
+      <div v-show="arrowClass == 'el-icon-caret-bottom'">
+        <!-- 筛选标签 -->
+        <div style="display: flex">
+          <span>所有筛选</span>
+          <div
+            class="searchblock"
+            v-for="(item, index) in searchList"
+            :key="index"
+          >
+            <span>{{ item.name }}</span>
+            <i class="el-icon-error" @click.stop="clearNode(index)"></i>
+          </div>
+        </div>
+        <dl style="display: flex">
+          <dt>任务过程</dt>
+          <dd
+            class="searchblock"
+            :class="{ selected: item.isSelected }"
+            v-for="(item, index) in taskProcessList"
+            :key="index"
+          >
+            <span @click="switchParent(item)">{{ item.label }}</span>
+          </dd>
+        </dl>
+        <dl style="display: flex">
+          <dt>任务步骤</dt>
+          <dd
+            class="searchblock"
+            :class="{ selected: item.isSelected }"
+            v-for="(item, index) in childCateList"
+            :key="index"
+          >
+            <span @click="selectStatus(item)">{{ item.label }}</span>
+          </dd>
+        </dl>
+        <dl>
+          <dt>确认接收</dt>
+          <dd>
+            <el-radio-group v-model="accept" @change="getTableList">
+              <el-radio-button :label="true">已确认</el-radio-button>
+              <el-radio-button :label="false">未确认</el-radio-button>
+            </el-radio-group>
+          </dd>
+        </dl>
+      </div>
     </div>
-    <div>
+    <!-- <div>
       <tl-searchbar></tl-searchbar>
-    </div>
+    </div> -->
     <!-- table -->
     <tl-crcloud-table
       :total="totalpage"
@@ -43,7 +102,9 @@
                   <el-dropdown-item @click.native="deleteTask(scope.row.taskId)"
                     >删除</el-dropdown-item
                   >
-                  <el-dropdown-item>任务归档</el-dropdown-item>
+                  <el-dropdown-item @click.native="filedTask(scope.row.taskId)"
+                    >任务归档</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </el-dropdown></template
             >
@@ -89,13 +150,13 @@
             <template slot-scope="scope">
               <el-button
                 type="text"
-                @click="handleAccept(scope.row)"
+                @click="acceptTask(scope.row.taskId)"
                 class="tl-btn"
                 >确认接收</el-button
               >
               <el-button
                 type="text"
-                @click="handleAssign(scope.row)"
+                @click="handleAssign(scope.row.taskId)"
                 class="tl-btn"
                 >确认指派</el-button
               >
@@ -136,7 +197,6 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
-import searchbar from './components/searchbar';
 import assignment from './components/assignment';
 import createTask from './components/createTask';
 import editTask from './components/editTask';
@@ -148,7 +208,6 @@ export default {
   name: 'myTask',
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-searchbar': searchbar,
     'tl-assignment': assignment,
     'tl-createtask': createTask,
     'tl-edittask': editTask,
@@ -166,6 +225,7 @@ export default {
       showReal: true, // 展示示例图片 false
       existCreatetask: false,
       showpage: 'myTask',
+      // 筛选
       tabMenuList: [
         { menuName: '全部' },
         { menuName: '我收到的' },
@@ -173,10 +233,22 @@ export default {
         { menuName: '我的草稿' },
       ],
       currentIndex: 0,
+      searchMsg: '',
+      arrowClass: 'el-icon-caret-top',
+      searchList: [],
+      taskProcessList: [],
+      taskProcess: {}, // 选择的任务过程
+      taskStatus: {}, // 选择的任务状态
+      processList: [], // 过程列表
+      childCateList: [{
+        label: '全部', value: null, isSelected: true,
+      }],
+      accept: null,
     };
   },
   created() {
     this.getTableList();
+    this.getProcess();
   },
   mounted() {
     // 状态
@@ -189,12 +261,12 @@ export default {
   methods: {
     getTableList() {
       const params = {
-
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         selectType: this.currentIndex,
-        taskTitle: '',
-
+        taskTitle: this.searchMsg,
+        psList: this.searchList,
+        accept: this.accept,
       };
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
@@ -203,13 +275,33 @@ export default {
         this.pageSize = res.data.pageSize;
       });
     },
-    handleAccept() {
-
+    getProcess() {
+      this.server.queryProcess().then((res) => {
+        if (res.code == 200) {
+          this.processList = res.data;
+          this.taskProcessList.push({
+            label: '全部',
+            value: 'all',
+            isSelected: true,
+            childCateList: [
+              { label: '全部', value: null, isSelected: true },
+            ],
+          });
+          this.processList.forEach((item) => {
+            this.taskProcessList.push({
+              label: item.processName,
+              value: item.processId,
+              isSelected: false,
+              childCateList: [],
+            });
+          });
+        }
+      });
     },
-    handleAssign() {
+    handleAssign(id) {
       this.existAssignment = true;
       this.$nextTick(() => {
-        this.$refs.assignment.show();
+        this.$refs.assignment.show(id);
       });
     },
     handleMove() {
@@ -228,13 +320,36 @@ export default {
       });
     },
     deleteTask(id) {
-      this.server.deleteTask({ taskId: id }).then((res) => {
+      this.$xconfirm({
+        content: '确定要删除这个任务吗？',
+        title: '删除任务',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteTask({ taskId: id }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.getTableList();
+          }
+        });
+      }).catch(() => {});
+    },
+    filedTask(id) {
+      this.server.filedTask({ taskId: id }).then((res) => {
         if (res.code == 200) {
-          this.$message.success('删除成功');
+          this.$message.success('归档成功');
           this.getTableList();
         }
       });
     },
+    acceptTask(id) {
+      this.server.acceptTask({ taskId: id }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('已确认接收');
+          this.getTableList();
+        }
+      });
+    },
+    // 筛选栏
     borderSlip(item, index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
@@ -244,6 +359,91 @@ export default {
       this.currentIndex = index;
       this.getTableList();
     },
+    showSearchBar() {
+      if (this.arrowClass == 'el-icon-caret-top') {
+        this.arrowClass = 'el-icon-caret-bottom';
+      } else {
+        this.arrowClass = 'el-icon-caret-top';
+      }
+    },
+    clearNode(index) {
+      this.searchList.splice(index, 1);
+    },
+    switchParent(parentCate) {
+      // 查任务步骤
+      this.childCateList = [];
+      const params = {
+        available: 1,
+        processId: parentCate.value,
+      };
+      this.server.queryProcessStep(params).then((res) => {
+        if (res.code == 200 && res.data) {
+          const stepList = res.data;
+          this.childCateList.push(
+            { label: '全部', value: null, isSelected: true },
+          );
+          stepList.forEach((item) => {
+            this.childCateList.push({
+              label: item.stepName,
+              value: item.stepId,
+              isSelected: false,
+            });
+          });
+        }
+      });
+      this.taskProcess = parentCate;
+      this.resetIsSelected(this.taskProcessList);
+      parentCate.isSelected = true;
+      for (const item of this.taskProcessList) {
+        if (item.value == parentCate.value) {
+          this.resetIsSelected(item.childCateList, 'init');
+        }
+      }
+    },
+    selectStatus(childCate) {
+      this.resetIsSelected(this.childCateList);
+      childCate.isSelected = true;
+      if (this.taskProcess.value == 'all') {
+        this.searchList = [];
+      } else {
+        this.searchList.push({
+          name: `${this.taskProcess.label}-${childCate.label}`,
+          processId: this.taskProcess.value,
+          processName: this.taskProcess.label,
+          stepId: childCate.value,
+          stepName: childCate.label,
+        });
+      }
+    },
+    resetIsSelected(list, init) {
+      if (init == 'init') {
+        for (let i = 0; i < list.length; i += 1) {
+          if (i == 0) {
+            list[i].isSelected = true;
+          } else {
+            list[i].isSelected = false;
+          }
+        }
+      } else {
+        for (const item of list) {
+          item.isSelected = false;
+        }
+      }
+    },
+  },
+  watch: {
+    searchList: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
   },
 };
 </script>
+<style scoped>
+.searchblock {
+  background-color: #f4f6f8;
+  margin: 0px 16px;
+}
+</style>
