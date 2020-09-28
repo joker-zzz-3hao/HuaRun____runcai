@@ -8,7 +8,6 @@
       id="norun"
       :options="options"
     >-->
-    <!-- <div class="list-group-item" v-for="stepData in rootData" :key="stepData.stepId"> -->
     <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
       <h3>{{stepData.stepName}}</h3>
       <el-button style="width:380px" @click="addTask(stepData)">
@@ -29,13 +28,8 @@
           <p>{{element.taskBegDate}}-{{element.taskEndDate}}</p>
         </div>
       </draggable>
+      <!-- </draggable> -->
     </div>
-    <!-- </div> -->
-    <!-- </draggable> -->
-
-    <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
-    <rawDisplayer class="col-3" :value="list2" title="List 2" />
-    <rawDisplayer class="col-3" :value="list3" title="List 3" />-->
     <tl-add-task :stepData="stepData" v-if="showAddTask" :exist.sync="showAddTask" ref="addTask"></tl-add-task>
   </div>
 </template>
@@ -73,10 +67,7 @@ export default {
       server,
       rootData: [],
       showAddTask: false,
-      stepId: '',
       moveItem: {},
-      changeid: '',
-      removeid: '',
       options: {
         group: 'people',
         ghostClass: 'chosendiv', // 占位影子
