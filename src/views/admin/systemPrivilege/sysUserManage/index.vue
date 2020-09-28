@@ -4,9 +4,9 @@
       <div>系统用户管理</div>
     </div>
     <div>
-      <el-form>
+      <el-form class="tl-form">
         <el-form-item label="用户账号">
-          <span>{{userInfo.userAccount}}</span>
+          <span>{{ userInfo.userAccount }}</span>
         </el-form-item>
         <el-form-item label="用户角色">
           <span>系统管理员</span>
@@ -15,15 +15,20 @@
           <span>内置用户</span>
         </el-form-item>
         <el-form-item label="创建时间">
-          <span>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(userInfo.createTime) )}}</span>
+          <span>{{
+            dateFormat("YYYY-mm-dd HH:MM:SS", new Date(userInfo.createTime))
+          }}</span>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetPwd">修改密码</el-button>
+          <el-button @click="resetPwd" class="tl-btn amt-border-fadeout" plain
+            >修改密码</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
     <el-dialog
       ref="createDepart"
+      class="tl-dialog"
       v-if="visible"
       :append-to-body="true"
       :visible="visible"
@@ -31,35 +36,74 @@
       title="修改密码"
       :close-on-click-modal="false"
     >
-      <el-form :model="formData" ref="resetForm">
+      <el-form
+        :model="formData"
+        ref="resetForm"
+        class="tl-form"
+        label-width="90px"
+      >
         <el-form-item
           label="原始密码"
           prop="loginPwd"
-          :rules="[
-          {required:true,validator: validatePwd,trigger:'blur'}]"
+          :rules="[{ required: true, validator: validatePwd, trigger: 'blur' }]"
         >
-          <el-input v-model.trim="formData.loginPwd" show-password clearable></el-input>
+          <el-input
+            v-model.trim="formData.loginPwd"
+            show-password
+            class="tl-input"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="新密码"
+          class="tl-input"
           prop="newPwd"
-          :rules="[{required:true,validator:validateNewPwd,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateNewPwd, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.newPwd" show-password clearable></el-input>
+          <el-input
+            v-model.trim="formData.newPwd"
+            show-password
+            class="tl-input"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="确认密码"
           prop="confirmPwd"
           :rules="[
-          {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
+            {
+              required: true,
+              validator: validateNewConfirmPwd,
+              trigger: 'blur',
+            },
+          ]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" @click="save">确认</el-button>
-          <el-button :disabled="loading" @click="close">取消</el-button>
+          <el-input
+            v-model.trim="formData.confirmPwd"
+            show-password
+            class="tl-input"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button
+          :loading="loading"
+          @click="save"
+          class="tl-btn amt-bg-slip"
+          type="primary"
+          >确认</el-button
+        >
+        <el-button
+          :disabled="loading"
+          @click="close"
+          class="tl-btn amt-border-fadeout"
+          plain
+          >取消</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>

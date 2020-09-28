@@ -8,23 +8,35 @@
           <div class="panner-title">
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
+            <div>
+              <el-button @click="prevSwiper">左</el-button>
+              <el-button @click="nextSwiper">右</el-button>
+            </div>
           </div>
         </div>
-        <div class="card-panel-body">
-          <div class="tl-card-panel-group">
-            <dl v-for="(item,index) in riskList" :key="index">
-              <dt>{{item.orgName}}</dt>
+        <div
+          class="card-panel-body"
+          v-swiper:mySwiper="swiperOption"
+          ref="mySwiper"
+        >
+          <div class="tl-card-panel-group swiper-wrapper">
+            <dl
+              v-for="(item, index) in riskList"
+              :key="index"
+              class="swiper-slide"
+            >
+              <dt>{{ item.orgName }}</dt>
               <dd>
                 <span>总人数</span>
-                <em>{{item.personCount}}</em>
+                <em>{{ item.personCount }}</em>
               </dd>
               <dd>
                 <span>承接数</span>
-                <em>{{item.okrContinueCount}}</em>
+                <em>{{ item.okrContinueCount }}</em>
               </dd>
               <dd>
                 <span>变更数</span>
-                <em>{{item.okrChangeCount}}</em>
+                <em>{{ item.okrChangeCount }}</em>
               </dd>
             </dl>
           </div>
@@ -73,6 +85,9 @@ export default {
       mainData: [],
       orgUser: [],
       riskList: [],
+      swiperOption: {
+        slidesPerView: 6,
+      },
     };
   },
   computed: {
@@ -83,7 +98,12 @@ export default {
     }),
   },
   methods: {
-
+    prevSwiper() {
+      this.$refs.mySwiper.swiper.slidePrev();
+    },
+    nextSwiper() {
+      this.$refs.mySwiper.swiper.slideNext();
+    },
     // 切换周期
     getPeriod(periodId) {
       this.periodId = periodId;

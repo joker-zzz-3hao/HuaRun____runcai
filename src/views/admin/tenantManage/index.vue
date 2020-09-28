@@ -43,14 +43,21 @@
               fixed
               prop="tenantBuId"
               label="企业ID"
+              min-width="130"
             ></el-table-column>
             <el-table-column
               prop="tenantName"
               label="企业名称"
+              min-width="100"
             ></el-table-column>
-            <el-table-column prop="applyUser" label="申请人"></el-table-column>
+            <el-table-column
+              prop="applyUser"
+              min-width="80"
+              label="申请人"
+            ></el-table-column>
             <!-- <el-table-column prop="version" label="开通版本"></el-table-column> -->
             <el-table-column
+              min-width="80"
               prop="status"
               label="状态"
               v-if="hasPower('sys-tenantstatus-update')"
@@ -64,7 +71,7 @@
                 ></el-switch>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" label="创建时间" min-width="130">
               <template slot-scope="scope">
                 <span v-if="scope.row.createTime">{{
                   dateFormat(
