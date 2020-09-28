@@ -18,7 +18,7 @@ export default class Server extends ServerBase {
   }
 
   getUndertakeOkr(param) {
-    return this._ajaxPost(`gateway/talent-okr/okr/main/getUndertakeOkr?periodId=${param.periodId}`);
+    return this._ajaxPost('gateway/talent-okr/okr/main/getUndertakeOkr', param);
   }
 
   queryCultureList(param) {

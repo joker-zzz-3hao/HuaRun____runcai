@@ -10,7 +10,7 @@
     :before-close="close"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">{{drawerTitle}}</div>
+      <div class="drawer-title">{{ drawerTitle }}</div>
     </div>
     <el-scrollbar>
       <div class="cont-box">
@@ -20,21 +20,21 @@
               <i class="el-icon-s-flag"></i>
               <em>OKR类型</em>
             </dt>
-            <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+            <dd>{{ CONST.OKR_TYPE_MAP[okrmain.okrBelongType] }}</dd>
           </dl>
           <dl>
             <dt>
               <i class="el-icon-s-custom"></i>
               <em>负责人</em>
             </dt>
-            <dd>{{okrmain.userName}}</dd>
+            <dd>{{ okrmain.userName }}</dd>
           </dl>
           <dl>
             <dt>
               <i class="el-icon-timer"></i>
               <em>更新时间</em>
             </dt>
-            <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+            <dd>{{ okrmain.updateTime || okrmain.createTime }}</dd>
           </dl>
           <dl>
             <dt>
@@ -60,7 +60,12 @@
               content="历史版本"
               placement="top"
               popper-class="tl-tooltip-popper"
-              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              @click.native="
+                openHistory(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
             >
               <i class="el-icon-time"></i>
             </el-tooltip>
@@ -73,7 +78,12 @@
               content="历史版本"
               placement="top"
               popper-class="tl-tooltip-popper"
-              @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+              @click.native="
+                openHistory(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
             >
               <i class="el-icon-time"></i>
             </el-tooltip>
@@ -94,7 +104,13 @@
             <el-form :model="reason" ref="reasonForm">
               <el-form-item
                 prop="modifyReason"
-                :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+                :rules="[
+                  {
+                    trigger: 'blur',
+                    message: '变更原因不能为空',
+                    required: true,
+                  },
+                ]"
               >
                 <el-input
                   maxlength="200"
@@ -116,8 +132,11 @@
         @click="validateForm"
         class="tl-btn amt-bg-slip"
         :loading="loading"
-      >提交</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+        >提交</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
     </div>
 
     <el-drawer
@@ -132,27 +151,38 @@
         <div class="drawer-title">关联父目标</div>
       </div>
       <tl-undertaketable
-        v-if="selectIndex !== ''"
+        v-if="selectIndex !== '' && innerDrawer"
         ref="undertake"
         :departokrList="tableList[this.selectIndex].departokrList"
-        :philosophyList="tableList[this.selectIndex].philosophyList"
-        :showPhil="undertakeType=='new'"
+        :showPhil="undertakeType == 'new'"
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="okrPeriod.periodName"
-        :currentOption="currentOption"
+        :currentOption="okrParentId"
+        :server="server"
       ></tl-undertaketable>
       <div class="operating-box">
         <div class="flex-auto">
           <el-button
             plain
             @click="summitIgnore"
-            v-if="undertakeType=='change'"
+            v-if="undertakeType == 'change'"
             class="tl-btn amt-border-fadeout"
-          >忽略</el-button>
+            >忽略</el-button
+          >
         </div>
-        <el-button type="primary" @click="summitUndertake" class="tl-btn amt-bg-slip">确定</el-button>
-        <el-button plain @click="innerDrawer = false" class="tl-btn amt-border-fadeout">取消</el-button>
+        <el-button
+          type="primary"
+          @click="summitUndertake"
+          class="tl-btn amt-bg-slip"
+          >确定</el-button
+        >
+        <el-button
+          plain
+          @click="innerDrawer = false"
+          class="tl-btn amt-border-fadeout"
+          >取消</el-button
+        >
       </div>
     </el-drawer>
 
@@ -213,7 +243,7 @@ export default {
       detialP: {},
       undertakeP: {},
       originalObject: '{}',
-      currentOption: '',
+      okrParentId: '',
       historyDrawer: false,
       loading: false,
     };
@@ -262,117 +292,20 @@ export default {
     close() {
       this.myokrDrawer = false;
     },
-    // 按周期查可关联承接的okr
-    searchOkr() {
-      if (this.searchForm.periodId) {
-        this.undertakeP = new Promise(((resolve) => {
-          this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
-            if (res.code == 200) {
-              if (res.data.parentUndertakeOkrInfoResult) {
-                this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-                res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-                  this.departokrList.push({
-                    typeName: '目标',
-                    okrKind: 'o',
-                    okrDetailObjectKr: item.o.okrDetailObjectKr,
-                    okrDetailId: item.o.okrDetailId,
-                    okrDetailVersion: item.o.okrDetailVersion,
-                  });
-                  if (item.krList && item.krList.length > 0) {
-                    item.krList.forEach((krItem) => {
-                      this.departokrList.push({
-                        typeName: 'KR',
-                        okrKind: 'k',
-                        okrDetailObjectKr: krItem.okrDetailObjectKr,
-                        okrDetailId: krItem.okrDetailId,
-                        okrDetailVersion: krItem.okrDetailVersion,
-                      });
-                    });
-                  }
-                });
-              } else {
-                this.departokrList = [];
-              }
-              // 将可承接列表转换成字符串
-              this.departokrObject = JSON.stringify(this.departokrList);
-            }
-          });
-          resolve('可关联承接的okr');
-        }));
-      }
-    },
     // 查okr详情
     getokrDetail() {
-      if (this.searchForm.periodId) {
-        const undertakeP = new Promise(((resolve) => {
-          this.server.getUndertakeOkr({ periodId: this.searchForm.periodId }).then((res) => {
-            if (res.code == 200) {
-              if (res.data.parentUndertakeOkrInfoResult) {
-                this.okrPeriod = res.data.parentUndertakeOkrInfoResult.okrPeriodEntity;
-                res.data.parentUndertakeOkrInfoResult.okrList.forEach((item) => {
-                  this.departokrList.push({
-                    typeName: '目标',
-                    okrKind: 'o',
-                    okrDetailObjectKr: item.o.okrDetailObjectKr,
-                    okrDetailId: item.o.okrDetailId,
-                    okrDetailVersion: item.o.okrDetailVersion,
-                  });
-                  if (item.krList && item.krList.length > 0) {
-                    item.krList.forEach((krItem) => {
-                      this.departokrList.push({
-                        typeName: 'KR',
-                        okrKind: 'k',
-                        okrDetailObjectKr: krItem.okrDetailObjectKr,
-                        okrDetailId: krItem.okrDetailId,
-                        okrDetailVersion: krItem.okrDetailVersion,
-                      });
-                    });
-                  }
-                });
-              } else {
-                this.departokrList = [];
-              }
-              // 将可承接列表转换成字符串
-              this.departokrObject = JSON.stringify(this.departokrList);
-              resolve(res.code);
-            } else {
-              resolve('not');
-            }
-          });
-        }));
-        const detialP = new Promise(((resolve) => {
-          this.server.queryCultureList().then((res) => {
-            if (res.code == 200) {
-              this.philosophyList = res.data;
-              this.philosophyList.forEach((item) => {
-                item.checkFlag = false;
-              });
-              // 将价值观列表转换成字符串
-              this.philosophyObject = JSON.stringify(this.philosophyList);
-              resolve(res.code);
-            } else {
-              resolve('not');
-            }
-          });
-        }));
-
-        Promise.all([detialP, undertakeP]).then((results) => {
-          if (results) {
-            this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
-              if (res.code == 200) {
-                this.originalObject = JSON.stringify(res.data.okrDetails);
-                this.tableList = res.data.okrDetails;
-                this.okrmain = res.data.okrMain;
-                this.okrMainId = res.data.okrMain.okrId;
-                // this.voteUser = res.data.voteUser;
-                this.tableList.forEach((item) => {
-                  item.departokrList = JSON.parse(this.departokrObject) || [];
-                  item.philosophyList = JSON.parse(this.philosophyObject) || [];
-                  if (item.parentUpdate) {
-                    // 关联承接变更接口
-                    this.getOkrModifyUndertakeOkrList(item);
-                  }
-                });
+      if (this.searchForm.okrId) {
+        this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
+          if (res.code == 200) {
+            this.originalObject = JSON.stringify(res.data.okrDetails);
+            this.tableList = res.data.okrDetails;
+            this.okrmain = res.data.okrMain;
+            this.okrMainId = res.data.okrMain.okrId;
+            // this.voteUser = res.data.voteUser;
+            this.tableList.forEach((item) => {
+              if (item.parentUpdate) {
+                // 关联承接变更接口
+                this.getOkrModifyUndertakeOkrList(item);
               }
             });
           }
@@ -416,20 +349,17 @@ export default {
           undertakeOkrVersion: '',
         };
       }
-      if (this.undertakeType == 'new') {
-        this.selectRadioDepart = this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
-          ? this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId
-          : this.tableList[this.selectIndex].okrParentId;
-      } else {
+      if (this.tableList[this.selectIndex].currentOption) {
         this.selectRadioDepart = this.tableList[this.selectIndex].currentOption;
+      } else if (this.selectRadioDepart == this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId) {
+        // eslint-disable-next-line max-len
+        this.selectRadioDepart = this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId + this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion;
+      } else {
+        // eslint-disable-next-line max-len
+        this.selectRadioDepart = this.tableList[this.selectIndex].okrParentId + this.tableList[this.selectIndex].okrDetailParentVersion;
       }
-      this.currentOption = this.tableList[this.selectIndex].okrParentId || '';
-      console.log('打开承接弹窗', this.currentOption);
-
-      // 打开前判断下有无数据
-      if (!this.tableList[this.selectIndex].departokrList) {
-        this.tableList[this.selectIndex].departokrList = JSON.parse(this.departokrObject) || [];
-      }
+      this.okrParentId = this.tableList[this.selectIndex].okrParentId || '';
+      console.log('打开承接弹窗', this.selectRadioDepart);
       this.innerDrawer = true;
     },
     // 忽略
@@ -469,6 +399,7 @@ export default {
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
+      console.log('选择', this.selectDepartRow);
       // eslint-disable-next-line max-len
       // 承接项id、版本、名称
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
