@@ -23,7 +23,7 @@ const router = new VueRouter({
 
 // 判断权限
 function hasPower(power) {
-  const userPowers = (window.$store.state.common.userInfo.privilegeList || []).map((item) => item
+  const userPowers = (window.$store.state.common.userInfo.allMenuList || []).map((item) => item
     .functionCode);
   if (typeof power == 'string') {
     return !!userPowers.includes(power) || (power == '');
