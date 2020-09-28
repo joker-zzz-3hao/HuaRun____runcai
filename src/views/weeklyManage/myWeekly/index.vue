@@ -1,17 +1,6 @@
 <template>
   <div class="my-weekly">
-    <div v-if="!showReal" class="show-pic">
-      <div class="pic-myweekly01">
-        <img src="~@/assets/images/demoPic/myweekly01.png" />
-      </div>
-      <div class="pic-myweekly02">
-        <img src="~@/assets/images/demoPic/myweekly02.png" />
-      </div>
-      <div class="pic-myweekly03">
-        <img src="~@/assets/images/demoPic/myweekly03.png" />
-      </div>
-    </div>
-    <div v-if="showReal">
+    <div>
       <div class="page-title">我的周报</div>
       <!-- <div class="operating-box" :class="{'visibility-hidden': weeklyTypeList.length > 0 }"> -->
       <div class="operating-box" v-if="weeklyTypeList.length > 0">
@@ -19,16 +8,22 @@
           class="tl-custom-btn"
           v-for="item in weeklyTypeList"
           :key="item"
-          :class="{'is-select': weeklyType == item,'is-version': weeklyTypeList.length == 1}"
+          :class="{
+            'is-select': weeklyType == item,
+            'is-version': weeklyTypeList.length == 1,
+          }"
           @click="setWeeklyType(item)"
         >
-          <em>{{item == '1' ? '标准版':'简单版'}}</em>
+          <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
         </div>
       </div>
     </div>
-    <div v-if="showReal" class="cont-area" v-show="weeklyTypeList.length > 0">
+    <div class="cont-area" v-show="weeklyTypeList.length > 0">
       <!-- 日期 -->
-      <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
+      <tl-calendar
+        @setCalendarId="setCalendarId"
+        @getWeeklyById="getWeeklyById"
+      ></tl-calendar>
       <div class="weekly-area" v-if="newPage">
         <!-- 标准版 -->
         <standard-Weekly
@@ -93,7 +88,6 @@ export default {
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
-      showReal: true, // 展示示例图片 false
     };
   },
   created() {
@@ -246,37 +240,5 @@ export default {
 }
 .is-simple {
   background: green;
-}
-.show-pic {
-  display: flex;
-  flex-direction: column;
-}
-.pic-myweekly01 {
-  background: url("~@/assets/images/demoPic/myweekly01.png") no-repeat;
-  background-size: 100%;
-  /* height: calc(39vh - 7px); */
-  flex: 1;
-}
-
-.pic-myweekly02 {
-  background: url("~@/assets/images/demoPic/myweekly02.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  /* height: calc(39vh - 2px); */
-  flex: 1;
-}
-.pic-myweekly03 {
-  background: url("~@/assets/images/demoPic/myweekly03.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  /* height: calc(30vh); */
-  flex: 1;
-}
-.pic-myweekly01 img,
-.pic-myweekly02 img,
-.pic-myweekly03 img {
-  display: inline-block;
-  height: auto;
-  max-width: 100%;
 }
 </style>

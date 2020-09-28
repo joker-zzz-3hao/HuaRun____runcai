@@ -1,81 +1,75 @@
 <template>
   <div class="tenant-management">
-    <div v-if="!showReal" class="show-pic">
-      <div v-if="changeweek==true">
-        <div class="pic-teamweekly01">
-          <div class="click-change" @click="changeweek=false"></div>
-          <img src="~@/assets/images/demoPic/teamweekly01.png" />
-        </div>
-        <div class="pic-teamweekly02">
-          <img src="~@/assets/images/demoPic/teamweekly02.png" />
-        </div>
+    <div class="page-title">团队周报</div>
+    <div class="operating-area">
+      <div>
+        <tl-calendar
+          @setCalendarId="setCalendarId"
+          @getWeeklyById="refreshPageList"
+          :isFromTeam="true"
+        ></tl-calendar>
       </div>
-      <div v-else class="pic-sukan">
-        <div class="click-change" @click="changeweek=true"></div>
-        <img src="~@/assets/images/demoPic/sukan.png" />
-      </div>
-    </div>
-    <template v-if="showReal">
-      <div class="page-title">团队周报</div>
-      <div class="operating-area">
-        <div>
-          <tl-calendar
-            @setCalendarId="setCalendarId"
-            @getWeeklyById="refreshPageList"
-            :isFromTeam="true"
-          ></tl-calendar>
-        </div>
-        <div>
-          <el-cascader
-            v-model="orgIdList"
-            ref="cascader"
-            :options="treeData"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
-            @change="selectIdChange"
-          ></el-cascader>
-          <el-select
-            v-model="formData.queryType"
-            @change="lookChange"
-            placeholder="周报速看"
-            clearable
-            @clear="clear"
-          >
-            <el-option
-              v-for="item in lookItemList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <!-- 按钮显示逻辑添加
+      <div>
+        <el-cascader
+          v-model="orgIdList"
+          ref="cascader"
+          :options="treeData"
+          :show-all-levels="false"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'sonTree',
+          }"
+          @change="selectIdChange"
+        ></el-cascader>
+        <el-select
+          v-model="formData.queryType"
+          @change="lookChange"
+          placeholder="周报速看"
+          clearable
+          @clear="clear"
+        >
+          <el-option
+            v-for="item in lookItemList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
         2、当组织切换时不显示该按钮
         3、不是部门负责人不显示该按钮
           -->
-          <el-button v-show="showRemindBtn" @click="remindWriteWeekly" icon="el-icon-phone">提醒写周报</el-button>
-        </div>
-        <div class="operating-panel">
-          <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-            <el-form-item>
-              <el-select
-                v-model="submitedOrLooked"
-                @change="submitedOrLookedChange"
-                placeholder="全部"
-                clearable
-                @clear="clearSubmitOrLooked"
-                :disabled="!!formData.queryType"
-              >
-                <el-option
-                  v-for="item in submitedOrLookedList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <!-- <el-input
+        <el-button
+          v-show="showRemindBtn"
+          @click="remindWriteWeekly"
+          icon="el-icon-phone"
+          >提醒写周报</el-button
+        >
+      </div>
+      <div class="operating-panel">
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form-item>
+            <el-select
+              v-model="submitedOrLooked"
+              @change="submitedOrLookedChange"
+              placeholder="全部"
+              clearable
+              @clear="clearSubmitOrLooked"
+              :disabled="!!formData.queryType"
+            >
+              <el-option
+                v-for="item in submitedOrLookedList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <!-- <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
               v-model="formData.queryUserId"
@@ -84,171 +78,224 @@
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
               </el-input>-->
-              <el-select
-                v-model.trim="formData.queryUserId"
-                filterable
-                placeholder="请输入成员姓名"
-                remote
-                :remote-method="remoteMethod"
-                @visible-change="visibleChange"
-                @change="nameChange"
-                clearable
+            <el-select
+              v-model.trim="formData.queryUserId"
+              filterable
+              placeholder="请输入成员姓名"
+              remote
+              :remote-method="remoteMethod"
+              @visible-change="visibleChange"
+              @change="nameChange"
+              clearable
+            >
+              <el-option
+                v-for="item in userList"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
               >
-                <el-option
-                  v-for="item in userList"
-                  :key="item.userId"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                  <span style="float:left">
-                    <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                      <div v-if="item.userName" class="user-name">
-                        <em>{{item.userName.substring(item.userName.length-2)}}</em>
-                      </div>
-                    </el-avatar>
+                <span style="float: left">
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                </span>
+                <span style="float: left; marginleft: 5px">{{
+                  item.userName
+                }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <div
+      class="cont-area"
+      v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId"
+    >
+      <crcloud-table
+        :total="total"
+        :currentPage.sync="formData.currentPage"
+        :pageSize.sync="formData.pageSize"
+        @searchList="refreshPageList"
+        v-if="tableLoading"
+      >
+        <div slot="tableContainer" class="table-container">
+          <ul v-if="!isQuickLook">
+            <li
+              v-for="weekly in tableData"
+              :key="weekly.userId"
+              @click="weeklyInfo(weekly)"
+              style="
+                cursor: pointer;
+                width: 320px;
+                height: 200px;
+                float: left;
+                marginleft: 10px;
+              "
+            >
+              <el-card>
+                <div>
+                  <el-avatar
+                    :size="30"
+                    :src="weekly.headerUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="weekly.userName" class="user-name">
+                      <em>{{
+                        weekly.userName.substring(weekly.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span
+                    >{{ weekly.userName
+                    }}{{ weekly.isadmin == "1" ? "(部门负责人)" : "" }}</span
+                  >
+                  <span v-if="weekly.weeklyId">
+                    <i class="el-icon-circle-check"></i>已提交
                   </span>
-                  <span style="float:left;marginLeft:5px">{{item.userName}}</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
+                  <span v-else>
+                    <i class="el-icon-warning-outline"></i>未提交
+                  </span>
+                  <div>{{ weekly.orgName }}</div>
+                </div>
+                <div>
+                  <div>
+                    本周心情
+                    <span v-if="weekly.weeklyEmotion == 0">
+                      <i class="el-icon-user"></i> 沮丧
+                    </span>
+                    <span v-else-if="weekly.weeklyEmotion == 50">
+                      <i class="el-icon-user"></i>平常
+                    </span>
+                    <span v-else-if="weekly.weeklyEmotion == 100">
+                      <i class="el-icon-user"></i>开心
+                    </span>
+                    <span v-else>--</span>
+                  </div>
+                  <div>
+                    更新时间
+                    <span>
+                      {{
+                        weekly.updateTime
+                          ? dateFormat(
+                              "YYYY-mm-dd HH:MM:SS",
+                              new Date(weekly.updateTime)
+                            )
+                          : "--"
+                      }}
+                    </span>
+                  </div>
+                </div>
+              </el-card>
+            </li>
+            <li v-if="tableData.length < 1">暂无数据</li>
+          </ul>
+          <ul v-else>
+            <li
+              v-for="weekly in tableData"
+              :key="weekly.userId"
+              @click="weeklyInfo(weekly)"
+              style="cursor: pointer"
+            >
+              <el-card>
+                <span>
+                  <el-avatar
+                    :size="30"
+                    :src="weekly.headerUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="weekly.userName" class="user-name">
+                      <em>{{
+                        weekly.userName.substring(weekly.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ weekly.userName }}</span>
+                  <span>{{ weekly.orgName }}</span>
+                </span>
+                <!-- 任务项 -->
+                <span v-if="formData.queryType == '0'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">
+                      {{ work.workContent }}
+                    </li>
+                  </ul>
+                </span>
+                <!-- 感想 -->
+                <span v-if="formData.queryType == '1'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">
+                      {{ work.thoughtContent }}
+                    </li>
+                  </ul>
+                </span>
+                <!-- 下周计划 -->
+                <span v-if="formData.queryType == '2'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">
+                      {{ work.planContent }}
+                    </li>
+                  </ul>
+                </span>
+                <!-- 有进度的okr -->
+                <span v-if="formData.queryType == '3'">
+                  <ul>
+                    <li v-for="work in weekly.contentList" :key="work">
+                      <!-- 目标 -->
+                      <span v-if="work.okrDetailType == 0">
+                        <span>目标</span>
+                        <span>{{ work.okrDetailObjectKr }}</span>
+                        <span>
+                          本次更新进度
+                          {{
+                            work.progressAfter - work.progressBefor > 0
+                              ? "+"
+                              : ""
+                          }}
+                          {{ work.progressAfter - work.progressBefor }}%
+                        </span>
+                      </span>
+                      <!-- KR -->
+                      <span v-else>
+                        <ul>
+                          <li>
+                            <span>目标</span>
+                            <span>{{ work.pokrDetailObjectKr }}</span>
+                          </li>
+                          <li>
+                            <span>KR</span>
+                            <span>{{ work.okrDetailObjectKr }}</span>
+                            <span>
+                              本次更新进度
+                              {{
+                                work.progressAfter - work.progressBefor > 0
+                                  ? "+"
+                                  : ""
+                              }}
+                              {{ work.progressAfter - work.progressBefor }}%
+                            </span>
+                          </li>
+                        </ul>
+                      </span>
+                    </li>
+                  </ul>
+                </span>
+              </el-card>
+            </li>
+            <li v-if="tableData.length < 1">暂无数据</li>
+          </ul>
         </div>
-      </div>
-      <div class="cont-area" v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId">
-        <crcloud-table
-          :total="total"
-          :currentPage.sync="formData.currentPage"
-          :pageSize.sync="formData.pageSize"
-          @searchList="refreshPageList"
-          v-if="tableLoading"
-        >
-          <div slot="tableContainer" class="table-container">
-            <ul v-if="!isQuickLook">
-              <li
-                v-for="weekly in tableData"
-                :key="weekly.userId"
-                @click="weeklyInfo(weekly)"
-                style="cursor:pointer;width:320px;height:200px;float:left;marginLeft:10px"
-              >
-                <el-card>
-                  <div>
-                    <el-avatar :size="30" :src="weekly.headerUrl" @error="errorHandler">
-                      <div v-if="weekly.userName" class="user-name">
-                        <em>{{weekly.userName.substring(weekly.userName.length-2)}}</em>
-                      </div>
-                    </el-avatar>
-                    <span>{{weekly.userName}}{{weekly.isadmin == '1'?'(部门负责人)':''}}</span>
-                    <span v-if="weekly.weeklyId">
-                      <i class="el-icon-circle-check"></i>已提交
-                    </span>
-                    <span v-else>
-                      <i class="el-icon-warning-outline"></i>未提交
-                    </span>
-                    <div>{{weekly.orgName}}</div>
-                  </div>
-                  <div>
-                    <div>
-                      本周心情
-                      <span v-if="weekly.weeklyEmotion == 0">
-                        <i class="el-icon-user"></i> 沮丧
-                      </span>
-                      <span v-else-if="weekly.weeklyEmotion == 50">
-                        <i class="el-icon-user"></i>平常
-                      </span>
-                      <span v-else-if="weekly.weeklyEmotion == 100">
-                        <i class="el-icon-user"></i>开心
-                      </span>
-                      <span v-else>--</span>
-                    </div>
-                    <div>
-                      更新时间
-                      <span>
-                        {{weekly.updateTime
-                        ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(weekly.updateTime) ):'--'}}
-                      </span>
-                    </div>
-                  </div>
-                </el-card>
-              </li>
-              <li v-if="tableData.length < 1">暂无数据</li>
-            </ul>
-            <ul v-else>
-              <li
-                v-for="weekly in tableData"
-                :key="weekly.userId"
-                @click="weeklyInfo(weekly)"
-                style="cursor:pointer;"
-              >
-                <el-card>
-                  <span>
-                    <el-avatar :size="30" :src="weekly.headerUrl" @error="errorHandler">
-                      <div v-if="weekly.userName" class="user-name">
-                        <em>{{weekly.userName.substring(weekly.userName.length-2)}}</em>
-                      </div>
-                    </el-avatar>
-                    <span>{{weekly.userName}}</span>
-                    <span>{{weekly.orgName}}</span>
-                  </span>
-                  <!-- 任务项 -->
-                  <span v-if="formData.queryType == '0'">
-                    <ul>
-                      <li v-for="work in weekly.contentList" :key="work">{{work.workContent}}</li>
-                    </ul>
-                  </span>
-                  <!-- 感想 -->
-                  <span v-if="formData.queryType == '1'">
-                    <ul>
-                      <li v-for="work in weekly.contentList" :key="work">{{work.thoughtContent}}</li>
-                    </ul>
-                  </span>
-                  <!-- 下周计划 -->
-                  <span v-if="formData.queryType == '2'">
-                    <ul>
-                      <li v-for="work in weekly.contentList" :key="work">{{work.planContent}}</li>
-                    </ul>
-                  </span>
-                  <!-- 有进度的okr -->
-                  <span v-if="formData.queryType == '3'">
-                    <ul>
-                      <li v-for="work in weekly.contentList" :key="work">
-                        <!-- 目标 -->
-                        <span v-if="work.okrDetailType == 0">
-                          <span>目标</span>
-                          <span>{{work.okrDetailObjectKr}}</span>
-                          <span>
-                            本次更新进度 {{work.progressAfter - work.progressBefor > 0 ? '+' :''}}
-                            {{work.progressAfter - work.progressBefor }}%
-                          </span>
-                        </span>
-                        <!-- KR -->
-                        <span v-else>
-                          <ul>
-                            <li>
-                              <span>目标</span>
-                              <span>{{work.pokrDetailObjectKr}}</span>
-                            </li>
-                            <li>
-                              <span>KR</span>
-                              <span>{{work.okrDetailObjectKr}}</span>
-                              <span>
-                                本次更新进度 {{work.progressAfter - work.progressBefor > 0 ? '+' :''}}
-                                {{work.progressAfter - work.progressBefor }}%
-                              </span>
-                            </li>
-                          </ul>
-                        </span>
-                      </li>
-                    </ul>
-                  </span>
-                </el-card>
-              </li>
-              <li v-if="tableData.length < 1">暂无数据</li>
-            </ul>
-          </div>
-        </crcloud-table>
-      </div>
-      <div v-else>该团队周报未开放</div>
-    </template>
+      </crcloud-table>
+    </div>
+    <div v-else>该团队周报未开放</div>
   </div>
 </template>
 
@@ -326,7 +373,6 @@ export default {
         },
       ],
       submitedOrLooked: '',
-      showReal: true, // 展示示例图片 false
       changeweek: true,
     };
   },
@@ -595,48 +641,3 @@ export default {
 
 };
 </script>
-<style lang="css" stylus>
-.show-pic {
-  display: flex;
-  flex-direction: column;
-}
-
-.pic-teamweekly01 {
-  background: url("~@/assets/images/demoPic/teamweekly01.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  /* height: calc(30vh + 5px); */
-  flex: 1;
-}
-
-.pic-teamweekly02 {
-  background: url("~@/assets/images/demoPic/teamweekly02.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  /* height: calc(40vh); */
-  flex: 1;
-}
-.pic-sukan {
-  background: url("~@/assets/images/demoPic/sukan.png") no-repeat;
-  /* background-size: cover; */
-  background-size: 100%;
-  /* height: calc(100vh); */
-  flex: 1;
-}
-
-.pic-teamweekly01 img,
-.pic-teamweekly02 img,
-.pic-sukan img {
-  display: inline-block;
-  height: auto;
-  max-width: 100%;
-}
-.click-change {
-  position: absolute;
-  right: 81px;
-  top: 7px;
-  width: 200px;
-  height: 68px;
-  cursor: pointer;
-}
-</style>
