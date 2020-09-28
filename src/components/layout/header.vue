@@ -21,7 +21,9 @@
             :value="item.orgId"
           >
             <span>{{item.orgName}}</span>
-            <span v-if="item.orgId == userInfo.orgId">当前选择</span>
+            <span v-if="item.orgId == userInfo.orgId">
+              <i class="el-icon-check"></i>
+            </span>
           </el-option>
         </el-select>
       </div>
