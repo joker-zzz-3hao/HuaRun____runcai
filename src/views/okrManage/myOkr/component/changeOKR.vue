@@ -351,7 +351,7 @@ export default {
       }
       if (this.tableList[this.selectIndex].currentOption) {
         this.selectRadioDepart = this.tableList[this.selectIndex].currentOption;
-      } else if (this.selectRadioDepart == this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId) {
+      } else if (this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId) {
         // eslint-disable-next-line max-len
         this.selectRadioDepart = this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId + this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrVersion;
       } else {
