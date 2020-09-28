@@ -12,16 +12,22 @@
               placeholder="输入ID/企业名称/企业申请人"
               class="tl-input-search"
             >
-              <i class="el-icon-search" slot="prefix" @click="getTenantList"></i>
+              <i
+                class="el-icon-search"
+                slot="prefix"
+                @click="getTenantList"
+              ></i>
             </el-input>
           </el-form-item>
         </el-form>
         <el-button
           type="primary"
           icon="el-icon-plus"
+          v-if="hasPower('sys_tenant_add')"
           @click="createAddTenant"
           class="tl-btn amt-bg-slip"
-        >创建租户</el-button>
+          >创建租户</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -33,11 +39,22 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column fixed prop="tenantBuId" label="企业ID"></el-table-column>
-            <el-table-column prop="tenantName" label="企业名称"></el-table-column>
+            <el-table-column
+              fixed
+              prop="tenantBuId"
+              label="企业ID"
+            ></el-table-column>
+            <el-table-column
+              prop="tenantName"
+              label="企业名称"
+            ></el-table-column>
             <el-table-column prop="applyUser" label="申请人"></el-table-column>
             <!-- <el-table-column prop="version" label="开通版本"></el-table-column> -->
-            <el-table-column prop="status" label="状态">
+            <el-table-column
+              prop="status"
+              label="状态"
+              v-if="hasPower('sys-tenantstatus-update')"
+            >
               <template slot-scope="scope">
                 <el-switch
                   v-model.trim="scope.row.status"
@@ -49,16 +66,31 @@
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间">
               <template slot-scope="scope">
-                <span
-                  v-if="scope.row.createTime"
-                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-if="scope.row.createTime">{{
+                  dateFormat(
+                    "YYYY-mm-dd HH:MM:SS",
+                    new Date(scope.row.createTime)
+                  )
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="130">
               <template slot-scope="scope">
-                <el-button @click="putTenant(scope.row.tenantId)" type="text" size="small">编辑</el-button>
-                <el-button type="text" size="small" @click="infoTenant(scope.row.tenantId)">详情</el-button>
+                <el-button
+                  @click="putTenant(scope.row.tenantId)"
+                  type="text"
+                  size="small"
+                  v-if="hasPower('sys_tenant_edit')"
+                  >编辑</el-button
+                >
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="infoTenant(scope.row.tenantId)"
+                  v-if="hasPower('sys_tenant_detail')"
+                  >详情</el-button
+                >
               </template>
             </el-table-column>
           </el-table>

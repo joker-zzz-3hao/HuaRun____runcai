@@ -8,7 +8,9 @@
           icon="el-icon-plus"
           @click="addOkr"
           class="tl-btn amt-bg-slip"
-        >添加周期</el-button>
+          v-if="hasPower('tenant-period-add')"
+          >添加周期</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -20,49 +22,71 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="periodName" label="OKR周期名称" min-width="240">
+            <el-table-column
+              prop="periodName"
+              label="OKR周期名称"
+              min-width="240"
+            >
               <template slot-scope="scope">
-                <em>{{scope.row.periodName}}</em>
-                <span v-if="scope.row.checkStatus=='1'">默认周期</span>
+                <em>{{ scope.row.periodName }}</em>
+                <span v-if="scope.row.checkStatus == '1'">默认周期</span>
               </template>
             </el-table-column>
             <el-table-column prop="startTime" label="开始时间" min-width="120">
               <template slot-scope="scope">
-                <em
-                  v-if="scope.row.startTime"
-                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.startTime))}}</em>
+                <em v-if="scope.row.startTime">{{
+                  dateFormat("YYYY-mm-dd", new Date(scope.row.startTime))
+                }}</em>
                 <em v-else>--</em>
               </template>
             </el-table-column>
             <el-table-column prop="endTime" label="结束时间" min-width="120">
               <template slot-scope="scope">
-                <em
-                  v-if="scope.row.endTime"
-                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.endTime))}}</em>
+                <em v-if="scope.row.endTime">{{
+                  dateFormat("YYYY-mm-dd", new Date(scope.row.endTime))
+                }}</em>
                 <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="draftingStartTime" label="起草开始时间" min-width="120">
+            <el-table-column
+              prop="draftingStartTime"
+              label="起草开始时间"
+              min-width="120"
+            >
               <template slot-scope="scope">
-                <em
-                  v-if="scope.row.draftingStartTime"
-                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.draftingStartTime))}}</em>
+                <em v-if="scope.row.draftingStartTime">{{
+                  dateFormat(
+                    "YYYY-mm-dd",
+                    new Date(scope.row.draftingStartTime)
+                  )
+                }}</em>
                 <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="approvalEndTime" label="审批结束时间" min-width="120">
+            <el-table-column
+              prop="approvalEndTime"
+              label="审批结束时间"
+              min-width="120"
+            >
               <template slot-scope="scope">
-                <em
-                  v-if="scope.row.approvalEndTime"
-                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.approvalEndTime))}}</em>
+                <em v-if="scope.row.approvalEndTime">{{
+                  dateFormat("YYYY-mm-dd", new Date(scope.row.approvalEndTime))
+                }}</em>
                 <em v-else>--</em>
               </template>
             </el-table-column>
-            <el-table-column prop="selfAssessReminderTime" label="自评举证时间" min-width="120">
+            <el-table-column
+              prop="selfAssessReminderTime"
+              label="自评举证时间"
+              min-width="120"
+            >
               <template slot-scope="scope">
-                <em
-                  v-if="scope.row.selfAssessReminderTime"
-                >{{dateFormat('YYYY-mm-dd',new Date(scope.row.selfAssessReminderTime))}}</em>
+                <em v-if="scope.row.selfAssessReminderTime">{{
+                  dateFormat(
+                    "YYYY-mm-dd",
+                    new Date(scope.row.selfAssessReminderTime)
+                  )
+                }}</em>
                 <em v-else>--</em>
               </template>
             </el-table-column>
@@ -80,7 +104,13 @@
             </el-table-column>-->
             <el-table-column fixed="right" label="操作" width="60">
               <template slot-scope="scope">
-                <el-button type="text" @click="updateOkr(scope.row)" class="tl-btn">编辑</el-button>
+                <el-button
+                  type="text"
+                  @click="updateOkr(scope.row)"
+                  v-if="hasPower('tenant-period-add')"
+                  class="tl-btn"
+                  >编辑</el-button
+                >
               </template>
             </el-table-column>
           </el-table>

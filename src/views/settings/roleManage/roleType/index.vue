@@ -17,11 +17,13 @@
           </el-form-item>
         </el-form>
         <el-button
+          v-if="hasPower('tenant-role-add')"
           type="primary"
           icon="el-icon-plus"
           @click="showAddRoule"
           class="tl-btn amt-bg-slip"
-        >新增角色</el-button>
+          >新增角色</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -35,27 +37,32 @@
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="roleCode" label="角色编码" min-width="140">
               <template slot-scope="scope">
-                <span v-if="scope.row.roleCode">{{scope.row.roleCode}}</span>
+                <span v-if="scope.row.roleCode">{{ scope.row.roleCode }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="roleName" label="角色名称" min-width="160">
               <template slot-scope="scope">
-                <span v-if="scope.row.roleName">{{scope.row.roleName}}</span>
+                <span v-if="scope.row.roleName">{{ scope.row.roleName }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="roleType" label="类型" min-width="120">
               <template slot-scope="scope">
-                <span v-if="scope.row.roleType">{{CONST.ROLE_TYPE[scope.row.roleType]}}</span>
+                <span v-if="scope.row.roleType">{{
+                  CONST.ROLE_TYPE[scope.row.roleType]
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间" min-width="180">
               <template slot-scope="scope">
-                <span
-                  v-if="scope.row.createTime"
-                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-if="scope.row.createTime">{{
+                  dateFormat(
+                    "YYYY-mm-dd HH:MM:SS",
+                    new Date(scope.row.createTime)
+                  )
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
@@ -63,27 +70,36 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  @click="$router.push({
-                    path:'/members',
-                    query:{
-                    roleId:scope.row.roleId,
-                    name:encodeURI(scope.row.roleName),
-                    roleType:scope.row.roleType
-                    }})"
+                  v-if="hasPower('tenant-role-user-query')"
+                  @click="
+                    $router.push({
+                      path: '/members',
+                      query: {
+                        roleId: scope.row.roleId,
+                        name: encodeURI(scope.row.roleName),
+                        roleType: scope.row.roleType,
+                      },
+                    })
+                  "
                   class="tl-btn"
-                >成员管理</el-button>
+                  >成员管理</el-button
+                >
                 <el-button
                   @click="putRoule(scope.row)"
-                  v-show="scope.row.roleType=='CREATION'"
+                  v-show="scope.row.roleType == 'CREATION'"
                   type="text"
                   class="tl-btn"
-                >编辑</el-button>
+                  v-if="hasPower('tenant-role-edit')"
+                  >编辑</el-button
+                >
                 <el-button
                   type="text"
                   @click="handleDelete(scope.row.roleId)"
-                  v-if="scope.row.roleType=='CREATION'"
+                  v-show="scope.row.roleType == 'CREATION'"
+                  v-if="hasPower('tenant-role-user-remove')"
                   class="tl-btn"
-                >移除</el-button>
+                  >移除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>

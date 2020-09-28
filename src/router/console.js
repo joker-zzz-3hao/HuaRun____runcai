@@ -162,7 +162,7 @@ export default [{
       isSubMenu: true,
       parentRoute: 'myOkr',
       title: 'okrSummarize',
-      power: '',
+      power: 'all-okr',
     },
     component: () => import('@/views/okrManage/okrSummarize/index'),
   },
