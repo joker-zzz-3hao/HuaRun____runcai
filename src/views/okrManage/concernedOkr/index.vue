@@ -14,22 +14,22 @@
         :class="item.targetId == selectUserId ? 'red' : 'green'"
         @click="selectUser(item)"
       >
-        <div style="display:flex;" class="user-info">
+        <div style="display: flex" class="user-info">
           <div v-if="item.headUrl">
             <el-avatar :src="item.headUrl"></el-avatar>
           </div>
           <div v-else-if="item.userName" class="user-name">
-            <em>{{item.userName.substring(item.userName.length-2)}}</em>
+            <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
           </div>
-          <div>{{item.targetName}}</div>
-          <div>{{`(${item.orgName})`}}</div>
+          <div>{{ item.targetName }}</div>
+          <div>{{ `(${item.orgName})` }}</div>
         </div>
         <div @click="cancelFocus(item)">取消关注</div>
       </div>
     </div>
     <div v-for="item in tableList" :key="item.okrMain.okrId">
       <div class="card-panel-head">
-        <div class="okr-title">{{item.okrMain.periodName}}</div>
+        <div class="okr-title">{{ item.okrMain.periodName }}</div>
         <dl class="okr-state">
           <dt>
             <i class="el-icon-set-up"></i>
@@ -37,7 +37,7 @@
           </dt>
           <dd>
             <i class="el-icon-sunny"></i>
-            <em>{{CONST.STATUS_LIST_MAP[item.okrMain.status]}}</em>
+            <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
           </dd>
         </dl>
         <dl class="okr-responsible">
@@ -45,7 +45,7 @@
             <i class="el-icon-user"></i>
             <em>负责人</em>
           </dt>
-          <dd>{{item.okrMain.userName}}</dd>
+          <dd>{{ item.okrMain.userName }}</dd>
         </dl>
         <dl class="okr-progress">
           <dt>
@@ -106,7 +106,6 @@ export default {
       param: [],
       selectUserId: '',
       tableList: [],
-      showReal: true, // 展示示例图片 false
     };
   },
   computed: {

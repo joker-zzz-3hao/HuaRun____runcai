@@ -7,7 +7,7 @@
     <img @click="showDia" src="~@/assets/images/demoPic/helpicon.png" />
     <div v-if="showDialog">
       <el-dialog append-to-body @close="close" :visible="showDialog">
-        <div>Hello {{userInfo.userName}}</div>
+        <div>Hello {{ userInfo.userName }}</div>
         <div>您可以在这给你的同事发送提醒或待办任务哦~</div>
         <div>
           <span>发送类型</span>
@@ -38,22 +38,34 @@
                 :label="item.userName"
                 :value="item.userId"
               >
-                <span style="float:left">
-                  <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <span style="float: left">
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
                     <div v-if="item.userName" class="user-name">
-                      <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
                     </div>
                   </el-avatar>
                 </span>
-                <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                <span style="float: left; marginleft: 5px">{{
+                  item.userName
+                }}</span>
               </el-option>
             </el-select>
           </div>
           <div v-if="formData.noticeType == 2">待办</div>
           <div v-if="formData.noticeType == 3">
             <div>
-              <el-radio v-model="formData.callbackType" label="1">遇到问题</el-radio>
-              <el-radio v-model="formData.callbackType" label="2">使用建议</el-radio>
+              <el-radio v-model="formData.callbackType" label="1"
+                >遇到问题</el-radio
+              >
+              <el-radio v-model="formData.callbackType" label="2"
+                >使用建议</el-radio
+              >
             </div>
             <div>
               <span>选择模块</span>
@@ -67,7 +79,11 @@
           <el-input
             v-model="formData.noticeContent"
             type="textarea"
-            :placeholder="formData.noticeType == '1' ? '这里请输入你想说的内容~':'请详细描述您的问题'"
+            :placeholder="
+              formData.noticeType == '1'
+                ? '这里请输入你想说的内容~'
+                : '请详细描述您的问题'
+            "
           ></el-input>
         </div>
         <div>
@@ -117,7 +133,6 @@ export default {
           name: '发送问题反馈',
         },
       ],
-      showReal: true, // 展示示例图片 false
     };
   },
   created() {

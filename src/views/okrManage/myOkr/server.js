@@ -49,7 +49,7 @@ export default class Server extends ServerBase {
 
   // 承接项
   getUndertakeOkr(param) {
-    return this._ajaxPost(`gateway/talent-okr/okr/main/getUndertakeOkr?periodId=${param.periodId}`);
+    return this._ajaxPost('gateway/talent-okr/okr/main/getUndertakeOkr', param);
   }
 
   // 价值观

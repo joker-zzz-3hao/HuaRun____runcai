@@ -1,59 +1,79 @@
 <template>
   <el-scrollbar>
     <div class="cont-box">
-      <dl v-if="showPhil" class="dl-list">
+      <dl
+        class="dl-list"
+        v-for="pItem in parentUndertake"
+        :key="pItem.periodName"
+      >
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}</em>
+          <em>{{ departmentName }}{{ pItem.periodName }}</em>
           <span>(单选)</span>
         </dt>
         <dd class="tag-kind">
           <el-radio-group v-model="modelDepart">
             <el-radio
-              @click.native="selectDepartokr($event,index,item)"
+              @click.native="selectDepartokr($event, index, item)"
               class="tl-radio"
-              :label="item.okrDetailId"
-              v-for="(item,index) in departokrList"
+              :label="item.okrDetailId + item.okrDetailVersion"
+              v-for="(item, index) in pItem.departokrList"
               :key="item.okrDetailId"
             >
-              <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
-              <em>{{item.okrDetailObjectKr}}</em>
+              <span
+                :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
+                >{{ item.typeName }}</span
+              >
+              <em>{{ item.okrDetailObjectKr }}</em>
             </el-radio>
           </el-radio-group>
         </dd>
-        <dd class="tag-kind" v-if="departokrList.length < 1">暂无可承接的父目标</dd>
+        <dd class="tag-kind" v-if="pItem.departokrList.length < 1">
+          暂无可承接的父目标
+        </dd>
       </dl>
-      <dl v-else class="dl-list">
+      <dl v-if="!showPhil" class="dl-list">
         <dt class="list-title">
-          <em>{{departmentName}}{{periodName}}</em>
+          <em>{{ departmentName }}{{ periodName }}</em>
           <span>(单选)</span>
         </dt>
         <dd class="tag-kind">
           <el-radio-group v-model="modelDepart">
             <el-radio
-              @click.native="selectDepartokr($event,index,item)"
+              @click.native="selectDepartokr($event, index, item)"
               class="tl-radio"
-              :label="item.okrDetailId+item.okrDetailVersion"
-              v-for="(item,index) in departokrList"
-              :key="item.okrDetailId+index"
+              :label="item.okrDetailId + item.okrDetailVersion"
+              v-for="(item, index) in departokrList"
+              :key="item.okrDetailId + index"
             >
-              <div v-if="currentOption.includes(item.okrDetailId)" class="undertake-change">
-                <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
+              <div
+                v-if="currentOption.includes(item.okrDetailId)"
+                class="undertake-change"
+              >
+                <span
+                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
+                  >{{ item.typeName }}</span
+                >
                 <em v-if="item.currentOption">
-                  <em>「历史版本{{item.okrDetailVersion}}」</em>
+                  <em>「历史版本{{ item.okrDetailVersion }}」</em>
                   <em>(当前选择)</em>
                 </em>
-                <em v-else-if="currentOption.includes(item.okrDetailId)">「最新版本」</em>
+                <em v-else-if="currentOption.includes(item.okrDetailId)"
+                  >「最新版本」</em
+                >
                 <div>
-                  <p>{{item.okrDetailObjectKr}}</p>
+                  <p>{{ item.okrDetailObjectKr }}</p>
                   <p v-if="item.modifyReason">
                     <span>变更原因</span>
-                    {{item.modifyReason}}
+                    {{ item.modifyReason }}
                   </p>
                 </div>
               </div>
               <template v-else>
-                <span :class="item.okrKind == 'o' ? 'kind-parent':'kind-child'">{{item.typeName}}</span>
-                <em>{{item.okrDetailObjectKr}}</em>
+                <span
+                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
+                  >{{ item.typeName }}</span
+                >
+                <em>{{ item.okrDetailObjectKr }}</em>
               </template>
             </el-radio>
           </el-radio-group>
@@ -67,12 +87,13 @@
         <dd>
           <el-radio-group v-model="modelPhil">
             <el-radio
-              @click.native="selectphilosophy($event,index,item)"
+              @click.native="selectphilosophy($event, index, item)"
               class="tl-radio"
               :label="item.id"
-              v-for="(item,index) in philosophyList"
+              v-for="(item, index) in philosophyList"
               :key="item.id"
-            >{{item.cultureName}}</el-radio>
+              >{{ item.cultureName }}</el-radio
+            >
           </el-radio-group>
         </dd>
       </dl>
@@ -87,9 +108,6 @@ export default {
   name: 'undertakeTable',
   props: {
     departokrList: {
-      type: Array,
-    },
-    philosophyList: {
       type: Array,
     },
     showPhil: {
@@ -112,7 +130,10 @@ export default {
       type: String,
       default: '',
     },
-
+    server: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -123,6 +144,8 @@ export default {
       departmentName: '',
       modelDepart: '', // 中转prop
       modelPhil: '', // 中转prop
+      parentUndertake: [],
+      philosophyList: [],
     };
   },
   created() {
@@ -131,6 +154,8 @@ export default {
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
     }
+    this.getUndertakeOkr();
+    this.getCultureList();
   },
   computed: {
     ...mapState('common', {
@@ -139,6 +164,89 @@ export default {
     }),
   },
   methods: {
+    getUndertakeOkr() {
+      this.server.getUndertakeOkr().then((res) => {
+        if (res.code == 200) {
+          this.parentUndertake = [];
+          if (res.data.parentUndertakeOkrInfoResults) {
+            res.data.parentUndertakeOkrInfoResults.forEach((pItem) => {
+              const departokrList = [];
+              pItem.okrList.forEach((item) => {
+                if (this.selectRadioDepart == item.o.okrDetailId
+                || this.selectRadioDepart == item.o.okrDetailId + item.o.okrDetailVersion) {
+                  console.log(this.selectRadioDepart);
+                  this.selectDepartRow = {
+                    typeName: '目标',
+                    okrKind: 'o',
+                    okrDetailObjectKr: item.o.okrDetailObjectKr,
+                    okrDetailId: item.o.okrDetailId,
+                    okrDetailVersion: item.o.okrDetailVersion,
+                  };
+                }
+                departokrList.push({
+                  typeName: '目标',
+                  okrKind: 'o',
+                  okrDetailObjectKr: item.o.okrDetailObjectKr,
+                  okrDetailId: item.o.okrDetailId,
+                  okrDetailVersion: item.o.okrDetailVersion,
+                });
+                if (item.krList && item.krList.length > 0) {
+                  item.krList.forEach((krItem) => {
+                    if (this.selectRadioDepart == krItem.okrDetailId
+                || this.selectRadioDepart == krItem.okrDetailId + krItem.okrDetailVersion) {
+                      this.selectDepartRow = {
+                        typeName: 'KR',
+                        okrKind: 'k',
+                        okrDetailObjectKr: krItem.okrDetailObjectKr,
+                        okrDetailId: krItem.okrDetailId,
+                        okrDetailVersion: krItem.okrDetailVersion,
+                      };
+                    }
+                    departokrList.push({
+                      typeName: 'KR',
+                      okrKind: 'k',
+                      okrDetailObjectKr: krItem.okrDetailObjectKr,
+                      okrDetailId: krItem.okrDetailId,
+                      okrDetailVersion: krItem.okrDetailVersion,
+                    });
+                  });
+                }
+              });
+              if (this.periodName == pItem.okrPeriodEntity.periodName && this.departokrList) {
+                this.parentUndertake.push({
+                  periodName: this.periodName,
+                  departokrList: this.departokrList,
+                });
+              } else {
+                this.parentUndertake.push({
+                  periodName: pItem.okrPeriodEntity.periodName,
+                  departokrList,
+                });
+              }
+            });
+            if (this.departokrList && this.selectRadioDepart) {
+              console.log('这是变更');
+              this.selectDepartRow = this.departokrList.filter(
+                (item) => item.okrDetailId + item.okrDetailVersion == this.selectRadioDepart,
+              )[0] || {};
+            }
+          }
+        }
+      });
+    },
+    // 查公司价值观
+    getCultureList() {
+      this.server.queryCultureList().then((res) => {
+        if (res.code == 200) {
+          this.philosophyList = res.data || [];
+          if (this.selectRadioPhil) {
+            this.selectPhilRow = this.philosophyList.filter(
+              (item) => item.id == this.selectRadioPhil,
+            )[0] || {};
+          }
+        }
+      });
+    },
     // 选择关联的okr
     selectDepartokr(e, index, row) {
       // 原生click会执行两次，第一次在label等，第二次在input
@@ -172,24 +280,12 @@ export default {
     selectRadioDepart: {
       handler(newVal) {
         this.modelDepart = newVal;
-        if (newVal) {
-          this.selectDepartRow = this.departokrList.filter(
-            (item) => item.okrDetailId == newVal
-            || item.okrDetailId + item.okrDetailVersion == newVal,
-          )[0] || {};
-        }
       },
       immediate: true,
     },
     selectRadioPhil: {
       handler(newVal) {
         this.modelPhil = newVal;
-        if (newVal) {
-          this.selectPhilRow = this.philosophyList.filter(
-            (item) => item.id == newVal,
-          )[0] || {};
-          console.log('价值观', this.selectPhilRow);
-        }
       },
       immediate: true,
     },
