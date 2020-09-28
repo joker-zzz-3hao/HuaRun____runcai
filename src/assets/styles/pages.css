@@ -1170,10 +1170,10 @@
 .okr-maps .operating-area .el-button {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .okr-maps .operating-area .el-button > span {
-  margin: 0 10px 0 0;
   order: 0;
 }
 
@@ -1192,6 +1192,94 @@
 
 .okr-maps .okr-info dd em {
   width: unset;
+}
+
+.okr-maps .maps-search {
+  flex: 1;
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.okr-maps .maps-search .tab-cont-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid #f4f6f8;
+}
+
+.okr-maps .maps-search .tab-cont-list li:last-child {
+  border-color: transparent;
+}
+
+.okr-maps .maps-search .tab-cont-list dd,
+.okr-maps .maps-search .tab-cont-list dd div {
+  display: flex;
+  align-items: center;
+}
+
+.okr-maps .maps-search .tab-cont-list dd .el-progress-circle {
+  display: unset;
+}
+
+.okr-maps .maps-search .tab-cont-list dd .el-progress__text {
+  justify-content: center;
+}
+
+.okr-maps .maps-search .tab-cont-list dd {
+  margin: 10px 0 0 0;
+  justify-content: space-between;
+}
+
+.okr-maps .maps-search .tab-cont-list dd > div:first-child {
+  flex: 1;
+}
+
+.okr-maps .maps-search .tab-cont-list dd div.user-info {
+  flex: unset;
+}
+
+.okr-maps .maps-search .tab-cont-list dd > div:last-child {
+  margin: 0 0 0 20px;
+}
+
+.okr-maps .maps-search .tab-cont-list dd > div span {
+  margin: 0 10px 0 0;
+  color: #acb6bf;
+}
+
+.okr-maps .maps-search .tab-cont-list dd > div img + em,
+.okr-maps .maps-search .tab-cont-list dd > div em + em {
+  margin: 0 0 0 10px;
+  color: #4d5155;
+}
+
+.okr-maps .maps-search .tab-cont-list dd > div em {
+  color: #4d5155;
+}
+
+.okr-maps .maps-search .tab-cont-list .is-o .current-progress {
+  background: #4ccd79;
+}
+
+.okr-maps .maps-search .tab-cont-list .is-o .progress-number {
+  color: #4ccd79;
+  font-size: 16px;
+}
+
+.okr-maps .maps-search .tab-cont-list .is-kr .progress-number {
+  color: #685df1;
+  font-size: 16px;
+}
+
+.okr-maps .maps-search div.tab-cont-list dt {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4d5155;
+}
+
+.okr-maps .maps-search div.tab-cont-list dl {
+  margin: 16px 0;
+  padding: 20px;
+  background: #f4f6f8;
 }
 
 /* undertake-maps */

@@ -1,43 +1,46 @@
 <template>
-  <div>
-    <div
-      v-for="item in searchData"
-      :key="item.resource_id"
-      style="display: flex;flex-direction: column;"
-    >
-      <div style="display:flex;">
-        <div>{{CONST.OKR_TYPE_MAP[item.okr_detail_type]}}</div>
-        <div v-html="item.okr_detail_content"></div>
-      </div>
-      <div style="display:flex;justify-content: space-between;">
-        <div style="display: flex;">
-          <div>当前进度</div>
+  <ul class="tab-cont-list">
+    <li v-for="item in searchData" :key="item.resource_id">
+      <dl>
+        <dt class="tag-kind">
+          <span class="kind-parent">{{CONST.OKR_TYPE_MAP[item.okr_detail_type]}}</span>
+          <em v-html="item.okr_detail_content"></em>
+        </dt>
+        <dd>
           <div>
-            <el-progress style="width:200px;" :percentage="item.okrDetailProgress" :color="color"></el-progress>
+            <span>当前进度</span>
+            <tl-process
+              :data="parseInt(item.okrDetailProgress,10)"
+              :width="40"
+              :marginLeft="6"
+              :class="item.okr_detail_type == 0 ? 'is-o' : 'is-kr'"
+            ></tl-process>
           </div>
-        </div>
-        <div style="display: flex;">
           <div>
             <span>来自</span>
-            <span>{{item.org_name}}</span>
+            <em>{{item.org_name}}</em>
           </div>
-          <div>
+          <div class="user-info">
             <span>负责人</span>
-            <el-avatar icon="el-icon-user-solid"></el-avatar>
-            <span>{{item.user_name}}</span>
+            <img v-if="true" src="@/assets/images/user/user.jpg" alt />
+            <em v-else class="user-name">{{cutName(item.user_name)}}</em>
+            <em>{{item.user_name}}</em>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        </dd>
+      </dl>
+    </li>
+  </ul>
 </template>
 
 <script>
+import process from '@/components/process';
 import CONST from '../const';
 
 export default {
   name: 'searchOKR',
-  components: {},
+  components: {
+    'tl-process': process,
+  },
   props: {
     searchData: {
       type: Array,
@@ -54,7 +57,12 @@ export default {
   },
   mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
+  },
   watch: {
     'searchData.length': {
       handler(val) {

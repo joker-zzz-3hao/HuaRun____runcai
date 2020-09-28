@@ -374,7 +374,7 @@ export default [{
       noSubMenu: true,
       parentRoute: 'note',
       title: 'note',
-      power: '',
+      power: 'note',
     },
     component: () => import('@/views/note/index'),
   },
