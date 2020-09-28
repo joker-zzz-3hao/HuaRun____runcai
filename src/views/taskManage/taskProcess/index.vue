@@ -20,13 +20,13 @@
         <div class="operating-right">
           <el-button
             type="primary"
-            @click="createTask"
+            @click="goCreateTask"
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-claim"
           >添加任务</el-button>
           <el-button
             type="primary"
-            @click="createTask"
+            @click="todo"
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-cooperation"
           >查看归档任务</el-button>
@@ -45,25 +45,41 @@
       </div>
       <div>
         <div class="operating-right">
-          <el-button
-            type="primary"
-            @click="createTask"
-            class="tl-btn amt-bg-slip"
-            icon="el-icon-s-claim"
-          >全部分类</el-button>
-          <el-button
-            type="primary"
-            @click="createTask"
-            class="tl-btn amt-bg-slip"
-            icon="el-icon-s-cooperation"
-          >无分类</el-button>
-          <el-button
-            type="primary"
-            @click="createTask"
-            class="tl-btn amt-bg-slip"
-            icon="el-icon-s-cooperation"
-          >新分类</el-button>
-          <i class="el-icon-circle-plus-outline"></i>
+          <div>
+            <el-button
+              type="primary"
+              @click="queryTaskByClassify('')"
+              class="tl-btn amt-bg-slip"
+              icon="el-icon-s-claim"
+            >全部分类</el-button>
+            <el-button
+              v-for="classify in processClassifyList"
+              :key="classify.typeId"
+              type="primary"
+              @click="queryTaskByClassify(classify.typeId)"
+              class="tl-btn amt-bg-slip"
+              :icon="!classify.isEdit?'el-icon-s-claim':''"
+            >
+              <el-input
+                @blur="editClassifyName(classify)"
+                v-if="classify.isEdit"
+                v-model="typeName"
+              ></el-input>
+              <span v-else>{{classify.typeName}}</span>
+              <!-- <i class="el-icon-more"></i> -->
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="editClassify(classify)">重新命名分类</el-dropdown-item>
+                  <el-dropdown-item @click.native="deleteClassify(classify)">删除分类</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-button>
+
+            <i @click="addClassify" style="cursor:pointer" class="el-icon-circle-plus-outline"></i>
+          </div>
           <el-input placeholder="输入任务标题" style="width:200px" clearable class="tl-input">
             <i class="el-icon-search el-input__icon" slot="prefix"></i>
           </el-input>
@@ -98,17 +114,36 @@
         </div>
         <div>
           <tl-list v-if="taskType == 1"></tl-list>
-          <tl-board v-else></tl-board>
+          <tl-board
+            ref="board"
+            :processObj="processObj"
+            :stepList="stepList"
+            v-if="taskType == 2 && stepList.length > 0"
+          ></tl-board>
         </div>
       </div>
     </div>
     <tl-custom-process
       ref="customProcess"
       :optionType="optionType"
-      :process="process"
+      :processObj="processObj"
       @closeAddProcess="closeAddProcess"
       v-if="showCustomProcess"
     ></tl-custom-process>
+    <tl-create-task
+      ref="createtask"
+      v-if="existCreatetask"
+      :existCreatetask.sync="existCreatetask"
+      :server="server"
+      @success="getTableList"
+    ></tl-create-task>
+    <tl-edit-task
+      ref="editTask"
+      v-if="existEditTask"
+      :existCreatetask.sync="existEditTask"
+      :server="server"
+      @success="getTableList"
+    ></tl-edit-task>
   </div>
 </template>
 
@@ -116,6 +151,8 @@
 import tlList from './components/listPage';
 import tlBoard from './components/boardPage';
 import tlCustomProcess from './components/customProcess';
+import tlCreateTask from '../myTask/components/createTask';
+import tlEditTask from '../myTask/components/editTask';
 import Server from './server';
 
 const server = new Server();
@@ -125,15 +162,23 @@ export default {
     tlList,
     tlBoard,
     tlCustomProcess,
+    tlCreateTask,
+    tlEditTask,
   },
   data() {
     return {
       server,
+      processId: '',
+      typeName: '',
       taskProcessList: [],
+      stepList: [],
+      processClassifyList: [],
       showReal: false, // 展示示例图片 false
       changeKanban: true,
       showCustomProcess: false,
-      process: {},
+      existCreatetask: false,
+      existEditTask: false,
+      processObj: {},
       taskTypeList: [1, 2],
       taskType: 2,
       executorList: [
@@ -141,28 +186,14 @@ export default {
           executorId: '1',
           executorName: '张三',
         },
-        {
-          executorId: '2',
-          executorName: '李四',
-        },
-        {
-          executorId: '3',
-          executorName: '王五',
-        },
+
       ],
       creatorList: [
         {
           creatorId: '1',
           creatorName: '王二麻子',
         },
-        {
-          creatorId: '2',
-          creatorName: 'tony老师',
-        },
-        {
-          creatorId: '3',
-          creatorName: '张学友',
-        },
+
       ],
       executorId: '',
       creatorId: '',
@@ -173,15 +204,25 @@ export default {
     this.server.queryTaskProcessList().then((res) => {
       if (res.code == 200) {
         this.taskProcessList = res.data;
+        this.processId = res.data[0].processId;
+        // 初始化页面,默认查询第一个任务过程的步骤
+        this.selectProcess(res.data[0]);
       }
     });
   },
   methods: {
-    createTask() {
-
-    },
     goback() {
       this.$router.go('-1');
+    },
+    queryProcessClassify() {
+      this.server.queryProcessClassify({ processId: this.processId }).then((res) => {
+        if (res.code == 200) {
+          this.processClassifyList = res.data;
+          this.processClassifyList.forEach((classify) => {
+            this.$set(classify, 'isEdit', false);
+          });
+        }
+      });
     },
     settaskType(type) {
       this.taskType = type;
@@ -190,7 +231,8 @@ export default {
       this.optionType = 'create';
       if (process && process.processId) {
         this.optionType = 'edit';
-        this.process = process;
+        this.processObj = process;
+        this.processId = process.processId;
       }
       this.showCustomProcess = true;
       this.$nextTick(() => {
@@ -198,14 +240,75 @@ export default {
       });
     },
     selectProcess(process) {
+      this.processObj = process;
+      this.queryProcessClassify();
       this.server.queryTaskStep({ processId: process.processId }).then((res) => {
         if (res.code == 200) {
-
+          this.stepList = res.data;
         }
       });
     },
+
     closeAddProcess(data) {
+      console.log(data);
       this.showCustomProcess = false;
+    },
+    goCreateTask() {
+      this.existCreatetask = true;
+      this.$nextTick(() => {
+        this.$refs.createtask.show();
+      });
+    },
+    openEdit(id) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(id);
+      });
+    },
+    getTableList() {},
+    todo() {},
+    queryTaskByClassify(typeId) {
+      this.$refs.board.init(typeId);
+    },
+    addClassify() {
+      const index = 0;
+      this.server.addProcessType({
+        available: 1,
+        processId: this.processId,
+        typeName: `新分类${index}`,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.queryProcessClassify({ processId: this.processId });
+        }
+      });
+    },
+    editClassify(classify) {
+      classify.isEdit = true;
+    },
+    editClassifyName(classify) {
+      this.server.updateClassify({
+        available: 1,
+        processId: this.processId,
+        typeId: classify.typeId,
+        typeName: this.typeName,
+      }).then((res) => {
+        if (res.code == 200) {
+          console.log(res);
+          this.queryProcessClassify({ processId: this.processId });
+        }
+      });
+    },
+    deleteClassify(classify) {
+      this.server.updateClassify({
+        available: 0,
+        processId: this.processId,
+        typeId: classify.typeId,
+      }).then((res) => {
+        if (res.code == 200) {
+          console.log(res);
+          this.queryProcessClassify({ processId: this.processId });
+        }
+      });
     },
   },
 };

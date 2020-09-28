@@ -72,6 +72,7 @@
           :loading="loading"
           @click="addProcess"
         >确定</el-button>
+        <el-button class="tl-btn amt-bg-slip" :loading="loading" @click="close">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -92,7 +93,7 @@ export default {
         return 'create';
       },
     },
-    process: {
+    processObj: {
       type: Object,
       default() {
         return {};
@@ -132,15 +133,17 @@ export default {
     this.formData.orgId = this.userInfo.orgId;
     this.remoteMethod();
     if (this.optionType == 'edit') {
-      this.server.queryProcessInfo({ processId: this.process.processId }).then((res) => {
+      this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
         if (res.code == 200) {
           res.data.forEach((user) => {
-            this.formData.userIdList.push(user.userId);
+            if (user.userId) {
+              this.formData.userIdList.push(user.userId);
+            }
           });
         }
       });
-      this.formData.processType = this.process.processType;
-      this.formData.processName = this.process.processName;
+      this.formData.processType = this.processObj.processType;
+      this.formData.processName = this.processObj.processName;
     }
   },
   mounted() {},
@@ -201,7 +204,6 @@ export default {
       } else {
         this.formData.processType = '';
       }
-      this.formData.userIdList = [];
     },
     selectLocalUser(local) {
       if (local) {
@@ -218,22 +220,33 @@ export default {
       } else {
         this.formData.processType = '';
       }
-      this.formData.userIdList = [];
     },
     addProcess() {
+      if (this.formData.processType == '1') { // 团队需要orgId
+        this.formData.userIdList = [];
+      }
+      if (this.formData.processType == '2') { // 小范围、个人不需要orgId，需要userIdList
+        this.formData.orgId = '';
+      }
+      if (this.formData.processType == '3') { // 小范围、个人不需要orgId，需要userIdList
+        this.formData.orgId = '';
+        this.formData.userIdList = [this.userInfo.userId];
+      }
       if (this.optionType == 'edit') {
-        this.formData.processId = this.process.processId;
+        this.formData.processId = this.processObj.processId;
         // 校验必填项
         this.server.editProcess(this.formData).then((res) => {
           if (res.code == 200) {
-            debugger;
+            this.$message.success('修改成功');
+            this.$emit('closeAddProcess');
           }
         });
       } else {
         // 校验必填项
         this.server.addProcess(this.formData).then((res) => {
           if (res.code == 200) {
-            debugger;
+            this.$message.success('新增成功');
+            this.$emit('closeAddProcess');
           }
         });
       }

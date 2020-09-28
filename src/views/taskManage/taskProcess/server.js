@@ -33,6 +33,26 @@ export default class Server extends ServerBase {
 
   // 任务过程详情
   queryProcessInfo(param) {
-    return this._ajaxPost('gateway/task-service//query', param);
+    return this._ajaxPost('gateway/task-service/query', param);
+  }
+
+  // 查询任务分类
+  queryProcessClassify(param) {
+    return this._ajaxPost('gateway/task-service/taskProcessType/queryProcessType', param);
+  }
+
+  // 新增任务分类
+  addProcessType(param) {
+    return this._ajaxPost('gateway/task-service/taskProcessType/addProcessType', param);
+  }
+
+  // 编辑、删除任务分类
+  updateClassify(param) {
+    return this._ajaxPost('gateway/task-service/taskProcessType/updateProcessType', param);
+  }
+
+  // 新建任务
+  createTask(param) {
+    return this._ajaxPost('gateway/task-service/task/save', param);
   }
 }

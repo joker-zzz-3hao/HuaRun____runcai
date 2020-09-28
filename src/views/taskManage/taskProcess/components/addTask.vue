@@ -19,9 +19,9 @@
           <el-form-item prop="taskTitle">
             <el-input maxlength="100" placeholder="请输入任务标题" v-model.trim="formData.taskTitle"></el-input>
           </el-form-item>
-          <el-form-item prop="userId">
+          <el-form-item prop="taskUserId">
             <el-select
-              v-model.trim="formData.userId"
+              v-model.trim="formData.taskUserId"
               filterable
               placeholder="请输入成员姓名"
               remote
@@ -46,46 +46,48 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="timeBeg">
+          <el-form-item prop="taskBegDate">
             <!-- TODO:时间精确到分 -->
             <el-date-picker
               placeholder="开始时间"
               :picker-options="dateBegRange"
-              v-model="formData.timeBeg"
+              v-model="formData.taskBegDate"
+              format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item prop="timeEnd">
+          <el-form-item prop="taskEndDate">
             <el-date-picker
               placeholder="截止时间"
               :picker-options="dateEndRange"
-              v-model="formData.timeEnd"
+              v-model="formData.taskEndDate"
+              format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item prop="priority">
-            <el-select v-model="formData.priority" placeholder="优先级">
+          <el-form-item prop="taskLevel">
+            <el-select v-model="formData.taskLevel" placeholder="优先级">
               <el-option
                 :label="item.name"
-                :value="item.priority"
-                v-for="item in priorityList"
-                :key="item.priority"
+                :value="item.taskLevel"
+                v-for="item in taskLevelList"
+                :key="item.taskLevel"
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="process">
+          <el-form-item prop="taskProgress">
             <el-slider
-              v-model="formData.process"
+              v-model="formData.taskProgress"
               @change="processChange"
               :step="1"
               show-input
               style="width:60%"
             ></el-slider>
           </el-form-item>
-          <el-form-item label="当前进度更新原因说明" prop="reason">
+          <el-form-item label="当前进度更新原因说明" prop="taskProgressRemark">
             <el-input
               maxlength="220"
               placeholder="请输入当前进度更新原因"
               type="textarea"
-              v-model="formData.reason"
+              v-model="formData.taskProgressRemark"
             ></el-input>
           </el-form-item>
         </el-form>
@@ -105,34 +107,44 @@ const server = new Server();
 export default {
   name: '',
   components: {},
-  props: {},
+  props: {
+    stepData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       server,
       visible: false,
       loading: false,
       formData: {
+        processId: this.stepData.processId,
+        stepId: this.stepData.stepId,
+        typeId: this.stepData.typeId,
         taskTitle: '',
-        userId: '',
-        timeBeg: '',
-        timeEnd: '',
-        priority: '',
-        process: 0,
-        reason: '',
+        taskUserId: '',
+        taskBegDate: '',
+        taskEndDate: '',
+        taskLevel: '',
+        taskProgress: 0,
+        taskProgressRemark: '',
       },
       userList: [],
-      priorityList: [
+      taskLevelList: [
         {
-          priority: '1',
-          name: '高',
+          taskLevel: '1',
+          name: '低',
         },
         {
-          priority: '2',
+          taskLevel: '10',
           name: '中',
         },
         {
-          priority: '3',
-          name: '低',
+          taskLevel: '20',
+          name: '高',
         },
       ],
       dateBegRange: {
@@ -143,7 +155,7 @@ export default {
       },
       dateEndRange: {
         // disabledDate(time) {
-        //   return time.getTime() < new Date(this.formData.timeBeg).getTime();
+        //   return time.getTime() < new Date(this.formData.taskBegDate).getTime();
         // },
       },
     };
@@ -156,7 +168,6 @@ export default {
       this.server.getUserListByOrgId({
         currentPage: 1,
         pageSize: 20,
-        // orgFullId: this.treeData[0].orgId,
         userName: name ? name.trim() : '',
       }).then((res) => {
         if (res.code == 200) {
@@ -170,7 +181,11 @@ export default {
       }
     },
     create() {
-
+      this.server.createTask(this.formData).then((res) => {
+        if (res.code == 200) {
+          console.log('');
+        }
+      });
     },
     errorHandler() {
       return true;

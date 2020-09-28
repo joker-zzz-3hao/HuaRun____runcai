@@ -1,113 +1,42 @@
 <template>
   <div class="row">
-    <div class="col-4">
-      <h3>最外层</h3>
-      <!-- <el-button style="width:380px" @click="addTask">
+    <!-- <draggable
+      class="list-group parent"
+      :list="rootData"
+      :clone="cloneDog"
+      @end="onMove"
+      id="norun"
+      :options="options"
+    >-->
+    <!-- <div class="list-group-item" v-for="stepData in rootData" :key="stepData.stepId"> -->
+    <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
+      <h3>{{stepData.stepName}}</h3>
+      <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
-      </el-button>-->
+      </el-button>
       <draggable
-        class="list-group parent"
-        :list="rootData"
+        class="list-group"
+        :list="stepData.stepTaskList"
         :clone="cloneDog"
         @end="onMove"
         id="norun"
         :options="options"
       >
-        <!-- <div class="list-group-item" v-for="stepData in rootData" :key="stepData.stepId">
-     <div class="col-4">
-          <h3>待进行</h3>
-          <el-button style="width:380px" @click="addTask">
-            <i class="el-icon-plus"></i>
-          </el-button>
-          <draggable
-            class="list-group"
-            :list="stepData.stepList"
-            :clone="cloneDog"
-            @end="onMove"
-            id="norun"
-            :options="options"
-          >
-            <div class="list-group-item" v-for="(element, index) in stepData.stepList" :key="element.name">
-              <p>序号：{{index}}</p>
-              {{ element.name }} {{ element.id }}
-              <p>{{element.okr}}</p>
-              <p>{{element.status}}</p>
-            </div>
-          </draggable>
-        </div>
-        </div>-->
-        <div class="col-4">
-          <h3>待进行</h3>
-          <el-button style="width:380px" @click="addTask">
-            <i class="el-icon-plus"></i>
-          </el-button>
-          <draggable
-            class="list-group"
-            :list="list1"
-            :clone="cloneDog"
-            @end="onMove"
-            id="norun"
-            :options="options"
-          >
-            <div class="list-group-item" v-for="(element, index) in list1" :key="element.name">
-              <p>序号：{{index}}</p>
-              {{ element.name }} {{ element.id }}
-              <p>{{element.okr}}</p>
-              <p>{{element.status}}</p>
-            </div>
-          </draggable>
-        </div>
-
-        <div class="col-4 child">
-          <h3>进行中</h3>
-          <el-button style="width:380px" @click="addTask">
-            <i class="el-icon-plus"></i>
-          </el-button>
-          <draggable
-            class="list-group"
-            :list="list2"
-            id="running"
-            :clone="cloneDog"
-            @end="onMove"
-            :options="options"
-          >
-            <div class="list-group-item" v-for="(element, index) in list2" :key="element.name">
-              <p>序号：{{index}}</p>
-              {{ element.name }} {{ element.id }}
-              <p>{{element.okr}}</p>
-              <p>{{element.status}}</p>
-            </div>
-          </draggable>
-        </div>
-
-        <div class="col-4 child">
-          <h3>已完成</h3>
-          <el-button style="width:380px" @click="addTask">
-            <i class="el-icon-plus"></i>
-          </el-button>
-          <draggable
-            class="list-group"
-            :list="list3"
-            id="end"
-            :clone="cloneDog"
-            @end="onMove"
-            :options="options"
-          >
-            <div class="list-group-item" v-for="(element, index) in list3" :key="element.name">
-              <p>序号：{{index}}</p>
-              {{ element.name }} {{ element.id }}
-              <p>{{element.okr}}</p>
-              <p>{{element.status}}</p>
-            </div>
-          </draggable>
+        <div class="list-group-item" v-for="element in stepData.stepTaskList" :key="element.taskId">
+          <p>{{element.taskLevel}}</p>
+          <p>{{ element.taskTitle }}</p>
+          <p>{{element.taskProgress}}</p>
+          <p>{{element.taskBegDate}}-{{element.taskEndDate}}</p>
         </div>
       </draggable>
     </div>
+    <!-- </div> -->
+    <!-- </draggable> -->
 
     <!-- <rawDisplayer class="col-3" :value="list1" title="List 1" />
     <rawDisplayer class="col-3" :value="list2" title="List 2" />
     <rawDisplayer class="col-3" :value="list3" title="List 3" />-->
-    <tl-add-task v-if="showAddTask" :exist.sync="showAddTask" ref="addTask"></tl-add-task>
+    <tl-add-task :stepData="stepData" v-if="showAddTask" :exist.sync="showAddTask" ref="addTask"></tl-add-task>
   </div>
 </template>
 <script>
@@ -125,44 +54,29 @@ export default {
     draggable,
     tlAddTask,
   },
+  props: {
+    stepList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    processObj: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       server,
       rootData: [],
       showAddTask: false,
-      list1: [
-        {
-          name: 'John', okr: '迭代16前端开发', status: '未开始', id: 1,
-        },
-        {
-          name: 'Joao', okr: '销售额18w', status: '未开始', id: 2,
-        },
-        {
-          name: 'Jean', okr: '迭代16后端开发', status: '未开始', id: 3,
-        },
-        {
-          name: 'Gerard', okr: '迭代16产品设计', status: '未开始', id: 4,
-        },
-      ],
-      list2: [
-        {
-          name: 'Juan', okr: '营业额29w', status: '进行中', id: 5,
-        },
-        {
-          name: 'Edgard', okr: 'UI设计', status: '进行中', id: 6,
-        },
-        {
-          name: 'Johnson', okr: '迭代16测试', status: '进行中', id: 7,
-        },
-      ],
-      list3: [
-        {
-          name: 'Juan', okr: '迭代15研发', status: '已完成', id: 8,
-        },
-      ],
+      stepId: '',
+      moveItem: {},
       changeid: '',
       removeid: '',
-      item: {},
       options: {
         group: 'people',
         ghostClass: 'chosendiv', // 占位影子
@@ -175,42 +89,65 @@ export default {
     this.init();
   },
   methods: {
-
-    init() {
+    init(typeId) {
+      const self = this;
+      self.rootData = [];
       const params = {
         currentPage: 1,
         pageSize: 10,
+        processId: self.processObj.processId,
+        typeId: typeId || '',
       };
-      this.server.queryTaskList(params).then((res) => {
+      self.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {
+          for (let i = 0; i < self.stepList.length; i += 1) {
+            self.rootData.push(
+              {
+                stepId: self.stepList[i].stepId,
+                processId: self.processObj.processId,
+                stepName: self.stepList[i].stepName,
+                typeId: typeId || '',
+                stepTaskList: [],
+              },
+            );
+            res.data.content.forEach((task) => {
+              if (task.stepId == self.stepList[i].stepId) {
+                self.rootData[i].stepTaskList.push(task);
+              }
+            });
+          }
         }
       });
     },
     cloneDog(evt) {
-      // console.log(this.removeid);
-      this.item = evt;
+      this.moveItem = evt;
       return evt;
     },
-    // changeDog(evt) {
-    //   this.changeid = evt.to.id;
-    //   console.log(evt.to.id);
-    // },
-    onMove(evt) {
-      this.removeid = evt.to.id;
-      // console.log(evt.to.id);
-      // console.log(evt.clone);
-      if (evt.to.id == 'norun') {
-        this.item.status = '未开始';
-      } else if (evt.to.id == 'running') {
-        this.item.status = '进行中';
-      } else if (evt.to.id == 'end') {
-        this.item.status = '已完成';
-      }
+    onMove() {
+      // 找出被移动的任务到了哪个步骤中
+      this.rootData.forEach((stepData) => {
+        stepData.stepTaskList.forEach((task) => {
+          if (this.moveItem.taskId == task.taskId) {
+            this.moveItem.stepId = stepData.stepId;
+            this.moveTask();
+          }
+        });
+      });
     },
-    addTask() {
+    addTask(stepData) {
+      this.stepData = stepData;
       this.showAddTask = true;
       this.$nextTick(() => {
         this.$refs.addTask.show();
+      });
+    },
+    moveTask() {
+      console.log(this.moveItem);
+      // debugger;
+      this.server.createTask(this.moveItem).then((res) => {
+        if (res.code == 200) {
+          console.log('');
+        }
       });
     },
   },
