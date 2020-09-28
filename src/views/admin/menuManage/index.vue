@@ -12,7 +12,7 @@
           class="tl-select"
         >
           <el-option
-            v-for="(item,index) in CONST.STATUS_LIST"
+            v-for="(item, index) in CONST.STATUS_LIST"
             :key="index"
             :label="item.statusName"
             :value="item.statusCode"
@@ -27,11 +27,13 @@
           <i class="el-icon-search" slot="prefix" @click="getMenuList"></i>
         </el-input>
         <el-button
+          v-if="hasPower('sys_menu_add')"
           type="primary"
           icon="el-icon-plus"
           @click="menuAdd"
           class="tl-btn amt-bg-slip"
-        >添加菜单</el-button>
+          >添加菜单</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -40,53 +42,81 @@
           <el-table
             :data="tableData"
             row-key="functionId"
-            style="width: 100%;"
-            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+            style="width: 100%"
+            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
-            <el-table-column prop="functionId" label="ID"></el-table-column>
-            <el-table-column prop="classTag" label="类标识">
+            <el-table-column
+              prop="functionId"
+              label="ID"
+              min-width="170px"
+            ></el-table-column>
+            <el-table-column prop="classTag" label="类标识" min-width="170px">
               <template slot-scope="scope">
-                <span v-if="scope.row.classTag">{{scope.row.classTag}}</span>
+                <span v-if="scope.row.classTag">{{ scope.row.classTag }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="icon" label="icon名称">
+            <el-table-column prop="icon" label="icon名称" min-width="150px">
               <template slot-scope="scope">
-                <span v-if="scope.row.icon">{{scope.row.icon}}</span>
+                <span v-if="scope.row.icon">{{ scope.row.icon }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题名称">
+            <el-table-column prop="title" label="标题名称" min-width="150px">
               <template slot-scope="scope">
-                <span v-if="scope.row.title">{{scope.row.title}}</span>
+                <span v-if="scope.row.title">{{ scope.row.title }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="functionName" label="菜单名称">
+            <el-table-column
+              prop="functionName"
+              label="菜单名称"
+              min-width="170px"
+            >
               <template slot-scope="scope">
-                <span v-if="scope.row.functionName">{{scope.row.functionName}}</span>
+                <span v-if="scope.row.functionName">{{
+                  scope.row.functionName
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="permissionCode" label="权限标识">
+            <el-table-column
+              prop="permissionCode"
+              label="权限标识"
+              min-width="220px"
+            >
               <template slot-scope="scope">
-                <span v-if="scope.row.permissionCode">{{scope.row.permissionCode}}</span>
+                <span v-if="scope.row.permissionCode">{{
+                  scope.row.permissionCode
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="resourceUrl" label="组件路径">
+            <el-table-column
+              prop="resourceUrl"
+              label="组件路径"
+              min-width="150px"
+            >
               <template slot-scope="scope">
-                <span v-if="scope.row.resourceUrl">{{scope.row.resourceUrl}}</span>
+                <span v-if="scope.row.resourceUrl">{{
+                  scope.row.resourceUrl
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="functionEvent" label="事件名">
+            <el-table-column
+              prop="functionEvent"
+              label="事件名"
+              min-width="150px"
+            >
               <template slot-scope="scope">
-                <span v-if="scope.row.functionEvent">{{scope.row.functionEvent}}</span>
+                <span v-if="scope.row.functionEvent">{{
+                  scope.row.functionEvent
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column prop="status" label="状态" min-width="80px">
               <template slot-scope="scope">
                 <el-switch
                   v-model.trim="scope.row.status"
@@ -96,19 +126,44 @@
                 ></el-switch>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column
+              prop="createTime"
+              label="创建时间"
+              min-width="170px"
+            >
               <template slot-scope="scope">
-                <span
-                  v-if="scope.row.createTime"
-                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
+                <span v-if="scope.row.createTime">{{
+                  dateFormat(
+                    "YYYY-mm-dd HH:MM:SS",
+                    new Date(scope.row.createTime)
+                  )
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="130">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="menuPut(scope.row)">修改</el-button>
-                <el-button type="text" size="small" @click="menuAdd(scope.row)">新增</el-button>
-                <el-button type="text" size="small" @click="deleteList(scope.row.functionId)">删除</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="menuPut(scope.row)"
+                  v-if="hasPower('sys_menu_add')"
+                  >修改</el-button
+                >
+                <el-button
+                  v-if="hasPower('sys_menu_add')"
+                  type="text"
+                  size="small"
+                  @click="menuAdd(scope.row)"
+                  >新增</el-button
+                >
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="deleteList(scope.row.functionId)"
+                  v-if="hasPower('sys-menu-remove')"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>

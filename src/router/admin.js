@@ -66,7 +66,7 @@ export default [{
       isSubMenu: true,
       parentRoute: 'tenantManage',
       title: 'menuManage',
-      power: '',
+      power: 'sys_menu',
     },
     component: () => import('@/views/admin/menuManage/index'),
   },

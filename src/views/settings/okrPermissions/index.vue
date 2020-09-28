@@ -12,8 +12,12 @@
             <span>是否可变更</span>
           </dt>
           <dd>
-            <el-radio v-model="radio['O-1']" label="O" class="tl-radio">开启 ( 开启后OKR在审核后可再次编辑 )</el-radio>
-            <el-radio v-model="radio['O-1']" label="S" class="tl-radio">关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio>
+            <el-radio v-model="radio['O-1']" label="O" class="tl-radio"
+              >开启 ( 开启后OKR在审核后可再次编辑 )</el-radio
+            >
+            <el-radio v-model="radio['O-1']" label="S" class="tl-radio"
+              >关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio
+            >
           </dd>
           <!-- <dt>
             <em>OKR</em>
@@ -33,7 +37,7 @@
           </dd>-->
         </dl>
         <el-form ref="form" label-width="110px" class="tl-form">
-          <dt style="margin-bottom:20px">
+          <dt style="margin-bottom: 20px">
             <span>公司OKR ( 根组织OKR ) 审批人设置</span>
           </dt>
           <el-form-item label="设置审批人：">
@@ -41,17 +45,19 @@
               v-model="spUser.userName"
               :disabled="true"
               placeholder="请设置公司OKR（根组织OKR）审批人"
-              style="width:350px"
+              style="width: 350px"
               class="tl-input"
             ></el-input>
             <el-button
               type="primary"
-              style="margin-left:20px;"
+              style="margin-left: 20px"
               class="tl-btn amt-bg-slip"
-              @click="okrspUserexist=true"
-            >设置</el-button>
+              v-if="hasPower('tenant-okr-rootorg-user-save')"
+              @click="okrspUserexist = true"
+              >设置</el-button
+            >
           </el-form-item>
-          <dt style="margin-bottom:20px">
+          <dt style="margin-bottom: 20px">
             <span>公司OKR ( 根组织OKR ) 考核人设置</span>
           </dt>
           <el-form-item label="设置审批人：">
@@ -59,15 +65,17 @@
               v-model="khUser.userName"
               :disabled="true"
               placeholder="请设置公司OKR（根组织OKR）审批人"
-              style="width:350px;"
+              style="width: 350px"
               class="tl-input"
             ></el-input>
             <el-button
+              v-if="hasPower('tenant-okr-rootorg-user-save')"
               type="primary"
-              style="margin-left:20px;"
+              style="margin-left: 20px"
               class="tl-btn amt-bg-slip"
-              @click="okrkhUserexist=true"
-            >设置</el-button>
+              @click="okrkhUserexist = true"
+              >设置</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -77,7 +85,8 @@
           :disabled="BtnDisabled"
           @click="getSave"
           class="tl-btn amt-bg-slip"
-        >保存更改</el-button>
+          >保存更改</el-button
+        >
       </div>
     </div>
     <addMember

@@ -23,7 +23,8 @@
           icon="el-icon-plus"
           class="tl-btn amt-bg-slip"
           @click="createDic"
-        >新增字典</el-button>
+          >新增字典</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -33,26 +34,74 @@
         :currentPage.sync="currentPage"
         @searchList="searchList"
       >
-        <div slot="tableContainer">
+        <div slot="tableContainer" class="table-container">
           <el-table ref="dicTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="code" label="字典编号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="name" label="字典名称"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="enabledFlag" label="状态">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="code"
+              label="字典编号"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="name"
+              label="字典名称"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="enabledFlag"
+              label="状态"
+            >
               <template slot-scope="scope">
-                <div>{{scope.row.enabledFlag == "Y" ? '启用' : '停用'}}</div>
+                <div>{{ scope.row.enabledFlag == "Y" ? "启用" : "停用" }}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="description" label="备注"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="description"
+              label="备注"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="createTime"
+              label="创建时间"
+            >
               <template slot-scope="scope">
-                <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
+                <div>
+                  {{
+                    scope.row.createTime
+                      ? dateFormat(
+                          "YYYY-mm-dd HH:MM:SS",
+                          new Date(scope.row.createTime)
+                        )
+                      : "--"
+                  }}
+                </div>
               </template>
             </el-table-column>
-            <el-table-column width="130px" align="left" label="操作">
+            <el-table-column
+              width="130px"
+              fixed="right"
+              align="left"
+              label="操作"
+            >
               <template slot-scope="scope">
-                <el-button type="text" @click="editDic(scope.row)">修改</el-button>
-                <el-button type="text" @click="info(scope.row)">详情</el-button>
-                <el-button type="text" @click="deleteDic(scope.row)">删除</el-button>
+                <el-button type="text" @click="editDic(scope.row)" size="small"
+                  >修改</el-button
+                >
+                <el-button type="text" @click="info(scope.row)" size="small"
+                  >详情</el-button
+                >
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="deleteDic(scope.row)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
