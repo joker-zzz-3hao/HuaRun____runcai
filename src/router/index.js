@@ -24,9 +24,9 @@ const router = new VueRouter({
 // 判断权限
 function hasPower(power) {
   const userPowers = (window.$store.state.common.userInfo.privilegeList || []).map((item) => item
-    .privilegeCode);
+    .functionCode);
   if (typeof power == 'string') {
-    return !!userPowers.includes(power) || userPowers.includes('admin') || (power == '');
+    return !!userPowers.includes(power) || (power == '');
   } if (Array.isArray(power)) {
     let result = true;
     if (!userPowers.includes('admin')) {

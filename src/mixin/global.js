@@ -5,12 +5,12 @@ const $bus = new Vue();
 export default {
   methods: {
     hasPower(power) {
-      const userPowers = (this.$store.state.common.userInfo.privilegeList || []).map((item) => item
-        .privilegeCode);
+      console.log(power);
+      const userPowers = (window.$store.state.common.userInfo.privilegeList || []).map((item) => item
+        .functionCode);
       if (typeof power == 'string') {
-        return !!userPowers.includes(power) || userPowers.includes('admin');
-      }
-      if (Array.isArray(power)) {
+        return !!userPowers.includes(power) || (power == '');
+      } if (Array.isArray(power)) {
         let result = true;
         if (!userPowers.includes('admin')) {
           power.forEach((item) => {
@@ -266,7 +266,7 @@ export default {
       obj.customClass = 'waiting';
       return this.$xmsgbox(obj);
     },
-    $busOn(eventName, callback = () => {}) {
+    $busOn(eventName, callback = () => { }) {
       $bus.$on(eventName, callback);
     },
     $busEmit(eventName, params = {}) {

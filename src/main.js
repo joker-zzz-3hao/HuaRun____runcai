@@ -27,7 +27,7 @@ const echarts = require('echarts/lib/echarts');
 require('echarts/lib/chart/pie');
 
 Vue.prototype.$echarts = echarts;
-if (process.env.VUE_APP_PORTAL == 'https://cr-talent-dev.crcloud.com') {
+if (process.env.VUE_APP_PORTAL == 'https://portal-prod.crcloud.com') {
   // eslint-disable-next-line func-names
   console.log = function () { };
 }
