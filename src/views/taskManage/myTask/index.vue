@@ -104,6 +104,7 @@
                     >
                     <el-dropdown-item
                       @click.native="filedTask(scope.row.taskId)"
+                      :disabled="scope.row.taskProgress != 100"
                       >任务归档</el-dropdown-item
                     >
                   </el-dropdown-menu>
@@ -537,5 +538,9 @@ export default {
 .searchblock {
   background-color: #f4f6f8;
   margin: 0px 16px;
+}
+.btn-disable {
+  color: #c0c4cc;
+  cursor: not-allowed;
 }
 </style>

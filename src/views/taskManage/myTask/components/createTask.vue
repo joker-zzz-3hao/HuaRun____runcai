@@ -13,7 +13,7 @@
       <div class="drawer-title">添加任务</div>
     </div>
     <el-scrollbar>
-      <el-form :model="formData" class="tl-form">
+      <el-form ref="dataForm" :model="formData" class="tl-form">
         <el-form-item
           prop="taskTitle"
           label="任务标题"
@@ -24,14 +24,14 @@
           <el-input
             type="text"
             placeholder="请输入任务标题"
-            v-model="formData.taskTitle"
+            v-model.trim="formData.taskTitle"
             maxlength="100"
             show-word-limit
           ></el-input>
         </el-form-item>
-        <el-form-item label="设置执行人" prop="executor">
+        <el-form-item label="设置执行人" prop="taskUserId">
           <el-select
-            v-model="formData.executor"
+            v-model.trim="formData.taskUserId"
             placeholder="添加执行人"
             filterable
             remote
@@ -67,7 +67,10 @@
           >
         </el-form-item>
         <el-form-item label="优先级" prop="taskLevel">
-          <el-select v-model="formData.taskLevel" placeholder="请选择优先级">
+          <el-select
+            v-model.trim="formData.taskLevel"
+            placeholder="请选择优先级"
+          >
             <el-option
               v-for="item in CONST.PRIORITY_LIST"
               :key="item.value"
@@ -85,7 +88,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="归属OKR" prop="okrDetailId">
-          <el-select v-model="formData.okrDetailId" placeholder="请选择归属OKR">
+          <el-select
+            v-model.trim="formData.okrDetailId"
+            placeholder="请选择归属OKR"
+          >
             <el-option
               v-for="item in okrList"
               :key="item.okrDetailId"
@@ -95,7 +101,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="归属任务过程" prop="processId">
-          <el-select v-model="formData.processId" placeholder="请选择任务过程">
+          <el-select
+            v-model.trim="formData.processId"
+            placeholder="请选择任务过程"
+          >
             <el-option
               v-for="item in processList"
               :key="item.processId"
@@ -104,18 +113,15 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="添加描述" prop="msgContent">
-          <quill-editor
-            v-model.trim="formData.msgContent"
-            ref="myQuillEditor"
-            :options="editorOption"
-          ></quill-editor>
-          <!-- :on-preview="handlePreview"
-          :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-          :on-exceed="handleExceed"
-            :options="editorOption"
-          -->
+        <el-form-item label="添加描述" prop="taskDesc">
+          <el-input
+            type="textarea"
+            :rows="5"
+            maxlength="800"
+            show-word-limit
+            v-model="formData.taskDesc"
+            resize="none"
+          ></el-input>
         </el-form-item>
         <el-form-item label="附件">
           <el-upload
@@ -159,7 +165,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { quillEditor } from 'vue-quill-editor';// 引入ue富文本组件vue-quill-editor
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -180,8 +185,8 @@ export default {
         okrDetailId: null,
         processId: null,
         processNum: 0,
-        msgContent: null,
-        executor: null,
+        taskDesc: null,
+        taskUserId: null,
         fileList: [], // 文件列表
       },
       okrList: [], // 归属okr列表
@@ -227,7 +232,6 @@ export default {
     },
   },
   components: {
-    'quill-editor': quillEditor,
     'tl-selectproject': selectProject,
   },
   created() {
@@ -282,9 +286,9 @@ export default {
     // lengthChange(data) {
     //   const str = data.html.replace(/<[^>]+>/g, '');
     //   this.amount = str.length;
-    //   this.$refs.dataForm.validateField('msgContent');
+    //   this.$refs.dataForm.validateField('taskDesc');
     //   if (str.length > 500) {
-    //     this.$refs.dataForm.validateField('msgContent');
+    //     this.$refs.dataForm.validateField('taskDesc');
     //     // this.$Message.error({ content: '内容长度最大为500', duration: 3 });
     //   }
     // },
@@ -313,7 +317,7 @@ export default {
     },
     handlerData() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
-      const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
+      const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
       let taskBegDate = null;
       let taskEndDate = null;
       if (this.formData.timeVal) {
@@ -321,45 +325,50 @@ export default {
         taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
       }
       const params = {
-        attachmentList: null,
+        attachmentList: [], // TODO: 附件
         // headerHrl: '',
         okrDetailId: this.formData.okrDetailId,
         okrDetailName: okrVal.okrDetailObjectKr,
         processId: this.formData.processId,
         projectId: this.formData.projectVal.projectId,
         projectName: this.formData.projectVal.projectNameCn,
-        // stepId: '',
-        taskDesc: this.formData.msgContent,
+        taskDesc: this.formData.taskDesc,
         taskBegDate,
         taskEndDate,
-        // taskId: '',
         taskLevel: this.formData.taskLevel,
         taskProgress: 0,
-        // taskProgressRemark: '',
         taskTitle: this.formData.taskTitle,
-        taskUserId: this.formData.executor,
-        // typeId: '',
+        taskUserId: this.formData.taskUserId,
         userName: userVal.userName,
       };
       return params;
     },
     save() {
-      const params = this.handlerData();
-      this.server.saveTask(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('保存成功');
-          this.$emit('success');
-          this.close();
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const params = this.handlerData();
+          console.log(this.handlerData());
+          this.server.saveTask(params).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('保存成功');
+              this.$emit('success');
+              this.close();
+            }
+          });
         }
       });
     },
     summitAssign() {
-      const params = this.handlerData();
-      this.server.appointSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$emit('success');
-          this.close();
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const params = this.handlerData();
+          this.server.appointSave(params).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('提交成功');
+              this.$emit('success');
+              this.close();
+            }
+          });
         }
       });
     },
