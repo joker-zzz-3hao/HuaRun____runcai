@@ -60,8 +60,10 @@
               class="tl-btn amt-bg-slip"
               :icon="!classify.isEdit?'el-icon-s-claim':''"
             >
+              <!-- @click.capture.stop="dataChange(scope.row)" -->
               <el-input
                 @blur="editClassifyName(classify)"
+                @keyup.enter.native="editClassifyName(classify)"
                 v-if="classify.isEdit"
                 v-model="typeName"
               ></el-input>
@@ -72,7 +74,7 @@
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="editClassify(classify)">重新命名分类</el-dropdown-item>
+                  <el-dropdown-item @clickc.capture.stop.native="editClassify(classify)">重新命名分类</el-dropdown-item>
                   <el-dropdown-item @click.native="deleteClassify(classify)">删除分类</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
