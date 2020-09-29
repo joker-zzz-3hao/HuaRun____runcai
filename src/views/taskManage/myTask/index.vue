@@ -144,7 +144,13 @@
                 <div>
                   <el-avatar :size="30">
                     <div class="user-name">
-                      <em> {{ scope.row.userName }} </em>
+                      <em v-if="scope.row.userName">
+                        {{
+                          scope.row.userName.substring(
+                            scope.row.userName.length - 2
+                          )
+                        }}
+                      </em>
                     </div>
                   </el-avatar>
                   <span>{{ scope.row.userName || "无执行人" }}</span>
@@ -196,7 +202,8 @@
                   placement="bottom"
                   width="200"
                   trigger="click"
-                  @show="queryStep(scope.row.processId)"
+                  v-model="scope.row.processVisible"
+                  @show="queryStep(scope.row)"
                 >
                   <div v-show="stepList.length > 0">
                     <el-select
@@ -314,6 +321,7 @@ export default {
       accept: null,
       moveProcessId: null,
       showTask: true,
+      processVisible: false,
     };
   },
   created() {
@@ -368,14 +376,15 @@ export default {
         this.pageSize = res.data.pageSize;
       });
     },
-    queryStep(processId = '1') {
+    queryStep(row) {
       const params = {
         available: 1,
-        processId,
+        processId: row.processId || '1',
       };
       this.server.queryProcessStep(params).then((res) => {
         if (res.code == 200 && res.data) {
           this.stepList = res.data;
+          row.processVisible = true;
         }
       });
     },
@@ -422,6 +431,7 @@ export default {
       this.server.move(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('移动成功');
+          row.processVisible = false;
           this.getTableList();
         }
       });
