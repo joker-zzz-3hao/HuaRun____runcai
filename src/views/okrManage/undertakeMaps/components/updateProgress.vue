@@ -17,13 +17,15 @@
             <dt>
               <div class="list-info">
                 <div class="list-title">
-                  <em>{{formData.okrDetailType === 0 ? '目标O' : '关键结果'}}</em>
-                  <span>{{formData.okrDetailObjectKr}}</span>
+                  <em>{{
+                    formData.okrDetailType === 0 ? "目标O" : "关键结果"
+                  }}</em>
+                  <span>{{ formData.okrDetailObjectKr }}</span>
                 </div>
                 <div class="list-cont">
                   <div class="tl-progress-group">
                     <tl-process
-                      :data="parseInt(formData.okrDetailProgress,10)"
+                      :data="parseInt(formData.okrDetailProgress, 10)"
                       :showNumber="false"
                       :width="64"
                       :marginLeft="6"
@@ -46,7 +48,9 @@
                     <span>%</span>
                   </div>
                   <div class="okr-risk" v-if="formData.okrDetailConfidence">
-                    <tl-confidence v-model="formData.okrDetailConfidence"></tl-confidence>
+                    <tl-confidence
+                      v-model="formData.okrDetailConfidence"
+                    ></tl-confidence>
                   </div>
                 </div>
               </div>
@@ -58,7 +62,13 @@
               <el-form-item
                 label="更新说明"
                 prop="updateexplain"
-                :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+                :rules="[
+                  {
+                    trigger: 'blur',
+                    message: '请输入更新说明',
+                    required: true,
+                  },
+                ]"
               >
                 <el-input
                   placeholder="请输入更新说明"
@@ -77,12 +87,16 @@
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button
+        :disabled="!hasPower('okr-continue-update-progress')"
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="summitUpdate"
         :loading="loading"
-      >更新</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+        >更新</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>
