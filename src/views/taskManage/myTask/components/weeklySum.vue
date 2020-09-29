@@ -1,58 +1,84 @@
 <template>
   <div class="home">
-    <tl-crcloud-table
-      :total="totalpage"
-      :currentPage.sync="currentPage"
-      :pageSize.sync="pageSize"
-      @searchList="getTableList"
-    >
-      <div slot="tableContainer" class="table-container">
-        <el-table :data="tableData" class="tl-table">
-          <el-table-column
-            min-width="100px"
-            align="left"
-            prop="taskTitle"
-            label="内容"
+    <!-- 我负责的 -->
+    <el-table :data="owntableData" class="tl-table">
+      <el-table-column
+        min-width="100px"
+        align="left"
+        prop="taskTitle"
+        label="我负责的"
+      >
+        <template slot-scope="scope">
+          <a @click="openEdit(scope.row.taskId)">{{ scope.row.taskTitle }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="left"
+        prop="createByUserName"
+        label="创建人"
+      ></el-table-column>
+      <el-table-column
+        min-width="100px"
+        align="left"
+        prop="createTime"
+        label="时长统计"
+      ></el-table-column>
+      <el-table-column align="left" prop="taskStatus" label="当前状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.processName"
+            >{{ scope.row.processName }} -</span
           >
-            <template slot-scope="scope">
-              <a @click="openEdit(scope.row.taskId)">{{
-                scope.row.taskTitle
-              }}</a>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="left"
-            prop="createByUserName"
-            label="创建人"
-          ></el-table-column>
-          <el-table-column
-            min-width="100px"
-            align="left"
-            prop="createTime"
-            label="时长统计"
-          ></el-table-column>
-          <el-table-column align="left" prop="taskStatus" label="当前状态">
-            <template slot-scope="scope">
-              <span>{{ scope.row.processName }} -</span>
-              <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="left" prop="userName" label="进度">
-            <template slot-scope="scope">
-              <tl-process
-                :data="parseInt(scope.row.taskProgress, 10)"
-              ></tl-process>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </tl-crcloud-table>
+          <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" prop="userName" label="进度">
+        <template slot-scope="scope">
+          <tl-process :data="parseInt(scope.row.taskProgress, 10)"></tl-process>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 我指派的 -->
+    <el-table :data="assigntableData" class="tl-table">
+      <el-table-column
+        min-width="100px"
+        align="left"
+        prop="taskTitle"
+        label="我指派的"
+      >
+        <template slot-scope="scope">
+          <a @click="openEdit(scope.row.taskId)">{{ scope.row.taskTitle }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="left"
+        prop="createByUserName"
+        label="创建人"
+      ></el-table-column>
+      <el-table-column
+        min-width="100px"
+        align="left"
+        prop="createTime"
+        label="时长统计"
+      ></el-table-column>
+      <el-table-column align="left" prop="taskStatus" label="当前状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.processName"
+            >{{ scope.row.processName }} -</span
+          >
+          <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" prop="userName" label="进度">
+        <template slot-scope="scope">
+          <tl-process :data="parseInt(scope.row.taskProgress, 10)"></tl-process>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import crcloudTable from '@/components/crcloudTable';
 import process from '@/components/process';
 import CONST from '../const';
 import Server from '../server';
@@ -62,7 +88,6 @@ const server = new Server();
 export default {
   name: 'weeklySum',
   components: {
-    'tl-crcloud-table': crcloudTable,
     'tl-process': process,
   },
   data() {
@@ -92,10 +117,17 @@ export default {
         weekEnd: '2020-09-28',
       };
       this.server.selectTaskForWeek(params).then((res) => {
-        this.tableData = res.data.content;
-        this.totalpage = res.data.total;
-        this.currentPage = res.data.currentPage;
-        this.pageSize = res.data.pageSize;
+        if (res.code == 200) {
+          this.tableData = res.data || [];
+          this.tableData.forEach((item) => {
+            if (item.taskUserId == this.userInfo.userId) {
+              this.owntableData.push(item);
+            }
+            if (item.updateBy == this.userInfo.userId) {
+              this.assigntableData.push(item);
+            }
+          });
+        }
       });
     },
   },
