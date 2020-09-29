@@ -104,6 +104,7 @@
                     >
                     <el-dropdown-item
                       @click.native="filedTask(scope.row.taskId)"
+                      :disabled="scope.row.taskProgress != 100"
                       >任务归档</el-dropdown-item
                     >
                   </el-dropdown-menu>
