@@ -199,7 +199,7 @@
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                   <div slot="tip" class="el-upload__tip">
-                    只能上传jpg/png文件，且不超过500kb
+                    最多上传10个文件，单个文件不超过30M
                   </div>
                 </el-upload>
               </el-form-item>
@@ -208,15 +208,22 @@
         </el-form>
         <!-- 右侧 -->
         <div class="task-tab">
-          <el-tabs>
-            <el-tab-pane label="操作历史" name="history">
-              <!--  -->
-              <ul>
-                <li v-for="item in historyList" :key="item.operationId">
-                  {{ item.userName }}添加任务{{ item.remark
-                  }}{{ item.createTime }}
-                </li>
-              </ul>
+          <el-tabs v-model="selectTab">
+            <el-tab-pane
+              label="操作历史"
+              name="history"
+              class="tl-custom-timeline"
+            >
+              <dl class="timeline-list">
+                <dd v-for="item in historyList" :key="item.operationId">
+                  <div class="list-info">
+                    <div class="list-title">{{ item.createTime }}</div>
+                    <div class="list-cont">
+                      {{ item.userName }}{{ item.remark }}
+                    </div>
+                  </div>
+                </dd>
+              </dl>
             </el-tab-pane>
             <el-tab-pane label="进度更新说明" name="update">
               <ul>
@@ -306,6 +313,7 @@ export default {
       userList: [], // 执行人列表
       processList: [], // 过程列表
       showRemark: false,
+      selectTab: 'history',
       historyList: [{
         name: '张三', title: '关于润才平台产品市场竞品调研', reason: '因11111任务属于错误输入的任务', time: '1小时前',
       }],

@@ -538,4 +538,8 @@ export default {
   background-color: #f4f6f8;
   margin: 0px 16px;
 }
+.btn-disable {
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
 </style>
