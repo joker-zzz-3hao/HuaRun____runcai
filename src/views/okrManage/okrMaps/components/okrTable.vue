@@ -18,8 +18,12 @@
           <template slot-scope="scope">
             <tl-process :data="scope.row.okrProgress"></tl-process>
           </template>
+        </el-table-column>goDetail
+        <el-table-column prop="okrDetailObjectKr" label="目标（O）" min-width="180">
+          <template slot-scope="scope">
+            <span @click="goDetail(scope.row.okrId)">{{scope.row.okrDetailObjectKr}}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="okrDetailObjectKr" label="目标（O）" min-width="180"></el-table-column>
         <el-table-column prop="krCount" label="关键结果（KR）" min-width="90"></el-table-column>
         <el-table-column prop="status" label="状态" width="80">
           <template slot-scope="scope">
@@ -53,12 +57,17 @@ export default {
       },
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(this.treeData);
+  },
   computed: {},
   methods: {
     gotoView(row) {
       const data = { node: row };
       this.$emit('takeOvierview', data);
+    },
+    goDetail(okrid) {
+      this.$emit('showDetail', okrid);
     },
   },
   watch: {},

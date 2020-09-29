@@ -35,12 +35,19 @@
         <tl-okr-table
           v-if="!showOkrMap"
           :treeData="treeTableData"
+          @showDetail="showDetail"
           @takeOvierview="takeOvierview"
           class="maps-view-table"
         ></tl-okr-table>
       </div>
       <div v-if="!showDepartmentSelect" class="maps-search">
-        <tl-search-table :keyword="keyword" :searchType="searchType" :searchData="searchData"></tl-search-table>
+        <tl-search-table
+          @showDetail="showDetail"
+          @takeOvierview="takeOvierview"
+          :keyword="keyword"
+          :searchType="searchType"
+          :searchData="searchData">
+        </tl-search-table>
       </div>
       <tl-mission ref="mission"></tl-mission>
     </div>

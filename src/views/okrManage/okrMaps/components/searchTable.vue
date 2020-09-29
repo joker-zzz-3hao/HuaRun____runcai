@@ -1,13 +1,13 @@
 <template>
   <el-tabs v-model="searchType" @tab-click="handleClick" class="tl-tabs">
     <el-tab-pane label="OKR" name="2">
-      <tl-searchOKR :searchData="searchData"></tl-searchOKR>
+      <tl-searchOKR :searchData="searchData" @showDetail="getDetail" @takeOvierview="gotoView"></tl-searchOKR>
     </el-tab-pane>
     <el-tab-pane label="部门" name="1">
-      <tl-searchResult :searchData="searchData"></tl-searchResult>
+      <tl-searchResult :searchType="searchType" :searchData="searchData" @takeOvierview="gotoView"></tl-searchResult>
     </el-tab-pane>
     <el-tab-pane label="成员" name="3">
-      <tl-searchResult :searchData="searchData"></tl-searchResult>
+      <tl-searchResult :searchType="searchType" :searchData="searchData"></tl-searchResult>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -62,6 +62,12 @@ export default {
           self.searchData = res.data.content;
         }
       });
+    },
+    getDetail(okrid) {
+      this.$emit('showDetail', okrid);
+    },
+    gotoView(data) {
+      this.$emit('takeOvierview', data);
     },
   },
   watch: {},

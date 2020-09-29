@@ -2,9 +2,9 @@
   <ul class="tab-cont-list">
     <li v-for="item in searchData" :key="item.resource_id">
       <dl>
-        <dt class="tag-kind">
-          <span class="kind-parent">{{CONST.OKR_TYPE_MAP[item.okr_detail_type]}}</span>
-          <em v-html="item.okr_detail_content"></em>
+        <dt class="tag-kind" @click="goDetail(item.okrId)">
+          <span class="kind-parent">{{CONST.OKR_TYPE_MAP[item.okrDetailType]}}</span>
+          <em v-html="item.okrDetailContent"></em>
         </dt>
         <dd>
           <div>
@@ -13,18 +13,18 @@
               :data="parseInt(item.okrDetailProgress,10)"
               :width="40"
               :marginLeft="6"
-              :class="item.okr_detail_type == 0 ? 'is-o' : 'is-kr'"
+              :class="item.okrDetailType == 0 ? 'is-o' : 'is-kr'"
             ></tl-process>
           </div>
           <div>
             <span>来自</span>
-            <em>{{item.org_name}}</em>
+            <em>{{item.orgName}}</em>
           </div>
           <div class="user-info">
             <span>负责人</span>
             <img v-if="true" src="@/assets/images/user/user.jpg" alt />
-            <em v-else class="user-name">{{cutName(item.user_name)}}</em>
-            <em>{{item.user_name}}</em>
+            <em v-else class="user-name">{{cutName(item.userName)}}</em>
+            <em @click="gotoView(item)">{{item.userName}}</em>
           </div>
         </dd>
       </dl>
@@ -61,6 +61,13 @@ export default {
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
+    },
+    goDetail(okrid) {
+      this.$emit('showDetail', okrid);
+    },
+    gotoView(row) {
+      const data = { node: row };
+      this.$emit('takeOvierview', data);
     },
   },
   watch: {

@@ -1,13 +1,13 @@
 <template>
   <div class="tab-cont-list">
     <dl v-for="item in searchData" :key="item.resource_id">
-      <dt>{{item.periodName}}</dt>
+      <dt v-if="searchType == '1'" >{{item.periodName}}</dt>
       <dd>
         <div class="user-info">
           <span>负责人</span>
           <img v-if="true" src="@/assets/images/user/user.jpg" alt />
           <em v-else class="user-name">{{cutName(item.userName)}}</em>
-          <em>{{item.userName}}</em>
+          <em @click="gotoView(item)">{{item.userName}}</em>
         </div>
         <div>
           <span>目标数(O)</span>
@@ -79,6 +79,10 @@ export default {
         return [];
       },
     },
+    searchType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -87,7 +91,15 @@ export default {
   },
   mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+    goDetail(okrid) {
+      this.$emit('showDetail', okrid);
+    },
+    gotoView(row) {
+      const data = { node: row };
+      this.$emit('takeOvierview', data);
+    },
+  },
   watch: {},
 };
 </script>
