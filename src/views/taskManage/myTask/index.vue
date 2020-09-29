@@ -144,10 +144,10 @@
                 <div>
                   <el-avatar :size="30">
                     <div class="user-name">
-                      <em> 王无 </em>
+                      <em> {{ scope.row.userName }} </em>
                     </div>
                   </el-avatar>
-                  <span>{{ scope.row.userName }}</span>
+                  <span>{{ scope.row.userName || "无执行人" }}</span>
                 </div>
               </template>
             </el-table-column>
@@ -246,7 +246,7 @@
       <tl-edittask
         ref="editTask"
         v-if="existEditTask"
-        :existCreatetask.sync="existEditTask"
+        :existEditTask.sync="existEditTask"
         :server="server"
         @success="getTableList"
       ></tl-edittask>

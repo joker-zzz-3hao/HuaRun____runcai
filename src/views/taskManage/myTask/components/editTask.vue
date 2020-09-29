@@ -148,6 +148,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="时长统计">
+                <span>{{ formData.timeSum }}</span>
                 <span>当前已用时长 0天 0小时 0分</span>
               </el-form-item>
               <el-form-item label="当前进度">
@@ -367,6 +368,7 @@ export default {
         projectVal: {},
         taskProgressRemark: '',
         taskProgress: 0,
+        timeSum: '当前已用时长 0天 0小时 0分',
       },
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
@@ -417,7 +419,7 @@ export default {
   },
 
   created() {
-
+    this.freshTime();
   },
   methods: {
     show(id) {
@@ -436,6 +438,19 @@ export default {
               taskBegDate = res.data.taskBegDate.split(' ')[0] || '';
               taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
               this.formData.timeVal = [taskBegDate, taskEndDate];
+            }
+            if (this.formData.createTime) {
+              const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+              const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+              let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+              let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+              const minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
+              if (dayNum >= 0 && hourNum < 0) {
+                hourNum = dayNum * 24 + hourNum;
+                dayNum -= 1;
+              }
+              const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
+              this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
             }
             this.historyList = res.data.operationList || [];
             this.updateList = [];
@@ -489,6 +504,32 @@ export default {
           this.processList = res.data;
         }
       });
+    },
+    // 时长统计
+    freshTime() {
+      this.timedInterval = setInterval(() => {
+        this.timeSum();
+      }, 30 * 1000);
+    },
+    timeSum() {
+      if (this.formData.createTime) {
+        const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+        const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+        let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+        let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+        const minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
+
+        if (dayNum >= 0 && hourNum < 0) {
+          hourNum = dayNum * 24 + hourNum;
+          dayNum -= 1;
+        }
+        const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
+        this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
+        this.$forceUpdate();
+        console.log(this.formData.timeSum);
+      } else {
+        this.formData.timeSum = '当前已用时长 0天 0小时 0分';
+      }
     },
     // 选择项目
     projectInputFocus() {
@@ -612,7 +653,9 @@ export default {
         }
       });
     },
-
+  },
+  beforeDestroy() {
+    clearInterval(this.timedInterval);
   },
 };
 </script>
