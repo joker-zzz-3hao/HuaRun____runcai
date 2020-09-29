@@ -363,7 +363,7 @@ export default {
       formData: {
         taskTitle: '',
         timeVal: '',
-        taskLevel: 1,
+        taskLevel: 10,
         projectVal: {},
         taskProgressRemark: '',
         taskProgress: 0,
@@ -562,13 +562,18 @@ export default {
       // TODO: 归档时候有特殊校验吗
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          this.server.filedTask({ taskId: this.formData.taskId }).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('归档成功');
-              this.close();
-              this.$emit('success');
-            }
-          });
+          this.$xconfirm({
+            content: '',
+            title: '确定要将该任务归档吗？',
+          }).then(() => {
+            this.server.filedTask({ taskId: this.formData.taskId }).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('归档成功');
+                this.close();
+                this.$emit('success');
+              }
+            });
+          }).catch(() => {});
         }
       });
     },

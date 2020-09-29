@@ -180,7 +180,7 @@ export default {
       formData: {
         taskTitle: null,
         timeVal: '',
-        taskLevel: 1,
+        taskLevel: 10,
         projectVal: {},
         okrDetailId: null,
         processId: null,

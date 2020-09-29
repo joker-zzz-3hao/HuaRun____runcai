@@ -36,19 +36,22 @@
           展开更多筛选
           <i :class="arrowClass"></i>
         </div>
+        <div style="display: flex">
+          <span
+            v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
+            >所有筛选</span
+          >
+          <div
+            class="searchblock"
+            v-for="(item, index) in searchList"
+            :key="index"
+          >
+            <span>{{ item.name }}</span>
+            <i class="el-icon-error" @click.stop="clearNode(index)"></i>
+          </div>
+        </div>
         <div v-show="arrowClass == 'el-icon-caret-bottom'">
           <!-- 筛选标签 -->
-          <div style="display: flex">
-            <span>所有筛选</span>
-            <div
-              class="searchblock"
-              v-for="(item, index) in searchList"
-              :key="index"
-            >
-              <span>{{ item.name }}</span>
-              <i class="el-icon-error" @click.stop="clearNode(index)"></i>
-            </div>
-          </div>
           <dl style="display: flex">
             <dt>任务过程</dt>
             <dd
@@ -378,8 +381,8 @@ export default {
     },
     deleteTask(id) {
       this.$xconfirm({
-        content: '确定要删除这个任务吗？',
-        title: '删除任务',
+        content: '',
+        title: '确定要删除该任务吗？',
       }).then(() => {
         // 提交确认弹窗
         this.server.deleteTask({ taskId: id }).then((res) => {
@@ -391,12 +394,17 @@ export default {
       }).catch(() => {});
     },
     filedTask(id) {
-      this.server.filedTask({ taskId: id }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('归档成功');
-          this.getTableList();
-        }
-      });
+      this.$xconfirm({
+        content: '',
+        title: '确定要将该任务归档吗？',
+      }).then(() => {
+        this.server.filedTask({ taskId: id }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('归档成功');
+            this.getTableList();
+          }
+        });
+      }).catch(() => {});
     },
     acceptTask(id) {
       this.server.acceptTask({ taskId: id }).then((res) => {
