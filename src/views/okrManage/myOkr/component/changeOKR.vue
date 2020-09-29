@@ -128,6 +128,7 @@
     </el-scrollbar>
     <div class="operating-box">
       <el-button
+        :disabled="!hasPower('okr-change')"
         type="primary"
         @click="validateForm"
         class="tl-btn amt-bg-slip"

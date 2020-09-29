@@ -10,7 +10,9 @@
     @closed="closed"
   >
     <div slot="title" class="flex-sb">
-      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">编辑OKR</div>
+      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">
+        编辑OKR
+      </div>
       <div v-else class="drawer-title">创建OKR</div>
       <div class="icon-save" v-if="showAuto">
         <i></i>
@@ -23,7 +25,7 @@
           <el-alert type="warning">
             <div slot="title">
               <div>审批退回原因：</div>
-              <div>{{searchForm.modifyReason}}</div>
+              <div>{{ searchForm.modifyReason }}</div>
             </div>
           </el-alert>
         </div>
@@ -50,7 +52,7 @@
           <dl>
             <dt>OKR类型</dt>
             <dd>
-              {{CONST.OKR_TYPE_MAP[searchForm.okrType]}}
+              {{ CONST.OKR_TYPE_MAP[searchForm.okrType] }}
               <!-- <el-select
                 v-model="searchForm.okrType"
                 placeholder="请选择类型"
@@ -73,20 +75,39 @@
               <img src="@/assets/images/user/user.jpg" alt />
             </dd>
             <dd v-else class="user-name">
-              <em>{{cutName(userName)}}</em>
+              <em>{{ cutName(userName) }}</em>
             </dd>
-            <dd>{{userName}}</dd>
+            <dd>{{ userName }}</dd>
           </dl>
         </div>
-        <okr-form v-if="createokrDrawer" ref="okrform" :searchForm="searchForm" :server="server"></okr-form>
+        <okr-form
+          v-if="createokrDrawer"
+          ref="okrform"
+          :searchForm="searchForm"
+          :server="server"
+        ></okr-form>
       </div>
     </el-scrollbar>
     <div class="operating-box">
       <div class="flex-auto" v-if="writeInfo.okrStatus != '8'">
-        <el-button plain @click="saveDraft" class="tl-btn amt-border-fadeout">保存为草稿</el-button>
+        <el-button
+          :disabled="!hasPower('okr-draft-save')"
+          plain
+          @click="saveDraft"
+          class="tl-btn amt-border-fadeout"
+          >保存为草稿</el-button
+        >
       </div>
-      <el-button type="primary" @click="summit" class="tl-btn amt-bg-slip">创建目标</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+      <el-button
+        :disabled="!hasPower('okr-create')"
+        type="primary"
+        @click="summit"
+        class="tl-btn amt-bg-slip"
+        >创建目标</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>

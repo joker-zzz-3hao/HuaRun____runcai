@@ -443,10 +443,14 @@ export default {
               const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
               let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
               let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
-              const minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
+              let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
               if (dayNum >= 0 && hourNum < 0) {
-                hourNum = dayNum * 24 + hourNum;
+                hourNum = 1 * 24 + hourNum;
                 dayNum -= 1;
+              }
+              if (hourNum >= 0 && minuteNum < 0) {
+                minuteNum = 1 * 60 + minuteNum;
+                hourNum -= 1;
               }
               const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
               this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
@@ -516,11 +520,14 @@ export default {
         const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
         let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
         let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
-        const minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
-
+        let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
         if (dayNum >= 0 && hourNum < 0) {
-          hourNum = dayNum * 24 + hourNum;
+          hourNum = 1 * 24 + hourNum;
           dayNum -= 1;
+        }
+        if (hourNum >= 0 && minuteNum < 0) {
+          minuteNum = 1 * 60 + minuteNum;
+          hourNum -= 1;
         }
         const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
         this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;

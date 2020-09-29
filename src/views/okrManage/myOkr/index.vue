@@ -7,11 +7,13 @@
           <div class="tab-menus">
             <ul class="tab-list">
               <li
-                v-for="(item,idx) in tabsList"
+                v-for="(item, idx) in tabsList"
                 :key="item.menuTitle"
-                @click="borderSlip(item,idx,item.toName)"
-                :class="{'is-focus': currentIndex === idx}"
-              >{{item.menuTitle}}</li>
+                @click="borderSlip(item, idx, item.toName)"
+                :class="{ 'is-focus': currentIndex === idx }"
+              >
+                {{ item.menuTitle }}
+              </li>
             </ul>
             <div class="border-slip"></div>
           </div>
@@ -39,7 +41,7 @@
               </el-select>
             </dd>
           </dl>
-          <dl class="dl-item" v-if="currentIndex===0">
+          <dl class="dl-item" v-if="currentIndex === 0">
             <dt>状态</dt>
             <dd>
               <el-select
@@ -50,7 +52,7 @@
                 class="tl-select"
               >
                 <el-option
-                  v-for="(item) in CONST.STATUS_LIST"
+                  v-for="item in CONST.STATUS_LIST"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -63,7 +65,9 @@
             icon="el-icon-plus"
             @click="goWriteOkr"
             class="tl-btn amt-bg-slip"
-          >创建OKR</el-button>
+            :disabled="!hasPower('okr-create')"
+            >创建OKR</el-button
+          >
         </div>
       </div>
     </div>
