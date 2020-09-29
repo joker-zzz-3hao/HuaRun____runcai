@@ -77,7 +77,6 @@
       v-if="writeokrExist"
       :userName="userInfo.userName"
       :writeInfo="writeInfo"
-      @success="searchOkr(searchForm.status)"
     ></tl-writeokr>
   </div>
 </template>

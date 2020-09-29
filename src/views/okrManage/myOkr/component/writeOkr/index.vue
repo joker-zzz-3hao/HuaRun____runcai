@@ -185,6 +185,9 @@ export default {
       this.setokrSuccess(false);
     },
     closed() {
+      if (this.showAuto) {
+        this.setokrSuccess(true);
+      }
       this.$emit('update:exist', false);
       this.setShowAuto(false);
     },
