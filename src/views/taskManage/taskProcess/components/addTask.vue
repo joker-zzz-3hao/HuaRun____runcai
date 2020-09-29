@@ -27,6 +27,7 @@
               remote
               :remote-method="remoteMethod"
               @visible-change="visibleChange"
+              @change="userChange"
               clearable
             >
               <el-option
@@ -126,6 +127,7 @@ export default {
         typeId: this.stepData.typeId,
         taskTitle: '',
         taskUserId: '',
+        userName: '',
         taskBegDate: '',
         taskEndDate: '',
         taskLevel: '',
@@ -181,6 +183,15 @@ export default {
       }
     },
     create() {
+      this.formData.taskBegDate = this.dateFormat(
+        'YYYY-mm-dd HH:MM:SS',
+        new Date(this.formData.taskBegDate),
+      );
+      this.formData.taskEndDate = this.dateFormat(
+        'YYYY-mm-dd HH:MM:SS',
+        new Date(this.formData.taskEndDate),
+      );
+      // this.formData.taskEndDate = '';
       this.server.createTask(this.formData).then((res) => {
         if (res.code == 200) {
           console.log('');
@@ -201,6 +212,17 @@ export default {
     },
     close() {
       this.visible = false;
+    },
+    userChange(userId) {
+      if (userId) {
+        this.userList.forEach((user) => {
+          if (user.userId == userId) {
+            this.formData.userName = user.userName;
+          }
+        });
+      } else {
+        this.formData.userName = '';
+      }
     },
   },
   watch: {},
