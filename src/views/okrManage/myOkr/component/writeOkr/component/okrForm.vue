@@ -724,7 +724,6 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timedInterval);
-    clearInterval(this.timedShow);
   },
 };
 </script>

@@ -52,8 +52,60 @@
         </dd>
       </dl>
       <dl class="dl-card-panel">
-        <dt></dt>
-        <dd></dd>
+        <dt class="card-title">
+          <em>团队成员</em>
+          <span>提示：点击头像可进行设置虚线汇报部门</span>
+        </dt>
+        <dd>
+          <span>实体成员</span>
+          <div class="img-list">
+            <dl v-for="tItem in teamMemberList" :key="tItem.userId" @click="setFictitious(tItem)">
+              <dt class="user-info">
+                <div class="user-name">
+                  <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                  <em>{{cutName(tItem.userName)}}</em>
+                </div>
+              </dt>
+              <dd>{{tItem.userName}}</dd>
+            </dl>
+          </div>
+        </dd>
+        <dd>
+          <span>虚线汇报成员</span>
+          <div v-if="fictitiousList.length > 0">
+            <div class="img-list">
+              <dl v-for="fItem in fictitiousList" :key="fItem.userId">
+                <dt class="user-info">
+                  <div class="user-name">
+                    <!-- <img v-if="fItem.headerUrl" :src="fItem.headerUrl" alt /> -->
+                    <em>{{cutName(fItem.userName)}}</em>
+                  </div>
+                  <i class="el-icon-close" @click="deleteFictitious(fItem)"></i>
+                </dt>
+                <dd>{{fItem.userName}}</dd>
+              </dl>
+            </div>
+            <span>提示：当前成员为虚线汇报成员，由成员所在部门负责人进行设置</span>
+          </div>
+          <span>当前无虚线汇报成员，如需设置虚线汇报成员请找成员所在部门负责人进行设置</span>
+        </dd>
+      </dl>
+      <dl class="dl-card-panel">
+        <dt class="card-title">
+          <em>组织架构</em>
+        </dt>
+        <dd>
+          <tl-svgtree fatherId="parentId" childId="orgId" :treeData="teamTreeData" direction="col">
+            <template slot="treecard" slot-scope="node">
+              <tl-teamCard
+                :node="node"
+                @editTeam="editTeamFun"
+                @deleteTeam="deleteTeam"
+                @addTeam="addTeam"
+              ></tl-teamCard>
+            </template>
+          </tl-svgtree>
+        </dd>
       </dl>
     </div>
     <!--
@@ -447,6 +499,10 @@ export default {
           }
         });
       });
+    },
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
     },
   },
   watch: {

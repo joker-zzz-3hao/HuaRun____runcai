@@ -19,12 +19,12 @@
                 <div class="list-info">
                   <div class="list-title">
                     <span>目标O</span>
-                    <em>{{formData.okrDetailObjectKr}}</em>
+                    <em>{{ formData.okrDetailObjectKr }}</em>
                   </div>
                   <div class="list-cont">
                     <div class="tl-progress-group">
                       <tl-process
-                        :data="parseInt(formData.okrDetailProgress,10)"
+                        :data="parseInt(formData.okrDetailProgress, 10)"
                         :showNumber="false"
                         :width="64"
                         :marginLeft="6"
@@ -52,13 +52,13 @@
               <dd v-for="(kitem, kindex) in formData.krList" :key="kindex">
                 <div class="list-info">
                   <div class="list-title">
-                    <span>关键结果{{kindex+1}}</span>
-                    <em>{{kitem.okrDetailObjectKr}}</em>
+                    <span>关键结果{{ kindex + 1 }}</span>
+                    <em>{{ kitem.okrDetailObjectKr }}</em>
                   </div>
                   <div class="list-cont">
                     <div class="tl-progress-group">
                       <tl-process
-                        :data="parseInt(kitem.okrDetailProgress,10)"
+                        :data="parseInt(kitem.okrDetailProgress, 10)"
                         :showNumber="false"
                         :width="64"
                         :marginLeft="6"
@@ -81,7 +81,9 @@
                       <span>%</span>
                     </div>
                     <div class="okr-risk">
-                      <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                      <tl-confidence
+                        v-model="kitem.okrDetailConfidence"
+                      ></tl-confidence>
                     </div>
                   </div>
                 </div>
@@ -92,7 +94,13 @@
               <dd>
                 <el-form-item
                   prop="updateexplain"
-                  :rules="[{trigger: 'blur',message:'请输入更新说明', required:true}]"
+                  :rules="[
+                    {
+                      trigger: 'blur',
+                      message: '请输入更新说明',
+                      required: true,
+                    },
+                  ]"
                 >
                   <el-input
                     placeholder="请输入更新说明"
@@ -112,12 +120,16 @@
     </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button
+        :disabled="!hasPower('okr-update')"
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="summitUpdate"
         :loading="loading"
-      >确定</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+        >确定</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>

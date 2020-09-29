@@ -1846,6 +1846,7 @@
 .create-task .task-tab{
   flex: 1;
   margin-left: 50px;
+  height: 100%;
 }
 
 /* 切换部门--by xinquan  */

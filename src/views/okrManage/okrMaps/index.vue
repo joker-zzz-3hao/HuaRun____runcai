@@ -5,7 +5,7 @@
         <!-- OKR树 -->
         <div v-if="showOkrMap" class="maps-view-tree">
           <svgtree
-            v-if="this.treeData.length>0"
+            v-if="this.treeData.length > 0"
             fatherId="orgParentId"
             childId="orgId"
             :treeData="treeData"

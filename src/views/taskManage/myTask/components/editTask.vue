@@ -3,7 +3,7 @@
     :wrapperClosable="false"
     :modal-append-to-body="true"
     :append-to-body="true"
-    title="编辑任务"
+    title="任务"
     :visible.sync="visible"
     @closed="closed"
     :before-close="close"
@@ -12,18 +12,31 @@
   >
     <el-scrollbar>
       <div class="task-fenlan">
-        <el-form :model="formData" class="tl-form">
+        <el-form ref="dataForm" :model="formData" class="tl-form">
           <dl>
             <dt>
-              <el-form-item prop="title">
+              <el-form-item
+                prop="taskTitle"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '请输入任务标题',
+                  },
+                ]"
+              >
                 <el-input
                   type="text"
                   placeholder="请输入任务标题"
-                  v-model="formData.taskTitle"
+                  v-model.trim="formData.taskTitle"
                   maxlength="100"
                   show-word-limit
                 ></el-input>
               </el-form-item>
+              <div>
+                <span>创建时间：</span>
+                <em>{{ formData.createTime }}</em>
+              </div>
               <!-- 更多操作 -->
               <div>
                 <el-dropdown trigger="click">
@@ -34,7 +47,9 @@
                     <el-dropdown-item @click="deleteTask"
                       >删除</el-dropdown-item
                     >
-                    <el-dropdown-item @click="filedTask"
+                    <el-dropdown-item
+                      @click="filedTask"
+                      :disabled="formData.taskProgress != 100"
                       >任务归档</el-dropdown-item
                     >
                   </el-dropdown-menu>
@@ -42,9 +57,9 @@
               </div>
             </dt>
             <dd>
-              <el-form-item label="设置执行人" prop="executor">
+              <el-form-item label="设置执行人">
                 <el-select
-                  v-model="formData.taskUserId"
+                  v-model.trim="formData.taskUserId"
                   placeholder="添加执行人"
                   filterable
                   remote
@@ -85,7 +100,7 @@
               </el-form-item>
               <el-form-item label="优先级" prop="taskLevel">
                 <el-select
-                  v-model="formData.taskLevel"
+                  v-model.trim="formData.taskLevel"
                   placeholder="请选择优先级"
                 >
                   <el-option
@@ -108,7 +123,7 @@
               </el-form-item>
               <el-form-item label="归属OKR" prop="okrDetailId">
                 <el-select
-                  v-model="formData.okrDetailId"
+                  v-model.trim="formData.okrDetailId"
                   placeholder="请选择归属OKR"
                 >
                   <el-option
@@ -121,7 +136,7 @@
               </el-form-item>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
-                  v-model="formData.processId"
+                  v-model.trim="formData.processId"
                   placeholder="请选择任务过程"
                 >
                   <el-option
@@ -133,43 +148,39 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="时长统计">
-                <span>当前已用时长 0天 0小时 0分</span>
+                <span>{{ formData.timeSum }}</span>
               </el-form-item>
-              <div class="tl-progress-group">
-                <tl-process
-                  :data="parseInt(formData.taskProgress, 10)"
-                  :showNumber="false"
-                  :width="64"
-                  :marginLeft="6"
-                ></tl-process>
-                <el-slider
-                  v-model="formData.taskProgress"
-                  :step="1"
-                  tooltip-class="slider-tooltip"
-                ></el-slider>
-                <el-input-number
-                  v-model="formData.taskProgress"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  :step="1"
-                  :precision="0"
-                  class="tl-input-number"
-                  @focus="showRemark = true"
-                ></el-input-number>
-                <span>%</span>
-              </div>
+              <el-form-item label="当前进度">
+                <div class="tl-progress-group">
+                  <tl-process
+                    :data="parseInt(formData.taskProgress, 10)"
+                    :showNumber="false"
+                    :width="64"
+                    :marginLeft="6"
+                  ></tl-process>
+                  <el-slider
+                    v-model.trim="formData.taskProgress"
+                    :step="1"
+                    tooltip-class="slider-tooltip"
+                    @click="showRemark = true"
+                  ></el-slider>
+                  <el-input-number
+                    v-model.trim="formData.taskProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                    class="tl-input-number"
+                    @focus="showRemark = true"
+                  ></el-input-number>
+                  <span>%</span>
+                </div>
+              </el-form-item>
               <el-form-item
                 v-if="showRemark"
                 label="进度更新原因说明"
                 prop="taskProgressRemark"
-                :rules="[
-                  {
-                    required: true,
-                    trigger: 'blur',
-                    message: '请输入更新原因',
-                  },
-                ]"
               >
                 <el-input
                   type="textarea"
@@ -177,14 +188,19 @@
                   maxlength="220"
                   placeholder="请输入进度更新原因"
                   v-model="formData.taskProgressRemark"
+                  show-word-limit
+                  resize="none"
                 ></el-input>
               </el-form-item>
               <el-form-item label="添加描述" prop="taskDesc">
-                <quill-editor
-                  v-model.trim="formData.taskDesc"
-                  ref="myQuillEditor"
-                  :options="editorOption"
-                ></quill-editor>
+                <el-input
+                  type="textarea"
+                  :rows="5"
+                  maxlength="800"
+                  show-word-limit
+                  v-model="formData.taskDesc"
+                  resize="none"
+                ></el-input>
               </el-form-item>
               <el-form-item label="附件">
                 <el-upload
@@ -208,33 +224,77 @@
         </el-form>
         <!-- 右侧 -->
         <div class="task-tab">
-          <el-tabs v-model="selectTab">
-            <el-tab-pane
-              label="操作历史"
-              name="history"
-              class="tl-custom-timeline"
-            >
-              <dl class="timeline-list">
-                <dd v-for="item in historyList" :key="item.operationId">
-                  <div class="list-info">
-                    <div class="list-title">{{ item.createTime }}</div>
-                    <div class="list-cont">
-                      {{ item.userName }}{{ item.remark }}
-                    </div>
+          <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
+            <template slot="tab-cont">
+              <div class="tab-cont" v-if="currentIndex === 0">
+                <el-scrollbar>
+                  <div class="tl-custom-timeline">
+                    <dl class="timeline-list">
+                      <dd v-for="item in historyList" :key="item.operationId">
+                        <div class="list-info">
+                          <div class="list-title">{{ item.createTime }}</div>
+                          <div class="list-cont">
+                            <div class="operate-type">
+                              <em>{{ item.userName }}</em>
+                              <span v-if="item.contents.operate == 'ADD'"
+                                >添加了</span
+                              >
+                              <span v-else-if="item.contents.operate == 'SET'"
+                                >设置了</span
+                              >
+                              <span>{{
+                                CONST.FIEID_MAP[item.contents.field]
+                              }}</span>
+                            </div>
+                            <div class="operate-kind">
+                              <span
+                                v-if="item.contents.field == 'taskProgress'"
+                              >
+                                {{ item.contents.value }}%</span
+                              >
+                              <span
+                                v-else-if="item.contents.field == 'taskLevel'"
+                              >
+                                {{
+                                  CONST.PRIORITY_MAP[item.contents.value]
+                                }}</span
+                              >
+                              <span v-else>{{ item.contents.value }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </dd>
+                    </dl>
                   </div>
-                </dd>
-              </dl>
-            </el-tab-pane>
-            <el-tab-pane label="进度更新说明" name="update">
-              <ul>
-                <li v-for="item in updateList" :key="item.id">
-                  <span>进度更新为：{{ item.process }}%</span>
-                  <span>进度更新说明：{{ item.reason }}</span>
-                  <span>操作人：{{ item.name }}</span>
-                </li>
-              </ul>
-            </el-tab-pane>
-          </el-tabs>
+                </el-scrollbar>
+              </div>
+              <div class="tab-cont" v-else>
+                <div class="tl-custom-timeline">
+                  <dl class="timeline-list">
+                    <dd v-for="item in updateList" :key="item.operationId">
+                      <div class="list-info">
+                        <div class="list-title">{{ item.createTime }}</div>
+                        <div class="list-cont">
+                          <div class="operate-type">
+                            <span>操作人：</span>
+                            <em>{{ item.userName }}</em>
+                          </div>
+                          <div class="operate-kind">
+                            <span>更新进度为：</span>
+                            <em>{{ item.contents.value }}%</em>
+                          </div>
+                          <div class="operate-kind">
+                            <span>进度更新进度说明：</span>
+                            <em>{{ item.contents.explain || "暂无" }}</em>
+                          </div>
+                        </div>
+                      </div>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </template>
+          </tl-tabs>
         </div>
       </div>
     </el-scrollbar>
@@ -244,11 +304,21 @@
       >
       <el-button
         v-if="formData.taskStatus == 0"
-        plain
-        class="tl-btn amt-border-fadeout"
+        type="primary"
+        class="tl-btn amt-bg-slip"
         @click="save"
         >暂存</el-button
       >
+      <el-button
+        v-if="formData.taskStatus == 0"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="save"
+        >确认指派</el-button
+      >
+      <el-button v-else type="primary" class="tl-btn amt-bg-slip" @click="save">
+        <span>确认</span>
+      </el-button>
       <el-button
         v-if="
           formData.taskStatus == 10 && formData.taskUserId == userInfo.userId
@@ -258,15 +328,6 @@
         @click="acceptTask"
         >确认接收</el-button
       >
-      <el-button
-        v-else
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="summitAssign"
-      >
-        <span v-if="formData.taskStatus == 0">确认指派</span>
-        <span v-else>确认</span>
-      </el-button>
     </div>
     <tl-selectproject
       ref="selectProject"
@@ -280,8 +341,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { quillEditor } from 'vue-quill-editor';// 引入ue富文本组件vue-quill-editor
 import process from '@/components/process';
+import tabs from '@/components/tabs';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -291,38 +352,40 @@ const server = new Server();
 export default {
   name: 'editTask',
   components: {
-    'quill-editor': quillEditor,
     'tl-selectproject': selectProject,
     'tl-process': process,
+    'tl-tabs': tabs,
   },
   data() {
     return {
       CONST,
       server,
       formData: {
-        title: '',
-        timeVal: [new Date(2020, 8, 1, 10, 10), new Date(2020, 9, 11, 10, 10)],
-        taskLevel: 1,
-        projectVal: '',
-        okrVal: '',
-        processVal: '',
-        processNum: 0,
+        taskTitle: '',
+        timeVal: '',
+        taskLevel: 10,
+        projectVal: {},
+        taskProgressRemark: '',
+        taskProgress: 0,
+        timeSum: '当前已用时长 0天 0小时 0分',
       },
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
       userList: [], // 执行人列表
       processList: [], // 过程列表
       showRemark: false,
-      selectTab: 'history',
-      historyList: [{
-        name: '张三', title: '关于润才平台产品市场竞品调研', reason: '因11111任务属于错误输入的任务', time: '1小时前',
-      }],
-      updateList: [{
-        name: '李四', reason: '因11111任务属于错误输入的任务', process: 20,
-      }],
+      historyList: [],
+      updateList: [],
       fileList: [],
       visible: false,
       showProjectDialog: false,
+      currentIndex: 0,
+      tabMenuList: [{
+        menuName: '操作历史',
+      },
+      {
+        menuName: '进度更新说明',
+      }],
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
       // 富文本编辑器
@@ -355,7 +418,7 @@ export default {
   },
 
   created() {
-
+    this.freshTime();
   },
   methods: {
     show(id) {
@@ -375,7 +438,33 @@ export default {
               taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
               this.formData.timeVal = [taskBegDate, taskEndDate];
             }
-            this.historyList = res.data.operationList;
+            if (this.formData.createTime) {
+              const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+              const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+              let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+              let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+              let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
+              if (dayNum >= 0 && hourNum < 0) {
+                hourNum = 1 * 24 + hourNum;
+                dayNum -= 1;
+              }
+              if (hourNum >= 0 && minuteNum < 0) {
+                minuteNum = 1 * 60 + minuteNum;
+                hourNum -= 1;
+              }
+              const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
+              this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
+            }
+            this.historyList = res.data.operationList || [];
+            this.updateList = [];
+            this.historyList.forEach((item) => {
+              // 操作历史
+              item.contents = JSON.parse(item.remark);
+              // 进度更新
+              if (item.operationType == 'taskProgress') {
+                this.updateList.push(item);
+              }
+            });
           }
         });
       }
@@ -419,6 +508,35 @@ export default {
         }
       });
     },
+    // 时长统计
+    freshTime() {
+      this.timedInterval = setInterval(() => {
+        this.timeSum();
+      }, 30 * 1000);
+    },
+    timeSum() {
+      if (this.formData.createTime) {
+        const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+        const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+        let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+        let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+        let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
+        if (dayNum >= 0 && hourNum < 0) {
+          hourNum = 1 * 24 + hourNum;
+          dayNum -= 1;
+        }
+        if (hourNum >= 0 && minuteNum < 0) {
+          minuteNum = 1 * 60 + minuteNum;
+          hourNum -= 1;
+        }
+        const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
+        this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
+        this.$forceUpdate();
+        console.log(this.formData.timeSum);
+      } else {
+        this.formData.timeSum = '当前已用时长 0天 0小时 0分';
+      }
+    },
     // 选择项目
     projectInputFocus() {
       this.showProjectDialog = true;
@@ -428,6 +546,7 @@ export default {
     },
     closeProjectDia(data) {
       this.formData.projectVal = data.project;
+      this.formData.projectName = data.project.projectNameCn;
     },
     // 文件
     errorHandler() {
@@ -446,24 +565,28 @@ export default {
     },
 
     save() {
-      const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
-      const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
-      this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-      this.formData.userName = userVal.userName;
-      if (this.formData.projectVal) {
-        this.formData.projectId = this.formData.projectVal.projectId;
-        this.formData.projectName = this.formData.projectVal.projectNameCn;
-      }
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+          const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
+          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+          this.formData.userName = userVal.userName;
+          if (this.formData.projectVal) {
+            this.formData.projectId = this.formData.projectVal.projectId;
+            this.formData.projectName = this.formData.projectVal.projectNameCn;
+          }
 
-      if (this.formData.timeVal) {
-        this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-        this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-      }
-      this.server.saveTask(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('保存成功');
-          this.close();
-          this.$emit('success');
+          if (this.formData.timeVal) {
+            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          this.server.saveTask(this.formData).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('保存成功');
+              this.close();
+              this.$emit('success');
+            }
+          });
         }
       });
     },
@@ -483,11 +606,21 @@ export default {
       }).catch(() => {});
     },
     filedTask() {
-      this.server.filedTask({ taskId: this.formData.taskId }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('归档成功');
-          this.close();
-          this.$emit('success');
+      // TODO: 归档时候有特殊校验吗
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          this.$xconfirm({
+            content: '',
+            title: '确定要将该任务归档吗？',
+          }).then(() => {
+            this.server.filedTask({ taskId: this.formData.taskId }).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('归档成功');
+                this.close();
+                this.$emit('success');
+              }
+            });
+          }).catch(() => {});
         }
       });
     },
@@ -501,28 +634,34 @@ export default {
       });
     },
     summitAssign() {
-      const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
-      const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
-      this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-      this.formData.userName = userVal.userName;
-      if (this.formData.projectVal) {
-        this.formData.projectId = this.formData.projectVal.projectId;
-        this.formData.projectName = this.formData.projectVal.projectNameCn;
-      }
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+          const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
+          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+          this.formData.userName = userVal.userName;
+          if (this.formData.projectVal) {
+            this.formData.projectId = this.formData.projectVal.projectId;
+            this.formData.projectName = this.formData.projectVal.projectNameCn;
+          }
 
-      if (this.formData.timeVal) {
-        this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-        this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-      }
-      this.server.appointSave(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('指派成功');
-          this.$emit('success');
-          this.close();
+          if (this.formData.timeVal) {
+            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          this.server.appointSave(this.formData).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('指派成功');
+              this.$emit('success');
+              this.close();
+            }
+          });
         }
       });
     },
-
+  },
+  beforeDestroy() {
+    clearInterval(this.timedInterval);
   },
 };
 </script>

@@ -5,6 +5,11 @@ const PRIORITY_LIST = [{
 }, {
   label: '低', value: 1,
 }];
+const PRIORITY_MAP = {
+  1: '低',
+  10: '中',
+  20: '高',
+};
 const TASK_PROCESS_LIST = [{
   label: '标准任务过程', value: 1,
 }, {
@@ -21,8 +26,18 @@ const TASK_STATUS_MAP = {
   10: '待确认',
   20: '已确认',
 };
+const FIEID_MAP = {
+  taskTitle: '任务标题',
+  taskProgress: '进度',
+  taskLevel: '优先级',
+  processId: '归属任务过程',
+  projectId: '归属项目',
+  taskUserId: '执行人',
+};
 export default {
   PRIORITY_LIST,
   TASK_PROCESS_LIST,
   TASK_STATUS_MAP,
+  FIEID_MAP,
+  PRIORITY_MAP,
 };
