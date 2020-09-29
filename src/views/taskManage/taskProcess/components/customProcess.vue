@@ -175,9 +175,7 @@ export default {
     move() {
 
     },
-    addMember() {
-      debugger;
-    },
+    addMember() {},
     remoteMethod(name) {
       this.server.getUserListByOrgId({
         currentPage: 1,
