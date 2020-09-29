@@ -210,10 +210,10 @@
 </template>
 
 <script>
-import svgtree from '@/components/svgtree';
+// import svgtree from '@/components/svgtree';
 import setManager from './component/setManager';
 import setFictitious from './component/setFictitious';
-import teamCard from './component/teamCard';
+// import teamCard from './component/teamCard';
 import editTeam from './component/editTeam';
 import addTeam from './component/addTeam';
 import moreMembers from './component/moreMembers';
@@ -250,8 +250,8 @@ export default {
     'tl-setManager': setManager,
     'tl-setFictitious': setFictitious,
     'tl-moreMembers': moreMembers,
-    'tl-teamCard': teamCard,
-    'tl-svgtree': svgtree,
+    // 'tl-teamCard': teamCard,
+    // 'tl-svgtree': svgtree,
     'tl-editTeam': editTeam,
     'tl-addTeam': addTeam,
   },
