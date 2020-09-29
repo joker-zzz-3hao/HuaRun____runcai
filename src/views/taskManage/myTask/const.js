@@ -28,8 +28,8 @@ const TASK_STATUS_MAP = {
 };
 const FIEID_MAP = {
   taskTitle: '任务标题',
-  taskProgress: '任务进度',
-  taskLevel: '任务优先级',
+  taskProgress: '进度',
+  taskLevel: '优先级',
   processId: '归属任务过程',
   projectId: '归属项目',
   taskUserId: '执行人',

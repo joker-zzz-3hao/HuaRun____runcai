@@ -149,7 +149,6 @@
               </el-form-item>
               <el-form-item label="时长统计">
                 <span>{{ formData.timeSum }}</span>
-                <span>当前已用时长 0天 0小时 0分</span>
               </el-form-item>
               <el-form-item label="当前进度">
                 <div class="tl-progress-group">
@@ -258,7 +257,7 @@
                               >
                                 {{
                                   CONST.PRIORITY_MAP[item.contents.value]
-                                }}%</span
+                                }}</span
                               >
                               <span v-else>{{ item.contents.value }}</span>
                             </div>
