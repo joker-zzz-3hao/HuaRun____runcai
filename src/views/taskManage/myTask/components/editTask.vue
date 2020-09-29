@@ -155,10 +155,22 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
+                  @focus="showRemark = true"
                 ></el-input-number>
                 <span>%</span>
               </div>
-              <el-form-item label="进度更新原因说明" prop="taskProgressRemark">
+              <el-form-item
+                v-if="showRemark"
+                label="进度更新原因说明"
+                prop="taskProgressRemark"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '请输入更新原因',
+                  },
+                ]"
+              >
                 <el-input
                   type="textarea"
                   :rows="3"
@@ -223,16 +235,31 @@
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
       >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="save"
+      <el-button
+        v-if="formData.taskStatus == 0"
+        plain
+        class="tl-btn amt-border-fadeout"
+        @click="save"
         >暂存</el-button
       >
-
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="close"
-        >确认指派</el-button
-      >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="acceptTask"
+      <el-button
+        v-if="
+          formData.taskStatus == 10 && formData.taskUserId == userInfo.userId
+        "
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="acceptTask"
         >确认接收</el-button
       >
+      <el-button
+        v-else
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="summitAssign"
+      >
+        <span v-if="formData.taskStatus == 0">确认指派</span>
+        <span v-else>确认</span>
+      </el-button>
     </div>
     <tl-selectproject
       ref="selectProject"
@@ -278,6 +305,7 @@ export default {
       projectList: [], // 项目列表
       userList: [], // 执行人列表
       processList: [], // 过程列表
+      showRemark: false,
       historyList: [{
         name: '张三', title: '关于润才平台产品市场竞品调研', reason: '因11111任务属于错误输入的任务', time: '1小时前',
       }],
@@ -344,6 +372,12 @@ export default {
         });
       }
     },
+    close() {
+      this.visible = false;
+    },
+    closed() {
+      this.$emit('update:existEditTask', false);
+    },
     queryOkr() {
       const params = {
         myOrOrg: 'org',
@@ -402,6 +436,7 @@ export default {
         return false;
       }
     },
+
     save() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
       const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
@@ -457,12 +492,29 @@ export default {
         }
       });
     },
-    close() {
-      this.visible = false;
+    summitAssign() {
+      const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+      const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
+      this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+      this.formData.userName = userVal.userName;
+      if (this.formData.projectVal) {
+        this.formData.projectId = this.formData.projectVal.projectId;
+        this.formData.projectName = this.formData.projectVal.projectNameCn;
+      }
+
+      if (this.formData.timeVal) {
+        this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+        this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+      }
+      this.server.appointSave(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('指派成功');
+          this.$emit('success');
+          this.close();
+        }
+      });
     },
-    closed() {
-      this.$emit('update:existEditTask', false);
-    },
+
   },
 };
 </script>

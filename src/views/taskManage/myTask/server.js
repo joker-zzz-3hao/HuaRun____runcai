@@ -65,8 +65,23 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/task-service/task/taskProcessStep/queryProcessStep', param);
   }
 
-  // 确认指派
+  // 保存并指派
   appointSave(param) {
     return this._ajaxPost('gateway/task-service/task/appointSave', param);
+  }
+
+  // 确认指派
+  appoint(param) {
+    return this._ajaxPost('gateway/task-service/task/appoint', param);
+  }
+
+  // 确认指派
+  move(param) {
+    return this._ajaxPost('gateway/task-service/task/move', param);
+  }
+
+  // 查周报
+  selectTaskForWeek(param) {
+    return this._ajaxPost('gateway/task-service/task/selectTaskForWeek', param);
   }
 }

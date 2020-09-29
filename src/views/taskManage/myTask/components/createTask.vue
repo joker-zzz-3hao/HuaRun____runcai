@@ -14,7 +14,13 @@
     </div>
     <el-scrollbar>
       <el-form :model="formData" class="tl-form">
-        <el-form-item prop="taskTitle" label="任务标题">
+        <el-form-item
+          prop="taskTitle"
+          label="任务标题"
+          :rules="[
+            { required: true, trigger: 'blur', message: '请输入任务标题' },
+          ]"
+        >
           <el-input
             type="text"
             placeholder="请输入任务标题"
@@ -137,11 +143,8 @@
       <el-button plain class="tl-btn amt-border-fadeout" @click="save"
         >暂存</el-button
       >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="close"
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
         >确认指派</el-button
-      >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="close"
-        >确认接收</el-button
       >
     </div>
     <tl-selectproject
@@ -308,7 +311,7 @@ export default {
         return false;
       }
     },
-    save() {
+    handlerData() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
       const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
       let taskBegDate = null;
@@ -338,6 +341,10 @@ export default {
         // typeId: '',
         userName: userVal.userName,
       };
+      return params;
+    },
+    save() {
+      const params = this.handlerData();
       this.server.saveTask(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('保存成功');
@@ -345,7 +352,16 @@ export default {
           this.close();
         }
       });
-      console.log('保存', this.formData.timeVal, params);
+    },
+    summitAssign() {
+      const params = this.handlerData();
+      this.server.appointSave(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+          this.$emit('success');
+          this.close();
+        }
+      });
     },
   },
 };

@@ -195,17 +195,27 @@ export default {
     },
     summit() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
-      const userVal = this.userList.filter((item) => item.userId == this.formData.executor)[0] || {};
+      const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
       this.formData.okrDetailName = okrVal.okrDetailObjectKr;
       this.formData.userName = userVal.userName;
       if (this.formData.projectVal) {
         this.formData.projectId = this.formData.projectVal.projectId;
         this.formData.projectName = this.formData.projectVal.projectNameCn;
       }
+      const params = {
+        okrDetailId: this.formData.okrDetailId,
+        okrDetailName: this.formData.okrDetailName,
+        processId: this.formData.processId,
+        projectId: this.formData.projectId,
+        projectName: this.formData.projectName,
+        taskId: this.formData.taskId,
+        taskUserId: this.formData.taskUserId,
+        userName: this.formData.userName,
+      };
 
-      this.server.appointSave(this.formData).then((res) => {
+      this.server.appoint(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('保存成功');
+          this.$message.success('提交成功');
           this.close();
           this.$emit('success');
         }

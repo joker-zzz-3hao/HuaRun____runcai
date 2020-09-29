@@ -16,7 +16,13 @@ const TASK_PROCESS_LIST = [{
 }, {
   label: '上线发布任务过程', value: 5,
 }];
+const TASK_STATUS_MAP = {
+  0: '草稿',
+  10: '待确认',
+  20: '已确认',
+};
 export default {
   PRIORITY_LIST,
   TASK_PROCESS_LIST,
+  TASK_STATUS_MAP,
 };
