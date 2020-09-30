@@ -8,23 +8,49 @@
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="110px" class="tl-form">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="110px"
+      class="tl-form"
+    >
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="form.tenantName" maxlength="64" class="tl-input" placeholder="请输入租户名称"></el-input>
+        <el-input
+          v-model="form.tenantName"
+          maxlength="64"
+          class="tl-input"
+          placeholder="请输入租户名称"
+        ></el-input>
       </el-form-item>
       <el-form-item label="企业ID" prop="tenantId">
-        <el-input maxlength="64" class="tl-input" v-model="form.tenantId" placeholder="请输入企业ID"></el-input>
+        <el-input
+          maxlength="64"
+          class="tl-input"
+          v-model="form.tenantId"
+          placeholder="请输入企业ID"
+        ></el-input>
       </el-form-item>
       <el-form-item label="申请人" prop="applyUser">
-        <el-input maxlength="64" class="tl-input" v-model="form.applyUser" placeholder="请输入申请人"></el-input>
+        <el-input
+          maxlength="64"
+          class="tl-input"
+          v-model="form.applyUser"
+          placeholder="请输入申请人"
+        ></el-input>
       </el-form-item>
       <el-form-item label="联系电话" prop="mobilePhone">
-        <el-input v-model="form.mobilePhone" class="tl-input" placeholder="请输入联系电话" maxlength="12"></el-input>
+        <el-input
+          v-model="form.mobilePhone"
+          class="tl-input"
+          placeholder="请输入联系电话"
+          maxlength="12"
+        ></el-input>
       </el-form-item>
       <el-form-item label="开放菜单功能">
         <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-            <span>{{item.data.functionName}}</span>
+          <div class="list" v-for="(item, index) in menuTreeList" :key="index">
+            <span>{{ item.data.functionName }}</span>
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <div>
@@ -33,7 +59,12 @@
               ref="treeMenu"
               :data="data"
               show-checkbox
-              :props="{ multiple: true,label:'functionName',id:'functionId',children:'children' }"
+              :props="{
+                multiple: true,
+                label: 'functionName',
+                id: 'functionId',
+                children: 'children',
+              }"
               node-key="functionId"
             ></el-tree>
           </div>
@@ -41,8 +72,15 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
+      <el-button
+        type="primary"
+        @click="validateForm('form')"
+        class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button @click="close" class="tl-btn amt-border-fadeout"
+        >取 消</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -131,9 +169,6 @@ export default {
                 .test(value) || /^[0][1-9]{2,3}-[0-9]{5,10}$/.test(value))) {
                 callback('联系电话格式不正确');
               } else {
-                if (this.formData.loginPwd) {
-                  this.$refs.userForm.validateField('loginPwd');
-                }
                 callback();
               }
             },

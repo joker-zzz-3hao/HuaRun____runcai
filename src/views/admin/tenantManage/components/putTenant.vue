@@ -12,10 +12,10 @@
     <div class="modelCreate">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="租户名称" prop="tenantName">
-          <span>{{form.tenantName}}</span>
+          <span>{{ form.tenantName }}</span>
         </el-form-item>
         <el-form-item label="企业ID" prop="tenantId">
-          <span>{{form.tenantId}}</span>
+          <span>{{ form.tenantId }}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
           <el-input
@@ -35,17 +35,18 @@
         </el-form-item>
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-              <span>{{item.data.functionName}}</span>
-              <i class="el-icon-error" @click.stop="clearNode(item)"></i>
-            </div>
             <div class="postMenu">
               <el-tree
                 @check-change="handleCheckChange"
                 ref="treeMenu"
                 show-checkbox
                 :data="data"
-                :props="{ multiple: true, label:'functionName',id:'functionId',children:'children'}"
+                :props="{
+                  multiple: true,
+                  label: 'functionName',
+                  id: 'functionId',
+                  children: 'children',
+                }"
                 node-key="functionId"
               ></el-tree>
             </div>
@@ -54,8 +55,15 @@
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" @click="validateForm('form')" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
+      <el-button
+        type="primary"
+        @click="validateForm('form')"
+        class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button @click="close" class="tl-btn amt-border-fadeout"
+        >取 消</el-button
+      >
     </div>
   </el-drawer>
 </template>

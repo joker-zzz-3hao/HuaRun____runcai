@@ -14,33 +14,39 @@
     <div class="modelCreate">
       <el-form ref="form" label-width="110px">
         <el-form-item label="租户名称" prop="tenantName">
-          <span>{{form.tenantName}}</span>
+          <span>{{ form.tenantName }}</span>
         </el-form-item>
         <el-form-item label="企业ID" prop="tenantId">
-          <span>{{form.tenantId}}</span>
+          <span>{{ form.tenantId }}</span>
         </el-form-item>
         <el-form-item label="申请人" prop="applyUser">
-          <span>{{form.applyUser}}</span>
+          <span>{{ form.applyUser }}</span>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobilePhone">
-          <span>{{form.mobilePhone}}</span>
+          <span>{{ form.mobilePhone }}</span>
         </el-form-item>
         <el-form-item label="开放菜单功能">
           <div class="menuTreeList">
-            <div class="list" v-for="(item,index) in menuTreeList" :key="index">{{item}}</div>
+            <div class="postMenu">
+              <el-tree
+                @check-change="handleCheckChange"
+                ref="treeMenu"
+                show-checkbox
+                :data="data"
+                :props="{
+                  multiple: true,
+                  label: 'functionName',
+                  id: 'functionId',
+                  children: 'children',
+                  disabled: 'functionId',
+                }"
+                node-key="functionId"
+              ></el-tree>
+            </div>
           </div>
         </el-form-item>
-        <div class="postMenu" v-show="false">
-          <el-cascader-panel
-            ref="treeMenu"
-            v-model="selectArr"
-            :options="data"
-            :props="{ multiple: true,label:'functionName',value:'functionId',children:'children' }"
-            node-key="id"
-          ></el-cascader-panel>
-        </div>
         <el-form-item label="租户状态">
-          <span>{{CONST.STATUS[form.status]}}</span>
+          <span>{{ CONST.STATUS[form.status] }}</span>
         </el-form-item>
       </el-form>
     </div>
@@ -96,22 +102,6 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    // 获取选中tree key值 展示选中
-    selectCheckList() {
-      const keys = this.$refs.treeMenu.getCheckedNodes();
-      // eslint-disable-next-line array-callback-return
-      const keyCheck = keys.map((item) => {
-        if (item.children.length == 0) {
-          return item.data.functionName;
-        }
-      });
-      // eslint-disable-next-line array-callback-return
-      this.menuTreeList = keyCheck.filter((item) => {
-        if (item) {
-          return item;
-        }
-      });
-    },
     // 获取菜单功能树形结构
     getqueryMenu() {
       this.server.queryMenu()
@@ -130,7 +120,7 @@ export default {
           this.form.tenantId = res.data.tenantId;
           this.form.status = res.data.status;
 
-          this.selectArr = res.data.menuItems;
+          this.$refs.treeMenu.setCheckedKeys(res.data.menuItems);
           this.$nextTick(() => {
             this.selectCheckList();
           });

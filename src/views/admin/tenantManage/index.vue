@@ -18,6 +18,7 @@
                 @click="getTenantList"
               ></i>
             </el-input>
+            <input type="text" style="display: none" />
           </el-form-item>
         </el-form>
         <el-button
