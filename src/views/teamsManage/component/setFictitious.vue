@@ -4,7 +4,7 @@
       title="设置虚拟汇报"
       :visible.sync="showSetManager"
       :with-header="true"
-      @close="closed"
+      @closed="closed"
       :modal="false"
       :append-to-body="false"
       :wrapperClosable="false"
