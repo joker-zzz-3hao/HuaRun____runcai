@@ -4,7 +4,7 @@
       title="编辑团队综合管理员"
       :visible.sync="showSetManager"
       :with-header="true"
-      @close="closed"
+      @closed="closed"
       :modal="false"
       :append-to-body="false"
       :wrapperClosable="false"
@@ -43,6 +43,62 @@
               @cancel="cancel"
             ></tl-selectMember>
           </div>
+        </div>
+        <div class="img-list">
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
+          <dl>
+            <dt class="user-info">
+              <div class="user-name">
+                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <em>哲民</em>
+              </div>
+            </dt>
+            <dd>徐哲民</dd>
+          </dl>
         </div>
         <div>
           <el-button @click="submitMember">确定</el-button>
@@ -120,8 +176,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.display-flex {
-  display: flex;
-}
-</style>

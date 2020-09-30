@@ -3223,12 +3223,16 @@
   color: #fff;
 }
 
+.user-info {
+  position: relative;
+}
+
 .user-info img {
   padding: 2px;
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid #879099;
+  border: 1px solid #685df1;
   cursor: pointer;
 }
 
@@ -3238,7 +3242,7 @@
   align-items: center;
   padding: 2px;
   border-radius: 50%;
-  border: 1px solid #879099;
+  border: 1px solid #685df1;
   cursor: pointer;
 }
 
@@ -3250,8 +3254,8 @@
   height: 34px;
   border-radius: 50%;
   font-size: 12px;
-  color: #fff;
-  background: #bdc5cd;
+  color: #685df1;
+  background: #f0effe;
 }
 
 /* 主内容区--左侧菜单 */

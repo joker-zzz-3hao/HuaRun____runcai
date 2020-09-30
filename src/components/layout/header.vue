@@ -97,7 +97,7 @@ export default {
     this.orgId = this.userInfo.orgId;
     if (this.userInfo.userId != 'admin') { this.init(); }
     this.userInfo.roleList.forEach((item) => {
-      if (item.roleCode == 'ORG_ADMIN') {
+      if (item.roleCode == 'ORG_ADMIN' || item.roleCode == 'TEAM_ADMIN') {
         this.showTeam = true;
       }
     });
