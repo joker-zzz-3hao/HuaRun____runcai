@@ -53,7 +53,38 @@
           :expands="expands"
         ></tl-okr-table>
       </div>
+      <div class="card-panel-body img-list" v-if="orgUser.length > 0">
+        <dl
+          v-for="(item, index) in orgUser"
+          :key="item.userId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <div class="user-name">
+              <em>{{ cutName(item.userName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ item.userName }}</dd>
+        </dl>
+      </div>
+      <div class="card-panel-body img-list" v-if="orgTable.length > 0">
+        <dl
+          v-for="(item, index) in orgTable"
+          :key="item.orgId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
+            <div class="user-name">
+              <em>{{ cutName(item.orgName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ item.orgName }}</dd>
+        </dl>
+      </div>
     </template>
+
     <template v-else>
       <div class="tl-card-panel no-data">
         <span v-if="$route.query.id" class="bg-no-data"></span>
@@ -76,36 +107,6 @@
         >
       </div>
     </template>
-    <div class="card-panel-body img-list" v-if="orgUser.length > 0">
-      <dl
-        v-for="(item, index) in orgUser"
-        :key="item.userId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-          <div class="user-name">
-            <em>{{ cutName(item.userName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ item.userName }}</dd>
-      </dl>
-    </div>
-    <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <dl
-        v-for="(item, index) in orgTable"
-        :key="item.orgId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-          <div class="user-name">
-            <em>{{ cutName(item.orgName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ item.orgName }}</dd>
-      </dl>
-    </div>
   </div>
 </template>
 
@@ -152,7 +153,7 @@ export default {
       periodList: [], // 周期列表
     };
   },
-  inject: ['reload'],
+  inject: ['reload', 'fullscreen'],
   computed: {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
@@ -278,7 +279,6 @@ export default {
   watch: {
     periodId: {
       handler(newVal) {
-        console.log('get', newVal);
         if (newVal) {
           this.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,

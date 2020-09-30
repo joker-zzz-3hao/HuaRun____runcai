@@ -44,6 +44,12 @@ const WEEKLYEMOTION = {
   100: '有收获',
 };
 
+const MOOD_TYPE = [
+  { name: '让我静静', type: '0' },
+  { name: '还行吧', type: '50' },
+  { name: '有收获', type: '100' },
+];
+
 const OKR_TYPE_MAP = {
   1: '部门',
   2: '个人',
@@ -58,6 +64,11 @@ const OKR_TYPE_LIST = [{
   name: '公司', id: 3,
 }];
 
+const DATA_TYPE = [
+  { name: '切换到我的数据' },
+  { name: '切换到示例数据' },
+];
+
 export default {
   STATUS_LIST,
   CONFIDENCE,
@@ -66,4 +77,6 @@ export default {
   STATUS_LIST_MAP,
   OKR_TYPE_LIST,
   WEEKLYEMOTION,
+  DATA_TYPE,
+  MOOD_TYPE,
 };

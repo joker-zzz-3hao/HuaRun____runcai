@@ -1,7 +1,5 @@
 <template>
-  <div class="okrSchedule">
-    <div id="okrUpdate"></div>
-  </div>
+  <div id="okrUpdate"></div>
 </template>
 
 <script>

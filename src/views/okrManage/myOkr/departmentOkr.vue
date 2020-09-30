@@ -1,9 +1,9 @@
 <template>
   <div class="department-okr">
     <div class="cont-panel">
-      <div v-if="tableList.length>0" class="tl-card-panel">
+      <div v-if="tableList.length > 0" class="tl-card-panel">
         <div class="card-panel-head">
-          <div class="okr-title">{{okrCycle.periodName}}</div>
+          <div class="okr-title">{{ okrMain.periodName }}</div>
           <dl class="okr-state">
             <dt>
               <!-- <i class="el-icon-set-up"></i> -->
@@ -11,21 +11,21 @@
             </dt>
             <dd>
               <i class="el-icon-sunny"></i>
-              <em>{{CONST.STATUS_LIST_MAP[searchForm.status]}}</em>
+              <em>{{ CONST.STATUS_LIST_MAP[searchForm.status] }}</em>
             </dd>
           </dl>
           <dl class="okr-responsible">
             <dt>
               <em>OKR类型</em>
             </dt>
-            <dd>{{CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1]}}</dd>
+            <dd>{{ CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1] }}</dd>
           </dl>
           <dl class="okr-responsible">
             <dt>
               <!-- <i class="el-icon-user"></i> -->
               <em>负责人</em>
             </dt>
-            <dd>{{okrMain.userName}}</dd>
+            <dd>{{ okrMain.userName }}</dd>
           </dl>
           <dl class="okr-progress">
             <dt>
@@ -49,7 +49,7 @@
               <em>更新时间</em>
             </dt>
             <dd>
-              <em>{{okrMain.updateTime || okrMain.createTime}}</em>
+              <em>{{ okrMain.updateTime || okrMain.createTime }}</em>
             </dd>
           </dl>
         </div>
@@ -64,19 +64,35 @@
           >
             <template slot="head-undertake" slot-scope="props">
               <div
-                v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                v-if="props.okritem.continueCount > 0"
+                @click="
+                  goUndertakeMaps(
+                    props.okritem.okrDetailId,
+                    props.okritem.okrDetailObjectKr
+                  )
+                "
               >
-                <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+                <i
+                  :class="{ 'has-undertake': props.okritem.continueCount > 0 }"
+                  class="el-icon-link"
+                ></i>
               </div>
               <div v-else>暂无</div>
             </template>
             <template slot="body-bar" slot-scope="props">
               <div
-                v-if="props.okritem.continueCount>0"
-                @click="goUndertakeMaps(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                v-if="props.okritem.continueCount > 0"
+                @click="
+                  goUndertakeMaps(
+                    props.okritem.okrDetailId,
+                    props.okritem.okrDetailObjectKr
+                  )
+                "
               >
-                <i :class="{'has-undertake':props.okritem.continueCount>0}" class="el-icon-link"></i>
+                <i
+                  :class="{ 'has-undertake': props.okritem.continueCount > 0 }"
+                  class="el-icon-link"
+                ></i>
               </div>
               <div v-else>暂无</div>
             </template>
@@ -94,40 +110,44 @@
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <div class="pannel-title">
-            <template v-if="memberList.length>0">
-              <em>{{departmentName}}</em>
+            <template v-if="memberList.length > 0">
+              <em>{{ departmentName }}</em>
               <span>成员OKR</span>
             </template>
-            <template v-if="orgTable.length>0">
-              <em>{{departmentName}}</em>
+            <template v-if="orgTable.length > 0">
+              <em>{{ departmentName }}</em>
             </template>
           </div>
         </div>
         <div class="card-panel-body img-list">
-          <template v-if="memberList.length>0">
+          <template v-if="memberList.length > 0">
             <dl
-              v-for="(item,index) in memberList"
-              :key="item.userId+index"
+              v-for="(item, index) in memberList"
+              :key="item.userId + index"
               @click="getidentity(item)"
             >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
                 <div class="user-name">
-                  <em>{{cutName(item.userName)}}</em>
+                  <em>{{ cutName(item.userName) }}</em>
                 </div>
               </dt>
-              <dd>{{item.userName}}</dd>
+              <dd>{{ item.userName }}</dd>
             </dl>
           </template>
-          <template v-if="orgTable.length>0">
-            <dl v-for="(item,index) in orgTable" :key="item.orgId+index" @click="getidentity(item)">
+          <template v-if="orgTable.length > 0">
+            <dl
+              v-for="(item, index) in orgTable"
+              :key="item.orgId + index"
+              @click="getidentity(item)"
+            >
               <dt class="user-info">
                 <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
                 <div class="user-name">
-                  <em>{{cutName(item.orgName)}}</em>
+                  <em>{{ cutName(item.orgName) }}</em>
                 </div>
               </dt>
-              <dd>{{item.orgName}}</dd>
+              <dd>{{ item.orgName }}</dd>
             </dl>
           </template>
         </div>
