@@ -11,8 +11,8 @@
             <el-radio
               :label="item.userId"
               class="tl-checkbox"
-              v-for="item in data"
-              :key="item.userId"
+              v-for="(item,index) in data"
+              :key="index+item.userId"
             >
               <div class="img-user">
                 <img src="@/assets/images/user/user.jpg" alt />
