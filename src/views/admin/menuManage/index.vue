@@ -122,7 +122,8 @@
                   v-model.trim="scope.row.status"
                   active-value="Y"
                   inactive-value="N"
-                  @change="statusList(scope.row)"
+                  class="tl-switch"
+                  @change="addOrUpdate(scope.row)"
                 ></el-switch>
               </template>
             </el-table-column>
