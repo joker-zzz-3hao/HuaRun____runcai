@@ -1,18 +1,15 @@
 <template>
-  <div>
-    <div
-      v-if="node.node.orgId!='add'"
-      style="width: 216px;height: 160px;display: flex;justify-content: center;align-items: center;position: relative;"
-    >
+  <div class="maps-card">
+    <div v-if="node.node.orgId != 'add'">
       <div>
         <div>
-          <span>{{node.node.orgName}}</span>
-          <span>({{node.node.orgType == '0' ? '实' : '虚'}})</span>
+          <span>{{ node.node.orgName }}</span>
+          <span>({{ node.node.orgType == "0" ? "实" : "虚" }})</span>
         </div>
         <div>
           <div>
             <span>负责人：</span>
-            <span v-if="node.node.orgLeader">{{node.node.orgLeader}}</span>
+            <span v-if="node.node.orgLeader">{{ node.node.orgLeader }}</span>
             <span v-else>未设置</span>
           </div>
           <div v-if="node.node.orgType == '1'">
@@ -26,9 +23,17 @@
     </div>
     <div
       v-else
-      style="width: 216px;height: 160px;display:flex;justify-content: center;align-items: center;"
+      style="
+        width: 216px;
+        height: 160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
       @click.stop="addTeam"
-    >创建虚拟团队</div>
+    >
+      创建虚拟团队
+    </div>
   </div>
 </template>
 
@@ -66,10 +71,3 @@ export default {
   watch: {},
 };
 </script>
-<style scoped>
-.delete-team {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-</style>

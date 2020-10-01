@@ -224,27 +224,10 @@ export default {
           },
         ],
       };
-      // if (myChart._$handlers.mousemove) {
-      //   myChart._$handlers.mousemove.length = 0;
-      // }
-      // if (myChart._$handlers.mouseout) {
-      //   myChart._$handlers.mouseout.length = 0;
-      // }
 
       myChart.setOption(option);
       myChart.resize();
       window.addEventListener('resize', myChart.resize);
-      // if (that.testModel) {
-      //   return false;
-      // }
-      // myChart.on('mousemove', 'series.line', (params) => {
-      //   option.series[1].data[params.dataIndex] = that.mainDataY[params.dataIndex] + 20;
-      //   myChart.setOption(option);
-      // });
-      // myChart.on('mouseout', 'series.line', (params) => {
-      //   option.series[1].data[params.dataIndex] = 0;
-      //   myChart.setOption(option);
-      // });
     },
     initCount() {
       const that = this;

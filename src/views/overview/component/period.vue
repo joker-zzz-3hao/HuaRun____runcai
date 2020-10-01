@@ -1,7 +1,9 @@
 <template>
   <div class="operating-area">
     <div class="operating-area-inside">
-      <em @click="changeTest">{{testModel?'切换到我的数据':'切换到示例数据'}}</em>
+      <em @click="changeTest">{{
+        testModel ? CONST.DATA_TYPE[0].name : CONST.DATA_TYPE[1].name
+      }}</em>
       <i class="el-icon-sort" @click="changeTest"></i>
       <div class="operating-box">
         <dl class="dl-item">
@@ -24,7 +26,12 @@
             </el-select>
           </dd>
         </dl>
-        <el-button plain v-if="$route.query.id" @click="back()" class="tl-btn amt-border-slip">
+        <el-button
+          plain
+          v-if="$route.query.id"
+          @click="back()"
+          class="tl-btn amt-border-slip"
+        >
           返回
           <span class="lines"></span>
         </el-button>
@@ -36,6 +43,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 export default {
@@ -48,6 +56,7 @@ export default {
       options: [],
       value: '',
       depart: '',
+      CONST,
     };
   },
   props: {

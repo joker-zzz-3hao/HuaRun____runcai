@@ -11,11 +11,9 @@ import Server from './server';
 const server = new Server();
 export default {
   name: 'overview',
-
   provide() {
     return {
       reload: this.reload,
-
     };
   },
   data() {
@@ -38,7 +36,15 @@ export default {
         this.isRouterAlive = true;
       });
     },
-
   },
 };
 </script>
+
+<style scoped>
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+}
+</style>
