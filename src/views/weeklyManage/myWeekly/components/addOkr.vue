@@ -109,16 +109,16 @@
           <em>公司价值观</em>
         </dt>
         <dd>
-          <el-radio-group v-model="valueSelectData">
-            <el-radio
-              @change="cultureChange"
-              class="tl-radio"
-              :label="culture.id"
+          <el-checkbox-group v-model="valueSelectData">
+            <el-checkbox
               v-for="culture in cultureList"
+              class="tl-checkbox"
+              :label="culture.id"
               :key="culture.id"
-              >{{ culture.cultureName }}</el-radio
+              @change="cultureChange"
+              >{{ culture.cultureName }}</el-checkbox
             >
-          </el-radio-group>
+          </el-checkbox-group>
         </dd>
       </dl>
     </div>
@@ -126,7 +126,7 @@
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm"
         >确认</el-button
       >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+      <el-button class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
       >
     </div>
