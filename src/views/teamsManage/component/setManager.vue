@@ -1,111 +1,55 @@
 <template>
-  <div>
-    <el-drawer
-      title="编辑团队综合管理员"
-      :visible.sync="showSetManager"
-      :with-header="true"
-      @closed="closed"
-      :modal="false"
-      :append-to-body="false"
-      :wrapperClosable="false"
-      :modal-append-to-body="false"
-      :close-on-click-modal="false"
-      :show-close="true"
-      class="tl-drawer"
-    >
+  <el-drawer
+    :visible.sync="showSetManager"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    custom-class="custom-drawer set-manage"
+    class="tl-drawer"
+    @closed="closed"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{ drawerTitle }}</div>
+    </div>
+    <div>
+      <div>
+        <span>部门名称</span>
+        <span>{{ baseInfo.orgName }}</span>
+      </div>
+      <div>
+        <span>角色名称</span>
+        <span>团队综合管理员</span>
+      </div>
       <div>
         <div>
-          <span>部门名称</span>
-          <span>{{baseInfo.orgName}}</span>
-        </div>
-        <div>
-          <span>角色名称</span>
-          <span>团队综合管理员</span>
-        </div>
-        <div>
-          <div>
-            <div>指定团队负责人</div>
-            <div v-if="chargeMember.userName">
-              <div>{{chargeMember.userName}}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMember"></i>
-              </div>
-            </div>
-            <div v-else>
-              <i class="el-icon-plus" @click="showSelectMember=!showSelectMember"></i>
+          <div>指定团队负责人</div>
+          <div v-if="chargeMember.userName">
+            <div>{{ chargeMember.userName }}</div>
+            <div>
+              <i class="el-icon-close" @click="deleteMember"></i>
             </div>
           </div>
-          <div v-if="showSelectMember">
-            <tl-selectMember
-              :value="chargeMember"
-              :teamMembers="teamMembers"
-              @ok="getMember"
-              @cancel="cancel"
-            ></tl-selectMember>
+          <div v-else>
+            <i
+              class="el-icon-plus"
+              @click="showSelectMember = !showSelectMember"
+            ></i>
           </div>
         </div>
-        <div class="img-list">
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-          <dl>
-            <dt class="user-info">
-              <div class="user-name">
-                <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
-                <em>哲民</em>
-              </div>
-            </dt>
-            <dd>徐哲民</dd>
-          </dl>
-        </div>
-        <div>
-          <el-button @click="submitMember">确定</el-button>
+        <div v-if="showSelectMember">
+          <tl-selectMember
+            :value="chargeMember"
+            :teamMembers="teamMembers"
+            @ok="getMember"
+            @cancel="cancel"
+          ></tl-selectMember>
         </div>
       </div>
-    </el-drawer>
-  </div>
+      <div>
+        <el-button @click="submitMember">确定</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -129,11 +73,15 @@ export default {
         return [];
       },
     },
+    drawerTitle: {
+      type: String,
+      default: '编辑团队综合管理员',
+    },
   },
   data() {
     return {
       showSelectMember: false,
-      showSetManager: true,
+      showSetManager: false,
       chargeMember: {},
       baseInfo: {},
     };

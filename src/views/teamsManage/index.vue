@@ -135,6 +135,7 @@
       :teamMembers="teamMembers"
       :baseInfo="baseInfo"
       @setSuccess="setSuccess"
+      :drawerTitle="drawerTitle"
     ></tl-setManager>
     <tl-setFictitious
       v-if="setFictitiousExist"
