@@ -34,7 +34,7 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table ref="dicTable" v-loading="loading" :data="tableData">
+          <el-table v-loading="loading" :data="tableData">
             <el-table-column min-width="100px" align="left" prop="processName" label="任务过程"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="indexNumber" label="排序"></el-table-column>
             <el-table-column min-width="100px" align="left" prop="processType" label="使用范围"></el-table-column>
@@ -53,11 +53,11 @@
                 </div>
               </template>
             </el-table-column>
-            <!-- <el-table-column width="130px" fixed="right" align="left" label="操作">
+            <el-table-column width="130px" fixed="right" align="left" label="操作">
               <template slot-scope="scope">
                 <el-button type="text" @click="editProcess(scope.row)" size="small">编辑</el-button>
               </template>
-            </el-table-column>-->
+            </el-table-column>
           </el-table>
         </div>
       </crcloud-table>
@@ -69,19 +69,19 @@
       @closeAddProcess="closeAddProcess"
       v-if="showCustomProcess"
     ></tl-add-process>
-    <!-- <tl-edit-process
+    <tl-edit-process
       v-if="showEditProcessDialog"
       :exist.sync="showEditProcessDialog"
       :server="server"
       :processObj="processObj"
       :optionType="optionType"
-      @closeDicDialog="closeDicDialog"
-    ></tl-edit-process>-->
+      @closeDialog="closeDialog"
+    ></tl-edit-process>
   </div>
 </template>
 
 <script>
-// import editProcess from './components/editProcess';
+import editProcess from './components/editProcess';
 import tlAddProcess from './components/addProcess';
 import Server from './server';
 
@@ -91,13 +91,13 @@ export default {
   name: 'dataDictionary',
   components: {
     tlAddProcess,
-    // tlEditProcess: editProcess,
+    tlEditProcess: editProcess,
   },
   data() {
     return {
       server,
       showCustomProcess: false,
-      // showEditProcessDialog: false,
+      showEditProcessDialog: false,
       processObj: {},
       showinfo: false,
       keyWord: '',
@@ -144,35 +144,21 @@ export default {
     closeAddProcess() {
       this.showCustomProcess = false;
     },
-    // editProcess(dic) {
-    //   if (dic.codeId) {
-    //     this.codeId = String(dic.codeId);
-    //     this.optionType = 'edit';
-    //   } else {
-    //     this.optionType = 'add';
-    //   }
-    //   this.showEditProcessDialog = true;
-    // },
+    editProcess(process) {
+      this.processObj = process;
+
+      this.showEditProcessDialog = true;
+    },
 
     // *********************************************************
 
-    deleteDic(dic) {
-      this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
-        this.server.deleteDic({ codeId: dic.codeId }).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('删除成功');
-            this.searchList();
-          }
-        });
-      });
-    },
-    closeDicDialog(data) {
+    closeDialog(data) {
       // 需要刷新则刷新页面;
       if (data.refreshPage) {
         this.searchList();
       }
       this.showCustomProcess = false;
-      // this.showEditProcessDialog = false;
+      this.showEditProcessDialog = false;
       this.showinfo = false;
     },
     clear() {

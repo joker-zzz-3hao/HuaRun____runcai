@@ -152,19 +152,19 @@ export default {
   created() {
     this.formData.orgId = this.userInfo.orgId;
     this.remoteMethod();
-    if (this.optionType == 'edit') {
-      this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
-        if (res.code == 200) {
-          res.data.forEach((user) => {
-            if (user.userId) {
-              this.formData.userIdList.push(user.userId);
-            }
-          });
-        }
-      });
-      this.formData.taskProcessQueryType = this.processObj.taskProcessQueryType;
-      this.formData.processName = this.processObj.processName;
-    }
+    // if (this.optionType == 'edit') {
+    //   this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
+    //     if (res.code == 200) {
+    //       res.data.forEach((user) => {
+    //         if (user.userId) {
+    //           this.formData.userIdList.push(user.userId);
+    //         }
+    //       });
+    //     }
+    //   });
+    //   this.formData.taskProcessQueryType = this.processObj.taskProcessQueryType;
+    //   this.formData.processName = this.processObj.processName;
+    // }
   },
   mounted() {},
   computed: {
@@ -250,7 +250,10 @@ export default {
         this.formData.orgId = '';
         this.formData.userIdList = [this.userInfo.userId];
       }
-      this.formData.stepNameList = [...this.stepNameList];
+      // this.formData.stepNameList = [...this.stepNameList];
+      this.stepNameList.forEach((step) => {
+        this.formData.stepNameList.push(step.name);
+      });
       this.server.addProcess(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message.success('新增成功');

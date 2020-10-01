@@ -18,10 +18,7 @@
     </div>
     <div class="cont-area" v-show="weeklyTypeList.length > 0">
       <!-- 日期 -->
-      <tl-calendar
-        @setCalendarId="setCalendarId"
-        @getWeeklyById="getWeeklyById"
-      ></tl-calendar>
+      <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
       <div class="weekly-area" v-if="newPage">
         <!-- 标准版 -->
         <standard-Weekly
@@ -139,10 +136,8 @@ export default {
       if (orgOrMy == 'org') {
         tempResult = this.orgOkrList;
       }
-      let oIndex = 0;
       for (const okr of okrDetails) {
-        oIndex += 1;
-        okr.indexText = `目标O${oIndex}`;
+        okr.indexText = '目标O';
         this.$set(okr, 'okrType', 'O');
         tempResult.push(okr);
         if (okr.krList && okr.krList.length > 0) {
