@@ -19,7 +19,7 @@
           <el-input placeholder="请输入任务标题" v-model="formData.processName"></el-input>
         </el-form-item>
         <el-form-item label="显示排序">
-          <el-input type="number" v-model="formData.processName"></el-input>
+          <el-input type="number" v-model="formData.indexNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
@@ -71,7 +71,12 @@
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
-          <p></p>
+          <p v-for="(step, index) in stepNameList" :key="step.randomId">
+            <span>步骤{{index+1}}</span>
+            <el-input v-model.trim="step.name"></el-input>
+            <el-button @click="deleteName(step)" v-if="stepNameList.length > 1">删除</el-button>
+            <el-button @click="addName" v-if="index == stepNameList.length - 1">添加</el-button>
+          </p>
         </el-form-item>
       </el-form>
       <div class="operating-box">
@@ -116,11 +121,17 @@ export default {
       loading: false,
       formData: {
         available: 1,
-        processType: '1',
+        taskProcessQueryType: '1',
         orgId: '',
         processName: '',
         userIdList: [],
+        stepNameList: [],
+        indexNumber: '',
       },
+      stepNameList: [{
+        randomId: Math.random().toString(36).substr(3),
+        name: '',
+      }],
       userList: [],
       processList: [
         {
@@ -151,7 +162,7 @@ export default {
           });
         }
       });
-      this.formData.processType = this.processObj.processType;
+      this.formData.taskProcessQueryType = this.processObj.taskProcessQueryType;
       this.formData.processName = this.processObj.processName;
     }
   },
@@ -161,13 +172,13 @@ export default {
       userInfo: (state) => state.userInfo,
     }),
     teamUser() {
-      return this.formData.processType == '1';
+      return this.formData.taskProcessQueryType == '1';
     },
     localUser() {
-      return this.formData.processType == '2';
+      return this.formData.taskProcessQueryType == '2';
     },
     personalUser() {
-      return this.formData.processType == '3';
+      return this.formData.taskProcessQueryType == '3';
     },
   },
   methods: {
@@ -207,72 +218,55 @@ export default {
 
     selectTeamUser(team) {
       if (team) {
-        this.formData.processType = '1';
+        this.formData.taskProcessQueryType = '1';
       } else {
-        this.formData.processType = '';
+        this.formData.taskProcessQueryType = '';
       }
     },
     selectLocalUser(local) {
       if (local) {
-        this.formData.processType = '2';
+        this.formData.taskProcessQueryType = '2';
       } else {
-        this.formData.processType = '';
+        this.formData.taskProcessQueryType = '';
 
         this.formData.userIdList = [];
       }
     },
     selectPersonalUser(personal) {
       if (personal) {
-        this.formData.processType = '3';
+        this.formData.taskProcessQueryType = '3';
       } else {
-        this.formData.processType = '';
+        this.formData.taskProcessQueryType = '';
       }
     },
     addProcess() {
-      if (this.formData.processType == '1') { // 团队需要orgId
+      if (this.formData.taskProcessQueryType == '1') { // 团队需要orgId
         this.formData.userIdList = [];
       }
-      if (this.formData.processType == '2') { // 小范围、个人不需要orgId，需要userIdList
+      if (this.formData.taskProcessQueryType == '2') { // 小范围、个人不需要orgId，需要userIdList
         this.formData.orgId = '';
       }
-      if (this.formData.processType == '3') { // 小范围、个人不需要orgId，需要userIdList
+      if (this.formData.taskProcessQueryType == '3') { // 小范围、个人不需要orgId，需要userIdList
         this.formData.orgId = '';
         this.formData.userIdList = [this.userInfo.userId];
       }
-      if (this.optionType == 'edit') {
-        this.formData.processId = this.processObj.processId;
-        // 校验必填项
-        this.server.editProcess(this.formData).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('修改成功');
-            this.$emit('closeAddProcess');
-          }
-        });
-      } else {
-        // 校验必填项
-        const params = {
-          available: 1,
-          indexNumber: 0,
-          orgId: this.userInfo.orgId,
-          processId: this.processObj.processId,
-          processName: 'hah',
-          stepNameList: [
-            '哈哈',
-            '呵呵',
-            '啧啧',
-          ],
-          taskProcessQueryType: '2',
-          userIdList: ['1233193790605557760'],
-        };
-        this.server.addProcess(params).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('新增成功');
-            this.$emit('closeAddProcess');
-          }
-        });
-      }
+      this.formData.stepNameList = [...this.stepNameList];
+      this.server.addProcess(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('新增成功');
+          this.$emit('closeAddProcess');
+        }
+      });
     },
-
+    addName() {
+      this.stepNameList.push({
+        randomId: Math.random().toString(36).substr(3),
+        name: '',
+      });
+    },
+    deleteName(step) {
+      this.stepNameList = this.stepNameList.filter((element) => element.randomId != step.randomId);
+    },
   },
   watch: {},
   updated() {},
