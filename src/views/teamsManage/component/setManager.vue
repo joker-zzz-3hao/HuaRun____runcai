@@ -25,23 +25,25 @@
         <div>
           <div>
             <div>指定团队负责人</div>
-            <div v-if="chargeMember.userName">
-              <div>{{chargeMember.userName}}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMember"></i>
-              </div>
-            </div>
-            <div v-else>
-              <i class="el-icon-plus" @click="showSelectMember=!showSelectMember"></i>
-            </div>
           </div>
-          <div v-if="showSelectMember">
-            <tl-selectMember
-              :value="chargeMember"
-              :teamMembers="teamMembers"
-              @ok="getMember"
-              @cancel="cancel"
-            ></tl-selectMember>
+          <div>
+            <el-select v-model="formData.manageMember" clearable filterable @clear="clearManage">
+              <el-option
+                v-for="(item,index) in teamMembers"
+                :key="index+item.userId"
+                :label="item.userName"
+                :value="item.userId">
+                <dt class="user-info">
+                  <div class="user-name">
+                    <!-- <img v-if="tItem.headerUrl" :src="item.headerUrl" alt /> -->
+                    <!-- <em>{{ item.userName }}</em> -->
+                  </div>
+                </dt>
+                <span>{{ item.userName }}</span>
+                <span v-if="item.userMobile">{{ `(${item.userMobile})` }}</span>
+                <el-checkbox v-model='item.checkStatus'></el-checkbox>
+              </el-option>
+            </el-select>
           </div>
         </div>
         <div class="img-list">
@@ -109,13 +111,10 @@
 </template>
 
 <script>
-import selectMember from '@/components/selectMember';
 
 export default {
   name: 'setManager',
-  components: {
-    'tl-selectMember': selectMember,
-  },
+  components: {},
   props: {
     server: {
       type: Object,
@@ -136,6 +135,9 @@ export default {
       showSetManager: true,
       chargeMember: {},
       baseInfo: {},
+      formData: {
+        manageMember: '',
+      },
     };
   },
   mounted() {},
@@ -147,23 +149,23 @@ export default {
       self.chargeMember.userId = data.teamUserId;
       self.chargeMember.userName = data.teamManager;
       self.showSetManager = true;
+      self.formData.manageMember = data.teamUserId;
     },
     closed() {
       this.showSetManager = false;
       this.$emit('closed');
     },
-    getMember(data) {
-      this.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
-      this.showSelectMember = false;
-    },
-    deleteMember() {
+    clearManage() {
+      this.teamMembers.forEach((item) => {
+        item.checkStatus = false;
+      });
       this.chargeMember = {};
     },
     submitMember() {
       this.server.setTeamAdminRole({
         roleCode: 'TEAM_ADMIN',
         orgId: this.baseInfo.orgId,
-        newUserId: this.chargeMember.userId,
+        newUserId: this.chargeMember.userId ? this.chargeMember.userId : '',
         userId: this.baseInfo.teamUserId || null,
       }).then((res) => {
         if (res.code == '200') {
@@ -173,6 +175,24 @@ export default {
       });
     },
   },
-  watch: {},
+  watch: {
+    'formData.manageMember': {
+      handler(newVal) {
+        if (newVal) {
+          this.teamMembers.forEach((item) => {
+            if (newVal == item.userId) {
+              item.checkStatus = true;
+            } else {
+              item.checkStatus = false;
+            }
+          });
+          this.chargeMember = this.teamMembers.filter((item) => item.userId == newVal)[0] || {};
+          this.showSelectMember = false;
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>
