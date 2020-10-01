@@ -950,6 +950,10 @@
   justify-content: space-between;
 }
 
+ .tl-drawer .custom-drawer .el-drawer__body {
+  margin-top: 10px;
+}
+
 .tl-drawer .el-drawer__body>.el-scrollbar {
   margin: 0 0 30px 0;
 }
@@ -1772,6 +1776,14 @@
 .tl-month-popper .el-month-table td.current:not(.disabled) .cell,
 .tl-month-popper .el-month-table td .cell:hover {
   color: #685df1;
+}
+
+.tl-month-popper .el-month-table td.today .cell {
+  color: #685df1;
+}
+
+.tl-month-popper .el-month-table td.disabled .cell:hover {
+  color: #C0C4CC;
 }
 
 /* tl-slider */
