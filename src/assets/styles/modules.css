@@ -158,7 +158,9 @@
   border-radius: 2px;
 }
 
-.is-plain.btn-lineheight:hover {
+.is-plain.btn-lineheight:hover,
+.is-plain.btn-lineheight:active,
+.is-plain.btn-lineheight:focus {
   background: #f0effe;
 }
 
@@ -858,7 +860,6 @@
   padding: 0 2px 30px 30px;
   box-shadow: -6px 0 16px 0 rgba(0, 0, 0, 0.04);
   width: unset !important;
-  /* width: 32% !important; */
 }
 
 .tl-drawer .el-drawer__header {

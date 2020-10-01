@@ -1,8 +1,7 @@
 <template>
   <div class="my-weekly">
-    <div>
+    <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <!-- <div class="operating-box" :class="{'visibility-hidden': weeklyTypeList.length > 0 }"> -->
       <div class="operating-box" v-if="weeklyTypeList.length > 0">
         <div
           class="tl-custom-btn"
@@ -10,7 +9,6 @@
           :key="item"
           :class="{
             'is-select': weeklyType == item,
-            'is-version': weeklyTypeList.length == 1,
           }"
           @click="setWeeklyType(item)"
         >

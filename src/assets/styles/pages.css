@@ -1740,6 +1740,21 @@
   border-radius: 2px;
 }
 
+.weekly-select .is-submit::before {
+  position: absolute;
+  left: -1px;
+  top: 5px;
+  bottom: 5px;
+  content: '';
+  width: 2px;
+  background: #4ccd79;
+}
+
+.weekly-select .is-submit .icon-bg {
+  background: #4ccd79;
+  color: #fff;
+}
+
 .weekly-select .period-time {
   color: #4d5155;
 }
@@ -1751,12 +1766,12 @@
 }
 
 .weekly-select .icon-bg {
+  margin: 0 6px 0 0;
   width: 14px;
   height: 14px;
 }
 
 .weekly-select .icon-bg i {
-  margin: 2px 1px 0 0;
   font-size: 12px;
 }
 
@@ -1974,6 +1989,11 @@
 
 .teams-manage .maps-card {
   height: 160px;
+}
+
+.set-manage .el-drawer__body {
+  margin-top: 10px;
+  width: 600px;
 }
 
 /* =========================================================租户管理================================================================== */

@@ -12,17 +12,23 @@
       class="tl-month-editor"
     ></el-date-picker>
     <!-- 选择周 -->
-    <ul v-if="weekList.length > 0 " class="weekly-select">
-      <li v-for="(item,index) in weekList" :key="index" @click="seclectBtn(item)">
-        <div class="period-time">{{getWeekItem(item,index)}}</div>
+    <ul v-if="weekList.length > 0" class="weekly-select">
+      <li
+        v-for="(item, index) in weekList"
+        :key="index"
+        @click="seclectBtn(item)"
+        :class="{
+          'is-submit': item.weeklyId,
+          'is-unsubmit': !item.weeklyId && !item.noOpen,
+          'is-unopen': item.noOpen,
+        }"
+      >
+        <div class="period-time">{{ getWeekItem(item, index) }}</div>
         <div v-if="!isFromTeam">
-          <div
-            class="period-state"
-            :class="{'is-submit':item.weeklyId,'is-unopen':!item.weeklyId && !item.noOpen}"
-          >
+          <div class="period-state">
             <div class="icon-bg">
               <!-- <i v-if="item.noOpen"></i> -->
-              <i :class="{'el-icon-check': !item.noOpen}"></i>
+              <i :class="{ 'el-icon-check': !item.noOpen }"></i>
             </div>
             <em v-if="!!item.weeklyId">已提交</em>
             <em v-if="!item.weeklyId && !item.noOpen">未提交</em>
