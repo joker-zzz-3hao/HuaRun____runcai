@@ -32,12 +32,22 @@
             </div>
           </div>
           <div v-if="showSelectMember">
-            <tl-selectMember
+            <!-- <tl-selectMember
               :value="formData.chargeMember.userId"
               :teamMembers="teamMembers"
               @ok="getMember"
               @cancel="cancel"
-            ></tl-selectMember>
+            ></tl-selectMember> -->
+            <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="(item,index) in teamMembers"
+                :key="index+item.userId"
+                :label="item.userName"
+                :value="item.userId">
+                <span>{{ item.userName }}</span>
+                <span>{{ item.value }}</span>
+              </el-option>
+            </el-select>
           </div>
         </div>
         <div>
@@ -73,13 +83,13 @@
 </template>
 
 <script>
-import selectMember from '@/components/selectMember';
+// import selectMember from '@/components/selectMember';
 import selectMembers from '@/components/selectMembers';
 
 export default {
   name: 'editTeam',
   components: {
-    'tl-selectMember': selectMember,
+    // 'tl-selectMember': selectMember,
     'tl-selectMembers': selectMembers,
   },
   props: {
