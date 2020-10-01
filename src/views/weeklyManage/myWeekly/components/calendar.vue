@@ -109,7 +109,7 @@ export default {
         if (res.code == 200) {
           this.weekList = res.data;
           // 设置日历的可点击状态以及周报可编辑状态
-          this.setWeekClickOrEditStatus(newMonth);
+          this.setWeekClickOrEditStatus(this.monthDate);
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
         }
@@ -138,10 +138,13 @@ export default {
           if (new Date(this.monthDate).getMonth() == new Date().getMonth()
           || (this.weekIndex == this.weekList.length - 1
            && new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth()
-            - new Date(this.weekList[this.weekList.length - 1].weekEnd).weekBegin() == 1
-           && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).weekBegin())) {
-            this.currentMonthWeekList = [...this.weekList];
-            this.currentWeekIndex = this.weekList.indexOf(week);
+            - new Date(this.weekList[this.weekList.length - 1].weekBegin).getMonth() == 1
+           && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth())) {
+            // 只有当前月的数据才保存为当前月数据：1、如果选中月是最后一周，说明是上个月的尾周
+            if (this.weekList.indexOf(week) != this.weekList.length - 1) {
+              this.currentMonthWeekList = [...this.weekList];
+              this.currentWeekIndex = this.weekList.indexOf(week);
+            }
           }
         }
       });
