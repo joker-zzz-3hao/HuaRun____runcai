@@ -313,8 +313,9 @@
   color: #879099;
 }
 
-.tl-radio .el-radio__input.is-checked+.el-radio__label {
-  color: #4d5155;
+.tl-radio .el-radio__input.is-checked+.el-radio__label,
+.tl-radio .el-radio__input.is-checked+.el-radio__label em {
+  color: #685df1;
 }
 
 .tl-radio.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
@@ -956,6 +957,20 @@
 
 .tl-drawer .el-drawer__body>.el-scrollbar {
   margin: 0 0 30px 0;
+}
+
+.custom-drawer .el-checkbox-group .tl-checkbox {
+  padding: 20px 0;
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #fff 0, #fff 0.6em);
+}
+
+.custom-drawer .el-checkbox-group .tl-checkbox:last-child {
+  background: unset;
+}
+
+.custom-drawer .el-checkbox-group .el-checkbox__label {
+  font-size: 14px;
 }
 
 .tl-drawer+.v-modal,
