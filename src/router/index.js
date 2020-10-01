@@ -27,7 +27,8 @@ function hasPower(power) {
     .functionCode);
   if (typeof power == 'string') {
     return !!userPowers.includes(power) || (power == '');
-  } if (Array.isArray(power)) {
+  }
+  if (Array.isArray(power)) {
     let result = true;
     if (!userPowers.includes('admin')) {
       power.forEach((item) => {
@@ -99,7 +100,9 @@ router.beforeEach((to, from, next) => {
       } else if (to.name == 'overview') {
         if (window.$store.getters['common/getIdentity'].data) {
           console.log(window.$store.getters['common/getIdentity']);
-          const { identityType } = window.$store.getters['common/getIdentity'].data;
+          const {
+            identityType,
+          } = window.$store.getters['common/getIdentity'].data;
           console.log(identityType);
           if (identityType == 'org') {
             next('/departleader');
@@ -117,7 +120,9 @@ router.beforeEach((to, from, next) => {
             orgId: window.$store.getters['common/userInfo'].orgId,
           }).then((res) => {
             console.log(res);
-            const { identityType } = res.data;
+            const {
+              identityType,
+            } = res.data;
             console.log(identityType);
             if (identityType == 'org') {
               next('/departleader');

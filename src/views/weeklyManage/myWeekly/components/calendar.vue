@@ -39,39 +39,7 @@
             <i></i>
           </el-tooltip>
         </div>
-        <!-- <div class="period-state">
-          <div class="icon-bg">
-            <i class="el-icon-check"></i>
-          </div>
-          <em>已提交</em>
-        </div>-->
-        <!-- <div class="period-state">
-          <div class="icon-bg">
-            <i></i>
-          </div>
-          <em>未开放</em>
-        </div>-->
       </li>
-      <!-- <el-button
-        plain
-        v-for="(item,index) in weekList"
-        :key="index"
-        @click="seclectBtn(item)"
-        :type="item.btnType"
-        :disabled="!item.canClick"
-        class="tl-btn"
-      >
-        {{getWeekItem(item,index)}}
-        <el-checkbox
-          v-if="!isFromTeam"
-          type="success"
-          :checked="isChecked(item.weeklyId)"
-          :label="item.weeklyId ? '已提交' : '未提交'"
-          disabled
-        ></el-checkbox>
-        <span v-if="!item.weeklyId && !item.canEdit">已超过两周，不可再提交周报</span>
-      </el-button>
-      <el-button @click="goCurrentWeek" class="tl-btn">回到本周</el-button>-->
     </ul>
   </div>
 </template>

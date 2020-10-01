@@ -58,6 +58,7 @@
               type="primary"
               @click="queryTaskByClassify(classify.typeId)"
               class="tl-btn amt-bg-slip"
+              :disabled="classify.isEdit"
               :icon="!classify.isEdit?'el-icon-s-claim':''"
             >
               <!-- @click.capture.stop="dataChange(scope.row)" -->
@@ -74,7 +75,7 @@
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @clickc.capture.stop.native="editClassify(classify)">重新命名分类</el-dropdown-item>
+                  <el-dropdown-item @click.native="editClassify(classify)">重新命名分类</el-dropdown-item>
                   <el-dropdown-item @click.native="deleteClassify(classify)">删除分类</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -115,7 +116,7 @@
           </el-select>
         </div>
         <div>
-          <tl-list v-if="taskType == 1"></tl-list>
+          <tl-list :processObj="processObj" :stepList="stepList" v-if="taskType == 1"></tl-list>
           <tl-board
             ref="board"
             :processObj="processObj"
@@ -182,7 +183,7 @@ export default {
       existEditTask: false,
       processObj: {},
       taskTypeList: [1, 2],
-      taskType: 2,
+      taskType: 1,
       executorList: [
         {
           executorId: '1',
@@ -251,8 +252,7 @@ export default {
       });
     },
 
-    closeAddProcess(data) {
-      console.log(data);
+    closeAddProcess() {
       this.showCustomProcess = false;
     },
     goCreateTask() {
@@ -295,7 +295,7 @@ export default {
         typeName: this.typeName,
       }).then((res) => {
         if (res.code == 200) {
-          console.log(res);
+          this.typeName = '';
           this.queryProcessClassify({ processId: this.processId });
         }
       });

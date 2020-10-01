@@ -11,9 +11,14 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/task-service/task/taskProcess/queryProcess', param);
   }
 
-  // 查询组织包含的用户列表
+  // 任务看板任务
   queryTaskList(param) {
     return this._ajaxPost('gateway/task-service/task/selectTaskForKanban', param);
+  }
+
+  // 查询任务列表数据
+  queryTaskTableList(param) {
+    return this._ajaxPost('gateway/task-service/task/selectTaskForList', param);
   }
 
   // 查询任务过程的步骤
