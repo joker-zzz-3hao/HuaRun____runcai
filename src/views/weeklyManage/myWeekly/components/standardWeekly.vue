@@ -176,7 +176,6 @@
                   <el-dropdown-item>删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-              <span v-else>--</span>
             </template>
           </el-table-column>
         </el-table>
