@@ -65,7 +65,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.approvalStatus == '0'"
+                  v-if="scope.row.approvalStatus == '0' && hasPower('okr-approval-pass')"
                   @click.native.prevent="okrApproval(scope.row)"
                   class="tl-btn"
                 >审批</el-button>
@@ -84,7 +84,7 @@
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <el-form :inline="true" @submit.native.prevent class="tl-form">
+          <el-form :inline="true" @submit.native.prevent class="tl-form" v-if="hasPower('okr-approval-list')">
             <el-form-item>
               <p>周期</p>
               <el-select
@@ -212,22 +212,24 @@ export default {
       });
     },
     searchList() {
-      this.tableData = [];
-      if (this.formData.periodId) {
-        this.server.getokrApproval({
-          approvalStatus: this.formData.approvalStatus,
-          approvalType: this.formData.approvalType,
-          currentPage: this.formData.currentPage,
-          keyword: this.formData.keyword,
-          pageSize: this.formData.pageSize,
-          periodId: this.formData.periodId,
-        }).then((res) => {
-          if (res.code == '200') {
-            this.tableData = res.data.content;
-            this.formData.total = res.data.total;
-            this.formData.currentPage = res.data.currentPage;
-          }
-        });
+      if (this.hasPower('okr-approval-list')) {
+        this.tableData = [];
+        if (this.formData.periodId) {
+          this.server.getokrApproval({
+            approvalStatus: this.formData.approvalStatus,
+            approvalType: this.formData.approvalType,
+            currentPage: this.formData.currentPage,
+            keyword: this.formData.keyword,
+            pageSize: this.formData.pageSize,
+            periodId: this.formData.periodId,
+          }).then((res) => {
+            if (res.code == '200') {
+              this.tableData = res.data.content;
+              this.formData.total = res.data.total;
+              this.formData.currentPage = res.data.currentPage;
+            }
+          });
+        }
       }
     },
     okrApproval(row) {

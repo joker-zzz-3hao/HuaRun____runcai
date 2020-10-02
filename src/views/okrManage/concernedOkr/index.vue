@@ -3,7 +3,7 @@
     <div>
       <div>
         <div>我的关注</div>
-        <div @click="addFocus">
+        <div @click="addFocus" v-if="hasPower('okr-focus-add')">
           <span>添加关注</span>
           <i class="el-icon-plus"></i>
         </div>
@@ -24,7 +24,7 @@
           <div>{{ item.targetName }}</div>
           <div>{{ `(${item.orgName})` }}</div>
         </div>
-        <div @click="cancelFocus(item)">取消关注</div>
+        <div v-if="hasPower('okr-focus-add')" @click="cancelFocus(item)">取消关注</div>
       </div>
     </div>
     <div v-for="item in tableList" :key="item.okrMain.okrId">
@@ -121,17 +121,19 @@ export default {
   },
   methods: {
     init() {
-      this.server.focusList().then((res) => {
-        if (res.code == '200') {
-          this.focusList = res.data;
-          if (this.focusList.length > 0) {
-            if (res.data.length > 0) {
-              this.selectUserId = res.data[0].targetId;
-              this.queryOKR();
+      if (this.hasPower('okr-foucs-list')) {
+        this.server.focusList().then((res) => {
+          if (res.code == '200') {
+            this.focusList = res.data;
+            if (this.focusList.length > 0) {
+              if (res.data.length > 0) {
+                this.selectUserId = res.data[0].targetId;
+                this.queryOKR();
+              }
             }
           }
-        }
-      });
+        });
+      }
     },
     addFocus() {
       this.exist = true;
@@ -140,19 +142,21 @@ export default {
       });
     },
     queryOKR() {
-      this.tableList = [];
-      this.server.queryFocusUserOkr({
-        userId: this.selectUserId,
-      }).then((response) => {
-        if (response.code == '200') {
-          response.data.forEach((item) => {
-            this.tableList.push({
-              okrMain: item.okrMain,
-              tableList: item.okrDetails,
+      if (this.hasPower('okr-focus-user-detail')) {
+        this.tableList = [];
+        this.server.queryFocusUserOkr({
+          userId: this.selectUserId,
+        }).then((response) => {
+          if (response.code == '200') {
+            response.data.forEach((item) => {
+              this.tableList.push({
+                okrMain: item.okrMain,
+                tableList: item.okrDetails,
+              });
             });
-          });
-        }
-      });
+          }
+        });
+      }
     },
     selectUser(data) {
       this.selectUserId = data.targetId;

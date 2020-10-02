@@ -2,7 +2,7 @@
   <div class="role-type">
     <div class="page-title">价值观分布数据</div>
     <div>
-      <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+      <el-form ref="ruleForm" :inline="true" class="tl-form-inline" v-if="hsaPower('culture-org-query')">
         <el-form-item label="组织">
           <div @click="showCascader = !showCascader">
             <el-input
@@ -74,7 +74,7 @@
       <div>
         <div>价值观评价</div>
         <div>
-          <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form ref="ruleForm" :inline="true" class="tl-form-inline" v-if="hasPower('culture-tenant-query')">
             <el-form-item label="周期">
               <div style="margin-left: 20px" v-if="cycleData.length > 0">
                 <el-select
@@ -237,7 +237,7 @@ export default {
       });
     },
     searchOrgCulture() {
-      if (this.okrCycle.startTime && this.orgId) {
+      if (this.hasPower('culture-org-query') && this.okrCycle.startTime && this.orgId) {
         this.server.orgCulture({
           begDate: this.okrCycle.startTime,
           endDate: this.okrCycle.endTime,
@@ -296,15 +296,17 @@ export default {
       });
     },
     queryWorth() {
-      this.server.tenantCultureScore({
-        begDate: this.worthCycle.startTime,
-        endDate: this.worthCycle.endTime,
-      }).then((res) => {
-        if (res.code == '200') {
-          console.log(res);
-          this.worthList = res.data;
-        }
-      });
+      if (this.hasPower('culture-tenant-query')) {
+        this.server.tenantCultureScore({
+          begDate: this.worthCycle.startTime,
+          endDate: this.worthCycle.endTime,
+        }).then((res) => {
+          if (res.code == '200') {
+            console.log(res);
+            this.worthList = res.data;
+          }
+        });
+      }
     },
     selectIdChange(data) {
       this.showCascader = false;
