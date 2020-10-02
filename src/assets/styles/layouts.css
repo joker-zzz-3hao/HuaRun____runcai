@@ -142,3 +142,12 @@ span + em + em:last-of-type,
 i + span + em + i {
   margin: 0 0 0 6px;
 }
+
+.layout-rows {
+  display: flex;
+  align-items: center;
+}
+
+.layout-rows dt {
+  margin: 0 20px 0 0;
+}

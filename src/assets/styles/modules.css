@@ -784,6 +784,10 @@
   font-weight: 500;
 }
 
+.tl-dialog .operating-box {
+  margin: 30px 0 0 0;
+}
+
 /* form */
 .tl-form .el-form-item {
   margin: 16px 0;
@@ -2124,6 +2128,11 @@
 
 .el-cascader__dropdown.tl-cascader-popper {
   margin-top: 6px;
+}
+
+.tl-cascader .el-input__inner {
+  border-radius: 2px;
+  border-color: #685df1;
 }
 
 /* tl-dropdown */
