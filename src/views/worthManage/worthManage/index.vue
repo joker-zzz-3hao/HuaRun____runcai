@@ -3,7 +3,7 @@
     <div class="operating-area">
       <div class="page-title">价值观事件簿</div>
       <div class="operating-box">
-        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline" v-if="hasPower('culture-event-query')">
           <el-form-item label="组织">
             <!-- <div @click="showCascader=!showCascader">
               <el-input v-model="formData.orgName" style="width: 200px;"></el-input>
@@ -249,19 +249,21 @@ export default {
   },
   methods: {
     searchList() {
-      if (this.formData.orgFullId) {
-        this.server.weeklyEvents({
-          cultureId: this.formData.worthId,
-          score: this.formData.scoreId,
-          orgFullId: this.formData.orgFullId,
-          currentPage: this.currentPage,
-          pageSize: this.pageSize,
-        }).then((res) => {
-          if (res.code == '200') {
-            this.tableData = res.data.content;
-            this.total = res.data.total;
-          }
-        });
+      if (this.hasPower('culture-event-query')) {
+        if (this.formData.orgFullId) {
+          this.server.weeklyEvents({
+            cultureId: this.formData.worthId,
+            score: this.formData.scoreId,
+            orgFullId: this.formData.orgFullId,
+            currentPage: this.currentPage,
+            pageSize: this.pageSize,
+          }).then((res) => {
+            if (res.code == '200') {
+              this.tableData = res.data.content;
+              this.total = res.data.total;
+            }
+          });
+        }
       }
     },
     selectIdChange(data) {

@@ -117,7 +117,7 @@
     </div>
     <div class="operating-box">
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
-      <el-button class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
     </div>
   </el-drawer>
 </template>

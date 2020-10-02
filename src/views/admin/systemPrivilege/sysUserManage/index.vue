@@ -4,7 +4,7 @@
       <div>系统用户管理</div>
     </div>
     <div>
-      <el-form class="tl-form">
+      <el-form class="tl-form" v-if="hasPower('sys_auth')">
         <el-form-item label="用户账号">
           <span>{{ userInfo.userAccount }}</span>
         </el-form-item>
@@ -143,16 +143,18 @@ export default {
   },
   methods: {
     searchList() {
-      const params = {
-        currentPage: this.currentPage,
-        pageSize: this.pageSize,
-        userAccount: 'admin',
-      };
-      this.server.getUserLIst(params).then((res) => {
-        if (res.code == 200) {
-          this.userInfo = res.data;
-        }
-      });
+      if (this.hasPower('sys-sysuser-query')) {
+        const params = {
+          currentPage: this.currentPage,
+          pageSize: this.pageSize,
+          userAccount: 'admin',
+        };
+        this.server.getUserLIst(params).then((res) => {
+          if (res.code == 200) {
+            this.userInfo = res.data;
+          }
+        });
+      }
     },
 
     resetPwd() {

@@ -1,54 +1,75 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年09月19日 10:38:33
-  备注：
--->
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :close-on-click-modal="false"
-      :before-close="close"
-      @closed="closed"
-      :visible="visible"
-      title="选择项目"
-    >
-      <div class="cont-area">
-        <div>
-          <span>部门</span>
+  <el-dialog
+    :append-to-body="true"
+    :close-on-click-modal="false"
+    :before-close="close"
+    @closed="closed"
+    :visible="visible"
+    title="选择项目"
+    custom-class="select-project"
+    class="tl-dialog"
+  >
+    <div class="cont-area">
+      <dl class="layout-rows">
+        <dt><em>部门</em></dt>
+        <dd>
           <el-cascader
             v-model="orgIdList"
             ref="cascader"
             :options="rootOrgList"
             :show-all-levels="false"
-            :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+            }"
             @change="selectIdChange"
+            popper-class="tl-cascader-popper"
+            class="tl-cascader"
           ></el-cascader>
-        </div>
-        <div>
-          <crcloud-table
-            :total="total"
-            :pageSize.sync="pageSize"
-            :currentPage.sync="currentPage"
-            @searchList="searchList"
+        </dd>
+      </dl>
+      <crcloud-table
+        :total="total"
+        :pageSize.sync="pageSize"
+        :currentPage.sync="currentPage"
+        @searchList="searchList"
+      >
+        <div slot="tableContainer">
+          <el-table
+            ref="table"
+            v-loading="loading"
+            :data="projectList"
+            @select="select"
+            class="tl-table"
           >
-            <div slot="tableContainer">
-              <el-table ref="table" v-loading="loading" :data="projectList" @select="select">
-                <el-table-column type="selection"></el-table-column>
-                <el-table-column min-width="100px" align="left" prop="projectNameCn" label="项目名称"></el-table-column>
-                <el-table-column min-width="100px" align="left" prop="projectManager" label="项目经理"></el-table-column>
-              </el-table>
-            </div>
-          </crcloud-table>
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column
+              min-width="400px"
+              align="left"
+              prop="projectNameCn"
+              label="项目名称"
+            ></el-table-column>
+            <el-table-column
+              min-width="70px"
+              align="left"
+              prop="projectManager"
+              label="项目经理"
+            ></el-table-column>
+          </el-table>
         </div>
-      </div>
-      <div style="marginTop:20px" class="operating-box">
-        <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
-        <el-button class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
-      </div>
-    </el-dialog>
-  </div>
+      </crcloud-table>
+    </div>
+    <div class="operating-box">
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm"
+        >确认</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
+    </div>
+  </el-dialog>
 </template>
 
 <script>

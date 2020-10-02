@@ -1879,6 +1879,14 @@
   width: 600px;
 }
 
+.tl-dialog .select-project {
+  width: 900px;
+}
+
+.select-project .table-pagination {
+  margin: 20px 0 0 0;
+}
+
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;

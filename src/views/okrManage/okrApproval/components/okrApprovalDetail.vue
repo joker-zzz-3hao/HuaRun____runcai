@@ -114,7 +114,7 @@
         </el-form>
       </dd>
     </dl>
-    <dl class="dl-card-panel">
+    <dl class="dl-card-panel" v-if="hasPower('okr-approval-history-query')">
       <dt>
         <em>审批记录</em>
       </dt>
@@ -228,19 +228,21 @@ export default {
       });
     },
     okrOperationHistory() {
-      this.server.okrOperationHistory({
-        okrMainId: this.data.okrMainId,
+      if (this.hasPower('okr-approval-history-query')) {
+        this.server.okrOperationHistory({
+          okrMainId: this.data.okrMainId,
         // approvalId: this.data.approvalId,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.cycleList = res.data;
-          this.cycleList.forEach((item) => {
-            const contents = JSON.parse(item.remark);
-            item.approvalStatus = contents.approvalStatus;
-          });
-          this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
-        }
-      });
+        }).then((res) => {
+          if (res.code == 200) {
+            this.cycleList = res.data;
+            this.cycleList.forEach((item) => {
+              const contents = JSON.parse(item.remark);
+              item.approvalStatus = contents.approvalStatus;
+            });
+            this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
+          }
+        });
+      }
     },
     backList() {
       this.setOkrApprovalStep('1');
