@@ -154,7 +154,7 @@
       <el-button @click="addItem" style>添加</el-button>
     </div>
     <!-- 个人OKR完成度 -->
-    <div v-if="weeklyOkrSaveList.length > 0" class="degree-completion">
+    <div v-if="showTaskProcess" class="degree-completion">
       <h1>个人OKR完成度</h1>
       <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
         <!-- 目标+KR -->
@@ -387,6 +387,7 @@ export default {
           label: '失控',
         },
       ],
+      showTaskProcess: false,
     };
   },
   created() {
@@ -457,22 +458,24 @@ export default {
         supportList.push(supportObj);
       }
       // 将支撑项塞到列表对应行中，监听到到表格数据变化侯，会将个人okr进度反显出来
-      for (const tableItem of this.formData.weeklyWorkVoSaveList) {
-        // 遍历整理好的数据
-        for (const supportItem of supportList) {
-          // 如果仅仅是个人目标
-          if (tableItem.workOkrList.length > 0 && tableItem.workOkrList[0].okrDetailId == supportItem.o.okrDetailId) {
-            this.$set(tableItem, 'supportMyOkrObj', supportItem);
-          }
-          // 如果是个人KR
-          if (
-            supportItem.kr
-            && tableItem.workOkrList.length > 0
-            && tableItem.workOkrList[0].okrDetailId == supportItem.kr.okrDetailId) {
-            this.$set(tableItem, 'supportMyOkrObj', supportItem);
-          }
-        }
-      }
+      this.formData.weeklyWorkVoSaveList.forEach((tableItem) => { // 列表行数据
+        tableItem.workOkrList.forEach((workOkr) => { // 行数据中的支撑项
+          // 遍历整理好的数据
+          supportList.forEach((supportItem) => {
+            // 如果仅仅是个人目标
+            if (workOkr.okrDetailId == supportItem.o.okrDetailId) {
+              this.$set(tableItem, 'supportMyOkrObj', supportItem);
+            }
+            // 如果是个人KR
+            if (
+              supportItem.kr
+                && tableItem.workOkrList.length > 0
+                && workOkr.okrDetailId == supportItem.kr.okrDetailId) {
+              this.$set(tableItem, 'supportMyOkrObj', supportItem);
+            }
+          });
+        });
+      });
     },
     setWorkTableData() {
       this.weeklyEmotion = this.weeklyData.weeklyEmotion;// 心情
@@ -663,6 +666,7 @@ export default {
         // *****************将本周关联的个人目标、okr同步至个人okr完成度*************
         // 将weeklyWorkVoSaveList中的支撑项读出来,放入个人okr完成度中
         this.weeklyOkrSaveList = [];
+        this.showTaskProcess = false;
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
@@ -713,6 +717,11 @@ export default {
           }
         }
         this.weeklyOkrSaveList = result;
+        if (this.weeklyOkrSaveList.length > 0) {
+          this.$nextTick(() => {
+            this.showTaskProcess = true;
+          });
+        }
         this.$forceUpdate();
       },
       deep: true,
