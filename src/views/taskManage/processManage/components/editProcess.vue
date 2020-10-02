@@ -37,14 +37,14 @@
               <span>(所加入的成员均可使用)</span>
             </el-checkbox>
             <div v-if="processObj.processType == '2'">
-              <span style="marginLeft:10px" v-for="user in selectUserList" :key="user">
+              <!-- <span style="marginLeft:10px" v-for="user in selectUserList" :key="user">
                 <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
                   <div v-if="user.userName" class="user-name">
                     <em>{{user.userName.substring(user.userName.length-2)}}</em>
                   </div>
                 </el-avatar>
                 <span>{{user.userName}}</span>
-              </span>
+              </span>-->
               <span>添加成员</span>
               <i style="cursor:pointer" @click="addMember" class="el-icon-plus"></i>
               <el-select
@@ -87,6 +87,7 @@
       </el-form>
     </div>
     <div class="operating-box">
+      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="addProcess">确定</el-button>
       <el-button class="tl-btn amt-border-fadeout" @click="closed">取消</el-button>
     </div>
   </el-drawer>
@@ -129,6 +130,7 @@ export default {
         orgId: '',
         processName: '',
         userIdList: [],
+        stepNameList: [],
       },
       userList: [],
       selectUserList: [],
@@ -144,6 +146,7 @@ export default {
   computed: {},
   methods: {
     init() {
+      this.formData.userIdList = [];
       this.formData = this.processObj;
       this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
         if (res.code == 200) {
@@ -155,6 +158,9 @@ export default {
         }
       });
       this.remoteMethod();
+    },
+    errorHandler() {
+      return true;
     },
     remoteMethod(name) {
       this.server.getUserListByOrgId({
@@ -172,6 +178,23 @@ export default {
       this.visible = false;
       this.$emit('closeDialog', { refreshPage: false });
     },
+    visibleChange(name) {
+      if (!name) {
+        this.remoteMethod();
+      }
+    },
+    addProcess() {
+      this.stepNameList.forEach((step) => {
+        this.formData.stepNameList.push(step.name);
+      });
+      this.server.addProcess(this.formData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('新增成功');
+          this.$emit('closeAddProcess');
+        }
+      });
+    },
+
   },
   watch: {},
   updated() {},

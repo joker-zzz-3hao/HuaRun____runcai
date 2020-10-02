@@ -26,7 +26,7 @@
           <span>个人：</span>
           <span>{{ userInfo.userName }}</span>
         </span>
-      </div> -->
+      </div>-->
       <dl class="dl-list">
         <dt class="list-title">
           <em>团队目标</em>
@@ -44,15 +44,12 @@
                 :class="
                   teamTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
                 "
-                >{{ teamTarget.indexText }}</span
-              >
+              >{{ teamTarget.indexText }}</span>
               <em>{{ teamTarget.okrDetailObjectKr }}</em>
             </el-radio>
           </el-radio-group>
         </dd>
-        <dd class="tag-kind" v-if="orgOkrList.length < 1">
-          暂无可承接的团队目标
-        </dd>
+        <dd class="tag-kind" v-if="orgOkrList.length < 1">暂无可承接的团队目标</dd>
       </dl>
       <!-- <el-checkbox-group v-model="orgSelectData">
           <el-checkbox
@@ -65,7 +62,7 @@
             {{teamTarget.indexText}}
             {{teamTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </el-checkbox-group>-->
+      </el-checkbox-group>-->
       <dl class="dl-list">
         <dt class="list-title">
           <em>个人目标</em>
@@ -83,15 +80,12 @@
                 :class="
                   personalTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
                 "
-                >{{ personalTarget.indexText }}</span
-              >
+              >{{ personalTarget.indexText }}</span>
               <em>{{ personalTarget.okrDetailObjectKr }}</em>
             </el-radio>
           </el-radio-group>
         </dd>
-        <dd class="tag-kind" v-if="myOkrList.length < 1">
-          暂无可承接的个人目标
-        </dd>
+        <dd class="tag-kind" v-if="myOkrList.length < 1">暂无可承接的个人目标</dd>
       </dl>
       <!-- <el-checkbox-group v-model="personalSelectData">
           <el-checkbox
@@ -103,7 +97,7 @@
             {{personalTarget.indexText}}
             {{personalTarget.okrDetailObjectKr}}
           </el-checkbox>
-        </el-checkbox-group>-->
+      </el-checkbox-group>-->
       <dl class="dl-list">
         <dt class="list-title">
           <em>公司价值观</em>
@@ -116,19 +110,14 @@
               :label="culture.id"
               :key="culture.id"
               @change="cultureChange"
-              >{{ culture.cultureName }}</el-checkbox
-            >
+            >{{ culture.cultureName }}</el-checkbox>
           </el-checkbox-group>
         </dd>
       </dl>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm"
-        >确认</el-button
-      >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
     </div>
   </el-drawer>
 </template>
