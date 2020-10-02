@@ -44,7 +44,7 @@
               <el-form-item>
                 <el-input
                   type="textarea"
-                  :rows="2"
+                  :rows="3"
                   placeholder="请描述具体工作内容"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
@@ -57,15 +57,15 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="150"
+            min-width="120"
           >
             <template slot-scope="scope">
               <el-input-number
-                style="width: 100%"
                 v-model="scope.row.workProgress"
                 controls-position="right"
                 :min="0"
                 :max="100"
+                class="tl-input-number"
               ></el-input-number>
             </template>
           </el-table-column>
@@ -77,7 +77,6 @@
           >
             <template slot-scope="scope">
               <el-input-number
-                style="width: 90%"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
                 :precision="0"
@@ -86,7 +85,7 @@
                 :max="80"
                 class="tl-input-number"
               ></el-input-number>
-              <span>h</span>
+              <span>天</span>
             </template>
           </el-table-column>
           <el-table-column

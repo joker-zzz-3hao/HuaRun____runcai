@@ -1,54 +1,60 @@
 <template>
   <el-drawer
-    :modal-append-to-body="false"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
     :before-close="close"
     @closed="closed"
-    :close-on-click-modal="false"
-    title="支撑OKR/价值观"
-    direction="rtl"
-    size="35%"
-    :modal="false"
     :visible.sync="visible"
-    :wrapperClosable="false"
+    custom-class="custom-drawer supporting-values"
     class="tl-drawer"
   >
-    <div>
-      <div>
-        <!-- <span>选择团队</span>
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{ drawerTitle }}</div>
+    </div>
+    <div class="cont-box">
+      <!-- <div>
+        <span>选择团队</span>
         <el-select v-model="team">
           <el-option v-for="item in " :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>-->
+        </el-select>
         <span>
           <span>团队：</span>
-          <span>{{userInfo.orgName}}</span>
+          <span>{{ userInfo.orgName }}</span>
         </span>
-        <span style="marginLeft:100px">
+        <span style="marginleft: 100px">
           <span>个人：</span>
-          <span>{{userInfo.userName}}</span>
+          <span>{{ userInfo.userName }}</span>
         </span>
-      </div>
-      <div>
-        <h4>团队目标</h4>
-        <dl class="dl-list">
-          <dd class="tag-kind">
-            <el-radio-group v-model="orgSelectData">
-              <el-radio
-                class="tl-radio"
-                v-for="(teamTarget,index) in orgOkrList"
-                :label="teamTarget.okrDetailId"
-                :key="teamTarget.okrDetailId"
-                @click.native="selectOrgOkr($event,index,teamTarget)"
+      </div> -->
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>团队目标</em>
+        </dt>
+        <dd class="tag-kind">
+          <el-radio-group v-model="orgSelectData">
+            <el-radio
+              class="tl-radio"
+              v-for="(teamTarget, index) in orgOkrList"
+              :label="teamTarget.okrDetailId"
+              :key="teamTarget.okrDetailId"
+              @click.native="selectOrgOkr($event, index, teamTarget)"
+            >
+              <span
+                :class="
+                  teamTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
+                "
+                >{{ teamTarget.indexText }}</span
               >
-                <span
-                  :class="teamTarget.okrType == 'O' ? 'kind-parent':'kind-child'"
-                >{{teamTarget.indexText}}</span>
-                <em>{{teamTarget.okrDetailObjectKr}}</em>
-              </el-radio>
-            </el-radio-group>
-          </dd>
-          <dd class="tag-kind" v-if="orgOkrList.length < 1">暂无可承接的团队目标</dd>
-        </dl>
-        <!-- <el-checkbox-group v-model="orgSelectData">
+              <em>{{ teamTarget.okrDetailObjectKr }}</em>
+            </el-radio>
+          </el-radio-group>
+        </dd>
+        <dd class="tag-kind" v-if="orgOkrList.length < 1">
+          暂无可承接的团队目标
+        </dd>
+      </dl>
+      <!-- <el-checkbox-group v-model="orgSelectData">
           <el-checkbox
             :class="{'move-to-right':teamTarget.okrType = 'KR'}"
             v-for="teamTarget in orgOkrList"
@@ -60,29 +66,34 @@
             {{teamTarget.okrDetailObjectKr}}
           </el-checkbox>
         </el-checkbox-group>-->
-      </div>
-      <div>
-        <h4>个人目标</h4>
-        <dl class="dl-list">
-          <dd class="tag-kind">
-            <el-radio-group v-model="personalSelectData">
-              <el-radio
-                class="tl-radio"
-                v-for="(personalTarget,index) in myOkrList"
-                :label="personalTarget.okrDetailId"
-                :key="personalTarget.okrDetailId"
-                @click.native="selectMyOkr($event,index,personalTarget)"
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>个人目标</em>
+        </dt>
+        <dd class="tag-kind">
+          <el-radio-group v-model="personalSelectData">
+            <el-radio
+              class="tl-radio"
+              v-for="(personalTarget, index) in myOkrList"
+              :label="personalTarget.okrDetailId"
+              :key="personalTarget.okrDetailId"
+              @click.native="selectMyOkr($event, index, personalTarget)"
+            >
+              <span
+                :class="
+                  personalTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
+                "
+                >{{ personalTarget.indexText }}</span
               >
-                <span
-                  :class="personalTarget.okrType == 'O' ? 'kind-parent':'kind-child'"
-                >{{personalTarget.indexText}}</span>
-                <em>{{personalTarget.okrDetailObjectKr}}</em>
-              </el-radio>
-            </el-radio-group>
-          </dd>
-          <dd class="tag-kind" v-if="myOkrList.length < 1">暂无可承接的个人目标</dd>
-        </dl>
-        <!-- <el-checkbox-group v-model="personalSelectData">
+              <em>{{ personalTarget.okrDetailObjectKr }}</em>
+            </el-radio>
+          </el-radio-group>
+        </dd>
+        <dd class="tag-kind" v-if="myOkrList.length < 1">
+          暂无可承接的个人目标
+        </dd>
+      </dl>
+      <!-- <el-checkbox-group v-model="personalSelectData">
           <el-checkbox
             v-for="personalTarget in myOkrList"
             :label="personalTarget.okrDetailId"
@@ -93,23 +104,31 @@
             {{personalTarget.okrDetailObjectKr}}
           </el-checkbox>
         </el-checkbox-group>-->
-      </div>
-      <div>
-        <h4>公司价值观</h4>
-        <el-checkbox-group v-model="valueSelectData">
-          <el-checkbox
-            v-for="culture in cultureList"
-            class="tl-checkbox"
-            :label="culture.id"
-            :key="culture.id"
-            @change="cultureChange"
-          >{{culture.cultureName}}</el-checkbox>
-        </el-checkbox-group>
-      </div>
+      <dl class="dl-list">
+        <dt class="list-title">
+          <em>公司价值观</em>
+        </dt>
+        <dd>
+          <el-checkbox-group v-model="valueSelectData">
+            <el-checkbox
+              v-for="culture in cultureList"
+              class="tl-checkbox"
+              :label="culture.id"
+              :key="culture.id"
+              @change="cultureChange"
+              >{{ culture.cultureName }}</el-checkbox
+            >
+          </el-checkbox-group>
+        </dd>
+      </dl>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
-      <el-button class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm"
+        >确认</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>
@@ -170,7 +189,10 @@ export default {
         return [];
       },
     },
-
+    drawerTitle: {
+      type: String,
+      default: '支撑OKR/价值观',
+    },
   },
   data() {
     return {

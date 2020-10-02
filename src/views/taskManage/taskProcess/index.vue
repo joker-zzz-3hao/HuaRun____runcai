@@ -3,20 +3,6 @@
     <div>
       <div>
         <div class="page-title">标准任务过程</div>
-        <el-button type="primary" @click="customProcess">自定义过程</el-button>
-        <div>
-          <ul>
-            <li
-              style="cursor:pointer"
-              @click="selectProcess(process)"
-              v-for="process in taskProcessList"
-              :key="process.processId"
-            >
-              {{process.processName}}
-              <i @click="customProcess(process)" class="el-icon-edit"></i>
-            </li>
-          </ul>
-        </div>
         <div class="operating-right">
           <el-button
             type="primary"
@@ -126,13 +112,7 @@
         </div>
       </div>
     </div>
-    <tl-custom-process
-      ref="customProcess"
-      :optionType="optionType"
-      :processObj="processObj"
-      @closeAddProcess="closeAddProcess"
-      v-if="showCustomProcess"
-    ></tl-custom-process>
+
     <tl-create-task
       ref="createtask"
       v-if="existCreatetask"
@@ -153,7 +133,6 @@
 <script>
 import tlList from './components/listPage';
 import tlBoard from './components/boardPage';
-import tlCustomProcess from './components/customProcess';
 import tlCreateTask from '../myTask/components/createTask';
 import tlEditTask from '../myTask/components/editTask';
 import Server from './server';
@@ -164,7 +143,6 @@ export default {
   components: {
     tlList,
     tlBoard,
-    tlCustomProcess,
     tlCreateTask,
     tlEditTask,
   },
@@ -178,7 +156,6 @@ export default {
       processClassifyList: [],
       showReal: false, // 展示示例图片 false
       changeKanban: true,
-      showCustomProcess: false,
       existCreatetask: false,
       existEditTask: false,
       processObj: {},
@@ -230,18 +207,7 @@ export default {
     settaskType(type) {
       this.taskType = type;
     },
-    customProcess(process) {
-      this.optionType = 'create';
-      if (process && process.processId) {
-        this.optionType = 'edit';
-        this.processObj = process;
-        this.processId = process.processId;
-      }
-      this.showCustomProcess = true;
-      this.$nextTick(() => {
-        this.$refs.customProcess.show();
-      });
-    },
+
     selectProcess(process) {
       this.processObj = process;
       this.queryProcessClassify();
@@ -252,9 +218,6 @@ export default {
       });
     },
 
-    closeAddProcess() {
-      this.showCustomProcess = false;
-    },
     goCreateTask() {
       this.existCreatetask = true;
       this.$nextTick(() => {

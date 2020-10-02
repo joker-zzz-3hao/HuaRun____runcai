@@ -7,7 +7,6 @@
 <template>
   <el-drawer
     :modal-append-to-body="false"
-    :before-close="cancel"
     @closed="closed"
     :close-on-click-modal="false"
     title
@@ -19,25 +18,33 @@
   >
     <div class="modelCreate">
       <el-form ref="form" :model="formData">
-        <el-form-item label="任务过程名称">
-          <el-input placeholder="请输入任务标题" v-model="formData.processName"></el-input>
+        <el-form-item label="任务过程名称：">
+          <el-input disabled placeholder="请输入任务标题" v-model="formData.processName"></el-input>
         </el-form-item>
-        <el-form-item label="显示排序">
-          <el-input type="number" v-model="formData.processName"></el-input>
+        <el-form-item label="显示排序：">
+          <el-input type="number" v-model="formData.indexNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
           <div style="display:flex;flex-direction: column;">
-            <el-checkbox v-model="teamUser" @change="selectTeamUser">
+            <el-checkbox disabled :checked="processObj.processType == '1'">
               团队申请
               <span>(创建后的任务过程其组织下成员均可使用)</span>
             </el-checkbox>
             <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>
-            <el-checkbox v-model="localUser" @change="selectLocalUser">
+            <el-checkbox disabled :checked="processObj.processType == '2'">
               小范围使用
               <span>(所加入的成员均可使用)</span>
             </el-checkbox>
-            <div v-if="localUser">
+            <div v-if="processObj.processType == '2'">
+              <span style="marginLeft:10px" v-for="user in selectUserList" :key="user">
+                <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
+                  <div v-if="user.userName" class="user-name">
+                    <em>{{user.userName.substring(user.userName.length-2)}}</em>
+                  </div>
+                </el-avatar>
+                <span>{{user.userName}}</span>
+              </span>
               <span>添加成员</span>
               <i style="cursor:pointer" @click="addMember" class="el-icon-plus"></i>
               <el-select
@@ -70,7 +77,7 @@
                 </el-option>
               </el-select>
             </div>
-            <el-checkbox v-model="personalUser" @change="selectPersonalUser">个人使用</el-checkbox>
+            <el-checkbox disabled :checked="processObj.processType == '3'">个人使用</el-checkbox>
           </div>
         </el-form-item>
         <el-form-item>
@@ -80,8 +87,7 @@
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="save">确定</el-button>
-      <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
+      <el-button class="tl-btn amt-border-fadeout" @click="closed">取消</el-button>
     </div>
   </el-drawer>
 </template>
@@ -117,11 +123,6 @@ export default {
   data() {
     return {
       visible: false,
-      loading: false,
-      tableLoading: false,
-      initCode: '',
-      initName: '',
-      dicTitle: '新增字典',
       formData: {
         available: 1,
         processType: '1',
@@ -129,6 +130,8 @@ export default {
         processName: '',
         userIdList: [],
       },
+      userList: [],
+      selectUserList: [],
 
     };
   },
@@ -142,61 +145,33 @@ export default {
   methods: {
     init() {
       this.formData = this.processObj;
-    },
-    close(status) {
-      this.visible = false;
-      this.$emit('closeDicDialog', { refreshPage: status == 'refreshPage' });
-    },
-    closed() {
-      this.$emit('update:showEditDicDialog', false);
-    },
-    save() {
-      let successTip = '新增成功';
-      if (this.optionType == 'edit') {
-        successTip = '编辑成功';
-      }
-      // 校验
-      const v1 = new Promise((resolve) => {
-        this.$refs.dicForm.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      const v2 = new Promise((resolve) => {
-        this.$refs.formTable.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      Promise.all([v1, v2]).then(() => {
-        this.loading = true;
-        this.server.addOrUpdate(this.formData).then((res) => {
-          if (res.code == 200) {
-            this.$message.success(successTip);
-            this.close('refreshPage');
-          }
-          this.loading = false;
-        });
-      });
-    },
-    cancel() {
-      this.close();
-    },
-
-    deleteItem(item) {
-      if (item.randomId) { // 删除本地数据
-      } else { // 删除数据库数据
-        this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
-          this.server.deleteDicItem({ codeValueId: item.codeValueId }).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('删除成功');
+      this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
+        if (res.code == 200) {
+          res.data.forEach((user) => {
+            if (user.userId) {
+              this.formData.userIdList.push(user.userId);
             }
           });
-        });
-      }
+        }
+      });
+      this.remoteMethod();
     },
-    dataChange(dicItem) {
-      dicItem.enabledFlag = dicItem.enabledFlag == 'Y' ? 'N' : 'Y';
+    remoteMethod(name) {
+      this.server.getUserListByOrgId({
+        currentPage: 1,
+        pageSize: 20,
+        userName: name ? name.trim() : '',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content;
+        }
+      });
     },
-
+    addMember() {},
+    closed() {
+      this.visible = false;
+      this.$emit('closeDialog', { refreshPage: false });
+    },
   },
   watch: {},
   updated() {},
