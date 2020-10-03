@@ -3,12 +3,17 @@ import ServerBase from '@/ajax/serverBase';
 export default class Server extends ServerBase {
   // 查询所有任务过程
   queryTaskProcessList(param) {
-    return this._ajaxPost('gateway/task-service/task/taskProcess/queryProcess', param);
+    return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
   }
 
   // 新增自定义任务过程
   addProcess(param) {
     return this._ajaxPost('gateway/task-service/task/taskProcess/addProcess', param);
+  }
+
+  // 编辑任务过程
+  updateProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/updateProcess', param);
   }
 
   // 查询组织包含的用户列表

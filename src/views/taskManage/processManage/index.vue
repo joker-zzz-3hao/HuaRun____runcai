@@ -1,7 +1,7 @@
 <template>
   <div class="tenant-management">
     <div class="operating-area">
-      <div class="page-title">任务管理</div>
+      <div class="page-title">过程管理</div>
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>

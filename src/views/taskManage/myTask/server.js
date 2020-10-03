@@ -27,7 +27,7 @@ export default class Server extends ServerBase {
 
   // 查询任务过程
   queryProcess(param) {
-    return this._ajaxPost('gateway/task-service/task/taskProcess/queryProcess', param);
+    return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
   }
 
   // 暂存任务

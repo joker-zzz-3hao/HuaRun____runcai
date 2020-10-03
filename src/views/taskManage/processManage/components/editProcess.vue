@@ -82,12 +82,17 @@
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
-          <p></p>
+          <p v-for="step in processObj.stepNameList" :key="step">{{step}}</p>
         </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="addProcess">确定</el-button>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :loading="loading"
+        @click="updateProcess"
+      >确定</el-button>
       <el-button class="tl-btn amt-border-fadeout" @click="closed">取消</el-button>
     </div>
   </el-drawer>
@@ -126,7 +131,8 @@ export default {
       visible: false,
       formData: {
         available: 1,
-        processType: '1',
+        processType: '',
+        indexNumber: '',
         orgId: '',
         processName: '',
         userIdList: [],
@@ -147,7 +153,15 @@ export default {
   methods: {
     init() {
       this.formData.userIdList = [];
-      this.formData = this.processObj;
+      // this.formData = this.processObj;
+      this.formData.available = this.processObj.available;
+      this.formData.indexNumber = this.processObj.indexNumber;
+
+      this.formData.processType = this.processObj.processType;
+      this.formData.orgId = this.processObj.orgId;
+      this.formData.processName = this.processObj.processName;
+      this.formData.stepNameList = this.processObj.stepNameList;
+      this.formData.processId = this.processObj.processId;
       this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
         if (res.code == 200) {
           res.data.forEach((user) => {
@@ -183,13 +197,22 @@ export default {
         this.remoteMethod();
       }
     },
-    addProcess() {
-      this.stepNameList.forEach((step) => {
-        this.formData.stepNameList.push(step.name);
-      });
-      this.server.addProcess(this.formData).then((res) => {
+    updateProcess() {
+      //    formData: {
+      //   available: 1,
+      //   processType: '1',
+      //   orgId: '',
+      //   processName: '',
+      //   userIdList: [],
+      //   stepNameList: [],
+      // },
+
+      // this.stepNameList.forEach((step) => {
+      //   this.formData.stepNameList.push(step.name);
+      // });
+      this.server.updateProcess(this.formData).then((res) => {
         if (res.code == 200) {
-          this.$message.success('新增成功');
+          this.$message.success('编辑成功');
           this.$emit('closeAddProcess');
         }
       });
