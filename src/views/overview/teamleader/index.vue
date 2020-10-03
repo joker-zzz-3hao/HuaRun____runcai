@@ -27,8 +27,8 @@
       <div class="tl-card-panel">
         <div class="card-panel-head">
           <div class="panner-title">
-            <em>OKR风险状态统计</em>
-            <span>部门成员的OKR风险状态总数，点击可以查看对应的OKR列表</span>
+            <em>OKR信心指数统计</em>
+            <span>部门成员的OKR信心指数总数，点击可以查看对应的OKR列表</span>
             <span v-show="testModel">示例数据</span>
           </div>
         </div>

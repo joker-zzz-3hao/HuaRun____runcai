@@ -8,7 +8,7 @@ export default class Server extends ServerBase {
 
   // 查询所有任务过程
   queryTaskProcessList(param) {
-    return this._ajaxPost('gateway/task-service/task/taskProcess/queryProcess', param);
+    return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
   }
 
   // 任务看板任务
@@ -59,5 +59,20 @@ export default class Server extends ServerBase {
   // 新建任务
   createTask(param) {
     return this._ajaxPost('gateway/task-service/task/save', param);
+  }
+
+  // 任务变更分类
+  changeClassify(param) {
+    return this._ajaxPost('gateway/task-service/task/changeType', param);
+  }
+
+  // 任务归档
+  finishTask(param) {
+    return this._ajaxPost(`gateway/task-service/task/filed?taskId=${param.taskId}`, param);
+  }
+
+  // 删除任务
+  deleteTask(param) {
+    return this._ajaxPost(`gateway/task-service/task/delete?taskId=${param.taskId}`, param);
   }
 }

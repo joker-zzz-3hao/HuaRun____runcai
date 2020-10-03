@@ -3,7 +3,7 @@
     <div class="card-panel-inside">
       <div class="card-panel-head">
         <div class="panner-title">
-          <em>OKR风险状态统计</em>
+          <em>OKR信心指数统计</em>
           <span v-show="testModel">示例数据</span>
         </div>
       </div>

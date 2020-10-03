@@ -2,7 +2,41 @@
   <div class="home">
     <div>
       <div>
-        <div class="page-title">标准任务过程</div>
+        <div>
+          <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
+            <el-submenu index="1">
+              <template slot="title">操作</template>
+              <el-submenu index="1-1">
+                <template slot="title">团队使用</template>
+                <el-menu-item
+                  @click.native="selectProcessItem(team)"
+                  v-for="team in teamList"
+                  :index="team.processId"
+                  :key="team.processId"
+                >{{team.processName}}</el-menu-item>
+              </el-submenu>
+              <el-submenu index="1-2">
+                <template slot="title">小范围使用</template>
+                <el-menu-item
+                  @click.native="selectProcessItem(littleRange)"
+                  v-for="littleRange in littleRangeList"
+                  :index="littleRange.processId"
+                  :key="littleRange.processId"
+                >{{littleRange.processName}}</el-menu-item>
+              </el-submenu>
+              <el-submenu index="1-3">
+                <template slot="title">个人使用</template>
+                <el-menu-item
+                  @click.native="selectProcessItem(person)"
+                  v-for="person in personList"
+                  :index="person.processId"
+                  :key="person.processId"
+                >{{person.processName}}</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+          </el-menu>
+        </div>
+        <div class="page-title">{{processObj.processName}}</div>
         <div class="operating-right">
           <el-button
             type="primary"
@@ -102,12 +136,18 @@
           </el-select>
         </div>
         <div>
-          <tl-list :processObj="processObj" :stepList="stepList" v-if="taskType == 1"></tl-list>
-          <tl-board
-            ref="board"
+          <tl-list
+            ref="list"
+            :processClassifyList="processClassifyList"
             :processObj="processObj"
             :stepList="stepList"
-            v-if="taskType == 2 && stepList.length > 0"
+            v-if="taskType == 1 && processObj.processId"
+          ></tl-list>
+          <tl-board
+            ref="board"
+            :processObj="processObj "
+            :stepList="stepList"
+            v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
           ></tl-board>
         </div>
       </div>
@@ -151,7 +191,9 @@ export default {
       server,
       processId: '',
       typeName: '',
-      taskProcessList: [],
+      teamList: [],
+      littleRangeList: [],
+      personList: [],
       stepList: [],
       processClassifyList: [],
       showReal: false, // 展示示例图片 false
@@ -181,16 +223,32 @@ export default {
     };
   },
   created() {
-    this.server.queryTaskProcessList().then((res) => {
-      if (res.code == 200) {
-        this.taskProcessList = res.data;
-        this.processId = res.data[0].processId;
-        // 初始化页面,默认查询第一个任务过程的步骤
-        this.selectProcess(res.data[0]);
-      }
-    });
+    this.init('1');
+    this.init('2');
+    this.init('3');
   },
   methods: {
+    init(processType) {
+      this.server.queryTaskProcessList({
+        currentPage: 1,
+        pageSize: 1000,
+        processType: processType || '',
+      }).then((res) => {
+        if (res.code == 200) {
+          if (processType == '1') {
+            this.teamList = res.data.content;
+            if (this.teamList.length > 0) {
+              this.processId = this.teamList[0].processId;
+              this.selectProcess(this.teamList[0]);
+            }
+          } else if (processType == '2') {
+            this.littleRangeList = res.data.content;
+          } else if (processType == '3') {
+            this.personList = res.data.content;
+          }
+        }
+      });
+    },
     goback() {
       this.$router.go('-1');
     },
@@ -202,6 +260,7 @@ export default {
             this.$set(classify, 'isEdit', false);
           });
         }
+        this.queryTaskByClassify();
       });
     },
     settaskType(type) {
@@ -233,7 +292,12 @@ export default {
     getTableList() {},
     todo() {},
     queryTaskByClassify(typeId) {
-      this.$refs.board.init(typeId);
+      if (this.$refs.board) {
+        this.$refs.board.init(typeId);
+      }
+      if (this.$refs.list) {
+        this.$refs.list.init(typeId);
+      }
     },
     addClassify() {
       const index = 0;
@@ -275,6 +339,11 @@ export default {
         }
       });
     },
+    selectProcessItem(process) {
+      this.processId = process.processId;
+      this.selectProcess(process);
+    },
+
   },
 };
 </script>

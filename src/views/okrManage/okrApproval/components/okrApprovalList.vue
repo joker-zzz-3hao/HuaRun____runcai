@@ -15,49 +15,92 @@
                 <img v-if="scope.row.headUrl" :src="uscope.row.headUrl" alt />
                 <div v-else-if="scope.row.userName" class="user-info">
                   <div class="user-name">
-                    <em>{{scope.row.userName.substring(scope.row.userName.length-2)}}</em>
+                    <em>{{
+                      scope.row.userName.substring(
+                        scope.row.userName.length - 2
+                      )
+                    }}</em>
                   </div>
                 </div>
                 <div class="user-name-txt">
-                  <em>{{scope.row.userName}}</em>
-                  <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-                    <div slot="content">{{scope.row.orgName}}</div>
-                    <em>{{scope.row.orgName}}</em>
+                  <em>{{ scope.row.userName }}</em>
+                  <el-tooltip
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
+                    <div slot="content">{{ scope.row.orgName }}</div>
+                    <em>{{ scope.row.orgName }}</em>
                   </el-tooltip>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="periodName" label="OKR周期" min-width="160"></el-table-column>
-            <el-table-column prop="approvalStatus" label="审批状态" min-width="90">
+            <el-table-column
+              prop="periodName"
+              label="OKR周期"
+              min-width="160"
+            ></el-table-column>
+            <el-table-column
+              prop="approvalStatus"
+              label="审批状态"
+              min-width="90"
+            >
               <template slot-scope="scope">
                 <i
-                  :class="{'create': scope.row.approvalType=='0',
-                  'change': scope.row.approvalType=='1',
-                  'unchange': scope.row.approvalType=='1'}"
+                  :class="{
+                    create: scope.row.approvalType == '0',
+                    change: scope.row.approvalType == '1',
+                    unchange: scope.row.approvalType == '1',
+                  }"
                 ></i>
-                <span>{{CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]}}</span>
+                <span>{{
+                  CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
+                }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="approvalType" label="审批类型" min-width="80">
+            <el-table-column
+              prop="approvalType"
+              label="审批类型"
+              min-width="80"
+            >
               <template slot-scope="scope">
                 <span
-                  :class="{'create': scope.row.approvalType=='0','change': scope.row.approvalType=='1'}"
-                >{{CONST.APPROVAL_TYPE_MAP[scope.row.approvalType]}}</span>
+                  :class="{
+                    create: scope.row.approvalType == '0',
+                    change: scope.row.approvalType == '1',
+                  }"
+                  >{{ CONST.APPROVAL_TYPE_MAP[scope.row.approvalType] }}</span
+                >
               </template>
             </el-table-column>
             <el-table-column prop="okrProgress" label="OKR进度" min-width="160">
               <template slot-scope="scope">
-                <tl-process v-if="scope.row.approvalType == '1'" :data="scope.row.okrProgress"></tl-process>
+                <tl-process
+                  v-if="scope.row.approvalType == '1'"
+                  :data="scope.row.okrProgress"
+                ></tl-process>
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="提交时间" min-width="170"></el-table-column>
-            <el-table-column prop="approveTime" label="审批时间" min-width="170">
+            <el-table-column
+              prop="createTime"
+              label="提交时间"
+              min-width="170"
+            ></el-table-column>
+            <el-table-column
+              prop="approveTime"
+              label="审批时间"
+              min-width="170"
+            >
               <template slot-scope="scope">
                 <span
                   v-if="scope.row.approveTime"
-                  :class="{'select': scope.row.approvalDateType == '0','unselect': scope.row.approvalDateType == '1',}"
-                >{{scope.row.approveTime}}</span>
+                  :class="{
+                    select: scope.row.approvalDateType == '0',
+                    unselect: scope.row.approvalDateType == '1',
+                  }"
+                  >{{ scope.row.approveTime }}</span
+                >
                 <span v-else>--</span>
               </template>
             </el-table-column>
@@ -65,16 +108,21 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.approvalStatus == '0' && hasPower('okr-approval-pass')"
+                  v-if="
+                    scope.row.approvalStatus == '0' &&
+                    hasPower('okr-approval-pass')
+                  "
                   @click.native.prevent="okrApproval(scope.row)"
                   class="tl-btn"
-                >审批</el-button>
+                  >审批</el-button
+                >
                 <el-button
                   v-else
                   type="text"
                   @click.native.prevent="detail(scope.row)"
                   class="tl-btn"
-                >查看</el-button>
+                  >查看</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -84,7 +132,12 @@
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <el-form :inline="true" @submit.native.prevent class="tl-form" v-if="hasPower('okr-approval-list')">
+          <el-form
+            :inline="true"
+            @submit.native.prevent
+            class="tl-form"
+            v-if="hasPower('okr-approval-list')"
+          >
             <el-form-item>
               <p>周期</p>
               <el-select
@@ -112,7 +165,7 @@
                 @change="searchList"
               >
                 <el-option
-                  v-for="(item) in CONST.APPROVAL_STATUS_LIST"
+                  v-for="item in CONST.APPROVAL_STATUS_LIST"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -129,7 +182,7 @@
                 @change="searchList"
               >
                 <el-option
-                  v-for="(item) in CONST.APPROVAL_TYPE_LIST"
+                  v-for="item in CONST.APPROVAL_TYPE_LIST"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -148,7 +201,12 @@
               </el-input>
             </el-form-item>
           </el-form>
-          <el-button type="primary" @click="goUndertake" class="tl-btn amt-bg-slip">OKR对齐</el-button>
+          <el-button
+            type="primary"
+            @click="goUndertake"
+            class="tl-btn amt-bg-slip"
+            >OKR对齐</el-button
+          >
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@
         <em v-if="!overview && showUndertake">承接地图</em>
       </li>
       <li>
-        <em v-if="!overview">风险状态</em>
+        <em v-if="!overview">信心指数</em>
       </li>
       <li>
         <em v-if="!overview">关联父目标</em>
@@ -95,7 +95,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="28%">
+      <el-table-column prop="okrDetailObjectKr" width="27%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
@@ -120,8 +120,8 @@
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
       </el-table-column>
-      <!-- o无风险状态 label="风险状态" -->
-      <el-table-column width="13%"></el-table-column>
+      <!-- o无风险状态 label="信心指数" -->
+      <el-table-column width="14%"></el-table-column>
       <!-- o label="关联父目标" -->
       <el-table-column prop="parentObjectKr" width="11%">
         <template slot-scope="scope" v-if="!overview">
@@ -226,9 +226,9 @@ import { mapState } from 'vuex';
 import process from '@/components/process';
 
 const CONFIDENCE_MAP = {
-  1: '无风险',
-  2: '风险可控',
-  3: '失控',
+  1: '信心指数高',
+  2: '信心指数中',
+  3: '信心指数低',
 };
 
 export default {

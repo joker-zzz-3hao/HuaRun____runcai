@@ -1,36 +1,57 @@
 <template>
-  <el-form :model="formData" ref="changeForm" v-if="formData.tableList.length > 0" class="tl-form">
+  <el-form
+    :model="formData"
+    ref="changeForm"
+    v-if="formData.tableList.length > 0"
+    class="tl-form"
+  >
     <elcollapse v-model="activeList" class="tl-collapse">
       <elcollapseitem
         ref="okrcoll"
         v-for="(item, index) in formData.tableList"
-        :key="item.okrDetailId+index"
+        :key="item.okrDetailId + index"
         :name="index"
         :disabled="disabled"
       >
         <template slot="title">
-          <dl class="collpase-panel" :class="{'has-third-child': item.okrParentId}">
-            <dt :class="{'is-edit': canWrite && item.showTitleEdit}">
-              <span>目标{{index+1}}</span>
+          <dl
+            class="collpase-panel"
+            :class="{ 'has-third-child': item.okrParentId }"
+          >
+            <dt :class="{ 'is-edit': canWrite && item.showTitleEdit }">
+              <span>目标{{ index + 1 }}</span>
               <div>
                 <el-form-item
                   v-if="canWrite && item.showTitleEdit"
                   :prop="'tableList.' + index + '.okrDetailObjectKr'"
-                  :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+                  :rules="[
+                    {
+                      trigger: 'blur',
+                      validator: validateObjectName,
+                      required: true,
+                    },
+                  ]"
                 >
-                  <el-input placeholder="请输入目标名称" v-model="item.okrDetailObjectKr" class="tl-input"></el-input>
+                  <el-input
+                    placeholder="请输入目标名称"
+                    v-model="item.okrDetailObjectKr"
+                    class="tl-input"
+                  ></el-input>
                 </el-form-item>
-                <em v-else>{{item.okrDetailObjectKr}}</em>
+                <em v-else>{{ item.okrDetailObjectKr }}</em>
                 <i
                   v-if="canWrite && !item.showTitleEdit"
                   class="el-icon-edit"
-                  @click="showInput(index,'showTitleEdit')"
+                  @click="showInput(index, 'showTitleEdit')"
                 ></i>
               </div>
               <slot name="head-bar" :okritem="item"></slot>
             </dt>
             <dd
-              :class="{'has-third-child': item.okrParentId,'is-edit': canWrite && item.showWeightEdit}"
+              :class="{
+                'has-third-child': item.okrParentId,
+                'is-edit': canWrite && item.showWeightEdit,
+              }"
             >
               <div>
                 <i class="el-icon-medal"></i>
@@ -44,13 +65,14 @@
                     :step="1"
                     :precision="0"
                     class="tl-input-number"
-                  ></el-input-number>%
+                  ></el-input-number
+                  >%
                 </el-form-item>
-                <em v-else>{{item.okrWeight}}%</em>
+                <em v-else>{{ item.okrWeight }}%</em>
                 <i
                   v-if="canWrite && !item.showWeightEdit"
                   class="el-icon-edit"
-                  @click="showInput(index,'showWeightEdit')"
+                  @click="showInput(index, 'showWeightEdit')"
                 ></i>
               </div>
               <div>
@@ -60,14 +82,16 @@
               </div>
               <!-- 变更 -->
               <div
-                v-if="item.okrParentId
-                && item.undertakeOkrVo
-                && item.undertakeOkrVo.undertakeOkrContent"
+                v-if="
+                  item.okrParentId &&
+                  item.undertakeOkrVo &&
+                  item.undertakeOkrVo.undertakeOkrContent
+                "
               >
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index,'change')">
-                  <a>{{item.undertakeOkrVo.undertakeOkrContent}}</a>
+                <p @click="goUndertake(index, 'change')">
+                  <a>{{ item.undertakeOkrVo.undertakeOkrContent }}</a>
                 </p>
               </div>
               <!-- 有承接项时 -->
@@ -76,10 +100,15 @@
                 <span>关联父目标</span>
                 <!-- 是变更且有更新显示icon -->
                 <template v-if="item.parentUpdate">
-                  <el-popover placement="top" width="200" trigger="hover" :append-to-body="false">
+                  <el-popover
+                    placement="top"
+                    width="200"
+                    trigger="hover"
+                    :append-to-body="false"
+                  >
                     <span v-if="canWrite">
                       您承接的OKR有变更，
-                      <a @click="goUndertake(index,'change')">查看详情</a>
+                      <a @click="goUndertake(index, 'change')">查看详情</a>
                     </span>
                     <span v-else>您承接的OKR有变更，请在变更中处理。</span>
                     <i class="el-icon-warning" slot="reference"></i>
@@ -88,34 +117,52 @@
                 <!-- 变更可点 -->
                 <em
                   v-if="canWrite"
-                  @click="goUndertake(index,'change')"
-                  :class="{'is-change':canWrite}"
-                >{{item.parentObjectKr}}</em>
+                  @click="goUndertake(index, 'change')"
+                  :class="{ 'is-change': canWrite }"
+                  >{{ item.parentObjectKr }}</em
+                >
                 <!-- 详情不可点 -->
-                <em v-else>{{item.parentObjectKr}}</em>
+                <em v-else>{{ item.parentObjectKr }}</em>
               </div>
               <!-- 变更无承接项时 -->
               <div v-else-if="canWrite">
                 <i
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                  v-if="
+                    (item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent) ||
+                    item.cultureName
+                  "
                   class="el-icon-attract"
                 ></i>
                 <span
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
-                >关联父目标</span>
+                  v-if="
+                    (item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent) ||
+                    item.cultureName
+                  "
+                  >关联父目标</span
+                >
                 <p
-                  @click="goUndertake(index,'new')"
-                  v-if="(item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent) || item.cultureName"
+                  @click="goUndertake(index, 'new')"
+                  v-if="
+                    (item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent) ||
+                    item.cultureName
+                  "
                 >
                   <a
-                    v-if="item.undertakeOkrVo && item.undertakeOkrVo.undertakeOkrContent"
-                  >{{item.undertakeOkrVo.undertakeOkrContent}}</a>
-                  <a v-if="item.cultureName">{{item.cultureName}}</a>
+                    v-if="
+                      item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent
+                    "
+                    >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
+                  >
+                  <a v-if="item.cultureName">{{ item.cultureName }}</a>
                 </p>
                 <el-button
                   plain
                   icon="el-icon-plus"
-                  @click.native="goUndertake(index,'new')"
+                  @click.native="goUndertake(index, 'new')"
                   class="tl-btn amt-border-slip"
                   v-else
                 >
@@ -128,31 +175,50 @@
         </template>
         <dl
           v-for="(kritem, krIndex) in item.krList"
-          :key="kritem.okrDetailId+krIndex"
+          :key="kritem.okrDetailId + krIndex"
           class="collpase-panel"
-          :class="{'has-third-child': kritem.okrDetailConfidence}"
+          :class="{ 'has-third-child': kritem.okrDetailConfidence }"
         >
-          <dt :class="{'is-edit': canWrite && kritem.showTitleEdit}">
-            <span>KR{{krIndex+1}}</span>
+          <dt :class="{ 'is-edit': canWrite && kritem.showTitleEdit }">
+            <span>KR{{ krIndex + 1 }}</span>
             <div>
               <el-form-item
                 v-if="canWrite && kritem.showTitleEdit"
-                :prop="'tableList.' + index + '.krList.' + krIndex + '.okrDetailObjectKr'"
-                :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+                :prop="
+                  'tableList.' +
+                  index +
+                  '.krList.' +
+                  krIndex +
+                  '.okrDetailObjectKr'
+                "
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    validator: validateKRName,
+                  },
+                ]"
               >
-                <el-input placeholder="请输入关键结果" v-model="kritem.okrDetailObjectKr" class="tl-input"></el-input>
+                <el-input
+                  placeholder="请输入关键结果"
+                  v-model="kritem.okrDetailObjectKr"
+                  class="tl-input"
+                ></el-input>
               </el-form-item>
-              <span v-else>{{kritem.okrDetailObjectKr}}</span>
+              <span v-else>{{ kritem.okrDetailObjectKr }}</span>
               <i
                 v-if="canWrite && !kritem.showTitleEdit"
                 class="el-icon-edit"
-                @click="showKRInput(index,krIndex,'showTitleEdit')"
+                @click="showKRInput(index, krIndex, 'showTitleEdit')"
               ></i>
             </div>
             <slot name="body-bar" :okritem="kritem"></slot>
           </dt>
           <dd
-            :class="{'has-third-child': kritem.okrDetailConfidence,'is-edit': canWrite && kritem.showWeightEdit}"
+            :class="{
+              'has-third-child': kritem.okrDetailConfidence,
+              'is-edit': canWrite && kritem.showWeightEdit,
+            }"
           >
             <div>
               <i class="el-icon-medal"></i>
@@ -166,13 +232,14 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number
+                >%
               </el-form-item>
-              <em v-else>{{kritem.okrWeight}}%</em>
+              <em v-else>{{ kritem.okrWeight }}%</em>
               <i
                 v-if="canWrite && !kritem.showWeightEdit"
                 class="el-icon-edit"
-                @click="showKRInput(index,krIndex,'showWeightEdit')"
+                @click="showKRInput(index, krIndex, 'showWeightEdit')"
               ></i>
             </div>
             <div>
@@ -182,20 +249,30 @@
             </div>
             <div>
               <i class="el-icon-bell"></i>
-              <span>风险状态</span>
+              <span>信心指数</span>
               <div class="state-grid">
                 <div
-                  :class="{'is-no-risk': kritem.okrDetailConfidence == 1,
+                  :class="{
+                    'is-no-risk': kritem.okrDetailConfidence == 1,
                     'is-risks': kritem.okrDetailConfidence == 2,
-                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3,
+                  }"
                 ></div>
                 <div
-                  :class="{'is-risks': kritem.okrDetailConfidence == 2,
-                    'is-uncontrollable': kritem.okrDetailConfidence == 3}"
+                  :class="{
+                    'is-risks': kritem.okrDetailConfidence == 2,
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3,
+                  }"
                 ></div>
-                <div :class="{'is-uncontrollable': kritem.okrDetailConfidence == 3}"></div>
+                <div
+                  :class="{
+                    'is-uncontrollable': kritem.okrDetailConfidence == 3,
+                  }"
+                ></div>
               </div>
-              <div class="state-txt">{{CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence]}}</div>
+              <div class="state-txt">
+                {{ CONST.CONFIDENCE_MAP[kritem.okrDetailConfidence] }}
+              </div>
             </div>
             <div>
               <el-popover
@@ -207,8 +284,16 @@
               >
                 <span>考核指标</span>
                 <el-form-item
-                  :prop="'tableList.' + index + '.krList.' + krIndex + '.checkQuota'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+                  :prop="
+                    'tableList.' + index + '.krList.' + krIndex + '.checkQuota'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      message: '请输入考核指标',
+                    },
+                  ]"
                 >
                   <el-input
                     v-if="canWrite"
@@ -217,12 +302,20 @@
                     maxlength="50"
                     class="tl-input"
                   ></el-input>
-                  <em v-else>{{kritem.checkQuota||'--'}}</em>
+                  <em v-else>{{ kritem.checkQuota || "--" }}</em>
                 </el-form-item>
                 <span>衡量办法</span>
                 <el-form-item
-                  :prop="'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+                  :prop="
+                    'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      message: '请输入衡量办法',
+                    },
+                  ]"
                 >
                   <el-input
                     v-if="canWrite"
@@ -231,7 +324,7 @@
                     maxlength="50"
                     class="tl-input"
                   ></el-input>
-                  <em v-else>{{kritem.judgeMethod||'--'}}</em>
+                  <em v-else>{{ kritem.judgeMethod || "--" }}</em>
                 </el-form-item>
                 <div slot="reference">
                   <div>考核指标、衡量办法></div>
@@ -241,13 +334,29 @@
           </dd>
         </dl>
         <template v-if="item.newkrList">
-          <dl v-for="(newItem, kindex) in item.newkrList" :key="kindex" class="collpase-panel">
+          <dl
+            v-for="(newItem, kindex) in item.newkrList"
+            :key="kindex"
+            class="collpase-panel"
+          >
             <dt>
-              <span>KR{{item.krList.length+kindex+1}}</span>
+              <span>KR{{ item.krList.length + kindex + 1 }}</span>
               <div>
                 <el-form-item
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+                  :prop="
+                    'tableList.' +
+                    index +
+                    '.newkrList.' +
+                    kindex +
+                    '.okrDetailObjectKr'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      validator: validateKRName,
+                    },
+                  ]"
                 >
                   <!-- 不强制刷新无法输入 -->
                   <el-input
@@ -260,12 +369,12 @@
               </div>
               <el-tooltip
                 class="icon-clear"
-                :class="{'is-disabled': false}"
+                :class="{ 'is-disabled': false }"
                 effect="dark"
                 content="删除"
                 placement="top"
                 popper-class="tl-tooltip-popper"
-                @click.native="deletekr(item,kindex)"
+                @click.native="deletekr(item, kindex)"
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
@@ -280,7 +389,8 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number
+                >%
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-input-number
@@ -291,10 +401,14 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
-                ></el-input-number>%
+                ></el-input-number
+                >%
               </el-form-item>
-              <el-form-item label="风险状态">
-                <tl-confidence v-model="newItem.okrDetailConfidence" @change="updateokrCollapse"></tl-confidence>
+              <el-form-item label="信心指数">
+                <tl-confidence
+                  v-model="newItem.okrDetailConfidence"
+                  @change="updateokrCollapse"
+                ></tl-confidence>
               </el-form-item>
               <el-popover
                 placement="bottom"
@@ -305,8 +419,20 @@
               >
                 <el-form-item
                   label="考核指标"
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.checkQuota'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入考核指标'}]"
+                  :prop="
+                    'tableList.' +
+                    index +
+                    '.newkrList.' +
+                    kindex +
+                    '.checkQuota'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      message: '请输入考核指标',
+                    },
+                  ]"
                 >
                   <el-input
                     placeholder="请输入考核指标"
@@ -317,8 +443,20 @@
                 </el-form-item>
                 <el-form-item
                   label="衡量办法"
-                  :prop="'tableList.' + index + '.newkrList.' + kindex + '.judgeMethod'"
-                  :rules="[{required:true, trigger:'blur',message:'请输入衡量办法'}]"
+                  :prop="
+                    'tableList.' +
+                    index +
+                    '.newkrList.' +
+                    kindex +
+                    '.judgeMethod'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      message: '请输入衡量办法',
+                    },
+                  ]"
                 >
                   <el-input
                     placeholder="请输入衡量办法"
@@ -337,7 +475,7 @@
         <el-button
           type="text"
           v-if="canWrite"
-          @click="addkr(item,'kr')"
+          @click="addkr(item, 'kr')"
           class="tl-btn sub-list-add"
         >
           <i class="el-icon-plus"></i>添加关键结果

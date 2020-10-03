@@ -7,10 +7,6 @@
 <template>
   <div>
     <div>
-      <!-- <el-button>全部</el-button>
-      <el-button>待处理</el-button>
-      <el-button>处理中</el-button>
-      <el-button>已完成</el-button>-->
       <el-tabs v-model="tabName" @tab-click="selectTab(tabName)">
         <el-tab-pane label="全部" name="all"></el-tab-pane>
         <el-tab-pane
@@ -19,10 +15,6 @@
           v-for="step in stepList"
           :key="step.stepId"
         ></el-tab-pane>
-
-        <!-- <el-tab-pane label="待处理" name="pending"></el-tab-pane>
-        <el-tab-pane label="处理中" name="running"></el-tab-pane>
-        <el-tab-pane label="已完成" name="finished"></el-tab-pane>-->
       </el-tabs>
     </div>
     <div>
@@ -53,17 +45,36 @@
             <el-table-column min-width="100px" align="left" prop="taskTitle"></el-table-column>
             <el-table-column fixed="right" min-width="130px" align="left">
               <template slot-scope="scope">
-                <el-dropdown>
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="moveStep(scope.row)">移动步骤</el-dropdown-item>
-                    <el-dropdown-item @click.native="moveClassify(scope.row)">移动分类</el-dropdown-item>
-                    <el-dropdown-item @click.native="taskFiling(scope.row)">任务归档</el-dropdown-item>
-                    <el-dropdown-item @click.native="deleteTask(data)">删除任务</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                <el-menu
+                  :default-active="'1'"
+                  class="el-menu-demo"
+                  mode="horizontal"
+                  @select="handleSelect"
+                >
+                  <el-submenu index="1">
+                    <template slot="title">操作</template>
+                    <el-menu-item @click.native="finish(scope.row)">任务归档</el-menu-item>
+                    <el-menu-item @click.native="deleteTask(scope.row)">删除任务</el-menu-item>
+                    <el-submenu index="1-1">
+                      <template slot="title">移动过程节点</template>
+                      <el-menu-item
+                        @click.native="changeStep(scope.row,step)"
+                        v-for="step in stepList"
+                        :index="step.stepId"
+                        :key="step.stepId"
+                      >{{step.stepName}}</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="1-2">
+                      <template slot="title">移动分类</template>
+                      <el-menu-item
+                        @click.native="changeClassify(scope.row,calssify)"
+                        v-for="calssify in processClassifyList"
+                        :index="calssify.typeId"
+                        :key="calssify.typeId"
+                      >{{calssify.typeName}}</el-menu-item>
+                    </el-submenu>
+                  </el-submenu>
+                </el-menu>
               </template>
             </el-table-column>
           </el-table>
@@ -90,6 +101,12 @@ export default {
   },
   props: {
     stepList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    processClassifyList: {
       type: Array,
       default() {
         return [];
@@ -158,8 +175,40 @@ export default {
       // 任务进度是否为100%，不是的话，不能归档
       console.log(task);
     },
+    handleSelect() {
+
+    },
+    changeStep(task, step) {
+      this.server.changeClassify({
+        taskId: task.taskId,
+        stepIdAfter: step.stepId,
+      });
+    },
+    changeClassify(task, classify) {
+      this.server.changeClassify({
+        taskId: task.taskId,
+        typeId: classify.typeId,
+      });
+    },
+    finish(task) {
+      if (task.taskProgress == 100) {
+        this.server.finishTask({ taskId: task.taskId });
+      } else {
+        this.$message.warning('未完成的任务，暂时无法归档');
+      }
+    },
     deleteTask(task) {
-      console.log(task);
+      this.$xconfirm({
+        title: '删除任务',
+        content: '确认要删除这个任务么？',
+      }).then(() => {
+        // 提交确认弹窗
+        this.server.deleteTask({ taskId: task.taskId }).then((res) => {
+          if (res.code == 200) {
+            console.log(res);
+          }
+        });
+      }).catch(() => {});
     },
 
   },

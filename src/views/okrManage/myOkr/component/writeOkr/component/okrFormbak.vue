@@ -2,14 +2,24 @@
   <div class="okr-info">
     <div class="tl-custom-timeline">
       <el-form :model="formData" ref="dataForm" class="tl-form">
-        <dl class="timeline-list" v-for="(oitem,index) in formData.okrInfoList" :key="oitem.id">
+        <dl
+          class="timeline-list"
+          v-for="(oitem, index) in formData.okrInfoList"
+          :key="oitem.id"
+        >
           <dt>
             <div class="list-info">
-              <div class="list-title">目标名称{{index+1}}</div>
+              <div class="list-title">目标名称{{ index + 1 }}</div>
               <div class="list-cont">
                 <el-form-item
                   :prop="'okrInfoList.' + index + '.okrDetailObjectKr'"
-                  :rules="[{trigger: 'blur',validator:validateObjectName, required:true}]"
+                  :rules="[
+                    {
+                      trigger: 'blur',
+                      validator: validateObjectName,
+                      required: true,
+                    },
+                  ]"
                 >
                   <el-input
                     placeholder="请输入目标名称"
@@ -44,14 +54,17 @@
                   </el-form-item>
                   <el-form-item label="关联父目标">
                     <p
-                      v-if="(oitem.undertakeOkrVo && oitem.undertakeOkrVo.undertakeOkrDetailId)
-                      || oitem.cultureId"
+                      v-if="
+                        (oitem.undertakeOkrVo &&
+                          oitem.undertakeOkrVo.undertakeOkrDetailId) ||
+                        oitem.cultureId
+                      "
                       @click="openUndertake(index)"
                     >
-                      <a
-                        v-if="oitem.undertakeOkrVo.undertakeOkrContent"
-                      >{{oitem.undertakeOkrVo.undertakeOkrContent}}</a>
-                      <a v-if="oitem.cultureName">{{oitem.cultureName}}</a>
+                      <a v-if="oitem.undertakeOkrVo.undertakeOkrContent">{{
+                        oitem.undertakeOkrVo.undertakeOkrContent
+                      }}</a>
+                      <a v-if="oitem.cultureName">{{ oitem.cultureName }}</a>
                     </p>
                     <el-button
                       plain
@@ -69,12 +82,17 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled':isnew && formData.okrInfoList.length === 1}"
+              :class="{
+                'is-disabled': isnew && formData.okrInfoList.length === 1,
+              }"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-popper"
-              @click.native="(!isnew || formData.okrInfoList.length > 1) && deleteobject(index)"
+              @click.native="
+                (!isnew || formData.okrInfoList.length > 1) &&
+                  deleteobject(index)
+              "
               :disabled="isnew && formData.okrInfoList.length == 1"
             >
               <i class="el-icon-minus"></i>
@@ -82,11 +100,23 @@
           </dt>
           <dd v-for="(kitem, kindex) in oitem.krList" :key="kitem.id">
             <div class="list-info">
-              <div class="list-title">关键结果{{kindex+1}}</div>
+              <div class="list-title">关键结果{{ kindex + 1 }}</div>
               <div class="list-cont">
                 <el-form-item
-                  :prop="'okrInfoList.' + index + '.krList.' + kindex + '.okrDetailObjectKr'"
-                  :rules="[{required:true, trigger:'blur',validator:validateKRName}]"
+                  :prop="
+                    'okrInfoList.' +
+                    index +
+                    '.krList.' +
+                    kindex +
+                    '.okrDetailObjectKr'
+                  "
+                  :rules="[
+                    {
+                      required: true,
+                      trigger: 'blur',
+                      validator: validateKRName,
+                    },
+                  ]"
                 >
                   <el-input
                     placeholder="请输入关键结果"
@@ -119,8 +149,10 @@
                     ></el-input-number>
                     <span>%</span>
                   </el-form-item>
-                  <el-form-item label="风险状态">
-                    <tl-confidence v-model="kitem.okrDetailConfidence"></tl-confidence>
+                  <el-form-item label="信心指数">
+                    <tl-confidence
+                      v-model="kitem.okrDetailConfidence"
+                    ></tl-confidence>
                   </el-form-item>
                   <el-popover
                     placement="bottom"
@@ -155,37 +187,51 @@
             </div>
             <el-tooltip
               class="icon-clear"
-              :class="{'is-disabled':oitem.krList.length === 1}"
+              :class="{ 'is-disabled': oitem.krList.length === 1 }"
               effect="dark"
               content="删除"
               placement="top"
               popper-class="tl-tooltip-popper"
-              @click.native="(oitem.krList.length > 1) && deletekr(index,kindex)"
+              @click.native="oitem.krList.length > 1 && deletekr(index, kindex)"
               :disabled="oitem.krList.length == 1"
             >
               <i class="el-icon-minus"></i>
             </el-tooltip>
           </dd>
           <dd>
-            <el-button type="text" @click="addkr(index)" class="tl-btn sub-list-add">
+            <el-button
+              type="text"
+              @click="addkr(index)"
+              class="tl-btn sub-list-add"
+            >
               <i class="el-icon-plus"></i>添加关键结果
             </el-button>
           </dd>
         </dl>
       </el-form>
-      <el-button type="text" @click="addobject()" class="tl-btn dotted-line list-add">
+      <el-button
+        type="text"
+        @click="addobject()"
+        class="tl-btn dotted-line list-add"
+      >
         <i class="el-icon-plus"></i>添加目标
       </el-button>
     </div>
     <!-- 变更原因 -->
-    <div v-if="searchForm.approvalType == 1 ">
+    <div v-if="searchForm.approvalType == 1">
       <span>变更原因</span>
       <el-form :model="reason" ref="reasonForm">
         <el-form-item
           prop="modifyReason"
-          :rules="[{trigger: 'blur',message:'变更原因不能为空', required:true}]"
+          :rules="[
+            { trigger: 'blur', message: '变更原因不能为空', required: true },
+          ]"
         >
-          <el-input maxlength="200" type="textarea" v-model="reason.modifyReason"></el-input>
+          <el-input
+            maxlength="200"
+            type="textarea"
+            v-model="reason.modifyReason"
+          ></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -208,12 +254,25 @@
         :departokrList="formData.okrInfoList[this.selectIndex].departokrList"
         :philosophyList="formData.okrInfoList[this.selectIndex].philosophyList"
         :periodName="periodName"
-        :selectRadioDepart.sync="formData.okrInfoList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId"
+        :selectRadioDepart.sync="
+          formData.okrInfoList[this.selectIndex].undertakeOkrVo
+            .undertakeOkrDetailId
+        "
         :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
       ></undertake-table>
       <div class="operating-box">
-        <el-button type="primary" @click="summitUndertake()" class="tl-btn amt-bg-slip">确定</el-button>
-        <el-button @click="innerDrawer = false" plain class="tl-btn amt-border-fadeout">取消</el-button>
+        <el-button
+          type="primary"
+          @click="summitUndertake()"
+          class="tl-btn amt-bg-slip"
+          >确定</el-button
+        >
+        <el-button
+          @click="innerDrawer = false"
+          plain
+          class="tl-btn amt-border-fadeout"
+          >取消</el-button
+        >
       </div>
     </el-drawer>
   </div>

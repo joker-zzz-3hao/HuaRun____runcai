@@ -274,6 +274,17 @@ export default [{
     },
     component: () => import('@/views/projectManage/index'),
   },
+  // {
+  //   // 项目管理
+  //   path: '/projectManage',
+  //   name: 'projectManage',
+  //   meta: {
+  //     hasMainMenu: true,
+  //     noSubMenu: true,
+  //     parentRoute: 'projectManage',
+  //   },
+  //   component: () => import('@/views/projectManage/index'),
+  // },
   {
     // 个人中心
     path: '/personalCenter',
@@ -366,6 +377,20 @@ export default [{
       power: 'note',
     },
     component: () => import('@/views/note/index'),
+  },
+  {
+    // 任务管理
+    // 过程管理
+    path: '/processManage',
+    name: 'processManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'myTask',
+      title: 'processManage',
+      power: '',
+    },
+    component: () => import('@/views/taskManage/processManage/index'),
   },
   ],
 }];
