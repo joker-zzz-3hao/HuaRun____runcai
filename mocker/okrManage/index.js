@@ -332,7 +332,7 @@ const mockData = {
           okrDetailObjectKr: 'okr标题',
           okrDetailType: '1', // okr类型 o || kr
           okrDetailProgress: 30, // 进度
-          okrDetailConfidence: '1', // 风险状态
+          okrDetailConfidence: '1', // 信心指数
         }],
       }],
     })));

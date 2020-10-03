@@ -1735,7 +1735,7 @@
   justify-content: space-between;
   margin: 5px 15px;
   padding: 0 10px;
-  width: 216px;
+  width: 218px;
   height: 40px;
   border: 1px #e5e9ee solid;
   border-radius: 2px;
@@ -1859,6 +1859,20 @@
   color: #879099;
 }
 
+.weekly-cont .icon-bg {
+  background: #f4f6f8;
+  color: #bcc4cc;
+  cursor: pointer;
+}
+
+.weekly-cont .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.weekly-cont .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.weekly-cont .el-table__body tr.hover-row.current-row>td,
+.weekly-cont .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.weekly-cont .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+  background: unset;
+}
+
 .my-weekly .operating-area .tl-custom-btn {
   height: 30px;
 }
@@ -1885,6 +1899,50 @@
 
 .select-project .table-pagination {
   margin: 20px 0 0 0;
+}
+
+.weekly-cont .tag-lists li {
+  margin: 5px 0 5px 18px;
+  min-width: 110px;
+  max-width: 110px;
+  cursor: pointer;
+}
+
+.weekly-cont .tag-lists .icon-bg {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.weekly-cont .tag-lists li:nth-child(odd) {
+  margin-left: 0;
+}
+
+.weekly-cont .tag-lists .icon-bg {
+  margin-left: 18px !important;
+  min-width: unset;
+  max-width: unset;
+}
+
+.weekly-cont .tag-lists .icon-bg i {
+  position: unset;
+}
+
+.weekly-cont .tag-lists li:not(.icon-bg) {
+  padding-right: 30px;
+}
+
+.weekly-cont .tag-lists li:not(.icon-bg) i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #bcc4cc;
+  right: 4px;
+  top: 4px;
 }
 
 /* 创建任务--by xinquan */ 

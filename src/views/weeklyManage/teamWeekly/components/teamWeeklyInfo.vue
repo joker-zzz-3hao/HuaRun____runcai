@@ -16,49 +16,67 @@
         <!-- 返回 -->
 
         <span>
-          <el-avatar :size="30" :src="$route.query.headerUrl" @error="errorHandler">
+          <el-avatar
+            :size="30"
+            :src="$route.query.headerUrl"
+            @error="errorHandler"
+          >
             <div v-if="$route.query.userName" class="user-name">
-              <em>{{$route.query.userName.substring($route.query.userName.length-2)}}</em>
+              <em>{{
+                $route.query.userName.substring(
+                  $route.query.userName.length - 2
+                )
+              }}</em>
             </div>
           </el-avatar>
         </span>
-        <span>{{$route.query.userName}}</span>
+        <span>{{ $route.query.userName }}</span>
       </div>
       <div>
         <!-- 本周工作项 -->
         <div>
           <el-table ref="workTable" :data="weeklyWorkVoList">
             <el-table-column label="序号" type="index"></el-table-column>
-            <el-table-column label="工作项" prop="workContent"></el-table-column>-
-            <el-table-column label="内容" prop="workDesc" v-if="weeklyType == '1'">
+            <el-table-column label="工作项" prop="workContent"></el-table-column
+            >-
+            <el-table-column
+              label="内容"
+              prop="workDesc"
+              v-if="weeklyType == '1'"
+            >
               <template slot-scope="scope">
-                <el-col style="display:flex">
-                  <pre>{{scope.row.workDesc}}</pre>
+                <el-col style="display: flex">
+                  <pre>{{ scope.row.workDesc }}</pre>
                 </el-col>
               </template>
             </el-table-column>
             <el-table-column width="100" label="进度" prop="workProgress">
               <template slot-scope="scope">
-                <span>{{scope.row.workProgress}}%</span>
+                <span>{{ scope.row.workProgress }}%</span>
               </template>
             </el-table-column>
             <el-table-column width="100" label="投入工时" prop="workTime">
               <template slot-scope="scope">
-                <span>{{scope.row.workTime}}h</span>
+                <span>{{ scope.row.workTime }}h</span>
               </template>
             </el-table-column>
             <el-table-column label="关联项目" prop="projectNameCn">
               <template slot-scope="scope">
-                <span>{{scope.row.projectNameCn ? scope.row.projectNameCn :'临时项目'}}</span>
+                <span>{{
+                  scope.row.projectNameCn ? scope.row.projectNameCn : "临时项目"
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column label="支持OKR/价值观">
               <template slot-scope="scope">
                 <div
-                  v-if="scope.row.okrCultureValueList.length > 0 || scope.row.workOkrList.length > 0"
+                  v-if="
+                    scope.row.okrCultureValueList.length > 0 ||
+                    scope.row.workOkrList.length > 0
+                  "
                 >
                   <span
-                    style="marginLeft:8px"
+                    style="marginleft: 8px"
                     v-for="value in scope.row.okrCultureValueList"
                     :key="value.id"
                   >
@@ -68,11 +86,11 @@
                       :content="value.cultureName"
                       placement="top-end"
                     >
-                      <span>{{setOkrStyle(value.cultureName)}}</span>
+                      <span>{{ setOkrStyle(value.cultureName) }}</span>
                     </el-tooltip>
                   </span>
                   <span
-                    style="marginLeft:8px"
+                    style="marginleft: 8px"
                     v-for="value in scope.row.workOkrList"
                     :key="value.id"
                   >
@@ -82,7 +100,7 @@
                       :content="value.okrDetailObjectKr"
                       placement="top-end"
                     >
-                      <span>{{setOkrStyle(value.okrDetailObjectKr)}}</span>
+                      <span>{{ setOkrStyle(value.okrDetailObjectKr) }}</span>
                     </el-tooltip>
                   </span>
                 </div>
@@ -92,43 +110,51 @@
           </el-table>
         </div>
         <!-- 本周感想、建议、收获 -->
-        <div v-if="weeklyType == '1'" style="marginTop:50px">
+        <div v-if="weeklyType == '1'" style="margintop: 50px">
           <h2>本周感想、建议、收获</h2>
-          <div v-for="(item) in weeklyThoughtList" :key="item.thoughtId">
+          <div v-for="item in weeklyThoughtList" :key="item.thoughtId">
             <el-button
               v-if="item.thoughtType == 0"
-              :class="{'is-thoughts': item.thoughtType == 0}"
-            >感想</el-button>
+              :class="{ 'is-thoughts': item.thoughtType == 0 }"
+              >感想</el-button
+            >
             <el-button
               v-if="item.thoughtType == 1"
-              :class="{'is-suggest': item.thoughtType == 1}"
-            >建议</el-button>
+              :class="{ 'is-suggest': item.thoughtType == 1 }"
+              >建议</el-button
+            >
             <el-button
               v-if="item.thoughtType == 2"
-              :class="{'is-harvest': item.thoughtType == 2}"
-            >收获</el-button>
-            <span>{{item.thoughtContent}}</span>
+              :class="{ 'is-harvest': item.thoughtType == 2 }"
+              >收获</el-button
+            >
+            <span>{{ item.thoughtContent }}</span>
           </div>
         </div>
         <!-- 下周计划 -->
-        <div v-if="weeklyType == '1'" style="marginTop:50px">
+        <div v-if="weeklyType == '1'" style="margintop: 50px">
           <h2>下周计划</h2>
           <el-table ref="workTable" :data="weeklyPlanList">
             <el-table-column label="序号" type="index"></el-table-column>
-            <el-table-column label="工作项" prop="planContent"></el-table-column>-
+            <el-table-column label="工作项" prop="planContent"></el-table-column
+            >-
           </el-table>
         </div>
         <!-- 个人okr完成度 -->
-        <div v-if="weeklyOkrVoList.length > 0" style="marginTop:50px">
+        <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
           <h2>个人okr完成度</h2>
           <div v-for="item in weeklyOkrVoList" :key="item.okrDetailId">
             <!-- 目标+KR -->
-            <div v-if="item.parentOkrDetail&&item.parentOkrDetail.okrDetailId">
+            <div
+              v-if="item.parentOkrDetail && item.parentOkrDetail.okrDetailId"
+            >
               <el-row :gutter="20">
                 <el-col :span="20">
                   <div>
                     <span>目标</span>
-                    <span style="marginLeft:15px">{{item.parentOkrDetail.okrDetailObjectKr}}</span>
+                    <span style="marginleft: 15px">{{
+                      item.parentOkrDetail.okrDetailObjectKr
+                    }}</span>
                   </div>
                 </el-col>
               </el-row>
@@ -136,34 +162,54 @@
                 <el-col :span="6">
                   <div>
                     <span>KR</span>
-                    <span style="marginLeft:15px">{{item.okrDetail.okrDetailObjectKr}}</span>
-                    <span style="marginLeft:15px">被工作项{{itemIndex(item)}}支持</span>
+                    <span style="marginleft: 15px">{{
+                      item.okrDetail.okrDetailObjectKr
+                    }}</span>
+                    <span style="marginleft: 15px"
+                      >被工作项{{ itemIndex(item) }}支持</span
+                    >
                   </div>
                 </el-col>
                 <el-col :span="6">
                   <div>
-                    <span style="marginLeft:15px">
-                      风险状态
-                      <el-button :class="{'no-risk':item.confidenceAfter == 1}"></el-button>
-                      <el-button :class="{'risk-is-controlled':item.confidenceAfter == 2}"></el-button>
-                      <el-button :class="{'risk-cannot-be-controlled':item.confidenceAfter == 3}"></el-button>
-                      <span>{{riskMap[item.confidenceAfter]}}</span>
+                    <span style="marginleft: 15px">
+                      信心指数
+                      <el-button
+                        :class="{ 'no-risk': item.confidenceAfter == 1 }"
+                      ></el-button>
+                      <el-button
+                        :class="{
+                          'risk-is-controlled': item.confidenceAfter == 2,
+                        }"
+                      ></el-button>
+                      <el-button
+                        :class="{
+                          'risk-cannot-be-controlled':
+                            item.confidenceAfter == 3,
+                        }"
+                      ></el-button>
+                      <span>{{ riskMap[item.confidenceAfter] }}</span>
                     </span>
                   </div>
                 </el-col>
                 <el-col :span="7">
                   <div>
-                    <span style="marginLeft:15px">
+                    <span style="marginleft: 15px">
                       当前进度
-                      <el-progress :percentage="item.progressAfter" :format="format"></el-progress>
+                      <el-progress
+                        :percentage="item.progressAfter"
+                        :format="format"
+                      ></el-progress>
                     </span>
                   </div>
                 </el-col>
                 <el-col :span="2">
                   <div>
-                    <span style="marginLeft:15px">
+                    <span style="marginleft: 15px">
                       本周变化
-                      <span>{{item.progressAfter-item.progressBefor}}%</span>
+                      <span
+                        >{{ item.progressAfter - item.progressBefor }}%</span
+                      >
                     </span>
                   </div>
                 </el-col>
@@ -175,24 +221,33 @@
                 <el-col :span="6">
                   <div>
                     目标
-                    <span style="marginLeft:15px">{{item.okrDetail.okrDetailObjectKr}}</span>
-                    <span style="marginLeft:15px">被工作项{{itemIndex(item)}}支持</span>
+                    <span style="marginleft: 15px">{{
+                      item.okrDetail.okrDetailObjectKr
+                    }}</span>
+                    <span style="marginleft: 15px"
+                      >被工作项{{ itemIndex(item) }}支持</span
+                    >
                   </div>
                 </el-col>
 
                 <el-col :span="7" :offset="6">
                   <div>
-                    <span style="marginLeft:15px">
+                    <span style="marginleft: 15px">
                       当前进度
-                      <el-progress :percentage="item.progressAfter" :format="format"></el-progress>
+                      <el-progress
+                        :percentage="item.progressAfter"
+                        :format="format"
+                      ></el-progress>
                     </span>
                   </div>
                 </el-col>
                 <el-col :span="2">
                   <div>
-                    <span style="marginLeft:15px">
+                    <span style="marginleft: 15px">
                       本周变化
-                      <span>{{item.progressAfter-item.progressBefor}}%</span>
+                      <span
+                        >{{ item.progressAfter - item.progressBefor }}%</span
+                      >
                     </span>
                   </div>
                 </el-col>
@@ -201,22 +256,28 @@
           </div>
         </div>
         <!-- 谁浏览了 -->
-        <div style="marginTop:50px">
+        <div style="margintop: 50px">
           <h2>谁浏览了</h2>
-          <span style="marginLeft:10px" v-for="user in visitUserNameList" :key="user">
+          <span
+            style="marginleft: 10px"
+            v-for="user in visitUserNameList"
+            :key="user"
+          >
             <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
               <!-- <img src="@/assets/images/login-error.png" /> -->
               <div v-if="user.userName" class="user-name">
-                <em>{{userIusernfo.userName.substring(user.userName.length-2)}}</em>
+                <em>{{
+                  userIusernfo.userName.substring(user.userName.length - 2)
+                }}</em>
               </div>
             </el-avatar>
-            <span>{{user.userName}}</span>
+            <span>{{ user.userName }}</span>
           </span>
         </div>
       </div>
       <!-- 点赞 -->
-      <div style="marginTop:50px">
-        <el-button @click="support(1)">送金条({{supportCount}})</el-button>
+      <div style="margintop: 50px">
+        <el-button @click="support(1)">送金条({{ supportCount }})</el-button>
       </div>
     </div>
     <div v-if="openOrClose == 'CLOSE'">该用户所在团队未公开周报</div>

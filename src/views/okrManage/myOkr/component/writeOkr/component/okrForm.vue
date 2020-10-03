@@ -210,7 +210,7 @@
                 ></el-input-number>
                 <span>%</span>
               </el-form-item>
-              <el-form-item label="风险状态">
+              <el-form-item label="信心指数">
                 <tl-confidence
                   v-model="kitem.okrDetailConfidence"
                 ></tl-confidence>

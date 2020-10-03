@@ -2,7 +2,6 @@
   <div class="tl-custom-popover">
     <el-popover
       placement="bottom"
-      width="200"
       trigger="click"
       :append-to-body="false"
       v-model="visible"
@@ -11,19 +10,28 @@
       @hide="hide"
     >
       <ul>
-        <li v-for="citem in CONST.CONFIDENCE" :key="citem.value" @click="handleClick(citem.value)">
+        <li
+          v-for="citem in CONST.CONFIDENCE"
+          :key="citem.value"
+          @click="handleClick(citem.value)"
+        >
           <div class="state-grid">
             <div
               :class="{
-              'is-no-risk': citem.value == 1,
-              'is-risks': citem.value == 2,
-              'is-uncontrollable': citem.value == 3
+                'is-no-risk': citem.value == 1,
+                'is-risks': citem.value == 2,
+                'is-uncontrollable': citem.value == 3,
               }"
             ></div>
-            <div :class="{'is-risks': citem.value == 2,'is-uncontrollable': citem.value == 3}"></div>
-            <div :class="{'is-uncontrollable': citem.value == 3}"></div>
+            <div
+              :class="{
+                'is-risks': citem.value == 2,
+                'is-uncontrollable': citem.value == 3,
+              }"
+            ></div>
+            <div :class="{ 'is-uncontrollable': citem.value == 3 }"></div>
           </div>
-          <div class="state-txt">{{citem.label}}</div>
+          <div class="state-txt">{{ citem.label }}</div>
         </li>
       </ul>
       <div slot="reference">
@@ -32,14 +40,19 @@
             :class="{
               'is-no-risk': modelVal == 1,
               'is-risks': modelVal == 2,
-              'is-uncontrollable': modelVal == 3
-              }"
+              'is-uncontrollable': modelVal == 3,
+            }"
           ></div>
-          <div :class="{'is-risks': modelVal == 2,'is-uncontrollable': modelVal == 3}"></div>
-          <div :class="{'is-uncontrollable': modelVal == 3}"></div>
+          <div
+            :class="{
+              'is-risks': modelVal == 2,
+              'is-uncontrollable': modelVal == 3,
+            }"
+          ></div>
+          <div :class="{ 'is-uncontrollable': modelVal == 3 }"></div>
         </div>
-        <div class="state-txt">{{CONST.CONFIDENCE_MAP[modelVal]}}</div>
-        <i class="el-icon-caret-bottom" :class="{'is-show': isShow}"></i>
+        <div class="state-txt">{{ CONST.CONFIDENCE_MAP[modelVal] }}</div>
+        <i class="el-icon-caret-bottom" :class="{ 'is-show': isShow }"></i>
       </div>
     </el-popover>
   </div>

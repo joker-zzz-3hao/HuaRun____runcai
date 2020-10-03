@@ -388,8 +388,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 28%;
-  width: 28%;
+  flex: 0 0 27%;
+  width: 27%;
   position: relative;
 }
 
@@ -428,8 +428,8 @@
 }
 
 .tl-table .sub-tr .okr-risk {
-  flex: 0 0 13%;
-  width: 13%;
+  flex: 0 0 14%;
+  width: 14%;
 }
 
 .tl-table .sub-tr .undertake-target {
@@ -3197,6 +3197,47 @@
   color: #acb6bf;
 }
 
+.tag-group {
+  display: flex;
+  align-items: center;
+}
+
+.tag-lists {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tag-group .icon-bg,
+.tag-lists li:not(:first-child) {
+  margin-left: 18px;
+}
+
+.tag-lists li {
+  padding: 5px 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f4f6f8;
+  border-radius: 15px;
+  height: 30px;
+}
+
+.tag-lists li i {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag-lists li em {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
 
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */

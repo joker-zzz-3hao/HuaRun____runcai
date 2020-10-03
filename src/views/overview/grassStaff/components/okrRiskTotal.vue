@@ -3,7 +3,7 @@
     <div class="tl-card-panel">
       <div class="card-panel-head">
         <div class="panner-title">
-          <em>OKR风险状态统计</em>
+          <em>OKR信心指数统计</em>
           <span v-show="testModel">示例数据</span>
         </div>
       </div>
@@ -38,20 +38,24 @@
         <el-table :data="tableData" :show-header="false" style="width: 100%">
           <el-table-column label="周报">
             <template slot-scope="scope">
-              <span>{{scope.row.weekBegin}}~{{scope.row.weekEnd}}</span>
+              <span>{{ scope.row.weekBegin }}~{{ scope.row.weekEnd }}</span>
             </template>
           </el-table-column>
           <el-table-column label="本周心情">
             <template slot-scope="scope">
-              <span
-                v-if="scope.row.weeklyEmotion!==null"
-              >本周心情:{{CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]}}</span>
+              <span v-if="scope.row.weeklyEmotion !== null"
+                >本周心情:{{
+                  CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]
+                }}</span
+              >
               <span v-else>未填写</span>
             </template>
           </el-table-column>
           <el-table-column label="提交时间">
             <template slot-scope="scope">
-              <span v-if="scope.row.updateTime">提交时间:{{scope.row.updateTime}}</span>
+              <span v-if="scope.row.updateTime"
+                >提交时间:{{ scope.row.updateTime }}</span
+              >
               <span v-else>--</span>
             </template>
           </el-table-column>
