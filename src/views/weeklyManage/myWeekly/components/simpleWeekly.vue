@@ -765,33 +765,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.btn-selected {
-  background: rgb(2, 2, 2);
-}
-.okr-selected {
-  background: rgb(204, 198, 198);
-  margin-left: 2px;
-}
-.is-thoughts {
-  background: rgb(123, 243, 197);
-}
-.is-suggest {
-  background: rgb(228, 241, 151);
-}
-.is-harvest {
-  background: rgb(95, 138, 218);
-}
-.text-color-red {
-  color: brown;
-}
-.no-risk {
-  background: green;
-}
-.risk-is-controlled {
-  background: yellow;
-}
-.risk-cannot-be-controlled {
-  background: red;
-}
-</style>

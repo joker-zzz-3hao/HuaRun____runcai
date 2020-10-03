@@ -1865,11 +1865,11 @@
   cursor: pointer;
 }
 
-.weekly-cont .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
-.weekly-cont .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.weekly-cont .el-table__body tr.hover-row.current-row>td,
-.weekly-cont .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.weekly-cont .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+.write-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.write-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.write-weekly .el-table__body tr.hover-row.current-row>td,
+.write-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.write-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
   background: unset;
 }
 
@@ -1963,6 +1963,91 @@
 
 .weekly-cont .tl-table .el-table__body-wrapper .cell {
   min-height: 96px;
+}
+
+.write-weekly .btn-box {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.write-weekly .weekly-thoughts .btn-box {
+  margin: 10px 0 0 0;
+}
+
+.write-weekly .tl-btn.el-button--text i {
+  margin: 0 10px 0 0;
+}
+
+.write-weekly .tl-btn.el-button--text {
+  color: #879099;
+  font-weight: normal;
+  transition: all .4s ease-out;
+}
+
+.write-weekly .tl-btn.el-button--text:hover {
+  color: #685df1;
+}
+
+.weekly-area .card-title {
+  font-weight: 500;
+  color: #222426;
+}
+
+.weekly-thoughts dd:not(:last-child) {
+  margin: 20px 0;
+}
+
+.weekly-thoughts .tag-group {
+  align-self: start;
+}
+
+.weekly-thoughts .tag-kinds {
+  margin: 0 20px 0 0;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  width: 58px;
+  height: 40px;
+  border: 1px solid #e5e9ee;
+  border-radius: 2px;
+  color: #879099;
+  cursor: pointer;
+}
+
+.weekly-thoughts .is-thoughts {
+  background: rgba(76,205,121,0.10);
+  color: #4ccd79;
+  border-color: rgba(76,205,121,0.10);
+}
+
+.weekly-thoughts .is-suggest {
+  background: rgba(255,188,32,0.10);
+  color: #ffbc20;
+  border-color: rgba(255,188,32,0.10);
+}
+
+.weekly-thoughts .is-harvest {
+  background: rgba(77,132,255,0.10);
+  color: #4d84ff;
+  border-color: rgba(77,132,255,0.10);
+}
+
+.weekly-thoughts dd > i {
+  margin: 0 0 0 20px;
+  flex: 0 0 20px;
+}
+
+.weekly-cont .el-form-item__content > em {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.write-weekly .tl-table .el-table__body .el-table__row td:last-child .cell {
+  padding-right: 0;
+  justify-content: flex-end;
 }
 
 /* 创建任务--by xinquan */ 
