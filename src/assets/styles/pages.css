@@ -1828,8 +1828,8 @@
 }
 
 .weekly-cont .tl-table .el-table__body .cell {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .weekly-cont .tl-table .el-table__body .cell .el-form-item {
@@ -1925,6 +1925,10 @@
   max-width: unset;
 }
 
+.weekly-cont .tag-lists li:first-child.icon-bg {
+  margin-left: 0 !important;
+}
+
 .weekly-cont .tag-lists .icon-bg i {
   position: unset;
 }
@@ -1943,6 +1947,22 @@
   background: #bcc4cc;
   right: 4px;
   top: 4px;
+}
+
+.weekly-cont .tag-lists li.only-one {
+  padding-right: 15px;
+  max-width: unset;
+}
+
+.weekly-cont .tag-group .verify-info {
+  left: 0;
+  bottom: -26px;
+  color: #f56c6c;
+  font-size: 12px;
+}
+
+.weekly-cont .tl-table .cell {
+  min-height: 96px;
 }
 
 /* 创建任务--by xinquan */ 

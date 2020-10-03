@@ -11,7 +11,7 @@
           ref="workTable"
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
-          class="tl-table flex"
+          class="tl-table"
         >
           <el-table-column
             label="序号"
@@ -108,8 +108,8 @@
                   <i class="el-icon-plus"></i>
                 </div>
                 <div class="tag-group">
-                  <ul class="tag-lists">
-                    <li>
+                  <!-- <ul class="tag-lists">
+                    <li class="only-one">
                       <el-tooltip
                         class="select-values"
                         effect="dark"
@@ -120,8 +120,9 @@
                         <em>华润云项目撒大法地方阿斯顿发上</em>
                       </el-tooltip>
                     </li>
-                  </ul>
-                  <div class="verify-info" v-show="false">这里是校验信息</div>
+                  </ul> -->
+                  <!-- 这里是自己写的注释 -->
+                  <!-- <div class="verify-info">这里是校验信息</div> -->
                 </div>
               </el-form-item>
             </template>
