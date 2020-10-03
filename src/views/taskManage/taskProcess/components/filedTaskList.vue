@@ -6,7 +6,64 @@
 -->
 <template>
   <div>
-    <div>
+    <div class="operating-area">
+      <div class="page-title">已归档任务</div>
+      <div class="operating-box">
+        <el-form
+          v-if="hasPower('sys-dictionary-list')"
+          ref="ruleForm"
+          :inline="true"
+          class="tl-form-inline"
+        >
+          <el-form-item>
+            <el-input
+              v-model="keyWord"
+              placeholder="输入任务标题"
+              maxlength="50"
+              class="tl-input-search"
+              @keyup.enter.native="searchList"
+              clearable
+              @clear="clear"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model.trim="executorId"
+              placeholder="执行者"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in executorList"
+                :key="item.executorId"
+                :label="item.executorName"
+                :value="item.executorId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model.trim="creatorId"
+              placeholder="创建人"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in creatorList"
+                :key="item.creatorId"
+                :label="item.creatorName"
+                :value="item.creatorId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <div class="cont-area">
       <crcloud-table
         :total="total"
         :pageSize.sync="pageSize"
@@ -63,12 +120,16 @@
 </template>
 
 <script>
+import Server from '../server';
+
+const server = new Server();
 export default {
   name: '',
   components: {},
   props: {},
   data() {
     return {
+      server,
     };
   },
   created() {
