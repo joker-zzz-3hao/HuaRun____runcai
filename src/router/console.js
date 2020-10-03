@@ -365,7 +365,6 @@ export default [{
         power: '',
       },
       component: () => import('@/views/taskManage/taskProcess/index'),
-
     },
     {
       path: '/note',
@@ -392,7 +391,6 @@ export default [{
         power: '',
       },
       component: () => import('@/views/taskManage/processManage/index'),
-
     },
     {
       // 任务管理

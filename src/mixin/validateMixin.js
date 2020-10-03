@@ -137,5 +137,14 @@ export default {
         callback();
       }
     },
+    validateProjectName(rule, value, callback) {
+      if (!value) {
+        callback('请输入项目名称');
+      } else if (value.length > 20) {
+        callback('项目名称最大支持20个字符');
+      } else {
+        callback();
+      }
+    },
   },
 };

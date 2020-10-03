@@ -11,6 +11,8 @@
   >
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{drawerTitle}}</div>
+      <div v-if="showFocus" @click="addFocus">关注</div>
+      <div v-else>已关注</div>
     </div>
     <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">
@@ -358,11 +360,15 @@ import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import tabs from '@/components/tabs';
 import okrHistory from './okrHistory';
+import Server from './server';
+
+const mainServer = new Server();
 
 export default {
   name: 'okrDetail',
   data() {
     return {
+      mainServer,
       tableList: [], // okr列表
       voteUser: [], // 点赞人列表
       okrmain: {}, // 公共信息
@@ -382,7 +388,8 @@ export default {
       periodName: '',
       currentPage: 1,
       status: 1,
-
+      showFocus: true,
+      param: [],
     };
   },
   components: {
@@ -476,14 +483,35 @@ export default {
           if (res.code == 200) {
             this.tableList = res.data.okrDetails || [];
             this.okrmain = res.data.okrMain || {};
+            if (res.data.okrMain.supported) {
+              this.showFocus = false;
+            }
           }
         });
       } else if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
         this.tableList = this.formData.tableList || [];
         this.okrmain = this.formData.okrMain || {};
+        if (this.formData.supported) {
+          this.showFocus = false;
+        }
         // this.okrId = this.formData.okrMain.okrMainId;
       }
+    },
+    // 关注
+    addFocus() {
+      this.param.push({
+        focusType: 0,
+        targetId: this.okrId,
+        supported: 1,
+      });
+      this.mainServer.addFocus(
+        this.param,
+      ).then((res) => {
+        if (res.code == '200') {
+          this.showFocus = !this.showFocus;
+        }
+      });
     },
     // 点赞
     like() {

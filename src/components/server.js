@@ -20,4 +20,8 @@ export default class Server extends ServerBase {
   unread(param) {
     return this._ajaxPost('gateway/sms-service/innermsg/unread', param);
   }
+
+  addFocus(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/focus/add', param);
+  }
 }

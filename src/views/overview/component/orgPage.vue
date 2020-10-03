@@ -27,6 +27,10 @@
           </dt>
           <dd>{{ okrMain.userName }}</dd>
         </dl>
+        <dl class="okr-responsible">
+          <dd v-if="okrMain.supported" @click="addFocus(okrMain)">关注</dd>
+          <dd v-else>已关注</dd>
+        </dl>
         <dl class="okr-progress">
           <dt>
             <em>OKR进度</em>
@@ -151,6 +155,7 @@ export default {
       drawerTitle: '创建okr',
       okrCycle: {}, // 当前选择的周期
       periodList: [], // 周期列表
+      param: [],
     };
   },
   inject: ['reload', 'fullscreen'],
@@ -195,6 +200,22 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.setList(res.data);
+        }
+      });
+    },
+    addFocus(data) {
+      this.param = [];
+      this.param.push({
+        focusType: 0,
+        targetId: data.okrId,
+        supported: 1,
+      });
+      this.server.addFocus(
+        this.param,
+      ).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+          this.okrMain.supported = '1';
         }
       });
     },

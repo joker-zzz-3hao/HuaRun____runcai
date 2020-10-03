@@ -97,18 +97,30 @@ export default [{
     },
     component: () => import('@/views/worthManage/index'),
   },
-    // 价值观统计
-    // {
-    //   path: '/worthStatistics',
-    //   name: 'worthStatistics',
-    //   meta: {
-    //     hasMainMenu: true,
-    //     isSubMenu: true,
-    //     parentRoute: 'orgManage',
-    //     title: 'worthStatistics',
-    //     power: '',
-    //   },
-    //   component: () => import('@/views/worthManage/worthStatistics/index'),
-    // },
+  // 项目
+  {
+    path: '/projectManage',
+    name: 'projectManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'projectManage',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/index'),
+  },
+  {
+    path: '/projectDetail',
+    name: 'projectDetail',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'projectDetail',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/projectDetail/index'),
+  },
   ],
 }];
