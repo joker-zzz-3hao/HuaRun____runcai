@@ -75,4 +75,8 @@ export default class Server extends ServerBase {
   okrRiskUserInfo(param) {
     return this._ajaxPost(`gateway/talent-query/home/team/okrRiskUserInfo?${qs.stringify(param)}`);
   }
+
+  addFocus(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/focus/add', param);
+  }
 }

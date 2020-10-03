@@ -1,6 +1,6 @@
 <template>
   <div class="concerned-okr">
-    <div>
+    <!-- <div>
       <div>
         <div>我的关注</div>
         <div @click="addFocus" v-if="hasPower('okr-focus-add')">
@@ -26,7 +26,7 @@
         </div>
         <div v-if="hasPower('okr-focus-add')" @click="cancelFocus(item)">取消关注</div>
       </div>
-    </div>
+    </div> -->
     <div v-for="item in tableList" :key="item.okrMain.okrId">
       <div class="card-panel-head">
         <div class="okr-title">{{ item.okrMain.periodName }}</div>
@@ -46,6 +46,10 @@
             <em>负责人</em>
           </dt>
           <dd>{{ item.okrMain.userName }}</dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dd v-if="item.supported" @click="addFocus(item)">关注</dd>
+          <dd v-else @click="cancelFocus(item)">取消关注</dd>
         </dl>
         <dl class="okr-progress">
           <dt>
@@ -72,21 +76,12 @@
         :expands="expands"
       ></tl-okr-table>
     </div>
-    <tl-focus
-      v-if="exist"
-      ref="focus"
-      :exist="exist"
-      @success="success"
-      @closed="closed"
-      :focusList="this.focusList"
-    ></tl-focus>
   </div>
 </template>
 
 <script>
 import okrTableLittle from '@/components/okrTableLittle';
 import CONST from './const';
-import focus from './components/focus';
 import Server from './server';
 
 const server = new Server();
@@ -95,7 +90,6 @@ export default {
   name: 'concernedOkr',
   components: {
     'tl-okr-table': okrTableLittle,
-    'tl-focus': focus,
   },
   data() {
     return {
@@ -122,31 +116,29 @@ export default {
   methods: {
     init() {
       if (this.hasPower('okr-foucs-list')) {
-        this.server.focusList().then((res) => {
-          if (res.code == '200') {
-            this.focusList = res.data;
-            if (this.focusList.length > 0) {
-              if (res.data.length > 0) {
-                this.selectUserId = res.data[0].targetId;
-                this.queryOKR();
-              }
-            }
-          }
-        });
+        this.queryOKR();
       }
     },
-    addFocus() {
-      this.exist = true;
-      this.$nextTick(() => {
-        this.$refs.focus.show();
+    addFocus(data) {
+      this.param = [];
+      this.param.push({
+        focusType: 0,
+        targetId: data.okrMain.okrId,
+        supported: 1,
+      });
+      this.server.addFocus(
+        this.param,
+      ).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+          this.init();
+        }
       });
     },
     queryOKR() {
       if (this.hasPower('okr-focus-user-detail')) {
         this.tableList = [];
-        this.server.queryFocusUserOkr({
-          userId: this.selectUserId,
-        }).then((response) => {
+        this.server.queryFocusUserOkr().then((response) => {
           if (response.code == '200') {
             response.data.forEach((item) => {
               this.tableList.push({
@@ -158,15 +150,11 @@ export default {
         });
       }
     },
-    selectUser(data) {
-      this.selectUserId = data.targetId;
-      this.queryOKR();
-    },
     cancelFocus(data) {
       this.param = [];
       this.param.push({
         focusType: 0,
-        targetId: data.targetId,
+        targetId: data.okrMain.okrId,
         supported: 0,
       });
       this.server.addFocus(

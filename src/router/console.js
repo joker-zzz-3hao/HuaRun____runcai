@@ -274,17 +274,6 @@ export default [{
     },
     component: () => import('@/views/projectManage/index'),
   },
-  // {
-  //   // 项目管理
-  //   path: '/projectManage',
-  //   name: 'projectManage',
-  //   meta: {
-  //     hasMainMenu: true,
-  //     noSubMenu: true,
-  //     parentRoute: 'projectManage',
-  //   },
-  //   component: () => import('@/views/projectManage/index'),
-  // },
   {
     // 个人中心
     path: '/personalCenter',
