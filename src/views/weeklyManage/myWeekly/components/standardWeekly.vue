@@ -36,6 +36,8 @@
                   placeholder="请用一句话概括某项工作，不超过100个字符"
                   class="tl-input"
                 ></el-input>
+                <!-- 编辑完提交后展示 -->
+                <!-- <em>balbalabala</em> -->
               </el-form-item>
             </template>
           </el-table-column>
@@ -49,6 +51,8 @@
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
                 ></el-input>
+                <!-- 编辑完提交后展示 -->
+                <!-- <em>balbalabala</em> -->
               </el-form-item>
             </template>
           </el-table-column>
@@ -66,6 +70,8 @@
                 :max="100"
                 class="tl-input-number"
               ></el-input-number>
+              <!-- 编辑完提交后展示 -->
+              <!-- <em>balbalabala</em> -->
             </template>
           </el-table-column>
           <el-table-column
@@ -84,6 +90,8 @@
                 :max="80"
                 class="tl-input-number"
               ></el-input-number>
+              <!-- 编辑完提交后展示 -->
+              <!-- <em>balbalabala</em> -->
               <span>天</span>
             </template>
           </el-table-column>
@@ -104,11 +112,12 @@
                   maxlength="0"
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
+                <!-- 此处点击后就永远消失 -->
                 <div class="icon-bg" @click="projectInputFocus(scope.row)">
                   <i class="el-icon-plus"></i>
                 </div>
                 <div class="tag-group">
-                  <!-- <ul class="tag-lists">
+                  <ul class="tag-lists">
                     <li class="only-one">
                       <el-tooltip
                         class="select-values"
@@ -120,8 +129,8 @@
                         <em>华润云项目撒大法地方阿斯顿发上</em>
                       </el-tooltip>
                     </li>
-                  </ul> -->
-                  <!-- 这里是自己写的注释 -->
+                  </ul>
+                  <!-- 此处是自己写的注释 -->
                   <!-- <div class="verify-info">这里是校验信息</div> -->
                 </div>
               </el-form-item>

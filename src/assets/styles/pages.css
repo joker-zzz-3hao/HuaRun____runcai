@@ -1961,7 +1961,7 @@
   font-size: 12px;
 }
 
-.weekly-cont .tl-table .cell {
+.weekly-cont .tl-table .el-table__body-wrapper .cell {
   min-height: 96px;
 }
 
