@@ -133,8 +133,6 @@ export default {
       });
     },
     moveTask() {
-      console.log(this.moveItem);
-      // debugger;
       this.server.createTask(this.moveItem).then((res) => {
         if (res.code == 200) {
           console.log('');

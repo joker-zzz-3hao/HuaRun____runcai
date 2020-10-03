@@ -5,7 +5,7 @@
         <div>
           <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
             <el-submenu index="1">
-              <template slot="title">操作</template>
+              <template slot="title">任务过程</template>
               <el-submenu index="1-1">
                 <template slot="title">团队使用</template>
                 <el-menu-item
@@ -46,7 +46,7 @@
           >添加任务</el-button>
           <el-button
             type="primary"
-            @click="todo"
+            @click="go('filedTaskList',{query:{processId:processObj,processId}})"
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-cooperation"
           >查看归档任务</el-button>

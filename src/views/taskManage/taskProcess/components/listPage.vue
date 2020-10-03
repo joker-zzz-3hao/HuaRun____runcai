@@ -41,8 +41,66 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskTitle"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskTitle"></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="taskProgress">
+              <template slot-scope="scope">
+                <div>
+                  <el-slider disabled v-model="scope.row.taskProgress" :step="1"></el-slider>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="100px" align="left">
+              <template slot-scope="scope">
+                <div
+                  v-if="!scope.row.showChangeUser"
+                  @click="showSelectPeople(scope.row)"
+                  style="cursor:pointer"
+                >
+                  <span>
+                    <el-avatar :size="30" :src="scope.row.headerUrl" @error="errorHandler">
+                      <div v-if="scope.row.userName" class="user-name">
+                        <em>
+                          {{
+                          scope.row.userName.substring(
+                          scope.row.userName.length - 2
+                          )
+                          }}
+                        </em>
+                      </div>
+                    </el-avatar>
+                  </span>
+                  <span>{{ scope.row.userName }}</span>
+                </div>
+                <div v-else>
+                  <el-select
+                    ref="taskSelect"
+                    filterable
+                    placeholder="请输入成员姓名"
+                    remote
+                    :remote-method="remoteMethod"
+                    @visible-change="visibleChange"
+                    @blur="selectBlur(scope.row)"
+                    @change="userChange"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in userList"
+                      :key="item.userId"
+                      :label="item.userName"
+                      :value="item.userId"
+                    >
+                      <span style="float:left">
+                        <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                          <div v-if="item.userName" class="user-name">
+                            <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                          </div>
+                        </el-avatar>
+                      </span>
+                      <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                    </el-option>
+                  </el-select>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" min-width="130px" align="left">
               <template slot-scope="scope">
                 <el-menu
@@ -131,9 +189,14 @@ export default {
       pageSize: 10,
       total: 0,
       tabName: 'all',
+      userList: [],
+      task: {},
     };
   },
-  created() { this.init(); },
+  created() {
+    this.init();
+    this.remoteMethod();
+  },
   mounted() {},
   computed: {},
   methods: {
@@ -149,10 +212,13 @@ export default {
       };
       self.server.queryTaskTableList(params).then((res) => {
         if (res.code == 200) {
-          this.tableData = res.data.content;
           this.currentPage = res.data.currentPage;
           this.pageSize = res.data.pageSize;
           this.total = res.data.total;
+          this.tableData = res.data.content;
+          this.tableData.forEach((task) => {
+            this.$set(task, 'showChangeUser', false);
+          });
         }
       });
     },
@@ -179,7 +245,7 @@ export default {
 
     },
     changeStep(task, step) {
-      this.server.changeClassify({
+      this.server.move({
         taskId: task.taskId,
         stepIdAfter: step.stepId,
       });
@@ -209,6 +275,52 @@ export default {
           }
         });
       }).catch(() => {});
+    },
+    errorHandler() {
+      return true;
+    },
+    showSelectPeople(task) {
+      task.showChangeUser = true;
+      this.task = task;
+      this.$nextTick(() => {
+        this.$refs.taskSelect.input.focus();
+      });
+    },
+    remoteMethod(name) {
+      this.server.getUserListByOrgId({
+        currentPage: 1,
+        pageSize: 20,
+        userName: name ? name.trim() : '',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content;
+        }
+      });
+    },
+    visibleChange(name) {
+      if (!name) {
+        this.remoteMethod();
+      }
+    },
+    userChange(userId) {
+      if (userId) {
+        this.userList.forEach((user) => {
+          if (user.userId == userId) {
+            this.server.changeUser({
+              taskId: this.task.taskId,
+              userId,
+              userName: user.userName,
+            }).then((res) => {
+              if (res.code == 200) {
+                this.init();
+              }
+            });
+          }
+        });
+      }
+    },
+    selectBlur(task) {
+      task.showChangeUser = false;
     },
 
   },
