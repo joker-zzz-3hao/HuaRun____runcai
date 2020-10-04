@@ -52,3 +52,12 @@ _:future,
     width: 86px;
   }
 }
+
+.teams-weekly .operating-area .el-select .el-input .el-input__inner:-ms-input-placeholder {
+  color:#fff !important;
+}
+
+.teams-weekly .operating-area .el-select .el-input input::-moz-placeholder {
+  color:#fff !important;
+}
+
