@@ -56,7 +56,7 @@
       <div class="operating-area-inside">
         <div class="operating-box">
           <el-input
-            placeholder="请输入关键词"
+            placeholder="请输入OKR内容、部门、用户"
             v-model="keyword"
             @keyup.enter.native="search"
             class="tl-input"
