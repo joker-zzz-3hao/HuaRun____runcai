@@ -9,7 +9,7 @@
               <li
                 v-for="(item, idx) in tabsList"
                 :key="item.menuTitle"
-                @click="borderSlip(item, idx, item.toName)"
+                @click="borderSlip(item, idx)"
                 :class="{ 'is-focus': currentIndex === idx }"
               >
                 {{ item.menuTitle }}
@@ -63,7 +63,7 @@
           <el-button
             type="primary"
             icon="el-icon-plus"
-            @click="goWriteOkr"
+            @click="goWriteOkr()"
             class="tl-btn amt-bg-slip"
             :disabled="!hasPower('okr-create')"
             >创建OKR</el-button
@@ -127,21 +127,43 @@ export default {
     }),
   },
   created() {
+    // 如果是负责人并且有上级，则展示上级
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
+      // 如果是负责人并且是根节点
     } else if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgId == 'CR0011000054') {
       this.departmentName = '润联科技';
+      // 普通用户
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
     }
+
+    // TODO: 加orgId
+    // 实体部门名
     this.tabsList.forEach((item) => {
       if (item.toName == 'departmentOkr') {
         item.menuTitle = `${this.departmentName}OKR`;
       }
     });
+    // 如果是“根级组织人”，只展示“我的okr”
+    if (!this.userInfo.orgParentId) {
+      this.tabsList = [
+        {
+          menuTitle: '我的OKR',
+          toName: 'myOkr',
+        },
+      ];
+    }
+    // 有虚线汇报需展示虚线部门和实体部门
+    // this.tabsList.push( {menuTitle: '部门OKR',toName: 'departmentOkr',},);
     this.getOkrCycleList();
   },
   mounted() {
+    if (this.$route.query) {
+      if (this.$route.query.openWriteOkr) {
+        this.goWriteOkr(this.$route.query.periodId);
+      }
+    }
     this.currentIndex = this.$route.name == 'myOkr' ? 0 : 1;
     const borderWidth = document.querySelector('.operating-area .border-slip');
     const selfLeft = document.querySelectorAll('.operating-area .tab-list li')[this.currentIndex].offsetLeft;
@@ -151,7 +173,8 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setokrStatus', 'setokrCycle']),
-    goWriteOkr() {
+    goWriteOkr(periodId = '') {
+      this.$router.replace('myOkr');
       // 调用接口校验是否可创建
       this.server.checkPrivilege({ operateType: 'add' }).then((res) => {
         if (res.code == 200 && res.data) {
@@ -161,7 +184,7 @@ export default {
             };
             this.writeokrExist = true;
             this.$nextTick(() => {
-              this.$refs.writeokr.showOkrDialog();
+              this.$refs.writeokr.showOkrDialog(periodId);
             });
           } else {
             this.$message.error(res.data.remark);
@@ -180,14 +203,15 @@ export default {
         }
       });
     },
-    borderSlip(item, index, name) {
+    borderSlip(item, index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
       const liWidth = document.querySelectorAll('.tab-list li');
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
-      this.go(name);
+      this.go(item.toNamename, item.orgId);
+      // if name == 虚线
     },
   },
   watch: {
