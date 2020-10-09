@@ -108,6 +108,14 @@ export default {
           menuTitle: '部门OKR',
           toName: 'departmentOkr',
         },
+        {
+          menuTitle: '虚拟部门OKR',
+          toName: '',
+        },
+        {
+          menuTitle: '历史部门OKR',
+          toName: '',
+        },
       ],
       writeokrExist: false,
       writeInfo: {},

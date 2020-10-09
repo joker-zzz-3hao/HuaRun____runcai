@@ -31,6 +31,7 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
+                  :disabled="true"
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
@@ -100,10 +101,14 @@
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
                 <!-- 此处点击后就永远消失 -->
-                <div class="icon-bg" @click="projectInputFocus(scope.row)">
+                <div
+                  class="icon-bg"
+                  @click="projectInputFocus(scope.row)"
+                  v-if="!scope.row.projectNameCn"
+                >
                   <i class="el-icon-plus"></i>
                 </div>
-                <div class="tag-group">
+                <div class="tag-group" v-else>
                   <ul class="tag-lists">
                     <li class="only-one">
                       <el-tooltip
@@ -112,8 +117,8 @@
                         placement="top"
                         popper-class="tl-tooltip-popper"
                       >
-                        <em slot="content">华润云项目撒大法地方阿斯顿发上</em>
-                        <em>华润云项目撒大法地方阿斯顿发上</em>
+                        <em slot="content">{{ scope.row.projectNameCn }}</em>
+                        <em>{{ scope.row.projectNameCn }}</em>
                       </el-tooltip>
                     </li>
                   </ul>
