@@ -155,6 +155,7 @@ export default {
       canWrite: true, // true写okr false changeokr
       periodList: [],
       temPeriod: '',
+      selectPeriod: '',
     };
   },
   computed: {
@@ -179,7 +180,8 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
-    showOkrDialog() {
+    showOkrDialog(periodId = '') {
+      this.selectPeriod = periodId;
       this.init();
       this.setCreateokrDrawer(true);
       this.setokrSuccess(false);
@@ -217,7 +219,7 @@ export default {
           if (this.temPeriod) {
             this.searchForm.periodId = this.temPeriod;
           } else {
-            this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+            this.searchForm.periodId = this.selectPeriod || this.searchForm.okrCycle.periodId;
           }
         }
       });

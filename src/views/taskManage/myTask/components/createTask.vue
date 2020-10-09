@@ -277,9 +277,12 @@ export default {
       });
     },
     getProcess() {
-      this.server.queryProcess().then((res) => {
+      this.server.queryProcess({
+        currentPage: 1,
+        pageSize: 1000,
+      }).then((res) => {
         if (res.code == 200) {
-          this.processList = res.data;
+          this.processList = res.data.content || [];
         }
       });
     },
