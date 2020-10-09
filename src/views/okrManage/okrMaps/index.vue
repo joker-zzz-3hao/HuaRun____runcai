@@ -46,7 +46,8 @@
           @takeOvierview="takeOvierview"
           :keyword="keyword"
           :searchType="searchType"
-          :searchData="searchData">
+          :searchData="searchData"
+        >
         </tl-search-table>
       </div>
       <tl-mission ref="mission"></tl-mission>
@@ -55,13 +56,24 @@
       <div class="operating-area-inside">
         <div class="operating-box">
           <el-input
-            placeholder="请输入关键词"
+            placeholder="请输入OKR内容、部门、用户"
             v-model="keyword"
             @keyup.enter.native="search"
             class="tl-input"
           >
-            <i slot="prefix" class="el-input__icon el-icon-search" @click="search"></i>
+            <i
+              slot="prefix"
+              class="el-input__icon el-icon-search"
+              @click="search"
+            ></i>
           </el-input>
+          <el-button
+            :disabled="!hasPower('okr-maps-query')"
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="search"
+            >搜索</el-button
+          >
           <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>周期</dt>
             <dd>
@@ -89,7 +101,12 @@
                 ref="cascader"
                 :options="departmentData"
                 :show-all-levels="false"
-                :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'children',
+                }"
                 @change="selectIdChange"
                 popper-class="tl-cascader-popper"
                 class="tl-cascader"
@@ -114,7 +131,7 @@
             plain
             icon="el-icon-arrow-right"
             class="tl-btn amt-border-slip"
-            @click="showMission(3,'公司价值观宣导')"
+            @click="showMission(3, '公司价值观宣导')"
           >
             <em>公司价值观宣导</em>
             <span class="lines"></span>
@@ -123,7 +140,7 @@
             plain
             icon="el-icon-arrow-right"
             class="tl-btn amt-border-slip"
-            @click="showMission(1,'华润使命·愿景')"
+            @click="showMission(1, '华润使命·愿景')"
           >
             <em>公司使命愿景</em>
             <span class="lines"></span>
@@ -132,7 +149,7 @@
             plain
             icon="el-icon-arrow-right"
             class="tl-btn amt-border-slip"
-            @click="showMission(2,'华润发展战略')"
+            @click="showMission(2, '华润发展战略')"
           >
             <em>公司战略</em>
             <span class="lines"></span>
@@ -284,18 +301,20 @@ export default {
       });
     },
     search() {
-      const self = this;
-      self.showDepartmentSelect = false;
-      self.server.search({
-        keyWord: self.keyword,
-        currentPage: 1,
-        pageSize: 10,
-        type: self.searchType,
-      }).then((res) => {
-        if (res.code == '200') {
-          self.searchData = res.data.content;
-        }
-      });
+      if (this.hasPower('okr-maps-query')) {
+        const self = this;
+        self.showDepartmentSelect = false;
+        self.server.search({
+          keyWord: self.keyword,
+          currentPage: 1,
+          pageSize: 10,
+          type: self.searchType,
+        }).then((res) => {
+          if (res.code == '200') {
+            self.searchData = res.data.content;
+          }
+        });
+      }
     },
     selectIdChange(data) {
       this.showCascader = false;

@@ -18,7 +18,10 @@
     </div>
     <div class="cont-area" v-show="weeklyTypeList.length > 0">
       <!-- 日期 -->
-      <tl-calendar @setCalendarId="setCalendarId" @getWeeklyById="getWeeklyById"></tl-calendar>
+      <tl-calendar
+        @setCalendarId="setCalendarId"
+        @getWeeklyById="getWeeklyById"
+      ></tl-calendar>
       <div class="weekly-area" v-if="newPage">
         <!-- 标准版 -->
         <standard-Weekly
@@ -32,6 +35,7 @@
           :cultureList="cultureList"
           :canEdit="canEdit"
           @refreshMyOkr="refreshMyOkr"
+          :timeDisabled="timeDisabled"
           v-if="weeklyType == '1'"
         ></standard-Weekly>
         <!-- 简单版 -->
@@ -83,6 +87,7 @@ export default {
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
+      timeDisabled: false,
     };
   },
   created() {
@@ -156,7 +161,17 @@ export default {
         this.myOkrList = [...tempResult];
       }
     },
+    newEdit(item) {
+      const now = new Date().getTime();
+      const weekBegin = new Date(item.weekBegin).getTime();
+      const weekEnd = new Date(item.weekEnd).getTime();
+      if (weekBegin < now && now < weekEnd) {
+        return true;
+      }
+      return false;
+    },
     getWeeklyById(item) {
+      this.timeDisabled = this.newEdit(item);
       this.canEdit = item.canEdit;
       this.weeklyTypeList = [];
       // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改

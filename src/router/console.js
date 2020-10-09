@@ -194,6 +194,72 @@ export default [{
     },
     component: () => import('@/views/assessManage/assessPk/index'),
   },
+  {
+    // 复盘
+    path: '/replayLeader',
+    name: 'replayLeader',
+    redirect: {
+      name: 'userList',
+    },
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'replayLeader',
+      title: 'replayLeader',
+      power: '',
+    },
+    component: () => import('@/views/replay/replayLeader/index'),
+    children: [{
+      path: '/replayEdit',
+      name: 'replayEdit',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'replayEdit',
+        title: 'replayEdit',
+        power: '',
+      },
+      component: () => import('@/views/replay/replayLeader/component/replayEdit'),
+    },
+    {
+      path: '/replayDetail',
+      name: 'replayDetail',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'replayDetail',
+        title: 'replayDetail',
+        power: '',
+      },
+      component: () => import('@/views/replay/replayLeader/component/replayDetail'),
+    },
+    {
+      path: '/userList',
+      name: 'userList',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'userList',
+        title: 'userList',
+        power: '',
+      },
+      component: () => import('@/views/replay/replayLeader/component/userList'),
+    },
+    ],
+  },
+  {
+    // 复盘
+    path: '/replayPerson',
+    name: 'replayPerson',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'replayPerson',
+      title: 'replayPerson',
+      power: '',
+    },
+    component: () => import('@/views/replay/replayPerson/index'),
+  },
   // {
   //   // 项目管理
   //   path: '/projectManage',

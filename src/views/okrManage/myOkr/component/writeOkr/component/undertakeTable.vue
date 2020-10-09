@@ -1,6 +1,11 @@
 <template>
   <el-scrollbar>
     <div class="cont-box">
+      <!-- tab 点击调接口查 -->
+      <!-- <tl-tabs
+        :current.sync="currentIndex"
+        :tabMenuList="tabMenuList"
+      ></tl-tabs> -->
       <dl
         class="dl-list"
         v-for="pItem in parentUndertake"
@@ -102,10 +107,15 @@
 </template>
 
 <script>
+import tabs from '@/components/tabs';
 import { mapState } from 'vuex';
 
 export default {
   name: 'undertakeTable',
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    'tl-tabs': tabs,
+  },
   props: {
     departokrList: {
       type: Array,
@@ -146,6 +156,13 @@ export default {
       modelPhil: '', // 中转prop
       parentUndertake: [],
       philosophyList: [],
+      currentIndex: 0,
+      tabMenuList: [{
+        menuName: '实体组织',
+      },
+      {
+        menuName: '虚拟汇报',
+      }],
     };
   },
   created() {
@@ -288,6 +305,11 @@ export default {
         this.modelPhil = newVal;
       },
       immediate: true,
+    },
+    currentIndex: {
+      handler() {
+        this.getUndertakeOkr();
+      },
     },
   },
 };
