@@ -10,7 +10,7 @@
     :before-close="close"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">{{drawerTitle}}</div>
+      <div class="drawer-title">{{ drawerTitle }}</div>
       <div v-if="showFocus" @click="addFocus">关注</div>
       <div v-else>已关注</div>
     </div>
@@ -18,28 +18,28 @@
       <div class="cont-box">
         <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
           <template slot="tab-cont">
-            <div v-if="currentIndex===0 && showSupport" class="tab-cont">
+            <div v-if="currentIndex === 0 && showSupport" class="tab-cont">
               <div class="dl-list">
                 <dl>
                   <dt>
                     <i class="el-icon-s-flag"></i>
                     <em>OKR类型</em>
                   </dt>
-                  <dd>{{CONST.OKR_TYPE_MAP[okrmain.okrBelongType]}}</dd>
+                  <dd>{{ CONST.OKR_TYPE_MAP[okrmain.okrBelongType] }}</dd>
                 </dl>
                 <dl>
                   <dt>
                     <i class="el-icon-s-custom"></i>
                     <em>负责人</em>
                   </dt>
-                  <dd>{{okrmain.userName}}</dd>
+                  <dd>{{ okrmain.userName }}</dd>
                 </dl>
                 <dl>
                   <dt>
                     <i class="el-icon-timer"></i>
                     <em>更新时间</em>
                   </dt>
-                  <dd>{{okrmain.updateTime || okrmain.createTime}}</dd>
+                  <dd>{{ okrmain.updateTime || okrmain.createTime }}</dd>
                 </dl>
                 <dl>
                   <dt>
@@ -60,7 +60,12 @@
                     content="历史版本"
                     placement="top"
                     popper-class="tl-tooltip-popper"
-                    @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                    @click.native="
+                      openHistory(
+                        props.okritem.okrDetailId,
+                        props.okritem.okrDetailObjectKr
+                      )
+                    "
                   >
                     <i class="el-icon-time"></i>
                   </el-tooltip>
@@ -73,7 +78,12 @@
                     content="历史版本"
                     placement="top"
                     popper-class="tl-tooltip-popper"
-                    @click.native="openHistory(props.okritem.okrDetailId,props.okritem.okrDetailObjectKr)"
+                    @click.native="
+                      openHistory(
+                        props.okritem.okrDetailId,
+                        props.okritem.okrDetailObjectKr
+                      )
+                    "
                   >
                     <i class="el-icon-time"></i>
                   </el-tooltip>
@@ -84,31 +94,43 @@
               <dl class="timeline-list">
                 <dt>
                   <div class="list-info">
-                    <div class="list-title">{{cycleFirst.createTime}}</div>
+                    <div class="list-title">{{ cycleFirst.createTime }}</div>
                     <div class="list-cont">
                       <div
                         class="operate-type"
                         :class="{
-                        'is-create':cycleFirst.operateType == 'add',
-                        'is-modify':cycleFirst.operateType == 'modify',
-                        'is-update':cycleFirst.operateType == 'update',
+                          'is-create': cycleFirst.operateType == 'add',
+                          'is-modify': cycleFirst.operateType == 'modify',
+                          'is-update': cycleFirst.operateType == 'update',
                         }"
                       >
-                        <em>{{userName}}</em>
-                        <span v-if="cycleFirst.operateType == 'add'">创建了OKR</span>
-                        <span v-else>{{cycleFirst.operateTypeCn}}</span>
-                        <em v-if="cycleFirst.operateType == 'add'">{{periodName}}</em>
+                        <em>{{ userName }}</em>
+                        <span v-if="cycleFirst.operateType == 'add'"
+                          >创建了OKR</span
+                        >
+                        <span v-else>{{ cycleFirst.operateTypeCn }}</span>
+                        <em v-if="cycleFirst.operateType == 'add'">{{
+                          periodName
+                        }}</em>
                       </div>
                       <!-- 更新进度操作记录 -->
-                      <ul v-if="cycleFirst.operateType == 'update'" class="operate-kind">
-                        <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                      <ul
+                        v-if="cycleFirst.operateType == 'update'"
+                        class="operate-kind"
+                      >
+                        <li
+                          v-for="uitem in cycleFirst.okrDetailId"
+                          :key="uitem.id"
+                        >
                           <div>
-                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em>{{uitem.okrDetailObjectKr}}</em>
+                            <span>{{
+                              CONST.OKR_KIND_MAP[uitem.type || 0]
+                            }}</span>
+                            <em>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterProgress">
                             <span>进度更新为</span>
-                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <em>{{ uitem.updateContents.afterProgress }}</em>
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.afterConfidence">
@@ -116,100 +138,149 @@
                             <div class="state-grid">
                               <div
                                 :class="{
-                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
-                                'is-risks': uitem.updateContents.afterConfidence == 2,
-                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                  'is-no-risk':
+                                    uitem.updateContents.afterConfidence == 1,
+                                  'is-risks':
+                                    uitem.updateContents.afterConfidence == 2,
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                               <div
                                 :class="{
-                                'is-risks': uitem.updateContents.afterConfidence == 2,
-                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                  'is-risks':
+                                    uitem.updateContents.afterConfidence == 2,
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                               <div
-                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                :class="{
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                             </div>
-                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                            <em>{{
+                              CONST.CONFIDENCE_MAP[
+                                uitem.updateContents.afterConfidence
+                              ]
+                            }}</em>
                           </div>
                         </li>
                       </ul>
                       <!-- 变更操作记录 -->
-                      <ul v-else-if="cycleFirst.operateType == 'modify'" class="operate-kind">
-                        <li v-for="uitem in cycleFirst.okrDetailId" :key="uitem.id">
+                      <ul
+                        v-else-if="cycleFirst.operateType == 'modify'"
+                        class="operate-kind"
+                      >
+                        <li
+                          v-for="uitem in cycleFirst.okrDetailId"
+                          :key="uitem.id"
+                        >
                           <!-- o或kr名称 -->
                           <div>
                             <span
-                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
-                            >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em
-                              v-if="uitem.updateContents.beforeName"
-                            >{{uitem.updateContents.beforeName}}</em>
-                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
+                              v-if="
+                                JSON.stringify(uitem.updateContents) == '{}'
+                              "
+                              >新增{{
+                                CONST.OKR_KIND_MAP[uitem.type || 0]
+                              }}</span
+                            >
+                            <span v-else>{{
+                              CONST.OKR_KIND_MAP[uitem.type || 0]
+                            }}</span>
+                            <em v-if="uitem.updateContents.beforeName">{{
+                              uitem.updateContents.beforeName
+                            }}</em>
+                            <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
                             <span>名称变更为</span>
-                            <em>{{uitem.updateContents.afterName}}</em>
+                            <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
-                            <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <em>{{ uitem.updateContents.beforeWeight }}</em>
                             <span>%</span>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterWeight}}</em>
+                            <em>{{ uitem.updateContents.afterWeight }}</em>
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.beforeCheckQuota">
                             <span>考核指标由</span>
-                            <em>{{uitem.updateContents.beforeCheckQuota}}</em>
+                            <em>{{ uitem.updateContents.beforeCheckQuota }}</em>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterCheckQuota}}</em>
+                            <em>{{ uitem.updateContents.afterCheckQuota }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeJudgeMethod">
                             <span>衡量办法由</span>
-                            <em>{{uitem.updateContents.beforeJudgeMethod}}</em>
+                            <em>{{
+                              uitem.updateContents.beforeJudgeMethod
+                            }}</em>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterJudgeMethod}}</em>
+                            <em>{{ uitem.updateContents.afterJudgeMethod }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeUndertakeName">
                             <span>关联父目标由</span>
-                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.beforeUndertakeName
+                            }}</em>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.afterUndertakeName
+                            }}</em>
                           </div>
-                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                          <div
+                            v-else-if="uitem.updateContents.afterUndertakeName"
+                          >
                             <span>关联父目标</span>
-                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.afterUndertakeName
+                            }}</em>
                           </div>
                         </li>
                       </ul>
                       <div class="operate-reason" v-if="cycleFirst.remark">
                         <span>说明：</span>
-                        <em>{{cycleFirst.remark}}</em>
+                        <em>{{ cycleFirst.remark }}</em>
                       </div>
                     </div>
                   </div>
                 </dt>
                 <dd v-for="activity in cycleList" :key="activity.id">
                   <div class="list-info">
-                    <div class="list-title">{{activity.createTime}}</div>
+                    <div class="list-title">{{ activity.createTime }}</div>
                     <div class="list-cont">
                       <div class="operate-type">
-                        <em>{{userName}}</em>
-                        <span v-if="activity.operateType == 'add'">创建了OKR</span>
-                        <span v-else>{{activity.operateTypeCn}}</span>
-                        <em v-if="activity.operateType == 'add'">{{periodName}}</em>
+                        <em>{{ userName }}</em>
+                        <span v-if="activity.operateType == 'add'"
+                          >创建了OKR</span
+                        >
+                        <span v-else>{{ activity.operateTypeCn }}</span>
+                        <em v-if="activity.operateType == 'add'">{{
+                          periodName
+                        }}</em>
                       </div>
                       <!-- 更新进度操作记录 -->
-                      <ul v-if="activity.operateType == 'update'" class="operate-kind">
-                        <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                      <ul
+                        v-if="activity.operateType == 'update'"
+                        class="operate-kind"
+                      >
+                        <li
+                          v-for="uitem in activity.okrDetailId"
+                          :key="uitem.id"
+                        >
                           <div>
-                            <span>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em>{{uitem.okrDetailObjectKr}}</em>
+                            <span>{{
+                              CONST.OKR_KIND_MAP[uitem.type || 0]
+                            }}</span>
+                            <em>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterProgress">
                             <span>进度更新为</span>
-                            <em>{{uitem.updateContents.afterProgress}}</em>
+                            <em>{{ uitem.updateContents.afterProgress }}</em>
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.afterConfidence">
@@ -217,64 +288,99 @@
                             <div class="state-grid">
                               <div
                                 :class="{
-                                'is-no-risk': uitem.updateContents.afterConfidence == 1,
-                                'is-risks': uitem.updateContents.afterConfidence == 2,
-                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                  'is-no-risk':
+                                    uitem.updateContents.afterConfidence == 1,
+                                  'is-risks':
+                                    uitem.updateContents.afterConfidence == 2,
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                               <div
                                 :class="{
-                                'is-risks': uitem.updateContents.afterConfidence == 2,
-                                'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                  'is-risks':
+                                    uitem.updateContents.afterConfidence == 2,
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                               <div
-                                :class="{'is-uncontrollable': uitem.updateContents.afterConfidence == 3}"
+                                :class="{
+                                  'is-uncontrollable':
+                                    uitem.updateContents.afterConfidence == 3,
+                                }"
                               ></div>
                             </div>
-                            <em>{{CONST.CONFIDENCE_MAP[uitem.updateContents.afterConfidence]}}</em>
+                            <em>{{
+                              CONST.CONFIDENCE_MAP[
+                                uitem.updateContents.afterConfidence
+                              ]
+                            }}</em>
                           </div>
                         </li>
                       </ul>
 
                       <!-- 变更操作记录 -->
-                      <ul v-else-if="activity.operateType == 'modify'" class="operate-kind">
-                        <li v-for="uitem in activity.okrDetailId" :key="uitem.id">
+                      <ul
+                        v-else-if="activity.operateType == 'modify'"
+                        class="operate-kind"
+                      >
+                        <li
+                          v-for="uitem in activity.okrDetailId"
+                          :key="uitem.id"
+                        >
                           <div>
                             <span
-                              v-if="JSON.stringify(uitem.updateContents)=='{}'"
-                            >新增{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <span v-else>{{CONST.OKR_KIND_MAP[uitem.type || 0]}}</span>
-                            <em
-                              v-if="uitem.updateContents.beforeName"
-                            >{{uitem.updateContents.beforeName}}</em>
-                            <em v-else>{{uitem.okrDetailObjectKr}}</em>
+                              v-if="
+                                JSON.stringify(uitem.updateContents) == '{}'
+                              "
+                              >新增{{
+                                CONST.OKR_KIND_MAP[uitem.type || 0]
+                              }}</span
+                            >
+                            <span v-else>{{
+                              CONST.OKR_KIND_MAP[uitem.type || 0]
+                            }}</span>
+                            <em v-if="uitem.updateContents.beforeName">{{
+                              uitem.updateContents.beforeName
+                            }}</em>
+                            <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
                             <span>名称变更为</span>
-                            <em>{{uitem.updateContents.afterName}}</em>
+                            <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
                             <span>权重由</span>
-                            <em>{{uitem.updateContents.beforeWeight}}</em>
+                            <em>{{ uitem.updateContents.beforeWeight }}</em>
                             <span>%</span>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterWeight}}</em>
+                            <em>{{ uitem.updateContents.afterWeight }}</em>
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.beforeUndertakeName">
                             <span>关联父目标由</span>
-                            <em>{{uitem.updateContents.beforeUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.beforeUndertakeName
+                            }}</em>
                             <span>变更为</span>
-                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.afterUndertakeName
+                            }}</em>
                           </div>
-                          <div v-else-if="uitem.updateContents.afterUndertakeName">
+                          <div
+                            v-else-if="uitem.updateContents.afterUndertakeName"
+                          >
                             <span>关联父目标</span>
-                            <em>{{uitem.updateContents.afterUndertakeName}}</em>
+                            <em>{{
+                              uitem.updateContents.afterUndertakeName
+                            }}</em>
                           </div>
                         </li>
                       </ul>
                       <div class="operate-reason" v-if="activity.remark">
                         <span>说明：</span>
-                        <em>{{activity.remark}}</em>
+                        <em>{{ activity.remark }}</em>
                       </div>
                     </div>
                   </div>
@@ -297,32 +403,32 @@
         <dd v-else>取消</dd>
       </dl>
       <template v-if="showMore">
-        <dl v-for="(item,index) in cutVoteList" :key="item.userId+index">
+        <dl v-for="(item, index) in cutVoteList" :key="item.userId + index">
           <dt class="user-info">
             <div class="user-name">
-              <em>{{cutName(item.userName)}}</em>
+              <em>{{ cutName(item.userName) }}</em>
             </div>
           </dt>
-          <dd>{{item.userName}}</dd>
+          <dd>{{ item.userName }}</dd>
         </dl>
         <dl v-if="voteLength > 10 && showMore" class="show-more">
           <dt class="user-info">
             <div class="user-name">
-              <em @click="showMore=!showMore">{{voteLength}}+</em>
+              <em @click="showMore = !showMore">{{ voteLength }}+</em>
             </div>
           </dt>
           <dd>更多</dd>
         </dl>
       </template>
       <template v-else>
-        <dl v-for="(item,index) in voteUser" :key="item.userId+index">
+        <dl v-for="(item, index) in voteUser" :key="item.userId + index">
           <dt class="user-info">
             <div class="user-name">
-              <em>{{cutName(item.userName)}}</em>
+              <em>{{ cutName(item.userName) }}</em>
             </div>
             <!-- <img src="@/assets/images/user/user3.jpg" alt /> -->
           </dt>
-          <dd>{{item.userName}}</dd>
+          <dd>{{ item.userName }}</dd>
         </dl>
         <dl>
           <dt class="user-info">
@@ -335,7 +441,10 @@
         <dl class="is-fold">
           <dt class="user-info">
             <div class="user-name">
-              <em @click="showMore=!showMore" class="el-icon-d-arrow-left"></em>
+              <em
+                @click="showMore = !showMore"
+                class="el-icon-d-arrow-left"
+              ></em>
             </div>
           </dt>
           <dd>收起</dd>
@@ -409,7 +518,7 @@ export default {
     },
     okrId: {
       type: String,
-      defualt: '',
+      default: '',
     },
     CONST: {
       type: Object,
@@ -430,7 +539,7 @@ export default {
     },
     drawerTitle: {
       type: String,
-      defualt: 'OKR详情',
+      default: 'OKR详情',
     },
   },
   computed: {
