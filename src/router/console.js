@@ -194,19 +194,19 @@ export default [{
     },
     component: () => import('@/views/assessManage/assessPk/index'),
   },
-  {
-    // 项目管理
-    path: '/projectManage',
-    name: 'projectManage',
-    meta: {
-      hasMainMenu: true,
-      noSubMenu: true,
-      parentRoute: 'projectManage',
-      title: 'projectManage',
-      power: '',
-    },
-    component: () => import('@/views/projectManage/index'),
-  },
+  // {
+  //   // 项目管理
+  //   path: '/projectManage',
+  //   name: 'projectManage',
+  //   meta: {
+  //     hasMainMenu: true,
+  //     noSubMenu: true,
+  //     parentRoute: 'projectManage',
+  //     title: 'projectManage',
+  //     power: '',
+  //   },
+  //   component: () => import('@/views/projectManage/index'),
+  // },
   {
     // 周报管理
     // 我的周报

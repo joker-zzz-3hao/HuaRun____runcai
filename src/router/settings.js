@@ -122,5 +122,17 @@ export default [{
     },
     component: () => import('@/views/projectManage/projectDetail/index'),
   },
+  {
+    path: '/mainHours',
+    name: 'mainHours',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'mainHours',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/index'),
+  },
   ],
 }];
