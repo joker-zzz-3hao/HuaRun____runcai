@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年09月04日 10:26:49
-  备注：
--->
 <template>
   <div v-loading="pageLoading">
     <div v-if="openOrClose == 'OPEN'">
