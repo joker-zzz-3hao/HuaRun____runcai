@@ -16,36 +16,36 @@
       <div class="cont-box">
         <dl class="dl-list">
           <dt class="list-title">
-            <em>{{okrmain.orgName}}{{okrmain.periodName}}</em>
+            <em>{{ okrmain.orgName }}{{ okrmain.periodName }}</em>
           </dt>
           <dd
-            v-for="(item) in historyOKRList"
+            v-for="item in historyOKRList"
             :key="item.okrDetailId"
             class="tag-kind"
-            :class="{'has-reason': item.remark}"
+            :class="{ 'has-reason': item.remark }"
           >
             <span v-if="item.okrDetailType == 0" class="kind-parent">目标</span>
             <span v-else class="kind-child">KR</span>
-            <em>{{item.versionName}}</em>
+            <em>{{ item.versionName }}</em>
             <div>
-              <p>{{item.objectName}}</p>
+              <p>{{ item.objectName }}</p>
               <p v-if="item.okrWeight">
                 <span>分权重</span>
-                <em>{{item.okrWeight}}%</em>
+                <em>{{ item.okrWeight }}%</em>
               </p>
               <p v-if="item.okrDetailType == 0">
                 <span>关联父目标</span>
-                <em>{{item.okrDetailParentObjectKr}}</em>
+                <em>{{ item.okrDetailParentObjectKr }}</em>
               </p>
               <p v-if="item.okrDetailType == 1">
                 <span>考核指标</span>
-                <em>{{item.checkQuota}}</em>
+                <em>{{ item.checkQuota }}</em>
               </p>
               <p v-if="item.okrDetailType == 1">
                 <span>衡量办法</span>
-                <em>{{item.judgeMethod}}</em>
+                <em>{{ item.judgeMethod }}</em>
               </p>
-              <p v-if="item.remark">变更原因：{{item.remark}}</p>
+              <p v-if="item.remark">变更原因：{{ item.remark }}</p>
             </div>
           </dd>
         </dl>
@@ -66,15 +66,15 @@ export default {
     },
     okrId: {
       type: String,
-      defualt: '',
+      default: '',
     },
     okrDetailId: {
       type: String,
-      defualt: '',
+      default: '',
     },
     okrmain: {
       type: Object,
-      defualt() {
+      default() {
         return {};
       },
     },

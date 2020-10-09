@@ -265,7 +265,7 @@ export default {
     },
     drawerTitle: {
       type: String,
-      defualt: 'OKR变更',
+      default: 'OKR变更',
     },
   },
   computed: {
