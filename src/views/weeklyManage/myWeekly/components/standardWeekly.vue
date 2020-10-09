@@ -32,12 +32,13 @@
                 <el-input
                   v-model.trim="scope.row.workContent"
                   maxlength="100"
+                  v-if="timeDisabled"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <!-- <em>balbalabala</em> -->
+                <em v-else>{{ scope.row.workContent }}</em>
               </el-form-item>
             </template>
           </el-table-column>
@@ -47,12 +48,13 @@
                 <el-input
                   type="textarea"
                   :rows="3"
+                  v-if="timeDisabled"
                   placeholder="请描述具体工作内容"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <!-- <em class="font-normal">balbalabala</em> -->
+                <em v-else class="font-normal">{{ scope.row.workDesc }}</em>
               </el-form-item>
             </template>
           </el-table-column>
@@ -117,20 +119,28 @@
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
                 <!-- 此处点击后就永远消失 -->
-                <div class="icon-bg" @click="projectInputFocus(scope.row)">
+                <div
+                  class="icon-bg"
+                  @click="projectInputFocus(scope.row)"
+                  v-if="!scope.row.projectNameCn"
+                >
                   <i class="el-icon-plus"></i>
                 </div>
                 <div class="tag-group">
                   <ul class="tag-lists">
-                    <li class="only-one">
+                    <li
+                      class="only-one"
+                      v-if="scope.row.projectNameCn"
+                      @click="projectInputFocus(scope.row)"
+                    >
                       <el-tooltip
                         class="select-values"
                         effect="dark"
                         placement="top"
                         popper-class="tl-tooltip-popper"
                       >
-                        <em slot="content">华润云项目撒大法地方阿斯顿发上</em>
-                        <em>华润云项目撒大法地方阿斯顿发上</em>
+                        <em slot="content">{{ scope.row.projectNameCn }}</em>
+                        <em>{{ scope.row.projectNameCn }}</em>
                       </el-tooltip>
                     </li>
                   </ul>
@@ -424,6 +434,7 @@
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
+                    :disabled="true"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
@@ -525,38 +536,42 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd class="undertake-okr-list is-o">
+      <dd
+        class="undertake-okr-list is-o"
+        v-for="item in weeklyOkrSaveList"
+        :key="item.o.okrdetailId"
+      >
         <div class="tag-kind">
           <!-- 这里根据判断显示 O 还是 KR  可共用DOM结构 -->
-          <template v-if="true">
+          <template v-if="item.kr">
             <span class="kind-parent">目标</span>
-            <em>这里放O的标题名称</em>
+            <em>{{ item.o.okrDetailObjectKr }}</em>
           </template>
           <template v-if="false">
             <span class="kind-child">KR</span>
-            <em>这里放KR的标题名称</em>
+            <em> {{ item.kr.okrDetailObjectKr }}</em>
           </template>
           <span
-            >被<em>{{ 工作项2 }}</em
+            >被<em>{{ itemIndex(item.kr) }}</em
             >支撑</span
           >
         </div>
         <div class="tl-progress-group">
           <span>当前进度</span>
           <tl-process
-            :data="parseInt(formData.okrDetailProgress, 10)"
+            :data="parseInt(item.progressAfter, 10)"
             :showNumber="false"
             :width="64"
             :marginLeft="6"
           ></tl-process>
           <el-slider
-            v-model="formData.okrDetailProgress"
+            v-model="item.progressAfter"
             :step="1"
-            @change="changeProgress(formData)"
+            @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
           <el-input-number
-            v-model="formData.okrDetailProgress"
+            v-model="item.progressAfter"
             controls-position="right"
             :min="0"
             :max="100"
@@ -566,7 +581,12 @@
           ></el-input-number>
           <span>%</span>
         </div>
-        <div class="week-change"><span>本周变化</span><em>具体数值</em></div>
+        <div class="week-change">
+          <span>本周变化</span
+          ><em>
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+          >
+        </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
           <h1></h1>
           <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
@@ -781,6 +801,12 @@ export default {
       type: Boolean,
       default() {
         return true;
+      },
+    },
+    timeDisabled: {
+      type: Boolean,
+      default() {
+        return false;
       },
     },
   },
@@ -1289,6 +1315,7 @@ export default {
           }
         }
         this.weeklyOkrSaveList = result;
+        console.log(this.weeklyOkrSaveList);
         if (this.weeklyOkrSaveList.length > 0) {
           this.$nextTick(() => {
             this.showTaskProcess = true;
