@@ -58,20 +58,20 @@
           <el-input
             placeholder="请输入关键词"
             v-model="keyword"
-            @keyup.enter.native="hasPower('okr-maps-query') && search"
+            @keyup.enter.native="search"
             class="tl-input"
           >
             <i
               slot="prefix"
               class="el-input__icon el-icon-search"
-              @click="hasPower('okr-maps-query') && search"
+              @click="search"
             ></i>
           </el-input>
           <el-button
             :disabled="!hasPower('okr-maps-query')"
             type="primary"
             class="tl-btn amt-bg-slip"
-            @click="hasPower('okr-maps-query') && search"
+            @click="search"
             >搜索</el-button
           >
           <dl class="dl-item" v-if="showDepartmentSelect">
@@ -301,18 +301,20 @@ export default {
       });
     },
     search() {
-      const self = this;
-      self.showDepartmentSelect = false;
-      self.server.search({
-        keyWord: self.keyword,
-        currentPage: 1,
-        pageSize: 10,
-        type: self.searchType,
-      }).then((res) => {
-        if (res.code == '200') {
-          self.searchData = res.data.content;
-        }
-      });
+      if (this.hasPower('okr-maps-query')) {
+        const self = this;
+        self.showDepartmentSelect = false;
+        self.server.search({
+          keyWord: self.keyword,
+          currentPage: 1,
+          pageSize: 10,
+          type: self.searchType,
+        }).then((res) => {
+          if (res.code == '200') {
+            self.searchData = res.data.content;
+          }
+        });
+      }
     },
     selectIdChange(data) {
       this.showCascader = false;

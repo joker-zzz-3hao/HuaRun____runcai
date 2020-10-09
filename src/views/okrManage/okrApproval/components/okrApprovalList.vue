@@ -200,6 +200,13 @@
                 <i class="el-icon-search" slot="prefix" @click="searchList"></i>
               </el-input>
             </el-form-item>
+            <el-button
+              :disabled="!hasPower('okr-approval-list')"
+              type="primary"
+              class="tl-btn amt-bg-slip"
+              @click="searchList"
+              >搜索</el-button
+            >
           </el-form>
           <el-button
             type="primary"
