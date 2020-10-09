@@ -192,6 +192,9 @@ export default {
         new Date(this.formData.taskEndDate),
       );
       // this.formData.taskEndDate = '';
+      if (this.formData.typeId == '') {
+        delete this.formData.typeId;
+      }
       this.server.createTask(this.formData).then((res) => {
         if (res.code == 200) {
           console.log('');

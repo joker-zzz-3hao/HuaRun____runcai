@@ -1,5 +1,5 @@
 <template>
-  <div class="write-weekly">
+  <div class="write-weekly standard-version">
     <div class="weekly-cont">
       <el-form
         :rules="formData.rules"
@@ -52,7 +52,7 @@
                   class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <!-- <em>balbalabala</em> -->
+                <!-- <em class="font-normal">balbalabala</em> -->
               </el-form-item>
             </template>
           </el-table-column>
@@ -71,7 +71,11 @@
                 class="tl-input-number"
               ></el-input-number>
               <!-- 编辑完提交后展示 -->
-              <!-- <em>balbalabala</em> -->
+              <!-- <tl-process
+                :data="node.okrDetailProgress"
+                :width="36"
+                :marginLeft="6"
+              ></tl-process> -->
             </template>
           </el-table-column>
           <el-table-column
@@ -125,7 +129,7 @@
                         placement="top"
                         popper-class="tl-tooltip-popper"
                       >
-                        <em slot="content"> 华润云项目撒大法地方阿斯顿发上 </em>
+                        <em slot="content">华润云项目撒大法地方阿斯顿发上</em>
                         <em>华润云项目撒大法地方阿斯顿发上</em>
                       </el-tooltip>
                     </li>
@@ -216,9 +220,29 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" width="50">
+          <el-table-column fixed="right" width="40">
             <template slot-scope="scope">
-              <el-dropdown
+              <el-tooltip
+                class="icon-clear"
+                :class="{
+                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
+                }"
+                effect="dark"
+                :content="
+                  formData.weeklyWorkVoSaveList.length > 1
+                    ? '删除'
+                    : '至少有一条工作项'
+                "
+                placement="top"
+                popper-class="tl-tooltip-popper"
+                @click.native="
+                  formData.weeklyWorkVoSaveList.length > 1 &&
+                    deleteItem(scope.row)
+                "
+              >
+                <i class="el-icon-minus"></i>
+              </el-tooltip>
+              <!-- <el-dropdown
                 @command="deleteItem(scope.row)"
                 v-if="formData.weeklyWorkVoSaveList.length > 1"
               >
@@ -228,33 +252,105 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>删除</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </template>
           </el-table-column>
         </el-table>
+        <div class="btn-box">
+          <el-button
+            type="text"
+            @click="addItem"
+            class="tl-btn dotted-line list-add"
+          >
+            <i class="el-icon-plus"></i>添加
+          </el-button>
+        </div>
       </el-form>
-      <el-button
-        type="text"
-        @click="addItem"
-        class="tl-btn dotted-line list-add"
-      >
-        <i class="el-icon-plus"></i>添加
-      </el-button>
     </div>
     <!-- 本周感想、建议、收获 -->
+    <dl class="dl-card-panel weekly-thoughts">
+      <dt class="card-title"><em>本周感想、建议、收获</em></dt>
+      <dd v-for="item in formData.weeklyThoughtSaveList" :key="item.randomId">
+        <div class="tag-group">
+          <div
+            class="tag-kinds"
+            @click="thoughtTypeChange(item, 0)"
+            :class="{ 'is-thoughts': item.thoughtType == 0 }"
+          >
+            <span>感想</span>
+          </div>
+          <div
+            class="tag-kinds"
+            @click="thoughtTypeChange(item, 1)"
+            :class="{ 'is-suggest': item.thoughtType == 1 }"
+          >
+            <span>建议</span>
+          </div>
+          <div
+            class="tag-kinds"
+            @click="thoughtTypeChange(item, 2)"
+            :class="{ 'is-harvest': item.thoughtType == 2 }"
+          >
+            <span>收获</span>
+          </div>
+        </div>
+        <el-input
+          v-model.trim="item.thoughtContent"
+          type="textarea"
+          maxlength="100"
+          :rows="2"
+          resize="none"
+          placeholder="请简单说一下你的感想，不超过100个字"
+          class="tl-textarea"
+        ></el-input>
+        <el-tooltip
+          class="icon-clear"
+          :class="{
+            'is-disabled': formData.weeklyThoughtSaveList.length == 1,
+          }"
+          effect="dark"
+          :content="
+            formData.weeklyThoughtSaveList.length > 1
+              ? '删除'
+              : '至少有一条感想或者建议或者收获'
+          "
+          placement="top"
+          popper-class="tl-tooltip-popper"
+          @click.native="
+            formData.weeklyThoughtSaveList.length > 1 &&
+              deleteThoughts(item.randomId)
+          "
+        >
+          <i class="el-icon-minus"></i>
+        </el-tooltip>
+      </dd>
+      <dd>
+        <div class="btn-box">
+          <el-button
+            type="text"
+            @click="addThisWeekWork"
+            class="tl-btn dotted-line list-add"
+          >
+            <i class="el-icon-plus"></i>添加
+          </el-button>
+        </div>
+      </dd>
+    </dl>
     <div>
-      <h1>本周感想、建议、收获</h1>
+      <!-- <h1>本周感想、建议、收获</h1>
       <i
         v-show="!weeklyData.weeklyId && !thoughtOpen"
         @click="openThought"
         class="el-icon-plus"
-      ></i>
+        ></i
+      >
       <i
         v-show="!weeklyData.weeklyId && thoughtOpen"
         @click="closeThought"
         class="el-icon-minus"
-      ></i>
-      <el-form :model="formData" v-show="weeklyData.weeklyId || thoughtOpen">
+        ></i
+      > -->
+      <!-- <el-form :model="formData" v-show="weeklyData.weeklyId || thoughtOpen">
         <el-table :data="formData.weeklyThoughtSaveList">
           <el-table-column>
             <template slot-scope="scope">
@@ -277,7 +373,6 @@
                   >
                   <el-input
                     v-model.trim="scope.row.thoughtContent"
-                    style="width: 60%"
                     type="textarea"
                     maxlength="100"
                     placeholder="请简单说一下你的感想，不超过100个字"
@@ -304,10 +399,85 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-form>
+      </el-form> -->
     </div>
     <!-- 下周计划 -->
-    <div>
+    <dl class="dl-card-panel week-plan">
+      <dt class="card-title"><em>下周计划</em></dt>
+      <dd>
+        <el-form
+          :model="formData"
+          v-show="weeklyData.weeklyId || planOpen"
+          class="tl-form"
+        >
+          <el-table
+            v-loading="tableLoading"
+            :data="formData.weeklyPlanSaveList"
+            class="tl-table"
+          >
+            <el-table-column
+              label="序号"
+              type="index"
+              width="55"
+            ></el-table-column>
+            <el-table-column label="工作项" min-width="420">
+              <template slot-scope="scope">
+                <el-form-item>
+                  <el-input
+                    v-model.trim="scope.row.planContent"
+                    maxlength="100"
+                    clearable
+                    placeholder="请用一句话概括某项工作，不超过100个字符"
+                    class="tl-input"
+                  ></el-input>
+                  <!-- 编辑完之后 -->
+                  <!-- <em>balabalabalab</em> -->
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column prop="code" width="40">
+              <template slot-scope="scope">
+                <el-tooltip
+                  class="icon-clear"
+                  :class="{
+                    'is-disabled': formData.length == 1,
+                  }"
+                  effect="dark"
+                  :content="formData.length > 1 ? '删除' : '至少有一条工作项'"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                  @click.native="
+                    formData.length > 1 && deletePlanItem(scope.row)
+                  "
+                >
+                  <i class="el-icon-minus"></i>
+                </el-tooltip>
+                <!-- <el-dropdown @command="deletePlanItem(scope.row)">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>删除</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown> -->
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
+      </dd>
+      <dd>
+        <div class="btn-box">
+          <el-button
+            type="text"
+            @click="addPlanItem"
+            class="tl-btn dotted-line list-add"
+          >
+            <i class="el-icon-plus"></i>添加
+          </el-button>
+        </div>
+      </dd>
+    </dl>
+    <!-- <div>
       <h1>下周计划</h1>
       <i
         v-show="!weeklyData.weeklyId && !planOpen"
@@ -349,96 +519,155 @@
         </el-table>
         <el-button @click="addPlanItem" style>添加</el-button>
       </el-form>
-    </div>
+    </div> -->
     <!-- 个人OKR完成度 -->
     <!-- <div style="margintop: 50px" v-if="weeklyOkrSaveList.length > 0"> -->
-    <div style="margintop: 50px" v-if="showTaskProcess">
-      <h1>个人OKR完成度</h1>
-      <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
-        <div v-if="item.kr">
-          <div>
-            <span>目标</span>
-            <span style="marginleft: 15px">{{ item.o.okrDetailObjectKr }}</span>
-          </div>
-          <div>
-            <span>KR</span>
-            <span style="marginleft: 15px">
-              {{ item.kr.okrDetailObjectKr }}
-            </span>
-            <span style="marginleft: 15px"
-              >被工作项{{ itemIndex(item.kr) }}支撑</span
-            >
-            <span style="marginleft: 15px">
-              信心指数
-              <el-button
-                :class="{ 'no-risk': item.confidenceAfter == 1 }"
-              ></el-button>
-              <el-button
-                :class="{ 'risk-is-controlled': item.confidenceAfter == 2 }"
-              ></el-button>
-              <el-button
-                :class="{
-                  'risk-cannot-be-controlled': item.confidenceAfter == 3,
-                }"
-              ></el-button>
-              <el-select v-model="item.confidenceAfter" placeholder="请选择">
-                <el-option
-                  v-for="item in riskList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </span>
-            <span style="marginleft: 15px">
-              当前进度
-              <el-slider
-                v-model="item.progressAfter"
-                @change="processChange(item)"
-                :step="1"
-                show-input
-                style="width: 20%"
-              ></el-slider>
-            </span>
-            <span style="marginleft: 15px">
-              本周变化
-              <span v-show="item.progressAfter != item.progressBefor">
-                {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}
-              </span>
-              <span>{{ item.progressAfter - item.progressBefor }}%</span>
-            </span>
-          </div>
+    <dl class="dl-card-panel okr-completion">
+      <dt class="card-title"><em>个人OKR完成度</em></dt>
+      <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
+      <dd class="undertake-okr-list is-o">
+        <div class="tag-kind">
+          <!-- 这里根据判断显示 O 还是 KR  可共用DOM结构 -->
+          <template v-if="true">
+            <span class="kind-parent">目标</span>
+            <em>这里放O的标题名称</em>
+          </template>
+          <template v-if="false">
+            <span class="kind-child">KR</span>
+            <em>这里放KR的标题名称</em>
+          </template>
+          <span
+            >被<em>{{ 工作项2 }}</em
+            >支撑</span
+          >
         </div>
-        <div v-else>
-          <div>
-            目标
-            <span style="marginleft: 15px">{{ item.o.okrDetailObjectKr }}</span>
-            <span style="marginleft: 15px"
-              >被工作项{{ itemIndex(item.o) }}支撑</span
-            >
-            <span style="marginleft: 15px">
-              当前进度
-              <el-slider
-                v-model="item.progressAfter"
-                @change="processChange(item)"
-                :step="1"
-                show-input
-                style="width: 20%"
-              ></el-slider>
-            </span>
-            <span style="marginleft: 15px">
-              本周变化
-              <span v-show="item.progressAfter != item.progressBefor">
-                {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}
-              </span>
-              <span>{{ item.progressAfter - item.progressBefor }}%</span>
-            </span>
-          </div>
+        <div class="tl-progress-group">
+          <span>当前进度</span>
+          <tl-process
+            :data="parseInt(formData.okrDetailProgress, 10)"
+            :showNumber="false"
+            :width="64"
+            :marginLeft="6"
+          ></tl-process>
+          <el-slider
+            v-model="formData.okrDetailProgress"
+            :step="1"
+            @change="changeProgress(formData)"
+            tooltip-class="slider-tooltip"
+          ></el-slider>
+          <el-input-number
+            v-model="formData.okrDetailProgress"
+            controls-position="right"
+            :min="0"
+            :max="100"
+            :step="1"
+            :precision="0"
+            class="tl-input-number"
+          ></el-input-number>
+          <span>%</span>
         </div>
-      </div>
-    </div>
+        <div class="week-change"><span>本周变化</span><em>具体数值</em></div>
+        <!-- <div style="margintop: 50px" v-if="showTaskProcess">
+          <h1></h1>
+          <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
+            <div v-if="item.kr">
+              <div>
+                <span>目标</span>
+                <span style="marginleft: 15px">{{
+                  item.o.okrDetailObjectKr
+                }}</span>
+              </div>
+              <div>
+                <span>KR</span>
+                <span style="marginleft: 15px">
+                  {{ item.kr.okrDetailObjectKr }}
+                </span>
+                <span style="marginleft: 15px"
+                  >被工作项{{ itemIndex(item.kr) }}支撑</span
+                >
+                <span style="marginleft: 15px">
+                  信心指数
+                  <el-button
+                    :class="{ 'no-risk': item.confidenceAfter == 1 }"
+                  ></el-button>
+                  <el-button
+                    :class="{ 'risk-is-controlled': item.confidenceAfter == 2 }"
+                  ></el-button>
+                  <el-button
+                    :class="{
+                      'risk-cannot-be-controlled': item.confidenceAfter == 3,
+                    }"
+                  ></el-button>
+                  <el-select
+                    v-model="item.confidenceAfter"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="item in riskList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </span>
+                <span style="marginleft: 15px">
+                  当前进度
+                  <el-slider
+                    v-model="item.progressAfter"
+                    @change="processChange(item)"
+                    :step="1"
+                    show-input
+                    style="width: 20%"
+                  ></el-slider>
+                </span>
+                <span style="marginleft: 15px">
+                  本周变化
+                  <span v-show="item.progressAfter != item.progressBefor">
+                    {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}
+                  </span>
+                  <span>{{ item.progressAfter - item.progressBefor }}%</span>
+                </span>
+              </div>
+            </div>
+            <div v-else>
+              <div>
+                目标
+                <span style="marginleft: 15px">{{
+                  item.o.okrDetailObjectKr
+                }}</span>
+                <span style="marginleft: 15px"
+                  >被工作项{{ itemIndex(item.o) }}支撑</span
+                >
+                <span style="marginleft: 15px">
+                  当前进度
+                  <el-slider
+                    v-model="item.progressAfter"
+                    @change="processChange(item)"
+                    :step="1"
+                    show-input
+                    style="width: 20%"
+                  ></el-slider>
+                </span>
+                <span style="marginleft: 15px">
+                  本周变化
+                  <span v-show="item.progressAfter != item.progressBefor">
+                    {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}
+                  </span>
+                  <span>{{ item.progressAfter - item.progressBefor }}%</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </dd>
+    </dl>
+
     <!-- 本周心情 -->
-    <div style="margintop: 50px">
+    <dl class="dl-card-panel">
+      <dt class="card-title"><em>本周心情</em></dt>
+      <dd></dd>
+    </dl>
+    <!-- <div style="margintop: 50px">
       <span>
         请选择本周心情
         <el-button @click="setEmotion(100)">有收获</el-button>
@@ -448,13 +677,18 @@
         <el-button @click="setEmotion(0)">让我静静</el-button>
         <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
       </span>
+    </div> -->
+    <div class="btn-box">
+      <el-button type="primary" @click="commitWeekly" class="tl-btn amt-bg-slip"
+        >提交</el-button
+      >
     </div>
-    <el-button
+    <!-- <el-button
       style="margintop: 65px"
       :disabled="!canEdit"
       @click="commitWeekly"
       >提交</el-button
-    >
+    > -->
     <!-- 添加支撑项 -->
     <add-okr
       ref="addOkr"
@@ -1067,33 +1301,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.btn-selected {
-  background: rgb(2, 2, 2);
-}
-.okr-selected {
-  background: rgb(204, 198, 198);
-  margin-left: 2px;
-}
-.is-thoughts {
-  background: rgb(123, 243, 197);
-}
-.is-suggest {
-  background: rgb(228, 241, 151);
-}
-.is-harvest {
-  background: rgb(95, 138, 218);
-}
-.text-color-red {
-  color: brown;
-}
-.no-risk {
-  background: green;
-}
-.risk-is-controlled {
-  background: yellow;
-}
-.risk-cannot-be-controlled {
-  background: red;
-}
-</style>

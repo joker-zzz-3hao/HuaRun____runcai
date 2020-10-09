@@ -81,8 +81,11 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <h1>任务过程使用范围设置</h1>
-          <p v-for="step in processObj.stepNameList" :key="step">{{step}}</p>
+          <h1>任务过程设置</h1>
+          <p v-for="(step,index) in formData.stepList" :key="step.stepId">
+            <span>步骤{{index+1}}</span>
+            <span>{{step.stepName}}</span>
+          </p>
         </el-form-item>
       </el-form>
     </div>
@@ -136,7 +139,7 @@ export default {
         orgId: '',
         processName: '',
         userIdList: [],
-        stepNameList: [],
+        stepList: [],
       },
       userList: [],
       selectUserList: [],
@@ -154,17 +157,17 @@ export default {
     init() {
       this.formData.userIdList = [];
       // this.formData = this.processObj;
-      this.formData.available = this.processObj.available;
-      this.formData.indexNumber = this.processObj.indexNumber;
-
-      this.formData.processType = this.processObj.processType;
-      this.formData.orgId = this.processObj.orgId;
-      this.formData.processName = this.processObj.processName;
-      this.formData.stepNameList = this.processObj.stepNameList;
-      this.formData.processId = this.processObj.processId;
-      this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
+      this.server.queryProcessInfo(this.processObj.processId).then((res) => {
         if (res.code == 200) {
-          res.data.forEach((user) => {
+          this.formData.available = res.data.available;
+          this.formData.indexNumber = res.data.indexNumber;
+
+          this.formData.processType = res.data.processType;
+          this.formData.orgId = res.data.orgId;
+          this.formData.processName = res.data.processName;
+          this.formData.processId = res.data.processId;
+          this.formData.stepList = res.data.stepList;
+          res.data.userList.forEach((user) => {
             if (user.userId) {
               this.formData.userIdList.push(user.userId);
             }
@@ -204,11 +207,11 @@ export default {
       //   orgId: '',
       //   processName: '',
       //   userIdList: [],
-      //   stepNameList: [],
+      //   stepList: [],
       // },
 
-      // this.stepNameList.forEach((step) => {
-      //   this.formData.stepNameList.push(step.name);
+      // this.stepList.forEach((step) => {
+      //   this.formData.stepList.push(step.name);
       // });
       this.server.updateProcess(this.formData).then((res) => {
         if (res.code == 200) {

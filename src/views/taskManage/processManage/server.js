@@ -21,9 +21,9 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/system-service/sys/user/listUserPage', param);
   }
 
-  // 查询任务过程适用人群
+  // // 查询任务过程适用人群
   queryProcessInfo(param) {
-    return this._ajaxPost('gateway/task-service/query', param);
+    return this._ajaxPost(`gateway/task-service/task/taskProcess/get?processId=${param}`, param);
   }
 
   // ********************************************************************************************

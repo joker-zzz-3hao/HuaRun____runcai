@@ -2132,7 +2132,16 @@
 
 .tl-cascader .el-input__inner {
   border-radius: 2px;
+}
+
+.tl-cascader.el-cascader:not(.is-disabled):hover .el-input__inner,
+.tl-cascader.el-cascader .el-input .el-input__inner:focus,
+.tl-cascader.el-cascader .el-input.is-focus .el-input__inner  {
   border-color: #685df1;
+}
+
+.tl-cascader .el-input__icon {
+  line-height: unset;
 }
 
 /* tl-dropdown */

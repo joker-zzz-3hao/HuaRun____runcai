@@ -1,15 +1,8 @@
 <template>
-  <div class="tenant-management">
-    <div class="page-title">团队周报</div>
+  <div class="teams-weekly">
     <div class="operating-area">
-      <div>
-        <tl-calendar
-          @setCalendarId="setCalendarId"
-          @getWeeklyById="refreshPageList"
-          :isFromTeam="true"
-        ></tl-calendar>
-      </div>
-      <div>
+      <div class="page-title">团队周报</div>
+      <div class="operating-box">
         <el-cascader
           v-model="orgIdList"
           ref="cascader"
@@ -22,6 +15,8 @@
             children: 'sonTree',
           }"
           @change="selectIdChange"
+          popper-class="tl-cascader-popper"
+          class="tl-cascader"
         ></el-cascader>
         <el-select
           v-model="formData.queryType"
@@ -29,6 +24,9 @@
           placeholder="周报速看"
           clearable
           @clear="clear"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select el-icon-view"
         >
           <el-option
             v-for="item in lookItemList"
@@ -42,34 +40,42 @@
         2、当组织切换时不显示该按钮
         3、不是部门负责人不显示该按钮
           -->
+
         <el-button
+          plain
+          class="tl-btn btn-lineheight"
+          icon="el-icon-phone"
           v-show="showRemindBtn"
           @click="remindWriteWeekly"
-          icon="el-icon-phone"
           >提醒写周报</el-button
         >
       </div>
-      <div class="operating-panel">
-        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item>
-            <el-select
-              v-model="submitedOrLooked"
-              @change="submitedOrLookedChange"
-              placeholder="全部"
-              clearable
-              @clear="clearSubmitOrLooked"
-              :disabled="!!formData.queryType"
-            >
-              <el-option
-                v-for="item in submitedOrLookedList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <!-- <el-input
+    </div>
+    <div
+      class="cont-area"
+      v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId"
+    >
+      <tl-calendar
+        @setCalendarId="setCalendarId"
+        @getWeeklyById="refreshPageList"
+        :isFromTeam="true"
+      ></tl-calendar>
+      <el-select
+        v-model="submitedOrLooked"
+        @change="submitedOrLookedChange"
+        placeholder="全部"
+        clearable
+        @clear="clearSubmitOrLooked"
+        :disabled="!!formData.queryType"
+      >
+        <el-option
+          v-for="item in submitedOrLookedList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+      <!-- <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
               v-model="formData.queryUserId"
@@ -78,48 +84,32 @@
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
               </el-input>-->
-            <el-select
-              v-model.trim="formData.queryUserId"
-              filterable
-              placeholder="请输入成员姓名"
-              remote
-              :remote-method="remoteMethod"
-              @visible-change="visibleChange"
-              @change="nameChange"
-              clearable
-            >
-              <el-option
-                v-for="item in userList"
-                :key="item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <span style="float: left">
-                  <el-avatar
-                    :size="30"
-                    :src="item.headUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="item.userName" class="user-name">
-                      <em>{{
-                        item.userName.substring(item.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar>
-                </span>
-                <span style="float: left; marginleft: 5px">{{
-                  item.userName
-                }}</span>
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>
-    <div
-      class="cont-area"
-      v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId"
-    >
+      <el-select
+        v-model.trim="formData.queryUserId"
+        filterable
+        placeholder="请输入成员姓名"
+        remote
+        :remote-method="remoteMethod"
+        @visible-change="visibleChange"
+        @change="nameChange"
+        clearable
+      >
+        <el-option
+          v-for="item in userList"
+          :key="item.userId"
+          :label="item.userName"
+          :value="item.userId"
+        >
+          <span style="float: left">
+            <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+              <div v-if="item.userName" class="user-name">
+                <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
+              </div>
+            </el-avatar>
+          </span>
+          <span style="float: left; marginleft: 5px">{{ item.userName }}</span>
+        </el-option>
+      </el-select>
       <crcloud-table
         :total="total"
         :currentPage.sync="formData.currentPage"

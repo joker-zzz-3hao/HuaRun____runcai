@@ -531,7 +531,8 @@
 .okr-approval .operating-area-inside .el-input .el-input__inner,
 .team-view .operating-area-inside .el-input .el-input__inner,
 .staff-view .operating-area-inside .el-input .el-input__inner,
-.department-view .operating-area-inside .el-input .el-input__inner {
+.department-view .operating-area-inside .el-input .el-input__inner,
+.teams-weekly .operating-area .el-input .el-input__inner {
   background: #f4f6f8;
 }
 
@@ -1109,7 +1110,8 @@
   margin: 3px 0 0 0;
 }
 
-.okr-maps .operating-area .el-input__inner {
+.okr-maps .operating-area .el-input__inner,
+.teams-weekly .operating-area .el-input__inner {
   border: transparent;
   color: #879099;
 }
@@ -1709,8 +1711,13 @@
 }
 
 /* 周报 */
+.my-weekly .operating-area {
+  height: 36px;
+}
+
 .my-weekly .cont-area,
-.okr-maps .maps-view-table {
+.okr-maps .maps-view-table,
+.teams-weekly .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -1828,8 +1835,8 @@
 }
 
 .weekly-cont .tl-table .el-table__body .cell {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .weekly-cont .tl-table .el-table__body .cell .el-form-item {
@@ -1865,11 +1872,11 @@
   cursor: pointer;
 }
 
-.weekly-cont .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
-.weekly-cont .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.weekly-cont .el-table__body tr.hover-row.current-row>td,
-.weekly-cont .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.weekly-cont .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+.write-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.write-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.write-weekly .el-table__body tr.hover-row.current-row>td,
+.write-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.write-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
   background: unset;
 }
 
@@ -1962,7 +1969,221 @@
 }
 
 .weekly-cont .tl-table .el-table__body-wrapper .cell {
-  min-height: 96px;
+  min-height: 80px;
+}
+
+.standard-version .weekly-cont .tl-table .el-table__body-wrapper .cell {
+  min-height: 95px;
+}
+
+.write-weekly .btn-box {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.write-weekly .weekly-thoughts .btn-box {
+  margin: 10px 0 0 0;
+}
+
+.write-weekly .tl-btn.el-button--text i {
+  margin: 0 10px 0 0;
+}
+
+.write-weekly .tl-btn.el-button--text {
+  color: #879099;
+  font-weight: normal;
+  transition: all .4s ease-out;
+}
+
+.write-weekly .tl-btn.el-button--text:hover {
+  color: #685df1;
+}
+
+.weekly-area .card-title {
+  font-weight: 500;
+  color: #222426;
+}
+
+.weekly-thoughts dd:not(:last-child) {
+  margin: 20px 0;
+}
+
+.weekly-thoughts .tag-group {
+  align-self: start;
+}
+
+.weekly-thoughts .tag-kinds {
+  margin: 0 20px 0 0;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  width: 60px;
+  height: 40px;
+  border: 1px solid #e5e9ee;
+  border-radius: 2px;
+  color: #879099;
+  cursor: pointer;
+}
+
+.weekly-thoughts .is-thoughts {
+  background: rgba(76,205,121,0.10);
+  color: #4ccd79;
+  border-color: rgba(76,205,121,0.10);
+}
+
+.weekly-thoughts .is-suggest {
+  background: rgba(255,188,32,0.10);
+  color: #ffbc20;
+  border-color: rgba(255,188,32,0.10);
+}
+
+.weekly-thoughts .is-harvest {
+  background: rgba(77,132,255,0.10);
+  color: #4d84ff;
+  border-color: rgba(77,132,255,0.10);
+}
+
+.weekly-thoughts dd > i {
+  margin: 0 0 0 20px;
+  flex: 0 0 20px;
+}
+
+.write-weekly .el-form-item__content > em {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.write-weekly .el-form-item__content > em.font-normal {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.write-weekly .tl-table .el-table__body .el-table__row td:last-child .cell {
+  padding-right: 0;
+  justify-content: flex-end;
+}
+
+.week-plan .el-table__body .el-table__row td:nth-child(2) .cell {
+  padding: 0;
+}
+
+.week-plan .el-table__body .el-table__row td:nth-child(2) .el-form-item {
+  width: 100%;
+}
+
+.week-plan .tl-input,
+.week-plan .el-form-item,
+.week-plan .el-form-item__content > em {
+  margin: 0;
+}
+
+.week-plan .tl-table td {
+  height: 60px;
+}
+
+.write-weekly .week-plan .btn-box {
+  margin: 30px 0 0 0;
+}
+
+.okr-completion .tl-progress-group > span:first-child {
+  width: 140px;
+  color: #acb6bf;
+}
+
+.okr-completion .okr-kind {
+  flex: 1;
+}
+
+.undertake-okr-list > div:last-child {
+  margin: 0 0 0 20px;
+}
+
+.okr-completion .week-change span {
+  margin: 0 10px 0 0;
+  color: #acb6bf;
+}
+
+.undertake-okr-list .tag-kind {
+  margin: 0 20px 0 0;
+}
+
+.undertake-okr-list .tag-kind span:nth-of-type(2) {
+  margin: 0 0 0 20px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 2px 2px 15px 2px;
+  font-size: 12px;
+  background: #e4e7fe;
+  color: #685df1;
+}
+
+.undertake-okr-list .tag-kind span:nth-of-type(2) em {
+  margin: 0 6px;
+  color: #685df1;
+}
+
+.undertake-okr-list {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #e5e9ee;
+}
+
+.undertake-okr-list.is-o::before,
+.undertake-okr-list.is-kr::before {
+  margin: 0 20px 0 0;
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(76, 205, 121, 0.16);
+  border: 2px solid #4ccd79;
+}
+
+.undertake-okr-list.is-kr::before {
+  background: rgba(104, 93, 241, 0.16);
+  border: 2px solid #685df1;
+}
+
+/* 团队周报 */
+.teams-weekly .operating-area .el-cascader {
+  line-height: unset;
+}
+
+.teams-weekly .operating-area .operating-box >div:not(:first-child) {
+  margin: 0 0 0 20px;
+}
+
+.teams-weekly .operating-area .el-select .el-input__inner {
+  padding: 0 0 0 30px;
+}
+
+.teams-weekly .operating-area .el-select:before {
+  position: absolute;
+  left: 8px;
+  top: 11px;
+  content: '\e6ce';
+  width: 20px;
+  height: 20px;
+  z-index: 5;
+  color: #fff;
+}
+
+.teams-weekly .operating-area .el-select .el-input .el-input__inner {
+  background: #685df1;
+}
+
+.teams-weekly .operating-area .el-select .el-input__inner,
+.teams-weekly .operating-area .el-select .el-input .el-select__caret {
+  color: #fff;
+}
+
+.teams-weekly .operating-area .el-select .el-input .el-input__inner::-webkit-input-placeholder{
+  color:#fff !important;
 }
 
 /* 创建任务--by xinquan */ 

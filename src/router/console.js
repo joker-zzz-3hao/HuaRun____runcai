@@ -392,5 +392,20 @@ export default [{
     },
     component: () => import('@/views/taskManage/processManage/index'),
   },
+  {
+    // 任务管理
+    // 归档任务
+    path: '/filedTaskList',
+    name: 'filedTaskList',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'myTask',
+      title: '归档任务',
+      power: '',
+    },
+    component: () => import('@/views/taskManage/taskProcess/components/filedTaskList'),
+
+  },
   ],
 }];

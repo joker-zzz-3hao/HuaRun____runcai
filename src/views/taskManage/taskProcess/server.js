@@ -75,4 +75,19 @@ export default class Server extends ServerBase {
   deleteTask(param) {
     return this._ajaxPost(`gateway/task-service/task/delete?taskId=${param.taskId}`, param);
   }
+
+  // 移动任务步骤
+  move(param) {
+    return this._ajaxPost('gateway/task-service/task/move', param);
+  }
+
+  // 任务换人
+  changeUser(param) {
+    return this._ajaxPost('gateway/task-service/task/changeUser', param);
+  }
+
+  // 查询任务归档接口
+  queryFiledList(param) {
+    return this._ajaxPost('gateway/task-service/task/selectTaskForFiled', param);
+  }
 }
