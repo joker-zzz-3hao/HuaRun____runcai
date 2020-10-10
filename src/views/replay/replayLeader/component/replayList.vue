@@ -1,0 +1,196 @@
+<template>
+  <div class="organize-management">
+    <div class="operating-area">
+      <div class="operating-box">
+        <div class="flex-auto">
+          <el-form class="tl-form" label-width="110px">
+            <el-form-item label="周期">
+              <el-select
+                v-model.trim="periodId"
+                placeholder="用户类型"
+                :popper-append-to-body="false"
+                clearable
+                @change="okrReviewList"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  :label="item.periodName"
+                  :value="item.periodId"
+                  v-for="(item, index) in periodIdList"
+                  :key="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="复盘状态">
+              <el-select
+                v-model.trim="reviewStatus"
+                placeholder="用户状态"
+                :popper-append-to-body="false"
+                @change="okrReviewList"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  :label="item.name"
+                  :value="item.status"
+                  v-for="(item, index) in CONST.REVIEW_STATUS_LIST"
+                  :key="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </div>
+    <div class="cont-area">
+      <tl-crcloud-table
+        :total="totalpage"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="okrReviewList"
+      >
+        <div slot="tableContainer">
+          <el-table :data="tableData" class="tl-table">
+            <el-table-column
+              prop="userName"
+              label="姓名"
+              min-width="165"
+            ></el-table-column>
+            <el-table-column
+              prop="periodName"
+              label="OKR周期"
+              min-width="170"
+            ></el-table-column>
+            <el-table-column prop="okrProgress" label="OKR进度" min-width="120">
+              <template slot-scope="scope">
+                <span>{{ scope.row.okrProgress + "%" }}</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              prop="reviewStatus"
+              label="复盘状态"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span>{{ CONST.REVIEW_STATUS[scope.row.reviewStatus] }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="reviewCommitTime"
+              label="提交复盘时间"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.reviewCommitTime">{{
+                  scope.row.reviewCommitTime
+                }}</span>
+                <span v-else>--</span>
+              </template></el-table-column
+            >
+            <el-table-column
+              prop="reviewCommunicateTime"
+              label="复盘沟通时间"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.reviewCommunicateTime">{{
+                  scope.row.reviewCommunicateTime
+                }}</span>
+                <span v-else>--</span>
+              </template></el-table-column
+            >
+
+            <el-table-column fixed="right" label="操作" width="140">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-if="scope.row.reviewStatus == 2"
+                  @click="
+                    $router.push({
+                      name: 'replayEdit',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
+                  "
+                  >复盘沟通</el-button
+                >
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  @click="
+                    $router.push({
+                      name: 'replayDetail',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
+                  "
+                  >查看</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </tl-crcloud-table>
+    </div>
+  </div>
+</template>
+
+<script>
+import crcloudTable from '@/components/crcloudTable';
+// eslint-disable-next-line import/extensions
+import Server from '../../server.js';
+import CONST from '../../const';
+
+const server = new Server();
+export default {
+  name: 'home',
+  data() {
+    return {
+      form: {},
+      server,
+      periodId: '',
+      periodIdList: [],
+      tableData: [],
+      CONST,
+      currentPage: 1,
+      pageSize: 20,
+      totalpage: 0,
+      reviewStatus: '',
+    };
+  },
+  created() {
+    this.getOkrCycleList();
+  },
+  methods: {
+    okrReviewList() {
+      this.server.okrReviewList({
+
+        periodId: this.periodId, // 周期id，必传
+        reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
+        userName: '', // 支持精确搜索
+        currentPage: this.currentPage, // 可以不传，默认是1
+        pageSize: this.pageSize, // 可以不传，默认是20
+
+      }).then((res) => {
+        this.tableData = res.data.content;
+        this.total = res.data.total;
+      });
+    },
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        this.periodIdList = res.data;
+        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        this.okrReviewList();
+      });
+    },
+  },
+  components: {
+    'tl-crcloud-table': crcloudTable,
+  },
+};
+</script>

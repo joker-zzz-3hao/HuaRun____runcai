@@ -16,43 +16,63 @@
       <div>
         <div>
           <span>团队名称</span>
-          <el-input v-model="formData.teamName" placeholder="请输入团队名称"></el-input>
+          <el-input
+            v-model="formData.teamName"
+            placeholder="请输入团队名称"
+          ></el-input>
         </div>
         <div>
           <div>
             <div>指定团队负责人</div>
             <div v-if="formData.chargeMember.userName">
-              <div>{{formData.chargeMember.userName}}</div>
+              <div>{{ formData.chargeMember.userName }}</div>
               <div>
                 <i class="el-icon-close" @click="deleteMember"></i>
               </div>
             </div>
             <div v-else>
-              <i class="el-icon-plus" @click="showSelectMember=!showSelectMember"></i>
+              <i
+                class="el-icon-plus"
+                @click="showSelectMember = !showSelectMember"
+              ></i>
             </div>
           </div>
           <div v-if="showSelectMember">
-            <tl-selectMember
+            <!-- <tl-selectMember
               :value="formData.chargeMember.userName"
               :teamMembers="teamMembers"
               @ok="getMember"
               @cancel="cancel"
-            ></tl-selectMember>
+            ></tl-selectMember> -->
+            <el-select v-model.trim="formData.userId" placeholder="请选择">
+              <el-option
+                v-for="(item, index) in teamMembers"
+                :key="index + item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+                <span>{{ item.userName }}</span>
+                <span>{{ item.value }}</span>
+              </el-option>
+            </el-select>
           </div>
         </div>
         <div>
           <div>
             <div>团队成员</div>
-            <div v-if="formData.chargeMembers.length>0">
+            <div v-if="formData.chargeMembers.length > 0">
               <div v-for="item in formData.chargeMembers" :key="item.userId">
-                <div>{{item.userName}}</div>
+                <div>{{ item.userName }}</div>
                 <div>
                   <i class="el-icon-close" @click="deleteMembers(item)"></i>
                 </div>
               </div>
             </div>
             <div v-else>
-              <i class="el-icon-plus" @click="showSelectMembers=!showSelectMembers"></i>
+              <i
+                class="el-icon-plus"
+                @click="showSelectMembers = !showSelectMembers"
+              ></i>
             </div>
           </div>
           <div v-if="showSelectMembers">
@@ -73,13 +93,13 @@
 </template>
 
 <script>
-import selectMember from '@/components/selectMember';
+// import selectMember from '@/components/selectMember';
 import selectMembers from '@/components/selectMembers';
 
 export default {
   name: 'editTeam',
   components: {
-    'tl-selectMember': selectMember,
+    // 'tl-selectMember': selectMember,
     'tl-selectMembers': selectMembers,
   },
   props: {
@@ -101,6 +121,7 @@ export default {
       showCreateTeam: false,
       data: {},
       formData: {
+        userId: '',
         teamName: '',
         chargeMember: '',
         chargeMembers: [],
@@ -119,7 +140,6 @@ export default {
     },
     getMember(data) {
       this.formData.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
-      console.log(this.formData.chargeMember);
       this.showSelectMember = false;
     },
     getMembers(data) {
@@ -154,7 +174,7 @@ export default {
         orgFullId: this.data.orgFullId,
         orgParentId: this.data.orgId,
         roleCode: 'ORG_ADMIN',
-        userId: this.formData.chargeMember.userId,
+        userId: this.formData.userId,
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
         if (res.code == '200') {

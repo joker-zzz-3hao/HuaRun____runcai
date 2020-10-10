@@ -128,11 +128,7 @@
                 </div>
                 <div class="tag-group">
                   <ul class="tag-lists">
-                    <li
-                      class="only-one"
-                      v-if="scope.row.projectNameCn"
-                      @click="projectInputFocus(scope.row)"
-                    >
+                    <li class="only-one" v-if="scope.row.projectNameCn">
                       <el-tooltip
                         class="select-values"
                         effect="dark"
@@ -142,7 +138,7 @@
                         <em slot="content">{{ scope.row.projectNameCn }}</em>
                         <em>{{ scope.row.projectNameCn }}</em>
                       </el-tooltip>
-                      <i class="el-icon-close"></i>
+                      <i class="el-icon-close" @click="projectDelete()"></i>
                     </li>
                   </ul>
                   <!-- 此处是自己写的注释 -->
@@ -1218,6 +1214,12 @@ export default {
       this.showProjectDialog = true;
       this.$nextTick(() => {
         this.$refs.selectProject.show();
+      });
+    },
+    projectDelete() {
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        work.projectId = '';
+        work.projectNameCn = '';
       });
     },
     closeProjectDia(data) {

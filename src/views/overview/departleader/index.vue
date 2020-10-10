@@ -8,7 +8,7 @@
           <div class="panner-title">
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
-            <div>
+            <div v-if="riskList.length > 6">
               <el-button @click="prevSwiper">左</el-button>
               <el-button @click="nextSwiper">右</el-button>
             </div>

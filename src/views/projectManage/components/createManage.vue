@@ -128,8 +128,8 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            format="yyyy-MM-DD"
-            value-format="yyyy-MM-DD"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             @change="changeDate"
           >
           </el-date-picker>
@@ -219,12 +219,9 @@ export default {
       this.visible = true;
     },
     getUserList() {
-      this.server.getUserList({
-        currentPage: 1,
-        pageSize: 9999999,
-      }).then((res) => {
+      this.server.projectUserList({}).then((res) => {
         if (res.code == '200') {
-          this.projectManagerList = res.data.content;
+          this.projectManagerList = res.data;
         }
       });
     },

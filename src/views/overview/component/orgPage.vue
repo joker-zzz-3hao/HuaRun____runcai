@@ -189,7 +189,8 @@ export default {
     },
     searchOkr() { // 默认搜索进行时
       this.showTable = false;
-      this.server.getmyOkr({
+      const ApiName = this.$route.name !== 'grassStaff' ? 'getOrgOkr' : 'getmyOkr';
+      this.server[ApiName]({
         periodId: this.periodId,
         status: this.searchForm.status,
         myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',

@@ -13,16 +13,16 @@ const USER_TYPE_LIST = [{
   label: '创建用户',
 }];
 const USER_STATUS_LIST = [{
-    key: '',
-    label: '全部',
-  }, {
-    key: '0',
-    label: '启用',
-  },
-  {
-    key: '50',
-    label: '禁用',
-  },
+  key: '',
+  label: '全部',
+}, {
+  key: '0',
+  label: '启用',
+},
+{
+  key: '50',
+  label: '禁用',
+},
 ];
 const USER_STATUS_MAP = {
   0: '启用',
@@ -34,16 +34,16 @@ const USER_TYPE_MAP = {
   2: '创建用户',
 };
 const IS_LEADER_LIST = [{
-    key: '',
-    label: '全部',
-  }, {
-    key: '0',
-    label: '是',
-  },
-  {
-    key: '1',
-    label: '否',
-  },
+  key: '',
+  label: '全部',
+}, {
+  key: '0',
+  label: '是',
+},
+{
+  key: '1',
+  label: '否',
+},
 ];
 export default {
   USER_TYPE_LIST,
