@@ -133,6 +133,7 @@
             multiple
             :limit="10"
             :file-list="formData.fileList"
+            :data="dataParams"
           >
             <el-button size="small" type="primary">添加附件</el-button>
             <div slot="tip" class="el-upload__tip">
@@ -215,6 +216,7 @@ export default {
       showProjectDialog: false,
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
+      dataParams: { validateCode: '', ...this.params },
     };
   },
   computed: {

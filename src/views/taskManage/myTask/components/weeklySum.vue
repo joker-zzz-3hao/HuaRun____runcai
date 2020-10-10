@@ -1,5 +1,12 @@
 <template>
   <div class="home">
+    <div>
+      <span>当前周报汇报时间：</span>
+      <em>{{ weekName }}</em>
+      <em>{{ weekBegin }}</em>
+      <span>~</span>
+      <em>{{ weekEnd }}</em>
+    </div>
     <!-- 我负责的 -->
     <el-table :data="owntableData" class="tl-table">
       <el-table-column
@@ -74,6 +81,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+      >当前周报汇总提交</el-button
+    >
   </div>
 </template>
 
@@ -100,10 +110,14 @@ export default {
       tableData: [],
       owntableData: [],
       assigntableData: [],
+      monthDate: this.dateFormat('YYYY-mm-dd', new Date()), // 初始化日期
+      weekBegin: '',
+      weekEnd: '',
+      weekName: '',
     };
   },
   created() {
-    this.getTableList();
+    this.getWeek();
   },
   computed: {
     ...mapState('common', {
@@ -111,10 +125,31 @@ export default {
     }),
   },
   methods: {
+    getWeek() {
+      this.server.getCalendar({ date: this.monthDate }).then((res) => {
+        if (res.code == 200) {
+          this.weekList = res.data;
+          const current = new Date();
+          this.weekList.forEach((item, index) => {
+            // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
+            let beg = new Date(item.weekBegin);
+            let end = new Date(item.weekEnd);
+            beg = beg.setHours(beg.getHours() - 8);
+            end = end.setHours(end.getHours() + 16);
+            if (current >= beg && current <= end) {
+              this.weekBegin = item.weekBegin;
+              this.weekEnd = item.weekEnd;
+              this.weekName = `${this.dateFormat('mm', new Date())}月第${index + 1}周`;
+              this.getTableList();
+            }
+          });
+        }
+      });
+    },
     getTableList() {
       const params = {
-        weekBegin: '2020-09-20',
-        weekEnd: '2020-09-28',
+        weekBegin: this.weekBegin,
+        weekEnd: this.weekEnd,
       };
       this.server.selectTaskForWeek(params).then((res) => {
         if (res.code == 200) {
@@ -129,6 +164,9 @@ export default {
           });
         }
       });
+    },
+    submit() {
+
     },
   },
 };

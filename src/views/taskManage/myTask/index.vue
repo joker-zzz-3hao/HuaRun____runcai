@@ -260,7 +260,12 @@
     </div>
     <div v-else class="weekly-sum">
       <tl-weeklysum></tl-weeklysum>
-      <el-button @click="showTask = true">返回</el-button>
+      <el-button
+        @click="showTask = true"
+        plain
+        class="tl-btn amt-border-fadeout"
+        >返回</el-button
+      >
     </div>
   </div>
 </template>

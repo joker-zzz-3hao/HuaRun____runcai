@@ -84,4 +84,9 @@ export default class Server extends ServerBase {
   selectTaskForWeek(param) {
     return this._ajaxPost('gateway/task-service/task/selectTaskForWeek', param);
   }
+
+  // 查询日历
+  getCalendar(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
 }
