@@ -88,6 +88,7 @@ export default {
       canEdit: false,
       weeklyTypeList: [],
       timeDisabled: false,
+      orgId: '',
     };
   },
   created() {
@@ -96,11 +97,12 @@ export default {
   methods: {
     init() {
       this.queryTeamOrPersonalTarget('my');
-      this.queryTeamOrPersonalTarget('org');
+      this.queryTeamOkr();
       this.getValues();
     },
     refreshMyOkr() {
       this.queryTeamOrPersonalTarget('my');
+      this.queryTeamOkr();
     },
     getValues() {
       this.server.getValues().then((res) => {
@@ -109,7 +111,30 @@ export default {
         }
       });
     },
-
+    queryTeamOkr() {
+      if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+        this.departmentName = this.userInfo.orgParentName;
+        this.orgId = this.userInfo.orgParentId;
+      } else {
+        this.departmentName = this.userInfo.orgName || '部门';
+        this.orgId = this.userInfo.orgId;
+      }
+      const params = {
+        myOrOrg: 'org',
+        status: '1',
+        orgId: this.orgId,
+      };
+      this.server.getorgOkr(params).then((res) => {
+        if (res.code == 200) {
+          // 团队目标
+          this.orgOkrList = [];
+          this.originalOrgOkrList = res.data.okrDetails;
+          if (this.originalOrgOkrList) {
+            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+          }
+        }
+      });
+    },
     queryTeamOrPersonalTarget(myOrOrg) {
       const params = {
         myOrOrg,
@@ -238,6 +263,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
 };
