@@ -64,6 +64,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
   }
 
+  // 查okr列表
+  getOrgOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
+  }
+
   getOkrCycleList(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/period', param);
   }

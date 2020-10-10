@@ -16,19 +16,27 @@
       <div>
         <div>
           <span>团队名称</span>
-          <el-input v-model="formData.orgName" placeholder="请输入团队名称"></el-input>
+          <el-input
+            v-model="formData.orgName"
+            placeholder="请输入团队名称"
+          ></el-input>
         </div>
         <div>
           <div>
             <div>指定团队负责人</div>
-            <div v-if="formData.chargeMember && formData.chargeMember.orgLeader">
-              <div>{{formData.chargeMember.orgLeader}}</div>
+            <div
+              v-if="formData.chargeMember && formData.chargeMember.orgLeader"
+            >
+              <div>{{ formData.chargeMember.orgLeader }}</div>
               <div>
                 <i class="el-icon-close" @click="deleteMember"></i>
               </div>
             </div>
             <div v-else>
-              <i class="el-icon-plus" @click="showSelectMember=!showSelectMember"></i>
+              <i
+                class="el-icon-plus"
+                @click="showSelectMember = !showSelectMember"
+              ></i>
             </div>
           </div>
           <div v-if="showSelectMember">
@@ -38,12 +46,16 @@
               @ok="getMember"
               @cancel="cancel"
             ></tl-selectMember> -->
-            <el-select v-model="value" placeholder="请选择">
+            <el-select
+              v-model="formData.chargeMember.userId"
+              placeholder="请选择"
+            >
               <el-option
-                v-for="(item,index) in teamMembers"
-                :key="index+item.userId"
+                v-for="(item, index) in teamMembers"
+                :key="index + item.userId"
                 :label="item.userName"
-                :value="item.userId">
+                :value="item.userId"
+              >
                 <span>{{ item.userName }}</span>
                 <span>{{ item.value }}</span>
               </el-option>
@@ -55,14 +67,17 @@
             <div>团队成员</div>
             <div>
               <div v-for="item in formData.chargeMembers" :key="item.userId">
-                <div>{{item.userName}}</div>
+                <div>{{ item.userName }}</div>
                 <div>
                   <i class="el-icon-close" @click="deleteMembers(item)"></i>
                 </div>
               </div>
             </div>
             <div>
-              <i class="el-icon-plus" @click="showSelectMembers=!showSelectMembers"></i>
+              <i
+                class="el-icon-plus"
+                @click="showSelectMembers = !showSelectMembers"
+              ></i>
             </div>
           </div>
           <div v-if="showSelectMembers">

@@ -8,8 +8,8 @@
     </div>
     <div>
       <el-radio-group v-model="form.resource">
-        <el-radio label="以关键结果KR复盘"></el-radio>
-        <el-radio label="以目标O复盘"></el-radio>
+        <el-radio label="kr">以关键结果KR复盘</el-radio>
+        <el-radio label="o">以目标O复盘</el-radio>
       </el-radio-group>
     </div>
     <div>
@@ -38,47 +38,52 @@
             考核指标
             完成物理机（连通性、资源使用情况等）、虚拟机（连通性）的监控机制。
           </div>
-          <div>衡量办法 功能上线通知</div>
-          <div>
-            <div>价值与收获</div>
+          <el-form ref="form" :model="form" :rules="rules">
+            <div>衡量办法 功能上线通知</div>
             <div>
-              <el-input
-                type="textarea"
-                placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
-              ></el-input>
+              <div>价值与收获</div>
+              <el-form-item>
+                <el-input
+                  maxlength="2000"
+                  type="textarea"
+                  placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
+                ></el-input>
+              </el-form-item>
             </div>
-          </div>
-          <div>
-            <div>问题与不足</div>
             <div>
-              <el-input
-                type="textarea"
-                placeholder="事情做的有那些不足，自己表现有哪些不足？"
-              ></el-input>
+              <div>问题与不足</div>
+
+              <el-form-item>
+                <el-input
+                  type="textarea"
+                  maxlength="1000"
+                  placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                ></el-input>
+              </el-form-item>
             </div>
-          </div>
-          <div>
-            <div>改进措施</div>
             <div>
+              <div>改进措施</div>
               <div>
-                <em>
-                  产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力。
-                </em>
-                <el-button type="text">删除</el-button>
+                <div v-for="(item, index) in produceList" :key="index">
+                  <em>
+                    {{ item.desc }}
+                  </em>
+                  <el-button type="text" @click="deleteProduce(index)"
+                    >删除</el-button
+                  >
+                </div>
+
+                <el-form-item>
+                  <el-input
+                    type="textarea"
+                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    v-model="deficiency"
+                  ></el-input>
+                </el-form-item>
+                <el-button type="text" @click="addproduceList">添加</el-button>
               </div>
-              <div>
-                <em>
-                  产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力。
-                </em>
-                <el-button type="text">删除</el-button>
-              </div>
-              <el-input
-                type="textarea"
-                placeholder="事情做的有那些不足，自己表现有哪些不足？"
-              ></el-input>
-              <el-button type="text">添加</el-button>
             </div>
-          </div>
+          </el-form>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -96,13 +101,39 @@ export default {
   name: 'home',
   data() {
     return {
-      form: {},
+      form: {
+        resource: 'kr',
+      },
       activeNames: ['1'],
+      produceList: [
+        {
+          desc: '产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力产品设计与研发按时按需交付，需继续努力。',
+        },
+      ],
+      deficiency: '',
+      rules: {
+
+      },
     };
   },
   methods: {
     handleChange(val) {
       console.log(val);
+    },
+    // 添加改进
+    addproduceList() {
+      if (!this.deficiency) {
+        this.$message.error('改进措施不能为空');
+        return false;
+      }
+      this.produceList.push({
+        desc: this.deficiency,
+      });
+      this.deficiency = '';
+    },
+    // 删除改进措施
+    deleteProduce(index) {
+      this.produceList.splice(index, 1);
     },
   },
 };
