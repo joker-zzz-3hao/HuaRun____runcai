@@ -36,7 +36,7 @@ export default {
       });
     } else {
       self.$router.push({
-        name: 'overview',
+        name: this.userInfo.defaultJump || 'overview',
       });
     }
   },
