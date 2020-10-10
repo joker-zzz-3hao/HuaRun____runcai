@@ -830,6 +830,12 @@ export default {
     tableProcessChange(item) {
       item.workProgress = Math.round(item.workProgress);
     },
+    projectDelete() {
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        work.projectId = '';
+        work.projectNameCn = '';
+      });
+    },
     projectInputFocus(work) {
       this.randomIdForProject = work.randomId;
       this.showProjectDialog = true;
