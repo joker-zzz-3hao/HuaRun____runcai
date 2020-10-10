@@ -12,7 +12,7 @@ const STATUS_LIST = [
   }, {
     name: '已完成', id: '3',
   }, {
-    name: '考核中', id: '2',
+    name: '复盘中', id: '2',
   }, {
     name: '已结束', id: '4',
   }, {
@@ -21,7 +21,7 @@ const STATUS_LIST = [
 const STATUS_LIST_MAP = {
   all: '全部',
   1: '进行中',
-  2: '考核中',
+  2: '复盘中',
   3: '已完成',
   4: '已结束',
   5: '未开始',

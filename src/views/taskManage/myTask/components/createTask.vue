@@ -124,7 +124,14 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="附件">
-          <el-upload
+          <file-upload
+            ref="fileUpload"
+            :fileList="formData.fileList"
+            :limit="5"
+            @change="fileChange"
+          ></file-upload>
+
+          <!-- <el-upload
             class="upload-demo"
             :action="action"
             :accept="acceptType"
@@ -139,7 +146,7 @@
             <div slot="tip" class="el-upload__tip">
               最多上传10个文件，单个文件不超过30M
             </div>
-          </el-upload>
+          </el-upload> -->
         </el-form-item>
       </el-form>
     </el-scrollbar>
@@ -166,6 +173,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import fileUpload from '@/components/fileUpload/index';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -235,6 +243,7 @@ export default {
   },
   components: {
     'tl-selectproject': selectProject,
+    'file-upload': fileUpload,
   },
   created() {
 
@@ -319,6 +328,10 @@ export default {
         );
         return false;
       }
+    },
+    fileChange(data) {
+      this.fileList = data.list;
+      console.log(this.fileList);
     },
     handlerData() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};

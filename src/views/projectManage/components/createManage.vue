@@ -4,6 +4,7 @@
       :append-to-body="true"
       :visible="visible"
       @closed="close"
+      @close="close"
       title="创建虚拟项目"
       :close-on-click-modal="false"
     >
@@ -46,15 +47,30 @@
         <el-form-item label="项目经理" prop="projectManager">
           <el-select
             v-model="formData.projectManager"
-            placeholder="请选择项目经理"
-            prop="projectManager"
+            placeholder="请选择"
+            filterable
+            popper-class="tl-select-dropdown user-list"
+            class="tl-select"
           >
             <el-option
               v-for="item in projectManagerList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
             >
+              <dl class="user-info">
+                <dt>
+                  <!-- 这里如果用户上传了图片 则调取上传图片 -->
+                  <img v-if="false" :src="item.headUrl" alt />
+                  <div v-else-if="item.userName" class="user-name">
+                    <em>{{
+                      item.userName.substring(item.userName.length - 2)
+                    }}</em>
+                  </div>
+                </dt>
+                <dd>{{ item.userName }}</dd>
+                <dd>{{ item.orgName }}</dd>
+              </dl>
             </el-option>
           </el-select>
         </el-form-item>
@@ -62,6 +78,7 @@
           <el-select
             v-model="formData.projectType"
             placeholder="请选择项目类型"
+            class="tl-select"
           >
             <el-option
               v-for="item in CONST.PROJECT_TYPE_LIST"
@@ -73,7 +90,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="投入类型" prop="throwType">
-          <el-select v-model="formData.throwType" placeholder="请选择投入类型">
+          <el-select
+            v-model="formData.throwType"
+            placeholder="请选择投入类型"
+            class="tl-select"
+          >
             <el-option
               v-for="item in CONST.THROW_TYPE_LIST"
               :key="item.value"
@@ -107,8 +128,8 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            format="yyyy-MM-DD"
-            value-format="yyyy-MM-DD"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             @change="changeDate"
           >
           </el-date-picker>
@@ -191,10 +212,18 @@ export default {
   computed: {},
   mounted() {
     this.getProjectOrg();
+    this.getUserList();
   },
   methods: {
     show() {
       this.visible = true;
+    },
+    getUserList() {
+      this.server.projectUserList({}).then((res) => {
+        if (res.code == '200') {
+          this.projectManagerList = res.data;
+        }
+      });
     },
     createManage() {
       this.$refs.projectForm.validate((valid) => {

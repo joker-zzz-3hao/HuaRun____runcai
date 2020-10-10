@@ -189,25 +189,32 @@ export default {
       // 查承接地图
       if (this.searchForm.orgId) {
         this.loading = true;
-        this.server.getmaps(this.searchForm).then((res) => {
-          if (res.code == 200) {
-            const allTreeData = res.data;
-            this.svgList = [];
-            if (this.showOne) {
-            // 要做兼容处理
+        if (this.showOne) {
+          this.server.okrContinueMapById(this.searchForm).then((res) => {
+            this.loading = false;
+            if (res.code == 200) {
+              const allTreeData = res.data;
+              this.svgList = [];
               allTreeData.forEach((item) => {
-                // if (index === 0) {
-                //   item.okrParentId = null;
-                // }
+              // if (index === 0) {
+              //   item.okrParentId = null;
+              // }
                 this.svgList.push(item);
                 // if (item.krContinueList && item.krContinueList.length > 0) {
                 this.svgList = this.svgList.concat(item.krContinueList || []);
-                // }
+              // }
               });
               this.svgList.forEach((item) => {
                 delete item.krContinueList;
               });
-            } else {
+            }
+          });
+        } else {
+          this.server.getmaps(this.searchForm).then((res) => {
+            this.loading = false;
+            if (res.code == 200) {
+              const allTreeData = res.data;
+              this.svgList = [];
               let index = 0;
               allTreeData.forEach((item) => {
                 // if (item.krContinueList && item.krContinueList.length > 0) {
@@ -239,9 +246,9 @@ export default {
                 }
               });
             }
-          }
-          this.loading = false;
-        });
+            this.loading = false;
+          });
+        }
       }
     },
     // 当点击根节点，收起其他已打开的树
