@@ -33,7 +33,12 @@
                 ref="cascader"
                 :options="departmentData"
                 :show-all-levels="false"
-                :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'children' }"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'children',
+                }"
                 @change="selectIdChange"
                 popper-class="tl-cascader-popper"
                 class="tl-cascader"
@@ -88,13 +93,17 @@
           </dl>
           <el-input
             placeholder="成员姓名"
-            v-model="userName "
+            v-model="userName"
             @keyup.enter.native="searchList"
             class="tl-input"
             clearable
             @clear="searchList"
           >
-            <i slot="prefix" class="el-input__icon el-icon-search" @click="searchList"></i>
+            <i
+              slot="prefix"
+              class="el-input__icon el-icon-search"
+              @click="searchList"
+            ></i>
           </el-input>
           <el-button @click="goback" plain class="tl-btn amt-border-slip">
             返回
@@ -113,15 +122,37 @@
         >
           <div slot="tableContainer">
             <el-table ref="dicTable" v-loading="loading" :data="tableData">
-              <el-table-column min-width="100px" align="left" prop="userName" label="姓名"></el-table-column>
-              <el-table-column min-width="100px" align="left" prop="orgName" label="部门"></el-table-column>
-              <el-table-column min-width="100px" align="left" prop="okrProgress" label="okr进度">
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="userName"
+                label="姓名"
+              ></el-table-column>
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="orgName"
+                label="部门"
+              ></el-table-column>
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="okrProgress"
+                label="okr进度"
+              >
                 <template slot-scope="scope">
-                  <div>{{scope.row.okrProgress}}%</div>
+                  <div>{{ scope.row.okrProgress }}%</div>
                 </template>
               </el-table-column>
-              <el-table-column min-width="100px" align="left" prop="status" label="状态">
-                <template slot-scope="scope">{{STATUS_MAP[scope.row.status]}}</template>
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="status"
+                label="状态"
+              >
+                <template slot-scope="scope">{{
+                  STATUS_MAP[scope.row.status]
+                }}</template>
               </el-table-column>
             </el-table>
           </div>
@@ -158,14 +189,14 @@ export default {
       statusList: [
         { status: '1', statusName: '进行中' },
         { status: '0', statusName: '待审批' },
-        { status: '2', statusName: '考核中' },
+        { status: '2', statusName: '复盘中' },
         { status: '3', statusName: '已完成' },
         { status: '4', statusName: '已结束' },
       ],
       STATUS_MAP: {
         0: '待审批',
         1: '进行中',
-        2: '考核中',
+        2: '复盘中',
         3: '已完成',
         4: '已结束',
       },

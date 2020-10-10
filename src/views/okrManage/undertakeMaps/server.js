@@ -10,9 +10,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/crcloud-okrManage/getTimeCycle', param);
   }
 
-  // getmaps(param) {
-  //   return this._ajaxPost('gateway/crcloud-okrManage/getmaps', param);
-  // }
+  // 查单棵承接树
+  okrContinueMapById(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/okrContinueMapById', param);
+  }
+
   getmaps(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/okrContinueMap', param);
   }

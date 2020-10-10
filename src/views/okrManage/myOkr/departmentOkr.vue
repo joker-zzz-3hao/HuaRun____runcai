@@ -229,6 +229,7 @@ export default {
       this.departmentName = this.userInfo.orgName || '部门';
       this.orgId = this.userInfo.orgId;
     }
+    console.log(this.orgId);
   },
   mounted() {
     const liWidth = document.querySelectorAll('.tab-list li');
@@ -324,6 +325,13 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.searchForm.periodId = newVal.periodId;
+          if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+            this.departmentName = this.userInfo.orgParentName;
+            this.orgId = this.userInfo.orgParentId;
+          } else {
+            this.departmentName = this.userInfo.orgName || '部门';
+            this.orgId = this.userInfo.orgId;
+          }
           this.searchOkr();
         }
       },
