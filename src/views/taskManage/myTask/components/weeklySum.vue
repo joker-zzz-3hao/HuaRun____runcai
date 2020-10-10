@@ -166,7 +166,7 @@ export default {
       });
     },
     submit() {
-
+      this.go('myWeekly', { query: { weeklySumParams: this.tableData } });
     },
   },
 };

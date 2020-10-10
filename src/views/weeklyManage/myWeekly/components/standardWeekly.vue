@@ -913,6 +913,8 @@ export default {
       // this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
+      // 来自任务的数据
+      console.log('任务', this.$route.query);
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
         // 反显周报列表数据
