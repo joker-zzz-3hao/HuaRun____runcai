@@ -2,8 +2,8 @@
   <div class="personal-center">
     <div style="display: flex">
       <div>
-        <el-avatar v-if="userInfo.headUrl" :src="userInfo.headUrl"></el-avatar>
-        <div v-if="!userInfo.headUrl">
+        <!-- <el-avatar v-if="userInfo.headUrl" :src="userInfo.headUrl"></el-avatar> -->
+        <div class="user-info">
           <tl-upload
             :isUploadHead="true"
             :imgWidth="199"
@@ -11,7 +11,6 @@
             :files="[img]"
             @change="returnParams"
           ></tl-upload>
-          <div @click="setHeader">设置图像</div>
         </div>
       </div>
       <div>
@@ -90,7 +89,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import validateMixin from '@/mixin/validateMixin';
 import Cryptojs from '@/lib/cryptojs';
 import { loginOut } from '@/lib/util';
@@ -126,7 +125,14 @@ export default {
       userInfo: (state) => state.userInfo,
     }),
   },
+  mounted() {
+    this.img = {
+      url: this.userInfo.headUrl,
+      resourceId: '',
+    };
+  },
   methods: {
+    ...mapMutations('common', ['setUserInfo']),
     showSetPassword() {
       this.dialogVisible = true;
       this.ruleForm.loginPwd = '';
@@ -152,21 +158,20 @@ export default {
       });
     },
     returnParams(params) {
-      if (!params.url) {
+      console.log(111);
+      console.log(params);
+      if (!params.resourceUrl) {
         return;
       }
-      const param = {
-        headUr: params.url,
-        resourceId: params.resourceId,
-      };
-      this.server.uploadUserHead(param).then((response) => {
-        if (response.code == 200) {
-          this.$message.success('头像上传成功');
-          this.init();
+      this.server.queryByTenantIdAndUserId().then((res) => {
+        if (res.code == '200') {
+          this.setUserInfo(res.data);
+          this.img = {
+            url: this.userInfo.headUrl,
+            resourceId: '',
+          };
         }
       });
-    },
-    setHeader() {
     },
   },
 };
