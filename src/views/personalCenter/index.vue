@@ -1,12 +1,9 @@
 <template>
   <div class="personal-center">
-    <div style="display:flex;">
+    <div style="display: flex">
       <div>
-        <el-avatar
-          v-if="userInfo.headerUrl"
-          src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
-        ></el-avatar>
-        <div v-if="!userInfo.headerUrl">
+        <el-avatar v-if="userInfo.headUrl" :src="userInfo.headUrl"></el-avatar>
+        <div v-if="!userInfo.headUrl">
           <tl-upload
             :isUploadHead="true"
             :imgWidth="199"
@@ -20,53 +17,66 @@
       <div>
         <div>
           <span>账号：</span>
-          <span>{{userInfo.userAccount}}</span>
+          <span>{{ userInfo.userAccount }}</span>
         </div>
         <div>
           <span>姓名：</span>
-          <span>{{userInfo.userName}}</span>
+          <span>{{ userInfo.userName }}</span>
         </div>
         <div>
           <span>部门：</span>
-          <span>{{userInfo.orgName}}</span>
+          <span>{{ userInfo.orgName }}</span>
         </div>
         <div>
           <span>手机：</span>
-          <span>{{userInfo.userMobile}}</span>
+          <span>{{ userInfo.userMobile }}</span>
         </div>
         <div>
           <span>邮箱：</span>
-          <span>{{userInfo.userMail}}</span>
+          <span>{{ userInfo.userMail }}</span>
         </div>
         <div v-if="userInfo.userType == '2'">
-          <el-button type="primary" @click="showSetPassword">修改密码</el-button>
+          <el-button type="primary" @click="showSetPassword"
+            >修改密码</el-button
+          >
         </div>
       </div>
     </div>
-    <div v-if="userInfo.userType == '1'">您当前使用的账号与密码均为LDAP账号与密码，如需修改将跳转至LDAP密码修改处</div>
+    <div v-if="userInfo.userType == '1'">
+      您当前使用的账号与密码均为LDAP账号与密码，如需修改将跳转至LDAP密码修改处
+    </div>
     <el-dialog
-      @close="dialogVisible=false"
+      @close="dialogVisible = false"
       :modal-append-to-body="false"
       title="修改密码"
       :visible="dialogVisible"
       width="30%"
       v-if="dialogVisible"
     >
-      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form
+        :model="ruleForm"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
         <el-form-item label="原始密码" prop="loginPwd">
           <el-input v-model.trim="ruleForm.loginPwd" show-password></el-input>
         </el-form-item>
         <el-form-item
           label="新密码"
           prop="newPwd"
-          :rules="[{trigger: 'blur',validator:validateLoginPwd,required:true}]"
+          :rules="[
+            { trigger: 'blur', validator: validateLoginPwd, required: true },
+          ]"
         >
           <el-input v-model.trim="ruleForm.newPwd" show-password></el-input>
         </el-form-item>
         <el-form-item
           label="确认密码"
           prop="confirmPwd"
-          :rules="[{trigger: 'blur',validator:validateConfirmPwd,required:true}]"
+          :rules="[
+            { trigger: 'blur', validator: validateConfirmPwd, required: true },
+          ]"
         >
           <el-input v-model.trim="ruleForm.confirmPwd" show-password></el-input>
         </el-form-item>
