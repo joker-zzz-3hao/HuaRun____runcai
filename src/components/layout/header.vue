@@ -5,7 +5,9 @@
         <div class="logo"></div>
       </div>
       <div class="toggle-department">
-        <span v-if="userInfo.orgList &&  userInfo.orgList.length <= 1">{{userInfo.orgName}}</span>
+        <span v-if="userInfo.orgList && userInfo.orgList.length <= 1">{{
+          userInfo.orgName
+        }}</span>
         <el-select
           v-else
           v-model="orgId"
@@ -20,7 +22,7 @@
             :label="item.orgName"
             :value="item.orgId"
           >
-            <span>{{item.orgName}}</span>
+            <span>{{ item.orgName }}</span>
             <span v-if="item.orgId == userInfo.orgId">
               <i class="el-icon-check"></i>
             </span>
@@ -36,7 +38,9 @@
         <li @click="go('notice')">
           <i class="el-icon-bell"></i>
           <em>通知</em>
-          <div v-if="!(totalMeaasge == '0')" class="badge">{{totalMeaasge}}</div>
+          <div v-if="!(totalMeaasge == '0')" class="badge">
+            {{ totalMeaasge }}
+          </div>
           <div class="remind-state"></div>
         </li>
         <li>
@@ -44,7 +48,9 @@
             <div class="el-dropdown-link user-info">
               <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt />
               <div v-else-if="userInfo.userName" class="user-name">
-                <em>{{userInfo.userName.substring(userInfo.userName.length-2)}}</em>
+                <em>{{
+                  userInfo.userName.substring(userInfo.userName.length - 2)
+                }}</em>
               </div>
             </div>
             <el-dropdown-menu slot="dropdown">
@@ -97,7 +103,7 @@ export default {
     this.orgId = this.userInfo.orgId;
     if (this.userInfo.userId != 'admin') { this.init(); }
     this.userInfo.roleList.forEach((item) => {
-      if (item.roleCode == 'ORG_ADMIN' || item.roleCode == 'TEAM_ADMIN') {
+      if (item.roleCode == 'TENANT_ADMIN' || item.roleCode == 'TEAM_ADMIN' || item.roleCode == 'ORG_ADMIN') {
         this.showTeam = true;
       }
     });

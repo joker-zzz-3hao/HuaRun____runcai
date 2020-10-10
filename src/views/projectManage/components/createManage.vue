@@ -3,7 +3,7 @@
     <el-dialog
       :append-to-body="true"
       :visible="visible"
-      @close="close"
+      @closed="close"
       title="创建虚拟项目"
       :close-on-click-modal="false"
     >
@@ -196,7 +196,29 @@ export default {
     show() {
       this.visible = true;
     },
-    createManage() {},
+    createManage() {
+      this.$refs.projectForm.validate((valid) => {
+        if (valid) {
+          this.server.createProject({
+            projectNameCn: this.formData.projectName,
+            projectDesc: this.formData.projectDesc,
+            projectManager: this.formData.projectManager,
+            projectType: this.formData.projectType,
+            projectInputType: this.formData.throwType,
+            projectBudget: this.formData.totalBudget,
+            projectCurrency: this.formData.currency,
+            projectBeginDate: this.formData.startDate,
+            projectEndDate: this.formData.endDate,
+            projectApplyDepName: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
+          }).then((res) => {
+            if (res.code == '200') {
+              this.$emit('success');
+              this.visible = false;
+            }
+          });
+        }
+      });
+    },
     close() {
       this.visible = false;
     },

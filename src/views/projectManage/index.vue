@@ -133,6 +133,7 @@
       ref="createUser"
       v-if="showCreateManage"
       :server="server"
+      @success="addSuccess"
     ></tl-create-manage>
   </div>
 </template>
@@ -162,14 +163,32 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-create-manage': createManage,
   },
-  mounted() {},
+  mounted() {
+    this.searchManage();
+  },
   methods: {
-    searchManage() {},
+    searchManage() {
+      const param = {
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+        projectName: this.keyWord,
+      };
+      this.server.projectPageList(param).then((res) => {
+        if (res.code == '200') {
+          this.tableData = res.data.content;
+          this.total = res.data.total;
+        }
+      });
+    },
     addProject() {
       this.showCreateManage = true;
       this.$nextTick(() => {
         this.$refs.createUser.show();
       });
+    },
+    addSuccess() {
+      this.currentPage = 1;
+      this.searchManage();
     },
     manage() {},
   },

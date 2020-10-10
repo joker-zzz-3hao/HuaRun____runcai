@@ -78,4 +78,12 @@ module.exports = {
       // '^/gateway': ''
     },
   },
+  '/gateway/project-service/*': {
+    target: api,
+    secure: false,
+    changeOrigin: true,
+    pathRewrite: {
+      // '^/gateway': ''
+    },
+  },
 };

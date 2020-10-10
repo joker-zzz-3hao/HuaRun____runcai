@@ -56,6 +56,22 @@
             <el-checkbox label="2" class="tl-checkbox">简单模式</el-checkbox>
           </el-checkbox-group>
         </dd>
+        <dd>
+          <span>设置默认首页</span>
+          <el-select
+            v-model="overview"
+            placeholder="请选择"
+            @change="changeView"
+          >
+            <el-option
+              v-for="item in CONST.OVERVIEW_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </dd>
       </dl>
       <dl class="dl-card-panel">
         <dt class="card-title">
@@ -169,6 +185,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import svgtree from '@/components/svgtree';
 import setManager from './component/setManager';
 import setFictitious from './component/setFictitious';
@@ -177,6 +194,7 @@ import editTeam from './component/editTeam';
 import addTeam from './component/addTeam';
 import moreMembers from './component/moreMembers';
 import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 
@@ -184,6 +202,7 @@ export default {
   name: 'teamsManage',
   data() {
     return {
+      CONST,
       server,
       setManagerExist: false,
       setFictitiousExist: false,
@@ -203,6 +222,7 @@ export default {
       fictitiousList: [],
       teamMembers: [],
       teamOrgId: '',
+      overview: '',
     };
   },
   components: {
@@ -214,12 +234,18 @@ export default {
     'tl-editTeam': editTeam,
     'tl-addTeam': addTeam,
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   mounted() {
     this.init();
   },
   methods: {
     init() {
       const self = this;
+      self.overview = self.userInfo.defaultJump || '';
       self.teamTreeData = [];
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
@@ -360,6 +386,9 @@ export default {
       // }).then(() => {
       //   this.updateOrgConfig(this.baseInfo.openOkrExamineId, data);
       // });
+    },
+    changeView(data) {
+      this.updateOrgConfig(this.userInfo.defaultJumpID, data);
     },
     updateOrgConfig(configId, configItemCode) {
       this.server.updateOrgConfig({
