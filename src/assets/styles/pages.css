@@ -1961,7 +1961,7 @@
 }
 
 .weekly-cont .tag-lists li.only-one {
-  padding-right: 15px;
+  padding-right: 25px;
   max-width: unset;
 }
 
@@ -2225,6 +2225,23 @@
   padding: 30px;
 }
 
+.teams-weekly .tl-card-list dt {
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid #e5e9ee;
+}
+
+.teams-weekly .tl-card-list > dd {
+  margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #4d5155;
+}
+
+.teams-weekly .tl-card-list dd span {
+  color: #acb6bf;
+}
+
 .teams-weekly .tl-card-list .user-info {
   margin: 0 10px 0 0;
 }
@@ -2236,6 +2253,7 @@
 }
 
 .teams-weekly .tl-card-list .user-txt p {
+  margin: 0 0 6px 0;
   display: flex;
 }
 
@@ -2260,11 +2278,110 @@
   font-size: 12px;
 }
 
+.teams-weekly .tl-card-list .user-from em {
+  padding: 3px 5px;
+  background: #f1f5f7;
+  font-size: 12px;
+  color: #879099;
+  border-radius: 2px;
+}
+
 .teams-weekly .weekly-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 46px;
+}
+
+.teams-weekly .weekly-state p {
+  margin: 6px 0 0 0;
+  font-size: 12px;
+}
+
+.weekly-state.is-submitted p {
+  color: #4ccd79;
+}
+
+.weekly-state.un-submitted p {
+  color: #bcc4cc;
+}
+
+.teams-weekly .table-container .quick-ook {
+  display: unset;
+}
+
+.teams-weekly .table-container .quick-ook li {
+  width: 100%;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list {
+  margin: 15px 0;
+  display: flex;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list > dt {
+  padding: 0;
+  border-bottom: unset;
+  flex: 0 0 204px;
+  width: 204px;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list dd,
+.teams-weekly .table-container .quick-ook .tl-card-list dd .dl-list {
+  margin: 0;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list dd .dl-list {
+  position: relative;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list > dd {
+  padding-left: 50px;
+  border-left: 1px solid #e5e9ee;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd {
+  padding: 0 0 0 20px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd::before {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #685DF1;
+  border: 2px solid #fff;
+  box-shadow: 0 0 3px 0 #e6e6e6;
+  z-index: 5;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd:not(:first-child) {
+  margin: 20px 0 0 0;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list::after {
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  bottom: 0;
+  content: '';
+  width: 1px;
+  border-left: 1px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.2em, #fff 0, #fff 0.3em);
+  z-index: 0;
+}
+
+.teams-weekly .table-container .quick-ook .tl-card-list dd .dl-list dd span {
+  flex: 0 0 80px;
+  margin: 0 10px 0 0;
+  color: #879099;
+  width: 80px;
 }
 
 /* 创建任务--by xinquan */ 

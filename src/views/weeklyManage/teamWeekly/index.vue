@@ -167,7 +167,10 @@
                       <em>{{ weekly.orgName }}</em>
                     </div>
                   </div>
-                  <div class="weekly-state">
+                  <div
+                    class="weekly-state"
+                    :class="weekly.weeklyId ? 'is-submitted' : 'un-submitted'"
+                  >
                     <div class="icon-bg">
                       <i
                         :class="
@@ -180,7 +183,45 @@
                     <p>{{ weekly.weeklyId ? "已提交" : "未提交" }}</p>
                   </div>
                 </dt>
-                <dd></dd>
+                <dd>
+                  <span>本周心情</span>
+                  <div
+                    class="mood-state"
+                    :class="{
+                      'has-mood': weekly.weeklyEmotion == 100,
+                      'is-ok': weekly.weeklyEmotion == 50,
+                      'want-quietly': weekly.weeklyEmotion == 0,
+                    }"
+                  >
+                    <template v-if="weekly.weeklyEmotion == 100">
+                      <i></i>
+                      <em>有收获</em>
+                    </template>
+                    <template v-else-if="weekly.weeklyEmotion == 50">
+                      <i></i>
+                      <em>还行吧</em>
+                    </template>
+                    <template v-else-if="weekly.weeklyEmotion == 0">
+                      <i></i>
+                      <em>我想静静</em>
+                    </template>
+                    <template v-else>
+                      <i></i>
+                      <em>--</em>
+                    </template>
+                  </div>
+                </dd>
+                <dd>
+                  <span>更新时间</span>
+                  <em>{{
+                    weekly.updateTime
+                      ? dateFormat(
+                          "YYYY-mm-dd HH:MM:SS",
+                          new Date(weekly.updateTime)
+                        )
+                      : "--"
+                  }}</em>
+                </dd>
               </dl>
               <!-- <el-card>
                 <div>
@@ -239,14 +280,52 @@
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
-          <ul v-else>
+          <ul v-else class="quick-ook">
             <li
               v-for="weekly in tableData"
               :key="weekly.userId"
               @click="weeklyInfo(weekly)"
             >
-              <el-card>
-                <span>
+              <dl class="tl-card-list">
+                <dt>
+                  <div class="user-info">
+                    <img v-if="false" :src="item.headUrl" alt />
+                    <div v-else-if="weekly.userName" class="user-name">
+                      <em>{{
+                        weekly.userName.substring(weekly.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </div>
+                  <div class="user-txt">
+                    <p>
+                      <em>{{ weekly.userName }}</em
+                      ><span>{{
+                        weekly.isadmin == "1" ? "(部门负责人)" : ""
+                      }}</span>
+                    </p>
+                    <div class="user-from">
+                      <em>{{ weekly.orgName }}</em>
+                    </div>
+                  </div>
+                </dt>
+                <dd>
+                  <dl class="dl-list">
+                    <dd>
+                      <span>#工作项5#</span>
+                      <em
+                        >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
+                      >
+                    </dd>
+                    <dd>
+                      <span>#工作项5#</span>
+                      <em
+                        >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
+                      >
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <!-- <span>
                   <el-avatar
                     :size="30"
                     :src="weekly.headerUrl"
@@ -260,36 +339,35 @@
                   </el-avatar>
                   <span>{{ weekly.userName }}</span>
                   <span>{{ weekly.orgName }}</span>
-                </span>
-                <!-- 任务项 -->
-                <span v-if="formData.queryType == '0'">
+                </span> -->
+              <!-- 任务项 -->
+              <!-- <span v-if="formData.queryType == '0'">
                   <ul>
                     <li v-for="work in weekly.contentList" :key="work">
                       {{ work.workContent }}
                     </li>
                   </ul>
-                </span>
-                <!-- 感想 -->
-                <span v-if="formData.queryType == '1'">
+                </span> -->
+              <!-- 感想 -->
+              <!-- <span v-if="formData.queryType == '1'">
                   <ul>
                     <li v-for="work in weekly.contentList" :key="work">
                       {{ work.thoughtContent }}
                     </li>
                   </ul>
-                </span>
-                <!-- 下周计划 -->
-                <span v-if="formData.queryType == '2'">
+                </span> -->
+              <!-- 下周计划 -->
+              <!-- <span v-if="formData.queryType == '2'">
                   <ul>
                     <li v-for="work in weekly.contentList" :key="work">
                       {{ work.planContent }}
                     </li>
                   </ul>
-                </span>
-                <!-- 有进度的okr -->
-                <span v-if="formData.queryType == '3'">
+                </span> -->
+              <!-- 有进度的okr -->
+              <!-- <span v-if="formData.queryType == '3'">
                   <ul>
                     <li v-for="work in weekly.contentList" :key="work">
-                      <!-- 目标 -->
                       <span v-if="work.okrDetailType == 0">
                         <span>目标</span>
                         <span>{{ work.okrDetailObjectKr }}</span>
@@ -303,7 +381,6 @@
                           {{ work.progressAfter - work.progressBefor }}%
                         </span>
                       </span>
-                      <!-- KR -->
                       <span v-else>
                         <ul>
                           <li>
@@ -327,8 +404,7 @@
                       </span>
                     </li>
                   </ul>
-                </span>
-              </el-card>
+                </span> -->
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
