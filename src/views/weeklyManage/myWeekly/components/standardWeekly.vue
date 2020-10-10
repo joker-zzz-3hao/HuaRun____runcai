@@ -142,6 +142,7 @@
                         <em slot="content">{{ scope.row.projectNameCn }}</em>
                         <em>{{ scope.row.projectNameCn }}</em>
                       </el-tooltip>
+                      <i class="el-icon-close"></i>
                     </li>
                   </ul>
                   <!-- 此处是自己写的注释 -->
