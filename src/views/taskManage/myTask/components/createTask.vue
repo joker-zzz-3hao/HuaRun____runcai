@@ -343,7 +343,7 @@ export default {
         taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
       }
       const params = {
-        attachmentList: [], // TODO: 附件
+        attachmentList: this.fileList, // TODO: 附件
         // headerHrl: '',
         okrDetailId: this.formData.okrDetailId,
         okrDetailName: okrVal.okrDetailObjectKr,
