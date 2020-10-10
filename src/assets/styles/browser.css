@@ -44,6 +44,18 @@ _:future,
     left: -53px;
     width: 46px;
   }
+
+  .calendar-select {
+    justify-content: space-between;
+  }
+
+  .teams-weekly .table-container > ul li {
+    width: 25%;
+  }
+
+  .weekly-select li:last-child {
+    margin-right: 0;
+  }
 }
 
 @media screen and (min-width:1921px) {

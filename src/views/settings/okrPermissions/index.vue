@@ -58,7 +58,7 @@
             >
           </el-form-item>
           <dt style="margin-bottom: 20px">
-            <span>公司OKR ( 根组织OKR ) 考核人设置</span>
+            <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
           </dt>
           <el-form-item label="设置审批人：">
             <el-input

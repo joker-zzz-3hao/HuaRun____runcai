@@ -1740,12 +1740,16 @@
 .weekly-select li {
   position: relative;
   justify-content: space-between;
-  margin: 5px 15px;
+  margin: 5px 12px;
   padding: 0 10px;
-  width: 218px;
+  width: 226px;
   height: 40px;
   border: 1px #e5e9ee solid;
   border-radius: 2px;
+}
+
+.weekly-select li:not(.is-unopen) {
+  cursor: pointer;
 }
 
 .weekly-select .is-submit::before,
@@ -2184,6 +2188,83 @@
 
 .teams-weekly .operating-area .el-select .el-input .el-input__inner::-webkit-input-placeholder{
   color:#fff !important;
+}
+
+.teams-weekly .cont-area .tl-select .el-input__inner {
+  background: #f4f6f8;
+}
+
+.teams-weekly .cont-area .tl-select + .tl-select {
+  margin: 0 0 0 20px;
+}
+
+.teams-weekly .table-pagination {
+  min-height: calc(100vh - 357px);
+}
+
+.user-list .el-select-dropdown__list li {
+  height: 60px;
+}
+
+.user-list .user-info .user-name em {
+  width: 30px;
+  height: 30px;
+}
+
+.teams-weekly .table-container > ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.teams-weekly .table-container > ul li {
+  width: 33.33%;
+}
+
+.teams-weekly .tl-card-list {
+  margin: 15px;
+  padding: 30px;
+}
+
+.teams-weekly .tl-card-list .user-info {
+  margin: 0 10px 0 0;
+}
+
+.teams-weekly .tl-card-list .user-info em,
+.teams-weekly .tl-card-list .user-txt p em {
+  color: #4d5155;
+  font-weight: 500;
+}
+
+.teams-weekly .tl-card-list .user-txt p {
+  display: flex;
+}
+
+.teams-weekly .tl-card-list .user-txt p em {
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.teams-weekly .tl-card-list .user-txt {
+  flex: 1;
+}
+
+.teams-weekly .tl-card-list .user-txt p span {
+  margin: 0 0 0 10px;
+  color: #acb6bf;
+  font-size: 12px;
+}
+
+.teams-weekly .weekly-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 46px;
 }
 
 /* 创建任务--by xinquan */ 

@@ -60,22 +60,25 @@
         @getWeeklyById="refreshPageList"
         :isFromTeam="true"
       ></tl-calendar>
-      <el-select
-        v-model="submitedOrLooked"
-        @change="submitedOrLookedChange"
-        placeholder="全部"
-        clearable
-        @clear="clearSubmitOrLooked"
-        :disabled="!!formData.queryType"
-      >
-        <el-option
-          v-for="item in submitedOrLookedList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <!-- <el-input
+      <div class="flex-end">
+        <el-select
+          v-model="submitedOrLooked"
+          @change="submitedOrLookedChange"
+          placeholder="全部"
+          clearable
+          @clear="clearSubmitOrLooked"
+          :disabled="!!formData.queryType"
+          popper-class="tl-select-dropdown"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in submitedOrLookedList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <!-- <el-input
               maxlength="64"
               @keyup.enter.native="refreshPageList"
               v-model="formData.queryUserId"
@@ -84,32 +87,51 @@
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
               </el-input>-->
-      <el-select
-        v-model.trim="formData.queryUserId"
-        filterable
-        placeholder="请输入成员姓名"
-        remote
-        :remote-method="remoteMethod"
-        @visible-change="visibleChange"
-        @change="nameChange"
-        clearable
-      >
-        <el-option
-          v-for="item in userList"
-          :key="item.userId"
-          :label="item.userName"
-          :value="item.userId"
+        <el-select
+          v-model.trim="formData.queryUserId"
+          filterable
+          placeholder="请输入成员姓名"
+          remote
+          :remote-method="remoteMethod"
+          @visible-change="visibleChange"
+          @change="nameChange"
+          clearable
+          popper-class="tl-select-dropdown user-list"
+          class="tl-select"
         >
-          <span style="float: left">
-            <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-              <div v-if="item.userName" class="user-name">
-                <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
-              </div>
-            </el-avatar>
-          </span>
-          <span style="float: left; marginleft: 5px">{{ item.userName }}</span>
-        </el-option>
-      </el-select>
+          <el-option
+            v-for="item in userList"
+            :key="item.userId"
+            :label="item.userName"
+            :value="item.userId"
+          >
+            <dl class="user-info">
+              <dt>
+                <!-- 这里如果用户上传了图片 则调取上传图片 -->
+                <img v-if="false" :src="item.headUrl" alt />
+                <div v-else-if="item.userName" class="user-name">
+                  <em>{{
+                    item.userName.substring(item.userName.length - 2)
+                  }}</em>
+                </div>
+              </dt>
+              <dd>{{ item.userName }}</dd>
+            </dl>
+            <!-- <span style="float: left">
+              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <div v-if="item.userName" class="user-name">
+                  <em>{{
+                    item.userName.substring(item.userName.length - 2)
+                  }}</em>
+                </div>
+              </el-avatar>
+            </span>
+            <span style="float: left; marginleft: 5px">{{
+              item.userName
+            }}</span> -->
+          </el-option>
+        </el-select>
+      </div>
       <crcloud-table
         :total="total"
         :currentPage.sync="formData.currentPage"
@@ -123,15 +145,44 @@
               v-for="weekly in tableData"
               :key="weekly.userId"
               @click="weeklyInfo(weekly)"
-              style="
-                cursor: pointer;
-                width: 320px;
-                height: 200px;
-                float: left;
-                marginleft: 10px;
-              "
             >
-              <el-card>
+              <dl class="tl-card-list">
+                <dt>
+                  <div class="user-info">
+                    <img v-if="false" :src="item.headUrl" alt />
+                    <div v-else-if="weekly.userName" class="user-name">
+                      <em>{{
+                        weekly.userName.substring(weekly.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </div>
+                  <div class="user-txt">
+                    <p>
+                      <em>{{ weekly.userName }}</em
+                      ><span>{{
+                        weekly.isadmin == "1" ? "(部门负责人)" : ""
+                      }}</span>
+                    </p>
+                    <div class="user-from">
+                      <em>{{ weekly.orgName }}</em>
+                    </div>
+                  </div>
+                  <div class="weekly-state">
+                    <div class="icon-bg">
+                      <i
+                        :class="
+                          weekly.weeklyId
+                            ? 'el-icon-circle-check'
+                            : 'el-icon-warning-outline'
+                        "
+                      ></i>
+                    </div>
+                    <p>{{ weekly.weeklyId ? "已提交" : "未提交" }}</p>
+                  </div>
+                </dt>
+                <dd></dd>
+              </dl>
+              <!-- <el-card>
                 <div>
                   <el-avatar
                     :size="30"
@@ -184,7 +235,7 @@
                     </span>
                   </div>
                 </div>
-              </el-card>
+              </el-card> -->
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
@@ -193,7 +244,6 @@
               v-for="weekly in tableData"
               :key="weekly.userId"
               @click="weeklyInfo(weekly)"
-              style="cursor: pointer"
             >
               <el-card>
                 <span>
