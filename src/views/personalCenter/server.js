@@ -5,4 +5,8 @@ export default class Server extends ServerBase {
   updateResetPassword(param) {
     return this._ajaxPost('gateway/system-service/sys/user/updateResetPassword', param);
   }
+
+  queryByTenantIdAndUserId(param) {
+    return this._ajaxGet('gateway/privilege-service/privilege/function/queryByTenantIdAndUserId', param);
+  }
 }
