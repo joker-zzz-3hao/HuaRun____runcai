@@ -16,4 +16,8 @@ export default class Server extends ServerBase {
   getUserList(param) {
     return this._ajaxPost('gateway/system-service/sys/user/listTenantUser', param);
   }
+
+  projectUserList(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/projectUserList', param);
+  }
 }
