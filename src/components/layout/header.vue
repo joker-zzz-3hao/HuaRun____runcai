@@ -103,7 +103,7 @@ export default {
     this.orgId = this.userInfo.orgId;
     if (this.userInfo.userId != 'admin') { this.init(); }
     this.userInfo.roleList.forEach((item) => {
-      if (item.roleCode == 'TENANT_ADMIN' || item.roleCode == 'TEAM_ADMIN') {
+      if (item.roleCode == 'TENANT_ADMIN' || item.roleCode == 'TEAM_ADMIN' || item.roleCode == 'ORG_ADMIN') {
         this.showTeam = true;
       }
     });
