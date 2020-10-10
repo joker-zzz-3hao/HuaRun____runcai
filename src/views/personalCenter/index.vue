@@ -126,10 +126,12 @@ export default {
     }),
   },
   mounted() {
-    this.img = {
-      url: this.userInfo.headUrl,
-      resourceId: '',
-    };
+    if (this.userInfo.headUrl) {
+      this.img = {
+        url: this.userInfo.headUrl,
+        resourceId: '',
+      };
+    }
   },
   methods: {
     ...mapMutations('common', ['setUserInfo']),
