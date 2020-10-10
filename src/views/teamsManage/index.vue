@@ -62,6 +62,7 @@
             v-model="overview"
             placeholder="请选择"
             @change="changeView"
+            class="tl-select"
           >
             <el-option
               v-for="item in CONST.OVERVIEW_LIST"
@@ -240,12 +241,12 @@ export default {
     }),
   },
   mounted() {
+    this.overview = this.userInfo.defaultJump || '';
     this.init();
   },
   methods: {
     init() {
       const self = this;
-      self.overview = self.userInfo.defaultJump || '';
       self.teamTreeData = [];
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
@@ -388,7 +389,15 @@ export default {
       // });
     },
     changeView(data) {
-      this.updateOrgConfig(this.userInfo.defaultJumpID, data);
+      // this.updateOrgConfig(this.userInfo.defaultJumpID, data);
+      this.server.updateOrgConfig({
+        configId: this.baseInfo.defaultJumpID,
+        configItemCode: data,
+      }).then((res) => {
+        if (res.code == '200') {
+          // this.$message.success(res.msg);
+        }
+      });
     },
     updateOrgConfig(configId, configItemCode) {
       this.server.updateOrgConfig({
