@@ -108,14 +108,14 @@ export default {
           menuTitle: '部门OKR',
           toName: 'departmentOkr',
         },
-        {
-          menuTitle: '虚拟部门OKR',
-          toName: '',
-        },
-        {
-          menuTitle: '历史部门OKR',
-          toName: '',
-        },
+        // {
+        //   menuTitle: '虚拟部门OKR',
+        //   toName: '',
+        // },
+        // {
+        //   menuTitle: '历史部门OKR',
+        //   toName: '',
+        // },
       ],
       writeokrExist: false,
       writeInfo: {},
@@ -218,7 +218,8 @@ export default {
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
-      this.go(item.toNamename, item.orgId);
+      console.log('qieh', item);
+      this.go(item.toName);
       // if name == 虚线
     },
   },

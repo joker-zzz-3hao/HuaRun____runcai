@@ -1,7 +1,7 @@
 <template>
   <div class="undertake-maps-tree">
     <div class="cont-area">
-      <div v-if="showOne && svgList.length>0">
+      <div v-if="showOne && svgList.length > 0">
         <tl-svgtree
           :treeData="svgList"
           svgId="svg"
@@ -15,16 +15,19 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node" @takeOvierview="takeOvierview(props.node)"></card>
+            <card
+              :node="props.node"
+              @takeOvierview="takeOvierview(props.node)"
+            ></card>
           </div>
         </tl-svgtree>
       </div>
-      <div v-else-if="svgList.length>0">
+      <div v-else-if="svgList.length > 0">
         <tl-svgtree
-          v-for="(item,index) in svgList"
+          v-for="(item, index) in svgList"
           :key="index"
           :treeData="item"
-          :svgId="'svg'+index"
+          :svgId="'svg' + index"
           ref="svgTree"
           direction="col"
           fatherId="okrParentId"
@@ -35,7 +38,10 @@
           :blockHeight="blockHeight"
         >
           <div slot="treecard" slot-scope="props">
-            <card :node="props.node" @takeOvierview="takeOvierview(props.node)"></card>
+            <card
+              :node="props.node"
+              @takeOvierview="takeOvierview(props.node)"
+            ></card>
           </div>
         </tl-svgtree>
       </div>
@@ -72,7 +78,13 @@
               </el-select>
             </dd>
             <dd>
-              <el-button v-if="showOne" @click="goback" plain class="tl-btn amt-border-fadeout">返回</el-button>
+              <el-button
+                v-if="showOne"
+                @click="goback"
+                plain
+                class="tl-btn amt-border-fadeout"
+                >返回</el-button
+              >
             </dd>
           </dl>
         </div>
@@ -105,8 +117,8 @@ export default {
       searchForm: {
         orgId: '',
         periodId: '',
-        okrCycle: {},
       },
+      okrCycle: {},
       cycleData: [],
       departmentData: [],
       initDepartment: {},
@@ -156,8 +168,8 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
-          this.searchForm.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.searchForm.periodId = this.okrCycle.periodId;
         }
       });
     },
@@ -290,7 +302,7 @@ export default {
       handler(newVal) {
         console.log('周期');
         if (newVal) {
-          this.searchForm.okrCycle = this.periodList.filter(
+          this.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
           )[0] || {};
           this.getmaps();

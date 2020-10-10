@@ -201,6 +201,7 @@ export default {
       drawerTitle: 'OKR详情',
       detailExist: false,
       loading: true,
+      orgId: '',
     };
   },
   props: {
@@ -223,8 +224,10 @@ export default {
   created() {
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
+      this.orgId = this.userInfo.orgParentId;
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
+      this.orgId = this.userInfo.orgId;
     }
   },
   mounted() {
@@ -237,11 +240,11 @@ export default {
   methods: {
     searchOkr() { // 默认搜索进行时
       this.loading = true;
-      this.server.getmyOkr({
+      this.server.getorgOkr({
         myOrOrg: 'org',
         periodId: this.okrCycle.periodId,
         status: this.searchForm.status,
-        orgId: this.userInfo.orgId,
+        orgId: this.orgId,
       }).then((res) => {
         if (res.code == 200) {
           this.tableList = res.data.okrDetails || [];

@@ -382,40 +382,77 @@ export default {
         okrMain: {},
       }];
       this.loading = true;
-      this.server.getmyOkr({
-        myOrOrg: 'my',
-        periodId: this.okrCycle.periodId,
-        status: this.searchForm.status,
-      }).then((res) => {
-        if (res.code == 200) {
-          if (this.searchForm.status == 'all') {
-            const totalList = res.data || [];
-            if (totalList.length > 0) {
-              this.okrList = [];
-              totalList.forEach((allitem) => {
-                if (['1', '2'].includes(allitem.okrStatus)) {
-                // 处理draft
-                  this.handleJSON(allitem.okrStatus, allitem.object);
-                } else {
-                  this.handleNormal(allitem.object, allitem.okrStatus);
-                }
-              });
-            }
-          } else if (['6', '7', '8'].includes(this.searchForm.status)) {
+      if (this.searchForm.status == 'all') {
+        this.server.getallOkr({
+          myOrOrg: 'my',
+          periodId: this.okrCycle.periodId,
+          status: this.searchForm.status,
+        }).then((res) => {
+          if (res.code == 200) {
+            if (this.searchForm.status == 'all') {
+              const totalList = res.data || [];
+              if (totalList.length > 0) {
+                this.okrList = [];
+                totalList.forEach((allitem) => {
+                  if (['1', '2'].includes(allitem.okrStatus)) {
+                    // 处理draft
+                    this.handleJSON(allitem.okrStatus, allitem.object);
+                  } else {
+                    this.handleNormal(allitem.object, allitem.okrStatus);
+                  }
+                });
+              }
+            } else if (['6', '7', '8'].includes(this.searchForm.status)) {
             // 如果是草稿、退回、审批中回显json串
-            const draftList = res.data || [];
-            if (draftList.length > 0) {
-              this.okrList = [];
-              this.handleJSON(this.searchForm.status, draftList);
+              const draftList = res.data || [];
+              if (draftList.length > 0) {
+                this.okrList = [];
+                this.handleJSON(this.searchForm.status, draftList);
+              }
+            } else {
+              this.okrList[0].tableList = res.data.okrDetails || [];
+              this.okrList[0].okrMain = res.data.okrMain || {};
+              this.okrId = this.okrList[0].okrMain.okrId || '';
             }
-          } else {
-            this.okrList[0].tableList = res.data.okrDetails || [];
-            this.okrList[0].okrMain = res.data.okrMain || {};
-            this.okrId = this.okrList[0].okrMain.okrId || '';
+            this.loading = false;
           }
-          this.loading = false;
-        }
-      });
+        });
+      } else {
+        this.server.getmyOkr({
+          myOrOrg: 'my',
+          periodId: this.okrCycle.periodId,
+          status: this.searchForm.status,
+        }).then((res) => {
+          if (res.code == 200) {
+            if (this.searchForm.status == 'all') {
+              const totalList = res.data || [];
+              if (totalList.length > 0) {
+                this.okrList = [];
+                totalList.forEach((allitem) => {
+                  if (['1', '2'].includes(allitem.okrStatus)) {
+                    // 处理draft
+                    this.handleJSON(allitem.okrStatus, allitem.object);
+                  } else {
+                    this.handleNormal(allitem.object, allitem.okrStatus);
+                  }
+                });
+              }
+            } else if (['6', '7', '8'].includes(this.searchForm.status)) {
+            // 如果是草稿、退回、审批中回显json串
+              const draftList = res.data || [];
+              if (draftList.length > 0) {
+                this.okrList = [];
+                this.handleJSON(this.searchForm.status, draftList);
+              }
+            } else {
+              this.okrList[0].tableList = res.data.okrDetails || [];
+              this.okrList[0].okrMain = res.data.okrMain || {};
+              this.okrId = this.okrList[0].okrMain.okrId || '';
+            }
+            this.loading = false;
+          }
+        });
+      }
     },
     handleJSON(okrStatus, draftList) {
       draftList.forEach((item, index) => {
