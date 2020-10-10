@@ -1980,6 +1980,10 @@
   min-height: 95px;
 }
 
+.weekly-cont .tag-lists li em {
+  padding: 0 10px 0 0;
+}
+
 .write-weekly .btn-box {
   margin: 30px 0;
   display: flex;
@@ -2341,13 +2345,16 @@
 }
 
 .teams-weekly .table-container .quick-ook .dl-list dd {
-  padding: 0 0 0 20px;
   position: relative;
   display: flex;
   align-items: flex-start;
 }
 
-.teams-weekly .table-container .quick-ook .dl-list dd::before {
+.teams-weekly .table-container .quick-ook .dl-list dd span {
+  padding: 0 0 0 20px;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd span::before {
   position: absolute;
   left: 0;
   top: 4px;
@@ -2361,11 +2368,19 @@
   z-index: 5;
 }
 
-.teams-weekly .table-container .quick-ook .dl-list dd:not(:first-child) {
-  margin: 20px 0 0 0;
+.teams-weekly .table-container .quick-ook .dl-list dd ~ dd span::before {
+  top: 24px;
 }
 
-.teams-weekly .table-container .quick-ook .dl-list::after {
+.teams-weekly .table-container .quick-ook .dl-list dd:not(:first-child) {
+  padding: 20px 0 0 0;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd:not(:first-child) span {
+  padding: 0 0 0 20px;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd::after {
   position: absolute;
   left: 5px;
   top: 20px;
@@ -2377,11 +2392,31 @@
   z-index: 0;
 }
 
+.teams-weekly .table-container .quick-ook .dl-list dd ~ dd::after {
+  top: 0;
+}
+
 .teams-weekly .table-container .quick-ook .tl-card-list dd .dl-list dd span {
   flex: 0 0 80px;
   margin: 0 10px 0 0;
   color: #879099;
   width: 80px;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd::before {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  content: '';
+  width: 12px;
+  background: #fff;
+  z-index: 5;
+}
+
+.teams-weekly .table-container .quick-ook .dl-list dd:last-child::before,
+.teams-weekly .table-container .quick-ook .dl-list dd:only-child::before {
+  bottom: 0;
 }
 
 /* 创建任务--by xinquan */ 

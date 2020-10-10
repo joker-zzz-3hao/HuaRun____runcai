@@ -34,7 +34,7 @@
                   maxlength="100"
                   v-if="timeDisabled"
                   clearable
-                  placeholder="请用一句话概括某项工作，不超过100个字符"
+                  placeholder="请用一句话概括某项工作"
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
