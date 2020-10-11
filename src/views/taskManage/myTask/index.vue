@@ -55,15 +55,61 @@
           >
             <i class="el-icon-search" slot="prefix" @click="getTableList"></i
           ></el-input>
-          <div @click="showSearchBar">
+          <div @click="showSearchBar" class="unfold-more">
             展开更多筛选
             <i :class="arrowClass"></i>
           </div>
           <div class="border-slip"></div>
         </div>
       </div>
-      <div>
-        <div style="display: flex">
+      <div class="tl-condition-screening" v-show="showTask">
+        <dl
+          class="screening-results tag-lists"
+          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>所有筛选</dt>
+          <dd v-for="(item, index) in searchList" :key="index">
+            <em>{{ item.name }}</em>
+            <i class="el-icon-close" @click.stop="clearNode(index)"></i>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>任务过程</dt>
+          <dd
+            :class="{ 'is-selected': item.isSelected }"
+            v-for="(item, index) in taskProcessList"
+            :key="index"
+          >
+            <em @click="switchParent(item)">{{ item.label }}</em>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>任务步骤</dt>
+          <dd
+            class="tag-item"
+            :class="{ 'is-selected': item.isSelected }"
+            v-for="(item, index) in childCateList"
+            :key="index"
+          >
+            <em @click="selectStatus(item)">{{ item.label }}</em>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>确认接收</dt>
+          <dd :class="{ 'is-selected': 这里是默认选择全部的条件 }"></dd>
+          <dd>已确认</dd>
+          <dd>未确认</dd>
+        </dl>
+        <!-- <div style="display: flex">
           <span
             v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
             >所有筛选</span
@@ -78,7 +124,6 @@
           </div>
         </div>
         <div v-show="arrowClass == 'el-icon-caret-bottom'">
-          <!-- 筛选标签 -->
           <dl style="display: flex">
             <dt>任务过程</dt>
             <dd
@@ -110,7 +155,7 @@
               </el-radio-group>
             </dd>
           </dl>
-        </div>
+        </div> -->
       </div>
       <tl-crcloud-table
         :total="totalpage"
@@ -121,26 +166,6 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column width="80px">
-              <template slot-scope="scope">
-                <el-dropdown trigger="click">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      @click.native="deleteTask(scope.row.taskId)"
-                      >删除</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      @click.native="filedTask(scope.row.taskId)"
-                      :disabled="scope.row.taskProgress != 100"
-                      >任务归档</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </el-dropdown></template
-              >
-            </el-table-column>
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row.taskId)">{{
@@ -148,7 +173,6 @@
                 }}</a>
               </template>
             </el-table-column>
-
             <el-table-column min-width="100px" align="left">
               <template slot-scope="scope">
                 <div>
@@ -184,7 +208,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" width="200">
+            <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
                   :disabled="
@@ -259,6 +283,26 @@
                   >
                 </el-popover>
               </template>
+            </el-table-column>
+            <el-table-column width="80px">
+              <template slot-scope="scope">
+                <el-dropdown trigger="click">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      @click.native="deleteTask(scope.row.taskId)"
+                      >删除</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click.native="filedTask(scope.row.taskId)"
+                      :disabled="scope.row.taskProgress != 100"
+                      >任务归档</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </el-dropdown></template
+              >
             </el-table-column>
           </el-table>
         </div>

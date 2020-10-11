@@ -2397,6 +2397,49 @@
   bottom: 1px;
 }
 
+/* tl-condition-screening */
+.tl-condition-screening dl {
+  height: 50px;
+}
+
+/* tag-lists */
+.tag-lists dd {
+  padding: 5px 40px 5px 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+  background: #f4f6f8;
+  border-radius: 14px;
+  height: 28px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.tag-lists .is-selected {
+  color: #685df1 !important;
+  background: #f0effe !important;
+}
+
+.tag-lists dd:not(:first-child) {
+  margin: 0 0 0 16px;
+}
+
+.tag-lists dd i {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #bcc4cc;
+  right: 4px;
+  top: 3px;
+  color: #fff;
+}
+
 /* 标记 */
 .badge {
   position: absolute;
@@ -3076,6 +3119,31 @@
 .custom-drawer .cont-box .dl-list dd:last-child,
 .dl-list .el-radio:last-child {
   background: unset;
+}
+
+.custom-drawer .tl-form .tl-select {
+  margin: 8px 0 2px 0;
+  width: 100%;
+}
+
+.custom-drawer .tl-form .tl-range-editor {
+  width: 100%;
+}
+
+.custom-drawer .tl-form .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.custom-drawer .item-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-drawer .item-flex .el-form-item {
+  margin: 0;
+  flex: 1;
 }
 
 .dl-list .el-radio__label {

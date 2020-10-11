@@ -2589,12 +2589,17 @@
   background: #e8ecf0;
 }
 
+.my-task .tl-custom-tabs .tab-list li {
+  font-weight: normal;
+}
+
 .my-task .tl-custom-tabs .border-slip {
   height: 4px;
 }
 
 .my-task .tl-custom-tabs .tl-input-search {
-  width: unset;
+  margin: 0 20px 0 0;
+  width: 280px;
   height: 36px;
 }
 
@@ -2604,10 +2609,45 @@
   line-height: unset;
 }
 
+.my-task .table-container {
+  padding: 20px 0 0 0;
+}
+
+.my-task .tl-table thead {
+  display: none;
+}
+
+.my-task .tl-condition-screening {
+  margin: 10px 0 0 0;
+}
+
+.my-task .screening-results dt {
+  color: #879099;
+}
+
+.my-task .condition-lists dd {
+  padding-right: 12px;
+  border-radius: 0;
+  color: #879099;
+}
+
+.my-task .tl-condition-screening dt {
+  margin: 0 20px 0 0;
+}
+
+.my-task .tl-condition-screening dl {
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.4em, #fff 0, #fff 0.6em);
+}
+
+.my-task .table-pagination {
+  min-height: calc(100vh - 244px);
+}
+
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;
-  width: 800px;
+  width: 700px;
 }
 .create-task .task-fenlan{
   display: flex;
@@ -2616,6 +2656,13 @@
   flex: 1;
   margin-left: 50px;
   height: 100%;
+}
+
+.create-task .tl-form .el-form-item__label {
+  padding: 6px 20px 0 0;
+  font-size: 14px;
+  color: #4d5155;
+  width: 120px;
 }
 
 /* 切换部门--by xinquan  */
