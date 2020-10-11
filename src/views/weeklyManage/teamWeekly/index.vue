@@ -280,7 +280,7 @@
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
-          <ul v-else class="quick-ook">
+          <ul v-else class="quick-look">
             <li
               v-for="weekly in tableData"
               :key="weekly.userId"
@@ -347,6 +347,27 @@
                       </dd>
                     </template>
                   </dl>
+                  <!-- 有进度的OKR -->
+                  <template v-if="formData.queryType == '3'">
+                    <!-- 循环这个dl（weekly.contentList） -->
+                    <dl class="tag-kind">
+                      <dd class="update-progress">
+                        <span>本次更新进度</span><em>+16%</em>
+                      </dd>
+                      <dt>
+                        <span class="kind-parent">目标</span
+                        ><em>今年先赚他一个亿</em>
+                      </dt>
+                      <dd>
+                        <span class="kind-child">KR</span
+                        ><em>那就这么说吧，惊不惊喜，意不意外</em>
+                      </dd>
+                      <dd>
+                        <span class="kind-child">KR</span
+                        ><em>那就这么说吧，惊不惊喜，意不意外</em>
+                      </dd>
+                    </dl>
+                  </template>
                 </dd>
               </dl>
               <!-- <span>

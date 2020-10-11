@@ -1,13 +1,39 @@
 <template>
-  <div class="home">
-    <div v-if="showTask" class="my-task">
-      <!-- 按钮组 -->
-      <div>
-        <el-button @click="goCreateTask">添加任务</el-button>
-        <el-button @click="showTask = false">周报汇总</el-button>
+  <div class="my-task">
+    <div class="operating-area">
+      <div class="page-title">
+        <em v-show="showTask">我的任务</em>
+        <em v-show="!showTask">任务汇总</em>
       </div>
-      <!-- 搜索框 -->
-      <div class="tl-custom-tabs">
+      <div class="operating-box">
+        <el-button
+          type="primary"
+          icon="el-icon-folder-checked"
+          @click="goCreateTask"
+          v-show="showTask"
+          class="tl-btn amt-bg-slip"
+          >添加任务</el-button
+        >
+        <el-button
+          plain
+          @click="toggleState"
+          v-show="showTask"
+          icon="el-icon-document-add"
+          class="tl-btn amt-border-slip"
+        >
+          <em>任务汇总</em><span class="lines"></span>
+        </el-button>
+        <el-button
+          @click="toggleState"
+          plain
+          class="tl-btn amt-border-slip"
+          v-show="!showTask"
+          >返回<span class="lines"></span
+        ></el-button>
+      </div>
+    </div>
+    <div class="cont-area" :class="{ 'small-padding': showTask }">
+      <div class="tl-custom-tabs" v-show="showTask">
         <div class="tab-menus">
           <ul class="tab-list">
             <li
@@ -19,23 +45,24 @@
               {{ item.menuName }}
             </li>
           </ul>
+          <el-input
+            placeholder="输入任务标题"
+            v-model="searchMsg"
+            maxlength="50"
+            clearable
+            class="tl-input-search"
+            @keyup.enter.native="getTableList"
+          >
+            <i class="el-icon-search" slot="prefix" @click="getTableList"></i
+          ></el-input>
+          <div @click="showSearchBar">
+            展开更多筛选
+            <i :class="arrowClass"></i>
+          </div>
           <div class="border-slip"></div>
         </div>
-        <el-input
-          placeholder="输入任务标题"
-          v-model="searchMsg"
-          maxlength="50"
-          clearable
-          class="tl-input-search"
-          @keyup.enter.native="getTableList"
-        >
-          <i class="el-icon-search" slot="prefix" @click="getTableList"></i
-        ></el-input>
-        <!-- 更多筛选 -->
-        <div @click="showSearchBar">
-          展开更多筛选
-          <i :class="arrowClass"></i>
-        </div>
+      </div>
+      <div>
         <div style="display: flex">
           <span
             v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
@@ -85,12 +112,12 @@
           </dl>
         </div>
       </div>
-      <!-- table -->
       <tl-crcloud-table
         :total="totalpage"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="getTableList"
+        v-show="showTask"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
@@ -236,37 +263,29 @@
           </el-table>
         </div>
       </tl-crcloud-table>
-      <tl-assignment
-        ref="assignment"
-        v-if="existAssignment"
-        :existAssignment.sync="existAssignment"
-        :server="server"
-        @success="getTableList"
-      ></tl-assignment>
-      <tl-createtask
-        ref="createtask"
-        v-if="existCreatetask"
-        :existCreatetask.sync="existCreatetask"
-        :server="server"
-        @success="getTableList"
-      ></tl-createtask>
-      <tl-edittask
-        ref="editTask"
-        v-if="existEditTask"
-        :existEditTask.sync="existEditTask"
-        :server="server"
-        @success="getTableList"
-      ></tl-edittask>
+      <tl-tasksum v-show="!showTask"></tl-tasksum>
     </div>
-    <div v-else class="weekly-sum">
-      <tl-weeklysum></tl-weeklysum>
-      <el-button
-        @click="showTask = true"
-        plain
-        class="tl-btn amt-border-fadeout"
-        >返回</el-button
-      >
-    </div>
+    <tl-assignment
+      ref="assignment"
+      v-if="existAssignment"
+      :existAssignment.sync="existAssignment"
+      :server="server"
+      @success="getTableList"
+    ></tl-assignment>
+    <tl-createtask
+      ref="createtask"
+      v-if="existCreatetask"
+      :existCreatetask.sync="existCreatetask"
+      :server="server"
+      @success="getTableList"
+    ></tl-createtask>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+      @success="getTableList"
+    ></tl-edittask>
   </div>
 </template>
 
@@ -276,7 +295,7 @@ import crcloudTable from '@/components/crcloudTable';
 import assignment from './components/assignment';
 import createTask from './components/createTask';
 import editTask from './components/editTask';
-import weeklySum from './components/weeklySum';
+import taskSum from './components/taskSum';
 import CONST from './const';
 import Server from './server';
 
@@ -289,7 +308,7 @@ export default {
     'tl-assignment': assignment,
     'tl-createtask': createTask,
     'tl-edittask': editTask,
-    'tl-weeklysum': weeklySum,
+    'tl-tasksum': taskSum,
   },
   data() {
     return {
@@ -347,6 +366,9 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
+    toggleState() {
+      this.showTask = !this.showTask;
+    },
     handleAssign(id) {
       this.existAssignment = true;
       this.$nextTick(() => {
@@ -560,13 +582,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.searchblock {
-  background-color: #f4f6f8;
-  margin: 0px 16px;
-}
-.btn-disable {
-  color: #c0c4cc;
-  cursor: not-allowed;
-}
-</style>

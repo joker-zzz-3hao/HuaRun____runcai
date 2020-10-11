@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <span>当前周报汇报时间：</span>
+      <span>当前任务汇报时间：</span>
       <em>{{ weekName }}</em>
       <em>{{ weekBegin }}</em>
       <span>~</span>
@@ -82,7 +82,7 @@
       </el-table-column>
     </el-table>
     <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
-      >当前周报汇总提交</el-button
+      >当前任务汇总提交</el-button
     >
   </div>
 </template>
@@ -96,7 +96,7 @@ import Server from '../server';
 const server = new Server();
 
 export default {
-  name: 'weeklySum',
+  name: 'taskSum',
   components: {
     'tl-process': process,
   },
