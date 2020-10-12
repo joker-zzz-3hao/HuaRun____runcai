@@ -31,7 +31,6 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
-                  :disabled="true"
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
@@ -101,14 +100,14 @@
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
                 <!-- 此处点击后就永远消失 -->
-                <div
+                <!-- <div
                   class="icon-bg"
                   @click="projectInputFocus(scope.row)"
                   v-if="!scope.row.projectNameCn"
                 >
                   <i class="el-icon-plus"></i>
-                </div>
-                <div class="tag-group" v-else>
+                </div> -->
+                <!-- <div class="tag-group">
                   <ul class="tag-lists">
                     <li class="only-one">
                       <el-tooltip
@@ -122,9 +121,20 @@
                       </el-tooltip>
                     </li>
                   </ul>
-                  <!-- 此处是自己写的注释 -->
-                  <!-- <div class="verify-info">这里是校验信息</div> -->
-                </div>
+
+                </div> -->
+                <el-select
+                  v-model="scope.row.projectNameCn"
+                  placeholder="请选择关联项目"
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectName"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </template>
           </el-table-column>
@@ -260,46 +270,44 @@
     <!-- 个人OKR完成度 -->
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无数据</dd>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd class="undertake-okr-list is-o">
+      <dd
+        class="undertake-okr-list is-o"
+        v-for="item in weeklyOkrSaveList"
+        :key="item.o.okrdetailId"
+      >
         <div class="tag-kind">
           <!-- 这里根据判断显示 O 还是 KR  可共用DOM结构 -->
-          <template v-if="true">
+          <template v-if="item.kr">
             <span class="kind-parent">目标</span>
-            <el-tooltip
-              effect="dark"
-              placement="top"
-              popper-class="tl-tooltip-popper"
-            >
-              <em slot="content">这里放O的标题名称</em>
-              <em>这里放O的标题名称</em>
-            </el-tooltip>
+            <em>{{ item.o.okrDetailObjectKr }}</em>
           </template>
           <template v-if="false">
             <span class="kind-child">KR</span>
-            <em>这里放KR的标题名称</em>
+            <em> {{ item.kr.okrDetailObjectKr }}</em>
           </template>
           <span
-            >被<em>{{ 工作项2 }}</em
+            >被工作项<em>{{ itemIndex(item.kr) }}</em
             >支撑</span
           >
         </div>
         <div class="tl-progress-group">
           <span>当前进度</span>
           <tl-process
-            :data="parseInt(formData.okrDetailProgress, 10)"
+            :data="parseInt(item.progressAfter, 10)"
             :showNumber="false"
             :width="64"
             :marginLeft="6"
           ></tl-process>
           <el-slider
-            v-model="formData.okrDetailProgress"
+            v-model="item.progressAfter"
             :step="1"
-            @change="changeProgress(formData)"
+            @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
           <el-input-number
-            v-model="formData.okrDetailProgress"
+            v-model="item.progressAfter"
             controls-position="right"
             :min="0"
             :max="100"
@@ -309,7 +317,12 @@
           ></el-input-number>
           <span>%</span>
         </div>
-        <div class="week-change"><span>本周变化</span><em>具体数值</em></div>
+        <div class="week-change">
+          <span>本周变化</span
+          ><em>
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+          >
+        </div>
       </dd>
     </dl>
     <!-- 以下是你的原版 -->
@@ -404,7 +417,7 @@
       <dt class="card-title"><em>本周心情</em></dt>
       <dd></dd>
     </dl>
-    <!-- <div class="week-mood">
+    <div class="week-mood">
       <span>
         请选择本周心情
         <el-button @click="setEmotion(100)">有收获</el-button>
@@ -415,14 +428,18 @@
         <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
       </span>
     </div>
-    <el-button
+    <!-- <el-button
       style="margintop: 65px"
       :disabled="!canEdit"
       @click="commitWeekly"
       >提交</el-button
     > -->
     <div class="btn-box">
-      <el-button type="primary" @click="commitWeekly" class="tl-btn amt-bg-slip"
+      <el-button
+        :disabled="!canEdit"
+        type="primary"
+        @click="commitWeekly"
+        class="tl-btn amt-bg-slip"
         >提交</el-button
       >
     </div>
@@ -453,7 +470,7 @@
 </template>
 
 <script>
-
+import tlProcess from '@/components/process';
 import Server from '../server';
 import selectProject from './selectProject';
 
@@ -467,6 +484,7 @@ export default {
   components: {
     'add-okr': addOkr,
     selectProject,
+    tlProcess,
   },
   props: {
     calendarId: {
@@ -512,6 +530,12 @@ export default {
       },
     },
     cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    projectList: {
       type: Array,
       default() {
         return [];
