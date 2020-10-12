@@ -381,6 +381,7 @@ export default {
         taskTitle: this.formData.taskTitle,
         taskUserId: this.formData.taskUserId,
         userName: userVal.userName,
+        innerType: 0, // 用户创建
       };
       return params;
     },

@@ -128,6 +128,37 @@
             未确认
           </dd>
         </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>执行人</dt>
+          <el-select
+            v-model="searchPerson"
+            multiple
+            placeholder="请选择执行人"
+            filterable
+            remote
+            :remote-method="getUserList"
+            @change="getTableList"
+          >
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
+            >
+              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <div v-if="item.userName" class="user-name">
+                  <em>{{
+                    item.userName.substring(item.userName.length - 2)
+                  }}</em>
+                </div>
+              </el-avatar>
+              <span>{{ item.userName }}</span>
+            </el-option>
+          </el-select>
+        </dl>
         <!-- <div style="display: flex">
           <span
             v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
@@ -341,11 +372,14 @@ export default {
       moveProcessId: null,
       showTask: true,
       processVisible: false,
+      userList: [], // 执行人列表
+      searchPerson: [],
     };
   },
   created() {
     this.getTableList();
     this.getProcess();
+    this.getUserList();
   },
   computed: {
     ...mapState('common', {
@@ -381,6 +415,22 @@ export default {
       this.$nextTick(() => {
         this.$refs.editTask.show(id);
       });
+    },
+    getUserList(name = '') {
+      const params = {
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.userInfo.orgList[0].orgFullId,
+        userName: name.trim(),
+      };
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content;
+        }
+      });
+    },
+    errorHandler() {
+      return true;
     },
     getTableList() {
       const params = {
