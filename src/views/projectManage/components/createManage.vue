@@ -53,8 +53,8 @@
             class="tl-select"
           >
             <el-option
-              v-for="item in projectManagerList"
-              :key="item.userId"
+              v-for="(item, index) in projectManagerList"
+              :key="index + item.userId"
               :label="item.userName"
               :value="item.userId"
             >
@@ -228,17 +228,25 @@ export default {
     createManage() {
       this.$refs.projectForm.validate((valid) => {
         if (valid) {
+          const projectManagerObj = this.projectManagerList.filter(
+            (item) => item.userId == this.formData.projectManager,
+          ) || [];
           this.server.createProject({
             projectNameCn: this.formData.projectName,
-            projectDesc: this.formData.projectDesc,
-            projectManager: this.formData.projectManager,
+            projectDescription: this.formData.projectDesc,
+            projectManagerCode: this.formData.projectManager,
+            projectManager: projectManagerObj.length > 0 ? projectManagerObj.userName : this.formData.projectManager,
             projectType: this.formData.projectType,
+            projectTypeCode: this.formData.projectType,
             projectInputType: this.formData.throwType,
+            projectInputTypeCode: this.formData.throwType,
             projectBudget: this.formData.totalBudget,
             projectCurrency: this.formData.currency,
+            projectCurrencyCode: this.formData.currency,
             projectBeginDate: this.formData.startDate,
             projectEndDate: this.formData.endDate,
             projectApplyDepName: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
+            projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
             if (res.code == '200') {
               this.$emit('success');

@@ -46,6 +46,11 @@ const CURRENCY_LIST = [
   { value: '1', label: '港币' },
 ];
 
+const PROJECT_STATUS_MAP = {
+  0: '进行中',
+  1: '已关闭',
+};
+
 export default {
   THROW_TYPE_MAP,
   THROW_TYPE_LIST,
@@ -55,4 +60,5 @@ export default {
   PROJECT_TYPE_LIST,
   LEVEL_LIST,
   FUNC_LIST,
+  PROJECT_STATUS_MAP,
 };

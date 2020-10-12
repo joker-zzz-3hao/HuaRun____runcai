@@ -115,6 +115,7 @@ export default {
       total: 0,
       currentPage: 0,
       pageSize: 0,
+      baseInfo: {},
       isTalentAdmin: false,
       showAddMember: false,
       tableData: [
@@ -153,8 +154,18 @@ export default {
         this.isTalentAdmin = true;
       }
     });
+    this.init();
   },
   methods: {
+    init() {
+      this.server.projectDetail({
+        projectId: this.$route.query.projectId || '',
+      }).then((res) => {
+        if (res.code == '200') {
+          this.baseInfo = res.data;
+        }
+      });
+    },
     searchList() {},
     deleteMember(data) {
       this.$xconfirm({
