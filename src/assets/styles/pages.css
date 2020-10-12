@@ -296,7 +296,6 @@
 }
 
 .overview .cont-area .tag-kind .kind-parent + em {
-  font-size: 16px;
   color: #26282a;
 }
 
@@ -1170,7 +1169,6 @@
 }
 
 .my-okr .cont-area .tag-kind .kind-parent + em {
-  font-size: 16px;
   color: #26282a;
 }
 
@@ -2898,4 +2896,61 @@
 
 .okr-cycle .tl-drawer .el-drawer__body {
   margin-top: 6px;
+}
+
+/* 价值观管理 */
+.worth-manage {
+  /* padding: 16px; */
+  margin: 0;
+  min-height: calc(100vh - 70px);
+}
+
+.worth-manage .tl-tabs .el-tabs__header {
+  padding: 0 48px;
+  background: #fff;
+}
+
+.worth-manage .tl-tabs .el-tabs__item {
+  padding: 15px 20px;
+}
+
+.worth-manage .tl-tabs .el-tabs__nav-wrap::after {
+  content: unset;
+}
+
+.worth-manage .tl-tabs .el-tabs__content {
+  padding: 20px 30px;
+  margin: 0 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 150px);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.worth-manage .tl-form-inline {
+  margin: 0 0 20px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.worth-manage .tl-form-inline .el-form-item {
+  margin: 0 0 0 30px;
+}
+
+.worth-manage .tl-form-inline .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.worth-manage .tl-tabs .el-tabs__content > div,
+.worth-manage .event-book {
+  display: flex;
+  flex-direction: column;
+}
+
+.worth-manage .tl-tabs .el-tabs__content > div,
+.worth-manage .event-book,
+.event-book .table-pagination {
+  flex: 1;
 }
