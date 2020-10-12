@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div>复盘对象：2020年下半年OKR (2020/06/01-2020/12/31)</div>
+    <div>复盘对象：{{ okrMain.okrMainVo.periodName }}</div>
     <div class="replay-user">
-      <div class="list">姓名：陆涛</div>
-      <div class="list">OKR进度： 76%</div>
-      <div class="list">复盘时间： 2020年9月21日 12:23</div>
+      <div class="list">姓名：{{ okrMain.okrMainVo.userName }}</div>
+      <div class="list">OKR进度： {{ okrMain.okrMainVo.okrProgress }}%</div>
+      <div class="list">
+        复盘时间： {{ okrMain.okrMainVo.reviewCommitTime }}
+      </div>
     </div>
     <div>
       <el-radio-group v-model="form.resource">
@@ -12,100 +14,205 @@
         <el-radio label="以目标O复盘"></el-radio>
       </el-radio-group>
     </div>
-    <div>
+    <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
       <el-collapse accordion v-model="activeNames" @change="handleChange">
         <el-collapse-item name="1">
           <template slot="title">
             <div style="width: 100%">
-              <em>目标1</em><em>完成上半年营收入100万元</em>
+              <em>目标1</em><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 30%</em>
-                <em>进度 100%</em>
+                <em>权重 {{ item.o.okrWeight }}%</em>
+                <em>进度 {{ item.o.okrDetailProgress }}%</em>
               </div>
             </div>
           </template>
-          <div>
+          <div v-for="(list, i) in item.krs" :key="i">
             <div style="width: 100%">
-              <em>KR1 </em
-              ><em>形成个别生态能力的解决方案，为下半年营收做准备</em>
+              <em>KR1 </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 30%</em>
-                <em>进度 100%</em>
+                <em>权重 {{ list.okrWeight }}%</em>
+                <em>进度 {{ item.okrDetailProgress }}%</em>
               </div>
             </div>
-          </div>
-          <div>
-            考核指标
-            完成物理机（连通性、资源使用情况等）、虚拟机（连通性）的监控机制。
-          </div>
-          <div>衡量办法 功能上线通知</div>
-          <div>
-            <div>价值与收获</div>
+
             <div>
-              他成功地带领英特尔从一家存储器芯片制造商转型为全球微处理器领域的霸主。
-              格鲁夫对德鲁克的MBO推崇备至，并将MBO引入英特尔。不过，格鲁夫对德鲁克的MBO做了一些修改，
-              将其变成了今天我们绝大多数人所看到的框架。他成功地带领英特尔从一家存储器芯片制造商转型为全球微处理器领域的霸主。
-              格鲁夫对德鲁克的MBO推崇备至，并将MBO引入英特尔。不过，格鲁夫对德鲁克的MBO做了一些修改，将其变成了今天我们绝大多数人所看到的框架。
+              考核指标
+              {{ list.checkQuota }}
             </div>
-          </div>
-          <div>
-            <div>问题与不足</div>
+            <div>衡量办法 {{ list.judgeMethod }}</div>
             <div>
-              他成功地带领英特尔从一家存储器芯片制造商转型为全球微处理器领域的霸主。格鲁夫对德鲁克的MBO推崇备至，并将MBO引入英特尔。不过，
-              格鲁夫对德鲁克的MBO做了一些修改，将其变成了今天我们绝大多数人所看到。
-            </div>
-          </div>
-          <div>
-            <div>改进措施</div>
-            <div>
+              <div>价值与收获</div>
               <div>
-                <em>
-                  1、员工目标的设定应该上下级高度参与，而不应由高层自上而下强制推行；
-                </em>
+                {{ list.advantage }}
               </div>
               <div>
-                <em> 2、强调员工的参与和自我管理 </em>
+                <div>问题与不足</div>
+                <div>
+                  {{ list.disadvantage }}
+                </div>
               </div>
               <div>
-                <em> 3、目标的设置不仅要关注短期，更应该关注长期。 </em>
+                <div>改进措施</div>
+                <div>
+                  <div v-for="(li, d) in list.measure" :key="d">
+                    <em>
+                      {{ li }}
+                    </em>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div>
-            <div>复盘沟通</div>
-            <el-input type="textarea" placeholder="不超过1000字符"></el-input>
-            <div>
-              <em>请选择：</em>
-              <el-button type="primary">超级优秀</el-button>
-              <el-button type="primary">优秀</el-button>
-              <el-button type="primary">继续努力</el-button>
-              <el-button type="primary">要加油哦</el-button>
+              <div>
+                <div>复盘沟通</div>
+                <el-input
+                  type="textarea"
+                  placeholder="不超过1000字符"
+                  v-model="list.communication"
+                  @input="inputCommunication($event, index, i)"
+                ></el-input>
+                <div>
+                  <em>请选择：</em>
+                  <el-button
+                    :type="btnText == list.communicationLabel ? 'primary' : ''"
+                    @click="selectCommunicationLabel(btnText, index, i)"
+                    v-for="(btnText, key) in listBtn"
+                    :key="key"
+                    >{{ btnText }}</el-button
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </el-collapse-item>
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary">保存</el-button>
-      <el-button type="primary">确认沟通</el-button>
-      <el-button type="primary">关闭</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click="submit">确认沟通</el-button>
+      <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import Server from '../../server';
 
+const server = new Server();
 export default {
   name: 'home',
   data() {
     return {
       form: {},
       activeNames: ['1'],
+      server,
+      okrMain: {
+        okrMainVo: {},
+      },
+      active: {},
+      communication: {},
+      communicationLabel: {},
+      list: [],
+      listBtn: [
+        '超级优秀',
+        '优秀',
+        '继续努力',
+        '要加油哦',
+      ],
     };
   },
+  created() {
+    this.getOkrReviewDetail();
+  },
+
   methods: {
+    checkDatakrs(clear) {
+      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
+      const krs = [];
+      let krsList;
+      krsData.forEach((item) => {
+        krsList = krs.concat(item);
+      });
+      if (clear) {
+        this.list = krsList.map((item) => ({
+          detailId: item.detailId,
+          okrDetailId: item.okrDetailId,
+          communication: '',
+          communicationLabel: '',
+        }));
+      } else {
+        this.list = krsList.map((item) => ({
+          detailId: item.detailId,
+          okrDetailId: item.okrDetailId,
+          communication: item.communication,
+          communicationLabel: item.communicationLabel,
+        }));
+      }
+    },
+    inputCommunication(value, index, i) {
+      this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
+    },
+    selectCommunicationLabel(value, index, i) {
+      const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
+      mainData.communicationLabel = value;
+    },
+    save() {
+      this.checkDatakrs(false);
+      const params = {
+        okrMainVo: {
+          okrId: this.okrMain.okrMainVo.okrId,
+        },
+        list: this.list,
+      };
+      this.server.okrReviewCommunicationSave(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('保存成功');
+        }
+      });
+    },
+    handleDeleteOne() {
+      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
+        .then(() => {
+          this.clearClose();
+        })
+        .catch(() => {});
+    },
+    clearClose() {
+      this.checkDatakrs(true);
+      const params = {
+        okrMainVo: {
+          okrId: this.okrMain.okrMainVo.okrId,
+        },
+        list: this.list,
+      };
+      this.server.okrReviewCommunicationSave(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('保存成功');
+        }
+      });
+    },
+    submit() {
+      this.checkDatakrs(false);
+      const params = {
+        okrMainVo: {
+          okrId: this.okrMain.okrMainVo.okrId,
+        },
+        list: this.list,
+      };
+      this.server.okrReviewCommunicationSubmit(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+        }
+      });
+    },
     handleChange(val) {
       console.log(val);
+    },
+    getOkrReviewDetail() {
+      this.server.getOkrReviewDetail({
+        okrMainId: this.$route.query.okrId,
+      }).then((res) => {
+        this.okrMain = res.data;
+        this.checkDatakrs();
+      });
     },
   },
 };

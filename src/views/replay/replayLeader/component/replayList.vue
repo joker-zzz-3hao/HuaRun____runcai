@@ -40,6 +40,16 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item>
+              <el-input
+                maxlength="64"
+                v-model="userName"
+                placeholder="请输入用户名称"
+                class="tl-input-search"
+              >
+                <i class="el-icon-search" slot="prefix"></i>
+              </el-input>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -107,10 +117,10 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.reviewStatus == 2"
+                  v-if="scope.$index > 0"
                   @click="
                     $router.push({
-                      name: 'replayEdit',
+                      name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
                       },
@@ -121,6 +131,21 @@
                 <el-button
                   type="text"
                   class="tl-btn"
+                  v-if="scope.$index == 0"
+                  @click="
+                    $router.push({
+                      name: 'replayEdit',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
+                  "
+                  >复盘</el-button
+                >
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-if="scope.row.reviewStatus == 3"
                   @click="
                     $router.push({
                       name: 'replayDetail',
@@ -153,11 +178,13 @@ export default {
     return {
       form: {},
       server,
+      keyWord: '',
       periodId: '',
       periodIdList: [],
       tableData: [],
       CONST,
       currentPage: 1,
+      userName: '',
       pageSize: 20,
       totalpage: 0,
       reviewStatus: '',
@@ -172,13 +199,13 @@ export default {
 
         periodId: this.periodId, // 周期id，必传
         reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
-        userName: '', // 支持精确搜索
+        userName: this.userName, // 支持精确搜索
         currentPage: this.currentPage, // 可以不传，默认是1
         pageSize: this.pageSize, // 可以不传，默认是20
 
       }).then((res) => {
         this.tableData = res.data.content;
-        this.total = res.data.total;
+        this.totalpage = res.data.total;
       });
     },
     getOkrCycleList() {

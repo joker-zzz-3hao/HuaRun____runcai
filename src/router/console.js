@@ -222,6 +222,18 @@ export default [{
       component: () => import('@/views/replay/replayLeader/component/replayEdit'),
     },
     {
+      path: '/replayLink',
+      name: 'replayLink',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'replayLink',
+        title: 'replayLink',
+        power: '',
+      },
+      component: () => import('@/views/replay/replayLeader/component/replayLink'),
+    },
+    {
       path: '/replayDetail',
       name: 'replayDetail',
       meta: {

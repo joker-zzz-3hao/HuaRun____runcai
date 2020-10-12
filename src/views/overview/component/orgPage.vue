@@ -90,26 +90,27 @@
     </template>
 
     <template v-else>
-      <div class="tl-card-panel no-data">
-        <span v-if="$route.query.id" class="bg-no-data"></span>
-        <el-button
-          v-else
-          v-show="showLoad"
-          type="primary"
-          icon="el-icon-plus"
-          @click="
-            $router.push({
-              name: 'myOkr',
-              query: {
-                openWriteOkr: true,
-                periodId,
-              },
-            })
-          "
-          class="tl-btn amt-bg-slip"
-          >创建OKR</el-button
-        >
+      <div class="tl-card-panel no-data" v-if="$route.query.id">
+        <span class="bg-no-data"></span>
       </div>
+
+      <el-button
+        v-else
+        v-show="showLoad"
+        type="primary"
+        icon="el-icon-plus"
+        @click="
+          $router.push({
+            name: 'myOkr',
+            query: {
+              openWriteOkr: true,
+              periodId,
+            },
+          })
+        "
+        class="tl-btn amt-bg-slip"
+        >去创建OKR</el-button
+      >
     </template>
   </div>
 </template>
