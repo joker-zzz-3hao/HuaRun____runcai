@@ -208,12 +208,12 @@
               >搜索</el-button
             >
           </el-form>
-          <el-button
+          <!-- <el-button
             type="primary"
             @click="goUndertake"
             class="tl-btn amt-bg-slip"
             >OKR对齐</el-button
-          >
+          > -->
         </div>
       </div>
     </div>
