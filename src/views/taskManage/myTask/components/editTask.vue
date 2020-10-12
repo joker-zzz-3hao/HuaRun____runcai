@@ -314,7 +314,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="save"
-        >确认指派</el-button
+        >指派</el-button
       >
       <el-button v-else type="primary" class="tl-btn amt-bg-slip" @click="save">
         <span>确认</span>
