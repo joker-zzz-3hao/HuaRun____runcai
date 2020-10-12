@@ -181,7 +181,7 @@
         >暂存</el-button
       >
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
-        >确认指派</el-button
+        >指派</el-button
       >
     </div>
     <tl-selectproject
