@@ -28,9 +28,9 @@ const OKR_KIND_MAP = {
   1: '关键结果',
 };
 const CONFIDENCE_MAP = {
-  1: '无风险',
-  2: '风险可控',
-  3: '失控',
+  1: '信心指数高',
+  2: '信心指数中',
+  3: '信心指数低',
 };
 export default {
   STATUS_MAP,

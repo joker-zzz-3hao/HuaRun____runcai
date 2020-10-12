@@ -12,8 +12,9 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
     </div>
-    <div class="cont-box">
-      <!-- <div>
+    <el-scrollbar>
+      <div class="cont-box">
+        <!-- <div>
         <span>选择团队</span>
         <el-select v-model="team">
           <el-option v-for="item in " :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -27,31 +28,34 @@
           <span>{{ userInfo.userName }}</span>
         </span>
       </div>-->
-      <dl class="dl-list">
-        <dt class="list-title">
-          <em>团队目标</em>
-        </dt>
-        <dd class="tag-kind">
-          <el-radio-group v-model="orgSelectData">
-            <el-radio
-              class="tl-radio"
-              v-for="(teamTarget, index) in orgOkrList"
-              :label="teamTarget.okrDetailId"
-              :key="teamTarget.okrDetailId"
-              @click.native="selectOrgOkr($event, index, teamTarget)"
-            >
-              <span
-                :class="
-                  teamTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
-                "
-              >{{ teamTarget.indexText }}</span>
-              <em>{{ teamTarget.okrDetailObjectKr }}</em>
-            </el-radio>
-          </el-radio-group>
-        </dd>
-        <dd class="tag-kind" v-if="orgOkrList.length < 1">暂无可承接的团队目标</dd>
-      </dl>
-      <!-- <el-checkbox-group v-model="orgSelectData">
+        <dl class="dl-list">
+          <dt class="list-title">
+            <em>团队目标</em>
+          </dt>
+          <dd class="tag-kind">
+            <el-radio-group v-model="orgSelectData">
+              <el-radio
+                class="tl-radio"
+                v-for="(teamTarget, index) in orgOkrList"
+                :label="teamTarget.okrDetailId"
+                :key="teamTarget.okrDetailId"
+                @click.native="selectOrgOkr($event, index, teamTarget)"
+              >
+                <span
+                  :class="
+                    teamTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
+                  "
+                  >{{ teamTarget.indexText }}</span
+                >
+                <em>{{ teamTarget.okrDetailObjectKr }}</em>
+              </el-radio>
+            </el-radio-group>
+          </dd>
+          <dd class="tag-kind" v-if="orgOkrList.length < 1">
+            暂无可承接的团队目标
+          </dd>
+        </dl>
+        <!-- <el-checkbox-group v-model="orgSelectData">
           <el-checkbox
             :class="{'move-to-right':teamTarget.okrType = 'KR'}"
             v-for="teamTarget in orgOkrList"
@@ -63,31 +67,34 @@
             {{teamTarget.okrDetailObjectKr}}
           </el-checkbox>
       </el-checkbox-group>-->
-      <dl class="dl-list">
-        <dt class="list-title">
-          <em>个人目标</em>
-        </dt>
-        <dd class="tag-kind">
-          <el-radio-group v-model="personalSelectData">
-            <el-radio
-              class="tl-radio"
-              v-for="(personalTarget, index) in myOkrList"
-              :label="personalTarget.okrDetailId"
-              :key="personalTarget.okrDetailId"
-              @click.native="selectMyOkr($event, index, personalTarget)"
-            >
-              <span
-                :class="
-                  personalTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
-                "
-              >{{ personalTarget.indexText }}</span>
-              <em>{{ personalTarget.okrDetailObjectKr }}</em>
-            </el-radio>
-          </el-radio-group>
-        </dd>
-        <dd class="tag-kind" v-if="myOkrList.length < 1">暂无可承接的个人目标</dd>
-      </dl>
-      <!-- <el-checkbox-group v-model="personalSelectData">
+        <dl class="dl-list">
+          <dt class="list-title">
+            <em>个人目标</em>
+          </dt>
+          <dd class="tag-kind">
+            <el-radio-group v-model="personalSelectData">
+              <el-radio
+                class="tl-radio"
+                v-for="(personalTarget, index) in myOkrList"
+                :label="personalTarget.okrDetailId"
+                :key="personalTarget.okrDetailId"
+                @click.native="selectMyOkr($event, index, personalTarget)"
+              >
+                <span
+                  :class="
+                    personalTarget.okrType == 'O' ? 'kind-parent' : 'kind-child'
+                  "
+                  >{{ personalTarget.indexText }}</span
+                >
+                <em>{{ personalTarget.okrDetailObjectKr }}</em>
+              </el-radio>
+            </el-radio-group>
+          </dd>
+          <dd class="tag-kind" v-if="myOkrList.length < 1">
+            暂无可承接的个人目标
+          </dd>
+        </dl>
+        <!-- <el-checkbox-group v-model="personalSelectData">
           <el-checkbox
             v-for="personalTarget in myOkrList"
             :label="personalTarget.okrDetailId"
@@ -98,26 +105,32 @@
             {{personalTarget.okrDetailObjectKr}}
           </el-checkbox>
       </el-checkbox-group>-->
-      <dl class="dl-list">
-        <dt class="list-title">
-          <em>公司价值观</em>
-        </dt>
-        <dd>
-          <el-checkbox-group v-model="valueSelectData">
-            <el-checkbox
-              v-for="culture in cultureList"
-              class="tl-checkbox"
-              :label="culture.id"
-              :key="culture.id"
-              @change="cultureChange"
-            >{{ culture.cultureName }}</el-checkbox>
-          </el-checkbox-group>
-        </dd>
-      </dl>
-    </div>
+        <dl class="dl-list">
+          <dt class="list-title">
+            <em>公司价值观</em>
+          </dt>
+          <dd>
+            <el-checkbox-group v-model="valueSelectData">
+              <el-checkbox
+                v-for="culture in cultureList"
+                class="tl-checkbox"
+                :label="culture.id"
+                :key="culture.id"
+                @change="cultureChange"
+                >{{ culture.cultureName }}</el-checkbox
+              >
+            </el-checkbox-group>
+          </dd>
+        </dl>
+      </div>
+    </el-scrollbar>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm">确认</el-button>
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close">取消</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="confirm"
+        >确认</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>

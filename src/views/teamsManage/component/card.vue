@@ -1,20 +1,20 @@
 <template>
-  <div style="width: 216px;position: relative;">
+  <div style="width: 216px; position: relative">
     <div v-if="node.node.orgType == '0'">
-      <div>{{node.node.orgName}}</div>
-      <div>{{node.node.orgLeader || node.node.userName}}</div>
+      <div>{{ node.node.orgName }}</div>
+      <div>{{ node.node.orgLeader || node.node.userName }}</div>
     </div>
     <div
       v-else-if="node.node.orgType == '1'"
-      style="position: absolute;top: 0;right: 0;"
+      style="position: absolute; top: 0; right: 0"
       @click="deleteFictitious(node.node)"
     >
-      <div>{{node.node.orgName}}</div>
-      <div>{{node.node.orgLeader || '未设置'}}</div>
+      <div>{{ node.node.orgName }}</div>
+      <div>{{ node.node.orgLeader || "未设置" }}</div>
       <i class="el-icon-close"></i>
     </div>
     <div v-else-if="!node.node.orgType && node.node.userName">
-      <div>{{node.node.userName}}</div>
+      <div>{{ node.node.userName }}</div>
     </div>
     <div v-if="node.node.add">
       <div>
@@ -24,7 +24,13 @@
           :options="orgData"
           v-show="showSelect"
           @change="changePanel"
-          :props="{checkStrictly: true,value: 'orgId',label: 'orgName',children: 'sonTree',expandTrigger: 'hover'}"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'sonTree',
+            expandTrigger: 'hover',
+          }"
         ></el-cascader-panel>
       </div>
       <div>添加虚线汇报部门</div>
@@ -59,6 +65,12 @@ export default {
         return [];
       },
     },
+    orgList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -67,6 +79,7 @@ export default {
       customColor: '#409eff',
       showSelect: false,
       fictitiousOrgId: '',
+      flag: false,
     };
   },
   mounted() {},
@@ -78,6 +91,17 @@ export default {
     changePanel(data) {
       if (data.length > 0) {
         this.showSelect = false;
+        this.flag = false;
+        // 判断是否和实体组织一样，若一样则不能设置成虚拟部门
+        this.orgList.forEach((item) => {
+          if (item.orgId == data[data.length - 1]) {
+            this.flag = true;
+          }
+        });
+        if (this.flag) {
+          this.$message.warning('虚拟汇报部门不能和实体部门一样');
+          return;
+        }
         this.server.addReportRelation({
           userId: this.userData.userId,
           orgId: data[data.length - 1],

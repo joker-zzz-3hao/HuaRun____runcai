@@ -1,7 +1,7 @@
 const STATUS_LIST = [{
   name: '进行中', id: '1',
 }, {
-  name: '考核中', id: '2',
+  name: '复盘中', id: '2',
 }, {
   name: '已完成', id: '3',
 }, {
@@ -17,7 +17,7 @@ const STATUS_LIST = [{
 }];
 const STATUS_LIST_MAP = {
   1: '进行中',
-  2: '考核中',
+  2: '复盘中',
   3: '已完成',
   4: '已结束',
   5: '未开始',
@@ -26,16 +26,16 @@ const STATUS_LIST_MAP = {
   8: '被退回',
 };
 const CONFIDENCE = [{
-  label: '无风险', value: '1',
+  label: '信心指数高', value: '1',
 }, {
-  label: '风险可控', value: '2',
+  label: '信心指数中', value: '2',
 }, {
-  label: '失控', value: '3',
+  label: '信心指数低', value: '3',
 }];
 const CONFIDENCE_MAP = {
-  1: '无风险',
-  2: '风险可控',
-  3: '失控',
+  1: '信心指数高',
+  2: '信心指数中',
+  3: '信心指数低',
 };
 
 const WEEKLYEMOTION = {

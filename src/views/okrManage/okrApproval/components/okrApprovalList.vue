@@ -12,9 +12,9 @@
           <el-table :data="tableData" :empty-text="emptyText" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
-                <img v-if="scope.row.headUrl" :src="uscope.row.headUrl" alt />
-                <div v-else-if="scope.row.userName" class="user-info">
-                  <div class="user-name">
+                <div class="user-info">
+                  <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                  <div v-else-if="scope.row.userName" class="user-name">
                     <em>{{
                       scope.row.userName.substring(
                         scope.row.userName.length - 2
@@ -208,12 +208,12 @@
               >搜索</el-button
             >
           </el-form>
-          <el-button
+          <!-- <el-button
             type="primary"
             @click="goUndertake"
             class="tl-btn amt-bg-slip"
             >OKR对齐</el-button
-          >
+          > -->
         </div>
       </div>
     </div>

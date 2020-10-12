@@ -27,6 +27,7 @@
               @deleteSuccess="deleteSuccess"
               :userData="userData"
               :orgData="orgData"
+              :orgList="orgList"
               @addFictitiousSuccess="addFictitiousSuccess"
             ></tl-card>
           </template>
@@ -60,6 +61,7 @@ export default {
       treeData: [],
       userData: {},
       orgData: [],
+      orgList: [],
     };
   },
   mounted() {
@@ -89,6 +91,7 @@ export default {
             item.userName = item.orgLeader;
             self.treeData.push(item);
           });
+          self.orgList = self.treeData;
           if (self.treeData.length < 3) {
             self.treeData.push({
               parentId: data.userId,

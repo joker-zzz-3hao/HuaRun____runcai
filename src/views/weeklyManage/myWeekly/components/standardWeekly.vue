@@ -119,14 +119,14 @@
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
                 <!-- 此处点击后就永远消失 -->
-                <div
+                <!-- <div
                   class="icon-bg"
                   @click="projectInputFocus(scope.row)"
                   v-if="!scope.row.projectNameCn"
                 >
                   <i class="el-icon-plus"></i>
-                </div>
-                <div class="tag-group">
+                </div> -->
+                <!-- <div class="tag-group">
                   <ul class="tag-lists">
                     <li class="only-one" v-if="scope.row.projectNameCn">
                       <el-tooltip
@@ -141,9 +141,20 @@
                       <i class="el-icon-close" @click="projectDelete()"></i>
                     </li>
                   </ul>
-                  <!-- 此处是自己写的注释 -->
-                  <!-- <div class="verify-info">这里是校验信息</div> -->
-                </div>
+
+                </div> -->
+                <el-select
+                  v-model="scope.row.projectNameCn"
+                  placeholder="请选择关联项目"
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectName"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </template>
           </el-table-column>
@@ -412,11 +423,7 @@
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
       <dd>
-        <el-form
-          :model="formData"
-          v-show="weeklyData.weeklyId || planOpen"
-          class="tl-form"
-        >
+        <el-form :model="formData" class="tl-form">
           <el-table
             v-loading="tableLoading"
             :data="formData.weeklyPlanSaveList"
@@ -431,7 +438,6 @@
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
-                    :disabled="true"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
@@ -533,6 +539,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无数据</dd>
       <dd
         class="undertake-okr-list is-o"
         v-for="item in weeklyOkrSaveList"
@@ -549,7 +556,7 @@
             <em> {{ item.kr.okrDetailObjectKr }}</em>
           </template>
           <span
-            >被<em>{{ itemIndex(item.kr) }}</em
+            >被工作项<em>{{ itemIndex(item.kr) }}</em
             >支撑</span
           >
         </div>
@@ -684,7 +691,7 @@
       <dt class="card-title"><em>本周心情</em></dt>
       <dd></dd>
     </dl>
-    <!-- <div style="margintop: 50px">
+    <div style="margintop: 50px">
       <span>
         请选择本周心情
         <el-button @click="setEmotion(100)">有收获</el-button>
@@ -694,9 +701,13 @@
         <el-button @click="setEmotion(0)">让我静静</el-button>
         <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
       </span>
-    </div> -->
+    </div>
     <div class="btn-box">
-      <el-button type="primary" @click="commitWeekly" class="tl-btn amt-bg-slip"
+      <el-button
+        :disabled="!canEdit"
+        type="primary"
+        @click="commitWeekly"
+        class="tl-btn amt-bg-slip"
         >提交</el-button
       >
     </div>
@@ -734,6 +745,7 @@
 
 <script>
 
+import tlProcess from '@/components/process';
 import Server from '../server';
 import selectProject from './selectProject';
 import addOkr from './addOkr';
@@ -744,6 +756,7 @@ export default {
   components: {
     'add-okr': addOkr,
     selectProject,
+    'tl-process': tlProcess,
   },
   props: {
     calendarId: {
@@ -789,6 +802,12 @@ export default {
       },
     },
     cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    projectList: {
       type: Array,
       default() {
         return [];
@@ -855,19 +874,19 @@ export default {
       riskList: [
         {
           value: 1,
-          label: '无风险',
+          label: '信心指数高',
         },
         {
           value: 2,
-          label: '风险可控',
+          label: '信心指数中',
         },
         {
           value: 3,
-          label: '失控',
+          label: '信心指数低',
         },
       ],
       thoughtOpen: false,
-      planOpen: false,
+      // planOpen: false,
       randomIdForProject: '',
       textarea: '',
       showTaskProcess: false,
@@ -913,6 +932,8 @@ export default {
       // this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
+      // 来自任务的数据
+      console.log('任务', this.$route.query);
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
         // 反显周报列表数据
@@ -1203,12 +1224,12 @@ export default {
     closeThought() {
       this.thoughtOpen = false;
     },
-    openPlan() {
-      this.planOpen = true;
-    },
-    closePlan() {
-      this.planOpen = false;
-    },
+    // openPlan() {
+    //   this.planOpen = true;
+    // },
+    // closePlan() {
+    //   this.planOpen = false;
+    // },
     projectInputFocus(work) {
       this.randomIdForProject = work.randomId;
       this.showProjectDialog = true;
