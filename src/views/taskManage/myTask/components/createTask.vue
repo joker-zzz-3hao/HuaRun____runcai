@@ -181,7 +181,7 @@
         >暂存</el-button
       >
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
-        >确认指派</el-button
+        >指派</el-button
       >
     </div>
     <tl-selectproject
@@ -292,7 +292,7 @@ export default {
       };
       this.server.queryOkr(params).then((res) => {
         if (res.code == 200) {
-          this.okrList = res.data.okrDetails;
+          this.okrList = res.data.okrDetails || [];
           console.log(res.data);
         }
       });

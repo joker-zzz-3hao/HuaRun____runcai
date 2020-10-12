@@ -91,6 +91,10 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>任务步骤</dt>
+          <!-- 为了不闪 -->
+          <dd v-if="childCateList.length == 0" class="tag-item is-selected">
+            全部
+          </dd>
           <dd
             class="tag-item"
             :class="{ 'is-selected': item.isSelected }"
@@ -105,9 +109,24 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>确认接收</dt>
-          <dd :class="{ 'is-selected': 这里是默认选择全部的条件 }"></dd>
-          <dd>已确认</dd>
-          <dd>未确认</dd>
+          <dd
+            :class="{ 'is-selected': accept === null }"
+            @click="changeAccept(null)"
+          >
+            全部
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === true }"
+            @click="changeAccept(true)"
+          >
+            已确认
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === false }"
+            @click="changeAccept(false)"
+          >
+            未确认
+          </dd>
         </dl>
         <!-- <div style="display: flex">
           <span
@@ -193,95 +212,27 @@
             <el-table-column align="left" prop="userName">
               <template slot-scope="scope">
                 <div>
-                  <el-avatar :size="30">
-                    <div class="user-name">
-                      <em v-if="scope.row.userName">
-                        {{
-                          scope.row.userName.substring(
-                            scope.row.userName.length - 2
-                          )
-                        }}
-                      </em>
-                    </div>
-                  </el-avatar>
-                  <span>{{ scope.row.userName || "无执行人" }}</span>
+                  <span>{{ scope.row.userName || "未指派" }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
-                  :disabled="
-                    !(
-                      scope.row.taskStatus == 10 &&
-                      scope.row.taskUserId == userInfo.userId
-                    )
+                  v-if="
+                    scope.row.taskStatus == 10 &&
+                    scope.row.taskUserId == userInfo.userId
                   "
-                  :class="{
-                    'btn-disable': !(
-                      scope.row.taskStatus == 10 &&
-                      scope.row.taskUserId == userInfo.userId
-                    ),
-                  }"
-                  type="text"
                   @click="acceptTask(scope.row.taskId)"
                   class="tl-btn"
                   >确认接收</el-button
                 >
                 <el-button
-                  :disabled="
-                    !(
-                      scope.row.createBy == userInfo.userId &&
-                      (scope.row.taskStatus == 0 ||
-                        (scope.row.taskStatus == 10 && !scope.row.taskUserId))
-                    )
-                  "
-                  :class="{
-                    'btn-disable': !(
-                      scope.row.createBy == userInfo.userId &&
-                      (scope.row.taskStatus == 0 ||
-                        (scope.row.taskStatus == 10 && !scope.row.taskUserId))
-                    ),
-                  }"
-                  type="text"
-                  @click="handleAssign(scope.row.taskId)"
+                  v-else
                   class="tl-btn"
-                  >确认指派</el-button
+                  @click="openEdit(scope.row.taskId)"
+                  >编辑</el-button
                 >
-                <el-popover
-                  :disabled="scope.row.taskStatus != 20"
-                  placement="bottom"
-                  width="200"
-                  trigger="click"
-                  v-model="scope.row.processVisible"
-                  @show="queryStep(scope.row)"
-                >
-                  <div v-show="stepList.length > 0">
-                    <el-select
-                      v-model="scope.row.stepId"
-                      @change="moveTask(scope.row)"
-                    >
-                      <el-option
-                        v-for="item in stepList"
-                        :key="item.stepId"
-                        :value="item.stepId"
-                        :label="item.stepName"
-                        ><span>{{ item.stepName }}</span
-                        ><span v-if="item.stepId == scope.row.stepId"
-                          >当前</span
-                        ></el-option
-                      >
-                    </el-select>
-                  </div>
-                  <el-button
-                    :disabled="scope.row.taskStatus != 20"
-                    :class="{ 'btn-disable': scope.row.taskStatus != 20 }"
-                    slot="reference"
-                    type="text"
-                    class="tl-btn"
-                    >移动</el-button
-                  >
-                </el-popover>
               </template>
             </el-table-column>
             <el-table-column width="80px">
@@ -552,8 +503,17 @@ export default {
     },
 
     switchParent(parentCate) {
+      console.log(parentCate);
       // 查任务步骤
       this.childCateList = [];
+      this.taskProcess = parentCate;
+      this.resetIsSelected(this.taskProcessList);
+      parentCate.isSelected = true;
+      // 如果选择全部，清空选择
+      if (parentCate.value == 'all') {
+        this.selectStatus({ label: '全部', value: null, isSelected: true });
+        this.resetIsSelected(this.taskProcessList, 'init');
+      }
       const params = {
         available: 1,
         processId: parentCate.value,
@@ -573,9 +533,6 @@ export default {
           });
         }
       });
-      this.taskProcess = parentCate;
-      this.resetIsSelected(this.taskProcessList);
-      parentCate.isSelected = true;
       for (const item of this.taskProcessList) {
         if (item.value == parentCate.value) {
           this.resetIsSelected(item.childCateList, 'init');
@@ -588,6 +545,7 @@ export default {
       if (this.taskProcess.value == 'all') {
         this.searchList = [];
       } else {
+        // 验重
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -599,6 +557,18 @@ export default {
     },
     clearNode(index) {
       this.searchList.splice(index, 1);
+      // 如果全清空了要把select切回全部
+      if (this.searchList.length === 0) {
+        const selectAll = {
+          label: '全部',
+          value: 'all',
+          isSelected: true,
+          childCateList: [
+            { label: '全部', value: null, isSelected: true },
+          ],
+        };
+        this.switchParent(selectAll);
+      }
     },
     resetIsSelected(list, init) {
       if (init == 'init') {
@@ -614,6 +584,10 @@ export default {
           item.isSelected = false;
         }
       }
+    },
+    changeAccept(isAccept) {
+      this.accept = isAccept;
+      this.getTableList();
     },
   },
   watch: {

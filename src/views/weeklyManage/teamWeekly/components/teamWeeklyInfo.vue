@@ -303,9 +303,9 @@ export default {
       supportCount: 0,
       weeklySupport: {},
       riskMap: {
-        1: '无风险',
-        2: '风险可控',
-        3: '失控',
+        1: '信心指数高',
+        2: '信心指数中',
+        3: '信心指数低',
       },
 
     };
