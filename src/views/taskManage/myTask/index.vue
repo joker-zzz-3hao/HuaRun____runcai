@@ -91,6 +91,10 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>任务步骤</dt>
+          <!-- 为了不闪 -->
+          <dd v-if="childCateList.length == 0" class="tag-item is-selected">
+            全部
+          </dd>
           <dd
             class="tag-item"
             :class="{ 'is-selected': item.isSelected }"
@@ -105,9 +109,24 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>确认接收</dt>
-          <dd :class="{ 'is-selected': 这里是默认选择全部的条件 }"></dd>
-          <dd>已确认</dd>
-          <dd>未确认</dd>
+          <dd
+            :class="{ 'is-selected': accept === null }"
+            @click="changeAccept(null)"
+          >
+            全部
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === true }"
+            @click="changeAccept(true)"
+          >
+            已确认
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === false }"
+            @click="changeAccept(false)"
+          >
+            未确认
+          </dd>
         </dl>
         <!-- <div style="display: flex">
           <span
@@ -552,8 +571,14 @@ export default {
     },
 
     switchParent(parentCate) {
+      console.log(parentCate);
       // 查任务步骤
       this.childCateList = [];
+      this.taskProcess = parentCate;
+      // 如果选择全部，清空选择
+      if (parentCate.value == 'all') {
+        this.selectStatus({ label: '全部', value: null, isSelected: true });
+      }
       const params = {
         available: 1,
         processId: parentCate.value,
@@ -573,7 +598,6 @@ export default {
           });
         }
       });
-      this.taskProcess = parentCate;
       this.resetIsSelected(this.taskProcessList);
       parentCate.isSelected = true;
       for (const item of this.taskProcessList) {
@@ -588,6 +612,7 @@ export default {
       if (this.taskProcess.value == 'all') {
         this.searchList = [];
       } else {
+        // 验重
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -599,6 +624,17 @@ export default {
     },
     clearNode(index) {
       this.searchList.splice(index, 1);
+      // 如果全清空了要把select切回全部
+      if (this.searchList.length === 0) {
+        this.switchParent({
+          label: '全部',
+          value: 'all',
+          isSelected: true,
+          childCateList: [
+            { label: '全部', value: null, isSelected: true },
+          ],
+        });
+      }
     },
     resetIsSelected(list, init) {
       if (init == 'init') {
@@ -614,6 +650,10 @@ export default {
           item.isSelected = false;
         }
       }
+    },
+    changeAccept(isAccept) {
+      this.accept = isAccept;
+      this.getTableList();
     },
   },
   watch: {
