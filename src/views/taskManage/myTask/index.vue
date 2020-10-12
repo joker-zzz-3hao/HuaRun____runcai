@@ -378,9 +378,7 @@ export default {
       taskStatus: {}, // 选择的任务状态
       processList: [], // 过程列表
       stepList: [],
-      childCateList: [{
-        label: '全部', value: null, isSelected: true,
-      }],
+      childCateList: [],
       accept: null,
       moveProcessId: null,
       showTask: true,
@@ -474,7 +472,6 @@ export default {
         accept: this.accept,
         taskUserIds: this.searchPerson.toString(),
       };
-      console.log('asd', this.searchPerson.toString());
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;
@@ -572,9 +569,6 @@ export default {
             label: '全部',
             value: 'all',
             isSelected: true,
-            childCateList: [
-              { label: '全部', value: null, isSelected: true },
-            ],
           });
           this.processList.forEach((item) => {
             this.taskProcessList.push({
@@ -634,6 +628,12 @@ export default {
         this.searchList = [];
       } else {
         // 验重
+        const stepList = this.searchList.map((item) => item.stepId) || [];
+        console.log(stepList.toString());
+        if (stepList.includes(childCate.value)) {
+          console.log(stepList.toString());
+          return;
+        }
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -641,6 +641,7 @@ export default {
           stepId: childCate.value,
           stepName: childCate.label,
         });
+        this.searchList = Array.from(new Set(this.searchList));
       }
     },
     // 删除单个条件
@@ -652,9 +653,6 @@ export default {
           label: '全部',
           value: 'all',
           isSelected: true,
-          childCateList: [
-            { label: '全部', value: null, isSelected: true },
-          ],
         };
         this.switchParent(selectAll);
       }
