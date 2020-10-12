@@ -145,9 +145,17 @@
 
           <el-popover placement="bottom" width="200" trigger="click">
             <div>
+              <el-input
+                placeholder="搜索"
+                v-model="keyword"
+                class="tl-input"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
               <el-checkbox-group v-model="searchPerson" @change="getTableList">
                 <el-checkbox
-                  v-for="item in userList"
+                  v-for="item in filterPerson"
                   :label="item.userId"
                   :key="item.userId"
                 >
@@ -367,6 +375,7 @@ export default {
       searchPerson: [],
       reformattedArray: [],
       userMap: {},
+      keyword: '',
     };
   },
   created() {
@@ -378,6 +387,11 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    filterPerson() {
+      return this.userList.filter(
+        (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
+      ) || [];
+    },
   },
   mounted() {
     // 状态
@@ -432,6 +446,7 @@ export default {
         }
       });
     },
+
     errorHandler() {
       return true;
     },
@@ -522,6 +537,7 @@ export default {
       this.currentIndex = index;
       this.getTableList();
     },
+    // 更换
     showSearchBar() {
       if (this.arrowClass == 'el-icon-caret-top') {
         this.arrowClass = 'el-icon-caret-bottom';
@@ -529,6 +545,7 @@ export default {
         this.arrowClass = 'el-icon-caret-top';
       }
     },
+    // 查任务过程
     getProcess() {
       this.server.queryProcess({
         currentPage: 1,
@@ -556,6 +573,7 @@ export default {
       });
     },
 
+    // 选择任务过程
     switchParent(parentCate) {
       console.log(parentCate);
       // 查任务步骤
@@ -593,6 +611,7 @@ export default {
         }
       }
     },
+    // 选择任务步骤
     selectStatus(childCate) {
       this.resetIsSelected(this.childCateList);
       childCate.isSelected = true;
@@ -638,6 +657,7 @@ export default {
       this.searchPerson = [];
       this.getTableList();
     },
+    // 重置
     resetIsSelected(list, init) {
       if (init == 'init') {
         for (let i = 0; i < list.length; i += 1) {
