@@ -6,10 +6,12 @@
         <span v-if="baseInfo.projectType">{{
           CONST.PROJECT_TYPE_MAP[baseInfo.projectType]
         }}</span>
-        <span>进行中</span>
+        <span v-if="baseInfo.projectStatus">{{
+          CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus]
+        }}</span>
       </div>
       <div>
-        <span>项目经理：张三</span>
+        <span>项目经理：{{ `${baseInfo.projectManager} || '--'` }}</span>
         <span>项目所属部门：张三</span>
         <span>项目总预算：张三</span>
       </div>

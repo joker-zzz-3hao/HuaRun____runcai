@@ -855,15 +855,15 @@ export default {
       riskList: [
         {
           value: 1,
-          label: '无风险',
+          label: '信心指数高',
         },
         {
           value: 2,
-          label: '风险可控',
+          label: '信心指数中',
         },
         {
           value: 3,
-          label: '失控',
+          label: '信心指数低',
         },
       ],
       thoughtOpen: false,
