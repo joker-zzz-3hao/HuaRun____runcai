@@ -245,7 +245,6 @@ export default {
             projectCurrencyCode: this.formData.currency,
             projectBeginDate: this.formData.startDate,
             projectEndDate: this.formData.endDate,
-            projectApplyDepName: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
             projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
             if (res.code == '200') {
