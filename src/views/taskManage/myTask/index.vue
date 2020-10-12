@@ -72,6 +72,11 @@
             <em>{{ item.name }}</em>
             <i class="el-icon-close" @click.stop="clearNode(index)"></i>
           </dd>
+          <dd v-if="searchPerson.length > 0">
+            <span>执行人：</span>
+            <em v-for="p in searchPerson" :key="p">{{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearAllPerson"></i>
+          </dd>
         </dl>
         <dl
           class="condition-lists tag-lists"
@@ -133,7 +138,40 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>执行人</dt>
-          <el-select
+          <dd v-for="p in searchPerson" :key="p">
+            <em> {{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearPersonNode(p)"></i>
+          </dd>
+
+          <el-popover placement="bottom" width="200" trigger="click">
+            <div>
+              <el-checkbox-group v-model="searchPerson" @change="getTableList">
+                <el-checkbox
+                  v-for="item in userList"
+                  :label="item.userId"
+                  :key="item.userId"
+                >
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ item.userName }}</span>
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div slot="reference">
+              <div>+</div>
+            </div>
+          </el-popover>
+
+          <!-- <el-select
             v-model="searchPerson"
             multiple
             placeholder="请选择执行人"
@@ -157,55 +195,8 @@
               </el-avatar>
               <span>{{ item.userName }}</span>
             </el-option>
-          </el-select>
+          </el-select> -->
         </dl>
-        <!-- <div style="display: flex">
-          <span
-            v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
-            >所有筛选</span
-          >
-          <div
-            class="searchblock"
-            v-for="(item, index) in searchList"
-            :key="index"
-          >
-            <span>{{ item.name }}</span>
-            <i class="el-icon-error" @click.stop="clearNode(index)"></i>
-          </div>
-        </div>
-        <div v-show="arrowClass == 'el-icon-caret-bottom'">
-          <dl style="display: flex">
-            <dt>任务过程</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in taskProcessList"
-              :key="index"
-            >
-              <span @click="switchParent(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl style="display: flex">
-            <dt>任务步骤</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in childCateList"
-              :key="index"
-            >
-              <span @click="selectStatus(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl>
-            <dt>确认接收</dt>
-            <dd>
-              <el-radio-group v-model="accept" @change="getTableList">
-                <el-radio-button :label="true">已确认</el-radio-button>
-                <el-radio-button :label="false">未确认</el-radio-button>
-              </el-radio-group>
-            </dd>
-          </dl>
-        </div> -->
       </div>
       <tl-crcloud-table
         :total="totalpage"
@@ -374,6 +365,8 @@ export default {
       processVisible: false,
       userList: [], // 执行人列表
       searchPerson: [],
+      reformattedArray: [],
+      userMap: {},
     };
   },
   created() {
@@ -425,7 +418,17 @@ export default {
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data.content || [];
+          // 生成团队map对象
+          this.reformattedArray = this.userList.map(
+            (obj) => {
+              const rObj = {};
+              rObj[obj.userId] = obj.userName;
+              Object.assign(this.userMap, rObj);
+              console.log();
+              return rObj;
+            },
+          );
         }
       });
     },
@@ -433,6 +436,7 @@ export default {
       return true;
     },
     getTableList() {
+      console.log(this.searchPerson);
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
@@ -605,6 +609,7 @@ export default {
         });
       }
     },
+    // 删除单个条件
     clearNode(index) {
       this.searchList.splice(index, 1);
       // 如果全清空了要把select切回全部
@@ -619,6 +624,19 @@ export default {
         };
         this.switchParent(selectAll);
       }
+    },
+    // 删除单个执行人
+    clearPersonNode(pId) {
+      const index = this.searchPerson.indexOf(pId);
+      if (index >= 0) {
+        this.searchPerson.splice(index, 1);
+        this.getTableList();
+      }
+    },
+    // 删除全部执行人
+    clearAllPerson() {
+      this.searchPerson = [];
+      this.getTableList();
     },
     resetIsSelected(list, init) {
       if (init == 'init') {
