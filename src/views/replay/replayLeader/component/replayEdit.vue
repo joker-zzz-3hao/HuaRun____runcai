@@ -30,8 +30,8 @@
             <div style="width: 100%">
               <em>KR1 </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 30%</em>
-                <em>进度 100%</em>
+                <em>权重 {{ list.okrWeight }}%</em>
+                <em>进度 {{ list.okrDetailProgress }}%</em>
               </div>
             </div>
 
@@ -39,14 +39,14 @@
               考核指标
               {{ list.checkQuota }}
             </div>
-            <el-form ref="form" :model="form" :rules="rules">
+            <el-form ref="form" :model="form">
               <div>衡量办法 {{ list.judgeMethod }}</div>
               <div>
                 <div>价值与收获</div>
                 <el-form-item>
                   <el-input
                     maxlength="2000"
-                    v-model="advantage"
+                    v-model="list.advantage"
                     type="textarea"
                     placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
                   ></el-input>
@@ -57,7 +57,7 @@
 
                 <el-form-item>
                   <el-input
-                    v-model="disadvantage"
+                    v-model="list.disadvantage"
                     type="textarea"
                     maxlength="1000"
                     placeholder="事情做的有那些不足，自己表现有哪些不足？"
@@ -67,11 +67,11 @@
               <div>
                 <div>改进措施</div>
                 <div>
-                  <div v-for="(item, index) in produceList" :key="index">
+                  <div v-for="(li, i) in list.measure || []" :key="i">
                     <em>
-                      {{ item.desc }}
+                      {{ li }}
                     </em>
-                    <el-button type="text" @click="deleteProduce(index)"
+                    <el-button type="text" @click="deleteProduce(i)"
                       >删除</el-button
                     >
                   </div>
@@ -80,10 +80,12 @@
                     <el-input
                       type="textarea"
                       placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                      v-model="deficiency"
+                      v-model="deficiency[list.detailId]"
                     ></el-input>
                   </el-form-item>
-                  <el-button type="text" @click="addproduceList"
+                  <el-button
+                    type="text"
+                    @click="addDefic(deficiency[list.detailId], index, i)"
                     >添加</el-button
                   >
                 </div>
@@ -116,6 +118,7 @@ export default {
         okrMainVo: {},
       },
       active: {},
+      deficiency: {},
       communication: {},
       communicationLabel: {},
       list: [],
@@ -132,6 +135,14 @@ export default {
   },
 
   methods: {
+    addDefic(value, index, i) {
+      if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
+        this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
+      }
+
+      this.okrMain.okrReviewPojoList[index].krs[i].measure.push(value);
+      console.log(this.okrMain.okrReviewPojoList[index].krs[i].measure);
+    },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
       const krs = [];
@@ -145,23 +156,23 @@ export default {
           okrDetailId: item.okrDetailId,
           communication: '',
           communicationLabel: '',
+          advantage: '',
+          disadvantage: '',
+          measure: '',
         }));
       } else {
         this.list = krsList.map((item) => ({
           detailId: item.detailId,
           okrDetailId: item.okrDetailId,
           communication: item.communication,
+          advantage: item.advantage,
+          disadvantage: item.disadvantage,
+          measure: item.measure,
           communicationLabel: item.communicationLabel,
         }));
       }
     },
-    inputCommunication(value, index, i) {
-      this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
-    },
-    selectCommunicationLabel(value, index, i) {
-      const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
-      mainData.communicationLabel = value;
-    },
+
     save() {
       this.checkDatakrs(false);
       const params = {
@@ -170,7 +181,7 @@ export default {
         },
         list: this.list,
       };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
+      this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('保存成功');
         }
@@ -191,7 +202,7 @@ export default {
         },
         list: this.list,
       };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
+      this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('保存成功');
         }
@@ -205,7 +216,7 @@ export default {
         },
         list: this.list,
       };
-      this.server.okrReviewCommunicationSubmit(params).then((res) => {
+      this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
         }
