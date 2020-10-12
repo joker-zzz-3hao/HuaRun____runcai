@@ -1,10 +1,7 @@
 <template>
   <div class="role-type">
     <div class="operating-area">
-      <div class="page-title">{{ baseInfo.projectApplyDepName }}</div>
-      <div>
-        <el-button @click="backProjectManage">返回</el-button>
-      </div>
+      <el-button @click="backProjectManage">返回</el-button>
     </div>
     <div>
       <el-tabs v-model="projectTab" @tab-click="handleClick">

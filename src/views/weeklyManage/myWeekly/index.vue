@@ -33,6 +33,7 @@
           :originalMyOkrList="originalMyOkrList"
           :originalOrgOkrList="originalOrgOkrList"
           :cultureList="cultureList"
+          :projectList="projectList"
           :canEdit="canEdit"
           @refreshMyOkr="refreshMyOkr"
           :timeDisabled="timeDisabled"
@@ -48,6 +49,7 @@
           :originalMyOkrList="originalMyOkrList"
           :originalOrgOkrList="originalOrgOkrList"
           :cultureList="cultureList"
+          :projectList="projectList"
           :canEdit="canEdit"
           @refreshMyOkr="refreshMyOkr"
           v-else
@@ -89,6 +91,7 @@ export default {
       weeklyTypeList: [],
       timeDisabled: false,
       orgId: '',
+      projectList: [],
     };
   },
   created() {
@@ -99,6 +102,7 @@ export default {
       this.queryTeamOrPersonalTarget('my');
       this.queryTeamOkr();
       this.getValues();
+      this.getProjectList();
     },
     refreshMyOkr() {
       this.queryTeamOrPersonalTarget('my');
@@ -108,6 +112,13 @@ export default {
       this.server.getValues().then((res) => {
         if (res.code == 200) {
           this.cultureList = res.data;
+        }
+      });
+    },
+    getProjectList() {
+      this.server.queryOrgProject().then((res) => {
+        if (res.code == 200) {
+          this.projectList = res.date;
         }
       });
     },
@@ -147,14 +158,14 @@ export default {
             // 我的目标
             this.myOkrList = [];
             this.originalMyOkrList = res.data.okrDetails;
-            if (this.originalMyOkrList.length > 0) {
+            if (this.originalMyOkrList && this.originalMyOkrList.length > 0) {
               this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
             }
           } else {
             // 团队目标
             this.orgOkrList = [];
             this.originalOrgOkrList = res.data.okrDetails;
-            if (this.originalOrgOkrList) {
+            if (this.originalOrgOkrList && this.originalOrgOkrList.length > 0) {
               this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
             }
           }

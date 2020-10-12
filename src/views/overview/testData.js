@@ -151,11 +151,11 @@ const teamData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      riskName: '无风险', riskCode: 1, count: 30, ratio: '40',
+      riskName: '信心指数高', riskCode: 1, count: 30, ratio: '40',
     }, {
-      riskName: '风险可控', riskCode: 2, count: 40, ratio: '30',
+      riskName: '信心指数中', riskCode: 2, count: 40, ratio: '30',
     }, {
-      riskName: '失控', riskCode: 3, count: 30, ratio: '30',
+      riskName: '信心指数低', riskCode: 3, count: 30, ratio: '30',
     }],
   },
 };
