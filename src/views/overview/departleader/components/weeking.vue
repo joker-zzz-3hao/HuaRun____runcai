@@ -1,47 +1,51 @@
 <template>
-  <div class="tl-card-panel">
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>OKR信心指数统计</em>
-          <span v-show="testModel">示例数据</span>
+  <div>
+    <div class="tl-card-panel">
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR信心指数统计</em>
+            <span v-show="testModel">示例数据</span>
+          </div>
         </div>
-      </div>
-      <div class="card-panel-body">
-        <div id="week-depart"></div>
-        <ul class="data-list">
-          <li
-            v-for="(item, index) in orgTable"
-            :key="index"
-            :class="{ active: active[item.orgId] }"
-            @click="changIdAction(item.orgId, index)"
-          >
-            {{ item.orgName }}
-          </li>
-        </ul>
+        <div class="card-panel-body">
+          <div id="week-depart"></div>
+          <ul class="data-list">
+            <li
+              v-for="(item, index) in orgTable"
+              :key="index"
+              :class="{ active: active[item.orgId] }"
+              @click="changIdAction(item.orgId, index)"
+            >
+              {{ item.orgName }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>员工情绪大屏</em>
-          <span v-show="testModel">示例数据</span>
+    <div class="tl-card-panel">
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>员工情绪大屏</em>
+            <span v-show="testModel">示例数据</span>
+          </div>
         </div>
-      </div>
-      <div class="card-panel-body flex-column">
-        <div class="flex-end">
-          <el-date-picker
-            format="yyyy-MM"
-            value-format="yyyy-MM"
-            v-model="mooddate"
-            :editable="false"
-            @change="getDateMood"
-            :clearable="false"
-            type="month"
-            placeholder="选择日期"
-          ></el-date-picker>
+        <div class="card-panel-body flex-column">
+          <div class="flex-end">
+            <el-date-picker
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              v-model="mooddate"
+              :editable="false"
+              @change="getDateMood"
+              :clearable="false"
+              type="month"
+              placeholder="选择日期"
+            ></el-date-picker>
+          </div>
+          <div id="mood-depart"></div>
         </div>
-        <div id="mood-depart"></div>
       </div>
     </div>
   </div>
@@ -71,6 +75,7 @@ export default {
       calendarId: '',
       dateTime: '',
       options: [],
+      legendTable: [],
       dateOption: [],
       echartDataY: [],
       echartDataX: [],
@@ -156,6 +161,7 @@ export default {
     async changIdAction(id, index) {
       this.orgId = id;
       const departData = await this.getDepartData(id);
+      console.log(this.active[id], id);
       if (this.active[id]) {
         this.$set(this.active, id, false);
         this.$set(this.echartDataY[index], 'data', []);
@@ -172,6 +178,8 @@ export default {
         this.active = {};
         this.echartDataY = [];
         this.orgId = this.orgTable[0].orgId;
+        this.$set(this.active, this.orgId, true);
+        this.legendTable = this.orgTable.map((item) => item.orgName);
         this.getInit(this.orgTable);
         this.$watch('periodId', () => {
           this.changIdAction(this.orgTable[0].orgId, 0);
@@ -198,10 +206,11 @@ export default {
       });
     },
     getInit(orgTable) {
-      this.echartDataY = orgTable.map(() => ({
+      this.echartDataY = orgTable.map((item) => ({
         type: 'line',
         symbol: 'circle',
         showAllSymbol: true,
+        name: item.orgName,
         symbolSize: 7,
         itemStyle: {
           normal: {
@@ -267,9 +276,11 @@ export default {
             },
           },
         },
-        legend: {
-          data: that.orgTable.map((item) => item.orgName),
-        },
+        // legend: {
+        //   data: that.legendTable,
+        //   bottom: 'bottom',
+        //   icon: 'rect',
+        // },
 
         yAxis: {
           min: 0,
@@ -322,6 +333,16 @@ export default {
       myChart.setOption(option, true);
       myChart.resize();
       window.addEventListener('resize', myChart.resize);
+      // if (myChart._$handlers.legendselectchanged) {
+      //   myChart._$handlers.legendselectchanged.length = 0;
+      // }
+      // myChart.on('legendselectchanged', (data) => {
+      //   console.log(data);
+      //   const orgData = that.orgTable.filter((item) => item.orgName == data.name)[0];
+      //   const index = that.orgTable.findIndex((item) => item.orgName == data.name);
+
+      //   that.changIdAction(orgData.orgId, index);
+      // });
     },
     initMood() {
       const that = this;
