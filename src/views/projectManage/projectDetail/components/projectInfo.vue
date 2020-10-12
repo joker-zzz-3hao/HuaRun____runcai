@@ -2,8 +2,10 @@
   <div>
     <div>
       <div>
-        <span>关于2019年新员工入职优化项目请示</span>
-        <span>云门户项目组</span>
+        <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
+        <span v-if="baseInfo.projectType">{{
+          CONST.PROJECT_TYPE_MAP[baseInfo.projectType]
+        }}</span>
         <span>进行中</span>
       </div>
       <div>
@@ -107,11 +109,13 @@
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import addMember from './addMember';
+import CONST from '../../const';
 
 export default {
   name: 'projectInfo',
   data() {
     return {
+      CONST,
       total: 0,
       currentPage: 0,
       pageSize: 0,
@@ -141,6 +145,12 @@ export default {
         return {};
       },
     },
+    baseInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   computed: {
     ...mapState('common', {
@@ -153,8 +163,10 @@ export default {
         this.isTalentAdmin = true;
       }
     });
+    this.init();
   },
   methods: {
+    init() {},
     searchList() {},
     deleteMember(data) {
       this.$xconfirm({

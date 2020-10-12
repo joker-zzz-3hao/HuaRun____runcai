@@ -35,25 +35,25 @@
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
             <el-table-column
-              prop="projectName"
+              prop="projectNameCn"
               label="项目名称"
               min-width="140"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectName">{{
-                  scope.row.projectName
+                <span v-if="scope.row.projectNameCn">{{
+                  scope.row.projectNameCn
                 }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column
-              prop="projectName"
+              prop="projectApplyDepName"
               label="所在部门"
               min-width="160"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectName">{{
-                  scope.row.projectName
+                <span v-if="scope.row.projectApplyDepName">{{
+                  scope.row.projectApplyDepName
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -83,38 +83,46 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="projectType"
+              prop="projectInputType"
               label="投入类型"
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectType">{{
-                  CONST.PROJECT_TYPE_MAP[scope.row.projectType]
+                <span v-if="scope.row.projectInputType">{{
+                  CONST.THROW_TYPE_MAP[scope.row.projectInputType]
                 }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="applyTime" label="申请时间" min-width="180">
+            <el-table-column
+              prop="projectApplyDate"
+              label="申请时间"
+              min-width="180"
+            >
             </el-table-column>
             <el-table-column
-              prop="startTime"
+              prop="projectBeginDate"
               label="开始时间"
               min-width="180"
             ></el-table-column>
-            <el-table-column prop="endTime" label="结束时间" min-width="180">
+            <el-table-column
+              prop="projectEndDate"
+              label="结束时间"
+              min-width="180"
+            >
             </el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="projectBudget"
               label="项目总预算(万)"
               min-width="180"
             ></el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="projectUserCount"
               label="项目成员"
               min-width="180"
             ></el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="projectManager"
               label="项目经理"
               min-width="180"
             ></el-table-column>
@@ -190,7 +198,14 @@ export default {
       this.currentPage = 1;
       this.searchManage();
     },
-    manage() {},
+    manage(data) {
+      this.$router.push({
+        name: 'projectDetail',
+        query: {
+          projectId: data.projectId,
+        },
+      });
+    },
   },
 };
 </script>
