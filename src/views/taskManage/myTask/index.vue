@@ -236,6 +236,14 @@
             </el-table-column>
             <el-table-column align="left" prop="taskStatus">
               <template slot-scope="scope">
+                <i
+                  :class="
+                    ({ 'is-draft': scope.row.taskStatus == '0' },
+                    { 'not-confirm': scope.row.taskStatus == '10' },
+                    { 'is-confirm': scope.row.taskStatus == '20' })
+                  "
+                ></i>
+
                 <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
               </template>
             </el-table-column>
@@ -249,16 +257,22 @@
             <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
-                  v-if="
-                    scope.row.taskStatus == 10 &&
-                    scope.row.taskUserId == userInfo.userId
+                  :disabled="
+                    !(
+                      scope.row.taskStatus == 10 &&
+                      scope.row.taskUserId == userInfo.userId
+                    )
                   "
                   @click="acceptTask(scope.row.taskId)"
                   class="tl-btn"
                   >确认接收</el-button
                 >
+                <!-- 已确认并且执行人不是我 不能编辑-->
                 <el-button
-                  v-else
+                  :disabled="
+                    scope.row.taskStatus == 20 &&
+                    scope.row.taskUserId != userInfo.userId
+                  "
                   class="tl-btn"
                   @click="openEdit(scope.row.taskId)"
                   >编辑</el-button
@@ -423,12 +437,12 @@ export default {
         this.$refs.editTask.show(id);
       });
     },
-    getUserList(name = '') {
+    getUserList() {
       const params = {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.userInfo.orgList[0].orgFullId,
-        userName: name.trim(),
+
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
@@ -439,7 +453,6 @@ export default {
               const rObj = {};
               rObj[obj.userId] = obj.userName;
               Object.assign(this.userMap, rObj);
-              console.log();
               return rObj;
             },
           );
@@ -459,7 +472,9 @@ export default {
         taskTitle: this.searchMsg,
         psList: this.searchList,
         accept: this.accept,
+        taskUserIds: this.searchPerson.toString(),
       };
+      console.log('asd', this.searchPerson.toString());
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;
