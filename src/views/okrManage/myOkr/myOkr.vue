@@ -2,14 +2,14 @@
   <div>
     <div class="cont-panel">
       <!-- 状态为审批中需展示温馨提示 -->
-      <div v-if="searchForm.status == '7'">
-        <el-alert type="warning">
+      <template v-if="searchForm.status == '7'">
+        <el-alert type="warning" class="tl-alert">
           <div slot="title">
             <i>温馨提示icon</i>
             <span>审批成功后才展示变更后的内容，请勿再次提交变更</span>
           </div>
         </el-alert>
-      </div>
+      </template>
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
           <div class="card-panel-head">

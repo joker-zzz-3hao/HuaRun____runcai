@@ -21,14 +21,14 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
-        <div v-if="searchForm.modifyReason">
-          <el-alert type="warning">
+        <template v-if="searchForm.modifyReason">
+          <el-alert type="warning" class="tl-alert">
             <div slot="title">
-              <div>审批退回原因：</div>
-              <div>{{ searchForm.modifyReason }}</div>
+              <div class="alert-title">审批退回原因：</div>
+              <div class="alert-cont">{{ searchForm.modifyReason }}</div>
             </div>
           </el-alert>
-        </div>
+        </template>
         <div class="allocation-info">
           <dl>
             <dt>目标周期</dt>
