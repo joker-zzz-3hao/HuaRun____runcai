@@ -455,14 +455,19 @@
                 <el-tooltip
                   class="icon-clear"
                   :class="{
-                    'is-disabled': formData.length == 1,
+                    'is-disabled': formData.weeklyPlanSaveList.length == 1,
                   }"
                   effect="dark"
-                  :content="formData.length > 1 ? '删除' : '至少有一条工作项'"
+                  :content="
+                    formData.weeklyPlanSaveList.length > 1
+                      ? '删除'
+                      : '至少有一条工作项'
+                  "
                   placement="top"
                   popper-class="tl-tooltip-popper"
                   @click.native="
-                    formData.length > 1 && deletePlanItem(scope.row)
+                    formData.weeklyPlanSaveList.length > 1 &&
+                      deletePlanItem(scope.row)
                   "
                 >
                   <i class="el-icon-minus"></i>
@@ -540,7 +545,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无数据</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list is-o"
         v-for="item in weeklyOkrSaveList"
@@ -1258,6 +1263,7 @@ export default {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         workTimeTotal += Number(element.workTime);
       });
+
       this.formData.weeklyWorkVoSaveList.forEach((work) => {
         if (row.randomId == work.randomId) {
           // 数据转换为0.5单位
@@ -1269,6 +1275,7 @@ export default {
               work.workTime = Number(tempArr[0]);
             }
           }
+
           if (workTimeTotal > 5) {
             work.workTime = 0;
           }
