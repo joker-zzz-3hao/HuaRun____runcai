@@ -87,4 +87,8 @@ export default {
   setCycleList: (state, cycleList = []) => {
     state.cycleList = cycleList;
   },
+  // 设置okr创建loading
+  setLoading: (state, okrLoading = false) => {
+    state.okrLoading = okrLoading;
+  },
 };

@@ -262,11 +262,11 @@ export default {
           position: 'top',
           formatter(params) {
             if (params.value[1] == 1) {
-              return `${params.value[0]},信心指数高`;
+              return `${params.value[0]},高`;
             } if (params.value[1] == 4) {
-              return `${params.value[0]},信心指数中`;
+              return `${params.value[0]},中`;
             } if (params.value[1] == 7) {
-              return `${params.value[0]},信心指数低`;
+              return `${params.value[0]},低`;
             }
           },
         },
@@ -287,11 +287,11 @@ export default {
               if (value == 0) {
                 console.log(0);
               } else if (value == 1) {
-                texts.push('信心指数高');
+                texts.push('高');
               } else if (value == 4) {
-                texts.push('信心指数中');
+                texts.push('中');
               } else if (value == 7) {
-                texts.push('信心指数低');
+                texts.push('低');
               }
               return texts;
             },

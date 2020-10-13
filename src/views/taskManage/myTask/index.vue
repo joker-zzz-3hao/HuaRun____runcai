@@ -217,9 +217,7 @@
           <el-table :data="tableData" class="tl-table">
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
-                <a @click="openEdit(scope.row.taskId)">{{
-                  scope.row.taskTitle
-                }}</a>
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left">
@@ -236,31 +234,43 @@
             </el-table-column>
             <el-table-column align="left" prop="taskStatus">
               <template slot-scope="scope">
+                <i
+                  :class="
+                    ({ 'is-draft': scope.row.taskStatus == '0' },
+                    { 'not-confirm': scope.row.taskStatus == '10' },
+                    { 'is-confirm': scope.row.taskStatus == '20' })
+                  "
+                ></i>
+
                 <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
               </template>
             </el-table-column>
             <el-table-column align="left" prop="userName">
               <template slot-scope="scope">
                 <div>
-                  <span>{{ scope.row.userName || "未指派" }}</span>
+                  <span>{{ scope.row.userName || "无执行人" }}</span>
                 </div>
               </template>
             </el-table-column>
             <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
-                  v-if="
-                    scope.row.taskStatus == 10 &&
-                    scope.row.taskUserId == userInfo.userId
+                  :disabled="
+                    !(
+                      scope.row.taskStatus == 10 &&
+                      scope.row.taskUserId == userInfo.userId
+                    )
                   "
                   @click="acceptTask(scope.row.taskId)"
                   class="tl-btn"
                   >确认接收</el-button
                 >
+                <!-- 已确认且执行人不是我 不能编辑-->
+                <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
-                  v-else
+                  :disabled="canEdit(scope.row)"
                   class="tl-btn"
-                  @click="openEdit(scope.row.taskId)"
+                  @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
               </template>
@@ -273,6 +283,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
+                      :disabled="canEdit(scope.row)"
                       @click.native="deleteTask(scope.row.taskId)"
                       >删除</el-dropdown-item
                     >
@@ -364,9 +375,7 @@ export default {
       taskStatus: {}, // 选择的任务状态
       processList: [], // 过程列表
       stepList: [],
-      childCateList: [{
-        label: '全部', value: null, isSelected: true,
-      }],
+      childCateList: [],
       accept: null,
       moveProcessId: null,
       showTask: true,
@@ -382,6 +391,9 @@ export default {
     this.getTableList();
     this.getProcess();
     this.getUserList();
+    if (this.$route.query && this.$route.query.openCreate) {
+      this.goCreateTask();
+    }
   },
   computed: {
     ...mapState('common', {
@@ -392,6 +404,7 @@ export default {
         (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
       ) || [];
     },
+
   },
   mounted() {
     // 状态
@@ -402,6 +415,12 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
+    canEdit(row) {
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                    || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
+    },
     toggleState() {
       this.showTask = !this.showTask;
     },
@@ -417,18 +436,18 @@ export default {
         this.$refs.createtask.show();
       });
     },
-    openEdit(id) {
+    openEdit(row) {
       this.existEditTask = true;
       this.$nextTick(() => {
-        this.$refs.editTask.show(id);
+        this.$refs.editTask.show(row.taskId, this.canEdit(row));
       });
     },
-    getUserList(name = '') {
+    getUserList() {
       const params = {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.userInfo.orgList[0].orgFullId,
-        userName: name.trim(),
+
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
@@ -439,7 +458,6 @@ export default {
               const rObj = {};
               rObj[obj.userId] = obj.userName;
               Object.assign(this.userMap, rObj);
-              console.log();
               return rObj;
             },
           );
@@ -459,6 +477,7 @@ export default {
         taskTitle: this.searchMsg,
         psList: this.searchList,
         accept: this.accept,
+        taskUserIds: this.searchPerson.toString(),
       };
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
@@ -557,9 +576,6 @@ export default {
             label: '全部',
             value: 'all',
             isSelected: true,
-            childCateList: [
-              { label: '全部', value: null, isSelected: true },
-            ],
           });
           this.processList.forEach((item) => {
             this.taskProcessList.push({
@@ -619,6 +635,12 @@ export default {
         this.searchList = [];
       } else {
         // 验重
+        const stepList = this.searchList.map((item) => item.stepId) || [];
+        console.log(stepList.toString());
+        if (stepList.includes(childCate.value)) {
+          console.log(stepList.toString());
+          return;
+        }
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -626,6 +648,7 @@ export default {
           stepId: childCate.value,
           stepName: childCate.label,
         });
+        // this.searchList = Array.from(new Set(this.searchList));
       }
     },
     // 删除单个条件
@@ -637,9 +660,6 @@ export default {
           label: '全部',
           value: 'all',
           isSelected: true,
-          childCateList: [
-            { label: '全部', value: null, isSelected: true },
-          ],
         };
         this.switchParent(selectAll);
       }

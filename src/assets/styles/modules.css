@@ -229,6 +229,10 @@
   background: #685df1;
 }
 
+.tl-range-popper .el-date-table td.start-date.today span {
+  color: #fff;
+}
+
 .tl-input-search {
   min-width: 180px;
 }
@@ -2171,6 +2175,12 @@
   color: #685df1;
 }
 
+/* tl-alert */
+.tl-alert .alert-cont {
+  margin: 16px 0 0 0;
+  line-height: 22px;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* tl-custom-btn */
 .tl-custom-btn {
@@ -3146,6 +3156,10 @@
   flex: 1;
 }
 
+.custom-drawer .tl-alert {
+  margin: 0 0 16px 0;
+}
+
 .dl-list .el-radio__label {
   display: flex;
   align-items: center;
@@ -3457,7 +3471,7 @@
 
 .is-shrink+.view-cont {
   width: calc(100vw - 122px);
-  z-index: 24;
+  /* z-index: 24; */
 }
 
 .no-sub-menu+.view-cont {
@@ -3880,6 +3894,10 @@
   font-size: 18px;
   color: #4d5155;
   font-weight: 600;
+}
+
+.cont-area .tl-alert {
+  margin: 0 0 16px 0;
 }
 
 .console-layout .cont-area {

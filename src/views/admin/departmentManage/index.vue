@@ -76,7 +76,7 @@
           :default-expanded-keys="defaultExpandNode"
           :props="defaultProps"
           @node-click="searchList"
-          :expand-on-click-node="true"
+          :expand-on-click-node="false"
           :highlight-current="true"
           :filter-node-method="filterNode"
           class="tl-tree"

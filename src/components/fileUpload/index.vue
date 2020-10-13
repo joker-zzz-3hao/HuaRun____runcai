@@ -61,7 +61,7 @@ export default {
     },
     tips: {
       type: String,
-      default: '注：最多可上传5个附件，每个附件大小不得超过5M，附件支持格式有：\'jpg\',\'jpeg\',\'bmp\',\'png\',\'gif\',\'doc\',\'docx\',\'pdf\'',
+      default: '最多上传10个文件，单个文件不超过30M',
     },
     limit: {
       type: Number,
@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       server,
-      dataParams: { ...this.params },
+      dataParams: { sourceType: 'TASK_FILE', ...this.params },
       fileNum: 0,
       fileUploadList: [],
       validateCode: '',

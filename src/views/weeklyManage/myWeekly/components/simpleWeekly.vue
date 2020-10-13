@@ -31,6 +31,7 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
+                  size="small"
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
@@ -52,7 +53,8 @@
                 :min="0"
                 :max="100"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input-number
+              >%
               <!-- 编辑完之后显示 -->
               <!-- <tl-process
                 :data="node.okrDetailProgress"
@@ -63,9 +65,8 @@
           </el-table-column>
           <el-table-column
             label="投入工时"
-            :precision="2"
-            :step="0.1"
             prop="workTime"
+            @change="workTimeChange(scope.row)"
             :render-header="renderHeader"
             min-width="130"
           >
@@ -73,13 +74,13 @@
               <el-input-number
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
-                :precision="0"
-                :step="1"
-                :min="1"
-                :max="80"
+                :precision="1"
+                :step="0.5"
+                :min="0"
+                :max="5"
                 class="tl-input-number"
               ></el-input-number>
-              <span>h</span>
+              <span>天</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -126,6 +127,7 @@
                 <el-select
                   v-model="scope.row.projectNameCn"
                   placeholder="请选择关联项目"
+                  size="small"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -165,14 +167,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i>
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      v-show="scope.row.selectedOkr.length < 1"
+                      class="icon-bg"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -270,7 +278,7 @@
     <!-- 个人OKR完成度 -->
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无数据</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd
         class="undertake-okr-list is-o"
@@ -587,15 +595,15 @@ export default {
       riskList: [
         {
           value: 1,
-          label: '信心指数高',
+          label: '高',
         },
         {
           value: 2,
-          label: '信心指数中',
+          label: '中',
         },
         {
           value: 3,
-          label: '信心指数低',
+          label: '低',
         },
       ],
       showTaskProcess: false,
@@ -619,14 +627,16 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        this.formData.weeklyWorkVoSaveList.forEach((item) => {
-          item.selectedOkr.forEach((element) => {
-            if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
-            }
+        if (okr) {
+          this.formData.weeklyWorkVoSaveList.forEach((item) => {
+            item.selectedOkr.forEach((element) => {
+              if (okr.okrDetailId == element.okrDetailId) {
+                result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+              }
+            });
           });
-        });
-        return result.join('、');
+          return result.join('、');
+        }
       };
     },
   },
@@ -875,6 +885,28 @@ export default {
         }
       });
       this.$forceUpdate();
+    },
+    workTimeChange(row) {
+      let workTimeTotal = 0;
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        workTimeTotal += Number(element.workTime);
+      });
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          // 数据转换为0.5单位
+          const tempArr = String(work.workTime).split('.');
+          if (tempArr.length > 1) { // 有小数位
+            if (tempArr[1] > 5) { //  大于5
+              work.workTime = Number(tempArr[0]) + 1;
+            } else if (tempArr[1] < 5) { // 小于5
+              work.workTime = Number(tempArr[0]);
+            }
+          }
+          if (workTimeTotal > 5) {
+            work.workTime = 0;
+          }
+        }
+      });
     },
   },
   watch: {

@@ -3,6 +3,7 @@
     <div v-if="node.node.orgType == '0'">
       <div>{{ node.node.orgName }}</div>
       <div>{{ node.node.orgLeader || node.node.userName }}</div>
+      <div>直属上级</div>
     </div>
     <div
       v-else-if="node.node.orgType == '1'"
@@ -12,6 +13,7 @@
       <div>{{ node.node.orgName }}</div>
       <div>{{ node.node.orgLeader || "未设置" }}</div>
       <i class="el-icon-close"></i>
+      <div>虚拟汇报部门</div>
     </div>
     <div v-else-if="!node.node.orgType && node.node.userName">
       <div>{{ node.node.userName }}</div>

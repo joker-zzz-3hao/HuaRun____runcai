@@ -296,7 +296,6 @@
 }
 
 .overview .cont-area .tag-kind .kind-parent + em {
-  font-size: 16px;
   color: #26282a;
 }
 
@@ -1170,7 +1169,6 @@
 }
 
 .my-okr .cont-area .tag-kind .kind-parent + em {
-  font-size: 16px;
   color: #26282a;
 }
 
@@ -1743,6 +1741,7 @@
 .my-weekly .cont-area,
 .okr-maps .maps-view-table,
 .teams-weekly .cont-area,
+.teams-weekly-detail .cont-area,
 .my-task .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
@@ -1902,11 +1901,16 @@
   cursor: pointer;
 }
 
-.write-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
-.write-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.write-weekly .el-table__body tr.hover-row.current-row>td,
-.write-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.write-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+.my-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.my-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.my-weekly .el-table__body tr.hover-row.current-row>td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td,
+.teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.teams-weekly-detail .el-table__body tr.hover-row.current-row>td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
   background: unset;
 }
 
@@ -2192,14 +2196,19 @@
   margin: 0 0 0 20px;
 }
 
-.teams-weekly .operating-area .el-select .el-input__inner {
+.teams-weekly .cont-area > .flex-sb {
+  margin: 10px 0;
+  padding: 0 15px;
+}
+
+.teams-weekly .flex-sb .el-select:first-child .el-input__inner {
   padding: 0 0 0 30px;
 }
 
-.teams-weekly .operating-area .el-select:before {
+.teams-weekly .flex-sb .el-select:first-child:before {
   position: absolute;
   left: 8px;
-  top: 11px;
+  top: 13px;
   content: '\e6ce';
   width: 20px;
   height: 20px;
@@ -2207,16 +2216,16 @@
   color: #fff;
 }
 
-.teams-weekly .operating-area .el-select .el-input .el-input__inner {
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-input__inner {
   background: #685df1;
 }
 
-.teams-weekly .operating-area .el-select .el-input__inner,
-.teams-weekly .operating-area .el-select .el-input .el-select__caret {
+.teams-weekly .flex-sb .el-select:first-child .el-input__inner,
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-select__caret {
   color: #fff;
 }
 
-.teams-weekly .operating-area .el-select .el-input .el-input__inner::-webkit-input-placeholder{
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-input__inner::-webkit-input-placeholder{
   color:#fff !important;
 }
 
@@ -2368,6 +2377,7 @@
 .teams-weekly .table-container .quick-look .tl-card-list > dd {
   flex: 1;
   flex-direction: column;
+  justify-content: center;
   align-items: stretch;
   padding-left: 50px;
   border-left: 1px solid #e5e9ee;
@@ -2568,6 +2578,45 @@
 
 .teams-weekly .table-container .quick-look .tag-kind dt:last-child::after {
   background: unset;
+}
+
+.weekly dd {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.weekly .user-info {
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.weekly .user-info dt {
+  margin-right: 10px;
+  color: #879099;
+  font-size: 12px;
+}
+
+.weekly .user-info dd:not(:last-child) {
+  margin: 0 14px 0 0;
+}
+
+.weekly .user-info dd:last-child {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.weekly .tl-table .el-table__body .cell {
+  padding: 10px;
+}
+
+.weekly .tl-table .el-table__body .el-table__row td:first-child em {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.week-plan .el-form-item {
+  width: 100%;
 }
 
 /* 任务 */
@@ -2898,4 +2947,76 @@
 
 .okr-cycle .tl-drawer .el-drawer__body {
   margin-top: 6px;
+}
+
+/* 价值观管理 */
+.worth-manage {
+  /* padding: 16px; */
+  margin: 0;
+  min-height: calc(100vh - 70px);
+}
+
+.worth-manage .tl-tabs .el-tabs__header {
+  padding: 0 48px;
+  background: #fff;
+}
+
+.worth-manage .tl-tabs .el-tabs__item {
+  padding: 15px 20px;
+}
+
+.worth-manage .tl-tabs .el-tabs__nav-wrap::after {
+  content: unset;
+}
+
+.worth-manage .tl-tabs .el-tabs__content {
+  padding: 20px 30px;
+  margin: 0 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 150px);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.worth-manage .tl-form-inline {
+  margin: 0 0 20px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.worth-manage .tl-form-inline .el-form-item {
+  margin: 0 0 0 30px;
+}
+
+.worth-manage .tl-form-inline .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.worth-manage .tl-tabs .el-tabs__content > div,
+.worth-manage .event-book {
+  display: flex;
+  flex-direction: column;
+}
+
+.worth-manage .tl-tabs .el-tabs__content > div,
+.worth-manage .event-book,
+.event-book .table-pagination {
+  flex: 1;
+}
+
+.worth-manage .user-name-txt {
+  margin: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.worth-manage .user-name-txt em:last-child {
+  font-size: 12px;
+  color: #acb6bf;
+}
+
+.worth-manage .event-book .tl-table td {
+  height: 66px;
 }

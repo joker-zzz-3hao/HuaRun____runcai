@@ -93,7 +93,7 @@
               ></el-date-picker
             >
           </el-form-item>
-          <el-form-item label="归属项目" prop="projectVal">
+          <!-- <el-form-item label="归属项目" prop="projectVal">
             <el-input
               v-model.trim="formData.projectVal.projectNameCn"
               placeholder="请选择归属项目"
@@ -101,8 +101,8 @@
               @focus="projectInputFocus()"
               class="tl-input"
             ></el-input>
-          </el-form-item>
-          <div class="item-flex">
+          </el-form-item> -->
+          <!-- <div class="item-flex">
             <el-form-item label="归属OKR" prop="okrDetailId">
               <el-select
                 v-model.trim="formData.okrDetailId"
@@ -133,7 +133,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </div>
+          </div> -->
           <el-form-item label="添加描述" prop="taskDesc">
             <el-input
               type="textarea"
@@ -263,6 +263,7 @@ export default {
     headers() {
       return { token: localStorage.token };
     },
+
   },
   components: {
     'tl-selectproject': selectProject,
@@ -341,6 +342,7 @@ export default {
     errorHandler() {
       return true;
     },
+    // 文件
     beforeUpload(file) {
       console.log(file.type);
       const self = this;
@@ -404,6 +406,10 @@ export default {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = this.handlerData();
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           this.server.appointSave(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');

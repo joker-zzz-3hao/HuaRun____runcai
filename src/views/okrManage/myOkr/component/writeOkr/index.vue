@@ -21,14 +21,14 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
-        <div v-if="searchForm.modifyReason">
-          <el-alert type="warning">
+        <template v-if="searchForm.modifyReason">
+          <el-alert type="warning" class="tl-alert">
             <div slot="title">
-              <div>审批退回原因：</div>
-              <div>{{ searchForm.modifyReason }}</div>
+              <div class="alert-title">审批退回原因：</div>
+              <div class="alert-cont">{{ searchForm.modifyReason }}</div>
             </div>
           </el-alert>
-        </div>
+        </template>
         <div class="allocation-info">
           <dl>
             <dt>目标周期</dt>
@@ -103,6 +103,7 @@
         type="primary"
         @click="summit"
         class="tl-btn amt-bg-slip"
+        :loading="createokrDrawer && okrLoading"
         >创建目标</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -163,6 +164,7 @@ export default {
       roleCode: (state) => state.roleCode,
       showAuto: (state) => state.showAuto,
       createokrDrawer: (state) => state.createokrDrawer,
+      okrLoading: (state) => state.okrLoading,
     }),
     okrTypeList() {
       if (this.roleCode.includes('ORG_ADMIN')) {
