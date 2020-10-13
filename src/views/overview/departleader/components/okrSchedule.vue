@@ -1,25 +1,29 @@
 <template>
-  <div class="tl-card-panel">
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>OKR当前进度</em>
-          <span v-show="testModel">示例数据</span>
+  <div>
+    <div class="tl-card-panel">
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR当前进度</em>
+            <span v-show="testModel">示例数据</span>
+          </div>
         </div>
-      </div>
-      <div class="card-panel-body">
-        <div id="okrSchedule"></div>
+        <div class="card-panel-body">
+          <div id="okrSchedule"></div>
+        </div>
       </div>
     </div>
-    <div class="card-panel-inside">
-      <div class="card-panel-head">
-        <div class="panner-title">
-          <em>OKR进度更新次数</em>
-          <span v-show="testModel">示例数据</span>
+    <div class="tl-card-panel">
+      <div class="card-panel-inside">
+        <div class="card-panel-head">
+          <div class="panner-title">
+            <em>OKR进度更新次数</em>
+            <span v-show="testModel">示例数据</span>
+          </div>
         </div>
-      </div>
-      <div class="card-panel-body">
-        <div id="okrCountUpdate"></div>
+        <div class="card-panel-body">
+          <div id="okrCountUpdate"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -131,27 +135,27 @@ export default {
               color: '#879099', // 更改坐标轴文字颜色
               fontSize: 14, // 更改坐标轴文字大小
             },
-            formatter(value) {
-              let ret = '';// 拼接加\n返回的类目项
-              const maxLength = 4;// 每项显示文字个数
-              const valLength = value.length;// X轴类目项的文字个数
-              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
-              if (rowN > 1)// 如果类目项的文字大于3,
-              // eslint-disable-next-line brace-style
-              {
-                // eslint-disable-next-line no-plusplus
-                for (let i = 0; i < rowN; i++) {
-                  let temp = '';// 每次截取的字符串
-                  const start = i * maxLength;// 开始截取的位置
-                  const end = start + maxLength;// 结束截取的位置
-                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}...`;
-                  ret = temp; // 拼接最终的字符串
-                }
-                return ret;
-              }
-              return value;
-            },
+            // formatter(value) {
+            //   let ret = '';// 拼接加\n返回的类目项
+            //   const maxLength = 4;// 每项显示文字个数
+            //   const valLength = value.length;// X轴类目项的文字个数
+            //   const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+            //   if (rowN > 1)// 如果类目项的文字大于3,
+            //   // eslint-disable-next-line brace-style
+            //   {
+            //     // eslint-disable-next-line no-plusplus
+            //     for (let i = 0; i < rowN; i++) {
+            //       let temp = '';// 每次截取的字符串
+            //       const start = i * maxLength;// 开始截取的位置
+            //       const end = start + maxLength;// 结束截取的位置
+            //       // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+            //       temp = `${value.substring(start, end)}...`;
+            //       ret = temp; // 拼接最终的字符串
+            //     }
+            //     return ret;
+            //   }
+            //   return value;
+            // },
           },
         },
         yAxis: {
@@ -260,27 +264,27 @@ export default {
               fontSize: 14, // 更改坐标轴文字大小
             },
             // rotate: 40  ,//斜体展示
-            formatter(value) {
-              let ret = '';// 拼接加\n返回的类目项
-              const maxLength = 4;// 每项显示文字个数
-              const valLength = value.length;// X轴类目项的文字个数
-              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
-              if (rowN > 1)// 如果类目项的文字大于3,
-              // eslint-disable-next-line brace-style
-              {
-                // eslint-disable-next-line no-plusplus
-                for (let i = 0; i < rowN; i++) {
-                  let temp = '';// 每次截取的字符串
-                  const start = i * maxLength;// 开始截取的位置
-                  const end = start + maxLength;// 结束截取的位置
-                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}...`;
-                  ret = temp; // 拼接最终的字符串
-                }
-                return ret;
-              }
-              return value;
-            },
+            // formatter(value) {
+            //   let ret = '';// 拼接加\n返回的类目项
+            //   const maxLength = 4;// 每项显示文字个数
+            //   const valLength = value.length;// X轴类目项的文字个数
+            //   const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+            //   if (rowN > 1)// 如果类目项的文字大于3,
+            //   // eslint-disable-next-line brace-style
+            //   {
+            //     // eslint-disable-next-line no-plusplus
+            //     for (let i = 0; i < rowN; i++) {
+            //       let temp = '';// 每次截取的字符串
+            //       const start = i * maxLength;// 开始截取的位置
+            //       const end = start + maxLength;// 结束截取的位置
+            //       // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+            //       temp = `${value.substring(start, end)}...`;
+            //       ret = temp; // 拼接最终的字符串
+            //     }
+            //     return ret;
+            //   }
+            //   return value;
+            // },
           },
         },
         yAxis: [

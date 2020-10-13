@@ -18,23 +18,6 @@
           popper-class="tl-cascader-popper"
           class="tl-cascader"
         ></el-cascader>
-        <el-select
-          v-model="formData.queryType"
-          @change="lookChange"
-          placeholder="周报速看"
-          clearable
-          @clear="clear"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select el-icon-view"
-        >
-          <el-option
-            v-for="item in lookItemList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
         <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
         2、当组织切换时不显示该按钮
@@ -60,11 +43,28 @@
         @getWeeklyById="refreshPageList"
         :isFromTeam="true"
       ></tl-calendar>
-      <div class="flex-end">
+      <div class="flex-sb">
+        <el-select
+          v-model="formData.queryType"
+          @change="lookChange"
+          placeholder="周报速看"
+          clearable
+          @clear="clear"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select el-icon-view"
+        >
+          <el-option
+            v-for="item in lookItemList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
         <el-select
           v-model="submitedOrLooked"
           @change="submitedOrLookedChange"
-          placeholder="全部"
+          placeholder="周报状态"
           clearable
           @clear="clearSubmitOrLooked"
           :disabled="!!formData.queryType"
@@ -87,7 +87,7 @@
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
               </el-input>-->
-        <el-select
+        <!-- <el-select
           v-model.trim="formData.queryUserId"
           filterable
           placeholder="请输入成员姓名"
@@ -107,7 +107,6 @@
           >
             <dl class="user-info">
               <dt>
-                <!-- 这里如果用户上传了图片 则调取上传图片 -->
                 <img v-if="false" :src="item.headUrl" alt />
                 <div v-else-if="item.userName" class="user-name">
                   <em>{{
@@ -117,20 +116,8 @@
               </dt>
               <dd>{{ item.userName }}</dd>
             </dl>
-            <!-- <span style="float: left">
-              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                <div v-if="item.userName" class="user-name">
-                  <em>{{
-                    item.userName.substring(item.userName.length - 2)
-                  }}</em>
-                </div>
-              </el-avatar>
-            </span>
-            <span style="float: left; marginleft: 5px">{{
-              item.userName
-            }}</span> -->
           </el-option>
-        </el-select>
+        </el-select> -->
       </div>
       <crcloud-table
         :total="total"
@@ -280,7 +267,7 @@
             </li>
             <li v-if="tableData.length < 1">暂无数据</li>
           </ul>
-          <ul v-else class="quick-ook">
+          <ul v-else class="quick-look">
             <li
               v-for="weekly in tableData"
               :key="weekly.userId"
@@ -313,40 +300,72 @@
                     <!-- 工作项 -->
                     <template v-if="formData.queryType == '0'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
-                        <span>#工作项5#</span>
-                        <em
-                          >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
-                        >
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
+                        <span>#工作项{{ index + 1 }}#</span>
+                        <em>{{ work.workContent }}</em>
                       </dd>
                     </template>
                     <!-- 感想 -->
                     <template v-if="formData.queryType == '1'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
-                        <span>#感想#</span>
-                        <em
-                          >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
-                        >
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
+                        <span>#{{ getThoughtName(work.thoughtType) }}#</span>
+                        <em>{{ work.thoughtContent }}</em>
                       </dd>
-                      <dd>
+                      <!-- <dd>
                         <span>#建议#</span>
                         <em
                           >撒大法大法的风格和大法好大法撒大法阿斯顿发去玩儿去玩儿童也儿人太温柔太温柔太温柔太温柔太我很快就会开花阿斯顿发送到发送发达的撒是否vv在持续啊撒发撒大法啊的说法</em
                         >
-                      </dd>
+                      </dd> -->
                     </template>
                     <!-- 工作项 -->
                     <template v-if="formData.queryType == '2'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
                         <span>#下周计划#</span>
-                        <em
-                          >和咕叽咕叽复古怀旧风肌肤光滑儿童也太爷爷太地方干活的干活的风格和还能和各家各户解放后请问而我却热情热情大是大非发撒大法是大法</em
-                        >
+                        <em>{{ work.planContent }}</em>
                       </dd>
                     </template>
                   </dl>
+                  <!-- 有进度的OKR -->
+                  <template v-if="formData.queryType == '3'">
+                    <!-- 循环这个dl（weekly.contentList） -->
+                    <dl class="tag-kind">
+                      <dd class="update-progress">
+                        <span>本次更新进度</span
+                        ><em
+                          >{{
+                            work.progressAfter - work.progressBefor > 0
+                              ? "+"
+                              : ""
+                          }}
+                          {{ work.progressAfter - work.progressBefor }}%</em
+                        >
+                      </dd>
+                      <dt v-if="work.okrDetailType == 0">
+                        <span class="kind-parent">目标</span
+                        ><em>{{ work.okrDetailObjectKr }}</em>
+                      </dt>
+                      <dt v-if="work.okrDetailType == 1">
+                        <span class="kind-parent">目标</span
+                        ><em>{{ work.pokrDetailObjectKr }}</em>
+                      </dt>
+                      <dd v-if="work.okrDetailType == 1">
+                        <span class="kind-child">KR</span
+                        ><em>{{ work.okrDetailObjectKr }}</em>
+                      </dd>
+                    </dl>
+                  </template>
                 </dd>
               </dl>
               <!-- <span>
@@ -757,6 +776,15 @@ export default {
     },
     errorHandler() {
       return true;
+    },
+    getThoughtName(thoughtType) {
+      if (thoughtType == 0) {
+        return '感想';
+      } if (thoughtType == 1) {
+        return '建议';
+      } if (thoughtType == 0) {
+        return '收获';
+      }
     },
   },
   watch: {

@@ -23,35 +23,41 @@
         @getWeeklyById="getWeeklyById"
       ></tl-calendar>
       <div class="weekly-area" v-if="newPage">
+        <!-- 以前的周报未填写，友情提示 -->
+        <div v-if="noWrite">周报未填写</div>
         <!-- 标准版 -->
-        <standard-Weekly
-          :weeklyData="weeklyData"
-          :weeklyType="weeklyType"
-          :calendarId="calendarId"
-          :myOkrList="myOkrList"
-          :orgOkrList="orgOkrList"
-          :originalMyOkrList="originalMyOkrList"
-          :originalOrgOkrList="originalOrgOkrList"
-          :cultureList="cultureList"
-          :canEdit="canEdit"
-          @refreshMyOkr="refreshMyOkr"
-          :timeDisabled="timeDisabled"
-          v-if="weeklyType == '1'"
-        ></standard-Weekly>
-        <!-- 简单版 -->
-        <simple-weekly
-          :weeklyData="weeklyData"
-          :weeklyType="weeklyType"
-          :calendarId="calendarId"
-          :myOkrList="myOkrList"
-          :orgOkrList="orgOkrList"
-          :originalMyOkrList="originalMyOkrList"
-          :originalOrgOkrList="originalOrgOkrList"
-          :cultureList="cultureList"
-          :canEdit="canEdit"
-          @refreshMyOkr="refreshMyOkr"
-          v-else
-        ></simple-weekly>
+        <div v-else>
+          <standard-Weekly
+            :weeklyData="weeklyData"
+            :weeklyType="weeklyType"
+            :calendarId="calendarId"
+            :myOkrList="myOkrList"
+            :orgOkrList="orgOkrList"
+            :originalMyOkrList="originalMyOkrList"
+            :originalOrgOkrList="originalOrgOkrList"
+            :cultureList="cultureList"
+            :projectList="projectList"
+            :canEdit="canEdit"
+            @refreshMyOkr="refreshMyOkr"
+            :timeDisabled="timeDisabled"
+            v-if="weeklyType == '1'"
+          ></standard-Weekly>
+          <!-- 简单版 -->
+          <simple-weekly
+            :weeklyData="weeklyData"
+            :weeklyType="weeklyType"
+            :calendarId="calendarId"
+            :myOkrList="myOkrList"
+            :orgOkrList="orgOkrList"
+            :originalMyOkrList="originalMyOkrList"
+            :originalOrgOkrList="originalOrgOkrList"
+            :cultureList="cultureList"
+            :projectList="projectList"
+            :canEdit="canEdit"
+            @refreshMyOkr="refreshMyOkr"
+            v-else
+          ></simple-weekly>
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +82,7 @@ export default {
     return {
       server,
       newPage: false,
+      noWrite: false,
       calendarId: '',
       weeklyType: '',
       // weeklyTypeList: [],
@@ -88,6 +95,8 @@ export default {
       canEdit: false,
       weeklyTypeList: [],
       timeDisabled: false,
+      orgId: '',
+      projectList: [],
     };
   },
   created() {
@@ -96,11 +105,13 @@ export default {
   methods: {
     init() {
       this.queryTeamOrPersonalTarget('my');
-      this.queryTeamOrPersonalTarget('org');
+      this.queryTeamOkr();
       this.getValues();
+      this.getProjectList();
     },
     refreshMyOkr() {
       this.queryTeamOrPersonalTarget('my');
+      this.queryTeamOkr();
     },
     getValues() {
       this.server.getValues().then((res) => {
@@ -109,7 +120,37 @@ export default {
         }
       });
     },
-
+    getProjectList() {
+      this.server.queryOrgProject().then((res) => {
+        if (res.code == 200) {
+          this.projectList = res.date;
+        }
+      });
+    },
+    queryTeamOkr() {
+      if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+        this.departmentName = this.userInfo.orgParentName;
+        this.orgId = this.userInfo.orgParentId;
+      } else {
+        this.departmentName = this.userInfo.orgName || '部门';
+        this.orgId = this.userInfo.orgId;
+      }
+      const params = {
+        myOrOrg: 'org',
+        status: '1',
+        orgId: this.orgId,
+      };
+      this.server.getorgOkr(params).then((res) => {
+        if (res.code == 200) {
+          // 团队目标
+          this.orgOkrList = [];
+          this.originalOrgOkrList = res.data.okrDetails;
+          if (this.originalOrgOkrList) {
+            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+          }
+        }
+      });
+    },
     queryTeamOrPersonalTarget(myOrOrg) {
       const params = {
         myOrOrg,
@@ -122,14 +163,14 @@ export default {
             // 我的目标
             this.myOkrList = [];
             this.originalMyOkrList = res.data.okrDetails;
-            if (this.originalMyOkrList.length > 0) {
+            if (this.originalMyOkrList && this.originalMyOkrList.length > 0) {
               this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
             }
           } else {
             // 团队目标
             this.orgOkrList = [];
             this.originalOrgOkrList = res.data.okrDetails;
-            if (this.originalOrgOkrList) {
+            if (this.originalOrgOkrList && this.originalOrgOkrList.length > 0) {
               this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
             }
           }
@@ -171,6 +212,7 @@ export default {
       return false;
     },
     getWeeklyById(item) {
+      this.noWrite = false;
       this.timeDisabled = this.newEdit(item);
       this.canEdit = item.canEdit;
       this.weeklyTypeList = [];
@@ -189,6 +231,13 @@ export default {
           });
           this.getTypeConfig();// 在这调用，防止俩标签闪烁
         });
+      } else if (!item.weeklyId && !this.timeDisabled) { // 以前的周 未填写周报
+        this.newPage = false;// 清空页面实例，重新加载新页面
+        this.$nextTick(() => {
+          this.newPage = true;
+        });
+        this.noWrite = true;
+        this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
       } else {
         this.newPage = false;// 清空页面实例，重新加载新页面
         this.$nextTick(() => {
@@ -238,6 +287,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
 };

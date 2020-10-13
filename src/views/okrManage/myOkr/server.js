@@ -17,7 +17,7 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/allOkr', param);
   }
 
-  // 查全部okr列表
+  // 查部门okr列表
   getorgOkr(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
   }

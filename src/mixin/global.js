@@ -272,5 +272,26 @@ export default {
     $busEmit(eventName, params = {}) {
       $bus.$emit(eventName, params);
     },
+    // 下载附件
+    openFile(obj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/crcloud-cert/outside/resource/download?resourceId=${obj.resourceId}`;
+      const temp = obj.resourceName.split('.');
+      const fileType = temp[temp.length - 1];
+      const images = {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      };
+      if (images[fileType]) {
+        this.$refs.imgDialog.show(url);
+      } else {
+        window.open(url);
+      }
+    },
   },
 };

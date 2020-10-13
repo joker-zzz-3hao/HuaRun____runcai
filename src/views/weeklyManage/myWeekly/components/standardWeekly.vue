@@ -31,10 +31,11 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
-                  maxlength="100"
+                  maxlength="20"
+                  size="small"
                   v-if="timeDisabled"
                   clearable
-                  placeholder="请用一句话概括某项工作"
+                  placeholder="简短概括任务，20字以内"
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
@@ -47,9 +48,9 @@
               <el-form-item>
                 <el-input
                   type="textarea"
-                  :rows="3"
+                  :rows="1"
                   v-if="timeDisabled"
-                  placeholder="请描述具体工作内容"
+                  placeholder="请多留点信息描述任务项，便于领导了解工作情况"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
                 ></el-input>
@@ -90,10 +91,11 @@
               <el-input-number
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
-                :precision="0"
-                :step="1"
-                :min="1"
-                :max="80"
+                :precision="1"
+                :step="0.5"
+                :min="0"
+                :max="5"
+                @change="workTimeChange(scope.row)"
                 class="tl-input-number"
               ></el-input-number>
               <!-- 编辑完提交后展示 -->
@@ -119,14 +121,14 @@
                   @focus="projectInputFocus(scope.row)"
                 ></el-input> -->
                 <!-- 此处点击后就永远消失 -->
-                <div
+                <!-- <div
                   class="icon-bg"
                   @click="projectInputFocus(scope.row)"
                   v-if="!scope.row.projectNameCn"
                 >
                   <i class="el-icon-plus"></i>
-                </div>
-                <div class="tag-group">
+                </div> -->
+                <!-- <div class="tag-group">
                   <ul class="tag-lists">
                     <li class="only-one" v-if="scope.row.projectNameCn">
                       <el-tooltip
@@ -141,9 +143,21 @@
                       <i class="el-icon-close" @click="projectDelete()"></i>
                     </li>
                   </ul>
-                  <!-- 此处是自己写的注释 -->
-                  <!-- <div class="verify-info">这里是校验信息</div> -->
-                </div>
+
+                </div> -->
+                <el-select
+                  v-model="scope.row.projectNameCn"
+                  placeholder="请选择关联项目"
+                  size="small"
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectName"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </template>
           </el-table-column>
@@ -305,9 +319,9 @@
           v-model.trim="item.thoughtContent"
           type="textarea"
           maxlength="100"
-          :rows="2"
+          :rows="1"
           resize="none"
-          placeholder="请简单说一下你的感想，不超过100个字"
+          :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
         <el-tooltip
@@ -412,11 +426,7 @@
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
       <dd>
-        <el-form
-          :model="formData"
-          v-show="weeklyData.weeklyId || planOpen"
-          class="tl-form"
-        >
+        <el-form :model="formData" class="tl-form">
           <el-table
             v-loading="tableLoading"
             :data="formData.weeklyPlanSaveList"
@@ -427,15 +437,14 @@
               type="index"
               width="55"
             ></el-table-column>
-            <el-table-column label="工作项" min-width="420">
+            <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
-                    :disabled="true"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
-                    placeholder="请用一句话概括某项工作，不超过100个字符"
+                    placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
                   ></el-input>
                   <!-- 编辑完之后 -->
@@ -448,14 +457,19 @@
                 <el-tooltip
                   class="icon-clear"
                   :class="{
-                    'is-disabled': formData.length == 1,
+                    'is-disabled': formData.weeklyPlanSaveList.length == 1,
                   }"
                   effect="dark"
-                  :content="formData.length > 1 ? '删除' : '至少有一条工作项'"
+                  :content="
+                    formData.weeklyPlanSaveList.length > 1
+                      ? '删除'
+                      : '至少有一条计划项'
+                  "
                   placement="top"
                   popper-class="tl-tooltip-popper"
                   @click.native="
-                    formData.length > 1 && deletePlanItem(scope.row)
+                    formData.weeklyPlanSaveList.length > 1 &&
+                      deletePlanItem(scope.row)
                   "
                 >
                   <i class="el-icon-minus"></i>
@@ -533,6 +547,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list is-o"
         v-for="item in weeklyOkrSaveList"
@@ -549,7 +564,7 @@
             <em> {{ item.kr.okrDetailObjectKr }}</em>
           </template>
           <span
-            >被<em>{{ itemIndex(item.kr) }}</em
+            >被工作项<em>{{ itemIndex(item.kr) }}</em
             >支撑</span
           >
         </div>
@@ -684,7 +699,7 @@
       <dt class="card-title"><em>本周心情</em></dt>
       <dd></dd>
     </dl>
-    <!-- <div style="margintop: 50px">
+    <div style="margintop: 50px">
       <span>
         请选择本周心情
         <el-button @click="setEmotion(100)">有收获</el-button>
@@ -694,9 +709,13 @@
         <el-button @click="setEmotion(0)">让我静静</el-button>
         <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
       </span>
-    </div> -->
+    </div>
     <div class="btn-box">
-      <el-button type="primary" @click="commitWeekly" class="tl-btn amt-bg-slip"
+      <el-button
+        :disabled="!canEdit"
+        type="primary"
+        @click="commitWeekly"
+        class="tl-btn amt-bg-slip"
         >提交</el-button
       >
     </div>
@@ -734,6 +753,7 @@
 
 <script>
 
+import tlProcess from '@/components/process';
 import Server from '../server';
 import selectProject from './selectProject';
 import addOkr from './addOkr';
@@ -744,6 +764,7 @@ export default {
   components: {
     'add-okr': addOkr,
     selectProject,
+    'tl-process': tlProcess,
   },
   props: {
     calendarId: {
@@ -789,6 +810,12 @@ export default {
       },
     },
     cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    projectList: {
       type: Array,
       default() {
         return [];
@@ -855,19 +882,19 @@ export default {
       riskList: [
         {
           value: 1,
-          label: '无风险',
+          label: '信心指数高',
         },
         {
           value: 2,
-          label: '风险可控',
+          label: '信心指数中',
         },
         {
           value: 3,
-          label: '失控',
+          label: '信心指数低',
         },
       ],
       thoughtOpen: false,
-      planOpen: false,
+      // planOpen: false,
       randomIdForProject: '',
       textarea: '',
       showTaskProcess: false,
@@ -913,6 +940,8 @@ export default {
       // this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
+      // 来自任务的数据
+      console.log('任务', this.$route.query);
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
         // 反显周报列表数据
@@ -1203,12 +1232,12 @@ export default {
     closeThought() {
       this.thoughtOpen = false;
     },
-    openPlan() {
-      this.planOpen = true;
-    },
-    closePlan() {
-      this.planOpen = false;
-    },
+    // openPlan() {
+    //   this.planOpen = true;
+    // },
+    // closePlan() {
+    //   this.planOpen = false;
+    // },
     projectInputFocus(work) {
       this.randomIdForProject = work.randomId;
       this.showProjectDialog = true;
@@ -1230,6 +1259,39 @@ export default {
         }
       });
       this.$forceUpdate();
+    },
+    workTimeChange(row) {
+      let workTimeTotal = 0;
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        workTimeTotal += Number(element.workTime);
+      });
+
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          // 数据转换为0.5单位
+          const tempArr = String(work.workTime).split('.');
+          if (tempArr.length > 1) { // 有小数位
+            if (tempArr[1] > 5) { //  大于5
+              work.workTime = Number(tempArr[0]) + 1;
+            } else if (tempArr[1] < 5) { // 小于5
+              work.workTime = Number(tempArr[0]);
+            }
+          }
+
+          if (workTimeTotal > 5) {
+            work.workTime = 0;
+          }
+        }
+      });
+    },
+    getPlaceholder(type) {
+      if (type == 0) {
+        return '本周有什么感想，工作的个人的都可以, 记录成长点滴';
+      } if (type == 1) {
+        return '对团队对公司对眼前事有什么建议吗';
+      } if (type == 2) {
+        return '做版本更好的自己，希望你本周有收获，记下来吧';
+      }
     },
   },
   watch: {

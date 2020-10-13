@@ -78,6 +78,7 @@ export default {
     getokrStatistics() {
       const form = {
         periodId: this.periodId,
+        orgId: this.$route.query.orgId ? this.$route.query.orgId : this.userInfo.orgId,
       };
       // eslint-disable-next-line no-unused-expressions
       this.$route.query.id ? form.user = this.$route.query.id : form.user = '';
@@ -102,4 +103,3 @@ export default {
   },
 };
 </script>
-]

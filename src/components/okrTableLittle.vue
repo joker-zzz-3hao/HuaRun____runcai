@@ -6,24 +6,39 @@
       <li>权重</li>
       <li>进度</li>
     </ul>
-    <el-table :data="tableList" class="tl-table" row-key="okrDetailId" :expand-row-keys="expands">
+    <el-table
+      :data="tableList"
+      class="tl-table"
+      row-key="okrDetailId"
+      :expand-row-keys="expands"
+    >
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
-          <dl v-for="(kritem,krindex) in scope.row.krList" :key="kritem.krId" class="sub-tr">
+          <dl
+            v-for="(kritem, krindex) in scope.row.krList"
+            :key="kritem.krId"
+            class="sub-tr"
+          >
             <dd class="okr-line"></dd>
             <!-- kr名称 -->
             <dd class="okr-kr-name tag-kind">
-              <span class="kind-child">KR{{krindex+1}}</span>
-              <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-                <div slot="content">{{kritem.okrDetailObjectKr}}</div>
-                <em>{{kritem.okrDetailObjectKr}}</em>
+              <span class="kind-child">KR{{ krindex + 1 }}</span>
+              <el-tooltip
+                effect="dark"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+              >
+                <div slot="content">{{ kritem.okrDetailObjectKr }}</div>
+                <em>{{ kritem.okrDetailObjectKr }}</em>
               </el-tooltip>
             </dd>
             <!-- kr权重 -->
-            <dd class="okr-proportion">{{kritem.okrWeight}}%</dd>
+            <dd class="okr-proportion">{{ kritem.okrWeight }}%</dd>
             <!-- kr进度 -->
             <dd class="okr-progress">
-              <tl-process :data="parseInt(kritem.okrDetailProgress,10)"></tl-process>
+              <tl-process
+                :data="parseInt(kritem.okrDetailProgress, 10)"
+              ></tl-process>
             </dd>
           </dl>
         </template>
@@ -32,22 +47,28 @@
       <el-table-column prop="okrDetailObjectKr" width="73%">
         <template slot-scope="scope">
           <div class="tag-kind">
-            <span class="kind-parent">目标{{scope.$index+1}}</span>
-            <el-tooltip effect="dark" placement="top" popper-class="tl-tooltip-popper">
-              <div slot="content">{{scope.row.okrDetailObjectKr}}</div>
-              <em>{{scope.row.okrDetailObjectKr}}</em>
+            <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
+            <el-tooltip
+              effect="dark"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+            >
+              <div slot="content">{{ scope.row.okrDetailObjectKr }}</div>
+              <em>{{ scope.row.okrDetailObjectKr }}</em>
             </el-tooltip>
           </div>
         </template>
       </el-table-column>
       <!-- o label="权重" -->
       <el-table-column prop="okrWeight" width="6%">
-        <template slot-scope="scope">{{scope.row.okrWeight}}%</template>
+        <template slot-scope="scope">{{ scope.row.okrWeight }}%</template>
       </el-table-column>
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
-          <tl-process :data="parseInt(scope.row.okrDetailProgress,10)"></tl-process>
+          <tl-process
+            :data="parseInt(scope.row.okrDetailProgress, 10)"
+          ></tl-process>
         </template>
       </el-table-column>
     </el-table>
@@ -58,9 +79,9 @@
 import process from '@/components/process';
 
 const CONFIDENCE_MAP = {
-  1: '无风险',
-  2: '风险可控',
-  3: '失控',
+  1: '信心指数高',
+  2: '信心指数中',
+  3: '信心指数低',
 };
 
 export default {

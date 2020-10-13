@@ -5,17 +5,13 @@
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
-            <el-input
+            <el-select
               v-model="keyWord"
               placeholder="输入字典编号/名称"
-              maxlength="50"
-              class="tl-input-search"
-              @keyup.enter.native="searchList"
+              @click="searchList"
               clearable
-              @clear="clear"
-            >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-            </el-input>
+              ><el-option></el-option
+            ></el-select>
           </el-form-item>
         </el-form>
         <el-button
@@ -23,7 +19,8 @@
           icon="el-icon-plus"
           class="tl-btn amt-bg-slip"
           @click="customProcess"
-        >新建任务过程</el-button>
+          >新建任务过程</el-button
+        >
       </div>
     </div>
     <div class="cont-area">
@@ -35,27 +32,62 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="processName" label="任务过程"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="indexNumber" label="排序"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="processType" label="使用范围"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="available" label="状态"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="createTime" label="创建时间">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="processName"
+              label="任务过程"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="indexNumber"
+              label="排序"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="processType"
+              label="使用范围"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="available"
+              label="状态"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="createTime"
+              label="创建时间"
+            >
               <template slot-scope="scope">
                 <div>
                   {{
-                  scope.row.createTime
-                  ? dateFormat(
-                  "YYYY-mm-dd HH:MM:SS",
-                  new Date(scope.row.createTime)
-                  )
-                  : "--"
+                    scope.row.createTime
+                      ? dateFormat(
+                          "YYYY-mm-dd HH:MM:SS",
+                          new Date(scope.row.createTime)
+                        )
+                      : "--"
                   }}
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="130px" fixed="right" align="left" label="操作">
+            <el-table-column
+              width="130px"
+              fixed="right"
+              align="left"
+              label="操作"
+            >
               <template slot-scope="scope">
-                <el-button type="text" @click="editProcess(scope.row)" size="small">编辑</el-button>
+                <el-button
+                  type="text"
+                  @click="editProcess(scope.row)"
+                  size="small"
+                  >编辑</el-button
+                >
               </template>
             </el-table-column>
           </el-table>

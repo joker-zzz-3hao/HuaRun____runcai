@@ -21,6 +21,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
   }
 
+  // 查部门okr列表
+  getorgOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
+  }
+
   // 获取公司价值观
   getValues(param) {
     return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
@@ -38,7 +43,7 @@ export default class Server extends ServerBase {
 
   // 查询项目
   queryOrgProject(param) {
-    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+    return this._ajaxPost('gateway/project-service/project/query/userProjectList', param);
   }
 
   // 查询项目组织

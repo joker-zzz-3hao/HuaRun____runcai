@@ -1,16 +1,5 @@
-<!--
- * @Author: 王益
- * @Description: file content
- * @Date: 2019-03-20 10:48:17
- * eslint max-len: off
- -->
 <template>
   <div>
-    <ul class="upload-item-title">
-      <li class="file-name">文件名</li>
-      <li class="file-name">日期</li>
-      <li class="operate">操作</li>
-    </ul>
     <upload-custom
       ref="uploadFile"
       v-bind="$attrs"
@@ -72,7 +61,7 @@ export default {
     },
     tips: {
       type: String,
-      default: '注：最多可上传5个附件，每个附件大小不得超过5M，附件支持格式有：\'jpg\',\'jpeg\',\'bmp\',\'png\',\'gif\',\'doc\',\'docx\',\'pdf\'',
+      default: '最多上传10个文件，单个文件不超过30M',
     },
     limit: {
       type: Number,
@@ -112,9 +101,10 @@ export default {
   data() {
     return {
       server,
-      dataParams: { validateCode: '', ...this.params },
+      dataParams: { sourceType: 'TASK_FILE', ...this.params },
       fileNum: 0,
       fileUploadList: [],
+      validateCode: '',
     };
   },
   computed: {
@@ -122,7 +112,7 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      return `${origin}/gateway/system-service/sys/attachment/upload`;
+      return `${origin}/gateway/system-service/sys/attachment/upload?validateCode=${this.validateCode}`;
     },
     headers() {
       return { token: localStorage.token };
@@ -142,8 +132,8 @@ export default {
             } else {
               fileMd5 = md5Code;
               fileNameMd5 = md5(file.name);
-              self.dataParams.validateCode = md5(fileMd5.substr(0, 6) + fileNameMd5.substr(0, 6));
-              console.log(self.dataParams.validateCode);
+              self.validateCode = md5(fileMd5.substr(0, 6) + fileNameMd5.substr(0, 6));
+              console.log(self.validateCode);
               resolve();
             }
           },

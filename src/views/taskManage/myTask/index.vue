@@ -1,13 +1,39 @@
 <template>
-  <div class="home">
-    <div v-if="showTask" class="my-task">
-      <!-- 按钮组 -->
-      <div>
-        <el-button @click="goCreateTask">添加任务</el-button>
-        <el-button @click="showTask = false">周报汇总</el-button>
+  <div class="my-task">
+    <div class="operating-area">
+      <div class="page-title">
+        <em v-show="showTask">我的任务</em>
+        <em v-show="!showTask">任务汇总</em>
       </div>
-      <!-- 搜索框 -->
-      <div class="tl-custom-tabs">
+      <div class="operating-box">
+        <el-button
+          type="primary"
+          icon="el-icon-folder-checked"
+          @click="goCreateTask"
+          v-show="showTask"
+          class="tl-btn amt-bg-slip"
+          >添加任务</el-button
+        >
+        <el-button
+          plain
+          @click="toggleState"
+          v-show="showTask"
+          icon="el-icon-document-add"
+          class="tl-btn amt-border-slip"
+        >
+          <em>任务汇总</em><span class="lines"></span>
+        </el-button>
+        <el-button
+          @click="toggleState"
+          plain
+          class="tl-btn amt-border-slip"
+          v-show="!showTask"
+          >返回<span class="lines"></span
+        ></el-button>
+      </div>
+    </div>
+    <div class="cont-area" :class="{ 'small-padding': showTask }">
+      <div class="tl-custom-tabs" v-show="showTask">
         <div class="tab-menus">
           <ul class="tab-list">
             <li
@@ -19,109 +45,181 @@
               {{ item.menuName }}
             </li>
           </ul>
+          <el-input
+            placeholder="输入任务标题"
+            v-model="searchMsg"
+            maxlength="50"
+            clearable
+            class="tl-input-search"
+            @keyup.enter.native="getTableList"
+          >
+            <i class="el-icon-search" slot="prefix" @click="getTableList"></i
+          ></el-input>
+          <div @click="showSearchBar" class="unfold-more">
+            展开更多筛选
+            <i :class="arrowClass"></i>
+          </div>
           <div class="border-slip"></div>
         </div>
-        <el-input
-          placeholder="输入任务标题"
-          v-model="searchMsg"
-          maxlength="50"
-          clearable
-          class="tl-input-search"
-          @keyup.enter.native="getTableList"
+      </div>
+      <div class="tl-condition-screening" v-show="showTask">
+        <dl
+          class="screening-results tag-lists"
+          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
         >
-          <i class="el-icon-search" slot="prefix" @click="getTableList"></i
-        ></el-input>
-        <!-- 更多筛选 -->
-        <div @click="showSearchBar">
-          展开更多筛选
-          <i :class="arrowClass"></i>
-        </div>
-        <div style="display: flex">
-          <span
-            v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
-            >所有筛选</span
-          >
-          <div
-            class="searchblock"
-            v-for="(item, index) in searchList"
+          <dt>所有筛选</dt>
+          <dd v-for="(item, index) in searchList" :key="index">
+            <em>{{ item.name }}</em>
+            <i class="el-icon-close" @click.stop="clearNode(index)"></i>
+          </dd>
+          <dd v-if="searchPerson.length > 0">
+            <span>执行人：</span>
+            <em v-for="p in searchPerson" :key="p">{{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearAllPerson"></i>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>任务过程</dt>
+          <dd
+            :class="{ 'is-selected': item.isSelected }"
+            v-for="(item, index) in taskProcessList"
             :key="index"
           >
-            <span>{{ item.name }}</span>
-            <i class="el-icon-error" @click.stop="clearNode(index)"></i>
-          </div>
-        </div>
-        <div v-show="arrowClass == 'el-icon-caret-bottom'">
-          <!-- 筛选标签 -->
-          <dl style="display: flex">
-            <dt>任务过程</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in taskProcessList"
-              :key="index"
+            <em @click="switchParent(item)">{{ item.label }}</em>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>任务步骤</dt>
+          <!-- 为了不闪 -->
+          <dd v-if="childCateList.length == 0" class="tag-item is-selected">
+            全部
+          </dd>
+          <dd
+            class="tag-item"
+            :class="{ 'is-selected': item.isSelected }"
+            v-for="(item, index) in childCateList"
+            :key="index"
+          >
+            <em @click="selectStatus(item)">{{ item.label }}</em>
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>确认接收</dt>
+          <dd
+            :class="{ 'is-selected': accept === null }"
+            @click="changeAccept(null)"
+          >
+            全部
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === true }"
+            @click="changeAccept(true)"
+          >
+            已确认
+          </dd>
+          <dd
+            :class="{ 'is-selected': accept === false }"
+            @click="changeAccept(false)"
+          >
+            未确认
+          </dd>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>执行人</dt>
+          <dd v-for="p in searchPerson" :key="p">
+            <em> {{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearPersonNode(p)"></i>
+          </dd>
+
+          <el-popover placement="bottom" width="200" trigger="click">
+            <div>
+              <el-input
+                placeholder="搜索"
+                v-model="keyword"
+                class="tl-input"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+              <el-checkbox-group v-model="searchPerson" @change="getTableList">
+                <el-checkbox
+                  v-for="item in filterPerson"
+                  :label="item.userId"
+                  :key="item.userId"
+                >
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ item.userName }}</span>
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div slot="reference">
+              <div>+</div>
+            </div>
+          </el-popover>
+
+          <!-- <el-select
+            v-model="searchPerson"
+            multiple
+            placeholder="请选择执行人"
+            filterable
+            remote
+            :remote-method="getUserList"
+            @change="getTableList"
+          >
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
             >
-              <span @click="switchParent(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl style="display: flex">
-            <dt>任务步骤</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in childCateList"
-              :key="index"
-            >
-              <span @click="selectStatus(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl>
-            <dt>确认接收</dt>
-            <dd>
-              <el-radio-group v-model="accept" @change="getTableList">
-                <el-radio-button :label="true">已确认</el-radio-button>
-                <el-radio-button :label="false">未确认</el-radio-button>
-              </el-radio-group>
-            </dd>
-          </dl>
-        </div>
+              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <div v-if="item.userName" class="user-name">
+                  <em>{{
+                    item.userName.substring(item.userName.length - 2)
+                  }}</em>
+                </div>
+              </el-avatar>
+              <span>{{ item.userName }}</span>
+            </el-option>
+          </el-select> -->
+        </dl>
       </div>
-      <!-- table -->
       <tl-crcloud-table
         :total="totalpage"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="getTableList"
+        v-show="showTask"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column width="80px">
-              <template slot-scope="scope">
-                <el-dropdown trigger="click">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      @click.native="deleteTask(scope.row.taskId)"
-                      >删除</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      @click.native="filedTask(scope.row.taskId)"
-                      :disabled="scope.row.taskProgress != 100"
-                      >任务归档</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </el-dropdown></template
-              >
-            </el-table-column>
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
-                <a @click="openEdit(scope.row.taskId)">{{
-                  scope.row.taskTitle
-                }}</a>
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-
             <el-table-column min-width="100px" align="left">
               <template slot-scope="scope">
                 <div>
@@ -136,28 +234,25 @@
             </el-table-column>
             <el-table-column align="left" prop="taskStatus">
               <template slot-scope="scope">
+                <i
+                  :class="
+                    ({ 'is-draft': scope.row.taskStatus == '0' },
+                    { 'not-confirm': scope.row.taskStatus == '10' },
+                    { 'is-confirm': scope.row.taskStatus == '20' })
+                  "
+                ></i>
+
                 <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
               </template>
             </el-table-column>
             <el-table-column align="left" prop="userName">
               <template slot-scope="scope">
                 <div>
-                  <el-avatar :size="30">
-                    <div class="user-name">
-                      <em v-if="scope.row.userName">
-                        {{
-                          scope.row.userName.substring(
-                            scope.row.userName.length - 2
-                          )
-                        }}
-                      </em>
-                    </div>
-                  </el-avatar>
                   <span>{{ scope.row.userName || "无执行人" }}</span>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" width="200">
+            <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
                   :disabled="
@@ -166,107 +261,67 @@
                       scope.row.taskUserId == userInfo.userId
                     )
                   "
-                  :class="{
-                    'btn-disable': !(
-                      scope.row.taskStatus == 10 &&
-                      scope.row.taskUserId == userInfo.userId
-                    ),
-                  }"
-                  type="text"
                   @click="acceptTask(scope.row.taskId)"
                   class="tl-btn"
                   >确认接收</el-button
                 >
+                <!-- 已确认且执行人不是我 不能编辑-->
+                <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
-                  :disabled="
-                    !(
-                      scope.row.createBy == userInfo.userId &&
-                      (scope.row.taskStatus == 0 ||
-                        (scope.row.taskStatus == 10 && !scope.row.taskUserId))
-                    )
-                  "
-                  :class="{
-                    'btn-disable': !(
-                      scope.row.createBy == userInfo.userId &&
-                      (scope.row.taskStatus == 0 ||
-                        (scope.row.taskStatus == 10 && !scope.row.taskUserId))
-                    ),
-                  }"
-                  type="text"
-                  @click="handleAssign(scope.row.taskId)"
+                  :disabled="canEdit(scope.row)"
                   class="tl-btn"
-                  >确认指派</el-button
+                  @click="openEdit(scope.row)"
+                  >编辑</el-button
                 >
-                <el-popover
-                  :disabled="scope.row.taskStatus != 20"
-                  placement="bottom"
-                  width="200"
-                  trigger="click"
-                  v-model="scope.row.processVisible"
-                  @show="queryStep(scope.row)"
-                >
-                  <div v-show="stepList.length > 0">
-                    <el-select
-                      v-model="scope.row.stepId"
-                      @change="moveTask(scope.row)"
-                    >
-                      <el-option
-                        v-for="item in stepList"
-                        :key="item.stepId"
-                        :value="item.stepId"
-                        :label="item.stepName"
-                        ><span>{{ item.stepName }}</span
-                        ><span v-if="item.stepId == scope.row.stepId"
-                          >当前</span
-                        ></el-option
-                      >
-                    </el-select>
-                  </div>
-                  <el-button
-                    :disabled="scope.row.taskStatus != 20"
-                    :class="{ 'btn-disable': scope.row.taskStatus != 20 }"
-                    slot="reference"
-                    type="text"
-                    class="tl-btn"
-                    >移动</el-button
-                  >
-                </el-popover>
               </template>
+            </el-table-column>
+            <el-table-column width="80px">
+              <template slot-scope="scope">
+                <el-dropdown trigger="click">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      :disabled="canEdit(scope.row)"
+                      @click.native="deleteTask(scope.row.taskId)"
+                      >删除</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click.native="filedTask(scope.row.taskId)"
+                      :disabled="scope.row.taskProgress != 100"
+                      >任务归档</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </el-dropdown></template
+              >
             </el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
-      <tl-assignment
-        ref="assignment"
-        v-if="existAssignment"
-        :existAssignment.sync="existAssignment"
-        :server="server"
-        @success="getTableList"
-      ></tl-assignment>
-      <tl-createtask
-        ref="createtask"
-        v-if="existCreatetask"
-        :existCreatetask.sync="existCreatetask"
-        :server="server"
-        @success="getTableList"
-      ></tl-createtask>
-      <tl-edittask
-        ref="editTask"
-        v-if="existEditTask"
-        :existEditTask.sync="existEditTask"
-        :server="server"
-        @success="getTableList"
-      ></tl-edittask>
+      <tl-tasksum v-show="!showTask"></tl-tasksum>
     </div>
-    <div v-else class="weekly-sum">
-      <tl-weeklysum></tl-weeklysum>
-      <el-button
-        @click="showTask = true"
-        plain
-        class="tl-btn amt-border-fadeout"
-        >返回</el-button
-      >
-    </div>
+    <tl-assignment
+      ref="assignment"
+      v-if="existAssignment"
+      :existAssignment.sync="existAssignment"
+      :server="server"
+      @success="getTableList"
+    ></tl-assignment>
+    <tl-createtask
+      ref="createtask"
+      v-if="existCreatetask"
+      :existCreatetask.sync="existCreatetask"
+      :server="server"
+      @success="getTableList"
+    ></tl-createtask>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+      @success="getTableList"
+    ></tl-edittask>
   </div>
 </template>
 
@@ -276,7 +331,7 @@ import crcloudTable from '@/components/crcloudTable';
 import assignment from './components/assignment';
 import createTask from './components/createTask';
 import editTask from './components/editTask';
-import weeklySum from './components/weeklySum';
+import taskSum from './components/taskSum';
 import CONST from './const';
 import Server from './server';
 
@@ -289,7 +344,7 @@ export default {
     'tl-assignment': assignment,
     'tl-createtask': createTask,
     'tl-edittask': editTask,
-    'tl-weeklysum': weeklySum,
+    'tl-tasksum': taskSum,
   },
   data() {
     return {
@@ -320,23 +375,36 @@ export default {
       taskStatus: {}, // 选择的任务状态
       processList: [], // 过程列表
       stepList: [],
-      childCateList: [{
-        label: '全部', value: null, isSelected: true,
-      }],
+      childCateList: [],
       accept: null,
       moveProcessId: null,
       showTask: true,
       processVisible: false,
+      userList: [], // 执行人列表
+      searchPerson: [],
+      reformattedArray: [],
+      userMap: {},
+      keyword: '',
     };
   },
   created() {
     this.getTableList();
     this.getProcess();
+    this.getUserList();
+    if (this.$route.query && this.$route.query.openCreate) {
+      this.goCreateTask();
+    }
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    filterPerson() {
+      return this.userList.filter(
+        (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
+      ) || [];
+    },
+
   },
   mounted() {
     // 状态
@@ -347,6 +415,15 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
+    canEdit(row) {
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                    || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
+    },
+    toggleState() {
+      this.showTask = !this.showTask;
+    },
     handleAssign(id) {
       this.existAssignment = true;
       this.$nextTick(() => {
@@ -359,13 +436,40 @@ export default {
         this.$refs.createtask.show();
       });
     },
-    openEdit(id) {
+    openEdit(row) {
       this.existEditTask = true;
       this.$nextTick(() => {
-        this.$refs.editTask.show(id);
+        this.$refs.editTask.show(row.taskId, this.canEdit(row));
       });
     },
+    getUserList() {
+      const params = {
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.userInfo.orgList[0].orgFullId,
+
+      };
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content || [];
+          // 生成团队map对象
+          this.reformattedArray = this.userList.map(
+            (obj) => {
+              const rObj = {};
+              rObj[obj.userId] = obj.userName;
+              Object.assign(this.userMap, rObj);
+              return rObj;
+            },
+          );
+        }
+      });
+    },
+
+    errorHandler() {
+      return true;
+    },
     getTableList() {
+      console.log(this.searchPerson);
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
@@ -373,6 +477,7 @@ export default {
         taskTitle: this.searchMsg,
         psList: this.searchList,
         accept: this.accept,
+        taskUserIds: this.searchPerson.toString(),
       };
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
@@ -451,6 +556,7 @@ export default {
       this.currentIndex = index;
       this.getTableList();
     },
+    // 更换
     showSearchBar() {
       if (this.arrowClass == 'el-icon-caret-top') {
         this.arrowClass = 'el-icon-caret-bottom';
@@ -458,6 +564,7 @@ export default {
         this.arrowClass = 'el-icon-caret-top';
       }
     },
+    // 查任务过程
     getProcess() {
       this.server.queryProcess({
         currentPage: 1,
@@ -469,9 +576,6 @@ export default {
             label: '全部',
             value: 'all',
             isSelected: true,
-            childCateList: [
-              { label: '全部', value: null, isSelected: true },
-            ],
           });
           this.processList.forEach((item) => {
             this.taskProcessList.push({
@@ -485,9 +589,19 @@ export default {
       });
     },
 
+    // 选择任务过程
     switchParent(parentCate) {
+      console.log(parentCate);
       // 查任务步骤
       this.childCateList = [];
+      this.taskProcess = parentCate;
+      this.resetIsSelected(this.taskProcessList);
+      parentCate.isSelected = true;
+      // 如果选择全部，清空选择
+      if (parentCate.value == 'all') {
+        this.selectStatus({ label: '全部', value: null, isSelected: true });
+        this.resetIsSelected(this.taskProcessList, 'init');
+      }
       const params = {
         available: 1,
         processId: parentCate.value,
@@ -507,21 +621,26 @@ export default {
           });
         }
       });
-      this.taskProcess = parentCate;
-      this.resetIsSelected(this.taskProcessList);
-      parentCate.isSelected = true;
       for (const item of this.taskProcessList) {
         if (item.value == parentCate.value) {
           this.resetIsSelected(item.childCateList, 'init');
         }
       }
     },
+    // 选择任务步骤
     selectStatus(childCate) {
       this.resetIsSelected(this.childCateList);
       childCate.isSelected = true;
       if (this.taskProcess.value == 'all') {
         this.searchList = [];
       } else {
+        // 验重
+        const stepList = this.searchList.map((item) => item.stepId) || [];
+        console.log(stepList.toString());
+        if (stepList.includes(childCate.value)) {
+          console.log(stepList.toString());
+          return;
+        }
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -529,11 +648,36 @@ export default {
           stepId: childCate.value,
           stepName: childCate.label,
         });
+        // this.searchList = Array.from(new Set(this.searchList));
       }
     },
+    // 删除单个条件
     clearNode(index) {
       this.searchList.splice(index, 1);
+      // 如果全清空了要把select切回全部
+      if (this.searchList.length === 0) {
+        const selectAll = {
+          label: '全部',
+          value: 'all',
+          isSelected: true,
+        };
+        this.switchParent(selectAll);
+      }
     },
+    // 删除单个执行人
+    clearPersonNode(pId) {
+      const index = this.searchPerson.indexOf(pId);
+      if (index >= 0) {
+        this.searchPerson.splice(index, 1);
+        this.getTableList();
+      }
+    },
+    // 删除全部执行人
+    clearAllPerson() {
+      this.searchPerson = [];
+      this.getTableList();
+    },
+    // 重置
     resetIsSelected(list, init) {
       if (init == 'init') {
         for (let i = 0; i < list.length; i += 1) {
@@ -549,6 +693,10 @@ export default {
         }
       }
     },
+    changeAccept(isAccept) {
+      this.accept = isAccept;
+      this.getTableList();
+    },
   },
   watch: {
     searchList: {
@@ -560,13 +708,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.searchblock {
-  background-color: #f4f6f8;
-  margin: 0px 16px;
-}
-.btn-disable {
-  color: #c0c4cc;
-  cursor: not-allowed;
-}
-</style>

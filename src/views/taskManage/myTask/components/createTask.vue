@@ -13,125 +13,147 @@
       <div class="drawer-title">添加任务</div>
     </div>
     <el-scrollbar>
-      <el-form ref="dataForm" :model="formData" class="tl-form">
-        <el-form-item
-          prop="taskTitle"
-          label="任务标题"
-          :rules="[
-            { required: true, trigger: 'blur', message: '请输入任务标题' },
-          ]"
-        >
-          <el-input
-            type="text"
-            placeholder="请输入任务标题"
-            v-model.trim="formData.taskTitle"
-            maxlength="100"
-            show-word-limit
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="设置执行人" prop="taskUserId">
-          <el-select
-            v-model.trim="formData.taskUserId"
-            placeholder="添加执行人"
-            filterable
-            remote
-            :remote-method="getUserList"
+      <div class="cont-box">
+        <el-form ref="dataForm" :model="formData" class="tl-form">
+          <el-form-item
+            prop="taskTitle"
+            label="任务标题"
+            :rules="[
+              { required: true, trigger: 'blur', message: '请输入任务标题' },
+            ]"
           >
-            <el-option
-              v-for="item in userList"
-              :key="item.userId"
-              :label="item.userName"
-              :value="item.userId"
+            <el-input
+              type="text"
+              placeholder="请输入任务标题"
+              v-model.trim="formData.taskTitle"
+              maxlength="100"
+              show-word-limit
+              class="tl-input"
+            ></el-input>
+          </el-form-item>
+          <div class="item-flex">
+            <el-form-item label="设置执行人" prop="taskUserId">
+              <el-select
+                v-model.trim="formData.taskUserId"
+                placeholder="添加执行人"
+                filterable
+                remote
+                :remote-method="getUserList"
+                popper-class="tl-select-dropdown user-list"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in userList"
+                  :key="item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ item.userName }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="优先级" prop="taskLevel">
+              <el-select
+                v-model.trim="formData.taskLevel"
+                placeholder="请选择优先级"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in CONST.PRIORITY_LIST"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <el-form-item label="设置时间" prop="timeVal">
+            <el-date-picker
+              v-model.trim="formData.timeVal"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
+              popper-class="tl-range-popper"
+              class="tl-range-editor"
             >
-              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                <div v-if="item.userName" class="user-name">
-                  <em>{{
-                    item.userName.substring(item.userName.length - 2)
-                  }}</em>
-                </div>
-              </el-avatar>
-              <span>{{ item.userName }}</span>
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="设置时间" prop="timeVal">
-          <el-date-picker
-            v-model.trim="formData.timeVal"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd"
-          >
-            ></el-date-picker
-          >
-        </el-form-item>
-        <el-form-item label="优先级" prop="taskLevel">
-          <el-select
-            v-model.trim="formData.taskLevel"
-            placeholder="请选择优先级"
-          >
-            <el-option
-              v-for="item in CONST.PRIORITY_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="归属项目" prop="projectVal">
-          <el-input
-            v-model.trim="formData.projectVal.projectNameCn"
-            placeholder="请选择归属项目"
-            maxlength="0"
-            @focus="projectInputFocus()"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="归属OKR" prop="okrDetailId">
-          <el-select
-            v-model.trim="formData.okrDetailId"
-            placeholder="请选择归属OKR"
-          >
-            <el-option
-              v-for="item in okrList"
-              :key="item.okrDetailId"
-              :label="item.okrDetailObjectKr"
-              :value="item.okrDetailId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="归属任务过程" prop="processId">
-          <el-select
-            v-model.trim="formData.processId"
-            placeholder="请选择任务过程"
-          >
-            <el-option
-              v-for="item in processList"
-              :key="item.processId"
-              :label="item.processName"
-              :value="item.processId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="添加描述" prop="taskDesc">
-          <el-input
-            type="textarea"
-            :rows="5"
-            maxlength="800"
-            show-word-limit
-            v-model="formData.taskDesc"
-            resize="none"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="附件">
-          <file-upload
-            ref="fileUpload"
-            :fileList="formData.fileList"
-            :limit="5"
-            @change="fileChange"
-          ></file-upload>
+              ></el-date-picker
+            >
+          </el-form-item>
+          <!-- <el-form-item label="归属项目" prop="projectVal">
+            <el-input
+              v-model.trim="formData.projectVal.projectNameCn"
+              placeholder="请选择归属项目"
+              maxlength="0"
+              @focus="projectInputFocus()"
+              class="tl-input"
+            ></el-input>
+          </el-form-item> -->
+          <!-- <div class="item-flex">
+            <el-form-item label="归属OKR" prop="okrDetailId">
+              <el-select
+                v-model.trim="formData.okrDetailId"
+                placeholder="请选择归属OKR"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in okrList"
+                  :key="item.okrDetailId"
+                  :label="item.okrDetailObjectKr"
+                  :value="item.okrDetailId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="归属任务过程" prop="processId">
+              <el-select
+                v-model.trim="formData.processId"
+                placeholder="请选择任务过程"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in processList"
+                  :key="item.processId"
+                  :label="item.processName"
+                  :value="item.processId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </div> -->
+          <el-form-item label="添加描述" prop="taskDesc">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="800"
+              show-word-limit
+              v-model="formData.taskDesc"
+              resize="none"
+              class="tl-textarea"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <file-upload
+              ref="fileUpload"
+              :fileList="formData.fileList"
+              :limit="5"
+              @change="fileChange"
+            ></file-upload>
 
-          <!-- <el-upload
+            <!-- <el-upload
             class="upload-demo"
             :action="action"
             :accept="acceptType"
@@ -147,8 +169,9 @@
               最多上传10个文件，单个文件不超过30M
             </div>
           </el-upload> -->
-        </el-form-item>
-      </el-form>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-scrollbar>
     <div class="operating-box">
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -158,7 +181,7 @@
         >暂存</el-button
       >
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
-        >确认指派</el-button
+        >指派</el-button
       >
     </div>
     <tl-selectproject
@@ -240,6 +263,7 @@ export default {
     headers() {
       return { token: localStorage.token };
     },
+
   },
   components: {
     'tl-selectproject': selectProject,
@@ -269,7 +293,7 @@ export default {
       };
       this.server.queryOkr(params).then((res) => {
         if (res.code == 200) {
-          this.okrList = res.data.okrDetails;
+          this.okrList = res.data.okrDetails || [];
           console.log(res.data);
         }
       });
@@ -318,6 +342,7 @@ export default {
     errorHandler() {
       return true;
     },
+    // 文件
     beforeUpload(file) {
       console.log(file.type);
       const self = this;
@@ -343,7 +368,7 @@ export default {
         taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
       }
       const params = {
-        attachmentList: [], // TODO: 附件
+        attachmentList: this.fileList, // TODO: 附件
         // headerHrl: '',
         okrDetailId: this.formData.okrDetailId,
         okrDetailName: okrVal.okrDetailObjectKr,
@@ -358,6 +383,7 @@ export default {
         taskTitle: this.formData.taskTitle,
         taskUserId: this.formData.taskUserId,
         userName: userVal.userName,
+        innerType: 0, // 用户创建
       };
       return params;
     },
@@ -380,6 +406,10 @@ export default {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = this.handlerData();
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           this.server.appointSave(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');

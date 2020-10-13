@@ -251,6 +251,7 @@ export default {
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          self.queryTeamMember(self.baseInfo.orgId);
           if (self.baseInfo.weeklySee == 'O') {
             self.weeklyOpen = true;
           }
@@ -421,7 +422,7 @@ export default {
           userId: data.userId,
         }).then((res) => {
           if (res.code == '200') {
-            this.queryTeamMember(this.teamSelect);
+            // this.queryTeamMember(this.teamSelect);
           }
         });
       });
@@ -451,15 +452,15 @@ export default {
     },
   },
   watch: {
-    teamSelect: {
-      handler(val) {
-        if (val) {
-          this.queryTeamMember(val);
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
+    // teamSelect: {
+    //   handler(val) {
+    //     if (val) {
+    //       this.queryTeamMember(val);
+    //     }
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
 };
 </script>

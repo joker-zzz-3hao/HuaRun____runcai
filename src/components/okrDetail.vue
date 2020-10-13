@@ -405,7 +405,8 @@
       <template v-if="showMore">
         <dl v-for="(item, index) in cutVoteList" :key="item.userId + index">
           <dt class="user-info">
-            <div class="user-name">
+            <img v-if="item.headUrl" :src="item.headUrl" alt="" />
+            <div v-else class="user-name">
               <em>{{ cutName(item.userName) }}</em>
             </div>
           </dt>

@@ -56,12 +56,24 @@ _:future,
   .weekly-select li:last-child {
     margin-right: 0;
   }
+
+  @-moz-document url-prefix() {
+    #talent>.el-scrollbar .el-scrollbar__wrap {
+      width: 1946px
+    }
+  }
 }
 
 @media screen and (min-width:1921px) {
   .tl-table .sub-tr .okr-kr-name::before {
     left: -95px;
     width: 86px;
+  }
+
+  @-moz-document url-prefix() {
+    #talent>.el-scrollbar .el-scrollbar__wrap {
+      width: 2586px
+    }
   }
 }
 
