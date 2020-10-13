@@ -105,6 +105,7 @@
               @click="searchList"
             ></i>
           </el-input>
+          <el-button type="primary" @click="searchList">查询</el-button>
           <el-button @click="goback" plain class="tl-btn amt-border-slip">
             返回
             <span class="lines"></span>

@@ -53,7 +53,8 @@
                 :min="0"
                 :max="100"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input-number
+              >%
               <!-- 编辑完之后显示 -->
               <!-- <tl-process
                 :data="node.okrDetailProgress"
@@ -166,14 +167,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i>
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      v-show="scope.row.selectedOkr.length < 1"
+                      class="icon-bg"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -620,14 +627,16 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        this.formData.weeklyWorkVoSaveList.forEach((item) => {
-          item.selectedOkr.forEach((element) => {
-            if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
-            }
+        if (okr) {
+          this.formData.weeklyWorkVoSaveList.forEach((item) => {
+            item.selectedOkr.forEach((element) => {
+              if (okr.okrDetailId == element.okrDetailId) {
+                result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+              }
+            });
           });
-        });
-        return result.join('、');
+          return result.join('、');
+        }
       };
     },
   },
