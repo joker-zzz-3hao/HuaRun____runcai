@@ -4,30 +4,31 @@
       title="评价"
       :visible.sync="showScore"
       :with-header="true"
-      @close="closed"
-      :modal="false"
-      :append-to-body="false"
       :wrapperClosable="false"
       :modal-append-to-body="false"
-      :close-on-click-modal="false"
       :show-close="true"
-      class="tl-drawer"
+      :append-to-body="true"
+      :before-close="close"
+      @closed="closed"
+      :close-on-click-modal="false"
+      class="tl-dialog"
     >
       <div>
-        <div style="display: flex;">
+        <div style="display: flex">
           <div v-for="item in labelList" :key="item.value">
             <el-button
               :class="worthName == item.label ? 'red' : 'green'"
               @click="selectWorth(item)"
               round
-            >{{item.label}}</el-button>
+              >{{ item.label }}</el-button
+            >
           </div>
         </div>
         <div v-if="worthName && scoreId != '50'">
           <span>描述：</span>
-          <span>{{worthName}}</span>
+          <span>{{ worthName }}</span>
         </div>
-        <div v-if="scoreId=='50'">
+        <div v-if="scoreId == '50'">
           <span>描述：如支撑项不符合价值观背景，请把它归类到其它标签中</span>
           <div>
             <div>添加：</div>
@@ -35,10 +36,11 @@
               <div v-if="!inputVisible && otherLabelList.length > 0">
                 <el-tag
                   :key="index"
-                  v-for="(lItem,index) in otherLabelList"
+                  v-for="(lItem, index) in otherLabelList"
                   :disable-transitions="false"
                   @click="selectOtherLabel(lItem)"
-                >{{lItem.label}}</el-tag>
+                  >{{ lItem.label }}</el-tag
+                >
               </div>
               <el-input
                 class="input-new-tag"
@@ -51,11 +53,12 @@
                 @blur="handleInputConfirm"
               ></el-input>
               <el-button
-                v-else-if="!inputVisible && otherLabelList.length==0"
+                v-else-if="!inputVisible && otherLabelList.length == 0"
                 class="button-new-tag"
                 size="small"
                 @click="showInput"
-              >新增标签</el-button>
+                >新增标签</el-button
+              >
             </div>
           </div>
         </div>

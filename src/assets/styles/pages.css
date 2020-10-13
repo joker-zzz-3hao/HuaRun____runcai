@@ -1741,6 +1741,7 @@
 .my-weekly .cont-area,
 .okr-maps .maps-view-table,
 .teams-weekly .cont-area,
+.teams-weekly-detail .cont-area,
 .my-task .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
@@ -2190,14 +2191,19 @@
   margin: 0 0 0 20px;
 }
 
-.teams-weekly .operating-area .el-select .el-input__inner {
+.teams-weekly .cont-area > .flex-sb {
+  margin: 10px 0;
+  padding: 0 15px;
+}
+
+.teams-weekly .flex-sb .el-select:first-child .el-input__inner {
   padding: 0 0 0 30px;
 }
 
-.teams-weekly .operating-area .el-select:before {
+.teams-weekly .flex-sb .el-select:first-child:before {
   position: absolute;
   left: 8px;
-  top: 11px;
+  top: 13px;
   content: '\e6ce';
   width: 20px;
   height: 20px;
@@ -2205,16 +2211,16 @@
   color: #fff;
 }
 
-.teams-weekly .operating-area .el-select .el-input .el-input__inner {
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-input__inner {
   background: #685df1;
 }
 
-.teams-weekly .operating-area .el-select .el-input__inner,
-.teams-weekly .operating-area .el-select .el-input .el-select__caret {
+.teams-weekly .flex-sb .el-select:first-child .el-input__inner,
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-select__caret {
   color: #fff;
 }
 
-.teams-weekly .operating-area .el-select .el-input .el-input__inner::-webkit-input-placeholder{
+.teams-weekly .flex-sb .el-select:first-child .el-input .el-input__inner::-webkit-input-placeholder{
   color:#fff !important;
 }
 
@@ -2366,6 +2372,7 @@
 .teams-weekly .table-container .quick-look .tl-card-list > dd {
   flex: 1;
   flex-direction: column;
+  justify-content: center;
   align-items: stretch;
   padding-left: 50px;
   border-left: 1px solid #e5e9ee;
@@ -2953,4 +2960,19 @@
 .worth-manage .event-book,
 .event-book .table-pagination {
   flex: 1;
+}
+
+.worth-manage .user-name-txt {
+  margin: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.worth-manage .user-name-txt em:last-child {
+  font-size: 12px;
+  color: #acb6bf;
+}
+
+.worth-manage .event-book .tl-table td {
+  height: 66px;
 }
