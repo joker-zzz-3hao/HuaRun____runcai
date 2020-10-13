@@ -72,6 +72,11 @@
             <em>{{ item.name }}</em>
             <i class="el-icon-close" @click.stop="clearNode(index)"></i>
           </dd>
+          <dd v-if="searchPerson.length > 0">
+            <span>执行人：</span>
+            <em v-for="p in searchPerson" :key="p">{{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearAllPerson"></i>
+          </dd>
         </dl>
         <dl
           class="condition-lists tag-lists"
@@ -128,53 +133,78 @@
             未确认
           </dd>
         </dl>
-        <!-- <div style="display: flex">
-          <span
-            v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
-            >所有筛选</span
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>执行人</dt>
+          <dd v-for="p in searchPerson" :key="p">
+            <em> {{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearPersonNode(p)"></i>
+          </dd>
+
+          <el-popover placement="bottom" width="200" trigger="click">
+            <div>
+              <el-input
+                placeholder="搜索"
+                v-model="keyword"
+                class="tl-input"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+              <el-checkbox-group v-model="searchPerson" @change="getTableList">
+                <el-checkbox
+                  v-for="item in filterPerson"
+                  :label="item.userId"
+                  :key="item.userId"
+                >
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ item.userName }}</span>
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div slot="reference">
+              <div>+</div>
+            </div>
+          </el-popover>
+
+          <!-- <el-select
+            v-model="searchPerson"
+            multiple
+            placeholder="请选择执行人"
+            filterable
+            remote
+            :remote-method="getUserList"
+            @change="getTableList"
           >
-          <div
-            class="searchblock"
-            v-for="(item, index) in searchList"
-            :key="index"
-          >
-            <span>{{ item.name }}</span>
-            <i class="el-icon-error" @click.stop="clearNode(index)"></i>
-          </div>
-        </div>
-        <div v-show="arrowClass == 'el-icon-caret-bottom'">
-          <dl style="display: flex">
-            <dt>任务过程</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in taskProcessList"
-              :key="index"
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
             >
-              <span @click="switchParent(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl style="display: flex">
-            <dt>任务步骤</dt>
-            <dd
-              class="searchblock"
-              :class="{ selected: item.isSelected }"
-              v-for="(item, index) in childCateList"
-              :key="index"
-            >
-              <span @click="selectStatus(item)">{{ item.label }}</span>
-            </dd>
-          </dl>
-          <dl>
-            <dt>确认接收</dt>
-            <dd>
-              <el-radio-group v-model="accept" @change="getTableList">
-                <el-radio-button :label="true">已确认</el-radio-button>
-                <el-radio-button :label="false">未确认</el-radio-button>
-              </el-radio-group>
-            </dd>
-          </dl>
-        </div> -->
+              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <div v-if="item.userName" class="user-name">
+                  <em>{{
+                    item.userName.substring(item.userName.length - 2)
+                  }}</em>
+                </div>
+              </el-avatar>
+              <span>{{ item.userName }}</span>
+            </el-option>
+          </el-select> -->
+        </dl>
       </div>
       <tl-crcloud-table
         :total="totalpage"
@@ -206,6 +236,14 @@
             </el-table-column>
             <el-table-column align="left" prop="taskStatus">
               <template slot-scope="scope">
+                <i
+                  :class="
+                    ({ 'is-draft': scope.row.taskStatus == '0' },
+                    { 'not-confirm': scope.row.taskStatus == '10' },
+                    { 'is-confirm': scope.row.taskStatus == '20' })
+                  "
+                ></i>
+
                 <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
               </template>
             </el-table-column>
@@ -219,16 +257,22 @@
             <el-table-column width="200">
               <template slot-scope="scope">
                 <el-button
-                  v-if="
-                    scope.row.taskStatus == 10 &&
-                    scope.row.taskUserId == userInfo.userId
+                  :disabled="
+                    !(
+                      scope.row.taskStatus == 10 &&
+                      scope.row.taskUserId == userInfo.userId
+                    )
                   "
                   @click="acceptTask(scope.row.taskId)"
                   class="tl-btn"
                   >确认接收</el-button
                 >
+                <!-- 已确认并且执行人不是我 不能编辑-->
                 <el-button
-                  v-else
+                  :disabled="
+                    scope.row.taskStatus == 20 &&
+                    scope.row.taskUserId != userInfo.userId
+                  "
                   class="tl-btn"
                   @click="openEdit(scope.row.taskId)"
                   >编辑</el-button
@@ -334,23 +378,32 @@ export default {
       taskStatus: {}, // 选择的任务状态
       processList: [], // 过程列表
       stepList: [],
-      childCateList: [{
-        label: '全部', value: null, isSelected: true,
-      }],
+      childCateList: [],
       accept: null,
       moveProcessId: null,
       showTask: true,
       processVisible: false,
+      userList: [], // 执行人列表
+      searchPerson: [],
+      reformattedArray: [],
+      userMap: {},
+      keyword: '',
     };
   },
   created() {
     this.getTableList();
     this.getProcess();
+    this.getUserList();
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    filterPerson() {
+      return this.userList.filter(
+        (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
+      ) || [];
+    },
   },
   mounted() {
     // 状态
@@ -382,7 +435,34 @@ export default {
         this.$refs.editTask.show(id);
       });
     },
+    getUserList() {
+      const params = {
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.userInfo.orgList[0].orgFullId,
+
+      };
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content || [];
+          // 生成团队map对象
+          this.reformattedArray = this.userList.map(
+            (obj) => {
+              const rObj = {};
+              rObj[obj.userId] = obj.userName;
+              Object.assign(this.userMap, rObj);
+              return rObj;
+            },
+          );
+        }
+      });
+    },
+
+    errorHandler() {
+      return true;
+    },
     getTableList() {
+      console.log(this.searchPerson);
       const params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
@@ -390,6 +470,7 @@ export default {
         taskTitle: this.searchMsg,
         psList: this.searchList,
         accept: this.accept,
+        taskUserIds: this.searchPerson.toString(),
       };
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
@@ -468,6 +549,7 @@ export default {
       this.currentIndex = index;
       this.getTableList();
     },
+    // 更换
     showSearchBar() {
       if (this.arrowClass == 'el-icon-caret-top') {
         this.arrowClass = 'el-icon-caret-bottom';
@@ -475,6 +557,7 @@ export default {
         this.arrowClass = 'el-icon-caret-top';
       }
     },
+    // 查任务过程
     getProcess() {
       this.server.queryProcess({
         currentPage: 1,
@@ -486,9 +569,6 @@ export default {
             label: '全部',
             value: 'all',
             isSelected: true,
-            childCateList: [
-              { label: '全部', value: null, isSelected: true },
-            ],
           });
           this.processList.forEach((item) => {
             this.taskProcessList.push({
@@ -502,6 +582,7 @@ export default {
       });
     },
 
+    // 选择任务过程
     switchParent(parentCate) {
       console.log(parentCate);
       // 查任务步骤
@@ -539,6 +620,7 @@ export default {
         }
       }
     },
+    // 选择任务步骤
     selectStatus(childCate) {
       this.resetIsSelected(this.childCateList);
       childCate.isSelected = true;
@@ -546,6 +628,12 @@ export default {
         this.searchList = [];
       } else {
         // 验重
+        const stepList = this.searchList.map((item) => item.stepId) || [];
+        console.log(stepList.toString());
+        if (stepList.includes(childCate.value)) {
+          console.log(stepList.toString());
+          return;
+        }
         this.searchList.push({
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
@@ -553,8 +641,10 @@ export default {
           stepId: childCate.value,
           stepName: childCate.label,
         });
+        this.searchList = Array.from(new Set(this.searchList));
       }
     },
+    // 删除单个条件
     clearNode(index) {
       this.searchList.splice(index, 1);
       // 如果全清空了要把select切回全部
@@ -563,13 +653,24 @@ export default {
           label: '全部',
           value: 'all',
           isSelected: true,
-          childCateList: [
-            { label: '全部', value: null, isSelected: true },
-          ],
         };
         this.switchParent(selectAll);
       }
     },
+    // 删除单个执行人
+    clearPersonNode(pId) {
+      const index = this.searchPerson.indexOf(pId);
+      if (index >= 0) {
+        this.searchPerson.splice(index, 1);
+        this.getTableList();
+      }
+    },
+    // 删除全部执行人
+    clearAllPerson() {
+      this.searchPerson = [];
+      this.getTableList();
+    },
+    // 重置
     resetIsSelected(list, init) {
       if (init == 'init') {
         for (let i = 0; i < list.length; i += 1) {

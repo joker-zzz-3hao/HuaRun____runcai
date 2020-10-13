@@ -381,6 +381,7 @@ export default {
         taskTitle: this.formData.taskTitle,
         taskUserId: this.formData.taskUserId,
         userName: userVal.userName,
+        innerType: 0, // 用户创建
       };
       return params;
     },
@@ -403,6 +404,10 @@ export default {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = this.handlerData();
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           this.server.appointSave(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');
