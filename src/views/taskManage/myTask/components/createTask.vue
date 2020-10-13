@@ -263,6 +263,7 @@ export default {
     headers() {
       return { token: localStorage.token };
     },
+
   },
   components: {
     'tl-selectproject': selectProject,
@@ -341,6 +342,7 @@ export default {
     errorHandler() {
       return true;
     },
+    // 文件
     beforeUpload(file) {
       console.log(file.type);
       const self = this;

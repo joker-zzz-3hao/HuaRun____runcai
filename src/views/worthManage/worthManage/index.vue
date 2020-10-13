@@ -65,41 +65,37 @@
     >
       <div slot="tableContainer" class="table-container">
         <el-table :data="tableData" class="tl-table">
-          <el-table-column prop="userName" label="员工" min-width="170">
+          <el-table-column prop="userName" label="员工" min-width="220">
             <template slot-scope="scope">
-              <div style="display: flex">
-                <div class="user-info">
-                  <img
-                    v-if="scope.row.headImageUrl"
-                    :src="scope.row.headImageUrl"
-                    alt
-                  />
-                  <div v-else-if="scope.row.userName" class="user-name">
-                    {{
-                      scope.row.userName.substring(
-                        scope.row.userName.length - 2
-                      )
-                    }}
-                  </div>
+              <div class="user-info">
+                <img
+                  v-if="scope.row.headImageUrl"
+                  :src="scope.row.headImageUrl"
+                  alt
+                />
+                <div v-else-if="scope.row.userName" class="user-name">
+                  <em>{{
+                    scope.row.userName.substring(scope.row.userName.length - 2)
+                  }}</em>
                 </div>
-                <div>
-                  <div>{{ scope.row.userName }}</div>
-                  <div>{{ scope.row.forgName }} - {{ scope.row.orgName }}</div>
-                </div>
+              </div>
+              <div class="user-name-txt">
+                <em>{{ scope.row.userName }}</em>
+                <em>{{ scope.row.forgName }} - {{ scope.row.orgName }}</em>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             prop="cultureName"
             label="支撑价值观"
-            min-width="180"
+            min-width="80"
           ></el-table-column>
           <el-table-column
             prop="workContent"
             label="工作项"
-            min-width="120"
+            min-width="320"
           ></el-table-column>
-          <el-table-column prop="score" label="评价" min-width="160">
+          <el-table-column prop="score" label="评价" min-width="80">
             <template slot-scope="scope">
               <span v-if="scope.row.score == '50' && scope.row.scoreLabel">{{
                 `${CONST.SCORE_MAP[scope.row.score]}(${scope.row.scoreLabel})`
