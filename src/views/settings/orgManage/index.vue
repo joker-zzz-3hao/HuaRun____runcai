@@ -56,14 +56,21 @@
             icon="el-icon-plus"
             @click="createUser"
             class="tl-btn amt-bg-slip"
-          >创建用户</el-button>
+            >创建用户</el-button
+          >
           <el-button
             type="primary"
             icon="el-icon-plus"
             @click="createDepart"
             class="tl-btn amt-bg-slip"
-          >创建部门</el-button>
-          <el-button plain icon="el-icon-minus" @click="batchImport" class="tl-btn amt-border-slip">
+            >创建部门</el-button
+          >
+          <el-button
+            plain
+            icon="el-icon-minus"
+            @click="batchImport"
+            class="tl-btn amt-border-slip"
+          >
             批量导入
             <span class="lines"></span>
           </el-button>
@@ -73,7 +80,12 @@
     </div>
     <div class="cont-area">
       <div class="department-tree">
-        <el-input placeholder="输入部门名称" v-model.trim="filterText" clearable class="tl-input">
+        <el-input
+          placeholder="输入部门名称"
+          v-model.trim="filterText"
+          clearable
+          class="tl-input"
+        >
           <i class="el-icon-search el-input__icon" slot="prefix"></i>
         </el-input>
         <el-tree
@@ -83,7 +95,7 @@
           :default-expanded-keys="defaultExpandNode"
           :props="defaultProps"
           @node-click="searchList"
-          :expand-on-click-node="true"
+          :expand-on-click-node="false"
           :highlight-current="true"
           :filter-node-method="filterNode"
           class="tl-tree"
@@ -95,9 +107,15 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data,'create')">创建部门</el-dropdown-item>
-                <el-dropdown-item @click.native="createDepart(data,'edit')">编辑部门</el-dropdown-item>
-                <el-dropdown-item @click.native="deleteDepart(data)">删除</el-dropdown-item>
+                <el-dropdown-item @click.native="createDepart(data, 'create')"
+                  >创建部门</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="createDepart(data, 'edit')"
+                  >编辑部门</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="deleteDepart(data)"
+                  >删除</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -111,27 +129,65 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table v-loading="loading" :data="tableData" class="tl-table">
-            <el-table-column min-width="200" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="150" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="150" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="120" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="120" align="left" prop="orgName" label="所属部门"></el-table-column>
-            <el-table-column min-width="130" align="left" prop="agentOrgName" label="代理部门">
+            <el-table-column
+              min-width="200"
+              align="left"
+              prop="userId"
+              label="用户ID"
+            ></el-table-column>
+            <el-table-column
+              min-width="150"
+              align="left"
+              prop="userName"
+              label="用户姓名"
+            ></el-table-column>
+            <el-table-column
+              min-width="150"
+              align="left"
+              prop="userAccount"
+              label="账号/LDAP账号"
+            ></el-table-column>
+            <el-table-column
+              min-width="120"
+              align="left"
+              prop="userMobile"
+              label="手机号"
+            ></el-table-column>
+            <el-table-column
+              min-width="120"
+              align="left"
+              prop="orgName"
+              label="所属部门"
+            ></el-table-column>
+            <el-table-column
+              min-width="130"
+              align="left"
+              prop="agentOrgName"
+              label="代理部门"
+            >
               <template slot-scope="scope">
                 <span
                   type="text"
                   v-if="scope.row.agentOrg"
                   @click="showexistEdit(scope.row)"
-                >{{changeOrgAndId(scope.row.agentOrg)}}</span>
+                  >{{ changeOrgAndId(scope.row.agentOrg) }}</span
+                >
                 <span v-else>
-                  <el-button type="text" @click="showexistEdit(scope.row)">设置</el-button>
+                  <el-button type="text" @click="showexistEdit(scope.row)"
+                    >设置</el-button
+                  >
                 </span>
               </template>
             </el-table-column>
             <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="queryOrgAdmin(scope.row)" style="cursor: pointer;">
-                  <el-tooltip class="item" effect="dark" content="部门负责人" placement="top-start">
+                <div @click="queryOrgAdmin(scope.row)" style="cursor: pointer">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="部门负责人"
+                    placement="top-start"
+                  >
                     <i v-if="scope.row.leader" class="el-icon-user-solid">
                       <span>取消</span>
                     </i>
@@ -142,10 +198,15 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100" align="left" prop="userStatus" label="状态">
+            <el-table-column
+              min-width="100"
+              align="left"
+              prop="userStatus"
+              label="状态"
+            >
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
-                <div v-if="scope.row.userType=='1'">--</div>
+                <div v-if="scope.row.userType == '1'">--</div>
                 <div v-else @click.capture.stop="dataChange(scope.row)">
                   <el-switch
                     active-value="0"
@@ -156,14 +217,33 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="120" align="left" prop="userType" label="用户类型">
+            <el-table-column
+              min-width="120"
+              align="left"
+              prop="userType"
+              label="用户类型"
+            >
               <template slot-scope="scope">
-                <div>{{CONST.USER_TYPE_MAP[scope.row.userType]}}</div>
+                <div>{{ CONST.USER_TYPE_MAP[scope.row.userType] }}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="180" align="left" prop="createTime" label="创建时间">
+            <el-table-column
+              min-width="180"
+              align="left"
+              prop="createTime"
+              label="创建时间"
+            >
               <template slot-scope="scope">
-                <div>{{scope.row.createTime ? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
+                <div>
+                  {{
+                    scope.row.createTime
+                      ? dateFormat(
+                          "YYYY-mm-dd HH:MM:SS",
+                          new Date(scope.row.createTime)
+                        )
+                      : "--"
+                  }}
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -176,16 +256,18 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType=='2'"
+                  v-if="scope.row.userType == '2'"
                   @click="editUser(scope.row)"
                   class="tl-btn"
-                >编辑</el-button>
+                  >编辑</el-button
+                >
                 <el-button
                   type="text"
-                  v-if="scope.row.userType=='2'"
+                  v-if="scope.row.userType == '2'"
                   @click="info(scope.row)"
                   class="tl-btn"
-                >详情</el-button>
+                  >详情</el-button
+                >
                 <div v-else>--</div>
               </template>
             </el-table-column>
