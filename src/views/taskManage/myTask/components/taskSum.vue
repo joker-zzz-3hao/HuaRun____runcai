@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="task-sum">
     <div>
       <span>当前任务汇报时间：</span>
       <em>{{ weekName }}</em>
@@ -158,7 +158,7 @@ export default {
             if (item.taskUserId == this.userInfo.userId) {
               this.owntableData.push(item);
             }
-            if (item.updateBy == this.userInfo.userId) {
+            if (item.createBy == this.userInfo.userId) {
               this.assigntableData.push(item);
             }
           });

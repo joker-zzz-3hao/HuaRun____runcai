@@ -19,14 +19,18 @@
     <div class="modelCreate">
       <el-form ref="form" :model="formData">
         <el-form-item label="任务过程名称：">
-          <el-input disabled placeholder="请输入任务标题" v-model="formData.processName"></el-input>
+          <el-input
+            disabled
+            placeholder="请输入任务标题"
+            v-model="formData.processName"
+          ></el-input>
         </el-form-item>
         <el-form-item label="显示排序：">
           <el-input type="number" v-model="formData.indexNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
-          <div style="display:flex;flex-direction: column;">
+          <div style="display: flex; flex-direction: column">
             <el-checkbox disabled :checked="processObj.processType == '1'">
               团队申请
               <span>(创建后的任务过程其组织下成员均可使用)</span>
@@ -46,7 +50,11 @@
                 <span>{{user.userName}}</span>
               </span>-->
               <span>添加成员</span>
-              <i style="cursor:pointer" @click="addMember" class="el-icon-plus"></i>
+              <i
+                style="cursor: pointer"
+                @click="addMember"
+                class="el-icon-plus"
+              ></i>
               <el-select
                 v-model.trim="formData.userIdList"
                 filterable
@@ -63,28 +71,38 @@
                   :label="item.userName"
                   :value="item.userId"
                 >
-                  <span style="float:left">
-                    <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                  <span style="float: left">
+                    <el-avatar
+                      :size="30"
+                      :src="item.headUrl"
+                      @error="errorHandler"
+                    >
                       <div v-if="item.userName" class="user-name">
-                        <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                        <em>{{
+                          item.userName.substring(item.userName.length - 2)
+                        }}</em>
                       </div>
                     </el-avatar>
                   </span>
-                  <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                  <span style="float: left; marginleft: 5px">{{
+                    item.userName
+                  }}</span>
                   <!-- <span style="float: right">
                   <el-checkbox @change="selectChange(item)" v-model="item.userId"></el-checkbox>
                   </span>-->
                 </el-option>
               </el-select>
             </div>
-            <el-checkbox disabled :checked="processObj.processType == '3'">个人使用</el-checkbox>
+            <el-checkbox disabled :checked="processObj.processType == '3'"
+              >个人使用</el-checkbox
+            >
           </div>
         </el-form-item>
         <el-form-item>
           <h1>任务过程设置</h1>
-          <p v-for="(step,index) in formData.stepList" :key="step.stepId">
-            <span>步骤{{index+1}}</span>
-            <span>{{step.stepName}}</span>
+          <p v-for="(step, index) in formData.stepList" :key="step.stepId">
+            <span>步骤{{ index + 1 }}</span>
+            <span>{{ step.stepName }}</span>
           </p>
         </el-form-item>
       </el-form>
@@ -95,8 +113,11 @@
         class="tl-btn amt-bg-slip"
         :loading="loading"
         @click="updateProcess"
-      >确定</el-button>
-      <el-button class="tl-btn amt-border-fadeout" @click="closed">取消</el-button>
+        >确定</el-button
+      >
+      <el-button class="tl-btn amt-border-fadeout" @click="closed"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>
@@ -143,7 +164,7 @@ export default {
       },
       userList: [],
       selectUserList: [],
-
+      loading: false,
     };
   },
   created() {

@@ -2,7 +2,12 @@
   <div class="role-type">
     <div class="page-title">价值观分布数据</div>
     <div>
-      <el-form ref="ruleForm" :inline="true" class="tl-form-inline" v-if="hsaPower('culture-org-query')">
+      <el-form
+        ref="ruleForm"
+        :inline="true"
+        class="tl-form-inline"
+        v-if="hasPower('culture-org-query')"
+      >
         <el-form-item label="组织">
           <div @click="showCascader = !showCascader">
             <el-input
@@ -74,7 +79,12 @@
       <div>
         <div>价值观评价</div>
         <div>
-          <el-form ref="ruleForm" :inline="true" class="tl-form-inline" v-if="hasPower('culture-tenant-query')">
+          <el-form
+            ref="ruleForm"
+            :inline="true"
+            class="tl-form-inline"
+            v-if="hasPower('culture-tenant-query')"
+          >
             <el-form-item label="周期">
               <div style="margin-left: 20px" v-if="cycleData.length > 0">
                 <el-select

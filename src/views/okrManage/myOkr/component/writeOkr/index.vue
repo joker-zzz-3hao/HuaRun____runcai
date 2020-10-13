@@ -103,6 +103,7 @@
         type="primary"
         @click="summit"
         class="tl-btn amt-bg-slip"
+        :loading="createokrDrawer && okrLoading"
         >创建目标</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -163,6 +164,7 @@ export default {
       roleCode: (state) => state.roleCode,
       showAuto: (state) => state.showAuto,
       createokrDrawer: (state) => state.createokrDrawer,
+      okrLoading: (state) => state.okrLoading,
     }),
     okrTypeList() {
       if (this.roleCode.includes('ORG_ADMIN')) {

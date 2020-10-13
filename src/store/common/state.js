@@ -20,4 +20,5 @@ export default {
   testModel: false,
   identity: {},
   cycleList: [],
+  okrLoading: false,
 };
