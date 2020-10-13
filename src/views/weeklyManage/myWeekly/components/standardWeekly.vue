@@ -72,7 +72,8 @@
                 :min="0"
                 :max="100"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input-number
+              >%
               <!-- 编辑完提交后展示 -->
               <!-- <tl-process
                 :data="node.okrDetailProgress"
@@ -165,7 +166,7 @@
             label="支撑OKR/价值观"
             prop="valueOrOkrIds"
             :render-header="renderHeader"
-            min-width="300"
+            min-width="200"
           >
             <!-- okrIds -->
             <template slot-scope="scope">
@@ -176,43 +177,6 @@
                 "
                 :rules="scope.row.projectId ? formData.rules.valueOrOkrIds : {}"
               >
-                <!-- <el-input
-                  @focus="addSupportOkr(scope.row)"
-                  v-model.trim="scope.row.valueOrOkrIds"
-                  placeholder="请选择所支撑OKR/价值观"
-                  maxlength="0"
-                  v-show="scope.row.selectedOkr.length < 1"
-                ></el-input>
-
-                <div v-if="scope.row.selectedOkr.length > 0">
-                  <span
-                    class="okr-selected"
-                    v-for="item in scope.row.selectedOkr"
-                    :key="item.okrDetailId"
-                  >
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      :content="item.okrDetailObjectKr"
-                      placement="top-end"
-                    >
-                      <span>
-                        {{ setOkrStyle(item.okrDetailObjectKr) }}
-                        <i
-                          @click="deleteOkr(item, scope.row.randomId)"
-                          style="cursor: pointer"
-                          class="el-icon-close"
-                        ></i>
-                      </span>
-                    </el-tooltip>
-                  </span>
-                </div>
-                <i
-                  v-show="scope.row.selectedOkr.length > 0"
-                  style="cursor: pointer"
-                  @click="addSupportOkr(scope.row)"
-                  class="el-icon-plus"
-                ></i> -->
                 <div class="tag-group">
                   <ul class="tag-lists">
                     <li
@@ -226,14 +190,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i>
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      v-show="scope.row.selectedOkr.length < 1"
+                      class="icon-bg"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -263,17 +233,6 @@
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
-              <!-- <el-dropdown
-                @command="deleteItem(scope.row)"
-                v-if="formData.weeklyWorkVoSaveList.length > 1"
-              >
-                <span class="el-dropdown-link">
-                  <i class="el-icon-more el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown> -->
             </template>
           </el-table-column>
         </el-table>
@@ -357,71 +316,7 @@
         </div>
       </dd>
     </dl>
-    <div>
-      <!-- <h1>本周感想、建议、收获</h1>
-      <i
-        v-show="!weeklyData.weeklyId && !thoughtOpen"
-        @click="openThought"
-        class="el-icon-plus"
-        ></i
-      >
-      <i
-        v-show="!weeklyData.weeklyId && thoughtOpen"
-        @click="closeThought"
-        class="el-icon-minus"
-        ></i
-      > -->
-      <!-- <el-form :model="formData" v-show="weeklyData.weeklyId || thoughtOpen">
-        <el-table :data="formData.weeklyThoughtSaveList">
-          <el-table-column>
-            <template slot-scope="scope">
-              <el-form-item>
-                <span>
-                  <el-button
-                    @click="thoughtTypeChange(scope.row, 0)"
-                    :class="{ 'is-thoughts': scope.row.thoughtType == 0 }"
-                    >感想</el-button
-                  >
-                  <el-button
-                    @click="thoughtTypeChange(scope.row, 1)"
-                    :class="{ 'is-suggest': scope.row.thoughtType == 1 }"
-                    >建议</el-button
-                  >
-                  <el-button
-                    @click="thoughtTypeChange(scope.row, 2)"
-                    :class="{ 'is-harvest': scope.row.thoughtType == 2 }"
-                    >收获</el-button
-                  >
-                  <el-input
-                    v-model.trim="scope.row.thoughtContent"
-                    type="textarea"
-                    maxlength="100"
-                    placeholder="请简单说一下你的感想，不超过100个字"
-                  ></el-input>
-                  <i
-                    style="cursor: pointer"
-                    class="el-icon-minus"
-                    v-if="formData.weeklyThoughtSaveList.length > 1"
-                    @click="deleteThoughts(scope.row.randomId)"
-                  ></i>
-                  <i
-                    style="cursor: pointer"
-                    v-if="
-                      scope.row.randomId ==
-                      formData.weeklyThoughtSaveList[
-                        formData.weeklyThoughtSaveList.length - 1
-                      ].randomId
-                    "
-                    class="el-icon-plus"
-                    @click="addThisWeekWork"
-                  ></i>
-                </span>
-              </el-form-item>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form> -->
-    </div>
+    <div></div>
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
@@ -474,14 +369,6 @@
                 >
                   <i class="el-icon-minus"></i>
                 </el-tooltip>
-                <!-- <el-dropdown @command="deletePlanItem(scope.row)">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>删除</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown> -->
               </template>
             </el-table-column>
           </el-table>
@@ -499,49 +386,7 @@
         </div>
       </dd>
     </dl>
-    <!-- <div>
-      <h1>下周计划</h1>
-      <i
-        v-show="!weeklyData.weeklyId && !planOpen"
-        @click="openPlan"
-        class="el-icon-plus"
-      ></i>
-      <i
-        v-show="!weeklyData.weeklyId && planOpen"
-        @click="closePlan"
-        class="el-icon-minus"
-      ></i>
-      <el-form :model="formData" v-show="weeklyData.weeklyId || planOpen">
-        <el-table v-loading="tableLoading" :data="formData.weeklyPlanSaveList">
-          <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项">
-            <template slot-scope="scope">
-              <el-form-item>
-                <el-input
-                  v-model.trim="scope.row.planContent"
-                  maxlength="100"
-                  clearable
-                  placeholder="请用一句话概括某项工作，不超过100个字符"
-                ></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column prop="code">
-            <template slot-scope="scope">
-              <el-dropdown @command="deletePlanItem(scope.row)">
-                <span class="el-dropdown-link">
-                  <i class="el-icon-more el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-button @click="addPlanItem" style>添加</el-button>
-      </el-form>
-    </div> -->
+
     <!-- 个人OKR完成度 -->
     <!-- <div style="margintop: 50px" v-if="weeklyOkrSaveList.length > 0"> -->
     <dl class="dl-card-panel okr-completion">
@@ -596,7 +441,8 @@
         <div class="week-change">
           <span>本周变化</span
           ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+            }}{{ item.progressAfter - item.progressBefor }}%</em
           >
         </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
@@ -915,14 +761,16 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        this.formData.weeklyWorkVoSaveList.forEach((item) => {
-          item.selectedOkr.forEach((element) => {
-            if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
-            }
+        if (okr) {
+          this.formData.weeklyWorkVoSaveList.forEach((item) => {
+            item.selectedOkr.forEach((element) => {
+              if (okr.okrDetailId == element.okrDetailId) {
+                result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+              }
+            });
           });
-        });
-        return result.join('、');
+          return result.join('、');
+        }
       };
     },
   },
