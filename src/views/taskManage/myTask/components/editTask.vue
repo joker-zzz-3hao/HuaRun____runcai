@@ -320,9 +320,7 @@
         <span>确认</span>
       </el-button>
       <el-button
-        v-if="
-          formData.taskStatus == 10 && formData.taskUserId == userInfo.userId
-        "
+        v-if="formData.taskStatus == 10 && taskUserId == userInfo.userId"
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="acceptTask"
@@ -369,6 +367,7 @@ export default {
         taskProgress: 0,
         timeSum: '当前已用时长 0天 0小时 0分',
       },
+      taskUserId: '', // 原执行人
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
       userList: [], // 执行人列表
@@ -431,6 +430,7 @@ export default {
           if (res.code == 200 && res.data) {
             console.log(res.data);
             this.formData = res.data;
+            this.taskUserId = this.formData.taskUserId;
             if (res.data.taskBegDate) {
               let taskBegDate = '';
               let taskEndDate = '';
