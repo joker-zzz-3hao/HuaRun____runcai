@@ -56,7 +56,7 @@
               }"
             ></i>
           </label>
-          <span @click="openFile(file)">下载</span>
+          <span @click="openFile(file)">预览</span>
 
           <i
             class="el-icon-close"
@@ -95,8 +95,8 @@
           </span>
         </slot>
       </li>
-      <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
     </transition-group>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 <script>
