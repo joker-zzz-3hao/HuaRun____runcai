@@ -588,15 +588,15 @@ export default {
       riskList: [
         {
           value: 1,
-          label: '信心指数高',
+          label: '高',
         },
         {
           value: 2,
-          label: '信心指数中',
+          label: '中',
         },
         {
           value: 3,
-          label: '信心指数低',
+          label: '低',
         },
       ],
       showTaskProcess: false,
