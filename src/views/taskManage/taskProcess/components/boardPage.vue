@@ -9,10 +9,10 @@
       :options="options"
     >-->
     <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
-      <h3>{{stepData.stepName}}</h3>
-      <el-button style="width:380px" @click="addTask(stepData)">
+      <h3>{{ stepData.stepName }}</h3>
+      <!-- <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
-      </el-button>
+      </el-button> -->
       <draggable
         class="list-group"
         :list="stepData.stepTaskList"
@@ -21,16 +21,25 @@
         id="norun"
         :options="options"
       >
-        <div class="list-group-item" v-for="element in stepData.stepTaskList" :key="element.taskId">
-          <p>{{element.taskLevel}}</p>
+        <div
+          class="list-group-item"
+          v-for="element in stepData.stepTaskList"
+          :key="element.taskId"
+        >
+          <p>{{ element.taskLevel }}</p>
           <p>{{ element.taskTitle }}</p>
-          <p>{{element.taskProgress}}</p>
-          <p>{{element.taskBegDate}}-{{element.taskEndDate}}</p>
+          <p>{{ element.taskProgress }}</p>
+          <p>{{ element.taskBegDate }}-{{ element.taskEndDate }}</p>
         </div>
       </draggable>
       <!-- </draggable> -->
     </div>
-    <tl-add-task :stepData="stepData" v-if="showAddTask" :exist.sync="showAddTask" ref="addTask"></tl-add-task>
+    <tl-add-task
+      :stepData="stepData"
+      v-if="showAddTask"
+      :exist.sync="showAddTask"
+      ref="addTask"
+    ></tl-add-task>
   </div>
 </template>
 <script>
