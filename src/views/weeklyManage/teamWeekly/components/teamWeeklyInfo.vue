@@ -128,6 +128,7 @@
               </div>
             </div>
             <em>{{ item.thoughtContent }}</em>
+            <div v-if="weeklyThoughtList.length < 1">您没有写感想</div>
           </dd>
         </dl>
         <div class="current-user-info">
@@ -167,6 +168,7 @@
                 ></el-table-column
                 >-
               </el-table>
+              <div v-if="weeklyPlanList.length < 1">您没有写下周计划</div>
             </div>
             <!-- 个人okr完成度 -->
             <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
