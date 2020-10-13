@@ -31,6 +31,7 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
+                  size="small"
                   maxlength="100"
                   clearable
                   placeholder="请用一句话概括某项工作，不超过100个字符"
@@ -125,6 +126,7 @@
                 <el-select
                   v-model="scope.row.projectNameCn"
                   placeholder="请选择关联项目"
+                  size="small"
                 >
                   <el-option
                     v-for="item in projectList"

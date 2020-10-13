@@ -260,9 +260,7 @@
             <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
               <!-- <img src="@/assets/images/login-error.png" /> -->
               <div v-if="user.userName" class="user-name">
-                <em>{{
-                  userIusernfo.userName.substring(user.userName.length - 2)
-                }}</em>
+                <em>{{ user.userName.substring(user.userName.length - 2) }}</em>
               </div>
             </el-avatar>
             <span>{{ user.userName }}</span>
