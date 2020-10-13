@@ -170,7 +170,7 @@
                     v-model.trim="formData.taskProgress"
                     :step="1"
                     tooltip-class="slider-tooltip"
-                    @click="showRemark = true"
+                    @change="showRemark = true"
                   ></el-slider>
                   <el-input-number
                     :disabled="canEdit"
