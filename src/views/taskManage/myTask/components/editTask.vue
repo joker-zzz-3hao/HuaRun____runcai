@@ -26,6 +26,7 @@
                 ]"
               >
                 <el-input
+                  :disabled="canEdit"
                   type="text"
                   placeholder="请输入任务标题"
                   v-model.trim="formData.taskTitle"
@@ -59,6 +60,7 @@
             <dd>
               <el-form-item label="设置执行人">
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.taskUserId"
                   placeholder="无执行人"
                   filterable
@@ -88,6 +90,7 @@
               </el-form-item>
               <el-form-item label="设置时间" prop="timeVal">
                 <el-date-picker
+                  :disabled="canEdit"
                   v-model.trim="formData.timeVal"
                   type="daterange"
                   range-separator="至"
@@ -100,6 +103,7 @@
               </el-form-item>
               <el-form-item label="优先级" prop="taskLevel">
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.taskLevel"
                   placeholder="请选择优先级"
                 >
@@ -115,6 +119,7 @@
             <dd>
               <el-form-item label="归属项目" prop="projectVal">
                 <el-input
+                  :disabled="canEdit"
                   v-model.trim="formData.projectName"
                   placeholder="请选择归属项目"
                   maxlength="0"
@@ -123,6 +128,7 @@
               </el-form-item>
               <el-form-item label="归属OKR" prop="okrDetailId">
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.okrDetailId"
                   placeholder="请选择归属OKR"
                 >
@@ -136,6 +142,7 @@
               </el-form-item>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.processId"
                   placeholder="请选择任务过程"
                 >
@@ -159,12 +166,14 @@
                     :marginLeft="6"
                   ></tl-process>
                   <el-slider
+                    :disabled="canEdit"
                     v-model.trim="formData.taskProgress"
                     :step="1"
                     tooltip-class="slider-tooltip"
-                    @click="showRemark = true"
+                    @change="showRemark = true"
                   ></el-slider>
                   <el-input-number
+                    :disabled="canEdit"
                     v-model.trim="formData.taskProgress"
                     controls-position="right"
                     :min="0"
@@ -183,6 +192,7 @@
                 prop="taskProgressRemark"
               >
                 <el-input
+                  :disabled="canEdit"
                   type="textarea"
                   :rows="3"
                   maxlength="220"
@@ -194,6 +204,7 @@
               </el-form-item>
               <el-form-item label="添加描述" prop="taskDesc">
                 <el-input
+                  :disabled="canEdit"
                   type="textarea"
                   :rows="5"
                   maxlength="800"
@@ -203,21 +214,24 @@
                 ></el-input>
               </el-form-item>
               <el-form-item label="附件">
-                <el-upload
-                  class="upload-demo"
-                  :action="action"
-                  :accept="acceptType"
-                  :before-upload="beforeUpload"
-                  :headers="headers"
-                  multiple
-                  :limit="10"
-                  :file-list="formData.fileList"
-                >
-                  <el-button size="small" type="primary">点击上传</el-button>
-                  <div slot="tip" class="el-upload__tip">
-                    最多上传10个文件，单个文件不超过30M
-                  </div>
-                </el-upload>
+                <ul>
+                  <li
+                    v-for="(file, index) in formData.attachmentList"
+                    :key="file.resourceId"
+                  >
+                    <em>{{ file.resourceName }}</em>
+                    <span @click="openFile(file)">下载</span>
+                    <span @click="openFile(file)">预览</span>
+                    <span @click="deleteFile(index)">删除</span>
+                  </li>
+                </ul>
+                <file-upload
+                  :disabled="canEdit"
+                  ref="fileUpload"
+                  :fileList="formData.fileList"
+                  :limit="5"
+                  @change="fileChange"
+                ></file-upload>
               </el-form-item>
             </dd>
           </dl>
@@ -313,10 +327,15 @@
         v-if="formData.taskStatus == 0"
         type="primary"
         class="tl-btn amt-bg-slip"
-        @click="save"
+        @click="summitAssign"
         >指派</el-button
       >
-      <el-button v-else type="primary" class="tl-btn amt-bg-slip" @click="save">
+      <el-button
+        v-else-if="formData.taskStatus != 0 && !canEdit"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="save"
+      >
         <span>确认</span>
       </el-button>
       <el-button
@@ -334,13 +353,16 @@
       :server="server"
       @closeProjectDia="closeProjectDia"
     ></tl-selectproject>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </el-drawer>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import fileUpload from '@/components/fileUpload/index';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
+import imgDialog from '@/components/imgDialog';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -353,6 +375,8 @@ export default {
     'tl-selectproject': selectProject,
     'tl-process': process,
     'tl-tabs': tabs,
+    'file-upload': fileUpload,
+    'img-dialog': imgDialog,
   },
   data() {
     return {
@@ -378,6 +402,8 @@ export default {
       fileList: [],
       visible: false,
       showProjectDialog: false,
+      canEdit: true, // 是否能编辑
+      // tab
       currentIndex: 0,
       tabMenuList: [{
         menuName: '操作历史',
@@ -420,8 +446,9 @@ export default {
     this.freshTime();
   },
   methods: {
-    show(id) {
+    show(id, canedit) {
       this.visible = true;
+      this.canEdit = canedit;
       this.getUserList();
       this.queryOkr();
       this.getProcess();
@@ -551,22 +578,35 @@ export default {
       this.formData.projectVal = data.project;
       this.formData.projectName = data.project.projectNameCn;
     },
-    // 文件
     errorHandler() {
       return true;
     },
-    beforeUpload(file) {
-      console.log(file.type);
-      const self = this;
-      const maxLength = file.size / 1024 / 1024;
-      if (maxLength > 30) {
-        self.$message.error(
-          '上传文件大小不能超过30MB',
-        );
-        return false;
+    // 文件
+    fileChange(data) {
+      this.fileList = data.list;
+      console.log(this.fileList);
+    },
+    // 下载or预览
+    openFile(fileObj) {
+      const images = {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      };
+      if (images[fileObj.resourceType]) {
+        this.$refs.imgDialog.show(fileObj.resourceUrl);
+      } else {
+        window.open(fileObj.resourceUrl);
       }
     },
-
+    deleteFile(index) {
+      if (this.formData.attachmentList.length > 0) {
+        this.formData.attachmentList.splice(index, 1);
+      }
+    },
+    // 保存任务
     save() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
@@ -582,6 +622,9 @@ export default {
           if (this.formData.timeVal) {
             this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
             this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          if (this.fileList.length > 0) {
+            this.formData.attachmentList.push(...this.fileList);
           }
           this.server.saveTask(this.formData).then((res) => {
             if (res.code == 200) {
@@ -639,6 +682,10 @@ export default {
     summitAssign() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
           this.formData.okrDetailName = okrVal.okrDetailObjectKr;
@@ -651,6 +698,9 @@ export default {
           if (this.formData.timeVal) {
             this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
             this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          if (this.fileList.length > 0) {
+            this.formData.attachmentList.push(...this.fileList);
           }
           this.server.appointSave(this.formData).then((res) => {
             if (res.code == 200) {

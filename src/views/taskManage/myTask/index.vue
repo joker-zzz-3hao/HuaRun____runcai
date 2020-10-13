@@ -217,9 +217,7 @@
           <el-table :data="tableData" class="tl-table">
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
-                <a @click="openEdit(scope.row.taskId)">{{
-                  scope.row.taskTitle
-                }}</a>
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left">
@@ -270,14 +268,9 @@
                 <!-- 已确认且执行人不是我 不能编辑-->
                 <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
-                  :disabled="
-                    (scope.row.taskStatus == 20 &&
-                      scope.row.taskUserId != userInfo.userId) ||
-                    (scope.row.taskStatus == 10 &&
-                      scope.row.createBy != userInfo.userId)
-                  "
+                  :disabled="canEdit(scope.row)"
                   class="tl-btn"
-                  @click="openEdit(scope.row.taskId)"
+                  @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
               </template>
@@ -290,6 +283,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
+                      :disabled="canEdit(scope.row)"
                       @click.native="deleteTask(scope.row.taskId)"
                       >删除</el-dropdown-item
                     >
@@ -397,6 +391,9 @@ export default {
     this.getTableList();
     this.getProcess();
     this.getUserList();
+    if (this.$route.query && this.$route.query.openCreate) {
+      this.goCreateTask();
+    }
   },
   computed: {
     ...mapState('common', {
@@ -407,6 +404,7 @@ export default {
         (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
       ) || [];
     },
+
   },
   mounted() {
     // 状态
@@ -417,6 +415,12 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
+    canEdit(row) {
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                    || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
+    },
     toggleState() {
       this.showTask = !this.showTask;
     },
@@ -432,10 +436,10 @@ export default {
         this.$refs.createtask.show();
       });
     },
-    openEdit(id) {
+    openEdit(row) {
       this.existEditTask = true;
       this.$nextTick(() => {
-        this.$refs.editTask.show(id);
+        this.$refs.editTask.show(row.taskId, this.canEdit(row));
       });
     },
     getUserList() {

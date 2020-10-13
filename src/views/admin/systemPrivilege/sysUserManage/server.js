@@ -2,7 +2,7 @@ import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
   // 查询用户列表
-  getUserLIst(param) {
+  getUserList(param) {
     return this._ajaxPost('gateway/system-service/sys/user/getAdminUser', param);
   }
 

@@ -18,23 +18,6 @@
           popper-class="tl-cascader-popper"
           class="tl-cascader"
         ></el-cascader>
-        <el-select
-          v-model="formData.queryType"
-          @change="lookChange"
-          placeholder="周报速看"
-          clearable
-          @clear="clear"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select el-icon-view"
-        >
-          <el-option
-            v-for="item in lookItemList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
         <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
         2、当组织切换时不显示该按钮
@@ -60,11 +43,28 @@
         @getWeeklyById="refreshPageList"
         :isFromTeam="true"
       ></tl-calendar>
-      <div class="flex-end">
+      <div class="flex-sb">
+        <el-select
+          v-model="formData.queryType"
+          @change="lookChange"
+          placeholder="周报速看"
+          clearable
+          @clear="clear"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select el-icon-view"
+        >
+          <el-option
+            v-for="item in lookItemList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
         <el-select
           v-model="submitedOrLooked"
           @change="submitedOrLookedChange"
-          placeholder="全部"
+          placeholder="周报状态"
           clearable
           @clear="clearSubmitOrLooked"
           :disabled="!!formData.queryType"
@@ -304,7 +304,7 @@
                         v-for="(work, index) in weekly.contentList"
                         :key="work + index"
                       >
-                        <span></span>
+                        <span>#工作项{{ index + 1 }}#</span>
                         <em>{{ work.workContent }}</em>
                       </dd>
                     </template>

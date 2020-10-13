@@ -39,7 +39,7 @@
             v-if="!item.weeklyId && !item.noOpen && !item.canEdit"
             class
             effect="dark"
-            content="已超过两周，不可再提交周报"
+            content="本周之前周报不可提交"
             placement="top"
             popper-class="tl-tooltip-popper"
           >
