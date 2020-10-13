@@ -59,7 +59,7 @@ export default {
     return {
       dialogVisible: false,
       dialogImageUrl: '',
-      dataParams: { validateCode: '', ...this.params },
+      dataParams: { sourceType: 'USER_HEAD', validateCode: '', ...this.params },
     };
   },
   computed: {
