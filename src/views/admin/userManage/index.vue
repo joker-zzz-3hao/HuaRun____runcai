@@ -3,9 +3,16 @@
     <div class="operating-area">
       <div class="page-title">用户管理</div>
       <div class="operating-box">
-        <el-form :inline="true" class="tl-form-inline" @keyup.enter.native="searchList()">
+        <el-form
+          :inline="true"
+          class="tl-form-inline"
+          @keyup.enter.native="searchList()"
+        >
           <el-form-item>
-            <el-select v-model.trim="searchForm.tenantId" placeholder="选择租户">
+            <el-select
+              v-model.trim="searchForm.tenantId"
+              placeholder="选择租户"
+            >
               <el-option
                 v-for="item in tenantList"
                 :key="item.tenantId"
@@ -50,6 +57,7 @@
               v-model.trim="searchForm.keyWord"
               clearable
               class="tl-input-search"
+              @clear="clear"
             >
               <i class="el-icon-search" slot="prefix" @click="searchList"></i>
             </el-input>
@@ -61,8 +69,14 @@
           type="primary"
           icon="el-icon-plus"
           class="tl-btn amt-bg-slip"
-        >创建用户</el-button>
-        <el-button plain icon="el-icon-minus" class="tl-btn amt-border-slip" @click="batchImport">
+          >创建用户</el-button
+        >
+        <el-button
+          plain
+          icon="el-icon-minus"
+          class="tl-btn amt-border-slip"
+          @click="batchImport"
+        >
           批量导入
           <span class="lines"></span>
         </el-button>
@@ -76,17 +90,55 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table ref="orgTable" v-loading="loading" :data="tableData" style="width: 100%">
-            <el-table-column min-width="170px" align="left" prop="userId" label="用户ID"></el-table-column>
-            <el-table-column min-width="170px" align="left" prop="userAccount" label="账号/LDAP账号"></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userName" label="用户姓名"></el-table-column>
-            <el-table-column min-width="170px" align="left" prop="userMobile" label="手机号"></el-table-column>
-            <el-table-column min-width="170px" align="left" prop="tenantName" label="所属租户"></el-table-column>
+          <el-table
+            ref="orgTable"
+            v-loading="loading"
+            :data="tableData"
+            style="width: 100%"
+          >
+            <el-table-column
+              min-width="170px"
+              align="left"
+              prop="userId"
+              label="用户ID"
+            ></el-table-column>
+            <el-table-column
+              min-width="170px"
+              align="left"
+              prop="userAccount"
+              label="账号/LDAP账号"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userName"
+              label="用户姓名"
+            ></el-table-column>
+            <el-table-column
+              min-width="170px"
+              align="left"
+              prop="userMobile"
+              label="手机号"
+            ></el-table-column>
+            <el-table-column
+              min-width="170px"
+              align="left"
+              prop="tenantName"
+              label="所属租户"
+            ></el-table-column>
             <el-table-column min-width="100px" align="left" label="租户管理员">
               <template slot-scope="scope">
                 <div style="cursor: pointer" @click="setLeader(scope.row)">
-                  <el-tooltip class="item" effect="dark" content="租户管理员" placement="top-start">
-                    <i v-if="scope.row.tenantLeader == '1'" class="el-icon-user-solid">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="租户管理员"
+                    placement="top-start"
+                  >
+                    <i
+                      v-if="scope.row.tenantLeader == '1'"
+                      class="el-icon-user-solid"
+                    >
                       <span>设置</span>
                     </i>
                   </el-tooltip>
@@ -96,28 +148,47 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userStatus" label="状态">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userStatus"
+              label="状态"
+            >
               <template slot-scope="scope">
                 <!-- 0：注册 1：LDAP 2：创建 -->
                 <div v-if="scope.row.userType == '1'">--</div>
                 <div v-else @click.capture.stop="dataChange(scope.row)">
-                  <el-switch active-value="0" inactive-value="50" v-model="scope.row.userStatus"></el-switch>
+                  <el-switch
+                    active-value="0"
+                    inactive-value="50"
+                    v-model="scope.row.userStatus"
+                  ></el-switch>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="userType" label="用户类型">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userType"
+              label="用户类型"
+            >
               <template slot-scope="scope">
                 <div>{{ CONST.USER_TYPE_MAP[scope.row.userType] }}</div>
               </template>
             </el-table-column>
-            <el-table-column min-width="170px" align="left" prop="createTime" label="创建时间">
+            <el-table-column
+              min-width="170px"
+              align="left"
+              prop="createTime"
+              label="创建时间"
+            >
               <template slot-scope="scope">
                 <div>
                   {{
-                  dateFormat(
-                  "YYYY-mm-dd HH:MM:SS",
-                  new Date(scope.row.createTime)
-                  )
+                    dateFormat(
+                      "YYYY-mm-dd HH:MM:SS",
+                      new Date(scope.row.createTime)
+                    )
                   }}
                 </div>
               </template>
@@ -134,7 +205,8 @@
                   type="text"
                   v-if="scope.row.userType == '2'"
                   @click="createOrEditUser(scope.row)"
-                >编辑</el-button>
+                  >编辑</el-button
+                >
                 <span v-else>--</span>
               </template>
             </el-table-column>
@@ -313,6 +385,9 @@ export default {
           }
         });
       });
+    },
+    clear() {
+      this.searchList();
     },
   },
   watch: {
