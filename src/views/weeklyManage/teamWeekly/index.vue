@@ -87,7 +87,7 @@
             >
               <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
               </el-input>-->
-        <el-select
+        <!-- <el-select
           v-model.trim="formData.queryUserId"
           filterable
           placeholder="请输入成员姓名"
@@ -107,7 +107,6 @@
           >
             <dl class="user-info">
               <dt>
-                <!-- 这里如果用户上传了图片 则调取上传图片 -->
                 <img v-if="false" :src="item.headUrl" alt />
                 <div v-else-if="item.userName" class="user-name">
                   <em>{{
@@ -117,20 +116,8 @@
               </dt>
               <dd>{{ item.userName }}</dd>
             </dl>
-            <!-- <span style="float: left">
-              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                <div v-if="item.userName" class="user-name">
-                  <em>{{
-                    item.userName.substring(item.userName.length - 2)
-                  }}</em>
-                </div>
-              </el-avatar>
-            </span>
-            <span style="float: left; marginleft: 5px">{{
-              item.userName
-            }}</span> -->
           </el-option>
-        </el-select>
+        </el-select> -->
       </div>
       <crcloud-table
         :total="total"
@@ -313,37 +300,40 @@
                     <!-- 工作项 -->
                     <template v-if="formData.queryType == '0'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
-                        <span>#工作项5#</span>
-                        <em
-                          >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
-                        >
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
+                        <span></span>
+                        <em>{{ work.workContent }}</em>
                       </dd>
                     </template>
                     <!-- 感想 -->
                     <template v-if="formData.queryType == '1'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
-                        <span>#感想#</span>
-                        <em
-                          >打算打到发疯撒发发说法是否考虑好是大法丷看科技活动罚款阿科技活动发几分阿卡话费阿卡话费阿大法好阿身份阿发阿卡大法好卡好发客户发开发</em
-                        >
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
+                        <span>#{{ getThoughtName(work.thoughtType) }}#</span>
+                        <em>{{ work.thoughtContent }}</em>
                       </dd>
-                      <dd>
+                      <!-- <dd>
                         <span>#建议#</span>
                         <em
                           >撒大法大法的风格和大法好大法撒大法阿斯顿发去玩儿去玩儿童也儿人太温柔太温柔太温柔太温柔太我很快就会开花阿斯顿发送到发送发达的撒是否vv在持续啊撒发撒大法啊的说法</em
                         >
-                      </dd>
+                      </dd> -->
                     </template>
                     <!-- 工作项 -->
                     <template v-if="formData.queryType == '2'">
                       <!-- 循环这个dd（weekly.contentList） -->
-                      <dd>
+                      <dd
+                        v-for="(work, index) in weekly.contentList"
+                        :key="work + index"
+                      >
                         <span>#下周计划#</span>
-                        <em
-                          >和咕叽咕叽复古怀旧风肌肤光滑儿童也太爷爷太地方干活的干活的风格和还能和各家各户解放后请问而我却热情热情大是大非发撒大法是大法</em
-                        >
+                        <em>{{ work.planContent }}</em>
                       </dd>
                     </template>
                   </dl>
@@ -352,19 +342,27 @@
                     <!-- 循环这个dl（weekly.contentList） -->
                     <dl class="tag-kind">
                       <dd class="update-progress">
-                        <span>本次更新进度</span><em>+16%</em>
+                        <span>本次更新进度</span
+                        ><em
+                          >{{
+                            work.progressAfter - work.progressBefor > 0
+                              ? "+"
+                              : ""
+                          }}
+                          {{ work.progressAfter - work.progressBefor }}%</em
+                        >
                       </dd>
-                      <dt>
+                      <dt v-if="work.okrDetailType == 0">
                         <span class="kind-parent">目标</span
-                        ><em>今年先赚他一个亿</em>
+                        ><em>{{ work.okrDetailObjectKr }}</em>
                       </dt>
-                      <dd>
+                      <dt v-if="work.okrDetailType == 1">
+                        <span class="kind-parent">目标</span
+                        ><em>{{ work.pokrDetailObjectKr }}</em>
+                      </dt>
+                      <dd v-if="work.okrDetailType == 1">
                         <span class="kind-child">KR</span
-                        ><em>那就这么说吧，惊不惊喜，意不意外</em>
-                      </dd>
-                      <dd>
-                        <span class="kind-child">KR</span
-                        ><em>那就这么说吧，惊不惊喜，意不意外</em>
+                        ><em>{{ work.okrDetailObjectKr }}</em>
                       </dd>
                     </dl>
                   </template>
@@ -778,6 +776,15 @@ export default {
     },
     errorHandler() {
       return true;
+    },
+    getThoughtName(thoughtType) {
+      if (thoughtType == 0) {
+        return '感想';
+      } if (thoughtType == 1) {
+        return '建议';
+      } if (thoughtType == 0) {
+        return '收获';
+      }
     },
   },
   watch: {

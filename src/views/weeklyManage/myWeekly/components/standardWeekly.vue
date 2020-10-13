@@ -90,10 +90,11 @@
               <el-input-number
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
-                :precision="0"
-                :step="1"
-                :min="1"
-                :max="80"
+                :precision="1"
+                :step="0.5"
+                :min="0"
+                :max="5"
+                @change="workTimeChange(scope.row)"
                 class="tl-input-number"
               ></el-input-number>
               <!-- 编辑完提交后展示 -->
@@ -1251,6 +1252,28 @@ export default {
         }
       });
       this.$forceUpdate();
+    },
+    workTimeChange(row) {
+      let workTimeTotal = 0;
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        workTimeTotal += Number(element.workTime);
+      });
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          // 数据转换为0.5单位
+          const tempArr = String(work.workTime).split('.');
+          if (tempArr.length > 1) { // 有小数位
+            if (tempArr[1] > 5) { //  大于5
+              work.workTime = Number(tempArr[0]) + 1;
+            } else if (tempArr[1] < 5) { // 小于5
+              work.workTime = Number(tempArr[0]);
+            }
+          }
+          if (workTimeTotal > 5) {
+            work.workTime = 0;
+          }
+        }
+      });
     },
   },
   watch: {
