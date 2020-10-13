@@ -483,7 +483,7 @@ export default {
       };
       this.server.queryOkr(params).then((res) => {
         if (res.code == 200) {
-          this.okrList = res.data.okrDetails;
+          this.okrList = res.data.okrDetails || [];
           console.log(res.data);
         }
       });

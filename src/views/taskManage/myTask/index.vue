@@ -267,11 +267,14 @@
                   class="tl-btn"
                   >确认接收</el-button
                 >
-                <!-- 已确认并且执行人不是我 不能编辑-->
+                <!-- 已确认且执行人不是我 不能编辑-->
+                <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
                   :disabled="
-                    scope.row.taskStatus == 20 &&
-                    scope.row.taskUserId != userInfo.userId
+                    (scope.row.taskStatus == 20 &&
+                      scope.row.taskUserId != userInfo.userId) ||
+                    (scope.row.taskStatus == 10 &&
+                      scope.row.createBy != userInfo.userId)
                   "
                   class="tl-btn"
                   @click="openEdit(scope.row.taskId)"
