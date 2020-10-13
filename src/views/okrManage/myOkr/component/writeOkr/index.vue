@@ -104,7 +104,7 @@
         @click="summit"
         class="tl-btn amt-bg-slip"
         :loading="createokrDrawer && okrLoading"
-        >创建目标{{ okrLoading }}</el-button
+        >创建目标</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
