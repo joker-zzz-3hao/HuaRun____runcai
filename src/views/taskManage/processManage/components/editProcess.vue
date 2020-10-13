@@ -155,6 +155,7 @@ export default {
       visible: false,
       formData: {
         available: 1,
+        enable: 1,
         processType: '',
         indexNumber: '',
         orgId: '',
@@ -237,7 +238,7 @@ export default {
       this.server.updateProcess(this.formData).then((res) => {
         if (res.code == 200) {
           this.$message.success('编辑成功');
-          this.$emit('closeAddProcess');
+          this.$emit('closeDialog');
         }
       });
     },

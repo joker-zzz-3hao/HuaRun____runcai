@@ -51,4 +51,9 @@ export default class Server extends ServerBase {
   deleteDicItem(param) {
     return this._ajaxPost('gateway/system-service/sys/dictionary/value/deleteById', param);
   }
+
+  // 更新启用禁用
+  updateEnable(param) {
+    return this._ajaxPost(`gateway/task-service/task/taskProcess/enable?enable=${param.enable}&processId=${param.processId}`);
+  }
 }

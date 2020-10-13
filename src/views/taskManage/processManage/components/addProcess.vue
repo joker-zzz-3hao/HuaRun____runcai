@@ -177,6 +177,7 @@ export default {
       loading: false,
       formData: {
         available: 1,
+        enable: 1,
         taskProcessQueryType: '1',
         orgId: '',
         processName: '',
