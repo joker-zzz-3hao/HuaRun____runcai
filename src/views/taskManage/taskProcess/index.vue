@@ -13,7 +13,8 @@
                   v-for="team in teamList"
                   :index="team.processId"
                   :key="team.processId"
-                >{{team.processName}}</el-menu-item>
+                  >{{ team.processName }}</el-menu-item
+                >
               </el-submenu>
               <el-submenu index="1-2">
                 <template slot="title">小范围使用</template>
@@ -22,7 +23,8 @@
                   v-for="littleRange in littleRangeList"
                   :index="littleRange.processId"
                   :key="littleRange.processId"
-                >{{littleRange.processName}}</el-menu-item>
+                  >{{ littleRange.processName }}</el-menu-item
+                >
               </el-submenu>
               <el-submenu index="1-3">
                 <template slot="title">个人使用</template>
@@ -31,35 +33,45 @@
                   v-for="person in personList"
                   :index="person.processId"
                   :key="person.processId"
-                >{{person.processName}}</el-menu-item>
+                  >{{ person.processName }}</el-menu-item
+                >
               </el-submenu>
             </el-submenu>
           </el-menu>
         </div>
-        <div class="page-title">{{processObj.processName}}</div>
+        <div class="page-title">{{ processObj.processName }}</div>
         <div class="operating-right">
           <el-button
             type="primary"
             @click="goCreateTask"
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-claim"
-          >添加任务</el-button>
+            >去添加任务</el-button
+          >
           <el-button
             type="primary"
-            @click="go('filedTaskList',{query:{processId:processObj,processId}})"
+            @click="
+              go('filedTaskList', {
+                query: { processId: processObj, processId },
+              })
+            "
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-cooperation"
-          >查看归档任务</el-button>
+            >查看归档任务</el-button
+          >
         </div>
         <div class="operating-box" v-if="taskTypeList.length > 0">
           <div
             class="tl-custom-btn"
             v-for="item in taskTypeList"
             :key="item"
-            :class="{'is-select': taskType == item,'is-version': taskTypeList.length == 1}"
+            :class="{
+              'is-select': taskType == item,
+              'is-version': taskTypeList.length == 1,
+            }"
             @click="settaskType(item)"
           >
-            <em>{{item == '1' ? '列表':'看板'}}</em>
+            <em>{{ item == "1" ? "列表" : "看板" }}</em>
           </div>
         </div>
       </div>
@@ -71,7 +83,8 @@
               @click="queryTaskByClassify('')"
               class="tl-btn amt-bg-slip"
               icon="el-icon-s-claim"
-            >全部分类</el-button>
+              >全部分类</el-button
+            >
             <el-button
               v-for="classify in processClassifyList"
               :key="classify.typeId"
@@ -79,7 +92,7 @@
               @click="queryTaskByClassify(classify.typeId)"
               class="tl-btn amt-bg-slip"
               :disabled="classify.isEdit"
-              :icon="!classify.isEdit?'el-icon-s-claim':''"
+              :icon="!classify.isEdit ? 'el-icon-s-claim' : ''"
             >
               <!-- @click.capture.stop="dataChange(scope.row)" -->
               <el-input
@@ -88,22 +101,35 @@
                 v-if="classify.isEdit"
                 v-model="typeName"
               ></el-input>
-              <span v-else>{{classify.typeName}}</span>
+              <span v-else>{{ classify.typeName }}</span>
               <!-- <i class="el-icon-more"></i> -->
               <el-dropdown>
                 <span class="el-dropdown-link">
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="editClassify(classify)">重新命名分类</el-dropdown-item>
-                  <el-dropdown-item @click.native="deleteClassify(classify)">删除分类</el-dropdown-item>
+                  <el-dropdown-item @click.native="editClassify(classify)"
+                    >重新命名分类</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="deleteClassify(classify)"
+                    >删除分类</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </el-dropdown>
             </el-button>
 
-            <i @click="addClassify" style="cursor:pointer" class="el-icon-circle-plus-outline"></i>
+            <i
+              @click="addClassify"
+              style="cursor: pointer"
+              class="el-icon-circle-plus-outline"
+            ></i>
           </div>
-          <el-input placeholder="输入任务标题" style="width:200px" clearable class="tl-input">
+          <el-input
+            placeholder="输入任务标题"
+            style="width: 200px"
+            clearable
+            class="tl-input"
+          >
             <i class="el-icon-search el-input__icon" slot="prefix"></i>
           </el-input>
           <el-select
@@ -145,7 +171,7 @@
           ></tl-list>
           <tl-board
             ref="board"
-            :processObj="processObj "
+            :processObj="processObj"
             :stepList="stepList"
             v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
           ></tl-board>
@@ -278,6 +304,7 @@ export default {
     },
 
     goCreateTask() {
+      this.go('myTask', { query: { openCreate: true } });
       this.existCreatetask = true;
       this.$nextTick(() => {
         this.$refs.createtask.show();

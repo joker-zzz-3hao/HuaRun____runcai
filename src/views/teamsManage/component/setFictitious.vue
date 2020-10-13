@@ -89,7 +89,11 @@ export default {
           res.data.forEach((item) => {
             item.parentId = data.userId;
             item.userName = item.orgLeader;
-            self.treeData.push(item);
+            if (item.orgType == '0') {
+              self.treeData.unshift(item);
+            } else {
+              self.treeData.push(item);
+            }
           });
           self.orgList = self.treeData;
           if (self.treeData.length < 3) {

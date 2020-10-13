@@ -26,16 +26,16 @@ const STATUS_LIST_MAP = {
   8: '被退回',
 };
 const CONFIDENCE = [{
-  label: '信心指数高', value: '1',
+  label: '高', value: '1',
 }, {
-  label: '信心指数中', value: '2',
+  label: '中', value: '2',
 }, {
-  label: '信心指数低', value: '3',
+  label: '低', value: '3',
 }];
 const CONFIDENCE_MAP = {
-  1: '信心指数高',
-  2: '信心指数中',
-  3: '信心指数低',
+  1: '高',
+  2: '中',
+  3: '低',
 };
 
 const WEEKLYEMOTION = {

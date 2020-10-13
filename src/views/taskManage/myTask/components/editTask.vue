@@ -170,7 +170,7 @@
                     v-model.trim="formData.taskProgress"
                     :step="1"
                     tooltip-class="slider-tooltip"
-                    @click="showRemark = true"
+                    @change="showRemark = true"
                   ></el-slider>
                   <el-input-number
                     :disabled="canEdit"
@@ -216,9 +216,14 @@
               <el-form-item label="附件">
                 <ul>
                   <li
-                    v-for="file in formData.attachmentList"
+                    v-for="(file, index) in formData.attachmentList"
                     :key="file.resourceId"
-                  ></li>
+                  >
+                    <em>{{ file.resourceName }}</em>
+                    <span @click="openFile(file)">下载</span>
+                    <span @click="openFile(file)">预览</span>
+                    <span @click="deleteFile(index)">删除</span>
+                  </li>
                 </ul>
                 <file-upload
                   :disabled="canEdit"
@@ -348,6 +353,7 @@
       :server="server"
       @closeProjectDia="closeProjectDia"
     ></tl-selectproject>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </el-drawer>
 </template>
 
@@ -356,6 +362,7 @@ import { mapState } from 'vuex';
 import fileUpload from '@/components/fileUpload/index';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
+import imgDialog from '@/components/imgDialog';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -369,6 +376,7 @@ export default {
     'tl-process': process,
     'tl-tabs': tabs,
     'file-upload': fileUpload,
+    'img-dialog': imgDialog,
   },
   data() {
     return {
@@ -578,6 +586,27 @@ export default {
       this.fileList = data.list;
       console.log(this.fileList);
     },
+    // 下载or预览
+    openFile(fileObj) {
+      const images = {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      };
+      if (images[fileObj.resourceType]) {
+        this.$refs.imgDialog.show(fileObj.resourceUrl);
+      } else {
+        window.open(fileObj.resourceUrl);
+      }
+    },
+    deleteFile(index) {
+      if (this.formData.attachmentList.length > 0) {
+        this.formData.attachmentList.splice(index, 1);
+      }
+    },
+    // 保存任务
     save() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
@@ -653,6 +682,10 @@ export default {
     summitAssign() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
           this.formData.okrDetailName = okrVal.okrDetailObjectKr;
@@ -665,6 +698,9 @@ export default {
           if (this.formData.timeVal) {
             this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
             this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          if (this.fileList.length > 0) {
+            this.formData.attachmentList.push(...this.fileList);
           }
           this.server.appointSave(this.formData).then((res) => {
             if (res.code == 200) {

@@ -2575,6 +2575,16 @@
   background: unset;
 }
 
+.weekly dd {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.weekly .user-info {
+  display: flex;
+  align-items: center;
+}
+
 /* 任务 */
 .my-task .tl-custom-tabs {
   height: 60px;

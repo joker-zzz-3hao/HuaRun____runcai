@@ -79,9 +79,9 @@
 import process from '@/components/process';
 
 const CONFIDENCE_MAP = {
-  1: '信心指数高',
-  2: '信心指数中',
-  3: '信心指数低',
+  1: '高',
+  2: '中',
+  3: '低',
 };
 
 export default {

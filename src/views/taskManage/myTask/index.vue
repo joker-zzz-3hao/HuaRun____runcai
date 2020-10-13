@@ -391,6 +391,9 @@ export default {
     this.getTableList();
     this.getProcess();
     this.getUserList();
+    if (this.$route.query && this.$route.query.openCreate) {
+      this.goCreateTask();
+    }
   },
   computed: {
     ...mapState('common', {
