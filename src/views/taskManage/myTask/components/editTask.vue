@@ -682,6 +682,10 @@ export default {
     summitAssign() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          if (!this.formData.taskUserId) {
+            this.$message.error('请选择执行人');
+            return;
+          }
           const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
           this.formData.okrDetailName = okrVal.okrDetailObjectKr;
