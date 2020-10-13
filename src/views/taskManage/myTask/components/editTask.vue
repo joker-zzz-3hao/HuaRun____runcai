@@ -216,13 +216,13 @@
               <el-form-item label="附件">
                 <ul>
                   <li
-                    v-for="file in formData.attachmentList"
+                    v-for="(file, index) in formData.attachmentList"
                     :key="file.resourceId"
                   >
                     <em>{{ file.resourceName }}</em>
                     <span @click="openFile(file)">下载</span>
                     <span @click="openFile(file)">预览</span>
-                    <span @click="deleteFile">删除</span>
+                    <span @click="deleteFile(index)">删除</span>
                   </li>
                 </ul>
                 <file-upload
@@ -601,8 +601,10 @@ export default {
         window.open(fileObj.resourceUrl);
       }
     },
-    deleteFile() {
-
+    deleteFile(index) {
+      if (this.formData.attachmentList.length > 0) {
+        this.formData.attachmentList.splice(index, 1);
+      }
     },
     // 保存任务
     save() {
@@ -692,6 +694,9 @@ export default {
           if (this.formData.timeVal) {
             this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
             this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+          }
+          if (this.fileList.length > 0) {
+            this.formData.attachmentList.push(...this.fileList);
           }
           this.server.appointSave(this.formData).then((res) => {
             if (res.code == 200) {
