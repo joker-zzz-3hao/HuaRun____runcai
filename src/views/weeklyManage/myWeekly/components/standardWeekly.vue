@@ -31,10 +31,11 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
-                  maxlength="100"
+                  maxlength="20"
+                  size="small"
                   v-if="timeDisabled"
                   clearable
-                  placeholder="请用一句话概括某项工作"
+                  placeholder="简短概括任务，20字以内"
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
@@ -47,9 +48,9 @@
               <el-form-item>
                 <el-input
                   type="textarea"
-                  :rows="3"
+                  :rows="1"
                   v-if="timeDisabled"
-                  placeholder="请描述具体工作内容"
+                  placeholder="请多留点信息描述任务项，便于领导了解工作情况"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
                 ></el-input>
@@ -147,6 +148,7 @@
                 <el-select
                   v-model="scope.row.projectNameCn"
                   placeholder="请选择关联项目"
+                  size="small"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -317,9 +319,9 @@
           v-model.trim="item.thoughtContent"
           type="textarea"
           maxlength="100"
-          :rows="2"
+          :rows="1"
           resize="none"
-          placeholder="请简单说一下你的感想，不超过100个字"
+          :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
         <el-tooltip
@@ -435,14 +437,14 @@
               type="index"
               width="55"
             ></el-table-column>
-            <el-table-column label="工作项" min-width="420">
+            <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
-                    placeholder="请用一句话概括某项工作，不超过100个字符"
+                    placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
                   ></el-input>
                   <!-- 编辑完之后 -->
@@ -455,14 +457,19 @@
                 <el-tooltip
                   class="icon-clear"
                   :class="{
-                    'is-disabled': formData.length == 1,
+                    'is-disabled': formData.weeklyPlanSaveList.length == 1,
                   }"
                   effect="dark"
-                  :content="formData.length > 1 ? '删除' : '至少有一条工作项'"
+                  :content="
+                    formData.weeklyPlanSaveList.length > 1
+                      ? '删除'
+                      : '至少有一条计划项'
+                  "
                   placement="top"
                   popper-class="tl-tooltip-popper"
                   @click.native="
-                    formData.length > 1 && deletePlanItem(scope.row)
+                    formData.weeklyPlanSaveList.length > 1 &&
+                      deletePlanItem(scope.row)
                   "
                 >
                   <i class="el-icon-minus"></i>
@@ -540,7 +547,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无数据</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list is-o"
         v-for="item in weeklyOkrSaveList"
@@ -1258,6 +1265,7 @@ export default {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         workTimeTotal += Number(element.workTime);
       });
+
       this.formData.weeklyWorkVoSaveList.forEach((work) => {
         if (row.randomId == work.randomId) {
           // 数据转换为0.5单位
@@ -1269,11 +1277,21 @@ export default {
               work.workTime = Number(tempArr[0]);
             }
           }
+
           if (workTimeTotal > 5) {
             work.workTime = 0;
           }
         }
       });
+    },
+    getPlaceholder(type) {
+      if (type == 0) {
+        return '本周有什么感想，工作的个人的都可以, 记录成长点滴';
+      } if (type == 1) {
+        return '对团队对公司对眼前事有什么建议吗';
+      } if (type == 2) {
+        return '做版本更好的自己，希望你本周有收获，记下来吧';
+      }
     },
   },
   watch: {

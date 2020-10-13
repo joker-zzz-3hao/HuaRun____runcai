@@ -304,7 +304,7 @@
                         v-for="(work, index) in weekly.contentList"
                         :key="work + index"
                       >
-                        <span></span>
+                        <span>#工作项{{ index + 1 }}#</span>
                         <em>{{ work.workContent }}</em>
                       </dd>
                     </template>
