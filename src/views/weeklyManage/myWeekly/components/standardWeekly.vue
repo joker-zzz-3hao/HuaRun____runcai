@@ -14,11 +14,6 @@
           class="tl-table"
         >
           <el-table-column
-            label="序号"
-            type="index"
-            width="55"
-          ></el-table-column>
-          <el-table-column
             label="工作项"
             prop="workContent"
             :render-header="renderHeader"
@@ -32,7 +27,6 @@
                 <el-input
                   v-model.trim="scope.row.workContent"
                   maxlength="20"
-                  size="small"
                   v-if="timeDisabled"
                   clearable
                   placeholder="简短概括任务，20字以内"
@@ -119,36 +113,6 @@
                 "
                 :rules="formData.rules.projectNameCn"
               >
-                <!-- <el-input
-                  v-model.trim="scope.row.projectNameCn"
-                  maxlength="0"
-                  @focus="projectInputFocus(scope.row)"
-                ></el-input> -->
-                <!-- 此处点击后就永远消失 -->
-                <!-- <div
-                  class="icon-bg"
-                  @click="projectInputFocus(scope.row)"
-                  v-if="!scope.row.projectNameCn"
-                >
-                  <i class="el-icon-plus"></i>
-                </div> -->
-                <!-- <div class="tag-group">
-                  <ul class="tag-lists">
-                    <li class="only-one" v-if="scope.row.projectNameCn">
-                      <el-tooltip
-                        class="select-values"
-                        effect="dark"
-                        placement="top"
-                        popper-class="tl-tooltip-popper"
-                      >
-                        <em slot="content">{{ scope.row.projectNameCn }}</em>
-                        <em>{{ scope.row.projectNameCn }}</em>
-                      </el-tooltip>
-                      <i class="el-icon-close" @click="projectDelete()"></i>
-                    </li>
-                  </ul>
-
-                </div> -->
                 <el-select
                   v-model="scope.row.projectNameCn"
                   placeholder="请选择关联项目"
@@ -169,7 +133,7 @@
             label="支撑OKR/价值观"
             prop="valueOrOkrIds"
             :render-header="renderHeader"
-            min-width="200"
+            min-width="300"
           >
             <!-- okrIds -->
             <template slot-scope="scope">
@@ -193,20 +157,14 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em @click="addSupportOkr(scope.row)">{{
-                          setOkrStyle(item.okrDetailObjectKr)
-                        }}</em>
+                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i> -->
                     </li>
-                    <li
-                      v-show="scope.row.selectedOkr.length < 1"
-                      class="icon-bg"
-                      @click="addSupportOkr(scope.row)"
-                    >
+                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -319,7 +277,6 @@
         </div>
       </dd>
     </dl>
-    <div></div>
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
@@ -330,11 +287,6 @@
             :data="formData.weeklyPlanSaveList"
             class="tl-table"
           >
-            <el-table-column
-              label="序号"
-              type="index"
-              width="55"
-            ></el-table-column>
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
@@ -389,9 +341,7 @@
         </div>
       </dd>
     </dl>
-
     <!-- 个人OKR完成度 -->
-    <!-- <div style="margintop: 50px" v-if="weeklyOkrSaveList.length > 0"> -->
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
@@ -401,53 +351,64 @@
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
-        <div class="tag-kind">
-          <!-- 这里根据判断显示 O 还是 KR  可共用DOM结构 -->
-          <template v-if="item.kr">
+        <template v-if="item.kr">
+          <div class="o-kr-group">
+            <div class="tag-kind">
+              <span class="kind-parent">目标</span>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+            </div>
+            <div class="tag-kind">
+              <span class="kind-child">KR</span>
+              <em> {{ item.kr.okrDetailObjectKr }}</em>
+              <span
+                >被工作项<em>{{ itemIndex(item.kr) }}</em
+                >支撑</span
+              >
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="tag-kind">
             <span class="kind-parent">目标</span>
             <em>{{ item.o.okrDetailObjectKr }}</em>
-          </template>
-          <template v-if="false">
-            <span class="kind-child">KR</span>
-            <em> {{ item.kr.okrDetailObjectKr }}</em>
-          </template>
-          <span
-            >被工作项<em>{{ itemIndex(item.kr) }}</em
-            >支撑</span
-          >
-        </div>
-        <div class="tl-progress-group">
-          <span>当前进度</span>
-          <tl-process
-            :data="parseInt(item.progressAfter, 10)"
-            :showNumber="false"
-            :width="64"
-            :marginLeft="6"
-          ></tl-process>
-          <el-slider
-            v-model="item.progressAfter"
-            :step="1"
-            @change="processChange(item)"
-            tooltip-class="slider-tooltip"
-          ></el-slider>
-          <el-input-number
-            v-model="item.progressAfter"
-            controls-position="right"
-            :min="0"
-            :max="100"
-            :step="1"
-            :precision="0"
-            class="tl-input-number"
-          ></el-input-number>
-          <span>%</span>
-        </div>
-        <div class="week-change">
-          <span>本周变化</span
-          ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
-            }}{{ item.progressAfter - item.progressBefor }}%</em
-          >
-        </div>
+            <span
+              >被工作项<em>{{ itemIndex(item.o) }}</em
+              >支撑</span
+            >
+          </div>
+          <div class="sdf"></div>
+          <div class="tl-progress-group">
+            <span>当前进度</span>
+            <tl-process
+              :data="parseInt(item.progressAfter, 10)"
+              :showNumber="false"
+              :width="64"
+              :marginLeft="6"
+            ></tl-process>
+            <el-slider
+              v-model="item.progressAfter"
+              :step="1"
+              @change="processChange(item)"
+              tooltip-class="slider-tooltip"
+            ></el-slider>
+            <el-input-number
+              v-model="item.progressAfter"
+              controls-position="right"
+              :min="0"
+              :max="100"
+              :step="1"
+              :precision="0"
+              class="tl-input-number"
+            ></el-input-number>
+            <span>%</span>
+          </div>
+          <div class="week-change">
+            <span>本周变化</span
+            ><em>
+              {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+            >
+          </div>
+        </template>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
           <h1></h1>
           <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
@@ -764,16 +725,14 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        if (okr) {
-          this.formData.weeklyWorkVoSaveList.forEach((item) => {
-            item.selectedOkr.forEach((element) => {
-              if (okr.okrDetailId == element.okrDetailId) {
-                result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
-              }
-            });
+        this.formData.weeklyWorkVoSaveList.forEach((item) => {
+          item.selectedOkr.forEach((element) => {
+            if (okr.okrDetailId == element.okrDetailId) {
+              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+            }
           });
-          return result.join('、');
-        }
+        });
+        return result.join('、');
       };
     },
   },
