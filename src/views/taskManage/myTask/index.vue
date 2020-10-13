@@ -250,7 +250,7 @@
             <el-table-column align="left" prop="userName">
               <template slot-scope="scope">
                 <div>
-                  <span>{{ scope.row.userName || "未指派" }}</span>
+                  <span>{{ scope.row.userName || "无执行人" }}</span>
                 </div>
               </template>
             </el-table-column>
@@ -641,7 +641,7 @@ export default {
           stepId: childCate.value,
           stepName: childCate.label,
         });
-        this.searchList = Array.from(new Set(this.searchList));
+        // this.searchList = Array.from(new Set(this.searchList));
       }
     },
     // 删除单个条件

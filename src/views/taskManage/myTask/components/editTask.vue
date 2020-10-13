@@ -60,7 +60,7 @@
               <el-form-item label="设置执行人">
                 <el-select
                   v-model.trim="formData.taskUserId"
-                  placeholder="添加执行人"
+                  placeholder="无执行人"
                   filterable
                   remote
                   :remote-method="getUserList"

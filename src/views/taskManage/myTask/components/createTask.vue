@@ -93,7 +93,7 @@
               ></el-date-picker
             >
           </el-form-item>
-          <el-form-item label="归属项目" prop="projectVal">
+          <!-- <el-form-item label="归属项目" prop="projectVal">
             <el-input
               v-model.trim="formData.projectVal.projectNameCn"
               placeholder="请选择归属项目"
@@ -101,8 +101,8 @@
               @focus="projectInputFocus()"
               class="tl-input"
             ></el-input>
-          </el-form-item>
-          <div class="item-flex">
+          </el-form-item> -->
+          <!-- <div class="item-flex">
             <el-form-item label="归属OKR" prop="okrDetailId">
               <el-select
                 v-model.trim="formData.okrDetailId"
@@ -133,7 +133,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </div>
+          </div> -->
           <el-form-item label="添加描述" prop="taskDesc">
             <el-input
               type="textarea"
