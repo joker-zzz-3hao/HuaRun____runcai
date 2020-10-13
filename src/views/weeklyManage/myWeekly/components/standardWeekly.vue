@@ -93,7 +93,7 @@
                 :precision="1"
                 :step="0.5"
                 :min="0"
-                :max="80"
+                :max="5"
                 @change="workTimeChange(scope.row)"
                 class="tl-input-number"
               ></el-input-number>
@@ -1254,7 +1254,6 @@ export default {
       this.$forceUpdate();
     },
     workTimeChange(row) {
-      debugger;
       let workTimeTotal = 0;
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         workTimeTotal += Number(element.workTime);
@@ -1270,7 +1269,6 @@ export default {
               work.workTime = Number(tempArr[0]);
             }
           }
-          debugger;
           if (workTimeTotal > 5) {
             work.workTime = 0;
           }
