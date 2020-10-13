@@ -434,7 +434,7 @@ export default {
     // 自动保存
   },
   methods: {
-    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),
+    ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto', 'setLoading']),
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
@@ -647,8 +647,8 @@ export default {
     // 新建okr
     summitNew() {
       this.loading = true;
+      this.setLoading(true);
       this.server.addokr(this.formData).then((res) => {
-        this.loading = false;
         if (res.code == 200) {
           this.$message.success('创建成功，请等待上级领导审批。');
           this.$refs.dataForm.resetFields();
@@ -663,6 +663,8 @@ export default {
             this.saveDraft();
           }).catch(() => {});
         }
+        this.loading = false;
+        this.setLoading(false);
       });
     },
     // 变更
