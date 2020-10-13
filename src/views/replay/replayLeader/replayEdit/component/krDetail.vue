@@ -1,25 +1,12 @@
 <template>
   <div>
-    <div>复盘对象：{{ okrMain.okrMainVo.periodName }}</div>
-    <div class="replay-user">
-      <div class="list">姓名：{{ okrMain.okrMainVo.userName }}</div>
-      <div class="list">OKR进度： {{ okrMain.okrMainVo.okrProgress }}%</div>
-      <div class="list">
-        复盘时间： {{ okrMain.okrMainVo.reviewCommitTime }}
-      </div>
-    </div>
-    <div>
-      <el-radio-group v-model="form.resource">
-        <el-radio label="kr">以关键结果KR复盘</el-radio>
-        <el-radio label="o">以目标O复盘</el-radio>
-      </el-radio-group>
-    </div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
       <el-collapse accordion v-model="activeNames" @change="handleChange">
         <el-collapse-item name="1">
           <template slot="title">
             <div style="width: 100%">
-              <em>目标1</em><em>{{ item.o.okrDetailObjectKr }}</em>
+              <em>目标{{ index + 1 }}</em
+              ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
                 <em>权重 {{ item.okrWeight }}%</em>
                 <em>进度 {{ item.okrDetailProgress }}%</em>
@@ -28,7 +15,7 @@
           </template>
           <div v-for="(list, i) in item.krs" :key="i + 'k'">
             <div style="width: 100%">
-              <em>KR1 </em><em>{{ list.okrDetailObjectKr }}</em>
+              <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
                 <em>权重 {{ list.okrWeight }}%</em>
                 <em>进度 {{ list.okrDetailProgress }}%</em>
@@ -71,7 +58,7 @@
                     <em>
                       {{ li }}
                     </em>
-                    <el-button type="text" @click="deleteProduce(i)"
+                    <el-button type="text" @click="deleteProduce(index, i)"
                       >删除</el-button
                     >
                   </div>
@@ -104,19 +91,18 @@
 </template>
 
 <script>
-import Server from '../../server';
+import Server from '../../../server';
 
 const server = new Server();
 export default {
   name: 'home',
+  props: ['okrMain'],
   data() {
     return {
+      reviewType: 1,
       form: {},
       activeNames: ['1'],
       server,
-      okrMain: {
-        okrMainVo: {},
-      },
       active: {},
       deficiency: {},
       communication: {},
@@ -130,26 +116,27 @@ export default {
       ],
     };
   },
-  created() {
-    this.getOkrReviewDetail();
-  },
 
   methods: {
+    deleteProduce(index, i) {
+      this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
+    },
     addDefic(value, index, i) {
       if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
         this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
       }
-
       this.okrMain.okrReviewPojoList[index].krs[i].measure.push(value);
       console.log(this.okrMain.okrReviewPojoList[index].krs[i].measure);
     },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
       const krs = [];
-      let krsList;
+
       krsData.forEach((item) => {
-        krsList = krs.concat(item);
+        // eslint-disable-next-line prefer-spread
+        krs.push.apply(krs, item);
       });
+      const krsList = krs;
       if (clear) {
         this.list = krsList.map((item) => ({
           detailId: item.detailId,
@@ -158,7 +145,7 @@ export default {
           communicationLabel: '',
           advantage: '',
           disadvantage: '',
-          measure: '',
+          measure: [],
         }));
       } else {
         this.list = krsList.map((item) => ({
@@ -177,6 +164,7 @@ export default {
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
+          reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
@@ -198,6 +186,7 @@ export default {
       this.checkDatakrs(true);
       const params = {
         okrMainVo: {
+          reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
@@ -212,6 +201,7 @@ export default {
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
+          reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
