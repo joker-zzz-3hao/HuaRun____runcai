@@ -66,20 +66,22 @@
             min-width="120"
           >
             <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.workProgress"
-                controls-position="right"
-                :min="0"
-                :max="100"
-                class="tl-input-number"
-              ></el-input-number
-              >%
+              <template v-if="timeDisabled">
+                <el-input-number
+                  v-model="scope.row.workProgress"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  class="tl-input-number"
+                ></el-input-number>
+              </template>
               <!-- 编辑完提交后展示 -->
-              <!-- <tl-process
-                :data="node.okrDetailProgress"
+              <tl-process
+                v-else
+                :data="scope.row.workProgress"
                 :width="36"
                 :marginLeft="6"
-              ></tl-process> -->
+              ></tl-process>
             </template>
           </el-table-column>
           <el-table-column
@@ -90,6 +92,7 @@
           >
             <template slot-scope="scope">
               <el-input-number
+                v-if="timeDisabled"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
                 :precision="1"
@@ -100,7 +103,7 @@
                 class="tl-input-number"
               ></el-input-number>
               <!-- 编辑完提交后展示 -->
-              <!-- <em>balbalabala</em> -->
+              <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
             </template>
           </el-table-column>
@@ -194,10 +197,10 @@
                           setOkrStyle(item.okrDetailObjectKr)
                         }}</em>
                       </el-tooltip>
-                      <i
+                      <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
-                      ></i>
+                      ></i> -->
                     </li>
                     <li
                       v-show="scope.row.selectedOkr.length < 1"
