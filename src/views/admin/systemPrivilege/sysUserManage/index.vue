@@ -16,7 +16,9 @@
         </el-form-item>
         <el-form-item label="创建时间">
           <span>{{
-            dateFormat("YYYY-mm-dd HH:MM:SS", new Date(userInfo.createTime))
+            userInfo.createTime
+              ? dateFormat("YYYY-mm-dd HH:MM:SS", new Date(userInfo.createTime))
+              : "--"
           }}</span>
         </el-form-item>
         <el-form-item>
@@ -149,7 +151,7 @@ export default {
           pageSize: this.pageSize,
           userAccount: 'admin',
         };
-        this.server.getUserLIst(params).then((res) => {
+        this.server.getUserList(params).then((res) => {
           if (res.code == 200) {
             this.userInfo = res.data;
           }

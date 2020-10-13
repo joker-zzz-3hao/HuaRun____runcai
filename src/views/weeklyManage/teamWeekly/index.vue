@@ -64,7 +64,7 @@
         <el-select
           v-model="submitedOrLooked"
           @change="submitedOrLookedChange"
-          placeholder="全部"
+          placeholder="周报状态"
           clearable
           @clear="clearSubmitOrLooked"
           :disabled="!!formData.queryType"
