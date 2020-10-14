@@ -61,13 +61,21 @@
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
-                <el-input
-                  v-model="scope.row.workProgress"
-                  controls-position="right"
-                  :min="0"
-                  :max="100"
-                  class="tl-input-number"
-                ></el-input>
+                <el-form-item
+                  v-if="timeDisabled"
+                  :prop="
+                    'weeklyWorkVoSaveList.' + scope.$index + '.workProgress'
+                  "
+                  :rules="formData.rules.workProgress"
+                >
+                  <el-input
+                    v-model="scope.row.workProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    class="tl-input-number"
+                  ></el-input>
+                </el-form-item>
               </template>
               <!-- 编辑完提交后展示 -->
               <tl-process
@@ -86,17 +94,23 @@
             min-width="130"
           >
             <template slot-scope="scope">
-              <el-input
+              <el-form-item
                 v-if="timeDisabled"
-                controls-position="right"
-                v-model.trim="scope.row.workTime"
-                :precision="1"
-                :step="0.5"
-                :min="0"
-                :max="5"
-                @change="workTimeChange(scope.row)"
-                class="tl-input-number"
-              ></el-input>
+                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workTime'"
+                :rules="formData.rules.workTime"
+              >
+                <el-input
+                  v-if="timeDisabled"
+                  controls-position="right"
+                  v-model.trim="scope.row.workTime"
+                  :precision="1"
+                  :step="0.5"
+                  :min="0"
+                  :max="5"
+                  @change="workTimeChange(scope.row)"
+                  class="tl-input-number"
+                ></el-input>
+              </el-form-item>
               <!-- 编辑完提交后展示 -->
               <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
@@ -110,20 +124,19 @@
             <template slot-scope="scope">
               <el-form-item
                 v-if="timeDisabled"
-                :prop="
-                  'weeklyWorkVoSaveList.' + scope.$index + '.projectNameCn'
-                "
-                :rules="formData.rules.projectNameCn"
+                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectId'"
+                :rules="formData.rules.projectId"
               >
                 <el-select
-                  v-model="scope.row.projectNameCn"
+                  v-model="scope.row.projectId"
                   placeholder="请选择关联项目"
                   size="small"
+                  @change="projectChange(scope.row)"
                 >
                   <el-option
                     v-for="item in projectList"
                     :key="item.projectId"
-                    :label="item.projectName"
+                    :label="item.projectNameCn"
                     :value="item.projectId"
                   >
                   </el-option>
@@ -145,7 +158,7 @@
                 :prop="
                   'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'
                 "
-                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds : {}"
+                :rules="formData.rules.valueOrOkrIds"
               >
                 <div class="tag-group">
                   <ul class="tag-lists">
@@ -459,12 +472,8 @@
               v-if="timeDisabled"
               v-model="item.progressAfter"
               controls-position="right"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
               class="tl-input-number"
-              @change="progressAfterChange"
+              @input="progressAfterChange"
             ></el-input>
             <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
@@ -637,10 +646,12 @@ import CONST from '@/components/const';
 import Server from '../server';
 import selectProject from './selectProject';
 import addOkr from './addOkr';
+import mixin from '../validateMixin';
 
 const server = new Server();
 export default {
   name: 'standardWeekly',
+  mixins: [mixin],
   components: {
     'add-okr': addOkr,
     selectProject,
@@ -741,7 +752,7 @@ export default {
             trigger: 'blur',
           },
 
-          projectNameCn: {
+          projectId: {
             type: 'string',
             required: true,
             message: '请选择关联项目',
@@ -752,6 +763,18 @@ export default {
             required: true,
             message: '请选择支撑项',
             trigger: 'change',
+          },
+          workProgress: {
+            type: 'string',
+            required: true,
+            trigger: 'blur',
+            validator: this.validateProcess,
+          },
+          workTime: {
+            type: 'string',
+            required: true,
+            trigger: 'blur',
+            validator: this.validateTime,
           },
         },
         weeklyWorkVoSaveList: [],
@@ -1177,8 +1200,20 @@ export default {
     },
     changeConfidence() {},
     progressAfterChange(progressAfter) {
-      console.log(progressAfter);
+      this.$forceUpdate();
     },
+    projectChange(work) {
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        if (work.randomId == element.randomId) {
+          this.projectList.forEach((project) => {
+            if (project.projectId == work.projectId) {
+              work.projectNameCn = project.projectNameCn;
+            }
+          });
+        }
+      });
+    },
+
   },
   watch: {
     'formData.weeklyWorkVoSaveList': {
