@@ -223,6 +223,9 @@ export default {
       // if name == 虚线
     },
   },
+  beforeDestroy() {
+    this.setokrCycle();
+  },
   watch: {
     'searchForm.periodId': {
       handler(newVal) {
