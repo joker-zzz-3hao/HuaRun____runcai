@@ -1178,7 +1178,7 @@ export default {
     },
     changeConfidence() {},
     progressAfterChange(progressAfter) {
-      debugger;
+      console.log(progressAfter);
     },
   },
   watch: {
