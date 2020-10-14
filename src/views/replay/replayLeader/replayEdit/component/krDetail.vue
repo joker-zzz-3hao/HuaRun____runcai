@@ -8,8 +8,11 @@
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.okrWeight }}%</em>
-                <em>进度 {{ item.okrDetailProgress }}%</em>
+                <em>权重 {{ item.okrWeight ? item.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{ item.okrDetailProgress ? item.okrDetailProgress : 0 }}%</em
+                >
               </div>
             </div>
           </template>
@@ -17,8 +20,11 @@
             <div style="width: 100%">
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ list.okrWeight }}%</em>
-                <em>进度 {{ list.okrDetailProgress }}%</em>
+                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{ list.okrDetailProgress ? list.okrDetailProgress : 0 }}%</em
+                >
               </div>
             </div>
 
@@ -54,11 +60,11 @@
               <div>
                 <div>改进措施</div>
                 <div>
-                  <div v-for="(li, i) in list.measure || []" :key="i">
+                  <div v-for="(li, d) in list.measure || []" :key="d">
                     <em>
                       {{ li }}
                     </em>
-                    <el-button type="text" @click="deleteProduce(index, i)"
+                    <el-button type="text" @click="deletedProduce(index, i, d)"
                       >删除</el-button
                     >
                   </div>
@@ -118,15 +124,15 @@ export default {
   },
 
   methods: {
-    deleteProduce(index, i) {
-      this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
+    deletedProduce(index, i, d) {
+      this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(d, 1);
     },
     addDefic(value, index, i) {
       if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
         this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
       }
       this.okrMain.okrReviewPojoList[index].krs[i].measure.push(value);
-      console.log(this.okrMain.okrReviewPojoList[index].krs[i].measure);
+      this.deficiency[this.okrMain.okrReviewPojoList[index].krs[i].detailId] = '';
     },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
@@ -154,7 +160,7 @@ export default {
           communication: item.communication,
           advantage: item.advantage,
           disadvantage: item.disadvantage,
-          measure: item.measure,
+          measure: item.measure || [],
           communicationLabel: item.communicationLabel,
         }));
       }
@@ -193,7 +199,7 @@ export default {
       };
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('保存成功');
+          this.$router.push('/replayList');
         }
       });
     },
@@ -209,6 +215,7 @@ export default {
       this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
+          this.$router.push('/replayList');
         }
       });
     },

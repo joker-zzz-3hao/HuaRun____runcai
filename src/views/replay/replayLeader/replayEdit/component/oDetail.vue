@@ -8,8 +8,11 @@
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.okrWeight }}%</em>
-                <em>进度 {{ item.okrDetailProgress }}%</em>
+                <em>权重 {{ item.okrWeight ? item.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{ item.okrDetailProgress ? item.okrDetailProgress : 0 }}%</em
+                >
               </div>
             </div>
           </template>
@@ -17,8 +20,11 @@
             <div style="width: 100%">
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ list.okrWeight }}%</em>
-                <em>进度 {{ list.okrDetailProgress }}%</em>
+                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{ list.okrDetailProgress ? list.okrDetailProgress : 0 }}%</em
+                >
               </div>
             </div>
 
@@ -126,6 +132,7 @@ export default {
         this.okrMain.okrReviewPojoList[index].o.measure = [];
       }
       this.okrMain.okrReviewPojoList[index].o.measure.push(value);
+      this.deficiency[this.okrMain.okrReviewPojoList[index].o.detailId] = '';
     },
     checkDatakrs(clear) {
       const krsList = this.okrMain.okrReviewPojoList.map((item) => item.o);
@@ -185,7 +192,7 @@ export default {
       };
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('保存成功');
+          this.$router.push('/replayList');
         }
       });
     },

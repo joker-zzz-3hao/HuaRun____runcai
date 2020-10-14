@@ -119,7 +119,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="!scope.row.orgManager && scope.row.reviewStatus == 2"
+                  v-if="!scope.row.isOwner && scope.row.reviewStatus == 2"
                   @click="
                     $router.push({
                       name: 'replayLink',
@@ -133,7 +133,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.$index == 0 && scope.row.reviewStatus == 1"
+                  v-if="scope.row.isOwner && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -155,7 +155,7 @@
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        index: scope.$index,
+                        isOwner: scope.row.isOwner,
                       },
                     })
                   "
