@@ -45,7 +45,9 @@
                     <i class="el-icon-more el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click="deleteTask"
+                    <el-dropdown-item
+                      @click="deleteTask"
+                      :disabled="formData.taskStatus !== 0"
                       >删除</el-dropdown-item
                     >
                     <el-dropdown-item
@@ -532,6 +534,7 @@ export default {
       this.server.queryProcess({
         currentPage: 1,
         pageSize: 1000,
+        enable: 1,
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];

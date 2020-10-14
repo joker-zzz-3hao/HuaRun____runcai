@@ -72,10 +72,15 @@
             <em>{{ item.name }}</em>
             <i class="el-icon-close" @click.stop="clearNode(index)"></i>
           </dd>
-          <dd v-if="searchPerson.length > 0">
+          <dd v-if="searchTaskUser.length > 0">
             <span>执行人：</span>
-            <em v-for="p in searchPerson" :key="p">{{ userMap[p] }}</em>
-            <i class="el-icon-close" @click.stop="clearAllPerson"></i>
+            <em v-for="p in searchTaskUser" :key="p">{{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearAllPerson('task')"></i>
+          </dd>
+          <dd v-if="searchCreateUser.length > 0">
+            <span>创建人：</span>
+            <em v-for="p in searchCreateUser" :key="p">{{ userMap[p] }}</em>
+            <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
           </dd>
         </dl>
         <dl
@@ -138,9 +143,12 @@
           v-show="arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>执行人</dt>
-          <dd v-for="p in searchPerson" :key="p">
+          <dd v-for="p in searchTaskUser" :key="p">
             <em> {{ userMap[p] }}</em>
-            <i class="el-icon-close" @click.stop="clearPersonNode(p)"></i>
+            <i
+              class="el-icon-close"
+              @click.stop="clearPersonNode(searchTaskUser, p)"
+            ></i>
           </dd>
 
           <el-popover placement="bottom" width="200" trigger="click">
@@ -153,9 +161,12 @@
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
-              <el-checkbox-group v-model="searchPerson" @change="getTableList">
+              <el-checkbox-group
+                v-model="searchTaskUser"
+                @change="getTableList"
+              >
                 <el-checkbox
-                  v-for="item in filterPerson"
+                  v-for="item in filterTask"
                   :label="item.userId"
                   :key="item.userId"
                 >
@@ -178,32 +189,58 @@
               <div>+</div>
             </div>
           </el-popover>
+        </dl>
+        <dl
+          class="condition-lists tag-lists"
+          v-show="arrowClass == 'el-icon-caret-bottom'"
+        >
+          <dt>创建人</dt>
+          <dd v-for="p in searchCreateUser" :key="p">
+            <em> {{ userMap[p] }}</em>
+            <i
+              class="el-icon-close"
+              @click.stop="clearPersonNode(searchCreateUser, p)"
+            ></i>
+          </dd>
 
-          <!-- <el-select
-            v-model="searchPerson"
-            multiple
-            placeholder="请选择执行人"
-            filterable
-            remote
-            :remote-method="getUserList"
-            @change="getTableList"
-          >
-            <el-option
-              v-for="item in userList"
-              :key="item.userId"
-              :label="item.userName"
-              :value="item.userId"
-            >
-              <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
-                <div v-if="item.userName" class="user-name">
-                  <em>{{
-                    item.userName.substring(item.userName.length - 2)
-                  }}</em>
-                </div>
-              </el-avatar>
-              <span>{{ item.userName }}</span>
-            </el-option>
-          </el-select> -->
+          <el-popover placement="bottom" width="200" trigger="click">
+            <div>
+              <el-input
+                placeholder="搜索"
+                v-model="keyword"
+                class="tl-input"
+                clearable
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+              <el-checkbox-group
+                v-model="searchCreateUser"
+                @change="getTableList"
+              >
+                <el-checkbox
+                  v-for="item in filterCreate"
+                  :label="item.userId"
+                  :key="item.userId"
+                >
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
+                    <div v-if="item.userName" class="user-name">
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </el-avatar>
+                  <span>{{ item.userName }}</span>
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div slot="reference">
+              <div>+</div>
+            </div>
+          </el-popover>
         </dl>
       </div>
       <tl-crcloud-table
@@ -283,7 +320,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      :disabled="canEdit(scope.row)"
+                      :disabled="scope.row.taskStatus !== 0"
                       @click.native="deleteTask(scope.row.taskId)"
                       >删除</el-dropdown-item
                     >
@@ -381,7 +418,9 @@ export default {
       showTask: true,
       processVisible: false,
       userList: [], // 执行人列表
-      searchPerson: [],
+      // CreateuserList: [], // 创建人列表
+      searchTaskUser: [],
+      searchCreateUser: [],
       reformattedArray: [],
       userMap: {},
       keyword: '',
@@ -399,7 +438,12 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    filterPerson() {
+    filterTask() {
+      return this.userList.filter(
+        (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
+      ) || [];
+    },
+    filterCreate() {
       return this.userList.filter(
         (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
       ) || [];
@@ -477,7 +521,8 @@ export default {
         taskTitle: this.searchMsg,
         psList: this.searchList,
         accept: this.accept,
-        taskUserIds: this.searchPerson.toString(),
+        taskUserIds: this.searchTaskUser.toString(),
+        createByIds: this.searchCreateUser.toString(),
       };
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
@@ -569,6 +614,7 @@ export default {
       this.server.queryProcess({
         currentPage: 1,
         pageSize: 1000,
+        enable: 1,
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];
@@ -665,16 +711,20 @@ export default {
       }
     },
     // 删除单个执行人
-    clearPersonNode(pId) {
-      const index = this.searchPerson.indexOf(pId);
+    clearPersonNode(userList, pId) {
+      const index = userList.indexOf(pId);
       if (index >= 0) {
-        this.searchPerson.splice(index, 1);
+        userList.splice(index, 1);
         this.getTableList();
       }
     },
     // 删除全部执行人
-    clearAllPerson() {
-      this.searchPerson = [];
+    clearAllPerson(listType) {
+      if (listType == 'task') {
+        this.searchTaskUser = [];
+      } else {
+        this.searchCreateUser = [];
+      }
       this.getTableList();
     },
     // 重置

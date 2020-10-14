@@ -259,6 +259,7 @@ export default {
         currentPage: 1,
         pageSize: 1000,
         processType: processType || '',
+        enable: 1,
       }).then((res) => {
         if (res.code == 200) {
           if (processType == '1') {

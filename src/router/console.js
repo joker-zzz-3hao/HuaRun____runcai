@@ -209,54 +209,56 @@ export default [{
       power: '',
     },
     component: () => import('@/views/replay/replayLeader/index'),
-    children: [{
-      path: '/replayEdit',
-      name: 'replayEdit',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'replayEdit',
-        title: 'replayEdit',
-        power: '',
+    children: [
+      {
+        path: '/replayEdit',
+        name: 'replayEdit',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'replayEdit',
+          title: 'replayEdit',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayLeader/replayEdit/index'),
       },
-      component: () => import('@/views/replay/replayLeader/component/replayEdit'),
-    },
-    {
-      path: '/replayLink',
-      name: 'replayLink',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'replayLink',
-        title: 'replayLink',
-        power: '',
+
+      {
+        path: '/replayDetail',
+        name: 'replayDetail',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'replayDetail',
+          title: 'replayDetail',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayLeader/replayDetail/index'),
       },
-      component: () => import('@/views/replay/replayLeader/component/replayLink'),
-    },
-    {
-      path: '/replayDetail',
-      name: 'replayDetail',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'replayDetail',
-        title: 'replayDetail',
-        power: '',
+      {
+        path: '/replayLink',
+        name: 'replayLink',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'replayLink',
+          title: 'replayLink',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayLeader/replayLink/index'),
       },
-      component: () => import('@/views/replay/replayLeader/component/replayDetail'),
-    },
-    {
-      path: '/replayList',
-      name: 'replayList',
-      meta: {
-        hasMainMenu: true,
-        isSubMenu: true,
-        parentRoute: 'replayList',
-        title: 'replayList',
-        power: '',
+      {
+        path: '/replayList',
+        name: 'replayList',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'replayList',
+          title: 'replayList',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayLeader/component/replayList'),
       },
-      component: () => import('@/views/replay/replayLeader/component/replayList'),
-    },
     ],
   },
   {

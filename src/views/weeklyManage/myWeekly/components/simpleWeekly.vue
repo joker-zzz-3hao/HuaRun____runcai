@@ -47,19 +47,20 @@
             min-width="120"
           >
             <template slot-scope="scope">
-              <el-input-number
+              <el-input
                 v-model="scope.row.workProgress"
                 controls-position="right"
                 :min="0"
                 :max="100"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input>
               <!-- 编辑完之后显示 -->
               <!-- <tl-process
                 :data="node.okrDetailProgress"
                 :width="36"
                 :marginLeft="6"
               ></tl-process> -->
+              %
             </template>
           </el-table-column>
           <el-table-column
@@ -70,7 +71,7 @@
             min-width="130"
           >
             <template slot-scope="scope">
-              <el-input-number
+              <el-input
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
                 :precision="1"
@@ -78,7 +79,7 @@
                 :min="0"
                 :max="5"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input>
               <span>天</span>
             </template>
           </el-table-column>
@@ -166,14 +167,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
-                      <i
+                      <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
-                      ></i>
+                      ></i> -->
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      v-show="scope.row.selectedOkr.length < 1"
+                      class="icon-bg"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -307,7 +314,7 @@
             @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
-          <el-input-number
+          <el-input
             v-model="item.progressAfter"
             controls-position="right"
             :min="0"
@@ -315,13 +322,14 @@
             :step="1"
             :precision="0"
             class="tl-input-number"
-          ></el-input-number>
+          ></el-input>
           <span>%</span>
         </div>
         <div class="week-change">
           <span>本周变化</span
           ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+            }}{{ item.progressAfter - item.progressBefor }}%</em
           >
         </div>
       </dd>
@@ -620,14 +628,16 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        this.formData.weeklyWorkVoSaveList.forEach((item) => {
-          item.selectedOkr.forEach((element) => {
-            if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
-            }
+        if (okr) {
+          this.formData.weeklyWorkVoSaveList.forEach((item) => {
+            item.selectedOkr.forEach((element) => {
+              if (okr.okrDetailId == element.okrDetailId) {
+                result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+              }
+            });
           });
-        });
-        return result.join('、');
+          return result.join('、');
+        }
       };
     },
   },

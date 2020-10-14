@@ -75,7 +75,9 @@
             ></el-table-column>
             <el-table-column prop="okrProgress" label="OKR进度" min-width="120">
               <template slot-scope="scope">
-                <span>{{ scope.row.okrProgress + "%" }}</span>
+                <span>{{
+                  scope.row.okrProgress ? scope.row.okrProgress + "%" : 0 + "%"
+                }}</span>
               </template></el-table-column
             >
             <el-table-column
@@ -117,10 +119,10 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.$index > 0"
+                  v-if="!scope.row.orgManager && scope.row.reviewStatus == 2"
                   @click="
                     $router.push({
-                      name: 'replayDetail',
+                      name: 'replayLink',
                       query: {
                         okrId: scope.row.okrId,
                       },
@@ -131,7 +133,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.$index == 0"
+                  v-if="scope.$index == 0 && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -145,12 +147,15 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.reviewStatus == 3"
+                  v-if="
+                    scope.row.reviewStatus == 3 || scope.row.reviewStatus == 2
+                  "
                   @click="
                     $router.push({
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
+                        index: scope.$index,
                       },
                     })
                   "

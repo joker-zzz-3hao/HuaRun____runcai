@@ -7,11 +7,14 @@
           <el-form-item>
             <el-select
               v-model="keyWord"
-              placeholder="输入字典编号/名称"
-              @click="searchList"
+              placeholder="请选择使用范围"
+              @change="searchList"
               clearable
-              ><el-option></el-option
-            ></el-select>
+            >
+              <el-option value="1" label="团队使用">团队使用</el-option>
+              <el-option value="2" label="小范围使用">小范围使用</el-option>
+              <el-option value="3" label="个人使用">个人使用</el-option>
+            </el-select>
           </el-form-item>
         </el-form>
         <el-button
@@ -49,13 +52,28 @@
               align="left"
               prop="processType"
               label="使用范围"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span>{{ processTypeMap[scope.row.processType] }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               min-width="100px"
               align="left"
-              prop="available"
+              prop="enable"
               label="状态"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model.trim="scope.row.enable"
+                  :active-text="scope.row.enable == 1 ? '启用' : '禁用'"
+                  :active-value="1"
+                  :inactive-value="0"
+                  @change="updateEnable(scope.row)"
+                  class="tl-switch"
+                ></el-switch>
+              </template>
+            </el-table-column>
             <el-table-column
               min-width="100px"
               align="left"
@@ -140,16 +158,22 @@ export default {
       loading: false,
       // codeId: '',
       optionType: 'create',
+      processTypeMap: {
+        1: '团队使用',
+        2: '小范围使用',
+        3: '个人使用',
+      },
     };
   },
   created() {
     this.searchList();
   },
   methods: {
-    searchList(params = { currentPage: 1 }) {
+    searchList() {
+      const params = {};
+      params.processType = this.keyWord;
       params.currentPage = this.currentPage;
       params.pageSize = this.pageSize;
-      params.keyWord = this.keyWord;
       this.loading = true;
       this.server.queryTaskProcessList(params).then((res) => {
         if (res.code == 200) {
@@ -174,6 +198,8 @@ export default {
       });
     },
     closeAddProcess() {
+      // 需要刷新则刷新页面;
+      this.searchList();
       this.showCustomProcess = false;
     },
     editProcess(process) {
@@ -181,7 +207,19 @@ export default {
 
       this.showEditProcessDialog = true;
     },
-
+    updateEnable(row) {
+      this.server.updateEnable(row).then((res) => {
+        if (res.code == 200) {
+          if (res.data === false) {
+            this.$xwarning({
+              title: '您当前任务过程有任务项，不可禁用',
+              content: '',
+            });
+          }
+          this.searchList();
+        }
+      });
+    },
     // *********************************************************
 
     closeDialog(data) {

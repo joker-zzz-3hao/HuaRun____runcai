@@ -1901,11 +1901,16 @@
   cursor: pointer;
 }
 
-.write-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
-.write-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.write-weekly .el-table__body tr.hover-row.current-row>td,
-.write-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.write-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+.my-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.my-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.my-weekly .el-table__body tr.hover-row.current-row>td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td,
+.teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.teams-weekly-detail .el-table__body tr.hover-row.current-row>td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
   background: unset;
 }
 
@@ -2573,6 +2578,49 @@
 
 .teams-weekly .table-container .quick-look .tag-kind dt:last-child::after {
   background: unset;
+}
+
+.weekly dd {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.weekly .user-info {
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.weekly .user-info dt {
+  margin-right: 10px;
+  color: #879099;
+  font-size: 12px;
+}
+
+.weekly .user-info dd:not(:last-child) {
+  margin: 0 14px 0 0;
+}
+
+.weekly .user-info dd:last-child {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.weekly .tl-table .el-table__body .cell {
+  padding: 10px;
+}
+
+.weekly .tl-table .el-table__body .el-table__row td:first-child em {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.week-plan .el-form-item .el-form-item__content {
+  flex: 1;
+}
+
+.week-plan .el-form-item .el-form-item__content .tl-input .el-input__inner {
+  width: 100%;
 }
 
 /* 任务 */

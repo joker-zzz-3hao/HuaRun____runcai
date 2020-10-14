@@ -10,95 +10,160 @@
     </div>
     <div class="cont-area">
       <template v-if="openOrClose == 'OPEN'">
-        <dl class="user-info">
-          <dt>负责人</dt>
-          <dd v-if="true">
-            <img
-              v-if="$route.query.headerUrl"
-              :src="$route.query.headerUrl"
-              alt
-            />
-          </dd>
-          <dd v-else-if="$route.query.userName" class="user-name">
-            <em>{{
-              $route.query.userName.substring($route.query.userName.length - 2)
-            }}</em>
-          </dd>
-          <dd>{{ $route.query.userName }}</dd>
-        </dl>
-        <el-table ref="workTable" :data="weeklyWorkVoList">
-          <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column label="工作项" prop="workContent"></el-table-column>-
-          <el-table-column
-            label="内容"
-            prop="workDesc"
-            v-if="weeklyType == '1'"
-          >
-            <template slot-scope="scope">
-              <el-col style="display: flex">
-                <pre>{{ scope.row.workDesc }}</pre>
-              </el-col>
-            </template>
-          </el-table-column>
-          <el-table-column width="100" label="进度" prop="workProgress">
-            <template slot-scope="scope">
-              <span>{{ scope.row.workProgress }}%</span>
-            </template>
-          </el-table-column>
-          <el-table-column width="100" label="投入工时" prop="workTime">
-            <template slot-scope="scope">
-              <span>{{ scope.row.workTime }}h</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="关联项目" prop="projectNameCn">
-            <template slot-scope="scope">
-              <span>{{
-                scope.row.projectNameCn ? scope.row.projectNameCn : "临时项目"
-              }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="支持OKR/价值观">
-            <template slot-scope="scope">
-              <div
-                v-if="
-                  scope.row.okrCultureValueList.length > 0 ||
-                  scope.row.workOkrList.length > 0
-                "
+        <dl class="dl-card-panel weekly">
+          <dd>
+            <dl class="user-info">
+              <dt>负责人</dt>
+              <dd v-if="true">
+                <img
+                  v-if="$route.query.headerUrl"
+                  :src="$route.query.headerUrl"
+                  alt
+                />
+              </dd>
+              <dd v-else-if="$route.query.userName" class="user-name">
+                <em>{{
+                  $route.query.userName.substring(
+                    $route.query.userName.length - 2
+                  )
+                }}</em>
+              </dd>
+              <dd>{{ $route.query.userName }}</dd>
+            </dl>
+            <el-table ref="workTable" :data="weeklyWorkVoList" class="tl-table">
+              <el-table-column
+                label="工作项"
+                prop="workContent"
+                min-width="150"
               >
-                <span
-                  style="marginleft: 8px"
-                  v-for="value in scope.row.okrCultureValueList"
-                  :key="value.id"
-                >
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="value.cultureName"
-                    placement="top-end"
+                <template slot-scope="scope">
+                  <em>{{ scope.row.workContent }}</em></template
+                ></el-table-column
+              >
+              <el-table-column
+                label="内容"
+                prop="workDesc"
+                v-if="weeklyType == '1'"
+                min-width="150"
+              >
+                <template slot-scope="scope">
+                  <em>{{ scope.row.workDesc }}</em>
+                </template>
+              </el-table-column>
+              <el-table-column width="80" label="进度" prop="workProgress">
+                <template slot-scope="scope">
+                  <em>{{ scope.row.workProgress }}%</em>
+                </template>
+              </el-table-column>
+              <el-table-column width="80" label="投入工时" prop="workTime">
+                <template slot-scope="scope">
+                  <em>{{ scope.row.workTime }}h</em>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="关联项目"
+                prop="projectNameCn"
+                min-width="120"
+              >
+                <template slot-scope="scope">
+                  <div class="tag-group">
+                    <ul class="tag-lists">
+                      <li>
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{
+                            scope.row.projectNameCn
+                              ? scope.row.projectNameCn
+                              : "临时项目"
+                          }}</em>
+                          <em>{{
+                            scope.row.projectNameCn
+                              ? scope.row.projectNameCn
+                              : "临时项目"
+                          }}</em>
+                        </el-tooltip>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- <em>{{
+                    scope.row.projectNameCn
+                      ? scope.row.projectNameCn
+                      : "临时项目"
+                  }}</em> -->
+                </template>
+              </el-table-column>
+              <el-table-column label="支持OKR/价值观" min-width="120">
+                <template slot-scope="scope">
+                  <!-- <div
+                    v-if="
+                      scope.row.okrCultureValueList.length > 0 ||
+                      scope.row.workOkrList.length > 0
+                    "
                   >
-                    <span>{{ setOkrStyle(value.cultureName) }}</span>
-                  </el-tooltip>
-                </span>
-                <span
-                  style="marginleft: 8px"
-                  v-for="value in scope.row.workOkrList"
-                  :key="value.id"
-                >
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="value.okrDetailObjectKr"
-                    placement="top-end"
+                    <span
+                      style="marginleft: 8px"
+                      v-for="value in scope.row.okrCultureValueList"
+                      :key="value.id"
+                    >
+                      <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :content="value.cultureName"
+                        placement="top-end"
+                      >
+                        <span>{{ setOkrStyle(value.cultureName) }}</span>
+                      </el-tooltip>
+                    </span>
+                    <span
+                      style="marginleft: 8px"
+                      v-for="value in scope.row.workOkrList"
+                      :key="value.id"
+                    >
+                      <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :content="value.okrDetailObjectKr"
+                        placement="top-end"
+                      >
+                        <span>{{ setOkrStyle(value.okrDetailObjectKr) }}</span>
+                      </el-tooltip>
+                    </span>
+                  </div> -->
+                  <div
+                    class="tag-group"
+                    v-if="
+                      scope.row.okrCultureValueList.length > 0 ||
+                      scope.row.workOkrList.length > 0
+                    "
                   >
-                    <span>{{ setOkrStyle(value.okrDetailObjectKr) }}</span>
-                  </el-tooltip>
-                </span>
-              </div>
-              <div v-else>--</div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <dl class="dl-card-panel weekly-thoughts">
+                    <ul class="tag-lists">
+                      <li
+                        v-for="value in scope.row.okrCultureValueList"
+                        :key="value.id"
+                      >
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ value.okrDetailObjectKr }}</em>
+                          <em>{{ setOkrStyle(value.okrDetailObjectKr) }}</em>
+                        </el-tooltip>
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-else>--</div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </dd>
+        </dl>
+        <dl class="dl-card-panel weekly-thoughts" v-if="weeklyType == '1'">
           <dt class="card-title"><em>本周感想、建议、收获</em></dt>
           <dd v-for="item in weeklyThoughtList" :key="item.thoughtId">
             <div class="tag-group">
@@ -128,8 +193,23 @@
               </div>
             </div>
             <em>{{ item.thoughtContent }}</em>
-            <div v-if="weeklyThoughtList.length < 1">您没有写感想</div>
           </dd>
+          <dd v-if="weeklyThoughtList.length < 1">
+            本周没有填写感想、建议或者收获！
+          </dd>
+        </dl>
+        <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
+          <dt class="card-title"><em>下周计划</em></dt>
+          <dd>
+            <el-table ref="workTable" :data="weeklyPlanList">
+              <el-table-column label="序号" type="index"></el-table-column>
+              <el-table-column
+                label="工作项"
+                prop="planContent"
+              ></el-table-column>
+            </el-table>
+          </dd>
+          <dd v-if="weeklyPlanList.length < 1">您没有写下周计划</dd>
         </dl>
         <div class="current-user-info">
           <div>
