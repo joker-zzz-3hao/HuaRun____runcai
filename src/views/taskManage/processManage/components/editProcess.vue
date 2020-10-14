@@ -238,23 +238,20 @@ export default {
       }
     },
     updateProcess() {
-      //    formData: {
-      //   available: 1,
-      //   processType: '1',
-      //   orgId: '',
-      //   processName: '',
-      //   userIdList: [],
-      //   stepList: [],
-      // },
-
-      // this.stepList.forEach((step) => {
-      //   this.formData.stepList.push(step.name);
-      // });
-      this.server.updateProcess(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('编辑成功');
-          this.close();
-          this.$emit('closeDialog', { refreshPage: true });
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const params = {
+            indexNumber: this.formData.indexNumber,
+            processId: this.formData.processId,
+            userIdList: this.formData.userIdList,
+          };
+          this.server.updateProcess(params).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('编辑成功');
+              this.close();
+              this.$emit('closeDialog', { refreshPage: true });
+            }
+          });
         }
       });
     },
