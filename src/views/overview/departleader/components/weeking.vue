@@ -174,20 +174,24 @@ export default {
     },
     getqueryMyOkr() {
       Bus.$once('getOrgTable', (orgTable) => {
-        this.orgTable = this.testModel ? mainData.orkData.data : orgTable;
+        const orgTableData = this.testModel ? mainData.orkData.data : orgTable;
+        this.$set(this, 'orgTable', orgTableData);
         this.active = {};
         this.echartDataY = [];
         this.orgId = this.orgTable[0].orgId;
         this.$set(this.active, this.orgId, true);
         this.legendTable = this.orgTable.map((item) => item.orgName);
         this.getInit(this.orgTable);
+        if (this.periodId == '') {
+          this.changIdAction(this.orgTable[0].orgId, 0);
+        }
         this.$watch('periodId', () => {
           this.changIdAction(this.orgTable[0].orgId, 0);
         }, { immediate: true });
       });
     },
     getDepartData(orgId) {
-      if (!this.periodId) {
+      if (this.periodId == '') {
         this.init();
         return false;
       }

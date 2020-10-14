@@ -5,21 +5,29 @@
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
+    :append-to-body="true"
     :title="title"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
   >
     <el-form ref="form" :model="form" label-width="80px" class="tl-form">
       <el-form-item label="角色名称">
-        <em>{{decodeURI($route.query.name)}}</em>
+        <em>{{ decodeURI($route.query.name) }}</em>
       </el-form-item>
       <el-form-item label="选择成员" class="tl-label-self">
-        <tl-select-member @click.native.stop @getMember="selectMb"></tl-select-member>
+        <tl-select-member
+          @click.native.stop
+          @getMember="selectMb"
+        ></tl-select-member>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>

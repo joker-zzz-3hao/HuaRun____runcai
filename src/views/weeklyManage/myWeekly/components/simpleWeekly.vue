@@ -90,10 +90,8 @@
           >
             <template slot-scope="scope">
               <el-form-item
-                :prop="
-                  'weeklyWorkVoSaveList.' + scope.$index + '.projectNameCn'
-                "
-                :rules="formData.rules.projectNameCn"
+                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectId'"
+                :rules="formData.rules.projectId"
               >
                 <!-- <el-input
                   v-model.trim="scope.row.projectNameCn"
@@ -125,14 +123,15 @@
 
                 </div> -->
                 <el-select
-                  v-model="scope.row.projectNameCn"
+                  v-model="scope.row.projectId"
                   placeholder="请选择关联项目"
                   size="small"
+                  @change="projectChange(scope.row)"
                 >
                   <el-option
                     v-for="item in projectList"
                     :key="item.projectId"
-                    :label="item.projectName"
+                    :label="item.projectNameCn"
                     :value="item.projectId"
                   >
                   </el-option>
@@ -152,7 +151,7 @@
                 :prop="
                   'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'
                 "
-                :rules="scope.row.projectId ? formData.rules.valueOrOkrIds : {}"
+                :rules="formData.rules.valueOrOkrIds"
               >
                 <div class="tag-group">
                   <ul class="tag-lists">
@@ -484,7 +483,7 @@ import Server from '../server';
 import selectProject from './selectProject';
 
 import addOkr from './addOkr';
-import mixin from '../mixin';
+import mixin from '../validateMixin';
 
 const server = new Server();
 export default {
@@ -575,7 +574,7 @@ export default {
             message: '请填写任务项',
             trigger: 'blur',
           },
-          projectNameCn: {
+          projectId: {
             type: 'string',
             required: true,
             message: '请选择关联项目',
@@ -906,6 +905,17 @@ export default {
           if (workTimeTotal > 5) {
             work.workTime = 0;
           }
+        }
+      });
+    },
+    projectChange(work) {
+      this.formData.weeklyWorkVoSaveList.forEach((element) => {
+        if (work.randomId == element.randomId) {
+          this.projectList.forEach((project) => {
+            if (project.projectId == work.projectId) {
+              work.projectNameCn = project.projectNameCn;
+            }
+          });
         }
       });
     },

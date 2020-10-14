@@ -4,6 +4,7 @@
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
+    :append-to-body="true"
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
@@ -18,15 +19,25 @@
       class="tl-form"
     >
       <el-form-item label="角色编号" prop="roleCode">
-        <el-input maxlength="64" v-model="form.roleCode" placeholder="请输入角色编号" class="tl-input"></el-input>
+        <el-input
+          maxlength="64"
+          v-model="form.roleCode"
+          placeholder="请输入角色编号"
+          class="tl-input"
+        ></el-input>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input maxlength="64" v-model="form.roleName" placeholder="请输入角色名称" class="tl-input"></el-input>
+        <el-input
+          maxlength="64"
+          v-model="form.roleName"
+          placeholder="请输入角色名称"
+          class="tl-input"
+        ></el-input>
       </el-form-item>
       <el-form-item label="菜单权限" v-if="!rouleType">
         <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-            <span>{{item.data.functionName}}</span>
+          <div class="list" v-for="(item, index) in menuTreeList" :key="index">
+            <span>{{ item.data.functionName }}</span>
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <div class="postMenu">
@@ -35,7 +46,12 @@
               ref="treeMenu"
               show-checkbox
               :data="data"
-              :props="{ multiple: true,id:'functionId',children:'children',label:'functionName' }"
+              :props="{
+                multiple: true,
+                id: 'functionId',
+                children: 'children',
+                label: 'functionName',
+              }"
               node-key="functionId"
             ></el-tree>
           </div>
@@ -43,8 +59,12 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取 消</el-button
+      >
     </div>
   </el-dialog>
 </template>

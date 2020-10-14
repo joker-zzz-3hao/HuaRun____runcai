@@ -123,7 +123,7 @@ export default {
     getProjectList() {
       this.server.queryOrgProject().then((res) => {
         if (res.code == 200) {
-          this.projectList = res.date;
+          this.projectList = res.data;
         }
       });
     },

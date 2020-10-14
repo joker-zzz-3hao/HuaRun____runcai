@@ -39,4 +39,13 @@ export default {
       return response.data;
     });
   },
+
+  getPeriod({ commit }) {
+    const url = 'gateway/talent-query/okr/query/period';
+    return window.$ajax.post(url).then((response) => {
+      if (response.data.data.length == 0) {
+        commit('changeTestModel', true);
+      }
+    });
+  },
 };
