@@ -1232,7 +1232,6 @@ export default {
       }
     },
     changeConfidence() {},
-
     projectChange(work) {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
