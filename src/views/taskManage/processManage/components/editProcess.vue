@@ -6,18 +6,20 @@
 -->
 <template>
   <el-drawer
-    :modal-append-to-body="false"
-    @closed="closed"
-    :close-on-click-modal="false"
-    title
-    direction="rtl"
-    :modal="false"
-    :visible.sync="visible"
     :wrapperClosable="false"
-    class="tl-drawer tl-drawer-dic"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    :visible.sync="visible"
+    @closed="closed"
+    :before-close="close"
+    custom-class="custom-drawer create-task"
+    class="tl-drawer"
   >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">编辑任务过程</div>
+    </div>
     <div class="modelCreate">
-      <el-form ref="form" :model="formData">
+      <el-form ref="dataForm" :model="formData">
         <el-form-item label="任务过程名称：">
           <el-input
             disabled
@@ -25,8 +27,19 @@
             v-model="formData.processName"
           ></el-input>
         </el-form-item>
-        <el-form-item label="显示排序：">
-          <el-input type="number" v-model="formData.indexNumber"></el-input>
+        <el-form-item
+          label="显示排序"
+          prop="indexNumber"
+          :rules="[{ trigger: 'blur', required: true, message: '请输入排序' }]"
+        >
+          <el-input-number
+            v-model="formData.indexNumber"
+            controls-position="right"
+            :min="0"
+            :max="100"
+            :step="1"
+            :precision="0"
+          ></el-input-number>
         </el-form-item>
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
@@ -115,7 +128,7 @@
         @click="updateProcess"
         >确定</el-button
       >
-      <el-button class="tl-btn amt-border-fadeout" @click="closed"
+      <el-button class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
       >
     </div>
@@ -213,9 +226,11 @@ export default {
       });
     },
     addMember() {},
-    closed() {
+    close() {
       this.visible = false;
-      this.$emit('closeDialog', { refreshPage: false });
+    },
+    closed() {
+      this.$emit('update:exist', false);
     },
     visibleChange(name) {
       if (!name) {
@@ -223,22 +238,20 @@ export default {
       }
     },
     updateProcess() {
-      //    formData: {
-      //   available: 1,
-      //   processType: '1',
-      //   orgId: '',
-      //   processName: '',
-      //   userIdList: [],
-      //   stepList: [],
-      // },
-
-      // this.stepList.forEach((step) => {
-      //   this.formData.stepList.push(step.name);
-      // });
-      this.server.updateProcess(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('编辑成功');
-          this.$emit('closeDialog');
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const params = {
+            indexNumber: this.formData.indexNumber,
+            processId: this.formData.processId,
+            userIdList: this.formData.userIdList,
+          };
+          this.server.updateProcess(params).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('编辑成功');
+              this.close();
+              this.$emit('closeDialog', { refreshPage: true });
+            }
+          });
         }
       });
     },

@@ -78,6 +78,9 @@ export default {
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
+        // if (!this.okrMain.okrMainVo.reviewType) {
+        //   this.okrMain.okrMainVo.reviewType = 1;
+        // }
       });
     },
 

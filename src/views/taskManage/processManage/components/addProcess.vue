@@ -6,14 +6,19 @@
 -->
 <template>
   <div>
-    <el-dialog
+    <el-drawer
       :before-close="close"
       @closed="closed"
+      :wrapperClosable="false"
+      :modal-append-to-body="true"
       :append-to-body="true"
-      :close-on-click-modal="false"
-      :visible="visible"
-      title="新建任务过程"
+      :visible.sync="visible"
+      custom-class="custom-drawer create-task"
+      class="tl-drawer"
     >
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">新建任务过程</div>
+      </div>
       <el-form ref="dataForm" :model="formData">
         <el-form-item
           label="任务过程名称"
@@ -144,7 +149,7 @@
           >取消</el-button
         >
       </div>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
@@ -242,13 +247,12 @@ export default {
   methods: {
     close() {
       this.visible = false;
-      this.$emit('closeAddProcess', { refreshPage: false });
     },
     show() {
       this.visible = true;
     },
     closed() {
-      this.$emit('update:showMove', false);
+      this.$emit('update:exist', false);
     },
     move() {
 
@@ -320,6 +324,7 @@ export default {
             this.loading = false;
             if (res.code == 200) {
               this.$message.success('新增成功');
+              this.close();
               this.$emit('closeAddProcess');
             }
           });

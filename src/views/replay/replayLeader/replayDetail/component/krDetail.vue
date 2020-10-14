@@ -185,6 +185,7 @@ export default {
       this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
+          this.$router.push('/replayList');
         }
       });
     },
