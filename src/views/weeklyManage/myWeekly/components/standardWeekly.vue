@@ -379,12 +379,14 @@
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
-        <template v-if="item.kr">
-          <div class="o-kr-group">
-            <div class="tag-kind">
-              <span class="kind-parent">目标</span>
-              <em>{{ item.o.okrDetailObjectKr }}</em>
-            </div>
+        <div class="o-kr-group" v-if="item.kr">
+          <div class="tag-kind">
+            <span class="kind-parent">目标</span>
+            <em>{{ item.o.okrDetailObjectKr }}</em>
+          </div>
+        </div>
+        <div class="o-kr-group">
+          <template v-if="item.kr">
             <div class="tag-kind">
               <span class="kind-child">KR</span>
               <em> {{ item.kr.okrDetailObjectKr }}</em>
@@ -393,22 +395,19 @@
                 >支撑</span
               >
             </div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="tag-kind">
-            <span class="kind-parent">目标</span>
-            <em>{{ item.o.okrDetailObjectKr }}</em>
-            <span
-              >被工作项<em>{{ itemIndex(item.o) }}</em
-              >支撑</span
-            >
-          </div>
-        </template>
-        <div class="sdf">
-          <em v-if="item.kr">
+          </template>
+          <template v-else>
+            <div class="tag-kind">
+              <span class="kind-parent">目标</span>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+              <span
+                >被工作项<em>{{ itemIndex(item.o) }}</em
+                >支撑</span
+              >
+            </div>
+          </template>
+          <div class="okr-risk" v-if="item.kr">
             <span>信心指数</span>
-
             <template v-if="timeDisabled">
               <tl-confidence
                 v-model="item.confidenceAfter"
@@ -440,43 +439,43 @@
                 {{ CONST.CONFIDENCE_MAP[item.confidenceAfter] }}
               </div>
             </template>
-          </em>
-        </div>
-        <div class="tl-progress-group">
-          <span>当前进度</span>
-          <tl-process
-            :data="parseInt(item.progressAfter, 10)"
-            :showNumber="false"
-            :width="64"
-            :marginLeft="6"
-          ></tl-process>
-          <el-slider
-            v-if="timeDisabled"
-            v-model="item.progressAfter"
-            :step="1"
-            @change="processChange(item)"
-            tooltip-class="slider-tooltip"
-          ></el-slider>
-          <el-input
-            v-if="timeDisabled"
-            v-model="item.progressAfter"
-            controls-position="right"
-            :min="0"
-            :max="100"
-            :step="1"
-            :precision="0"
-            class="tl-input-number"
-            @change="progressAfterChange"
-          ></el-input>
-          <em v-else>{{ item.progressAfter }}</em>
-          <span>%</span>
-        </div>
-        <div class="week-change">
-          <span>本周变化</span
-          ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
-            }}{{ item.progressAfter - item.progressBefor }}%</em
-          >
+          </div>
+          <div class="tl-progress-group">
+            <span>当前进度</span>
+            <tl-process
+              :data="parseInt(item.progressAfter, 10)"
+              :showNumber="false"
+              :width="64"
+              :marginLeft="6"
+            ></tl-process>
+            <el-slider
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              :step="1"
+              @change="processChange(item)"
+              tooltip-class="slider-tooltip"
+            ></el-slider>
+            <el-input
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              controls-position="right"
+              :min="0"
+              :max="100"
+              :step="1"
+              :precision="0"
+              class="tl-input-number"
+              @change="progressAfterChange"
+            ></el-input>
+            <em v-else>{{ item.progressAfter }}</em>
+            <span>%</span>
+          </div>
+          <div class="week-change">
+            <span>本周变化</span
+            ><em
+              >{{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+              }}{{ item.progressAfter - item.progressBefor }}%</em
+            >
+          </div>
         </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
           <h1></h1>
