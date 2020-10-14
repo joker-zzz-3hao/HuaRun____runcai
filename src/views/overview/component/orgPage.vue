@@ -58,6 +58,7 @@
         ></tl-okr-table>
       </div>
       <div class="card-panel-body img-list" v-if="orgUser.length > 0">
+        <div>团队成员：</div>
         <dl
           v-for="(item, index) in orgUser"
           :key="item.userId + index"
@@ -73,6 +74,7 @@
         </dl>
       </div>
       <div class="card-panel-body img-list" v-if="orgTable.length > 0">
+        <div>下级部门：</div>
         <dl
           v-for="(item, index) in orgTable"
           :key="item.orgId + index"
@@ -195,7 +197,7 @@ export default {
         periodId: this.periodId,
         status: this.searchForm.status,
         myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
-        userId: this.$route.query.userId,
+        userId: this.$route.name !== 'grassStaff' ? this.$route.query.userId : '',
         tenantId: this.$route.query.tenantId,
         orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         type: 'INDEX',

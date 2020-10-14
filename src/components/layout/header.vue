@@ -57,9 +57,9 @@
               <el-dropdown-item @click.native="go('personalCenter')">
                 <em>个人中心</em>
               </el-dropdown-item>
-              <el-dropdown-item @click.native="go('personConfig')">
+              <!-- <el-dropdown-item @click.native="go('personConfig')">
                 <em>个人设置</em>
-              </el-dropdown-item>
+              </el-dropdown-item> -->
               <el-dropdown-item @click.native="loginOut">
                 <em>退出登录</em>
               </el-dropdown-item>

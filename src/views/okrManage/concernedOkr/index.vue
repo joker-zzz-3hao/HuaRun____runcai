@@ -3,11 +3,20 @@
     <div>
       <div>
         <div>我的关注</div>
+        <el-input
+          maxlength="64"
+          @keyup.enter.native="searchFocus"
+          v-model="keyWord"
+          placeholder="请输入关注人姓名"
+          class="tl-input-search"
+        >
+          <i class="el-icon-search" slot="prefix" @click="searchFocus"></i>
+        </el-input>
       </div>
       <div
         v-for="item in focusList"
         :key="item.id"
-        :class="item.targetId == selectUserId ? 'red' : 'green'"
+        :class="item.userId == selectUserId ? 'red' : 'green'"
         @click="selectUser(item)"
       >
         <div style="display: flex" class="user-info">
@@ -17,7 +26,7 @@
           <div v-else-if="item.userName" class="user-name">
             <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
           </div>
-          <div>{{ item.targetName }}</div>
+          <div>{{ item.userName }}</div>
           <div>{{ `(${item.orgName})` }}</div>
         </div>
         <div v-if="hasPower('okr-focus-add')">
@@ -101,12 +110,14 @@ export default {
   data() {
     return {
       server,
+      keyWord: '',
       CONST,
       focusList: [],
       exist: false,
       param: [],
       selectUserId: '',
       tableList: [],
+      totalData: [],
     };
   },
   computed: {
@@ -123,7 +134,6 @@ export default {
   methods: {
     init() {
       if (this.hasPower('okr-foucs-list')) {
-        this.queryOKR();
         this.queryFocusList();
       }
     },
@@ -132,10 +142,15 @@ export default {
         if (res.code == '200') {
           this.focusList = res.data;
           if (this.focusList.length > 0) {
-            this.selectUserId = this.focusList[0].targetId;
+            this.totalData = res.data;
+            this.selectUserId = this.focusList[0].userId;
+            this.queryOKR(this.focusList[0]);
           }
         }
       });
+    },
+    searchFocus() {
+      this.focusList = this.totalData.filter((item) => item.userName.indexOf(this.keyWord) > -1) || [];
     },
     addFocus(data) {
       this.param = [];
@@ -153,10 +168,12 @@ export default {
         }
       });
     },
-    queryOKR() {
+    queryOKR(data) {
       if (this.hasPower('okr-focus-user-detail')) {
         this.tableList = [];
-        this.server.queryFocusUserOkr().then((response) => {
+        this.server.queryFocusUserOkr({
+          userId: data.userId,
+        }).then((response) => {
           if (response.code == '200') {
             response.data.forEach((item) => {
               this.tableList.push({

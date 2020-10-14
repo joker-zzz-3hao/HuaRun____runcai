@@ -2145,9 +2145,27 @@
   margin: 0 0 0 20px;
 }
 
+.okr-completion .week-change {
+  display: flex;
+  align-items: center;
+}
+
 .okr-completion .week-change span {
   margin: 0 10px 0 0;
   color: #acb6bf;
+}
+
+.okr-completion .week-change em {
+  width: 45px;
+  text-align: right;
+}
+
+.undertake-okr-list .o-kr-group {
+  flex: 1;
+} 
+
+.undertake-okr-list > div:not(:first-child) {
+  flex: 0;
 }
 
 .undertake-okr-list .tag-kind {
@@ -2628,6 +2646,10 @@
 
 .week-plan .el-form-item .el-form-item__content .tl-input .el-input__inner {
   width: 100%;
+}
+
+.week-plan .tl-table .el-table__body .el-table__row .cell {
+  padding-right: 0;
 }
 
 /* 任务 */
