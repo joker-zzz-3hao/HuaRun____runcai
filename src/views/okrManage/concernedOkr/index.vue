@@ -3,21 +3,29 @@
     <div>
       <div>
         <div>我的关注</div>
+        <el-input
+          maxlength="64"
+          @keyup.enter.native="searchFocus"
+          v-model="keyWord"
+          placeholder="请输入关注人姓名"
+          class="tl-input-search"
+        >
+          <i class="el-icon-search" slot="prefix" @click="searchFocus"></i>
+        </el-input>
       </div>
       <div
         v-for="item in focusList"
         :key="item.id"
-        :class="item.targetId == selectUserId ? 'red' : 'green'"
-        @click="selectUser(item)"
+        :class="item.userId == selectUserId ? 'red' : 'green'"
       >
-        <div style="display: flex" class="user-info">
+        <div style="display: flex" class="user-info" @click="selectUser(item)">
           <div v-if="item.headUrl">
             <el-avatar :src="item.headUrl"></el-avatar>
           </div>
           <div v-else-if="item.userName" class="user-name">
             <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
           </div>
-          <div>{{ item.targetName }}</div>
+          <div>{{ item.userName }}</div>
           <div>{{ `(${item.orgName})` }}</div>
         </div>
         <div v-if="hasPower('okr-focus-add')">
@@ -39,7 +47,7 @@
         <div class="okr-title">{{ item.okrMain.periodName }}</div>
         <dl class="okr-state">
           <dt>
-            <i class="el-icon-set-up"></i>
+            <i class></i>
             <em>状态</em>
           </dt>
           <dd>
@@ -49,7 +57,13 @@
         </dl>
         <dl class="okr-responsible">
           <dt>
-            <i class="el-icon-user"></i>
+            <em>OKR类型</em>
+          </dt>
+          <dd>{{ CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType || 2] }}</dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dt>
+            <!-- <i class="el-icon-user"></i> -->
             <em>负责人</em>
           </dt>
           <dd>{{ item.okrMain.userName }}</dd>
@@ -60,14 +74,14 @@
         </dl>
         <dl class="okr-progress">
           <dt>
-            <i class="el-icon-odometer"></i>
+            <!-- <i class="el-icon-odometer"></i> -->
             <em>OKR进度</em>
           </dt>
           <dd>
             <el-progress
               type="circle"
-              :percentage="parseInt(item.okrMain.okrProgress, 10) || 0"
-              :width="70"
+              :percentage="item.okrMain.okrProgress"
+              :width="60"
               :stroke-width="5"
               color="#4ccd79"
               class="tl-progress-circle"
@@ -75,19 +89,68 @@
           </dd>
         </dl>
       </div>
-      <tl-okr-table
-        :overview="true"
-        :tableList="item.tableList"
-        :disabled="false"
-        :showOKRInfoLabel="true"
-        :expands="expands"
-      ></tl-okr-table>
+      <div class="card-panel-body">
+        <tl-okr-table :tableList="item.tableList">
+          <!-- o的承接地图 -->
+          <template slot="head-undertake" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount > 0"
+              @click="
+                goUndertakeMaps(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
+            >
+              <i
+                :class="{
+                  'has-undertake': props.okritem.continueCount > 0,
+                }"
+                class="el-icon-link"
+              ></i>
+            </div>
+            <div v-else-if="showUndertake">暂无</div>
+          </template>
+          <!-- kr的承接地图 -->
+          <template slot="body-bar" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount > 0"
+              @click="
+                goUndertakeMaps(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
+            >
+              <i
+                :class="{
+                  'has-undertake': props.okritem.continueCount > 0,
+                }"
+                class="el-icon-link"
+              ></i>
+            </div>
+            <div v-else-if="showUndertake">暂无</div>
+          </template>
+          <!-- o的进度更新 -->
+          <template slot="weight-bar" slot-scope="props">
+            <div
+              v-if="item.okrMain.status == '1'"
+              @click="openUpdate(props.okritem)"
+            >
+              <el-button plain class="tl-btn btn-lineheight"
+                >更新进展</el-button
+              >
+            </div>
+          </template>
+        </tl-okr-table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import okrTableLittle from '@/components/okrTableLittle';
+import { mapState } from 'vuex';
+import okrTable from './components/okrTable';
 import CONST from './const';
 import Server from './server';
 
@@ -96,25 +159,36 @@ const server = new Server();
 export default {
   name: 'concernedOkr',
   components: {
-    'tl-okr-table': okrTableLittle,
+    'tl-okr-table': okrTable,
   },
   data() {
     return {
       server,
+      keyWord: '',
       CONST,
       focusList: [],
       exist: false,
       param: [],
       selectUserId: '',
       tableList: [],
+      totalData: [],
     };
   },
   computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+    }),
     expands() {
       if (this.tableList.length > 0) {
         return [this.tableList[0].okrDetailId];
       }
       return [];
+    },
+    showUndertake() {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return true;
+      }
+      return false;
     },
   },
   mounted() {
@@ -123,7 +197,6 @@ export default {
   methods: {
     init() {
       if (this.hasPower('okr-foucs-list')) {
-        this.queryOKR();
         this.queryFocusList();
       }
     },
@@ -132,10 +205,15 @@ export default {
         if (res.code == '200') {
           this.focusList = res.data;
           if (this.focusList.length > 0) {
-            this.selectUserId = this.focusList[0].targetId;
+            this.totalData = res.data;
+            this.selectUserId = this.focusList[0].userId;
+            this.queryOKR(this.focusList[0]);
           }
         }
       });
+    },
+    searchFocus() {
+      this.focusList = this.totalData.filter((item) => item.userName.indexOf(this.keyWord) > -1) || [];
     },
     addFocus(data) {
       this.param = [];
@@ -153,10 +231,12 @@ export default {
         }
       });
     },
-    queryOKR() {
+    queryOKR(data) {
       if (this.hasPower('okr-focus-user-detail')) {
         this.tableList = [];
-        this.server.queryFocusUserOkr().then((response) => {
+        this.server.queryFocusUserOkr({
+          userId: data.userId,
+        }).then((response) => {
           if (response.code == '200') {
             response.data.forEach((item) => {
               this.tableList.push({
@@ -190,6 +270,9 @@ export default {
     },
     closed() {
       this.exist = false;
+    },
+    selectUser(data) {
+      this.queryOKR(data);
     },
   },
 };

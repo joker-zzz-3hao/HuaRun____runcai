@@ -102,7 +102,7 @@
               <el-table-column fixed="right" label="操作" width="180">
                 <template slot-scope="scope">
                   <el-button
-                    :disabled="scope.row.isManage == '1'"
+                    :disabled="scope.row.projectUserType == '1'"
                     @click="deleteMember(scope.row)"
                     type="text"
                     class="tl-btn"
@@ -187,16 +187,20 @@ export default {
       });
     },
     setManager(data) {
-      if (data == '1') {
-        this.server.setManager({
-          userId: data.userId,
-        }).then((res) => {
-          if (res.code == '200') {
-            console.log(res);
-            this.searchProject();
-          }
-        });
-      }
+      this.$router.go(0);
+      this.baseInfo.projectUserVoList.forEach((item) => {
+        if (item.userId == this.userInfo.userId) {
+          this.server.setManager({
+            userId: data.userId,
+          }).then((res) => {
+            if (res.code == '200') {
+              console.log(res);
+              // this.searchProject();
+              this.reload();
+            }
+          });
+        }
+      });
     },
     addMembers() {
       this.showAddMember = true;

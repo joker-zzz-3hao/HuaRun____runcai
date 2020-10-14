@@ -65,6 +65,10 @@
             >
               <template slot-scope="scope">
                 <el-switch
+                  :disabled="
+                    !roleCode.includes('ORG_ADMIN') &&
+                    scope.row.processType == 1
+                  "
                   v-model.trim="scope.row.enable"
                   :active-text="scope.row.enable == 1 ? '启用' : '禁用'"
                   :active-value="1"
@@ -101,6 +105,10 @@
             >
               <template slot-scope="scope">
                 <el-button
+                  :disabled="
+                    !roleCode.includes('ORG_ADMIN') &&
+                    scope.row.processType == 1
+                  "
                   type="text"
                   @click="editProcess(scope.row)"
                   size="small"
@@ -132,6 +140,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import editProcess from './components/editProcess';
 import tlAddProcess from './components/addProcess';
 import Server from './server';
@@ -167,6 +176,11 @@ export default {
   },
   created() {
     this.searchList();
+  },
+  computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+    }),
   },
   methods: {
     searchList() {

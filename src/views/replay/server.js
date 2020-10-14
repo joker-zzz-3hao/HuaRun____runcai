@@ -26,10 +26,14 @@ export default class Server extends ServerBase {
 
   // okr复盘提交
   okrReviewSubmit(param) {
-    return this._ajaxPost('gateway/talent-okr//okr/okrReview/okrReviewSubmit', param);
+    return this._ajaxPost('gateway/talent-okr/okr/okrReview/okrReviewSubmit', param);
   }
 
   getOkrCycleList(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
+
+  getOkrReviewHistoryList(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrReview/getOkrReviewHistoryList', param);
   }
 }

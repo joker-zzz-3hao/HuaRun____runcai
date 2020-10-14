@@ -491,7 +491,6 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.userInfo.orgList[0].orgFullId,
-
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {
