@@ -9,20 +9,27 @@
       <el-dialog append-to-body @close="close" :visible="showDialog">
         <div>Hello {{ userInfo.userName }}</div>
         <div>您可以在这给你的同事发送提醒或待办任务哦~</div>
-        <div>
-          <span>发送类型</span>
-          <el-select v-model.trim="formData.noticeType">
-            <el-option
-              v-for="type in typeList"
-              :key="type.noticeType"
-              :label="type.name"
-              :value="type.noticeType"
-            ></el-option>
-          </el-select>
-        </div>
-        <div>
-          <div v-if="formData.noticeType == 1">
-            <span>发送对象</span>
+        <el-form ref="asistant" :model="formData" label-width="80px">
+          <el-form-item
+            label="发送类型"
+            prop="noticeType"
+            :rules="[{ required: true }]"
+          >
+            <el-select v-model.trim="formData.noticeType" @change="typeChange">
+              <el-option
+                v-for="type in typeList"
+                :key="type.noticeType"
+                :label="type.name"
+                :value="type.noticeType"
+              ></el-option> </el-select
+          ></el-form-item>
+          <el-form-item
+            label="发送对象"
+            prop="userId"
+            :rules="[
+              { required: true, message: '请选择发送对象', trigger: 'blur' },
+            ]"
+          >
             <el-select
               v-model.trim="formData.userId"
               filterable
@@ -31,6 +38,7 @@
               :remote-method="remoteMethod"
               @visible-change="visibleChange"
               clearable
+              @change="userChange"
             >
               <el-option
                 v-for="item in userList"
@@ -56,36 +64,53 @@
                 }}</span>
               </el-option>
             </el-select>
-          </div>
-          <div v-if="formData.noticeType == 2">待办</div>
-          <div v-if="formData.noticeType == 3">
-            <div>
-              <el-radio v-model="formData.callbackType" label="1"
-                >遇到问题</el-radio
-              >
-              <el-radio v-model="formData.callbackType" label="2"
-                >使用建议</el-radio
-              >
-            </div>
-            <div>
-              <span>选择模块</span>
-              <el-button @click="selectModule('1')">OKR</el-button>
-              <el-button @click="selectModule('2')">周报</el-button>
-              <el-button @click="selectModule('3')">系统管理</el-button>
-            </div>
-          </div>
-        </div>
-        <div v-if="formData.noticeType == '1' || formData.noticeType == '3'">
-          <el-input
-            v-model="formData.noticeContent"
-            type="textarea"
-            :placeholder="
-              formData.noticeType == '1'
-                ? '这里请输入你想说的内容~'
-                : '请详细描述您的问题'
-            "
-          ></el-input>
-        </div>
+          </el-form-item>
+          <el-form-item
+            label="任务标题"
+            prop="taskTitle"
+            :rules="[
+              { required: true, message: '请填写任务标题', trigger: 'blur' },
+            ]"
+            v-if="formData.noticeType == 2"
+          >
+            <el-input
+              maxlength="50"
+              v-model.trim="formData.taskTitle"
+            ></el-input
+          ></el-form-item>
+          <el-form-item v-if="formData.noticeType == 3">
+            <el-radio v-model="formData.callbackType" label="1"
+              >遇到问题</el-radio
+            >
+            <el-radio v-model="formData.callbackType" label="2"
+              >使用建议</el-radio
+            >
+          </el-form-item>
+          <el-form-item label="选择模块" v-if="formData.noticeType == 3">
+            <el-button @click="selectModule('1')">OKR</el-button>
+            <el-button @click="selectModule('2')">周报</el-button>
+            <el-button @click="selectModule('3')">系统管理</el-button>
+          </el-form-item>
+          <el-form-item
+            label="内容"
+            prop="noticeContent"
+            :rules="[
+              { required: true, message: '请填写内容', trigger: 'blur' },
+            ]"
+            v-if="formData.noticeType == '1' || formData.noticeType == '3'"
+            ><el-input
+              v-model="formData.noticeContent"
+              maxlength="100"
+              type="textarea"
+              :placeholder="
+                formData.noticeType == '1'
+                  ? '这里请输入你想说的内容~'
+                  : '请详细描述您的问题'
+              "
+            ></el-input
+          ></el-form-item>
+        </el-form>
+
         <div>
           <el-button @click="sendMessage">
             <i class="el-icon-position"></i> 发送内容
@@ -115,23 +140,23 @@ export default {
       formData: {
         userId: '',
         noticeType: '1',
-        // callbackType: '1',
-        // callbackModule: '1',
         noticeContent: '',
+        taskTitle: '',
+        userName: '',
       },
       typeList: [
         {
           noticeType: '1',
-          name: '发送提醒',
+          name: '通知',
         },
         {
           noticeType: '2',
-          name: '发送待办',
+          name: '待办',
         },
-        {
-          noticeType: '3',
-          name: '发送问题反馈',
-        },
+        // {
+        //   noticeType: '3',
+        //   name: '问题反馈',
+        // },
       ],
     };
   },
@@ -180,15 +205,40 @@ export default {
       this.formData.callbackModule = callbackModule;
     },
     sendMessage() {
-      this.server.sendMessage(this.formData).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('发送成功');
-          this.showDialog = false;
-          this.formData = {
-            userId: '',
-            noticeType: '1',
-            noticeContent: '',
-          };
+      let params = {};
+      this.$refs.asistant.validate((valid) => {
+        if (valid) {
+          if (this.formData.noticeType == 1) {
+            params = {
+              noticeContent: this.formData.noticeContent,
+              noticeType: this.formData.noticeType,
+              userId: this.formData.userId,
+            };
+            this.server.sendMessage(params).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('发送成功');
+                this.showDialog = false;
+                this.formData = {
+                  userId: '',
+                  noticeType: '1',
+                  noticeContent: '',
+                };
+              }
+            });
+          } else if (this.formData.noticeType == 2) {
+            params = {
+              taskUserId: this.formData.userId,
+              taskTitle: this.formData.taskTitle,
+              userName: this.formData.userName,
+            };
+            this.server.appointSave(params).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('提交成功');
+                this.$emit('success');
+                this.close();
+              }
+            });
+          }
         }
       });
     },
@@ -199,6 +249,16 @@ export default {
         noticeType: '1',
         noticeContent: '',
       };
+    },
+    userChange(userId) {
+      this.userList.forEach((user) => {
+        if (user.userId == userId) {
+          this.formData.userName = user.userName;
+        }
+      });
+    },
+    typeChange() {
+      this.$refs.asistant.clearValidate();
     },
   },
   watch: {},
