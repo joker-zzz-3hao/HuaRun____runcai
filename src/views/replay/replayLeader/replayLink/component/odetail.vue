@@ -1,15 +1,20 @@
 <template>
   <div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
-      <el-collapse accordion v-model="activeNames" @change="handleChange">
+      <el-collapse accordion v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
             <div style="width: 100%">
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.o.okrWeight }}%</em>
-                <em>进度 {{ item.o.okrDetailProgress }}%</em>
+                <em>权重 {{ item.o.okrWeight ? item.o.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{
+                    item.o.okrDetailProgress ? item.o.okrDetailProgress : 0
+                  }}%</em
+                >
               </div>
             </div>
           </template>
@@ -17,8 +22,11 @@
             <div style="width: 100%">
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ list.okrWeight }}%</em>
-                <em>进度 {{ item.okrDetailProgress }}%</em>
+                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
+                <em
+                  >进度
+                  {{ item.okrDetailProgress ? item.okrDetailProgress : 0 }}%</em
+                >
               </div>
             </div>
 

@@ -76,7 +76,7 @@
             <el-table-column prop="okrProgress" label="OKR进度" min-width="120">
               <template slot-scope="scope">
                 <span>{{
-                  scope.row.okrProgress ? scope.row.okrProgress : 0 + "%"
+                  scope.row.okrProgress ? scope.row.okrProgress + "%" : 0 + "%"
                 }}</span>
               </template></el-table-column
             >

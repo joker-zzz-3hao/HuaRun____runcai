@@ -353,7 +353,8 @@
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
-        class="undertake-okr-list is-o"
+        class="undertake-okr-list"
+        :class="item.kr ? 'is-kr' : 'is-o'"
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
@@ -382,39 +383,39 @@
               >支撑</span
             >
           </div>
-          <div class="sdf"></div>
-          <div class="tl-progress-group">
-            <span>当前进度</span>
-            <tl-process
-              :data="parseInt(item.progressAfter, 10)"
-              :showNumber="false"
-              :width="64"
-              :marginLeft="6"
-            ></tl-process>
-            <el-slider
-              v-model="item.progressAfter"
-              :step="1"
-              @change="processChange(item)"
-              tooltip-class="slider-tooltip"
-            ></el-slider>
-            <el-input-number
-              v-model="item.progressAfter"
-              controls-position="right"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
-              class="tl-input-number"
-            ></el-input-number>
-            <span>%</span>
-          </div>
-          <div class="week-change">
-            <span>本周变化</span
-            ><em>
-              {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
-            >
-          </div>
         </template>
+        <div class="sdf"><em v-if="item.kr">风险状态</em></div>
+        <div class="tl-progress-group">
+          <span>当前进度</span>
+          <tl-process
+            :data="parseInt(item.progressAfter, 10)"
+            :showNumber="false"
+            :width="64"
+            :marginLeft="6"
+          ></tl-process>
+          <el-slider
+            v-model="item.progressAfter"
+            :step="1"
+            @change="processChange(item)"
+            tooltip-class="slider-tooltip"
+          ></el-slider>
+          <el-input-number
+            v-model="item.progressAfter"
+            controls-position="right"
+            :min="0"
+            :max="100"
+            :step="1"
+            :precision="0"
+            class="tl-input-number"
+          ></el-input-number>
+          <span>%</span>
+        </div>
+        <div class="week-change">
+          <span>本周变化</span
+          ><em>
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+          >
+        </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
           <h1></h1>
           <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
