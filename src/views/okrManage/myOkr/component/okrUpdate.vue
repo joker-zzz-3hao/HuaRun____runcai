@@ -26,7 +26,7 @@
                       <tl-process
                         :data="parseInt(formData.okrDetailProgress, 10)"
                         :showNumber="false"
-                        :width="64"
+                        :width="67"
                         :marginLeft="6"
                       ></tl-process>
                       <el-slider
@@ -60,7 +60,7 @@
                       <tl-process
                         :data="parseInt(kitem.okrDetailProgress, 10)"
                         :showNumber="false"
-                        :width="64"
+                        :width="67"
                         :marginLeft="6"
                       ></tl-process>
                       <el-slider

@@ -5,7 +5,7 @@ import VueAwesomeSwiper from 'vue-awesome-swiper';
 import App from './App';
 import router from './router';
 import mixin from './mixin/global';
-import store from './store';
+import store from './store/index';
 import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';

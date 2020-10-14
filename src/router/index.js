@@ -77,13 +77,14 @@ router.beforeEach((to, from, next) => {
         } else {
           next('/exception404');
         }
-      } else if (to.name == 'login') {
-        localStorage.token = '';
-        next();
-      } else {
-        localStorage.token = '';
-        next('login');
       }
+      // else if (to.name == 'login') {
+      //   localStorage.token = '';
+      //   next();
+      // } else {
+      //   localStorage.token = '';
+      //   next('login');
+      // }
 
       // TODO:
       // else if (origin == process.env.VUE_APP_PORTAL) {
@@ -91,6 +92,7 @@ router.beforeEach((to, from, next) => {
       // }
     });
   } else if (localStorage.token && (window.$store.getters['common/userInfo'].userName)) {
+    console.log(window.$store.getters['common/userInfo'].userName);
     if (to.name == 'login') {
       next('transfer');
     } else if (to.meta.title) {
@@ -114,7 +116,6 @@ router.beforeEach((to, from, next) => {
             next('/grassStaff');
           }
         } else {
-          console.log(window.$store.getters['common/userInfo']);
           window.$store.dispatch('common/getUserType', {
             user: window.$store.getters['common/userInfo'].userId,
             orgId: window.$store.getters['common/userInfo'].orgId,
