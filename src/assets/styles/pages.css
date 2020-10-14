@@ -2141,7 +2141,23 @@
   flex: 1;
 }
 
-.undertake-okr-list > div:last-child {
+.dl-card-panel .undertake-okr-list {
+  justify-content: flex-start;
+}
+
+.undertake-okr-list .o-kr-group {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dl-card-panel .undertake-okr-list.is-kr {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.undertake-okr-list .o-kr-group > div:last-child {
   margin: 0 0 0 20px;
 }
 
@@ -2156,20 +2172,28 @@
 }
 
 .okr-completion .week-change em {
-  width: 45px;
+  width: 40px;
   text-align: right;
-}
-
-.undertake-okr-list .o-kr-group {
-  flex: 1;
-} 
-
-.undertake-okr-list > div:not(:first-child) {
-  flex: 0;
 }
 
 .undertake-okr-list .tag-kind {
   margin: 0 20px 0 0;
+}
+
+.undertake-okr-list div.okr-risk {
+  display: flex;
+  align-items: center;
+  flex: 0 0 210px;
+}
+
+.undertake-okr-list div.week-change {
+  flex: 0 0 108px;
+}
+
+.undertake-okr-list .okr-risk span {
+  margin: 0 20px 0 0;
+  flex-wrap: nowrap;
+  color: #acb6bf;
 }
 
 .undertake-okr-list .tag-kind span:nth-of-type(2) {
