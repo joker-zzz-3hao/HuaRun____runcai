@@ -2615,7 +2615,11 @@
   font-weight: 500;
 }
 
-.week-plan .el-form-item {
+.week-plan .el-form-item .el-form-item__content {
+  flex: 1;
+}
+
+.week-plan .el-form-item .el-form-item__content .tl-input .el-input__inner {
   width: 100%;
 }
 
