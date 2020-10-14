@@ -157,14 +157,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i> -->
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      class="icon-bg"
+                      v-if="scope.row.selectedOkr.length < 1"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
