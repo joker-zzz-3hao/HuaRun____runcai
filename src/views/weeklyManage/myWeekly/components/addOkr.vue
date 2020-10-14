@@ -271,6 +271,7 @@ export default {
     },
     // 选择关联的okr
     selectOrgOkr(e, index, okr) {
+      this.supportMyOkrObj = {};
       this.personalSelectData = '';
       this.valueSelectData = '';
       this.personalOkr = [];
@@ -324,6 +325,7 @@ export default {
       }
     },
     cultureChange(e, index, culture) {
+      this.supportMyOkrObj = {};
       this.orgSelectData = '';
       this.personalSelectData = '';
       this.orgOkr = [];

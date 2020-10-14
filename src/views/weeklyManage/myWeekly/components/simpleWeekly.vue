@@ -144,7 +144,7 @@
             label="支撑OKR/价值观"
             prop="valueOrOkrIds"
             :render-header="renderHeader"
-            min-width="300"
+            min-width="150"
           >
             <template slot-scope="scope">
               <!-- 临时项目可不选择支撑项 -->

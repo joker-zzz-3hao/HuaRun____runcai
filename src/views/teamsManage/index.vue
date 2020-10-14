@@ -10,7 +10,10 @@
         </dt>
         <dd>
           <span>所属部门</span>
-          <em>{{ baseInfo.orgParentName }}-{{ baseInfo.orgName }}</em>
+          <em v-if="baseInfo.orgParentName">{{
+            `${baseInfo.orgParentName}-`
+          }}</em>
+          <em>{{ baseInfo.orgName }}</em>
         </dd>
         <dd>
           <span>团队负责人</span>
@@ -251,7 +254,7 @@ export default {
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
-          self.queryTeamMember(self.baseInfo.orgId);
+          self.queryTeamMember(self.baseInfo.orgFullId);
           if (self.baseInfo.weeklySee == 'O') {
             self.weeklyOpen = true;
           }

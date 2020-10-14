@@ -12,7 +12,10 @@
           ></tl-project-info>
         </el-tab-pane>
         <el-tab-pane label="项目统计数据" name="2">
-          <tl-project-statistics :server="server"></tl-project-statistics>
+          <tl-project-statistics
+            :summaryList="summaryList"
+            :server="server"
+          ></tl-project-statistics>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -32,6 +35,7 @@ export default {
       server,
       projectTab: '1',
       baseInfo: {},
+      summaryList: [],
     };
   },
   props: {},
@@ -45,6 +49,13 @@ export default {
     }).then((res) => {
       if (res.code == '200') {
         this.baseInfo = res.data;
+      }
+    });
+    this.server.summaryList({
+      projectId: this.$route.query.projectId || '',
+    }).then((res) => {
+      if (res.code == '200') {
+        this.summaryList = res.data;
       }
     });
   },
