@@ -507,7 +507,6 @@
               v-model="item.progressAfter"
               controls-position="right"
               class="tl-input-number"
-              @input="progressAfterChange"
             ></el-input> -->
             <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
@@ -1233,9 +1232,7 @@ export default {
       }
     },
     changeConfidence() {},
-    progressAfterChange(progressAfter) {
-      this.$forceUpdate();
-    },
+
     projectChange(work) {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
