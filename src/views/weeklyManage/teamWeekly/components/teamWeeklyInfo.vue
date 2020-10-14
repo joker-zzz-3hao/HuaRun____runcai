@@ -57,7 +57,7 @@
               </el-table-column>
               <el-table-column width="80" label="投入工时" prop="workTime">
                 <template slot-scope="scope">
-                  <em>{{ scope.row.workTime }}h</em>
+                  <em>{{ scope.row.workTime }}天</em>
                 </template>
               </el-table-column>
               <el-table-column

@@ -109,6 +109,7 @@
           >
             <template slot-scope="scope">
               <el-form-item
+                v-if="timeDisabled"
                 :prop="
                   'weeklyWorkVoSaveList.' + scope.$index + '.projectNameCn'
                 "
@@ -128,6 +129,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <em v-else>{{ scope.row.projectNameCn }}</em>
             </template>
           </el-table-column>
           <el-table-column
@@ -158,9 +160,10 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em @click="addSupportOkr(scope.row)">{{
-                          setOkrStyle(item.okrDetailObjectKr)
-                        }}</em>
+                        <em
+                          @click="timeDisabled ? addSupportOkr(scope.row) : ''"
+                          >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
+                        >
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
@@ -180,7 +183,7 @@
             </template>
           </el-table-column>
           <el-table-column fixed="right" width="40">
-            <template slot-scope="scope">
+            <template slot-scope="scope" v-if="timeDisabled">
               <el-tooltip
                 class="icon-clear"
                 :class="{
@@ -209,6 +212,7 @@
             type="text"
             @click="addItem"
             class="tl-btn dotted-line list-add"
+            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -218,12 +222,16 @@
     <!-- 本周感想、建议、收获 -->
     <dl class="dl-card-panel weekly-thoughts">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
+      <dd v-if="formData.weeklyThoughtSaveList.length < 1">
+        <span>本周未填写感想、建议、收获</span>
+      </dd>
       <dd v-for="item in formData.weeklyThoughtSaveList" :key="item.randomId">
         <div class="tag-group">
           <div
             class="tag-kinds"
             @click="thoughtTypeChange(item, 0)"
             :class="{ 'is-thoughts': item.thoughtType == 0 }"
+            v-if="timeDisabled || item.thoughtType == 0"
           >
             <span>感想</span>
           </div>
@@ -231,6 +239,7 @@
             class="tag-kinds"
             @click="thoughtTypeChange(item, 1)"
             :class="{ 'is-suggest': item.thoughtType == 1 }"
+            v-if="timeDisabled || item.thoughtType == 1"
           >
             <span>建议</span>
           </div>
@@ -238,11 +247,13 @@
             class="tag-kinds"
             @click="thoughtTypeChange(item, 2)"
             :class="{ 'is-harvest': item.thoughtType == 2 }"
+            v-if="timeDisabled || item.thoughtType == 2"
           >
             <span>收获</span>
           </div>
         </div>
         <el-input
+          v-if="timeDisabled"
           v-model.trim="item.thoughtContent"
           type="textarea"
           maxlength="100"
@@ -251,7 +262,9 @@
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
+        <em v-else>{{ item.thoughtContent }}</em>
         <el-tooltip
+          v-if="timeDisabled"
           class="icon-clear"
           :class="{
             'is-disabled': formData.weeklyThoughtSaveList.length == 1,
@@ -278,6 +291,7 @@
             type="text"
             @click="addThisWeekWork"
             class="tl-btn dotted-line list-add"
+            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -287,6 +301,9 @@
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
+      <dd v-if="formData.weeklyPlanSaveList.length < 1">
+        <span>本周未填写下周计划</span>
+      </dd>
       <dd>
         <el-form :model="formData" class="tl-form">
           <el-table
@@ -298,6 +315,7 @@
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
+                    v-if="timeDisabled"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
@@ -305,13 +323,14 @@
                     class="tl-input"
                   ></el-input>
                   <!-- 编辑完之后 -->
-                  <!-- <em>balabalabalab</em> -->
+                  <em v-else>{{ scope.row.planContent }}</em>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="code" width="40">
               <template slot-scope="scope">
                 <el-tooltip
+                  v-if="timeDisabled"
                   class="icon-clear"
                   :class="{
                     'is-disabled': formData.weeklyPlanSaveList.length == 1,
@@ -342,6 +361,7 @@
             type="text"
             @click="addPlanItem"
             class="tl-btn dotted-line list-add"
+            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -385,7 +405,43 @@
             >
           </div>
         </template>
-        <div class="sdf"><em v-if="item.kr">风险状态</em></div>
+        <div class="sdf">
+          <em v-if="item.kr">
+            <span>信心指数</span>
+
+            <template v-if="timeDisabled">
+              <tl-confidence
+                v-model="item.confidenceAfter"
+                @change="changeConfidence"
+              ></tl-confidence>
+            </template>
+            <template v-else>
+              <div class="state-grid">
+                <div
+                  :class="{
+                    'is-no-risk': item.confidenceAfter == 1,
+                    'is-risks': item.confidenceAfter == 2,
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-risks': item.confidenceAfter == 2,
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+              </div>
+              <div class="state-txt">
+                {{ CONST.CONFIDENCE_MAP[item.confidenceAfter] }}
+              </div>
+            </template>
+          </em>
+        </div>
         <div class="tl-progress-group">
           <span>当前进度</span>
           <tl-process
@@ -395,12 +451,14 @@
             :marginLeft="6"
           ></tl-process>
           <el-slider
+            v-if="timeDisabled"
             v-model="item.progressAfter"
             :step="1"
             @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
           <el-input
+            v-if="timeDisabled"
             v-model="item.progressAfter"
             controls-position="right"
             :min="0"
@@ -408,7 +466,9 @@
             :step="1"
             :precision="0"
             class="tl-input-number"
+            @change="progressAfterChange"
           ></el-input>
+          <em v-else>{{ item.progressAfter }}</em>
           <span>%</span>
         </div>
         <div class="week-change">
@@ -573,6 +633,8 @@
 <script>
 
 import tlProcess from '@/components/process';
+import confidenceSelect from '@/components/confidenceSelect';
+import CONST from '@/components/const';
 import Server from '../server';
 import selectProject from './selectProject';
 import addOkr from './addOkr';
@@ -584,6 +646,7 @@ export default {
     'add-okr': addOkr,
     selectProject,
     'tl-process': tlProcess,
+    'tl-confidence': confidenceSelect,
   },
   props: {
     calendarId: {
@@ -656,6 +719,7 @@ export default {
   data() {
     return {
       server,
+      CONST,
       weeklyEmotion: '100',
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
@@ -757,10 +821,10 @@ export default {
       // 如果是已提交过的数据，初始化数据
       this.initPage();
       // this.thisPageProjectList = [...this.projectList];
-    },
-    initPage() {
       // 来自任务的数据
       console.log('任务', this.$route.query);
+    },
+    initPage() {
       if (this.weeklyData.weeklyId) {
         this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
         // 反显周报列表数据
@@ -844,7 +908,7 @@ export default {
       this.formData.weeklyThoughtSaveList.forEach((thought) => {
         thought.randomId = Math.random().toString(36).substr(3);
       });
-      if (this.formData.weeklyThoughtSaveList) {
+      if (this.formData.weeklyThoughtSaveList && this.timeDisabled) {
         this.addThought();
       }
     },
@@ -1111,6 +1175,10 @@ export default {
       } if (type == 2) {
         return '做版本更好的自己，希望你本周有收获，记下来吧';
       }
+    },
+    changeConfidence() {},
+    progressAfterChange(progressAfter) {
+      debugger;
     },
   },
   watch: {
