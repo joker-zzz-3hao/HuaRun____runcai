@@ -9,75 +9,114 @@
     >
       <el-select
         v-model="keyword"
-        filterable
-        remote
-        reserve-keyword
         placeholder="请输入关键词"
+        filterable
+        reserve-keyword
         :remote-method="filterMembers"
-        :loading="loading"
+        popper-class="tl-select-dropdown user-list"
+        class="tl-select"
         @change="changeMember"
+        :loading="loading"
       >
         <el-option
-          v-for="item in membersList"
-          :key="item.value"
-          :label="item.name"
-          :value="item.value"
+          v-for="(item, index) in projectManagerList"
+          :key="index + item.userId"
+          :label="item.userName"
+          :value="item.userId"
         >
+          <dl class="user-info">
+            <dt>
+              <!-- 这里如果用户上传了图片 则调取上传图片 -->
+              <img v-if="false" :src="item.headUrl" alt />
+              <div v-else-if="item.userName" class="user-name">
+                <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
+              </div>
+            </dt>
+            <dd>{{ item.userName }}</dd>
+            <dd>{{ item.orgName }}</dd>
+          </dl>
         </el-option>
       </el-select>
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
-            <el-table-column
-              prop="name"
-              label="姓名"
-              min-width="140"
-            ></el-table-column>
-            <el-table-column prop="level" label="级别" min-width="140">
-              <template slot-scope="scope">
-                <el-select v-model="scope.row.level" placeholder="请选择级别">
-                  <el-option
-                    v-for="item in CONST.LEVEL_LIST"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+          <el-form :model="dataForm" ref="dataForm">
+            <el-table :data="dataForm.tableData" class="tl-table">
+              <el-table-column
+                prop="userName"
+                label="姓名"
+                min-width="140"
+              ></el-table-column>
+              <el-table-column prop="level" label="级别" min-width="140">
+                <template slot-scope="scope">
+                  <el-form-item
+                    :prop="'tableData.' + scope.$index + '.level'"
+                    :rules="[
+                      {
+                        trigger: 'change',
+                        required: true,
+                        message: '请选择级别',
+                      },
+                    ]"
                   >
-                  </el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column prop="funcName" label="职能" min-width="140">
-              <template slot-scope="scope">
-                <el-select
-                  v-model="scope.row.funcName"
-                  placeholder="请选择职能"
-                >
-                  <el-option
-                    v-for="item in CONST.FUNC_LIST"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    <el-select
+                      v-model="scope.row.level"
+                      placeholder="请选择级别"
+                    >
+                      <el-option
+                        v-for="item in CONST.LEVEL_LIST"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column prop="funcName" label="职能" min-width="140">
+                <template slot-scope="scope">
+                  <el-form-item
+                    :prop="'tableData.' + scope.$index + '.funcName'"
+                    :rules="[
+                      {
+                        trigger: 'change',
+                        required: true,
+                        message: '请选择职能',
+                      },
+                    ]"
                   >
-                  </el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="departName"
-              label="所属部门"
-              min-width="140"
-            ></el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
-              <template slot-scope="scope">
-                <el-button
-                  @click="deleteMember(scope.$index)"
-                  type="text"
-                  class="tl-btn"
-                  >移除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
+                    <el-select
+                      v-model="scope.row.funcName"
+                      placeholder="请选择职能"
+                    >
+                      <el-option
+                        v-for="item in CONST.FUNC_LIST"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="orgName"
+                label="所属部门"
+                min-width="140"
+              ></el-table-column>
+              <el-table-column fixed="right" label="操作" width="180">
+                <template slot-scope="scope">
+                  <el-button
+                    @click="deleteMember(scope.$index)"
+                    type="text"
+                    class="tl-btn"
+                    >移除</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form>
         </div>
       </tl-crcloud-table>
       <span slot="footer" class="dialog-footer">
@@ -100,39 +139,11 @@ export default {
       visible: false,
       loading: false,
       keyword: '',
-      membersList: [
-        {
-          value: '0', name: '赵子龙', departName: '蜀国', level: '五虎上将', time: '2020-09-10',
-        },
-        {
-          value: '1', name: '马孟起', departName: '蜀国', level: '五虎上将', time: '2020-09-10',
-        },
-        {
-          value: '2', name: '黄汉升', departName: '蜀国', level: '五虎上将', time: '2020-09-10',
-        },
-        {
-          value: '3', name: '关云长', departName: '蜀国', level: '五虎上将', time: '2020-09-10',
-        },
-        {
-          value: '4', name: '张翼德', departName: '蜀国', level: '五虎上将', time: '2020-09-10',
-        },
-        {
-          value: '5', name: '张文远', departName: '魏国', level: '五子良将', time: '2020-09-10',
-        },
-        {
-          value: '6', name: '于文则', departName: '魏国', level: '五子良将', time: '2020-09-10',
-        },
-        {
-          value: '7', name: '徐公明', departName: '魏国', level: '五子良将', time: '2020-09-10',
-        },
-        {
-          value: '8', name: '张儁乂', departName: '魏国', level: '五子良将', time: '2020-09-10',
-        },
-        {
-          value: '9', name: '乐文谦', departName: '魏国', level: '五子良将', time: '2020-09-10',
-        },
-      ],
+      projectManagerList: [],
       tableData: [],
+      dataForm: {
+        tableData: [],
+      },
     };
   },
   components: {
@@ -147,42 +158,63 @@ export default {
     },
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    this.server.projectUserList({}).then((res) => {
+      if (res.code == '200') {
+        this.projectManagerList = res.data || [];
+      }
+    });
+  },
   methods: {
     show() {
       this.visible = true;
-      this.tableData = [];
+      this.dataForm.tableData = [];
     },
     close() {
       this.visible = false;
     },
     deleteMember(index) {
-      this.tableData.splice(index, 1);
+      this.dataForm.tableData.splice(index, 1);
     },
     changeMember(data) {
-      this.membersList.forEach((item) => {
-        if (item.value == data) {
-          this.tableData.push(item);
+      this.projectManagerList.forEach((item) => {
+        if (item.userId == data) {
+          this.dataForm.tableData.push(item);
         }
       });
+      console.log(this.dataForm.tableData);
+      this.keyword = '';
     },
     addMembers() {
-      this.server.addMembers({
-        addMembers: this.tableData,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$emit('addSuccess');
-          this.visible = false;
+      this.$refs.dataForm.validate((valid) => {
+        if (valid) {
+          const params = [];
+          this.dataForm.tableData.forEach((item) => {
+            params.push({
+              orgName: item.orgName,
+              projectId: this.$route.query.projectId || '',
+              userId: item.userId,
+              userLevel: item.level,
+              userName: item.userName,
+              userPost: item.funcName,
+            });
+          });
+          this.server.addProjectUser(params).then((res) => {
+            if (res.code == '200') {
+              this.visible = false;
+              this.$emit('addSuccess');
+            }
+          });
         }
       });
     },
     filterMembers(param) {
-      this.membersList = [];
-      this.server.queryMembers({
+      this.projectManagerList = [];
+      this.server.projectUserList({
         param,
       }).then((res) => {
         if (res.code == '200') {
-          this.membersList = res.data;
+          this.projectManagerList = res.data;
         }
       });
     },

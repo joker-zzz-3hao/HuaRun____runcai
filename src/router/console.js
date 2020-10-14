@@ -285,6 +285,43 @@ export default [{
   //   },
   //   component: () => import('@/views/projectManage/index'),
   // },
+  // 项目
+  {
+    path: '/projectManage',
+    name: 'projectManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'projectManage',
+      power: 'projectList',
+    },
+    component: () => import('@/views/projectManage/index'),
+  },
+  {
+    path: '/projectDetail',
+    name: 'projectDetail',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'projectDetail',
+      power: 'projectList',
+    },
+    component: () => import('@/views/projectManage/projectDetail/index'),
+  },
+  {
+    path: '/mainHours',
+    name: 'mainHours',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: 'mainHours',
+      power: 'mainHours',
+    },
+    component: () => import('@/views/projectManage/mainHours/index'),
+  },
   {
     // 周报管理
     // 我的周报

@@ -51,6 +51,17 @@ const PROJECT_STATUS_MAP = {
   1: '已关闭',
 };
 
+const APPROVAL_STATUS_MAP = {
+  0: '待审批',
+  1: '已审批',
+};
+
+const APPROVAL_STATUS_LIST = [
+  { value: '', label: '全部' },
+  { value: '0', label: '待审批' },
+  { value: '1', label: '已审批' },
+];
+
 export default {
   THROW_TYPE_MAP,
   THROW_TYPE_LIST,
@@ -61,4 +72,6 @@ export default {
   LEVEL_LIST,
   FUNC_LIST,
   PROJECT_STATUS_MAP,
+  APPROVAL_STATUS_MAP,
+  APPROVAL_STATUS_LIST,
 };

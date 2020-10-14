@@ -6,7 +6,7 @@
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
             <el-select
-              v-model="formData.projectCode"
+              v-model="formData.projectId"
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
@@ -15,15 +15,15 @@
             >
               <el-option
                 v-for="(item, index) in projectList"
-                :key="index + item.projectCode"
-                :label="item.projectName"
-                :value="item.projectCode"
+                :key="index + item.projectId"
+                :label="item.projectNameCn"
+                :value="item.projectId"
               ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select
-              v-model="formData.status"
+              v-model="formData.approvalStatus"
               :popper-append-to-body="false"
               placeholder="请选择审批状态"
               @change="changeStatus"
@@ -31,10 +31,10 @@
               class="tl-select"
             >
               <el-option
-                v-for="(item, index) in statusList"
+                v-for="(item, index) in CONST.APPROVAL_STATUS_LIST"
                 :key="index + item.value"
                 :label="item.label"
-                :value="item.label"
+                :value="item.value"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -61,46 +61,64 @@
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="applyTime" label="填报人" min-width="180">
+              <template slot-scope="scope">
+                <div class="user-info">
+                  <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                  <div v-else-if="scope.row.userName" class="user-name">
+                    <em>{{
+                      scope.row.userName.substring(
+                        scope.row.userName.length - 2
+                      )
+                    }}</em>
+                  </div>
+                </div>
+                <span>{{ scope.row.userName }}</span>
+              </template>
             </el-table-column>
             <el-table-column
-              prop="startTime"
-              label="开始时间"
-              min-width="180"
-            ></el-table-column>
-            <el-table-column prop="endTime" label="工作项" min-width="180">
-            </el-table-column>
-            <el-table-column
-              prop="projectName"
+              prop="projectNameCn"
               label="项目名称"
               min-width="180"
             >
             </el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="approvalStatus"
+              label="审批状态"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.approvalStatus">{{
+                  CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="submitTime"
               label="提交日期"
               min-width="180"
             ></el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="approvalTime"
               label="审批日期"
               min-width="180"
             ></el-table-column>
             <el-table-column
-              prop="totalAmount"
+              prop="approvalUserName"
               label="审批人"
               min-width="180"
             ></el-table-column>
             <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.status == '0'"
+                  v-if="scope.row.approvalStatus == '0'"
                   @click="approval(scope.row)"
                   type="text"
                   class="tl-btn"
                   >审批</el-button
                 >
                 <el-button
-                  v-if="scope.row.status == '1'"
+                  v-if="scope.row.approvalStatus == '1'"
                   @click="detail(scope.row)"
                   type="text"
                   class="tl-btn"
@@ -146,56 +164,11 @@ export default {
       pageSize: 10,
       showApproval: false,
       showApprovalDetail: false,
-      statusList: [],
-      tableData: [
-        {
-          applyTime: '陈翔',
-          status: '0',
-          totalAmount: '2020-09-09',
-          projectName: '云门户',
-          list: [
-            {
-              id: '0', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '42', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-            {
-              id: '1', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-          ],
-        },
-        {
-          applyTime: '陈翔',
-          status: '1',
-          totalAmount: '2020-09-09',
-          projectName: '行云',
-          list: [
-            {
-              id: '0', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '42', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-            {
-              id: '1', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-          ],
-
-        },
-        {
-          applyTime: '陈翔',
-          status: '0',
-          totalAmount: '2020-09-09',
-          projectName: '云门户',
-          list: [
-            {
-              id: '0', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '42', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-            {
-              id: '1', workContent: '润才操作文档', status: '40', startDate: '2020-09-09', endDate: '2020-10-10', totalTime: '45', times: '42', remark: '撒打算打算打算的撒', content: '投入45天投入45天投入45天投入45天投入45天投入45天投入45天',
-            },
-          ],
-        },
-      ],
+      tableData: [],
       projectList: [],
       formData: {
-        projectCode: '',
-        status: '',
+        projectId: '',
+        approvalStatus: '',
       },
     };
   },
@@ -205,14 +178,38 @@ export default {
     'tl-approval-detail': approvalDetail,
   },
   props: {},
-  mounted() {},
+  mounted() {
+    this.server.projectPageList({
+      currentPage: 1,
+      pageSize: 10,
+      projectName: '',
+    }).then((res) => {
+      if (res.code == '200') {
+        this.projectList = res.data.content;
+        if (this.projectList.length > 0) {
+          this.formData.projectId = this.projectList[0].projectId;
+          this.searchList();
+        }
+      }
+    });
+  },
   methods: {
-    searchList() {},
-    changeProject(data) {
-      console.log(data);
+    searchList() {
+      this.server.timeSheetList({
+        projectId: this.formData.projectId,
+        approvalStatus: this.formData.approvalStatus,
+      }).then((res) => {
+        if (res.code == '200') {
+          this.tableData = res.data;
+        }
+      });
+    },
+    changeProject() {
+      this.searchList();
     },
     changeStatus(data) {
       console.log(data);
+      this.searchList();
     },
     approval(data) {
       this.showApproval = true;
