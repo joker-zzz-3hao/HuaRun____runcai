@@ -60,7 +60,7 @@
 import krDetail from './component/krDetail.vue';
 // eslint-disable-next-line import/extensions
 import oDetail from './component/oDetail.vue';
-import Server from '../../server';
+import Server from '../server';
 
 const server = new Server();
 export default {

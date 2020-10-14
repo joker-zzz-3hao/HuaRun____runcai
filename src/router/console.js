@@ -196,19 +196,20 @@ export default [{
   },
   {
     // 复盘
-    path: '/replayLeader',
-    name: 'replayLeader',
+    path: '/replay',
+    name: 'replay',
     redirect: {
-      name: 'userList',
+      name: 'replayList',
     },
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'replayLeader',
-      title: 'replayLeader',
+      parentRoute: 'replay',
+      title: 'replay',
       power: '',
     },
-    component: () => import('@/views/replay/replayLeader/index'),
+
+    component: () => import('@/views/replay/index'),
     children: [
       {
         path: '/replayEdit',
@@ -220,7 +221,7 @@ export default [{
           title: 'replayEdit',
           power: '',
         },
-        component: () => import('@/views/replay/replayLeader/replayEdit/index'),
+        component: () => import('@/views/replay/replayEdit/index'),
       },
 
       {
@@ -233,7 +234,7 @@ export default [{
           title: 'replayDetail',
           power: '',
         },
-        component: () => import('@/views/replay/replayLeader/replayDetail/index'),
+        component: () => import('@/views/replay/replayDetail/index'),
       },
       {
         path: '/replayLink',
@@ -245,7 +246,7 @@ export default [{
           title: 'replayLink',
           power: '',
         },
-        component: () => import('@/views/replay/replayLeader/replayLink/index'),
+        component: () => import('@/views/replay/replayLink/index'),
       },
       {
         path: '/replayList',
@@ -257,7 +258,7 @@ export default [{
           title: 'replayList',
           power: '',
         },
-        component: () => import('@/views/replay/replayLeader/component/replayList'),
+        component: () => import('@/views/replay/component/replayList'),
       },
     ],
   },

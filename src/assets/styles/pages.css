@@ -2133,6 +2133,7 @@
 }
 
 .okr-completion .tl-progress-group > span:first-child {
+  margin: 0 10px 0 0;
   width: 140px;
   color: #acb6bf;
 }
@@ -2146,10 +2147,65 @@
 }
 
 .undertake-okr-list .o-kr-group {
-  width: 100%;
+  padding: 0 20px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:last-child {
+  padding-left: 30px;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:first-child {
+  position: relative;
+  padding: 0 0 16px 0;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:first-child::after {
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  bottom: 0;
+  content: '';
+  width: 1px;
+  border-left: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.4em, #fff 0, #fff 0.6em);
+}
+
+.undertake-okr-list.is-kr .o-kr-group:last-child::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  content: '';
+  width: 30px;
+  background: #fff;
+  z-index: 0;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:last-child {
+  position: relative;
+  background: #f4f6f8;
+  height: 60px;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:last-child .tag-kind {
+  position: relative;
+  padding: 0 0 0 20px;
+}
+
+.undertake-okr-list.is-kr .o-kr-group:last-child .tag-kind::before {
+  position: absolute;
+  left: -25px;
+  top: -18px;
+  bottom: 18px;
+  content: '';
+  width: 1px;
+  border-left: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.4em, #fff 0, #fff 0.6em);
+  z-index: 5;
 }
 
 .dl-card-panel .undertake-okr-list.is-kr {
@@ -2215,12 +2271,12 @@
 
 .undertake-okr-list {
   margin: 20px 0;
-  padding: 20px;
+  padding: 16px 20px;
   border: 1px solid #e5e9ee;
 }
 
 .undertake-okr-list.is-o::before,
-.undertake-okr-list.is-kr::before {
+.undertake-okr-list.is-kr .o-kr-group::before {
   margin: 0 20px 0 0;
   content: '';
   width: 7px;
@@ -2230,9 +2286,37 @@
   border: 2px solid #4ccd79;
 }
 
-.undertake-okr-list.is-kr::before {
+.undertake-okr-list.is-kr::before,
+.undertake-okr-list.is-kr .o-kr-group:last-child::before {
   background: rgba(104, 93, 241, 0.16);
   border: 2px solid #685df1;
+}
+.undertake-okr-list.is-kr .o-kr-group:last-child::before {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  content: '';
+  z-index: 8;
+}
+
+.undertake-okr-list.is-kr .o-kr-group .tag-kind {
+  margin-left: 0;
+}
+
+.undertake-okr-list .tl-progress-group {
+  flex: 0 0 300px;
+}
+
+.undertake-okr-list .tl-progress-group .tl-progress-bar {
+  left: 66px;
+}
+
+.undertake-okr-list.is-o .tl-progress-bar .current-progress {
+  background: #4ccd79;
+}
+
+.undertake-okr-list .tl-input-number .el-input__inner {
+  padding: 0 8px;
 }
 
 /* 团队周报 */

@@ -395,14 +395,30 @@
         <div class="o-kr-group" v-if="item.kr">
           <div class="tag-kind">
             <span class="kind-parent">目标</span>
-            <em>{{ item.o.okrDetailObjectKr }}</em>
+            <el-tooltip
+              class="select-values"
+              effect="dark"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+            >
+              <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+            </el-tooltip>
           </div>
         </div>
         <div class="o-kr-group">
           <template v-if="item.kr">
             <div class="tag-kind">
               <span class="kind-child">KR</span>
-              <em> {{ item.kr.okrDetailObjectKr }}</em>
+              <el-tooltip
+                class="select-values"
+                effect="dark"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+              >
+                <em slot="content">{{ item.kr.okrDetailObjectKr }}</em>
+                <em>{{ item.kr.okrDetailObjectKr }}</em>
+              </el-tooltip>
               <span
                 >被工作项<em>{{ itemIndex(item.kr) }}</em
                 >支撑</span
@@ -412,7 +428,15 @@
           <template v-else>
             <div class="tag-kind">
               <span class="kind-parent">目标</span>
-              <em>{{ item.o.okrDetailObjectKr }}</em>
+              <el-tooltip
+                class="select-values"
+                effect="dark"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+              >
+                <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
+                <em>{{ item.o.okrDetailObjectKr }}</em>
+              </el-tooltip>
               <span
                 >被工作项<em>{{ itemIndex(item.o) }}</em
                 >支撑</span
@@ -458,8 +482,8 @@
             <tl-process
               :data="parseInt(item.progressAfter, 10)"
               :showNumber="false"
-              :width="64"
-              :marginLeft="6"
+              :width="30"
+              :marginLeft="2"
             ></tl-process>
             <el-slider
               v-if="timeDisabled"

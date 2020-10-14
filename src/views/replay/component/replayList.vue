@@ -173,8 +173,8 @@
 <script>
 import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/extensions
-import Server from '../../server.js';
-import CONST from '../../const';
+import Server from '../server.js';
+import CONST from '../const';
 
 const server = new Server();
 export default {

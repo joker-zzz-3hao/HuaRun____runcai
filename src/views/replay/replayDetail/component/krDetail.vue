@@ -8,15 +8,14 @@
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.okrWeight ? item.okrWeight : 0 }}%</em>
-                <em>进度 {{ item.okrDetailProgress ? item.okrWeight : 0 }}%</em>
+                <em>权重 {{ item.okrWeight }}%</em>
+                <em>进度 {{ item.okrDetailProgress }}%</em>
               </div>
             </div>
           </template>
           <div v-for="(list, i) in item.krs" :key="i + 'k'">
             <div style="width: 100%">
-              <em>KR{{ i + 1 }}</em
-              ><em>{{ list.okrDetailObjectKr }}</em>
+              <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
               <div class="right">
                 <em>权重 {{ list.okrWeight }}%</em>
                 <em>进度 {{ list.okrDetailProgress }}%</em>
@@ -27,37 +26,38 @@
               考核指标
               {{ list.checkQuota }}
             </div>
-            <div>衡量办法 {{ list.judgeMethod }}</div>
-          </div>
-          <div>
             <div>
-              <div>价值与收获</div>
-              <div>{{ item.o.advantage }}</div>
-            </div>
-            <div>
-              <div>问题与不足</div>
-
-              <div>{{ item.o.disadvantage }}</div>
-            </div>
-            <div>
-              <div>改进措施</div>
+              <div>衡量办法 {{ list.judgeMethod }}</div>
               <div>
-                <div v-for="(li, i) in item.o.measure || []" :key="i">
-                  <em> {{ i + 1 }}. {{ li }} </em>
+                <div>价值与收获</div>
+
+                <div>{{ list.advantage }}</div>
+              </div>
+              <div>
+                <div>问题与不足</div>
+
+                <div>{{ list.disadvantage }}</div>
+              </div>
+              <div>
+                <div>改进措施</div>
+                <div>
+                  <div v-for="(li, i) in list.measure || []" :key="i">
+                    <em> {{ i + 1 }}.{{ li }} </em>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-if="okrMain.okrMainVo.reviewStatus == 3">
-            <div>复盘沟通</div>
+            <div v-if="okrMain.okrMainVo.reviewStatus == 3">
+              <div>复盘沟通</div>
 
-            <div>{{ item.o.communication }}</div>
+              <div>{{ list.communication }}</div>
 
-            <div>
-              <em>请选择：</em>
-              <el-button :type="'primary'">{{
-                item.o.communicationLabel
-              }}</el-button>
+              <div>
+                <em>请选择：</em>
+                <el-button :type="'primary'">{{
+                  list.communicationLabel
+                }}</el-button>
+              </div>
             </div>
           </div>
         </el-collapse-item>
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import Server from '../../../server';
+import Server from '../../server';
 
 const server = new Server();
 export default {
@@ -75,7 +75,7 @@ export default {
   props: ['okrMain'],
   data() {
     return {
-      reviewType: 0,
+      reviewType: 1,
       form: {},
       activeNames: ['1'],
       server,
@@ -95,16 +95,24 @@ export default {
 
   methods: {
     deleteProduce(index, i) {
-      this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
+      this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
     },
-    addDefic(value, index) {
-      if (!this.okrMain.okrReviewPojoList[index].o.measure) {
-        this.okrMain.okrReviewPojoList[index].o.measure = [];
+    addDefic(value, index, i) {
+      if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
+        this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
       }
-      this.okrMain.okrReviewPojoList[index].o.measure.push(value);
+      this.okrMain.okrReviewPojoList[index].krs[i].measure.push(value);
+      console.log(this.okrMain.okrReviewPojoList[index].krs[i].measure);
     },
     checkDatakrs(clear) {
-      const krsList = this.okrMain.okrReviewPojoList.map((item) => item.o);
+      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
+      const krs = [];
+
+      krsData.forEach((item) => {
+        // eslint-disable-next-line prefer-spread
+        krs.push.apply(krs, item);
+      });
+      const krsList = krs;
       if (clear) {
         this.list = krsList.map((item) => ({
           detailId: item.detailId,

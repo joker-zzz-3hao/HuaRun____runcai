@@ -44,6 +44,7 @@ function hasPower(power) {
 router.beforeEach((to, from, next) => {
   const urlParams = getParams(window.location.href);
   const urlCrctoken = urlParams.token;
+  // window.$store.dispatch('common/getPeriod');
   // const origin = getOrigin();
   // 判断获取的token,如果token存在就更新存到缓存
   if (urlCrctoken) {
@@ -52,10 +53,11 @@ router.beforeEach((to, from, next) => {
   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
   if (!localStorage.token || localStorage.token === null) {
     // 当token不存在时，如果是环境上就需要跳转到ladp登录页面，如果是本地启动就直接跳转login页面
-    // if (origin == process.env.VUE_APP_PORTAL) {
-    //   window.open(process.env.VUE_APP_LOGIN, '_self');
-    // } else
-    if (to.name == 'login') {
+    if (origin == process.env.VUE_APP_PORTAL) {
+      window.$store.commit('common/setUserInfo', { userInfo: {} });
+      localStorage.setItem('token', '');
+      window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http://ldap.talent.crcloud.com:8888/account-service/outside/ldapLogin', '_self');
+    } else if (to.name == 'login') {
       next();
     } else {
       next('login');
@@ -92,7 +94,6 @@ router.beforeEach((to, from, next) => {
       // }
     });
   } else if (localStorage.token && (window.$store.getters['common/userInfo'].userName)) {
-    console.log(window.$store.getters['common/userInfo'].userName);
     if (to.name == 'login') {
       next('transfer');
     } else if (to.meta.title) {
@@ -105,7 +106,7 @@ router.beforeEach((to, from, next) => {
           const {
             identityType,
           } = window.$store.getters['common/getIdentity'].data;
-          console.log(identityType);
+
           if (identityType == 'org') {
             next('/departleader');
           }
@@ -120,11 +121,10 @@ router.beforeEach((to, from, next) => {
             user: window.$store.getters['common/userInfo'].userId,
             orgId: window.$store.getters['common/userInfo'].orgId,
           }).then((res) => {
-            console.log(res);
             const {
               identityType,
             } = res.data;
-            console.log(identityType);
+
             if (identityType == 'org') {
               next('/departleader');
             }
