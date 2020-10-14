@@ -13,6 +13,30 @@
           :data="formData.weeklyWorkVoSaveList"
           class="tl-table"
         >
+          <el-table-column width="40">
+            <template slot-scope="scope" v-if="timeDisabled">
+              <el-tooltip
+                class="icon-clear"
+                :class="{
+                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
+                }"
+                effect="dark"
+                :content="
+                  formData.weeklyWorkVoSaveList.length > 1
+                    ? '删除'
+                    : '至少有一条工作项'
+                "
+                placement="top"
+                popper-class="tl-tooltip-popper"
+                @click.native="
+                  formData.weeklyWorkVoSaveList.length > 1 &&
+                    deleteItem(scope.row)
+                "
+              >
+                <i class="el-icon-minus"></i>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
             label="工作项"
             prop="workContent"
@@ -57,7 +81,7 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="120"
+            min-width="80"
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
@@ -76,14 +100,14 @@
                 :width="36"
                 :marginLeft="6"
               ></tl-process
-              >%
+              ><span>%</span>
             </template>
           </el-table-column>
           <el-table-column
             label="投入工时"
             prop="workTime"
             :render-header="renderHeader"
-            min-width="130"
+            min-width="100"
           >
             <template slot-scope="scope">
               <el-input
@@ -118,7 +142,7 @@
                 <el-select
                   v-model="scope.row.projectNameCn"
                   placeholder="请选择关联项目"
-                  size="small"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -180,30 +204,6 @@
                   </ul>
                 </div>
               </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" width="40">
-            <template slot-scope="scope" v-if="timeDisabled">
-              <el-tooltip
-                class="icon-clear"
-                :class="{
-                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
-                }"
-                effect="dark"
-                :content="
-                  formData.weeklyWorkVoSaveList.length > 1
-                    ? '删除'
-                    : '至少有一条工作项'
-                "
-                placement="top"
-                popper-class="tl-tooltip-popper"
-                @click.native="
-                  formData.weeklyWorkVoSaveList.length > 1 &&
-                    deleteItem(scope.row)
-                "
-              >
-                <i class="el-icon-minus"></i>
-              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>

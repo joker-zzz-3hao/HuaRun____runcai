@@ -2319,6 +2319,20 @@
   padding: 0 8px;
 }
 
+.my-weekly .tl-textarea .el-textarea__inner {
+  padding: 8px 15px 5px 15px;
+  min-height: 40px !important;
+}
+
+.my-weekly .tl-table .el-table__header th .cell > div {
+  padding-left: 0;
+}
+
+.my-weekly .tl-input-number .el-input__inner {
+  padding: 0 8px;
+  height: 40px;
+}
+
 /* 团队周报 */
 .teams-weekly .operating-area .el-cascader {
   line-height: unset;
