@@ -315,6 +315,7 @@ export default {
       this.server.queryProcess({
         currentPage: 1,
         pageSize: 1000,
+        enable: 1,
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];

@@ -61,13 +61,13 @@
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
-                <el-input-number
+                <el-input
                   v-model="scope.row.workProgress"
                   controls-position="right"
                   :min="0"
                   :max="100"
                   class="tl-input-number"
-                ></el-input-number>
+                ></el-input>
               </template>
               <!-- 编辑完提交后展示 -->
               <tl-process
@@ -75,7 +75,8 @@
                 :data="scope.row.workProgress"
                 :width="36"
                 :marginLeft="6"
-              ></tl-process>
+              ></tl-process
+              >%
             </template>
           </el-table-column>
           <el-table-column
@@ -85,7 +86,7 @@
             min-width="130"
           >
             <template slot-scope="scope">
-              <el-input-number
+              <el-input
                 v-if="timeDisabled"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
@@ -95,7 +96,7 @@
                 :max="5"
                 @change="workTimeChange(scope.row)"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input>
               <!-- 编辑完提交后展示 -->
               <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
@@ -133,7 +134,7 @@
             label="支撑OKR/价值观"
             prop="valueOrOkrIds"
             :render-header="renderHeader"
-            min-width="300"
+            min-width="150"
           >
             <!-- okrIds -->
             <template slot-scope="scope">
@@ -157,14 +158,20 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                        <em @click="addSupportOkr(scope.row)">{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
                       ></i> -->
                     </li>
-                    <li class="icon-bg" @click="addSupportOkr(scope.row)">
+                    <li
+                      class="icon-bg"
+                      v-if="scope.row.selectedOkr.length < 1"
+                      @click="addSupportOkr(scope.row)"
+                    >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
@@ -393,7 +400,7 @@
             @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
-          <el-input-number
+          <el-input
             v-model="item.progressAfter"
             controls-position="right"
             :min="0"
@@ -401,13 +408,14 @@
             :step="1"
             :precision="0"
             class="tl-input-number"
-          ></el-input-number>
+          ></el-input>
           <span>%</span>
         </div>
         <div class="week-change">
           <span>本周变化</span
           ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+            }}{{ item.progressAfter - item.progressBefor }}%</em
           >
         </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">

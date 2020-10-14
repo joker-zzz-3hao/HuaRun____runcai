@@ -13,7 +13,7 @@ export default class Server extends ServerBase {
 
   // 编辑任务过程
   updateProcess(param) {
-    return this._ajaxPost('gateway/task-service/task/taskProcess/updateProcess', param);
+    return this._ajaxPost('gateway/task-service/task/taskProcess/update', param);
   }
 
   // 查询组织包含的用户列表

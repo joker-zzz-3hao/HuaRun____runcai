@@ -33,7 +33,7 @@ export default class Server extends ServerBase {
 
   // 编辑自定义任务过程
   editProcess(param) {
-    return this._ajaxPost('gateway/task-service/task/taskProcess/updateProcess', param);
+    return this._ajaxPost('gateway/task-service/task/taskProcess/update', param);
   }
 
   // 查询任务过程适用人群

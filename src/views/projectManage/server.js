@@ -24,4 +24,28 @@ export default class Server extends ServerBase {
   projectDetail(param) {
     return this._ajaxPost('gateway/project-service/project/query/projectDetail', param);
   }
+
+  addProjectUser(param) {
+    return this._ajaxPost('gateway/project-service/project/add/projectUser', param);
+  }
+
+  removeProjectUser(param) {
+    return this._ajaxPost('gateway/project-service/project/remove/projectUser', param);
+  }
+
+  summaryList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/summaryList', param);
+  }
+
+  timeSheetList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/timeSheetList', param);
+  }
+
+  approvalTimeSheetList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/approvalTimeSheetList', param);
+  }
+
+  timeSheet(param) {
+    return this._ajaxPost('gateway/project-service/project/submit/timeSheet', param);
+  }
 }
