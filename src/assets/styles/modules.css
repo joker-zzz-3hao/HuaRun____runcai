@@ -1276,12 +1276,12 @@
 
 .tl-progress-group .tl-progress-bar {
   position: absolute;
-  width: 75%;
+  width: 100%;
 }
 
 .tl-progress-group .el-slider {
   margin: 0 20px 0 0;
-  width: 75%;
+  width: 100%;
 }
 
 .tl-progress-group .el-slider__bar {
