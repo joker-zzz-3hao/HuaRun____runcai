@@ -25,11 +25,15 @@
             ></div>
             <div
               :class="{
+                'is-no-risk': citem.value == 1,
                 'is-risks': citem.value == 2,
-                'is-uncontrollable': citem.value == 3,
               }"
             ></div>
-            <div :class="{ 'is-uncontrollable': citem.value == 3 }"></div>
+            <div
+              :class="{
+                'is-no-risk': citem.value == 1,
+              }"
+            ></div>
           </div>
           <div class="state-txt">{{ citem.label }}</div>
         </li>
@@ -45,11 +49,11 @@
           ></div>
           <div
             :class="{
+              'is-no-risk': modelVal == 1,
               'is-risks': modelVal == 2,
-              'is-uncontrollable': modelVal == 3,
             }"
           ></div>
-          <div :class="{ 'is-uncontrollable': modelVal == 3 }"></div>
+          <div :class="{ 'is-no-risk': modelVal == 1 }"></div>
         </div>
         <div class="state-txt">{{ CONST.CONFIDENCE_MAP[modelVal] }}</div>
         <i class="el-icon-caret-bottom" :class="{ 'is-show': isShow }"></i>

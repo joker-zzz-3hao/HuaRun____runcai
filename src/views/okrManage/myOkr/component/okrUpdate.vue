@@ -81,6 +81,7 @@
                       <span>%</span>
                     </div>
                     <div class="okr-risk">
+                      <span>信心指数</span>
                       <tl-confidence
                         v-model="kitem.okrDetailConfidence"
                       ></tl-confidence>

@@ -628,6 +628,12 @@
 
 .update-progress .okr-risk {
   margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.update-progress .okr-risk span {
+  margin: 0 20px 0 0;
 }
 
 .update-progress .change-reason dt {
@@ -2615,8 +2621,9 @@
   font-weight: 500;
 }
 
+.week-plan .el-form-item,
 .week-plan .el-form-item .el-form-item__content {
-  flex: 1;
+  flex: 1 1 auto;
 }
 
 .week-plan .el-form-item .el-form-item__content .tl-input .el-input__inner {
