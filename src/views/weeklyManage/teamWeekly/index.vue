@@ -602,9 +602,10 @@ export default {
     weeklyInfo(weekly) {
       if (weekly.weeklyId) {
         this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
-      } else {
-        this.$message.warning('该用户周报还未提交');
       }
+      //  else {
+      //   this.$message.warning('该用户周报还未提交');
+      // }
     },
     setInitOrg() {
       // 遍历嵌套数组，转换为一维数组
