@@ -46,11 +46,12 @@
             </li>
           </ul>
           <el-input
+            class="tl-input-search"
             placeholder="输入任务标题"
             v-model="searchMsg"
             maxlength="50"
             clearable
-            class="tl-input-search"
+            @clear="getTableList"
             @keyup.enter.native="getTableList"
           >
             <i class="el-icon-search" slot="prefix" @click="getTableList"></i
@@ -491,7 +492,6 @@ export default {
         currentPage: 1,
         pageSize: 20,
         orgFullId: this.userInfo.orgList[0].orgFullId,
-
       };
       this.server.getUserListByOrgId(params).then((res) => {
         if (res.code == 200) {

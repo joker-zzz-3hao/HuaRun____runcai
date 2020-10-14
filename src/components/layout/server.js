@@ -15,4 +15,9 @@ export default class Server extends ServerBase {
   sendMessage(param) {
     return this._ajaxPost('gateway/system-service/sys/notice/sendNotice ', param);
   }
+
+  // 保存并指派
+  appointSave(param) {
+    return this._ajaxPost('gateway/task-service/task/appointSave', param);
+  }
 }

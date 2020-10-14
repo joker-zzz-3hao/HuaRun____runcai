@@ -127,39 +127,32 @@
           <el-input
             placeholder="输入任务标题"
             style="width: 200px"
+            class="tl-input-search"
+            v-model="searchParams.taskTitle"
             clearable
-            class="tl-input"
+            @clear="getTableList"
+            @keyup.enter.native="getTableList"
           >
-            <i class="el-icon-search el-input__icon" slot="prefix"></i>
+            <i
+              class="el-icon-search el-input__icon"
+              slot="prefix"
+              @click="getTableList"
+            ></i>
           </el-input>
-          <el-select
-            v-model.trim="executorId"
-            placeholder="执行者"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in executorList"
-              :key="item.executorId"
-              :label="item.executorName"
-              :value="item.executorId"
-            ></el-option>
-          </el-select>
-          <el-select
-            v-model.trim="creatorId"
-            placeholder="创建人"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in creatorList"
-              :key="item.creatorId"
-              :label="item.creatorName"
-              :value="item.creatorId"
-            ></el-option>
-          </el-select>
+          <tl-personmultiple
+            title="请选择执行人"
+            :userList="userList"
+            :userMap="userMap"
+            v-model="searchParams.searchExecutor"
+            @change="getTableList"
+          ></tl-personmultiple>
+          <tl-personmultiple
+            title="请选择创建人"
+            :userList="userList"
+            :userMap="userMap"
+            v-model="searchParams.searchCreator"
+            @change="getTableList"
+          ></tl-personmultiple>
         </div>
         <div>
           <tl-list
@@ -168,12 +161,14 @@
             :processObj="processObj"
             :stepList="stepList"
             v-if="taskType == 1 && processObj.processId"
+            :searchParams="searchParams"
           ></tl-list>
           <tl-board
             ref="board"
             :processObj="processObj"
             :stepList="stepList"
             v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
+            :searchParams="searchParams"
           ></tl-board>
         </div>
       </div>
@@ -197,6 +192,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import personMultiple from '@/components/personMultiple';
 import tlList from './components/listPage';
 import tlBoard from './components/boardPage';
 import tlCreateTask from '../myTask/components/createTask';
@@ -211,6 +208,7 @@ export default {
     tlBoard,
     tlCreateTask,
     tlEditTask,
+    'tl-personmultiple': personMultiple,
   },
   data() {
     return {
@@ -245,8 +243,20 @@ export default {
       ],
       executorId: '',
       creatorId: '',
-
+      searchParams: {
+        taskTitle: '',
+        searchCreator: [],
+        searchExecutor: [],
+        typeId: '',
+      },
+      userList: [],
+      userMap: {},
     };
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   created() {
     this.init('1');
@@ -273,6 +283,26 @@ export default {
           } else if (processType == '3') {
             this.personList = res.data.content;
           }
+        }
+      });
+    },
+    queryUser() {
+      const params = {
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.userInfo.orgList[0].orgFullId,
+      };
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content || [];
+          this.userList.map(
+            (obj) => {
+              const rObj = {};
+              rObj[obj.userId] = obj.userName;
+              Object.assign(this.userMap, rObj);
+              return rObj;
+            },
+          );
         }
       });
     },
@@ -317,9 +347,12 @@ export default {
         this.$refs.editTask.show(id);
       });
     },
-    getTableList() {},
+    getTableList() {
+      this.queryTaskByClassify(this.searchParams.typeId);
+    },
     todo() {},
     queryTaskByClassify(typeId) {
+      this.searchParams.typeId = typeId || '';
       if (this.$refs.board) {
         this.$refs.board.init(typeId);
       }
@@ -372,6 +405,17 @@ export default {
       this.selectProcess(process);
     },
 
+  },
+  watch: {
+    processId: {
+      handler() {
+        this.queryUser();
+      },
+      immediate: true,
+    },
+  },
+  beforeDestroy() {
+    this.setSearchParams();
   },
 };
 </script>

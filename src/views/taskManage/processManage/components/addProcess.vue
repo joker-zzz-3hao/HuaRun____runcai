@@ -50,7 +50,11 @@
         <el-form-item>
           <h1>任务过程使用范围设置</h1>
           <div style="display: flex; flex-direction: column">
-            <el-checkbox v-model="teamUser" @change="selectTeamUser">
+            <el-checkbox
+              v-model="teamUser"
+              @change="selectTeamUser"
+              :disabled="!this.roleCode.includes('ORG_ADMIN')"
+            >
               团队申请
               <span>(创建后的任务过程其组织下成员均可使用)</span>
             </el-checkbox>
@@ -213,6 +217,12 @@ export default {
     };
   },
   created() {
+    // 只有部门负责人才能选团队使用
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.formData.taskProcessQueryType = '1';
+    } else {
+      this.formData.taskProcessQueryType = '2';
+    }
     this.formData.orgId = this.userInfo.orgId;
     this.remoteMethod();
     // if (this.optionType == 'edit') {
@@ -233,6 +243,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
     teamUser() {
       return this.formData.taskProcessQueryType == '1';
@@ -304,7 +315,10 @@ export default {
     addProcess() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          if (this.formData.taskProcessQueryType == '') {
+            this.$message.error('请选择使用范围');
+            return;
+          }
           if (this.formData.taskProcessQueryType == '1') { // 团队需要orgId
             this.formData.userIdList = [];
           }

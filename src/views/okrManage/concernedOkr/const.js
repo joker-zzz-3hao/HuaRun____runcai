@@ -9,6 +9,13 @@ const STATUS_LIST_MAP = {
   8: '被退回',
 };
 
+const OKR_TYPE_MAP = {
+  1: '部门',
+  2: '个人',
+  3: '公司',
+};
+
 export default {
   STATUS_LIST_MAP,
+  OKR_TYPE_MAP,
 };

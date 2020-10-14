@@ -200,7 +200,7 @@ export default {
     },
     init() {
       // okr类型
-      if (this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TENANT_ADMIN')) {
+      if (this.roleCode.includes('ORG_ADMIN')) {
         this.searchForm.okrType = 1;
       } else { this.searchForm.okrType = 2; }
       if (this.writeInfo.canWrite == 'draft') {
