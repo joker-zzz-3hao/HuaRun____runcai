@@ -82,7 +82,7 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="80"
+            min-width="85"
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
@@ -103,7 +103,7 @@
                 </el-form-item>
               </template>
               <!-- 编辑完提交后展示 -->
-              <em>{{ scope.row.workProgress }}</em
+              <em v-else>{{ scope.row.workProgress }}</em
               ><span>%</span>
             </template>
           </el-table-column>

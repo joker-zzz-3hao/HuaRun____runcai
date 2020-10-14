@@ -2016,6 +2016,10 @@
   min-height: 90px;
 }
 
+.weekly-cont .tl-table.is-edit .el-table__body-wrapper .el-table__row td:nth-child(5) .cell .el-form-item {
+  flex: 0 0 54px;
+}
+
 .weekly-cont .tag-lists li em {
   padding: 0 10px 0 0;
 }
@@ -2304,7 +2308,7 @@
 }
 
 .undertake-okr-list .tl-progress-group {
-  flex: 0 0 300px;
+  flex: 0 0 316px;
 }
 
 .undertake-okr-list .tl-progress-group .tl-progress-bar {
@@ -2328,10 +2332,30 @@
   padding-left: 0;
 }
 
+.my-weekly .tl-input-number {
+  width: 60px;
+}
+
 .my-weekly .tl-input-number .el-input__inner {
   padding: 0 8px;
-  width: 60px;
+  width: 48px;
   height: 40px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  width: 60px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  height: 32px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input {
+  width: unset;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  padding: 0 24px 0 2px;
 }
 
 /* 团队周报 */

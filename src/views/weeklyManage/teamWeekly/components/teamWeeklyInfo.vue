@@ -201,14 +201,18 @@
         <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
           <dt class="card-title"><em>下周计划</em></dt>
           <dd>
-            <el-table ref="workTable" :data="weeklyPlanList">
-              <el-table-column label="序号" type="index"></el-table-column>
+            <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
               <el-table-column
                 label="工作项"
                 prop="planContent"
               ></el-table-column>
             </el-table>
           </dd>
+          <dd v-if="weeklyPlanList.length < 1">您没有写下周计划</dd>
+        </dl>
+        <dl class="dl-card-panel okr-completion">
+          <dt class="card-title"><em>个人OKR完成度</em></dt>
+          <dd></dd>
           <dd v-if="weeklyPlanList.length < 1">您没有写下周计划</dd>
         </dl>
         <div class="current-user-info">
@@ -238,23 +242,21 @@
               </div>
             </div> -->
             <!-- 下周计划 -->
-            <div v-if="weeklyType == '1'" style="margintop: 50px">
+            <!-- <div v-if="weeklyType == '1'" style="margintop: 50px">
               <h2>下周计划</h2>
               <el-table ref="workTable" :data="weeklyPlanList">
                 <el-table-column label="序号" type="index"></el-table-column>
                 <el-table-column
                   label="工作项"
                   prop="planContent"
-                ></el-table-column
-                >-
+                ></el-table-column>
               </el-table>
               <div v-if="weeklyPlanList.length < 1">您没有写下周计划</div>
-            </div>
+            </div> -->
             <!-- 个人okr完成度 -->
-            <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
+            <!-- <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
               <h2>个人okr完成度</h2>
               <div v-for="item in weeklyOkrVoList" :key="item.okrDetailId">
-                <!-- 目标+KR -->
                 <div
                   v-if="
                     item.parentOkrDetail && item.parentOkrDetail.okrDetailId
@@ -329,7 +331,6 @@
                     </el-col>
                   </el-row>
                 </div>
-                <!-- 目标 -->
                 <div v-else>
                   <el-row :gutter="20">
                     <el-col :span="6">
@@ -370,7 +371,7 @@
                   </el-row>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- 谁浏览了 -->
             <div style="margintop: 50px">
               <h2>谁浏览了</h2>
