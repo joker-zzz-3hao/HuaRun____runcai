@@ -10,6 +10,7 @@
     "mock": "vue-cli-service serve --mode mock",
     "build:sit": "vue-cli-service build --mode sit",
     "build:uat": "vue-cli-service build --mode uat",
+    "build:prod": "vue-cli-service build --mode prod",
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
