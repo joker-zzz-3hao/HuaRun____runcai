@@ -17,9 +17,8 @@
         v-for="item in focusList"
         :key="item.id"
         :class="item.userId == selectUserId ? 'red' : 'green'"
-        @click="selectUser(item)"
       >
-        <div style="display: flex" class="user-info">
+        <div style="display: flex" class="user-info" @click="selectUser(item)">
           <div v-if="item.headUrl">
             <el-avatar :src="item.headUrl"></el-avatar>
           </div>
@@ -48,7 +47,7 @@
         <div class="okr-title">{{ item.okrMain.periodName }}</div>
         <dl class="okr-state">
           <dt>
-            <i class="el-icon-set-up"></i>
+            <i class></i>
             <em>状态</em>
           </dt>
           <dd>
@@ -58,7 +57,13 @@
         </dl>
         <dl class="okr-responsible">
           <dt>
-            <i class="el-icon-user"></i>
+            <em>OKR类型</em>
+          </dt>
+          <dd>{{ CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType || 2] }}</dd>
+        </dl>
+        <dl class="okr-responsible">
+          <dt>
+            <!-- <i class="el-icon-user"></i> -->
             <em>负责人</em>
           </dt>
           <dd>{{ item.okrMain.userName }}</dd>
@@ -69,14 +74,14 @@
         </dl>
         <dl class="okr-progress">
           <dt>
-            <i class="el-icon-odometer"></i>
+            <!-- <i class="el-icon-odometer"></i> -->
             <em>OKR进度</em>
           </dt>
           <dd>
             <el-progress
               type="circle"
-              :percentage="parseInt(item.okrMain.okrProgress, 10) || 0"
-              :width="70"
+              :percentage="item.okrMain.okrProgress"
+              :width="60"
               :stroke-width="5"
               color="#4ccd79"
               class="tl-progress-circle"
@@ -84,19 +89,68 @@
           </dd>
         </dl>
       </div>
-      <tl-okr-table
-        :overview="true"
-        :tableList="item.tableList"
-        :disabled="false"
-        :showOKRInfoLabel="true"
-        :expands="expands"
-      ></tl-okr-table>
+      <div class="card-panel-body">
+        <tl-okr-table :tableList="item.tableList">
+          <!-- o的承接地图 -->
+          <template slot="head-undertake" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount > 0"
+              @click="
+                goUndertakeMaps(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
+            >
+              <i
+                :class="{
+                  'has-undertake': props.okritem.continueCount > 0,
+                }"
+                class="el-icon-link"
+              ></i>
+            </div>
+            <div v-else-if="showUndertake">暂无</div>
+          </template>
+          <!-- kr的承接地图 -->
+          <template slot="body-bar" slot-scope="props">
+            <div
+              v-if="props.okritem.continueCount > 0"
+              @click="
+                goUndertakeMaps(
+                  props.okritem.okrDetailId,
+                  props.okritem.okrDetailObjectKr
+                )
+              "
+            >
+              <i
+                :class="{
+                  'has-undertake': props.okritem.continueCount > 0,
+                }"
+                class="el-icon-link"
+              ></i>
+            </div>
+            <div v-else-if="showUndertake">暂无</div>
+          </template>
+          <!-- o的进度更新 -->
+          <template slot="weight-bar" slot-scope="props">
+            <div
+              v-if="item.okrMain.status == '1'"
+              @click="openUpdate(props.okritem)"
+            >
+              <el-button plain class="tl-btn btn-lineheight"
+                >更新进展</el-button
+              >
+            </div>
+          </template>
+        </tl-okr-table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import okrTableLittle from '@/components/okrTableLittle';
+import { mapState } from 'vuex';
+import okrTable from './components/okrTable';
 import CONST from './const';
 import Server from './server';
 
@@ -105,7 +159,7 @@ const server = new Server();
 export default {
   name: 'concernedOkr',
   components: {
-    'tl-okr-table': okrTableLittle,
+    'tl-okr-table': okrTable,
   },
   data() {
     return {
@@ -121,11 +175,20 @@ export default {
     };
   },
   computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+    }),
     expands() {
       if (this.tableList.length > 0) {
         return [this.tableList[0].okrDetailId];
       }
       return [];
+    },
+    showUndertake() {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        return true;
+      }
+      return false;
     },
   },
   mounted() {
@@ -207,6 +270,9 @@ export default {
     },
     closed() {
       this.exist = false;
+    },
+    selectUser(data) {
+      this.queryOKR(data);
     },
   },
 };

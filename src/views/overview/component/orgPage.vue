@@ -28,7 +28,9 @@
           <dd>{{ okrMain.userName }}</dd>
         </dl>
         <dl class="okr-responsible">
-          <dd v-if="okrMain.supported" @click="addFocus(okrMain)">关注</dd>
+          <dd v-if="okrMain.supported != '1'" @click="addFocus(okrMain)">
+            关注
+          </dd>
           <dd v-else>已关注</dd>
         </dl>
         <dl class="okr-progress">
