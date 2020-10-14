@@ -328,7 +328,8 @@
         <div class="week-change">
           <span>本周变化</span
           ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+            }}{{ item.progressAfter - item.progressBefor }}%</em
           >
         </div>
       </dd>
