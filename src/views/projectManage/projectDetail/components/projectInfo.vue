@@ -11,14 +11,29 @@
         }}</span>
       </div>
       <div>
-        <span>项目经理：{{ `${baseInfo.projectManager} || '--'` }}</span>
-        <span>项目所属部门：张三</span>
-        <span>项目总预算：张三</span>
+        <span>项目经理：{{ `${baseInfo.projectManager || "--"}` }}</span>
+        <span
+          >项目所属部门：{{ `${baseInfo.projectApplyDepName || "--"}` }}</span
+        >
+        <span>项目总预算：{{ `${baseInfo.projectBudget || "0"}` }}万</span>
+        <span>{{
+          `${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"}`
+        }}</span>
       </div>
       <div>
-        <span>投入类型：张三</span>
-        <span>申请时间：张三</span>
-        <span>项目时间：张三</span>
+        <span
+          >投入类型：{{
+            `${CONST.THROW_TYPE_MAP[baseInfo.projectInputType] || "--"}`
+          }}</span
+        >
+        <span>申请时间：{{ `${baseInfo.projectApplyDate || "--"}` }}</span>
+        <span
+          >项目时间：{{
+            `${baseInfo.projectBeginDate || "--"}至${
+              baseInfo.projectEndDate || "--"
+            }`
+          }}</span
+        >
       </div>
     </div>
     <div>
@@ -31,54 +46,56 @@
           :total="total"
           :currentPage.sync="currentPage"
           :pageSize.sync="pageSize"
-          @searchList="searchList"
+          @searchList="searchProject"
         >
           <div slot="tableContainer" class="table-container">
-            <el-table :data="tableData" class="tl-table">
-              <el-table-column prop="name" label="姓名" min-width="140">
+            <el-table :data="baseInfo.projectUserVoList" class="tl-table">
+              <el-table-column prop="userName" label="姓名" min-width="140">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.name">
-                    <span>{{ scope.row.name }}</span>
-                    <template v-if="isTalentAdmin">
-                      <span v-if="scope.row.memberType == '0'">(经理)</span>
-                      <span
-                        @click="setManager(scope.row)"
-                        v-else-if="scope.row.memberType == '1'"
-                        >(内部)</span
-                      >
-                      <span
-                        @click="setManager(scope.row)"
-                        v-else-if="scope.row.memberType == '2'"
-                        >(外部)</span
-                      >
-                    </template>
-                  </p>
-                  <p v-else>--</p>
+                  <div class="user-info">
+                    <img
+                      v-if="scope.row.headUrl"
+                      :src="scope.row.headUrl"
+                      alt
+                    />
+                    <div v-else-if="scope.row.userName" class="user-name">
+                      <em>{{
+                        scope.row.userName.substring(
+                          scope.row.userName.length - 2
+                        )
+                      }}</em>
+                    </div>
+                  </div>
+                  <span>{{ scope.row.userName }}</span>
+                  <template>
+                    <span v-if="scope.row.projectUserType == '1'">(经理)</span>
+                    <span
+                      @click="setManager(scope.row)"
+                      v-else-if="scope.row.projectUserType == '0'"
+                      >(普通员工)</span
+                    >
+                  </template>
                 </template>
               </el-table-column>
-              <el-table-column prop="departName" label="部门" min-width="160">
+              <el-table-column prop="userLevel" label="级别" min-width="120">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.departName">{{
-                    scope.row.departName
+                  <span v-if="scope.row.userLevel">{{
+                    scope.row.userLevel
                   }}</span>
                   <span v-else>--</span>
                 </template>
               </el-table-column>
-              <el-table-column
-                prop="totalTime"
-                label="合计工时"
-                min-width="120"
-              >
+              <el-table-column prop="orgName" label="所属部门" min-width="160">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.totalTime">{{
-                    scope.row.totalTime
-                  }}</span>
+                  <span v-if="scope.row.orgName">{{ scope.row.orgName }}</span>
                   <span v-else>--</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="time" label="加入项目时间" min-width="180">
+              <el-table-column prop="userPost" label="职能" min-width="180">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.projectType">{{ scope.row.time }}</span>
+                  <span v-if="scope.row.userPost">{{
+                    scope.row.userPost
+                  }}</span>
                   <span v-else>--</span>
                 </template>
               </el-table-column>
@@ -123,17 +140,7 @@ export default {
       pageSize: 0,
       isTalentAdmin: false,
       showAddMember: false,
-      tableData: [
-        {
-          name: '陈翔', departName: '华润云', totalTime: '20天', time: '2020-09-10', isManage: '0', memberType: '0',
-        },
-        {
-          name: '陈翔', departName: '华润云', totalTime: '20天', time: '2020-09-10', isManage: '1', memberType: '1',
-        },
-        {
-          name: '陈翔', departName: '华润云', totalTime: '20天', time: '2020-09-10', isManage: '0', memberType: '2',
-        },
-      ],
+      tableData: [],
     };
   },
   components: {
@@ -160,41 +167,36 @@ export default {
     }),
   },
   mounted() {
-    this.userInfo.roleList.forEach((item) => {
-      if (item.roleCode == 'TENANT_ADMIN') {
-        this.isTalentAdmin = true;
-      }
-    });
-    this.init();
+    // this.tableData = this.baseInfo.projectUserVoList || [];
   },
   methods: {
-    init() {},
-    searchList() {},
     deleteMember(data) {
       this.$xconfirm({
         title: '删除确认',
         content: '是否确认删除该数据，删除将无法恢复',
 
       }).then(() => {
-        this.server.deleteMember({
-          orguserIdId: data.userId,
+        this.server.removeProjectUser({
+          projectId: data.projectId,
+          userId: data.userId,
         }).then((res) => {
           if (res.code == 200) {
-            // this.$message.success('移除成员成功');
-            this.searchList();
+            this.searchProject();
           }
         });
       });
     },
     setManager(data) {
-      this.server.setManager({
-        userId: data.userId,
-      }).then((res) => {
-        if (res.code == '200') {
-          console.log(res);
-          this.searchList();
-        }
-      });
+      if (data == '1') {
+        this.server.setManager({
+          userId: data.userId,
+        }).then((res) => {
+          if (res.code == '200') {
+            console.log(res);
+            this.searchProject();
+          }
+        });
+      }
     },
     addMembers() {
       this.showAddMember = true;
@@ -203,8 +205,17 @@ export default {
       });
     },
     addSuccess() {
-      this.searchList();
       this.showAddMember = false;
+      this.searchProject();
+    },
+    searchProject() {
+      this.server.projectDetail({
+        projectId: this.$route.query.projectId || '',
+      }).then((res) => {
+        if (res.code == '200') {
+          this.baseInfo = res.data;
+        }
+      });
     },
   },
   watch: {},

@@ -210,6 +210,12 @@ export default {
     updateEnable(row) {
       this.server.updateEnable(row).then((res) => {
         if (res.code == 200) {
+          if (res.data === false) {
+            this.$xwarning({
+              title: '您当前任务过程有任务项，不可禁用',
+              content: '',
+            });
+          }
           this.searchList();
         }
       });

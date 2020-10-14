@@ -3,7 +3,7 @@ const apiList = {
   sit: 'https://cr-talent-dev.crcloud.com',
   // sit: 'http://10.200.197.21:8080',
   uat: 'https://cr-talent-uat.crcloud.com',
-  prod: 'https://portal-prod.crcloud.com',
+  prod: 'https://talent.crcloud.com',
 };
 const api = apiList[process.env.VUE_APP_NODE_ENV];
 console.log(`api:${api}`);

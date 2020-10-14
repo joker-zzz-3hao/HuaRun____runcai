@@ -13,14 +13,6 @@
     </div>
     <div>
       <div>
-        <span>部门名称</span>
-        <span>{{ baseInfo.orgName }}</span>
-      </div>
-      <div>
-        <span>角色名称</span>
-        <span>团队综合管理员</span>
-      </div>
-      <div>
         <div>
           <span>部门名称</span>
           <span>{{ baseInfo.orgName }}</span>

@@ -1,12 +1,8 @@
 <template>
   <div class="concerned-okr">
-    <!-- <div>
+    <div>
       <div>
         <div>我的关注</div>
-        <div @click="addFocus" v-if="hasPower('okr-focus-add')">
-          <span>添加关注</span>
-          <i class="el-icon-plus"></i>
-        </div>
       </div>
       <div
         v-for="item in focusList"
@@ -24,9 +20,20 @@
           <div>{{ item.targetName }}</div>
           <div>{{ `(${item.orgName})` }}</div>
         </div>
-        <div v-if="hasPower('okr-focus-add')" @click="cancelFocus(item)">取消关注</div>
+        <div v-if="hasPower('okr-focus-add')">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <i class="el-icon-more el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="cancelFocus(item)"
+                >取消关注</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
-    </div> -->
+    </div>
     <div v-for="item in tableList" :key="item.okrMain.okrId">
       <div class="card-panel-head">
         <div class="okr-title">{{ item.okrMain.periodName }}</div>
@@ -117,7 +124,18 @@ export default {
     init() {
       if (this.hasPower('okr-foucs-list')) {
         this.queryOKR();
+        this.queryFocusList();
       }
+    },
+    queryFocusList() {
+      this.server.focusList().then((res) => {
+        if (res.code == '200') {
+          this.focusList = res.data;
+          if (this.focusList.length > 0) {
+            this.selectUserId = this.focusList[0].targetId;
+          }
+        }
+      });
     },
     addFocus(data) {
       this.param = [];

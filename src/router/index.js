@@ -43,7 +43,7 @@ function hasPower(power) {
 
 router.beforeEach((to, from, next) => {
   const urlParams = getParams(window.location.href);
-  const urlCrctoken = urlParams.crctoken;
+  const urlCrctoken = urlParams.token;
   // const origin = getOrigin();
   // 判断获取的token,如果token存在就更新存到缓存
   if (urlCrctoken) {

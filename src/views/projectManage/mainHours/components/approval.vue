@@ -4,17 +4,17 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      :title="info.projectName"
+      :title="info.projectNameCn"
       :close-on-click-modal="false"
     >
-      <div v-for="item in info.list" :key="item.id">
+      <div v-for="item in info.weeklyItemList" :key="item.id">
         <div>
           <span>工作项:</span>
           <span>{{ item.workContent }}</span>
         </div>
         <div>
           <span>状态:</span>
-          <span>{{ item.status }}%</span>
+          <span>{{ item.workProgress }}%</span>
         </div>
         <div>
           <span>时间:</span>
@@ -22,33 +22,21 @@
         </div>
         <div>
           <span>填报工时:</span>
-          <span>投入{{ item.totalTime }}天</span>
-        </div>
-        <div>
-          <span>确认工时:</span>
-          <el-popover placement="top" width="160" v-model="item.visible">
-            <el-input
-              maxlength="64"
-              v-model="item.times"
-              class="tl-input-search"
-            />
-            <div style="text-align: right; margin: 0">
-              <el-button type="primary" size="mini" @click="hideDom(item)"
-                >确定</el-button
-              >
-            </div>
-            <el-button slot="reference" @click="test(item)"
-              >如需修改,请确认</el-button
-            >
-          </el-popover>
-          <span v-if="item.remark">修改原因：{{ item.remark }}</span>
+          <span>投入{{ item.workTime }}天</span>
         </div>
         <div>
           <span>内容:</span>
-          <span>{{ item.content }}</span>
+          <span>{{ item.workDesc }}</span>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
+        <span>确认工时</span>
+        <el-input-number
+          v-model="timeSheet"
+          :precision="1"
+          :step="0.5"
+          :min="0"
+        ></el-input-number>
         <el-button @click="visible = false">取 消</el-button>
         <el-button type="primary" @click="approval">确 定</el-button>
       </span>
@@ -66,6 +54,7 @@ export default {
       CONST,
       visible: false,
       loading: false,
+      timeSheet: 0,
       info: {},
     };
   },
@@ -83,13 +72,29 @@ export default {
   mounted() {},
   methods: {
     show(data) {
-      this.info = data;
-      this.info.list.forEach((item) => {
-        item.visible = false;
+      // this.info = data;
+      // this.info.list.forEach((item) => {
+      //   item.visible = false;
+      // });
+      this.server.approvalTimeSheetList({
+        projectApprovalId: data.projectApprovalId,
+      }).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+          this.info = res.data;
+        }
       });
       this.visible = true;
     },
-    approval() {},
+    approval() {
+      this.server.timeSheet({
+        projectId: '',
+      }).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+        }
+      });
+    },
     close() {
       this.visible = false;
     },
