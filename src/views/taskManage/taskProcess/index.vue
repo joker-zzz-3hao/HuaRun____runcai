@@ -126,10 +126,12 @@
           </div>
           <el-input
             placeholder="输入任务标题"
-            v-model="searchParams.taskTitle"
             style="width: 200px"
-            clearable
             class="tl-input-search"
+            v-model="searchParams.taskTitle"
+            clearable
+            @clear="getTableList"
+            @keyup.enter.native="getTableList"
           >
             <i
               class="el-icon-search el-input__icon"
@@ -142,12 +144,14 @@
             :userList="userList"
             :userMap="userMap"
             v-model="searchParams.searchExecutor"
+            @change="getTableList"
           ></tl-personmultiple>
           <tl-personmultiple
             title="请选择创建人"
             :userList="userList"
             :userMap="userMap"
             v-model="searchParams.searchCreator"
+            @change="getTableList"
           ></tl-personmultiple>
         </div>
         <div>
@@ -188,7 +192,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import personMultiple from '@/components/personMultiple';
 import tlList from './components/listPage';
 import tlBoard from './components/boardPage';
@@ -243,6 +247,7 @@ export default {
         taskTitle: '',
         searchCreator: [],
         searchExecutor: [],
+        typeId: '',
       },
       userList: [],
       userMap: {},
@@ -250,7 +255,6 @@ export default {
   },
   computed: {
     ...mapState('common', {
-      // searchParams: (state) => state.searchParams,
       userInfo: (state) => state.userInfo,
     }),
   },
@@ -260,7 +264,6 @@ export default {
     this.init('3');
   },
   methods: {
-    ...mapMutations('common', ['setSearchParams']),
     init(processType) {
       this.server.queryTaskProcessList({
         currentPage: 1,
@@ -345,11 +348,11 @@ export default {
       });
     },
     getTableList() {
-      this.searchParams = {};
-      // this.setSearchParams();
+      this.queryTaskByClassify(this.searchParams.typeId);
     },
     todo() {},
     queryTaskByClassify(typeId) {
+      this.searchParams.typeId = typeId || '';
       if (this.$refs.board) {
         this.$refs.board.init(typeId);
       }

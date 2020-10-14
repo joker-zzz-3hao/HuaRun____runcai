@@ -26,17 +26,21 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="taskTitle"></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskTitle"
+            ></el-table-column>
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
                 <div>
                   <p>
                     <i class="el-icon-user"></i>
-                    <span>{{scope.row.userName}}</span>
+                    <span>{{ scope.row.userName }}</span>
                   </p>
                   <p>
                     <i class="el-icon-date"></i>
-                    <span>{{scope.row.createTime}}</span>
+                    <span>{{ scope.row.createTime }}</span>
                   </p>
                 </div>
               </template>
@@ -44,7 +48,11 @@
             <el-table-column min-width="100px" align="left" prop="taskProgress">
               <template slot-scope="scope">
                 <div>
-                  <el-slider disabled v-model="scope.row.taskProgress" :step="1"></el-slider>
+                  <el-slider
+                    disabled
+                    v-model="scope.row.taskProgress"
+                    :step="1"
+                  ></el-slider>
                 </div>
               </template>
             </el-table-column>
@@ -53,16 +61,20 @@
                 <div
                   v-if="!scope.row.showChangeUser"
                   @click="showSelectPeople(scope.row)"
-                  style="cursor:pointer"
+                  style="cursor: pointer"
                 >
                   <span>
-                    <el-avatar :size="30" :src="scope.row.headerUrl" @error="errorHandler">
+                    <el-avatar
+                      :size="30"
+                      :src="scope.row.headerUrl"
+                      @error="errorHandler"
+                    >
                       <div v-if="scope.row.userName" class="user-name">
                         <em>
                           {{
-                          scope.row.userName.substring(
-                          scope.row.userName.length - 2
-                          )
+                            scope.row.userName.substring(
+                              scope.row.userName.length - 2
+                            )
                           }}
                         </em>
                       </div>
@@ -88,14 +100,22 @@
                       :label="item.userName"
                       :value="item.userId"
                     >
-                      <span style="float:left">
-                        <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                      <span style="float: left">
+                        <el-avatar
+                          :size="30"
+                          :src="item.headUrl"
+                          @error="errorHandler"
+                        >
                           <div v-if="item.userName" class="user-name">
-                            <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                            <em>{{
+                              item.userName.substring(item.userName.length - 2)
+                            }}</em>
                           </div>
                         </el-avatar>
                       </span>
-                      <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                      <span style="float: left; marginleft: 5px">{{
+                        item.userName
+                      }}</span>
                     </el-option>
                   </el-select>
                 </div>
@@ -111,25 +131,31 @@
                 >
                   <el-submenu index="1">
                     <template slot="title">操作</template>
-                    <el-menu-item @click.native="finish(scope.row)">任务归档</el-menu-item>
-                    <el-menu-item @click.native="deleteTask(scope.row)">删除任务</el-menu-item>
+                    <el-menu-item @click.native="finish(scope.row)"
+                      >任务归档</el-menu-item
+                    >
+                    <el-menu-item @click.native="deleteTask(scope.row)"
+                      >删除任务</el-menu-item
+                    >
                     <el-submenu index="1-1">
                       <template slot="title">移动过程节点</template>
                       <el-menu-item
-                        @click.native="changeStep(scope.row,step)"
+                        @click.native="changeStep(scope.row, step)"
                         v-for="step in stepList"
                         :index="step.stepId"
                         :key="step.stepId"
-                      >{{step.stepName}}</el-menu-item>
+                        >{{ step.stepName }}</el-menu-item
+                      >
                     </el-submenu>
                     <el-submenu index="1-2">
                       <template slot="title">移动分类</template>
                       <el-menu-item
-                        @click.native="changeClassify(scope.row,calssify)"
+                        @click.native="changeClassify(scope.row, calssify)"
                         v-for="calssify in processClassifyList"
                         :index="calssify.typeId"
                         :key="calssify.typeId"
-                      >{{calssify.typeName}}</el-menu-item>
+                        >{{ calssify.typeName }}</el-menu-item
+                      >
                     </el-submenu>
                   </el-submenu>
                 </el-menu>
@@ -176,6 +202,12 @@ export default {
         return {};
       },
     },
+    searchParams: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -209,6 +241,9 @@ export default {
         processId: self.processObj.processId,
         typeId: typeId || '',
         stepId: this.stepId,
+        taskTitle: this.searchParams.taskTitle || '',
+        taskUserIds: this.searchParams.searchCreator.toString(),
+        createByIds: this.searchParams.searchExecutor.toString(),
       };
       self.server.queryTaskTableList(params).then((res) => {
         if (res.code == 200) {
