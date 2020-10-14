@@ -492,13 +492,23 @@
               @change="processChange(item)"
               tooltip-class="slider-tooltip"
             ></el-slider>
-            <el-input
+            <el-input-number
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              controls-position="right"
+              :min="0"
+              :max="100"
+              :step="1"
+              :precision="0"
+              class="tl-input-number"
+            ></el-input-number>
+            <!-- <el-input
               v-if="timeDisabled"
               v-model="item.progressAfter"
               controls-position="right"
               class="tl-input-number"
               @input="progressAfterChange"
-            ></el-input>
+            ></el-input> -->
             <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>
