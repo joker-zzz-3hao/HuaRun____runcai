@@ -1224,6 +1224,7 @@ export default {
     },
     changeConfidence() {},
     progressAfterChange(progressAfter) {
+      console.log(progressAfter);
       this.$forceUpdate();
     },
     projectChange(work) {
