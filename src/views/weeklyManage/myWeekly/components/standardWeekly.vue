@@ -134,7 +134,7 @@
             label="支撑OKR/价值观"
             prop="valueOrOkrIds"
             :render-header="renderHeader"
-            min-width="300"
+            min-width="150"
           >
             <!-- okrIds -->
             <template slot-scope="scope">
