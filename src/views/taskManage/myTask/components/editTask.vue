@@ -45,7 +45,9 @@
                     <i class="el-icon-more el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click="deleteTask"
+                    <el-dropdown-item
+                      @click="deleteTask"
+                      :disabled="formData.taskStatus !== 0"
                       >删除</el-dropdown-item
                     >
                     <el-dropdown-item
