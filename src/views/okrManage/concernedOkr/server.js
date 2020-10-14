@@ -2,7 +2,7 @@ import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
   focusList(param) {
-    return this._ajaxPost('gateway/talent-okr/okr/focus/list', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/queryFocusOkrUserList', param);
   }
 
   addFocus(param) {
@@ -14,6 +14,6 @@ export default class Server extends ServerBase {
   }
 
   queryFocusUserOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/queryUserFocusOkr', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/queryFocusUserOkr', param);
   }
 }

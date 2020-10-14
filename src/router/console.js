@@ -261,19 +261,6 @@ export default [{
       },
     ],
   },
-  {
-    // 复盘
-    path: '/replayPerson',
-    name: 'replayPerson',
-    meta: {
-      hasMainMenu: true,
-      isSubMenu: true,
-      parentRoute: 'replayPerson',
-      title: 'replayPerson',
-      power: '',
-    },
-    component: () => import('@/views/replay/replayPerson/index'),
-  },
   // {
   //   // 项目管理
   //   path: '/projectManage',
