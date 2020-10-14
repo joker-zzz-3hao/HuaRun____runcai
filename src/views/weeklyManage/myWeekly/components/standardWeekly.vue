@@ -61,13 +61,13 @@
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
-                <el-input-number
+                <el-input
                   v-model="scope.row.workProgress"
                   controls-position="right"
                   :min="0"
                   :max="100"
                   class="tl-input-number"
-                ></el-input-number>
+                ></el-input>
               </template>
               <!-- 编辑完提交后展示 -->
               <tl-process
@@ -75,7 +75,8 @@
                 :data="scope.row.workProgress"
                 :width="36"
                 :marginLeft="6"
-              ></tl-process>
+              ></tl-process
+              >%
             </template>
           </el-table-column>
           <el-table-column
@@ -85,7 +86,7 @@
             min-width="130"
           >
             <template slot-scope="scope">
-              <el-input-number
+              <el-input
                 v-if="timeDisabled"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
@@ -95,7 +96,7 @@
                 :max="5"
                 @change="workTimeChange(scope.row)"
                 class="tl-input-number"
-              ></el-input-number>
+              ></el-input>
               <!-- 编辑完提交后展示 -->
               <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
@@ -399,7 +400,7 @@
             @change="processChange(item)"
             tooltip-class="slider-tooltip"
           ></el-slider>
-          <el-input-number
+          <el-input
             v-model="item.progressAfter"
             controls-position="right"
             :min="0"
@@ -407,7 +408,7 @@
             :step="1"
             :precision="0"
             class="tl-input-number"
-          ></el-input-number>
+          ></el-input>
           <span>%</span>
         </div>
         <div class="week-change">
