@@ -41,6 +41,17 @@
         :okrMain="okrMain"
       />
     </div>
+    <div>
+      <div>复盘记录</div>
+      <el-timeline :reverse="false">
+        <el-timeline-item
+          v-for="(item, index) in activities"
+          :key="index"
+          :timestamp="item.createTime"
+          >{{ item.userName }} {{ item.content }}</el-timeline-item
+        >
+      </el-timeline>
+    </div>
   </div>
 </template>
 
@@ -59,6 +70,7 @@ export default {
       form: {},
       server,
       activeNames: ['1'],
+      activities: [],
       okrMain: {
         okrMainVo: {},
       },
@@ -70,8 +82,17 @@ export default {
   },
   created() {
     this.getOkrReviewDetail();
+    this.getOkrReviewHistoryList();
   },
   methods: {
+    getOkrReviewHistoryList() {
+      this.server.getOkrReviewHistoryList({
+        okrMainId: this.$route.query.okrId,
+
+      }).then((res) => {
+        this.activities = res.data;
+      });
+    },
     getOkrReviewDetail() {
       this.server.getOkrReviewDetail({
         okrMainId: this.$route.query.okrId,
