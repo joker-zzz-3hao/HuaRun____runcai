@@ -171,10 +171,10 @@
                           setOkrStyle(item.okrDetailObjectKr)
                         }}</em>
                       </el-tooltip>
-                      <i
+                      <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
-                      ></i>
+                      ></i> -->
                     </li>
                     <li
                       v-show="scope.row.selectedOkr.length < 1"

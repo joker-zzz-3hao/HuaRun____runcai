@@ -60,19 +60,22 @@
             min-width="120"
           >
             <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.workProgress"
-                controls-position="right"
-                :min="0"
-                :max="100"
-                class="tl-input-number"
-              ></el-input-number>
+              <template v-if="timeDisabled">
+                <el-input-number
+                  v-model="scope.row.workProgress"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  class="tl-input-number"
+                ></el-input-number>
+              </template>
               <!-- 编辑完提交后展示 -->
-              <!-- <tl-process
-                :data="node.okrDetailProgress"
+              <tl-process
+                v-else
+                :data="scope.row.workProgress"
                 :width="36"
                 :marginLeft="6"
-              ></tl-process> -->
+              ></tl-process>
             </template>
           </el-table-column>
           <el-table-column
@@ -83,6 +86,7 @@
           >
             <template slot-scope="scope">
               <el-input-number
+                v-if="timeDisabled"
                 controls-position="right"
                 v-model.trim="scope.row.workTime"
                 :precision="1"
@@ -93,7 +97,7 @@
                 class="tl-input-number"
               ></el-input-number>
               <!-- 编辑完提交后展示 -->
-              <!-- <em>balbalabala</em> -->
+              <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
             </template>
           </el-table-column>
@@ -155,10 +159,10 @@
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
                         <em>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
                       </el-tooltip>
-                      <i
+                      <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
                         class="el-icon-close"
-                      ></i>
+                      ></i> -->
                     </li>
                     <li class="icon-bg" @click="addSupportOkr(scope.row)">
                       <i class="el-icon-plus"></i>
@@ -343,7 +347,8 @@
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
-        class="undertake-okr-list is-o"
+        class="undertake-okr-list"
+        :class="item.kr ? 'is-kr' : 'is-o'"
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
@@ -372,39 +377,39 @@
               >支撑</span
             >
           </div>
-          <div class="sdf"></div>
-          <div class="tl-progress-group">
-            <span>当前进度</span>
-            <tl-process
-              :data="parseInt(item.progressAfter, 10)"
-              :showNumber="false"
-              :width="64"
-              :marginLeft="6"
-            ></tl-process>
-            <el-slider
-              v-model="item.progressAfter"
-              :step="1"
-              @change="processChange(item)"
-              tooltip-class="slider-tooltip"
-            ></el-slider>
-            <el-input-number
-              v-model="item.progressAfter"
-              controls-position="right"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
-              class="tl-input-number"
-            ></el-input-number>
-            <span>%</span>
-          </div>
-          <div class="week-change">
-            <span>本周变化</span
-            ><em>
-              {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
-            >
-          </div>
         </template>
+        <div class="sdf"><em v-if="item.kr">风险状态</em></div>
+        <div class="tl-progress-group">
+          <span>当前进度</span>
+          <tl-process
+            :data="parseInt(item.progressAfter, 10)"
+            :showNumber="false"
+            :width="64"
+            :marginLeft="6"
+          ></tl-process>
+          <el-slider
+            v-model="item.progressAfter"
+            :step="1"
+            @change="processChange(item)"
+            tooltip-class="slider-tooltip"
+          ></el-slider>
+          <el-input-number
+            v-model="item.progressAfter"
+            controls-position="right"
+            :min="0"
+            :max="100"
+            :step="1"
+            :precision="0"
+            class="tl-input-number"
+          ></el-input-number>
+          <span>%</span>
+        </div>
+        <div class="week-change">
+          <span>本周变化</span
+          ><em>
+            {{ item.progressAfter - item.progressBefor > 0 ? "+" : "" }}</em
+          >
+        </div>
         <!-- <div style="margintop: 50px" v-if="showTaskProcess">
           <h1></h1>
           <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
