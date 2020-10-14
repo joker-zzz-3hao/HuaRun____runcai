@@ -6,6 +6,7 @@
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
+    :append-to-body="true"
     :visible.sync="dialogTableVisible"
     :modal="false"
     class="tl-drawer tl-drawer-okr-cycle"

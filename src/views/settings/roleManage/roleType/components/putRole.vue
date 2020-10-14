@@ -4,6 +4,7 @@
     :modal-append-to-body="false"
     :before-close="close"
     @closed="closed"
+    :append-to-body="true"
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
@@ -17,15 +18,15 @@
       :rules="rules"
       label-width="100px"
       class="tl-form"
-      style="width:400px"
+      style="width: 400px"
     >
       <el-form-item label="角色编号" prop="roleCode">
-        <em>{{form.roleCode}}</em>
+        <em>{{ form.roleCode }}</em>
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
         <el-input
           maxlength="64"
-          style="width:200px"
+          style="width: 200px"
           v-model="form.roleName"
           placeholder="请输入角色名称"
           class="tl-input"
@@ -33,8 +34,8 @@
       </el-form-item>
       <el-form-item label="菜单权限">
         <div class="menuTreeList">
-          <div class="list" v-for="(item,index) in menuTreeList" :key="index">
-            <span>{{item.data.functionName}}</span>
+          <div class="list" v-for="(item, index) in menuTreeList" :key="index">
+            <span>{{ item.data.functionName }}</span>
             <i class="el-icon-error" @click.stop="clearNode(item)"></i>
           </div>
           <div class="postMenu">
@@ -43,7 +44,12 @@
               ref="treeMenu"
               :data="data"
               show-checkbox
-              :props="{ multiple: true, id:'functionId', label:'functionName',children:'children' }"
+              :props="{
+                multiple: true,
+                id: 'functionId',
+                label: 'functionName',
+                children: 'children',
+              }"
               node-key="functionId"
             ></el-tree>
           </div>
@@ -51,8 +57,12 @@
       </el-form-item>
     </el-form>
     <div class="operating-box">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">保存</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+        >保存</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>

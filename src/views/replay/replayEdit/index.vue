@@ -37,7 +37,7 @@
 import krDetail from './component/krDetail.vue';
 // eslint-disable-next-line import/extensions
 import oDetail from './component/oDetail.vue';
-import Server from '../../server';
+import Server from '../server';
 
 const server = new Server();
 export default {
@@ -78,9 +78,9 @@ export default {
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
-        // if (!this.okrMain.okrMainVo.reviewType) {
-        //   this.okrMain.okrMainVo.reviewType = 1;
-        // }
+        if (this.okrMain.okrMainVo.reviewType == null) {
+          this.okrMain.okrMainVo.reviewType = 1;
+        }
       });
     },
 
