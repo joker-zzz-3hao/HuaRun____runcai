@@ -104,7 +104,7 @@ export default class Server extends ServerBase {
 
   // 查询项目
   queryOrgProject(param) {
-    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+    return this._ajaxPost('gateway/project-service/project/query/userProjectList', param);
   }
 
   // 查询任务过程

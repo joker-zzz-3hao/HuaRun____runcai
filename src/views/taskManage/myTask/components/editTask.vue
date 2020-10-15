@@ -122,13 +122,27 @@
             </dd>
             <dd>
               <el-form-item label="归属项目" prop="projectVal">
-                <el-input
+                <el-select
+                  v-model.trim="formData.projectId"
+                  placeholder="请选择关联项目"
+                  @change="projectChange(scope.row)"
+                  class="tl-select"
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectNameCn"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
+                <!-- <el-input
                   :disabled="canEdit"
                   v-model.trim="formData.projectName"
                   placeholder="请选择归属项目"
                   maxlength="0"
                   @focus="projectInputFocus()"
-                ></el-input>
+                ></el-input> -->
               </el-form-item>
               <el-form-item label="归属OKR" prop="okrDetailId">
                 <el-select
@@ -458,6 +472,7 @@ export default {
       this.getUserList();
       this.queryOkr();
       this.getProcess();
+      this.getProjectList();
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
           if (res.code == 200 && res.data) {
@@ -508,6 +523,7 @@ export default {
     closed() {
       this.$emit('update:existEditTask', false);
     },
+    // 查询okr
     queryOkr() {
       const params = {
         myOrOrg: 'org',
@@ -521,6 +537,7 @@ export default {
         }
       });
     },
+    // 查询执行人
     getUserList(name = '') {
       const params = {
         currentPage: 1,
@@ -534,6 +551,7 @@ export default {
         }
       });
     },
+    // 查询过程
     getProcess() {
       this.server.queryProcess({
         currentPage: 1,
@@ -542,6 +560,14 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];
+        }
+      });
+    },
+    // 查询项目
+    getProjectList() {
+      this.server.queryOrgProject().then((res) => {
+        if (res.code == 200) {
+          this.projectList = res.data || [];
         }
       });
     },
@@ -619,11 +645,12 @@ export default {
         if (valid) {
           const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
+          const projectVal = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0] || {};
           this.formData.okrDetailName = okrVal.okrDetailObjectKr;
           this.formData.userName = userVal.userName;
-          if (this.formData.projectVal) {
-            this.formData.projectId = this.formData.projectVal.projectId;
-            this.formData.projectName = this.formData.projectVal.projectNameCn;
+          if (projectVal) {
+            this.formData.projectId = projectVal.projectId;
+            this.formData.projectName = projectVal.projectNameCn;
           }
 
           if (this.formData.timeVal) {

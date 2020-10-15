@@ -423,9 +423,6 @@ export default {
       immediate: true,
     },
   },
-  beforeDestroy() {
-    this.setSearchParams();
-  },
 };
 </script>
 <style lang="css" stylus>

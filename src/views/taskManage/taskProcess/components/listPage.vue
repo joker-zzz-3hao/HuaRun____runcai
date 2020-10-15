@@ -7,7 +7,11 @@
 <template>
   <div>
     <div>
-      <el-tabs v-model="tabName" @tab-click="selectTab(tabName)">
+      <el-tabs
+        v-model="tabName"
+        @tab-click="selectTab(tabName)"
+        class="tl-tabs"
+      >
         <el-tab-pane label="全部" name="all"></el-tab-pane>
         <el-tab-pane
           :label="step.stepName"
