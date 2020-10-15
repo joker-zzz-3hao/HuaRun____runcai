@@ -88,20 +88,22 @@
         <div class="operating-right">
           <div>
             <el-button
-              type="primary"
+              plain
+              class="tl-btn amt-border-fadeout"
               @click="queryTaskByClassify('')"
-              class="tl-btn amt-bg-slip"
-              icon="el-icon-s-claim"
+              :class="{ 'is-select': searchParams.typeId == '' }"
               >全部分类</el-button
             >
             <el-button
               v-for="classify in processClassifyList"
               :key="classify.typeId"
-              type="primary"
+              plain
+              class="tl-btn amt-border-fadeout"
               @click="queryTaskByClassify(classify.typeId)"
-              class="tl-btn amt-bg-slip"
               :disabled="classify.isEdit"
-              :icon="!classify.isEdit ? 'el-icon-s-claim' : ''"
+              :class="{
+                'is-select': searchParams.typeId == classify.typeId,
+              }"
             >
               <!-- @click.capture.stop="dataChange(scope.row)" -->
               <el-input

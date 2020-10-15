@@ -40,6 +40,10 @@
           </div>
         </div>
         <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
+        <span v-if="modelVal.length > 0" @click="clear">
+          <i class="el-icon-circle-close"></i
+        ></span>
+
         <i :class="arrowClass"></i>
       </div>
     </el-popover>
@@ -116,16 +120,12 @@ export default {
   },
   methods: {
     handleClick() {
-      console.log(this.searchUser);
       this.$emit('change', this.searchUser);
     },
-    // 删除单个执行人
-    clearPersonNode(pId) {
-      const index = this.userList.indexOf(pId);
-      if (index >= 0) {
-        this.userList.splice(index, 1);
-        this.handleClick();
-      }
+    // 删除
+    clear() {
+      this.$emit('change', []);
+      this.searchUser = [];
     },
     show() {
       this.arrowClass = 'el-icon-caret-top';
