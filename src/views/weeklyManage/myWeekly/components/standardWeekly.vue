@@ -307,7 +307,7 @@
       </dd>
     </dl>
     <!-- 下周计划 -->
-    <dl class="dl-card-panel week-plan">
+    <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>下周计划</em></dt>
       <dd v-if="formData.weeklyPlanSaveList.length < 1" class="no-data">
         <em>本周未填写下周计划</em>
@@ -323,20 +323,20 @@
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
-                  <el-input
+                  <!-- <el-input
                     v-if="canUpdate"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
                     placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
-                  ></el-input>
+                  ></el-input> -->
                   <!-- 编辑完之后 -->
-                  <em v-else>{{ scope.row.planContent }}</em>
+                  <em>{{ scope.row.planContent }}是大法是大法说的</em>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="code" width="40">
+            <!-- <el-table-column prop="code" width="40">
               <template slot-scope="scope">
                 <el-tooltip
                   v-if="canUpdate"
@@ -360,7 +360,7 @@
                   <i class="el-icon-minus"></i>
                 </el-tooltip>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </el-form>
       </dd>
@@ -377,7 +377,7 @@
       </dd>
     </dl>
     <!-- 个人OKR完成度 -->
-    <dl class="dl-card-panel okr-completion">
+    <dl class="dl-card-panel okr-completion" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">暂无关联的OKR</dd>
@@ -480,7 +480,7 @@
               :width="30"
               :marginLeft="2"
             ></tl-process>
-            <el-slider
+            <!-- <el-slider
               v-if="canUpdate"
               v-model="item.progressAfter"
               :step="1"
@@ -496,7 +496,7 @@
               :step="1"
               :precision="0"
               class="tl-input-number"
-            ></el-input-number>
+            ></el-input-number> -->
             <em>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>

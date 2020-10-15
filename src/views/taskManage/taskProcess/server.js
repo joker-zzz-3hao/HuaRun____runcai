@@ -122,6 +122,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost(`gateway/task-service/task/filed?taskId=${param.taskId}`, param);
   }
 
+  // 归档所有任务
+  filedAll(param) {
+    return this._ajaxPost(`gateway/task-service/task/filedAll?processId=${param.processId}`, param);
+  }
+
   // 接收任务
   acceptTask(param) {
     return this._ajaxPost(`gateway/task-service/task/accept?taskId=${param.taskId}`, param);
