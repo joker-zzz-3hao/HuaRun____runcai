@@ -1461,6 +1461,50 @@
   font-size: 14px;
 }
 
+/* concerned-okr */
+.concerned-okr .cont-area {
+  display: flex;
+  flex-direction: row;
+}
+
+.concerned-okr .followed-users {
+  margin: 0 16px 0 0;
+  flex: 0 0 280px;
+  width: 280px;
+}
+
+.concerned-okr .followed-okrs {
+  flex: 1;
+}
+
+.concerned-okr .followed-users,
+.concerned-okr .followed-okrs {
+  background: #fff;
+  box-shadow: 0 0 14px 0 #f4f6f8;
+  border-radius: 4px;
+}
+
+.concerned-okr .followed-okrs .tl-card-panel {
+  background: unset;
+  box-shadow: unset;
+  border-radius: unset;
+}
+
+.concerned-okr .followed-okrs .okr-follow {
+  flex: 0 0 100px;
+}
+
+.concerned-okr .followed-okrs .okr-title {
+  flex: 1;
+}
+
+.concerned-okr .cont-area .tl-card-panel .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 67%;
+}
+
+.concerned-okr .cont-area .tl-card-panel .tl-table-fix .tl-thead li:nth-child(3) {
+  width: 8%;
+}
 
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,

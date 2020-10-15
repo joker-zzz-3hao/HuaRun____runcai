@@ -459,7 +459,7 @@ export default {
           userId: data.userId,
         }).then((res) => {
           if (res.code == '200') {
-            this.queryTeamMember(this.teamSelect);
+            this.init();
           }
         });
       });
