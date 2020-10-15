@@ -332,6 +332,7 @@
               :step="1"
               :precision="0"
               class="tl-input-number"
+              @blur="progressAfterBlur(item)"
             ></el-input-number>
             <em>{{ item.progressAfter }}</em>
             <span>%</span>
@@ -379,6 +380,9 @@
         @click="canUpdate = true"
         class="tl-btn amt-bg-slip"
         >编辑</el-button
+      >
+      <span v-if="!canEdit"
+        >不好意思同学，历史周报不能编辑（补写），让往事随风吧，向前看</span
       >
     </div>
     <!-- 添加支撑项 -->
@@ -964,6 +968,15 @@ export default {
           });
         }
       });
+    },
+    progressAfterBlur(okrItem) {
+      if (okrItem.progressAfter == undefined) {
+        this.weeklyOkrSaveList.forEach((okr) => {
+          if (okrItem.okrDetailId == okr.okrDetailId) {
+            okr.progressAfter = 0;
+          }
+        });
+      }
     },
   },
   watch: {

@@ -549,6 +549,9 @@
         class="tl-btn amt-bg-slip"
         >编辑</el-button
       >
+      <span v-if="!canEdit"
+        >不好意思同学，历史周报不能编辑（补写），让往事随风吧，向前看</span
+      >
     </div>
 
     <!-- 添加支撑项 -->
