@@ -57,17 +57,30 @@
             icon="el-icon-s-claim"
             >去添加任务</el-button
           >
-          <el-button
-            type="primary"
-            @click="
-              go('filedTaskList', {
-                query: { processId: processObj.processId },
-              })
-            "
-            class="tl-btn amt-bg-slip"
-            icon="el-icon-s-cooperation"
-            >查看归档任务</el-button
-          >
+          <el-dropdown class="tl-dropdown">
+            <div class="el-dropdown-link">
+              <el-button
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                icon="el-icon-s-cooperation"
+                >查看归档任务</el-button
+              >
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="filedAll">
+                归档任务过程所有已完成的任务</el-dropdown-item
+              >
+              <el-dropdown-item
+                @click.native="
+                  go('filedTaskList', {
+                    query: { processId: processObj.processId },
+                  })
+                "
+              >
+                查看任务归档</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
         <!-- 切换列表或看板 -->
         <div class="operating-box" v-if="taskTypeList.length > 0">
@@ -401,7 +414,13 @@ export default {
       this.processId = process.processId;
       this.selectProcess(process);
     },
-
+    filedAll() {
+      this.server.filedAll({ processId: this.processId }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('归档成功');
+        }
+      });
+    },
   },
   watch: {
     processId: {
