@@ -46,7 +46,12 @@
           </el-radio-group>
         </dd>
       </dl>
-      <dl v-else class="dl-list no-data">暂无可关联的父目标</dl>
+      <dl
+        v-else-if="periodList.length == 0 || !hasParent"
+        class="dl-list no-data"
+      >
+        暂无可关联的父目标
+      </dl>
       <dl v-if="!showPhil" class="dl-list">
         <dt class="list-title">
           <em>{{ departmentName }}{{ periodName }}</em>
@@ -179,6 +184,7 @@ export default {
       {
         menuName: '虚拟汇报',
       }],
+      hasParent: true,
     };
   },
   created() {
@@ -186,6 +192,9 @@ export default {
       this.departmentName = this.userInfo.orgParentName || '部门';
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
+    }
+    if (!this.userInfo.orgParentName) {
+      this.hasParent = false;
     }
     // this.getCycle();
     this.getUndertakeOkr();
