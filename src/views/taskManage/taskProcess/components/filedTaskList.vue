@@ -74,11 +74,9 @@
             <el-table-column min-width="100px" align="left" prop="taskProgress">
               <template slot-scope="scope">
                 <div>
-                  <el-slider
-                    disabled
-                    v-model="scope.row.taskProgress"
-                    :step="1"
-                  ></el-slider>
+                  <tl-process
+                    :data="parseInt(scope.row.taskProgress, 10)"
+                  ></tl-process>
                 </div>
               </template>
             </el-table-column>
@@ -109,6 +107,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import process from '@/components/process';
 import personMultiple from '@/components/personMultiple';
 import Server from '../server';
 
@@ -117,7 +116,7 @@ export default {
   name: '',
   components: {
     'tl-personmultiple': personMultiple,
-
+    'tl-process': process,
   },
   props: {},
   data() {
