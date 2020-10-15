@@ -663,8 +663,10 @@ export default {
             this.saveDraft();
           }).catch(() => {});
         }
-        this.loading = false;
-        this.setLoading(false);
+        if (res.code) {
+          this.loading = false;
+          this.setLoading(false);
+        }
       });
     },
     // 变更
