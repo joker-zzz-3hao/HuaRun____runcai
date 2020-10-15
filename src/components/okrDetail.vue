@@ -12,7 +12,7 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
       <div v-if="showFocus" @click="addFocus">关注</div>
-      <div v-else>已关注</div>
+      <div v-else @click="cancelFocus">已关注</div>
     </div>
     <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">
@@ -500,6 +500,7 @@ export default {
       status: 1,
       showFocus: true,
       param: [],
+      cancelParam: [],
     };
   },
   components: {
@@ -607,6 +608,21 @@ export default {
         }
         // this.okrId = this.formData.okrMain.okrMainId;
       }
+    },
+    cancelFocus() {
+      this.cancelParam = [];
+      this.param.push({
+        focusType: 0,
+        targetId: this.okrId,
+        supported: 0,
+      });
+      this.mainServer.addFocus(
+        this.param,
+      ).then((res) => {
+        if (res.code == '200') {
+          this.showFocus = !this.showFocus;
+        }
+      });
     },
     // 关注
     addFocus() {
