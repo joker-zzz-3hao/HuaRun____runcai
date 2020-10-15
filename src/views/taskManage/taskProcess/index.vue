@@ -8,6 +8,9 @@
               <template slot="title">任务过程</template>
               <el-submenu index="1-1">
                 <template slot="title">团队使用</template>
+                <el-menu-item v-if="teamList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(team)"
                   v-for="team in teamList"
@@ -18,6 +21,9 @@
               </el-submenu>
               <el-submenu index="1-2">
                 <template slot="title">小范围使用</template>
+                <el-menu-item v-if="littleRangeList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(littleRange)"
                   v-for="littleRange in littleRangeList"
@@ -28,6 +34,9 @@
               </el-submenu>
               <el-submenu index="1-3">
                 <template slot="title">个人使用</template>
+                <el-menu-item v-if="personList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(person)"
                   v-for="person in personList"

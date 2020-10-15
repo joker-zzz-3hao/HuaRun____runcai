@@ -1,6 +1,12 @@
 <template>
   <div class="tl-custom-popover">
-    <el-popover placement="bottom" width="200" trigger="click">
+    <el-popover
+      placement="bottom"
+      width="200"
+      trigger="click"
+      @show="show"
+      @hide="hide"
+    >
       <div>
         <el-input
           placeholder="搜索"
@@ -27,9 +33,14 @@
       </div>
       <div slot="reference">
         <div v-if="modelVal.length < 1">{{ this.title }}</div>
-        <div v-for="p in modelVal" :key="p">
-          <em> {{ userMap[p] }}</em>
+        <div v-for="p in cutPic" :key="p.userId" class="user-info">
+          <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+          <div v-else class="user-name">
+            <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+          </div>
         </div>
+        <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
+        <i :class="arrowClass"></i>
       </div>
     </el-popover>
   </div>
@@ -49,6 +60,7 @@ export default {
       isShow: false,
       keyword: '',
       searchUser: [],
+      arrowClass: 'el-icon-caret-bottom',
     };
   },
 
@@ -86,6 +98,19 @@ export default {
         (data) => !this.keyword || data.userName.toLowerCase().includes(this.keyword.toLowerCase()),
       ) || [];
     },
+    cutPic() {
+      const list = [];
+      this.modelVal.forEach((id, index) => {
+        if (index < 4) {
+          this.userList.forEach((uitem) => {
+            if (uitem.userId == id) {
+              list.push(uitem);
+            }
+          });
+        }
+      });
+      return list;
+    },
   },
   created() {
   },
@@ -103,10 +128,10 @@ export default {
       }
     },
     show() {
-      this.isShow = true;
+      this.arrowClass = 'el-icon-caret-top';
     },
     hide() {
-      this.isShow = false;
+      this.arrowClass = 'el-icon-caret-bottom';
     },
   },
 };

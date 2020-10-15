@@ -48,21 +48,15 @@
             <el-table-column min-width="100px" align="left" prop="taskProgress">
               <template slot-scope="scope">
                 <div>
-                  <el-slider
-                    disabled
-                    v-model="scope.row.taskProgress"
-                    :step="1"
-                  ></el-slider>
+                  <tl-process
+                    :data="parseInt(scope.row.taskProgress, 10)"
+                  ></tl-process>
                 </div>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left">
               <template slot-scope="scope">
-                <div
-                  v-if="!scope.row.showChangeUser"
-                  @click="showSelectPeople(scope.row)"
-                  style="cursor: pointer"
-                >
+                <div style="cursor: pointer">
                   <span>
                     <el-avatar
                       :size="30"
@@ -82,11 +76,12 @@
                   </span>
                   <span>{{ scope.row.userName }}</span>
                 </div>
-                <div v-else>
+                <!-- <div v-else>
                   <el-select
                     ref="taskSelect"
+                    v-model="scope.row.taskUserId"
                     filterable
-                    placeholder="请输入成员姓名"
+                    placeholder="请选择执行人"
                     remote
                     :remote-method="remoteMethod"
                     @visible-change="visibleChange"
@@ -118,11 +113,34 @@
                       }}</span>
                     </el-option>
                   </el-select>
-                </div>
+                </div> -->
               </template>
             </el-table-column>
             <el-table-column fixed="right" min-width="130px" align="left">
               <template slot-scope="scope">
+                <el-button class="tl-btn" @click="openEdit(scope.row)"
+                  >编辑</el-button
+                >
+                <el-dropdown class="tl-dropdown">
+                  <div class="el-dropdown-link">
+                    <el-button class="tl-btn">移动</el-button>
+                  </div>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      @click.native="changeStep(scope.row, step)"
+                      v-for="step in stepList"
+                      :index="step.stepId"
+                      :key="step.stepId"
+                    >
+                      <em>{{ step.stepName }}</em>
+
+                      <span v-if="scope.row.stepId == step.stepId"
+                        >（当前节点）</span
+                      >
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+
                 <el-menu
                   :default-active="'1'"
                   class="el-menu-demo"
@@ -130,23 +148,16 @@
                   @select="handleSelect"
                 >
                   <el-submenu index="1">
-                    <template slot="title">操作</template>
+                    <template slot="title">
+                      <i class="el-icon-more el-icon--right"></i>
+                    </template>
                     <el-menu-item @click.native="finish(scope.row)"
                       >任务归档</el-menu-item
                     >
-                    <el-menu-item @click.native="deleteTask(scope.row)"
+                    <!-- <el-menu-item @click.native="deleteTask(scope.row)"
                       >删除任务</el-menu-item
-                    >
-                    <el-submenu index="1-1">
-                      <template slot="title">移动过程节点</template>
-                      <el-menu-item
-                        @click.native="changeStep(scope.row, step)"
-                        v-for="step in stepList"
-                        :index="step.stepId"
-                        :key="step.stepId"
-                        >{{ step.stepName }}</el-menu-item
-                      >
-                    </el-submenu>
+                    > -->
+
                     <el-submenu index="1-2">
                       <template slot="title">移动分类</template>
                       <el-menu-item
@@ -154,8 +165,14 @@
                         v-for="calssify in processClassifyList"
                         :index="calssify.typeId"
                         :key="calssify.typeId"
-                        >{{ calssify.typeName }}</el-menu-item
                       >
+                        <em
+                          :class="{
+                            'high-light': scope.row.typeId == calssify.typeId,
+                          }"
+                          >{{ calssify.typeName }}</em
+                        >
+                      </el-menu-item>
                     </el-submenu>
                   </el-submenu>
                 </el-menu>
@@ -165,14 +182,22 @@
         </div>
       </crcloud-table>
     </div>
-    <tl-move-task ref="moveTask" v-if="showMove"></tl-move-task>
-    <tl-move-classify ref="moveTask" v-if="showMove"></tl-move-classify>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+      @success="init()"
+    ></tl-edittask>
+    <!-- <tl-move-task ref="moveTask" v-if="showMove"></tl-move-task>
+    <tl-move-classify ref="moveTask" v-if="showMove"></tl-move-classify> -->
   </div>
 </template>
 
 <script>
-import tlMoveTask from './moveTask';
-import tlMoveClassify from './moveClassify';
+import { mapState } from 'vuex';
+import process from '@/components/process';
+import editTask from './editTask';
 import Server from '../server';
 
 const server = new Server();
@@ -180,8 +205,8 @@ const server = new Server();
 export default {
   name: '',
   components: {
-    tlMoveTask,
-    tlMoveClassify,
+    'tl-edittask': editTask,
+    'tl-process': process,
   },
   props: {
     stepList: {
@@ -223,6 +248,8 @@ export default {
       tabName: 'all',
       userList: [],
       task: {},
+      existEditTask: false,
+      taskUserId: '',
     };
   },
   created() {
@@ -230,7 +257,11 @@ export default {
     this.remoteMethod();
   },
   mounted() {},
-  computed: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   methods: {
     init(typeId) {
       const self = this;
@@ -239,7 +270,7 @@ export default {
         currentPage: 1,
         pageSize: 10,
         processId: self.processObj.processId,
-        typeId: typeId || '',
+        typeId: typeId || this.searchParams.typeId,
         stepId: this.stepId,
         taskTitle: this.searchParams.taskTitle || '',
         taskUserIds: this.searchParams.searchCreator.toString(),
@@ -255,6 +286,12 @@ export default {
             this.$set(task, 'showChangeUser', false);
           });
         }
+      });
+    },
+    openEdit(row) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(row.taskId, false);
       });
     },
     moveStep(task) {
@@ -283,6 +320,11 @@ export default {
       this.server.move({
         taskId: task.taskId,
         stepIdAfter: step.stepId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('移动成功');
+          this.init();
+        }
       });
     },
     changeClassify(task, classify) {
@@ -293,7 +335,12 @@ export default {
     },
     finish(task) {
       if (task.taskProgress == 100) {
-        this.server.finishTask({ taskId: task.taskId });
+        this.server.finishTask({ taskId: task.taskId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('任务归档成功');
+            this.init();
+          }
+        });
       } else {
         this.$message.warning('未完成的任务，暂时无法归档');
       }
@@ -318,7 +365,7 @@ export default {
       task.showChangeUser = true;
       this.task = task;
       this.$nextTick(() => {
-        this.$refs.taskSelect.input.focus();
+        this.$refs.taskSelect.focus();
       });
     },
     remoteMethod(name) {
@@ -326,9 +373,10 @@ export default {
         currentPage: 1,
         pageSize: 20,
         userName: name ? name.trim() : '',
+        orgFullId: this.userInfo.orgList[0].orgFullId,
       }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data.content || [];
         }
       });
     },
@@ -341,6 +389,7 @@ export default {
       if (userId) {
         this.userList.forEach((user) => {
           if (user.userId == userId) {
+            console.log('userchange', user, userId);
             this.server.changeUser({
               taskId: this.task.taskId,
               userId,

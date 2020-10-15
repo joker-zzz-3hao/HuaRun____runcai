@@ -90,4 +90,55 @@ export default class Server extends ServerBase {
   queryFiledList(param) {
     return this._ajaxPost('gateway/task-service/task/selectTaskForFiled', param);
   }
+
+  // ..... 编辑任务
+  // 查询okr
+  queryOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+  }
+
+  // 查询项目组织
+  queryOrg(param) {
+    return this._ajaxPost('gateway/weekly-service/project/org', param);
+  }
+
+  // 查询项目
+  queryOrgProject(param) {
+    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+  }
+
+  // 查询任务过程
+  queryProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
+  }
+
+  // 暂存任务
+  saveTask(param) {
+    return this._ajaxPost('gateway/task-service/task/save', param);
+  }
+
+  // 归档任务
+  filedTask(param) {
+    return this._ajaxPost(`gateway/task-service/task/filed?taskId=${param.taskId}`, param);
+  }
+
+  // 接收任务
+  acceptTask(param) {
+    return this._ajaxPost(`gateway/task-service/task/accept?taskId=${param.taskId}`, param);
+  }
+
+  // 查询我的任务详情
+  queryTaskDetail(param) {
+    return this._ajaxPost(`gateway/task-service/task/get?taskId=${param.taskId}`, param);
+  }
+
+  // 保存并指派
+  appointSave(param) {
+    return this._ajaxPost('gateway/task-service/task/appointSave', param);
+  }
+
+  // 查询任务步骤
+  queryProcessStep(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcessStep/queryProcessStep', param);
+  }
 }
