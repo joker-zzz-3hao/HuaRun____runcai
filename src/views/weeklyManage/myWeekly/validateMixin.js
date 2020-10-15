@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable space-unary-ops */
 export default {
   methods: {
     // 进度
@@ -18,6 +16,10 @@ export default {
     validateTime(rule, value, callback) {
       if (!value) {
         callback('请填写工时');
+      } else if (!/^(\d{1,2}(\.[0-9]{1})?)$|^100$/.test(value)) {
+        callback('请保留一位小数');
+      } else if (value > 50) {
+        callback('工时不能超过50天');
       } else {
         callback();
       }

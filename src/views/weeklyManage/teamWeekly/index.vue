@@ -133,6 +133,7 @@
               :key="weekly.userId"
               @click="weeklyInfo(weekly)"
             >
+              <!-- weekly.visitId 存在时  则是被查看的  否则是没被查看的TODO:待与炜哥沟通 -->
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
