@@ -3,7 +3,23 @@
     <div>复盘对象：{{ okrMain.okrMainVo.periodName }}</div>
     <div class="replay-user">
       <div class="list">姓名：{{ okrMain.okrMainVo.userName }}</div>
-      <div class="list">OKR进度： {{ okrMain.okrMainVo.okrProgress }}%</div>
+      <div class="list">
+        <dl class="okr-progress">
+          <dt>
+            <em>OKR进度</em>
+          </dt>
+          <dd>
+            <el-progress
+              type="circle"
+              :percentage="parseInt(okrMain.okrMainVo.okrProgress, 10) || 0"
+              :width="70"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
+            ></el-progress>
+          </dd>
+        </dl>
+      </div>
       <div class="list">
         复盘时间：
         {{

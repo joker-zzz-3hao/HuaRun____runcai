@@ -1739,11 +1739,12 @@
 .tl-collapse-other .collpase-icon:hover+.tag-kind dd:last-child em {
   color: #685df1;
 }
-
+/* change by xinquan */
 .tl-collapse-other .tag-kind dd:last-child em {
   margin: 0 4px 0 0;
-  width: 20px;
+  width: 23px;
   cursor: pointer;
+  color: #FFBC20;
 }
 
 .tl-collapse-other .tag-kind dd:last-child span {

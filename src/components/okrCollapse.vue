@@ -36,7 +36,7 @@
                     placeholder="请输入目标名称"
                     v-model="item.okrDetailObjectKr"
                     class="tl-input"
-                    maxlength="50"
+                    maxlength="100"
                   ></el-input>
                 </el-form-item>
                 <em v-else>{{ item.okrDetailObjectKr }}</em>

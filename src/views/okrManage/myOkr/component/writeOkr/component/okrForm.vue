@@ -27,7 +27,7 @@
                       placeholder="请输入目标名称"
                       v-model="oitem.okrDetailObjectKr"
                       class="tl-input"
-                      maxlength="50"
+                      maxlength="100"
                     ></el-input>
                   </el-form-item>
                 </div>

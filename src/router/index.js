@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
   if (!localStorage.token || localStorage.token === null) {
     // 当token不存在时，如果是环境上就需要跳转到ladp登录页面，如果是本地启动就直接跳转login页面
-    if (origin == 'https://talent.crcloud.com') {
+    if (origin == 'https://talent.crcloud.com' && !urlParams.isAdmin) {
       window.$store.commit('common/setUserInfo', { userInfo: {} });
       localStorage.setItem('token', '');
       window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http%3a%2f%2fldap.talent.crcloud.com%3a8888%2faccount-service%2foutside%2fldapLogin', '_self');

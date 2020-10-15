@@ -4,29 +4,52 @@
       <el-collapse accordion v-model="activeNames" @change="handleChange">
         <el-collapse-item :name="index + 1">
           <template slot="title">
-            <div style="width: 100%">
-              <em>目标{{ index + 1 }}</em
-              ><em>{{ item.o.okrDetailObjectKr }}</em>
-              <div class="right">
-                <em>权重 {{ item.o.okrWeight ? item.o.okrWeight : 0 }}%</em>
-                <em
-                  >进度
-                  {{
-                    item.o.okrDetailProgress ? item.o.okrDetailProgress : 0
-                  }}%</em
-                >
+            <div class="title-row">
+              <div>
+                <em>目标{{ index + 1 }}</em
+                ><em>{{ item.o.okrDetailObjectKr }}</em>
+              </div>
+              <div style="width: 200px">
+                <div style="width: 100px; float: left">
+                  <span>权重</span>
+
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(item.o.okrWeight) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </div>
+                <div style="width: 100px; float: left">
+                  <span>进度</span>
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(item.o.okrDetailProgress) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </div>
               </div>
             </div>
           </template>
           <div v-for="(list, i) in item.krs" :key="i + 'k'">
-            <div style="width: 100%">
+            <div>
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
-              <div class="right">
-                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
-                <em
+              <div class="right" style="width: 200px">
+                <em style="float: left; width: 100px"
+                  >权重
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrWeight) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
+                <em style="float: left; width: 100px"
                   >进度
-                  {{ list.okrDetailProgress ? list.okrDetailProgress : 0 }}%</em
-                >
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrDetailProgress) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
               </div>
             </div>
 
@@ -249,5 +272,35 @@ export default {
 }
 .right {
   float: right;
+}
+.replay-user {
+  display: flex;
+  flex-direction: row;
+}
+.replay-user .list {
+  margin-right: 40px;
+}
+.right {
+  float: right;
+}
+
+.rightweight {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+
+.title-row {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+  width: 50%;
+  flex-direction: row;
 }
 </style>
