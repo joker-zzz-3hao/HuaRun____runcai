@@ -1,6 +1,42 @@
 <template>
   <div class="concerned-okr">
-    <div>
+    <div class="cont-area">
+      <div class="followed-users">asdfadf</div>
+      <div class="followed-okrs">
+        <div
+          v-for="item in tableList"
+          :key="item.okrMain.okrId"
+          class="tl-card-panel"
+        >
+          <div class="card-panel-head">
+            <div class="okr-title">{{ item.okrMain.periodName }}</div>
+            <dl class="okr-follow">
+              <dd v-if="item.supported" @click="addFocus(item)">关注</dd>
+              <dd v-else @click="cancelFocus(item)">取消关注</dd>
+            </dl>
+            <dl class="okr-progress">
+              <dt>
+                <em>OKR进度</em>
+              </dt>
+              <dd>
+                <el-progress
+                  type="circle"
+                  :percentage="item.okrMain.okrProgress"
+                  :width="60"
+                  :stroke-width="5"
+                  color="#4ccd79"
+                  class="tl-progress-circle"
+                ></el-progress>
+              </dd>
+            </dl>
+          </div>
+          <div class="card-panel-body">
+            <tl-okr-table :tableList="item.tableList"></tl-okr-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div>
       <div>
         <div>我的关注</div>
         <el-input
@@ -63,7 +99,6 @@
         </dl>
         <dl class="okr-responsible">
           <dt>
-            <!-- <i class="el-icon-user"></i> -->
             <em>负责人</em>
           </dt>
           <dd>{{ item.okrMain.userName }}</dd>
@@ -74,7 +109,6 @@
         </dl>
         <dl class="okr-progress">
           <dt>
-            <!-- <i class="el-icon-odometer"></i> -->
             <em>OKR进度</em>
           </dt>
           <dd>
@@ -91,7 +125,6 @@
       </div>
       <div class="card-panel-body">
         <tl-okr-table :tableList="item.tableList">
-          <!-- o的承接地图 -->
           <template slot="head-undertake" slot-scope="props">
             <div
               v-if="props.okritem.continueCount > 0"
@@ -111,7 +144,6 @@
             </div>
             <div v-else-if="showUndertake">暂无</div>
           </template>
-          <!-- kr的承接地图 -->
           <template slot="body-bar" slot-scope="props">
             <div
               v-if="props.okritem.continueCount > 0"
@@ -131,7 +163,6 @@
             </div>
             <div v-else-if="showUndertake">暂无</div>
           </template>
-          <!-- o的进度更新 -->
           <template slot="weight-bar" slot-scope="props">
             <div
               v-if="item.okrMain.status == '1'"
@@ -144,7 +175,7 @@
           </template>
         </tl-okr-table>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -277,17 +308,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.red {
-  background-color: red;
-}
-.green {
-  background-color: green;
-}
-.pic-notice {
-  background: url("~@/assets/images/demoPic/noticeOkr.png") no-repeat;
-  background-size: 100%;
-  /* background-size: cover; */
-  height: calc(80vh);
-}
-</style>
