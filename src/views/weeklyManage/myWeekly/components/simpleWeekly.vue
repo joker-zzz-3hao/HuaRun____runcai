@@ -47,39 +47,59 @@
             min-width="120"
           >
             <template slot-scope="scope">
-              <el-input
-                v-model="scope.row.workProgress"
-                controls-position="right"
-                :min="0"
-                :max="100"
-                class="tl-input-number"
-              ></el-input>
-              <!-- 编辑完之后显示 -->
-              <!-- <tl-process
-                :data="node.okrDetailProgress"
+              <template v-if="timeDisabled">
+                <el-form-item
+                  v-if="timeDisabled"
+                  :prop="
+                    'weeklyWorkVoSaveList.' + scope.$index + '.workProgress'
+                  "
+                  :rules="formData.rules.workProgress"
+                >
+                  <el-input
+                    v-model="scope.row.workProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    class="tl-input-number"
+                  ></el-input>
+                </el-form-item>
+              </template>
+              <!-- 编辑完提交后展示 -->
+              <tl-process
+                v-else
+                :data="scope.row.workProgress"
                 :width="36"
                 :marginLeft="6"
-              ></tl-process> -->
-              %
+              ></tl-process
+              >%
             </template>
           </el-table-column>
           <el-table-column
             label="投入工时"
             prop="workTime"
-            @change="workTimeChange(scope.row)"
             :render-header="renderHeader"
             min-width="130"
           >
             <template slot-scope="scope">
-              <el-input
-                controls-position="right"
-                v-model.trim="scope.row.workTime"
-                :precision="1"
-                :step="0.5"
-                :min="0"
-                :max="5"
-                class="tl-input-number"
-              ></el-input>
+              <el-form-item
+                v-if="timeDisabled"
+                :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workTime'"
+                :rules="formData.rules.workTime"
+              >
+                <el-input
+                  v-if="timeDisabled"
+                  controls-position="right"
+                  v-model.trim="scope.row.workTime"
+                  :precision="1"
+                  :step="0.5"
+                  :min="0"
+                  :max="5"
+                  @change="workTimeChange(scope.row)"
+                  class="tl-input-number"
+                ></el-input>
+              </el-form-item>
+              <!-- 编辑完提交后展示 -->
+              <em v-else>{{ scope.row.workTime }}</em>
               <span>天</span>
             </template>
           </el-table-column>
@@ -90,38 +110,10 @@
           >
             <template slot-scope="scope">
               <el-form-item
+                v-if="timeDisabled"
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectId'"
                 :rules="formData.rules.projectId"
               >
-                <!-- <el-input
-                  v-model.trim="scope.row.projectNameCn"
-                  maxlength="0"
-                  @focus="projectInputFocus(scope.row)"
-                ></el-input> -->
-                <!-- 此处点击后就永远消失 -->
-                <!-- <div
-                  class="icon-bg"
-                  @click="projectInputFocus(scope.row)"
-                  v-if="!scope.row.projectNameCn"
-                >
-                  <i class="el-icon-plus"></i>
-                </div> -->
-                <!-- <div class="tag-group">
-                  <ul class="tag-lists">
-                    <li class="only-one">
-                      <el-tooltip
-                        class="select-values"
-                        effect="dark"
-                        placement="top"
-                        popper-class="tl-tooltip-popper"
-                      >
-                        <em slot="content">{{ scope.row.projectNameCn }}</em>
-                        <em>{{ scope.row.projectNameCn }}</em>
-                      </el-tooltip>
-                    </li>
-                  </ul>
-
-                </div> -->
                 <el-select
                   v-model="scope.row.projectId"
                   placeholder="请选择关联项目"
@@ -137,6 +129,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <em v-else>{{ scope.row.projectNameCn }}</em>
             </template>
           </el-table-column>
           <el-table-column
@@ -145,6 +138,7 @@
             :render-header="renderHeader"
             min-width="150"
           >
+            <!-- okrIds -->
             <template slot-scope="scope">
               <!-- 临时项目可不选择支撑项 -->
               <el-form-item
@@ -166,9 +160,10 @@
                         popper-class="tl-tooltip-popper"
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                        <em @click="addSupportOkr(scope.row)">{{
-                          setOkrStyle(item.okrDetailObjectKr)
-                        }}</em>
+                        <em
+                          @click="timeDisabled ? addSupportOkr(scope.row) : ''"
+                          >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
+                        >
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
@@ -176,57 +171,19 @@
                       ></i> -->
                     </li>
                     <li
-                      v-show="scope.row.selectedOkr.length < 1"
                       class="icon-bg"
+                      v-if="scope.row.selectedOkr.length < 1"
                       @click="addSupportOkr(scope.row)"
                     >
                       <i class="el-icon-plus"></i>
                     </li>
                   </ul>
                 </div>
-                <!-- <el-input
-                  @focus="addSupportOkr(scope.row)"
-                  v-model.trim="scope.row.valueOrOkrIds"
-                  placeholder="请选择所支撑OKR/价值观"
-                  maxlength="0"
-                  v-show="scope.row.selectedOkr.length < 1"
-                ></el-input>
-
-                <div v-if="scope.row.selectedOkr.length > 0">
-                  <span
-                    class="okr-selected"
-                    v-for="item in scope.row.selectedOkr"
-                    :key="item.okrDetailId"
-                  >
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
-                      :content="item.okrDetailObjectKr"
-                      placement="top-end"
-                      popper-class="tl-tooltip-popper"
-                    >
-                      <span>
-                        {{ setOkrStyle(item.okrDetailObjectKr) }}
-                        <i
-                          @click="deleteOkr(item, scope.row.randomId)"
-                          style="cursor: pointer"
-                          class="el-icon-close"
-                        ></i>
-                      </span>
-                    </el-tooltip>
-                  </span>
-                </div>
-                <i
-                  v-show="scope.row.selectedOkr.length > 0"
-                  style="cursor: pointer"
-                  @click="addSupportOkr(scope.row)"
-                  class="el-icon-plus"
-                ></i> -->
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column prop="code" fixed="right" width="40">
-            <template slot-scope="scope">
+          <el-table-column fixed="right" width="40">
+            <template slot-scope="scope" v-if="timeDisabled">
               <el-tooltip
                 class="icon-clear"
                 :class="{
@@ -247,18 +204,6 @@
               >
                 <i class="el-icon-minus"></i>
               </el-tooltip>
-              <!-- <el-dropdown
-                @command="deleteItem(scope.row)"
-                v-if="formData.weeklyWorkVoSaveList.length > 1"
-              >
-                <span class="el-dropdown-link">
-                  <i class="el-icon-more el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <span v-else>--</span> -->
             </template>
           </el-table-column>
         </el-table>
@@ -268,157 +213,156 @@
           type="text"
           @click="addItem"
           class="tl-btn dotted-line list-add"
+          v-if="timeDisabled"
         >
           <i class="el-icon-plus"></i>添加
         </el-button>
       </div>
-      <!-- <el-button @click="addItem" style>添加</el-button> -->
     </div>
     <!-- 个人OKR完成度 -->
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
+      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
       <dd
-        class="undertake-okr-list is-o"
+        class="undertake-okr-list"
+        :class="item.kr ? 'is-kr' : 'is-o'"
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
-        <div class="tag-kind">
-          <!-- 这里根据判断显示 O 还是 KR  可共用DOM结构 -->
-          <template v-if="item.kr">
+        <div class="o-kr-group" v-if="item.kr">
+          <div class="tag-kind">
             <span class="kind-parent">目标</span>
-            <em>{{ item.o.okrDetailObjectKr }}</em>
-          </template>
-          <template v-if="false">
-            <span class="kind-child">KR</span>
-            <em> {{ item.kr.okrDetailObjectKr }}</em>
-          </template>
-          <span
-            >被工作项<em>{{ itemIndex(item.kr) }}</em
-            >支撑</span
-          >
+            <el-tooltip
+              class="select-values"
+              effect="dark"
+              placement="top"
+              popper-class="tl-tooltip-popper"
+            >
+              <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+            </el-tooltip>
+          </div>
         </div>
-        <div class="tl-progress-group">
-          <span>当前进度</span>
-          <tl-process
-            :data="parseInt(item.progressAfter, 10)"
-            :showNumber="false"
-            :width="64"
-            :marginLeft="6"
-          ></tl-process>
-          <el-slider
-            v-model="item.progressAfter"
-            :step="1"
-            @change="processChange(item)"
-            tooltip-class="slider-tooltip"
-          ></el-slider>
-          <el-input
-            v-model="item.progressAfter"
-            controls-position="right"
-            :min="0"
-            :max="100"
-            :step="1"
-            :precision="0"
-            class="tl-input-number"
-          ></el-input>
-          <span>%</span>
-        </div>
-        <div class="week-change">
-          <span>本周变化</span
-          ><em>
-            {{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
-            }}{{ item.progressAfter - item.progressBefor }}%</em
-          >
+        <div class="o-kr-group">
+          <template v-if="item.kr">
+            <div class="tag-kind">
+              <span class="kind-child">KR</span>
+              <el-tooltip
+                class="select-values"
+                effect="dark"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+              >
+                <em slot="content">{{ item.kr.okrDetailObjectKr }}</em>
+                <em>{{ item.kr.okrDetailObjectKr }}</em>
+              </el-tooltip>
+              <span
+                >被工作项<em>{{ itemIndex(item.kr) }}</em
+                >支撑</span
+              >
+            </div>
+          </template>
+          <template v-else>
+            <div class="tag-kind">
+              <span class="kind-parent">目标</span>
+              <el-tooltip
+                class="select-values"
+                effect="dark"
+                placement="top"
+                popper-class="tl-tooltip-popper"
+              >
+                <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
+                <em>{{ item.o.okrDetailObjectKr }}</em>
+              </el-tooltip>
+              <span
+                >被工作项<em>{{ itemIndex(item.o) }}</em
+                >支撑</span
+              >
+            </div>
+          </template>
+          <div class="okr-risk" v-if="item.kr">
+            <span>信心指数</span>
+            <template v-if="timeDisabled">
+              <tl-confidence
+                v-model="item.confidenceAfter"
+                @change="changeConfidence"
+              ></tl-confidence>
+            </template>
+            <template v-else>
+              <div class="state-grid">
+                <div
+                  :class="{
+                    'is-no-risk': item.confidenceAfter == 1,
+                    'is-risks': item.confidenceAfter == 2,
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-risks': item.confidenceAfter == 2,
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-uncontrollable': item.confidenceAfter == 3,
+                  }"
+                ></div>
+              </div>
+              <div class="state-txt">
+                {{ CONST.CONFIDENCE_MAP[item.confidenceAfter] }}
+              </div>
+            </template>
+          </div>
+          <div class="tl-progress-group">
+            <span>当前进度</span>
+            <tl-process
+              :data="parseInt(item.progressAfter, 10)"
+              :showNumber="false"
+              :width="30"
+              :marginLeft="2"
+            ></tl-process>
+            <el-slider
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              :step="1"
+              @change="processChange(item)"
+              tooltip-class="slider-tooltip"
+            ></el-slider>
+            <el-input-number
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              controls-position="right"
+              :min="0"
+              :max="100"
+              :step="1"
+              :precision="0"
+              class="tl-input-number"
+            ></el-input-number>
+            <!-- <el-input
+              v-if="timeDisabled"
+              v-model="item.progressAfter"
+              controls-position="right"
+              class="tl-input-number"
+            ></el-input> -->
+            <em v-else>{{ item.progressAfter }}</em>
+            <span>%</span>
+          </div>
+          <div class="week-change">
+            <span>本周变化</span
+            ><em
+              >{{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+              }}{{ item.progressAfter - item.progressBefor }}%</em
+            >
+          </div>
         </div>
       </dd>
     </dl>
     <!-- 以下是你的原版 -->
     <div v-if="showTaskProcess" class="degree-completion">
       <!-- <h1>个人OKR完成度</h1> -->
-      <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId">
-        <!-- 目标+KR -->
-        <!-- <div v-if="item.kr">
-          <div>
-            <span>目标</span>
-            <span style="marginleft: 15px">{{ item.o.okrDetailObjectKr }}</span>
-          </div>
-          <div>
-            <span>KR</span>
-            <span style="marginleft: 15px">{{
-              item.kr.okrDetailObjectKr
-            }}</span>
-            <span style="marginleft: 15px"
-              >被工作项{{ itemIndex(item.kr) }}支撑</span
-            >
-            <span style="marginleft: 15px">
-              信心指数
-              <el-button
-                :class="{ 'no-risk': item.confidenceAfter == 1 }"
-              ></el-button>
-              <el-button
-                :class="{ 'risk-is-controlled': item.confidenceAfter == 2 }"
-              ></el-button>
-              <el-button
-                :class="{
-                  'risk-cannot-be-controlled': item.confidenceAfter == 3,
-                }"
-              ></el-button>
-              <el-select v-model="item.confidenceAfter" placeholder="请选择">
-                <el-option
-                  v-for="item in riskList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </span>
-            <span style="marginleft: 15px">
-              当前进度
-              <el-slider
-                v-model="item.progressAfter"
-                :step="1"
-                @change="processChange(item)"
-                show-input
-              ></el-slider>
-            </span>
-            <span style="marginleft: 15px">
-              本周变化
-              <span v-show="item.progressAfter != item.progressBefor">{{
-                item.progressAfter - item.progressBefor > 0 ? "+" : ""
-              }}</span>
-              <span>{{ item.progressAfter - item.progressBefor }}%</span>
-            </span>
-          </div>
-        </div> -->
-        <!-- 目标 -->
-        <!-- <div v-else>
-          <div>
-            目标
-            <span style="marginleft: 15px">{{ item.o.okrDetailObjectKr }}</span>
-            <span style="marginleft: 15px"
-              >被工作项{{ itemIndex(item.o) }}支撑</span
-            >
-            <span style="marginleft: 15px">
-              当前进度
-              <el-slider
-                v-model="item.progressAfter"
-                @change="processChange(item)"
-                :step="1"
-                show-input
-                style="width: 20%"
-              ></el-slider>
-            </span>
-            <span style="marginleft: 15px">
-              本周变化
-              <span v-show="item.progressAfter != item.progressBefor">{{
-                item.progressAfter - item.progressBefor > 0 ? "+" : ""
-              }}</span>
-              <span>{{ item.progressAfter - item.progressBefor }}%</span>
-            </span>
-          </div>
-        </div> -->
-      </div>
+      <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId"></div>
     </div>
     <!-- 本周心情 -->
     <dl class="dl-card-panel">
@@ -436,12 +380,7 @@
         <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
       </span>
     </div>
-    <!-- <el-button
-      style="margintop: 65px"
-      :disabled="!canEdit"
-      @click="commitWeekly"
-      >提交</el-button
-    > -->
+
     <div class="btn-box">
       <el-button
         :disabled="!canEdit"
@@ -479,6 +418,7 @@
 
 <script>
 import tlProcess from '@/components/process';
+import CONST from '@/components/const';
 import Server from '../server';
 import selectProject from './selectProject';
 
@@ -555,10 +495,17 @@ export default {
         return true;
       },
     },
+    timeDisabled: {
+      type: Boolean,
+      default() {
+        return false;
+      },
+    },
   },
   data() {
     return {
       server,
+      CONST,
       weeklyEmotion: '100',
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
