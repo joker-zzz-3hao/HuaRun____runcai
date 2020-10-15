@@ -787,10 +787,8 @@ export default {
       // // 来自任务的数据,同步至本周任务中
       // console.log('任务', self.$route.params);
       const tempOkrList = [];
-      debugger;
       // 将任务的okr遍历出来
       if (self.$route.params && self.$route.params.weeklySumParams) {
-        debugger;
         self.canUpdate = true;
         self.$route.params.weeklySumParams.forEach((okr) => {
           if (okr.okrDetailId) {
