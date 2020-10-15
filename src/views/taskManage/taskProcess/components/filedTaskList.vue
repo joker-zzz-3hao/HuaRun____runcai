@@ -8,59 +8,39 @@
   <div>
     <div class="operating-area">
       <div class="page-title">已归档任务</div>
+      <el-button @click="goback" plain class="tl-btn amt-border-slip"
+        >返回<span class="lines"></span
+      ></el-button>
       <div class="operating-box">
-        <el-form
-          v-if="hasPower('sys-dictionary-list')"
-          ref="ruleForm"
-          :inline="true"
-          class="tl-form-inline"
+        <el-input
+          placeholder="输入任务标题"
+          style="width: 200px"
+          class="tl-input-search"
+          v-model="searchParams.taskTitle"
+          clearable
+          @clear="searchList"
+          @keyup.enter.native="searchList"
         >
-          <el-form-item>
-            <el-input
-              v-model="keyWord"
-              placeholder="输入任务标题"
-              maxlength="50"
-              class="tl-input-search"
-              @keyup.enter.native="searchList"
-              clearable
-              @clear="clear"
-            >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-select
-              v-model.trim="executorId"
-              placeholder="执行者"
-              :popper-append-to-body="false"
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                v-for="item in executorList"
-                :key="item.executorId"
-                :label="item.executorName"
-                :value="item.executorId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select
-              v-model.trim="creatorId"
-              placeholder="创建人"
-              :popper-append-to-body="false"
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                v-for="item in creatorList"
-                :key="item.creatorId"
-                :label="item.creatorName"
-                :value="item.creatorId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
+          <i
+            class="el-icon-search el-input__icon"
+            slot="prefix"
+            @click="searchList"
+          ></i>
+        </el-input>
+        <tl-personmultiple
+          title="请选择执行人"
+          :userList="userList"
+          :userMap="userMap"
+          v-model="searchParams.searchExecutor"
+          @change="searchList"
+        ></tl-personmultiple>
+        <tl-personmultiple
+          title="请选择创建人"
+          :userList="userList"
+          :userMap="userMap"
+          v-model="searchParams.searchCreator"
+          @change="searchList"
+        ></tl-personmultiple>
       </div>
     </div>
     <div class="cont-area">
@@ -72,17 +52,21 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="taskTitle"></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskTitle"
+            ></el-table-column>
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
                 <div>
                   <p>
                     <i class="el-icon-user"></i>
-                    <span>{{scope.row.userName}}</span>
+                    <span>{{ scope.row.userName }}</span>
                   </p>
                   <p>
                     <i class="el-icon-date"></i>
-                    <span>{{scope.row.createTime}}</span>
+                    <span>{{ scope.row.createTime }}</span>
                   </p>
                 </div>
               </template>
@@ -90,20 +74,24 @@
             <el-table-column min-width="100px" align="left" prop="taskProgress">
               <template slot-scope="scope">
                 <div>
-                  <el-slider disabled v-model="scope.row.taskProgress" :step="1"></el-slider>
+                  <el-slider
+                    disabled
+                    v-model="scope.row.taskProgress"
+                    :step="1"
+                  ></el-slider>
                 </div>
               </template>
             </el-table-column>
             <el-table-column min-width="100px" align="left">
               <template slot-scope="scope">
                 <span>
-                  <el-avatar :size="30" :src="scope.row.headerUrl" @error="errorHandler">
+                  <el-avatar :size="30" :src="scope.row.headerUrl">
                     <div v-if="scope.row.userName" class="user-name">
                       <em>
                         {{
-                        scope.row.userName.substring(
-                        scope.row.userName.length - 2
-                        )
+                          scope.row.userName.substring(
+                            scope.row.userName.length - 2
+                          )
                         }}
                       </em>
                     </div>
@@ -120,46 +108,97 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import personMultiple from '@/components/personMultiple';
 import Server from '../server';
 
 const server = new Server();
 export default {
   name: '',
-  components: {},
+  components: {
+    'tl-personmultiple': personMultiple,
+
+  },
   props: {},
   data() {
     return {
       server,
+      loading: false,
+      tableData: [],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      searchParams: {
+        taskTitle: '',
+        searchCreator: [],
+        searchExecutor: [],
+        typeId: '',
+      },
+      userList: [],
+      userMap: {},
     };
   },
   created() {
     this.init();
   },
   mounted() {},
-  computed: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   methods: {
     init() {
       this.searchList();
+      this.queryUser();
     },
     searchList() {
       const self = this;
       self.rootData = [];
       const params = {
-        currentPage: 1,
-        pageSize: 10,
-        processId: this.$route.query.processId,
+        currentPage: self.currentPage,
+        pageSize: self.pageSize,
+        processId: self.$route.query.processId,
+        taskTitle: self.searchParams.taskTitle || '',
+        taskUserIds: self.searchParams.searchCreator.toString(),
+        createByIds: self.searchParams.searchExecutor.toString(),
       };
+      self.loading = true;
       self.server.queryFiledList(params).then((res) => {
+        self.loading = false;
         if (res.code == 200) {
-          this.currentPage = res.data.currentPage;
-          this.pageSize = res.data.pageSize;
-          this.total = res.data.total;
-          this.tableData = res.data.content;
-          this.tableData.forEach((task) => {
-            this.$set(task, 'showChangeUser', false);
+          self.currentPage = res.data.currentPage;
+          self.pageSize = res.data.pageSize;
+          self.total = res.data.total;
+          self.tableData = res.data.content;
+          self.tableData.forEach((task) => {
+            self.$set(task, 'showChangeUser', false);
           });
         }
       });
+    },
+    queryUser() {
+      const params = {
+        currentPage: 1,
+        pageSize: 20,
+        orgFullId: this.userInfo.orgList[0].orgFullId,
+      };
+      this.server.getUserListByOrgId(params).then((res) => {
+        if (res.code == 200) {
+          this.userList = res.data.content || [];
+          this.userList.map(
+            (obj) => {
+              const rObj = {};
+              rObj[obj.userId] = obj.userName;
+              Object.assign(this.userMap, rObj);
+              return rObj;
+            },
+          );
+        }
+      });
+    },
+    goback() {
+      this.$router.go('-1');
     },
   },
   watch: {},

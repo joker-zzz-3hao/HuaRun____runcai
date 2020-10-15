@@ -46,12 +46,12 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      @click="deleteTask"
+                      @click.native="deleteTask"
                       :disabled="formData.taskStatus !== 0"
                       >删除</el-dropdown-item
                     >
                     <el-dropdown-item
-                      @click="filedTask"
+                      @click.native="filedTask"
                       :disabled="formData.taskProgress != 100"
                       >任务归档</el-dropdown-item
                     >
@@ -686,7 +686,7 @@ export default {
       }).catch(() => {});
     },
     filedTask() {
-      // TODO: 归档时候有特殊校验吗
+      console.log('guidang');
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           this.$xconfirm({
