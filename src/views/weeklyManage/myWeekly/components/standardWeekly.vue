@@ -783,6 +783,15 @@ export default {
       // this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
+      //  this.formData.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+      //   // 反显周报列表数据
+      //   this.setWorkTableData();
+      //   // 反显本周感想
+      //   this.setThoughts();
+      //   // 反显下周计划
+      //   this.setNextWeekPlan();
+      //   // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+      //   this.setOkrProcess(this.weeklyDataCopy.weeklyOkrVoList);
       const self = this;
       // // 来自任务的数据,同步至本周任务中
       // console.log('任务', self.$route.params);
@@ -798,15 +807,6 @@ export default {
           }
         });
       }
-      //  this.formData.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
-      //   // 反显周报列表数据
-      //   this.setWorkTableData();
-      //   // 反显本周感想
-      //   this.setThoughts();
-      //   // 反显下周计划
-      //   this.setNextWeekPlan();
-      //   // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
-      //   this.setOkrProcess(this.weeklyDataCopy.weeklyOkrVoList);
       if (self.weeklyDataCopy.weeklyId) { // 后端查回来的数据
         // 任务汇总传过来的数据
         if (self.$route.params && self.$route.params.weeklySumParams) {
