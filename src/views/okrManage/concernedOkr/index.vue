@@ -54,8 +54,7 @@
           <div class="card-panel-head">
             <div class="okr-title">{{ item.okrMain.periodName }}</div>
             <dl class="okr-follow">
-              <dd v-if="item.supported" @click="addFocus(item)">关注</dd>
-              <dd v-else @click="cancelFocus(item)">取消关注</dd>
+              <dd @click="cancelFocus(item)">取消关注</dd>
             </dl>
             <dl class="okr-progress">
               <dt>
