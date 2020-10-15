@@ -11,8 +11,12 @@
   >
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
-      <div v-if="showFocus" @click="addFocus">关注</div>
-      <div v-else @click="cancelFocus">已关注</div>
+      <div v-show="showFocus" @click="addFocus" class="okr-follow">
+        <i></i><em>关注</em>
+      </div>
+      <div v-show="!showFocus" @click="cancelFocus" class="okr-follow">
+        <i></i><em>已关注</em>
+      </div>
     </div>
     <el-scrollbar ref="detailscrollbar">
       <div class="cont-box">

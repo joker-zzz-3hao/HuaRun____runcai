@@ -15,6 +15,9 @@
         <tl-select-member
           @click.native.stop
           @getMember="selectMb"
+          :rouleType="rouleType"
+          :selectListed="selectListed"
+          :disabledId="disabledId"
         ></tl-select-member>
       </el-form-item>
     </el-form>
@@ -41,7 +44,25 @@ export default {
       type: String,
       required: true,
     },
+    rouleType: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    selectListed: {
+      type: Array,
+      required: false,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: [],
+    },
+    disabledId: {
+      type: String,
+      required: false,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: '',
+    },
   },
+
   data() {
     return {
       server,

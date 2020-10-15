@@ -15,7 +15,7 @@
             <em>{{ CONST.STATUS_LIST_MAP[okrMain.status] }}</em>
           </dd>
         </dl>
-        <dl class="okr-responsible">
+        <dl class="okr-type">
           <dt>
             <em>OKR类型</em>
           </dt>
@@ -27,11 +27,13 @@
           </dt>
           <dd>{{ okrMain.userName }}</dd>
         </dl>
-        <dl class="okr-responsible">
-          <dd v-if="okrMain.supported != '1'" @click="addFocus(okrMain)">
-            关注
+        <dl class="okr-follow">
+          <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
+            <i></i><em>关注</em>
           </dd>
-          <dd v-else @click="cancelFocus(okrMain)">已关注</dd>
+          <dd v-show="okrMain.supported == '1'" @click="cancelFocus(okrMain)">
+            <i></i><em>已关注</em>
+          </dd>
         </dl>
         <dl class="okr-progress">
           <dt>
@@ -163,7 +165,7 @@ export default {
       param: [],
     };
   },
-  inject: ['reload', 'fullscreen'],
+  inject: ['reload'],
   computed: {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
@@ -173,8 +175,8 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  beforeUpdate() {
-    if (!this.periodId) {
+  mounted() {
+    if (this.periodId == '') {
       this.setList();
     }
   },
@@ -258,10 +260,14 @@ export default {
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-      Bus.$emit('getOrgTable', this.orgTable);
+      this.$nextTick(() => {
+        Bus.$emit('getOrgTable', this.orgTable);
+      });
+
       this.showLoad = true;
       this.fullscreenLoading = false;
     },
+
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {
@@ -318,6 +324,7 @@ export default {
       });
     },
   },
+
   watch: {
     periodId: {
       handler(newVal) {
