@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
     if (origin == 'https://talent.crcloud.com') {
       window.$store.commit('common/setUserInfo', { userInfo: {} });
       localStorage.setItem('token', '');
-      window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http://ldap.talent.crcloud.com:8888/account-service/outside/ldapLogin', '_self');
+      window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http%3a%2f%2fldap.talent.crcloud.com%3a8888%2faccount-service%2foutside%2fldapLogin', '_self');
     } else if (to.name == 'login') {
       next();
     } else {
