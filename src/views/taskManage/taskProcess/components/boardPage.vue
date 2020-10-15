@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" style="display: flex">
     <!-- <draggable
       class="list-group parent"
       :list="rootData"
@@ -9,7 +9,12 @@
       :options="options"
     >-->
     <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
-      <h3>{{ stepData.stepName }}</h3>
+      <div>
+        <h3>{{ stepData.stepName }}</h3>
+        <span v-if="stepData.stepTaskList.length">{{
+          stepData.stepTaskList.length
+        }}</span>
+      </div>
       <!-- <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
       </el-button> -->
@@ -26,10 +31,33 @@
           v-for="element in stepData.stepTaskList"
           :key="element.taskId"
         >
-          <p>{{ element.taskLevel }}</p>
-          <p>{{ element.taskTitle }}</p>
-          <p>{{ element.taskProgress }}</p>
-          <p>{{ element.taskBegDate }}-{{ element.taskEndDate }}</p>
+          <div>
+            {{ CONST.PRIORITY_MAP[element.taskLevel] }}
+          </div>
+          <div>
+            {{ element.taskTitle }}
+          </div>
+          <tl-process
+            :data="element.taskProgress"
+            :width="36"
+            :marginLeft="6"
+          ></tl-process>
+          <div>
+            <i class="el-icon-time"></i>
+            <span v-if="element.taskBegDate"
+              >{{ element.taskBegDate }}-{{ element.taskEndDate }}</span
+            >
+            <span v-else>未设置起止时间</span>
+          </div>
+          <div>
+            <el-avatar :size="30" :src="element.headerUrl">
+              <div v-if="element.userName" class="user-name">
+                <em>
+                  {{ element.userName.substring(element.userName.length - 2) }}
+                </em>
+              </div>
+            </el-avatar>
+          </div>
         </div>
       </draggable>
       <!-- </draggable> -->
@@ -44,8 +72,10 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
+import process from '@/components/process';
 import tlAddTask from './addTask';
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 
@@ -56,6 +86,7 @@ export default {
   components: {
     draggable,
     tlAddTask,
+    'tl-process': process,
   },
   props: {
     stepList: {
@@ -73,6 +104,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       rootData: [],
       showAddTask: false,
