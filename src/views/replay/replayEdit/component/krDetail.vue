@@ -2,16 +2,18 @@
   <div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
       <el-collapse accordion v-model="activeNames" @change="handleChange">
-        <el-collapse-item name="1">
+        <el-collapse-item :name="index + 1">
           <template slot="title">
             <div style="width: 100%">
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.okrWeight ? item.okrWeight : 0 }}%</em>
+                <em>权重 {{ item.o.okrWeight ? item.o.okrWeight : 0 }}%</em>
                 <em
                   >进度
-                  {{ item.okrDetailProgress ? item.okrDetailProgress : 0 }}%</em
+                  {{
+                    item.o.okrDetailProgress ? item.o.okrDetailProgress : 0
+                  }}%</em
                 >
               </div>
             </div>
@@ -107,7 +109,7 @@ export default {
     return {
       reviewType: 1,
       form: {},
-      activeNames: ['1'],
+      activeNames: [1],
       server,
       active: {},
       deficiency: {},
@@ -184,7 +186,7 @@ export default {
       });
     },
     handleDeleteOne() {
-      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
+      this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
         })
@@ -225,9 +227,7 @@ export default {
         }
       });
     },
-    handleChange(val) {
-      console.log(val);
-    },
+
     getOkrReviewDetail() {
       this.server.getOkrReviewDetail({
         okrMainId: this.$route.query.okrId,
