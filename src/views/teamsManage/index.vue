@@ -119,9 +119,10 @@
               >提示：当前成员为虚线汇报成员，由成员所在部门负责人进行设置</span
             >
           </div>
-          <span
+          <span v-if="false"
             >当前无虚线汇报成员，如需设置虚线汇报成员请找成员所在部门负责人进行设置</span
           >
+          <el-button @click="addDotted()">添加虚线汇报人</el-button>
         </dd>
       </dl>
       <dl class="dl-card-panel">
@@ -185,11 +186,21 @@
       @success="closedAddTeam"
       :teamMembers="teamMembers"
     ></tl-addTeam>
+    <tl-addMember
+      v-if="exist"
+      :selectListed="fictitiousList"
+      :exist.sync="exist"
+      :disabledId="baseTeamOrgId"
+      title="添加虚线汇报人"
+      :rouleType="rouleType"
+      @submitFunctin="listRoleUser"
+    ></tl-addMember>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import addMember from '@/components/addMember';
 import svgtree from '@/components/svgtree';
 import setManager from './component/setManager';
 import setFictitious from './component/setFictitious';
@@ -227,6 +238,10 @@ export default {
       teamMembers: [],
       teamOrgId: '',
       overview: '',
+      exist: false,
+      rouleType: true,
+      disabledList: [],
+      baseTeamOrgId: '',
     };
   },
   components: {
@@ -237,6 +252,7 @@ export default {
     'tl-svgtree': svgtree,
     'tl-editTeam': editTeam,
     'tl-addTeam': addTeam,
+    'tl-addMember': addMember,
   },
   computed: {
     ...mapState('common', {
@@ -248,12 +264,30 @@ export default {
     this.init();
   },
   methods: {
+    listRoleUser(member) {
+      const params = member.map((item) => ({ userId: item.userId }));
+      const oldParams = this.fictitiousList.map((item) => ({ userId: item.userId }));
+      this.server.addReportRelationList({
+        virtualReportUserList: oldParams,
+        newVirtualReportUserList: params,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.msg);
+          this.exist = false;
+          this.init();
+        }
+      });
+    },
+    addDotted() {
+      this.exist = true;
+    },
     init() {
       const self = this;
       self.teamTreeData = [];
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          this.baseTeamOrgId = res.data.orgId;
           self.queryTeamMember(self.baseInfo.orgFullId);
           if (self.baseInfo.weeklySee == 'O') {
             self.weeklyOpen = true;
@@ -421,11 +455,11 @@ export default {
 
       }).then(() => {
         this.server.updateReportRelation({
-          orgId: this.teamOrgId,
+          orgId: this.baseTeamOrgId,
           userId: data.userId,
         }).then((res) => {
           if (res.code == '200') {
-            // this.queryTeamMember(this.teamSelect);
+            this.queryTeamMember(this.teamSelect);
           }
         });
       });

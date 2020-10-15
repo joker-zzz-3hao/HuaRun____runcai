@@ -8,7 +8,10 @@
         </div>
       </div>
       <div class="card-panel-body">
-        <div id="okr-risk-line"></div>
+        <div id="okr-risk-line" v-if="okrData.length > 0 || testModel"></div>
+        <div class="tl-card-panel no-data" style="box-shadow: none" v-else>
+          <span class="bg-no-data"></span>
+        </div>
       </div>
     </div>
 

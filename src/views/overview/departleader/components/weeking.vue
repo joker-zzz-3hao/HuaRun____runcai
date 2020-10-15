@@ -9,7 +9,10 @@
           </div>
         </div>
         <div class="card-panel-body">
-          <div id="week-depart"></div>
+          <div id="week-depart" v-if="orgTable.length > 0"></div>
+          <div class="tl-card-panel no-data" style="box-shadow: none" v-else>
+            <span class="bg-no-data"></span>
+          </div>
           <ul class="data-list">
             <li
               v-for="(item, index) in orgTable"
@@ -106,6 +109,7 @@ export default {
   },
   mounted() {
     this.fetchData();
+
     this.getqueryMyOkr();
   },
 
@@ -160,8 +164,13 @@ export default {
     },
     async changIdAction(id, index) {
       this.orgId = id;
+      if (this.periodId == '') {
+        await this.init();
+        return false;
+      }
+
       const departData = await this.getDepartData(id);
-      console.log(this.active[id], id);
+
       if (this.active[id]) {
         this.$set(this.active, id, false);
         this.$set(this.echartDataY[index], 'data', []);
@@ -178,23 +187,20 @@ export default {
         this.$set(this, 'orgTable', orgTableData);
         this.active = {};
         this.echartDataY = [];
+        console.log(this.orgTable);
         this.orgId = this.orgTable[0].orgId;
         this.$set(this.active, this.orgId, true);
         this.legendTable = this.orgTable.map((item) => item.orgName);
         this.getInit(this.orgTable);
-        if (this.periodId == '') {
-          this.changIdAction(this.orgTable[0].orgId, 0);
-        }
+
         this.$watch('periodId', () => {
-          this.changIdAction(this.orgTable[0].orgId, 0);
+          this.$nextTick(() => {
+            this.changIdAction(this.orgTable[0].orgId, 0);
+          });
         }, { immediate: true });
       });
     },
     getDepartData(orgId) {
-      if (this.periodId == '') {
-        this.init();
-        return false;
-      }
       return new Promise((reslove) => {
         this.server.riskStatistics({
           periodId: this.periodId,
@@ -263,6 +269,7 @@ export default {
     },
     init() {
       const that = this;
+
       const myChart = echarts.init(document.getElementById('week-depart'));
       const option = {
         xAxis: {

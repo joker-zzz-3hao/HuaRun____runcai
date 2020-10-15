@@ -165,7 +165,7 @@ export default {
       param: [],
     };
   },
-  inject: ['reload', 'fullscreen'],
+  inject: ['reload'],
   computed: {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
@@ -175,8 +175,8 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  beforeUpdate() {
-    if (!this.periodId) {
+  mounted() {
+    if (this.periodId == '') {
       this.setList();
     }
   },
@@ -260,10 +260,14 @@ export default {
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-      Bus.$emit('getOrgTable', this.orgTable);
+      this.$nextTick(() => {
+        Bus.$emit('getOrgTable', this.orgTable);
+      });
+
       this.showLoad = true;
       this.fullscreenLoading = false;
     },
+
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {
@@ -320,6 +324,7 @@ export default {
       });
     },
   },
+
   watch: {
     periodId: {
       handler(newVal) {

@@ -418,6 +418,7 @@ export default {
       this.server.filedAll({ processId: this.processId }).then((res) => {
         if (res.code == 200) {
           this.$message.success('归档成功');
+          this.getTableList();
         }
       });
     },
