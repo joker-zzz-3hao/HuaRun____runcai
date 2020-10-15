@@ -1460,6 +1460,13 @@
   color: #879099;
   font-size: 14px;
 }
+/* change by xinquan */
+.undertake-maps-detail .no-data{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  color: #879099;
+}
 
 /* concerned-okr */
 .concerned-okr .cont-area {
