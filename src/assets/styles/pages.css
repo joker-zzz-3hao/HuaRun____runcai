@@ -303,6 +303,10 @@
   color: #685df1;
 }
 
+.overview .tl-card-panel .okr-follow {
+  flex: 0 0 100px;
+}
+
 .department-view .tl-card-panel-group {
   margin: 20px 0 0 0;
   justify-content: space-between;

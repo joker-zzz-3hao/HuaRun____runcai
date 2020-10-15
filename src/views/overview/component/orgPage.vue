@@ -15,7 +15,7 @@
             <em>{{ CONST.STATUS_LIST_MAP[okrMain.status] }}</em>
           </dd>
         </dl>
-        <dl class="okr-responsible">
+        <dl class="okr-type">
           <dt>
             <em>OKR类型</em>
           </dt>
@@ -27,11 +27,13 @@
           </dt>
           <dd>{{ okrMain.userName }}</dd>
         </dl>
-        <dl class="okr-responsible">
-          <dd v-if="okrMain.supported != '1'" @click="addFocus(okrMain)">
-            关注
+        <dl class="okr-follow">
+          <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
+            <i></i><em>关注</em>
           </dd>
-          <dd v-else @click="cancelFocus(okrMain)">已关注</dd>
+          <dd v-show="okrMain.supported == '1'" @click="cancelFocus(okrMain)">
+            <i></i><em>已关注</em>
+          </dd>
         </dl>
         <dl class="okr-progress">
           <dt>
