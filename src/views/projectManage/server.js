@@ -48,4 +48,16 @@ export default class Server extends ServerBase {
   timeSheet(param) {
     return this._ajaxPost('gateway/project-service/project/submit/timeSheet', param);
   }
+
+  approvaledTimeSheetList(param) {
+    return this._ajaxPost('gateway/project-service/project/approval/timeSheetList', param);
+  }
+
+  setProjectManager(param) {
+    return this._ajaxPost('gateway/project-service/project/update/setProjectManager', param);
+  }
+
+  projectUserRelation(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectUserRelation', param);
+  }
 }

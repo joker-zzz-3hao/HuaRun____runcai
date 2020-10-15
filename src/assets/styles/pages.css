@@ -2098,6 +2098,16 @@
   flex: 0 0 20px;
 }
 
+.write-weekly pre,
+.weekly-thoughts dd > pre {
+  margin: 0;
+  flex: 1;
+  font-family: -apple-system, BlinkMacSystemFont,"微软雅黑","Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
 .write-weekly .el-form-item__content > em {
   margin: 0;
   font-size: 16px;
@@ -2138,8 +2148,13 @@
 
 .okr-completion .tl-progress-group > span:first-child {
   margin: 0 10px 0 0;
-  width: 140px;
+  flex: 0 0 60px;
   color: #acb6bf;
+}
+
+.okr-completion .tl-progress-group > em {
+  flex: 1;
+  text-align: right;
 }
 
 .okr-completion .okr-kind {
@@ -2308,6 +2323,10 @@
 }
 
 .undertake-okr-list .tl-progress-group {
+  flex: 0 0 270px;
+}
+
+.okr-completion.is-edit .undertake-okr-list .tl-progress-group {
   flex: 0 0 316px;
 }
 
@@ -2804,8 +2823,13 @@
   border-color: transparent;
 }
 
-.my-weekly .dl-card-panel > dd {
+.my-weekly .dl-card-panel > dd,
+.teams-weekly-detail .dl-card-panel > dd {
   margin: 10px 0 20px 0;
+}
+
+.no-data em {
+  color: #acb6bf;
 }
 
 /* 任务 */

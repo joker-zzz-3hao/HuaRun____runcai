@@ -2,52 +2,52 @@
   <div class="home">
     <div>
       <div>
-        <div>
-          <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
-            <el-submenu index="1">
-              <template slot="title">任务过程</template>
-              <el-submenu index="1-1">
-                <template slot="title">团队使用</template>
-                <el-menu-item v-if="teamList.length == 0"
-                  >暂无任务过程</el-menu-item
-                >
-                <el-menu-item
-                  @click.native="selectProcessItem(team)"
-                  v-for="team in teamList"
-                  :index="team.processId"
-                  :key="team.processId"
-                  >{{ team.processName }}</el-menu-item
-                >
-              </el-submenu>
-              <el-submenu index="1-2">
-                <template slot="title">小范围使用</template>
-                <el-menu-item v-if="littleRangeList.length == 0"
-                  >暂无任务过程</el-menu-item
-                >
-                <el-menu-item
-                  @click.native="selectProcessItem(littleRange)"
-                  v-for="littleRange in littleRangeList"
-                  :index="littleRange.processId"
-                  :key="littleRange.processId"
-                  >{{ littleRange.processName }}</el-menu-item
-                >
-              </el-submenu>
-              <el-submenu index="1-3">
-                <template slot="title">个人使用</template>
-                <el-menu-item v-if="personList.length == 0"
-                  >暂无任务过程</el-menu-item
-                >
-                <el-menu-item
-                  @click.native="selectProcessItem(person)"
-                  v-for="person in personList"
-                  :index="person.processId"
-                  :key="person.processId"
-                  >{{ person.processName }}</el-menu-item
-                >
-              </el-submenu>
+        <!-- 要放在菜单 -->
+        <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
+          <el-submenu index="1">
+            <template slot="title">任务过程</template>
+            <el-submenu index="1-1">
+              <template slot="title">团队使用</template>
+              <el-menu-item v-if="teamList.length == 0"
+                >暂无任务过程</el-menu-item
+              >
+              <el-menu-item
+                @click.native="selectProcessItem(team)"
+                v-for="team in teamList"
+                :index="team.processId"
+                :key="team.processId"
+                >{{ team.processName }}</el-menu-item
+              >
             </el-submenu>
-          </el-menu>
-        </div>
+            <el-submenu index="1-2">
+              <template slot="title">小范围使用</template>
+              <el-menu-item v-if="littleRangeList.length == 0"
+                >暂无任务过程</el-menu-item
+              >
+              <el-menu-item
+                @click.native="selectProcessItem(littleRange)"
+                v-for="littleRange in littleRangeList"
+                :index="littleRange.processId"
+                :key="littleRange.processId"
+                >{{ littleRange.processName }}</el-menu-item
+              >
+            </el-submenu>
+            <el-submenu index="1-3">
+              <template slot="title">个人使用</template>
+              <el-menu-item v-if="personList.length == 0"
+                >暂无任务过程</el-menu-item
+              >
+              <el-menu-item
+                @click.native="selectProcessItem(person)"
+                v-for="person in personList"
+                :index="person.processId"
+                :key="person.processId"
+                >{{ person.processName }}</el-menu-item
+              >
+            </el-submenu>
+          </el-submenu>
+        </el-menu>
+
         <div class="page-title">{{ processObj.processName }}</div>
         <div class="operating-right">
           <el-button
@@ -57,18 +57,32 @@
             icon="el-icon-s-claim"
             >去添加任务</el-button
           >
-          <el-button
-            type="primary"
-            @click="
-              go('filedTaskList', {
-                query: { processId: processObj, processId },
-              })
-            "
-            class="tl-btn amt-bg-slip"
-            icon="el-icon-s-cooperation"
-            >查看归档任务</el-button
-          >
+          <el-dropdown class="tl-dropdown">
+            <div class="el-dropdown-link">
+              <el-button
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                icon="el-icon-s-cooperation"
+                >查看归档任务</el-button
+              >
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="filedAll">
+                归档任务过程所有已完成的任务</el-dropdown-item
+              >
+              <el-dropdown-item
+                @click.native="
+                  go('filedTaskList', {
+                    query: { processId: processObj.processId },
+                  })
+                "
+              >
+                查看任务归档</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
+        <!-- 切换列表或看板 -->
         <div class="operating-box" v-if="taskTypeList.length > 0">
           <div
             class="tl-custom-btn"
@@ -84,112 +98,107 @@
           </div>
         </div>
       </div>
-      <div>
-        <div class="operating-right">
-          <div>
-            <el-button
-              type="primary"
-              @click="queryTaskByClassify('')"
-              class="tl-btn amt-bg-slip"
-              icon="el-icon-s-claim"
-              >全部分类</el-button
-            >
-            <el-button
-              v-for="classify in processClassifyList"
-              :key="classify.typeId"
-              type="primary"
-              @click="queryTaskByClassify(classify.typeId)"
-              class="tl-btn amt-bg-slip"
-              :disabled="classify.isEdit"
-              :icon="!classify.isEdit ? 'el-icon-s-claim' : ''"
-            >
-              <!-- @click.capture.stop="dataChange(scope.row)" -->
-              <el-input
-                @blur="editClassifyName(classify)"
-                @keyup.enter.native="editClassifyName(classify)"
-                v-if="classify.isEdit"
-                v-model="typeName"
-              ></el-input>
-              <span v-else>{{ classify.typeName }}</span>
-              <!-- <i class="el-icon-more"></i> -->
-              <el-dropdown>
-                <span class="el-dropdown-link">
-                  <i class="el-icon-more el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="editClassify(classify)"
-                    >重新命名分类</el-dropdown-item
-                  >
-                  <el-dropdown-item @click.native="deleteClassify(classify)"
-                    >删除分类</el-dropdown-item
-                  >
-                </el-dropdown-menu>
-              </el-dropdown>
-            </el-button>
 
-            <i
-              @click="addClassify"
-              style="cursor: pointer"
-              class="el-icon-circle-plus-outline"
-            ></i>
-          </div>
-          <el-input
-            placeholder="输入任务标题"
-            style="width: 200px"
-            class="tl-input-search"
-            v-model="searchParams.taskTitle"
-            clearable
-            @clear="getTableList"
-            @keyup.enter.native="getTableList"
-          >
-            <i
-              class="el-icon-search el-input__icon"
-              slot="prefix"
-              @click="getTableList"
-            ></i>
-          </el-input>
-          <tl-personmultiple
-            title="请选择执行人"
-            :userList="userList"
-            :userMap="userMap"
-            v-model="searchParams.searchExecutor"
-            @change="getTableList"
-          ></tl-personmultiple>
-          <tl-personmultiple
-            title="请选择创建人"
-            :userList="userList"
-            :userMap="userMap"
-            v-model="searchParams.searchCreator"
-            @change="getTableList"
-          ></tl-personmultiple>
-        </div>
+      <!-- 搜索栏 -->
+      <div class="operating-right">
+        <!-- 分类 -->
         <div>
-          <tl-list
-            ref="list"
-            :processClassifyList="processClassifyList"
-            :processObj="processObj"
-            :stepList="stepList"
-            v-if="taskType == 1 && processObj.processId"
-            :searchParams="searchParams"
-          ></tl-list>
-          <tl-board
-            ref="board"
-            :processObj="processObj"
-            :stepList="stepList"
-            v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
-            :searchParams="searchParams"
-          ></tl-board>
+          <el-button
+            plain
+            class="tl-btn amt-border-fadeout"
+            @click="queryTaskByClassify('')"
+            :class="{ 'is-select': searchParams.typeId == '' }"
+            >全部分类</el-button
+          >
+          <el-button
+            v-for="classify in processClassifyList"
+            :key="classify.typeId"
+            plain
+            class="tl-btn amt-border-fadeout"
+            @click="queryTaskByClassify(classify.typeId)"
+            :disabled="classify.isEdit"
+            :class="{
+              'is-select': searchParams.typeId == classify.typeId,
+            }"
+          >
+            <!-- @click.capture.stop="dataChange(scope.row)" -->
+            <el-input
+              @blur="editClassifyName(classify)"
+              @keyup.enter.native="editClassifyName(classify)"
+              v-if="classify.isEdit"
+              v-model="typeName"
+            ></el-input>
+            <span v-else>{{ classify.typeName }}</span>
+            <!-- <i class="el-icon-more"></i> -->
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <i class="el-icon-more el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="editClassify(classify)"
+                  >重新命名分类</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="deleteClassify(classify)"
+                  >删除分类</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-button>
+          <i
+            @click="addClassify"
+            style="cursor: pointer"
+            class="el-icon-circle-plus-outline"
+          ></i>
         </div>
+        <el-input
+          placeholder="输入任务标题"
+          style="width: 200px"
+          class="tl-input-search"
+          v-model="searchParams.taskTitle"
+          clearable
+          @clear="getTableList"
+          @keyup.enter.native="getTableList"
+        >
+          <i
+            class="el-icon-search el-input__icon"
+            slot="prefix"
+            @click="getTableList"
+          ></i>
+        </el-input>
+        <tl-personmultiple
+          title="请选择执行人"
+          :userList="userList"
+          :userMap="userMap"
+          v-model="searchParams.searchExecutor"
+          @change="getTableList"
+        ></tl-personmultiple>
+        <tl-personmultiple
+          title="请选择创建人"
+          :userList="userList"
+          :userMap="userMap"
+          v-model="searchParams.searchCreator"
+          @change="getTableList"
+        ></tl-personmultiple>
+      </div>
+      <!-- 列表和看板 -->
+      <div>
+        <tl-list
+          ref="list"
+          :processClassifyList="processClassifyList"
+          :processObj="processObj"
+          :stepList="stepList"
+          v-if="taskType == 1 && processObj.processId"
+          :searchParams="searchParams"
+        ></tl-list>
+        <tl-board
+          ref="board"
+          :processObj="processObj"
+          :stepList="stepList"
+          v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
+          :searchParams="searchParams"
+        ></tl-board>
       </div>
     </div>
-
-    <tl-create-task
-      ref="createtask"
-      v-if="existCreatetask"
-      :existCreatetask.sync="existCreatetask"
-      :server="server"
-      @success="getTableList"
-    ></tl-create-task>
     <tl-edit-task
       ref="editTask"
       v-if="existEditTask"
@@ -205,7 +214,6 @@ import { mapState } from 'vuex';
 import personMultiple from '@/components/personMultiple';
 import tlList from './components/listPage';
 import tlBoard from './components/boardPage';
-import tlCreateTask from '../myTask/components/createTask';
 import tlEditTask from '../myTask/components/editTask';
 import Server from './server';
 
@@ -215,7 +223,6 @@ export default {
   components: {
     tlList,
     tlBoard,
-    tlCreateTask,
     tlEditTask,
     'tl-personmultiple': personMultiple,
   },
@@ -231,7 +238,6 @@ export default {
       processClassifyList: [],
       showReal: false, // 展示示例图片 false
       changeKanban: true,
-      existCreatetask: false,
       existEditTask: false,
       processObj: {},
       taskTypeList: [1, 2],
@@ -274,6 +280,7 @@ export default {
   },
   methods: {
     init(processType) {
+      // 搜索任务过程
       this.server.queryTaskProcessList({
         currentPage: 1,
         pageSize: 1000,
@@ -295,6 +302,7 @@ export default {
         }
       });
     },
+    // 搜索部门成员
     queryUser() {
       const params = {
         currentPage: 1,
@@ -314,9 +322,6 @@ export default {
           );
         }
       });
-    },
-    goback() {
-      this.$router.go('-1');
     },
     queryProcessClassify() {
       this.server.queryProcessClassify({ processId: this.processId }).then((res) => {
@@ -345,10 +350,6 @@ export default {
 
     goCreateTask() {
       this.go('myTask', { query: { openCreate: true } });
-      this.existCreatetask = true;
-      this.$nextTick(() => {
-        this.$refs.createtask.show();
-      });
     },
     openEdit(id) {
       this.existEditTask = true;
@@ -413,7 +414,14 @@ export default {
       this.processId = process.processId;
       this.selectProcess(process);
     },
-
+    filedAll() {
+      this.server.filedAll({ processId: this.processId }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('归档成功');
+          this.getTableList();
+        }
+      });
+    },
   },
   watch: {
     processId: {
@@ -422,9 +430,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  beforeDestroy() {
-    this.setSearchParams();
   },
 };
 </script>

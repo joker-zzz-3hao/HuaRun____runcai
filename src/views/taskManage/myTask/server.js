@@ -16,9 +16,9 @@ export default class Server extends ServerBase {
   }
 
   // 查询项目
-  queryOrgProject(param) {
-    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
-  }
+  // queryOrgProject(param) {
+  //   return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+  // }
 
   // 查询组织包含的用户列表
   getUserListByOrgId(param) {
@@ -88,5 +88,10 @@ export default class Server extends ServerBase {
   // 查询日历
   getCalendar(param) {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
+
+  // 查询项目
+  queryOrgProject(param) {
+    return this._ajaxPost('gateway/project-service/project/query/userProjectList', param);
   }
 }

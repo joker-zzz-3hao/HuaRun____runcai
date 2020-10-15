@@ -104,7 +104,7 @@ export default class Server extends ServerBase {
 
   // 查询项目
   queryOrgProject(param) {
-    return this._ajaxPost('gateway/weekly-service/project/queryOrg', param);
+    return this._ajaxPost('gateway/project-service/project/query/userProjectList', param);
   }
 
   // 查询任务过程
@@ -120,6 +120,11 @@ export default class Server extends ServerBase {
   // 归档任务
   filedTask(param) {
     return this._ajaxPost(`gateway/task-service/task/filed?taskId=${param.taskId}`, param);
+  }
+
+  // 归档所有任务
+  filedAll(param) {
+    return this._ajaxPost(`gateway/task-service/task/filedAll?processId=${param.processId}`, param);
   }
 
   // 接收任务

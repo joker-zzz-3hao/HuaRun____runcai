@@ -31,7 +31,7 @@
           <dd v-if="okrMain.supported != '1'" @click="addFocus(okrMain)">
             关注
           </dd>
-          <dd v-else>已关注</dd>
+          <dd v-else @click="cancelFocus(okrMain)">已关注</dd>
         </dl>
         <dl class="okr-progress">
           <dt>
@@ -206,6 +206,21 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.setList(res.data);
+        }
+      });
+    },
+    cancelFocus(data) {
+      this.cancelParam = [];
+      this.param.push({
+        focusType: 0,
+        targetId: data.okrId,
+        supported: 0,
+      });
+      this.server.addFocus(
+        this.param,
+      ).then((res) => {
+        if (res.code == '200') {
+          this.okrMain.supported = '0';
         }
       });
     },

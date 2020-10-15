@@ -4,36 +4,35 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      :title="info.projectName"
+      :title="info.projectNameCn"
       :close-on-click-modal="false"
     >
-      <div v-for="item in info.list" :key="item.id">
+      <div v-for="item in info.weeklyItemList" :key="item.id">
         <div>
           <span>工作项:</span>
           <span>{{ item.workContent }}</span>
         </div>
         <div>
           <span>状态:</span>
-          <span>{{ item.status }}%</span>
+          <span>{{ item.workProgress }}%</span>
         </div>
         <div>
           <span>时间:</span>
-          <span>{{ item.startDate }}至{{ item.endDate }}</span>
+          <span>{{ item.startTime }}至{{ item.endTime }}</span>
         </div>
         <div>
           <span>填报工时:</span>
-          <span>投入{{ item.totalTime }}天</span>
-        </div>
-        <div>
-          <span>确认工时:</span>
-          <span>投入{{ item.times }}天</span>
-          <span v-if="item.remark">修改原因：{{ item.remark }}</span>
+          <span>投入{{ item.workTime }}天</span>
         </div>
         <div>
           <span>内容:</span>
-          <span>{{ item.content }}</span>
+          <span>{{ item.workDesc }}</span>
         </div>
       </div>
+      <span slot="footer" class="dialog-footer">
+        <span>确认工时: {{ info.timeSheet }}</span>
+        <span>原因: {{ info.remark }}</span>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -42,15 +41,15 @@
 import CONST from '../../const';
 
 export default {
-  name: 'approval',
+  name: 'approvalDetail',
   data() {
     return {
       CONST,
       visible: false,
       loading: false,
-      info: {
-
-      },
+      timeSheet: 0,
+      info: {},
+      remark: '',
     };
   },
   components: {
@@ -67,7 +66,15 @@ export default {
   mounted() {},
   methods: {
     show(data) {
-      this.info = data;
+      this.server.approvalTimeSheetList({
+        projectApprovalId: data.projectApprovalId,
+      }).then((res) => {
+        if (res.code == '200') {
+          console.log(res);
+          this.info = res.data;
+          this.timeSheet = this.info.timeSheet;
+        }
+      });
       this.visible = true;
     },
     close() {
