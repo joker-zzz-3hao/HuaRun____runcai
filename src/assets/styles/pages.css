@@ -551,7 +551,8 @@
 .team-view .operating-area-inside .el-input .el-input__inner,
 .staff-view .operating-area-inside .el-input .el-input__inner,
 .department-view .operating-area-inside .el-input .el-input__inner,
-.teams-weekly .operating-area .el-input .el-input__inner {
+.teams-weekly .operating-area .el-input .el-input__inner,
+.associated-undertaking .operating-area-inside .el-input .el-input__inner {
   background: #f4f6f8;
 }
 
@@ -786,6 +787,24 @@
   line-height: 24px;
 }
 
+/* change by xinquan */
+.associated-undertaking .no-data{
+  color: #879099;
+}
+.associated-undertaking .operating-area-inside{
+  display: flex;
+  align-items: center;
+  }
+.associated-undertaking .operating-area-inside em{
+  margin-right: 10px;
+}
+.associated-undertaking .operating-area-inside::before {
+  margin: 0 6px 0 0;
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: #685df1;
+}
 /* check-judge 考核与衡量弹窗--change by 心荃 */
 .check-judge .check-title{
   text-align: center;

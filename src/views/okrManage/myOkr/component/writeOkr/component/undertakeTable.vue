@@ -6,16 +6,29 @@
         :current.sync="currentIndex"
         :tabMenuList="tabMenuList"
       ></tl-tabs> -->
-      <dl
-        class="dl-list"
-        v-for="pItem in parentUndertake"
-        :key="pItem.periodName"
-      >
-        <dt class="list-title">
-          <em>{{ departmentName }}{{ pItem.periodName }}</em>
-          <span>(单选)</span>
+      <dl class="dl-list" v-if="periodList.length > 0">
+        <dt class="operating-area-inside">
+          <em>父目标周期</em>
+          <el-select
+            v-model="searchForm.periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              v-for="item in periodList"
+              :key="item.periodId"
+              :label="item.periodName"
+              :value="item.periodId"
+            ></el-option>
+          </el-select>
         </dt>
-        <dd class="tag-kind">
+        <dd
+          class="tag-kind"
+          v-for="pItem in parentUndertake[searchForm.periodId]"
+          :key="pItem.periodName"
+        >
           <el-radio-group v-model="modelDepart">
             <el-radio
               @click.native="selectDepartokr($event, index, item)"
@@ -32,10 +45,8 @@
             </el-radio>
           </el-radio-group>
         </dd>
-        <dd class="tag-kind" v-if="pItem.departokrList.length < 1">
-          暂无可承接的父目标
-        </dd>
       </dl>
+      <dl v-else class="dl-list no-data">暂无可关联的父目标</dl>
       <dl v-if="!showPhil" class="dl-list">
         <dt class="list-title">
           <em>{{ departmentName }}{{ periodName }}</em>
@@ -157,6 +168,11 @@ export default {
       parentUndertake: [],
       philosophyList: [],
       currentIndex: 0,
+      periodList: [],
+      searchForm: {
+        okrCycle: {},
+        periodId: 0,
+      },
       tabMenuList: [{
         menuName: '实体组织',
       },
@@ -171,6 +187,7 @@ export default {
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
     }
+    // this.getCycle();
     this.getUndertakeOkr();
     this.getCultureList();
   },
@@ -181,12 +198,25 @@ export default {
     }),
   },
   methods: {
+    // getCycle() {
+    //   // 周期
+    //   this.server.getOkrCycleList().then((res) => {
+    //     if (res.code == 200) {
+    //       this.periodList = res.data || [];
+    //       this.searchForm.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
+    //       this.searchForm.periodId = this.searchForm.okrCycle.periodId;
+    //       this.getUndertakeOkr();
+    //     }
+    //   });
+    // },
     getUndertakeOkr() {
       this.server.getUndertakeOkr().then((res) => {
         if (res.code == 200) {
           this.parentUndertake = [];
+          this.periodList = [];
           if (res.data.parentUndertakeOkrInfoResults) {
-            res.data.parentUndertakeOkrInfoResults.forEach((pItem) => {
+            res.data.parentUndertakeOkrInfoResults.forEach((pItem, pindex) => {
+              this.periodList.push({ periodId: pindex, periodName: pItem.okrPeriodEntity.periodName });
               const departokrList = [];
               pItem.okrList.forEach((item) => {
                 if (this.selectRadioDepart == item.o.okrDetailId
@@ -229,15 +259,20 @@ export default {
                   });
                 }
               });
+              console.log(pindex);
               if (this.periodName == pItem.okrPeriodEntity.periodName && this.departokrList) {
                 this.parentUndertake.push({
-                  periodName: this.periodName,
-                  departokrList: this.departokrList,
+                  pindex: {
+                    periodName: this.periodName,
+                    departokrList: this.departokrList,
+                  },
                 });
               } else {
                 this.parentUndertake.push({
-                  periodName: pItem.okrPeriodEntity.periodName,
-                  departokrList,
+                  pindex: {
+                    periodName: pItem.okrPeriodEntity.periodName,
+                    departokrList,
+                  },
                 });
               }
             });

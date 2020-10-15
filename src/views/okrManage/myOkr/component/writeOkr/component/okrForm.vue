@@ -428,10 +428,10 @@ export default {
     if (['6', '8'].includes(this.searchForm.okrStatus)) {
       this.getOkrDraftById();
     }
-    if (this.searchForm.okrStatus != '8' && this.isnew) {
-      this.autosave();
-    }
-    // 自动保存
+    // 自动保存去掉
+    // if (this.searchForm.okrStatus != '8' && this.isnew) {
+    //   this.autosave();
+    // }
   },
   methods: {
     ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto', 'setLoading']),

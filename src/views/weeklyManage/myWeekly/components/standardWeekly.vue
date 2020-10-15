@@ -328,16 +328,16 @@
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
-                  <!-- <el-input
+                  <el-input
                     v-if="canUpdate"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
                     placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
-                  ></el-input> -->
+                  ></el-input>
                   <!-- 编辑完之后 -->
-                  <em>{{ scope.row.planContent }}是大法是大法说的</em>
+                  <em v-else>{{ scope.row.planContent }}</em>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -485,7 +485,7 @@
               :width="30"
               :marginLeft="2"
             ></tl-process>
-            <!-- <el-slider
+            <el-slider
               v-if="canUpdate"
               v-model="item.progressAfter"
               :step="1"
@@ -501,8 +501,8 @@
               :step="1"
               :precision="0"
               class="tl-input-number"
-            ></el-input-number> -->
-            <em>{{ item.progressAfter }}</em>
+            ></el-input-number>
+            <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>
           <div class="week-change">
@@ -581,6 +581,7 @@
 
 import tlProcess from '@/components/process';
 import confidenceSelect from '@/components/confidenceSelect';
+import merge from 'webpack-merge';
 import CONST from '@/components/const';
 import Server from '../server';
 import selectProject from './selectProject';
@@ -776,10 +777,12 @@ export default {
     init() {
       this.weeklyDataCopy = { ...this.weeklyData };
       if (!this.weeklyDataCopy.weeklyId) {
+        if (!(this.$route.params && this.$route.params.weeklySumParams)) {
         // 本周任务初始化数据
-        this.addWork();
-        // 下周计划初始化数据
-        this.addNextWeekWork();
+          this.addWork();
+          // 下周计划初始化数据
+          this.addNextWeekWork();
+        }
         // 本周感想初始化数据
         this.addThought();
         // 如果是已提交过的数据，初始化数据
@@ -831,9 +834,9 @@ export default {
               workProgress: '',
               workTime: '',
               selectedOkr: [],
-              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
               okrCultureValueList: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
             });
           });
           // 合并后端取回数据
@@ -873,9 +876,9 @@ export default {
               workProgress: '',
               workTime: '',
               selectedOkr: [],
-              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
               okrCultureValueList: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
             });
           });
           // 反显周报列表数据
@@ -993,8 +996,11 @@ export default {
         workProgress: '',
         workTime: '',
         selectedOkr: [],
+        workOkrList: [],
+        okrCultureValueList: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
+      this.$forceUpdate();
     },
     addNextWeekWork() {
       this.formData.weeklyPlanSaveList.push({
@@ -1131,6 +1137,10 @@ export default {
             this.$busEmit('refreshCalendar');
             // 更新个人okr数据
             this.$emit('refreshMyOkr');
+            // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
+            this.$router.push({
+              query: merge({}, { params: 'clear' }),
+            });
           }
         });
       });
