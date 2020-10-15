@@ -63,7 +63,7 @@
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <em v-else>{{ scope.row.workContent }}</em>
+                <pre v-else>{{ scope.row.workContent }}</pre>
               </el-form-item>
             </template>
           </el-table-column>
