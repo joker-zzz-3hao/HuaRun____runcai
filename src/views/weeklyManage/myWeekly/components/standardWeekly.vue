@@ -501,6 +501,7 @@
               :step="1"
               :precision="0"
               class="tl-input-number"
+              @blur="progressAfterBlur(item)"
             ></el-input-number>
             <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
@@ -1250,6 +1251,15 @@ export default {
           });
         }
       });
+    },
+    progressAfterBlur(okrItem) {
+      if (okrItem.progressAfter == undefined) {
+        this.weeklyOkrSaveList.forEach((okr) => {
+          if (okrItem.okrDetailId == okr.okrDetailId) {
+            okr.progressAfter = 0;
+          }
+        });
+      }
     },
 
   },
