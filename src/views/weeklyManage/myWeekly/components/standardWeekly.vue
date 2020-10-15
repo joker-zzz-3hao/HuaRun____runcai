@@ -12,10 +12,10 @@
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
           class="tl-table"
-          :class="{ 'is-edit': timeDisabled }"
+          :class="{ 'is-edit': canUpdate }"
         >
-          <el-table-column width="40" v-if="timeDisabled">
-            <template slot-scope="scope" v-if="timeDisabled">
+          <el-table-column width="40" v-if="canUpdate">
+            <template slot-scope="scope" v-if="canUpdate">
               <el-tooltip
                 class="icon-clear"
                 :class="{
@@ -52,7 +52,7 @@
                 <el-input
                   v-model.trim="scope.row.workContent"
                   maxlength="20"
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   clearable
                   placeholder="简短概括任务，20字以内"
                   class="tl-input"
@@ -68,7 +68,7 @@
                 <el-input
                   type="textarea"
                   :rows="1"
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   placeholder="请多留点信息描述任务项，便于领导了解工作情况"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
@@ -85,9 +85,9 @@
             min-width="85"
           >
             <template slot-scope="scope">
-              <template v-if="timeDisabled">
+              <template v-if="canUpdate">
                 <el-form-item
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   :prop="
                     'weeklyWorkVoSaveList.' + scope.$index + '.workProgress'
                   "
@@ -115,12 +115,12 @@
           >
             <template slot-scope="scope">
               <el-form-item
-                v-if="timeDisabled"
+                v-if="canUpdate"
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workTime'"
                 :rules="formData.rules.workTime"
               >
                 <el-input
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   controls-position="right"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
@@ -139,7 +139,7 @@
           >
             <template slot-scope="scope">
               <el-form-item
-                v-if="timeDisabled"
+                v-if="canUpdate"
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectId'"
                 :rules="formData.rules.projectId"
               >
@@ -190,7 +190,7 @@
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
                         <em
-                          @click="timeDisabled ? addSupportOkr(scope.row) : ''"
+                          @click="canUpdate ? addSupportOkr(scope.row) : ''"
                           >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
                         >
                       </el-tooltip>
@@ -212,7 +212,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="btn-box" v-if="timeDisabled">
+        <div class="btn-box" v-if="canUpdate">
           <el-button
             type="text"
             @click="addItem"
@@ -235,7 +235,7 @@
             class="tag-kinds"
             @click="thoughtTypeChange(item, 0)"
             :class="{ 'is-thoughts': item.thoughtType == 0 }"
-            v-if="timeDisabled || item.thoughtType == 0"
+            v-if="canUpdate || item.thoughtType == 0"
           >
             <span>感想</span>
           </div>
@@ -243,7 +243,7 @@
             class="tag-kinds"
             @click="thoughtTypeChange(item, 1)"
             :class="{ 'is-suggest': item.thoughtType == 1 }"
-            v-if="timeDisabled || item.thoughtType == 1"
+            v-if="canUpdate || item.thoughtType == 1"
           >
             <span>建议</span>
           </div>
@@ -251,13 +251,13 @@
             class="tag-kinds"
             @click="thoughtTypeChange(item, 2)"
             :class="{ 'is-harvest': item.thoughtType == 2 }"
-            v-if="timeDisabled || item.thoughtType == 2"
+            v-if="canUpdate || item.thoughtType == 2"
           >
             <span>收获</span>
           </div>
         </div>
         <el-input
-          v-if="timeDisabled"
+          v-if="canUpdate"
           v-model.trim="item.thoughtContent"
           type="textarea"
           maxlength="100"
@@ -268,7 +268,7 @@
         ></el-input>
         <em v-else>{{ item.thoughtContent }}</em>
         <el-tooltip
-          v-if="timeDisabled"
+          v-if="canUpdate"
           class="icon-clear"
           :class="{
             'is-disabled': formData.weeklyThoughtSaveList.length == 1,
@@ -289,7 +289,7 @@
           <i class="el-icon-minus"></i>
         </el-tooltip>
       </dd>
-      <dd v-if="timeDisabled">
+      <dd v-if="canUpdate">
         <div class="btn-box">
           <el-button
             type="text"
@@ -313,13 +313,13 @@
             v-loading="tableLoading"
             :data="formData.weeklyPlanSaveList"
             class="tl-table"
-            :class="{ 'is-edit': timeDisabled }"
+            :class="{ 'is-edit': canUpdate }"
           >
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
-                    v-if="timeDisabled"
+                    v-if="canUpdate"
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
@@ -334,7 +334,7 @@
             <el-table-column prop="code" width="40">
               <template slot-scope="scope">
                 <el-tooltip
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   class="icon-clear"
                   :class="{
                     'is-disabled': formData.weeklyPlanSaveList.length == 1,
@@ -359,7 +359,7 @@
           </el-table>
         </el-form>
       </dd>
-      <dd v-if="timeDisabled">
+      <dd v-if="canUpdate">
         <div class="btn-box">
           <el-button
             type="text"
@@ -435,7 +435,7 @@
           </template>
           <div class="okr-risk" v-if="item.kr">
             <span>信心指数</span>
-            <template v-if="timeDisabled">
+            <template v-if="canUpdate">
               <tl-confidence
                 v-model="item.confidenceAfter"
                 @change="changeConfidence"
@@ -476,14 +476,14 @@
               :marginLeft="2"
             ></tl-process>
             <el-slider
-              v-if="timeDisabled"
+              v-if="canUpdate"
               v-model="item.progressAfter"
               :step="1"
               @change="processChange(item)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
-              v-if="timeDisabled"
+              v-if="canUpdate"
               v-model="item.progressAfter"
               controls-position="right"
               :min="0"
@@ -493,7 +493,7 @@
               class="tl-input-number"
             ></el-input-number>
             <!-- <el-input
-              v-if="timeDisabled"
+              v-if="canUpdate"
               v-model="item.progressAfter"
               controls-position="right"
               class="tl-input-number"
@@ -532,11 +532,18 @@
     </dl>
     <div class="btn-box">
       <el-button
-        :disabled="!canEdit"
+        v-if="canEdit && canUpdate"
         type="primary"
         @click="commitWeekly"
         class="tl-btn amt-bg-slip"
         >提交</el-button
+      >
+      <el-button
+        v-if="canEdit && !canUpdate"
+        type="primary"
+        @click="canUpdate = true"
+        class="tl-btn amt-bg-slip"
+        >编辑</el-button
       >
     </div>
 
@@ -647,17 +654,18 @@ export default {
         return true;
       },
     },
-    timeDisabled: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
+    // timeDisabled: {
+    //   type: Boolean,
+    //   default() {
+    //     return false;
+    //   },
+    // },
   },
   data() {
     return {
       server,
       CONST,
+      canUpdate: !this.weeklyData.weeklyId,
       weeklyEmotion: '100',
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
@@ -944,7 +952,7 @@ export default {
       this.formData.weeklyThoughtSaveList.forEach((thought) => {
         thought.randomId = Math.random().toString(36).substr(3);
       });
-      if (this.formData.weeklyThoughtSaveList && this.timeDisabled) {
+      if (this.formData.weeklyThoughtSaveList && this.canUpdate) {
         // this.addThought();
       }
     },
@@ -1118,6 +1126,7 @@ export default {
             this.$busEmit('refreshCalendar');
             // 更新个人okr数据
             this.$emit('refreshMyOkr');
+            this.canUpdate = true;
           }
         });
       });
