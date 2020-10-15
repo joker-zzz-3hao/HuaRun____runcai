@@ -11,8 +11,33 @@
           ref="workTable"
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
-          class="tl-table flex"
+          class="tl-table"
+          :class="{ 'is-edit': canUpdate }"
         >
+          <el-table-column width="40" v-if="canUpdate">
+            <template slot-scope="scope" v-if="canUpdate">
+              <el-tooltip
+                class="icon-clear"
+                :class="{
+                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
+                }"
+                effect="dark"
+                :content="
+                  formData.weeklyWorkVoSaveList.length > 1
+                    ? '删除'
+                    : '至少有一条工作项'
+                "
+                placement="top"
+                popper-class="tl-tooltip-popper"
+                @click.native="
+                  formData.weeklyWorkVoSaveList.length > 1 &&
+                    deleteItem(scope.row)
+                "
+              >
+                <i class="el-icon-minus"></i>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
             label="序号"
             type="index"
@@ -31,12 +56,14 @@
               >
                 <el-input
                   v-model.trim="scope.row.workContent"
-                  size="small"
-                  maxlength="100"
+                  maxlength="20"
+                  v-if="canUpdate"
                   clearable
-                  placeholder="请用一句话概括某项工作，不超过100个字符"
+                  placeholder="简短概括任务，20字以内"
                   class="tl-input"
                 ></el-input>
+                <!-- 编辑完提交后展示 -->
+                <em v-else>{{ scope.row.workContent }}</em>
               </el-form-item>
             </template>
           </el-table-column>
@@ -44,12 +71,12 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="120"
+            min-width="85"
           >
             <template slot-scope="scope">
-              <template v-if="timeDisabled">
+              <template v-if="canUpdate">
                 <el-form-item
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   :prop="
                     'weeklyWorkVoSaveList.' + scope.$index + '.workProgress'
                   "
@@ -65,35 +92,26 @@
                 </el-form-item>
               </template>
               <!-- 编辑完提交后展示 -->
-              <tl-process
-                v-else
-                :data="scope.row.workProgress"
-                :width="36"
-                :marginLeft="6"
-              ></tl-process
-              >%
+              <em v-else>{{ scope.row.workProgress }}</em
+              ><span>%</span>
             </template>
           </el-table-column>
           <el-table-column
             label="投入工时"
             prop="workTime"
             :render-header="renderHeader"
-            min-width="130"
+            min-width="100"
           >
             <template slot-scope="scope">
               <el-form-item
-                v-if="timeDisabled"
+                v-if="canUpdate"
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.workTime'"
                 :rules="formData.rules.workTime"
               >
                 <el-input
-                  v-if="timeDisabled"
+                  v-if="canUpdate"
                   controls-position="right"
                   v-model.trim="scope.row.workTime"
-                  :precision="1"
-                  :step="0.5"
-                  :min="0"
-                  :max="5"
                   @change="workTimeChange(scope.row)"
                   class="tl-input-number"
                 ></el-input>
@@ -110,15 +128,15 @@
           >
             <template slot-scope="scope">
               <el-form-item
-                v-if="timeDisabled"
+                v-if="canUpdate"
                 :prop="'weeklyWorkVoSaveList.' + scope.$index + '.projectId'"
                 :rules="formData.rules.projectId"
               >
                 <el-select
                   v-model="scope.row.projectId"
                   placeholder="请选择关联项目"
-                  size="small"
                   @change="projectChange(scope.row)"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -161,7 +179,7 @@
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
                         <em
-                          @click="timeDisabled ? addSupportOkr(scope.row) : ''"
+                          @click="canUpdate ? addSupportOkr(scope.row) : ''"
                           >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
                         >
                       </el-tooltip>
@@ -182,48 +200,23 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" width="40">
-            <template slot-scope="scope" v-if="timeDisabled">
-              <el-tooltip
-                class="icon-clear"
-                :class="{
-                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
-                }"
-                effect="dark"
-                :content="
-                  formData.weeklyWorkVoSaveList.length > 1
-                    ? '删除'
-                    : '至少有一条工作项'
-                "
-                placement="top"
-                popper-class="tl-tooltip-popper"
-                @click.native="
-                  formData.weeklyWorkVoSaveList.length > 1 &&
-                    deleteItem(scope.row)
-                "
-              >
-                <i class="el-icon-minus"></i>
-              </el-tooltip>
-            </template>
-          </el-table-column>
         </el-table>
+        <div class="btn-box" v-if="canUpdate">
+          <el-button
+            type="text"
+            @click="addItem"
+            class="tl-btn dotted-line list-add"
+          >
+            <i class="el-icon-plus"></i>添加
+          </el-button>
+        </div>
       </el-form>
-      <div class="btn-box">
-        <el-button
-          type="text"
-          @click="addItem"
-          class="tl-btn dotted-line list-add"
-          v-if="timeDisabled"
-        >
-          <i class="el-icon-plus"></i>添加
-        </el-button>
-      </div>
     </div>
     <!-- 个人OKR完成度 -->
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list"
         :class="item.kr ? 'is-kr' : 'is-o'"
@@ -283,7 +276,7 @@
           </template>
           <div class="okr-risk" v-if="item.kr">
             <span>信心指数</span>
-            <template v-if="timeDisabled">
+            <template v-if="canUpdate">
               <tl-confidence
                 v-model="item.confidenceAfter"
                 @change="changeConfidence"
@@ -324,14 +317,14 @@
               :marginLeft="2"
             ></tl-process>
             <el-slider
-              v-if="timeDisabled"
+              v-if="canUpdate"
               v-model="item.progressAfter"
               :step="1"
               @change="processChange(item)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
-              v-if="timeDisabled"
+              v-if="canUpdate"
               v-model="item.progressAfter"
               controls-position="right"
               :min="0"
@@ -340,13 +333,7 @@
               :precision="0"
               class="tl-input-number"
             ></el-input-number>
-            <!-- <el-input
-              v-if="timeDisabled"
-              v-model="item.progressAfter"
-              controls-position="right"
-              class="tl-input-number"
-            ></el-input> -->
-            <em v-else>{{ item.progressAfter }}</em>
+            <em>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>
           <div class="week-change">
@@ -359,35 +346,39 @@
         </div>
       </dd>
     </dl>
-    <!-- 以下是你的原版 -->
-    <div v-if="showTaskProcess" class="degree-completion">
-      <!-- <h1>个人OKR完成度</h1> -->
-      <div v-for="item in weeklyOkrSaveList" :key="item.o.okrdetailId"></div>
-    </div>
     <!-- 本周心情 -->
     <dl class="dl-card-panel">
       <dt class="card-title"><em>本周心情</em></dt>
-      <dd></dd>
+      <dd>
+        <span>
+          请选择本周心情
+          <el-button @click="setEmotion(100)">有收获</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
+            >有收获</span
+          >
+          <el-button @click="setEmotion(50)">还行吧</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
+          <el-button @click="setEmotion(0)">让我静静</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
+            >让我静静</span
+          >
+        </span>
+      </dd>
     </dl>
-    <div class="week-mood">
-      <span>
-        请选择本周心情
-        <el-button @click="setEmotion(100)">有收获</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 100 }">有收获</span>
-        <el-button @click="setEmotion(50)">还行吧</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-        <el-button @click="setEmotion(0)">让我静静</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
-      </span>
-    </div>
-
     <div class="btn-box">
       <el-button
-        :disabled="!canEdit"
+        v-if="canEdit && canUpdate"
         type="primary"
         @click="commitWeekly"
         class="tl-btn amt-bg-slip"
         >提交</el-button
+      >
+      <el-button
+        v-if="canEdit && !canUpdate"
+        type="primary"
+        @click="canUpdate = true"
+        class="tl-btn amt-bg-slip"
+        >编辑</el-button
       >
     </div>
     <!-- 添加支撑项 -->
@@ -495,17 +486,18 @@ export default {
         return true;
       },
     },
-    timeDisabled: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
+    // canUpdate: {
+    //   type: Boolean,
+    //   default() {
+    //     return false;
+    //   },
+    // },
   },
   data() {
     return {
       server,
       CONST,
+      canUpdate: !this.weeklyData.weeklyId,
       weeklyEmotion: '100',
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
@@ -532,6 +524,18 @@ export default {
             required: true,
             message: '请选择支撑项',
             trigger: 'change',
+          },
+          workProgress: {
+            type: 'string',
+            required: true,
+            trigger: 'blur',
+            validator: this.validateProcess,
+          },
+          workTime: {
+            type: 'string',
+            required: true,
+            trigger: 'blur',
+            validator: this.validateTime,
           },
         },
         weeklyWorkVoSaveList: [],
@@ -568,9 +572,6 @@ export default {
         return okr;
       };
     },
-    workItem() {
-      return '工作项';
-    },
     itemIndex() {
       return (okr) => {
         const result = [];
@@ -589,18 +590,104 @@ export default {
   },
   methods: {
     init() {
-      // 本周任务初始化数据
-      this.addWork();
+      this.weeklyDataCopy = { ...this.weeklyData };
+      if (!this.weeklyDataCopy.weeklyId) {
+        // 本周任务初始化数据
+        this.addWork();
+      }
       // 如果是已提交过的数据，初始化数据
       this.initPage();
       // this.thisPageProjectList = [...this.projectList];
     },
     initPage() {
-      if (this.weeklyData.weeklyId) {
-        this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
-        this.setWorkTableData();
+      // if (this.weeklyData.weeklyId) {
+      //   this.formData.weeklyWorkVoSaveList = this.weeklyData.weeklyWorkVoList;// 列表数据
+      //   this.setWorkTableData();
+      //   // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+      //   this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
+      // }
+      const self = this;
+      // // 来自任务的数据,同步至本周任务中
+      // console.log('任务', self.$route.params);
+      const tempOkrList = [];
+      if (self.$route.params && self.$route.params.weeklySumParams) {
+        self.canUpdate = true;
+        self.$route.params.weeklySumParams.forEach((okr) => {
+          if (okr.okrDetailId) {
+            tempOkrList.push({
+              okrDetailId: okr.okrDetailId,
+            });
+          }
+        });
+      }
+      if (self.weeklyDataCopy.weeklyId) { // 后端查回来的数据
+        // 任务汇总传过来的数据
+        if (self.$route.params && self.$route.params.weeklySumParams) {
+          // 初始化
+          self.$route.params.weeklySumParams.forEach((work) => {
+            self.formData.weeklyWorkVoSaveList.push({
+              okrCultureValueIds: '',
+              okrIds: '',
+              okrDetailId: work.okrDetailId || '',
+              projectId: work.projectId || '',
+              projectNameCn: work.projectName || '',
+              weeklyId: '',
+              workContent: work.taskTitle || '',
+              workDesc: work.taskDesc || '',
+              workId: '',
+              workIndex: 0,
+              workProgress: '',
+              workTime: '',
+              selectedOkr: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+              workOkrList: [],
+              okrCultureValueList: [],
+            });
+          });
+          // 合并后端取回数据
+          self.formData.weeklyWorkVoSaveList = [
+            ...self.formData.weeklyWorkVoSaveList,
+            ...self.weeklyDataCopy.weeklyWorkVoList,
+          ];
+        } else {
+          // 后端查询数据
+          self.formData.weeklyWorkVoSaveList = self.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+        }
+
+        // 反显周报列表数据
+        self.setWorkTableData();
+
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
-        this.setOkrProcess(this.weeklyData.weeklyOkrVoList);
+        self.setOkrProcess([...tempOkrList, ...self.weeklyDataCopy.weeklyOkrVoList]);
+      } else if (!self.weeklyDataCopy.weeklyId) {
+        // 任务汇总传过来的数据
+        if (self.$route.params && self.$route.params.weeklySumParams) {
+          // 初始化
+          self.$route.params.weeklySumParams.forEach((work) => {
+            self.formData.weeklyWorkVoSaveList.push({
+              okrCultureValueIds: '',
+              okrIds: '',
+              projectId: work.projectId || '',
+              okrDetailId: work.okrDetailId || '',
+              projectNameCn: work.projectName || '',
+              weeklyId: '',
+              workContent: work.taskTitle || '',
+              workDesc: work.taskDesc || '',
+              workId: '',
+              workIndex: 0,
+              workProgress: '',
+              workTime: '',
+              selectedOkr: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+              workOkrList: [],
+              okrCultureValueList: [],
+            });
+          });
+          // 反显周报列表数据
+          self.setWorkTableData();
+          // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+          self.setOkrProcess(tempOkrList);
+        }
       }
     },
     setOkrProcess(weeklyOkrVoList) {
@@ -686,8 +773,8 @@ export default {
         workDesc: '',
         workId: '',
         workIndex: 0,
-        workProgress: 0,
-        workTime: 0,
+        workProgress: '',
+        workTime: '',
         selectedOkr: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });

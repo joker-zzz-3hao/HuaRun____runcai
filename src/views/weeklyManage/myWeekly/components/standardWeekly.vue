@@ -320,6 +320,11 @@
             class="tl-table"
             :class="{ 'is-edit': canUpdate }"
           >
+            <el-table-column
+              label="序号"
+              type="index"
+              width="55"
+            ></el-table-column>
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
                 <el-form-item>
@@ -1126,7 +1131,6 @@ export default {
             this.$busEmit('refreshCalendar');
             // 更新个人okr数据
             this.$emit('refreshMyOkr');
-            this.canUpdate = true;
           }
         });
       });
