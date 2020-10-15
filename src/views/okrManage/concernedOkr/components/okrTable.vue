@@ -12,7 +12,7 @@
       row-key="okrDetailId"
       :expand-row-keys="expands"
     >
-      <el-table-column type="expand" width="5%">
+      <el-table-column type="expand" width="6%">
         <template slot-scope="scope">
           <dl
             v-for="(kritem, krindex) in scope.row.krList"
