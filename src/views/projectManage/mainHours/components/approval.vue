@@ -18,7 +18,7 @@
         </div>
         <div>
           <span>时间:</span>
-          <span>{{ item.startDate }}至{{ item.endDate }}</span>
+          <span>{{ item.startTime }}至{{ item.endTime }}</span>
         </div>
         <div>
           <span>填报工时:</span>
@@ -37,6 +37,14 @@
           :step="0.5"
           :min="0"
         ></el-input-number>
+        <span>原因</span>
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="remark"
+        >
+        </el-input>
         <el-button @click="visible = false">取 消</el-button>
         <el-button type="primary" @click="approval">确 定</el-button>
       </span>
@@ -56,6 +64,7 @@ export default {
       loading: false,
       timeSheet: 0,
       info: {},
+      remark: '',
     };
   },
   components: {
@@ -72,41 +81,34 @@ export default {
   mounted() {},
   methods: {
     show(data) {
-      // this.info = data;
-      // this.info.list.forEach((item) => {
-      //   item.visible = false;
-      // });
       this.server.approvalTimeSheetList({
         projectApprovalId: data.projectApprovalId,
       }).then((res) => {
         if (res.code == '200') {
           console.log(res);
           this.info = res.data;
+          this.timeSheet = this.info.timeSheet;
         }
       });
       this.visible = true;
     },
     approval() {
-      this.server.timeSheet({
-        projectId: '',
+      this.server.approvaledTimeSheetList({
+        projectId: this.info.projectId,
+        timeSheet: this.timeSheet,
+        remark: this.remark,
+        sourceId: this.info.sourceId,
+        sourceType: this.info.sourceType,
+        projectApprovalId: this.info.projectApprovalId,
       }).then((res) => {
         if (res.code == '200') {
-          console.log(res);
+          this.$emit('success');
+          this.close();
         }
       });
     },
     close() {
       this.visible = false;
-    },
-    test(data) {
-      console.log(data);
-    },
-    hideDom(data) {
-      this.info.list.forEach((item) => {
-        if (item.id == data.id) {
-          item.visible = false;
-        }
-      });
     },
   },
   watch: {},

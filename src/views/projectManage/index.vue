@@ -147,6 +147,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import createManage from './components/createManage';
 import Server from './server';
@@ -171,6 +172,11 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-create-manage': createManage,
   },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   mounted() {
     this.searchManage();
   },
@@ -180,6 +186,7 @@ export default {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         projectName: this.keyWord,
+        userAccount: this.userInfo.userAccount,
       };
       this.server.projectPageList(param).then((res) => {
         if (res.code == '200') {
@@ -195,6 +202,7 @@ export default {
       });
     },
     addSuccess() {
+      this.showCreateManage = false;
       this.currentPage = 1;
       this.searchManage();
     },

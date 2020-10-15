@@ -3,8 +3,8 @@
     <el-dialog
       :append-to-body="true"
       :visible="visible"
-      @closed="close"
-      @close="close"
+      @closed="closed"
+      @close="closed"
       title="创建虚拟项目"
       :close-on-click-modal="false"
     >
@@ -54,9 +54,9 @@
           >
             <el-option
               v-for="(item, index) in projectManagerList"
-              :key="index + item.userId"
+              :key="index + item.userAccount"
               :label="item.userName"
-              :value="item.userId"
+              :value="item.userAccount"
             >
               <dl class="user-info">
                 <dt>
@@ -255,7 +255,7 @@ export default {
         }
       });
     },
-    close() {
+    closed() {
       this.visible = false;
     },
     cancel() {},
