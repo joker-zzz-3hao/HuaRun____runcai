@@ -2,14 +2,14 @@
   <div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
       <el-collapse accordion v-model="activeNames">
-        <el-collapse-item name="1">
+        <el-collapse-item :name="index + 1">
           <template slot="title">
             <div style="width: 100%">
               <em>目标{{ index + 1 }}</em
               ><em>{{ item.o.okrDetailObjectKr }}</em>
               <div class="right">
-                <em>权重 {{ item.okrWeight }}%</em>
-                <em>进度 {{ item.okrDetailProgress }}%</em>
+                <em>权重 {{ item.o.okrWeight }}% </em>
+                <em>进度 {{ item.o.okrDetailProgress }}%</em>
               </div>
             </div>
           </template>
@@ -53,7 +53,7 @@
               <div>{{ list.communication }}</div>
 
               <div>
-                <em>请选择：</em>
+                <!-- <em>请选择：</em> -->
                 <el-button :type="'primary'">{{
                   list.communicationLabel
                 }}</el-button>
@@ -77,7 +77,7 @@ export default {
     return {
       reviewType: 1,
       form: {},
-      activeNames: ['1'],
+      activeNames: [1],
       server,
       active: {},
       deficiency: {},
@@ -152,7 +152,7 @@ export default {
       });
     },
     handleDeleteOne() {
-      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
+      this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
         })
@@ -169,7 +169,7 @@ export default {
       };
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
-          this.$message.success('保存成功');
+          this.$route.push('/replayList');
         }
       });
     },

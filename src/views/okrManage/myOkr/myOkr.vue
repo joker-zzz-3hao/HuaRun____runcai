@@ -73,19 +73,18 @@
                     >
                       <em>操作历史</em>
                     </el-dropdown-item>
-
+                    <el-dropdown-item
+                      v-if="['6', '8', 6, 8].includes(item.okrMain.status)"
+                      @click.native="goDraft(item)"
+                    >
+                      <em>编辑</em>
+                    </el-dropdown-item>
                     <el-dropdown-item
                       v-if="['6', 6].includes(item.okrMain.status)"
                       @click.native="deleteDraft(item.id)"
                     >
                       <!-- <i class="el-icon-delete"></i> -->
                       <em>删除</em>
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                      v-if="['6', '8', 6, 8].includes(item.okrMain.status)"
-                      @click.native="goDraft(item)"
-                    >
-                      <em>编辑</em>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
