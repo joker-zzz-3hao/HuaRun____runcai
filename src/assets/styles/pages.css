@@ -295,7 +295,8 @@
   z-index: 999999;
 }
 
-.overview .cont-area .tag-kind .kind-parent + em {
+.overview .cont-area .tag-kind .kind-parent + em,
+.concerned-okr .cont-area .tag-kind .kind-parent + em {
   color: #26282a;
 }
 
@@ -1484,7 +1485,13 @@
   border-radius: 4px;
 }
 
+.concerned-okr .followed-users {
+  padding: 6px;
+}
+
 .concerned-okr .followed-okrs .tl-card-panel {
+  margin-bottom: 0;
+  padding: 30px 30px 0 30px;
   background: unset;
   box-shadow: unset;
   border-radius: unset;
@@ -1504,6 +1511,30 @@
 
 .concerned-okr .cont-area .tl-card-panel .tl-table-fix .tl-thead li:nth-child(3) {
   width: 8%;
+}
+
+.concerned-okr .tl-table .sub-tr .okr-line {
+  flex: 0 0 7%;
+  width: 7%;
+}
+
+.concerned-okr .tl-table .sub-tr .okr-kr-name {
+  flex: 0 0 65%;
+  width: 65%;
+}
+
+.concerned-okr .followed-users dd,
+.concerned-okr .followed-users .user-info {
+  display: flex;
+  align-items: center;
+}
+
+.concerned-okr .followed-users dd {
+  justify-content: space-between;
+}
+
+.concerned-okr .followed-users .user-name {
+  margin: 0 20px 0 0;
 }
 
 /* okr-approval */
