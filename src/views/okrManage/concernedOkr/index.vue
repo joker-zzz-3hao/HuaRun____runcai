@@ -11,6 +11,7 @@
               v-model="keyWord"
               placeholder="请输入关注人姓名"
               class="tl-input-search"
+              clearable
             >
               <i class="el-icon-search" slot="prefix" @click="searchFocus"></i>
             </el-input>
