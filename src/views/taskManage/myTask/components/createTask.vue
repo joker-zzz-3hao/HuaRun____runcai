@@ -75,7 +75,9 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                ></el-option>
+                >
+                  <tl-levelblock :value="item.value"></tl-levelblock>
+                </el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -197,6 +199,7 @@
 <script>
 import { mapState } from 'vuex';
 import fileUpload from '@/components/fileUpload/index';
+import levelblock from '@/components/levelblock';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -268,6 +271,7 @@ export default {
   components: {
     'tl-selectproject': selectProject,
     'file-upload': fileUpload,
+    'tl-levelblock': levelblock,
   },
   created() {
 

@@ -32,7 +32,7 @@
           :key="element.taskId"
         >
           <div>
-            {{ CONST.PRIORITY_MAP[element.taskLevel] }}
+            <tl-levelblock :value="element.taskLevel"></tl-levelblock>
           </div>
           <div>
             {{ element.taskTitle }}
@@ -73,6 +73,7 @@
 <script>
 import draggable from 'vuedraggable';
 import process from '@/components/process';
+import levelblock from '@/components/levelblock';
 import tlAddTask from './addTask';
 import Server from '../server';
 import CONST from '../const';
@@ -87,6 +88,7 @@ export default {
     draggable,
     tlAddTask,
     'tl-process': process,
+    'tl-levelblock': levelblock,
   },
   props: {
     stepList: {

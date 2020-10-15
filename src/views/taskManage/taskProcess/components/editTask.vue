@@ -114,7 +114,9 @@
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
-                  ></el-option>
+                  >
+                    <tl-levelblock :value="item.value"></tl-levelblock>
+                  </el-option>
                 </el-select>
               </el-form-item>
             </dd>
@@ -365,6 +367,7 @@ import fileUpload from '@/components/fileUpload/index';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
 import imgDialog from '@/components/imgDialog';
+import levelblock from '@/components/levelblock';
 import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
@@ -379,6 +382,7 @@ export default {
     'tl-tabs': tabs,
     'file-upload': fileUpload,
     'img-dialog': imgDialog,
+    'tl-levelblock': levelblock,
   },
   data() {
     return {
