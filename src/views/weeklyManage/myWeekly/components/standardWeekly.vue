@@ -63,7 +63,7 @@
                   class="tl-input"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <pre v-else>{{ scope.row.workContent }}</pre>
+                <em v-else>{{ scope.row.workContent }}</em>
               </el-form-item>
             </template>
           </el-table-column>
@@ -79,7 +79,7 @@
                   class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
-                <em v-else class="font-normal">{{ scope.row.workDesc }}</em>
+                <pre v-else class="font-normal">{{ scope.row.workDesc }}</pre>
               </el-form-item>
             </template>
           </el-table-column>
@@ -271,7 +271,7 @@
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
-        <em v-else>{{ item.thoughtContent }}</em>
+        <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
           v-if="canUpdate"
           class="icon-clear"
