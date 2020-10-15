@@ -39,6 +39,11 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="序号"
+            type="index"
+            width="55"
+          ></el-table-column>
+          <el-table-column
             label="工作项"
             prop="workContent"
             :render-header="renderHeader"
@@ -785,12 +790,15 @@ export default {
     },
     initPage() {
       const self = this;
-      // 来自任务的数据,同步至本周任务中
-      console.log('任务', self.$route.query);
+      // // 来自任务的数据,同步至本周任务中
+      // console.log('任务', self.$route.params);
       const tempOkrList = [];
+      debugger;
       // 将任务的okr遍历出来
-      if (self.$route.query && self.$route.query.weeklySumParams) {
-        self.$route.query.weeklySumParams.forEach((okr) => {
+      if (self.$route.params && self.$route.params.weeklySumParams) {
+        debugger;
+        self.canUpdate = true;
+        self.$route.params.weeklySumParams.forEach((okr) => {
           if (okr.okrDetailId) {
             tempOkrList.push({
               okrDetailId: okr.okrDetailId,
@@ -809,9 +817,9 @@ export default {
       //   this.setOkrProcess(this.weeklyDataCopy.weeklyOkrVoList);
       if (self.weeklyDataCopy.weeklyId) { // 后端查回来的数据
         // 任务汇总传过来的数据
-        if (self.$route.query && self.$route.query.weeklySumParams) {
+        if (self.$route.params && self.$route.params.weeklySumParams) {
           // 初始化
-          self.$route.query.weeklySumParams.forEach((work) => {
+          self.$route.params.weeklySumParams.forEach((work) => {
             self.formData.weeklyWorkVoSaveList.push({
               okrCultureValueIds: '',
               okrIds: '',
@@ -851,9 +859,9 @@ export default {
         self.setOkrProcess([...tempOkrList, ...self.weeklyDataCopy.weeklyOkrVoList]);
       } else if (!self.weeklyDataCopy.weeklyId) {
         // 任务汇总传过来的数据
-        if (self.$route.query && self.$route.query.weeklySumParams) {
+        if (self.$route.params && self.$route.params.weeklySumParams) {
           // 初始化
-          self.$route.query.weeklySumParams.forEach((work) => {
+          self.$route.params.weeklySumParams.forEach((work) => {
             self.formData.weeklyWorkVoSaveList.push({
               okrCultureValueIds: '',
               okrIds: '',
