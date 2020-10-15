@@ -195,15 +195,26 @@ export default {
       });
     },
     setManager(data) {
-      this.server.setProjectManager({
-        userId: data.userId,
-        projectId: data.projectId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$router.push({
-            name: 'projectManage',
-          });
+      let managerName = '';
+      this.baseInfo.projectUserVoList.forEach((item) => {
+        if (item.projectUserType == '1') {
+          managerName = item.userName;
         }
+      });
+      this.$xconfirm({
+        title: '设置项目经理',
+        content: `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`,
+      }).then(() => {
+        this.server.setProjectManager({
+          userId: data.userId,
+          projectId: data.projectId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.$router.push({
+              name: 'projectManage',
+            });
+          }
+        });
       });
     },
     addMembers() {

@@ -133,10 +133,11 @@
               :key="weekly.userId"
               @click="weeklyInfo(weekly)"
             >
+              <!-- weekly.visitId 存在时  则是被查看的  否则是没被查看的TODO:待与炜哥沟通 -->
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="false" :src="item.headUrl" alt />
+                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)
@@ -276,7 +277,7 @@
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="false" :src="item.headUrl" alt />
+                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)

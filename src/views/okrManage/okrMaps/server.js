@@ -60,4 +60,9 @@ export default class Server extends ServerBase {
   selectOkrHistoryVersion(param) {
     return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
   }
+
+  // 价值观数据查询
+  getCultureContent(param) {
+    return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
+  }
 }
