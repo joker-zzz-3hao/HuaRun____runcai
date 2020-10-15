@@ -7,11 +7,11 @@
     :title="title"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
-    style="marginLeft:20%;marginRight:20%"
+    style="marginleft: 20%; marginright: 20%"
     width="700px"
   >
     <!-- 使命愿景 -->
-    <div v-if="type=='1'">
+    <div v-if="type == '1'">
       <div>
         <h3>华润使命</h3>
         <h3>引领商业进步，共创美好生活</h3>
@@ -32,12 +32,22 @@
         <p>履行社会责任，承担央企使命，努力以实际行动回报社会；</p>
         <p>贡献商业智慧，分享最佳实践，为社会进步提供思想源泉。</p>
         <h3>华润将携手客户、股东、员工、伙伴、社会和环境，共创美好生活：</h3>
-        <p>携手客户，通过提供优质产品与服务，不断超越客户期望，持续创造客户价值；</p>
-        <p>携手股东，通过依法依规治企，提高治理能力与业绩水平，实现企业稳健发展；</p>
-        <p>携手员工，通过权益保护与人文关怀，帮助员工实现价值，提升员工幸福指数；</p>
+        <p>
+          携手客户，通过提供优质产品与服务，不断超越客户期望，持续创造客户价值；
+        </p>
+        <p>
+          携手股东，通过依法依规治企，提高治理能力与业绩水平，实现企业稳健发展；
+        </p>
+        <p>
+          携手员工，通过权益保护与人文关怀，帮助员工实现价值，提升员工幸福指数；
+        </p>
         <p>携手伙伴，通过恪守商业道德，营造良好商业环境，开创合作共赢新局；</p>
-        <p>携手社会，通过响应国家号召，投身公益，弘扬主流价值，促进社会和谐发展；</p>
-        <p>携手环境，通过严守环保法规，节能减排，发展循环经济，建设绿色生态文明。</p>
+        <p>
+          携手社会，通过响应国家号召，投身公益，弘扬主流价值，促进社会和谐发展；
+        </p>
+        <p>
+          携手环境，通过严守环保法规，节能减排，发展循环经济，建设绿色生态文明。
+        </p>
         <h3>企业愿景</h3>
         <h3>成为大众信赖和喜爱的全球化企业</h3>
         <p>
@@ -60,7 +70,7 @@
       </div>
     </div>
     <!-- 华润战略 -->
-    <div v-else-if="type=='2'">
+    <div v-else-if="type == '2'">
       <p>
         集团正在实施“十三五”发展战略，按照“做实、做强、做大、做好、做长”的发展方式，依托实业发展、
         资本运营的“双擎”之力，借助“国际化、+互联网”的“两翼”之势，通过提升资产质量、优化资本结构、
@@ -69,7 +79,7 @@
       </p>
     </div>
     <!-- 公司价值观宣导 -->
-    <div v-else-if="type=='3'">
+    <div v-else-if="type == '3'">
       <h3>诚实守信</h3>
       <p>
         忠诚爱国，崇尚公平正义，敬畏法纪、尊重制度，坚守法律和道德底线。
@@ -106,6 +116,7 @@ export default {
       dialogTableVisible: false,
       title: '',
       type: '',
+      cultureContent: '',
     };
   },
   mounted() {},
@@ -115,6 +126,14 @@ export default {
       this.type = type;
       this.title = title;
       this.dialogTableVisible = true;
+      this.getCultureContent();
+    },
+    getCultureContent() {
+      this.server.getCultureContent().then((res) => {
+        if (res.code == 200) {
+          this.cultureContent = res.data;
+        }
+      });
     },
     close() {
       this.dialogTableVisible = false;
