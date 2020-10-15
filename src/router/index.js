@@ -2,8 +2,8 @@ import Vue from 'vue';
 import {
   getParams,
   localSave,
+  getOrigin,
 } from '@/lib/util';
-// getOrigin,
 import VueRouter from 'vue-router';
 import loginJs from './login';
 import consoleJs from './console';
@@ -44,8 +44,7 @@ function hasPower(power) {
 router.beforeEach((to, from, next) => {
   const urlParams = getParams(window.location.href);
   const urlCrctoken = urlParams.token;
-  // window.$store.dispatch('common/getPeriod');
-  // const origin = getOrigin();
+  const origin = getOrigin();
   // 判断获取的token,如果token存在就更新存到缓存
   if (urlCrctoken) {
     localSave('token', urlCrctoken);
@@ -53,7 +52,7 @@ router.beforeEach((to, from, next) => {
   // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
   if (!localStorage.token || localStorage.token === null) {
     // 当token不存在时，如果是环境上就需要跳转到ladp登录页面，如果是本地启动就直接跳转login页面
-    if (origin == process.env.VUE_APP_PORTAL) {
+    if (origin == 'https://talent.crcloud.com') {
       window.$store.commit('common/setUserInfo', { userInfo: {} });
       localStorage.setItem('token', '');
       window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http://ldap.talent.crcloud.com:8888/account-service/outside/ldapLogin', '_self');

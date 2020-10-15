@@ -179,10 +179,18 @@ export default {
     changeMember(data) {
       this.projectManagerList.forEach((item) => {
         if (item.userId == data) {
-          this.dataForm.tableData.push(item);
+          this.server.projectUserRelation({
+            projectId: this.$route.query.projectId || '',
+            userId: item.userId,
+          }).then((res) => {
+            if (res.code == '200') {
+              if (res.data) {
+                this.dataForm.tableData.push(item);
+              }
+            }
+          });
         }
       });
-      console.log(this.dataForm.tableData);
       this.keyword = '';
     },
     addMembers() {

@@ -8,7 +8,7 @@ export const loginOut = () => {
       console.log(response);
       window.$store.commit('common/setUserInfo', { userInfo: {} });
       localStorage.setItem('token', '');
-      window.open('https://portal.crc.com.cn/oamsso/logout.html?end_url=http://ldap.talent.crcloud.com:8888/account-service/outside/ldapLogin', '_self');
+      window.open(process.env.VUE_APP_LOGINOUT, '_self');
     }
   });
 };

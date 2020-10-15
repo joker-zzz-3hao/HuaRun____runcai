@@ -38,7 +38,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <span>项目总预算:</span>
             <span>324万</span>
             <span>人民币</span>
@@ -47,7 +47,7 @@
             <span>项目已确认人力成本:</span>
             <span>324万</span>
             <span>人民币</span>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
     </div>
@@ -134,7 +134,7 @@
       ref="approval"
       v-if="showApproval"
       :server="server"
-      @approvalSuccess="approvalSuccess"
+      @success="approvalSuccess"
     ></tl-approval>
     <tl-approval-detail
       ref="approvalDetail"
@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
@@ -178,11 +179,17 @@ export default {
     'tl-approval-detail': approvalDetail,
   },
   props: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   mounted() {
     this.server.projectPageList({
       currentPage: 1,
       pageSize: 10,
       projectName: '',
+      userAccount: this.userInfo.userAccount,
     }).then((res) => {
       if (res.code == '200') {
         this.projectList = res.data.content;
@@ -198,6 +205,7 @@ export default {
       this.server.timeSheetList({
         projectId: this.formData.projectId,
         approvalStatus: this.formData.approvalStatus,
+        approvalUser: this.userInfo.userId,
       }).then((res) => {
         if (res.code == '200') {
           this.tableData = res.data;
@@ -223,7 +231,10 @@ export default {
         this.$refs.approvalDetail.show(data);
       });
     },
-    approvalSuccess() {},
+    approvalSuccess() {
+      this.showApproval = false;
+      this.searchList();
+    },
   },
   watch: {},
 };

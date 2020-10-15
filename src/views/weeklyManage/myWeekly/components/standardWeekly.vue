@@ -12,7 +12,32 @@
           v-loading="tableLoading"
           :data="formData.weeklyWorkVoSaveList"
           class="tl-table"
+          :class="{ 'is-edit': timeDisabled }"
         >
+          <el-table-column width="40" v-if="timeDisabled">
+            <template slot-scope="scope" v-if="timeDisabled">
+              <el-tooltip
+                class="icon-clear"
+                :class="{
+                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
+                }"
+                effect="dark"
+                :content="
+                  formData.weeklyWorkVoSaveList.length > 1
+                    ? '删除'
+                    : '至少有一条工作项'
+                "
+                placement="top"
+                popper-class="tl-tooltip-popper"
+                @click.native="
+                  formData.weeklyWorkVoSaveList.length > 1 &&
+                    deleteItem(scope.row)
+                "
+              >
+                <i class="el-icon-minus"></i>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
             label="工作项"
             prop="workContent"
@@ -57,7 +82,7 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="120"
+            min-width="85"
           >
             <template slot-scope="scope">
               <template v-if="timeDisabled">
@@ -78,20 +103,15 @@
                 </el-form-item>
               </template>
               <!-- 编辑完提交后展示 -->
-              <tl-process
-                v-else
-                :data="scope.row.workProgress"
-                :width="36"
-                :marginLeft="6"
-              ></tl-process
-              >%
+              <em v-else>{{ scope.row.workProgress }}</em
+              ><span>%</span>
             </template>
           </el-table-column>
           <el-table-column
             label="投入工时"
             prop="workTime"
             :render-header="renderHeader"
-            min-width="130"
+            min-width="100"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -126,8 +146,8 @@
                 <el-select
                   v-model="scope.row.projectId"
                   placeholder="请选择关联项目"
-                  size="small"
                   @change="projectChange(scope.row)"
+                  class="tl-select"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -191,37 +211,12 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" width="40">
-            <template slot-scope="scope" v-if="timeDisabled">
-              <el-tooltip
-                class="icon-clear"
-                :class="{
-                  'is-disabled': formData.weeklyWorkVoSaveList.length == 1,
-                }"
-                effect="dark"
-                :content="
-                  formData.weeklyWorkVoSaveList.length > 1
-                    ? '删除'
-                    : '至少有一条工作项'
-                "
-                placement="top"
-                popper-class="tl-tooltip-popper"
-                @click.native="
-                  formData.weeklyWorkVoSaveList.length > 1 &&
-                    deleteItem(scope.row)
-                "
-              >
-                <i class="el-icon-minus"></i>
-              </el-tooltip>
-            </template>
-          </el-table-column>
         </el-table>
-        <div class="btn-box">
+        <div class="btn-box" v-if="timeDisabled">
           <el-button
             type="text"
             @click="addItem"
             class="tl-btn dotted-line list-add"
-            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -231,8 +226,8 @@
     <!-- 本周感想、建议、收获 -->
     <dl class="dl-card-panel weekly-thoughts">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
-      <dd v-if="formData.weeklyThoughtSaveList.length < 1">
-        <span>本周未填写感想、建议、收获</span>
+      <dd v-if="formData.weeklyThoughtSaveList.length < 1" class="no-data">
+        <em>本周未填写感想、建议、收获</em>
       </dd>
       <dd v-for="item in formData.weeklyThoughtSaveList" :key="item.randomId">
         <div class="tag-group">
@@ -294,13 +289,12 @@
           <i class="el-icon-minus"></i>
         </el-tooltip>
       </dd>
-      <dd>
+      <dd v-if="timeDisabled">
         <div class="btn-box">
           <el-button
             type="text"
             @click="addThisWeekWork"
             class="tl-btn dotted-line list-add"
-            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -310,8 +304,8 @@
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
-      <dd v-if="formData.weeklyPlanSaveList.length < 1">
-        <span>本周未填写下周计划</span>
+      <dd v-if="formData.weeklyPlanSaveList.length < 1" class="no-data">
+        <em>本周未填写下周计划</em>
       </dd>
       <dd>
         <el-form :model="formData" class="tl-form">
@@ -319,6 +313,7 @@
             v-loading="tableLoading"
             :data="formData.weeklyPlanSaveList"
             class="tl-table"
+            :class="{ 'is-edit': timeDisabled }"
           >
             <el-table-column label="计划项" min-width="420">
               <template slot-scope="scope">
@@ -364,13 +359,12 @@
           </el-table>
         </el-form>
       </dd>
-      <dd>
+      <dd v-if="timeDisabled">
         <div class="btn-box">
           <el-button
             type="text"
             @click="addPlanItem"
             class="tl-btn dotted-line list-add"
-            v-if="timeDisabled"
           >
             <i class="el-icon-plus"></i>添加
           </el-button>
@@ -381,7 +375,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list"
         :class="item.kr ? 'is-kr' : 'is-o'"
@@ -520,19 +514,22 @@
     <!-- 本周心情 -->
     <dl class="dl-card-panel">
       <dt class="card-title"><em>本周心情</em></dt>
-      <dd></dd>
+      <dd>
+        <span>
+          请选择本周心情
+          <el-button @click="setEmotion(100)">有收获</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
+            >有收获</span
+          >
+          <el-button @click="setEmotion(50)">还行吧</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
+          <el-button @click="setEmotion(0)">让我静静</el-button>
+          <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
+            >让我静静</span
+          >
+        </span>
+      </dd>
     </dl>
-    <div style="margintop: 50px">
-      <span>
-        请选择本周心情
-        <el-button @click="setEmotion(100)">有收获</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 100 }">有收获</span>
-        <el-button @click="setEmotion(50)">还行吧</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-        <el-button @click="setEmotion(0)">让我静静</el-button>
-        <span :class="{ 'text-color-red': weeklyEmotion == 0 }">让我静静</span>
-      </span>
-    </div>
     <div class="btn-box">
       <el-button
         :disabled="!canEdit"

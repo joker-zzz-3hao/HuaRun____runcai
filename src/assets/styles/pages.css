@@ -2008,12 +2008,16 @@
   font-size: 12px;
 }
 
-.weekly-cont .tl-table .el-table__body-wrapper .cell {
-  min-height: 80px;
+.weekly-cont > .tl-form:not(.is-edit) {
+  margin: 0 0 30px 0;
 }
 
-.standard-version .weekly-cont .tl-table .el-table__body-wrapper .cell {
-  min-height: 95px;
+.weekly-cont .tl-table.is-edit .el-table__body-wrapper .cell {
+  min-height: 90px;
+}
+
+.weekly-cont .tl-table.is-edit .el-table__body-wrapper .el-table__row td:nth-child(5) .cell .el-form-item {
+  flex: 0 0 54px;
 }
 
 .weekly-cont .tag-lists li em {
@@ -2129,7 +2133,7 @@
 }
 
 .write-weekly .week-plan .btn-box {
-  margin: 30px 0 0 0;
+  margin: 0;
 }
 
 .okr-completion .tl-progress-group > span:first-child {
@@ -2304,7 +2308,7 @@
 }
 
 .undertake-okr-list .tl-progress-group {
-  flex: 0 0 300px;
+  flex: 0 0 316px;
 }
 
 .undertake-okr-list .tl-progress-group .tl-progress-bar {
@@ -2317,6 +2321,41 @@
 
 .undertake-okr-list .tl-input-number .el-input__inner {
   padding: 0 8px;
+}
+
+.my-weekly .tl-textarea .el-textarea__inner {
+  padding: 8px 15px 5px 15px;
+  min-height: 40px !important;
+}
+
+.my-weekly .tl-table .el-table__header th .cell > div {
+  padding-left: 0;
+}
+
+.my-weekly .tl-input-number {
+  width: 60px;
+}
+
+.my-weekly .tl-input-number .el-input__inner {
+  padding: 0 8px;
+  width: 48px;
+  height: 40px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  width: 60px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  height: 32px;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input {
+  width: unset;
+}
+
+.my-weekly .okr-completion .tl-input-number .el-input__inner {
+  padding: 0 24px 0 2px;
 }
 
 /* 团队周报 */
@@ -2758,6 +2797,20 @@
 
 .week-plan .tl-table .el-table__body .el-table__row .cell {
   padding-right: 0;
+}
+
+.week-plan .tl-table.is-edit .el-table__body td:not(:last-child),
+.week-plan .el-table--enable-row-transition.is-edit .el-table__body td:last-child {
+  border-color: transparent;
+}
+
+.my-weekly .dl-card-panel > dd,
+.teams-weekly-detail .dl-card-panel > dd {
+  margin: 10px 0 20px 0;
+}
+
+.no-data em {
+  color: #acb6bf;
 }
 
 /* 任务 */

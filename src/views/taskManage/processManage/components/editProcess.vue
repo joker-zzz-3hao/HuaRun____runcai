@@ -22,7 +22,6 @@
       <el-form ref="dataForm" :model="formData">
         <el-form-item label="任务过程名称：">
           <el-input
-            disabled
             placeholder="请输入任务标题"
             v-model="formData.processName"
           ></el-input>
@@ -244,6 +243,7 @@ export default {
             indexNumber: this.formData.indexNumber,
             processId: this.formData.processId,
             userIdList: this.formData.userIdList,
+            processName: this.formData.processName,
           };
           this.server.updateProcess(params).then((res) => {
             if (res.code == 200) {

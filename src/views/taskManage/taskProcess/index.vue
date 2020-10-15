@@ -8,6 +8,9 @@
               <template slot="title">任务过程</template>
               <el-submenu index="1-1">
                 <template slot="title">团队使用</template>
+                <el-menu-item v-if="teamList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(team)"
                   v-for="team in teamList"
@@ -18,6 +21,9 @@
               </el-submenu>
               <el-submenu index="1-2">
                 <template slot="title">小范围使用</template>
+                <el-menu-item v-if="littleRangeList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(littleRange)"
                   v-for="littleRange in littleRangeList"
@@ -28,6 +34,9 @@
               </el-submenu>
               <el-submenu index="1-3">
                 <template slot="title">个人使用</template>
+                <el-menu-item v-if="personList.length == 0"
+                  >暂无任务过程</el-menu-item
+                >
                 <el-menu-item
                   @click.native="selectProcessItem(person)"
                   v-for="person in personList"
@@ -79,20 +88,22 @@
         <div class="operating-right">
           <div>
             <el-button
-              type="primary"
+              plain
+              class="tl-btn amt-border-fadeout"
               @click="queryTaskByClassify('')"
-              class="tl-btn amt-bg-slip"
-              icon="el-icon-s-claim"
+              :class="{ 'is-select': searchParams.typeId == '' }"
               >全部分类</el-button
             >
             <el-button
               v-for="classify in processClassifyList"
               :key="classify.typeId"
-              type="primary"
+              plain
+              class="tl-btn amt-border-fadeout"
               @click="queryTaskByClassify(classify.typeId)"
-              class="tl-btn amt-bg-slip"
               :disabled="classify.isEdit"
-              :icon="!classify.isEdit ? 'el-icon-s-claim' : ''"
+              :class="{
+                'is-select': searchParams.typeId == classify.typeId,
+              }"
             >
               <!-- @click.capture.stop="dataChange(scope.row)" -->
               <el-input
@@ -413,9 +424,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  beforeDestroy() {
-    this.setSearchParams();
   },
 };
 </script>

@@ -102,7 +102,6 @@
               <el-table-column fixed="right" label="操作" width="180">
                 <template slot-scope="scope">
                   <el-button
-                    :disabled="scope.row.projectUserType == '1'"
                     @click="deleteMember(scope.row)"
                     type="text"
                     class="tl-btn"
@@ -141,6 +140,7 @@ export default {
       isTalentAdmin: false,
       showAddMember: false,
       tableData: [],
+      isManage: false,
     };
   },
   components: {
@@ -167,7 +167,15 @@ export default {
     }),
   },
   mounted() {
-    // this.tableData = this.baseInfo.projectUserVoList || [];
+    if (this.baseInfo.projectUserVoList) {
+      this.baseInfo.projectUserVoList.forEach((item) => {
+        if (item.projectUserType == '1') {
+          if (item.userId == this.userInfo.userId) {
+            this.isManage = true;
+          }
+        }
+      });
+    }
   },
   methods: {
     deleteMember(data) {
@@ -187,17 +195,13 @@ export default {
       });
     },
     setManager(data) {
-      this.$router.go(0);
-      this.baseInfo.projectUserVoList.forEach((item) => {
-        if (item.userId == this.userInfo.userId) {
-          this.server.setManager({
-            userId: data.userId,
-          }).then((res) => {
-            if (res.code == '200') {
-              console.log(res);
-              // this.searchProject();
-              this.reload();
-            }
+      this.server.setProjectManager({
+        userId: data.userId,
+        projectId: data.projectId,
+      }).then((res) => {
+        if (res.code == '200') {
+          this.$router.push({
+            name: 'projectManage',
           });
         }
       });
@@ -218,6 +222,16 @@ export default {
       }).then((res) => {
         if (res.code == '200') {
           this.baseInfo = res.data;
+          this.isManage = false;
+          if (this.baseInfo.projectUserVoList) {
+            this.baseInfo.projectUserVoList.forEach((item) => {
+              if (item.projectUserType == '1') {
+                if (item.userId == this.userInfo.userId) {
+                  this.isManage = true;
+                }
+              }
+            });
+          }
         }
       });
     },

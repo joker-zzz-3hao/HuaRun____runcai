@@ -194,22 +194,157 @@
             </div>
             <em>{{ item.thoughtContent }}</em>
           </dd>
-          <dd v-if="weeklyThoughtList.length < 1">
-            本周没有填写感想、建议或者收获！
+          <dd v-if="weeklyThoughtList.length < 1" class="no-data">
+            <em>本周没有填写感想、建议或者收获！</em>
           </dd>
         </dl>
         <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
           <dt class="card-title"><em>下周计划</em></dt>
           <dd>
-            <el-table ref="workTable" :data="weeklyPlanList">
-              <el-table-column label="序号" type="index"></el-table-column>
+            <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
               <el-table-column
                 label="工作项"
                 prop="planContent"
               ></el-table-column>
             </el-table>
           </dd>
-          <dd v-if="weeklyPlanList.length < 1">您没有写下周计划</dd>
+          <dd v-if="weeklyPlanList.length < 1" class="no-data">
+            <em>您没有写下周计划</em>
+          </dd>
+        </dl>
+        <dl class="dl-card-panel okr-completion">
+          <dt class="card-title"><em>个人OKR完成度</em></dt>
+          <dd
+            class="undertake-okr-list"
+            :class="
+              item.parentOkrDetail && item.parentOkrDetail.okrDetailId
+                ? 'is-kr'
+                : 'is-o'
+            "
+            v-for="item in weeklyOkrVoList"
+            :key="item.okrDetailId"
+          >
+            <div
+              class="o-kr-group"
+              v-if="item.parentOkrDetail && item.parentOkrDetail.okrDetailId"
+            >
+              <div class="tag-kind">
+                <span class="kind-parent">目标</span>
+                <el-tooltip
+                  class="select-values"
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <em slot="content">{{
+                    item.parentOkrDetail.okrDetailObjectKr
+                  }}</em>
+                  <em>{{ item.parentOkrDetail.okrDetailObjectKr }}</em>
+                </el-tooltip>
+              </div>
+            </div>
+            <div class="o-kr-group">
+              <template
+                v-if="item.parentOkrDetail && item.parentOkrDetail.okrDetailId"
+              >
+                <div class="tag-kind">
+                  <span class="kind-child">KR</span>
+                  <el-tooltip
+                    class="select-values"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
+                    <em slot="content">{{
+                      item.okrDetail.okrDetailObjectKr
+                    }}</em>
+                    <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
+                  </el-tooltip>
+                  <span
+                    >被工作项<em>{{ itemIndex(item) }}</em
+                    >支撑</span
+                  >
+                </div>
+              </template>
+              <template v-else>
+                <div class="tag-kind">
+                  <span class="kind-parent">目标</span>
+                  <el-tooltip
+                    class="select-values"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
+                    <em slot="content">{{
+                      item.okrDetail.okrDetailObjectKr
+                    }}</em>
+                    <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
+                  </el-tooltip>
+                  <span
+                    >被工作项<em>{{ itemIndex(item) }}</em
+                    >支撑</span
+                  >
+                </div>
+              </template>
+              <div
+                class="okr-risk"
+                v-if="item.parentOkrDetail && item.parentOkrDetail.okrDetailId"
+              >
+                <span>信心指数</span>
+                <div class="state-grid">
+                  <div
+                    :class="{
+                      'is-no-risk': item.confidenceAfter == 1,
+                      'is-risks': item.confidenceAfter == 2,
+                      'is-uncontrollable': item.confidenceAfter == 3,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-risks': item.confidenceAfter == 2,
+                      'is-uncontrollable': item.confidenceAfter == 3,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-uncontrollable': item.confidenceAfter == 3,
+                    }"
+                  ></div>
+                </div>
+                <div class="state-txt">
+                  {{ riskMap[item.confidenceAfter] }}
+                </div>
+              </div>
+              <div class="tl-progress-group">
+                <span>当前进度</span>
+                <tl-process
+                  :data="parseInt(item.progressAfter, 10)"
+                  :showNumber="false"
+                  :width="30"
+                  :marginLeft="2"
+                ></tl-process>
+                <el-slider
+                  v-if="timeDisabled"
+                  v-model="item.progressAfter"
+                  :step="1"
+                  @change="processChange(item)"
+                  tooltip-class="slider-tooltip"
+                ></el-slider>
+                <em>{{ item.progressAfter }}</em>
+                <span>%</span>
+              </div>
+              <div class="week-change">
+                <span>本周变化</span
+                ><em
+                  >{{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
+                  }}{{ item.progressAfter - item.progressBefor }}%</em
+                >
+              </div>
+            </div>
+          </dd>
+          <dd v-if="weeklyOkrVoList.length < 1" class="no-data">
+            <em>周报暂无支撑OKR或价值观</em>
+          </dd>
         </dl>
         <div class="current-user-info">
           <div>
@@ -238,23 +373,21 @@
               </div>
             </div> -->
             <!-- 下周计划 -->
-            <div v-if="weeklyType == '1'" style="margintop: 50px">
+            <!-- <div v-if="weeklyType == '1'" style="margintop: 50px">
               <h2>下周计划</h2>
               <el-table ref="workTable" :data="weeklyPlanList">
                 <el-table-column label="序号" type="index"></el-table-column>
                 <el-table-column
                   label="工作项"
                   prop="planContent"
-                ></el-table-column
-                >-
+                ></el-table-column>
               </el-table>
               <div v-if="weeklyPlanList.length < 1">您没有写下周计划</div>
-            </div>
+            </div> -->
             <!-- 个人okr完成度 -->
-            <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
+            <!-- <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
               <h2>个人okr完成度</h2>
               <div v-for="item in weeklyOkrVoList" :key="item.okrDetailId">
-                <!-- 目标+KR -->
                 <div
                   v-if="
                     item.parentOkrDetail && item.parentOkrDetail.okrDetailId
@@ -329,7 +462,6 @@
                     </el-col>
                   </el-row>
                 </div>
-                <!-- 目标 -->
                 <div v-else>
                   <el-row :gutter="20">
                     <el-col :span="6">
@@ -370,7 +502,7 @@
                   </el-row>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- 谁浏览了 -->
             <div style="margintop: 50px">
               <h2>谁浏览了</h2>
