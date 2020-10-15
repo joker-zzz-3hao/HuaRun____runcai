@@ -71,8 +71,8 @@
           </dl>
           <dl class="user-info">
             <dt>负责人</dt>
-            <dd v-if="true">
-              <img src="@/assets/images/user/user.jpg" alt />
+            <dd v-if="userInfo.headUrl">
+              <img :src="userInfo.headUrl" alt />
             </dd>
             <dd v-else class="user-name">
               <em>{{ cutName(userName) }}</em>
@@ -161,6 +161,7 @@ export default {
   },
   computed: {
     ...mapState('common', {
+      userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
       showAuto: (state) => state.showAuto,
       createokrDrawer: (state) => state.createokrDrawer,
