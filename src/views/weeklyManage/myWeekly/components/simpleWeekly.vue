@@ -409,7 +409,9 @@
 
 <script>
 import tlProcess from '@/components/process';
+import confidenceSelect from '@/components/confidenceSelect';
 import CONST from '@/components/const';
+import merge from 'webpack-merge';
 import Server from '../server';
 import selectProject from './selectProject';
 
@@ -424,6 +426,7 @@ export default {
     'add-okr': addOkr,
     selectProject,
     tlProcess,
+    'tl-confidence': confidenceSelect,
   },
   props: {
     calendarId: {
@@ -591,7 +594,8 @@ export default {
   methods: {
     init() {
       this.weeklyDataCopy = { ...this.weeklyData };
-      if (!this.weeklyDataCopy.weeklyId) {
+
+      if (!this.weeklyDataCopy.weeklyId && !(this.$route.params && this.$route.params.weeklySumParams)) {
         // 本周任务初始化数据
         this.addWork();
       }
@@ -776,6 +780,8 @@ export default {
         workProgress: '',
         workTime: '',
         selectedOkr: [],
+        workOkrList: [],
+        okrCultureValueList: [],
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
       this.$forceUpdate();
@@ -871,6 +877,10 @@ export default {
               this.$busEmit('refreshCalendar');
               // 更新个人okr数据
               this.$emit('refreshMyOkr');
+              // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
+              this.$router.push({
+                query: merge({}, { params: 'clear' }),
+              });
             }
           });
         }
@@ -921,27 +931,29 @@ export default {
       this.$forceUpdate();
     },
     workTimeChange(row) {
-      let workTimeTotal = 0;
-      this.formData.weeklyWorkVoSaveList.forEach((element) => {
-        workTimeTotal += Number(element.workTime);
-      });
-      this.formData.weeklyWorkVoSaveList.forEach((work) => {
-        if (row.randomId == work.randomId) {
-          // 数据转换为0.5单位
-          const tempArr = String(work.workTime).split('.');
-          if (tempArr.length > 1) { // 有小数位
-            if (tempArr[1] > 5) { //  大于5
-              work.workTime = Number(tempArr[0]) + 1;
-            } else if (tempArr[1] < 5) { // 小于5
-              work.workTime = Number(tempArr[0]);
-            }
-          }
-          if (workTimeTotal > 5) {
-            work.workTime = 0;
-          }
-        }
-      });
+      console.log(row);
+      // let workTimeTotal = 0;
+      // this.formData.weeklyWorkVoSaveList.forEach((element) => {
+      //   workTimeTotal += Number(element.workTime);
+      // });
+      // this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      //   if (row.randomId == work.randomId) {
+      //     // 数据转换为0.5单位
+      //     const tempArr = String(work.workTime).split('.');
+      //     if (tempArr.length > 1) { // 有小数位
+      //       if (tempArr[1] > 5) { //  大于5
+      //         work.workTime = Number(tempArr[0]) + 1;
+      //       } else if (tempArr[1] < 5) { // 小于5
+      //         work.workTime = Number(tempArr[0]);
+      //       }
+      //     }
+      //     if (workTimeTotal > 5) {
+      //       work.workTime = 0;
+      //     }
+      //   }
+      // });
     },
+    changeConfidence() {},
     projectChange(work) {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
