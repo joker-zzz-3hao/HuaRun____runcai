@@ -57,7 +57,7 @@
             ></i>
           </label>
           <span @click="openFile(file)">预览</span>
-
+          <span @click="downFile(file)">下载</span>
           <i
             class="el-icon-close"
             v-if="!disabled"
@@ -140,7 +140,7 @@ export default {
       // eslint-disable-next-line no-unused-expressions
       this.handlePreview && this.handlePreview(file);
     },
-    // 下载or预览
+    // 预览
     openFile(res) {
       const fileObj = res.response.data;
       const images = {
@@ -152,9 +152,17 @@ export default {
       };
       if (images[fileObj.resourceType]) {
         this.$refs.imgDialog.show(fileObj.resourceUrl);
-      } else {
-        window.open(fileObj.resourceUrl);
       }
+    },
+    // 下载
+    downFile(res) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const fileObj = res.response.data;
+      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType='TASK_FILE'`;
+      console.log(url);
+      window.open(url);
     },
   },
 };

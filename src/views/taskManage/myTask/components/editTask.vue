@@ -238,7 +238,7 @@
                     :key="file.resourceId"
                   >
                     <em>{{ file.resourceName }}</em>
-                    <span @click="openFile(file)">下载</span>
+                    <span @click="downFile(file)">下载</span>
                     <span @click="openFile(file)">预览</span>
                     <span @click="deleteFile(index)">删除</span>
                   </li>
@@ -630,9 +630,19 @@ export default {
       };
       if (images[fileObj.resourceType]) {
         this.$refs.imgDialog.show(fileObj.resourceUrl);
-      } else {
-        window.open(fileObj.resourceUrl);
       }
+    },
+    downFile(fileObj) {
+      this.server.downFile({ resourceId: fileObj.resourceId }).then((res) => {
+        console.log(res.code);
+      });
+      // const origin = window.location.origin
+      //   ? window.location.origin
+      //   : window.location.href.split('/#')[0];
+      // const url = `${origin}/gateway/system-service/sys/attachment/download?
+      // resourceId=${fileObj.resourceId}&sourceType=TASK_FILE`;
+      // console.log(url);
+      // window.open(url);
     },
     deleteFile(index) {
       if (this.formData.attachmentList.length > 0) {

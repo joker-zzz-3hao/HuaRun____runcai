@@ -154,6 +154,8 @@ export default {
       this.server.selectTaskForWeek(params).then((res) => {
         if (res.code == 200) {
           this.tableData = res.data || [];
+          this.owntableData = [];
+          this.assigntableData = [];
           this.tableData.forEach((item) => {
             if (item.taskUserId == this.userInfo.userId) {
               this.owntableData.push(item);
