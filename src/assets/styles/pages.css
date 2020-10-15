@@ -2098,8 +2098,14 @@
   flex: 0 0 20px;
 }
 
-.weekly-thoughts dd > em {
+.write-weekly pre,
+.weekly-thoughts dd > pre {
+  margin: 0;
   flex: 1;
+  font-family: -apple-system, BlinkMacSystemFont,"微软雅黑","Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .write-weekly .el-form-item__content > em {

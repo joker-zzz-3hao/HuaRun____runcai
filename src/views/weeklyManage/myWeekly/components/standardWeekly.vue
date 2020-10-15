@@ -271,7 +271,7 @@
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
-        <em v-else>{{ item.thoughtContent }}</em>
+        <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
           v-if="canUpdate"
           class="icon-clear"
