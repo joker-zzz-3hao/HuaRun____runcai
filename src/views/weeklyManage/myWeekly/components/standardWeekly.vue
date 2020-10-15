@@ -224,7 +224,7 @@
       </el-form>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <dl class="dl-card-panel weekly-thoughts">
+    <dl class="dl-card-panel weekly-thoughts" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
       <dd v-if="formData.weeklyThoughtSaveList.length < 1" class="no-data">
         <em>本周未填写感想、建议、收获</em>
@@ -492,13 +492,7 @@
               :precision="0"
               class="tl-input-number"
             ></el-input-number>
-            <!-- <el-input
-              v-if="canUpdate"
-              v-model="item.progressAfter"
-              controls-position="right"
-              class="tl-input-number"
-            ></el-input> -->
-            <em v-else>{{ item.progressAfter }}</em>
+            <em>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>
           <div class="week-change">
