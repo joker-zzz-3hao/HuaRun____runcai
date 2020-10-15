@@ -55,7 +55,7 @@
             @click="goCreateTask"
             class="tl-btn amt-bg-slip"
             icon="el-icon-s-claim"
-            >去添加任务</el-button
+            >创建任务</el-button
           >
           <el-dropdown class="tl-dropdown">
             <div class="el-dropdown-link">
