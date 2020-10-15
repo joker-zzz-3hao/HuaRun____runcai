@@ -13,56 +13,74 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em>
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''"
+              >润联科技</em
+            >
             <em
-              :class="light==item.id?'is-subset':''"
-              v-for="(item,index) in selectList"
+              :class="light == item.id ? 'is-subset' : ''"
+              v-for="(item, index) in selectList"
               :key="index"
               @click="getqueryOrgAndUser(item)"
-            >{{item.name}}</em>
+              >{{ item.name }}</em
+            >
           </div>
         </div>
         <el-scrollbar>
           <ul class="txt-list" v-show="showLoad">
-            <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
+            <li
+              v-for="(item, index) in data"
+              :key="index"
+              @click="getqueryOrgAndUser(item)"
+            >
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                @change="true?checkOneMember($event,item):checkMember($event,item)"
+                :disabled="disabledId == item.orgId"
+                @change="
+                  !rouleType
+                    ? checkOneMember($event, item)
+                    : checkMember($event, item)
+                "
                 v-model="value[item.id]"
-                v-if="item.type=='USER'"
+                v-if="item.type == 'USER'"
               >
                 <div class="img-user">
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                  <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                  <div class="user-name" v-else>{{ checkName(item.name) }}</div>
                 </div>
-                <em>{{item.name}}</em>
+                <em>{{ item.name }}</em>
               </el-checkbox>
               <div v-else class="flex-sb">
-                <em>{{item.name}}</em>
+                <em>{{ item.name }}</em>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </li>
           </ul>
         </el-scrollbar>
       </div>
-      <div class="selected-target" v-if="false">
+      <div class="selected-target" v-if="rouleType">
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
-            <em>{{roulelist.length}}</em>人
+            <em>{{ roulelist.length }}</em
+            >人
           </div>
           <div class="clear" @click="clearMember">清空</div>
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li v-for="(item,index) in roulelist" :key="index">
+            <li v-for="(item, index) in roulelist" :key="index">
               <div class="img-user">
-                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>{{checkName(item.userName)}}</div>
+                <img v-if="rouleType" src="@/assets/images/user/user.jpg" alt />
+                <div class="user-name" v-else>
+                  {{ checkName(item.userName) }}
+                </div>
               </div>
-              <em>{{item.userName}}</em>
-              <i class="el-icon-close" @click="deleteMember(index,item.userId)"></i>
+              <em>{{ item.userName }}</em>
+              <i
+                class="el-icon-close"
+                @click="deleteMember(index, item.userId)"
+              ></i>
             </li>
           </ul>
         </el-scrollbar>
@@ -76,6 +94,7 @@ import Server from './server';
 const server = new Server();
 export default {
   name: 'selectMember',
+  props: ['rouleType', 'selectListed', 'disabledId'],
   data() {
     return {
       server,
@@ -93,10 +112,28 @@ export default {
     };
   },
   mounted() {
+    console.log(this.disabledId);
+    this.getSelected();
+
     this.dialogTableVisible = true;
     this.getqueryOrgAndUser({});
   },
   methods: {
+    getSelected() {
+      if (this.selectListed.length > 0) {
+        this.selectListed.forEach((item) => {
+          this.value[item.userId] = true;
+          this.roulelist.push({
+            userName: item.userName,
+            userId: item.userId,
+            roleId: this.$route.query.roleId,
+            orgId: item.parentId,
+          });
+        });
+        this.member = this.roulelist;
+        this.$emit('getMember', this.member);
+      }
+    },
     checkName(name) {
       return name.substring(name.length - 2);
     },
@@ -160,7 +197,7 @@ export default {
           userName: data.name,
           userId: data.id,
           roleId: this.$route.query.roleId,
-          orgId: data.parentId,
+          orgId: this.rouleType ? data.orgId : data.parentId,
         }];
       } else {
         this.roulelist.forEach((item, index) => {
@@ -170,6 +207,7 @@ export default {
         });
       }
       this.member = this.roulelist;
+      console.log(this.getMember);
       this.$emit('getMember', this.member);
     },
     getRember(data) {
@@ -204,6 +242,8 @@ export default {
     deleteMember(index, id) {
       this.$set(this.value, id, false);
       this.roulelist.splice(index, 1);
+      this.member = this.roulelist;
+      this.$emit('getMember', this.member);
     },
 
   },

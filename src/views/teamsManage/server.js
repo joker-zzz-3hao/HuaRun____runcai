@@ -25,6 +25,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('/gateway/system-service/sys/reportRelation/addReportRelation', param);
   }
 
+  addReportRelationList(param) {
+    return this._ajaxPost('/gateway/system-service/sys/reportRelation/addReportRelationList', param);
+  }
+
   updateVirtualOrg(param) {
     return this._ajaxPost('/gateway/system-service/sys/organization/updateVirtualOrg', param);
   }

@@ -178,6 +178,8 @@ export default {
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('保存成功');
+        } else {
+          this.$$message.error(res.msg);
         }
       });
     },
@@ -200,6 +202,8 @@ export default {
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
           this.$router.push('/replayList');
+        } else {
+          this.$$message.error(res.msg);
         }
       });
     },
@@ -216,6 +220,8 @@ export default {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.$router.push('/replayList');
+        } else {
+          this.$$message.error(res.msg);
         }
       });
     },
