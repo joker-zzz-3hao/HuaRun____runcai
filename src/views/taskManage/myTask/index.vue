@@ -12,7 +12,7 @@
           @click="goCreateTask"
           v-show="showTask"
           class="tl-btn amt-bg-slip"
-          >添加任务</el-button
+          >创建任务</el-button
         >
         <el-button
           plain

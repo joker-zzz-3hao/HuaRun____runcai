@@ -10,7 +10,7 @@
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">添加任务</div>
+      <div class="drawer-title">创建任务</div>
     </div>
     <el-scrollbar>
       <div class="cont-box">
