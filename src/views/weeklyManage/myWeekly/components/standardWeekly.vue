@@ -230,8 +230,8 @@
     <!-- 本周感想、建议、收获 -->
     <dl class="dl-card-panel weekly-thoughts">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
-      <dd v-if="formData.weeklyThoughtSaveList.length < 1">
-        <span>本周未填写感想、建议、收获</span>
+      <dd v-if="formData.weeklyThoughtSaveList.length < 1" class="no-data">
+        <em>本周未填写感想、建议、收获</em>
       </dd>
       <dd v-for="item in formData.weeklyThoughtSaveList" :key="item.randomId">
         <div class="tag-group">
@@ -308,8 +308,8 @@
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan">
       <dt class="card-title"><em>下周计划</em></dt>
-      <dd v-if="formData.weeklyPlanSaveList.length < 1">
-        <span>本周未填写下周计划</span>
+      <dd v-if="formData.weeklyPlanSaveList.length < 1" class="no-data">
+        <em>本周未填写下周计划</em>
       </dd>
       <dd>
         <el-form :model="formData" class="tl-form">
@@ -379,7 +379,7 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1">暂无关联的OKR</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">暂无关联的OKR</dd>
       <dd
         class="undertake-okr-list"
         :class="item.kr ? 'is-kr' : 'is-o'"

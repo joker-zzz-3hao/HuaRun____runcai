@@ -2804,8 +2804,13 @@
   border-color: transparent;
 }
 
-.my-weekly .dl-card-panel > dd {
+.my-weekly .dl-card-panel > dd,
+.teams-weekly-detail .dl-card-panel > dd {
   margin: 10px 0 20px 0;
+}
+
+.no-data em {
+  color: #acb6bf;
 }
 
 /* 任务 */
