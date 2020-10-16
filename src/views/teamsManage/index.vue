@@ -65,6 +65,7 @@
             v-model="overview"
             placeholder="请选择"
             @change="changeView"
+            popper-class="tl-select-dropdown"
             class="tl-select"
           >
             <el-option
@@ -91,8 +92,8 @@
               @click="setFictitious(tItem)"
             >
               <dt class="user-info">
-                <div class="user-name">
-                  <!-- <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt /> -->
+                <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt />
+                <div class="user-name" v-else>
                   <em>{{ cutName(tItem.userName) }}</em>
                 </div>
               </dt>
@@ -102,27 +103,39 @@
         </dd>
         <dd>
           <span>虚线汇报成员</span>
-          <div v-if="fictitiousList.length > 0">
+          <div class="dd-cont">
             <div class="img-list">
-              <dl v-for="fItem in fictitiousList" :key="fItem.userId">
+              <template v-if="fictitiousList.length > 0">
+                <dl v-for="fItem in fictitiousList" :key="fItem.userId">
+                  <dt class="user-info">
+                    <img v-if="fItem.headerUrl" :src="fItem.headerUrl" alt />
+                    <div class="user-name" v-else>
+                      <em>{{ cutName(fItem.userName) }}</em>
+                    </div>
+                    <i
+                      class="el-icon-close"
+                      @click="deleteFictitious(fItem)"
+                    ></i>
+                  </dt>
+                  <dd>{{ fItem.userName }}</dd>
+                </dl>
+              </template>
+              <dl @click="addDotted()">
                 <dt class="user-info">
                   <div class="user-name">
-                    <img v-if="fItem.headerUrl" :src="fItem.headerUrl" alt />
-                    <em>{{ cutName(fItem.userName) }}</em>
+                    <i class="el-icon-plus"></i>
+                    <i class="el-icon-user"></i>
                   </div>
-                  <i class="el-icon-close" @click="deleteFictitious(fItem)"></i>
                 </dt>
-                <dd>{{ fItem.userName }}</dd>
               </dl>
             </div>
-            <span
+            <span v-if="fictitiousList.length > 0"
               >提示：当前成员为虚线汇报成员，由成员所在部门负责人进行设置</span
             >
+            <span v-if="fictitiousList.length == 0"
+              >当前无虚线汇报成员，如需设置虚线汇报成员请找成员所在部门负责人进行设置</span
+            >
           </div>
-          <span v-if="false"
-            >当前无虚线汇报成员，如需设置虚线汇报成员请找成员所在部门负责人进行设置</span
-          >
-          <el-button @click="addDotted()">添加虚线汇报人</el-button>
         </dd>
       </dl>
       <dl class="dl-card-panel">
@@ -153,7 +166,7 @@
       ref="setManager"
       :server="server"
       @closed="closedSetManager"
-      :teamMembers="teamMembers"
+      :teamMembers="teamManage"
       :baseInfo="baseInfo"
       @setSuccess="setSuccess"
       :drawerTitle="drawerTitle"
@@ -236,6 +249,7 @@ export default {
       totalMemberList: [],
       fictitiousList: [],
       teamMembers: [],
+      teamManage: [],
       teamOrgId: '',
       overview: '',
       exist: false,
@@ -284,6 +298,7 @@ export default {
     init() {
       const self = this;
       self.teamTreeData = [];
+      this.getTeamMembers();
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
@@ -462,6 +477,13 @@ export default {
             this.init();
           }
         });
+      });
+    },
+    getTeamMembers() {
+      this.server.fuzzyQueryUser().then((res) => {
+        if (res.code == 200) {
+          this.teamManage = res.data;
+        }
       });
     },
     queryTeamMember(data) {

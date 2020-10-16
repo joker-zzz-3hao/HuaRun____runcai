@@ -240,7 +240,7 @@
                     :key="file.resourceId"
                   >
                     <em>{{ file.resourceName }}</em>
-                    <span @click="openFile(file)">下载</span>
+                    <span @click="downFile(file)">下载</span>
                     <span @click="openFile(file)">预览</span>
                     <span @click="deleteFile(index)">删除</span>
                   </li>
@@ -333,13 +333,15 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <el-button
-        v-if="formData.taskStatus == 0"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="save"
-        >暂存</el-button
-      >
+      <div class="flex-auto">
+        <el-button
+          v-if="formData.taskStatus == 0"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="save"
+          >暂存</el-button
+        >
+      </div>
       <el-button
         v-if="formData.taskStatus == 0"
         type="primary"
@@ -635,6 +637,16 @@ export default {
       } else {
         window.open(fileObj.resourceUrl);
       }
+    },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType=TASK_FILE`;
+      console.log(url);
+      // window.open(url);
+      this.server.downFile({ resourceId: fileObj.resourceId }).then();
     },
     deleteFile(index) {
       if (this.formData.attachmentList.length > 0) {

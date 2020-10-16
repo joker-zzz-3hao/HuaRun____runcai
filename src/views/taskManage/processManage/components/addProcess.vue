@@ -53,7 +53,10 @@
             <el-checkbox
               v-model="teamUser"
               @change="selectTeamUser"
-              :disabled="!this.roleCode.includes('ORG_ADMIN')"
+              :disabled="
+                !this.roleCode.includes('ORG_ADMIN') &&
+                !this.roleCode.includes('TEAM_ADMIN')
+              "
             >
               团队申请
               <span>(创建后的任务过程其组织下成员均可使用)</span>
@@ -218,7 +221,7 @@ export default {
   },
   created() {
     // 只有部门负责人才能选团队使用
-    if (this.roleCode.includes('ORG_ADMIN')) {
+    if (this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) {
       this.formData.taskProcessQueryType = '1';
     } else {
       this.formData.taskProcessQueryType = '2';

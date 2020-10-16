@@ -222,9 +222,10 @@ export default {
     },
   },
   created() {
-    if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+    if ((this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
       this.orgId = this.userInfo.orgParentId;
+      console.log('team');
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
       this.orgId = this.userInfo.orgId;
@@ -240,22 +241,24 @@ export default {
   },
   methods: {
     searchOkr() { // 默认搜索进行时
-      this.loading = true;
-      this.server.getorgOkr({
-        myOrOrg: 'org',
-        periodId: this.okrCycle.periodId,
-        status: this.searchForm.status,
-        orgId: this.orgId,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.tableList = res.data.okrDetails || [];
-          this.okrMain = res.data.okrMain || {};
-          this.okrId = this.okrMain.okrId || '';
-          this.memberList = res.data.orgUser || [];
-          this.orgTable = res.data.orgTable || [];
-        }
-        this.loading = false;
-      });
+      if (this.okrCycle.periodId) {
+        this.loading = true;
+        this.server.getorgOkr({
+          myOrOrg: 'org',
+          periodId: this.okrCycle.periodId,
+          status: this.searchForm.status,
+          orgId: this.orgId,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.tableList = res.data.okrDetails || [];
+            this.okrMain = res.data.okrMain || {};
+            this.okrId = this.okrMain.okrId || '';
+            this.memberList = res.data.orgUser || [];
+            this.orgTable = res.data.orgTable || [];
+          }
+          this.loading = false;
+        });
+      }
     },
     goUndertakeMaps(id, name) {
       // this.$message('要跳到承接地图啦~');
@@ -325,9 +328,10 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.searchForm.periodId = newVal.periodId;
-          if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+          if ((this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) && this.userInfo.orgParentName) {
             this.departmentName = this.userInfo.orgParentName;
             this.orgId = this.userInfo.orgParentId;
+            console.log('team');
           } else {
             this.departmentName = this.userInfo.orgName || '部门';
             this.orgId = this.userInfo.orgId;

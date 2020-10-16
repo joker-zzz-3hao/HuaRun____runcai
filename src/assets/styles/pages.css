@@ -1493,7 +1493,7 @@
 }
 
 .concerned-okr .followed-users {
-  padding: 6px;
+  padding: 10px;
 }
 
 .concerned-okr .followed-okrs .tl-card-panel {
@@ -1538,14 +1538,63 @@
 
 .concerned-okr .followed-users dd {
   justify-content: space-between;
+  cursor: pointer;
+}
+
+.concerned-okr .followed-users dd:not(:first-of-type) {
+  padding: 8px;
+}
+
+.concerned-okr .followed-users dd:first-of-type {
+  margin: 0 0 16px 0;
+}
+
+.concerned-okr .followed-users dd:not(:first-of-type).is-selected {
+  background: #f4f6f8;
 }
 
 .concerned-okr .followed-users .user-name {
-  margin: 0 20px 0 0;
+  margin: 0 16px 0 0;
 }
 
 .concerned-okr .followed-users .el-input__inner {
   background-color: #eee;
+  height: 36px;
+  line-height: unset;
+}
+
+.concerned-okr .followed-users dt {
+  padding: 10px 8px;
+  color: #879099;
+}
+
+.concerned-okr .followed-users .user-name-txt {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.concerned-okr .followed-users .user-name-txt em,
+.concerned-okr .followed-users .user-name-txt span {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.concerned-okr .followed-users .user-name-txt em {
+  max-width: 82px;
+}
+
+.concerned-okr .followed-users .user-name-txt span {
+  margin: 0 0 0 10px;
+  padding: 2px;
+  font-size: 12px;
+  background: #f0effe;
+  color: #685df1;
 }
 
 /* okr-approval */
@@ -2087,10 +2136,6 @@
 
 .weekly-cont .tag-lists .icon-bg i {
   position: unset;
-}
-
-.weekly-cont .tag-lists li:not(.icon-bg) {
-  padding-right: 30px;
 }
 
 .weekly-cont .tag-lists li:not(.icon-bg) i {
@@ -3068,7 +3113,7 @@
 }
 
 .teams-manage .card-title ~ dd:nth-of-type(1) {
-  margin: 30px 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 .teams-manage .card-title ~ dd > span:nth-of-type(1) {
@@ -3136,7 +3181,7 @@
   color: #7b8a95
 }
 
-.teams-manage .dl-card-panel .user-info i {
+.teams-manage .dl-card-panel .user-info > i {
   position: absolute;
   right: -20px;
   top: 0;
@@ -3161,6 +3206,11 @@
 .set-manage .el-drawer__body {
   margin-top: 10px;
   width: 600px;
+}
+
+.teams-manage .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
 }
 
 /* =========================================================租户管理================================================================== */

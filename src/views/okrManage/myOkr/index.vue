@@ -136,7 +136,8 @@ export default {
   },
   created() {
     // 如果是负责人并且有上级，则展示上级
-    if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+    if ((this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN'))
+    && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
       // 如果是负责人并且是根节点
     } else if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgId == 'CR0011000054') {
