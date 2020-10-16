@@ -749,19 +749,7 @@
 .create-okr .timeline-list .el-form-item__label {
   color: #4d5155;
 }
-/* change by xinquan */
-.create-okr .okr-info .weight-tip .el-popover{
-  background: #7e7e7e;
-  color: #fff;
-  font-size: 12px;
-  width: 70px; 
-  height: 25px;
-}
-.create-okr .okr-info .weight-tip .el-popover .popper__arrow,
-.create-okr .okr-info .weight-tip .el-popover .popper__arrow::after
-{
-  border-top-color: #8f7b7b;
-}
+
 .associated-undertaking .el-scrollbar {
   margin: 0 0 30px 0;
 }

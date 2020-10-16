@@ -321,6 +321,7 @@ export default {
     },
 
     okrInfo(okr) {
+      debugger;
       this.okrId = okr.okrId;
       this.drawerTitle = this.okrCycle.periodName;
       this.detailExist = true;

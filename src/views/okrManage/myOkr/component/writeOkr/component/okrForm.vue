@@ -65,27 +65,15 @@
                       },
                     ]"
                   >
-                    <el-popover
-                      :content="lastWeightmsg"
-                      placement="top-start"
-                      :value="oitem.showTip"
-                      trigger="manual"
-                      class="weight-tip"
-                      :append-to-body="false"
-                    >
-                      <el-input-number
-                        slot="reference"
-                        v-model="oitem.okrWeight"
-                        controls-position="right"
-                        :min="0"
-                        :max="100"
-                        :step="0.1"
-                        step-strictly
-                        class="tl-input-number"
-                        @focus="showTip('o', index, 0)"
-                        @blur="hideTip('o', index, 0)"
-                      ></el-input-number>
-                    </el-popover>
+                    <el-input-number
+                      v-model="oitem.okrWeight"
+                      controls-position="right"
+                      :min="0"
+                      :max="100"
+                      :step="0.1"
+                      step-strictly
+                      class="tl-input-number"
+                    ></el-input-number>
                     <span>%</span>
                   </el-form-item>
                 </div>
@@ -199,27 +187,15 @@
                   },
                 ]"
               >
-                <el-popover
-                  :content="lastWeightmsg"
-                  placement="top-start"
-                  :value="kitem.showTip"
-                  trigger="manual"
-                  class="weight-tip"
-                  :append-to-body="false"
-                >
-                  <el-input-number
-                    slot="reference"
-                    v-model.trim="kitem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="0.1"
-                    step-strictly
-                    class="tl-input-number"
-                    @focus="showTip('kr', index, kindex)"
-                    @blur="hideTip('kr', index, kindex)"
-                  ></el-input-number>
-                </el-popover>
+                <el-input-number
+                  v-model.trim="kitem.okrWeight"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="0.1"
+                  step-strictly
+                  class="tl-input-number"
+                ></el-input-number>
                 <span>%</span>
               </el-form-item>
               <el-form-item label="当前进度">
@@ -416,7 +392,6 @@ export default {
       reason: {},
       visibleQuota: false, // 考核的弹窗
       loading: false,
-      lastWeightmsg: '剩余权重 计算中...',
     };
   },
   props: {
@@ -727,33 +702,6 @@ export default {
           this.$message.warning('变更申请正在审批中，请勿重复提交');
         }
       });
-    },
-    showTip(type, oindex, krindex) {
-      if (type == 'o') {
-        let opercent = 0;
-        this.formData.okrInfoList.forEach((oitem) => {
-          opercent += oitem.okrWeight;
-        });
-        this.lastWeightmsg = `剩余权重${100 - opercent}%`;
-        this.formData.okrInfoList[oindex].showTip = true;
-        this.$forceUpdate();
-      } else {
-        let keypercent = 0;
-        this.formData.okrInfoList[oindex].krList.forEach((kitem) => {
-          keypercent += kitem.okrWeight;
-        });
-        this.lastWeightmsg = `剩余权重${100 - keypercent}%`;
-        this.formData.okrInfoList[oindex].krList[krindex].showTip = true;
-        this.$forceUpdate();
-      }
-    },
-    hideTip(type, oindex, krindex) {
-      if (type == 'o') {
-        this.formData.okrInfoList[oindex].showTip = false;
-      } else {
-        this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
-      }
-      this.lastWeightmsg = '剩余权重 计算中...';
     },
   },
   watch: {
