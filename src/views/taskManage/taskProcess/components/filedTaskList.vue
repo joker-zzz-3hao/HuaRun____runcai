@@ -52,11 +52,11 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column
-              min-width="100px"
-              align="left"
-              prop="taskTitle"
-            ></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="taskTitle">
+              <template slot-scope="scope">
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
+              </template></el-table-column
+            >
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
                 <div>
@@ -102,6 +102,12 @@
         </div>
       </crcloud-table>
     </div>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+    ></tl-edittask>
   </div>
 </template>
 
@@ -109,6 +115,7 @@
 import { mapState } from 'vuex';
 import process from '@/components/process';
 import personMultiple from '@/components/personMultiple';
+import editTask from './editTask';
 import Server from '../server';
 
 const server = new Server();
@@ -117,6 +124,7 @@ export default {
   components: {
     'tl-personmultiple': personMultiple,
     'tl-process': process,
+    'tl-edittask': editTask,
   },
   props: {},
   data() {
@@ -135,6 +143,7 @@ export default {
       },
       userList: [],
       userMap: {},
+      existEditTask: false,
     };
   },
   created() {
@@ -194,6 +203,12 @@ export default {
             },
           );
         }
+      });
+    },
+    openEdit(row) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(row.taskId, true);
       });
     },
     goback() {

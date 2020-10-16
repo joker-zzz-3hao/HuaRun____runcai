@@ -30,11 +30,11 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column
-              min-width="100px"
-              align="left"
-              prop="taskTitle"
-            ></el-table-column>
+            <el-table-column min-width="100px" align="left" prop="taskTitle">
+              <template slot-scope="scope">
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
+              </template>
+            </el-table-column>
             <el-table-column min-width="100px" align="left" prop="taskTitle">
               <template slot-scope="scope">
                 <div>
