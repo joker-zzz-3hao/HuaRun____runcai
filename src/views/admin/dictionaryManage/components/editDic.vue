@@ -22,27 +22,38 @@
         <el-form-item
           label="字典编号"
           prop="code"
-          :rules="[{required:true,validator:validateDicCode,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateDicCode, trigger: 'blur' },
+          ]"
         >
           <el-input
             v-model.trim="formData.code"
             :disabled="this.optionType == 'edit'"
             maxlength="50"
             clearable
-            style="width:90%"
+            style="width: 90%"
           ></el-input>
         </el-form-item>
         <el-form-item
           label="字典名称"
           prop="name"
-          :rules="[{required:true,validator:validateDicName,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateDicName, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.name" maxlength="50" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.name"
+            maxlength="50"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="状态"
           prop="enabledFlag"
-          :rules="[{required:true,message:'请输选择请用状态',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请输选择请用状态', trigger: 'blur' },
+          ]"
         >
           <el-radio-group v-model="formData.enabledFlag">
             <el-radio :label="'Y'">启用</el-radio>
@@ -50,15 +61,24 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="description">
-          <el-input v-model.trim="formData.description" maxlength="100" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.description"
+            maxlength="100"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
       </el-form>
-      <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
+      <el-form
+        :rules="formTableData.rules"
+        :model="formTableData"
+        ref="formTable"
+      >
         <el-table
           ref="dicTable"
           v-loading="tableLoading"
           :data="formTableData.tableData"
-          style="width:90%"
+          style="width: 90%"
         >
           <el-table-column label="字典键" prop="value">
             <template slot-scope="scope">
@@ -66,7 +86,11 @@
                 :prop="'tableData.' + scope.$index + '.value'"
                 :rules="formTableData.rules.value"
               >
-                <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
+                <el-input
+                  v-model.trim="scope.row.value"
+                  maxlength="50"
+                  clearable
+                ></el-input>
               </el-form-item>
             </template>
           </el-table-column>
@@ -76,21 +100,20 @@
                 :prop="'tableData.' + scope.$index + '.meaning'"
                 :rules="formTableData.rules.meaning"
               >
-                <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
+                <el-input
+                  v-model.trim="scope.row.meaning"
+                  maxlength="50"
+                  clearable
+                ></el-input>
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="字典排序" prop="orderSeq">
+          <el-table-column width="70" label="字典排序" prop="orderSeq">
             <template slot-scope="scope">
-              <el-input-number
-                v-model.trim="scope.row.orderSeq"
-                controls-position="right"
-                :min="1"
-                :max="1000"
-              ></el-input-number>
+              <el-input v-model.trim="scope.row.orderSeq"></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="状态" prop="enabledFlag">
+          <el-table-column label="状态" width="50" prop="enabledFlag">
             <template slot-scope="scope">
               <div @click.capture.stop="dataChange(scope.row)">
                 <el-switch
@@ -104,17 +127,32 @@
           </el-table-column>
           <el-table-column label="备注" prop="description">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
+              <el-input
+                v-model.trim="scope.row.description"
+                maxlength="50"
+                clearable
+              ></el-input>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="createTime">
+          <el-table-column label="创建时间" width="150" prop="createTime">
             <template slot-scope="scope">
-              <div>{{scope.row.createTime? dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) ):'--'}}</div>
+              <div>
+                {{
+                  scope.row.createTime
+                    ? dateFormat(
+                        "YYYY-mm-dd HH:MM",
+                        new Date(scope.row.createTime)
+                      )
+                    : "--"
+                }}
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="code">
+          <el-table-column label="操作" prop="code" width="50">
             <template slot-scope="scope">
-              <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
+              <el-button type="text" @click="deleteItem(scope.row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -122,8 +160,19 @@
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="save">确定</el-button>
-      <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :loading="loading"
+        @click="save"
+        >确定</el-button
+      >
+      <el-button
+        class="tl-btn amt-border-fadeout"
+        :disabled="loading"
+        @click="cancel"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>
@@ -298,6 +347,6 @@ export default {
 </script>
 <style >
 .tl-drawer-dic .el-drawer {
-  width: 700px !important;
+  width: 1000px !important;
 }
 </style>

@@ -204,9 +204,12 @@
                         class="el-icon-close"
                       ></i> -->
                     </li>
+                    <em v-if="scope.row.selectedOkr.length < 1 && !canUpdate"
+                      >--</em
+                    >
                     <li
                       class="icon-bg"
-                      v-if="scope.row.selectedOkr.length < 1"
+                      v-if="scope.row.selectedOkr.length < 1 && canUpdate"
                       @click="addSupportOkr(scope.row)"
                     >
                       <i class="el-icon-plus"></i>
@@ -341,31 +344,6 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="code" width="40">
-              <template slot-scope="scope">
-                <el-tooltip
-                  v-if="canUpdate"
-                  class="icon-clear"
-                  :class="{
-                    'is-disabled': formData.weeklyPlanSaveList.length == 1,
-                  }"
-                  effect="dark"
-                  :content="
-                    formData.weeklyPlanSaveList.length > 1
-                      ? '删除'
-                      : '至少有一条计划项'
-                  "
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                  @click.native="
-                    formData.weeklyPlanSaveList.length > 1 &&
-                      deletePlanItem(scope.row)
-                  "
-                >
-                  <i class="el-icon-minus"></i>
-                </el-tooltip>
-              </template>
-            </el-table-column> -->
           </el-table>
         </el-form>
       </dd>
@@ -565,6 +543,7 @@
       :server="server"
       :myOkrList="myOkrList"
       :orgOkrList="orgOkrList"
+      :orgOkrPeriodList="orgOkrPeriodList"
       :originalMyOkrList="originalMyOkrList"
       :originalOrgOkrList="originalOrgOkrList"
       :cultureList="cultureList"
@@ -640,6 +619,12 @@ export default {
       },
     },
     originalOrgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrPeriodList: {
       type: Array,
       default() {
         return [];

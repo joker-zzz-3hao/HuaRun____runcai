@@ -34,7 +34,7 @@
           <div>
             <tl-levelblock :value="element.taskLevel"></tl-levelblock>
           </div>
-          <div>
+          <div @click="openEdit(element)">
             {{ element.taskTitle }}
           </div>
           <tl-process
@@ -62,19 +62,20 @@
       </draggable>
       <!-- </draggable> -->
     </div>
-    <tl-add-task
-      :stepData="stepData"
-      v-if="showAddTask"
-      :exist.sync="showAddTask"
-      ref="addTask"
-    ></tl-add-task>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+      @success="init()"
+    ></tl-edittask>
   </div>
 </template>
 <script>
 import draggable from 'vuedraggable';
 import process from '@/components/process';
 import levelblock from '@/components/levelblock';
-import tlAddTask from './addTask';
+import editTask from './editTask';
 import Server from '../server';
 import CONST from '../const';
 
@@ -86,9 +87,9 @@ export default {
   order: 2,
   components: {
     draggable,
-    tlAddTask,
     'tl-process': process,
     'tl-levelblock': levelblock,
+    'tl-edittask': editTask,
   },
   props: {
     stepList: {
@@ -109,7 +110,6 @@ export default {
       CONST,
       server,
       rootData: [],
-      showAddTask: false,
       moveItem: {},
       options: {
         group: 'people',
@@ -117,6 +117,7 @@ export default {
         animation: 150, // ms动画排序速度
         // dragClass: 'dragitem', // 被拖拽元素
       },
+      existEditTask: false,
     };
   },
   created() {
@@ -180,6 +181,12 @@ export default {
         if (res.code == 200) {
           console.log('');
         }
+      });
+    },
+    openEdit(row) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(row.taskId, false);
       });
     },
   },

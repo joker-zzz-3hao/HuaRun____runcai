@@ -21,10 +21,13 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
   }
 
-  // 查部门okr列表
-  getorgOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
+  // 查部门okr
+  getOrgOkr(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/getUndertakeOkr', param);
   }
+  // getorgOkr(param) {
+  //   return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
+  // }
 
   // 获取公司价值观
   getValues(param) {
