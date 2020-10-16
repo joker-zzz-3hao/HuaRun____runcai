@@ -1,8 +1,19 @@
 <template>
   <div>
-    <div>复盘对象：{{ okrMain.okrMainVo.periodName }}</div>
+    <div>
+      复盘对象：{{ okrMain.okrMainVo.periodName }}({{
+        okrMain.okrMainVo.startTime + "-" + okrMain.okrMainVo.endTime
+      }})
+    </div>
     <div class="replay-user">
-      <div class="list">姓名：{{ okrMain.okrMainVo.userName }}</div>
+      <div class="list">
+        <img
+          style="width: 50px; height: 50px; border-radius: 50%"
+          :src="okrMain.okrMainVo.headUrl"
+          alt=""
+          srcset=""
+        />{{ okrMain.okrMainVo.userName }}
+      </div>
       <div class="list">OKR进度： {{ okrMain.okrMainVo.okrProgress }}%</div>
       <div class="list">
         复盘时间：

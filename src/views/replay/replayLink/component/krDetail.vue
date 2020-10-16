@@ -195,6 +195,12 @@ export default {
       });
     },
     handleDeleteOne() {
+      this.checkDatakrs(false);
+      const CheckNull = this.list.every((item) => !item.communication && !item.communicationLabel);
+      if (CheckNull) {
+        this.$router.push('/replayList');
+        return false;
+      }
       this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();

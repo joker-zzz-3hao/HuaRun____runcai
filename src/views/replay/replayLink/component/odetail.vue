@@ -7,7 +7,10 @@
             <div class="title-row">
               <div>
                 <em>目标{{ index + 1 }}</em
-                ><em>{{ item.o.okrDetailObjectKr }}</em>
+                ><em
+                  >{{ item.o.okrDetailObjectKr
+                  }}{{ item.o.startTime + "-" + item.o.endTime }}</em
+                >
               </div>
               <div style="width: 200px">
                 <div style="width: 100px; float: left">
@@ -193,6 +196,12 @@ export default {
       });
     },
     handleDeleteOne() {
+      this.checkDatakrs(false);
+      const CheckNull = this.list.every((item) => !item.communication && !item.communicationLabel);
+      if (CheckNull) {
+        this.$router.push('/replayList');
+        return false;
+      }
       this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
