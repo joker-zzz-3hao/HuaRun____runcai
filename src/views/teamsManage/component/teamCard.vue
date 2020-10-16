@@ -1,38 +1,39 @@
 <template>
   <div class="maps-card">
-    <div v-if="node.node.orgId != 'add'">
-      <div>
-        <div>
-          <span>{{ node.node.orgName }}</span>
-          <span>({{ node.node.orgType == "0" ? "实" : "虚" }})</span>
-        </div>
-        <div>
-          <div>
-            <span>负责人：</span>
-            <span v-if="node.node.orgLeader">{{ node.node.orgLeader }}</span>
-            <span v-else>未设置</span>
+    <dl v-if="node.node.orgId != 'add'">
+      <dt>
+        <template v-if="node.node.orgLeader">
+          <div class="user-info">
+            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <div v-else-if="node.node.orgLeader" class="user-name">
+              <em>{{
+                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+              }}</em>
+            </div>
           </div>
-          <div v-if="node.node.orgType == '1'">
-            <i class="el-icon-edit-outline" @click.stop="editTeam"></i>
-          </div>
+          <em>{{ node.node.orgLeader }}</em>
+          <span>(部门负责人)</span>
+        </template>
+        <span v-else>提示：此部门尚未设置部门负责人</span>
+      </dt>
+      <dd class="user-name-txt">
+        <span>{{ node.node.orgType == "0" ? "实" : "虚" }}</span>
+        <em>{{ node.node.orgName }}</em>
+      </dd>
+      <dd v-if="node.node.orgType == '1'" class="is-operational">
+        <div class="icon-bg">
+          <i class="el-icon-edit-outline" @click.stop="editTeam"></i>
         </div>
+        <div class="icon-bg">
+          <i class="el-icon-close" @click.stop="deleteTeam"></i>
+        </div>
+      </dd>
+    </dl>
+    <div v-else @click.stop="addTeam" class="icon-txt-group">
+      <div class="icon-bg-big">
+        <i class="el-icon-plus"></i>
       </div>
-      <div class="delete-team" v-if="node.node.orgType == '1'">
-        <i class="el-icon-close" @click.stop="deleteTeam"></i>
-      </div>
-    </div>
-    <div
-      v-else
-      style="
-        width: 216px;
-        height: 160px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      "
-      @click.stop="addTeam"
-    >
-      创建虚拟团队
+      <span>创建虚拟团队</span>
     </div>
   </div>
 </template>
