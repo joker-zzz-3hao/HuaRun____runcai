@@ -184,11 +184,19 @@
                 ></el-input>
               </el-form-item>
               <el-form-item
-                v-show="formData.taskProgress == 100"
+                v-if="formData.taskProgress == 100"
                 label="归属项目"
-                prop="projectVal"
+                prop="projectId"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '任务还未归属项目，请选择',
+                  },
+                ]"
               >
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.projectId"
                   placeholder="请选择关联项目"
                   @change="projectChange(scope.row)"
@@ -204,9 +212,16 @@
                 </el-select>
               </el-form-item>
               <el-form-item
-                v-show="formData.taskProgress == 100"
+                v-if="formData.taskProgress == 100"
                 label="归属OKR"
                 prop="okrDetailId"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '任务还未归属项目，请选择',
+                  },
+                ]"
               >
                 <el-select
                   :disabled="canEdit"
@@ -246,7 +261,7 @@
                   </li>
                 </ul>
                 <file-upload
-                  :disabled="canEdit"
+                  v-if="!canEdit"
                   ref="fileUpload"
                   :fileList="formData.fileList"
                   :limit="5"

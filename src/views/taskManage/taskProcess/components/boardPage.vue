@@ -45,7 +45,9 @@
           <div>
             <i class="el-icon-time"></i>
             <span v-if="element.taskBegDate"
-              >{{ element.taskBegDate }}-{{ element.taskEndDate }}</span
+              >{{ dateFormat("YYYY-mm-dd", new Date(element.taskBegDate)) }}-{{
+                dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
+              }}</span
             >
             <span v-else>未设置起止时间</span>
           </div>
@@ -67,7 +69,7 @@
       v-if="existEditTask"
       :existEditTask.sync="existEditTask"
       :server="server"
-      @success="init()"
+      @success="init('')"
     ></tl-edittask>
   </div>
 </template>
@@ -125,29 +127,28 @@ export default {
   },
   methods: {
     init(typeId) {
-      const self = this;
-      self.rootData = [];
       const params = {
         currentPage: 1,
         pageSize: 10,
-        processId: self.processObj.processId,
+        processId: this.processObj.processId,
         typeId: typeId || '',
       };
-      self.server.queryTaskList(params).then((res) => {
+      this.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {
-          for (let i = 0; i < self.stepList.length; i += 1) {
-            self.rootData.push(
+          this.rootData = [];
+          for (let i = 0; i < this.stepList.length; i += 1) {
+            this.rootData.push(
               {
-                stepId: self.stepList[i].stepId,
-                processId: self.processObj.processId,
-                stepName: self.stepList[i].stepName,
+                stepId: this.stepList[i].stepId,
+                processId: this.processObj.processId,
+                stepName: this.stepList[i].stepName,
                 typeId: typeId || '',
                 stepTaskList: [],
               },
             );
             res.data.content.forEach((task) => {
-              if (task.stepId == self.stepList[i].stepId) {
-                self.rootData[i].stepTaskList.push(task);
+              if (task.stepId == this.stepList[i].stepId) {
+                this.rootData[i].stepTaskList.push(task);
               }
             });
           }
