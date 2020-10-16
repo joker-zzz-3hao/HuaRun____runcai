@@ -136,16 +136,23 @@
                 </el-select>
               </el-form-item>
               <el-form-item
-                v-show="formData.taskProgress == 100"
+                v-if="formData.taskProgress == 100"
                 label="归属项目"
-                prop="projectVal"
+                prop="projectId"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '任务还未归属项目，请选择',
+                  },
+                ]"
               >
                 <el-select
+                  :disabled="canEdit"
                   v-model.trim="formData.projectId"
                   placeholder="请选择关联项目"
                   @change="projectChange(scope.row)"
                   class="tl-select"
-                  clearable
                 >
                   <el-option
                     v-for="item in projectList"
@@ -157,15 +164,21 @@
                 </el-select>
               </el-form-item>
               <el-form-item
-                v-show="formData.taskProgress == 100"
+                v-if="formData.taskProgress == 100"
                 label="归属OKR"
                 prop="okrDetailId"
+                :rules="[
+                  {
+                    required: true,
+                    trigger: 'blur',
+                    message: '任务还未归属OKR，请选择',
+                  },
+                ]"
               >
                 <el-select
                   :disabled="canEdit"
                   v-model.trim="formData.okrDetailId"
                   placeholder="请选择归属OKR"
-                  clearable
                 >
                   <el-option
                     v-for="item in okrList"
@@ -238,6 +251,9 @@
               </el-form-item>
               <el-form-item label="附件">
                 <ul>
+                  <li v-if="formData.attachmentList.length == 0 && canEdit">
+                    暂无文件
+                  </li>
                   <li
                     v-for="(file, index) in formData.attachmentList"
                     :key="file.resourceId"
@@ -254,7 +270,7 @@
                   </li>
                 </ul>
                 <file-upload
-                  :disabled="canEdit"
+                  v-if="!canEdit"
                   ref="fileUpload"
                   :fileList="formData.fileList"
                   :limit="5"
@@ -422,6 +438,7 @@ export default {
         taskProgressRemark: '',
         taskProgress: 0,
         timeSum: '当前已用时长 0天 0小时 0分',
+        attachmentList: [],
       },
       taskUserId: '', // 原执行人
       okrList: [], // 归属okr列表

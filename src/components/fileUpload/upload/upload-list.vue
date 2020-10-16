@@ -51,7 +51,7 @@
             ></i>
           </label>
           <span
-            v-if="images_map[file.response.data.resourceType]"
+            v-if="images_map[file.response && file.response.data.resourceType]"
             @click="openFile(file)"
             >预览</span
           >
