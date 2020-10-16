@@ -30,12 +30,22 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column min-width="100px" align="left" prop="taskTitle">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskTitle"
+              label="任务"
+            >
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskTitle">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userName"
+              label="创建人"
+            >
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -49,7 +59,12 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskProgress">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskProgress"
+              label="进度"
+            >
               <template slot-scope="scope">
                 <div>
                   <tl-process
@@ -58,7 +73,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left">
+            <el-table-column min-width="100px" align="left" label="执行人">
               <template slot-scope="scope">
                 <div style="cursor: pointer">
                   <span>
@@ -80,47 +95,14 @@
                   </span>
                   <span>{{ scope.row.userName }}</span>
                 </div>
-                <!-- <div v-else>
-                  <el-select
-                    ref="taskSelect"
-                    v-model="scope.row.taskUserId"
-                    filterable
-                    placeholder="请选择执行人"
-                    remote
-                    :remote-method="remoteMethod"
-                    @visible-change="visibleChange"
-                    @blur="selectBlur(scope.row)"
-                    @change="userChange"
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in userList"
-                      :key="item.userId"
-                      :label="item.userName"
-                      :value="item.userId"
-                    >
-                      <span style="float: left">
-                        <el-avatar
-                          :size="30"
-                          :src="item.headUrl"
-                          @error="errorHandler"
-                        >
-                          <div v-if="item.userName" class="user-name">
-                            <em>{{
-                              item.userName.substring(item.userName.length - 2)
-                            }}</em>
-                          </div>
-                        </el-avatar>
-                      </span>
-                      <span style="float: left; marginleft: 5px">{{
-                        item.userName
-                      }}</span>
-                    </el-option>
-                  </el-select>
-                </div> -->
               </template>
             </el-table-column>
-            <el-table-column fixed="right" min-width="130px" align="left">
+            <el-table-column
+              fixed="right"
+              min-width="200px"
+              align="left"
+              label="操作"
+            >
               <template slot-scope="scope">
                 <el-button class="tl-btn" @click="openEdit(scope.row)"
                   >编辑</el-button
@@ -144,10 +126,8 @@
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-
                 <el-menu
                   :default-active="'1'"
-                  class="el-menu-demo"
                   mode="horizontal"
                   @select="handleSelect"
                 >

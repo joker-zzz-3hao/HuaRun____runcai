@@ -85,7 +85,7 @@
               min-width="100px"
               align="left"
               prop="taskProgress"
-              label="任务进度"
+              label="进度"
             >
               <template slot-scope="scope">
                 <div>
