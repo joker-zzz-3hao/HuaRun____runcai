@@ -1208,10 +1208,6 @@ export default {
     },
     workTimeChange(row) {
       console.log(row);
-      // let workTimeTotal = 0;
-      // this.formData.weeklyWorkVoSaveList.forEach((element) => {
-      //   workTimeTotal += Number(element.workTime);
-      // });
 
       // this.formData.weeklyWorkVoSaveList.forEach((work) => {
       //   if (row.randomId == work.randomId) {
@@ -1223,10 +1219,6 @@ export default {
       //       } else if (tempArr[1] < 5) { // 小于5
       //         work.workTime = Number(tempArr[0]);
       //       }
-      //     }
-
-      //     if (workTimeTotal > 5) {
-      //       work.workTime = 0;
       //     }
       //   }
       // });

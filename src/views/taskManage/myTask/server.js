@@ -94,4 +94,9 @@ export default class Server extends ServerBase {
   queryOrgProject(param) {
     return this._ajaxPost('gateway/project-service/project/query/userProjectList', param);
   }
+
+  // 查询项目
+  downFile(param) {
+    return this._ajaxPost(`gateway/system-service/sys/attachment/download?resourceId=${param.resourceId}&sourceType=TASK_FILE`);
+  }
 }

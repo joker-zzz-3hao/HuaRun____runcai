@@ -351,7 +351,7 @@ export default {
       return [this.okrList[0].tableList[0].okrDetailId];
     },
     showUndertake() {
-      if (this.roleCode.includes('ORG_ADMIN')) {
+      if (this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) {
         return true;
       }
       return false;

@@ -166,6 +166,7 @@ export default {
       pageSize: 10,
       tableData: [],
       showCreateManage: false,
+      isTalent: false,
     };
   },
   components: {
@@ -182,11 +183,17 @@ export default {
   },
   methods: {
     searchManage() {
+      this.isTalent = false;
+      this.userInfo.roleList.forEach((item) => {
+        if (item.roleCode == 'TENANT_ADMIN') {
+          this.isTalent = true;
+        }
+      });
       const param = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         projectName: this.keyWord,
-        userAccount: this.userInfo.userAccount,
+        userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       };
       this.server.projectPageList(param).then((res) => {
         if (res.code == '200') {

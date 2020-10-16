@@ -121,43 +121,6 @@
               </el-form-item>
             </dd>
             <dd>
-              <el-form-item label="归属项目" prop="projectVal">
-                <el-select
-                  v-model.trim="formData.projectId"
-                  placeholder="请选择关联项目"
-                  @change="projectChange(scope.row)"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in projectList"
-                    :key="item.projectId"
-                    :label="item.projectNameCn"
-                    :value="item.projectId"
-                  >
-                  </el-option>
-                </el-select>
-                <!-- <el-input
-                  :disabled="canEdit"
-                  v-model.trim="formData.projectName"
-                  placeholder="请选择归属项目"
-                  maxlength="0"
-                  @focus="projectInputFocus()"
-                ></el-input> -->
-              </el-form-item>
-              <el-form-item label="归属OKR" prop="okrDetailId">
-                <el-select
-                  :disabled="canEdit"
-                  v-model.trim="formData.okrDetailId"
-                  placeholder="请选择归属OKR"
-                >
-                  <el-option
-                    v-for="item in okrList"
-                    :key="item.okrDetailId"
-                    :label="item.okrDetailObjectKr"
-                    :value="item.okrDetailId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
                   :disabled="canEdit"
@@ -180,7 +143,7 @@
                   <tl-process
                     :data="parseInt(formData.taskProgress, 10)"
                     :showNumber="false"
-                    :width="64"
+                    :width="40"
                     :marginLeft="6"
                   ></tl-process>
                   <el-slider
@@ -220,8 +183,47 @@
                   resize="none"
                 ></el-input>
               </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属项目"
+                prop="projectVal"
+              >
+                <el-select
+                  v-model.trim="formData.projectId"
+                  placeholder="请选择关联项目"
+                  @change="projectChange(scope.row)"
+                  class="tl-select"
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectNameCn"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属OKR"
+                prop="okrDetailId"
+              >
+                <el-select
+                  :disabled="canEdit"
+                  v-model.trim="formData.okrDetailId"
+                  placeholder="请选择归属OKR"
+                >
+                  <el-option
+                    v-for="item in okrList"
+                    :key="item.okrDetailId"
+                    :label="item.okrDetailObjectKr"
+                    :value="item.okrDetailId"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="添加描述" prop="taskDesc">
                 <el-input
+                  placeholder="请输入任务描述"
                   :disabled="canEdit"
                   type="textarea"
                   :rows="5"
@@ -238,7 +240,7 @@
                     :key="file.resourceId"
                   >
                     <em>{{ file.resourceName }}</em>
-                    <span @click="openFile(file)">下载</span>
+                    <span @click="downFile(file)">下载</span>
                     <span @click="openFile(file)">预览</span>
                     <span @click="deleteFile(index)">删除</span>
                   </li>
@@ -331,16 +333,15 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
-      <el-button
-        v-if="formData.taskStatus == 0"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="save"
-        >暂存</el-button
-      >
+      <div class="flex-auto">
+        <el-button
+          v-if="formData.taskStatus == 0"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="save"
+          >暂存</el-button
+        >
+      </div>
       <el-button
         v-if="formData.taskStatus == 0"
         type="primary"
@@ -362,6 +363,9 @@
         class="tl-btn amt-bg-slip"
         @click="acceptTask"
         >确认接收</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
       >
     </div>
     <tl-selectproject
@@ -634,6 +638,16 @@ export default {
         window.open(fileObj.resourceUrl);
       }
     },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType=TASK_FILE`;
+      console.log(url);
+      // window.open(url);
+      this.server.downFile({ resourceId: fileObj.resourceId }).then();
+    },
     deleteFile(index) {
       if (this.formData.attachmentList.length > 0) {
         this.formData.attachmentList.splice(index, 1);
@@ -686,7 +700,6 @@ export default {
       }).catch(() => {});
     },
     filedTask() {
-      console.log('guidang');
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           this.$xconfirm({

@@ -282,7 +282,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'orgManage',
+      parentRoute: 'projectManage',
       title: 'projectManage',
       power: 'projectList',
     },
@@ -294,7 +294,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'orgManage',
+      parentRoute: 'projectManage',
       title: 'projectDetail',
       power: 'projectList',
     },
@@ -306,7 +306,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'orgManage',
+      parentRoute: 'projectManage',
       title: 'mainHours',
       power: 'mainHours',
     },

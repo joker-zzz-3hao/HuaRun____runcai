@@ -337,7 +337,7 @@
           </el-table>
         </div>
       </tl-crcloud-table>
-      <tl-tasksum v-show="!showTask"></tl-tasksum>
+      <tl-tasksum v-show="!showTask" ref="tasksum"></tl-tasksum>
     </div>
     <tl-assignment
       ref="assignment"
@@ -466,6 +466,11 @@ export default {
     },
     toggleState() {
       this.showTask = !this.showTask;
+      this.$nextTick(() => {
+        if (this.showTask == false) {
+          this.$refs.tasksum.getWeek();
+        }
+      });
     },
     handleAssign(id) {
       this.existAssignment = true;

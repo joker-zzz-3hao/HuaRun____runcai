@@ -67,6 +67,7 @@
                 <el-switch
                   :disabled="
                     !roleCode.includes('ORG_ADMIN') &&
+                    !roleCode.includes('TEAM_ADMIN') &&
                     scope.row.processType == 1
                   "
                   v-model.trim="scope.row.enable"
@@ -107,6 +108,7 @@
                 <el-button
                   :disabled="
                     !roleCode.includes('ORG_ADMIN') &&
+                    !roleCode.includes('TEAM_ADMIN') &&
                     scope.row.processType == 1
                   "
                   type="text"
