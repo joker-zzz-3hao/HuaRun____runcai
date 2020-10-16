@@ -63,6 +63,6 @@ export default class Server extends ServerBase {
 
   // 价值观数据查询
   getCultureContent(param) {
-    return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
+    return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
 }

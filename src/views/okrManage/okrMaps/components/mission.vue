@@ -80,7 +80,15 @@
     </div>
     <!-- 公司价值观宣导 -->
     <div v-else-if="type == '3'">
-      <h3>诚实守信</h3>
+      <div v-for="culture in cultureContent" :key="culture.id">
+        <h3>
+          {{ culture.cultureName }}
+        </h3>
+        <p>
+          {{ culture.cultureDesc }}
+        </p>
+      </div>
+      <!-- <h3>诚实守信</h3>
       <p>
         忠诚爱国，崇尚公平正义，敬畏法纪、尊重制度，坚守法律和道德底线。
         遵守商业伦理与契约精神，维护利益相关方合法权益，信守承诺，知行合一。
@@ -103,16 +111,20 @@
         忠诚爱国，崇尚公平正义，敬畏法纪、尊重制度，坚守法律和道德底线。
         遵守商业伦理与契约精神，维护利益相关方合法权益，信守承诺，知行合一。
         倡导真诚坦率的人际沟通，不唯上、不专断，构建简单透明的管理氛围。
-      </p>
+      </p> -->
     </div>
   </el-dialog>
 </template>
 
 <script>
+import Server from '../server';
+
+const server = new Server();
 export default {
   name: 'mission',
   data() {
     return {
+      server,
       dialogTableVisible: false,
       title: '',
       type: '',

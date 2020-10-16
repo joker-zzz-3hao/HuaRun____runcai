@@ -208,7 +208,9 @@ export default {
       orgOkr: [],
       personalOkr: [],
       selectedCultureList: [],
+      myPeriodId: '',
       orgPeriodId: '',
+      thisPageMyOkrList: [],
       thisPageOrgOkrList: [],
     };
   },
@@ -251,6 +253,7 @@ export default {
         // 匹配个人okr
         for (const okr of this.myOkrList) {
           if (item.okrDetailId == okr.okrDetailId) {
+            this.myPeriodId = okr.periodId;
             // 反显
             this.personalSelectData = okr.okrDetailId;
             // 赋值已选项
@@ -270,14 +273,23 @@ export default {
         }
         // 匹配团队okr
         // 先确定是哪个团队okr周期；下拉框选中该周期；遍历该周期目标；勾选该目标
-        // for (const okr of this.orgOkrList) {
-        //   if (item.okrDetailId == okr.okrDetailId) {
-        //     // 反显
-        //     this.orgSelectData = okr.okrDetailId;
-        //     // 赋值已选项
-        //     this.orgOkr = [okr];
+        for (const okr of this.orgOkrList) {
+          if (item.okrDetailId == okr.okrDetailId) {
+            this.orgPeriodId = okr.periodId;
+            // 反显
+            this.orgSelectData = okr.okrDetailId;
+            // 赋值已选项
+            this.orgOkr = [okr];
+          }
+        }
+        //  for (const okr of this.orgOkrList) {
+        //     if (item.okrDetailId == okr.okrDetailId) {
+        //       // 反显
+        //       this.orgSelectData = okr.okrDetailId;
+        //       // 赋值已选项
+        //       this.orgOkr = [okr];
+        //     }
         //   }
-        // }
         // 匹配价值观
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
