@@ -11,14 +11,8 @@
     >
       <li
         v-for="file in files"
-        :class="[
-          'el-upload-list__item',
-          'is-' + file.status,
-          focusing ? 'focusing' : '',
-        ]"
         :key="file.uid"
         tabindex="0"
-        @keydown.delete="!disabled && $emit('remove', file)"
         @focus="focusing = true"
         @blur="focusing = false"
         @click="focusing = false"
@@ -56,16 +50,17 @@
               }"
             ></i>
           </label>
-          <span @click="openFile(file)">预览</span>
-          <span @click="downFile(file)">下载</span>
+          <span
+            v-if="images_map[file.response.data.resourceType]"
+            @click="openFile(file)"
+            >预览</span
+          >
+          <!-- <span @click="downFile(file)">下载</span> -->
           <i
             class="el-icon-close"
             v-if="!disabled"
             @click="$emit('remove', file)"
           ></i>
-          <i class="el-icon-close-tip" v-if="!disabled">{{
-            t("el.upload.deleteTip")
-          }}</i>
           <!--因为close按钮只在li:focus的时候 display, li blur后就不存在了，所以键盘导航时永远无法 focus到 close按钮上-->
           <el-progress
             v-if="file.status === 'uploading'"
@@ -113,6 +108,13 @@ export default {
   data() {
     return {
       focusing: false,
+      images_map: {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      },
     };
   },
   // components: { ElProgress },
@@ -160,8 +162,7 @@ export default {
         ? window.location.origin
         : window.location.href.split('/#')[0];
       const fileObj = res.response.data;
-      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType='TASK_FILE'`;
-      console.log(url);
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=`;
       window.open(url);
     },
   },

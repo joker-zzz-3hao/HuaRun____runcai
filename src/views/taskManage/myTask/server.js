@@ -96,7 +96,7 @@ export default class Server extends ServerBase {
   }
 
   // 查询项目
-  downFile(param) {
-    return this._ajaxPost(`gateway/system-service/sys/attachment/download?resourceId=${param.resourceId}&sourceType=TASK_FILE`);
+  removeFile(param) {
+    return this._ajaxPost(`gateway/system-service/sys/attachment/remove?resourceId=${param.resourceId}&sourceType=TASK&sourceKey=${param.taskId}`);
   }
 }

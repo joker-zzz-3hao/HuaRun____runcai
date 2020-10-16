@@ -239,10 +239,15 @@
                     v-for="(file, index) in formData.attachmentList"
                     :key="file.resourceId"
                   >
+                    <i class="el-icon-document"></i>
                     <em>{{ file.resourceName }}</em>
                     <span @click="downFile(file)">下载</span>
-                    <span @click="openFile(file)">预览</span>
-                    <span @click="deleteFile(index)">删除</span>
+                    <span
+                      v-if="images_map[file.resourceType]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="deleteFile(index, file)">删除</span>
                   </li>
                 </ul>
                 <file-upload
@@ -437,6 +442,13 @@ export default {
       }],
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
+      images_map: {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      },
       // 富文本编辑器
       editorOption: {
         modules: {
@@ -634,8 +646,6 @@ export default {
       };
       if (images[fileObj.resourceType]) {
         this.$refs.imgDialog.show(fileObj.resourceUrl);
-      } else {
-        window.open(fileObj.resourceUrl);
       }
     },
     // 下载
@@ -643,12 +653,12 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType=TASK_FILE`;
-      console.log(url);
-      // window.open(url);
-      this.server.downFile({ resourceId: fileObj.resourceId }).then();
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.formData.taskId}`;
+      window.open(url);
     },
-    deleteFile(index) {
+    // eslint-disable-next-line no-unused-vars
+    deleteFile(index, fileObj) {
+      // this.server.removeFile({ resourceId: fileObj.resourceId, taskId: this.formData.taskId }).then();
       if (this.formData.attachmentList.length > 0) {
         this.formData.attachmentList.splice(index, 1);
       }

@@ -272,15 +272,21 @@
             </el-table-column>
             <el-table-column align="left" prop="taskStatus">
               <template slot-scope="scope">
-                <i
-                  :class="
-                    ({ 'is-draft': scope.row.taskStatus == '0' },
-                    { 'not-confirm': scope.row.taskStatus == '10' },
-                    { 'is-confirm': scope.row.taskStatus == '20' })
-                  "
-                ></i>
-
-                <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                <div v-if="scope.row.processName && scope.row.stepName">
+                  <span>{{ scope.row.processName }}</span>
+                  <span>-</span>
+                  <span>{{ scope.row.stepName }}</span>
+                </div>
+                <div v-else>
+                  <i
+                    :class="
+                      ({ 'is-draft': scope.row.taskStatus == '0' },
+                      { 'not-confirm': scope.row.taskStatus == '10' },
+                      { 'is-confirm': scope.row.taskStatus == '20' })
+                    "
+                  ></i>
+                  <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                </div>
               </template>
             </el-table-column>
             <el-table-column align="left" prop="userName">
