@@ -208,8 +208,8 @@ export default {
         tempResult = this.orgOkrList;
       }
       for (const okr of okrDetails) {
-        okr.indexText = '目标O';
-        this.$set(okr, 'okrType', 'O');
+        okr.o.indexText = '目标O';
+        this.$set(okr.o, 'okrType', 'O');
         this.$set(okr.o, 'periodId', okr.periodId);
         tempResult.push(okr.o);
         if (okr.krList && okr.krList.length > 0) {

@@ -226,6 +226,7 @@ export default {
   methods: {
     init() {
       this.visible = true;
+      this.orgPeriodId = this.orgOkrPeriodList[0].periodId;
       this.initSelectedData();
     },
     confirm() {
@@ -268,14 +269,15 @@ export default {
           }
         }
         // 匹配团队okr
-        for (const okr of this.orgOkrList) {
-          if (item.okrDetailId == okr.okrDetailId) {
-            // 反显
-            this.orgSelectData = okr.okrDetailId;
-            // 赋值已选项
-            this.orgOkr = [okr];
-          }
-        }
+        // 先确定是哪个团队okr周期；下拉框选中该周期；遍历该周期目标；勾选该目标
+        // for (const okr of this.orgOkrList) {
+        //   if (item.okrDetailId == okr.okrDetailId) {
+        //     // 反显
+        //     this.orgSelectData = okr.okrDetailId;
+        //     // 赋值已选项
+        //     this.orgOkr = [okr];
+        //   }
+        // }
         // 匹配价值观
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
@@ -381,7 +383,6 @@ export default {
     orgPeriodId: {
       handler(newValue) {
         this.thisPageOrgOkrList = [];
-        // debugger;
         this.orgOkrList.forEach((okr) => {
           if (newValue == okr.periodId) {
             this.thisPageOrgOkrList.push(okr);
