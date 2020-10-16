@@ -6,6 +6,7 @@
     :append-to-body="true"
     custom-class="custom-drawer set-manage"
     class="tl-drawer"
+    :before-close="close"
     @closed="closed"
   >
     <div slot="title" class="flex-sb">
@@ -113,8 +114,10 @@ export default {
       self.formData.manageMember = data.teamUserId;
     },
     closed() {
-      this.showSetManager = false;
       this.$emit('closed');
+    },
+    close() {
+      this.showSetManager = false;
     },
     clearManage() {
       this.teamMembers.forEach((item) => {
@@ -130,7 +133,7 @@ export default {
         userId: this.baseInfo.teamUserId || null,
       }).then((res) => {
         if (res.code == '200') {
-          this.showSetManager = false;
+          this.close();
           this.$emit('setSuccess');
         }
       });
