@@ -213,6 +213,11 @@ export default {
         },
         list: this.list,
       };
+      const CheckNull = this.list.some((item) => item.advantage == '' || item.disadvantage == '' || item.measure.length == 0);
+      if (CheckNull) {
+        this.$message.error('未复盘完毕，请检查');
+        return false;
+      }
       this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');

@@ -45,9 +45,14 @@
                 maxlength="64"
                 v-model="userName"
                 placeholder="请输入用户名称"
+                @keyup.enter.native="okrReviewList"
                 class="tl-input-search"
               >
-                <i class="el-icon-search" slot="prefix"></i>
+                <i
+                  class="el-icon-search"
+                  slot="prefix"
+                  @click="okrReviewList"
+                ></i>
               </el-input>
             </el-form-item>
           </el-form>
