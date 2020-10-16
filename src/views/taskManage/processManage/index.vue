@@ -107,9 +107,11 @@
               <template slot-scope="scope">
                 <el-button
                   :disabled="
-                    !roleCode.includes('ORG_ADMIN') &&
-                    !roleCode.includes('TEAM_ADMIN') &&
-                    scope.row.processType == 1
+                    (!roleCode.includes('ORG_ADMIN') &&
+                      !roleCode.includes('TEAM_ADMIN') &&
+                      scope.row.processType == 1) ||
+                    (scope.row.processType == 2 &&
+                      scope.row.createBy != userInfo.userId)
                   "
                   type="text"
                   @click="editProcess(scope.row)"
@@ -181,6 +183,7 @@ export default {
   },
   computed: {
     ...mapState('common', {
+      userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
     }),
   },
