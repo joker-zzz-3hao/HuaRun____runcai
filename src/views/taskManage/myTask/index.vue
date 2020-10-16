@@ -211,6 +211,7 @@
                 v-model="keyword"
                 class="tl-input"
                 clearable
+                maxlength="50"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
@@ -250,47 +251,61 @@
         :pageSize.sync="pageSize"
         @searchList="getTableList"
         v-show="showTask"
+        layout="prev, pager, next, jumper"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column min-width="100px" align="left" prop="taskTitle">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskTitle"
+              label="任务"
+            >
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left">
+            <el-table-column min-width="100px" align="left" label="创建人">
               <template slot-scope="scope">
                 <div>
-                  <i class="el-icon-user"></i>
-                  <span>{{ scope.row.createByUserName }}</span>
-                </div>
-                <div>
-                  <i class="el-icon-date"></i>
-                  <span>{{ scope.row.createTime }}</span>
+                  <p>
+                    <i class="el-icon-user"></i>
+                    <span>{{ scope.row.userName }}</span>
+                  </p>
+                  <p>
+                    <i class="el-icon-date"></i>
+                    <span>{{ scope.row.createTime }}</span>
+                  </p>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="taskStatus">
+            <el-table-column align="left" prop="taskStatus" label="任务状态">
               <template slot-scope="scope">
-                <i
-                  :class="
-                    ({ 'is-draft': scope.row.taskStatus == '0' },
-                    { 'not-confirm': scope.row.taskStatus == '10' },
-                    { 'is-confirm': scope.row.taskStatus == '20' })
-                  "
-                ></i>
-
-                <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                <div v-if="scope.row.processName && scope.row.stepName">
+                  <span>{{ scope.row.processName }}</span>
+                  <span>-</span>
+                  <span>{{ scope.row.stepName }}</span>
+                </div>
+                <div v-else>
+                  <i
+                    :class="
+                      ({ 'is-draft': scope.row.taskStatus == '0' },
+                      { 'not-confirm': scope.row.taskStatus == '10' },
+                      { 'is-confirm': scope.row.taskStatus == '20' })
+                    "
+                  ></i>
+                  <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="userName">
+            <el-table-column align="left" prop="userName" label="当前执行人">
               <template slot-scope="scope">
                 <div>
                   <span>{{ scope.row.userName || "无执行人" }}</span>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="200">
+            <el-table-column width="250" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   :disabled="
@@ -311,10 +326,6 @@
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
-              </template>
-            </el-table-column>
-            <el-table-column width="80px">
-              <template slot-scope="scope">
                 <el-dropdown trigger="click">
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
@@ -331,8 +342,8 @@
                       >任务归档</el-dropdown-item
                     >
                   </el-dropdown-menu>
-                </el-dropdown></template
-              >
+                </el-dropdown>
+              </template>
             </el-table-column>
           </el-table>
         </div>

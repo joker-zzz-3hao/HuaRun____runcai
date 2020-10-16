@@ -4,29 +4,55 @@
       <el-collapse v-model="activeNames">
         <el-collapse-item :name="index + 1">
           <template slot="title">
-            <div style="width: 100%">
-              <em>目标{{ index + 1 }}</em
-              ><em>{{ item.o.okrDetailObjectKr }}</em>
-              <div class="right">
-                <em>权重 {{ item.o.okrWeight ? item.o.okrWeight : 0 }}% </em>
-                <em
-                  >进度
-                  {{
-                    item.o.okrDetailProgress ? item.o.okrDetailProgress : 0
-                  }}%</em
+            <div class="title-row">
+              <div>
+                <em>目标{{ index + 1 }}</em
+                ><em
+                  >{{ item.o.okrDetailObjectKr
+                  }}{{ item.o.startTime + "-" + item.o.endTime }}</em
                 >
+              </div>
+              <div style="width: 200px">
+                <div style="width: 100px; float: left">
+                  <span>权重</span>
+
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(item.o.okrWeight) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </div>
+                <div style="width: 100px; float: left">
+                  <span>进度</span>
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(item.o.okrDetailProgress) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </div>
               </div>
             </div>
           </template>
           <div v-for="(list, i) in item.krs" :key="i">
             <div style="width: 100%">
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
-              <div class="right">
-                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
-                <em
+              <div class="right" style="width: 200px">
+                <em style="float: left; width: 100px"
+                  >权重
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrWeight) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
+                <em style="float: left; width: 100px"
                   >进度
-                  {{ item.okrDetailProgress ? item.okrDetailProgress : 0 }}%</em
-                >
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrDetailProgress) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
               </div>
             </div>
 
@@ -64,7 +90,6 @@
               type="textarea"
               placeholder="不超过1000字符"
               v-model="item.o.communication"
-              @input="inputCommunication($event, index, i)"
             ></el-input>
             <div>
               <em>请选择：</em>
@@ -81,8 +106,9 @@
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary" @click="save">保存</el-button>
       <el-button type="primary" @click="submit">确认沟通</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
+
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
@@ -139,6 +165,9 @@ export default {
           okrDetailId: item.okrDetailId,
           communication: item.communication,
           communicationLabel: item.communicationLabel,
+          advantage: item.advantage,
+          disadvantage: item.disadvantage,
+          measure: item.measure || [],
         }));
       }
     },
@@ -162,11 +191,17 @@ export default {
         if (res.code == 200) {
           this.$message.success('保存成功');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },
     handleDeleteOne() {
+      this.checkDatakrs(false);
+      const CheckNull = this.list.every((item) => !item.communication && !item.communicationLabel);
+      if (CheckNull) {
+        this.$router.push('/replayList');
+        return false;
+      }
       this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
@@ -184,9 +219,9 @@ export default {
       };
       this.server.okrReviewCommunicationSave(params).then((res) => {
         if (res.code == 200) {
-          this.$route.push('/replayList');
+          this.$router.push('/replayList');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },
@@ -199,12 +234,17 @@ export default {
         },
         list: this.list,
       };
+      const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
+      if (CheckNull) {
+        this.$message.error('未复盘沟通完毕，请检查');
+        return false;
+      }
       this.server.okrReviewCommunicationSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
-          this.$route.push('/replayList');
+          this.$router.push('/replayList');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },
@@ -230,5 +270,24 @@ export default {
 }
 .right {
   float: right;
+}
+.rightweight {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+
+.title-row {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+  width: 50%;
+  flex-direction: row;
 }
 </style>

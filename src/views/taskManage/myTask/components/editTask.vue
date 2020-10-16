@@ -60,11 +60,11 @@
               </div>
             </dt>
             <dd>
-              <el-form-item label="设置执行人">
+              <el-form-item label="指派给">
                 <el-select
                   :disabled="canEdit"
                   v-model.trim="formData.taskUserId"
-                  placeholder="无执行人"
+                  placeholder="添加执行人"
                   filterable
                   remote
                   :remote-method="getUserList"
@@ -90,7 +90,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="设置时间" prop="timeVal">
+              <el-form-item label="任务时间" prop="timeVal">
                 <el-date-picker
                   :disabled="canEdit"
                   v-model.trim="formData.timeVal"
@@ -132,6 +132,46 @@
                     :key="item.processId"
                     :label="item.processName"
                     :value="item.processId"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属项目"
+                prop="projectVal"
+              >
+                <el-select
+                  v-model.trim="formData.projectId"
+                  placeholder="请选择关联项目"
+                  @change="projectChange(scope.row)"
+                  class="tl-select"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectNameCn"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属OKR"
+                prop="okrDetailId"
+              >
+                <el-select
+                  :disabled="canEdit"
+                  v-model.trim="formData.okrDetailId"
+                  placeholder="请选择归属OKR"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in okrList"
+                    :key="item.okrDetailId"
+                    :label="item.okrDetailObjectKr"
+                    :value="item.okrDetailId"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -183,45 +223,8 @@
                   resize="none"
                 ></el-input>
               </el-form-item>
-              <el-form-item
-                v-show="formData.taskProgress == 100"
-                label="归属项目"
-                prop="projectVal"
-              >
-                <el-select
-                  v-model.trim="formData.projectId"
-                  placeholder="请选择关联项目"
-                  @change="projectChange(scope.row)"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in projectList"
-                    :key="item.projectId"
-                    :label="item.projectNameCn"
-                    :value="item.projectId"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                v-show="formData.taskProgress == 100"
-                label="归属OKR"
-                prop="okrDetailId"
-              >
-                <el-select
-                  :disabled="canEdit"
-                  v-model.trim="formData.okrDetailId"
-                  placeholder="请选择归属OKR"
-                >
-                  <el-option
-                    v-for="item in okrList"
-                    :key="item.okrDetailId"
-                    :label="item.okrDetailObjectKr"
-                    :value="item.okrDetailId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="添加描述" prop="taskDesc">
+
+              <el-form-item label="任务描述" prop="taskDesc">
                 <el-input
                   placeholder="请输入任务描述"
                   :disabled="canEdit"
@@ -239,10 +242,15 @@
                     v-for="(file, index) in formData.attachmentList"
                     :key="file.resourceId"
                   >
+                    <i class="el-icon-document"></i>
                     <em>{{ file.resourceName }}</em>
                     <span @click="downFile(file)">下载</span>
-                    <span @click="openFile(file)">预览</span>
-                    <span @click="deleteFile(index)">删除</span>
+                    <span
+                      v-if="images_map[file.resourceType]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="deleteFile(index, file)">删除</span>
                   </li>
                 </ul>
                 <file-upload
@@ -437,6 +445,13 @@ export default {
       }],
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
+      images_map: {
+        jpg: true,
+        jpeg: true,
+        png: true,
+        bmp: true,
+        gif: true,
+      },
       // 富文本编辑器
       editorOption: {
         modules: {
@@ -634,8 +649,6 @@ export default {
       };
       if (images[fileObj.resourceType]) {
         this.$refs.imgDialog.show(fileObj.resourceUrl);
-      } else {
-        window.open(fileObj.resourceUrl);
       }
     },
     // 下载
@@ -643,12 +656,12 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/download?resourceId=${fileObj.resourceId}&sourceType=TASK_FILE`;
-      console.log(url);
-      // window.open(url);
-      this.server.downFile({ resourceId: fileObj.resourceId }).then();
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.formData.taskId}`;
+      window.open(url);
     },
-    deleteFile(index) {
+    // eslint-disable-next-line no-unused-vars
+    deleteFile(index, fileObj) {
+      // this.server.removeFile({ resourceId: fileObj.resourceId, taskId: this.formData.taskId }).then();
       if (this.formData.attachmentList.length > 0) {
         this.formData.attachmentList.splice(index, 1);
       }

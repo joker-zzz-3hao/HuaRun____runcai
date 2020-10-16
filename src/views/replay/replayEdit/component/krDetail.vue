@@ -114,8 +114,9 @@
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary" @click="save">保存</el-button>
       <el-button type="primary" @click="submit">提交复盘</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
+
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
@@ -153,6 +154,10 @@ export default {
       this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(d, 1);
     },
     addDefic(value, index, i) {
+      if (!value) {
+        this.$message.error('请填写改进措施');
+        return false;
+      }
       if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
         this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
       }
@@ -209,6 +214,12 @@ export default {
       });
     },
     handleDeleteOne() {
+      this.checkDatakrs(false);
+      const CheckNull = this.list.every((item) => !item.advantage && !item.disadvantage && item.measure.length == 0);
+      if (CheckNull) {
+        this.$router.push('/replayList');
+        return false;
+      }
       this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
@@ -224,6 +235,7 @@ export default {
         },
         list: this.list,
       };
+
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
           this.$router.push('/replayList');
@@ -241,7 +253,7 @@ export default {
         },
         list: this.list,
       };
-      const CheckNull = this.list.some((item) => item.advantage == '' || item.disadvantage == '' || item.measure.length == 0);
+      const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
       if (CheckNull) {
         this.$message.error('未复盘完毕，请检查');
         return false;
@@ -251,7 +263,7 @@ export default {
           this.$message.success('提交成功');
           this.$router.push('/replayList');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },

@@ -1,8 +1,21 @@
 <template>
   <div>
-    <div>复盘对象：{{ okrMain.okrMainVo.periodName }}</div>
+    <div>
+      复盘对象：{{ okrMain.okrMainVo.periodName }}({{
+        dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
+        "~" +
+        dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
+      }})
+    </div>
     <div class="replay-user">
-      <div class="list">姓名：{{ okrMain.okrMainVo.userName }}</div>
+      <div class="list">
+        <img
+          style="width: 50px; height: 50px; border-radius: 50%"
+          :src="okrMain.okrMainVo.headUrl"
+          alt=""
+          srcset=""
+        />{{ okrMain.okrMainVo.userName }}
+      </div>
       <div class="list">
         <dl class="okr-progress">
           <dt>
@@ -89,6 +102,7 @@ export default {
   },
 
   methods: {
+
     getOkrReviewDetail() {
       this.server.getOkrReviewDetail({
         okrMainId: this.$route.query.okrId,
