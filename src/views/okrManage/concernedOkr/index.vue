@@ -19,7 +19,7 @@
           <dd
             v-for="item in focusList"
             :key="item.id"
-            :class="item.userId == selectUserId ? 'red' : 'green'"
+            :class="{ 'is-selected': item.userId == selectUserId }"
           >
             <div class="user-info" @click="selectUser(item)">
               <div v-if="item.headUrl">
@@ -282,6 +282,8 @@ export default {
             this.totalData = res.data;
             this.selectUserId = this.focusList[0].userId;
             this.queryOKR(this.focusList[0]);
+          } else {
+            this.tableList = [];
           }
         }
       });
@@ -346,6 +348,7 @@ export default {
       this.exist = false;
     },
     selectUser(data) {
+      this.selectUserId = data.userId;
       this.queryOKR(data);
     },
   },

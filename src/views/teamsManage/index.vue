@@ -153,7 +153,7 @@
       ref="setManager"
       :server="server"
       @closed="closedSetManager"
-      :teamMembers="teamMembers"
+      :teamMembers="teamManage"
       :baseInfo="baseInfo"
       @setSuccess="setSuccess"
       :drawerTitle="drawerTitle"
@@ -236,6 +236,7 @@ export default {
       totalMemberList: [],
       fictitiousList: [],
       teamMembers: [],
+      teamManage: [],
       teamOrgId: '',
       overview: '',
       exist: false,
@@ -284,6 +285,7 @@ export default {
     init() {
       const self = this;
       self.teamTreeData = [];
+      this.getTeamMembers();
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
@@ -462,6 +464,13 @@ export default {
             this.init();
           }
         });
+      });
+    },
+    getTeamMembers() {
+      this.server.fuzzyQueryUser().then((res) => {
+        if (res.code == 200) {
+          this.teamManage = res.data;
+        }
       });
     },
     queryTeamMember(data) {
