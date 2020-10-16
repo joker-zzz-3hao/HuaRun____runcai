@@ -155,17 +155,36 @@
                   STATUS_MAP[scope.row.status]
                 }}</template>
               </el-table-column>
+              <el-table-column width="80" label="操作">
+                <template slot-scope="scope">
+                  <el-button @click="okrInfo(scope.row)" type="text"
+                    >详情</el-button
+                  >
+                </template>
+              </el-table-column>
             </el-table>
           </div>
         </crcloud-table>
       </div>
     </div>
+    <tl-okr-detail
+      v-if="detailExist"
+      :exist.sync="detailExist"
+      ref="okrdetail"
+      :server="server"
+      :okrId="okrId"
+      :CONST="CONST"
+      :showSupport="true"
+      :drawerTitle="drawerTitle"
+    ></tl-okr-detail>
   </div>
 </template>
 
 <script>
 
+import okrDetail from '@/components/okrDetail';
 import Server from './server';
+import CONST from './const';
 
 const server = new Server();
 
@@ -174,6 +193,10 @@ export default {
   data() {
     return {
       server,
+      CONST,
+      detailExist: false,
+      okrId: '',
+      drawerTitle: '',
       tableData: [],
       loading: false,
       treeData: [],
@@ -216,7 +239,7 @@ export default {
     };
   },
   components: {
-
+    'tl-okr-detail': okrDetail,
   },
   mounted() {
     const self = this;
@@ -295,6 +318,16 @@ export default {
     },
     goback() {
       this.$router.go('-1');
+    },
+
+    okrInfo(okr) {
+      debugger;
+      this.okrId = okr.okrId;
+      this.drawerTitle = this.okrCycle.periodName;
+      this.detailExist = true;
+      this.$nextTick(() => {
+        this.$refs.okrdetail.showOkrDialog();
+      });
     },
 
   },
