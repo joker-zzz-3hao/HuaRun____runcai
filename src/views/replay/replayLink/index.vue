@@ -2,7 +2,9 @@
   <div>
     <div>
       复盘对象：{{ okrMain.okrMainVo.periodName }}({{
-        okrMain.okrMainVo.startTime + "-" + okrMain.okrMainVo.endTime
+        dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
+        "~" +
+        dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
       }})
     </div>
     <div class="replay-user">
