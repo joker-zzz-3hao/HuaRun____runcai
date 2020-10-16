@@ -11,9 +11,8 @@
         <dd>
           <span>所属部门</span>
           <em v-if="baseInfo.orgParentName">{{
-            `${baseInfo.orgParentName}-`
+            `${baseInfo.orgParentName} - ${baseInfo.orgName}`
           }}</em>
-          <em>{{ baseInfo.orgName }}</em>
         </dd>
         <dd>
           <span>团队负责人</span>
@@ -31,6 +30,7 @@
           <el-button plain @click="setManager" class="tl-btn btn-lineheight"
             >编辑团队综合管理员</el-button
           >
+          <span>提示：团队综合管理员可以协助团队负责人完成OKR审批等工作</span>
         </dd>
         <dd>
           <span>
@@ -43,8 +43,7 @@
             class="tl-switch"
           ></el-switch>
           <p>
-            <span>开放：整个公司的人,能够互相查看彼此的周报;</span>
-            <span>关闭：仅部门队友,能够互相查看彼此的周报</span>
+            <span>提示：周报开放后团队外人员可以查看你团队成员的周报</span>
           </p>
         </dd>
         <dd>
@@ -76,12 +75,12 @@
             >
             </el-option>
           </el-select>
+          <span>提示：设置后团队所有成员登录后会看到这个页面</span>
         </dd>
       </dl>
       <dl class="dl-card-panel">
         <dt class="card-title">
           <em>团队成员</em>
-          <span>提示：点击头像可进行设置虚线汇报部门</span>
         </dt>
         <dd>
           <span>实体成员</span>
@@ -120,27 +119,27 @@
                   <dd>{{ fItem.userName }}</dd>
                 </dl>
               </template>
-              <dl @click="addDotted()">
+              <dl @click="addDotted()" class="add-users">
                 <dt class="user-info">
                   <div class="user-name">
                     <i class="el-icon-plus"></i>
-                    <i class="el-icon-user"></i>
                   </div>
                 </dt>
+                <dd>虚线汇报人</dd>
               </dl>
             </div>
             <span v-if="fictitiousList.length > 0"
-              >提示：当前成员为虚线汇报成员，由成员所在部门负责人进行设置</span
-            >
-            <span v-if="fictitiousList.length == 0"
-              >当前无虚线汇报成员，如需设置虚线汇报成员请找成员所在部门负责人进行设置</span
+              >提示：添加虚线汇报成员后，该成员可视为您团队的正式一员参与团队事务</span
             >
           </div>
         </dd>
       </dl>
       <dl class="dl-card-panel">
         <dt class="card-title">
-          <em>组织架构</em>
+          <em>我的团队阵型</em>
+          <span
+            >提示：个性化你的团队阵型，构建自己的组织能力，便于其他人了解你的团队</span
+          >
         </dt>
         <dd>
           <tl-svgtree
@@ -163,9 +162,9 @@
     </div>
     <tl-setManager
       v-if="setManagerExist"
+      :exist.sync="setManagerExist"
       ref="setManager"
       :server="server"
-      @closed="closedSetManager"
       :teamMembers="teamManage"
       :baseInfo="baseInfo"
       @setSuccess="setSuccess"
@@ -386,9 +385,6 @@ export default {
         });
       });
     },
-    closedSetManager() {
-      this.setManagerExist = false;
-    },
     closedSetMembers() {
       this.moreMembersExist = false;
     },
@@ -401,7 +397,6 @@ export default {
       this.init();
     },
     setSuccess() {
-      this.setManagerExist = false;
       this.init();
     },
     closedSetFictitious() {

@@ -6,49 +6,61 @@
     :append-to-body="true"
     custom-class="custom-drawer set-manage"
     class="tl-drawer"
+    :before-close="close"
     @closed="closed"
   >
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
     </div>
-    <div>
+    <dl>
+      <dt>部门名称</dt>
+      <dd>{{ baseInfo.orgName }}</dd>
+    </dl>
+    <dl>
+      <dt>角色名称</dt>
+      <dd>团队综合管理员</dd>
+    </dl>
+    <dl>
+      <dt>指定团队负责人</dt>
+      <dd>
+        <el-select
+          v-model="formData.manageMember"
+          clearable
+          filterable
+          @clear="clearManage"
+        >
+          <el-option
+            v-for="(item, index) in teamMembers"
+            :key="index + item.userId"
+            :label="item.userName"
+            :value="item.userId"
+          >
+            <dt class="user-info">
+              <div class="user-name">
+                <img v-if="tItem.headerUrl" :src="item.headerUrl" alt />
+                <em>{{ item.userName }}</em>
+              </div>
+            </dt>
+            <span>{{ item.userName }}</span>
+            <span v-if="item.userMobile">{{ `(${item.userMobile})` }}</span>
+            <el-checkbox v-model="item.checkStatus"></el-checkbox>
+          </el-option>
+        </el-select>
+      </dd>
+    </dl>
+    <!-- <div>
       <div>
-        <div>
-          <span>部门名称</span>
-          <span>{{ baseInfo.orgName }}</span>
-        </div>
+
         <div>
           <span>角色名称</span>
-          <span>团队综合管理员</span>
+          <span></span>
         </div>
         <div>
           <div>
-            <div>指定团队负责人</div>
+            <div></div>
           </div>
           <div>
-            <el-select
-              v-model="formData.manageMember"
-              clearable
-              filterable
-              @clear="clearManage"
-            >
-              <el-option
-                v-for="(item, index) in teamMembers"
-                :key="index + item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <dt class="user-info">
-                  <div class="user-name">
-                    <!-- <img v-if="tItem.headerUrl" :src="item.headerUrl" alt /> -->
-                    <!-- <em>{{ item.userName }}</em> -->
-                  </div>
-                </dt>
-                <span>{{ item.userName }}</span>
-                <span v-if="item.userMobile">{{ `(${item.userMobile})` }}</span>
-                <el-checkbox v-model="item.checkStatus"></el-checkbox>
-              </el-option>
-            </el-select>
+
           </div>
         </div>
         <div v-if="showSelectMember">
@@ -63,7 +75,7 @@
       <div>
         <el-button @click="submitMember">确定</el-button>
       </div>
-    </div>
+    </div> -->
   </el-drawer>
 </template>
 
@@ -113,8 +125,10 @@ export default {
       self.formData.manageMember = data.teamUserId;
     },
     closed() {
+      this.$emit('update:exist', false);
+    },
+    close() {
       this.showSetManager = false;
-      this.$emit('closed');
     },
     clearManage() {
       this.teamMembers.forEach((item) => {
@@ -130,7 +144,7 @@ export default {
         userId: this.baseInfo.teamUserId || null,
       }).then((res) => {
         if (res.code == '200') {
-          this.showSetManager = false;
+          this.close();
           this.$emit('setSuccess');
         }
       });

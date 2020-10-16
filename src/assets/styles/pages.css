@@ -3090,6 +3090,10 @@
   background: #fff;
 }
 
+.teams-manage .cont-area .dl-card-panel:last-child {
+  margin: 0;
+}
+
 .teams-manage .card-title {
   margin: 0 0 10px 0;
   justify-content: flex-start;
@@ -3124,17 +3128,21 @@
 
 .teams-manage .card-title ~ dd > span:nth-of-type(2),
 .teams-manage .dl-card-panel .img-list + span {
-  color: #879099;
+  color: #bdc5cd;
   font-size: 12px;
 }
 
 .teams-manage .card-title ~ dd > span span {
   margin: 4px 0 0 0;
   font-size: 12px;
-  color: #879099;
+  color: #bdc5cd;
 }
 
-.teams-manage .card-title ~ dd > em {
+.teams-manage .dl-card-panel dt span {
+  color: #bdc5cd;
+}
+
+.teams-manage .cont-area .dl-card-panel:not(:first-child) .card-title ~ dd > em {
   margin: 0 30px 0 0;
 }
 
@@ -3181,6 +3189,11 @@
   color: #7b8a95
 }
 
+.teams-manage .dl-card-panel .img-list .add-users .user-name {
+  width: 36px;
+  height: 36px;
+}
+
 .teams-manage .dl-card-panel .user-info > i {
   position: absolute;
   right: -20px;
@@ -3199,8 +3212,64 @@
   background: #f7fafc;
 }
 
+.teams-manage .dl-card-panel .tl-btn,
+.teams-manage .dl-card-panel .tl-select {
+  margin: 0 20px 0 0;
+}
+
 .teams-manage .maps-card {
   height: 160px;
+}
+
+.teams-manage .maps-card dt {
+  margin: 0;
+  min-height: 36px;
+}
+
+.teams-manage .maps-card .user-info {
+  margin: 0 10px 0 0;
+}
+
+.teams-manage .maps-card .user-info + em,
+.teams-manage .maps-card .user-name-txt em {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.teams-manage .maps-card .user-name-txt {
+  margin: 20px 0 0 0;
+  justify-content: flex-start;
+}
+
+.teams-manage .maps-card .user-name-txt span {
+  margin: 0 20px 0 0;
+  padding: 2px 5px;
+  background: #f0effe;
+  border-radius: 2px;
+  color: #685df1;
+}
+
+.teams-manage .maps-card .user-name-txt em {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.teams-manage .maps-card .user-name-txt + dd {
+  justify-content: center;
+}
+
+.teams-manage .maps-card .is-operational {
+  margin: 20px 0 0 0;
+}
+
+.teams-manage .maps-card .is-operational .icon-bg {
+  margin: 0 10px;
+  cursor: pointer;
 }
 
 .set-manage .el-drawer__body {
@@ -3211,6 +3280,37 @@
 .teams-manage .tl-select .el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
+}
+
+.teams-manage .draw-area {
+  padding-bottom: 90px;
+}
+
+.teams-manage .draw-area > div:nth-child(2) .vnode:last-child .maps-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teams-manage .maps-card .icon-txt-group {
+  flex-direction: column;
+  align-items: center;
+}
+
+.teams-manage .maps-card .icon-bg-big {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border-radius: 50%;
+  border: 1px solid #685df1;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.teams-manage .maps-card .icon-txt-group span {
+  margin: 16px 0 0 0;
 }
 
 /* =========================================================租户管理================================================================== */
