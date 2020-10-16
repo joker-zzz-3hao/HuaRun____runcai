@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
-      <el-collapse accordion v-model="activeNames">
+      <el-collapse v-model="activeNames">
         <el-collapse-item :name="index + 1">
           <template slot="title">
             <div style="width: 100%">

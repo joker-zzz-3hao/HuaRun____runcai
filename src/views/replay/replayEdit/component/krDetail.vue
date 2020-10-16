@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
-      <el-collapse accordion v-model="activeNames" @change="handleChange">
+      <el-collapse v-model="activeNames">
         <el-collapse-item :name="index + 1">
           <template slot="title">
             <div class="title-row">
@@ -57,7 +57,7 @@
               考核指标
               {{ list.checkQuota }}
             </div>
-            <el-form ref="form" :model="form">
+            <el-form ref="form">
               <div>衡量办法 {{ list.judgeMethod }}</div>
               <div>
                 <div>价值与收获</div>
@@ -241,6 +241,11 @@ export default {
         },
         list: this.list,
       };
+      const CheckNull = this.list.some((item) => item.advantage == '' || item.disadvantage == '' || item.measure.length == 0);
+      if (CheckNull) {
+        this.$message.error('未复盘完毕，请检查');
+        return false;
+      }
       this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
