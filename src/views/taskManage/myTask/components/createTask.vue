@@ -32,7 +32,7 @@
             ></el-input>
           </el-form-item>
           <div class="item-flex">
-            <el-form-item label="设置执行人" prop="taskUserId">
+            <el-form-item label="指派给" prop="taskUserId">
               <el-select
                 v-model.trim="formData.taskUserId"
                 placeholder="添加执行人"
@@ -81,7 +81,7 @@
               </el-select>
             </el-form-item>
           </div>
-          <el-form-item label="设置时间" prop="timeVal">
+          <el-form-item label="任务时间" prop="timeVal">
             <el-date-picker
               v-model.trim="formData.timeVal"
               type="daterange"
@@ -136,7 +136,7 @@
               </el-select>
             </el-form-item>
           </div> -->
-          <el-form-item label="添加描述" prop="taskDesc">
+          <el-form-item label="任务描述" prop="taskDesc">
             <el-input
               placeholder="请输入任务描述"
               type="textarea"

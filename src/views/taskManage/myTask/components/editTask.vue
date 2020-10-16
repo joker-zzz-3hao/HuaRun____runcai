@@ -60,11 +60,11 @@
               </div>
             </dt>
             <dd>
-              <el-form-item label="设置执行人">
+              <el-form-item label="指派给">
                 <el-select
                   :disabled="canEdit"
                   v-model.trim="formData.taskUserId"
-                  placeholder="无执行人"
+                  placeholder="添加执行人"
                   filterable
                   remote
                   :remote-method="getUserList"
@@ -90,7 +90,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="设置时间" prop="timeVal">
+              <el-form-item label="任务时间" prop="timeVal">
                 <el-date-picker
                   :disabled="canEdit"
                   v-model.trim="formData.timeVal"
@@ -132,6 +132,46 @@
                     :key="item.processId"
                     :label="item.processName"
                     :value="item.processId"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属项目"
+                prop="projectVal"
+              >
+                <el-select
+                  v-model.trim="formData.projectId"
+                  placeholder="请选择关联项目"
+                  @change="projectChange(scope.row)"
+                  class="tl-select"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in projectList"
+                    :key="item.projectId"
+                    :label="item.projectNameCn"
+                    :value="item.projectId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="formData.taskProgress == 100"
+                label="归属OKR"
+                prop="okrDetailId"
+              >
+                <el-select
+                  :disabled="canEdit"
+                  v-model.trim="formData.okrDetailId"
+                  placeholder="请选择归属OKR"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in okrList"
+                    :key="item.okrDetailId"
+                    :label="item.okrDetailObjectKr"
+                    :value="item.okrDetailId"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -183,45 +223,8 @@
                   resize="none"
                 ></el-input>
               </el-form-item>
-              <el-form-item
-                v-show="formData.taskProgress == 100"
-                label="归属项目"
-                prop="projectVal"
-              >
-                <el-select
-                  v-model.trim="formData.projectId"
-                  placeholder="请选择关联项目"
-                  @change="projectChange(scope.row)"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in projectList"
-                    :key="item.projectId"
-                    :label="item.projectNameCn"
-                    :value="item.projectId"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                v-show="formData.taskProgress == 100"
-                label="归属OKR"
-                prop="okrDetailId"
-              >
-                <el-select
-                  :disabled="canEdit"
-                  v-model.trim="formData.okrDetailId"
-                  placeholder="请选择归属OKR"
-                >
-                  <el-option
-                    v-for="item in okrList"
-                    :key="item.okrDetailId"
-                    :label="item.okrDetailObjectKr"
-                    :value="item.okrDetailId"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="添加描述" prop="taskDesc">
+
+              <el-form-item label="任务描述" prop="taskDesc">
                 <el-input
                   placeholder="请输入任务描述"
                   :disabled="canEdit"
