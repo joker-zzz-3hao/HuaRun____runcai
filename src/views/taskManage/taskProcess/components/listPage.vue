@@ -164,6 +164,9 @@
 
                     <el-submenu index="1-2">
                       <template slot="title">移动分类</template>
+                      <el-menu-item v-if="processClassifyList.length == 0"
+                        >暂无分类</el-menu-item
+                      >
                       <el-menu-item
                         @click.native="changeClassify(scope.row, calssify)"
                         v-for="calssify in processClassifyList"
@@ -193,8 +196,6 @@
       :server="server"
       @success="init()"
     ></tl-edittask>
-    <!-- <tl-move-task ref="moveTask" v-if="showMove"></tl-move-task>
-    <tl-move-classify ref="moveTask" v-if="showMove"></tl-move-classify> -->
   </div>
 </template>
 
@@ -243,7 +244,6 @@ export default {
       server,
       rootData: [],
       allStepTaskList: [],
-      showMove: false,
       loading: false,
       tableData: [],
       currentPage: 1,
@@ -254,6 +254,7 @@ export default {
       task: {},
       existEditTask: false,
       taskUserId: '',
+      stepId: '',
     };
   },
   created() {
@@ -270,9 +271,14 @@ export default {
     init(typeId) {
       const self = this;
       self.rootData = [];
+      // 切换分类时
+      if (typeId) {
+        self.tabName = 'all';
+        self.stepId = '';
+      }
       const params = {
-        currentPage: 1,
-        pageSize: 10,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
         processId: self.processObj.processId,
         typeId: typeId || this.searchParams.typeId,
         stepId: this.stepId,
@@ -298,28 +304,18 @@ export default {
         this.$refs.editTask.show(row.taskId, false);
       });
     },
-    moveStep(task) {
-      console.log(task);
-      this.showMove = true;
-      this.$nextTick(() => {
-        this.$refs.moveTask.show();
-      });
+    searchList() {
+      this.init();
     },
-    searchList() {},
+    // 切换步骤
     selectTab(tab) {
       this.stepId = tab == 'all' ? '' : tab;
       this.init();
     },
-    moveClassify(task) {
-      console.log(task);
-    },
-    taskFiling(task) {
-      // 任务进度是否为100%，不是的话，不能归档
-      console.log(task);
-    },
     handleSelect() {
 
     },
+    // 移动步骤
     changeStep(task, step) {
       this.server.move({
         taskId: task.taskId,
@@ -331,6 +327,7 @@ export default {
         }
       });
     },
+    // 切换分类
     changeClassify(task, classify) {
       this.server.changeClassify({
         taskId: task.taskId,
@@ -412,7 +409,16 @@ export default {
     },
 
   },
-  watch: {},
+  watch: {
+    processObj: {
+      handler() {
+        this.tabName = 'all';
+        this.stepId = '';
+      },
+      deep: true,
+    },
+
+  },
   updated() {},
   beforeDestroy() {},
 };
