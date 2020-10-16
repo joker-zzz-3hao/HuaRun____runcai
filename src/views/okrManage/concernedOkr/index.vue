@@ -20,15 +20,17 @@
             v-for="item in focusList"
             :key="item.id"
             :class="{ 'is-selected': item.userId == selectUserId }"
+            @click="selectUser(item)"
           >
-            <div class="user-info" @click="selectUser(item)">
+            <div class="user-info">
               <img v-if="item.headUrl" :src="item.headUrl" alt />
               <div v-else-if="item.userName" class="user-name">
                 <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
               </div>
             </div>
             <div class="user-name-txt">
-              <em>{{ item.userName }}({{ item.userName }})</em>
+              <em>{{ item.userName }}</em>
+              <span>{{ item.orgName }}</span>
             </div>
             <div v-if="hasPower('okr-focus-add')">
               <el-dropdown>

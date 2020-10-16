@@ -1537,9 +1537,16 @@
 }
 
 .concerned-okr .followed-users dd {
-  padding: 8px;
   justify-content: space-between;
   cursor: pointer;
+}
+
+.concerned-okr .followed-users dd:not(:first-of-type) {
+  padding: 8px;
+}
+
+.concerned-okr .followed-users dd:first-of-type {
+  margin: 0 0 16px 0;
 }
 
 .concerned-okr .followed-users dd:not(:first-of-type).is-selected {
@@ -1561,9 +1568,34 @@
   color: #879099;
 }
 
-/* .concerned-okr .followed-users dd:first-of-type ~ dd {
-  margin: 0 0 20px 0;
-} */
+.concerned-okr .followed-users .user-name-txt {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.concerned-okr .followed-users .user-name-txt em,
+.concerned-okr .followed-users .user-name-txt span {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.concerned-okr .followed-users .user-name-txt em {
+  max-width: 82px;
+}
+
+.concerned-okr .followed-users .user-name-txt span {
+  margin: 0 0 0 10px;
+  padding: 2px;
+  font-size: 12px;
+  background: #f0effe;
+  color: #685df1;
+}
 
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,
