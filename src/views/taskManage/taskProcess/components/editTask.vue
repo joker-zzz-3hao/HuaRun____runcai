@@ -273,7 +273,7 @@
                   v-if="!canEdit"
                   ref="fileUpload"
                   :fileList="formData.fileList"
-                  :limit="5"
+                  :limit="10"
                   @change="fileChange"
                 ></file-upload>
               </el-form-item>
