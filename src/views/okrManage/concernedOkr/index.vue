@@ -281,6 +281,8 @@ export default {
             this.totalData = res.data;
             this.selectUserId = this.focusList[0].userId;
             this.queryOKR(this.focusList[0]);
+          } else {
+            this.tableList = [];
           }
         }
       });
