@@ -346,6 +346,7 @@ export default {
       this.exist = false;
     },
     selectUser(data) {
+      this.selectUserId = data.userId;
       this.queryOKR(data);
     },
   },
