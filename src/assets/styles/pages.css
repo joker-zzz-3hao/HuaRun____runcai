@@ -3272,11 +3272,6 @@
   cursor: pointer;
 }
 
-.set-manage .el-drawer__body {
-  margin-top: 10px;
-  width: 600px;
-}
-
 .teams-manage .tl-select .el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
@@ -3311,6 +3306,54 @@
 
 .teams-manage .maps-card .icon-txt-group span {
   margin: 16px 0 0 0;
+}
+
+.set-manage .el-drawer__body {
+  margin-top: 10px;
+  width: 600px;
+}
+
+.set-manage .cont-box > dl {
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.set-manage .cont-box > dl dt {
+  margin: 0 30px 0 0;
+  min-width: 100px;
+}
+
+.set-manage .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
+.set-manage .tl-select .el-input.is-focus .el-input__inner {
+  color: #685df1;
+}
+
+.set-manage .el-select-dropdown__item {
+  height: 50px;
+}
+
+.set-manage .el-select-dropdown__item dl,
+.set-manage .el-select-dropdown__item dd {
+  display: flex;
+  align-items: center;
+}
+
+.set-manage .el-select-dropdown__item dl {
+  width: 100%;
+}
+
+.set-manage .el-select-dropdown__item dd {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.set-manage .el-select-dropdown__item dd span:last-of-type {
+  flex: 1;
 }
 
 /* =========================================================租户管理================================================================== */

@@ -12,70 +12,64 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
     </div>
-    <dl>
-      <dt>部门名称</dt>
-      <dd>{{ baseInfo.orgName }}</dd>
-    </dl>
-    <dl>
-      <dt>角色名称</dt>
-      <dd>团队综合管理员</dd>
-    </dl>
-    <dl>
-      <dt>指定团队负责人</dt>
-      <dd>
-        <el-select
-          v-model="formData.manageMember"
-          clearable
-          filterable
-          @clear="clearManage"
-        >
-          <el-option
-            v-for="(item, index) in teamMembers"
-            :key="index + item.userId"
-            :label="item.userName"
-            :value="item.userId"
-          >
-            <dt class="user-info">
-              <div class="user-name">
-                <img v-if="tItem.headerUrl" :src="item.headerUrl" alt />
-                <em>{{ item.userName }}</em>
-              </div>
-            </dt>
-            <span>{{ item.userName }}</span>
-            <span v-if="item.userMobile">{{ `(${item.userMobile})` }}</span>
-            <el-checkbox v-model="item.checkStatus"></el-checkbox>
-          </el-option>
-        </el-select>
-      </dd>
-    </dl>
-    <!-- <div>
-      <div>
-
-        <div>
-          <span>角色名称</span>
-          <span></span>
-        </div>
-        <div>
-          <div>
-            <div></div>
-          </div>
-          <div>
-
-          </div>
-        </div>
-        <div v-if="showSelectMember">
-          <tl-selectMember
-            :value="chargeMember"
-            :teamMembers="teamMembers"
-            @ok="getMember"
-            @cancel="cancel"
-          ></tl-selectMember>
-        </div>
+    <el-scrollbar>
+      <div class="cont-box">
+        <dl>
+          <dt>部门名称</dt>
+          <dd>{{ baseInfo.orgName }}</dd>
+        </dl>
+        <dl>
+          <dt>角色名称</dt>
+          <dd>团队综合管理员</dd>
+        </dl>
+        <dl>
+          <dt>指定团队负责人</dt>
+          <dd>
+            <el-select
+              v-model="formData.manageMember"
+              clearable
+              filterable
+              @clear="clearManage"
+              popper-class="tl-select-dropdown set-manage"
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in teamMembers"
+                :key="index + item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+                <dl>
+                  <dt class="user-info">
+                    <div class="user-name">
+                      <img v-if="item.headerUrl" :src="item.headerUrl" alt />
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
+                    </div>
+                  </dt>
+                  <dd>
+                    <span>{{ item.userName }}</span>
+                    <span v-if="item.userMobile">{{
+                      `(${item.userMobile})`
+                    }}</span>
+                    <el-checkbox
+                      v-model="item.checkStatus"
+                      class="tl-checkbox"
+                    ></el-checkbox>
+                  </dd>
+                </dl>
+              </el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
-      <div>
-        <el-button @click="submitMember">确定</el-button>
-      </div>
-    </div> -->
+    </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="submitMember" class="tl-btn amt-bg-slip"
+        >保存</el-button
+      >
+    </div>
   </el-drawer>
 </template>
 
