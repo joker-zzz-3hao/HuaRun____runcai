@@ -30,7 +30,7 @@
             <div>
               <p>{{ item.objectName }}</p>
               <p v-if="item.okrWeight">
-                <span>分权重</span>
+                <span>权重</span>
                 <em>{{ item.okrWeight }}%</em>
               </p>
               <p v-if="item.okrDetailType == 0">
