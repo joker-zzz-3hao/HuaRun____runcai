@@ -70,8 +70,8 @@
                       controls-position="right"
                       :min="0"
                       :max="100"
-                      :step="1"
-                      :precision="0"
+                      :step="0.1"
+                      step-strictly
                       class="tl-input-number"
                     ></el-input-number>
                     <span>%</span>
@@ -192,8 +192,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
-                  :step="1"
-                  :precision="0"
+                  :step="0.1"
+                  step-strictly
                   class="tl-input-number"
                 ></el-input-number>
                 <span>%</span>
@@ -655,6 +655,11 @@ export default {
           this.setokrSuccess(true);
           this.close();
         } else if (res.code == 30000) {
+          if (res.msg.indexOf('权重') != -1) {
+            this.$message.error(res.msg);
+            this.loading = false;
+            return;
+          }
           this.$xconfirm({
             content: '',
             title: '当前周期已提交，是否保存为草稿？',

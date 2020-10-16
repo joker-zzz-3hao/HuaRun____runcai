@@ -73,8 +73,8 @@
                     controls-position="right"
                     :min="0"
                     :max="100"
-                    :step="1"
-                    :precision="0"
+                    :step="0.1"
+                    step-strictly
                     class="tl-input-number"
                   ></el-input-number>
                   <span>%</span>
@@ -278,8 +278,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
-                  :step="1"
-                  :precision="0"
+                  :step="0.1"
+                  step-strictly
                   class="tl-input-number"
                 ></el-input-number>
                 <span>%</span>
@@ -458,8 +458,8 @@
                   controls-position="right"
                   :min="0"
                   :max="100"
-                  :step="1"
-                  :precision="0"
+                  :step="0.1"
+                  step-strictly
                   class="tl-input-number"
                 ></el-input-number>
                 <span>%</span>

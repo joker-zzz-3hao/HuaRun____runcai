@@ -35,6 +35,7 @@
             :orgOkrList="orgOkrList"
             :originalMyOkrList="originalMyOkrList"
             :originalOrgOkrList="originalOrgOkrList"
+            :orgOkrPeriodList="orgOkrPeriodList"
             :cultureList="cultureList"
             :projectList="projectList"
             :canEdit="canEdit"
@@ -51,6 +52,7 @@
             :orgOkrList="orgOkrList"
             :originalMyOkrList="originalMyOkrList"
             :originalOrgOkrList="originalOrgOkrList"
+            :orgOkrPeriodList="orgOkrPeriodList"
             :cultureList="cultureList"
             :projectList="projectList"
             :canEdit="canEdit"
@@ -91,6 +93,7 @@ export default {
       orgOkrList: [],
       originalMyOkrList: [],
       originalOrgOkrList: [],
+      orgOkrPeriodList: [],
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
@@ -127,26 +130,48 @@ export default {
         }
       });
     },
+    // queryTeamOkr() {
+    //   if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
+    //     this.departmentName = this.userInfo.orgParentName;
+    //     this.orgId = this.userInfo.orgParentId;
+    //   } else {
+    //     this.departmentName = this.userInfo.orgName || '部门';
+    //     this.orgId = this.userInfo.orgId;
+    //   }
+    //   const params = {
+    //     myOrOrg: 'org',
+    //     status: '1',
+    //     orgId: this.orgId,
+    //   };
+    //   this.server.getorgOkr(params).then((res) => {
+    //     if (res.code == 200) {
+    //       // 团队目标
+    //       this.orgOkrList = [];
+    //       this.originalOrgOkrList = res.data.okrDetails;
+    //       if (this.originalOrgOkrList) {
+    //         this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+    //       }
+    //     }
+    //   });
+    // },
     queryTeamOkr() {
-      if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
-        this.departmentName = this.userInfo.orgParentName;
-        this.orgId = this.userInfo.orgParentId;
-      } else {
-        this.departmentName = this.userInfo.orgName || '部门';
-        this.orgId = this.userInfo.orgId;
-      }
-      const params = {
-        myOrOrg: 'org',
-        status: '1',
-        orgId: this.orgId,
-      };
-      this.server.getorgOkr(params).then((res) => {
+      this.originalOrgOkrList = [];
+      this.orgOkrPeriodList = [];
+      this.server.getOrgOkr().then((res) => {
         if (res.code == 200) {
-          // 团队目标
-          this.orgOkrList = [];
-          this.originalOrgOkrList = res.data.okrDetails;
-          if (this.originalOrgOkrList) {
-            this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+          // 将所有团队目标、周期整合到一个数组
+          if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
+            res.data.parentUndertakeOkrInfoResults.forEach((element) => {
+              element.okrList.forEach((okr) => {
+                okr.periodId = element.okrPeriodEntity.periodId;
+              });
+              // element.periodId = element.okrPeriodEntity.periodId;
+              this.originalOrgOkrList = [...this.originalOrgOkrList, ...element.okrList];
+              this.orgOkrPeriodList.push(element.okrPeriodEntity);
+            });
+            if (this.originalOrgOkrList) {
+              this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+            }
           }
         }
       });
@@ -183,15 +208,17 @@ export default {
         tempResult = this.orgOkrList;
       }
       for (const okr of okrDetails) {
-        okr.indexText = '目标O';
-        this.$set(okr, 'okrType', 'O');
-        tempResult.push(okr);
+        okr.o.indexText = '目标O';
+        this.$set(okr.o, 'okrType', 'O');
+        this.$set(okr.o, 'periodId', okr.periodId);
+        tempResult.push(okr.o);
         if (okr.krList && okr.krList.length > 0) {
           let krIndex = 0;
           for (const kr of okr.krList) {
             krIndex += 1;
             kr.indexText = `KR${krIndex}`;
             this.$set(kr, 'okrType', 'KR');
+            this.$set(kr, 'periodId', okr.periodId);
             tempResult.push(kr);
           }
         }

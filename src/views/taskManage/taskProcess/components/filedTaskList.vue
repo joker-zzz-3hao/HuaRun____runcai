@@ -56,8 +56,18 @@
               min-width="100px"
               align="left"
               prop="taskTitle"
-            ></el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskTitle">
+              label="任务"
+            >
+              <template slot-scope="scope">
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
+              </template></el-table-column
+            >
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userName"
+              label="创建人"
+            >
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -71,7 +81,12 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" prop="taskProgress">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskProgress"
+              label="进度"
+            >
               <template slot-scope="scope">
                 <div>
                   <tl-process
@@ -80,7 +95,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left">
+            <el-table-column min-width="100px" align="left" label="执行人">
               <template slot-scope="scope">
                 <span>
                   <el-avatar :size="30" :src="scope.row.headerUrl">
@@ -102,6 +117,12 @@
         </div>
       </crcloud-table>
     </div>
+    <tl-edittask
+      ref="editTask"
+      v-if="existEditTask"
+      :existEditTask.sync="existEditTask"
+      :server="server"
+    ></tl-edittask>
   </div>
 </template>
 
@@ -109,6 +130,7 @@
 import { mapState } from 'vuex';
 import process from '@/components/process';
 import personMultiple from '@/components/personMultiple';
+import editTask from './editTask';
 import Server from '../server';
 
 const server = new Server();
@@ -117,6 +139,7 @@ export default {
   components: {
     'tl-personmultiple': personMultiple,
     'tl-process': process,
+    'tl-edittask': editTask,
   },
   props: {},
   data() {
@@ -135,6 +158,7 @@ export default {
       },
       userList: [],
       userMap: {},
+      existEditTask: false,
     };
   },
   created() {
@@ -194,6 +218,12 @@ export default {
             },
           );
         }
+      });
+    },
+    openEdit(row) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(row.taskId, true);
       });
     },
     goback() {

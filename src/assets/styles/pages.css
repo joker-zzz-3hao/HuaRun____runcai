@@ -3024,9 +3024,9 @@
   padding: 20px 0 0 0;
 }
 
-.my-task .tl-table thead {
+/* .my-task .tl-table thead {
   display: none;
-}
+} */
 
 .my-task .tl-condition-screening {
   margin: 10px 0 0 0;

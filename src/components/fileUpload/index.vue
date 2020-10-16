@@ -65,7 +65,7 @@ export default {
     },
     limit: {
       type: Number,
-      default: 5,
+      default: 10,
     },
     actionName: {
       type: String,
@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       server,
-      dataParams: { sourceType: 'TASK_FILE', ...this.params },
+      dataParams: { sourceType: 'TASK', ...this.params },
       fileNum: 0,
       fileUploadList: [],
       validateCode: '',

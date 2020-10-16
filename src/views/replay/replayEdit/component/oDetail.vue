@@ -4,9 +4,11 @@
       <el-collapse v-model="activeNames">
         <el-collapse-item :name="index + 1">
           <template slot="title">
-            <div style="width: 100%">
-              <em>目标{{ index + 1 }}</em
-              ><em>{{ item.o.okrDetailObjectKr }}</em>
+            <div class="title-row">
+              <div>
+                <em>目标{{ index + 1 }}</em
+                ><em>{{ item.o.okrDetailObjectKr }}</em>
+              </div>
               <div style="width: 200px">
                 <div style="width: 100px; float: left">
                   <span>权重</span>
@@ -31,12 +33,23 @@
           <div v-for="(list, i) in item.krs" :key="i + 'k'">
             <div style="width: 100%">
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
-              <div class="right">
-                <em>权重 {{ list.okrWeight ? list.okrWeight : 0 }}%</em>
-                <em
+              <div class="right" style="width: 200px">
+                <em style="float: left; width: 100px"
+                  >权重
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrWeight) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
+                <em style="float: left; width: 100px"
                   >进度
-                  {{ list.okrDetailProgress ? list.okrDetailProgress : 0 }}%</em
-                >
+                  <el-progress
+                    :width="50"
+                    :percentage="parseInt(list.okrDetailProgress) || 0"
+                    :show-text="true"
+                  ></el-progress>
+                </em>
               </div>
             </div>
 
@@ -101,8 +114,9 @@
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary" @click="save">保存</el-button>
       <el-button type="primary" @click="submit">提交复盘</el-button>
+      <el-button type="primary" @click="save">保存</el-button>
+
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
@@ -140,6 +154,10 @@ export default {
       this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
     },
     addDefic(value, index) {
+      if (!value) {
+        this.$message.error('请填写改进措施');
+        return false;
+      }
       if (!this.okrMain.okrReviewPojoList[index].o.measure) {
         this.okrMain.okrReviewPojoList[index].o.measure = [];
       }
@@ -165,7 +183,7 @@ export default {
           communication: item.communication,
           advantage: item.advantage,
           disadvantage: item.disadvantage,
-          measure: item.measure,
+          measure: item.measure || [],
           communicationLabel: item.communicationLabel,
         }));
       }
@@ -187,6 +205,12 @@ export default {
       });
     },
     handleDeleteOne() {
+      this.checkDatakrs(false);
+      const CheckNull = this.list.every((item) => !item.advantage && !item.disadvantage && item.measure.length == 0);
+      if (CheckNull) {
+        this.$router.push('/replayList');
+        return false;
+      }
       this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
         .then(() => {
           this.clearClose();
@@ -217,10 +241,18 @@ export default {
         },
         list: this.list,
       };
+      const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
+
+      if (CheckNull) {
+        this.$message.error('未复盘完毕，请检查');
+        return false;
+      }
       this.server.okrReviewSubmit(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.$router.push('/replayList');
+        } else {
+          this.$message.error(res.msg);
         }
       });
     },

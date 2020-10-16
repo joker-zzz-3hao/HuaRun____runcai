@@ -29,7 +29,11 @@
         align="left"
         prop="createTime"
         label="时长统计"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <div>{{ computedTime(scope.row.createTime) }}</div>
+        </template>
+      </el-table-column>
       <el-table-column align="left" prop="taskStatus" label="当前状态">
         <template slot-scope="scope">
           <span v-if="scope.row.processName"
@@ -66,7 +70,11 @@
         align="left"
         prop="createTime"
         label="时长统计"
-      ></el-table-column>
+      >
+        <template slot-scope="scope">
+          <div>{{ computedTime(scope.row.createTime) }}</div>
+        </template></el-table-column
+      >
       <el-table-column align="left" prop="taskStatus" label="当前状态">
         <template slot-scope="scope">
           <span v-if="scope.row.processName"
@@ -82,7 +90,7 @@
       </el-table-column>
     </el-table>
     <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
-      >当前任务汇总提交</el-button
+      >当前周报汇总提交</el-button
     >
   </div>
 </template>
@@ -166,6 +174,26 @@ export default {
           });
         }
       });
+    },
+    computedTime(row) {
+      if (row) {
+        const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(row));
+        const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(row));
+        let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(row));
+        let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(row));
+        let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(row));
+        if (dayNum >= 0 && hourNum < 0) {
+          hourNum = 1 * 24 + hourNum;
+          dayNum -= 1;
+        }
+        if (hourNum >= 0 && minuteNum < 0) {
+          minuteNum = 1 * 60 + minuteNum;
+          hourNum -= 1;
+        }
+        const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
+        return `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
+      }
+      return '当前已用时长 0天 0小时 0分';
     },
     submit() {
       this.go('myWeekly', { params: { weeklySumParams: this.tableData } });
