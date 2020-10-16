@@ -162,9 +162,9 @@
     </div>
     <tl-setManager
       v-if="setManagerExist"
+      :exist.sync="setManagerExist"
       ref="setManager"
       :server="server"
-      @closed="closedSetManager"
       :teamMembers="teamManage"
       :baseInfo="baseInfo"
       @setSuccess="setSuccess"
@@ -385,9 +385,6 @@ export default {
         });
       });
     },
-    closedSetManager() {
-      this.setManagerExist = false;
-    },
     closedSetMembers() {
       this.moreMembersExist = false;
     },
@@ -400,7 +397,6 @@ export default {
       this.init();
     },
     setSuccess() {
-      this.setManagerExist = false;
       this.init();
     },
     closedSetFictitious() {

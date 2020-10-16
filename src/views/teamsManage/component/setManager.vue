@@ -125,7 +125,7 @@ export default {
       self.formData.manageMember = data.teamUserId;
     },
     closed() {
-      this.$emit('closed');
+      this.$emit('update:exist', false);
     },
     close() {
       this.showSetManager = false;
