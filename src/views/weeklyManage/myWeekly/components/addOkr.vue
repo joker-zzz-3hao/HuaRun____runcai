@@ -17,12 +17,27 @@
         <dl class="dl-list">
           <dt class="list-title">
             <em>团队目标</em>
+            <el-select
+              v-model="orgPeriodId"
+              placeholder="请选择周期"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="periodChange"
+            >
+              <el-option
+                v-for="item in orgOkrPeriodList"
+                :key="item.periodId"
+                :label="item.periodName"
+                :value="item.periodId"
+              ></el-option>
+            </el-select>
           </dt>
           <dd class="tag-kind">
             <el-radio-group v-model="orgSelectData">
               <el-radio
                 class="tl-radio"
-                v-for="(teamTarget, index) in orgOkrList"
+                v-for="(teamTarget, index) in thisPageOrgOkrList"
                 :label="teamTarget.okrDetailId"
                 :key="teamTarget.okrDetailId"
                 @click.native="selectOrgOkr($event, index, teamTarget)"
@@ -37,7 +52,7 @@
               </el-radio>
             </el-radio-group>
           </dd>
-          <dd class="tag-kind" v-if="orgOkrList.length < 1">
+          <dd class="tag-kind" v-if="thisPageOrgOkrList.length < 1">
             暂无可承接的团队目标
           </dd>
         </dl>
@@ -147,6 +162,12 @@ export default {
         return [];
       },
     },
+    orgOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
     originalMyOkrList: {
       type: Array,
       default() {
@@ -187,6 +208,8 @@ export default {
       orgOkr: [],
       personalOkr: [],
       selectedCultureList: [],
+      orgPeriodId: '',
+      thisPageOrgOkrList: [],
     };
   },
   created() {
@@ -284,7 +307,7 @@ export default {
         this.orgSelectData = '';
       } else {
         this.orgSelectData = okr.okrDetailId;// 单选控制
-        this.orgOkrList.forEach((element) => {
+        this.thisPageOrgOkrList.forEach((element) => {
           if (element.okrDetailId == this.orgSelectData) {
             this.orgOkr = [element];
           }
@@ -350,8 +373,22 @@ export default {
       }
       this.$forceUpdate();
     },
+    periodChange(period) {
+
+    },
   },
   watch: {
+    orgPeriodId: {
+      handler(newValue) {
+        this.thisPageOrgOkrList = [];
+        debugger;
+        this.orgOkrList.forEach((okr) => {
+          if (newValue == okr.periodId) {
+            this.thisPageOrgOkrList.push(okr);
+          }
+        });
+      },
+    },
   },
   updated() {},
   beforeDestroy() {},
