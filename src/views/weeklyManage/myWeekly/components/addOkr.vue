@@ -59,12 +59,27 @@
         <dl class="dl-list">
           <dt class="list-title">
             <em>个人目标</em>
+            <el-select
+              v-model="myPeriodId"
+              placeholder="请选择周期"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="periodChange"
+            >
+              <el-option
+                v-for="item in myOkrPeriodList"
+                :key="item.periodId"
+                :label="item.periodName"
+                :value="item.periodId"
+              ></el-option>
+            </el-select>
           </dt>
           <dd class="tag-kind">
             <el-radio-group v-model="personalSelectData">
               <el-radio
                 class="tl-radio"
-                v-for="(personalTarget, index) in myOkrList"
+                v-for="(personalTarget, index) in thisPageMyOkrList"
                 :label="personalTarget.okrDetailId"
                 :key="personalTarget.okrDetailId"
                 @click.native="selectMyOkr($event, index, personalTarget)"
@@ -79,7 +94,7 @@
               </el-radio>
             </el-radio-group>
           </dd>
-          <dd class="tag-kind" v-if="myOkrList.length < 1">
+          <dd class="tag-kind" v-if="thisPageMyOkrList.length < 1">
             暂无可承接的个人目标
           </dd>
         </dl>
@@ -168,6 +183,12 @@ export default {
         return [];
       },
     },
+    myOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
     originalMyOkrList: {
       type: Array,
       default() {
@@ -228,7 +249,12 @@ export default {
   methods: {
     init() {
       this.visible = true;
-      this.orgPeriodId = this.orgOkrPeriodList[0].periodId;
+      if (this.orgOkrPeriodList.length > 0) {
+        this.orgPeriodId = this.orgOkrPeriodList[0].periodId;
+      }
+      if (this.myOkrPeriodList.length > 0) {
+        this.myPeriodId = this.myOkrPeriodList[0].periodId;
+      }
       this.initSelectedData();
     },
     confirm() {
@@ -343,7 +369,7 @@ export default {
       } else { // 选中
         this.selectMyIndex = index;
         this.personalSelectData = okr.okrDetailId;// 单选控制
-        this.myOkrList.forEach((element) => {
+        this.thisPageMyOkrList.forEach((element) => {
           if (element.okrDetailId == this.personalSelectData) {
             this.personalOkr = [element];
           }
@@ -398,6 +424,16 @@ export default {
         this.orgOkrList.forEach((okr) => {
           if (newValue == okr.periodId) {
             this.thisPageOrgOkrList.push(okr);
+          }
+        });
+      },
+    },
+    myPeriodId: {
+      handler(newValue) {
+        this.thisPageMyOkrList = [];
+        this.myOkrList.forEach((okr) => {
+          if (newValue == okr.periodId) {
+            this.thisPageMyOkrList.push(okr);
           }
         });
       },

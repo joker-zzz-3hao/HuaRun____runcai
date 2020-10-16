@@ -17,7 +17,7 @@ export default class Server extends ServerBase {
   }
 
   // 查询团队目标、个人目标
-  queryTeamOrPersonalTarget(param) {
+  queryPersonalOkr(param) {
     // return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
     return this._ajaxPost('gateway/talent-query/okr/query/weekly/userOkr', param);
   }

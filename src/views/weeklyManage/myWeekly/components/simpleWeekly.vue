@@ -399,6 +399,8 @@
       :orgOkrList="orgOkrList"
       :originalMyOkrList="originalMyOkrList"
       :originalOrgOkrList="originalOrgOkrList"
+      :orgOkrPeriodList="orgOkrPeriodList"
+      :myOkrPeriodList="myOkrPeriodList"
       :cultureList="cultureList"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
@@ -484,6 +486,18 @@ export default {
       },
     },
     projectList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    myOkrPeriodList: {
       type: Array,
       default() {
         return [];

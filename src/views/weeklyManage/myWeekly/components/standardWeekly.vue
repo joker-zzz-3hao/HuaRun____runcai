@@ -546,6 +546,7 @@
       :myOkrList="myOkrList"
       :orgOkrList="orgOkrList"
       :orgOkrPeriodList="orgOkrPeriodList"
+      :myOkrPeriodList="myOkrPeriodList"
       :originalMyOkrList="originalMyOkrList"
       :originalOrgOkrList="originalOrgOkrList"
       :cultureList="cultureList"
@@ -626,12 +627,7 @@ export default {
         return [];
       },
     },
-    orgOkrPeriodList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+
     cultureList: {
       type: Array,
       default() {
@@ -639,6 +635,18 @@ export default {
       },
     },
     projectList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    myOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrPeriodList: {
       type: Array,
       default() {
         return [];

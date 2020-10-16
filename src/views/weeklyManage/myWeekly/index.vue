@@ -36,6 +36,7 @@
             :originalMyOkrList="originalMyOkrList"
             :originalOrgOkrList="originalOrgOkrList"
             :orgOkrPeriodList="orgOkrPeriodList"
+            :myOkrPeriodList="myOkrPeriodList"
             :cultureList="cultureList"
             :projectList="projectList"
             :canEdit="canEdit"
@@ -53,6 +54,7 @@
             :originalMyOkrList="originalMyOkrList"
             :originalOrgOkrList="originalOrgOkrList"
             :orgOkrPeriodList="orgOkrPeriodList"
+            :myOkrPeriodList="myOkrPeriodList"
             :cultureList="cultureList"
             :projectList="projectList"
             :canEdit="canEdit"
@@ -94,6 +96,7 @@ export default {
       originalMyOkrList: [],
       originalOrgOkrList: [],
       orgOkrPeriodList: [],
+      myOkrPeriodList: [],
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
@@ -107,13 +110,13 @@ export default {
   },
   methods: {
     init() {
-      this.queryTeamOrPersonalTarget('my');
+      this.queryPersonalOkr();
       this.queryTeamOkr();
       this.getValues();
       this.getProjectList();
     },
     refreshMyOkr() {
-      this.queryTeamOrPersonalTarget('my');
+      this.queryPersonalOkr();
       this.queryTeamOkr();
     },
     getValues() {
@@ -124,7 +127,7 @@ export default {
       });
     },
     getProjectList() {
-      this.server.queryOrgProject().then((res) => {
+      this.server.queryOrgProject({ flag: '0' }).then((res) => {
         if (res.code == 200) {
           this.projectList = res.data;
         }
@@ -162,51 +165,70 @@ export default {
           // 将所有团队目标、周期整合到一个数组
           if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
             res.data.parentUndertakeOkrInfoResults.forEach((element) => {
+              // 周期
+              this.orgOkrPeriodList.push(element.okrPeriodEntity);
               element.okrList.forEach((okr) => {
                 okr.periodId = element.okrPeriodEntity.periodId;
               });
-              // element.periodId = element.okrPeriodEntity.periodId;
               this.originalOrgOkrList = [...this.originalOrgOkrList, ...element.okrList];
-              this.orgOkrPeriodList.push(element.okrPeriodEntity);
             });
             if (this.originalOrgOkrList) {
-              this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+              this.setOrgOkrList(this.originalOrgOkrList);
             }
           }
         }
       });
     },
-    queryTeamOrPersonalTarget(myOrOrg) {
-      const params = {
-        myOrOrg,
-        status: '1',
-        orgId: this.userInfo.orgId,
-      };
-      this.server.queryTeamOrPersonalTarget(params).then((res) => {
+    queryPersonalOkr() {
+      this.originalMyOkrList = [];
+      this.myOkrPeriodList = [];
+      this.server.queryPersonalOkr().then((res) => {
         if (res.code == 200) {
-          if (myOrOrg == 'my') {
-            // 我的目标
-            this.myOkrList = [];
-            this.originalMyOkrList = res.data.okrDetails;
-            if (this.originalMyOkrList && this.originalMyOkrList.length > 0) {
-              this.setMyOrOrgOkrList(this.originalMyOkrList, 'my');
-            }
-          } else {
-            // 团队目标
-            this.orgOkrList = [];
-            this.originalOrgOkrList = res.data.okrDetails;
-            if (this.originalOrgOkrList && this.originalOrgOkrList.length > 0) {
-              this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
+          // 将所有个人目标、周期整合到一个数组
+          if (res.data && res.data.length > 0) {
+            res.data.forEach((element) => {
+              // 周期
+              this.myOkrPeriodList.push(element.okrMain);
+              element.okrDetails.forEach((okr) => {
+                okr.periodId = element.okrMain.periodId;
+              });
+              this.originalMyOkrList = [...this.originalMyOkrList, ...element.okrDetails];
+            });
+            if (this.originalMyOkrList) {
+              this.setMyOkrList(this.originalMyOkrList);
             }
           }
         }
       });
     },
-    setMyOrOrgOkrList(okrDetails, orgOrMy) {
-      let tempResult = this.myOkrList;
-      if (orgOrMy == 'org') {
-        tempResult = this.orgOkrList;
+    setMyOkrList(okrDetails) {
+      const tempResult = [];
+      // if (orgOrMy == 'org') {
+      //   tempResult = this.orgOkrList;
+      // }
+      for (const okr of okrDetails) {
+        okr.indexText = '目标O';
+        this.$set(okr, 'okrType', 'O');
+        this.$set(okr, 'periodId', okr.periodId);
+        tempResult.push(okr);
+        if (okr.krList && okr.krList.length > 0) {
+          let krIndex = 0;
+          for (const kr of okr.krList) {
+            krIndex += 1;
+            kr.indexText = `KR${krIndex}`;
+            this.$set(kr, 'okrType', 'KR');
+            this.$set(kr, 'periodId', okr.periodId);
+            tempResult.push(kr);
+          }
+        }
       }
+      this.myOkrList = [...tempResult];
+    },
+    setOrgOkrList(okrDetails) {
+      const tempResult = [];
+      // if (orgOrMy == 'org') {
+      //   tempResult = this.orgOkrList;
+      // }
       for (const okr of okrDetails) {
         okr.o.indexText = '目标O';
         this.$set(okr.o, 'okrType', 'O');
@@ -223,11 +245,7 @@ export default {
           }
         }
       }
-      if (orgOrMy == 'org') {
-        this.orgOkrList = [...tempResult];
-      } else {
-        this.myOkrList = [...tempResult];
-      }
+      this.orgOkrList = [...tempResult];
     },
     newEdit(item) {
       const now = new Date().getTime();
@@ -244,7 +262,7 @@ export default {
       this.canEdit = item.canEdit;
       this.weeklyTypeList = [];
       // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
-      this.queryTeamOrPersonalTarget('my');
+      // this.queryPersonalOkr();
       this.weeklyData = {};
       if (item.weeklyId) {
         this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
