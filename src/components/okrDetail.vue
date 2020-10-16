@@ -11,10 +11,18 @@
   >
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
-      <div v-show="showFocus" @click="addFocus" class="okr-follow">
+      <div
+        v-show="showFocus && !isFromOkrSummarize"
+        @click="addFocus"
+        class="okr-follow"
+      >
         <i></i><em>关注</em>
       </div>
-      <div v-show="!showFocus" @click="cancelFocus" class="okr-follow">
+      <div
+        v-show="!showFocus && !isFromOkrSummarize"
+        @click="cancelFocus"
+        class="okr-follow"
+      >
         <i></i><em>已关注</em>
       </div>
     </div>
@@ -396,7 +404,7 @@
       </div>
     </el-scrollbar>
     <!-- 点赞要一直浮着 -->
-    <div v-if="showSupport" class="img-list">
+    <div v-if="showSupport && !isFromOkrSummarize" class="img-list">
       <dl>
         <dt class="user-info" @click="like()">
           <div class="user-name">
@@ -547,12 +555,24 @@ export default {
       type: String,
       default: 'OKR详情',
     },
+    isFromOkrSummarize: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
     tabMenuList() {
+      // 如果是来自okr汇总页面，不显示
+      if (this.isFromOkrSummarize) {
+        return [
+          {
+            menuName: '详情',
+          },
+        ];
+      }
       if (this.showSupport) {
         return [
           {
@@ -581,8 +601,10 @@ export default {
   methods: {
     showOkrDialog() {
       this.getokrDetail();
-      this.getSupportList();
-      this.getOperationHistory();
+      if (!this.isFromOkrSummarize) {
+        this.getSupportList();
+        this.getOperationHistory();
+      }
       this.myokrDrawer = true;
     },
     closed() {

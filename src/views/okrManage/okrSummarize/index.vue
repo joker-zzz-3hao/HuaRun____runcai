@@ -91,21 +91,28 @@
               </div>
             </dd>
           </dl>
-          <el-input
-            placeholder="成员姓名"
-            v-model="userName"
-            @keyup.enter.native="searchList"
-            class="tl-input"
-            clearable
-            @clear="searchList"
+          <dl class="dl-item">
+            <el-input
+              placeholder="成员姓名"
+              v-model="userName"
+              @keyup.enter.native="searchList"
+              class="tl-input"
+              clearable
+              @clear="searchList"
+            >
+              <i
+                slot="prefix"
+                class="el-input__icon el-icon-search"
+                @click="searchList"
+              ></i>
+            </el-input>
+          </dl>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="searchList"
+            >查询</el-button
           >
-            <i
-              slot="prefix"
-              class="el-input__icon el-icon-search"
-              @click="searchList"
-            ></i>
-          </el-input>
-          <el-button type="primary" @click="searchList">查询</el-button>
           <el-button @click="goback" plain class="tl-btn amt-border-slip">
             返回
             <span class="lines"></span>
@@ -176,6 +183,7 @@
       :CONST="CONST"
       :showSupport="true"
       :drawerTitle="drawerTitle"
+      :isFromOkrSummarize="true"
     ></tl-okr-detail>
   </div>
 </template>
@@ -321,7 +329,6 @@ export default {
     },
 
     okrInfo(okr) {
-      debugger;
       this.okrId = okr.okrId;
       this.drawerTitle = this.okrCycle.periodName;
       this.detailExist = true;

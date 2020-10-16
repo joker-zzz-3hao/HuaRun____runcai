@@ -216,7 +216,9 @@
     <dl class="dl-card-panel okr-completion">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
-      <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">暂无关联的OKR</dd>
+      <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
+        请在工作项中支撑OKR，以便于调整OKR完成度
+      </dd>
       <dd
         class="undertake-okr-list"
         :class="item.kr ? 'is-kr' : 'is-o'"
