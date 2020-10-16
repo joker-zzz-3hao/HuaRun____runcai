@@ -1539,6 +1539,7 @@
 .concerned-okr .followed-users dd {
   padding: 8px;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .concerned-okr .followed-users dd:not(:first-of-type).is-selected {
@@ -3080,7 +3081,7 @@
 }
 
 .teams-manage .card-title ~ dd:nth-of-type(1) {
-  margin: 30px 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 .teams-manage .card-title ~ dd > span:nth-of-type(1) {
@@ -3148,7 +3149,7 @@
   color: #7b8a95
 }
 
-.teams-manage .dl-card-panel .user-info i {
+.teams-manage .dl-card-panel .user-info > i {
   position: absolute;
   right: -20px;
   top: 0;
@@ -3173,6 +3174,11 @@
 .set-manage .el-drawer__body {
   margin-top: 10px;
   width: 600px;
+}
+
+.teams-manage .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
 }
 
 /* =========================================================租户管理================================================================== */
