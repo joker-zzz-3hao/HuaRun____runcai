@@ -374,14 +374,14 @@ export default {
       this.$forceUpdate();
     },
     periodChange(period) {
-
+      console.log(period);
     },
   },
   watch: {
     orgPeriodId: {
       handler(newValue) {
         this.thisPageOrgOkrList = [];
-        debugger;
+        // debugger;
         this.orgOkrList.forEach((okr) => {
           if (newValue == okr.periodId) {
             this.thisPageOrgOkrList.push(okr);
