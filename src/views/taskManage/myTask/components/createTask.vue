@@ -138,6 +138,7 @@
           </div> -->
           <el-form-item label="添加描述" prop="taskDesc">
             <el-input
+              placeholder="请输入任务描述"
               type="textarea"
               :rows="5"
               maxlength="800"
@@ -176,14 +177,16 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="save"
-        >暂存</el-button
-      >
+      <div class="flex-auto">
+        <el-button plain class="tl-btn amt-border-fadeout" @click="save"
+          >暂存</el-button
+        >
+      </div>
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
         >指派</el-button
+      >
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
       >
     </div>
     <tl-selectproject
