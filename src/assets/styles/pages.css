@@ -1493,7 +1493,7 @@
 }
 
 .concerned-okr .followed-users {
-  padding: 6px;
+  padding: 10px;
 }
 
 .concerned-okr .followed-okrs .tl-card-panel {
@@ -1537,16 +1537,32 @@
 }
 
 .concerned-okr .followed-users dd {
+  padding: 8px;
   justify-content: space-between;
 }
 
+.concerned-okr .followed-users dd:not(:first-of-type).is-selected {
+  background: #f4f6f8;
+}
+
 .concerned-okr .followed-users .user-name {
-  margin: 0 20px 0 0;
+  margin: 0 16px 0 0;
 }
 
 .concerned-okr .followed-users .el-input__inner {
   background-color: #eee;
+  height: 36px;
+  line-height: unset;
 }
+
+.concerned-okr .followed-users dt {
+  padding: 10px 8px;
+  color: #879099;
+}
+
+/* .concerned-okr .followed-users dd:first-of-type ~ dd {
+  margin: 0 0 20px 0;
+} */
 
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,
@@ -2087,10 +2103,6 @@
 
 .weekly-cont .tag-lists .icon-bg i {
   position: unset;
-}
-
-.weekly-cont .tag-lists li:not(.icon-bg) {
-  padding-right: 30px;
 }
 
 .weekly-cont .tag-lists li:not(.icon-bg) i {

@@ -19,7 +19,7 @@
           <dd
             v-for="item in focusList"
             :key="item.id"
-            :class="item.userId == selectUserId ? 'red' : 'green'"
+            :class="{ 'is-selected': item.userId == selectUserId }"
           >
             <div class="user-info" @click="selectUser(item)">
               <div v-if="item.headUrl">
