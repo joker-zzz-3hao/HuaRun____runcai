@@ -90,7 +90,7 @@
       </el-table-column>
     </el-table>
     <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
-      >当前周报汇总提交</el-button
+      >任务汇总到周报</el-button
     >
   </div>
 </template>

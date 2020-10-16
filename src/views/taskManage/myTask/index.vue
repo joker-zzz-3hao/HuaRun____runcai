@@ -3,7 +3,7 @@
     <div class="operating-area">
       <div class="page-title">
         <em v-show="showTask">我的任务</em>
-        <em v-show="!showTask">周报汇总</em>
+        <em v-show="!showTask">任务汇总</em>
       </div>
       <div class="operating-box">
         <el-button
@@ -21,7 +21,7 @@
           icon="el-icon-document-add"
           class="tl-btn amt-border-slip"
         >
-          <em>周报汇总</em><span class="lines"></span>
+          <em>任务汇总</em><span class="lines"></span>
         </el-button>
         <el-button
           @click="toggleState"
