@@ -168,6 +168,7 @@ export default {
       okrLoading: (state) => state.okrLoading,
     }),
     okrTypeList() {
+      // okr类型
       if (this.roleCode.includes('ORG_ADMIN')) {
         return this.CONST.OKR_TYPE_LIST.filter(
           (item) => item.id == 1,

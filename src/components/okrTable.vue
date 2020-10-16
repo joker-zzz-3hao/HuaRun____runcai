@@ -297,7 +297,7 @@ export default {
       roleCode: (state) => state.roleCode,
     }),
     showUndertake() {
-      if (this.roleCode.includes('ORG_ADMIN')) {
+      if (this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) {
         return true;
       } if (this.showUpdate) {
         return false;

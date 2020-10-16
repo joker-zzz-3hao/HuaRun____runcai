@@ -100,6 +100,7 @@
           </el-radio-group>
         </dd>
       </dl>
+      <!-- 价值观 -->
       <dl class="dl-list">
         <dt class="list-title">
           <em>公司管理价值观</em>
