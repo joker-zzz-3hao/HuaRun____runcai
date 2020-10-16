@@ -3419,8 +3419,8 @@
 
 .user-info img {
   padding: 2px;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 1px solid #685df1;
   cursor: pointer;
@@ -3440,12 +3440,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   font-size: 12px;
   color: #685df1;
   background: #f0effe;
+}
+
+.header-wrap .user-info img,
+.header-wrap .user-info .user-name em {
+  width: 34px;
+  height: 34px;
 }
 
 /* 主内容区--左侧菜单 */

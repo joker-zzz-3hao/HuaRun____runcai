@@ -1544,6 +1544,10 @@
   margin: 0 20px 0 0;
 }
 
+.concerned-okr .followed-users .el-input__inner {
+  background-color: #eee;
+}
+
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,
 .okr-approval .operating-area-inside .el-form .el-form-item__content {
@@ -2538,11 +2542,6 @@
 
 .user-list .el-select-dropdown__list li {
   height: 60px;
-}
-
-.user-list .user-info .user-name em {
-  width: 30px;
-  height: 30px;
 }
 
 .teams-weekly .table-container > ul {
