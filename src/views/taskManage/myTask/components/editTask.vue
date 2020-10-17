@@ -713,33 +713,46 @@ export default {
       }
     },
     // 保存任务
-    save() {
+    async save() {
+      const checkparams = {
+        userId: this.formData.taskUserId,
+        processId: this.formData.processId,
+      };
+      const checkres = await this.server.checkUserInProcess(checkparams);
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
-          const projectVal = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0] || {};
-          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-          this.formData.userName = userVal.userName;
-          if (projectVal) {
-            this.formData.projectId = projectVal.projectId;
-            this.formData.projectName = projectVal.projectNameCn;
-          }
-
-          if (this.formData.timeVal) {
-            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-          }
-          if (this.fileList.length > 0) {
-            this.formData.attachmentList.push(...this.fileList);
-          }
-          this.server.saveTask(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('保存成功');
-              this.close();
-              this.$emit('success');
+          if (checkres.data.inProcess) {
+            const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+            const projectVal = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0] || {};
+            this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+            this.formData.userName = userVal.userName;
+            if (projectVal) {
+              this.formData.projectId = projectVal.projectId;
+              this.formData.projectName = projectVal.projectNameCn;
             }
-          });
+
+            if (this.formData.timeVal) {
+              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            }
+            if (this.fileList.length > 0) {
+              this.formData.attachmentList.push(...this.fileList);
+            }
+            this.server.saveTask(this.formData).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('保存成功');
+                this.close();
+                this.$emit('success');
+              }
+            });
+          } else {
+            const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
+            this.$xconfirm({
+              content: '',
+              title: `执行人「${userVal.userName}」无任务过程「${processVal.processName}」的使用权限，请重新选择或在「过程管理」中为其添加权限`,
+            });
+          }
         }
       });
     },
@@ -785,36 +798,49 @@ export default {
         }
       });
     },
-    summitAssign() {
+    async summitAssign() {
+      if (!this.formData.taskUserId) {
+        this.$message.error('请选择执行人');
+        return;
+      }
+      const checkparams = {
+        userId: this.formData.taskUserId,
+        processId: this.formData.processId,
+      };
+      const checkres = await this.server.checkUserInProcess(checkparams);
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          if (!this.formData.taskUserId) {
-            this.$message.error('请选择执行人');
-            return;
-          }
-          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
-          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-          this.formData.userName = userVal.userName;
-          if (this.formData.projectVal) {
-            this.formData.projectId = this.formData.projectVal.projectId;
-            this.formData.projectName = this.formData.projectVal.projectNameCn;
-          }
-
-          if (this.formData.timeVal) {
-            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-          }
-          if (this.fileList.length > 0) {
-            this.formData.attachmentList.push(...this.fileList);
-          }
-          this.server.appointSave(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('指派成功');
-              this.$emit('success');
-              this.close();
+          if (checkres.data.inProcess) {
+            const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+            this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+            this.formData.userName = userVal.userName;
+            if (this.formData.projectVal) {
+              this.formData.projectId = this.formData.projectVal.projectId;
+              this.formData.projectName = this.formData.projectVal.projectNameCn;
             }
-          });
+
+            if (this.formData.timeVal) {
+              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            }
+            if (this.fileList.length > 0) {
+              this.formData.attachmentList.push(...this.fileList);
+            }
+            this.server.appointSave(this.formData).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('指派成功');
+                this.$emit('success');
+                this.close();
+              }
+            });
+          } else {
+            const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
+            this.$xconfirm({
+              content: '',
+              title: `执行人「${userVal.userName}」无任务过程「${processVal.processName}」的使用权限，请重新选择或在「过程管理」中为其添加权限`,
+            });
+          }
         }
       });
     },

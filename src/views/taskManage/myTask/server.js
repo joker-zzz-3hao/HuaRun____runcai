@@ -99,4 +99,9 @@ export default class Server extends ServerBase {
   removeFile(param) {
     return this._ajaxPost(`gateway/system-service/sys/attachment/remove?resourceId=${param.resourceId}&sourceType=TASK&sourceKey=${param.taskId}`);
   }
+
+  // 校验执行人是否在过程中
+  checkUserInProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/checkUserInProcess', param);
+  }
 }
