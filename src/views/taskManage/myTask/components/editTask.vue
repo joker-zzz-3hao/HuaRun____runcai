@@ -99,9 +99,9 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   value-format="yyyy-MM-dd"
-                  @change="changeTime"
                   popper-class="tl-range-popper"
                   class="tl-range-editor"
+                  :clearable="false"
                 >
                   ></el-date-picker
                 >
@@ -621,12 +621,6 @@ export default {
           this.projectList = res.data || [];
         }
       });
-    },
-    // 选择时间
-    changeTime(date) {
-      console.log('shijian');
-      console.log(date);
-      console.log(this.timeVal);
     },
     // 时长统计
     freshTime() {
