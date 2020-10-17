@@ -8,14 +8,14 @@
           ref="ruleForm"
           :inline="true"
           class="tl-form-inline"
+          @submit.native.prevent="searchList('newPage')"
         >
           <el-form-item>
             <el-input
-              v-model="keyWord"
+              v-model.trim="keyWord"
               placeholder="输入字典编号/名称"
               maxlength="50"
               class="tl-input-search"
-              @keyup.enter.native="searchList('newPage')"
               clearable
               @clear="clear"
             >
