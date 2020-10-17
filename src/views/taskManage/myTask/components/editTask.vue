@@ -93,12 +93,15 @@
               <el-form-item label="任务时间" prop="timeVal">
                 <el-date-picker
                   :disabled="canEdit"
-                  v-model.trim="formData.timeVal"
+                  v-model.trim="timeVal"
                   type="daterange"
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   value-format="yyyy-MM-dd"
+                  @change="changeTime"
+                  popper-class="tl-range-popper"
+                  class="tl-range-editor"
                 >
                   ></el-date-picker
                 >
@@ -429,7 +432,7 @@ export default {
       server,
       formData: {
         taskTitle: '',
-        timeVal: '',
+        timeVal: [],
         taskLevel: 10,
         projectVal: {},
         taskProgressRemark: '',
@@ -437,6 +440,7 @@ export default {
         timeSum: '当前已用时长 0天 0小时 0分',
         attachmentList: [],
       },
+      timeVal: [],
       taskUserId: '', // 原执行人
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
@@ -510,15 +514,10 @@ export default {
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
           if (res.code == 200 && res.data) {
-            console.log(res.data);
             this.formData = res.data;
             this.taskUserId = this.formData.taskUserId;
             if (res.data.taskBegDate) {
-              let taskBegDate = '';
-              let taskEndDate = '';
-              taskBegDate = res.data.taskBegDate.split(' ')[0] || '';
-              taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
-              this.formData.timeVal = [taskBegDate, taskEndDate];
+              this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(res.data.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(res.data.taskEndDate))];
             }
             if (this.formData.createTime) {
               const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
@@ -552,7 +551,6 @@ export default {
                 });
               }
               if (ctime == item.createTime) {
-                console.log(this.historyList);
                 this.historyList[timeCount].contentList.push(item);
               } else {
                 timeCount += 1;
@@ -567,7 +565,6 @@ export default {
                 this.updateList.push(item);
               }
             });
-            console.log('历史', this.historyList);
           }
         });
       }
@@ -588,7 +585,6 @@ export default {
       this.server.queryOkr(params).then((res) => {
         if (res.code == 200) {
           this.okrList = res.data.okrDetails || [];
-          console.log(res.data);
         }
       });
     },
@@ -626,12 +622,19 @@ export default {
         }
       });
     },
+    // 选择时间
+    changeTime(date) {
+      console.log('shijian');
+      console.log(date);
+      console.log(this.timeVal);
+    },
     // 时长统计
     freshTime() {
       this.timedInterval = setInterval(() => {
         this.timeSum();
       }, 30 * 1000);
     },
+    // 时长计算
     timeSum() {
       if (this.formData.createTime) {
         const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
@@ -650,7 +653,6 @@ export default {
         const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
         this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
         this.$forceUpdate();
-        console.log(this.formData.timeSum);
       } else {
         this.formData.timeSum = '当前已用时长 0天 0小时 0分';
       }
@@ -669,7 +671,7 @@ export default {
     errorHandler() {
       return true;
     },
-    // 文件
+    // --------文件---------
     fileChange(data) {
       this.fileList = data.list;
       console.log(this.fileList);
@@ -729,9 +731,9 @@ export default {
               this.formData.projectName = projectVal.projectNameCn;
             }
 
-            if (this.formData.timeVal) {
-              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            if (this.timeVal) {
+              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
@@ -817,9 +819,9 @@ export default {
               this.formData.projectName = this.formData.projectVal.projectNameCn;
             }
 
-            if (this.formData.timeVal) {
-              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            if (this.timeVal) {
+              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
