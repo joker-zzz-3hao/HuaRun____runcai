@@ -3,29 +3,37 @@
     <div class="operating-area">
       <div class="page-title">菜单管理</div>
       <div class="operating-box">
-        <el-select
-          v-model="status"
-          :popper-append-to-body="false"
-          placeholder="请选择"
-          @change="getMenuList"
-          clearable
-          class="tl-select"
-        >
-          <el-option
-            v-for="(item, index) in CONST.STATUS_LIST"
-            :key="index"
-            :label="item.statusName"
-            :value="item.statusCode"
-          ></el-option>
-        </el-select>
-        <el-input
-          maxlength="64"
-          @keyup.enter.native="getMenuList"
-          v-model="keyWord"
-          placeholder="输入菜单名称"
-        >
-          <i class="el-icon-search" slot="prefix" @click="getMenuList"></i>
-        </el-input>
+        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form-item>
+            <el-select
+              v-model="status"
+              :popper-append-to-body="false"
+              placeholder="请选择"
+              @change="getMenuList"
+              clearable
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in CONST.STATUS_LIST"
+                :key="index"
+                :label="item.statusName"
+                :value="item.statusCode"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              maxlength="64"
+              @keyup.enter.native="getMenuList"
+              v-model="keyWord"
+              placeholder="输入菜单名称"
+              class="tl-input-search"
+            >
+              <input type="text" style="display: none" />
+              <i class="el-icon-search" slot="prefix" @click="getMenuList"></i>
+            </el-input>
+          </el-form-item>
+        </el-form>
         <el-button
           v-if="hasPower('sys_menu_add')"
           type="primary"
