@@ -83,7 +83,7 @@
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <el-dropdown v-show="showMenuOption(date)">
+            <el-dropdown>
               <span class="el-dropdown-link">
                 <i class="el-icon-more el-icon--right"></i>
               </span>
