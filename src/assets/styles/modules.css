@@ -3981,7 +3981,7 @@ svg {
 
 .maps-card {
   position: relative;
-  padding: 20px;
+  padding: 16px;
   width: 280px;
   background: #fff;
   box-shadow: 0 6px 16px 0 rgba(0, 11, 84, 0.04);
@@ -4016,6 +4016,19 @@ svg {
   width: 14px;
   height: 3px;
   background: #685df1;
+}
+
+.maps-card .card-tag {
+  display: flex;
+  align-items: center;
+}
+
+.maps-card .card-tag em {
+  padding: 2px 5px;
+  background: #eaf6f6;
+  color: #06aca9;
+  border-radius: 2px;
+  font-size: 12px;
 }
 
 .okr-info dt {
