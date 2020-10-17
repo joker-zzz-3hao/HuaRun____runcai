@@ -1,38 +1,40 @@
 <template>
   <div>
     <el-drawer
-      title="设置虚拟汇报"
       :visible.sync="showSetManager"
-      :with-header="true"
       @closed="closed"
-      :modal="false"
-      :append-to-body="false"
       :wrapperClosable="false"
-      :modal-append-to-body="false"
-      :close-on-click-modal="false"
-      :show-close="true"
+      :modal-append-to-body="true"
+      :append-to-body="true"
+      custom-class="custom-drawer set-fictitious"
       class="tl-drawer"
+      :before-close="close"
     >
-      <div>
-        <tl-svgtree
-          fatherId="parentId"
-          childId="userId"
-          :treeData="treeData"
-          direction="col"
-          svgId="svg01"
-        >
-          <template slot="treecard" slot-scope="node">
-            <tl-card
-              :node="node"
-              @deleteSuccess="deleteSuccess"
-              :userData="userData"
-              :orgData="orgData"
-              :orgList="orgList"
-              @addFictitiousSuccess="addFictitiousSuccess"
-            ></tl-card>
-          </template>
-        </tl-svgtree>
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">{{ drawerTitle }}</div>
       </div>
+      <el-scrollbar>
+        <div class="cont-box">
+          <tl-svgtree
+            fatherId="parentId"
+            childId="userId"
+            :treeData="treeData"
+            direction="col"
+            svgId="svg01"
+          >
+            <template slot="treecard" slot-scope="node">
+              <tl-card
+                :node="node"
+                @deleteSuccess="deleteSuccess"
+                :userData="userData"
+                :orgData="orgData"
+                :orgList="orgList"
+                @addFictitiousSuccess="addFictitiousSuccess"
+              ></tl-card>
+            </template>
+          </tl-svgtree>
+        </div>
+      </el-scrollbar>
     </el-drawer>
   </div>
 </template>
@@ -54,10 +56,14 @@ export default {
         return {};
       },
     },
+    drawerTitle: {
+      type: String,
+      default: '设置虚拟汇报',
+    },
   },
   data() {
     return {
-      showSetManager: true,
+      showSetManager: false,
       treeData: [],
       userData: {},
       orgData: [],

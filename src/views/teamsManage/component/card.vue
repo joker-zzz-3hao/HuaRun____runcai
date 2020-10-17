@@ -1,5 +1,82 @@
 <template>
-  <div style="width: 216px; position: relative">
+  <div class="maps-card">
+    <dl>
+      <dt>
+        <template v-if="!node.node.orgType && node.node.userName">
+          <div class="user-info">
+            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <div v-else-if="node.node.orgLeader" class="user-name">
+              <em>{{
+                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+              }}</em>
+            </div>
+          </div>
+          <em>{{ node.node.userName }}</em>
+        </template>
+        <template v-if="node.node.orgType == '0'">
+          <div class="user-info">
+            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <div v-else-if="node.node.orgLeader" class="user-name">
+              <em>{{
+                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+              }}</em>
+            </div>
+          </div>
+          <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
+          <span v-if="node.node.orgLeader">(部门负责人)</span>
+          <span v-else>提示：此部门尚未设置部门负责人</span>
+        </template>
+        <template v-if="node.node.add">
+          <div @click="addFictitious">
+            <el-cascader-panel
+              v-model="fictitiousOrgId"
+              :options="orgData"
+              v-show="showSelect"
+              @change="changePanel"
+              :props="{
+                checkStrictly: true,
+                value: 'orgId',
+                label: 'orgName',
+                children: 'sonTree',
+                expandTrigger: 'hover',
+              }"
+            ></el-cascader-panel>
+            <span>添加虚线汇报部门</span>
+          </div>
+        </template>
+        <template v-if="node.node.orgType == '1'">
+          <div class="user-info">
+            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <div v-else-if="node.node.orgLeader" class="user-name">
+              <em>{{
+                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+              }}</em>
+            </div>
+          </div>
+          <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
+          <span v-if="node.node.orgLeader">(部门负责人)</span>
+          <span v-else>提示：此部门尚未设置部门负责人</span>
+        </template>
+      </dt>
+      <dd class="user-name-txt">
+        <span>{{ node.node.orgType == "0" ? "实" : "虚" }}</span>
+        <em>{{ node.node.orgName }}</em>
+      </dd>
+      <dd
+        v-if="node.node.orgType == '1'"
+        class="is-operational"
+        @click="deleteFictitious(node.node)"
+      >
+        <div class="icon-bg">
+          <i class="el-icon-close"></i>
+        </div>
+      </dd>
+    </dl>
+    <!-- <div v-if="node.node.add" @click="addFictitious" class="icon-txt-group">
+
+    </div> -->
+  </div>
+  <!-- <div style="width: 216px; position: relative">
     <div v-if="node.node.orgType == '0'">
       <div>{{ node.node.orgName }}</div>
       <div>{{ node.node.orgLeader || node.node.userName }}</div>
@@ -16,7 +93,7 @@
       <div>虚拟汇报部门</div>
     </div>
     <div v-else-if="!node.node.orgType && node.node.userName">
-      <div>{{ node.node.userName }}</div>
+      <div>{{ node.node.userName }}sdfs</div>
     </div>
     <div v-if="node.node.add">
       <div>
@@ -37,7 +114,7 @@
       </div>
       <div>添加虚线汇报部门</div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -115,13 +192,18 @@ export default {
       }
     },
     deleteFictitious(data) {
-      this.server.updateReportRelation({
-        orgId: data.orgId,
-        userId: data.parentId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$emit('deleteSuccess');
-        }
+      this.$xconfirm({
+        title: '删除确认',
+        content: '是否确认删除该虚线汇报部门?',
+      }).then(() => {
+        this.server.updateReportRelation({
+          orgId: data.orgId,
+          userId: data.parentId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.$emit('deleteSuccess');
+          }
+        });
       });
     },
   },

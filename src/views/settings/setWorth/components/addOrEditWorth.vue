@@ -3,12 +3,18 @@
     :modal-append-to-body="false"
     @closed="closed"
     @close="closed"
-    :close-on-click-modal="true"
+    :close-on-click-modal="false"
     :title="title"
     :visible="dialogTableVisible"
     class="tl-dialog"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="tl-form">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="120px"
+      class="tl-form"
+    >
       <el-form-item label="公司价值观" prop="cultureName">
         <el-input
           maxlength="50"
@@ -28,8 +34,12 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="closed" class="tl-btn amt-border-fadeout">取 消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button plain @click="closed" class="tl-btn amt-border-fadeout"
+        >取 消</el-button
+      >
     </div>
   </el-dialog>
 </template>

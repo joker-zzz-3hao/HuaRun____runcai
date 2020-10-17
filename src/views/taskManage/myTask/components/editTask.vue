@@ -714,11 +714,18 @@ export default {
     },
     // 保存任务
     async save() {
-      const checkparams = {
-        userId: this.formData.taskUserId,
-        processId: this.formData.processId,
-      };
-      const checkres = await this.server.checkUserInProcess(checkparams);
+      let checkres = {};
+      if (this.formData.taskUserId && this.formData.processId) {
+        const checkparams = {
+          userId: this.formData.taskUserId,
+          processId: this.formData.processId,
+        };
+        checkres = await this.server.checkUserInProcess(checkparams);
+      } else {
+        checkres.data = {};
+        checkres.data.inProcess = true;
+      }
+
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};

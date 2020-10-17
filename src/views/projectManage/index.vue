@@ -98,7 +98,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectType">{{
-                  CONST.PROJECT_TYPE_MAP[scope.row.projectType]
+                  scope.row.projectType
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -122,7 +122,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectInputType">{{
-                  CONST.THROW_TYPE_MAP[scope.row.projectInputType]
+                  scope.row.projectInputType
                 }}</span>
                 <span v-else>--</span>
               </template>
