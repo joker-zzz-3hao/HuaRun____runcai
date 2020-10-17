@@ -83,7 +83,11 @@
             <em v-for="p in searchCreateUser" :key="p">{{ userMap[p] }}</em>
             <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
           </dd>
-          <dd v-if="accept !== null">{{ accept }}</dd>
+          <!-- 确认接收 -->
+          <dd v-if="accept !== null">
+            <em> {{ accept == true ? "已确认" : "待确认" }}</em>
+            <i class="el-icon-close" @click.stop="clearaccept"></i>
+          </dd>
         </dl>
         <dl
           class="condition-lists tag-lists"
@@ -256,18 +260,13 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column
-              min-width="100px"
-              align="left"
-              prop="taskTitle"
-              label="任务"
-            >
+            <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
             <el-table-column
-              min-width="100px"
+              min-width="150px"
               align="left"
               label="创建人/创建时间"
             >
@@ -275,7 +274,7 @@
                 <div>
                   <p>
                     <i class="el-icon-user"></i>
-                    <span>{{ scope.row.userName }}</span>
+                    <span>{{ scope.row.createByUserName }}</span>
                   </p>
                   <p>
                     <i class="el-icon-date"></i>
@@ -304,6 +303,7 @@
               </template>
             </el-table-column>
             <el-table-column
+              min-width="150px"
               align="left"
               prop="userName"
               label="当前执行人/起止时间"
@@ -788,6 +788,10 @@ export default {
     },
     changeAccept(isAccept) {
       this.accept = isAccept;
+      this.getTableList();
+    },
+    clearaccept() {
+      this.accept = null;
       this.getTableList();
     },
   },

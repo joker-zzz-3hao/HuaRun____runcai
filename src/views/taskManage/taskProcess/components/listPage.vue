@@ -30,27 +30,22 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column
-              min-width="100px"
-              align="left"
-              prop="taskTitle"
-              label="任务"
-            >
+            <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
             <el-table-column
-              min-width="100px"
+              min-width="120px"
               align="left"
               prop="userName"
-              label="创建人"
+              label="创建人/创建时间"
             >
               <template slot-scope="scope">
                 <div>
                   <p>
                     <i class="el-icon-user"></i>
-                    <span>{{ scope.row.userName }}</span>
+                    <span>{{ scope.row.createByUserName }}</span>
                   </p>
                   <p>
                     <i class="el-icon-date"></i>
@@ -78,7 +73,11 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" label="执行人">
+            <el-table-column
+              min-width="140px"
+              align="left"
+              label="当前执行人/起止时间"
+            >
               <template slot-scope="scope">
                 <div>
                   <p>
