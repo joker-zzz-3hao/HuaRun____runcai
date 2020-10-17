@@ -283,83 +283,70 @@
         <!-- 右侧 -->
         <div class="task-tab">
           <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
-            <template slot="tab-cont">
-              <div class="tab-cont" v-if="currentIndex === 0">
-                <el-scrollbar>
-                  <div class="tl-custom-timeline">
-                    <dl class="timeline-list">
-                      <dd v-for="item in historyList" :key="item.createTime">
-                        <div class="list-info">
-                          <div class="list-title">{{ item.createTime }}</div>
-                          <div
-                            class="list-cont"
-                            v-for="content in item.contentList"
-                            :key="content.operationId"
-                          >
-                            <div class="operate-type">
-                              <em>{{ content.userName }}</em>
-                              <span v-if="content.contents.operate == 'ADD'"
-                                >添加了</span
-                              >
-                              <span
-                                v-else-if="content.contents.operate == 'SET'"
-                                >设置了</span
-                              >
-                              <span>{{
-                                CONST.FIEID_MAP[content.contents.field]
-                              }}</span>
-                            </div>
-                            <div class="operate-kind">
-                              <span
-                                v-if="content.contents.field == 'taskProgress'"
-                              >
-                                {{ content.contents.value }}%</span
-                              >
-                              <span
-                                v-else-if="
-                                  content.contents.field == 'taskLevel'
-                                "
-                              >
-                                {{
-                                  CONST.PRIORITY_MAP[content.contents.value]
-                                }}</span
-                              >
-                              <span v-else>{{ content.contents.value }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </dd>
-                    </dl>
-                  </div>
-                </el-scrollbar>
-              </div>
-              <div class="tab-cont" v-else>
-                <div class="tl-custom-timeline">
-                  <dl class="timeline-list">
-                    <dd v-for="item in updateList" :key="item.operationId">
-                      <div class="list-info">
-                        <div class="list-title">{{ item.createTime }}</div>
-                        <div class="list-cont">
-                          <div class="operate-type">
-                            <span>操作人：</span>
-                            <em>{{ item.userName }}</em>
-                          </div>
-                          <div class="operate-kind">
-                            <span>更新进度为：</span>
-                            <em>{{ item.contents.value }}%</em>
-                          </div>
-                          <div class="operate-kind">
-                            <span>进度更新进度说明：</span>
-                            <em>{{ item.contents.explain || "暂无" }}</em>
-                          </div>
-                        </div>
-                      </div>
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </template>
           </tl-tabs>
+          <div class="tab-cont" v-if="currentIndex === 0">
+            <div class="tl-custom-timeline">
+              <dl class="timeline-list">
+                <dd v-for="item in historyList" :key="item.createTime">
+                  <div class="list-info">
+                    <div class="list-title">{{ item.createTime }}</div>
+                    <div
+                      class="list-cont"
+                      v-for="content in item.contentList"
+                      :key="content.operationId"
+                    >
+                      <div class="operate-type">
+                        <em>{{ content.userName }}</em>
+                        <span v-if="content.contents.operate == 'ADD'"
+                          >添加了</span
+                        >
+                        <span v-else-if="content.contents.operate == 'SET'"
+                          >设置了</span
+                        >
+                        <span>{{
+                          CONST.FIEID_MAP[content.contents.field]
+                        }}</span>
+                      </div>
+                      <div class="operate-kind">
+                        <span v-if="content.contents.field == 'taskProgress'">
+                          {{ content.contents.value }}%</span
+                        >
+                        <span v-else-if="content.contents.field == 'taskLevel'">
+                          {{ CONST.PRIORITY_MAP[content.contents.value] }}</span
+                        >
+                        <span v-else>{{ content.contents.value }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <div class="tab-cont" v-else>
+            <div class="tl-custom-timeline">
+              <dl class="timeline-list">
+                <dd v-for="item in updateList" :key="item.operationId">
+                  <div class="list-info">
+                    <div class="list-title">{{ item.createTime }}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <span>操作人：</span>
+                        <em>{{ item.userName }}</em>
+                      </div>
+                      <div class="operate-kind">
+                        <span>更新进度为：</span>
+                        <em>{{ item.contents.value }}%</em>
+                      </div>
+                      <div class="operate-kind">
+                        <span>进度更新进度说明：</span>
+                        <em>{{ item.contents.explain || "暂无" }}</em>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </el-scrollbar>

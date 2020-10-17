@@ -57,7 +57,11 @@
             <i class="el-icon-search" slot="prefix" @click="getTableList"></i
           ></el-input>
           <div @click="showSearchBar" class="unfold-more">
-            展开更多筛选
+            <span v-if="arrowClass == 'el-icon-caret-bottom'"
+              >展开更多筛选</span
+            >
+            <span v-else>收起更多筛选</span>
+
             <i :class="arrowClass"></i>
           </div>
           <div class="border-slip"></div>
@@ -66,7 +70,7 @@
       <div class="tl-condition-screening" v-show="showTask">
         <dl
           class="screening-results tag-lists"
-          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
+          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-top'"
         >
           <dt>所有筛选</dt>
           <dd v-for="(item, index) in searchList" :key="index">
@@ -91,7 +95,7 @@
         </dl>
         <dl
           class="condition-lists tag-lists"
-          v-show="arrowClass == 'el-icon-caret-bottom'"
+          v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>任务过程</dt>
           <dd
@@ -104,7 +108,7 @@
         </dl>
         <dl
           class="condition-lists tag-lists"
-          v-show="arrowClass == 'el-icon-caret-bottom'"
+          v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>任务步骤</dt>
           <!-- 为了不闪 -->
@@ -122,7 +126,7 @@
         </dl>
         <dl
           class="condition-lists tag-lists"
-          v-show="arrowClass == 'el-icon-caret-bottom'"
+          v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>确认接收</dt>
           <dd
@@ -146,7 +150,7 @@
         </dl>
         <dl
           class="condition-lists tag-lists"
-          v-show="arrowClass == 'el-icon-caret-bottom'"
+          v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>执行人</dt>
           <dd v-for="p in searchTaskUser" :key="p">
@@ -198,7 +202,7 @@
         </dl>
         <dl
           class="condition-lists tag-lists"
-          v-show="arrowClass == 'el-icon-caret-bottom'"
+          v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>创建人</dt>
           <dd v-for="p in searchCreateUser" :key="p">
@@ -446,7 +450,7 @@ export default {
       ],
       currentIndex: 0,
       searchMsg: '',
-      arrowClass: 'el-icon-caret-top',
+      arrowClass: 'el-icon-caret-bottom',
       searchList: [],
       taskProcessList: [],
       taskProcess: {}, // 选择的任务过程

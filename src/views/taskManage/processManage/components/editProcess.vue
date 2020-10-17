@@ -18,7 +18,7 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">编辑任务过程</div>
     </div>
-    <div class="modelCreate">
+    <el-scrollbar>
       <el-form ref="dataForm" :model="formData">
         <el-form-item label="任务过程名称：">
           <el-input
@@ -118,7 +118,7 @@
           </p>
         </el-form-item>
       </el-form>
-    </div>
+    </el-scrollbar>
     <div class="operating-box">
       <el-button
         type="primary"
