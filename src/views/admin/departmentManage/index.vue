@@ -83,7 +83,7 @@
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <el-dropdown>
+            <el-dropdown v-show="showMenuOption(data)">
               <span class="el-dropdown-link">
                 <i class="el-icon-more el-icon--right"></i>
               </span>
@@ -332,7 +332,13 @@ export default {
   },
   computed: {
     showMenuOption() {
-      return true;
+      return (menu) => {
+        const arr = menu.orgFullId.split(':');
+        if (arr.length < 3) {
+          return false;
+        }
+        return true;
+      };
     },
   },
   methods: {
