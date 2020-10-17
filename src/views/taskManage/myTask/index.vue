@@ -168,6 +168,7 @@
                 v-model="keyword"
                 class="tl-input"
                 clearable
+                maxlength="64"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
@@ -220,7 +221,7 @@
                 v-model="keyword"
                 class="tl-input"
                 clearable
-                maxlength="50"
+                maxlength="64"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
