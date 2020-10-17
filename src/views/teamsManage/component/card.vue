@@ -61,22 +61,21 @@
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
       </dt>
-      <dd class="user-name-txt">
-        <template v-if="node.node.orgType == '0' || node.node.orgType == '1'">
-          <span>{{
-            node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
-          }}</span>
-          <em>{{ node.node.orgName }}</em>
-        </template>
+      <dd
+        class="user-name-txt"
+        v-if="node.node.orgType == '0' || node.node.orgType == '1'"
+      >
+        <span>{{
+          node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
+        }}</span>
+        <em>{{ node.node.orgName }}</em>
       </dd>
       <dd
         v-if="node.node.orgType == '1'"
-        class="is-operational"
+        class="icon-bg is-close"
         @click="deleteFictitious(node.node)"
       >
-        <div class="icon-bg">
-          <i class="el-icon-close"></i>
-        </div>
+        <i class="el-icon-close"></i>
       </dd>
     </dl>
   </div>

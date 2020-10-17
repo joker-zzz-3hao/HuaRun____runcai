@@ -24,6 +24,9 @@
             :treeData="treeData"
             direction="col"
             svgId="svg01"
+            :middlePoint="cardHight"
+            :blockHeight="blockHeight"
+            :canOpen="false"
           >
             <template slot="treecard" slot-scope="node">
               <tl-card
@@ -71,6 +74,8 @@ export default {
       userData: {},
       orgData: [],
       orgList: [],
+      cardHight: 50, // 线的位置
+      blockHeight: 140,
     };
   },
   mounted() {

@@ -112,6 +112,11 @@ export default {
       type: Number,
       default: 83,
     },
+    // 点击事件是否生效
+    canOpen: {
+      type: Boolean,
+      default: true,
+    },
   },
   mounted() {
     if (this.treeData && this.treeData.length > 0) {
@@ -363,6 +368,10 @@ export default {
     },
     // 收缩和展开
     toggle(vnode, isclose = 'self') {
+      // 不能点击
+      if (!this.canOpen) {
+        return;
+      }
       // 点开或关闭
       vnode.open = !vnode.open;
       // 如果有子节点
