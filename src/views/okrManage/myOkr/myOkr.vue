@@ -35,7 +35,8 @@
                 <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
               </dt>
-              <dd>{{ userInfo.userName }}</dd>
+              <dd v-if="item.okrMain">{{ item.okrMain.userName }}</dd>
+              <dd v-else>{{ userInfo.userName }}</dd>
             </dl>
             <dl class="okr-progress">
               <dt>

@@ -23,8 +23,8 @@
             </div>
           </div>
           <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
-          <span v-if="node.node.orgLeader">(部门负责人)</span>
-          <span v-else>提示：此部门尚未设置部门负责人</span>
+          <span v-if="node.node.orgLeader">(组织负责人)</span>
+          <span v-else>提示：此组织尚未设置负责人</span>
         </template>
         <template v-if="node.node.add">
           <div @click="addFictitious">
@@ -41,7 +41,7 @@
                 expandTrigger: 'hover',
               }"
             ></el-cascader-panel>
-            <span>添加虚线汇报部门</span>
+            <span>添加虚线汇报组织</span>
           </div>
         </template>
         <template v-if="node.node.orgType == '1'">
@@ -54,13 +54,15 @@
             </div>
           </div>
           <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
-          <span v-if="node.node.orgLeader">(部门负责人)</span>
-          <span v-else>提示：此部门尚未设置部门负责人</span>
+          <span v-if="node.node.orgLeader">(组织负责人)</span>
+          <span v-else>提示：此组织尚未设置负责人</span>
         </template>
       </dt>
       <dd class="user-name-txt">
-        <span>{{ node.node.orgType == "0" ? "实" : "虚" }}</span>
-        <em>{{ node.node.orgName }}</em>
+        <span>{{
+          node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
+        }}</span>
+        <em>{{ node.node.orgName ? node.node.orgName : "未加入虚拟组织" }}</em>
       </dd>
       <dd
         v-if="node.node.orgType == '1'"
@@ -72,9 +74,6 @@
         </div>
       </dd>
     </dl>
-    <!-- <div v-if="node.node.add" @click="addFictitious" class="icon-txt-group">
-
-    </div> -->
   </div>
   <!-- <div style="width: 216px; position: relative">
     <div v-if="node.node.orgType == '0'">

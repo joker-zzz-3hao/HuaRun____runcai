@@ -93,12 +93,15 @@
               <el-form-item label="任务时间" prop="timeVal">
                 <el-date-picker
                   :disabled="canEdit"
-                  v-model.trim="formData.timeVal"
+                  v-model.trim="timeVal"
                   type="daterange"
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   value-format="yyyy-MM-dd"
+                  popper-class="tl-range-popper"
+                  class="tl-range-editor"
+                  :clearable="false"
                 >
                   ></el-date-picker
                 >
@@ -283,83 +286,73 @@
         <!-- 右侧 -->
         <div class="task-tab">
           <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
-            <template slot="tab-cont">
-              <div class="tab-cont" v-if="currentIndex === 0">
-                <el-scrollbar>
-                  <div class="tl-custom-timeline">
-                    <dl class="timeline-list">
-                      <dd v-for="item in historyList" :key="item.createTime">
-                        <div class="list-info">
-                          <div class="list-title">{{ item.createTime }}</div>
-                          <div
-                            class="list-cont"
-                            v-for="content in item.contentList"
-                            :key="content.operationId"
-                          >
-                            <div class="operate-type">
-                              <em>{{ content.userName }}</em>
-                              <span v-if="content.contents.operate == 'ADD'"
-                                >添加了</span
-                              >
-                              <span
-                                v-else-if="content.contents.operate == 'SET'"
-                                >设置了</span
-                              >
-                              <span>{{
-                                CONST.FIEID_MAP[content.contents.field]
-                              }}</span>
-                            </div>
-                            <div class="operate-kind">
-                              <span
-                                v-if="content.contents.field == 'taskProgress'"
-                              >
-                                {{ content.contents.value }}%</span
-                              >
-                              <span
-                                v-else-if="
-                                  content.contents.field == 'taskLevel'
-                                "
-                              >
-                                {{
-                                  CONST.PRIORITY_MAP[content.contents.value]
-                                }}</span
-                              >
-                              <span v-else>{{ content.contents.value }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </dd>
-                    </dl>
-                  </div>
-                </el-scrollbar>
-              </div>
-              <div class="tab-cont" v-else>
-                <div class="tl-custom-timeline">
-                  <dl class="timeline-list">
-                    <dd v-for="item in updateList" :key="item.operationId">
-                      <div class="list-info">
-                        <div class="list-title">{{ item.createTime }}</div>
-                        <div class="list-cont">
-                          <div class="operate-type">
-                            <span>操作人：</span>
-                            <em>{{ item.userName }}</em>
-                          </div>
-                          <div class="operate-kind">
-                            <span>更新进度为：</span>
-                            <em>{{ item.contents.value }}%</em>
-                          </div>
-                          <div class="operate-kind">
-                            <span>进度更新进度说明：</span>
-                            <em>{{ item.contents.explain || "暂无" }}</em>
-                          </div>
-                        </div>
-                      </div>
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </template>
           </tl-tabs>
+          <div class="tab-cont" v-if="currentIndex === 0">
+            <div class="tl-custom-timeline">
+              <dl class="timeline-list">
+                <dd v-for="item in historyList" :key="item.createTime">
+                  <div class="list-info">
+                    <div class="list-title">{{ item.createTime }}</div>
+                    <div
+                      class="list-cont"
+                      v-for="content in item.contentList"
+                      :key="content.operationId"
+                    >
+                      <div class="operate-type">
+                        <em>{{ content.userName }}</em>
+                        <span v-if="content.contents.operate == 'ADD'"
+                          >添加了</span
+                        >
+                        <span v-else-if="content.contents.operate == 'SET'"
+                          >设置了</span
+                        >
+                        <span v-else-if="content.contents.operate == 'DELETE'"
+                          >删除了</span
+                        >
+                        <span>{{
+                          CONST.FIEID_MAP[content.contents.field]
+                        }}</span>
+                      </div>
+                      <div class="operate-kind">
+                        <span v-if="content.contents.field == 'taskProgress'">
+                          {{ content.contents.value }}%</span
+                        >
+                        <span v-else-if="content.contents.field == 'taskLevel'">
+                          {{ CONST.PRIORITY_MAP[content.contents.value] }}</span
+                        >
+                        <span v-else>{{ content.contents.value }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <div class="tab-cont" v-else>
+            <div class="tl-custom-timeline">
+              <dl class="timeline-list">
+                <dd v-for="item in updateList" :key="item.operationId">
+                  <div class="list-info">
+                    <div class="list-title">{{ item.createTime }}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <span>操作人：</span>
+                        <em>{{ item.userName }}</em>
+                      </div>
+                      <div class="operate-kind">
+                        <span>更新进度为：</span>
+                        <em>{{ item.contents.value }}%</em>
+                      </div>
+                      <div class="operate-kind">
+                        <span>进度更新进度说明：</span>
+                        <em>{{ item.contents.explain || "暂无" }}</em>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </el-scrollbar>
@@ -439,7 +432,7 @@ export default {
       server,
       formData: {
         taskTitle: '',
-        timeVal: '',
+        timeVal: [],
         taskLevel: 10,
         projectVal: {},
         taskProgressRemark: '',
@@ -447,6 +440,7 @@ export default {
         timeSum: '当前已用时长 0天 0小时 0分',
         attachmentList: [],
       },
+      timeVal: [],
       taskUserId: '', // 原执行人
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
@@ -520,15 +514,10 @@ export default {
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
           if (res.code == 200 && res.data) {
-            console.log(res.data);
             this.formData = res.data;
             this.taskUserId = this.formData.taskUserId;
             if (res.data.taskBegDate) {
-              let taskBegDate = '';
-              let taskEndDate = '';
-              taskBegDate = res.data.taskBegDate.split(' ')[0] || '';
-              taskEndDate = res.data.taskEndDate.split(' ')[0] || '';
-              this.formData.timeVal = [taskBegDate, taskEndDate];
+              this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(res.data.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(res.data.taskEndDate))];
             }
             if (this.formData.createTime) {
               const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
@@ -562,7 +551,6 @@ export default {
                 });
               }
               if (ctime == item.createTime) {
-                console.log(this.historyList);
                 this.historyList[timeCount].contentList.push(item);
               } else {
                 timeCount += 1;
@@ -577,7 +565,6 @@ export default {
                 this.updateList.push(item);
               }
             });
-            console.log('历史', this.historyList);
           }
         });
       }
@@ -598,7 +585,6 @@ export default {
       this.server.queryOkr(params).then((res) => {
         if (res.code == 200) {
           this.okrList = res.data.okrDetails || [];
-          console.log(res.data);
         }
       });
     },
@@ -642,6 +628,7 @@ export default {
         this.timeSum();
       }, 30 * 1000);
     },
+    // 时长计算
     timeSum() {
       if (this.formData.createTime) {
         const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
@@ -660,7 +647,6 @@ export default {
         const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
         this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
         this.$forceUpdate();
-        console.log(this.formData.timeSum);
       } else {
         this.formData.timeSum = '当前已用时长 0天 0小时 0分';
       }
@@ -679,7 +665,7 @@ export default {
     errorHandler() {
       return true;
     },
-    // 文件
+    // --------文件---------
     fileChange(data) {
       this.fileList = data.list;
       console.log(this.fileList);
@@ -714,11 +700,18 @@ export default {
     },
     // 保存任务
     async save() {
-      const checkparams = {
-        userId: this.formData.taskUserId,
-        processId: this.formData.processId,
-      };
-      const checkres = await this.server.checkUserInProcess(checkparams);
+      let checkres = {};
+      if (this.formData.taskUserId && this.formData.processId) {
+        const checkparams = {
+          userId: this.formData.taskUserId,
+          processId: this.formData.processId,
+        };
+        checkres = await this.server.checkUserInProcess(checkparams);
+      } else {
+        checkres.data = {};
+        checkres.data.inProcess = true;
+      }
+
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
@@ -732,9 +725,9 @@ export default {
               this.formData.projectName = projectVal.projectNameCn;
             }
 
-            if (this.formData.timeVal) {
-              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            if (this.timeVal) {
+              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
@@ -820,9 +813,9 @@ export default {
               this.formData.projectName = this.formData.projectVal.projectNameCn;
             }
 
-            if (this.formData.timeVal) {
-              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            if (this.timeVal) {
+              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
