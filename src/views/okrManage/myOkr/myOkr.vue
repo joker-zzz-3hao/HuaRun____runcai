@@ -507,6 +507,7 @@ export default {
               canWrite: 'cannot',
               okrId: this.okrId,
               periodId: this.okrCycle.periodId,
+              periodName: this.okrCycle.periodName,
             };
             this.currentView = 'tl-changeokr';
             this.changeokrExist = true;
