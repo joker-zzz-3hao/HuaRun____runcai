@@ -31,7 +31,7 @@
         </template>
         <template v-if="node.node.add">
           <div @click="addFictitious">
-            <el-cascader-panel
+            <!-- <el-cascader
               v-model="fictitiousOrgId"
               :options="orgData"
               v-show="showSelect"
@@ -41,9 +41,23 @@
                 value: 'orgId',
                 label: 'orgName',
                 children: 'sonTree',
-                expandTrigger: 'hover',
               }"
-            ></el-cascader-panel>
+            ></el-cascader> -->
+            <el-cascader
+              v-model="fictitiousOrgId"
+              ref="cascader"
+              :options="orgData"
+              :show-all-levels="false"
+              :props="{
+                checkStrictly: true,
+                value: 'orgId',
+                label: 'orgName',
+                children: 'sonTree',
+              }"
+              @change="changePanel"
+              popper-class="tl-cascader-popper"
+              class="tl-cascader"
+            ></el-cascader>
             <span>添加虚线汇报组织</span>
           </div>
         </template>
