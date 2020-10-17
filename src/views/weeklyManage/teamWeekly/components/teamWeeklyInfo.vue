@@ -52,7 +52,7 @@
                 min-width="150"
               >
                 <template slot-scope="scope">
-                  <em>{{ scope.row.workDesc }}</em>
+                  <pre class="font-normal">{{ scope.row.workDesc }}</pre>
                 </template>
               </el-table-column>
               <el-table-column width="80" label="进度" prop="workProgress">
@@ -176,7 +176,7 @@
                 <span>收获</span>
               </div>
             </div>
-            <em>{{ item.thoughtContent }}</em>
+            <pre>{{ item.thoughtContent }}</pre>
           </dd>
           <dd v-if="weeklyThoughtList.length < 1" class="no-data">
             <em>本周没有填写感想、建议或者收获！</em>
@@ -184,7 +184,7 @@
         </dl>
         <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
           <dt class="card-title"><em>下周计划</em></dt>
-          <dd>
+          <dd v-if="weeklyPlanList.length > 0">
             <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
               <el-table-column
                 label="序号"
@@ -197,8 +197,8 @@
               ></el-table-column>
             </el-table>
           </dd>
-          <dd v-if="weeklyPlanList.length < 1" class="no-data">
-            <em>您没有写下周计划</em>
+          <dd v-else class="no-data">
+            <em>未填写下周计划</em>
           </dd>
         </dl>
         <dl class="dl-card-panel okr-completion">
