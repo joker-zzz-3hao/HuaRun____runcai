@@ -11,8 +11,9 @@
         <dd>
           <span>所属部门</span>
           <em v-if="baseInfo.orgParentName">{{
-            `${baseInfo.orgParentName} - ${baseInfo.orgName}`
+            `${baseInfo.orgParentName} - `
           }}</em>
+          <em>{{ baseInfo.orgName }}</em>
         </dd>
         <dd>
           <span>团队负责人</span>
