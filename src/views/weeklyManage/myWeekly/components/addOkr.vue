@@ -15,8 +15,8 @@
     <el-scrollbar>
       <div class="cont-box">
         <dl class="dl-list">
-          <dt class="list-title">
-            <em>团队目标</em>
+          <dt class="list-title operating-area-inside">
+            <em>部门目标</em>
             <el-select
               v-model="orgPeriodId"
               placeholder="请选择周期"
@@ -53,7 +53,7 @@
             </el-radio-group>
           </dd>
           <dd class="tag-kind" v-if="thisPageOrgOkrList.length < 1">
-            暂无可承接的团队目标
+            暂无可支撑的OKR
           </dd>
         </dl>
         <dl class="dl-list">
@@ -95,7 +95,7 @@
             </el-radio-group>
           </dd>
           <dd class="tag-kind" v-if="thisPageMyOkrList.length < 1">
-            暂无可承接的个人目标
+            暂无可支撑的OKR
           </dd>
         </dl>
         <dl class="dl-list">
@@ -308,14 +308,6 @@ export default {
             this.orgOkr = [okr];
           }
         }
-        //  for (const okr of this.orgOkrList) {
-        //     if (item.okrDetailId == okr.okrDetailId) {
-        //       // 反显
-        //       this.orgSelectData = okr.okrDetailId;
-        //       // 赋值已选项
-        //       this.orgOkr = [okr];
-        //     }
-        //   }
         // 匹配价值观
         for (const culture of this.cultureList) {
           if (item.okrDetailId == culture.id) {
@@ -329,7 +321,6 @@ export default {
           }
         }
       }
-
       this.$forceUpdate();
     },
     // 选择关联的okr

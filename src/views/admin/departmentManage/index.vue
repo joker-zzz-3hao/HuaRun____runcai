@@ -83,7 +83,7 @@
         >
           <div class="tree-title" slot-scope="{ node, data }">
             <em>{{ node.label }}</em>
-            <el-dropdown>
+            <el-dropdown v-show="showMenuOption(date)">
               <span class="el-dropdown-link">
                 <i class="el-icon-more el-icon--right"></i>
               </span>
@@ -329,6 +329,11 @@ export default {
   },
   created() {
     this.init();
+  },
+  computed: {
+    showMenuOption() {
+      return true;
+    },
   },
   methods: {
     showAddRoule() {
