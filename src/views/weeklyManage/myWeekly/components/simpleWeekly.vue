@@ -217,7 +217,7 @@
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
-        请在工作项中支撑OKR，以便于调整OKR完成度
+        当工作项中的任务支撑OKR，才能修改相关OKR完成度
       </dd>
       <dd
         class="undertake-okr-list"
@@ -664,7 +664,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
@@ -703,7 +703,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
@@ -801,7 +801,7 @@ export default {
         workId: '',
         workIndex: 0,
         workProgress: '',
-        workTime: '',
+        workTime: 0.5,
         selectedOkr: [],
         workOkrList: [],
         okrCultureValueList: [],

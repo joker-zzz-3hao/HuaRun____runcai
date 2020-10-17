@@ -86,9 +86,12 @@
                 <div>改进措施</div>
                 <div>
                   <div v-for="(li, d) in list.measure || []" :key="d">
-                    <em>
-                      {{ li }}
-                    </em>
+                    <el-input
+                      type="textarea"
+                      placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                      :value="li"
+                    ></el-input>
+
                     <el-button type="text" @click="deletedProduce(index, i, d)"
                       >删除</el-button
                     >

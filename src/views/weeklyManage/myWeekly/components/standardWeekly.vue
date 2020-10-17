@@ -282,17 +282,10 @@
             'is-disabled': formData.weeklyThoughtSaveList.length == 1,
           }"
           effect="dark"
-          :content="
-            formData.weeklyThoughtSaveList.length > 1
-              ? '删除'
-              : '至少有一条感想或者建议或者收获'
-          "
+          :content="'删除'"
           placement="top"
           popper-class="tl-tooltip-popper"
-          @click.native="
-            formData.weeklyThoughtSaveList.length > 1 &&
-              deleteThoughts(item.randomId)
-          "
+          @click.native="deleteThoughts(item.randomId)"
         >
           <i class="el-icon-minus"></i>
         </el-tooltip>
@@ -312,10 +305,8 @@
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>下周计划</em></dt>
-      <dd v-if="formData.weeklyPlanSaveList.length < 1" class="no-data">
-        <em>本周未填写下周计划</em>
-      </dd>
-      <dd>
+
+      <dd v-if="formData.weeklyPlanSaveList.length > 0">
         <el-form :model="formData" class="tl-form">
           <el-table
             v-loading="tableLoading"
@@ -339,6 +330,20 @@
                     placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
                   ></el-input>
+                  <el-tooltip
+                    v-if="canUpdate"
+                    class="icon-clear"
+                    :class="{
+                      'is-disabled': formData.weeklyPlanSaveList.length == 1,
+                    }"
+                    effect="dark"
+                    :content="'删除'"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                    @click.native="deletePlanItem(scope.row)"
+                  >
+                    <i class="el-icon-minus"></i>
+                  </el-tooltip>
                   <!-- 编辑完之后 -->
                   <em v-else>{{ scope.row.planContent }}</em>
                 </el-form-item>
@@ -346,6 +351,9 @@
             </el-table-column>
           </el-table>
         </el-form>
+      </dd>
+      <dd v-else class="no-data">
+        <em>本周未填写下周计划</em>
       </dd>
       <dd v-if="canUpdate">
         <div class="btn-box">
@@ -364,7 +372,7 @@
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
-        请在工作项中支撑OKR，以便于调整OKR完成度
+        当工作项中的任务支撑OKR，才能修改相关OKR完成度
       </dd>
       <dd
         class="undertake-okr-list"
@@ -833,7 +841,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               workOkrList: [],
               okrCultureValueList: [],
@@ -875,7 +883,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               workOkrList: [],
               okrCultureValueList: [],
@@ -995,7 +1003,7 @@ export default {
         workId: '',
         workIndex: 0,
         workProgress: '',
-        workTime: '',
+        workTime: 0.5,
         selectedOkr: [],
         workOkrList: [],
         okrCultureValueList: [],

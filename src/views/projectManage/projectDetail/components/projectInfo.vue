@@ -35,6 +35,7 @@
           }}</span
         >
       </div>
+      <div><el-button @click="closeProject">结束项目</el-button></div>
     </div>
     <div>
       <div style="display: flex">
@@ -192,6 +193,22 @@ export default {
         }).then((res) => {
           if (res.code == 200) {
             this.searchProject();
+          }
+        });
+      });
+    },
+    closeProject() {
+      this.$xconfirm({
+        title: '结束项目',
+        content: '确定结束该项目吗?结束后将不可进行管理。',
+      }).then(() => {
+        this.server.closeProject({
+          projectId: this.$route.query.projectId || '',
+        }).then((res) => {
+          if (res.code == '200') {
+            this.$router.push({
+              name: 'projectManage',
+            });
           }
         });
       });

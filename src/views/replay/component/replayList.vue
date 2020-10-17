@@ -1,15 +1,14 @@
 <template>
-  <div class="organize-management">
+  <div class="menu-manage">
     <div class="operating-area">
       <div class="operating-box">
-        <div class="flex-auto">
-          <el-form class="tl-form" label-width="110px">
+        <div class="operating-box">
+          <el-form label-width="110px" :inline="true" class="tl-form-inline">
             <el-form-item label="周期">
               <el-select
                 v-model.trim="periodId"
                 placeholder="用户类型"
                 :popper-append-to-body="false"
-                clearable
                 @change="okrReviewList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
@@ -66,8 +65,8 @@
         :pageSize.sync="pageSize"
         @searchList="okrReviewList"
       >
-        <div slot="tableContainer">
-          <el-table :data="tableData" class="tl-table">
+        <div slot="tableContainer" class="table-container">
+          <el-table :data="tableData" style="width: 100%">
             <el-table-column
               prop="userName"
               label="姓名"
@@ -147,7 +146,7 @@
                       },
                     })
                   "
-                  >复盘</el-button
+                  >待复盘</el-button
                 >
                 <el-button
                   type="text"
