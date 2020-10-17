@@ -27,7 +27,11 @@
           <span>团队综合管理员</span>
           <em v-if="baseInfo.teamManager">{{ baseInfo.teamManager }}</em>
           <em v-else>未设置</em>
-          <el-button plain @click="setManager" class="tl-btn btn-lineheight"
+          <el-button
+            v-if="userInfo.userId == baseInfo.userId"
+            plain
+            @click="setManager"
+            class="tl-btn btn-lineheight"
             >编辑团队综合管理员</el-button
           >
           <span>提示：团队综合管理员可以协助团队负责人完成OKR审批等工作</span>
@@ -443,7 +447,7 @@ export default {
         configItemCode: data,
       }).then((res) => {
         if (res.code == '200') {
-          // this.$message.success(res.msg);
+          this.$message.success(res.msg);
         }
       });
     },

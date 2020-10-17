@@ -185,7 +185,7 @@ export default {
             userId: item.userId,
           }).then((res) => {
             if (res.code == '200') {
-              if (res.data) {
+              if (!res.data) {
                 this.dataForm.tableData.push(item);
               }
             }
