@@ -83,6 +83,7 @@
             <em v-for="p in searchCreateUser" :key="p">{{ userMap[p] }}</em>
             <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
           </dd>
+          <dd v-if="accept !== null">{{ accept }}</dd>
         </dl>
         <dl
           class="condition-lists tag-lists"
@@ -136,7 +137,7 @@
             :class="{ 'is-selected': accept === false }"
             @click="changeAccept(false)"
           >
-            未确认
+            待确认
           </dd>
         </dl>
         <dl
