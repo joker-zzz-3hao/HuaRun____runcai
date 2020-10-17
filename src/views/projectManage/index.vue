@@ -37,7 +37,7 @@
             <el-table-column
               prop="projectNameCn"
               label="项目名称"
-              min-width="140"
+              min-width="180"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectNameCn">{{
@@ -49,17 +49,17 @@
             <el-table-column
               prop="projectManager"
               label="项目经理"
-              min-width="180"
+              min-width="160"
             ></el-table-column>
             <el-table-column
               prop="projectBudget"
               label="项目总预算(万)"
-              min-width="180"
+              min-width="120"
             ></el-table-column>
             <el-table-column
               prop="projectCurrency"
               label="币种"
-              min-width="120"
+              min-width="100"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectCurrency">{{
@@ -71,12 +71,12 @@
             <el-table-column
               prop="projectBeginDate"
               label="开始时间"
-              min-width="180"
+              min-width="120"
             ></el-table-column>
             <el-table-column
               prop="projectEndDate"
               label="结束时间"
-              min-width="180"
+              min-width="120"
             >
             </el-table-column>
             <el-table-column
@@ -137,7 +137,7 @@
             <el-table-column
               prop="projectUserCount"
               label="项目成员(位)"
-              min-width="180"
+              min-width="120"
             ></el-table-column>
 
             <el-table-column fixed="right" label="操作" width="80">
