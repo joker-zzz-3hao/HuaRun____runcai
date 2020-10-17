@@ -7,9 +7,10 @@
       title="添加成员"
       :close-on-click-modal="false"
     >
+      <span>成员:</span>
       <el-select
         v-model="keyword"
-        placeholder="请输入关键词"
+        placeholder="请输入成员姓名"
         filterable
         reserve-keyword
         :remote-method="filterMembers"

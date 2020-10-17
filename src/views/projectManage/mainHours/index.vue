@@ -205,7 +205,7 @@ export default {
       this.server.timeSheetList({
         projectId: this.formData.projectId,
         approvalStatus: this.formData.approvalStatus,
-        approvalUser: this.userInfo.userId,
+        approvalUser: this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
           this.tableData = res.data;

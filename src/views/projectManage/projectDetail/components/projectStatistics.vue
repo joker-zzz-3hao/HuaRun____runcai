@@ -25,7 +25,7 @@
           <el-table-column prop="timeSheet" label="合计工时" min-width="120">
           </el-table-column>
           <el-table-column
-            prop="submitTime"
+            prop="createDate"
             label="加入项目时间"
             min-width="180"
           >

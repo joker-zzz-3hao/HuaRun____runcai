@@ -121,7 +121,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="项目日期" prop="projectDate">
+        <el-form-item label="项目周期" prop="projectDate">
           <el-date-picker
             v-model="formData.projectDate"
             type="daterange"
@@ -191,7 +191,7 @@ export default {
           { required: true, message: '请选择投入类型', trigger: 'change' },
         ],
         projectDate: [
-          { required: true, message: '请选择项目日期', trigger: 'change' },
+          { required: true, message: '请选择项目周期', trigger: 'change' },
         ],
         orgIdList: [
           { required: true, message: '请选择申请部门', trigger: 'change' },

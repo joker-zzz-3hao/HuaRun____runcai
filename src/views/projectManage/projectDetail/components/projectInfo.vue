@@ -52,7 +52,7 @@
             <el-table :data="baseInfo.projectUserVoList" class="tl-table">
               <el-table-column prop="userName" label="姓名" min-width="140">
                 <template slot-scope="scope">
-                  <div class="user-info">
+                  <div class="user-info" @click="setManager(scope.row)">
                     <img
                       v-if="scope.row.headUrl"
                       :src="scope.row.headUrl"
@@ -66,13 +66,14 @@
                       }}</em>
                     </div>
                   </div>
-                  <span>{{ scope.row.userName }}</span>
+                  <div class="user-name-txt" @click="setManager(scope.row)">
+                    <em>{{ scope.row.userName }}</em>
+                  </div>
                   <template>
-                    <span v-if="scope.row.projectUserType == '1'">(经理)</span>
                     <span
+                      v-if="scope.row.projectUserType == '1'"
                       @click="setManager(scope.row)"
-                      v-else-if="scope.row.projectUserType == '0'"
-                      >(普通员工)</span
+                      >(项目经理)</span
                     >
                   </template>
                 </template>
@@ -99,9 +100,10 @@
                   <span v-else>--</span>
                 </template>
               </el-table-column>
-              <el-table-column fixed="right" label="操作" width="180">
+              <el-table-column fixed="right" label="操作" width="100">
                 <template slot-scope="scope">
                   <el-button
+                    v-if="scope.row.projectUserType != '1'"
                     @click="deleteMember(scope.row)"
                     type="text"
                     class="tl-btn"
@@ -195,27 +197,29 @@ export default {
       });
     },
     setManager(data) {
-      let managerName = '';
-      this.baseInfo.projectUserVoList.forEach((item) => {
-        if (item.projectUserType == '1') {
-          managerName = item.userName;
-        }
-      });
-      this.$xconfirm({
-        title: '设置项目经理',
-        content: `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`,
-      }).then(() => {
-        this.server.setProjectManager({
-          userId: data.userId,
-          projectId: data.projectId,
-        }).then((res) => {
-          if (res.code == '200') {
-            this.$router.push({
-              name: 'projectManage',
-            });
+      if (data.projectUserType == '0') {
+        let managerName = '';
+        this.baseInfo.projectUserVoList.forEach((item) => {
+          if (item.projectUserType == '1') {
+            managerName = item.userName;
           }
         });
-      });
+        this.$xconfirm({
+          title: '设置项目经理',
+          content: `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`,
+        }).then(() => {
+          this.server.setProjectManager({
+            userId: data.userId,
+            projectId: data.projectId,
+          }).then((res) => {
+            if (res.code == '200') {
+              this.$router.push({
+                name: 'projectManage',
+              });
+            }
+          });
+        });
+      }
     },
     addMembers() {
       this.showAddMember = true;
