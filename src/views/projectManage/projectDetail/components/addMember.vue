@@ -26,13 +26,6 @@
           :value="item.userId"
         >
           <dl class="user-info">
-            <dt>
-              <!-- 这里如果用户上传了图片 则调取上传图片 -->
-              <img v-if="false" :src="item.headUrl" alt />
-              <div v-else-if="item.userName" class="user-name">
-                <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
-              </div>
-            </dt>
             <dd>{{ item.userName }}</dd>
             <dd>{{ item.orgName }}</dd>
           </dl>
@@ -120,10 +113,21 @@
           </el-form>
         </div>
       </tl-crcloud-table>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
         <el-button type="primary" @click="addMembers">确 定</el-button>
-      </span>
+      </span> -->
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addMembers" class="tl-btn amt-bg-slip"
+          >确定</el-button
+        >
+        <el-button
+          plain
+          @click="visible = false"
+          class="tl-btn amt-border-fadeout"
+          >取消</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>

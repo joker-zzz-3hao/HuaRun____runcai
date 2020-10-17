@@ -59,21 +59,16 @@
               :value="item.userAccount"
             >
               <dl class="user-info">
-                <dt>
-                  <!-- 这里如果用户上传了图片 则调取上传图片 -->
-                  <img v-if="false" :src="item.headUrl" alt />
-                  <div v-else-if="item.userName" class="user-name">
-                    <em>{{
-                      item.userName.substring(item.userName.length - 2)
-                    }}</em>
-                  </div>
-                </dt>
                 <dd>{{ item.userName }}</dd>
                 <dd>{{ item.orgName }}</dd>
               </dl>
             </el-option>
           </el-select>
-          <el-select v-model="formData.userLevel" placeholder="请选择级别">
+          <el-select
+            v-model="formData.userLevel"
+            placeholder="请选择级别"
+            class="tl-select"
+          >
             <el-option
               v-for="item in CONST.LEVEL_LIST"
               :key="item.value"
@@ -119,9 +114,14 @@
             controls-position="right"
             :min="0"
             :max="50000000"
+            class="tl-input-number"
           ></el-input-number>
           万
-          <el-select v-model="formData.currency" placeholder="请选择币种">
+          <el-select
+            v-model="formData.currency"
+            placeholder="请选择币种"
+            class="tl-select"
+          >
             <el-option
               v-for="item in CONST.CURRENCY_LIST"
               :key="item.value"
@@ -144,11 +144,22 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item prop="sortIndex">
+        <!-- <el-form-item prop="sortIndex">
           <el-button :loading="loading" @click="createManage">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="createManage"
+          class="tl-btn amt-bg-slip"
+          >确定</el-button
+        >
+        <el-button plain @click="cancel" class="tl-btn amt-border-fadeout"
+          >取消</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -278,7 +289,9 @@ export default {
     closed() {
       this.visible = false;
     },
-    cancel() {},
+    cancel() {
+      this.closed();
+    },
     changeDate(data) {
       if (data && data.length > 0) {
         this.formData.startDate = data[0] || '';

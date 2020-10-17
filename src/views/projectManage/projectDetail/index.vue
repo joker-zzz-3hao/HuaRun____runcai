@@ -3,8 +3,8 @@
     <div class="operating-area">
       <el-button @click="backProjectManage">返回</el-button>
     </div>
-    <div>
-      <el-tabs v-model="projectTab" @tab-click="handleClick">
+    <div class="worth-manage">
+      <el-tabs v-model="projectTab" @tab-click="handleClick" class="tl-tabs">
         <el-tab-pane label="项目信息" name="1">
           <tl-project-info
             :server="server"
