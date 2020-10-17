@@ -35,12 +35,20 @@
           }}</span
         >
       </div>
-      <div><el-button @click="closeProject">结束项目</el-button></div>
+      <div>
+        <el-button plain class="tl-btn" @click="closeProject"
+          >结束项目</el-button
+        >
+      </div>
     </div>
     <div>
       <div style="display: flex">
         <div>项目成员</div>
-        <div><el-button @click="addMembers">添加成员</el-button></div>
+        <div>
+          <el-button plain class="tl-btn" @click="addMembers"
+            >添加成员</el-button
+          >
+        </div>
       </div>
       <div>
         <tl-crcloud-table
