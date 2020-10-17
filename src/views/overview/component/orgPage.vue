@@ -61,38 +61,6 @@
           :expands="expands"
         ></tl-okr-table>
       </div>
-      <div class="card-panel-body img-list" v-if="orgUser.length > 0">
-        <div>团队成员：</div>
-        <dl
-          v-for="(item, index) in orgUser"
-          :key="item.userId + index"
-          @click="getidentity(item)"
-        >
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <div class="user-name">
-              <em>{{ cutName(item.userName) }}</em>
-            </div>
-          </dt>
-          <dd>{{ item.userName }}</dd>
-        </dl>
-      </div>
-      <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-        <div>下级部门：</div>
-        <dl
-          v-for="(item, index) in orgTable"
-          :key="item.orgId + index"
-          @click="getidentity(item)"
-        >
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <div class="user-name">
-              <em>{{ cutName(item.orgName) }}</em>
-            </div>
-          </dt>
-          <dd>{{ item.orgName }}</dd>
-        </dl>
-      </div>
     </template>
 
     <template v-else>
@@ -115,16 +83,49 @@
           })
         "
         class="tl-btn amt-bg-slip"
+        :class="'button-overview'"
         >去创建OKR</el-button
       >
     </template>
+    <div class="card-panel-body img-list" v-if="orgUser.length > 0">
+      <div>团队成员：</div>
+      <dl
+        v-for="(item, index) in orgUser"
+        :key="item.userId + index"
+        @click="getidentity(item)"
+      >
+        <dt class="user-info">
+          <img v-if="item.headUrl" :src="item.headUrl" alt />
+          <div class="user-name" v-else>
+            <em>{{ cutName(item.userName) }}</em>
+          </div>
+        </dt>
+        <dd>{{ item.userName }}</dd>
+      </dl>
+    </div>
+    <div class="card-panel-body img-list" v-if="orgTable.length > 0">
+      <div>下级部门：</div>
+      <dl
+        v-for="(item, index) in orgTable"
+        :key="item.orgId + index"
+        @click="getidentity(item)"
+      >
+        <dt class="user-info">
+          <img v-if="item.headUrl" :src="item.headUrl" alt />
+          <div class="user-name" v-else>
+            <em>{{ cutName(item.orgName) }}</em>
+          </div>
+        </dt>
+        <dd>{{ item.orgName }}</dd>
+      </dl>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
 import okrTable from '@/components/okrTableLittle';
-import Bus from '../departleader/bus';
+
 import Server from '../server';
 import CONST from '../const';
 import { okrData, okrDataTeam, okrUser } from '../testData';
@@ -260,9 +261,10 @@ export default {
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-      this.$nextTick(() => {
-        Bus.$emit('getOrgTable', this.orgTable);
-      });
+
+      // this.$nextTick(() => {
+      //   Bus.$emit('getOrgTable', this.orgTable);
+      // });
 
       this.showLoad = true;
       this.fullscreenLoading = false;
@@ -341,3 +343,9 @@ export default {
   },
 };
 </script>
+<style  scoped>
+.button-overview {
+  margin: 50px auto;
+  display: block;
+}
+</style>

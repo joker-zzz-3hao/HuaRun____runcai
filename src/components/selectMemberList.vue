@@ -48,7 +48,12 @@
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
                   <div class="user-name" v-else>{{ checkName(item.name) }}</div>
                 </div>
-                <em>{{ item.name }}</em>
+                <el-tooltip
+                  :content="'LDAP账号：' + item.userAccount"
+                  placement="top"
+                >
+                  <em>{{ item.name }}</em>
+                </el-tooltip>
               </el-checkbox>
               <div v-else class="flex-sb">
                 <em>{{ item.name }}</em>
@@ -71,7 +76,7 @@
           <ul class="txt-list">
             <li v-for="(item, index) in roulelist" :key="index">
               <div class="img-user">
-                <img v-if="rouleType" src="@/assets/images/user/user.jpg" alt />
+                <img v-if="false" src="@/assets/images/user/user.jpg" alt />
                 <div class="user-name" v-else>
                   {{ checkName(item.userName) }}
                 </div>
@@ -234,6 +239,7 @@ export default {
         this.data = res.data.map((item) => ({
           id: item.userId,
           name: item.userName,
+          orgId: item.orgId,
           parentId: item.orgId,
           type: 'USER',
         }));

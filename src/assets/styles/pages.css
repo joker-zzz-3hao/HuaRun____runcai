@@ -3384,6 +3384,18 @@
   flex: 1;
 }
 
+.set-fictitious .el-drawer__body {
+  width: 800px;
+}
+
+.set-fictitious .draw-area {
+  width: 800px;
+}
+
+.set-fictitious #svg01 {
+  width: 800px !important;
+}
+
 /* =========================================================租户管理================================================================== */
 /* 部门管理 */
 .organize-management .operating-area .operating-box {
