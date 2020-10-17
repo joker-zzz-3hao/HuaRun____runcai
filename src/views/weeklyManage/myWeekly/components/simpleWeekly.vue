@@ -354,17 +354,18 @@
       <dt class="card-title"><em>本周心情</em></dt>
       <dd>
         <span>
-          请选择本周心情
-          <el-button @click="setEmotion(100)">有收获</el-button>
+          本周心情
+          <el-button @click="weeklyEmotion = 100">有收获</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
             >有收获</span
           >
-          <el-button @click="setEmotion(50)">还行吧</el-button>
+          <el-button @click="weeklyEmotion = 50">还行吧</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="setEmotion(0)">让我静静</el-button>
+          <el-button @click="weeklyEmotion = 0">让我静静</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
             >让我静静</span
           >
+          <span v-if="showEmotionError">请选择本周心情</span>
         </span>
       </dd>
     </dl>
@@ -521,7 +522,8 @@ export default {
       server,
       CONST,
       canUpdate: !this.weeklyData.weeklyId,
-      weeklyEmotion: '100',
+      weeklyEmotion: '',
+      showEmotionError: false,
       weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
       currenItemrandomId: '',
@@ -610,6 +612,7 @@ export default {
         }
       };
     },
+
   },
   methods: {
     init() {
@@ -888,6 +891,10 @@ export default {
         weeklyOkrSaveList: this.weeklyOkrSaveList,
         weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
       };
+      if (!this.weeklyEmotion) {
+        this.showEmotionError = true;
+        return;
+      }
       this.$refs.formDom.validate((valid) => {
         if (valid) {
           this.server.commitWeekly(params).then((res) => {
@@ -906,9 +913,7 @@ export default {
         }
       });
     },
-    setEmotion(type) {
-      this.weeklyEmotion = type;
-    },
+
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
       return h('div', [// h即为cerateElement的简写
@@ -1060,6 +1065,13 @@ export default {
         this.$forceUpdate();
       },
       deep: true,
+    },
+    weeklyEmotion: {
+      handler(value) {
+        if (value || value == 0) {
+          this.showEmotionError = false;
+        }
+      },
     },
   },
 };

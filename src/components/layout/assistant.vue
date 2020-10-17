@@ -6,9 +6,14 @@
     </el-popover>-->
     <img @click="showDia" src="~@/assets/images/demoPic/helpicon.png" />
     <div v-if="showDialog">
-      <el-dialog append-to-body @close="close" :visible="showDialog">
+      <el-dialog
+        :close-on-click-modal="false"
+        append-to-body
+        @close="close"
+        :visible="showDialog"
+      >
         <div>Hello {{ userInfo.userName }}</div>
-        <div>您可以在这给你的同事发送提醒或待办任务哦~</div>
+        <div>您可以在这给你的同事发送提醒或任务哦~</div>
         <el-form ref="asistant" :model="formData" label-width="80px">
           <el-form-item
             label="发送类型"
@@ -39,6 +44,8 @@
               @visible-change="visibleChange"
               clearable
               @change="userChange"
+              popper-class="tl-select-dropdown set-manage"
+              class="tl-select"
             >
               <el-option
                 v-for="item in userList"
@@ -46,22 +53,16 @@
                 :label="item.userName"
                 :value="item.userId"
               >
-                <span style="float: left">
-                  <el-avatar
-                    :size="30"
-                    :src="item.headUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="item.userName" class="user-name">
-                      <em>{{
-                        item.userName.substring(item.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar>
-                </span>
-                <span style="float: left; marginleft: 5px">{{
-                  item.userName
-                }}</span>
+                <dl>
+                  <dd>
+                    <em>{{ item.userName }}</em>
+                    <em>{{ `(${item.userAccount})` }}</em>
+                    <!-- <el-checkbox
+                      v-model="item.checkStatus"
+                      class="tl-checkbox"
+                    ></el-checkbox> -->
+                  </dd>
+                </dl>
               </el-option>
             </el-select>
           </el-form-item>
@@ -100,7 +101,7 @@
             v-if="formData.noticeType == '1' || formData.noticeType == '3'"
             ><el-input
               v-model="formData.noticeContent"
-              maxlength="100"
+              maxlength="1000"
               type="textarea"
               :placeholder="
                 formData.noticeType == '1'
@@ -113,7 +114,7 @@
 
         <div>
           <el-button @click="sendMessage">
-            <i class="el-icon-position"></i> 发送内容
+            <i class="el-icon-position"></i> 发送
           </el-button>
         </div>
       </el-dialog>
@@ -151,7 +152,7 @@ export default {
         },
         {
           noticeType: '2',
-          name: '待办',
+          name: '任务',
         },
         // {
         //   noticeType: '3',
