@@ -47,25 +47,39 @@
               </template>
             </el-table-column>
             <el-table-column
+              prop="projectManager"
+              label="项目经理"
+              min-width="180"
+            ></el-table-column>
+             <el-table-column
+              prop="projectBudget"
+              label="项目总预算(万)"
+              min-width="180"
+            ></el-table-column>
+             <el-table-column
+              prop="projectCurrency"
+              label="币种"
+              min-width="120"
+            ></el-table-column>
+            <el-table-column
+              prop="projectBeginDate"
+              label="开始时间"
+              min-width="180"
+            ></el-table-column>
+            <el-table-column
+              prop="projectEndDate"
+              label="结束时间"
+              min-width="180"
+            >
+            </el-table-column>
+            <el-table-column
               prop="projectApplyDepName"
-              label="所在部门"
+              label="申请部门"
               min-width="160"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectApplyDepName">{{
                   scope.row.projectApplyDepName
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="projectStatus"
-              label="项目状态"
-              min-width="120"
-            >
-              <template slot-scope="scope">
-                <span v-if="scope.row.projectStatus">{{
-                  CONST.PROJECT_STATUS_MAP[scope.row.projectStatus]
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -78,6 +92,18 @@
               <template slot-scope="scope">
                 <span v-if="scope.row.projectType">{{
                   CONST.PROJECT_TYPE_MAP[scope.row.projectType]
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="projectStatus"
+              label="项目状态"
+              min-width="120"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.projectStatus">{{
+                  CONST.PROJECT_STATUS_MAP[scope.row.projectStatus]
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -100,33 +126,14 @@
               min-width="180"
             >
             </el-table-column>
-            <el-table-column
-              prop="projectBeginDate"
-              label="开始时间"
-              min-width="180"
-            ></el-table-column>
-            <el-table-column
-              prop="projectEndDate"
-              label="结束时间"
-              min-width="180"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="projectBudget"
-              label="项目总预算(万)"
-              min-width="180"
-            ></el-table-column>
+
             <el-table-column
               prop="projectUserCount"
-              label="项目成员"
+              label="项目成员(位)"
               min-width="180"
             ></el-table-column>
-            <el-table-column
-              prop="projectManager"
-              label="项目经理"
-              min-width="180"
-            ></el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+
+            <el-table-column fixed="right" label="操作" width="80">
               <template slot-scope="scope">
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
