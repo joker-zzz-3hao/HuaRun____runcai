@@ -22,31 +22,45 @@
         <el-form-item
           label="用户名称"
           prop="userName"
-          :rules="[{required:true,message:'请填写用户名称',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请填写用户名称', trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.userName" maxlength="50" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.userName"
+            maxlength="50"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="用户账号"
           prop="userAccount"
-          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateAccount, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.userAccount" maxlength="50" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.userAccount"
+            maxlength="50"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           :label="pwdLabel"
           prop="newPwd"
-          :rules="[{required:true,validator:validatePwd,trigger:'blur'}]"
+          :rules="[{ required: true, validator: validatePwd, trigger: 'blur' }]"
         >
           <el-input
-            :disabled="!isEditPwd "
+            :disabled="!isEditPwd"
             v-model.trim="formData.newPwd"
             show-password
             clearable
-            style="width:90%"
+            style="width: 90%"
           ></el-input>
-          <el-button v-if="!isEditPwd " @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd " @click="cancelEditPwd">取消</el-button>
+          <el-button v-if="!isEditPwd" @click="editPwd">修改密码</el-button>
+          <el-button v-if="isEditPwd" @click="cancelEditPwd">取消</el-button>
         </el-form-item>
         <!-- <el-form-item
         v-if="isEditPwd"
@@ -61,47 +75,94 @@
           label="确认密码"
           prop="confirmPwd"
           :rules="[
-          {required:true,validator: validateNewConfirmPwd,trigger:'blur'}]"
+            {
+              required: true,
+              validator: validateNewConfirmPwd,
+              trigger: 'blur',
+            },
+          ]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.confirmPwd"
+            show-password
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="手机号"
           prop="userMobile"
-          :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
+          :rules="[
+            {
+              required: true,
+              validator: validateInsideMobile,
+              trigger: 'blur',
+            },
+          ]"
         >
-          <el-input v-model.trim="formData.userMobile" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.userMobile"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="电子邮箱"
           prop="userMail"
-          :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateEmail, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.userMail" clearable style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.userMail"
+            clearable
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item label="所属租户">
-          <el-input v-model.trim="formData.tenantName" disabled style="width:90%"></el-input>
+          <el-input
+            v-model.trim="formData.tenantName"
+            disabled
+            style="width: 90%"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="所在部门"
           prop="orgIdList"
-          :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
+          :rules="[{ required: true, message: '请选择部门', trigger: 'blur' }]"
         >
           <el-cascader
             ref="cascader"
             v-model="formData.orgIdList"
             :options="treeData"
             :show-all-levels="false"
-            :props="{ checkStrictly: true, expandTrigger: 'click',value:'orgId',label:'orgName',children:'sonTree' }"
+            :props="{
+              checkStrictly: true,
+              expandTrigger: 'click',
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+            }"
             @change="selectIdChange"
-            style="width:90%"
+            style="width: 90%"
           ></el-cascader>
         </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="saveUser">确定</el-button>
-      <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="cancel">取消</el-button>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :loading="loading"
+        @click="saveUser"
+        >确定</el-button
+      >
+      <el-button
+        class="tl-btn amt-border-fadeout"
+        :disabled="loading"
+        @click="cancel"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>
@@ -178,7 +239,7 @@ export default {
   methods: {
     init() {
       this.server.getUserInfo({ userId: this.userId }).then((res) => {
-        if (res.code == 200) {
+        if (res.code == 200 && res.data) {
           this.formData.userName = res.data.userName;
           this.formData.userAccount = res.data.userAccount;
           this.initUserAccount = res.data.userAccount;

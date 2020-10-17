@@ -1094,8 +1094,6 @@ export default {
           item.supportMyOkrObj = selectedData.supportMyOkrObj;
         }
       }
-
-      this.showAddOkr = false;
       this.$forceUpdate();
     },
     addThisWeekWork() {
@@ -1207,8 +1205,6 @@ export default {
       this.$forceUpdate();
     },
     workTimeChange(row) {
-      console.log(row);
-
       this.formData.weeklyWorkVoSaveList.forEach((work) => {
         if (row.randomId == work.randomId) {
           // 数据转换为0.5单位
@@ -1216,7 +1212,7 @@ export default {
           if (tempArr.length > 1) { // 有小数位
             // if (tempArr[1].length == 1) {
             // work.workTime.toFixed();
-            if (tempArr[1] != 5) { //  大于5
+            if (tempArr[1] != 5) { // 小数点后不为5
               work.workTime = Number(work.workTime).toFixed(0);
             }
             // }

@@ -72,6 +72,8 @@ export default {
     validateAccount(rule, value, callback) {
       if (!value) {
         callback('请输入账号');
+      } else if (!/^[a-z][a-z0-9\-_]*$/i.test(value)) {
+        callback('只能输入英文字母、数字、短横线和下划线');
       } else if (this.server.judgeUser && value != this.initUserAccount) {
         this.server.judgeUser({
           userAccount: value,

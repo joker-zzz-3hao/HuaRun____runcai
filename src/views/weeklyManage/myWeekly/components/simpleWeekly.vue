@@ -878,7 +878,7 @@ export default {
           item.supportMyOkrObj = selectedData.supportMyOkrObj;
         }
       }
-      this.showAddOkr = false;
+      // this.showAddOkr = false;
       this.$forceUpdate();
     },
     commitWeekly() {
@@ -963,7 +963,7 @@ export default {
           if (tempArr.length > 1) { // 有小数位
             // if (tempArr[1].length == 1) {
             // work.workTime.toFixed();
-            if (tempArr[1] != 5) { //  大于5
+            if (tempArr[1] != 5) { //  小数点后不为5
               work.workTime = Number(work.workTime).toFixed(0);
             }
             // }
