@@ -265,7 +265,11 @@
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" label="创建人">
+            <el-table-column
+              min-width="100px"
+              align="left"
+              label="创建人/创建时间"
+            >
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -298,10 +302,34 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="userName" label="当前执行人">
+            <el-table-column
+              align="left"
+              prop="userName"
+              label="当前执行人/起止时间"
+            >
               <template slot-scope="scope">
                 <div>
-                  <span>{{ scope.row.userName || "无执行人" }}</span>
+                  <p>
+                    <i class="el-icon-user"></i>
+                    <span>{{ scope.row.userName || "无执行人" }}</span>
+                  </p>
+                  <p>
+                    <i class="el-icon-date"></i>
+                    <span v-if="scope.row.taskBegDate"
+                      >{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskBegDate)
+                        )
+                      }}~{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskEndDate)
+                        )
+                      }}</span
+                    >
+                    <span v-else>未设置起止时间</span>
+                  </p>
                 </div>
               </template>
             </el-table-column>
