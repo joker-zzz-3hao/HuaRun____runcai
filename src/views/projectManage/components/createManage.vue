@@ -73,6 +73,15 @@
               </dl>
             </el-option>
           </el-select>
+          <el-select v-model="formData.userLevel" placeholder="请选择级别">
+            <el-option
+              v-for="item in CONST.LEVEL_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="项目类型" prop="projectType">
           <el-select
@@ -231,20 +240,30 @@ export default {
           const projectManagerObj = this.projectManagerList.filter(
             (item) => item.userId == this.formData.projectManager,
           ) || [];
+          const throwTypeObj = this.CONST.THROW_TYPE_LIST.filter(
+            (item) => item.value == this.formData.throwType,
+          ) || [];
+          const projectTypeObj = this.CONST.PROJECT_TYPE_LIST.filter(
+            (item) => item.value == this.formData.projectType,
+          ) || [];
+          const currencyObj = this.CONST.CURRENCY_LIST.filter(
+            (item) => item.value == this.formData.currency,
+          ) || [];
           this.server.createProject({
             projectNameCn: this.formData.projectName,
             projectDescription: this.formData.projectDesc,
             projectManagerCode: this.formData.projectManager,
-            projectManager: projectManagerObj.length > 0 ? projectManagerObj.userName : this.formData.projectManager,
-            projectType: this.formData.projectType,
+            projectManager: projectManagerObj.length > 0 ? projectManagerObj[0].userName : this.formData.projectManager,
+            projectType: projectTypeObj.length > 0 ? projectTypeObj[0].label : this.formData.projectType,
             projectTypeCode: this.formData.projectType,
-            projectInputType: this.formData.throwType,
+            projectInputType: throwTypeObj.length > 0 ? throwTypeObj[0].label : this.formData.throwType,
             projectInputTypeCode: this.formData.throwType,
             projectBudget: this.formData.totalBudget,
-            projectCurrency: this.formData.currency,
+            projectCurrency: currencyObj.length > 0 ? currencyObj[0].label : this.formData.currency,
             projectCurrencyCode: this.formData.currency,
             projectBeginDate: this.formData.startDate,
             projectEndDate: this.formData.endDate,
+            userLevel: this.formData.userLevel,
             projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
             if (res.code == '200') {

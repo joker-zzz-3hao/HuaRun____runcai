@@ -51,12 +51,12 @@
               label="项目经理"
               min-width="180"
             ></el-table-column>
-             <el-table-column
+            <el-table-column
               prop="projectBudget"
               label="项目总预算(万)"
               min-width="180"
             ></el-table-column>
-             <el-table-column
+            <el-table-column
               prop="projectCurrency"
               label="币种"
               min-width="120"
