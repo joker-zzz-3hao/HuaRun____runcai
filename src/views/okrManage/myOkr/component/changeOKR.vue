@@ -158,7 +158,7 @@
         :showPhil="undertakeType == 'new'"
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
-        :periodName="okrPeriod.periodName"
+        :periodName="writeInfo.periodName"
         :currentOption="okrParentId"
         :server="server"
       ></tl-undertaketable>
