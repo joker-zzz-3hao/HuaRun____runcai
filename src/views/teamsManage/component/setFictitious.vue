@@ -15,6 +15,9 @@
       </div>
       <el-scrollbar>
         <div class="cont-box">
+          <div class="tips-info">
+            提示：如果您与对方团队的负责人沟通好之后，可以直接设置该成员的虚线汇报关系。
+          </div>
           <tl-svgtree
             fatherId="parentId"
             childId="userId"
@@ -58,7 +61,7 @@ export default {
     },
     drawerTitle: {
       type: String,
-      default: '设置虚拟汇报',
+      default: '设置虚线汇报',
     },
   },
   data() {

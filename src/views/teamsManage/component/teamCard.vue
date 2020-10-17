@@ -33,7 +33,7 @@
       <div class="icon-bg-big">
         <i class="el-icon-plus"></i>
       </div>
-      <span>创建虚拟团队</span>
+      <span>创建虚拟组织</span>
     </div>
   </div>
 </template>
