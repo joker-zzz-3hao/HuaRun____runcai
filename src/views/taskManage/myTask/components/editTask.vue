@@ -66,6 +66,8 @@
                   v-model.trim="formData.taskUserId"
                   placeholder="添加执行人"
                   filterable
+                  popper-class="tl-select-dropdown set-manage"
+                  class="tl-select"
                   remote
                   :remote-method="getUserList"
                 >
@@ -75,18 +77,18 @@
                     :label="item.userName"
                     :value="item.userId"
                   >
-                    <el-avatar
-                      :size="30"
-                      :src="item.headUrl"
-                      @error="errorHandler"
-                    >
-                      <div v-if="item.userName" class="user-name">
-                        <em>{{
-                          item.userName.substring(item.userName.length - 2)
+                    <dl>
+                      <dd>
+                        <em>{{ item.userName }}</em>
+                        <em v-if="item.userMobile">{{
+                          `(${item.userMobile})`
                         }}</em>
-                      </div>
-                    </el-avatar>
-                    <span>{{ item.userName }}</span>
+                        <el-checkbox
+                          v-model="item.checkStatus"
+                          class="tl-checkbox"
+                        ></el-checkbox>
+                      </dd>
+                    </dl>
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -726,8 +728,8 @@ export default {
             }
 
             if (this.timeVal) {
-              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
+              this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
+              this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
@@ -814,8 +816,8 @@ export default {
             }
 
             if (this.timeVal) {
-              this.formData.taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
-              this.formData.taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
+              this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
+              this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
@@ -840,6 +842,23 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timedInterval);
+  },
+  watch: {
+    'formData.taskUserId': {
+      handler(newVal) {
+        if (newVal) {
+          this.userList.forEach((item) => {
+            if (newVal == item.userId) {
+              item.checkStatus = true;
+            } else {
+              item.checkStatus = false;
+            }
+          });
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 };
 </script>

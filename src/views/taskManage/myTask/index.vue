@@ -270,11 +270,7 @@
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-            <el-table-column
-              min-width="150px"
-              align="left"
-              label="创建人/创建时间"
-            >
+            <el-table-column min-width="150px" align="left" label="创建信息">
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -288,7 +284,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="taskStatus" label="任务状态">
+            <el-table-column align="left" prop="taskStatus" label="状态">
               <template slot-scope="scope">
                 <div v-if="scope.row.processName && scope.row.stepName">
                   <span>{{ scope.row.processName }}</span>
@@ -311,7 +307,7 @@
               min-width="150px"
               align="left"
               prop="userName"
-              label="当前执行人/起止时间"
+              label="执行信息"
             >
               <template slot-scope="scope">
                 <div>

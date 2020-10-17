@@ -39,7 +39,7 @@
               min-width="120px"
               align="left"
               prop="userName"
-              label="创建人/创建时间"
+              label="创建信息"
             >
               <template slot-scope="scope">
                 <div>
@@ -73,11 +73,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              min-width="140px"
-              align="left"
-              label="当前执行人/起止时间"
-            >
+            <el-table-column min-width="140px" align="left" label="执行信息">
               <template slot-scope="scope">
                 <div>
                   <p>
