@@ -177,9 +177,8 @@ export default {
         }
       });
     },
-    cancel(data) {
-      console.log(data);
-      this.showSelectMember = false;
+    cancel() {
+      this.showSelectMembers = false;
     },
     closed() {
       this.showEditTeam = false;
