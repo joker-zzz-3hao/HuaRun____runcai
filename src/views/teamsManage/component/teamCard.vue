@@ -19,14 +19,12 @@
       <dd class="user-name-txt">
         <span>{{ node.node.orgType == "0" ? "实体组织" : "虚拟组织" }}</span>
         <em>{{ node.node.orgName }}</em>
-      </dd>
-      <dd v-if="node.node.orgType == '1'" class="is-operational">
-        <div class="icon-bg">
+        <div class="icon-bg" v-if="node.node.orgType == '1'">
           <i class="el-icon-edit-outline" @click.stop="editTeam"></i>
         </div>
-        <div class="icon-bg">
-          <i class="el-icon-close" @click.stop="deleteTeam"></i>
-        </div>
+      </dd>
+      <dd v-if="node.node.orgType == '1'" class="icon-bg is-close">
+        <i class="el-icon-close" @click.stop="deleteTeam"></i>
       </dd>
     </dl>
     <div v-else @click.stop="addTeam" class="icon-txt-group">

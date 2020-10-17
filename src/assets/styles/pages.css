@@ -3264,6 +3264,7 @@
 .teams-manage .maps-card .user-name-txt em,
 .set-fictitious .maps-card .user-info + em,
 .set-fictitious .maps-card .user-name-txt em {
+  flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -3304,13 +3305,15 @@
   justify-content: center;
 }
 
-.teams-manage .maps-card .is-operational {
-  margin: 20px 0 0 0;
+.teams-manage .maps-card .icon-bg {
+  margin: 0 0 0 10px;
+  cursor: pointer;
 }
 
-.teams-manage .maps-card .is-operational .icon-bg {
-  margin: 0 10px;
-  cursor: pointer;
+.teams-manage .maps-card .icon-bg.is-close {
+  position: absolute;
+  right: -10px;
+  top: -10px;
 }
 
 .teams-manage .tl-select .el-input__inner {

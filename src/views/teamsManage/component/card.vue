@@ -1,13 +1,16 @@
 <template>
-  <div class="maps-card">
+  <div
+    class="maps-card"
+    :class="{ 'is-center': !node.node.orgType && node.node.userName }"
+  >
     <dl>
       <dt>
         <template v-if="!node.node.orgType && node.node.userName">
           <div class="user-info">
             <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
-            <div v-else-if="node.node.orgLeader" class="user-name">
+            <div v-else-if="node.node.userName" class="user-name">
               <em>{{
-                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+                node.node.userName.substring(node.node.userName.length - 2)
               }}</em>
             </div>
           </div>
@@ -59,10 +62,12 @@
         </template>
       </dt>
       <dd class="user-name-txt">
-        <span>{{
-          node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
-        }}</span>
-        <em>{{ node.node.orgName ? node.node.orgName : "未加入虚拟组织" }}</em>
+        <template v-if="node.node.orgType == '0' || node.node.orgType == '1'">
+          <span>{{
+            node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
+          }}</span>
+          <em>{{ node.node.orgName }}</em>
+        </template>
       </dd>
       <dd
         v-if="node.node.orgType == '1'"
