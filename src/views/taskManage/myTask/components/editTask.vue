@@ -303,6 +303,9 @@
                         <span v-else-if="content.contents.operate == 'SET'"
                           >设置了</span
                         >
+                        <span v-else-if="content.contents.operate == 'DELETE'"
+                          >删除了</span
+                        >
                         <span>{{
                           CONST.FIEID_MAP[content.contents.field]
                         }}</span>
