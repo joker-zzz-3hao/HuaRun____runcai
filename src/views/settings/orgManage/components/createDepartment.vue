@@ -10,21 +10,29 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      :title="departOptionType=='create'?'创建部门':'编辑部门'"
+      :title="departOptionType == 'create' ? '创建部门' : '编辑部门'"
       :close-on-click-modal="false"
     >
       <el-form ref="departForm" :model="formData" label-width="80px">
         <el-form-item
           label="部门名称"
           prop="orgName"
-          :rules="[{required:true,message:'请填写部门名称',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请填写部门名称', trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.orgName" clearable></el-input>
+          <el-input
+            maxlength="50"
+            v-model.trim="formData.orgName"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="上级部门"
           prop="orgParentId"
-          :rules="[{required:true,message:'请选择上级部门',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请选择上级部门', trigger: 'blur' },
+          ]"
         >
           <el-cascader
             v-model="formData.orgParentId"
@@ -32,21 +40,28 @@
             :options="treeData"
             :show-all-levels="false"
             node-key="orgId"
-            :props="{ checkStrictly: true, value:'orgId',label:'orgName',children:'sonTree',emitPath:false  }"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+              emitPath: false,
+            }"
             @change="selectIdChange"
           ></el-cascader>
         </el-form-item>
         <el-form-item
           label="序号"
           prop="orgSort"
-          :rules="[{required:true,message:'请填写序号',trigger:'blur'}]"
+          :rules="[{ required: true, message: '请填写序号', trigger: 'blur' }]"
         >
           <el-input-number
             v-model.trim="formData.orgSort"
             controls-position="right"
             :min="1"
             :max="1000"
-          ></el-input-number>（用于部门显示顺序）
+          ></el-input-number
+          >（用于部门显示顺序）
         </el-form-item>
         <el-form-item prop="orgSort">
           <el-button :loading="loading" @click="saveDepart">确定</el-button>

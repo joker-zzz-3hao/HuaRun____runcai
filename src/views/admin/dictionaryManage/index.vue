@@ -3,18 +3,27 @@
     <div class="operating-area">
       <div class="page-title">数据字典管理</div>
       <div class="operating-box">
-        <el-form v-if="hasPower('sys-dictionary-list')" ref="ruleForm" :inline="true" class="tl-form-inline">
+        <el-form
+          v-if="hasPower('sys-dictionary-list')"
+          ref="ruleForm"
+          :inline="true"
+          class="tl-form-inline"
+        >
           <el-form-item>
             <el-input
               v-model="keyWord"
               placeholder="输入字典编号/名称"
               maxlength="50"
               class="tl-input-search"
-              @keyup.enter.native="searchList"
+              @keyup.enter.native="searchList('newPage')"
               clearable
               @clear="clear"
             >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+              <i
+                class="el-icon-search"
+                slot="prefix"
+                @click="searchList('newPage')"
+              ></i>
             </el-input>
           </el-form-item>
         </el-form>
@@ -91,10 +100,18 @@
               label="操作"
             >
               <template slot-scope="scope">
-                <el-button v-if="hasPower('sys_dictionary_update')" type="text" @click="editDic(scope.row)" size="small"
+                <el-button
+                  v-if="hasPower('sys_dictionary_update')"
+                  type="text"
+                  @click="editDic(scope.row)"
+                  size="small"
                   >修改</el-button
                 >
-                <el-button v-if="hasPower('sys-dictionary-detail')" type="text" @click="info(scope.row)" size="small"
+                <el-button
+                  v-if="hasPower('sys-dictionary-detail')"
+                  type="text"
+                  @click="info(scope.row)"
+                  size="small"
                   >详情</el-button
                 >
                 <el-button
@@ -172,11 +189,15 @@ export default {
     this.searchList();
   },
   methods: {
-    searchList(params = { currentPage: 1 }) {
+    searchList(page) {
+      const params = {};
       if (this.hasPower('sys-dictionary-list')) {
         params.currentPage = this.currentPage;
         params.pageSize = this.pageSize;
         params.keyWord = this.keyWord;
+        if (page == 'newPage') {
+          params.currentPage = 1;
+        }
         this.loading = true;
         this.server.queryOfPage(params).then((res) => {
           if (res.code == 200) {

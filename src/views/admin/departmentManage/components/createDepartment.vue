@@ -21,7 +21,11 @@
             { required: true, message: '请填写部门名称', trigger: 'blur' },
           ]"
         >
-          <el-input v-model.trim="formData.orgName" clearable></el-input>
+          <el-input
+            maxlength="50"
+            v-model.trim="formData.orgName"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="上级部门"

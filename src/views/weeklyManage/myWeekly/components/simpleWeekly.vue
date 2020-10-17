@@ -878,7 +878,6 @@ export default {
           item.supportMyOkrObj = selectedData.supportMyOkrObj;
         }
       }
-      // this.showAddOkr = false;
       this.$forceUpdate();
     },
     commitWeekly() {
