@@ -43,6 +43,8 @@
                 children: 'sonTree',
                 expandTrigger: 'hover',
               }"
+              popper-class="tl-cascader-popper"
+              class="tl-cascader"
             ></el-cascader-panel>
             <span>添加虚线汇报组织</span>
           </div>

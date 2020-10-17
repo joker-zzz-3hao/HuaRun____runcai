@@ -3245,6 +3245,11 @@
   margin: 0 20px 0 0;
 }
 
+.teams-manage .maps-card,
+.set-fictitious .maps-card {
+  min-height: 112px;
+}
+
 .teams-manage .maps-card dt,
 .set-fictitious .maps-card dt {
   margin: 0;
@@ -3301,7 +3306,8 @@
   justify-content: center;
 }
 
-.teams-manage .maps-card .icon-bg {
+.teams-manage .maps-card .icon-bg,
+.set-fictitious .maps-card .icon-bg {
   margin: 0 0 0 10px;
   cursor: pointer;
 }
@@ -3398,15 +3404,7 @@
 }
 
 .set-fictitious .el-drawer__body {
-  width: 1100px;
-}
-
-.set-fictitious .draw-area {
-  width: 800px;
-}
-
-.set-fictitious #svg01 {
-  width: 800px !important;
+  width: 1264px;
 }
 
 .set-fictitious .tips-info {
@@ -3423,6 +3421,10 @@
   display: flex;
   align-items: center;
   min-height: 112px;
+}
+
+.set-fictitious .draw-area {
+  width: unset;
 }
 
 /* =========================================================租户管理================================================================== */
