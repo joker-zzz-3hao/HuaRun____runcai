@@ -16,7 +16,7 @@
         <div v-for="item in tableData" :key="item.id" style="display: flex;">
           <div class="header-class">{{item.cultureName}}</div>
           <div class="header-class">{{item.cultureDesc}}</div>
-          <div class="header-class">{{item.updateTime}}</div>
+          <div class="header-class">{{item.updateTime || item.createTime}}</div>
           <div class="header-class">
             <el-button @click="createOrEdit('1',item)" type="text" class="tl-btn">编辑</el-button>
             <el-button @click="deleteWorth(item)" type="text" class="tl-btn">删除</el-button>

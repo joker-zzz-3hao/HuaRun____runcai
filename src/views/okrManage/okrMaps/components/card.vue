@@ -2,14 +2,19 @@
   <div class="maps-card">
     <div @click.stop="goDetail(node.node.okrId)">
       <dl class="okr-info">
-        <dd>{{ node.node.periodName }}</dd>
+        <dd class="card-tag">
+          <em>{{ node.node.periodName }}</em>
+        </dd>
         <dt>
+          <span>主要目标：</span>
           <em>{{ node.node.okrDetailObjectKr }}</em>
+          <span>等</span>
         </dt>
         <dd class="tag-kind">
           <!-- <span class="kind-child">KR</span> -->
-          <span>关键成果</span>
+          <span>关键成果数：</span>
           <em>{{ node.node.krCount }}</em>
+          <span>个</span>
         </dd>
       </dl>
       <tl-process

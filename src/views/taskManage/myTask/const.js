@@ -33,6 +33,10 @@ const FIEID_MAP = {
   processId: '归属任务过程',
   projectId: '归属项目',
   taskUserId: '执行人',
+  taskBegDate: '任务开始时间',
+  taskEndDate: '任务结束时间',
+  taskDesc: '任务描述',
+  attachment: '附件',
 };
 export default {
   PRIORITY_LIST,

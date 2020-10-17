@@ -1337,6 +1337,34 @@
   background: #f4f6f8;
 }
 
+.okr-maps .maps-card .okr-info dt span:first-child {
+  flex: 0 0 70px;
+}
+
+.okr-maps .maps-card .okr-info dt em {
+  margin: 0 10px 0 0;
+  width: unset;
+}
+
+.okr-maps .maps-card .card-tag {
+  margin: 0 0 10px 0;
+}
+
+.okr-maps .maps-card .tag-kind span:first-child {
+  color: #879099;
+  font-size: 12px;
+}
+
+.okr-maps .maps-card .tag-kind span:last-child {
+  margin: 0 0 0 4px;
+}
+
+.okr-maps .maps-card .department-info .btn-lineheight {
+  width: unset;
+  background: #f2f5f7;
+  color: #7a828a;
+}
+
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
@@ -3330,7 +3358,7 @@
 }
 
 .set-manage .tl-select .el-input.is-focus .el-input__inner {
-  color: #685df1;
+  border-color: #685df1;
 }
 
 .set-manage .el-select-dropdown__item {
@@ -3352,7 +3380,7 @@
   justify-content: space-between;
 }
 
-.set-manage .el-select-dropdown__item dd span:last-of-type {
+.set-manage .el-select-dropdown__item dd em:last-of-type {
   flex: 1;
 }
 

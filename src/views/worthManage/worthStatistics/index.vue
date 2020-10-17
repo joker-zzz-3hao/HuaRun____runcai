@@ -333,6 +333,7 @@ export default {
       this.server.getOrgTable().then((res) => {
         if (res.code == '200') {
           if (res.data) {
+            this.departmentData = [];
             this.departmentData.push(res.data);
             this.formData.orgFullId = this.departmentData[0].orgFullId;
             console.log(this.formData.orgFullId);

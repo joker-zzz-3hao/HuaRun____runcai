@@ -34,7 +34,7 @@
           <span>邮箱：</span>
           <span>{{ userInfo.userMail }}</span>
         </div>
-        <div v-if="userInfo.userType == '2'">
+        <div v-if="userInfo.userType == '2' || userInfo.userType == '0'">
           <el-button type="primary" @click="showSetPassword"
             >修改密码</el-button
           >

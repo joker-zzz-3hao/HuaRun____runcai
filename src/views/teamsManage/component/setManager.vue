@@ -40,19 +40,9 @@
                 :value="item.userId"
               >
                 <dl>
-                  <dt class="user-info">
-                    <div class="user-name">
-                      <img v-if="item.headerUrl" :src="item.headerUrl" alt />
-                      <em>{{
-                        item.userName.substring(item.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </dt>
                   <dd>
-                    <span>{{ item.userName }}</span>
-                    <span v-if="item.userMobile">{{
-                      `(${item.userMobile})`
-                    }}</span>
+                    <em>{{ item.userName }}</em>
+                    <em v-if="item.userMobile">{{ `(${item.userMobile})` }}</em>
                     <el-checkbox
                       v-model="item.checkStatus"
                       class="tl-checkbox"

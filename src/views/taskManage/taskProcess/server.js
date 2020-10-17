@@ -146,4 +146,9 @@ export default class Server extends ServerBase {
   queryProcessStep(param) {
     return this._ajaxPost('gateway/task-service/task/taskProcessStep/queryProcessStep', param);
   }
+
+  // 校验执行人是否在过程中
+  checkUserInProcess(param) {
+    return this._ajaxPost('gateway/task-service/task/checkUserInProcess', param);
+  }
 }

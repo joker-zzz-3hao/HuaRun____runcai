@@ -6,12 +6,12 @@
     <div v-for="(arr, index) in levels" :key="index">
       <!-- 通过left和top控制每个节点位置 -->
       <div
-        v-for="(v,index) in arr"
+        v-for="(v, index) in arr"
         v-show="!v.parent || v.parent.open"
         class="vnode"
-        v-bind:class="{pnode: v.children && v.children.length > 0}"
+        v-bind:class="{ pnode: v.children && v.children.length > 0 }"
         :key="index"
-        :style="'left:' + (v.left) + 'px; top:' + (v.top) + 'px'"
+        :style="'left:' + v.left + 'px; top:' + v.top + 'px'"
         @click="toggle(v)"
       >
         <slot name="treecard" :node="v"></slot>
@@ -84,10 +84,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    // 横向时节点块高度
+    // 横向时节点块高度（上下两块的间距）
     blockHeight: {
       type: Number,
-      default: 200,
+      default: 210,
     },
     // 纵向时节点块宽度
     blockWidth: {
@@ -107,9 +107,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 调整线起始点的偏移量
     middlePoint: {
       type: Number,
-      default: 71,
+      default: 83,
     },
   },
   mounted() {

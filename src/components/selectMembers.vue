@@ -1,6 +1,11 @@
 <template>
   <div class="tl-item-cont">
-    <el-input placeholder="输入用户名称/LDAP账号" minlength="64" v-model="keyWord" class="tl-input-search">
+    <el-input
+      placeholder="输入用户名称/LDAP账号"
+      minlength="64"
+      v-model="keyWord"
+      class="tl-input-search"
+    >
       <i class="el-icon-search" slot="prefix"></i>
     </el-input>
     <div class="tl-transfer-select">
@@ -13,9 +18,9 @@
               v-for="item in data"
               :key="item.userId"
             >
-              <div class="img-user" style="display: flex;">
+              <div class="img-user" style="display: flex">
                 <img src="@/assets/images/user/user.jpg" alt />
-                <div>{{`${item.userName}(${item.userAccount})`}}</div>
+                <div>{{ `${item.userName}(${item.userAccount})` }}</div>
               </div>
             </el-checkbox>
           </el-checkbox-group>
