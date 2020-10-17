@@ -12,8 +12,6 @@
         <img
           style="width: 50px; height: 50px; border-radius: 50%"
           :src="okrMain.okrMainVo.headUrl"
-          alt=""
-          srcset=""
         />{{ okrMain.okrMainVo.userName }}
       </div>
       <div class="list">

@@ -106,6 +106,12 @@ export default {
         return {};
       },
     },
+    searchParams: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -131,7 +137,10 @@ export default {
         currentPage: 1,
         pageSize: 10,
         processId: this.processObj.processId,
-        typeId: typeId || '',
+        typeId: typeId || this.searchParams.typeId,
+        taskTitle: this.searchParams.taskTitle || '',
+        taskUserIds: this.searchParams.searchCreator.toString(),
+        createByIds: this.searchParams.searchExecutor.toString(),
       };
       this.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {

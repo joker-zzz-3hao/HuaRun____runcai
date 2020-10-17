@@ -118,6 +118,7 @@
             v-model="formData.totalBudget"
             controls-position="right"
             :min="0"
+            :max="50000000"
           ></el-input-number>
           万
           <el-select v-model="formData.currency" placeholder="请选择币种">

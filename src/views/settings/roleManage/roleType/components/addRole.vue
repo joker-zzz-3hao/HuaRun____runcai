@@ -110,8 +110,8 @@ export default {
         roleCode: [
           { required: true, message: '请输入角色编号', trigger: 'blur' },
           {
-            pattern: /^[0-9a-zA-Z]+$/,
-            message: '请输入数字或者英文字母',
+            pattern: /^[a-zA-Z0-9_]*$/,
+            message: '请输入数字或者英文字母或者下划线',
             trigger: 'blur',
           },
         ],

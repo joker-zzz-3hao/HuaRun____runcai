@@ -30,33 +30,33 @@
       >
         <div slot="tableContainer">
           <el-table ref="taskTable" v-loading="loading" :data="tableData">
-            <el-table-column
-              min-width="100px"
-              align="left"
-              prop="taskTitle"
-              label="任务"
-            >
+            <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
             <el-table-column
-              min-width="100px"
+              min-width="120px"
               align="left"
               prop="userName"
-              label="创建人"
+              label="创建人/创建时间"
             >
               <template slot-scope="scope">
                 <div>
                   <p>
                     <i class="el-icon-user"></i>
-                    <span>{{ scope.row.userName }}</span>
+                    <span>{{ scope.row.createByUserName }}</span>
                   </p>
                   <p>
                     <i class="el-icon-date"></i>
                     <span>{{ scope.row.createTime }}</span>
                   </p>
                 </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="所属分类" prop="typeName">
+              <template slot-scope="scope">
+                <div>{{ scope.row.typeName || "暂无分类" }}</div>
               </template>
             </el-table-column>
             <el-table-column
@@ -73,27 +73,34 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="100px" align="left" label="执行人">
+            <el-table-column
+              min-width="140px"
+              align="left"
+              label="当前执行人/起止时间"
+            >
               <template slot-scope="scope">
-                <div style="cursor: pointer">
-                  <span>
-                    <el-avatar
-                      :size="30"
-                      :src="scope.row.headerUrl"
-                      @error="errorHandler"
+                <div>
+                  <p>
+                    <i class="el-icon-user"></i>
+                    <span>{{ scope.row.userName || "无执行人" }}</span>
+                  </p>
+                  <p>
+                    <i class="el-icon-date"></i>
+                    <span v-if="scope.row.taskBegDate"
+                      >{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskBegDate)
+                        )
+                      }}~{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskEndDate)
+                        )
+                      }}</span
                     >
-                      <div v-if="scope.row.userName" class="user-name">
-                        <em>
-                          {{
-                            scope.row.userName.substring(
-                              scope.row.userName.length - 2
-                            )
-                          }}
-                        </em>
-                      </div>
-                    </el-avatar>
-                  </span>
-                  <span>{{ scope.row.userName }}</span>
+                    <span v-else>未设置起止时间</span>
+                  </p>
                 </div>
               </template>
             </el-table-column>
