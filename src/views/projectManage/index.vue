@@ -60,7 +60,14 @@
               prop="projectCurrency"
               label="币种"
               min-width="120"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.projectCurrency">{{
+                  CONST.CURRENCY_MAP[scope.row.projectCurrency]
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="projectBeginDate"
               label="开始时间"

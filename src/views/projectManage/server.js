@@ -60,4 +60,8 @@ export default class Server extends ServerBase {
   projectUserRelation(param) {
     return this._ajaxPost('gateway/project-service/project/query/queryProjectUserRelation', param);
   }
+
+  closeProject(param) {
+    return this._ajaxPost('gateway/project-service/project/close/project', param);
+  }
 }
