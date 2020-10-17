@@ -10,9 +10,16 @@
     <div class="replay-user">
       <div class="list">
         <img
+          v-if="okrMain.okrMainVo.headUrl"
           style="width: 50px; height: 50px; border-radius: 50%"
           :src="okrMain.okrMainVo.headUrl"
-        />{{ okrMain.okrMainVo.userName }}
+        />
+        <!-- <div class="user-info" v-else>
+          <div class="user-name">
+            {{ cutName(okrMain.okrMainVo.userName) }}
+          </div>
+          {{ okrMain.okrMainVo.userName }}
+        </div> -->
       </div>
       <div class="list">
         <dl class="okr-progress">
@@ -112,6 +119,10 @@ export default {
     this.getOkrReviewHistoryList();
   },
   methods: {
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
     getOkrReviewHistoryList() {
       this.server.getOkrReviewHistoryList({
         okrMainId: this.$route.query.okrId,
