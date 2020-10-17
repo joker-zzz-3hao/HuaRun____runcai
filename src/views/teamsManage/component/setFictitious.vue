@@ -27,6 +27,7 @@
             :middlePoint="cardHight"
             :blockHeight="blockHeight"
             :canOpen="false"
+            :colWidth="500"
           >
             <template slot="treecard" slot-scope="node">
               <tl-card

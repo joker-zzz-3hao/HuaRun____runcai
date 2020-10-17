@@ -117,6 +117,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 横向时左右间距
+    colWidth: {
+      type: Number,
+      default: 400,
+    },
   },
   mounted() {
     if (this.treeData && this.treeData.length > 0) {
@@ -190,7 +195,7 @@ export default {
           const p = keys[v[this.fatherId]]; // p为v的上一级
           if (p) {
             v.deep = p.deep + 1;
-            v.left = this.direction == 'col' ? v.deep * 400 - 0 : 0;
+            v.left = this.direction == 'col' ? v.deep * this.colWidth - 0 : 0;
             v.top = this.direction == 'row' ? v.deep * 250 + 5 : 0; // 纵向 深度*250（块的高度）+ 5（间隔）
             v.open = v.deep < 1; // 除根节点默认open为false
             v.show = v.deep < 2; // 大于2层默认show为false

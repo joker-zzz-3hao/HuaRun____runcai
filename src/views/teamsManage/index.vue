@@ -155,6 +155,7 @@
             :middlePoint="cardHight"
             :blockHeight="blockHeight"
             :canOpen="false"
+            :colWidth="700"
           >
             <template slot="treecard" slot-scope="node">
               <tl-teamCard
@@ -263,8 +264,8 @@ export default {
       rouleType: true,
       disabledList: [],
       baseTeamOrgId: '',
-      cardHight: 50, // 块高度的一半
-      blockHeight: 125,
+      cardHight: 52, // 块高度的一半
+      blockHeight: 150,
     };
   },
   components: {
