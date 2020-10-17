@@ -42,7 +42,6 @@
                 show-checkbox
                 :data="data"
                 :props="{
-                  multiple: true,
                   label: 'functionName',
                   id: 'functionId',
                   children: 'children',
@@ -172,7 +171,9 @@ export default {
           this.form.tenantId = res.data.tenantId;
           this.form.status = res.data.status;
           this.list = res.data.menuItems;
-          this.$refs.treeMenu.setCheckedKeys(res.data.menuItems);
+          this.$nextTick(() => {
+            this.$refs.treeMenu.setCheckedKeys(res.data.menuItems);
+          });
         });
     },
 

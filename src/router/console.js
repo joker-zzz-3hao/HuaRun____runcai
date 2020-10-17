@@ -204,7 +204,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: 'replay',
+      parentRoute: 'myOkr',
       title: 'replay',
       power: '',
     },
@@ -217,7 +217,7 @@ export default [{
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'replayEdit',
+          parentRoute: 'myOkr',
           title: 'replayEdit',
           power: '',
         },
@@ -230,7 +230,7 @@ export default [{
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'replayDetail',
+          parentRoute: 'myOkr',
           title: 'replayDetail',
           power: '',
         },
@@ -242,7 +242,7 @@ export default [{
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'replayLink',
+          parentRoute: 'myOkr',
           title: 'replayLink',
           power: '',
         },
@@ -254,7 +254,7 @@ export default [{
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
-          parentRoute: 'replayList',
+          parentRoute: 'myOkr',
           title: 'replayList',
           power: '',
         },

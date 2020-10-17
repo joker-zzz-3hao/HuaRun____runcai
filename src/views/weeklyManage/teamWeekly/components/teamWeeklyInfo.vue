@@ -32,6 +32,11 @@
             </dl>
             <el-table ref="workTable" :data="weeklyWorkVoList" class="tl-table">
               <el-table-column
+                label="序号"
+                type="index"
+                width="55"
+              ></el-table-column>
+              <el-table-column
                 label="工作项"
                 prop="workContent"
                 min-width="150"
@@ -47,7 +52,7 @@
                 min-width="150"
               >
                 <template slot-scope="scope">
-                  <em>{{ scope.row.workDesc }}</em>
+                  <pre class="font-normal">{{ scope.row.workDesc }}</pre>
                 </template>
               </el-table-column>
               <el-table-column width="80" label="进度" prop="workProgress">
@@ -98,41 +103,6 @@
               </el-table-column>
               <el-table-column label="支持OKR/价值观" min-width="120">
                 <template slot-scope="scope">
-                  <!-- <div
-                    v-if="
-                      scope.row.okrCultureValueList.length > 0 ||
-                      scope.row.workOkrList.length > 0
-                    "
-                  >
-                    <span
-                      style="marginleft: 8px"
-                      v-for="value in scope.row.okrCultureValueList"
-                      :key="value.id"
-                    >
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="value.cultureName"
-                        placement="top-end"
-                      >
-                        <span>{{ setOkrStyle(value.cultureName) }}</span>
-                      </el-tooltip>
-                    </span>
-                    <span
-                      style="marginleft: 8px"
-                      v-for="value in scope.row.workOkrList"
-                      :key="value.id"
-                    >
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="value.okrDetailObjectKr"
-                        placement="top-end"
-                      >
-                        <span>{{ setOkrStyle(value.okrDetailObjectKr) }}</span>
-                      </el-tooltip>
-                    </span>
-                  </div> -->
                   <div
                     class="tag-group"
                     v-if="
@@ -143,6 +113,20 @@
                     <ul class="tag-lists">
                       <li
                         v-for="value in scope.row.okrCultureValueList"
+                        :key="value.id"
+                      >
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ value.cultureName }}</em>
+                          <em>{{ setOkrStyle(value.cultureName) }}</em>
+                        </el-tooltip>
+                      </li>
+                      <li
+                        v-for="value in scope.row.workOkrList"
                         :key="value.id"
                       >
                         <el-tooltip
@@ -192,7 +176,7 @@
                 <span>收获</span>
               </div>
             </div>
-            <em>{{ item.thoughtContent }}</em>
+            <pre>{{ item.thoughtContent }}</pre>
           </dd>
           <dd v-if="weeklyThoughtList.length < 1" class="no-data">
             <em>本周没有填写感想、建议或者收获！</em>
@@ -200,16 +184,21 @@
         </dl>
         <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
           <dt class="card-title"><em>下周计划</em></dt>
-          <dd>
+          <dd v-if="weeklyPlanList.length > 0">
             <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
+              <el-table-column
+                label="序号"
+                type="index"
+                width="55"
+              ></el-table-column>
               <el-table-column
                 label="工作项"
                 prop="planContent"
               ></el-table-column>
             </el-table>
           </dd>
-          <dd v-if="weeklyPlanList.length < 1" class="no-data">
-            <em>您没有写下周计划</em>
+          <dd v-else class="no-data">
+            <em>未填写下周计划</em>
           </dd>
         </dl>
         <dl class="dl-card-panel okr-completion">

@@ -57,7 +57,7 @@
 <script>
 import echarts from 'echarts';
 import { mapState } from 'vuex';
-import Bus from '../bus';
+
 import Server from '../../server';
 import { mainData } from '../../testData';
 
@@ -182,24 +182,35 @@ export default {
       await this.init();
     },
     getqueryMyOkr() {
-      Bus.$once('getOrgTable', (orgTable) => {
-        const orgTableData = this.testModel ? mainData.orkData.data : orgTable;
-        this.$set(this, 'orgTable', orgTableData);
-        this.active = {};
-        this.echartDataY = [];
-        console.log(this.orgTable);
-        this.orgId = this.orgTable[0].orgId;
-        this.$set(this.active, this.orgId, true);
-        this.legendTable = this.orgTable.map((item) => item.orgName);
-        this.getInit(this.orgTable);
+      const ApiName = this.$route.name !== 'grassStaff' ? 'getOrgOkr' : 'getmyOkr';
+      this.server[ApiName]({
+        periodId: this.periodId,
+        status: '1',
+        myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
+        userId: this.$route.name !== 'grassStaff' ? this.$route.query.userId : '',
+        tenantId: this.$route.query.tenantId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
+        type: 'INDEX',
+      }).then((res) => {
+        if (res.code == 200) {
+          const { orgTable } = res.data;
+          const orgTableData = this.testModel ? mainData.orkData.data : orgTable;
+          this.$set(this, 'orgTable', orgTableData);
+          this.active = {};
+          this.echartDataY = [];
 
-        this.$watch('periodId', () => {
-          this.$nextTick(() => {
+          this.orgId = this.orgTable[0].orgId;
+          this.$set(this.active, this.orgId, true);
+          this.legendTable = this.orgTable.map((item) => item.orgName);
+          this.getInit(this.orgTable);
+          this.changIdAction(this.orgTable[0].orgId, 0);
+          this.$watch('periodId', () => {
             this.changIdAction(this.orgTable[0].orgId, 0);
-          });
-        }, { immediate: true });
+          }, { immediate: true });
+        }
       });
     },
+
     getDepartData(orgId) {
       return new Promise((reslove) => {
         this.server.riskStatistics({
@@ -493,3 +504,22 @@ export default {
   },
 };
 </script>
+<style  scoped>
+.data-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.data-list li {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.card-panel-body {
+  flex-direction: column;
+}
+.active {
+  color: #ffbc20;
+}
+</style>

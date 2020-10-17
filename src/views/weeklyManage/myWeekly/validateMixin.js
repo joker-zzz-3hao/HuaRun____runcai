@@ -16,10 +16,12 @@ export default {
     validateTime(rule, value, callback) {
       if (!value) {
         callback('请填写工时');
-      } else if (!/^(\d{1,2}(\.[0-9]{1})?)$|^100$/.test(value)) {
+      } else if (!/^([1-9][0-9]{0,1}|100)(\.\d{1})?$/.test(value)) {
         callback('请保留一位小数');
       } else if (value > 50) {
         callback('工时不能超过50天');
+      } else if (value < 0.5) {
+        callback('最小值为0.5');
       } else {
         callback();
       }
