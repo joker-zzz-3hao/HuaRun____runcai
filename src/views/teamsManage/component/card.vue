@@ -191,13 +191,18 @@ export default {
       }
     },
     deleteFictitious(data) {
-      this.server.updateReportRelation({
-        orgId: data.orgId,
-        userId: data.parentId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$emit('deleteSuccess');
-        }
+      this.$xconfirm({
+        title: '删除确认',
+        content: '是否确认删除该虚线汇报部门?',
+      }).then(() => {
+        this.server.updateReportRelation({
+          orgId: data.orgId,
+          userId: data.parentId,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.$emit('deleteSuccess');
+          }
+        });
       });
     },
   },

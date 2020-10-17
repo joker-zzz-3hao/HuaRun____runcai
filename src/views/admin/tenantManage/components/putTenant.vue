@@ -39,6 +39,7 @@
               <el-tree
                 @check-change="handleCheckChange"
                 ref="treeMenu"
+                :check-strictly="true"
                 show-checkbox
                 :data="data"
                 :props="{

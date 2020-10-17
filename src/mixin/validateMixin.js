@@ -26,7 +26,7 @@ export default {
       } else if (value.length < 8 || value.length > 32) {
         callback('密码长度不够，请输入8-32个字符');
       } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
-        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
+        callback('必须设置以大小写字母、数字和特殊字符~!@#$%^&*()为组合的密码');
       } else if (!/^([0-9a-zA-Z~!@#$%^&*()]*$)/g.test(value)) {
         callback('只支持包含以下特殊字符~!@#$%^&*()');
       } else {

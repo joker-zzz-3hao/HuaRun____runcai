@@ -14,7 +14,7 @@
           <em>{{ node.node.orgLeader }}</em>
           <span>(组织负责人)</span>
         </template>
-        <span v-else>提示：此组织尚未设置负责人</span>
+        <span v-else>提示：该组织尚未设置负责人</span>
       </dt>
       <dd class="user-name-txt">
         <span>{{ node.node.orgType == "0" ? "实体组织" : "虚拟组织" }}</span>
