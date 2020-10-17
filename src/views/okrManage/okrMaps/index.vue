@@ -15,7 +15,7 @@
               <card
                 :node="node"
                 @showDetail="showDetail(node.node.okrId)"
-                @takeOvierview="takeOvierview(node)"
+                @takeOvierview="takeOvierview"
               ></card>
             </template>
           </svgtree>
@@ -357,7 +357,7 @@ export default {
         this.$refs.okrdetail.showOkrDialog();
       });
     },
-    takeOvierview({ node }) {
+    takeOvierview(node) {
       this.changeTestModel(false);
       this.server.identity({
         orgId: node.orgId,
