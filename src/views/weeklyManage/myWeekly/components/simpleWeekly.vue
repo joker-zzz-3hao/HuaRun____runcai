@@ -878,7 +878,7 @@ export default {
           item.supportMyOkrObj = selectedData.supportMyOkrObj;
         }
       }
-      this.showAddOkr = false;
+      // this.showAddOkr = false;
       this.$forceUpdate();
     },
     commitWeekly() {
@@ -956,27 +956,20 @@ export default {
       this.$forceUpdate();
     },
     workTimeChange(row) {
-      console.log(row);
-      // let workTimeTotal = 0;
-      // this.formData.weeklyWorkVoSaveList.forEach((element) => {
-      //   workTimeTotal += Number(element.workTime);
-      // });
-      // this.formData.weeklyWorkVoSaveList.forEach((work) => {
-      //   if (row.randomId == work.randomId) {
-      //     // 数据转换为0.5单位
-      //     const tempArr = String(work.workTime).split('.');
-      //     if (tempArr.length > 1) { // 有小数位
-      //       if (tempArr[1] > 5) { //  大于5
-      //         work.workTime = Number(tempArr[0]) + 1;
-      //       } else if (tempArr[1] < 5) { // 小于5
-      //         work.workTime = Number(tempArr[0]);
-      //       }
-      //     }
-      //     if (workTimeTotal > 5) {
-      //       work.workTime = 0;
-      //     }
-      //   }
-      // });
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          // 数据转换为0.5单位
+          const tempArr = String(work.workTime).split('.');
+          if (tempArr.length > 1) { // 有小数位
+            // if (tempArr[1].length == 1) {
+            // work.workTime.toFixed();
+            if (tempArr[1] != 5) { //  小数点后不为5
+              work.workTime = Number(work.workTime).toFixed(0);
+            }
+            // }
+          }
+        }
+      });
     },
     changeConfidence() {},
     projectChange(work) {

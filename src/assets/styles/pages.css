@@ -3249,17 +3249,21 @@
   height: 160px;
 }
 
-.teams-manage .maps-card dt {
+.teams-manage .maps-card dt,
+.set-fictitious .maps-card dt {
   margin: 0;
   min-height: 36px;
 }
 
-.teams-manage .maps-card .user-info {
+.teams-manage .maps-card .user-info,
+.set-fictitious .maps-card .user-info {
   margin: 0 10px 0 0;
 }
 
 .teams-manage .maps-card .user-info + em,
-.teams-manage .maps-card .user-name-txt em {
+.teams-manage .maps-card .user-name-txt em,
+.set-fictitious .maps-card .user-info + em,
+.set-fictitious .maps-card .user-name-txt em {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -3269,25 +3273,34 @@
   word-break: break-all;
 }
 
-.teams-manage .maps-card .user-name-txt {
+.teams-manage .maps-card .user-name-txt,
+.set-fictitious .maps-card .user-name-txt {
   margin: 20px 0 0 0;
   justify-content: flex-start;
 }
 
-.teams-manage .maps-card .user-name-txt span {
+.teams-manage .maps-card .user-name-txt span,
+.set-fictitious .maps-card .user-name-txt span {
   margin: 0 20px 0 0;
   padding: 2px 5px;
   background: #f0effe;
   border-radius: 2px;
   color: #685df1;
+  min-width: 56px;
 }
 
-.teams-manage .maps-card .user-name-txt em {
+.set-fictitious .maps-card .user-name-txt span {
+  min-width: 84px;
+}
+
+.teams-manage .maps-card .user-name-txt em,
+.set-fictitious .maps-card .user-name-txt em {
   font-weight: 500;
   font-size: 16px;
 }
 
-.teams-manage .maps-card .user-name-txt + dd {
+.teams-manage .maps-card .user-name-txt + dd,
+.set-fictitious .maps-card .user-name-txt + dd {
   justify-content: center;
 }
 
@@ -3394,6 +3407,16 @@
 
 .set-fictitious #svg01 {
   width: 800px !important;
+}
+
+.set-fictitious .tips-info {
+  color: #bdc5cd;
+}
+
+.set-fictitious .maps-card dt,
+.set-fictitious .maps-card dd {
+  display: flex;
+  align-items: center;
 }
 
 /* =========================================================租户管理================================================================== */

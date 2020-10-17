@@ -258,7 +258,6 @@ export default {
       this.initSelectedData();
     },
     confirm() {
-      this.visible = false;
       this.$emit('closeOkrDialog', {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList],
         selectedOkr: [...this.orgOkr, ...this.personalOkr],
@@ -266,6 +265,7 @@ export default {
         currenItemrandomId: this.currenItemrandomId,
         supportMyOkrObj: this.supportMyOkrObj,
       });
+      this.visible = false;
     },
     close() {
       this.visible = false;
