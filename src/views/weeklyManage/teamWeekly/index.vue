@@ -61,6 +61,8 @@
             :value="item.value"
           ></el-option>
         </el-select>
+
+        <!-- <span>周报状态：</span> -->
         <el-select
           v-model="submitedOrLooked"
           @change="submitedOrLookedChange"
@@ -78,46 +80,6 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <!-- <el-input
-              maxlength="64"
-              @keyup.enter.native="refreshPageList"
-              v-model="formData.queryUserId"
-              placeholder="请输入成员姓名"
-              class="tl-input-search"
-            >
-              <i class="el-icon-search" slot="prefix" @click="refreshPageList"></i>
-              </el-input>-->
-        <!-- <el-select
-          v-model.trim="formData.queryUserId"
-          filterable
-          placeholder="请输入成员姓名"
-          remote
-          :remote-method="remoteMethod"
-          @visible-change="visibleChange"
-          @change="nameChange"
-          clearable
-          popper-class="tl-select-dropdown user-list"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in userList"
-            :key="item.userId"
-            :label="item.userName"
-            :value="item.userId"
-          >
-            <dl class="user-info">
-              <dt>
-                <img v-if="false" :src="item.headUrl" alt />
-                <div v-else-if="item.userName" class="user-name">
-                  <em>{{
-                    item.userName.substring(item.userName.length - 2)
-                  }}</em>
-                </div>
-              </dt>
-              <dd>{{ item.userName }}</dd>
-            </dl>
-          </el-option>
-        </el-select> -->
       </div>
       <crcloud-table
         :total="total"
@@ -515,6 +477,10 @@ export default {
         },
       ],
       submitedOrLookedList: [
+        // {
+        //   value: '',
+        //   label: '全部',
+        // },
         {
           value: '1',
           label: '已查看',

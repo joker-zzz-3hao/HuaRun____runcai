@@ -664,7 +664,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
@@ -703,7 +703,7 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: '',
+              workTime: 0.5,
               selectedOkr: [],
               randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
               workOkrList: [],
@@ -801,7 +801,7 @@ export default {
         workId: '',
         workIndex: 0,
         workProgress: '',
-        workTime: '',
+        workTime: 0.5,
         selectedOkr: [],
         workOkrList: [],
         okrCultureValueList: [],

@@ -32,6 +32,11 @@
             </dl>
             <el-table ref="workTable" :data="weeklyWorkVoList" class="tl-table">
               <el-table-column
+                label="序号"
+                type="index"
+                width="55"
+              ></el-table-column>
+              <el-table-column
                 label="工作项"
                 prop="workContent"
                 min-width="150"
@@ -98,41 +103,6 @@
               </el-table-column>
               <el-table-column label="支持OKR/价值观" min-width="120">
                 <template slot-scope="scope">
-                  <!-- <div
-                    v-if="
-                      scope.row.okrCultureValueList.length > 0 ||
-                      scope.row.workOkrList.length > 0
-                    "
-                  >
-                    <span
-                      style="marginleft: 8px"
-                      v-for="value in scope.row.okrCultureValueList"
-                      :key="value.id"
-                    >
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="value.cultureName"
-                        placement="top-end"
-                      >
-                        <span>{{ setOkrStyle(value.cultureName) }}</span>
-                      </el-tooltip>
-                    </span>
-                    <span
-                      style="marginleft: 8px"
-                      v-for="value in scope.row.workOkrList"
-                      :key="value.id"
-                    >
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="value.okrDetailObjectKr"
-                        placement="top-end"
-                      >
-                        <span>{{ setOkrStyle(value.okrDetailObjectKr) }}</span>
-                      </el-tooltip>
-                    </span>
-                  </div> -->
                   <div
                     class="tag-group"
                     v-if="
@@ -143,6 +113,20 @@
                     <ul class="tag-lists">
                       <li
                         v-for="value in scope.row.okrCultureValueList"
+                        :key="value.id"
+                      >
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ value.cultureName }}</em>
+                          <em>{{ setOkrStyle(value.cultureName) }}</em>
+                        </el-tooltip>
+                      </li>
+                      <li
+                        v-for="value in scope.row.workOkrList"
                         :key="value.id"
                       >
                         <el-tooltip
@@ -202,6 +186,11 @@
           <dt class="card-title"><em>下周计划</em></dt>
           <dd>
             <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
+              <el-table-column
+                label="序号"
+                type="index"
+                width="55"
+              ></el-table-column>
               <el-table-column
                 label="工作项"
                 prop="planContent"
