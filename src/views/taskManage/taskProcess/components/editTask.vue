@@ -288,36 +288,43 @@
                 <el-scrollbar>
                   <div class="tl-custom-timeline">
                     <dl class="timeline-list">
-                      <dd v-for="item in historyList" :key="item.operationId">
+                      <dd v-for="item in historyList" :key="item.createTime">
                         <div class="list-info">
                           <div class="list-title">{{ item.createTime }}</div>
-                          <div class="list-cont">
+                          <div
+                            class="list-cont"
+                            v-for="content in item.contentList"
+                            :key="content.operationId"
+                          >
                             <div class="operate-type">
-                              <em>{{ item.userName }}</em>
-                              <span v-if="item.contents.operate == 'ADD'"
+                              <em>{{ content.userName }}</em>
+                              <span v-if="content.contents.operate == 'ADD'"
                                 >添加了</span
                               >
-                              <span v-else-if="item.contents.operate == 'SET'"
+                              <span
+                                v-else-if="content.contents.operate == 'SET'"
                                 >设置了</span
                               >
                               <span>{{
-                                CONST.FIEID_MAP[item.contents.field]
+                                CONST.FIEID_MAP[content.contents.field]
                               }}</span>
                             </div>
                             <div class="operate-kind">
                               <span
-                                v-if="item.contents.field == 'taskProgress'"
+                                v-if="content.contents.field == 'taskProgress'"
                               >
-                                {{ item.contents.value }}%</span
+                                {{ content.contents.value }}%</span
                               >
                               <span
-                                v-else-if="item.contents.field == 'taskLevel'"
+                                v-else-if="
+                                  content.contents.field == 'taskLevel'
+                                "
                               >
                                 {{
-                                  CONST.PRIORITY_MAP[item.contents.value]
+                                  CONST.PRIORITY_MAP[content.contents.value]
                                 }}</span
                               >
-                              <span v-else>{{ item.contents.value }}</span>
+                              <span v-else>{{ content.contents.value }}</span>
                             </div>
                           </div>
                         </div>
@@ -446,6 +453,7 @@ export default {
       userList: [], // 执行人列表
       processList: [], // 过程列表
       showRemark: false,
+      historyallList: [],
       historyList: [],
       updateList: [],
       fileList: [],
@@ -539,16 +547,37 @@ export default {
               const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
               this.formData.timeSum = `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
             }
-            this.historyList = res.data.operationList || [];
+            this.historyallList = res.data.operationList || [];
             this.updateList = [];
-            this.historyList.forEach((item) => {
+            let ctime = '';
+            let timeCount = 0;
+            this.historyallList.forEach((item, index) => {
               // 操作历史
               item.contents = JSON.parse(item.remark);
+              if (index == 0) {
+                ctime = item.createTime;
+                this.historyList.push({
+                  createTime: ctime,
+                  contentList: [],
+                });
+              }
+              if (ctime == item.createTime) {
+                console.log(this.historyList);
+                this.historyList[timeCount].contentList.push(item);
+              } else {
+                timeCount += 1;
+                ctime = item.createTime;
+                this.historyList.push({
+                  createTime: ctime,
+                  contentList: [item],
+                });
+              }
               // 进度更新
               if (item.operationType == 'taskProgress') {
                 this.updateList.push(item);
               }
             });
+            console.log('历史', this.historyList);
           }
         });
       }
@@ -684,33 +713,46 @@ export default {
       }
     },
     // 保存任务
-    save() {
+    async save() {
+      const checkparams = {
+        userId: this.formData.taskUserId,
+        processId: this.formData.processId,
+      };
+      const checkres = await this.server.checkUserInProcess(checkparams);
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
-          const projectVal = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0] || {};
-          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-          this.formData.userName = userVal.userName;
-          if (projectVal) {
-            this.formData.projectId = projectVal.projectId;
-            this.formData.projectName = projectVal.projectNameCn;
-          }
-
-          if (this.formData.timeVal) {
-            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-          }
-          if (this.fileList.length > 0) {
-            this.formData.attachmentList.push(...this.fileList);
-          }
-          this.server.saveTask(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('保存成功');
-              this.close();
-              this.$emit('success');
+          if (checkres.data.inProcess) {
+            const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+            const projectVal = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0] || {};
+            this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+            this.formData.userName = userVal.userName;
+            if (projectVal) {
+              this.formData.projectId = projectVal.projectId;
+              this.formData.projectName = projectVal.projectNameCn;
             }
-          });
+
+            if (this.formData.timeVal) {
+              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            }
+            if (this.fileList.length > 0) {
+              this.formData.attachmentList.push(...this.fileList);
+            }
+            this.server.saveTask(this.formData).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('保存成功');
+                this.close();
+                this.$emit('success');
+              }
+            });
+          } else {
+            const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
+            this.$xconfirm({
+              content: '',
+              title: `执行人「${userVal.userName}」无任务过程「${processVal.processName}」的使用权限，请重新选择或在「过程管理」中为其添加权限`,
+            });
+          }
         }
       });
     },
@@ -756,36 +798,49 @@ export default {
         }
       });
     },
-    summitAssign() {
+    async summitAssign() {
+      if (!this.formData.taskUserId) {
+        this.$message.error('请选择执行人');
+        return;
+      }
+      const checkparams = {
+        userId: this.formData.taskUserId,
+        processId: this.formData.processId,
+      };
+      const checkres = await this.server.checkUserInProcess(checkparams);
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          if (!this.formData.taskUserId) {
-            this.$message.error('请选择执行人');
-            return;
-          }
-          const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
-          this.formData.okrDetailName = okrVal.okrDetailObjectKr;
-          this.formData.userName = userVal.userName;
-          if (this.formData.projectVal) {
-            this.formData.projectId = this.formData.projectVal.projectId;
-            this.formData.projectName = this.formData.projectVal.projectNameCn;
-          }
-
-          if (this.formData.timeVal) {
-            this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-            this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
-          }
-          if (this.fileList.length > 0) {
-            this.formData.attachmentList.push(...this.fileList);
-          }
-          this.server.appointSave(this.formData).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('指派成功');
-              this.$emit('success');
-              this.close();
+          if (checkres.data.inProcess) {
+            const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
+            this.formData.okrDetailName = okrVal.okrDetailObjectKr;
+            this.formData.userName = userVal.userName;
+            if (this.formData.projectVal) {
+              this.formData.projectId = this.formData.projectVal.projectId;
+              this.formData.projectName = this.formData.projectVal.projectNameCn;
             }
-          });
+
+            if (this.formData.timeVal) {
+              this.formData.taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
+              this.formData.taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+            }
+            if (this.fileList.length > 0) {
+              this.formData.attachmentList.push(...this.fileList);
+            }
+            this.server.appointSave(this.formData).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('指派成功');
+                this.$emit('success');
+                this.close();
+              }
+            });
+          } else {
+            const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
+            this.$xconfirm({
+              content: '',
+              title: `执行人「${userVal.userName}」无任务过程「${processVal.processName}」的使用权限，请重新选择或在「过程管理」中为其添加权限`,
+            });
+          }
         }
       });
     },

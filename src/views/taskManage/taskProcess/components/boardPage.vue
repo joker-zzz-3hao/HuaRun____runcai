@@ -45,7 +45,7 @@
           <div>
             <i class="el-icon-time"></i>
             <span v-if="element.taskBegDate"
-              >{{ dateFormat("YYYY-mm-dd", new Date(element.taskBegDate)) }}-{{
+              >{{ dateFormat("YYYY-mm-dd", new Date(element.taskBegDate)) }}~{{
                 dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
               }}</span
             >
