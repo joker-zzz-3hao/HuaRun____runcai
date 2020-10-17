@@ -127,8 +127,8 @@
               @click="getidentity(item)"
             >
               <dt class="user-info">
-                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-                <div class="user-name">
+                <img v-if="item.headUrl" :src="item.headUrl" alt />
+                <div v-else class="user-name">
                   <em>{{ cutName(item.userName) }}</em>
                 </div>
               </dt>
@@ -142,8 +142,8 @@
               @click="getidentity(item)"
             >
               <dt class="user-info">
-                <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-                <div class="user-name">
+                <img v-if="item.headUrl" :src="item.headUrl" alt />
+                <div v-else class="user-name">
                   <em>{{ cutName(item.orgName) }}</em>
                 </div>
               </dt>
