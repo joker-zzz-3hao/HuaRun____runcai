@@ -1,26 +1,30 @@
 <template>
   <div class="tab-cont-list">
     <dl v-for="item in searchData" :key="item.resource_id">
-      <dt v-if="searchType == '1'" >{{item.periodName}}</dt>
+      <dt v-if="searchType == '1'">{{ item.periodName }}</dt>
       <dd>
         <div class="user-info">
           <span>负责人</span>
           <img v-if="true" src="@/assets/images/user/user.jpg" alt />
-          <em v-else class="user-name">{{cutName(item.userName)}}</em>
-          <em @click="gotoView(item)">{{item.userName}}</em>
+          <em v-else class="user-name">{{ cutName(item.userName) }}</em>
+          <em @click="gotoView(item)">{{ item.userName }}</em>
+        </div>
+        <div v-if="searchType == '3'">
+          <span>部门</span>
+          <em>{{ item.orgName }}</em>
         </div>
         <div>
           <span>目标数(O)</span>
-          <em>{{item.ocount}}</em>
+          <em>{{ item.ocount }}</em>
         </div>
         <div>
           <span>关键结果(KR)</span>
-          <em>{{item.krCount}}</em>
+          <em>{{ item.krCount }}</em>
         </div>
         <div>
           <span>状态</span>
           <i></i>
-          <em>{{CONST.STATUS_MAP[item.status]}}</em>
+          <em>{{ CONST.STATUS_MAP[item.status] }}</em>
         </div>
         <div>
           <span>当前进度</span>

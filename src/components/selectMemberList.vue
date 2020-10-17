@@ -94,12 +94,16 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import Server from './server';
 
 const server = new Server();
 export default {
   name: 'selectMember',
   props: ['rouleType', 'selectListed', 'disabledId'],
+  ...mapState('common', {
+    userInfo: (state) => state.userInfo,
+  }),
   data() {
     return {
       server,

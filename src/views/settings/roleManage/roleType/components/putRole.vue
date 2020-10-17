@@ -106,6 +106,11 @@ export default {
       rules: {
         roleCode: [
           { required: true, message: '请输入角色编号', trigger: 'blur' },
+          {
+            pattern: /^[a-zA-Z0-9_]*$/,
+            message: '请输入数字或者英文字母或者下划线',
+            trigger: 'blur',
+          },
         ],
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },

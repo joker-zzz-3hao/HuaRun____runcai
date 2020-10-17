@@ -49,6 +49,7 @@
       :modal-append-to-body="false"
       title="修改密码"
       :visible="dialogVisible"
+      :close-on-click-modal="false"
       width="30%"
       v-if="dialogVisible"
     >
