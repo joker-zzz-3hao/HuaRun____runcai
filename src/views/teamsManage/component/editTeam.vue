@@ -26,15 +26,9 @@
         </dl>
         <dl>
           <dt>指定组织负责人</dt>
-          <dd>
-            <el-input
-              v-model="formData.orgName"
-              placeholder="请输入组织名称"
-              class="tl-input"
-            ></el-input>
-          </dd>
-          <dd v-if="formData.chargeMember && formData.chargeMember.orgLeader">
-            <em>{{ formData.chargeMember.orgLeader }}</em>
+          <dd></dd>
+          <dd v-if="chargeMember && chargeMember.orgLeader">
+            <em>{{ chargeMember.orgLeader }}</em>
             <i class="el-icon-close" @click="deleteMember"></i>
           </dd>
           <dd v-else>
@@ -43,30 +37,7 @@
               @click="showSelectMember = !showSelectMember"
             ></i>
           </dd>
-        </dl>
-        <!-- <div>
-          <div>
-            <div>指定团队负责人</div>
-            <div v-if="chargeMember && chargeMember.orgLeader">
-              <div>{{ chargeMember.orgLeader }}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMember"></i>
-              </div>
-            </div>
-            <div v-else>
-              <i
-                class="el-icon-plus"
-                @click="showSelectMember = !showSelectMember"
-              ></i>
-            </div>
-          </div>
-          <div v-if="showSelectMember">
-            <!-- <tl-selectMember
-              :value="formData.chargeMember.userId"
-              :teamMembers="teamMembers"
-              @ok="getMember"
-              @cancel="cancel"
-            ></tl-selectMember> -->
+          <dd v-if="showSelectMember">
             <el-select v-model="chargeMember.userId" placeholder="请选择">
               <el-option
                 v-for="(item, index) in teamMembers"
@@ -74,46 +45,39 @@
                 :label="item.userName"
                 :value="item.userId"
               >
-                <el-option
-                  v-for="(item, index) in teamMembers"
-                  :key="index + item.userId"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                  <span>{{ item.userName }}</span>
-                  <span>{{ item.value }}</span>
-                </el-option>
-              </el-select>
+                <span>{{ item.userName }}</span>
+                <span>{{ item.value }}</span>
+              </el-option>
+            </el-select>
+          </dd>
+        </dl>
+      </div>
+      <div>
+        <div>
+          <div>团队成员</div>
+          <div>
+            <div v-for="item in formData.chargeMembers" :key="item.userId">
+              <div>{{ item.userName }}</div>
+              <div>
+                <i class="el-icon-close" @click="deleteMembers(item)"></i>
+              </div>
             </div>
           </div>
           <div>
-            <div>
-              <div>团队成员</div>
-              <div>
-                <div v-for="item in formData.chargeMembers" :key="item.userId">
-                  <div>{{ item.userName }}</div>
-                  <div>
-                    <i class="el-icon-close" @click="deleteMembers(item)"></i>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <i
-                  class="el-icon-plus"
-                  @click="showSelectMembers = !showSelectMembers"
-                ></i>
-              </div>
-            </div>
-            <div v-if="showSelectMembers">
-              <tl-selectMembers
-                :value="formData.chargeMembersValue"
-                :teamMembers="teamMembers"
-                @ok="getMembers"
-                @cancel="cancel"
-              ></tl-selectMembers>
-            </div>
+            <i
+              class="el-icon-plus"
+              @click="showSelectMembers = !showSelectMembers"
+            ></i>
           </div>
-        </div> -->
+        </div>
+        <div v-if="showSelectMembers">
+          <tl-selectMembers
+            :value="formData.chargeMembersValue"
+            :teamMembers="teamMembers"
+            @ok="getMembers"
+            @cancel="cancel"
+          ></tl-selectMembers>
+        </div>
       </div>
     </el-scrollbar>
     <div class="operating-box">
