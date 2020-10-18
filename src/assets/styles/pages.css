@@ -3203,8 +3203,25 @@
   padding: 10px 0 0 6px;
 }
 
-.teams-manage .dl-card-panel .img-list dl {
+.teams-manage .dl-card-panel .img-list dl,
+.add-teams .img-list dl {
   margin: 0 4px 10px 4px;
+}
+
+.add-teams .add-users {
+  position: relative;
+}
+
+.add-teams .add-users .select-members {
+  position: absolute;
+  left: 50%;
+  top: 80px;
+  transform: translateX(-50%);
+  -webkit-line-clamp: unset;
+}
+
+.add-teams .img-list dl:nth-child(7n) .select-members {
+  left: calc(50% - 80px);
 }
 
 .teams-manage .dl-card-panel .img-list dt {
@@ -3217,18 +3234,23 @@
   color: #7b8a95
 }
 
-.teams-manage .dl-card-panel .img-list .add-users .user-name {
+.teams-manage .dl-card-panel .img-list .add-users .user-name,
+.add-teams .img-list .add-users .user-name {
   width: 36px;
   height: 36px;
 }
 
-.teams-manage .dl-card-panel .user-info .icon-bg {
+.teams-manage .dl-card-panel .user-info .icon-bg,
+.add-teams .user-info .icon-bg {
   position: absolute;
-  right: -11px;
-  top: -10px;
+  right: -8px;
+  top: -6px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  width: 16px;
+  height: 16px;
+  color: #fff;
   transition: all .4s ease-out;
 }
 
@@ -3365,20 +3387,23 @@
 }
 
 .set-manage .cont-box > dl,
-.edit-teams .cont-box > dl {
+.edit-teams .cont-box > dl,
+.add-teams .cont-box > dl {
   margin: 0 0 20px 0;
   display: flex;
   align-items: center;
 }
 
 .set-manage .cont-box > dl dt,
-.edit-teams .cont-box > dl dt {
+.edit-teams .cont-box > dl dt,
+.add-teams .cont-box > dl > dt {
   margin: 0 30px 0 0;
-  min-width: 100px;
+  min-width: 120px;
 }
 
 .set-manage .tl-select .el-input__inner,
-.edit-teams .tl-select .el-input__inner {
+.edit-teams .tl-select .el-input__inner,
+.add-teams .tl-select .el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
 }
@@ -3474,9 +3499,16 @@
   position: absolute;
   left: 26px;
   top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border-radius: 50%;
+  border: 1px solid #685df1;
+  cursor: pointer;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  background: unset;
   z-index: 1;
 }
 
@@ -3490,7 +3522,7 @@
 
 .edit-teams .el-drawer__body,
 .add-teams .el-drawer__body {
-  width: 500px;
+  width: 800px;
 }
 
 /* =========================================================租户管理================================================================== */
