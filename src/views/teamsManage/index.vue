@@ -194,6 +194,7 @@
     ></tl-moreMembers>
     <tl-editTeam
       v-if="editTeamExist"
+      :exist.sync="editTeamExist"
       ref="editTeam"
       :server="server"
       @success="closedEditTeam"
@@ -399,7 +400,7 @@ export default {
       this.moreMembersExist = false;
     },
     closedEditTeam() {
-      this.editTeamExist = false;
+      // this.editTeamExist = false;
       this.init();
     },
     closedAddTeam() {
