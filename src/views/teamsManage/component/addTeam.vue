@@ -1,105 +1,101 @@
 <template>
-  <div>
-    <el-drawer
-      title="创建虚拟团队"
-      :visible.sync="showCreateTeam"
-      :with-header="true"
-      @close="closed"
-      :modal="false"
-      :append-to-body="false"
-      :wrapperClosable="false"
-      :modal-append-to-body="false"
-      :close-on-click-modal="false"
-      :show-close="true"
-      class="tl-drawer"
-    >
-      <div>
-        <div>
-          <span>团队名称</span>
-          <el-input
-            v-model="formData.teamName"
-            placeholder="请输入团队名称"
-          ></el-input>
-        </div>
+  <el-drawer
+    :visible.sync="showCreateTeam"
+    @closed="closed"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    custom-class="custom-drawer add-teams"
+    class="tl-drawer"
+    :before-close="close"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{ drawerTitle }}</div>
+    </div>
+    <el-scrollbar>
+      <div class="cont-box">
         <div>
           <div>
-            <div>指定团队负责人</div>
-            <div v-if="formData.chargeMember.userName">
-              <div>{{ formData.chargeMember.userName }}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMember"></i>
-              </div>
-            </div>
-            <div v-else>
-              <i
-                class="el-icon-plus"
-                @click="showSelectMember = !showSelectMember"
-              ></i>
-            </div>
+            <span>团队名称</span>
+            <el-input
+              v-model="formData.teamName"
+              placeholder="请输入团队名称"
+            ></el-input>
           </div>
-          <div v-if="showSelectMember">
-            <!-- <tl-selectMember
-              :value="formData.chargeMember.userName"
-              :teamMembers="teamMembers"
-              @ok="getMember"
-              @cancel="cancel"
-            ></tl-selectMember> -->
-            <el-select v-model.trim="formData.userId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in teamMembers"
-                :key="index + item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <span>{{ item.userName }}</span>
-                <span>{{ item.value }}</span>
-              </el-option>
-            </el-select>
-          </div>
-        </div>
-        <div>
           <div>
-            <div>团队成员</div>
-            <div v-if="formData.chargeMembers.length > 0">
-              <div v-for="item in formData.chargeMembers" :key="item.userId">
-                <div>{{ item.userName }}</div>
+            <div>
+              <div>指定团队负责人</div>
+              <div v-if="formData.chargeMember.userName">
+                <div>{{ formData.chargeMember.userName }}</div>
                 <div>
-                  <i class="el-icon-close" @click="deleteMembers(item)"></i>
+                  <i class="el-icon-close" @click="deleteMember"></i>
                 </div>
               </div>
+              <div v-else>
+                <i
+                  class="el-icon-plus"
+                  @click="showSelectMember = !showSelectMember"
+                ></i>
+              </div>
             </div>
-            <div v-else>
-              <i
-                class="el-icon-plus"
-                @click="showSelectMembers = !showSelectMembers"
-              ></i>
+            <div v-if="showSelectMember">
+              <el-select v-model.trim="formData.userId" placeholder="请选择">
+                <el-option
+                  v-for="(item, index) in teamMembers"
+                  :key="index + item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                  <span>{{ item.userName }}</span>
+                  <span>{{ item.value }}</span>
+                </el-option>
+              </el-select>
             </div>
           </div>
-          <div v-if="showSelectMembers">
-            <tl-selectMembers
-              :value="formData.chargeMembers"
-              :teamMembers="teamMembers"
-              @ok="getMembers"
-              @cancel="cancel"
-            ></tl-selectMembers>
+          <div>
+            <div>
+              <div>团队成员</div>
+              <div v-if="formData.chargeMembers.length > 0">
+                <div v-for="item in formData.chargeMembers" :key="item.userId">
+                  <div>{{ item.userName }}</div>
+                  <div>
+                    <i class="el-icon-close" @click="deleteMembers(item)"></i>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <i
+                  class="el-icon-plus"
+                  @click="showSelectMembers = !showSelectMembers"
+                ></i>
+              </div>
+            </div>
+            <div v-if="showSelectMembers">
+              <tl-selectMembers
+                :value="formData.chargeMembers"
+                :teamMembers="teamMembers"
+                @ok="getMembers"
+                @cancel="cancel"
+              ></tl-selectMembers>
+            </div>
           </div>
-        </div>
-        <div>
-          <el-button @click="submitMember">确定</el-button>
         </div>
       </div>
-    </el-drawer>
-  </div>
+    </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="submitMember" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+    </div>
+  </el-drawer>
 </template>
 
 <script>
-// import selectMember from '@/components/selectMember';
 import selectMembers from '@/components/selectMembers';
 
 export default {
   name: 'editTeam',
   components: {
-    // 'tl-selectMember': selectMember,
     'tl-selectMembers': selectMembers,
   },
   props: {
@@ -114,6 +110,10 @@ export default {
       default() {
         return {};
       },
+    },
+    drawerTitle: {
+      type: String,
+      default: '创建虚拟组织',
     },
   },
   data() {
@@ -160,6 +160,9 @@ export default {
       this.showSelectMembers = false;
     },
     closed() {
+      this.$emit('update:exist', false);
+    },
+    close() {
       this.showCreateTeam = false;
     },
     submitMember() {
@@ -177,7 +180,7 @@ export default {
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
         if (res.code == '200') {
-          this.showCreateTeam = false;
+          this.close();
           this.$emit('success');
         }
       });

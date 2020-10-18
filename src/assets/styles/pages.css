@@ -3488,7 +3488,8 @@
   top: 436px !important;
 }
 
-.edit-teams .el-drawer__body {
+.edit-teams .el-drawer__body,
+.add-teams .el-drawer__body {
   width: 500px;
 }
 
