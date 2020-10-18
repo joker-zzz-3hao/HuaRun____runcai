@@ -43,11 +43,19 @@
           <dd v-for="item in formData.chargeMembers" :key="item.userId">
             <em>{{ item.userName }}</em
             ><i class="el-icon-close" @click="deleteMembers(item)"></i>
-            <i
-              class="el-icon-plus"
-              @click="showSelectMembers = !showSelectMembers"
-            ></i>
           </dd>
+          <i
+            class="el-icon-plus"
+            @click="showSelectMembers = !showSelectMembers"
+          ></i>
+          <div v-if="showSelectMembers">
+            <tl-selectMembers
+              :value="formData.chargeMembers"
+              :teamMembers="teamMembers"
+              @ok="getMembers"
+              @cancel="cancel"
+            ></tl-selectMembers>
+          </div>
         </dl>
       </div>
     </el-scrollbar>
@@ -60,11 +68,12 @@
 </template>
 
 <script>
+import selectMembers from '@/components/selectMembers';
 
 export default {
   name: 'editTeam',
   components: {
-
+    'tl-selectMembers': selectMembers,
   },
   props: {
     teamMembers: {
