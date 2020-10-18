@@ -26,7 +26,11 @@
         </dl>
         <dl>
           <dt>指定组织负责人</dt>
-          <el-select v-model="chargeMember.userId" placeholder="请选择">
+          <el-select
+            v-model="chargeMember.userId"
+            placeholder="请选择"
+            class="tl-select"
+          >
             <el-option
               v-for="(item, index) in teamMembers"
               :key="index + item.userId"
@@ -40,7 +44,40 @@
         </dl>
         <dl>
           <dt>组织成员</dt>
-          <dd v-for="item in formData.chargeMembers" :key="item.userId">
+          <dd class="img-list">
+            <dl v-for="item in formData.chargeMembers" :key="item.userId">
+              <dt class="user-info">
+                <img v-if="item.headerUrl" :src="item.headerUrl" alt />
+                <div class="user-name" v-else>
+                  <em>{{ cutName(item.userName) }}</em>
+                </div>
+                <div class="icon-bg" @click="deleteMembers(item)">
+                  <i class="el-icon-close"></i>
+                </div>
+              </dt>
+              <dd>{{ item.userName }}</dd>
+            </dl>
+            <dl class="add-users">
+              <dt
+                class="user-info"
+                @click="showSelectMembers = !showSelectMembers"
+              >
+                <div class="user-name">
+                  <i class="el-icon-plus"></i>
+                </div>
+              </dt>
+              <dd>添加成员</dd>
+              <dd v-if="showSelectMembers" class="select-members">
+                <tl-selectMembers
+                  :value="formData.chargeMembers"
+                  :teamMembers="teamMembers"
+                  @ok="getMembers"
+                  @cancel="cancel"
+                ></tl-selectMembers>
+              </dd>
+            </dl>
+          </dd>
+          <!-- <dd v-for="item in formData.chargeMembers" :key="item.userId">
             <em>{{ item.userName }}</em
             ><i class="el-icon-close" @click="deleteMembers(item)"></i>
           </dd>
@@ -55,7 +92,7 @@
               @ok="getMembers"
               @cancel="cancel"
             ></tl-selectMembers>
-          </div>
+          </div> -->
         </dl>
       </div>
     </el-scrollbar>
@@ -180,6 +217,10 @@ export default {
           this.$emit('success');
         }
       });
+    },
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
     },
   },
   watch: {},

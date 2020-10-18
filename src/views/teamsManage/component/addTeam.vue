@@ -26,7 +26,11 @@
         </dl>
         <dl>
           <dt>指定组织负责人</dt>
-          <el-select v-model.trim="formData.userId" placeholder="请选择">
+          <el-select
+            v-model.trim="formData.userId"
+            placeholder="请选择"
+            class="tl-select"
+          >
             <el-option
               v-for="(item, index) in teamMembers"
               :key="index + item.userId"

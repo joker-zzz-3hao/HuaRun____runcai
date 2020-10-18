@@ -3204,14 +3204,17 @@
 }
 
 .teams-manage .dl-card-panel .img-list dl,
+.edit-teams .img-list dl,
 .add-teams .img-list dl {
   margin: 0 4px 10px 4px;
 }
 
+.edit-teams .add-users,
 .add-teams .add-users {
   position: relative;
 }
 
+.edit-teams .add-users .select-members,
 .add-teams .add-users .select-members {
   position: absolute;
   left: 50%;
@@ -3220,8 +3223,14 @@
   -webkit-line-clamp: unset;
 }
 
+.edit-teams .img-list dl:nth-child(7n + 1) .select-members,
+.add-teams .img-list dl:nth-child(7n + 1) .select-members {
+  left: calc(50% + 30px);
+}
+
+.edit-teams .img-list dl:nth-child(7n) .select-members,
 .add-teams .img-list dl:nth-child(7n) .select-members {
-  left: calc(50% - 80px);
+  left: calc(50% - 120px);
 }
 
 .teams-manage .dl-card-panel .img-list dt {
@@ -3235,12 +3244,14 @@
 }
 
 .teams-manage .dl-card-panel .img-list .add-users .user-name,
+.edit-teams .img-list .add-users .user-name,
 .add-teams .img-list .add-users .user-name {
   width: 36px;
   height: 36px;
 }
 
 .teams-manage .dl-card-panel .user-info .icon-bg,
+.edit-teams .user-info .icon-bg,
 .add-teams .user-info .icon-bg {
   position: absolute;
   right: -8px;
@@ -3395,7 +3406,7 @@
 }
 
 .set-manage .cont-box > dl dt,
-.edit-teams .cont-box > dl dt,
+.edit-teams .cont-box > dl > dt,
 .add-teams .cont-box > dl > dt {
   margin: 0 30px 0 0;
   min-width: 120px;
@@ -3522,7 +3533,42 @@
 
 .edit-teams .el-drawer__body,
 .add-teams .el-drawer__body {
-  width: 800px;
+  width: 730px;
+}
+
+.custom-drawer.edit-teams .el-checkbox-group .tl-checkbox,
+.custom-drawer.add-teams .el-checkbox-group .tl-checkbox {
+  padding: 10px 0;
+}
+
+.edit-teams .el-scrollbar__view,
+.add-teams .el-scrollbar__view {
+  padding: 0 20px 0 0;
+}
+
+.edit-teams .tl-transfer-select .select-target,
+.add-teams .tl-transfer-select .select-target {
+  border: none;
+  height: 300px;
+}
+
+.edit-teams .select-user-info em,
+.add-teams .select-user-info em {
+  margin: 0 10px 0 0;
+}
+
+.edit-teams .tl-input,
+.edit-teams .tl-select,
+.add-teams .tl-input,
+.add-teams .tl-select {
+  margin: 0;
+  width: 300px;
+}
+
+.edit-teams .cont-box > dl:last-child > dt,
+.add-teams .cont-box > dl:last-child > dt {
+  margin: 18px 0 0 0;
+  align-self: start;
 }
 
 /* =========================================================租户管理================================================================== */
