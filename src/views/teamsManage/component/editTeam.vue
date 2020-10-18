@@ -24,10 +24,8 @@
         <div>
           <div>
             <div>指定团队负责人</div>
-            <div
-              v-if="formData.chargeMember && formData.chargeMember.orgLeader"
-            >
-              <div>{{ formData.chargeMember.orgLeader }}</div>
+            <div v-if="chargeMember && chargeMember.orgLeader">
+              <div>{{ chargeMember.orgLeader }}</div>
               <div>
                 <i class="el-icon-close" @click="deleteMember"></i>
               </div>
@@ -46,10 +44,7 @@
               @ok="getMember"
               @cancel="cancel"
             ></tl-selectMember> -->
-            <el-select
-              v-model="formData.chargeMember.userId"
-              placeholder="请选择"
-            >
+            <el-select v-model="chargeMember.userId" placeholder="请选择">
               <el-option
                 v-for="(item, index) in teamMembers"
                 :key="index + item.userId"
@@ -128,23 +123,27 @@ export default {
       formData: {
         orgName: '',
         teamName: '',
-        chargeMember: {},
+        // chargeMember: {},
         chargeMembers: [],
         chargeMembersValue: [],
       },
       showSelectMember: false,
       showSelectMembers: false,
       virtualOrgUser: [],
+      chargeMember: {
+        userId: '',
+      },
     };
   },
   mounted() {},
   computed: {},
   methods: {
     show(data) {
+      console.log(this.teamMembers);
       this.data = data;
       this.formData.orgName = data.orgName;
-      this.formData.chargeMember.orgLeader = data.orgLeader;
-      this.formData.chargeMember.userId = data.userId;
+      this.chargeMember.orgLeader = data.orgLeader;
+      this.chargeMember.userId = data.userId;
       this.chargeMembersValue = [];
       this.server.getVirtualOrgUser({ orgId: data.orgId }).then((res) => {
         if (res.code == '200') {
@@ -158,9 +157,8 @@ export default {
       console.log(this.chargeMembersValue);
     },
     getMember(data) {
-      this.formData.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
-      this.formData.chargeMember.orgLeader = this.formData.chargeMember.userName;
-      console.log(this.formData.chargeMember);
+      this.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
+      this.chargeMember.orgLeader = this.chargeMember.userName;
       this.showSelectMember = false;
     },
     getMembers(data) {
@@ -168,7 +166,7 @@ export default {
       this.showSelectMembers = false;
     },
     deleteMember() {
-      this.formData.chargeMember = {};
+      this.chargeMember = {};
     },
     deleteMembers(data) {
       this.formData.chargeMembers.forEach((item, index) => {
@@ -193,7 +191,7 @@ export default {
         orgName: this.formData.orgName,
         orgId: this.data.orgId,
         roleCode: 'ORG_ADMIN',
-        userId: this.formData.chargeMember.userId,
+        userId: this.chargeMember.userId,
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
         if (res.code == '200') {
