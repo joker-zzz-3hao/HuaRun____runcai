@@ -19,7 +19,6 @@
               :key="item.userId"
             >
               <div class="img-user" style="display: flex">
-                <img src="@/assets/images/user/user.jpg" alt />
                 <div>{{ `${item.userName}(${item.userAccount})` }}</div>
               </div>
             </el-checkbox>
