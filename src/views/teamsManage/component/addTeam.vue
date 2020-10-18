@@ -14,6 +14,53 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
+        <dl>
+          <dt>组织名称</dt>
+          <dd>
+            <el-input
+              v-model="formData.teamName"
+              placeholder="请输入团队名称"
+              class="tl-input"
+            ></el-input>
+          </dd>
+        </dl>
+        <dl>
+          <dt>指定组织负责人</dt>
+          <el-select v-model.trim="formData.userId" placeholder="请选择">
+            <el-option
+              v-for="(item, index) in teamMembers"
+              :key="index + item.userId"
+              :label="item.userName"
+              :value="item.userId"
+            >
+              <span>{{ item.userName }}</span>
+              <span>{{ item.value }}</span>
+            </el-option>
+          </el-select>
+        </dl>
+        <dl>
+          <dt>组织成员</dt>
+          <dd v-for="item in formData.chargeMembers" :key="item.userId">
+            <em>{{ item.userName }}</em
+            ><i class="el-icon-close" @click="deleteMembers(item)"></i>
+          </dd>
+          <i
+            class="el-icon-plus"
+            @click="showSelectMembers = !showSelectMembers"
+          ></i>
+          <div v-if="showSelectMembers">
+            <tl-selectMembers
+              :value="formData.chargeMembers"
+              :teamMembers="teamMembers"
+              @ok="getMembers"
+              @cancel="cancel"
+            ></tl-selectMembers>
+          </div>
+        </dl>
+      </div>
+    </el-scrollbar>
+    <!-- <el-scrollbar>
+      <div class="cont-box">
         <div>
           <div>
             <span>团队名称</span>
@@ -81,7 +128,7 @@
           </div>
         </div>
       </div>
-    </el-scrollbar>
+    </el-scrollbar> -->
     <div class="operating-box">
       <el-button type="primary" @click="submitMember" class="tl-btn amt-bg-slip"
         >确定</el-button
