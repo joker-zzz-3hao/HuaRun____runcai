@@ -1,100 +1,122 @@
 <template>
-  <div>
-    <el-drawer
-      title="编辑虚拟团队"
-      :visible.sync="showEditTeam"
-      :with-header="true"
-      @close="closed"
-      :modal="false"
-      :append-to-body="false"
-      :wrapperClosable="false"
-      :modal-append-to-body="false"
-      :close-on-click-modal="false"
-      :show-close="true"
-      class="tl-drawer"
-    >
-      <div>
-        <div>
-          <span>团队名称</span>
-          <el-input
-            v-model="formData.orgName"
-            placeholder="请输入团队名称"
-          ></el-input>
-        </div>
-        <div>
+  <el-drawer
+    :visible.sync="showEditTeam"
+    @closed="closed"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    custom-class="custom-drawer edit-teams"
+    class="tl-drawer"
+    :before-close="close"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{ drawerTitle }}</div>
+    </div>
+    <el-scrollbar>
+      <div class="cont-box">
+        <dl>
+          <dt>组织名称</dt>
+          <dd>
+            <el-input
+              v-model="formData.orgName"
+              placeholder="请输入团队名称"
+              class="tl-input"
+            ></el-input>
+          </dd>
+        </dl>
+        <dl>
+          <dt>指定组织负责人</dt>
+          <dd>
+            <el-input
+              v-model="formData.orgName"
+              placeholder="请输入组织名称"
+              class="tl-input"
+            ></el-input>
+          </dd>
+          <dd v-if="formData.chargeMember && formData.chargeMember.orgLeader">
+            <em>{{ formData.chargeMember.orgLeader }}</em>
+            <i class="el-icon-close" @click="deleteMember"></i>
+          </dd>
+          <dd v-else>
+            <i
+              class="el-icon-plus"
+              @click="showSelectMember = !showSelectMember"
+            ></i>
+          </dd>
+        </dl>
+        <!-- <div>
           <div>
-            <div>指定团队负责人</div>
-            <div
-              v-if="formData.chargeMember && formData.chargeMember.orgLeader"
-            >
-              <div>{{ formData.chargeMember.orgLeader }}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMember"></i>
-              </div>
-            </div>
-            <div v-else>
-              <i
-                class="el-icon-plus"
-                @click="showSelectMember = !showSelectMember"
-              ></i>
-            </div>
+            <span></span>
+
           </div>
-          <div v-if="showSelectMember">
-            <!-- <tl-selectMember
-              :value="formData.chargeMember.userId"
-              :teamMembers="teamMembers"
-              @ok="getMember"
-              @cancel="cancel"
-            ></tl-selectMember> -->
-            <el-select
-              v-model="formData.chargeMember.userId"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="(item, index) in teamMembers"
-                :key="index + item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <span>{{ item.userName }}</span>
-                <span>{{ item.value }}</span>
-              </el-option>
-            </el-select>
-          </div>
-        </div>
-        <div>
           <div>
-            <div>团队成员</div>
             <div>
-              <div v-for="item in formData.chargeMembers" :key="item.userId">
-                <div>{{ item.userName }}</div>
+              <div></div>
+              <div
+
+              >
+                <div></div>
                 <div>
-                  <i class="el-icon-close" @click="deleteMembers(item)"></i>
+
                 </div>
               </div>
+              <div v-else>
+
+              </div>
             </div>
+            <div v-if="showSelectMember">
+              <el-select
+                v-model="formData.chargeMember.userId"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="(item, index) in teamMembers"
+                  :key="index + item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                  <span>{{ item.userName }}</span>
+                  <span>{{ item.value }}</span>
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div>
             <div>
-              <i
-                class="el-icon-plus"
-                @click="showSelectMembers = !showSelectMembers"
-              ></i>
+              <div>团队成员</div>
+              <div>
+                <div v-for="item in formData.chargeMembers" :key="item.userId">
+                  <div>{{ item.userName }}</div>
+                  <div>
+                    <i class="el-icon-close" @click="deleteMembers(item)"></i>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <i
+                  class="el-icon-plus"
+                  @click="showSelectMembers = !showSelectMembers"
+                ></i>
+              </div>
+            </div>
+            <div v-if="showSelectMembers">
+              <tl-selectMembers
+                :value="formData.chargeMembersValue"
+                :teamMembers="teamMembers"
+                @ok="getMembers"
+                @cancel="cancel"
+              ></tl-selectMembers>
             </div>
           </div>
-          <div v-if="showSelectMembers">
-            <tl-selectMembers
-              :value="formData.chargeMembersValue"
-              :teamMembers="teamMembers"
-              @ok="getMembers"
-              @cancel="cancel"
-            ></tl-selectMembers>
-          </div>
-        </div>
-        <div>
-          <el-button @click="submitMember">确定</el-button>
-        </div>
+        </div> -->
       </div>
-    </el-drawer>
-  </div>
+    </el-scrollbar>
+    <div class="operating-box">
+      <el-button type="primary" @click="submitMember" class="tl-btn amt-bg-slip"
+        >保存</el-button
+      >
+    </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -119,6 +141,10 @@ export default {
       default() {
         return {};
       },
+    },
+    drawerTitle: {
+      type: String,
+      default: '编辑虚拟组织',
     },
   },
   data() {
@@ -181,6 +207,9 @@ export default {
       this.showSelectMembers = false;
     },
     closed() {
+      this.$emit('update:exist', false);
+    },
+    close() {
       this.showEditTeam = false;
     },
     submitMember() {
@@ -197,7 +226,7 @@ export default {
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
         if (res.code == '200') {
-          this.showEditTeam = false;
+          this.close();
           this.$emit('success');
         }
       });

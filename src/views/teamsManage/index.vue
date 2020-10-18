@@ -116,10 +116,9 @@
                     <div class="user-name" v-else>
                       <em>{{ cutName(fItem.userName) }}</em>
                     </div>
-                    <i
-                      class="el-icon-close"
-                      @click="deleteFictitious(fItem)"
-                    ></i>
+                    <div class="icon-bg" @click="deleteFictitious(fItem)">
+                      <i class="el-icon-close"></i>
+                    </div>
                   </dt>
                   <dd>{{ fItem.userName }}</dd>
                 </dl>

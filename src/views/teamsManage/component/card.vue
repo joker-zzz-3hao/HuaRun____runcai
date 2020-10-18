@@ -1,7 +1,10 @@
 <template>
   <div
     class="maps-card"
-    :class="{ 'is-center': !node.node.orgType && node.node.userName }"
+    :class="{
+      'is-center': !node.node.orgType && node.node.userName,
+      'is-add': node.node.add,
+    }"
   >
     <dl>
       <dt>
@@ -30,36 +33,26 @@
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
         <template v-if="node.node.add">
-          <div @click="addFictitious">
-            <!-- <el-cascader
-              v-model="fictitiousOrgId"
-              :options="orgData"
-              v-show="showSelect"
-              @change="changePanel"
-              :props="{
-                checkStrictly: true,
-                value: 'orgId',
-                label: 'orgName',
-                children: 'sonTree',
-              }"
-            ></el-cascader> -->
-            <el-cascader
-              v-model="fictitiousOrgId"
-              ref="cascader"
-              :options="orgData"
-              :show-all-levels="false"
-              :props="{
-                checkStrictly: true,
-                value: 'orgId',
-                label: 'orgName',
-                children: 'sonTree',
-              }"
-              @change="changePanel"
-              popper-class="tl-cascader-popper"
-              class="tl-cascader"
-            ></el-cascader>
-            <span>添加虚线汇报组织</span>
+          <el-cascader
+            v-model="fictitiousOrgId"
+            ref="cascader"
+            :options="orgData"
+            :show-all-levels="false"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+            }"
+            @change="changePanel"
+            popper-class="tl-cascader-popper set-fictitious"
+            class="tl-cascader"
+            :class="{ 'is-hide': !showSelect }"
+          ></el-cascader>
+          <div class="icon-bg" @click="addFictitious">
+            <i class="el-icon-plus"></i>
           </div>
+          <span>添加虚线汇报组织</span>
         </template>
         <template v-if="node.node.orgType == '1'">
           <div class="user-info">

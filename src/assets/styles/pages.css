@@ -3222,14 +3222,18 @@
   height: 36px;
 }
 
-.teams-manage .dl-card-panel .user-info > i {
+.teams-manage .dl-card-panel .user-info .icon-bg {
   position: absolute;
-  right: -20px;
-  top: 0;
-  font-size: 20px;
+  right: -11px;
+  top: -10px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all .4s ease-out;
+}
+
+.teams-manage .dl-card-panel .user-info .icon-bg .el-icon-close {
+  color: #fff;
 }
 
 .teams-manage .dl-card-panel .user-info i:hover {
@@ -3360,18 +3364,21 @@
   width: 600px;
 }
 
-.set-manage .cont-box > dl {
+.set-manage .cont-box > dl,
+.edit-teams .cont-box > dl {
   margin: 0 0 20px 0;
   display: flex;
   align-items: center;
 }
 
-.set-manage .cont-box > dl dt {
+.set-manage .cont-box > dl dt,
+.edit-teams .cont-box > dl dt {
   margin: 0 30px 0 0;
   min-width: 100px;
 }
 
-.set-manage .tl-select .el-input__inner {
+.set-manage .tl-select .el-input__inner,
+.edit-teams .tl-select .el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
 }
@@ -3424,7 +3431,65 @@
 }
 
 .set-fictitious .draw-area {
-  width: unset;
+  width: 800px;
+}
+
+.set-fictitious .maps-card dt > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.set-fictitious .maps-card.is-add,
+.set-fictitious .maps-card.is-add dl {
+  display: flex;
+}
+
+.set-fictitious .maps-card.is-add {
+  justify-content: center;
+}
+
+.set-fictitious .maps-card.is-add dt {
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.set-fictitious .maps-card.is-add dt .el-cascader {
+  position: absolute;
+  width: 40px;
+  opacity: 0;
+  z-index: 5;
+}
+
+.set-fictitious .maps-card.is-add dt .el-cascader.is-hede {
+  display: none;
+}
+
+.set-fictitious .maps-card.is-add dt .el-input__inner {
+  border-radius: 50%;
+}
+
+.set-fictitious .maps-card.is-add .icon-bg {
+  position: absolute;
+  left: 26px;
+  top: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.set-fictitious .maps-card.is-add dt span {
+  margin: 50px 0 0 0;
+}
+
+.tl-cascader-popper.set-fictitious {
+  top: 436px !important;
+}
+
+.edit-teams .el-drawer__body {
+  width: 500px;
 }
 
 /* =========================================================租户管理================================================================== */

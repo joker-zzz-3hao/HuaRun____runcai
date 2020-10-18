@@ -1,49 +1,47 @@
 <template>
-  <div>
-    <el-drawer
-      :visible.sync="showSetManager"
-      @closed="closed"
-      :wrapperClosable="false"
-      :modal-append-to-body="true"
-      :append-to-body="true"
-      custom-class="custom-drawer set-fictitious"
-      class="tl-drawer"
-      :before-close="close"
-    >
-      <div slot="title" class="flex-sb">
-        <div class="drawer-title">{{ drawerTitle }}</div>
-      </div>
-      <el-scrollbar>
-        <div class="cont-box">
-          <div class="tips-info">
-            提示：如果您与对方团队的负责人沟通好之后，可以直接设置该成员的虚线汇报关系。
-          </div>
-          <tl-svgtree
-            fatherId="parentId"
-            childId="userId"
-            :treeData="treeData"
-            direction="col"
-            svgId="svg01"
-            :middlePoint="cardHight"
-            :blockHeight="blockHeight"
-            :canOpen="false"
-            :colWidth="500"
-          >
-            <template slot="treecard" slot-scope="node">
-              <tl-card
-                :node="node"
-                @deleteSuccess="deleteSuccess"
-                :userData="userData"
-                :orgData="orgData"
-                :orgList="orgList"
-                @addFictitiousSuccess="addFictitiousSuccess"
-              ></tl-card>
-            </template>
-          </tl-svgtree>
+  <el-drawer
+    :visible.sync="showSetManager"
+    @closed="closed"
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    custom-class="custom-drawer set-fictitious"
+    class="tl-drawer"
+    :before-close="close"
+  >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">{{ drawerTitle }}</div>
+    </div>
+    <el-scrollbar>
+      <div class="cont-box">
+        <div class="tips-info">
+          提示：如果您与对方团队的负责人沟通好之后，可以直接设置该成员的虚线汇报关系。
         </div>
-      </el-scrollbar>
-    </el-drawer>
-  </div>
+        <tl-svgtree
+          fatherId="parentId"
+          childId="userId"
+          :treeData="treeData"
+          direction="col"
+          svgId="svg01"
+          :middlePoint="cardHight"
+          :blockHeight="blockHeight"
+          :canOpen="false"
+          :colWidth="500"
+        >
+          <template slot="treecard" slot-scope="node">
+            <tl-card
+              :node="node"
+              @deleteSuccess="deleteSuccess"
+              :userData="userData"
+              :orgData="orgData"
+              :orgList="orgList"
+              @addFictitiousSuccess="addFictitiousSuccess"
+            ></tl-card>
+          </template>
+        </tl-svgtree>
+      </div>
+    </el-scrollbar>
+  </el-drawer>
 </template>
 
 <script>
