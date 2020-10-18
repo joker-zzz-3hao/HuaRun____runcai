@@ -51,33 +51,17 @@
             </el-select>
           </dd>
         </dl>
-      </div>
-      <div>
-        <div>
-          <div>团队成员</div>
-          <div>
-            <div v-for="item in formData.chargeMembers" :key="item.userId">
-              <div>{{ item.userName }}</div>
-              <div>
-                <i class="el-icon-close" @click="deleteMembers(item)"></i>
-              </div>
-            </div>
-          </div>
-          <div>
+        <dl>
+          <dt>组织成员</dt>
+          <dd v-for="item in formData.chargeMembers" :key="item.userId">
+            <em>{{ item.userName }}</em
+            ><i class="el-icon-close" @click="deleteMembers(item)"></i>
             <i
               class="el-icon-plus"
               @click="showSelectMembers = !showSelectMembers"
             ></i>
-          </div>
-        </div>
-        <div v-if="showSelectMembers">
-          <tl-selectMembers
-            :value="formData.chargeMembersValue"
-            :teamMembers="teamMembers"
-            @ok="getMembers"
-            @cancel="cancel"
-          ></tl-selectMembers>
-        </div>
+          </dd>
+        </dl>
       </div>
     </el-scrollbar>
     <div class="operating-box">
@@ -89,14 +73,11 @@
 </template>
 
 <script>
-// import selectMember from '@/components/selectMember';
-import selectMembers from '@/components/selectMembers';
 
 export default {
   name: 'editTeam',
   components: {
-    // 'tl-selectMember': selectMember,
-    'tl-selectMembers': selectMembers,
+
   },
   props: {
     teamMembers: {
