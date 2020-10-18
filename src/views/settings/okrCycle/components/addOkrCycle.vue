@@ -1,12 +1,12 @@
 <template>
   <el-dialog
-    :append-to-body="true"
+    :title="title"
+    :visible.sync="dialogTableVisible"
     @click.native="closeshowMember"
     :before-close="close"
     @closed="closed"
+    :append-to-body="true"
     :close-on-click-modal="false"
-    :title="title"
-    :visible.sync="dialogTableVisible"
     class="tl-dialog"
   >
     <el-form

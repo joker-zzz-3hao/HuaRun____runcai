@@ -77,22 +77,6 @@
               </dd>
             </dl>
           </dd>
-          <!-- <dd v-for="item in formData.chargeMembers" :key="item.userId">
-            <em>{{ item.userName }}</em
-            ><i class="el-icon-close" @click="deleteMembers(item)"></i>
-          </dd>
-          <i
-            class="el-icon-plus"
-            @click="showSelectMembers = !showSelectMembers"
-          ></i>
-          <div v-if="showSelectMembers">
-            <tl-selectMembers
-              :value="formData.chargeMembers"
-              :teamMembers="teamMembers"
-              @ok="getMembers"
-              @cancel="cancel"
-            ></tl-selectMembers>
-          </div> -->
         </dl>
       </div>
     </el-scrollbar>

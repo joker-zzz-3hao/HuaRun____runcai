@@ -86,45 +86,6 @@
       </dd>
     </dl>
   </div>
-  <!-- <div style="width: 216px; position: relative">
-    <div v-if="node.node.orgType == '0'">
-      <div>{{ node.node.orgName }}</div>
-      <div>{{ node.node.orgLeader || node.node.userName }}</div>
-      <div>直属上级</div>
-    </div>
-    <div
-      v-else-if="node.node.orgType == '1'"
-      style="position: absolute; top: 0; right: 0"
-      @click="deleteFictitious(node.node)"
-    >
-      <div>{{ node.node.orgName }}</div>
-      <div>{{ node.node.orgLeader || "未设置" }}</div>
-      <i class="el-icon-close"></i>
-      <div>虚拟汇报部门</div>
-    </div>
-    <div v-else-if="!node.node.orgType && node.node.userName">
-      <div>{{ node.node.userName }}sdfs</div>
-    </div>
-    <div v-if="node.node.add">
-      <div>
-        <i class="el-icon-plus" @click="addFictitious"></i>
-        <el-cascader-panel
-          v-model="fictitiousOrgId"
-          :options="orgData"
-          v-show="showSelect"
-          @change="changePanel"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'sonTree',
-            expandTrigger: 'hover',
-          }"
-        ></el-cascader-panel>
-      </div>
-      <div>添加虚线汇报部门</div>
-    </div>
-  </div> -->
 </template>
 
 <script>

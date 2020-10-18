@@ -1,61 +1,66 @@
 <template>
-  <div class="menu-manage">
+  <div class="replay-okr">
     <div class="operating-area">
+      <div class="page-title">OKR复盘</div>
       <div class="operating-box">
-        <div class="operating-box">
-          <el-form label-width="110px" :inline="true" class="tl-form-inline">
-            <el-form-item label="周期">
-              <el-select
-                v-model.trim="periodId"
-                placeholder="用户类型"
-                :popper-append-to-body="false"
-                @change="okrReviewList"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  :label="item.periodName"
-                  :value="item.periodId"
-                  v-for="(item, index) in periodIdList"
-                  :key="index"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="复盘状态">
-              <el-select
-                v-model.trim="reviewStatus"
-                placeholder="用户状态"
-                :popper-append-to-body="false"
-                @change="okrReviewList"
-                clearable
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  :label="item.name"
-                  :value="item.status"
-                  v-for="(item, index) in CONST.REVIEW_STATUS_LIST"
-                  :key="index"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-input
-                maxlength="64"
-                v-model="userName"
-                placeholder="请输入用户名称"
-                @keyup.enter.native="okrReviewList"
-                class="tl-input-search"
-              >
-                <i
-                  class="el-icon-search"
-                  slot="prefix"
-                  @click="okrReviewList"
-                ></i>
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div>
+        <dl class="dl-item">
+          <dt>周期</dt>
+          <dd>
+            <el-select
+              v-model.trim="periodId"
+              placeholder="用户类型"
+              :popper-append-to-body="false"
+              @change="okrReviewList"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                :label="item.periodName"
+                :value="item.periodId"
+                v-for="(item, index) in periodIdList"
+                :key="index"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>复盘状态</dt>
+          <dd>
+            <el-select
+              v-model.trim="reviewStatus"
+              placeholder="用户状态"
+              :popper-append-to-body="false"
+              @change="okrReviewList"
+              clearable
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                :label="item.name"
+                :value="item.status"
+                v-for="(item, index) in CONST.REVIEW_STATUS_LIST"
+                :key="index"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              maxlength="64"
+              v-model="userName"
+              placeholder="请输入用户名称"
+              @keyup.enter.native="okrReviewList"
+              class="tl-input-search"
+            >
+              <i
+                class="el-icon-search"
+                slot="prefix"
+                @click="okrReviewList"
+              ></i>
+            </el-input>
+          </dd>
+        </dl>
       </div>
     </div>
     <div class="cont-area">
@@ -66,7 +71,7 @@
         @searchList="okrReviewList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" style="width: 100%">
+          <el-table :data="tableData" class="tl-table">
             <el-table-column
               prop="userName"
               label="姓名"

@@ -1934,7 +1934,8 @@
 .okr-maps .maps-view-table,
 .teams-weekly .cont-area,
 .teams-weekly-detail .cont-area,
-.my-task .cont-area {
+.my-task .cont-area,
+.replay-okr .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -3052,10 +3053,6 @@
   padding: 20px 0 0 0;
 }
 
-/* .my-task .tl-table thead {
-  display: none;
-} */
-
 .my-task .tl-condition-screening {
   margin: 10px 0 0 0;
 }
@@ -3569,6 +3566,45 @@
 .add-teams .cont-box > dl:last-child > dt {
   margin: 18px 0 0 0;
   align-self: start;
+}
+
+/* replay-okr */
+.replay-okr .cont-area {
+  display: flex;
+}
+
+/* personal-center */
+.personal-center .cont-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  width: 1100px;
+}
+
+.personal-center .cont-area {
+  padding: 60px 60px 30px;
+  display: flex;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+}
+
+.personal-center .avatar-uploader img {
+  width: 100px;
+  height: 100px;
+}
+
+.personal-center .dl-list {
+  margin: 30px 0 0 0;
+}
+
+.personal-center .dl-item {
+  margin: 30px 0;
+}
+
+.personal-center .dl-list dt {
+  margin: 0 30px 0 0;
 }
 
 /* =========================================================租户管理================================================================== */
