@@ -26,30 +26,17 @@
         </dl>
         <dl>
           <dt>指定组织负责人</dt>
-          <dd></dd>
-          <dd v-if="chargeMember && chargeMember.orgLeader">
-            <em>{{ chargeMember.orgLeader }}</em>
-            <i class="el-icon-close" @click="deleteMember"></i>
-          </dd>
-          <dd v-else>
-            <i
-              class="el-icon-plus"
-              @click="showSelectMember = !showSelectMember"
-            ></i>
-          </dd>
-          <dd v-if="showSelectMember">
-            <el-select v-model="chargeMember.userId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in teamMembers"
-                :key="index + item.userId"
-                :label="item.userName"
-                :value="item.userId"
-              >
-                <span>{{ item.userName }}</span>
-                <span>{{ item.value }}</span>
-              </el-option>
-            </el-select>
-          </dd>
+          <el-select v-model="chargeMember.userId" placeholder="请选择">
+            <el-option
+              v-for="(item, index) in teamMembers"
+              :key="index + item.userId"
+              :label="item.userName"
+              :value="item.userId"
+            >
+              <span>{{ item.userName }}</span>
+              <span>{{ item.value }}</span>
+            </el-option>
+          </el-select>
         </dl>
         <dl>
           <dt>组织成员</dt>
@@ -121,6 +108,7 @@ export default {
   methods: {
     show(data) {
       console.log(this.teamMembers);
+      console.log(this.data);
       this.data = data;
       this.formData.orgName = data.orgName;
       this.chargeMember.orgLeader = data.orgLeader;
