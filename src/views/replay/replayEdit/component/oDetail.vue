@@ -129,7 +129,6 @@
     <div>
       <el-button type="primary" @click="submit">提交复盘</el-button>
       <el-button type="primary" @click="save">保存</el-button>
-
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
