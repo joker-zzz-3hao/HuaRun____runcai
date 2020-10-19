@@ -2,9 +2,6 @@ export const loginOut = () => {
   // 登出时清除缓存中的token和vuex中的用户信息
   window.$store.dispatch('common/ldapLogout').then((response) => {
     if (response.code == '200') {
-      // const origin = window.location.origin
-      //   ? window.location.origin
-      //   : window.location.href.split('/#')[0];
       console.log(response);
       window.$store.commit('common/setUserInfo', { userInfo: {} });
       localStorage.setItem('token', '');
