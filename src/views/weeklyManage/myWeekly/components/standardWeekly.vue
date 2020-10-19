@@ -955,6 +955,16 @@ export default {
           this.$set(item, 'randomId', Math.random().toString(36).substr(3));
           okrIdList.push(item.okrDetailId);
         });
+        // 后端取回的数据，如果没支撑项，则加上‘不关联任何okr’
+        if ([...element.okrCultureValueList, ...element.workOkrList].length < 1 && element.workId) {
+          element.okrCultureValueList = [{
+            okrDetailId: 'noOkr',
+            okrDetailObjectKr: '不关联任何OKR',
+            randomId: Math.random().toString(36).substr(3),
+
+          }];
+          valueIdList.push('noOkr');
+        }
         this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
         this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
         this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
@@ -1047,28 +1057,27 @@ export default {
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
     },
-    deleteOkr(okr, randomId) {
-      // 删除已选择的价值观、okr
-      for (const item of this.formData.weeklyWorkVoSaveList) {
-        if (item.randomId == randomId) {
-          item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
-          let valueIdList = [];
-          let okrIdList = [];
-          // 删除对应okr、价值观id
-          valueIdList = item.valueIdList.filter((id) => okr.okrDetailId != id);
-          okrIdList = item.okrIdList.filter((id) => okr.okrDetailId != id);
-          item.okrCultureValueIds = valueIdList.join(',');
-          item.okrIds = okrIdList.join(',');
-          this.$set(item, 'okrIdList', okrIdList);
-          this.$set(item, 'valueIdList', valueIdList);
-
-          // 添加该字段用于校验支撑项
-          this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
-          // 删掉对应的支撑项
-          delete item.supportMyOkrObj;
-        }
-      }
-    },
+    // deleteOkr(okr, randomId) {
+    //   // 删除已选择的价值观、okr
+    //   for (const item of this.formData.weeklyWorkVoSaveList) {
+    //     if (item.randomId == randomId) {
+    //       item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
+    //       let valueIdList = [];
+    //       let okrIdList = [];
+    //       // 删除对应okr、价值观id
+    //       valueIdList = item.valueIdList.filter((id) => okr.okrDetailId != id);
+    //       okrIdList = item.okrIdList.filter((id) => okr.okrDetailId != id);
+    //       item.okrCultureValueIds = valueIdList.join(',');
+    //       item.okrIds = okrIdList.join(',');
+    //       this.$set(item, 'okrIdList', okrIdList);
+    //       this.$set(item, 'valueIdList', valueIdList);
+    //       // 添加该字段用于校验支撑项
+    //       this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
+    //       // 删掉对应的支撑项
+    //       delete item.supportMyOkrObj;
+    //     }
+    //   }
+    // },
 
     closeOkrDialog(selectedData) {
       for (const item of this.formData.weeklyWorkVoSaveList) {
