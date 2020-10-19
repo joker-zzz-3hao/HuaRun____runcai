@@ -53,7 +53,7 @@
             ></el-table-column>
             <el-table-column
               prop="projectBudget"
-              label="项目总预算(万)"
+              label="项目总预算(元)"
               min-width="120"
             ></el-table-column>
             <el-table-column

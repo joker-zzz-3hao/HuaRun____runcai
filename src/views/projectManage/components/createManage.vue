@@ -116,7 +116,7 @@
             :max="50000000"
             class="tl-input-number"
           ></el-input-number>
-          万
+          元
           <el-select
             v-model="formData.currency"
             placeholder="请选择币种"
