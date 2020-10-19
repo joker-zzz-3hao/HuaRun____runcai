@@ -80,6 +80,12 @@
               label="项目名称"
               min-width="180"
             >
+              <template slot-scope="scope">
+                <span v-if="scope.row.projectNameCn">{{
+                  scope.row.projectNameCn
+                }}</span>
+                <span v-else>--</span>
+              </template>
             </el-table-column>
             <el-table-column
               prop="approvalStatus"
@@ -93,21 +99,38 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="submitTime"
-              label="提交日期"
-              min-width="180"
-            ></el-table-column>
+            <el-table-column prop="submitTime" label="提交日期" min-width="180">
+              <template slot-scope="scope">
+                <span v-if="scope.row.submitTime">{{
+                  scope.row.submitTime
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="approvalTime"
               label="审批日期"
               min-width="180"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.approvalTime">{{
+                  scope.row.approvalTime
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="approvalUserName"
               label="审批人"
               min-width="180"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.approvalUserName">{{
+                  scope.row.approvalUserName
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button
