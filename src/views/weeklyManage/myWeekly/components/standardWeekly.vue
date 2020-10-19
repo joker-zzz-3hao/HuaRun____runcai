@@ -857,7 +857,6 @@ export default {
           // 后端查询数据
           self.formData.weeklyWorkVoSaveList = self.weeklyDataCopy.weeklyWorkVoList;// 列表数据
         }
-
         // 反显周报列表数据
         self.setWorkTableData();
         // 反显本周感想

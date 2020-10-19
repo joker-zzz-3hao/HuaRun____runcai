@@ -157,7 +157,8 @@
                   type="text"
                   class="tl-btn"
                   v-if="
-                    scope.row.reviewStatus == 3 || scope.row.reviewStatus == 2
+                    scope.row.reviewStatus == 3 ||
+                    (scope.row.reviewStatus == 2 && scope.row.isOwner)
                   "
                   @click="
                     $router.push({
