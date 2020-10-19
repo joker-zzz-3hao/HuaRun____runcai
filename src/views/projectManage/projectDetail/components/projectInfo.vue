@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="project-info">
+    <div class="project-description">
       <div>
         <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
         <span v-if="baseInfo.projectType">{{
