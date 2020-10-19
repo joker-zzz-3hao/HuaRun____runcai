@@ -109,7 +109,7 @@
                     <i class="el-icon-medal"></i>
                     <span>项目经理</span>
                   </div>
-                  <div v-if="scope.row.projectUserType == '0'">
+                  <div v-else-if="scope.row.projectUserType == '0'">
                     <i class="el-icon-medal"></i>
                     <span>设置项目经理</span>
                   </div>
