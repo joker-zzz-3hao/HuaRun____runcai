@@ -13,7 +13,7 @@
           <span>{{ item.workContent }}</span>
         </div>
         <div>
-          <span>状态:</span>
+          <span>进度:</span>
           <span>{{ item.workProgress }}%</span>
         </div>
         <div>

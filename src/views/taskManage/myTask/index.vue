@@ -284,23 +284,26 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="taskStatus" label="状态">
+            <el-table-column align="left" prop="processName" label="过程">
               <template slot-scope="scope">
                 <div v-if="scope.row.processName && scope.row.stepName">
                   <span>{{ scope.row.processName }}</span>
                   <span>-</span>
                   <span>{{ scope.row.stepName }}</span>
                 </div>
-                <div v-else>
-                  <i
-                    :class="
-                      ({ 'is-draft': scope.row.taskStatus == '0' },
-                      { 'not-confirm': scope.row.taskStatus == '10' },
-                      { 'is-confirm': scope.row.taskStatus == '20' })
-                    "
-                  ></i>
-                  <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
-                </div>
+                <div v-else>未设置任务过程</div>
+              </template>
+            </el-table-column>
+            <el-table-column align="left" prop="taskStatus" label="状态">
+              <template slot-scope="scope">
+                <i
+                  :class="
+                    ({ 'is-draft': scope.row.taskStatus == '0' },
+                    { 'not-confirm': scope.row.taskStatus == '10' },
+                    { 'is-confirm': scope.row.taskStatus == '20' })
+                  "
+                ></i>
+                <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
               </template>
             </el-table-column>
             <el-table-column

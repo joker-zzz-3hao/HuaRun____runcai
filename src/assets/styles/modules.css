@@ -3796,17 +3796,60 @@
   justify-content: center;
   position: fixed;
   right: 20px;
-  bottom: 50px;
+  bottom: 100px;
   width: 60px;
   height: 60px;
   background: #685df1;
   border-radius: 50%;
   z-index: 50;
+  cursor: pointer;
 }
 
 .assistant i {
   color: #fff;
   font-size: 34px;
+}
+
+.el-dialog.assistant-dialog {
+  padding: 0;
+  position: absolute;
+  right: 16px;
+  bottom: 180px;
+  width: 370px;
+  height: 430px;
+  min-width: unset;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
+  background: #fff;
+}
+
+.assistant-dialog .sender-info {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 194px;
+  border-radius: 4px 4px 0 0;
+  background-image: linear-gradient(136deg, #A196F9 0%, #685DF1 100%);
+}
+
+.assistant-dialog .sender-info dt {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.assistant-dialog .sender-info dt span {
+  margin: 0 12px 0 0;
+}
+
+.assistant-dialog .sender-info dd {
+  margin: 14px 0 0 0;
+  color: #cdc9f7;
+}
+
+.assistant-dialog .receiver-info {
+  padding: 0 16px;
 }
 
 /* 后台 */
