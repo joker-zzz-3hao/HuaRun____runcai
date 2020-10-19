@@ -1,6 +1,6 @@
 <template>
   <div class="assistant">
-    <i @click="showDia">sdfsdf</i>
+    <i @click="showDia" class="el-icon-chat-dot-round"></i>
     <div v-if="showDialog">
       <el-dialog
         :close-on-click-modal="false"
