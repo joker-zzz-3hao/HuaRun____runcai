@@ -88,6 +88,7 @@
                     :min="0"
                     :max="100"
                     class="tl-input-number"
+                    @change="tableProcessChange(scope.row)"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -939,9 +940,9 @@ export default {
     processChange(item) {
       item.progressAfter = Math.round(item.progressAfter);
     },
-    tableProcessChange(item) {
-      item.workProgress = Math.round(item.workProgress);
-    },
+    // tableProcessChange(item) {
+    //   item.workProgress = Math.round(item.workProgress);
+    // },
     projectDelete() {
       this.formData.weeklyWorkVoSaveList.forEach((work) => {
         work.projectId = '';
@@ -976,6 +977,16 @@ export default {
               work.workTime = Number(work.workTime).toFixed(0);
             }
             // }
+          }
+        }
+      });
+    },
+    tableProcessChange(row) {
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          work.workProgress = Number(work.workProgress).toFixed(0);
+          if (work.workProgress > 100) {
+            work.workProgress = 100;
           }
         }
       });
