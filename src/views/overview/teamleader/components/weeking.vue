@@ -188,13 +188,12 @@ export default {
     init() {
       const that = this;
       this.myChart = echarts.init(document.getElementById('weeking'));
-      console.log(that.moodDataY);
+      // console.log(that.moodDataY);
       const option = {
         tooltip: {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            console.log(params);
             return `<div>进行中的工作项${params.data[1]}</div><div>已完成的工作项${params.data[2]}</div>`;
           },
         },
@@ -292,7 +291,7 @@ export default {
           trigger: 'item',
           position: 'top',
           formatter(params) {
-            console.log(params);
+            // console.log(params);
             return `<div>让我静静${params.data[1]}</div>
             <div>还行吧${params.data[2] ? params.data[2] : 0}</div>
             <div>有收获${params.data[3] ? params.data[3] : 0}</div>`;
@@ -363,7 +362,7 @@ export default {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { barBorderRadius: 5, color: '#FFBC20' },
+              normal: { barBorderRadius: 5, color: '#FB4C59' },
             },
           },
           {
@@ -377,7 +376,7 @@ export default {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { barBorderRadius: 5, color: '#FB4C59' },
+              normal: { barBorderRadius: 5, color: '#FFBC20' },
             },
           },
         ],

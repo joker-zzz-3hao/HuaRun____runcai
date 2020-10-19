@@ -243,7 +243,6 @@ export default {
         this.param,
       ).then((res) => {
         if (res.code == '200') {
-          console.log(res);
           this.okrMain.supported = '1';
         }
       });
