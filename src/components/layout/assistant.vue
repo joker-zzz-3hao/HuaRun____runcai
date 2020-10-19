@@ -179,7 +179,7 @@ export default {
   },
   methods: {
     showDia() {
-      this.showDialog = true;
+      this.showDialog = !this.showDialog;
     },
     remoteMethod(name) {
       this.server.getUserListByOrgId({
