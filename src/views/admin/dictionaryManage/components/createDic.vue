@@ -12,54 +12,76 @@
       @close="close"
       :title="dicTitle"
       :close-on-click-modal="false"
+      width="70%"
     >
       <div>
         <el-form ref="dicForm" :model="formData" label-width="80px">
-          <el-form-item
-            label="字典编号"
-            prop="code"
-            :rules="[
-              { required: true, validator: validateDicCode, trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              v-model.trim="formData.code"
-              maxlength="50"
-              clearable
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="字典名称"
-            prop="name"
-            :rules="[
-              { required: true, validator: validateDicName, trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              v-model.trim="formData.name"
-              maxlength="50"
-              clearable
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="状态"
-            prop="enabledFlag"
-            :rules="[
-              { required: true, message: '请输选择请用状态', trigger: 'blur' },
-            ]"
-          >
-            <el-radio-group v-model="formData.enabledFlag">
-              <el-radio :label="'Y'">启用</el-radio>
-              <el-radio :label="'N'">停用</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="备注" prop="description">
-            <el-input
-              v-model.trim="formData.description"
-              maxlength="100"
-              clearable
-            ></el-input>
-          </el-form-item>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item
+                label="字典编号"
+                prop="code"
+                :rules="[
+                  {
+                    required: true,
+                    validator: validateDicCode,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <el-input
+                  v-model.trim="formData.code"
+                  maxlength="50"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="字典名称"
+                prop="name"
+                :rules="[
+                  {
+                    required: true,
+                    validator: validateDicName,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <el-input
+                  v-model.trim="formData.name"
+                  maxlength="50"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item
+                label="状态"
+                prop="enabledFlag"
+                :rules="[
+                  {
+                    required: true,
+                    message: '请输选择请用状态',
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <el-radio-group v-model="formData.enabledFlag">
+                  <el-radio :label="'Y'">启用</el-radio>
+                  <el-radio :label="'N'">停用</el-radio>
+                </el-radio-group>
+              </el-form-item></el-col
+            >
+            <el-col :span="12">
+              <el-form-item label="备注" prop="description">
+                <el-input
+                  v-model.trim="formData.description"
+                  maxlength="100"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+          </el-row>
         </el-form>
       </div>
       <div>
@@ -104,6 +126,7 @@
                   controls-position="right"
                   :min="1"
                   :max="1000"
+                  style="width: 90px"
                 ></el-input-number>
               </template>
             </el-table-column>
@@ -143,12 +166,28 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-button @click="addItem">新增</el-button>
+          <div class="btn-box">
+            <el-button
+              type="text"
+              @click="addItem"
+              class="tl-btn dotted-line list-add"
+            >
+              <i class="el-icon-plus"></i>添加
+            </el-button>
+          </div>
+          <!-- <el-form-item>
+            <el-button :loading="loading" @click="save">确定</el-button>
+            <el-button :disabled="loading" @click="cancel">取消</el-button>
+          </el-form-item> -->
         </el-form>
-      </div>
-      <div>
-        <el-button :loading="loading" @click="save">确定</el-button>
-        <el-button :disabled="loading" @click="cancel">取消</el-button>
+        <div class="operating-box">
+          <el-button type="primary" class="tl-btn amt-bg-slip" @click="save"
+            >确认</el-button
+          >
+          <el-button plain class="tl-btn amt-border-fadeout" @click="cancel"
+            >取消</el-button
+          >
+        </div>
       </div>
     </el-dialog>
   </div>
