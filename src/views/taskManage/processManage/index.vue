@@ -106,7 +106,8 @@
                       !roleCode.includes('TEAM_ADMIN') &&
                       scope.row.processType == 1) ||
                     (scope.row.processType == 2 &&
-                      scope.row.createBy != userInfo.userId)
+                      scope.row.createBy != userInfo.userId) ||
+                    scope.row.innerType == 1
                   "
                   type="text"
                   @click="editProcess(scope.row)"

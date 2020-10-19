@@ -179,7 +179,7 @@
               </el-input>
               <el-checkbox-group
                 v-model="searchTaskUser"
-                @change="getTableList"
+                @change="getTableList()"
               >
                 <el-checkbox
                   v-for="item in filterTask"
@@ -227,7 +227,7 @@
               </el-input>
               <el-checkbox-group
                 v-model="searchCreateUser"
-                @change="getTableList"
+                @change="getTableList()"
               >
                 <el-checkbox
                   v-for="item in filterCreate"
