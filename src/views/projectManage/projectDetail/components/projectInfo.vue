@@ -41,7 +41,7 @@
         >
       </div>
     </div>
-    <div>
+    <div class="project-members">
       <div style="display: flex">
         <div>项目成员</div>
         <div>
