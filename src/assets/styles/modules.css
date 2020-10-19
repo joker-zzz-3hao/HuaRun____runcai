@@ -3363,6 +3363,10 @@
   background: #fff;
 }
 
+.no-mainnav .logo-bg {
+  background: unset;
+}
+
 .header-wrap::after {
   position: absolute;
   left: 0;

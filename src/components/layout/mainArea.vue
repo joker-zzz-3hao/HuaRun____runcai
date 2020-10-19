@@ -1,5 +1,5 @@
 <template>
-  <section class="main-wrap">
+  <section class="main-wrap" :class="{ 'toggle-bg': !$route.meta.hasMainMenu }">
     <main-menu :menuList="menuList" v-if="hasMainMenu"></main-menu>
     <router-view class="view-cont" />
   </section>
