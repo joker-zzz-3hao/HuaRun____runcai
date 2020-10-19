@@ -15,6 +15,17 @@
     <el-scrollbar>
       <div class="cont-box">
         <dl class="dl-list">
+          <el-radio-group v-model="noOkr">
+            <el-radio
+              class="tl-radio"
+              v-for="(item, index) in [{ id: 'noOkr', name: '不关联任何OKR' }]"
+              :label="item.id"
+              :key="item.id"
+              @click.native="noOkrChange($event, index, item)"
+            >
+              <em>{{ item.name }}</em>
+            </el-radio>
+          </el-radio-group>
           <dt class="list-title operating-area-inside">
             <em>部门目标</em>
             <el-select
@@ -221,6 +232,7 @@ export default {
       selectOrgIndex: undefined,
       selectMyIndex: undefined,
       selectCultureIndex: undefined,
+      noOkrIndex: undefined,
       supportMyOkrObj: {},
       selectOkrList: [],
       orgSelectData: '', // 团队目标
@@ -229,10 +241,12 @@ export default {
       orgOkr: [],
       personalOkr: [],
       selectedCultureList: [],
+      noOkrList: [],
       myPeriodId: '',
       orgPeriodId: '',
       thisPageMyOkrList: [],
       thisPageOrgOkrList: [],
+      noOkr: '',
     };
   },
   created() {
@@ -259,9 +273,9 @@ export default {
     },
     confirm() {
       this.$emit('closeOkrDialog', {
-        selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList],
+        selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList, ...this.noOkrList],
         selectedOkr: [...this.orgOkr, ...this.personalOkr],
-        selectedCulture: [...this.selectedCultureList],
+        selectedCulture: [...this.selectedCultureList, ...this.noOkrList], // 不关联任何okr合并至价值观，省事
         currenItemrandomId: this.currenItemrandomId,
         supportMyOkrObj: this.supportMyOkrObj,
       });
@@ -276,6 +290,11 @@ export default {
     initSelectedData() {
       this.valueSelectData = [];
       for (const item of this.selectedOkr) {
+        // 匹配“未关联人和okr”
+        if (item.okrDetailId == 'noOkr') {
+          this.noOkr = 'noOkr';
+          this.noOkrList = [item];
+        }
         // 匹配个人okr
         for (const okr of this.myOkrList) {
           if (item.okrDetailId == okr.okrDetailId) {
@@ -325,6 +344,8 @@ export default {
     },
     // 选择关联的okr
     selectOrgOkr(e, index, okr) {
+      this.noOkr = '';
+      this.noOkrList = [];
       this.supportMyOkrObj = {};
       this.personalSelectData = '';
       this.valueSelectData = '';
@@ -347,6 +368,8 @@ export default {
       }
     },
     selectMyOkr(e, index, okr) {
+      this.noOkr = '';
+      this.noOkrList = [];
       this.orgSelectData = '';
       this.valueSelectData = '';
       this.orgOkr = [];
@@ -379,6 +402,8 @@ export default {
       }
     },
     cultureChange(e, index, culture) {
+      this.noOkr = '';
+      this.noOkrList = [];
       this.supportMyOkrObj = {};
       this.orgSelectData = '';
       this.personalSelectData = '';
@@ -401,6 +426,26 @@ export default {
           }
         });
         this.selectCultureIndex = index;
+      }
+      this.$forceUpdate();
+    },
+    noOkrChange(e, index, item) {
+      this.supportMyOkrObj = {};
+      this.orgSelectData = '';
+      this.personalSelectData = '';
+      this.orgOkr = [];
+      this.personalOkr = [];
+      this.selectedCultureList = [];
+      if (e.target.tagName != 'INPUT') return;
+      if (this.noOkrIndex === index) { // 取消选中
+        this.noOkrIndex = undefined;
+        this.noOkrList = [];
+        this.noOkr = '';
+      } else { // 选中
+        this.noOkrList = [{ okrDetailId: item.id, okrDetailObjectKr: item.name }];
+        this.noOkrIndex = index;
+        this.noOkr = item.id;// 单选控制
+        this.noOkrIndex = index;
       }
       this.$forceUpdate();
     },

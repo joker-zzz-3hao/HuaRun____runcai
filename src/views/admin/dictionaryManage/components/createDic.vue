@@ -18,11 +18,12 @@
           <el-form-item
             label="字典编号"
             prop="code"
-            :rules="[{required:true,validator:validateDicCode,trigger:'blur'}]"
+            :rules="[
+              { required: true, validator: validateDicCode, trigger: 'blur' },
+            ]"
           >
             <el-input
               v-model.trim="formData.code"
-              :disabled="this.optionType == 'edit'"
               maxlength="50"
               clearable
             ></el-input>
@@ -30,14 +31,22 @@
           <el-form-item
             label="字典名称"
             prop="name"
-            :rules="[{required:true,validator:validateDicName,trigger:'blur'}]"
+            :rules="[
+              { required: true, validator: validateDicName, trigger: 'blur' },
+            ]"
           >
-            <el-input v-model.trim="formData.name" maxlength="50" clearable></el-input>
+            <el-input
+              v-model.trim="formData.name"
+              maxlength="50"
+              clearable
+            ></el-input>
           </el-form-item>
           <el-form-item
             label="状态"
             prop="enabledFlag"
-            :rules="[{required:true,message:'请输选择请用状态',trigger:'blur'}]"
+            :rules="[
+              { required: true, message: '请输选择请用状态', trigger: 'blur' },
+            ]"
           >
             <el-radio-group v-model="formData.enabledFlag">
               <el-radio :label="'Y'">启用</el-radio>
@@ -45,12 +54,20 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="备注" prop="description">
-            <el-input v-model.trim="formData.description" maxlength="100" clearable></el-input>
+            <el-input
+              v-model.trim="formData.description"
+              maxlength="100"
+              clearable
+            ></el-input>
           </el-form-item>
         </el-form>
       </div>
       <div>
-        <el-form :rules="formTableData.rules" :model="formTableData" ref="formTable">
+        <el-form
+          :rules="formTableData.rules"
+          :model="formTableData"
+          ref="formTable"
+        >
           <el-table v-loading="tableLoading" :data="formTableData.tableData">
             <el-table-column label="字典键" prop="value">
               <template slot-scope="scope">
@@ -58,7 +75,11 @@
                   :prop="'tableData.' + scope.$index + '.value'"
                   :rules="formTableData.rules.value"
                 >
-                  <el-input v-model.trim="scope.row.value" maxlength="50" clearable></el-input>
+                  <el-input
+                    v-model.trim="scope.row.value"
+                    maxlength="50"
+                    clearable
+                  ></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -68,7 +89,11 @@
                   :prop="'tableData.' + scope.$index + '.meaning'"
                   :rules="formTableData.rules.meaning"
                 >
-                  <el-input v-model.trim="scope.row.meaning" maxlength="50" clearable></el-input>
+                  <el-input
+                    v-model.trim="scope.row.meaning"
+                    maxlength="50"
+                    clearable
+                  ></el-input>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -96,17 +121,25 @@
             </el-table-column>
             <el-table-column label="备注" prop="description">
               <template slot-scope="scope">
-                <el-input v-model.trim="scope.row.description" maxlength="50" clearable></el-input>
+                <el-input
+                  v-model.trim="scope.row.description"
+                  maxlength="50"
+                  clearable
+                ></el-input>
               </template>
             </el-table-column>
             <el-table-column label="创建时间" prop="createTime">
               <template slot-scope="scope">
-                <span>{{scope.row.createTime ?scope.row.createTime :'--' }}</span>
+                <span>{{
+                  scope.row.createTime ? scope.row.createTime : "--"
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作" prop="code">
               <template slot-scope="scope">
-                <el-button type="text" @click="deleteItem(scope.row)">删除</el-button>
+                <el-button type="text" @click="deleteItem(scope.row)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -134,18 +167,6 @@ export default {
       type: Object,
       default() {
         return {};
-      },
-    },
-    optionType: {
-      type: String,
-      default() {
-        return 'add';
-      },
-    },
-    codeId: {
-      type: String,
-      default() {
-        return '';
       },
     },
   },
@@ -178,9 +199,7 @@ export default {
         enabledFlag: 'Y',
         description: '',
         subList: [],
-        codeId: this.codeId,
       },
-
     };
   },
   created() {
@@ -190,24 +209,7 @@ export default {
   computed: {},
   methods: {
     init() {
-      if (this.optionType == 'edit') {
-        this.dicTitle = '编辑字典';
-        this.tableLoading = true;
-        this.server.queryDicDetail({ codeId: this.codeId }).then((res) => {
-          if (res.code == 200) {
-            this.formData.code = res.data.code;
-            this.formData.name = res.data.name;
-            this.formData.enabledFlag = res.data.enabledFlag;
-            this.formData.description = res.data.description;
-            this.tableData = res.data.subList;
-            // 添加字段
-            for (const item of this.formTableData.tableData) {
-              item.randomId = '';// 添加随机id，用于删除环节
-            }
-          }
-          this.tableLoading = false;
-        });
-      }
+
     },
 
     show() {
