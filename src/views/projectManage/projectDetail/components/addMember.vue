@@ -237,18 +237,27 @@ export default {
       this.dataForm.tableData.splice(index, 1);
     },
     changeMember(data) {
+      let flag = false;
       this.projectManagerList.forEach((item) => {
+        flag = false;
         if (item.userId == data) {
-          this.server.projectUserRelation({
-            projectId: this.$route.query.projectId || '',
-            userId: item.userId,
-          }).then((res) => {
-            if (res.code == '200') {
-              if (!res.data) {
-                this.dataForm.tableData.push(item);
-              }
+          this.dataForm.tableData.forEach((dItem) => {
+            if (dItem.userId == data) {
+              flag = true;
             }
           });
+          if (!flag) {
+            this.server.projectUserRelation({
+              projectId: this.$route.query.projectId || '',
+              userId: item.userId,
+            }).then((res) => {
+              if (res.code == '200') {
+                if (!res.data) {
+                  this.dataForm.tableData.push(item);
+                }
+              }
+            });
+          }
         }
       });
       this.keyword = '';
@@ -265,6 +274,7 @@ export default {
               userLevel: item.level,
               userName: item.userName,
               userPost: item.funcName,
+              companyName: item.companyName,
             });
           });
           this.server.addProjectUser(params).then((res) => {
