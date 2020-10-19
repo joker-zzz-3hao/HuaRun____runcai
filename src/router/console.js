@@ -241,8 +241,6 @@ export default [{
         path: '/replayLink',
         name: 'replayLink',
         meta: {
-          hasMainMenu: true,
-          isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
           power: '',
