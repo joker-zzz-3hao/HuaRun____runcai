@@ -1,5 +1,9 @@
 <template>
   <div>
+    <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+      返回
+      <span class="lines"></span>
+    </el-button>
     <div>
       复盘对象：{{ okrMain.okrMainVo.periodName }}({{
         dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
@@ -67,6 +71,17 @@
         :okrMain="okrMain"
       />
     </div>
+    <div>
+      <div>复盘记录</div>
+      <el-timeline :reverse="false">
+        <el-timeline-item
+          v-for="(item, index) in activities"
+          :key="index"
+          :timestamp="item.createTime"
+          >{{ item.userName }} {{ item.content }}</el-timeline-item
+        >
+      </el-timeline>
+    </div>
   </div>
 </template>
 
@@ -93,6 +108,7 @@ export default {
           reviewType: 0,
         },
       },
+      activities: [],
       active: {},
       communication: {},
       communicationLabel: {},
@@ -105,11 +121,20 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
     this.getOkrReviewDetail();
+    this.getOkrReviewHistoryList();
   },
 
   methods: {
+    getOkrReviewHistoryList() {
+      this.server.getOkrReviewHistoryList({
+        okrMainId: this.$route.query.okrId,
+
+      }).then((res) => {
+        this.activities = res.data;
+      });
+    },
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
@@ -196,9 +221,7 @@ export default {
         }
       });
     },
-    handleChange(val) {
-      console.log(val);
-    },
+
     getOkrReviewDetail() {
       this.server.getOkrReviewDetail({
         okrMainId: this.$route.query.okrId,

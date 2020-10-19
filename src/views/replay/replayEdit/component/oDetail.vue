@@ -86,27 +86,40 @@
             <div>
               <div>改进措施</div>
               <div>
-                <div v-for="(li, i) in item.o.measure || []" :key="i">
-                  <em>
-                    {{ li }}
-                  </em>
-                  <el-button type="text" @click="deleteProduce(index, i)"
-                    >删除</el-button
-                  >
-                </div>
+                <template v-if="item.o.measure.length > 1">
+                  <div v-for="(li, d) in item.o.measure || []" :key="d">
+                    <el-input
+                      type="textarea"
+                      placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                      v-model="item.o.measure[d]"
+                    ></el-input>
 
-                <el-form-item>
-                  <el-input
-                    type="textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                    v-model="deficiency[item.o.detailId]"
-                  ></el-input>
-                </el-form-item>
-                <el-button
-                  type="text"
-                  @click="addDefic(deficiency[item.o.detailId], index, i)"
-                  >添加</el-button
-                >
+                    <el-button
+                      v-if="item.o.measure.length == d + 1"
+                      type="text"
+                      @click="addDefic(index, i)"
+                      >添加</el-button
+                    >
+                    <el-button
+                      v-else
+                      type="text"
+                      @click="deleteProduce(index, i)"
+                      >删除</el-button
+                    >
+                  </div>
+                </template>
+                <template v-else>
+                  <div>
+                    <el-input
+                      type="textarea"
+                      placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                      v-model="item.o.measure[0]"
+                    ></el-input>
+                  </div>
+                  <el-button type="text" @click="addDefic(index)"
+                    >添加</el-button
+                  >
+                </template>
               </div>
             </div>
           </el-form>
@@ -156,16 +169,11 @@ export default {
     deleteProduce(index, i) {
       this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
     },
-    addDefic(value, index) {
-      if (!value) {
-        this.$message.error('请填写改进措施');
-        return false;
-      }
+    addDefic(index) {
       if (!this.okrMain.okrReviewPojoList[index].o.measure) {
         this.okrMain.okrReviewPojoList[index].o.measure = [];
       }
-      this.okrMain.okrReviewPojoList[index].o.measure.push(value);
-      this.deficiency[this.okrMain.okrReviewPojoList[index].o.detailId] = '';
+      this.okrMain.okrReviewPojoList[index].o.measure.push('');
     },
     checkDatakrs(clear) {
       const krsList = this.okrMain.okrReviewPojoList.map((item) => item.o);
@@ -210,7 +218,8 @@ export default {
       });
     },
     getOldList() {
-      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.o);
+      const oList = JSON.parse(JSON.stringify(this.okrMain.okrReviewPojoList));
+      const krsData = oList.map((item) => item.o);
       const krsList = krsData;
 
       this.oldList = krsList.map((item) => ({

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+      返回
+      <span class="lines"></span>
+    </el-button>
     <div>
       复盘对象：{{ okrMain.okrMainVo.periodName }}({{
         dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
@@ -100,7 +104,7 @@ export default {
     'tl-kr-detail': krDetail,
     'tl-o-detail': oDetail,
   },
-  created() {
+  mounted() {
     this.getOkrReviewDetail();
   },
 
