@@ -64,4 +64,8 @@ export default class Server extends ServerBase {
   closeProject(param) {
     return this._ajaxPost('gateway/project-service/project/close/project', param);
   }
+
+  queryByCodes(param) {
+    return this._ajaxPost('gateway/system-service/sys/dictionary/queryByCodes', param);
+  }
 }

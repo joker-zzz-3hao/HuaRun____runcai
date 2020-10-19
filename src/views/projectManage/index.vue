@@ -1,5 +1,5 @@
 <template>
-  <div class="role-type">
+  <div class="project-manage">
     <div class="operating-area">
       <div class="page-title">项目管理</div>
       <div class="operating-box">
@@ -109,9 +109,15 @@
               min-width="120"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectStatus">{{
-                  CONST.PROJECT_STATUS_MAP[scope.row.projectStatus]
-                }}</span>
+                <span v-if="scope.row.projectStatus">
+                  <i
+                    :class="{
+                      'el-icon-basketball': scope.row.projectStatus == '0',
+                      'el-icon-basketball': scope.row.projectStatus == '1',
+                    }"
+                  ></i>
+                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
+                >
                 <span v-else>--</span>
               </template>
             </el-table-column>
@@ -140,7 +146,7 @@
               min-width="120"
             ></el-table-column>
 
-            <el-table-column fixed="right" label="操作" width="80">
+            <el-table-column fixed="right" label="操作" width="50">
               <template slot-scope="scope">
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
