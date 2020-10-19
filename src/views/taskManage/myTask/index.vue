@@ -566,18 +566,15 @@ export default {
     errorHandler() {
       return true;
     },
-    getTableList() {
-      console.log(this.searchPerson);
-      const params = {
-        currentPage: this.currentPage,
-        pageSize: this.pageSize,
-        selectType: this.currentIndex,
-        taskTitle: this.searchMsg,
-        psList: this.psList || this.searchList,
-        accept: this.accept,
-        taskUserIds: this.searchTaskUser.toString(),
-        createByIds: this.searchCreateUser.toString(),
-      };
+    getTableList(params = { currentPage: 1 }) {
+      params.pageSize = this.pageSize;
+      params.selectType = this.currentIndex;
+      params.taskTitle = this.searchMsg;
+      params.psList = this.psList || this.searchList;
+      params.accept = this.accept;
+      params.taskUserIds = this.searchTaskUser.toString();
+      params.createByIds = this.searchCreateUser.toString();
+
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;

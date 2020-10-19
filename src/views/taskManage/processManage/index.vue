@@ -5,15 +5,10 @@
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
-            <el-select
-              v-model="keyWord"
-              placeholder="请选择使用范围"
-              @change="searchList"
-              clearable
-            >
-              <el-option value="1" label="团队使用">团队使用</el-option>
-              <el-option value="2" label="小范围使用">小范围使用</el-option>
-              <el-option value="3" label="个人使用">个人使用</el-option>
+            <el-select v-model="keyWord" placeholder="请选择使用范围" clearable>
+              <el-option :value="1" label="团队使用">团队使用</el-option>
+              <el-option :value="2" label="小范围使用">小范围使用</el-option>
+              <el-option :value="3" label="个人使用">个人使用</el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -150,7 +145,11 @@ import tlAddProcess from './components/addProcess';
 import Server from './server';
 
 const server = new Server();
-
+const processTypeMap = {
+  1: '团队使用',
+  2: '小范围使用',
+  3: '个人使用',
+};
 export default {
   name: 'dataDictionary',
   components: {
@@ -171,11 +170,7 @@ export default {
       loading: false,
       // codeId: '',
       optionType: 'create',
-      processTypeMap: {
-        1: '团队使用',
-        2: '小范围使用',
-        3: '个人使用',
-      },
+      processTypeMap,
     };
   },
   created() {
@@ -188,8 +183,8 @@ export default {
     }),
   },
   methods: {
-    searchList() {
-      const params = {};
+    searchList(params = { currentPage: 1 }) {
+      console.log(this.keyWord);
       params.processType = this.keyWord;
       params.currentPage = this.currentPage;
       params.pageSize = this.pageSize;
@@ -251,6 +246,13 @@ export default {
     },
     clear() {
       this.searchList();
+    },
+  },
+  watch: {
+    keyWord: {
+      handler() {
+        this.searchList();
+      },
     },
   },
 };
