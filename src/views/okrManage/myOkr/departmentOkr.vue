@@ -206,10 +206,6 @@ export default {
   },
   props: {
 
-    departmentName: {
-      type: String,
-      default: '',
-    },
   },
   computed: {
     ...mapState('common', {
@@ -240,6 +236,7 @@ export default {
   methods: {
     searchOkr() { // 默认搜索进行时
       if (this.okrCycle.periodId) {
+        console.log('123', this.departmentName, this.orgId);
         this.loading = true;
         this.server.getorgOkr({
           myOrOrg: 'org',
@@ -326,7 +323,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           this.searchForm.periodId = newVal.periodId;
-          if ((this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) && this.userInfo.orgParentName) {
+          if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
             this.departmentName = this.userInfo.orgParentName;
             this.orgId = this.userInfo.orgParentId;
             console.log('team');
