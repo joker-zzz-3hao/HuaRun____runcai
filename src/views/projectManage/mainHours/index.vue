@@ -10,7 +10,6 @@
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
-              clearable
               class="tl-select"
             >
               <el-option
@@ -38,16 +37,16 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item>
+          <el-form-item>
             <span>项目总预算:</span>
-            <span>324万</span>
+            <span>{{ projectBudgetAmount || 0 }}</span>
             <span>人民币</span>
           </el-form-item>
           <el-form-item>
             <span>项目已确认人力成本:</span>
-            <span>324万</span>
+            <span>{{ projectConfirmAmount || 0 }}</span>
             <span>人民币</span>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
     </div>

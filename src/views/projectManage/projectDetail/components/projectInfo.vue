@@ -15,9 +15,9 @@
         <span
           >项目所属部门：{{ `${baseInfo.projectApplyDepName || "--"}` }}</span
         >
-        <span>项目总预算：{{ `${baseInfo.projectBudget || "0"}` }}万</span>
+        <span>项目总预算：{{ `${baseInfo.projectBudget || "0"}` }}元</span>
         <span>{{
-          `${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"}`
+          `(${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"})`
         }}</span>
       </div>
       <div>
