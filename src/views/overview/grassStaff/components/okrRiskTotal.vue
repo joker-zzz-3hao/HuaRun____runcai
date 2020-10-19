@@ -285,7 +285,7 @@ export default {
             formatter(value) {
               const texts = [];
               if (value == 0) {
-                console.log(0);
+                console.log('');
               } else if (value == 1) {
                 texts.push('高');
               } else if (value == 4) {

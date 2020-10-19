@@ -367,9 +367,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入考核指标"
                   v-model="kritem.checkQuota"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                 ></el-input>
               </el-form-item>
@@ -396,9 +398,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入衡量办法"
                   v-model="kritem.judgeMethod"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                 ></el-input>
               </el-form-item>
@@ -514,9 +518,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入考核指标"
                   v-model="newItem.checkQuota"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                   @input="updateokrCollapse"
                 ></el-input>
@@ -531,9 +537,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入衡量办法"
                   v-model="newItem.judgeMethod"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                   @input="updateokrCollapse"
                 ></el-input>
