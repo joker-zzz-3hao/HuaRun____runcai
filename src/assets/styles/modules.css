@@ -3796,12 +3796,13 @@
   justify-content: center;
   position: fixed;
   right: 20px;
-  bottom: 50px;
+  bottom: 100px;
   width: 60px;
   height: 60px;
   background: #685df1;
   border-radius: 50%;
   z-index: 50;
+  cursor: pointer;
 }
 
 .assistant i {
