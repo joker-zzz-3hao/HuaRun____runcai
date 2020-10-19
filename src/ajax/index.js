@@ -1,22 +1,25 @@
 import axios from 'axios';
 import {
   getOrigin,
+  // loginOut,
 } from '@/lib/util';
 import {
   Message,
 } from 'element-ui';
 
 function sessionTimeOut(data) {
+  // loginOut();
   console.log(data);
   const origin = getOrigin();
-  // TODO:未授权时跳转ladp登录首页
-  // if (origin == process.env.VUE_APP_PORTAL) {
-  //   window.open(process.env.VUE_APP_LOGIN, '_self');
-  // } else {
-  //   window.open(`${origin}/#/login`, '_self');
-  // }
-  window.open(`${origin}/#/login`, '_self');
   localStorage.token = '';
+  window.$store.commit('common/setUserInfo', {});
+  // TODO:未授权时跳转ladp登录首页
+  if (origin == 'https://talent.crcloud.com') {
+    window.open(process.env.VUE_APP_LOGINOUT, '_self');
+  } else {
+    window.open(`${origin}/#/login`, '_self');
+    window.location.reload();
+  }
 }
 
 const ajax = axios.create({
