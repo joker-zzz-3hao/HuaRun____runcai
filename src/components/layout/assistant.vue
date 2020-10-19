@@ -8,11 +8,14 @@
     <template v-if="showDialog">
       <el-dialog
         :modal="false"
-        append-to-body
-        :show-close="false"
+        :append-to-body="true"
+        :close-on-click-modal="false"
+        :before-close="close"
+        @closed="closed"
         :visible="showDialog"
         custom-class="assistant-dialog"
         class="tl-dialog"
+        :class="{ 'is-show': showDialog }"
       >
         <dl class="sender-info">
           <dt>
@@ -30,6 +33,7 @@
               <el-select
                 v-model.trim="formData.noticeType"
                 @change="typeChange"
+                popper-class="select-border"
                 class="tl-select"
               >
                 <el-option
@@ -55,7 +59,7 @@
                 @visible-change="visibleChange"
                 clearable
                 @change="userChange"
-                popper-class="tl-select-dropdown set-manage"
+                popper-class="tl-select-dropdown"
                 class="tl-select"
               >
                 <el-option
@@ -84,6 +88,7 @@
               <el-input
                 maxlength="50"
                 v-model.trim="formData.taskTitle"
+                class="tl-input"
               ></el-input
             ></el-form-item>
             <el-form-item v-if="formData.noticeType == 3">
@@ -109,16 +114,26 @@
               ><el-input
                 v-model="formData.noticeContent"
                 maxlength="1000"
+                rows="2"
+                resize="none"
                 type="textarea"
                 :placeholder="
                   formData.noticeType == '1'
                     ? '这里请输入你想说的内容~'
                     : '请详细描述您的问题'
                 "
+                class="tl-textarea"
               ></el-input
             ></el-form-item>
           </el-form>
         </div>
+        <el-button
+          type="primary"
+          @click="sendMessage"
+          class="tl-btn amt-bg-slip"
+        >
+          <i class="el-icon-position"></i><em>发送内容</em>
+        </el-button>
         <!-- <div>Hello {{ userInfo.userName }}</div>
         <div>您可以在这给你的同事发送提醒或任务哦~</div>
         <el-form ref="asistant" :model="formData" label-width="80px">
@@ -282,7 +297,7 @@ export default {
   },
   methods: {
     showDia() {
-      this.showDialog = !this.showDialog;
+      this.showDialog = true;
     },
     remoteMethod(name) {
       this.server.getUserListByOrgId({
