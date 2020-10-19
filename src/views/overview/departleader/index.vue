@@ -87,6 +87,7 @@ export default {
       riskList: [],
       swiperOption: {
         slidesPerView: 6,
+        spaceBetween: 20,
       },
     };
   },
