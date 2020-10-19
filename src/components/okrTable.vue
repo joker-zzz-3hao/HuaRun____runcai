@@ -158,12 +158,12 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrDto.undertakeOkrContent }}
-              {{ scope.row.cultureName }}
+              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <em
-              >{{ scope.row.undertakeOkrDto.undertakeOkrContent
-              }}{{ scope.row.cultureName }}</em
-            >
+            <span>
+              <em>{{ scope.row.undertakeOkrDto.undertakeOkrContent }} </em>
+              <!-- <em>{{ scope.row.cultureName }}</em> -->
+            </span>
           </el-tooltip>
           <el-tooltip
             v-else-if="
@@ -176,12 +176,12 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrVo.undertakeOkrContent }}
-              {{ scope.row.cultureName }}
+              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <em
-              >{{ scope.row.undertakeOkrVo.undertakeOkrContent
-              }}{{ scope.row.cultureName }}</em
-            >
+            <span>
+              <em>{{ scope.row.undertakeOkrVo.undertakeOkrContent }}</em>
+              <!-- <em>{{ scope.row.cultureName }}</em> -->
+            </span>
           </el-tooltip>
           <el-tooltip
             v-else-if="scope.row.cultureName"

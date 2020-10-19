@@ -108,6 +108,13 @@
                       @click="openUndertake(index)"
                       >{{ oitem.undertakeOkrVo.undertakeOkrContent }}</em
                     >
+                    <em
+                      v-if="
+                        oitem.undertakeOkrVo.undertakeOkrContent &&
+                        oitem.cultureId
+                      "
+                      >、</em
+                    >
                     <em v-if="oitem.cultureId" @click="openUndertake(index)">{{
                       oitem.cultureName
                     }}</em>
