@@ -238,9 +238,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入考核指标"
                   v-model="kitem.checkQuota"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                 ></el-input>
               </el-form-item>
@@ -258,9 +260,11 @@
                 ]"
               >
                 <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请输入衡量办法"
                   v-model="kitem.judgeMethod"
-                  maxlength="50"
+                  maxlength="1500"
                   class="tl-input"
                 ></el-input>
               </el-form-item>
