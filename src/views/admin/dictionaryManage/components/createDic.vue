@@ -67,12 +67,23 @@
                   },
                 ]"
               >
-                <el-radio-group v-model="formData.enabledFlag">
+                <!-- <el-radio-group v-model="formData.enabledFlag">
                   <el-radio :label="'Y'">启用</el-radio>
                   <el-radio :label="'N'">停用</el-radio>
-                </el-radio-group>
-              </el-form-item></el-col
-            >
+                </el-radio-group> -->
+                <el-select
+                  v-model="formData.enabledFlag"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                >
+                  <el-option
+                    v-for="item in enabledList"
+                    :key="item.enabledFlag"
+                    :value="item.enabledFlag"
+                    :label="item.name"
+                  ></el-option>
+                </el-select> </el-form-item
+            ></el-col>
             <el-col :span="12">
               <el-form-item label="备注" prop="description">
                 <el-input
@@ -166,13 +177,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="btn-box">
+          <div class="btn-box" style="margin-top: 10px">
             <el-button
               type="text"
               @click="addItem"
               class="tl-btn dotted-line list-add"
+              style="display: block; margin: 0 auto"
             >
-              <i class="el-icon-plus"></i>添加
+              <i class="el-icon-plus"></i>新增
             </el-button>
           </div>
           <!-- <el-form-item>
@@ -239,6 +251,16 @@ export default {
         description: '',
         subList: [],
       },
+      enabledList: [
+        {
+          enabledFlag: 'Y',
+          name: '启用',
+        },
+        {
+          enabledFlag: 'N',
+          name: '停用',
+        },
+      ],
     };
   },
   created() {
