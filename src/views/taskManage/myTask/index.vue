@@ -79,12 +79,18 @@
           </dd>
           <dd v-if="searchTaskUser.length > 0">
             <span>执行人：</span>
-            <em v-for="p in searchTaskUser" :key="p">{{ userMap[p] }}</em>
+            <em v-for="p in searchTaskUser.slice(0, 2)" :key="p">{{
+              userMap[p]
+            }}</em>
+            <em>（{{ searchTaskUser.length }}人）</em>
             <i class="el-icon-close" @click.stop="clearAllPerson('task')"></i>
           </dd>
           <dd v-if="searchCreateUser.length > 0">
             <span>创建人：</span>
-            <em v-for="p in searchCreateUser" :key="p">{{ userMap[p] }}</em>
+            <em v-for="p in searchCreateUser.slice(0, 2)" :key="p">{{
+              userMap[p]
+            }}</em>
+            <em>（{{ searchCreateUser.length }}人）</em>
             <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
           </dd>
           <!-- 确认接收 -->
@@ -153,15 +159,14 @@
           v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>执行人</dt>
-          <dd v-for="p in searchTaskUser" :key="p">
+          <dd v-for="p in searchTaskUser.slice(0, 8)" :key="p">
             <em> {{ userMap[p] }}</em>
             <i
               class="el-icon-close"
               @click.stop="clearPersonNode(searchTaskUser, p)"
             ></i>
           </dd>
-
-          <el-popover placement="bottom" width="200" trigger="click">
+          <el-popover placement="bottom" width="270" trigger="click">
             <div>
               <el-input
                 placeholder="搜索"
@@ -174,30 +179,25 @@
               </el-input>
               <el-checkbox-group
                 v-model="searchTaskUser"
-                @change="getTableList"
+                @change="getTableList()"
               >
                 <el-checkbox
                   v-for="item in filterTask"
                   :label="item.userId"
                   :key="item.userId"
                 >
-                  <el-avatar
-                    :size="30"
-                    :src="item.headUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="item.userName" class="user-name">
-                      <em>{{
-                        item.userName.substring(item.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar>
-                  <span>{{ item.userName }}</span>
+                  <em>{{ item.userName }}</em>
+                  <em>（{{ item.userAccount }}）</em>
                 </el-checkbox>
               </el-checkbox-group>
             </div>
             <div slot="reference">
-              <div>+</div>
+              <div>
+                <span v-if="searchTaskUser.length >= 9"
+                  >({{ searchTaskUser.length }}人)</span
+                >
+                <i class="el-icon-circle-plus-outline"></i>
+              </div>
             </div>
           </el-popover>
         </dl>
@@ -206,7 +206,7 @@
           v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>创建人</dt>
-          <dd v-for="p in searchCreateUser" :key="p">
+          <dd v-for="p in searchCreateUser.slice(0, 8)" :key="p">
             <em> {{ userMap[p] }}</em>
             <i
               class="el-icon-close"
@@ -214,7 +214,7 @@
             ></i>
           </dd>
 
-          <el-popover placement="bottom" width="200" trigger="click">
+          <el-popover placement="bottom" width="270" trigger="click">
             <div>
               <el-input
                 placeholder="搜索"
@@ -227,14 +227,14 @@
               </el-input>
               <el-checkbox-group
                 v-model="searchCreateUser"
-                @change="getTableList"
+                @change="getTableList()"
               >
                 <el-checkbox
                   v-for="item in filterCreate"
                   :label="item.userId"
                   :key="item.userId"
                 >
-                  <el-avatar
+                  <!-- <el-avatar
                     :size="30"
                     :src="item.headUrl"
                     @error="errorHandler"
@@ -244,13 +244,19 @@
                         item.userName.substring(item.userName.length - 2)
                       }}</em>
                     </div>
-                  </el-avatar>
-                  <span>{{ item.userName }}</span>
+                  </el-avatar> -->
+                  <em>{{ item.userName }}</em>
+                  <em>（{{ item.userAccount }}）</em>
                 </el-checkbox>
               </el-checkbox-group>
             </div>
             <div slot="reference">
-              <div>+</div>
+              <div>
+                <span v-if="searchCreateUser.length >= 9"
+                  >({{ searchCreateUser.length }}人)</span
+                >
+                <i class="el-icon-circle-plus-outline"></i>
+              </div>
             </div>
           </el-popover>
         </dl>
@@ -560,18 +566,15 @@ export default {
     errorHandler() {
       return true;
     },
-    getTableList() {
-      console.log(this.searchPerson);
-      const params = {
-        currentPage: this.currentPage,
-        pageSize: this.pageSize,
-        selectType: this.currentIndex,
-        taskTitle: this.searchMsg,
-        psList: this.psList || this.searchList,
-        accept: this.accept,
-        taskUserIds: this.searchTaskUser.toString(),
-        createByIds: this.searchCreateUser.toString(),
-      };
+    getTableList(params = { currentPage: 1 }) {
+      params.pageSize = this.pageSize;
+      params.selectType = this.currentIndex;
+      params.taskTitle = this.searchMsg;
+      params.psList = this.psList || this.searchList;
+      params.accept = this.accept;
+      params.taskUserIds = this.searchTaskUser.toString();
+      params.createByIds = this.searchCreateUser.toString();
+
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;

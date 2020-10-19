@@ -104,6 +104,7 @@
                     :min="0"
                     :max="100"
                     class="tl-input-number"
+                    @change="tableProcessChange(scope.row)"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -510,13 +511,13 @@
       <dd>
         <span>
           本周心情
-          <el-button @click="weeklyEmotion = 100">有收获</el-button>
+          <el-button @click="setEmotion(100)">有收获</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
             >有收获</span
           >
-          <el-button @click="weeklyEmotion = 50">还行吧</el-button>
+          <el-button @click="setEmotion(50)">还行吧</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="weeklyEmotion = 0">让我静静</el-button>
+          <el-button @click="setEmotion(0)">让我静静</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
             >让我静静</span
           >
@@ -1144,7 +1145,7 @@ export default {
           if (valid) resolve();
         });
       });
-      if (!this.weeklyEmotion) {
+      if (this.weeklyEmotion === '') {
         this.showEmotionError = true;
         return;
       }
@@ -1181,9 +1182,9 @@ export default {
     processChange(item) {
       item.progressAfter = Math.round(item.progressAfter);
     },
-    tableProcessChange(item) {
-      item.workProgress = Math.round(item.workProgress);
-    },
+    // tableProcessChange(item) {
+    //   item.workProgress = Math.round(item.workProgress);
+    // },
     openThought() {
       this.thoughtOpen = true;
     },
@@ -1237,6 +1238,16 @@ export default {
         return '做版本更好的自己，希望你本周有收获，记下来吧';
       }
     },
+    tableProcessChange(row) {
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (row.randomId == work.randomId) {
+          work.workProgress = Number(work.workProgress).toFixed(0);
+          if (work.workProgress > 100) {
+            work.workProgress = 100;
+          }
+        }
+      });
+    },
     changeConfidence() {},
     projectChange(work) {
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
@@ -1257,6 +1268,10 @@ export default {
           }
         });
       }
+    },
+    setEmotion(emotion) {
+      this.weeklyEmotion = emotion;
+      this.showEmotionError = false;
     },
 
   },
@@ -1355,13 +1370,6 @@ export default {
         this.$forceUpdate();
       },
       deep: true,
-    },
-    weeklyEmotion: {
-      handler(value) {
-        if (value || value == 0) {
-          this.showEmotionError = false;
-        }
-      },
     },
   },
 };

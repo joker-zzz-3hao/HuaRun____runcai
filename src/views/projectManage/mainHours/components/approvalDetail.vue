@@ -13,12 +13,12 @@
           <span>{{ item.workContent }}</span>
         </div>
         <div>
-          <span>状态:</span>
+          <span>进度:</span>
           <span>{{ item.workProgress }}%</span>
         </div>
         <div>
           <span>时间:</span>
-          <span>{{ item.startTime }}至{{ item.endTime }}</span>
+          <span>{{ info.startTime }}至{{ info.endTime }}</span>
         </div>
         <div>
           <span>填报工时:</span>
