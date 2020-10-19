@@ -405,27 +405,27 @@ export default {
               color: '#879099', // 更改坐标轴文字颜色
               fontSize: 14, // 更改坐标轴文字大小
             },
-            formatter(value) {
-              let ret = '';// 拼接加\n返回的类目项
-              const maxLength = 4;// 每项显示文字个数
-              const valLength = value.length;// X轴类目项的文字个数
-              const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
-              if (rowN > 1)// 如果类目项的文字大于3,
-              // eslint-disable-next-line brace-style
-              {
-                // eslint-disable-next-line no-plusplus
-                for (let i = 0; i < rowN; i++) {
-                  let temp = '';// 每次截取的字符串
-                  const start = i * maxLength;// 开始截取的位置
-                  const end = start + maxLength;// 结束截取的位置
-                  // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-                  temp = `${value.substring(start, end)}...`;
-                  ret = temp; // 拼接最终的字符串
-                }
-                return ret;
-              }
-              return value;
-            },
+            // formatter(value) {
+            //   let ret = '';// 拼接加\n返回的类目项
+            //   const maxLength = 4;// 每项显示文字个数
+            //   const valLength = value.length;// X轴类目项的文字个数
+            //   const rowN = Math.ceil(valLength / maxLength); // 类目项需要换行的行数
+            //   if (rowN > 1)// 如果类目项的文字大于3,
+            //   // eslint-disable-next-line brace-style
+            //   {
+            //     // eslint-disable-next-line no-plusplus
+            //     for (let i = 0; i < rowN; i++) {
+            //       let temp = '';// 每次截取的字符串
+            //       const start = i * maxLength;// 开始截取的位置
+            //       const end = start + maxLength;// 结束截取的位置
+            //       // 这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+            //       temp = `${value.substring(start, end)}...`;
+            //       ret = temp; // 拼接最终的字符串
+            //     }
+            //     return ret;
+            //   }
+            //   return value;
+            // },
           },
           axisLine: {
             lineStyle: {
@@ -463,7 +463,7 @@ export default {
             barWidth: 7,
             itemStyle: {
 
-              normal: { barBorderRadius: 5, color: '#FFBC20' },
+              normal: { barBorderRadius: 5, color: '#FB4C59' },
             },
           },
           {
@@ -477,7 +477,7 @@ export default {
             type: 'bar',
             barWidth: 7,
             itemStyle: {
-              normal: { barBorderRadius: 5, color: '#FB4C59' },
+              normal: { barBorderRadius: 5, color: '#FFBC20' },
             },
           },
         ],
@@ -508,12 +508,13 @@ export default {
 .data-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
 }
 .data-list li {
   font-size: 14px;
   cursor: pointer;
+  margin: 0px 20px;
 }
 
 .card-panel-body {

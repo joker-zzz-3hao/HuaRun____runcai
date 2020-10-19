@@ -1935,7 +1935,8 @@
 .teams-weekly .cont-area,
 .teams-weekly-detail .cont-area,
 .my-task .cont-area,
-.replay-okr .cont-area {
+.replay-okr .cont-area,
+.project-manage .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -3569,7 +3570,8 @@
 }
 
 /* replay-okr */
-.replay-okr .cont-area {
+.replay-okr .cont-area,
+.project-manage .cont-area {
   display: flex;
 }
 
@@ -3605,6 +3607,43 @@
 
 .personal-center .dl-list dt {
   margin: 0 30px 0 0;
+}
+
+/* .project-manage */
+.project-detail .tl-tabs {
+  position: relative;
+}
+
+.project-detail .tl-tabs .el-tabs__content {
+  position: unset;
+}
+
+.project-detail .tl-tabs .tabs-other-panel {
+  position: absolute;
+  right: 16px;
+  top: 7px;
+}
+
+.custom-dialog .el-form-item__content {
+  display: flex;
+  align-items: center;
+}
+
+.custom-dialog .el-form-item__content .tl-select,
+.custom-dialog .el-form-item__content .tl-range-editor,
+.custom-dialog .el-form-item__content .tl-cascader {
+  width: 100%;
+}
+
+.custom-dialog .el-form-item__content > span {
+  margin: 8px 0 2px 6px;
+}
+
+.custom-dialog .tl-textarea,
+.custom-dialog .tl-cascader,
+.custom-dialog .tl-select,
+.custom-dialog .tl-input-number {
+  margin: 8px 0 2px 0;
 }
 
 /* =========================================================租户管理================================================================== */
@@ -3711,26 +3750,31 @@
 }
 
 /* 价值观管理 */
-.worth-manage {
+.worth-manage,
+.project-detail {
   /* padding: 16px; */
   margin: 0;
   min-height: calc(100vh - 70px);
 }
 
-.worth-manage .tl-tabs .el-tabs__header {
+.worth-manage .tl-tabs .el-tabs__header,
+.project-detail .tl-tabs .el-tabs__header {
   padding: 0 48px;
   background: #fff;
 }
 
-.worth-manage .tl-tabs .el-tabs__item {
+.worth-manage .tl-tabs .el-tabs__item,
+.project-detail .tl-tabs .el-tabs__item {
   padding: 15px 20px;
 }
 
-.worth-manage .tl-tabs .el-tabs__nav-wrap::after {
+.worth-manage .tl-tabs .el-tabs__nav-wrap::after,
+.project-detail .tl-tabs .el-tabs__nav-wrap::after {
   content: unset;
 }
 
-.worth-manage .tl-tabs .el-tabs__content {
+.worth-manage .tl-tabs .el-tabs__content,
+.project-detail .tl-tabs .el-tabs__content {
   padding: 20px 30px;
   margin: 0 16px 16px 16px;
   display: flex;
@@ -3756,12 +3800,14 @@
 }
 
 .worth-manage .tl-tabs .el-tabs__content > div,
+.project-detail .tl-tabs .el-tabs__content > div,
 .worth-manage .event-book {
   display: flex;
   flex-direction: column;
 }
 
 .worth-manage .tl-tabs .el-tabs__content > div,
+.project-detail .tl-tabs .el-tabs__content > div,
 .worth-manage .event-book,
 .event-book .table-pagination {
   flex: 1;

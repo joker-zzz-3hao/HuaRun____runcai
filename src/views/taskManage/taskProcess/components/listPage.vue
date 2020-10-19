@@ -252,18 +252,30 @@ export default {
   },
   methods: {
     init(typeId) {
-      const self = this;
-      self.rootData = [];
+      this.rootData = [];
       // 切换分类时
       if (typeId) {
-        self.tabName = 'all';
-        self.stepId = '';
+        this.tabName = 'all';
+        this.stepId = '';
+        // this.searchParams.typeId = typeId;
       }
-      const params = {
+      this.searchList();
+    },
+    openEdit(row) {
+      this.existEditTask = true;
+      this.$nextTick(() => {
+        this.$refs.editTask.show(row.taskId, false);
+      });
+    },
+    searchList(params = { currentPage: 1 }) {
+      this.currentPage = params.currentPage;
+      const self = this;
+      self.rootData = [];
+      params = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         processId: self.processObj.processId,
-        typeId: typeId || this.searchParams.typeId,
+        typeId: this.searchParams.typeId,
         stepId: this.stepId,
         taskTitle: this.searchParams.taskTitle || '',
         taskUserIds: this.searchParams.searchCreator.toString(),
@@ -280,15 +292,6 @@ export default {
           });
         }
       });
-    },
-    openEdit(row) {
-      this.existEditTask = true;
-      this.$nextTick(() => {
-        this.$refs.editTask.show(row.taskId, false);
-      });
-    },
-    searchList() {
-      this.init();
     },
     // 切换步骤
     selectTab(tab) {

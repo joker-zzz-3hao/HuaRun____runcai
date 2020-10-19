@@ -208,6 +208,11 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
+          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1') {
+            this.changeTestModel(true);
+            this.reload();
+            sessionStorage.setItem('modelOkr', '1');
+          }
           this.setList(res.data);
         }
       });
@@ -238,7 +243,6 @@ export default {
         this.param,
       ).then((res) => {
         if (res.code == '200') {
-          console.log(res);
           this.okrMain.supported = '1';
         }
       });

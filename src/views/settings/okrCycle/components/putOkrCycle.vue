@@ -32,6 +32,7 @@
         <el-date-picker
           type="date"
           v-model="form.draftingStartTime"
+          @change="draftingTime"
           placeholder="请设置起草开始时间"
           popper-class="tl-date-popper"
           class="tl-date-editor"
@@ -39,18 +40,7 @@
           style="width: 90%"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="审批结束时间" prop="approvalEndTime">
-        <el-date-picker
-          type="date"
-          v-model="form.approvalEndTime"
-          placeholder="请设置审批结束时间"
-          popper-class="tl-date-popper"
-          value-format="yyyy-MM-dd"
-          class="tl-date-editor"
-          style="width: 90%"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="周期开始日期" prop="startTime">
+      <el-form-item label="周期起始日期" prop="startTime">
         <el-date-picker
           v-model="dateTime"
           @change="getTime"
@@ -64,10 +54,24 @@
           style="width: 90%"
         ></el-date-picker>
       </el-form-item>
+      <el-form-item label="审批结束时间" prop="approvalEndTime">
+        <el-date-picker
+          type="date"
+          v-model="form.approvalEndTime"
+          @change="approvalTime"
+          placeholder="请设置审批结束时间"
+          popper-class="tl-date-popper"
+          value-format="yyyy-MM-dd"
+          class="tl-date-editor"
+          style="width: 90%"
+        ></el-date-picker>
+      </el-form-item>
+
       <el-form-item label="自评举证时间" prop="selfAssessReminderTime">
         <el-date-picker
           type="date"
           v-model="form.selfAssessReminderTime"
+          @change="selfAssessTime"
           placeholder="请设置自评举证时间"
           popper-class="tl-date-popper"
           value-format="yyyy-MM-dd"
@@ -172,11 +176,48 @@ export default {
     this.form.endTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime));
     this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.approvalEndTime));
     this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.draftingStartTime));
-    console.log(this.form);
   },
   methods: {
+    draftingTime(date) {
+      const tingTime = new Date(date).getTime();
+      const startTime = new Date(this.form.startTime).getTime();
+      if (tingTime > startTime - 24 * 60 * 60 * 1000) {
+        this.$message.error('起草时间不能大于周期开始时间');
+        this.form.draftingStartTime = '';
+      }
+    },
+    approvalTime(date) {
+      const approvalTime = new Date(date).getTime();
+      const startTime = new Date(this.form.startTime).getTime();
+      const endTime = new Date(this.form.endTime).getTime();
+      if (startTime > approvalTime || approvalTime > endTime) {
+        this.$message.error('请设置在周期起始时间范围内');
+        this.form.approvalEndTime = '';
+      }
+    },
+    selfAssessTime(date) {
+      const selfAssessTime = new Date(date).getTime();
+      const endTime = new Date(this.form.endTime).getTime();
+      if (selfAssessTime < endTime + 24 * 60 * 60 * 1000) {
+        this.$message.error('自评举证时间请大于周期结束时间');
+        this.form.selfAssessReminderTime = '';
+      }
+    },
     getTime(date) {
-      console.log(date);
+      const draftingStartTime = new Date(this.form.draftingStartTime).getTime();
+      const selfAssessReminderTime = new Date(this.form.selfAssessReminderTime).getTime();
+      const startTime = new Date(date[0]).getTime();
+      const endTime = new Date(date[1]).getTime();
+      if (draftingStartTime + 24 * 60 * 60 * 1000 > startTime) {
+        this.$message.error('周期开始时间不能小于起草时间');
+        this.dateTime = '';
+        return false;
+      }
+      if (selfAssessReminderTime < endTime + 24 * 60 * 60 * 1000) {
+        this.$message.error('周期结束时间不能大于自评举证时间');
+        this.dateTime = '';
+        return false;
+      }
       // eslint-disable-next-line prefer-destructuring
       this.form.startTime = date[0];
       // eslint-disable-next-line prefer-destructuring

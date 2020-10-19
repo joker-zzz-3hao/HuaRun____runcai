@@ -4,13 +4,12 @@
       <div class="page-title">工时审批</div>
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item>
+          <el-form-item label="项目">
             <el-select
               v-model="formData.projectId"
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
-              clearable
               class="tl-select"
             >
               <el-option
@@ -21,7 +20,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item label="审批状态">
             <el-select
               v-model="formData.approvalStatus"
               :popper-append-to-body="false"
@@ -38,16 +37,16 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item>
+          <el-form-item>
             <span>项目总预算:</span>
-            <span>324万</span>
-            <span>人民币</span>
+            <span>{{ projectBudgetAmount || 0 }}</span>
+            <span>{{ projectBudgetCurrency || "" }}</span>
           </el-form-item>
           <el-form-item>
             <span>项目已确认人力成本:</span>
-            <span>324万</span>
-            <span>人民币</span>
-          </el-form-item> -->
+            <span>{{ projectConfirmAmount || 0 }}</span>
+            <span>{{ projectConfirmCurrency || "" }}</span>
+          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -194,6 +193,10 @@ export default {
         projectId: '',
         approvalStatus: '',
       },
+      projectBudgetAmount: 0,
+      projectBudgetCurrency: '',
+      projectConfirmAmount: 0,
+      projectConfirmCurrency: '',
     };
   },
   components: {
@@ -210,7 +213,7 @@ export default {
   mounted() {
     this.server.projectPageList({
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 9999,
       projectName: '',
       userAccount: this.userInfo.userAccount,
     }).then((res) => {
@@ -226,12 +229,19 @@ export default {
   methods: {
     searchList() {
       this.server.timeSheetList({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
         projectId: this.formData.projectId,
         approvalStatus: this.formData.approvalStatus,
         approvalUser: this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
-          this.tableData = res.data;
+          this.projectBudgetAmount = res.data.projectBudgetAmount || 0;
+          this.projectBudgetCurrency = res.data.projectBudgetCurrency;
+          this.projectConfirmAmount = res.data.projectConfirmAmount || 0;
+          this.projectConfirmCurrency = res.data.projectConfirmCurrency;
+          this.tableData = res.data.resultPageDto.content;
+          this.total = res.data.resultPageDto.total;
         }
       });
     },

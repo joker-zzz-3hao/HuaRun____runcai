@@ -5,15 +5,10 @@
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
-            <el-select
-              v-model="keyWord"
-              placeholder="请选择使用范围"
-              @change="searchList"
-              clearable
-            >
-              <el-option value="1" label="团队使用">团队使用</el-option>
-              <el-option value="2" label="小范围使用">小范围使用</el-option>
-              <el-option value="3" label="个人使用">个人使用</el-option>
+            <el-select v-model="keyWord" placeholder="请选择使用范围" clearable>
+              <el-option :value="1" label="团队使用">团队使用</el-option>
+              <el-option :value="2" label="小范围使用">小范围使用</el-option>
+              <el-option :value="3" label="个人使用">个人使用</el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -40,7 +35,13 @@
               align="left"
               prop="processName"
               label="任务过程"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <a @click="editProcess(scope.row, 'detail')">{{
+                  scope.row.processName
+                }}</a>
+              </template>
+            </el-table-column>
             <el-table-column
               min-width="100px"
               align="left"
@@ -111,10 +112,11 @@
                       !roleCode.includes('TEAM_ADMIN') &&
                       scope.row.processType == 1) ||
                     (scope.row.processType == 2 &&
-                      scope.row.createBy != userInfo.userId)
+                      scope.row.createBy != userInfo.userId) ||
+                    scope.row.innerType == 1
                   "
                   type="text"
-                  @click="editProcess(scope.row)"
+                  @click="editProcess(scope.row, 'edit')"
                   size="small"
                   >编辑</el-button
                 >
@@ -132,7 +134,9 @@
       v-if="showCustomProcess"
       :exist.sync="showCustomProcess"
     ></tl-add-process>
+
     <tl-edit-process
+      ref="editProcess"
       v-if="showEditProcessDialog"
       :exist.sync="showEditProcessDialog"
       :server="server"
@@ -150,7 +154,11 @@ import tlAddProcess from './components/addProcess';
 import Server from './server';
 
 const server = new Server();
-
+const processTypeMap = {
+  1: '团队使用',
+  2: '小范围使用',
+  3: '个人使用',
+};
 export default {
   name: 'dataDictionary',
   components: {
@@ -171,11 +179,7 @@ export default {
       loading: false,
       // codeId: '',
       optionType: 'create',
-      processTypeMap: {
-        1: '团队使用',
-        2: '小范围使用',
-        3: '个人使用',
-      },
+      processTypeMap,
     };
   },
   created() {
@@ -188,8 +192,8 @@ export default {
     }),
   },
   methods: {
-    searchList() {
-      const params = {};
+    searchList(params = { currentPage: 1 }) {
+      console.log(this.keyWord);
       params.processType = this.keyWord;
       params.currentPage = this.currentPage;
       params.pageSize = this.pageSize;
@@ -221,10 +225,12 @@ export default {
       this.searchList();
       // this.showCustomProcess = false;
     },
-    editProcess(process) {
+    editProcess(process, type) {
       this.processObj = process;
-
       this.showEditProcessDialog = true;
+      this.$nextTick(() => {
+        this.$refs.editProcess.show(type);
+      });
     },
     updateEnable(row) {
       this.server.updateEnable(row).then((res) => {
@@ -251,6 +257,13 @@ export default {
     },
     clear() {
       this.searchList();
+    },
+  },
+  watch: {
+    keyWord: {
+      handler() {
+        this.searchList();
+      },
     },
   },
 };

@@ -400,7 +400,7 @@ export default {
     summitUndertake() {
       this.selectDepartRow = this.$refs.undertake.selectDepartRow;
       this.selectPhilRow = this.$refs.undertake.selectPhilRow;
-      console.log('选择', this.selectDepartRow);
+      console.log('选择', this.selectPhilRow);
       // eslint-disable-next-line max-len
       // 承接项id、版本、名称
       this.tableList[this.selectIndex].undertakeOkrVo.undertakeOkrDetailId = this.selectDepartRow.okrDetailId || '';
@@ -530,6 +530,7 @@ export default {
           okrWeight: item.okrWeight,
           okrDetailProgress: item.okrDetailProgress,
           cultureId: item.cultureId,
+          cultureName: item.cultureName,
           undertakeOkrDto: undertakeOkr,
           krList: [],
         });

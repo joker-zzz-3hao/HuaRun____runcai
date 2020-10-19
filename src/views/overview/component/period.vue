@@ -69,6 +69,12 @@ export default {
     this.setOrg(this.userInfo.orgId);
     this.getokrQuery();
   },
+  mounted() {
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.removeItem('model');
+      sessionStorage.removeItem('modelOkr');
+    });
+  },
   inject: ['reload'],
   computed: {
     ...mapState('common', {
@@ -92,6 +98,11 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.options = res.data;
+          if (res.data.length == 0 && sessionStorage.getItem('model') !== '1') {
+            this.changeTestModel(true);
+            this.reload();
+            sessionStorage.setItem('model', '1');
+          }
           if (this.options.length > 0) {
             this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
           } else {

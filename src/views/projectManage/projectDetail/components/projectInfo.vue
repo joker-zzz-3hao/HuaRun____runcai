@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div>
-      <div>
+  <div class="project-info">
+    <div class="project-description">
+      <!-- <div>
         <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
         <span v-if="baseInfo.projectType">{{
           CONST.PROJECT_TYPE_MAP[baseInfo.projectType]
@@ -9,15 +9,21 @@
         <span v-if="baseInfo.projectStatus">{{
           CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus]
         }}</span>
+      </div> -->
+      <div>
+        <div :class="openFlag ? 'open' : 'false'">
+          项目描述：{{ `${baseInfo.projectDescription || "--"}` }}
+        </div>
+        <div @click="openFlag = !openFlag">展开</div>
       </div>
       <div>
         <span>项目经理：{{ `${baseInfo.projectManager || "--"}` }}</span>
         <span
           >项目所属部门：{{ `${baseInfo.projectApplyDepName || "--"}` }}</span
         >
-        <span>项目总预算：{{ `${baseInfo.projectBudget || "0"}` }}万</span>
+        <span>项目总预算：{{ `${baseInfo.projectBudget || "0"}` }}元</span>
         <span>{{
-          `${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"}`
+          `(${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"})`
         }}</span>
       </div>
       <div>
@@ -41,15 +47,21 @@
         >
       </div>
     </div>
-    <div>
-      <div style="display: flex">
+    <div class="dl-card-panel project-members">
+      <dt class="card-title">
+        <em>项目成员</em
+        ><el-button plain class="tl-btn" @click="addMembers"
+          ><i class="el-icon-plus"></i><em>添加成员</em></el-button
+        >
+      </dt>
+      <!-- <div style="display: flex">
         <div>项目成员</div>
         <div>
           <el-button plain class="tl-btn" @click="addMembers"
             >添加成员</el-button
           >
         </div>
-      </div>
+      </div> -->
       <div>
         <tl-crcloud-table
           :total="total"
@@ -85,6 +97,23 @@
                       >(项目经理)</span
                     >
                   </template>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="userLevel"
+                label="项目经理"
+                min-width="120"
+              >
+                <template slot-scope="scope">
+                  <div v-if="scope.row.projectUserType == '1'">
+                    <i class="el-icon-medal"></i>
+                    <span>项目经理</span>
+                  </div>
+                  <div v-else-if="scope.row.projectUserType == '0'">
+                    <i class="el-icon-medal"></i>
+                    <span>设置项目经理</span>
+                  </div>
+                  <div v-else>--</div>
                 </template>
               </el-table-column>
               <el-table-column prop="userLevel" label="级别" min-width="120">
@@ -129,6 +158,7 @@
       ref="addMember"
       v-if="showAddMember"
       :server="server"
+      :codes="codes"
       @addSuccess="addSuccess"
     ></tl-add-member>
   </div>
@@ -152,6 +182,8 @@ export default {
       showAddMember: false,
       tableData: [],
       isManage: false,
+      openFlag: false,
+      codes: [],
     };
   },
   components: {
@@ -187,6 +219,13 @@ export default {
         }
       });
     }
+    this.server.queryByCodes({
+      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+    }).then((res) => {
+      if (res.code == '200') {
+        this.codes = res.data;
+      }
+    });
   },
   methods: {
     deleteMember(data) {
