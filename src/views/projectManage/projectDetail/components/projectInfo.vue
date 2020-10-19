@@ -1,7 +1,7 @@
 <template>
   <div class="project-info">
     <div class="project-description">
-      <div>
+      <!-- <div>
         <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
         <span v-if="baseInfo.projectType">{{
           CONST.PROJECT_TYPE_MAP[baseInfo.projectType]
@@ -9,7 +9,7 @@
         <span v-if="baseInfo.projectStatus">{{
           CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus]
         }}</span>
-      </div>
+      </div> -->
       <div>
         <div :class="openFlag ? 'open' : 'false'">
           项目描述：{{ `${baseInfo.projectDescription || "--"}` }}
@@ -47,15 +47,21 @@
         >
       </div>
     </div>
-    <div class="project-members">
-      <div style="display: flex">
+    <div class="dl-card-panel project-members">
+      <dt class="card-title">
+        <em>项目成员</em
+        ><el-button plain class="tl-btn" @click="addMembers"
+          ><i class="el-icon-plus"></i><em>添加成员</em></el-button
+        >
+      </dt>
+      <!-- <div style="display: flex">
         <div>项目成员</div>
         <div>
           <el-button plain class="tl-btn" @click="addMembers"
             >添加成员</el-button
           >
         </div>
-      </div>
+      </div> -->
       <div>
         <tl-crcloud-table
           :total="total"
