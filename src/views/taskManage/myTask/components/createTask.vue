@@ -51,8 +51,8 @@
                   <dl>
                     <dd>
                       <em>{{ item.userName }}</em>
-                      <em v-if="item.userMobile">{{
-                        `(${item.userMobile})`
+                      <em v-if="item.userAccount">{{
+                        `(${item.userAccount})`
                       }}</em>
                       <el-checkbox
                         v-model="item.checkStatus"
