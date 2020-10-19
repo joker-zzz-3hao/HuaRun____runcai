@@ -511,13 +511,13 @@
       <dd>
         <span>
           本周心情
-          <el-button @click="weeklyEmotion = 100">有收获</el-button>
+          <el-button @click="setEmotion(100)">有收获</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
             >有收获</span
           >
-          <el-button @click="weeklyEmotion = 50">还行吧</el-button>
+          <el-button @click="setEmotion(50)">还行吧</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="weeklyEmotion = 0">让我静静</el-button>
+          <el-button @click="setEmotion(0)">让我静静</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
             >让我静静</span
           >
@@ -1145,7 +1145,7 @@ export default {
           if (valid) resolve();
         });
       });
-      if (!this.weeklyEmotion) {
+      if (this.weeklyEmotion === '') {
         this.showEmotionError = true;
         return;
       }
@@ -1269,6 +1269,10 @@ export default {
         });
       }
     },
+    setEmotion(emotion) {
+      this.weeklyEmotion = emotion;
+      this.showEmotionError = false;
+    },
 
   },
   watch: {
@@ -1366,13 +1370,6 @@ export default {
         this.$forceUpdate();
       },
       deep: true,
-    },
-    weeklyEmotion: {
-      handler(value) {
-        if (value || value == 0) {
-          this.showEmotionError = false;
-        }
-      },
     },
   },
 };
