@@ -44,7 +44,7 @@
           v-model="form.mobilePhone"
           class="tl-input"
           placeholder="请输入联系电话"
-          maxlength="12"
+          maxlength="13"
         ></el-input>
       </el-form-item>
       <el-form-item label="开放菜单功能">
@@ -167,7 +167,7 @@ export default {
                 callback('请输入手机号');
               } else if (!(/^[1][3456789][0-9]{9}$/
                 .test(value) || /^[0][1-9]{2,3}-[0-9]{5,10}$/.test(value))) {
-                callback('联系电话格式不正确');
+                callback('联系电话格式不正确,示例0596-12345678');
               } else {
                 callback();
               }
