@@ -288,6 +288,12 @@ export default {
         this.remoteMethod();
       }
     });
+    if (!this.hasPower('renwu')) {
+      this.typeList = [{
+        noticeType: '1',
+        name: '通知',
+      }];
+    }
   },
   mounted() {},
   computed: {
