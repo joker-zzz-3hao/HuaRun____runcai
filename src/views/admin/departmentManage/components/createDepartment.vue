@@ -12,6 +12,7 @@
       @close="close"
       :title="departOptionType == 'create' ? '创建部门' : '编辑部门'"
       :close-on-click-modal="false"
+      width="30%"
     >
       <el-form ref="departForm" :model="formData" label-width="80px">
         <el-form-item
@@ -49,6 +50,7 @@
               emitPath: false,
             }"
             @change="selectIdChange"
+            style="width: 100%"
           ></el-cascader>
         </el-form-item>
         <el-form-item
@@ -61,14 +63,23 @@
             controls-position="right"
             :min="1"
             :max="1000"
+            style="width: 65%"
           ></el-input-number
           >（用于部门显示顺序）
         </el-form-item>
-        <el-form-item prop="orgSort">
+        <!-- <el-form-item prop="orgSort">
           <el-button :loading="loading" @click="saveDepart">确定</el-button>
           <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
+      <div class="operating-box">
+        <el-button type="primary" class="tl-btn amt-bg-slip" @click="saveDepart"
+          >确定</el-button
+        >
+        <el-button plain class="tl-btn amt-border-fadeout" @click="cancel"
+          >取消</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>

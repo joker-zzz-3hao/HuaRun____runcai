@@ -17,7 +17,6 @@
         <el-button
           plain
           @click="backProjectManage"
-          v-if="!showDepartmentSelect"
           class="tl-btn amt-border-slip"
         >
           返回

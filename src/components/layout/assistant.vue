@@ -288,6 +288,7 @@ export default {
         this.remoteMethod();
       }
     });
+    // 没有任务权限时，小助手无发送待办功能
     if (!this.hasPower('renwu')) {
       this.typeList = [{
         noticeType: '1',
