@@ -3646,6 +3646,11 @@
   margin: 8px 0 2px 0;
 }
 
+.project-description {
+  padding: 20px;
+  background: #f4f6f8;
+}
+
 /* =========================================================租户管理================================================================== */
 /* 部门管理 */
 .organize-management .operating-area .operating-box {
