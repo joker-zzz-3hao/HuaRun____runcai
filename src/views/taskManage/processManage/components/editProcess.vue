@@ -22,6 +22,7 @@
       <el-form ref="dataForm" :model="formData">
         <el-form-item label="任务过程名称：">
           <el-input
+            :disabled="!canEdit"
             placeholder="请输入任务标题"
             v-model="formData.processName"
           ></el-input>
@@ -32,6 +33,7 @@
           :rules="[{ trigger: 'blur', required: true, message: '请输入排序' }]"
         >
           <el-input-number
+            :disabled="!canEdit"
             v-model="formData.indexNumber"
             controls-position="right"
             :min="0"
@@ -121,13 +123,14 @@
     </el-scrollbar>
     <div class="operating-box">
       <el-button
+        v-if="canEdit"
         type="primary"
         class="tl-btn amt-bg-slip"
         :loading="loading"
         @click="updateProcess"
         >确定</el-button
       >
-      <el-button class="tl-btn amt-border-fadeout" @click="close"
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
       >
     </div>
@@ -178,16 +181,24 @@ export default {
       userList: [],
       selectUserList: [],
       loading: false,
+      canEdit: true,
     };
   },
   created() {
-    this.init();
   },
   mounted() {
-    this.visible = true;
   },
   computed: {},
   methods: {
+    show(type = 'detail') {
+      this.init();
+      this.visible = true;
+      if (type == 'edit') {
+        this.canEdit = true;
+      } else {
+        this.canEdit = false;
+      }
+    },
     init() {
       this.formData.userIdList = [];
       // this.formData = this.processObj;

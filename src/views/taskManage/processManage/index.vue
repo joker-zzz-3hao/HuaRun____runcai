@@ -35,7 +35,13 @@
               align="left"
               prop="processName"
               label="任务过程"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <a @click="editProcess(scope.row, 'detail')">{{
+                  scope.row.processName
+                }}</a>
+              </template>
+            </el-table-column>
             <el-table-column
               min-width="100px"
               align="left"
@@ -110,7 +116,7 @@
                     scope.row.innerType == 1
                   "
                   type="text"
-                  @click="editProcess(scope.row)"
+                  @click="editProcess(scope.row, 'edit')"
                   size="small"
                   >编辑</el-button
                 >
@@ -128,7 +134,9 @@
       v-if="showCustomProcess"
       :exist.sync="showCustomProcess"
     ></tl-add-process>
+
     <tl-edit-process
+      ref="editProcess"
       v-if="showEditProcessDialog"
       :exist.sync="showEditProcessDialog"
       :server="server"
@@ -217,10 +225,12 @@ export default {
       this.searchList();
       // this.showCustomProcess = false;
     },
-    editProcess(process) {
+    editProcess(process, type) {
       this.processObj = process;
-
       this.showEditProcessDialog = true;
+      this.$nextTick(() => {
+        this.$refs.editProcess.show(type);
+      });
     },
     updateEnable(row) {
       this.server.updateEnable(row).then((res) => {
