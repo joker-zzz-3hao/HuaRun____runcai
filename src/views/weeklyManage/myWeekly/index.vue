@@ -26,7 +26,7 @@
         <!-- 以前的周报未填写，友情提示 -->
         <div v-if="noWrite">周报未填写</div>
         <!-- 标准版 -->
-        <div v-else>
+        <div v-if="!noWrite && myOkrLoadFinish && teamOkrLoadFinish">
           <standard-Weekly
             :weeklyData="weeklyData"
             :weeklyType="weeklyType"
@@ -97,6 +97,8 @@ export default {
       originalOrgOkrList: [],
       orgOkrPeriodList: [],
       myOkrPeriodList: [],
+      teamOkrLoadFinish: false,
+      myOkrLoadFinish: false,
       cultureList: [],
       canEdit: false,
       weeklyTypeList: [],
@@ -116,6 +118,8 @@ export default {
       this.getProjectList();
     },
     refreshMyOkr() {
+      this.teamOkrLoadFinish = false;
+      this.myOkrLoadFinish = false;
       this.queryPersonalOkr();
       this.queryTeamOkr();
     },
@@ -176,6 +180,7 @@ export default {
               this.setOrgOkrList(this.originalOrgOkrList);
             }
           }
+          this.teamOkrLoadFinish = true;
         }
       });
     },
@@ -198,6 +203,7 @@ export default {
               this.setMyOkrList(this.originalMyOkrList);
             }
           }
+          this.myOkrLoadFinish = true;
         }
       });
     },
