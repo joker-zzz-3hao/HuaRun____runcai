@@ -93,6 +93,23 @@
                   </template>
                 </template>
               </el-table-column>
+              <el-table-column
+                prop="userLevel"
+                label="项目经理"
+                min-width="120"
+              >
+                <template slot-scope="scope">
+                  <div v-if="scope.row.projectUserType == '1'">
+                    <i class="el-icon-medal"></i>
+                    <span>项目经理</span>
+                  </div>
+                  <div v-if="scope.row.projectUserType == '0'">
+                    <i class="el-icon-medal"></i>
+                    <span>设置项目经理</span>
+                  </div>
+                  <div v-else>--</div>
+                </template>
+              </el-table-column>
               <el-table-column prop="userLevel" label="级别" min-width="120">
                 <template slot-scope="scope">
                   <span v-if="scope.row.userLevel">{{

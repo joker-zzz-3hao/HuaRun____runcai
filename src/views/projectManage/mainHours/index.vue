@@ -40,12 +40,12 @@
           <el-form-item>
             <span>项目总预算:</span>
             <span>{{ projectBudgetAmount || 0 }}</span>
-            <span>人民币</span>
+            <span>{{ projectBudgetCurrency || "" }}</span>
           </el-form-item>
           <el-form-item>
             <span>项目已确认人力成本:</span>
             <span>{{ projectConfirmAmount || 0 }}</span>
-            <span>人民币</span>
+            <span>{{ projectConfirmCurrency || "" }}</span>
           </el-form-item>
         </el-form>
       </div>
@@ -193,6 +193,10 @@ export default {
         projectId: '',
         approvalStatus: '',
       },
+      projectBudgetAmount: 0,
+      projectBudgetCurrency: '',
+      projectConfirmAmount: 0,
+      projectConfirmCurrency: '',
     };
   },
   components: {
@@ -232,6 +236,10 @@ export default {
         approvalUser: this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
+          this.projectBudgetAmount = res.data.projectBudgetAmount || 0;
+          this.projectBudgetCurrency = res.data.projectBudgetCurrency;
+          this.projectConfirmAmount = res.data.projectConfirmAmount || 0;
+          this.projectConfirmCurrency = res.data.projectConfirmCurrency;
           this.tableData = res.data.resultPageDto.content;
           this.total = res.data.resultPageDto.total;
         }
