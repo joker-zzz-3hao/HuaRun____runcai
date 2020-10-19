@@ -1,6 +1,34 @@
 <template>
   <div class="project-info">
     <div class="project-description">
+      <dl>
+        <dt>
+          <span
+            v-if="baseInfo.projectStatus"
+            :class="{
+              'is-ongoing': baseInfo.projectStatus == '0',
+              'is-over': baseInfo.projectStatus == '1',
+            }"
+            >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
+          >
+          <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
+        </dt>
+        <dd>
+          <span>项目描述:</span
+          ><em :class="openFlag ? 'unfold' : 'fold'">{{
+            `${baseInfo.projectDescription || "--"}`
+          }}</em>
+          <div class="toggle-state">
+            <span @click="openFlag = !openFlag">展开</span><i></i>
+          </div>
+        </dd>
+      </dl>
+      <div class="dl-list">
+        <dl class="dl-item">
+          <dt></dt>
+          <dd></dd>
+        </dl>
+      </div>
       <!-- <div>
         <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
         <span v-if="baseInfo.projectType">{{
@@ -10,7 +38,7 @@
           CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus]
         }}</span>
       </div> -->
-      <div>
+      <!-- <div>
         <div :class="openFlag ? 'open' : 'false'">
           项目描述：{{ `${baseInfo.projectDescription || "--"}` }}
         </div>
@@ -25,8 +53,8 @@
         <span>{{
           `(${CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"})`
         }}</span>
-      </div>
-      <div>
+      </div> -->
+      <!-- <div>
         <span
           >投入类型：{{
             `${CONST.THROW_TYPE_MAP[baseInfo.projectInputType] || "--"}`
@@ -45,7 +73,7 @@
         <el-button plain class="tl-btn" @click="closeProject"
           >结束项目</el-button
         >
-      </div>
+      </div> -->
     </div>
     <div class="dl-card-panel project-members">
       <dt class="card-title">
