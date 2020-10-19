@@ -35,7 +35,7 @@
           v-model="timeSheet"
           :precision="1"
           :step="0.5"
-          :min="0"
+          :min="0.5"
         ></el-input-number>
         <span>原因</span>
         <el-input
@@ -82,7 +82,7 @@ export default {
   methods: {
     show(data) {
       this.server.approvalTimeSheetList({
-        projectApprovalId: data.projectApprovalId,
+        projectApprovalId: data.projectApprovalIdString,
       }).then((res) => {
         if (res.code == '200') {
           console.log(res);
@@ -93,18 +93,23 @@ export default {
       this.visible = true;
     },
     approval() {
-      this.server.approvaledTimeSheetList({
-        projectId: this.info.projectId,
-        timeSheet: this.timeSheet,
-        remark: this.remark,
-        sourceId: this.info.sourceId,
-        sourceType: this.info.sourceType,
-        projectApprovalId: this.info.projectApprovalId,
-      }).then((res) => {
-        if (res.code == '200') {
-          this.$emit('success');
-          this.close();
-        }
+      this.$xconfirm({
+        title: '工时确认后将不可再更改，请确认',
+        content: '',
+      }).then(() => {
+        this.server.approvaledTimeSheetList({
+          projectId: this.info.projectId,
+          timeSheet: this.timeSheet,
+          remark: this.remark,
+          sourceId: this.info.sourceId,
+          sourceType: this.info.sourceType,
+          projectApprovalId: this.info.projectApprovalIdString,
+        }).then((res) => {
+          if (res.code == '200') {
+            this.$emit('success');
+            this.close();
+          }
+        });
       });
     },
     close() {
