@@ -178,11 +178,19 @@
     </el-scrollbar>
     <div class="operating-box">
       <div class="flex-auto">
-        <el-button plain class="tl-btn amt-border-fadeout" @click="save"
+        <el-button
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="save"
+          :loading="loading"
           >暂存</el-button
         >
       </div>
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="summitAssign"
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="summitAssign"
+        :loading="loading"
         >指派</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -254,6 +262,7 @@ export default {
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
       dataParams: { validateCode: '', ...this.params },
+      loading: false,
     };
   },
   computed: {
@@ -399,13 +408,14 @@ export default {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = this.handlerData();
-          console.log(this.handlerData());
+          this.loading = true;
           this.server.saveTask(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('保存成功');
               this.$emit('success');
               this.close();
             }
+            this.loading = false;
           });
         }
       });
@@ -418,12 +428,14 @@ export default {
             this.$message.error('请选择执行人');
             return;
           }
+          this.loading = true;
           this.server.appointSave(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('提交成功');
               this.$emit('success');
               this.close();
             }
+            this.loading = false;
           });
         }
       });
