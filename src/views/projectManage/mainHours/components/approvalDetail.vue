@@ -67,7 +67,7 @@ export default {
   methods: {
     show(data) {
       this.server.approvalTimeSheetList({
-        projectApprovalId: data.projectApprovalIdString,
+        projectApprovalId: data.projectApprovalId,
       }).then((res) => {
         if (res.code == '200') {
           console.log(res);

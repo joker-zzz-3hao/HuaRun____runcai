@@ -127,12 +127,14 @@
                   "
                   @click="goUndertake(index, 'change')"
                   :class="{ 'is-change': canWrite }"
-                  >{{ item.undertakeOkrVo.undertakeOkrContent }}</em
+                  >{{ item.undertakeOkrVo.undertakeOkrContent }}
+                  <em v-if="item.cultureName">、</em></em
                 >
                 <em
                   v-else
                   @click="goUndertake(index, 'change')"
                   :class="{ 'is-change': canWrite }"
+                  ><em v-if="item.cultureName">、</em
                   >{{ item.parentObjectKr }}</em
                 >
                 <em
@@ -154,6 +156,14 @@
                     >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
                   >
                   <a v-else>{{ item.parentObjectKr }}</a>
+                  <a
+                    v-if="
+                      (item.undertakeOkrVo &&
+                        item.undertakeOkrVo.undertakeOkrContent) ||
+                      (item.parentObjectKr && item.cultureName)
+                    "
+                    >、</a
+                  >
                   <a>{{ item.cultureName }}</a>
                 </p>
               </div>
@@ -176,6 +186,15 @@
                     "
                     >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
                   >
+                  <em
+                    v-if="
+                      item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent &&
+                      item.cultureName
+                    "
+                    >、</em
+                  >
+
                   <a v-if="item.cultureName">{{ item.cultureName }}</a>
                 </p>
                 <el-button
@@ -204,6 +223,7 @@
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
                 <em>{{ item.parentObjectKr }}</em>
+                <em v-if="item.parentObjectKr && item.cultureName">、</em>
                 <em>{{ item.cultureName }}</em>
               </div>
             </dd>

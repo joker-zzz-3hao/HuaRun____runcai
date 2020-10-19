@@ -82,7 +82,7 @@ export default {
   methods: {
     show(data) {
       this.server.approvalTimeSheetList({
-        projectApprovalId: data.projectApprovalIdString,
+        projectApprovalId: data.projectApprovalId,
       }).then((res) => {
         if (res.code == '200') {
           console.log(res);
@@ -103,7 +103,7 @@ export default {
           remark: this.remark,
           sourceId: this.info.sourceId,
           sourceType: this.info.sourceType,
-          projectApprovalId: this.info.projectApprovalIdString,
+          projectApprovalId: this.info.projectApprovalId,
         }).then((res) => {
           if (res.code == '200') {
             this.$emit('success');

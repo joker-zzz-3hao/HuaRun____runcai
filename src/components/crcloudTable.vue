@@ -62,7 +62,7 @@ export default {
     },
     handleCurrentChange(currentPage) {
       this.$emit('update:currentPage', currentPage);
-      this.$emit('searchList');
+      this.$emit('searchList', { currentPage });
     },
   },
 };
