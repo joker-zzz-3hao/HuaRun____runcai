@@ -67,7 +67,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="内容" prop="workDesc" min-width="400">
+          <el-table-column label="内容" prop="workDesc" width="400">
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
@@ -87,7 +87,7 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="85"
+            min-width="100"
           >
             <template slot-scope="scope">
               <template v-if="canUpdate">
@@ -100,11 +100,8 @@
                 >
                   <el-input
                     v-model="scope.row.workProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    class="tl-input-number"
                     @change="tableProcessChange(scope.row)"
+                    style="width: 60px"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -117,7 +114,7 @@
             label="投入工时"
             prop="workTime"
             :render-header="renderHeader"
-            min-width="100"
+            min-width="95"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -127,15 +124,13 @@
               >
                 <el-input
                   v-if="canUpdate"
-                  controls-position="right"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
-                  class="tl-input-number"
-                ></el-input>
+                >
+                </el-input>
               </el-form-item>
               <!-- 编辑完提交后展示 -->
-              <em v-else>{{ scope.row.workTime }}</em>
-              <span>天</span>
+              <em v-else>{{ scope.row.workTime }} </em><span>天</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -196,9 +191,13 @@
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
                         <em
-                          @click="canUpdate ? addSupportOkr(scope.row) : ''"
+                          v-if="canUpdate"
+                          @click="addSupportOkr(scope.row)"
                           >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
                         >
+                        <em v-else>{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
@@ -527,6 +526,7 @@
     </dl>
     <div class="btn-box">
       <el-button
+        :loading="commitLoading"
         v-if="canEdit && canUpdate"
         type="primary"
         @click="commitWeekly"
@@ -688,6 +688,7 @@ export default {
       showAddOkr: false,
       showProjectDialog: false,
       thisPageProjectList: [],
+      commitLoading: false,
       formData: {
         rules: {
           workContent: {
@@ -1150,7 +1151,9 @@ export default {
         return;
       }
       Promise.all([v1]).then(() => {
+        this.commitLoading = true;
         this.server.commitWeekly(params).then((res) => {
+          this.commitLoading = false;
           if (res.code == 200) {
             this.$message.success('提交成功');
             // 刷新日历数据

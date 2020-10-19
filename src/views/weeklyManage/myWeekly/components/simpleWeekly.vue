@@ -71,7 +71,7 @@
             label="进度"
             prop="workProgress"
             :render-header="renderHeader"
-            min-width="85"
+            width="90"
           >
             <template slot-scope="scope">
               <template v-if="canUpdate">
@@ -84,10 +84,6 @@
                 >
                   <el-input
                     v-model="scope.row.workProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    class="tl-input-number"
                     @change="tableProcessChange(scope.row)"
                   ></el-input>
                 </el-form-item>
@@ -101,7 +97,7 @@
             label="投入工时"
             prop="workTime"
             :render-header="renderHeader"
-            min-width="100"
+            width="100"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -111,10 +107,9 @@
               >
                 <el-input
                   v-if="canUpdate"
-                  controls-position="right"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
-                  class="tl-input-number"
+                  style="width: 60px"
                 ></el-input>
               </el-form-item>
               <!-- 编辑完提交后展示 -->
@@ -180,9 +175,13 @@
                       >
                         <em slot="content">{{ item.okrDetailObjectKr }}</em>
                         <em
-                          @click="canUpdate ? addSupportOkr(scope.row) : ''"
+                          v-if="canUpdate"
+                          @click="addSupportOkr(scope.row)"
                           >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
                         >
+                        <em v-else>{{
+                          setOkrStyle(item.okrDetailObjectKr)
+                        }}</em>
                       </el-tooltip>
                       <!-- <i
                         @click="deleteOkr(item, scope.row.randomId)"
@@ -376,6 +375,7 @@
         type="primary"
         @click="commitWeekly"
         class="tl-btn amt-bg-slip"
+        :loading="commitLoading"
         >提交</el-button
       >
       <el-button
@@ -530,6 +530,7 @@ export default {
       currenItemrandomId: '',
       showAddOkr: false,
       showProjectDialog: false,
+      commitLoading: false,
       thisPageProjectList: [],
       formData: {
         rules: {
@@ -907,7 +908,9 @@ export default {
       }
       this.$refs.formDom.validate((valid) => {
         if (valid) {
+          this.commitLoading = true;
           this.server.commitWeekly(params).then((res) => {
+            this.commitLoading = false;
             if (res.code == 200) {
               this.$message.success('提交成功');
               // 刷新日历数据

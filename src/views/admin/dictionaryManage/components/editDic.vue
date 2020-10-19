@@ -19,55 +19,83 @@
   >
     <div class="modelCreate">
       <el-form ref="dicForm" :model="formData" label-width="80px">
-        <el-form-item
-          label="字典编号"
-          prop="code"
-          :rules="[
-            { required: true, validator: validateDicCode, trigger: 'blur' },
-          ]"
-        >
-          <el-input
-            v-model.trim="formData.code"
-            :disabled="this.optionType == 'edit'"
-            maxlength="50"
-            clearable
-            style="width: 90%"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          label="字典名称"
-          prop="name"
-          :rules="[
-            { required: true, validator: validateDicName, trigger: 'blur' },
-          ]"
-        >
-          <el-input
-            v-model.trim="formData.name"
-            maxlength="50"
-            clearable
-            style="width: 90%"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          label="状态"
-          prop="enabledFlag"
-          :rules="[
-            { required: true, message: '请输选择请用状态', trigger: 'blur' },
-          ]"
-        >
-          <el-radio-group v-model="formData.enabledFlag">
-            <el-radio :label="'Y'">启用</el-radio>
-            <el-radio :label="'N'">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="description">
-          <el-input
-            v-model.trim="formData.description"
-            maxlength="100"
-            clearable
-            style="width: 90%"
-          ></el-input>
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item
+              label="字典编号"
+              prop="code"
+              :rules="[
+                {
+                  required: true,
+                  validator: validateDicCode,
+                  trigger: 'blur',
+                },
+              ]"
+            >
+              <el-input
+                v-model.trim="formData.code"
+                maxlength="50"
+                clearable
+              ></el-input> </el-form-item
+          ></el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="字典名称"
+              prop="name"
+              :rules="[
+                {
+                  required: true,
+                  validator: validateDicName,
+                  trigger: 'blur',
+                },
+              ]"
+            >
+              <el-input
+                v-model.trim="formData.name"
+                maxlength="50"
+                clearable
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item
+              label="状态"
+              prop="enabledFlag"
+              :rules="[
+                {
+                  required: true,
+                  message: '请输选择请用状态',
+                  trigger: 'blur',
+                },
+              ]"
+            >
+              <!-- <el-radio-group v-model="formData.enabledFlag">
+                  <el-radio :label="'Y'">启用</el-radio>
+                  <el-radio :label="'N'">停用</el-radio>
+                </el-radio-group> -->
+              <el-select
+                v-model="formData.enabledFlag"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in enabledList"
+                  :key="item.enabledFlag"
+                  :value="item.enabledFlag"
+                  :label="item.name"
+                ></el-option>
+              </el-select> </el-form-item
+          ></el-col>
+          <el-col :span="12">
+            <el-form-item label="备注" prop="description">
+              <el-input
+                v-model.trim="formData.description"
+                maxlength="100"
+                clearable
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
       </el-form>
       <el-form
         :rules="formTableData.rules"
@@ -108,7 +136,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column width="70" label="字典排序" prop="orderSeq">
+          <el-table-column width="85" label="字典排序" prop="orderSeq">
             <template slot-scope="scope">
               <el-input v-model.trim="scope.row.orderSeq"></el-input>
             </template>
@@ -156,7 +184,16 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button @click="addItem">新增</el-button>
+        <div class="btn-box" style="margin-top: 10px">
+          <el-button
+            type="text"
+            @click="addItem"
+            class="tl-btn dotted-line list-add"
+            style="display: block; margin: 0 auto"
+          >
+            <i class="el-icon-plus"></i>新增
+          </el-button>
+        </div>
       </el-form>
     </div>
     <div class="operating-box">
@@ -238,7 +275,16 @@ export default {
         subList: [],
         codeId: this.codeId,
       },
-
+      enabledList: [
+        {
+          enabledFlag: 'Y',
+          name: '启用',
+        },
+        {
+          enabledFlag: 'N',
+          name: '停用',
+        },
+      ],
     };
   },
   created() {
