@@ -176,8 +176,8 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  mounted() {
-    if (this.periodId == '') {
+  beforeUpdate() {
+    if (!this.periodId) {
       this.setList();
     }
   },

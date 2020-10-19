@@ -19,22 +19,19 @@
               >关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio
             >
           </dd>
-          <!-- <dt>
-            <em>OKR</em>
-            <span>制定个人OKR</span>
-          </dt>
-          <dd>
-            <el-radio v-model="radio['O-2']" label="O" class="tl-radio">开启 ( 开启后员工可制定个人OKR )</el-radio>
-            <el-radio v-model="radio['O-2']" label="S" class="tl-radio">关闭 ( 关闭后员工不可制定个人OK )</el-radio>
-          </dd>
+        </dl>
+        <dl class="dl-list">
           <dt>
-            <em>OKR</em>
-            <span>制定团队OKR</span>
+            <span>周报中支撑个人OKR或团队OKR</span>
           </dt>
           <dd>
-            <el-radio v-model="radio['O-3']" label="O" class="tl-radio">开启 ( 开启后部门负责人可制定部门OKR )</el-radio>
-            <el-radio v-model="radio['O-3']" label="S" class="tl-radio">关闭 ( 关闭后部门负责人不可制定部门OKR )</el-radio>
-          </dd>-->
+            <el-radio v-model="radio['O-R']" label="O" class="tl-radio"
+              >个人</el-radio
+            >
+            <el-radio v-model="radio['O-R']" label="S" class="tl-radio"
+              >团队</el-radio
+            >
+          </dd>
         </dl>
         <el-form ref="form" label-width="110px" class="tl-form">
           <dt style="margin-bottom: 20px">
@@ -124,8 +121,7 @@ export default {
       server,
       radio: {
         'O-1': 'O',
-        'O-2': 'O',
-        'O-3': 'O',
+        'O-R': 'O',
       },
       setList: [{
         configItemCode: 'O',
@@ -136,12 +132,7 @@ export default {
       {
         configItemCode: 'O',
         configType: 'OKR',
-        configTypeDetail: 'O-2',
-        level: 'T',
-      }, {
-        configItemCode: 'O',
-        configType: 'OKR',
-        configTypeDetail: 'O-3',
+        configTypeDetail: 'O-R',
         level: 'T',
       }],
       sysConfigDtos: [],
