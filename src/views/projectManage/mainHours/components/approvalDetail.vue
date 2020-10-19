@@ -14,6 +14,7 @@
         </div>
         <div>
           <span>进度:</span>
+          <tl-process :data="item.workProgress"></tl-process>
           <span>{{ item.workProgress }}%</span>
         </div>
         <div>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import CONST from '../../const';
 
 export default {
@@ -53,6 +55,7 @@ export default {
     };
   },
   components: {
+    'tl-process': process,
   },
   props: {
     server: {

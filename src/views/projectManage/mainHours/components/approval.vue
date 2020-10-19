@@ -14,6 +14,7 @@
         </div>
         <div>
           <span>进度:</span>
+          <tl-process :data="item.workProgress"></tl-process>
           <span>{{ item.workProgress }}%</span>
         </div>
         <div>
@@ -30,21 +31,33 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <span>确认工时</span>
-        <el-input-number
-          v-model="timeSheet"
-          :precision="1"
-          :step="0.5"
-          :min="0.5"
-        ></el-input-number>
-        <span>原因</span>
-        <el-input
-          type="textarea"
-          :rows="2"
-          placeholder="请输入内容"
-          v-model="remark"
-        >
-        </el-input>
+        <span>共投入工时{{ timeSheet }}天</span>
+        <span v-if="remark">原因：{{ remark }}</span>
+        <el-popover placement="top" width="160" v-model="popoverVisible">
+          <el-input-number
+            v-model="confirmSheet"
+            :precision="1"
+            :step="0.5"
+            :min="0.5"
+          ></el-input-number>
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="editRemark"
+          >
+          </el-input>
+          <div style="text-align: right; margin: 0">
+            <!-- <el-button size="mini" type="text" @click="popoverVisible = false"
+              >取消</el-button
+            > -->
+            <el-button type="primary" size="mini" @click="confirmTimeSheet"
+              >确定</el-button
+            >
+          </div>
+          <el-button slot="reference">点击修改</el-button>
+        </el-popover>
+
         <el-button @click="visible = false">取 消</el-button>
         <el-button type="primary" @click="approval">确 定</el-button>
       </span>
@@ -53,6 +66,7 @@
 </template>
 
 <script>
+import process from '@/components/process';
 import CONST from '../../const';
 
 export default {
@@ -61,13 +75,17 @@ export default {
     return {
       CONST,
       visible: false,
+      popoverVisible: false,
       loading: false,
-      timeSheet: 0,
+      timeSheet: 0.5,
+      confirmSheet: 0.5,
       info: {},
       remark: '',
+      editRemark: '',
     };
   },
   components: {
+    'tl-process': process,
   },
   props: {
     server: {
@@ -91,6 +109,11 @@ export default {
         }
       });
       this.visible = true;
+    },
+    confirmTimeSheet() {
+      this.popoverVisible = false;
+      this.timeSheet = this.confirmSheet;
+      this.remark = this.editRemark;
     },
     approval() {
       this.$xconfirm({
