@@ -1,10 +1,6 @@
 <template>
   <div class="assistant">
-    <!-- <el-popover placement="top" trigger="click" :append-to-body="false" width="370">
-      <div class="pic-help" @click="showDia"></div>
-      <img slot="reference" src="~@/assets/images/demoPic/helpicon.png" />
-    </el-popover>-->
-    <img @click="showDia" src="~@/assets/images/demoPic/helpicon.png" />
+    <i @click="showDia">sdfsdf</i>
     <div v-if="showDialog">
       <el-dialog
         :close-on-click-modal="false"
