@@ -1,12 +1,18 @@
 <template>
   <div class="assistant">
-    <i @click="showDia" class="el-icon-chat-dot-round"></i>
-    <div v-if="showDialog">
+    <i
+      @click="showDia"
+      class="el-icon-chat-dot-round"
+      :class="{ 'is-focus': showDialog }"
+    ></i>
+    <template v-if="showDialog">
       <el-dialog
+        :modal="false"
         :close-on-click-modal="false"
         append-to-body
         @close="close"
         :visible="showDialog"
+        class="tl-dialog"
       >
         <div>Hello {{ userInfo.userName }}</div>
         <div>您可以在这给你的同事发送提醒或任务哦~</div>
@@ -114,7 +120,7 @@
           </el-button>
         </div>
       </el-dialog>
-    </div>
+    </template>
   </div>
 </template>
 
