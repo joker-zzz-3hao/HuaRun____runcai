@@ -222,15 +222,13 @@ export default {
     },
   },
   created() {
-    if ((this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) && this.userInfo.orgParentName) {
+    if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
       this.departmentName = this.userInfo.orgParentName;
       this.orgId = this.userInfo.orgParentId;
-      console.log('team');
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
       this.orgId = this.userInfo.orgId;
     }
-    console.log(this.orgId);
   },
   mounted() {
     const liWidth = document.querySelectorAll('.tab-list li');
