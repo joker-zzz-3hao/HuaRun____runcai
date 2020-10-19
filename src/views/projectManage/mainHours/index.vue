@@ -4,7 +4,7 @@
       <div class="page-title">工时审批</div>
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item>
+          <el-form-item label="项目">
             <el-select
               v-model="formData.projectId"
               :popper-append-to-body="false"
@@ -21,7 +21,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item label="审批状态">
             <el-select
               v-model="formData.approvalStatus"
               :popper-append-to-body="false"
@@ -210,7 +210,7 @@ export default {
   mounted() {
     this.server.projectPageList({
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 9999,
       projectName: '',
       userAccount: this.userInfo.userAccount,
     }).then((res) => {
@@ -226,12 +226,15 @@ export default {
   methods: {
     searchList() {
       this.server.timeSheetList({
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
         projectId: this.formData.projectId,
         approvalStatus: this.formData.approvalStatus,
         approvalUser: this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
-          this.tableData = res.data;
+          this.tableData = res.data.resultPageDto.content;
+          this.total = res.data.resultPageDto.total;
         }
       });
     },
