@@ -469,6 +469,7 @@ export default {
       reformattedArray: [],
       userMap: {},
       keyword: '',
+      psList: '',
     };
   },
   created() {
@@ -566,7 +567,7 @@ export default {
         pageSize: this.pageSize,
         selectType: this.currentIndex,
         taskTitle: this.searchMsg,
-        psList: this.searchList,
+        psList: this.psList || this.searchList,
         accept: this.accept,
         taskUserIds: this.searchTaskUser.toString(),
         createByIds: this.searchCreateUser.toString(),
@@ -694,6 +695,9 @@ export default {
       if (parentCate.value == 'all') {
         this.selectStatus({ label: '全部', value: null, isSelected: true });
         this.resetIsSelected(this.taskProcessList, 'init');
+      } else {
+        this.psList = [{ processId: parentCate.value }];
+        this.getTableList();
       }
       const params = {
         available: 1,
@@ -723,6 +727,7 @@ export default {
     // 选择任务步骤
     selectStatus(childCate) {
       this.resetIsSelected(this.childCateList);
+      this.psList = '';
       childCate.isSelected = true;
       if (this.taskProcess.value == 'all') {
         this.searchList = [];

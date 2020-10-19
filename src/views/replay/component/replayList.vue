@@ -50,6 +50,7 @@
               maxlength="64"
               v-model="userName"
               placeholder="请输入用户名称"
+              clearable
               @keyup.enter.native="okrReviewList"
               class="tl-input-search"
             >
@@ -82,13 +83,12 @@
               label="OKR周期"
               min-width="170"
             ></el-table-column>
-            <el-table-column prop="okrProgress" label="OKR进度" min-width="120">
+            <el-table-column prop="okrProgress" label="OKR进度" min-width="180">
               <template slot-scope="scope">
-                <span>{{
-                  scope.row.okrProgress ? scope.row.okrProgress + "%" : 0 + "%"
-                }}</span>
-              </template></el-table-column
-            >
+                <tl-process
+                  :data="parseInt(scope.row.okrProgress || 0, 10)"
+                ></tl-process> </template
+            ></el-table-column>
             <el-table-column
               prop="reviewStatus"
               label="复盘状态"
@@ -183,6 +183,7 @@
 <script>
 import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/extensions
+import process from '@/components/process';
 import Server from '../server.js';
 import CONST from '../const';
 
@@ -233,6 +234,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-process': process,
   },
 };
 </script>
