@@ -57,7 +57,7 @@
                       placeholder="请选择级别"
                     >
                       <el-option
-                        v-for="item in CONST.LEVEL_LIST"
+                        v-for="item in levelList"
                         :key="item.value"
                         :label="item.label"
                         :value="item.label"
@@ -84,7 +84,38 @@
                       placeholder="请选择职能"
                     >
                       <el-option
-                        v-for="item in CONST.FUNC_LIST"
+                        v-for="item in funcList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="companyName"
+                label="所属公司"
+                min-width="140"
+              >
+                <template slot-scope="scope">
+                  <el-form-item
+                    :prop="'tableData.' + scope.$index + '.companyName'"
+                    :rules="[
+                      {
+                        trigger: 'change',
+                        required: true,
+                        message: '请选择职能',
+                      },
+                    ]"
+                  >
+                    <el-select
+                      v-model="scope.row.companyName"
+                      placeholder="请选择所属公司"
+                    >
+                      <el-option
+                        v-for="item in companyList"
                         :key="item.value"
                         :label="item.label"
                         :value="item.label"
@@ -146,6 +177,9 @@ export default {
       keyword: '',
       projectManagerList: [],
       tableData: [],
+      levelList: [],
+      funcList: [],
+      companyList: [],
       dataForm: {
         tableData: [],
       },
@@ -161,12 +195,33 @@ export default {
         return {};
       },
     },
+    codes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   computed: {},
   mounted() {
     this.server.projectUserList({}).then((res) => {
       if (res.code == '200') {
         this.projectManagerList = res.data || [];
+      }
+    });
+    this.codes.forEach((item) => {
+      switch (item.code) {
+        case 'PROJECT_EMPLOYEE_LEVEL':
+          this.levelList = item.subList;
+          break;
+        case 'PROJECT_TECH_TYPE':
+          this.levelList = item.subList;
+          break;
+        case 'PROJECT_EMPLOYEE_COMPANY':
+          this.companyList = item.subList;
+          break;
+        default:
+          break;
       }
     });
   },
