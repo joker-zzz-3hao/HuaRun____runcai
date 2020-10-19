@@ -199,6 +199,7 @@ export default [{
     path: '/replay',
     name: 'replay',
     redirect: {
+      title: 'replay',
       name: 'replayList',
     },
     meta: {
@@ -216,9 +217,9 @@ export default [{
         name: 'replayEdit',
         meta: {
           hasMainMenu: true,
-          isSubMenu: true,
+          isSubMenu: false,
           parentRoute: 'myOkr',
-          title: 'replayEdit',
+          title: 'replay',
           power: '',
         },
         component: () => import('@/views/replay/replayEdit/index'),
@@ -229,9 +230,9 @@ export default [{
         name: 'replayDetail',
         meta: {
           hasMainMenu: true,
-          isSubMenu: true,
+          isSubMenu: false,
           parentRoute: 'myOkr',
-          title: 'replayDetail',
+          title: 'replay',
           power: '',
         },
         component: () => import('@/views/replay/replayDetail/index'),
@@ -241,9 +242,9 @@ export default [{
         name: 'replayLink',
         meta: {
           hasMainMenu: true,
-          isSubMenu: true,
+          isSubMenu: false,
           parentRoute: 'myOkr',
-          title: 'replayLink',
+          title: 'replay',
           power: '',
         },
         component: () => import('@/views/replay/replayLink/index'),
@@ -255,7 +256,7 @@ export default [{
           hasMainMenu: true,
           isSubMenu: true,
           parentRoute: 'myOkr',
-          title: 'replayList',
+          title: 'replay',
           power: '',
         },
         component: () => import('@/views/replay/component/replayList'),

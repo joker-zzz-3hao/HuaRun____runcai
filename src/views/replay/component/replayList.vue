@@ -184,6 +184,7 @@
 import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/extensions
 import process from '@/components/process';
+// eslint-disable-next-line import/extensions
 import Server from '../server.js';
 import CONST from '../const';
 
