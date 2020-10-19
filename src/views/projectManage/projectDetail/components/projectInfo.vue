@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="project-info">
+    <div class="project-description">
       <div>
         <span v-if="baseInfo.projectNameCn">{{ baseInfo.projectNameCn }}</span>
         <span v-if="baseInfo.projectType">{{
@@ -9,6 +9,12 @@
         <span v-if="baseInfo.projectStatus">{{
           CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus]
         }}</span>
+      </div>
+      <div>
+        <div :class="openFlag ? 'open' : 'false'">
+          项目描述：{{ `${baseInfo.projectDescription || "--"}` }}
+        </div>
+        <div @click="openFlag = !openFlag">展开</div>
       </div>
       <div>
         <span>项目经理：{{ `${baseInfo.projectManager || "--"}` }}</span>
@@ -41,7 +47,7 @@
         >
       </div>
     </div>
-    <div>
+    <div class="project-members">
       <div style="display: flex">
         <div>项目成员</div>
         <div>
@@ -129,6 +135,7 @@
       ref="addMember"
       v-if="showAddMember"
       :server="server"
+      :codes="codes"
       @addSuccess="addSuccess"
     ></tl-add-member>
   </div>
@@ -152,6 +159,8 @@ export default {
       showAddMember: false,
       tableData: [],
       isManage: false,
+      openFlag: false,
+      codes: [],
     };
   },
   components: {
@@ -187,6 +196,13 @@ export default {
         }
       });
     }
+    this.server.queryByCodes({
+      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+    }).then((res) => {
+      if (res.code == '200') {
+        this.codes = res.data;
+      }
+    });
   },
   methods: {
     deleteMember(data) {

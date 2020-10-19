@@ -1,167 +1,171 @@
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :visible="visible"
-      @closed="closed"
-      @close="closed"
-      title="创建虚拟项目"
-      :close-on-click-modal="false"
+  <el-dialog
+    title="创建虚拟项目"
+    :visible="visible"
+    @closed="closed"
+    :before-close="close"
+    :append-to-body="true"
+    :close-on-click-modal="false"
+    custom-class="custom-dialog"
+    class="tl-dialog"
+  >
+    <el-form
+      ref="projectForm"
+      :model="formData"
+      label-width="100px"
+      :rules="rules"
+      class="tl-form"
     >
-      <el-form
-        ref="projectForm"
-        :model="formData"
-        label-width="80px"
-        :rules="rules"
+      <el-form-item label="项目名称" prop="projectName">
+        <el-input
+          v-model.trim="formData.projectName"
+          maxlength="20"
+          clearable
+          class="tl-input"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="项目描述" prop="projectDesc">
+        <el-input
+          v-model.trim="formData.projectDesc"
+          maxlength="200"
+          type="textarea"
+          clearable
+          class="tl-textarea"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="申请部门" prop="orgIdList">
+        <el-cascader
+          ref="cascader"
+          v-model="formData.orgIdList"
+          :options="departmentData"
+          :show-all-levels="false"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'children',
+          }"
+          @change="selectIdChange"
+          popper-class="tl-cascader-popper"
+          class="tl-cascader"
+        ></el-cascader>
+      </el-form-item>
+      <el-form-item label="项目经理" prop="projectManager">
+        <el-select
+          v-model="formData.projectManager"
+          placeholder="请选择"
+          filterable
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="(item, index) in projectManagerList"
+            :key="index + item.userAccount"
+            :label="item.userName"
+            :value="item.userAccount"
+          >
+            <dl class="user-info">
+              <dd>{{ item.userName }}</dd>
+              <dd>{{ item.orgName }}</dd>
+            </dl>
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="formData.userLevel"
+          placeholder="请选择级别"
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in CONST.LEVEL_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="项目类型" prop="projectType">
+        <el-select
+          v-model="formData.projectType"
+          placeholder="请选择项目类型"
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in CONST.PROJECT_TYPE_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="投入类型" prop="throwType">
+        <el-select
+          v-model="formData.throwType"
+          placeholder="请选择投入类型"
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in CONST.THROW_TYPE_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="项目总预算" prop="totalBudget">
+        <el-input-number
+          v-model="formData.totalBudget"
+          controls-position="right"
+          :min="0"
+          :max="50000000"
+          class="tl-input-number"
+        ></el-input-number>
+        <span>元</span>
+        <el-select
+          v-model="formData.currency"
+          placeholder="请选择币种"
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in CONST.CURRENCY_LIST"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="项目周期" prop="projectDate">
+        <el-date-picker
+          v-model="formData.projectDate"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+          @change="changeDate"
+          popper-class="tl-range-popper"
+          class="tl-range-editor"
+        >
+        </el-date-picker>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="createManage" class="tl-btn amt-bg-slip"
+        >确定</el-button
       >
-        <el-form-item label="项目名称" prop="projectName">
-          <el-input
-            v-model.trim="formData.projectName"
-            maxlength="20"
-            clearable
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="项目描述" prop="projectDesc">
-          <el-input
-            v-model.trim="formData.projectDesc"
-            maxlength="200"
-            type="textarea"
-            clearable
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="申请部门" prop="orgIdList">
-          <el-cascader
-            ref="cascader"
-            v-model="formData.orgIdList"
-            :options="departmentData"
-            :show-all-levels="false"
-            :props="{
-              checkStrictly: true,
-              value: 'orgId',
-              label: 'orgName',
-              children: 'children',
-            }"
-            @change="selectIdChange"
-          ></el-cascader>
-        </el-form-item>
-        <el-form-item label="项目经理" prop="projectManager">
-          <el-select
-            v-model="formData.projectManager"
-            placeholder="请选择"
-            filterable
-            popper-class="tl-select-dropdown user-list"
-            class="tl-select"
-          >
-            <el-option
-              v-for="(item, index) in projectManagerList"
-              :key="index + item.userAccount"
-              :label="item.userName"
-              :value="item.userAccount"
-            >
-              <dl class="user-info">
-                <dd>{{ item.userName }}</dd>
-                <dd>{{ item.orgName }}</dd>
-              </dl>
-            </el-option>
-          </el-select>
-          <el-select
-            v-model="formData.userLevel"
-            placeholder="请选择级别"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in CONST.LEVEL_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.label"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目类型" prop="projectType">
-          <el-select
-            v-model="formData.projectType"
-            placeholder="请选择项目类型"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in CONST.PROJECT_TYPE_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="投入类型" prop="throwType">
-          <el-select
-            v-model="formData.throwType"
-            placeholder="请选择投入类型"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in CONST.THROW_TYPE_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目总预算" prop="totalBudget">
-          <el-input-number
-            v-model="formData.totalBudget"
-            controls-position="right"
-            :min="0"
-            :max="50000000"
-            class="tl-input-number"
-          ></el-input-number>
-          元
-          <el-select
-            v-model="formData.currency"
-            placeholder="请选择币种"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in CONST.CURRENCY_LIST"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目周期" prop="projectDate">
-          <el-date-picker
-            v-model="formData.projectDate"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
-            @change="changeDate"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <!-- <el-form-item prop="sortIndex">
-          <el-button :loading="loading" @click="createManage">确定</el-button>
-          <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item> -->
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="createManage"
-          class="tl-btn amt-bg-slip"
-          >确定</el-button
-        >
-        <el-button plain @click="cancel" class="tl-btn amt-border-fadeout"
-          >取消</el-button
-        >
-      </div>
-    </el-dialog>
-  </div>
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -286,7 +290,7 @@ export default {
         }
       });
     },
-    closed() {
+    close() {
       this.visible = false;
     },
     cancel() {
