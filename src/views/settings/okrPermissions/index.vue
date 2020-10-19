@@ -25,10 +25,10 @@
             <span>周报中支撑个人OKR或团队OKR</span>
           </dt>
           <dd>
-            <el-radio v-model="radio['O-R']" label="O" class="tl-radio"
+            <el-radio v-model="radio['O-2']" label="O" class="tl-radio"
               >个人</el-radio
             >
-            <el-radio v-model="radio['O-R']" label="S" class="tl-radio"
+            <el-radio v-model="radio['O-2']" label="S" class="tl-radio"
               >团队</el-radio
             >
           </dd>
@@ -121,7 +121,7 @@ export default {
       server,
       radio: {
         'O-1': 'O',
-        'O-R': 'O',
+        'O-2': 'O',
       },
       setList: [{
         configItemCode: 'O',
@@ -132,7 +132,7 @@ export default {
       {
         configItemCode: 'O',
         configType: 'OKR',
-        configTypeDetail: 'O-R',
+        configTypeDetail: 'O-2',
         level: 'T',
       }],
       sysConfigDtos: [],

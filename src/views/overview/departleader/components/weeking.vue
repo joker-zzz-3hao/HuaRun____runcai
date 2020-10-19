@@ -508,12 +508,13 @@ export default {
 .data-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
 }
 .data-list li {
   font-size: 14px;
   cursor: pointer;
+  margin: 0px 20px;
 }
 
 .card-panel-body {
