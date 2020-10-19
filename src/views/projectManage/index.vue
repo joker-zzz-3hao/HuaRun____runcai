@@ -109,9 +109,15 @@
               min-width="120"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectStatus">{{
-                  CONST.PROJECT_STATUS_MAP[scope.row.projectStatus]
-                }}</span>
+                <span v-if="scope.row.projectStatus">
+                  <i
+                    :class="{
+                      'el-icon-basketball': scope.row.projectStatus == '0',
+                      'el-icon-basketball': scope.row.projectStatus == '1',
+                    }"
+                  ></i>
+                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
+                >
                 <span v-else>--</span>
               </template>
             </el-table-column>
