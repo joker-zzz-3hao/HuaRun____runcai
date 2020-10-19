@@ -59,7 +59,7 @@
         </el-popover>
 
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="approval">确 定</el-button>
+        <el-button type="primary" @click="approval">提交</el-button>
       </span>
     </el-dialog>
   </div>
