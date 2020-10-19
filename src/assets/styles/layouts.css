@@ -60,6 +60,10 @@
 }
 
 /* 内容容器 */
+.main-wrap.toggle-bg {
+  background: #fff;
+}
+
 .cont-wrap {
   margin: 0 auto;
   display: flex;

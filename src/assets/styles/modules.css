@@ -3363,6 +3363,10 @@
   background: #fff;
 }
 
+.no-mainnav .logo-bg {
+  background: unset;
+}
+
 .header-wrap::after {
   position: absolute;
   left: 0;
@@ -3816,7 +3820,7 @@
   right: 16px;
   bottom: 180px;
   width: 370px;
-  height: 430px;
+  height: 450px;
   min-width: unset;
   border-radius: 4px;
   box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
@@ -3849,7 +3853,41 @@
 }
 
 .assistant-dialog .receiver-info {
-  padding: 0 16px;
+  padding: 10px 16px 36px 16px;
+  position: absolute;
+  top: 164px;
+  left: 16px;
+  right: 16px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #e5e9ee;
+}
+
+.tl-dialog .assistant-dialog .el-dialog__headerbtn {
+  top: 466px;
+  right: 20px;
+}
+
+.tl-dialog.is-show .assistant-dialog .el-dialog__close {
+  color: transparent;
+}
+
+.select-border .el-select-dropdown__item.selected {
+  color: #685df1;
+}
+
+.assistant-dialog .receiver-info .el-form-item:nth-child(2) .tl-select .el-input__inner {
+  border: 1px solid #e5e9ee;
+  border-radius: 2px;
+}
+
+.assistant-dialog .tl-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  height: 36px;
 }
 
 /* 后台 */
