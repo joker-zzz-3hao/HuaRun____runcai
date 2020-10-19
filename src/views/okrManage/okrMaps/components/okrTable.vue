@@ -18,11 +18,13 @@
             <span @click="gotoView(scope.row)">{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="periodName" label="周期" min-width="116">
+        </el-table-column>
         <el-table-column prop="okrProgress" label="进度" min-width="116">
           <template slot-scope="scope">
             <tl-process :data="scope.row.okrProgress"></tl-process>
-          </template> </el-table-column
-        >goDetail
+          </template>
+        </el-table-column>
         <el-table-column
           prop="okrDetailObjectKr"
           label="目标（O）"

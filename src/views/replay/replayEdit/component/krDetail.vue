@@ -85,27 +85,31 @@
               <div>
                 <div>改进措施</div>
                 <div>
-                  <div v-for="(li, i) in list.measure || []" :key="i">
-                    <em>
-                      {{ li }}
-                    </em>
-                    <el-button type="text" @click="deleteProduce(index, i)"
-                      >删除</el-button
-                    >
-                  </div>
-
-                  <el-form-item>
+                  <div v-for="(li, d) in list.measure || []" :key="d">
                     <el-input
                       type="textarea"
                       placeholder="事情做的有那些不足，自己表现有哪些不足？"
                       v-model="deficiency[list.detailId]"
                     ></el-input>
-                  </el-form-item>
-                  <el-button
-                    type="text"
-                    @click="addDefic(deficiency[list.detailId], index, i)"
-                    >添加</el-button
-                  >
+
+                    <el-button type="text" @click="deletedProduce(index, i, d)"
+                      >删除</el-button
+                    >
+                  </div>
+                  <template>
+                    <div>
+                      <el-input
+                        type="textarea"
+                        placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                        v-model="deficiency[list.detailId]"
+                      ></el-input>
+                    </div>
+                    <el-button
+                      type="text"
+                      @click="addDefic(deficiency[list.detailId], index, i)"
+                      >添加</el-button
+                    >
+                  </template>
                 </div>
               </div>
             </el-form>

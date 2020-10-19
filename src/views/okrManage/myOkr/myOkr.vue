@@ -454,7 +454,7 @@ export default {
         this.okrList.push({
           tableList: okrInfo.okrInfoList,
           okrMain: {
-            userName: this.userInfo.userName,
+            userName: item.userName,
             okrProgress: item.okrProgress || 0,
             updateTime: item.updateTime || item.createTime || item.createDate || item.updateDate,
             okrBelongType: okrInfo.okrBelongType,

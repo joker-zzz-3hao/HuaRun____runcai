@@ -92,7 +92,7 @@
             <el-table-column
               prop="reviewStatus"
               label="复盘状态"
-              min-width="180"
+              min-width="80"
             >
               <template slot-scope="scope">
                 <span>{{ CONST.REVIEW_STATUS[scope.row.reviewStatus] }}</span>
@@ -101,7 +101,7 @@
             <el-table-column
               prop="reviewCommitTime"
               label="提交复盘时间"
-              min-width="180"
+              min-width="160"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.reviewCommitTime">{{
@@ -113,7 +113,7 @@
             <el-table-column
               prop="reviewCommunicateTime"
               label="复盘沟通时间"
-              min-width="180"
+              min-width="160"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.reviewCommunicateTime">{{
@@ -123,7 +123,7 @@
               </template></el-table-column
             >
 
-            <el-table-column fixed="right" label="操作" width="140">
+            <el-table-column label="操作" width="80">
               <template slot-scope="scope">
                 <el-button
                   type="text"
@@ -157,7 +157,8 @@
                   type="text"
                   class="tl-btn"
                   v-if="
-                    scope.row.reviewStatus == 3 || scope.row.reviewStatus == 2
+                    scope.row.reviewStatus == 3 ||
+                    (scope.row.reviewStatus == 2 && scope.row.isOwner)
                   "
                   @click="
                     $router.push({

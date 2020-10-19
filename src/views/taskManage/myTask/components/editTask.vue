@@ -80,8 +80,8 @@
                     <dl>
                       <dd>
                         <em>{{ item.userName }}</em>
-                        <em v-if="item.userMobile">{{
-                          `(${item.userMobile})`
+                        <em v-if="item.userAccount">{{
+                          `(${item.userAccount})`
                         }}</em>
                         <el-checkbox
                           v-model="item.checkStatus"
@@ -798,11 +798,21 @@ export default {
         this.$message.error('请选择执行人');
         return;
       }
-      const checkparams = {
-        userId: this.formData.taskUserId,
-        processId: this.formData.processId,
-      };
-      const checkres = await this.server.checkUserInProcess(checkparams);
+      let checkres = {};
+      if (this.formData.processId) {
+        const checkparams = {
+          userId: this.formData.taskUserId,
+          processId: this.formData.processId,
+        };
+        checkres = await this.server.checkUserInProcess(checkparams);
+      } else {
+        checkres = {
+          data: {
+            inProcess: true,
+          },
+        };
+      }
+
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};

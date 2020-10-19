@@ -34,11 +34,18 @@
           <div>{{ computedTime(scope.row.createTime) }}</div>
         </template>
       </el-table-column>
-      <el-table-column align="left" prop="taskStatus" label="当前状态">
+      <el-table-column align="left" prop="processName" label="过程">
         <template slot-scope="scope">
-          <span v-if="scope.row.processName"
-            >{{ scope.row.processName }} -</span
-          >
+          <div v-if="scope.row.processName && scope.row.stepName">
+            <span>{{ scope.row.processName }}</span>
+            <span>-</span>
+            <span>{{ scope.row.stepName }}</span>
+          </div>
+          <div v-else>未设置任务过程</div>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" prop="taskStatus" label="状态">
+        <template slot-scope="scope">
           <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
         </template>
       </el-table-column>
@@ -75,11 +82,18 @@
           <div>{{ computedTime(scope.row.createTime) }}</div>
         </template></el-table-column
       >
-      <el-table-column align="left" prop="taskStatus" label="当前状态">
+      <el-table-column align="left" prop="processName" label="过程">
         <template slot-scope="scope">
-          <span v-if="scope.row.processName"
-            >{{ scope.row.processName }} -</span
-          >
+          <div v-if="scope.row.processName && scope.row.stepName">
+            <span>{{ scope.row.processName }}</span>
+            <span>-</span>
+            <span>{{ scope.row.stepName }}</span>
+          </div>
+          <div v-else>未设置任务过程</div>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" prop="taskStatus" label="状态">
+        <template slot-scope="scope">
           <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
         </template>
       </el-table-column>
