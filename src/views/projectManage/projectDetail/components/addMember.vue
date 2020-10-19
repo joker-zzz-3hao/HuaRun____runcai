@@ -59,8 +59,8 @@
                       <el-option
                         v-for="item in levelList"
                         :key="item.value"
-                        :label="item.label"
-                        :value="item.label"
+                        :label="item.meaning"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select>
@@ -86,8 +86,8 @@
                       <el-option
                         v-for="item in funcList"
                         :key="item.value"
-                        :label="item.label"
-                        :value="item.label"
+                        :label="item.meaning"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select>
@@ -117,8 +117,8 @@
                       <el-option
                         v-for="item in companyList"
                         :key="item.value"
-                        :label="item.label"
-                        :value="item.label"
+                        :label="item.meaning"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select>
@@ -215,7 +215,7 @@ export default {
           this.levelList = item.subList;
           break;
         case 'PROJECT_TECH_TYPE':
-          this.levelList = item.subList;
+          this.funcList = item.subList;
           break;
         case 'PROJECT_EMPLOYEE_COMPANY':
           this.companyList = item.subList;
