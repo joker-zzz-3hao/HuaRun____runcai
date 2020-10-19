@@ -118,6 +118,8 @@ export default {
       this.getProjectList();
     },
     refreshMyOkr() {
+      this.teamOkrLoadFinish = false;
+      this.myOkrLoadFinish = false;
       this.queryPersonalOkr();
       this.queryTeamOkr();
     },
