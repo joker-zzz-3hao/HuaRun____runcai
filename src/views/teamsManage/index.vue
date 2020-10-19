@@ -11,8 +11,9 @@
         <dd>
           <span>所属部门</span>
           <em v-if="baseInfo.orgParentName">{{
-            `${baseInfo.orgParentName} - ${baseInfo.orgName}`
+            `${baseInfo.orgParentName} - `
           }}</em>
+          <em>{{ baseInfo.orgName }}</em>
         </dd>
         <dd>
           <span>团队负责人</span>
@@ -115,10 +116,9 @@
                     <div class="user-name" v-else>
                       <em>{{ cutName(fItem.userName) }}</em>
                     </div>
-                    <i
-                      class="el-icon-close"
-                      @click="deleteFictitious(fItem)"
-                    ></i>
+                    <div class="icon-bg" @click="deleteFictitious(fItem)">
+                      <i class="el-icon-close"></i>
+                    </div>
                   </dt>
                   <dd>{{ fItem.userName }}</dd>
                 </dl>
@@ -151,6 +151,10 @@
             childId="orgId"
             :treeData="teamTreeData"
             direction="col"
+            :middlePoint="cardHight"
+            :blockHeight="blockHeight"
+            :canOpen="false"
+            :colWidth="700"
           >
             <template slot="treecard" slot-scope="node">
               <tl-teamCard
@@ -190,6 +194,7 @@
     ></tl-moreMembers>
     <tl-editTeam
       v-if="editTeamExist"
+      :exist.sync="editTeamExist"
       ref="editTeam"
       :server="server"
       @success="closedEditTeam"
@@ -259,6 +264,8 @@ export default {
       rouleType: true,
       disabledList: [],
       baseTeamOrgId: '',
+      cardHight: 52, // 块高度的一半
+      blockHeight: 150,
     };
   },
   components: {
@@ -393,11 +400,10 @@ export default {
       this.moreMembersExist = false;
     },
     closedEditTeam() {
-      this.editTeamExist = false;
+      // this.editTeamExist = false;
       this.init();
     },
     closedAddTeam() {
-      this.addTeamExist = false;
       this.init();
     },
     setSuccess() {

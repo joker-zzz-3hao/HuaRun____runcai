@@ -18,18 +18,22 @@
               v-for="item in data"
               :key="item.userId"
             >
-              <div class="img-user" style="display: flex">
-                <img src="@/assets/images/user/user.jpg" alt />
-                <div>{{ `${item.userName}(${item.userAccount})` }}</div>
+              <div class="select-user-info">
+                <em>{{ item.userName }}</em>
+                <em v-if="item.userAccount">({{ item.userAccount }})</em>
               </div>
             </el-checkbox>
           </el-checkbox-group>
         </el-scrollbar>
       </div>
     </div>
-    <div>
-      <el-button @click="ok">确定</el-button>
-      <el-button @click="cancel">取消</el-button>
+    <div class="flex-end">
+      <el-button plain class="tl-btn amt-border-fadeout" @click="cancel"
+        >取消</el-button
+      >
+      <el-button type="primary" @click="ok" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
     </div>
   </div>
 </template>

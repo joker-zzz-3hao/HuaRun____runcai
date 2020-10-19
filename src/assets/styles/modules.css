@@ -3773,6 +3773,14 @@
   min-width: 60px;
 }
 
+.operating-area .dl-item .tl-select .el-input__inner {
+  border: 1px solid #e5e9ee;
+}
+
+.operating-area .dl-item dt {
+  margin: 0 10px 0 0;
+}
+
 .operating-panel .tl-custom-tabs .border-slip {
   height: 1px;
 }

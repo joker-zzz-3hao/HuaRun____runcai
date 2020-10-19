@@ -1,13 +1,19 @@
 <template>
-  <div class="maps-card">
+  <div
+    class="maps-card"
+    :class="{
+      'is-center': !node.node.orgType && node.node.userName,
+      'is-add': node.node.add,
+    }"
+  >
     <dl>
       <dt>
         <template v-if="!node.node.orgType && node.node.userName">
           <div class="user-info">
             <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
-            <div v-else-if="node.node.orgLeader" class="user-name">
+            <div v-else-if="node.node.userName" class="user-name">
               <em>{{
-                node.node.orgLeader.substring(node.node.orgLeader.length - 2)
+                node.node.userName.substring(node.node.userName.length - 2)
               }}</em>
             </div>
           </div>
@@ -27,22 +33,26 @@
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
         <template v-if="node.node.add">
-          <div @click="addFictitious">
-            <el-cascader-panel
-              v-model="fictitiousOrgId"
-              :options="orgData"
-              v-show="showSelect"
-              @change="changePanel"
-              :props="{
-                checkStrictly: true,
-                value: 'orgId',
-                label: 'orgName',
-                children: 'sonTree',
-                expandTrigger: 'hover',
-              }"
-            ></el-cascader-panel>
-            <span>添加虚线汇报组织</span>
+          <el-cascader
+            v-model="fictitiousOrgId"
+            ref="cascader"
+            :options="orgData"
+            :show-all-levels="false"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+            }"
+            @change="changePanel"
+            popper-class="tl-cascader-popper set-fictitious"
+            class="tl-cascader"
+            :class="{ 'is-hide': !showSelect }"
+          ></el-cascader>
+          <div class="icon-bg" @click="addFictitious">
+            <i class="el-icon-plus"></i>
           </div>
+          <span>添加虚线汇报组织</span>
         </template>
         <template v-if="node.node.orgType == '1'">
           <div class="user-info">
@@ -58,62 +68,24 @@
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
       </dt>
-      <dd class="user-name-txt">
+      <dd
+        class="user-name-txt"
+        v-if="node.node.orgType == '0' || node.node.orgType == '1'"
+      >
         <span>{{
           node.node.orgType == "0" ? "实体汇报组织" : "虚线汇报组织"
         }}</span>
-        <em>{{ node.node.orgName ? node.node.orgName : "未加入虚拟组织" }}</em>
+        <em>{{ node.node.orgName }}</em>
       </dd>
       <dd
         v-if="node.node.orgType == '1'"
-        class="is-operational"
+        class="icon-bg is-close"
         @click="deleteFictitious(node.node)"
       >
-        <div class="icon-bg">
-          <i class="el-icon-close"></i>
-        </div>
+        <i class="el-icon-close"></i>
       </dd>
     </dl>
   </div>
-  <!-- <div style="width: 216px; position: relative">
-    <div v-if="node.node.orgType == '0'">
-      <div>{{ node.node.orgName }}</div>
-      <div>{{ node.node.orgLeader || node.node.userName }}</div>
-      <div>直属上级</div>
-    </div>
-    <div
-      v-else-if="node.node.orgType == '1'"
-      style="position: absolute; top: 0; right: 0"
-      @click="deleteFictitious(node.node)"
-    >
-      <div>{{ node.node.orgName }}</div>
-      <div>{{ node.node.orgLeader || "未设置" }}</div>
-      <i class="el-icon-close"></i>
-      <div>虚拟汇报部门</div>
-    </div>
-    <div v-else-if="!node.node.orgType && node.node.userName">
-      <div>{{ node.node.userName }}sdfs</div>
-    </div>
-    <div v-if="node.node.add">
-      <div>
-        <i class="el-icon-plus" @click="addFictitious"></i>
-        <el-cascader-panel
-          v-model="fictitiousOrgId"
-          :options="orgData"
-          v-show="showSelect"
-          @change="changePanel"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'sonTree',
-            expandTrigger: 'hover',
-          }"
-        ></el-cascader-panel>
-      </div>
-      <div>添加虚线汇报部门</div>
-    </div>
-  </div> -->
 </template>
 
 <script>

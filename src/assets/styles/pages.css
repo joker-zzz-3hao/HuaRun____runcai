@@ -1934,7 +1934,8 @@
 .okr-maps .maps-view-table,
 .teams-weekly .cont-area,
 .teams-weekly-detail .cont-area,
-.my-task .cont-area {
+.my-task .cont-area,
+.replay-okr .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -3052,10 +3053,6 @@
   padding: 20px 0 0 0;
 }
 
-/* .my-task .tl-table thead {
-  display: none;
-} */
-
 .my-task .tl-condition-screening {
   margin: 10px 0 0 0;
 }
@@ -3203,8 +3200,34 @@
   padding: 10px 0 0 6px;
 }
 
-.teams-manage .dl-card-panel .img-list dl {
+.teams-manage .dl-card-panel .img-list dl,
+.edit-teams .img-list dl,
+.add-teams .img-list dl {
   margin: 0 4px 10px 4px;
+}
+
+.edit-teams .add-users,
+.add-teams .add-users {
+  position: relative;
+}
+
+.edit-teams .add-users .select-members,
+.add-teams .add-users .select-members {
+  position: absolute;
+  left: 50%;
+  top: 80px;
+  transform: translateX(-50%);
+  -webkit-line-clamp: unset;
+}
+
+.edit-teams .img-list dl:nth-child(7n + 1) .select-members,
+.add-teams .img-list dl:nth-child(7n + 1) .select-members {
+  left: calc(50% + 30px);
+}
+
+.edit-teams .img-list dl:nth-child(7n) .select-members,
+.add-teams .img-list dl:nth-child(7n) .select-members {
+  left: calc(50% - 120px);
 }
 
 .teams-manage .dl-card-panel .img-list dt {
@@ -3217,19 +3240,30 @@
   color: #7b8a95
 }
 
-.teams-manage .dl-card-panel .img-list .add-users .user-name {
+.teams-manage .dl-card-panel .img-list .add-users .user-name,
+.edit-teams .img-list .add-users .user-name,
+.add-teams .img-list .add-users .user-name {
   width: 36px;
   height: 36px;
 }
 
-.teams-manage .dl-card-panel .user-info > i {
+.teams-manage .dl-card-panel .user-info .icon-bg,
+.edit-teams .user-info .icon-bg,
+.add-teams .user-info .icon-bg {
   position: absolute;
-  right: -20px;
-  top: 0;
-  font-size: 20px;
+  right: -8px;
+  top: -6px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  width: 16px;
+  height: 16px;
+  color: #fff;
   transition: all .4s ease-out;
+}
+
+.teams-manage .dl-card-panel .user-info .icon-bg .el-icon-close {
+  color: #fff;
 }
 
 .teams-manage .dl-card-panel .user-info i:hover {
@@ -3245,8 +3279,9 @@
   margin: 0 20px 0 0;
 }
 
-.teams-manage .maps-card {
-  height: 160px;
+.teams-manage .maps-card,
+.set-fictitious .maps-card {
+  min-height: 112px;
 }
 
 .teams-manage .maps-card dt,
@@ -3264,6 +3299,7 @@
 .teams-manage .maps-card .user-name-txt em,
 .set-fictitious .maps-card .user-info + em,
 .set-fictitious .maps-card .user-name-txt em {
+  flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -3304,13 +3340,17 @@
   justify-content: center;
 }
 
-.teams-manage .maps-card .is-operational {
-  margin: 20px 0 0 0;
+.teams-manage .maps-card .icon-bg,
+.set-fictitious .maps-card .icon-bg {
+  margin: 0 0 0 10px;
+  cursor: pointer;
 }
 
-.teams-manage .maps-card .is-operational .icon-bg {
-  margin: 0 10px;
-  cursor: pointer;
+.teams-manage .maps-card .icon-bg.is-close,
+.set-fictitious .maps-card .icon-bg.is-close {
+  position: absolute;
+  right: -10px;
+  top: -10px;
 }
 
 .teams-manage .tl-select .el-input__inner {
@@ -3354,18 +3394,24 @@
   width: 600px;
 }
 
-.set-manage .cont-box > dl {
+.set-manage .cont-box > dl,
+.edit-teams .cont-box > dl,
+.add-teams .cont-box > dl {
   margin: 0 0 20px 0;
   display: flex;
   align-items: center;
 }
 
-.set-manage .cont-box > dl dt {
+.set-manage .cont-box > dl dt,
+.edit-teams .cont-box > dl > dt,
+.add-teams .cont-box > dl > dt {
   margin: 0 30px 0 0;
-  min-width: 100px;
+  min-width: 120px;
 }
 
-.set-manage .tl-select .el-input__inner {
+.set-manage .tl-select .el-input__inner,
+.edit-teams .tl-select .el-input__inner,
+.add-teams .tl-select .el-input__inner {
   border: 1px solid #d5dde3;
   border-radius: 2px;
 }
@@ -3398,15 +3444,7 @@
 }
 
 .set-fictitious .el-drawer__body {
-  width: 800px;
-}
-
-.set-fictitious .draw-area {
-  width: 800px;
-}
-
-.set-fictitious #svg01 {
-  width: 800px !important;
+  width: 1264px;
 }
 
 .set-fictitious .tips-info {
@@ -3417,6 +3455,156 @@
 .set-fictitious .maps-card dd {
   display: flex;
   align-items: center;
+}
+
+.set-fictitious .maps-card.is-center {
+  display: flex;
+  align-items: center;
+  min-height: 112px;
+}
+
+.set-fictitious .draw-area {
+  width: 800px;
+}
+
+.set-fictitious .maps-card dt > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.set-fictitious .maps-card.is-add,
+.set-fictitious .maps-card.is-add dl {
+  display: flex;
+}
+
+.set-fictitious .maps-card.is-add {
+  justify-content: center;
+}
+
+.set-fictitious .maps-card.is-add dt {
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.set-fictitious .maps-card.is-add dt .el-cascader {
+  position: absolute;
+  width: 40px;
+  opacity: 0;
+  z-index: 5;
+}
+
+.set-fictitious .maps-card.is-add dt .el-cascader.is-hede {
+  display: none;
+}
+
+.set-fictitious .maps-card.is-add dt .el-input__inner {
+  border-radius: 50%;
+}
+
+.set-fictitious .maps-card.is-add .icon-bg {
+  position: absolute;
+  left: 26px;
+  top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border-radius: 50%;
+  border: 1px solid #685df1;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background: unset;
+  z-index: 1;
+}
+
+.set-fictitious .maps-card.is-add dt span {
+  margin: 50px 0 0 0;
+}
+
+.tl-cascader-popper.set-fictitious {
+  top: 436px !important;
+}
+
+.edit-teams .el-drawer__body,
+.add-teams .el-drawer__body {
+  width: 730px;
+}
+
+.custom-drawer.edit-teams .el-checkbox-group .tl-checkbox,
+.custom-drawer.add-teams .el-checkbox-group .tl-checkbox {
+  padding: 10px 0;
+}
+
+.edit-teams .el-scrollbar__view,
+.add-teams .el-scrollbar__view {
+  padding: 0 20px 0 0;
+}
+
+.edit-teams .tl-transfer-select .select-target,
+.add-teams .tl-transfer-select .select-target {
+  border: none;
+  height: 300px;
+}
+
+.edit-teams .select-user-info em,
+.add-teams .select-user-info em {
+  margin: 0 10px 0 0;
+}
+
+.edit-teams .tl-input,
+.edit-teams .tl-select,
+.add-teams .tl-input,
+.add-teams .tl-select {
+  margin: 0;
+  width: 300px;
+}
+
+.edit-teams .cont-box > dl:last-child > dt,
+.add-teams .cont-box > dl:last-child > dt {
+  margin: 18px 0 0 0;
+  align-self: start;
+}
+
+/* replay-okr */
+.replay-okr .cont-area {
+  display: flex;
+}
+
+/* personal-center */
+.personal-center .cont-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  width: 1100px;
+}
+
+.personal-center .cont-area {
+  padding: 60px 60px 30px;
+  display: flex;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e9ee;
+  border-radius: 4px;
+}
+
+.personal-center .avatar-uploader img {
+  width: 100px;
+  height: 100px;
+}
+
+.personal-center .dl-list {
+  margin: 30px 0 0 0;
+}
+
+.personal-center .dl-item {
+  margin: 30px 0;
+}
+
+.personal-center .dl-list dt {
+  margin: 0 30px 0 0;
 }
 
 /* =========================================================租户管理================================================================== */

@@ -52,8 +52,8 @@
           <dl>
             <dt>OKR类型</dt>
             <dd>
-              {{ CONST.OKR_TYPE_MAP[searchForm.okrType] }}
-              <!-- <el-select
+              <el-select
+                v-if="showMoreType"
                 v-model="searchForm.okrType"
                 placeholder="请选择类型"
                 :popper-append-to-body="false"
@@ -62,11 +62,12 @@
               >
                 <el-option
                   v-for="(item, index) in okrTypeList"
-                  :key="item.id+index"
+                  :key="item.id + index"
                   :label="item.name"
                   :value="item.id"
                 ></el-option>
-              </el-select>-->
+              </el-select>
+              <span v-else>{{ CONST.OKR_TYPE_MAP[searchForm.okrType] }}</span>
             </dd>
           </dl>
           <dl class="user-info">
@@ -157,6 +158,7 @@ export default {
       periodList: [],
       temPeriod: '',
       selectPeriod: '',
+      showMoreType: false,
     };
   },
   computed: {
@@ -169,18 +171,23 @@ export default {
     }),
     okrTypeList() {
       // okr类型
-      if (this.roleCode.includes('ORG_ADMIN')) {
-        return this.CONST.OKR_TYPE_LIST.filter(
-          (item) => item.id == 1,
-        );
-      } return this.CONST.OKR_TYPE_LIST.filter(
-        (item) => item.id == 2,
-      );
+      // if (this.roleCode.includes('ORG_ADMIN')) {
+      //   return this.CONST.OKR_TYPE_LIST.filter(
+      //     (item) => item.id == 1,
+      //   );
+      // } return this.CONST.OKR_TYPE_LIST.filter(
+      //   (item) => item.id == 2,
+      // );
+
+      return this.CONST.OKR_TYPE_LIST;
     },
   },
   mounted() {
   },
   created() {
+    if (this.roleCode.includes('PUBLIC') && this.roleCode.includes('TEAM_ADMIN')) {
+      this.showMoreType = true;
+    }
   },
   methods: {
     ...mapMutations('common', ['setokrSuccess', 'setCreateokrDrawer', 'setShowAuto']),

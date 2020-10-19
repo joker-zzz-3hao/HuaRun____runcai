@@ -85,14 +85,11 @@
               <div>
                 <div>改进措施</div>
                 <div>
-                  <div v-for="(li, d) in list.measure || []" :key="d">
-                    <el-input
-                      type="textarea"
-                      placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                      :value="li"
-                    ></el-input>
-
-                    <el-button type="text" @click="deletedProduce(index, i, d)"
+                  <div v-for="(li, i) in list.measure || []" :key="i">
+                    <em>
+                      {{ li }}
+                    </em>
+                    <el-button type="text" @click="deleteProduce(index, i)"
                       >删除</el-button
                     >
                   </div>
@@ -143,6 +140,7 @@ export default {
       communication: {},
       communicationLabel: {},
       list: [],
+      oldList: [],
       listBtn: [
         '超级优秀',
         '优秀',
@@ -151,7 +149,9 @@ export default {
       ],
     };
   },
-
+  created() {
+    this.getOldList();
+  },
   methods: {
     deletedProduce(index, i, d) {
       this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(d, 1);
@@ -210,6 +210,8 @@ export default {
       };
       this.server.okrReviewSave(params).then((res) => {
         if (res.code == 200) {
+          this.$emit('getView');
+          this.getOldList();
           this.$message.success('保存成功');
         } else {
           this.$$message.error(res.msg);
@@ -223,11 +225,22 @@ export default {
         this.$router.push('/replayList');
         return false;
       }
-      this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
-        .then(() => {
-          this.clearClose();
+
+      if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
+        this.$router.push('/replayList');
+      } else {
+        this.$confirm('关闭后您填写内容将被清除，请确认是否关闭?', {
+          confirmButtonText: '确定保存',
+          cancelButtonText: '关闭',
         })
-        .catch(() => {});
+          .then(() => {
+            this.save();
+            this.$router.push('/replayList');
+          })
+          .catch(() => {
+            this.$router.push('/replayList');
+          });
+      }
     },
     clearClose() {
       this.checkDatakrs(true);
@@ -258,7 +271,7 @@ export default {
       };
       const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
       if (CheckNull) {
-        this.$message.error('未复盘完毕，请检查');
+        this.$message.error('未完成复盘，尚有未填写内容，请检查');
         return false;
       }
       this.server.okrReviewSubmit(params).then((res) => {
@@ -270,13 +283,32 @@ export default {
         }
       });
     },
+    getOldList() {
+      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
+      const krs = [];
 
+      krsData.forEach((item) => {
+        // eslint-disable-next-line prefer-spread
+        krs.push.apply(krs, item);
+      });
+      const krsList = krs;
+
+      this.oldList = krsList.map((item) => ({
+        detailId: item.detailId,
+        okrDetailId: item.okrDetailId,
+        communication: item.communication,
+        advantage: item.advantage,
+        disadvantage: item.disadvantage,
+        measure: item.measure || [],
+        communicationLabel: item.communicationLabel,
+      }));
+    },
     getOkrReviewDetail() {
       this.server.getOkrReviewDetail({
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
-        this.checkDatakrs();
+        this.checkDatakrs(false);
       });
     },
   },

@@ -29,7 +29,47 @@
           v-for="pItem in parentUndertake[searchForm.periodId]"
           :key="pItem.periodName"
         >
-          <el-radio-group v-model="modelDepart">
+          <el-radio-group v-model="modelDepart" v-if="pItem.isupdate">
+            <el-radio
+              @click.native="selectDepartokr($event, index, item)"
+              class="tl-radio"
+              :label="item.okrDetailId + item.okrDetailVersion"
+              v-for="(item, index) in departokrList"
+              :key="item.okrDetailId + index"
+            >
+              <div
+                v-if="currentOption.includes(item.okrDetailId)"
+                class="undertake-change"
+              >
+                <span
+                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
+                  >{{ item.typeName }}</span
+                >
+                <em v-if="item.currentOption">
+                  <em>「历史版本{{ item.okrDetailVersion }}」</em>
+                  <em>(当前选择)</em>
+                </em>
+                <em v-else-if="currentOption.includes(item.okrDetailId)"
+                  >「最新版本」</em
+                >
+                <div>
+                  <p>{{ item.okrDetailObjectKr }}</p>
+                  <p v-if="item.modifyReason">
+                    <span>变更原因</span>
+                    {{ item.modifyReason }}
+                  </p>
+                </div>
+              </div>
+              <template v-else>
+                <span
+                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
+                  >{{ item.typeName }}</span
+                >
+                <em>{{ item.okrDetailObjectKr }}</em>
+              </template>
+            </el-radio>
+          </el-radio-group>
+          <el-radio-group v-model="modelDepart" v-else>
             <el-radio
               @click.native="selectDepartokr($event, index, item)"
               class="tl-radio"
@@ -52,7 +92,7 @@
       >
         暂无可关联的父目标
       </dl>
-      <dl v-if="!showPhil" class="dl-list">
+      <!-- <dl v-if="!showPhil" class="dl-list">
         <dt class="list-title">
           <em>{{ departmentName }}{{ periodName }}</em>
           <span>(单选)</span>
@@ -99,7 +139,7 @@
             </el-radio>
           </el-radio-group>
         </dd>
-      </dl>
+      </dl> -->
       <!-- 价值观 -->
       <dl class="dl-list">
         <dt class="list-title">
@@ -189,7 +229,7 @@ export default {
     };
   },
   created() {
-    if (this.roleCode.includes('ORG_ADMIN')) {
+    if (this.roleCode.includes('ORG_ADMIN') || this.roleCode.includes('TEAM_ADMIN')) {
       this.departmentName = this.userInfo.orgParentName || '部门';
     } else {
       this.departmentName = this.userInfo.orgName || '部门';
@@ -269,10 +309,12 @@ export default {
                   });
                 }
               });
-              console.log(pindex);
+              console.log(this.periodName, pItem.okrPeriodEntity.periodName);
               if (this.periodName == pItem.okrPeriodEntity.periodName && this.departokrList) {
+                console.log('isupdate');
                 this.parentUndertake.push({
                   pindex: {
+                    isupdate: true,
                     periodName: this.periodName,
                     departokrList: this.departokrList,
                   },

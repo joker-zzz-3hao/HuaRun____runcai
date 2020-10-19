@@ -10,11 +10,32 @@
     <div class="replay-user">
       <div class="list">
         <img
+          v-if="okrMain.okrMainVo.headUrl"
           style="width: 50px; height: 50px; border-radius: 50%"
           :src="okrMain.okrMainVo.headUrl"
-        />{{ okrMain.okrMainVo.userName }}
+        />
+        <!-- <div class="user-name" v-else>
+          <em>{{ cutName(okrMain.okrMainVo.userName) }}</em>
+        </div> -->
+        {{ okrMain.okrMainVo.userName }}
       </div>
-      <div class="list">OKR进度： {{ okrMain.okrMainVo.okrProgress }}%</div>
+      <div class="list">
+        <dl class="okr-progress">
+          <dt>
+            <em>OKR进度</em>
+          </dt>
+          <dd>
+            <el-progress
+              type="circle"
+              :percentage="parseInt(okrMain.okrMainVo.okrProgress, 10) || 0"
+              :width="70"
+              :stroke-width="5"
+              color="#4ccd79"
+              class="tl-progress-circle"
+            ></el-progress>
+          </dd>
+        </dl>
+      </div>
       <div class="list">
         复盘时间：
         {{
@@ -35,8 +56,16 @@
       </el-radio-group>
     </div>
     <div>
-      <tl-kr-detail v-if="okrMain.okrMainVo.reviewType == 1" />
-      <tl-o-detail v-if="okrMain.okrMainVo.reviewType == 0" />
+      <tl-kr-detail
+        v-if="okrMain.okrMainVo.reviewType == 1"
+        @getView="getOkrReviewDetail"
+        :okrMain="okrMain"
+      />
+      <tl-o-detail
+        v-if="okrMain.okrMainVo.reviewType == 0"
+        @getView="getOkrReviewDetail"
+        :okrMain="okrMain"
+      />
     </div>
   </div>
 </template>
@@ -59,6 +88,7 @@ export default {
       activeNames: ['1'],
       server,
       okrMain: {
+        okrReviewPojoList: [],
         okrMainVo: {
           reviewType: 0,
         },
@@ -80,6 +110,10 @@ export default {
   },
 
   methods: {
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
       const krs = [];

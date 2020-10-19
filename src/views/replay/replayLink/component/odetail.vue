@@ -120,16 +120,14 @@ import Server from '../../server';
 const server = new Server();
 export default {
   name: 'home',
+  props: ['okrMain'],
   data() {
     return {
       form: {},
       activeNames: [1],
       server,
-      okrMain: {
-        okrMainVo: {
-          reviewType: 0,
-        },
-      },
+
+      oldList: [],
       active: {},
       communication: {},
       communicationLabel: {},
@@ -143,10 +141,24 @@ export default {
     };
   },
   created() {
-    this.getOkrReviewDetail();
+    this.getOldList();
   },
 
   methods: {
+    getOldList() {
+      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.o);
+      const krsList = krsData;
+
+      this.oldList = krsList.map((item) => ({
+        detailId: item.detailId,
+        okrDetailId: item.okrDetailId,
+        communication: item.communication,
+        communicationLabel: item.communicationLabel,
+        advantage: item.advantage,
+        disadvantage: item.disadvantage,
+        measure: item.measure || [],
+      }));
+    },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.o);
 
@@ -202,11 +214,22 @@ export default {
         this.$router.push('/replayList');
         return false;
       }
-      this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
+      if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
+        this.$router.push('/replayList');
+        return false;
+      }
+      this.$confirm('关闭后您填写内容将被清除，请确认是否关闭?', {
+        confirmButtonText: '确定保存',
+        cancelButtonText: '关闭',
+      })
         .then(() => {
-          this.clearClose();
+          this.save();
+          this.$router.push('/replayList');
         })
-        .catch(() => {});
+        .catch(() => {
+          this.clearClose();
+          this.$router.push('/replayList');
+        });
     },
     clearClose() {
       this.checkDatakrs(true);
@@ -236,7 +259,7 @@ export default {
       };
       const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
       if (CheckNull) {
-        this.$message.error('未复盘沟通完毕，请检查');
+        this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
         return false;
       }
       this.server.okrReviewCommunicationSubmit(params).then((res) => {
