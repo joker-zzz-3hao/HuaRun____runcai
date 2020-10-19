@@ -373,6 +373,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="summitAssign"
+        :loading="loading"
         >指派</el-button
       >
       <el-button
@@ -380,6 +381,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="save"
+        :loading="loading"
       >
         <span>确认</span>
       </el-button>
@@ -388,6 +390,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="acceptTask"
+        :loading="loading"
         >确认接收</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -456,6 +459,7 @@ export default {
       visible: false,
       showProjectDialog: false,
       canEdit: true, // 是否能编辑
+      loading: false,
       // tab
       currentIndex: 0,
       tabMenuList: [{
@@ -734,12 +738,14 @@ export default {
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
             }
+            this.loading = true;
             this.server.saveTask(this.formData).then((res) => {
               if (res.code == 200) {
                 this.$message.success('保存成功');
                 this.close();
                 this.$emit('success');
               }
+              this.loading = false;
             });
           } else {
             const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
@@ -785,12 +791,14 @@ export default {
       });
     },
     acceptTask() {
+      this.loading = true;
       this.server.acceptTask({ taskId: this.formData.taskId }).then((res) => {
         if (res.code == 200) {
           this.$message.success('接收成功');
           this.close();
           this.$emit('success');
         }
+        this.loading = false;
       });
     },
     async summitAssign() {
@@ -832,12 +840,14 @@ export default {
             if (this.fileList.length > 0) {
               this.formData.attachmentList.push(...this.fileList);
             }
+            this.loading = true;
             this.server.appointSave(this.formData).then((res) => {
               if (res.code == 200) {
                 this.$message.success('指派成功');
                 this.$emit('success');
                 this.close();
               }
+              this.loading = false;
             });
           } else {
             const processVal = this.processList.filter((item) => item.processId == this.formData.processId)[0] || {};
