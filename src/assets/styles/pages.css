@@ -1936,7 +1936,8 @@
 .teams-weekly-detail .cont-area,
 .my-task .cont-area,
 .replay-okr .cont-area,
-.project-manage .cont-area {
+.project-manage .cont-area,
+.working-hours .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -3571,7 +3572,8 @@
 
 /* replay-okr */
 .replay-okr .cont-area,
-.project-manage .cont-area {
+.project-manage .cont-area,
+.working-hours .cont-area {
   display: flex;
 }
 
@@ -3610,6 +3612,15 @@
 }
 
 /* .project-manage */
+.project-manage .page-title {
+  margin: 6px 0 0 0;
+  align-self: start;
+}
+
+.project-manage .operating-box .el-input {
+  width: unset;
+}
+
 .project-detail .tl-tabs {
   position: relative;
 }
@@ -3774,6 +3785,7 @@
 }
 
 .project-manage .table-container > .tl-table td,
+.working-hours .table-container > .tl-table td,
 .project-members .tl-table td {
   height: 54px;
 }
@@ -3792,6 +3804,150 @@
 
 .tl-dialog .add-members .tl-table td {
   height: 54px;
+}
+
+/* working-hours */
+.working-hours .dl-list,
+.working-hours .dl-item dd {
+  display: flex;
+  align-items: center;
+}
+
+.working-hours .cont-area > .dl-list .dl-item {
+  margin: 0 124px 0 0;
+}
+
+.working-hours .dl-item dt {
+  margin: 0 30px 0 0;
+  color: #acb6bf;
+}
+
+.working-hours .dl-item dd span {
+  color: #acb6bf;
+}
+.working-hours .dl-item dd span:not(:last-child) {
+  margin: 0 0 0 6px;
+}
+
+.working-hours .dl-item dd em {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #685df1;
+}
+
+.approval .el-dialog__body,
+.approval-detail .el-dialog__body {
+  width: 102%;
+  height: 530px;
+  overflow: hidden;
+}
+
+.approval-detail .el-scrollbar__view,
+.approval .el-scrollbar__view {
+  padding: 0 14px 0 0;
+}
+
+.approval .dl-list,
+.approval-detail .dl-list {
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 6px 16px 0 rgba(0,11,84,0.04);
+  border-radius: 2px;
+}
+
+.approval .dl-item,
+.approval .dl-item dt,
+.approval .dl-item dd,
+.approval-detail .dl-item,
+.approval-detail .dl-item dt,
+.approval-detail .dl-item dd {
+  display: flex;
+  align-items: center;
+}
+
+.approval .dl-item,
+.approval-detail .dl-item {
+  margin: 18px 0;
+}
+
+.approval .dl-item dt span,
+.approval-detail .dl-item dt span {
+  margin: 0 20px 0 0;
+  color: #acb6bf;
+  min-width: 60px;
+}
+
+.approval .dl-item dd,
+.approval-detail .dl-item dd {
+  color: #26282a;
+}
+
+.approval .dl-item .tl-progress-bar .current-progress,
+.approval-detail .dl-item .tl-progress-bar .current-progress {
+  background: #4ccd70;
+}
+
+.approval .dl-item .progress-number,
+.approval-detail .dl-item .progress-number {
+  color: #4ccd79;
+}
+
+.approval .dialog-footer,
+.approval-detail .dialog-footer {
+  text-align: left;
+}
+
+.approval .dialog-footer-l .btn-lineheight {
+  margin: 0 0 0 10px;
+  padding: 0 10px;
+  height: 28px;
+  min-width: unset;
+  border-radius: 2px;
+  background: #f4f6f8;
+  color: #879099;
+  transition: all .4s ease-out;
+}
+
+.approval .dialog-footer-l .btn-lineheight:hover {
+  background: #f0effe;
+}
+
+.approval .dialog-footer-l > div,
+.approval-detail .dialog-footer-l > div {
+  display: flex;
+  align-items: center;
+}
+
+.approval .dialog-footer-l > div:last-child,
+.approval-detail .dialog-footer-l > div:last-child {
+  margin: 6px 0 0 0;
+}
+
+.approval .dialog-footer-l > div > span:first-child,
+.approval-detail .dialog-footer-l > div > span:first-child {
+  min-width: 86px;
+  margin: 0 20px 0 0;
+  color: #acb6bf;
+}
+
+.approval-detail .dialog-footer-l > div > span:first-child {
+  min-width: 56px;
+}
+
+.approval .dialog-footer-l > div:first-child em,
+.approval-detail .dialog-footer-l > div:first-child em {
+  margin: 0 6px 0 0;
+  font-family: DINAlternate-Bold;
+  font-size: 18px;
+  color: #26282a;
+}
+
+.approval-pop .tl-input-number {
+  margin: 0 0 20px 0;
+}
+
+.approval-pop .flex-end {
+  margin: 30px 0 10px 0;
 }
 
 /* =========================================================租户管理================================================================== */

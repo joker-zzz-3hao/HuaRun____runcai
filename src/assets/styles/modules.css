@@ -145,8 +145,6 @@
   transition: all .4s ease-out;
 }
 
-
-
 .tl-dialog .tl-btn,
 .tl-drawer .tl-btn {
   min-width: 90px;
@@ -799,6 +797,10 @@
 
 .tl-dialog .tl-select .el-input.is-focus .el-input__inner {
   border-color: #685df1;
+}
+
+.dialog-footer .dialog-footer-l {
+  flex: 1;
 }
 
 /* form */
