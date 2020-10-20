@@ -1,148 +1,30 @@
 <template>
-  <div class="assistant">
-    <i
-      @click="showDia"
-      class="el-icon-chat-dot-round"
-      :class="{ 'is-focus': showDialog }"
-    ></i>
-    <template v-if="showDialog">
-      <el-dialog
-        :modal="false"
-        :append-to-body="true"
-        :close-on-click-modal="false"
-        :before-close="close"
-        @closed="closed"
-        :visible="showDialog"
-        custom-class="assistant-dialog"
-        class="tl-dialog"
-        :class="{ 'is-show': showDialog }"
-      >
-        <dl class="sender-info">
-          <dt>
-            <span>Hello</span><em>{{ userInfo.userName }}</em>
-          </dt>
-          <dd>您可以在这给你的同事发送提醒或代办任务哦～</dd>
-        </dl>
-        <div class="receiver-info">
-          <el-form ref="asistant" :model="formData" label-width="80px">
-            <el-form-item
-              label="发送类型"
-              prop="noticeType"
-              :rules="[{ required: true }]"
-            >
-              <el-select
-                v-model.trim="formData.noticeType"
-                @change="typeChange"
-                popper-class="select-border"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="type in typeList"
-                  :key="type.noticeType"
-                  :label="type.name"
-                  :value="type.noticeType"
-                ></el-option> </el-select
-            ></el-form-item>
-            <el-form-item
-              label="发送对象"
-              prop="userId"
-              :rules="[
-                { required: true, message: '请选择发送对象', trigger: 'blur' },
-              ]"
-            >
-              <el-select
-                v-model.trim="formData.userId"
-                filterable
-                placeholder="请输入成员姓名"
-                remote
-                :remote-method="remoteMethod"
-                @visible-change="visibleChange"
-                clearable
-                @change="userChange"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="item in userList"
-                  :key="item.userId"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                  <dl>
-                    <dd>
-                      <em>{{ item.userName }}</em>
-                      <em>{{ `(${item.userAccount})` }}</em>
-                    </dd>
-                  </dl>
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              label="任务标题"
-              prop="taskTitle"
-              :rules="[
-                { required: true, message: '请填写任务标题', trigger: 'blur' },
-              ]"
-              v-if="formData.noticeType == 2"
-            >
-              <el-input
-                maxlength="50"
-                v-model.trim="formData.taskTitle"
-                class="tl-input"
-              ></el-input
-            ></el-form-item>
-            <el-form-item v-if="formData.noticeType == 3">
-              <el-radio v-model="formData.callbackType" label="1"
-                >遇到问题</el-radio
-              >
-              <el-radio v-model="formData.callbackType" label="2"
-                >使用建议</el-radio
-              >
-            </el-form-item>
-            <el-form-item label="选择模块" v-if="formData.noticeType == 3">
-              <el-button @click="selectModule('1')">OKR</el-button>
-              <el-button @click="selectModule('2')">周报</el-button>
-              <el-button @click="selectModule('3')">系统管理</el-button>
-            </el-form-item>
-            <el-form-item
-              label="内容"
-              prop="noticeContent"
-              :rules="[
-                { required: true, message: '请填写内容', trigger: 'blur' },
-              ]"
-              v-if="formData.noticeType == '1' || formData.noticeType == '3'"
-              ><el-input
-                v-model="formData.noticeContent"
-                maxlength="1000"
-                rows="2"
-                resize="none"
-                type="textarea"
-                :placeholder="
-                  formData.noticeType == '1'
-                    ? '这里请输入你想说的内容~'
-                    : '请详细描述您的问题'
-                "
-                class="tl-textarea"
-              ></el-input
-            ></el-form-item>
-          </el-form>
-        </div>
-        <el-button
-          type="primary"
-          @click="sendMessage"
-          class="tl-btn amt-bg-slip"
-        >
-          <i class="el-icon-position"></i><em>发送内容</em>
-        </el-button>
-        <!-- <div>Hello {{ userInfo.userName }}</div>
-        <div>您可以在这给你的同事发送提醒或任务哦~</div>
+  <div class="assistant" :class="{ 'is-focus': showDialog }">
+    <i @click="showDia" class="el-icon-chat-dot-round"></i>
+    <div
+      class="assistant-popup"
+      v-if="showDialog"
+      :class="{ 'is-show': showDialog }"
+    >
+      <dl class="sender-info">
+        <dt>
+          <span>Hello</span><em>{{ userInfo.userName }}</em>
+        </dt>
+        <dd>您可以在这给你的同事发送提醒或代办任务哦～</dd>
+      </dl>
+      <div class="receiver-info">
         <el-form ref="asistant" :model="formData" label-width="80px">
           <el-form-item
             label="发送类型"
             prop="noticeType"
             :rules="[{ required: true }]"
           >
-            <el-select v-model.trim="formData.noticeType" @change="typeChange">
+            <el-select
+              v-model.trim="formData.noticeType"
+              @change="typeChange"
+              popper-class="select-border"
+              class="tl-select"
+            >
               <el-option
                 v-for="type in typeList"
                 :key="type.noticeType"
@@ -166,7 +48,7 @@
               @visible-change="visibleChange"
               clearable
               @change="userChange"
-              popper-class="tl-select-dropdown set-manage"
+              popper-class="tl-select-dropdown"
               class="tl-select"
             >
               <el-option
@@ -195,6 +77,7 @@
             <el-input
               maxlength="50"
               v-model.trim="formData.taskTitle"
+              class="tl-input"
             ></el-input
           ></el-form-item>
           <el-form-item v-if="formData.noticeType == 3">
@@ -220,23 +103,131 @@
             ><el-input
               v-model="formData.noticeContent"
               maxlength="1000"
+              rows="2"
+              resize="none"
               type="textarea"
               :placeholder="
                 formData.noticeType == '1'
                   ? '这里请输入你想说的内容~'
                   : '请详细描述您的问题'
               "
+              class="tl-textarea"
             ></el-input
           ></el-form-item>
         </el-form>
+      </div>
+      <el-button type="primary" @click="sendMessage" class="tl-btn amt-bg-slip">
+        <i class="el-icon-position"></i><em>发送内容</em>
+      </el-button>
+    </div>
+    <!-- <el-dialog
+      :modal="false"
+      :append-to-body="true"
+      :close-on-click-modal="false"
+      :before-close="close"
+      @closed="closed"
+      :visible="showDialog"
+      custom-class="assistant-dialog"
+      class="tl-dialog"
+      :class="{ 'is-show': showDialog }"
+    >
+      <div>Hello {{ userInfo.userName }}</div>
+      <div>您可以在这给你的同事发送提醒或任务哦~</div>
+      <el-form ref="asistant" :model="formData" label-width="80px">
+        <el-form-item
+          label="发送类型"
+          prop="noticeType"
+          :rules="[{ required: true }]"
+        >
+          <el-select v-model.trim="formData.noticeType" @change="typeChange">
+            <el-option
+              v-for="type in typeList"
+              :key="type.noticeType"
+              :label="type.name"
+              :value="type.noticeType"
+            ></el-option> </el-select
+        ></el-form-item>
+        <el-form-item
+          label="发送对象"
+          prop="userId"
+          :rules="[
+            { required: true, message: '请选择发送对象', trigger: 'blur' },
+          ]"
+        >
+          <el-select
+            v-model.trim="formData.userId"
+            filterable
+            placeholder="请输入成员姓名"
+            remote
+            :remote-method="remoteMethod"
+            @visible-change="visibleChange"
+            clearable
+            @change="userChange"
+            popper-class="tl-select-dropdown set-manage"
+            class="tl-select"
+          >
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userId"
+            >
+              <dl>
+                <dd>
+                  <em>{{ item.userName }}</em>
+                  <em>{{ `(${item.userAccount})` }}</em>
+                </dd>
+              </dl>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="任务标题"
+          prop="taskTitle"
+          :rules="[
+            { required: true, message: '请填写任务标题', trigger: 'blur' },
+          ]"
+          v-if="formData.noticeType == 2"
+        >
+          <el-input maxlength="50" v-model.trim="formData.taskTitle"></el-input
+        ></el-form-item>
+        <el-form-item v-if="formData.noticeType == 3">
+          <el-radio v-model="formData.callbackType" label="1"
+            >遇到问题</el-radio
+          >
+          <el-radio v-model="formData.callbackType" label="2"
+            >使用建议</el-radio
+          >
+        </el-form-item>
+        <el-form-item label="选择模块" v-if="formData.noticeType == 3">
+          <el-button @click="selectModule('1')">OKR</el-button>
+          <el-button @click="selectModule('2')">周报</el-button>
+          <el-button @click="selectModule('3')">系统管理</el-button>
+        </el-form-item>
+        <el-form-item
+          label="内容"
+          prop="noticeContent"
+          :rules="[{ required: true, message: '请填写内容', trigger: 'blur' }]"
+          v-if="formData.noticeType == '1' || formData.noticeType == '3'"
+          ><el-input
+            v-model="formData.noticeContent"
+            maxlength="1000"
+            type="textarea"
+            :placeholder="
+              formData.noticeType == '1'
+                ? '这里请输入你想说的内容~'
+                : '请详细描述您的问题'
+            "
+          ></el-input
+        ></el-form-item>
+      </el-form>
 
-        <div>
-          <el-button @click="sendMessage">
-            <i class="el-icon-position"></i> 发送
-          </el-button>
-        </div> -->
-      </el-dialog>
-    </template>
+      <div>
+        <el-button @click="sendMessage">
+          <i class="el-icon-position"></i> 发送
+        </el-button>
+      </div>
+    </el-dialog> -->
   </div>
 </template>
 

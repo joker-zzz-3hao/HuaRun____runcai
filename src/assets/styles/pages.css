@@ -3651,6 +3651,20 @@
   background: #f4f6f8;
 }
 
+.project-description > dl dt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project-description > dl dt em {
+  margin: 0 10px 0 0;
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #26282b;
+}
+
 /* =========================================================租户管理================================================================== */
 /* 部门管理 */
 .organize-management .operating-area .operating-box {

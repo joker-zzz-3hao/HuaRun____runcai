@@ -151,4 +151,14 @@ export default class Server extends ServerBase {
   checkUserInProcess(param) {
     return this._ajaxPost('gateway/task-service/task/checkUserInProcess', param);
   }
+
+  // 校验分类是否有任务
+  deleteCheck(param) {
+    return this._ajaxPost(`gateway/task-service/taskProcessType/deleteCheck?typeId=${param.typeId}`);
+  }
+
+  // 删除分类
+  deleteProcess(param) {
+    return this._ajaxPost(`gateway/task-service/taskProcessType/delete?typeId=${param.typeId}`);
+  }
 }
