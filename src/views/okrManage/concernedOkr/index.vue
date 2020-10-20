@@ -38,7 +38,7 @@
                   <i class="el-icon-more el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="cancelFocus(item)"
+                  <el-dropdown-item @click.native="cancelFocus(item, false)"
                     >取消关注</el-dropdown-item
                   >
                 </el-dropdown-menu>
@@ -56,7 +56,7 @@
           <div class="card-panel-head">
             <div class="okr-title">{{ item.okrMain.periodName }}</div>
             <dl class="okr-follow">
-              <dd @click="cancelFocus(item)">取消关注</dd>
+              <dd @click="cancelFocus(item, true)">取消关注</dd>
             </dl>
             <dl class="okr-progress">
               <dt>
@@ -325,13 +325,21 @@ export default {
         });
       }
     },
-    cancelFocus(data) {
+    cancelFocus(data, flag) {
       this.param = [];
-      this.param.push({
-        focusType: 0,
-        targetId: data.okrMain.okrId,
-        supported: 0,
-      });
+      if (flag) {
+        this.param.push({
+          focusType: 0,
+          targetId: data.okrMain.okrId,
+          supported: 0,
+        });
+      } else {
+        this.param.push({
+          focusType: 0,
+          userId: data.userId,
+          supported: 0,
+        });
+      }
       this.server.addFocus(
         this.param,
       ).then((res) => {
