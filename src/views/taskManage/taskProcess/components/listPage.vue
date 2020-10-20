@@ -107,12 +107,17 @@
               label="操作"
             >
               <template slot-scope="scope">
-                <el-button class="tl-btn" @click="openEdit(scope.row)"
+                <el-button
+                  plain
+                  class="tl-btn amt-border-fadeout"
+                  @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
                 <el-dropdown class="tl-dropdown">
                   <div class="el-dropdown-link">
-                    <el-button class="tl-btn">移动</el-button>
+                    <el-button plain class="tl-btn amt-border-fadeout"
+                      >移动</el-button
+                    >
                   </div>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item

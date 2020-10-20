@@ -1,14 +1,7 @@
 <template>
   <div class="task-sum">
-    <div>
-      <span>当前任务汇报时间：</span>
-      <em>{{ weekName }}</em>
-      <em>{{ weekBegin }}</em>
-      <span>~</span>
-      <em>{{ weekEnd }}</em>
-    </div>
     <!-- 我负责的 -->
-    <el-table :data="owntableData" class="tl-table">
+    <el-table :data="owntableData" class="tl-table" v-loading="loading">
       <el-table-column
         min-width="100px"
         align="left"
@@ -56,7 +49,7 @@
       </el-table-column>
     </el-table>
     <!-- 我指派的 -->
-    <el-table :data="assigntableData" class="tl-table">
+    <el-table :data="assigntableData" class="tl-table" v-loading="loading">
       <el-table-column
         min-width="100px"
         align="left"
@@ -136,10 +129,13 @@ export default {
       weekBegin: '',
       weekEnd: '',
       weekName: '',
+      loading: false,
     };
   },
+  props: {
+
+  },
   created() {
-    this.getWeek();
   },
   computed: {
     ...mapState('common', {
@@ -147,32 +143,17 @@ export default {
     }),
   },
   methods: {
-    getWeek() {
-      this.server.getCalendar({ date: this.monthDate }).then((res) => {
-        if (res.code == 200) {
-          this.weekList = res.data;
-          const current = new Date();
-          this.weekList.forEach((item, index) => {
-            // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
-            let beg = new Date(item.weekBegin);
-            let end = new Date(item.weekEnd);
-            beg = beg.setHours(beg.getHours() - 8);
-            end = end.setHours(end.getHours() + 16);
-            if (current >= beg && current <= end) {
-              this.weekBegin = item.weekBegin;
-              this.weekEnd = item.weekEnd;
-              this.weekName = `${this.dateFormat('mm', new Date())}月第${index + 1}周`;
-              this.getTableList();
-            }
-          });
-        }
-      });
+    show(weekBegin, weekEnd) {
+      this.weekBegin = weekBegin;
+      this.weekEnd = weekEnd;
+      this.getTableList();
     },
     getTableList() {
       const params = {
         weekBegin: this.weekBegin,
         weekEnd: this.weekEnd,
       };
+      this.loading = true;
       this.server.selectTaskForWeek(params).then((res) => {
         if (res.code == 200) {
           this.tableData = res.data || [];
@@ -187,6 +168,7 @@ export default {
             }
           });
         }
+        this.loading = false;
       });
     },
     computedTime(row) {
