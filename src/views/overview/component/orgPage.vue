@@ -203,7 +203,7 @@ export default {
         periodId: this.periodId,
         status: this.searchForm.status,
         myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
-        userId: this.$route.name !== 'grassStaff' ? this.$route.query.userId : '',
+        userId: this.$route.name == 'grassStaff' ? this.$route.query.userId : '',
         tenantId: this.$route.query.tenantId,
         orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         type: 'INDEX',
