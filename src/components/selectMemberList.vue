@@ -81,7 +81,7 @@
                   {{ checkName(item.userName) }}
                 </div>
               </div>
-              <em>{{ item.userName }}</em>
+              <em>{{ item.userName }}({{ item.userAccount }})</em>
               <i
                 class="el-icon-close"
                 @click="deleteMember(index, item.userId)"
@@ -136,6 +136,7 @@ export default {
           this.roulelist.push({
             userName: item.userName,
             userId: item.userId,
+            userAccount: item.userAccount,
             roleId: this.$route.query.roleId,
             orgId: item.parentId,
           });
@@ -181,6 +182,7 @@ export default {
         this.roulelist.push({
           userName: data.name,
           userId: data.id,
+          userAccount: data.userAccount,
           roleId: this.$route.query.roleId,
           orgId: data.parentId,
         });
@@ -207,6 +209,7 @@ export default {
           userName: data.name,
           userId: data.id,
           roleId: this.$route.query.roleId,
+          userAccount: data.userAccount,
           orgId: this.rouleType ? data.orgId : data.parentId,
         }];
       } else {
