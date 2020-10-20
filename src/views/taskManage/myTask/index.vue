@@ -5,6 +5,17 @@
         <em v-show="showTask">我的任务</em>
         <em v-show="!showTask">任务汇总</em>
       </div>
+      <!-- 任务汇总提示 -->
+      <div v-show="!showTask">
+        <div>
+          <span>当前任务汇报时间：</span>
+          <em>{{ weekName }}</em>
+          <em>{{ weekBegin }}</em>
+          <span>~</span>
+          <em>{{ weekEnd }}</em>
+        </div>
+        <em>温馨提示：仅统计当前周时间段内的所有工作任务</em>
+      </div>
       <div class="operating-box">
         <el-button
           type="primary"
@@ -387,7 +398,11 @@
           </el-table>
         </div>
       </tl-crcloud-table>
-      <tl-tasksum v-show="!showTask" ref="tasksum"></tl-tasksum>
+      <tl-tasksum
+        v-if="!showTask"
+        :exist.sync="showTask"
+        ref="tasksum"
+      ></tl-tasksum>
     </div>
     <tl-assignment
       ref="assignment"
@@ -476,12 +491,17 @@ export default {
       userMap: {},
       keyword: '',
       psList: '',
+      weekList: [],
+      weekBegin: '',
+      weekEnd: '',
+      weekName: '',
     };
   },
   created() {
     this.getTableList();
     this.getProcess();
     this.getUserList();
+    this.getWeek();
     if (this.$route.query && this.$route.query.openCreate) {
       this.goCreateTask();
     }
@@ -519,7 +539,7 @@ export default {
       this.showTask = !this.showTask;
       this.$nextTick(() => {
         if (this.showTask == false) {
-          this.$refs.tasksum.getWeek();
+          this.$refs.tasksum.show(this.weekBegin, this.weekEnd);
         }
       });
     },
@@ -798,13 +818,38 @@ export default {
         }
       }
     },
+    // 切换确认筛选
     changeAccept(isAccept) {
       this.accept = isAccept;
       this.getTableList();
     },
+    // 清除确认筛选
     clearaccept() {
       this.accept = null;
       this.getTableList();
+    },
+    // 任务汇总事件统计
+    getWeek() {
+      this.server.getCalendar({ date: this.monthDate }).then((res) => {
+        if (res.code == 200) {
+          this.weekList = res.data;
+          const current = new Date();
+          this.weekList.forEach((item, index) => {
+            // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
+            let beg = new Date(item.weekBegin);
+            let end = new Date(item.weekEnd);
+            beg = beg.setHours(beg.getHours() - 8);
+            end = end.setHours(end.getHours() + 16);
+            if (current >= beg && current <= end) {
+              this.weekBegin = item.weekBegin;
+              this.weekEnd = item.weekEnd;
+              this.weekName = `${this.dateFormat('mm', new Date())}月第${index + 1}周`;
+              // go
+              // this.getTableList();
+            }
+          });
+        }
+      });
     },
   },
   watch: {
