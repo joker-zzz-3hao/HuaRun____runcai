@@ -48,12 +48,12 @@
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
                   <div class="user-name" v-else>{{ checkName(item.name) }}</div>
                 </div>
-                <el-tooltip
+                <!-- <el-tooltip
                   :content="'LDAP账号：' + item.userAccount"
                   placement="top"
-                >
-                  <em>{{ item.name }}</em>
-                </el-tooltip>
+                > -->
+                <em>{{ item.name }}({{ item.userAccount }})</em>
+                <!-- </el-tooltip> -->
               </el-checkbox>
               <div v-else class="flex-sb">
                 <em>{{ item.name }}</em>
@@ -245,6 +245,7 @@ export default {
           name: item.userName,
           orgId: item.orgId,
           parentId: item.orgId,
+          userAccount: item.userAccount,
           type: 'USER',
         }));
       });
