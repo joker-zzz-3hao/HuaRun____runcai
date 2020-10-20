@@ -3697,11 +3697,20 @@
 
 .project-description > dl dd span {
   color: #879099;
+  transition: all .4s ease-out;
 }
 
 .project-description > dl dd span,
 .project-description > dl dd .toggle-state {
   align-self: start;
+}
+
+.project-description > dl dd .toggle-state span {
+  cursor: pointer;
+}
+
+.project-description > dl dd .toggle-state:hover span {
+  color: #685df1;
 }
 
 .project-description > dl dd p {

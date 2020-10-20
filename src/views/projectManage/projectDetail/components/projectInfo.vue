@@ -44,8 +44,64 @@
       </dl>
       <div class="dl-list">
         <dl class="dl-item">
-          <dt></dt>
-          <dd></dd>
+          <dt><span>项目经理</span></dt>
+          <dd>
+            <div class="user-info">
+              <img
+                v-if="baseInfo.projectUserVoList[0].headUrl"
+                :src="baseInfo.projectUserVoList[0].headUrl"
+                alt
+              />
+              <div
+                v-else-if="baseInfo.projectUserVoList[0].userName"
+                class="user-name"
+              >
+                <em>{{
+                  baseInfo.projectUserVoList[0].userName.substring(
+                    baseInfo.projectUserVoList[0].userName.userName.length - 2
+                  )
+                }}</em>
+              </div>
+            </div>
+            <div class="user-name-txt">
+              <em>{{ baseInfo.projectManager }}</em>
+            </div>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目所属部门</span></dt>
+          <dd>
+            <em>{{ baseInfo.projectApplyDepName || "--" }}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目总预算</span></dt>
+          <dd>
+            <em>{{ baseInfo.projectBudget || "0" }}</em
+            ><span>元</span
+            ><span
+              >({{
+                CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"
+              }})</span
+            >
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>投入类型</span></dt>
+          <dd>
+            <em>{{
+              CONST.THROW_TYPE_MAP[baseInfo.projectInputType] || "--"
+            }}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目类型</span></dt>
+          <dd>
+            <em>{{ CONST.PROJECT_TYPE_MAP[baseInfo.projectType] || "--" }}</em
+            ><span v-if="baseInfo.projectSourceSystem">{{
+              baseInfo.projectSourceSystem
+            }}</span>
+          </dd>
         </dl>
       </div>
       <!-- <div>
