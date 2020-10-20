@@ -68,8 +68,6 @@
                   filterable
                   popper-class="tl-select-dropdown set-manage"
                   class="tl-select"
-                  remote
-                  :remote-method="getUserList"
                 >
                   <el-option
                     v-for="item in userList"
@@ -255,12 +253,12 @@
                 ></el-input>
               </el-form-item>
               <el-form-item label="附件">
-                <ul>
+                <ul v-if="canEdit">
                   <li v-if="formData.attachmentList.length == 0 && canEdit">
                     暂无文件
                   </li>
                   <li
-                    v-for="(file, index) in formData.attachmentList"
+                    v-for="file in formData.attachmentList"
                     :key="file.resourceId"
                   >
                     <i class="el-icon-document"></i>
@@ -271,14 +269,15 @@
                       @click="openFile(file)"
                       >预览</span
                     >
-                    <span @click="deleteFile(index, file)">删除</span>
+                    <!-- <span @click="deleteFile(index, file)">删除</span> -->
                   </li>
                 </ul>
                 <file-upload
                   v-if="!canEdit"
                   ref="fileUpload"
-                  :fileList="formData.fileList"
+                  :fileList="fileList"
                   :limit="10"
+                  :taskId="this.formData.taskId"
                   @change="fileChange"
                 ></file-upload>
               </el-form-item>
@@ -397,13 +396,6 @@
         >取消</el-button
       >
     </div>
-    <tl-selectproject
-      ref="selectProject"
-      :showProjectDialog.sync="showProjectDialog"
-      v-if="showProjectDialog"
-      :server="server"
-      @closeProjectDia="closeProjectDia"
-    ></tl-selectproject>
     <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </el-drawer>
 </template>
@@ -415,7 +407,6 @@ import process from '@/components/process';
 import tabs from '@/components/tabs';
 import imgDialog from '@/components/imgDialog';
 import levelblock from '@/components/levelblock';
-import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
 
@@ -424,7 +415,6 @@ const server = new Server();
 export default {
   name: 'editTask',
   components: {
-    'tl-selectproject': selectProject,
     'tl-process': process,
     'tl-tabs': tabs,
     'file-upload': fileUpload,
@@ -455,9 +445,7 @@ export default {
       historyallList: [],
       historyList: [],
       updateList: [],
-      fileList: [],
       visible: false,
-      showProjectDialog: false,
       canEdit: true, // 是否能编辑
       loading: false,
       // tab
@@ -469,6 +457,7 @@ export default {
         menuName: '进度更新说明',
       }],
       // 文件
+      fileList: [],
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
       images_map: {
         jpg: true,
@@ -522,6 +511,7 @@ export default {
           if (res.code == 200 && res.data) {
             this.formData = res.data;
             this.taskUserId = this.formData.taskUserId;
+            this.fileList = this.formData.attachmentList;
             if (res.data.taskBegDate) {
               this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(res.data.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(res.data.taskEndDate))];
             }
@@ -595,16 +585,10 @@ export default {
       });
     },
     // 查询执行人
-    getUserList(name = '') {
-      const params = {
-        currentPage: 1,
-        pageSize: 20,
-        orgFullId: this.userInfo.orgList[0].orgFullId,
-        userName: name.trim(),
-      };
-      this.server.getUserListByOrgId(params).then((res) => {
+    getUserList() {
+      this.server.listOrgUserPage({ orgFullId: this.userInfo.orgList[0].orgFullId }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data;
         }
       });
     },
@@ -656,20 +640,6 @@ export default {
       } else {
         this.formData.timeSum = '当前已用时长 0天 0小时 0分';
       }
-    },
-    // 选择项目
-    projectInputFocus() {
-      this.showProjectDialog = true;
-      this.$nextTick(() => {
-        this.$refs.selectProject.show();
-      });
-    },
-    closeProjectDia(data) {
-      this.formData.projectVal = data.project;
-      this.formData.projectName = data.project.projectNameCn;
-    },
-    errorHandler() {
-      return true;
     },
     // --------文件---------
     fileChange(data) {
@@ -735,9 +705,7 @@ export default {
               this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
               this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
-            if (this.fileList.length > 0) {
-              this.formData.attachmentList.push(...this.fileList);
-            }
+            this.formData.attachmentList = this.fileList;
             this.loading = true;
             this.server.saveTask(this.formData).then((res) => {
               if (res.code == 200) {
@@ -837,9 +805,7 @@ export default {
               this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
               this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
-            if (this.fileList.length > 0) {
-              this.formData.attachmentList.push(...this.fileList);
-            }
+            this.formData.attachmentList = this.fileList;
             this.loading = true;
             this.server.appointSave(this.formData).then((res) => {
               if (res.code == 200) {

@@ -34,6 +34,7 @@
         </div>
         <div class="operating-right">
           <el-button
+            v-if="hasPower('sys_department_add')"
             type="primary"
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
@@ -41,6 +42,7 @@
             >创建部门</el-button
           >
           <el-button
+            v-if="hasPower('tenant-user-add')"
             type="primary"
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
@@ -48,6 +50,7 @@
             >创建用户</el-button
           >
           <el-button
+            v-if="hasPower('sys_department_import')"
             plain
             icon="el-icon-minus"
             class="tl-btn amt-border-slip"
@@ -88,13 +91,19 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data, 'create')"
+                <el-dropdown-item
+                  v-if="hasPower('sys_department_add')"
+                  @click.native="createDepart(data, 'create')"
                   >创建部门</el-dropdown-item
                 >
-                <el-dropdown-item @click.native="createDepart(data, 'edit')"
+                <el-dropdown-item
+                  v-if="hasPower('sys_department_edit')"
+                  @click.native="createDepart(data, 'edit')"
                   >编辑部门</el-dropdown-item
                 >
-                <el-dropdown-item @click.native="deleteDepart(data)"
+                <el-dropdown-item
+                  v-if="hasPower('sys_department_edit')"
+                  @click.native="deleteDepart(data)"
                   >删除</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -151,6 +160,7 @@
                 <div v-if="scope.row.userType == '1'">--</div>
                 <div v-else @click.capture.stop="dataChange(scope.row)">
                   <el-switch
+                    :disabled="!hasPower('TNT_ORG_EDIT')"
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
@@ -199,7 +209,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType == '2'"
+                  v-if="scope.row.userType == '2' && hasPower('TNT_ORG_EDIT')"
                   @click="createOrEditUser(scope.row)"
                   class="tl-btn"
                   >编辑</el-button
@@ -517,6 +527,9 @@ export default {
 
     },
     dataChange(user) {
+      if (!this.hasPower('TNT_ORG_EDIT')) {
+        return;
+      }
       // this.$confirm('确认更改用户状态？').then(() => {
       this.changeStatus(user);
       // });

@@ -274,7 +274,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType == '2'"
+                  v-if="scope.row.userType == '2' && hasPower('TNT_ORG_EDIT')"
                   @click="editUser(scope.row)"
                   class="tl-btn"
                   >编辑</el-button
@@ -613,11 +613,12 @@ export default {
 
     },
     dataChange(user) {
-      if (this.hasPower('TNT_ORG_EDIT')) {
-        // this.$confirm('确认更改用户状态？').then(() => {
-        this.changeStatus(user);
-        // });
+      if (!this.hasPower('TNT_ORG_EDIT')) {
+        return;
       }
+      // this.$confirm('确认更改用户状态？').then(() => {
+      this.changeStatus(user);
+      // });
     },
     changeStatus(user) {
       const params = {

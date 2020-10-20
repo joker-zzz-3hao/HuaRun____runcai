@@ -15,6 +15,7 @@
       :on-success="imgUploadSuccess"
       :on-remove="removeImg"
       :on-exceed="handleExceed"
+      :taskId="taskId"
     >
       <div slot="tip" class="el-upload__tip">{{ tips }}</div>
       <el-button
@@ -91,6 +92,10 @@ export default {
       },
     },
     userId: {
+      type: String,
+      default: '',
+    },
+    taskId: {
       type: String,
       default: '',
     },
@@ -221,7 +226,7 @@ export default {
       this.triggerChangeByFileList(fileList);
     },
     handleExceed() {
-      this.$message.error(`最多上传${this.limit}个文件！`);
+      this.$message.error('最多上传10个文件！');
     },
     clearFiles() {
       this.$refs.uploadFile.clearFiles();

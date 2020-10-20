@@ -3651,11 +3651,21 @@
   background: #f4f6f8;
 }
 
+.project-description > dl {
+  padding: 0 0 16px 0;
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.2em,#f4f6f8 0,#f4f6f8 0.4em);
+}
+
 .project-description > dl dt,
 .project-description > dl dd {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.project-description > dl dd {
+  margin: 10px 0 0 0;
 }
 
 .project-description > dl dt em {
@@ -3664,6 +3674,16 @@
   font-size: 16px;
   font-weight: 500;
   color: #26282b;
+}
+
+.project-description > dl dd .fold em {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 .project-description > dl .el-dropdown {
@@ -3677,10 +3697,25 @@
 
 .project-description > dl dd span {
   color: #879099;
+  transition: all .4s ease-out;
 }
 
-.project-description > dl dd em {
+.project-description > dl dd span,
+.project-description > dl dd .toggle-state {
+  align-self: start;
+}
+
+.project-description > dl dd .toggle-state span {
+  cursor: pointer;
+}
+
+.project-description > dl dd .toggle-state:hover span {
+  color: #685df1;
+}
+
+.project-description > dl dd p {
   margin: 0 10px 0 4px;
+  display: flex;
   flex: 1;
   color: #879099;
 }

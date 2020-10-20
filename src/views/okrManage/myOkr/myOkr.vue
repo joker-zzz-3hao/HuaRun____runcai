@@ -54,7 +54,11 @@
                 ></el-progress>
               </dd>
             </dl>
-            <dl v-if="['1', 1, '6', 6, '8', 8].includes(item.okrMain.status)">
+            <dl
+              v-if="
+                ['1', 1, '6', 6, '8', 8, 3, '3'].includes(item.okrMain.status)
+              "
+            >
               <dt>
                 <el-dropdown trigger="click">
                   <span class="el-dropdown-link">
@@ -62,7 +66,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      v-if="['1', 1].includes(item.okrMain.status)"
+                      v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
                       @click.native="goChangeOkr(item)"
                     >
                       <!-- <i class="el-icon-edit-outline"></i> -->
@@ -154,7 +158,7 @@
               <!-- o的进度更新 -->
               <template slot="weight-bar" slot-scope="props">
                 <div
-                  v-if="item.okrMain.status == '1'"
+                  v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
                   @click="openUpdate(props.okritem)"
                 >
                   <el-button plain class="tl-btn btn-lineheight"
