@@ -169,8 +169,8 @@ export default {
       this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
     },
     addDefic(index) {
-      if (!this.okrMain.okrReviewPojoList[index].o.measure) {
-        this.okrMain.okrReviewPojoList[index].o.measure = [];
+      if (this.okrMain.okrReviewPojoList[index].o.measure.length == 0) {
+        this.okrMain.okrReviewPojoList[index].o.measure = [''];
       }
       this.okrMain.okrReviewPojoList[index].o.measure.push('');
     },
