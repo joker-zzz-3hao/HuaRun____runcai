@@ -63,8 +63,15 @@
             </el-input>
           </el-form-item>
         </el-form>
-        <el-button plain class="tl-btn" @click="searchList">查询</el-button>
         <el-button
+          v-if="hasPower('sys-tenant-user-list')"
+          plain
+          class="tl-btn"
+          @click="searchList"
+          >查询</el-button
+        >
+        <el-button
+          v-if="hasPower('sys_user_add')"
           @click="createOrEditUser"
           type="primary"
           icon="el-icon-plus"
@@ -72,6 +79,7 @@
           >创建用户</el-button
         >
         <el-button
+          v-if="hasPower('sys_user_batch_import')"
           plain
           icon="el-icon-minus"
           class="tl-btn amt-border-slip"
@@ -128,7 +136,15 @@
             ></el-table-column>
             <el-table-column min-width="100px" align="left" label="租户管理员">
               <template slot-scope="scope">
-                <div style="cursor: pointer" @click="setLeader(scope.row)">
+                <div
+                  style="cursor: pointer"
+                  @click="
+                    hasPower('set-depart-leader') &&
+                    hasPower('cancel-depart-leader')
+                      ? setLeader(scope.row)
+                      : ''
+                  "
+                >
                   <el-tooltip
                     class="item"
                     effect="dark"
@@ -162,6 +178,7 @@
                     active-value="0"
                     inactive-value="50"
                     v-model="scope.row.userStatus"
+                    :disabled="!hasPower('sys_user_edit')"
                   ></el-switch>
                 </div>
               </template>
@@ -203,7 +220,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType == '2'"
+                  v-if="scope.row.userType == '2' && hasPower('sys_user_edit')"
                   @click="createOrEditUser(scope.row)"
                   >编辑</el-button
                 >
@@ -312,14 +329,16 @@ export default {
         pageSize: this.pageSize,
         ...this.searchForm,
       };
-      this.server.getUserList(params).then((res) => {
-        if (res.code == 200) {
-          this.total = res.data.total;
-          this.currentPage = res.data.currentPage;
-          this.pageSize = res.data.pageSize;
-          this.tableData = res.data.content;
-        }
-      });
+      if (this.hasPower('sys-tenant-user-list')) {
+        this.server.getUserList(params).then((res) => {
+          if (res.code == 200) {
+            this.total = res.data.total;
+            this.currentPage = res.data.currentPage;
+            this.pageSize = res.data.pageSize;
+            this.tableData = res.data.content;
+          }
+        });
+      }
     },
     getOrg() {
       this.server.getOrg({ tenantId: this.searchForm.tenantId }).then((res) => {
@@ -354,6 +373,9 @@ export default {
 
     },
     dataChange(user) {
+      if (!this.hasPower('sys_user_edit')) {
+        return;
+      }
       // this.$confirm('确认更改用户状态？').then(() => {
       this.changeStatus(user);
       // });
