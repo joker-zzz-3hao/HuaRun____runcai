@@ -32,7 +32,7 @@
           >
             <em>{{ `${baseInfo.projectDescription || "--"}` }}</em>
           </p>
-          <div class="toggle-state" v-if="emHeight > 20">
+          <div class="toggle-state">
             <span @click="openFlag = !openFlag">{{
               openFlag ? "收起" : "展开"
             }}</span
