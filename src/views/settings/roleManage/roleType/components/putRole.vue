@@ -32,6 +32,8 @@
           class="tl-input"
         ></el-input>
       </el-form-item>
+      <el-button @click="selectAllfun(true)" type="text">全选</el-button>
+      <el-button @click="selectAllfun(false)" type="text">清空</el-button>
       <el-form-item label="菜单权限">
         <div class="menuTreeList">
           <div class="list" v-for="(item, index) in menuTreeList" :key="index">
@@ -135,6 +137,13 @@ export default {
     this.getqueryMenu();
   },
   methods: {
+    selectAllfun(node) {
+      if (node) {
+        this.$refs.treeMenu.setCheckedNodes(this.data);
+      } else {
+        this.$refs.treeMenu.setCheckedNodes([]);
+      }
+    },
     handleCheckChange() {
       this.list = this.$refs.treeMenu.getCheckedKeys();
     },
