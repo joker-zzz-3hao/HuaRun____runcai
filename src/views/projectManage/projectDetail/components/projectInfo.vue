@@ -108,12 +108,7 @@
         </div>
       </div> -->
       <div>
-        <tl-crcloud-table
-          :total="total"
-          :currentPage.sync="currentPage"
-          :pageSize.sync="pageSize"
-          @searchList="searchProject"
-        >
+        <tl-crcloud-table :isPage="false">
           <div slot="tableContainer" class="table-container">
             <el-table :data="baseInfo.projectUserVoList" class="tl-table">
               <el-table-column prop="userName" label="姓名" min-width="140">
@@ -132,16 +127,9 @@
                       }}</em>
                     </div>
                   </div>
-                  <div class="user-name-txt" @click="setManager(scope.row)">
+                  <div class="user-name-txt">
                     <em>{{ scope.row.userName }}</em>
                   </div>
-                  <template>
-                    <span
-                      v-if="scope.row.projectUserType == '1'"
-                      @click="setManager(scope.row)"
-                      >(项目经理)</span
-                    >
-                  </template>
                 </template>
               </el-table-column>
               <el-table-column
@@ -154,7 +142,10 @@
                     <i class="el-icon-medal"></i>
                     <span>项目经理</span>
                   </div>
-                  <div v-else-if="scope.row.projectUserType == '0'">
+                  <div
+                    v-else-if="scope.row.projectUserType == '0'"
+                    @click="setManager(scope.row)"
+                  >
                     <i class="el-icon-medal"></i>
                     <span>设置项目经理</span>
                   </div>
@@ -230,7 +221,7 @@ export default {
       openFlag: false,
       codes: [],
       emHeight: '',
-      isTxtShow: false,
+      emWidth: '',
     };
   },
   components: {
@@ -368,7 +359,9 @@ export default {
         console.log(val);
         this.$nextTick(() => {
           this.emHeight = document.getElementById('projectDesc').clientHeight;
+          this.emWidth = document.getElementById('projectDesc').clientWidth;
           console.log(this.emHeight);
+          console.log(this.emWidth);
         });
       },
 

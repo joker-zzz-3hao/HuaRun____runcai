@@ -59,7 +59,11 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+      <el-button
+        type="primary"
+        @click="submitForm"
+        class="tl-btn amt-bg-slip"
+        :loading="btnLoad"
         >确定</el-button
       >
       <el-button plain @click="close" class="tl-btn amt-border-fadeout"
@@ -95,6 +99,7 @@ export default {
       labelPosition: 'left',
       menuTreeList: [],
       selectArr: [],
+      btnLoad: false,
       list: [],
       showMenu: false,
       form: {
@@ -155,7 +160,9 @@ export default {
       const { form } = this;
       this.form.functionList = this.list.map((item) => ({ functionId: item }));
       form.roleType = 'CREATION';
+      this.btnLoad = true;
       this.server.addRole(form).then((res) => {
+        this.btnLoad = false;
         if (res.code == 200) {
           this.$emit('getSearchList');
           this.$message.success(res.msg);

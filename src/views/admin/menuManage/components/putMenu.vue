@@ -95,7 +95,9 @@
       </el-form-item>-->
     </el-form>
     <div>
-      <el-button type="primary" @click="validateForm">确定</el-button>
+      <el-button type="primary" @click="validateForm" :loading="btnLoad"
+        >确定</el-button
+      >
       <el-button @click="close">取 消</el-button>
     </div>
   </el-drawer>
@@ -130,6 +132,7 @@ export default {
     return {
       server,
       labelPosition: 'left',
+      btnLoad: false,
       showOption: false,
       form: {
         functionType: 'PAGE',
@@ -194,7 +197,9 @@ export default {
         form.classTag = '';
         form.functionEvent = '';
       }
+      this.btnLoad = true;
       this.server.addOrUpdate(form).then((res) => {
+        this.btnLoad = false;
         if (res.code == 200) {
           this.$message.success(res.msg);
           this.$emit('getMenuList');

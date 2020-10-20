@@ -11,7 +11,13 @@
     class="tl-drawer tl-drawer-tenant-edit"
   >
     <div class="modelCreate">
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="110px"
+        class="tl-form"
+      >
         <el-form-item label="租户名称" prop="tenantName">
           <span>{{ form.tenantName }}</span>
         </el-form-item>
@@ -31,7 +37,7 @@
             v-model="form.mobilePhone"
             placeholder="请输入联系电话"
             class="tl-input input-width"
-            maxlength="11"
+            maxlength="13"
           ></el-input>
         </el-form-item>
         <el-form-item label="开放菜单功能">
@@ -58,6 +64,7 @@
       <el-button
         type="primary"
         @click="validateForm('form')"
+        :loading="btnLoad"
         class="tl-btn amt-bg-slip"
         >确定</el-button
       >
@@ -96,6 +103,7 @@ export default {
       server,
       visible: false,
       showMenu: false,
+      btnLoad: false,
       selectArr: [],
       menuTreeList: [],
       form: {
@@ -133,7 +141,16 @@ export default {
         mobilePhone: [
           {
             required: true,
-            message: '请输入联系电话',
+            validator: (rule, value, callback) => {
+              if (!value) {
+                callback('请输入手机号');
+              } else if (!(/^[1][3456789][0-9]{9}$/
+                .test(value) || /^[0][1-9]{2,3}-[0-9]{5,10}$/.test(value))) {
+                callback('请输入11位正确手机号或联系电话 示例:0596-12345678');
+              } else {
+                callback();
+              }
+            },
             trigger: 'blur',
           },
         ],
@@ -195,6 +212,7 @@ export default {
     },
     // 提交编辑数据
     pudateForm() {
+      this.btnLoad = true;
       this.form.menuTree = this.list.map((item) => ({ functionId: item }));
       this.server.updateTenant({
         tenantName: this.form.tenantName,
@@ -207,6 +225,7 @@ export default {
         menuTree: this.form.menuTree,
       })
         .then((res) => {
+          this.btnLoad = false;
           if (res.code == 200) {
             this.$emit('getTenantList');
             this.$message.success(res.msg);
