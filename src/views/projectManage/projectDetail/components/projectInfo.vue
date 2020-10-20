@@ -24,15 +24,19 @@
           </el-dropdown>
         </dt>
         <dd>
-          <span>项目描述:</span
-          ><em
+          <span>项目描述:</span>
+          <p
             ref="projectDesc"
             id="projectDesc"
             :class="openFlag ? 'unfold' : 'fold'"
-            >{{ `${baseInfo.projectDescription || "--"}` }}</em
           >
+            <em>{{ `${baseInfo.projectDescription || "--"}` }}</em>
+          </p>
           <div class="toggle-state" v-if="emHeight > 20">
-            <span @click="openFlag = !openFlag">展开</span><i></i>
+            <span @click="openFlag = !openFlag">{{
+              openFlag ? "收起" : "展开"
+            }}</span
+            ><i></i>
           </div>
         </dd>
       </dl>
@@ -226,6 +230,7 @@ export default {
       openFlag: false,
       codes: [],
       emHeight: '',
+      isTxtShow: false,
     };
   },
   components: {
