@@ -171,6 +171,7 @@ export default {
     ...mapState('common', {
       setOrgId: (state) => state.setOrgId,
       testModel: (state) => state.testModel,
+      userInfo: (state) => state.userInfo,
     }),
     expands() {
       return [this.tableList[0].okrDetailId];
@@ -277,6 +278,10 @@ export default {
     // 认证身份跳转对应身份首页
     getidentity(user) {
       if (this.testModel) {
+        return false;
+      }
+      if (this.userInfo.userId == user.userId) {
+        this.$message.success('此为当前团队负责人');
         return false;
       }
       if (this.$route.query.userId == user.userId) {
