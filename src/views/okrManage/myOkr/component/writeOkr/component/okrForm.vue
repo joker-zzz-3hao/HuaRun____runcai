@@ -404,6 +404,7 @@ export default {
       reason: {},
       visibleQuota: false, // 考核的弹窗
       loading: false,
+      activeList: [0],
     };
   },
   props: {
@@ -424,11 +425,11 @@ export default {
     },
   },
   computed: {
-    activeList() {
-      const activeLength = this.formData.okrInfoList.length;
-      console.log([...new Array(activeLength).keys()]);
-      return [...new Array(activeLength).keys()];
-    },
+    // activeList() {
+    //   const activeLength = this.formData.okrInfoList.length;
+    //   console.log([...new Array(activeLength).keys()]);
+    //   return [...new Array(activeLength).keys()];
+    // },
 
   },
   mounted() {
@@ -521,6 +522,11 @@ export default {
         }],
         undertakeOkrVo: {},
       });
+      // 自动打开新增加的
+      if (this.formData.okrInfoList.length > 0) {
+        const newOpen = [this.formData.okrInfoList.length - 1];
+        this.activeList = this.activeList.concat(newOpen);
+      }
     },
     // 删除o
     deleteobject(oindex) {
