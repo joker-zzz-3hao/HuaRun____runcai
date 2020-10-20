@@ -228,12 +228,14 @@ export default {
             userIdList: this.formData.userIdList,
             processName: this.formData.processName,
           };
+          this.loading = true;
           this.server.updateProcess(params).then((res) => {
             if (res.code == 200) {
               this.$message.success('编辑成功');
               this.close();
               this.$emit('closeDialog', { refreshPage: true });
             }
+            this.loading = false;
           });
         }
       });

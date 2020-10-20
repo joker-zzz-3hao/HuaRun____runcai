@@ -159,6 +159,9 @@
           </el-radio-group>
         </dd>
       </dl>
+      <dl v-if="philosophyList.length == 0" class="dl-list no-data">
+        暂无数据
+      </dl>
     </div>
   </el-scrollbar>
 </template>
