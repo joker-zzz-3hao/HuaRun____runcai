@@ -274,7 +274,7 @@ export default {
               userLevel: item.level,
               userName: item.userName,
               userPost: item.funcName,
-              companyName: item.companyName,
+              userCompany: item.companyName,
             });
           });
           this.server.addProjectUser(params).then((res) => {
