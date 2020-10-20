@@ -97,10 +97,17 @@
         <dl class="dl-item">
           <dt><span>项目类型</span></dt>
           <dd>
-            <em>{{ CONST.PROJECT_TYPE_MAP[baseInfo.projectType] || "--" }}</em
+            <em>{{ baseInfo.projectType || "--" }}</em
             ><span v-if="baseInfo.projectSourceSystem">{{
               baseInfo.projectSourceSystem
             }}</span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目时间</span></dt>
+          <dd>
+            <em>{{ baseInfo.projectBeginDate || "--" }}</em
+            ><span>至</span><em>{{ baseInfo.projectEndDate || "--" }}</em>
           </dd>
         </dl>
       </div>
