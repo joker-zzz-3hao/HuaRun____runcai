@@ -63,7 +63,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectCurrency">{{
-                  CONST.CURRENCY_MAP[scope.row.projectCurrency]
+                  projectCurrency
                 }}</span>
                 <span v-else>--</span>
               </template>

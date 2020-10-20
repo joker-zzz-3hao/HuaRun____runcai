@@ -217,6 +217,7 @@ export default {
       openFlag: false,
       codes: [],
       emHeight: '',
+      emWidth: '',
     };
   },
   components: {
@@ -354,7 +355,9 @@ export default {
         console.log(val);
         this.$nextTick(() => {
           this.emHeight = document.getElementById('projectDesc').clientHeight;
+          this.emWidth = document.getElementById('projectDesc').clientWidth;
           console.log(this.emHeight);
+          console.log(this.emWidth);
         });
       },
 
