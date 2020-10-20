@@ -323,6 +323,11 @@ export default {
       this.server.changeClassify({
         taskId: task.taskId,
         typeId: classify.typeId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(`已移动到「${classify.typeName}」`);
+          this.init();
+        }
       });
     },
     finish(task) {
