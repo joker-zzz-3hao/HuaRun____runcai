@@ -64,8 +64,10 @@
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
-            <em>{{ baseInfo.parentOrgName }}</em
-            ><span>-</span><em>{{ baseInfo.orgName }}</em>
+            <em v-if="baseInfo.parentOrgName">{{
+              `${baseInfo.parentOrgName}-`
+            }}</em>
+            <em>{{ baseInfo.orgName }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
