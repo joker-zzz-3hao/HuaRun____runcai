@@ -4,6 +4,54 @@
       <div class="page-title">项目管理</div>
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
+          <el-form-item label="项目状态">
+            <el-select
+              v-model="formData.projectStatus"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchManage"
+            >
+              <el-option
+                v-for="item in CONST.PROJECT_STATUS_LIST"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="项目类型">
+            <el-select
+              v-model="formData.projectType"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchManage"
+            >
+              <el-option
+                v-for="item in CONST.PROJECT_TYPE_LIST"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="投入类型">
+            <el-select
+              v-model="formData.projectInputTypeCode"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchManage"
+            >
+              <el-option
+                v-for="item in CONST.THROW_TYPE_LIST"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-input
               maxlength="64"
@@ -70,7 +118,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.projectCurrency">{{
-                  projectCurrency
+                  scope.row.projectCurrency
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -188,6 +236,12 @@ export default {
     return {
       CONST,
       server,
+      formData: {
+        projectStatus: '',
+        projectInputTypeCode: '',
+        projectType: '',
+        keyWord: '',
+      },
       keyWord: '',
       total: 0,
       currentPage: 1,
@@ -229,6 +283,9 @@ export default {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         projectName: this.keyWord,
+        projectStatus: this.formData.projectStatus,
+        projectInputTypeCode: this.formData.projectInputTypeCode,
+        projectType: this.formData.projectType,
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       };
       this.server.projectPageList(param).then((res) => {
