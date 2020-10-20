@@ -483,6 +483,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      orgFullId: (state) => state.orgFullId,
     }),
     action() {
       const origin = window.location.origin
@@ -586,9 +587,9 @@ export default {
     },
     // 查询执行人
     getUserList() {
-      this.server.listOrgUserPage({ orgFullId: this.userInfo.orgList[0].orgFullId }).then((res) => {
+      this.server.listOrgUserPage({ orgFullId: this.orgFullId }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data;
+          this.userList = res.data || [];
         }
       });
     },

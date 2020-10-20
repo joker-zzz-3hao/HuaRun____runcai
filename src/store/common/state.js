@@ -22,4 +22,5 @@ export default {
   cycleList: [],
   okrLoading: false,
   listenerWidth: 0,
+  orgFullId: '',
 };

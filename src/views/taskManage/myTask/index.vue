@@ -443,6 +443,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      orgFullId: (state) => state.orgFullId,
     }),
     filterTask() {
       return this.userList.filter(
@@ -496,14 +497,9 @@ export default {
       });
     },
     getUserList() {
-      const params = {
-        currentPage: 1,
-        pageSize: 20,
-        orgFullId: this.userInfo.orgList[0].orgFullId,
-      };
-      this.server.getUserListByOrgId(params).then((res) => {
+      this.server.listOrgUserPage({ orgFullId: this.orgFullId }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content || [];
+          this.userList = res.data || [];
           // 生成团队map对象
           this.reformattedArray = this.userList.map(
             (obj) => {
