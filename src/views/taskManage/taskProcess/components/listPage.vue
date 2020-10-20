@@ -283,8 +283,8 @@ export default {
         typeId: this.searchParams.typeId,
         stepId: this.stepId,
         taskTitle: this.searchParams.taskTitle || '',
-        taskUserIds: this.searchParams.searchCreator.toString(),
-        createByIds: this.searchParams.searchExecutor.toString(),
+        taskUserIds: this.searchParams.searchExecutor.toString(),
+        createByIds: this.searchParams.searchCreator.toString(),
       };
       self.server.queryTaskTableList(params).then((res) => {
         if (res.code == 200) {
