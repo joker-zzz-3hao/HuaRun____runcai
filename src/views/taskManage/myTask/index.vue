@@ -365,14 +365,16 @@
                     )
                   "
                   @click="acceptTask(scope.row.taskId)"
-                  class="tl-btn"
+                  plain
+                  class="tl-btn amt-border-fadeout"
                   >确认接收</el-button
                 >
                 <!-- 已确认且执行人不是我 不能编辑-->
                 <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
                   :disabled="canEdit(scope.row)"
-                  class="tl-btn"
+                  plain
+                  class="tl-btn amt-border-fadeout"
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
