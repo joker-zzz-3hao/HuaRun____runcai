@@ -4,6 +4,7 @@
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
+    :append-to-body="true"
     :title="title"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"

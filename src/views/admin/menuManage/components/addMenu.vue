@@ -4,6 +4,7 @@
     :modal-append-to-body="false"
     :before-close="close"
     :destroy-on-close="true"
+    :append-to-body="true"
     @closed="closed"
     :close-on-click-modal="false"
     :title="title"
@@ -19,7 +20,7 @@
       <el-form-item label="上级菜单">
         <!-- <el-input style="width:320px" v-if="parentId" v-model="parentId" placeholder="请输入上级菜单"></el-input> -->
         <!-- <tl-set-menu-option v-show="showOption"></tl-set-menu-option> -->
-        <em v-if="menuName">{{menuName}}</em>
+        <em v-if="menuName">{{ menuName }}</em>
         <em v-if="!menuName">主目录</em>
       </el-form-item>
       <el-form-item label="菜单类型" prop="functionType">
@@ -30,30 +31,58 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单编码" prop="functionCode">
-        <el-input style="width:320px" v-model="form.functionCode" placeholder="请输入菜单编码"></el-input>
+        <el-input
+          style="width: 320px"
+          v-model="form.functionCode"
+          placeholder="请输入菜单编码"
+        ></el-input>
       </el-form-item>
       <el-form-item label="菜单名称" prop="functionName">
-        <el-input style="width:320px" v-model="form.functionName" placeholder="请输入菜单名称"></el-input>
+        <el-input
+          style="width: 320px"
+          v-model="form.functionName"
+          placeholder="请输入菜单名称"
+        ></el-input>
       </el-form-item>
       <el-form-item label="显示排序" prop="functionSequence">
         <el-input
-          style="width:320px"
+          style="width: 320px"
           type="number"
           v-model="form.functionSequence"
           placeholder="请设置示排序"
         ></el-input>
       </el-form-item>
       <el-form-item label="路由地址" prop="resourceUrl">
-        <el-input style="width:320px" v-model="form.resourceUrl" placeholder="请输入路由地址"></el-input>
+        <el-input
+          style="width: 320px"
+          v-model="form.resourceUrl"
+          placeholder="请输入路由地址"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="类标识" v-if="form.functionType !=='BTN'" prop="classTag">
-        <el-input style="width:320px" v-model="form.classTag" placeholder="请输入类标识"></el-input>
+      <el-form-item
+        label="类标识"
+        v-if="form.functionType !== 'BTN'"
+        prop="classTag"
+      >
+        <el-input
+          style="width: 320px"
+          v-model="form.classTag"
+          placeholder="请输入类标识"
+        ></el-input>
       </el-form-item>
       <el-form-item label="权限标识" prop="permissionCode">
-        <el-input style="width:320px" v-model="form.permissionCode" placeholder="请输入权限标识"></el-input>
+        <el-input
+          style="width: 320px"
+          v-model="form.permissionCode"
+          placeholder="请输入权限标识"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="事件名" v-if="form.functionType !=='BTN'">
-        <el-input style="width:320px" v-model="form.functionEvent" placeholder="请输入事件名"></el-input>
+      <el-form-item label="事件名" v-if="form.functionType !== 'BTN'">
+        <el-input
+          style="width: 320px"
+          v-model="form.functionEvent"
+          placeholder="请输入事件名"
+        ></el-input>
       </el-form-item>
       <!-- <el-form-item label="icon" v-if="form.functionType =='PAGE'" prop="icon">
         <el-input style="width:320px" v-model="form.icon" placeholder="请输入icon名称"></el-input>
@@ -63,7 +92,7 @@
       </el-form-item>-->
       <el-form-item
         label="菜单状态"
-        v-if="form.functionType=='MENU'||form.functionType=='PAGE'"
+        v-if="form.functionType == 'MENU' || form.functionType == 'PAGE'"
         prop="status"
       >
         <el-radio-group v-model="form.status">
