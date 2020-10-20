@@ -21,7 +21,6 @@
       <el-button
         size="small"
         type="primary"
-        v-if="fileNum < 10"
         icon="el-icon-upload2"
         class="width-auto"
         >添加附件</el-button
@@ -146,6 +145,7 @@ export default {
       });
     },
     beforeUpload(file) {
+      console.log('文件大小', file.size);
       const biggerThanMaxFileSize = file.size / 1024 / 1024 < this.maxFileSzie;
       const isNameLength = file.name && file.name.length < 100;
       const fileFormatResult = this.fileFormatFn(file);

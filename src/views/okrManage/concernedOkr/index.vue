@@ -334,10 +334,12 @@ export default {
           supported: 0,
         });
       } else {
-        this.param.push({
-          focusType: 0,
-          userId: data.userId,
-          supported: 0,
+        this.tableList.forEach((item) => {
+          this.param.push({
+            focusType: 0,
+            targetId: item.okrMain.okrId,
+            supported: 0,
+          });
         });
       }
       this.server.addFocus(

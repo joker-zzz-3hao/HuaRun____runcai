@@ -27,6 +27,23 @@
             @click="searchList"
           ></i>
         </el-input>
+        <el-select
+          v-show="processList.length > 0"
+          v-model="searchParams.processId"
+          placeholder="请选择任务过程"
+          clearable
+          class="tl-select"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          @change="searchList()"
+        >
+          <el-option
+            v-for="item in processList"
+            :key="item.processId"
+            :value="item.processId"
+            :label="item.processName"
+          ></el-option>
+        </el-select>
         <tl-personmultiple
           title="请选择执行人"
           :userList="userList"
@@ -95,6 +112,8 @@
                 </div>
               </template>
             </el-table-column>
+            <el-table-column align="left" prop="processName" label="过程">
+            </el-table-column>
             <el-table-column min-width="100px" align="left" label="执行人">
               <template slot-scope="scope">
                 <span>
@@ -155,10 +174,12 @@ export default {
         searchCreator: [],
         searchExecutor: [],
         typeId: '',
+        processId: '',
       },
       userList: [],
       userMap: {},
       existEditTask: false,
+      processList: [],
     };
   },
   created() {
@@ -172,8 +193,23 @@ export default {
   },
   methods: {
     init() {
+      this.searchParams.processId = this.$route.query.processId;
       this.searchList();
       this.queryUser();
+      this.queryProcessList();
+    },
+    queryProcessList() {
+      // 搜索任务过程
+      this.server.queryTaskProcessList({
+        currentPage: 1,
+        pageSize: 1000,
+        processType: '',
+        enable: 1,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.processList = res.data.content || [];
+        }
+      });
     },
     searchList() {
       const self = this;
@@ -181,7 +217,7 @@ export default {
       const params = {
         currentPage: self.currentPage,
         pageSize: self.pageSize,
-        processId: self.$route.query.processId,
+        processId: self.searchParams.processId,
         taskTitle: self.searchParams.taskTitle || '',
         taskUserIds: self.searchParams.searchCreator.toString(),
         createByIds: self.searchParams.searchExecutor.toString(),

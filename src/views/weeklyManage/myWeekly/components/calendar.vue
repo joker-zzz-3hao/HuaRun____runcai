@@ -12,7 +12,8 @@
       class="tl-month-editor"
     ></el-date-picker>
     <!-- 选择周 -->
-    <ul v-if="weekList.length > 0" class="weekly-select">
+    <!-- <ul v-if="weekList.length > 0" class="weekly-select"> -->
+    <ul class="weekly-select">
       <li
         v-for="(item, index) in weekList"
         :key="index"

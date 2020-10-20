@@ -12,33 +12,54 @@
       @close="close"
       :title="userTitle"
       :close-on-click-modal="false"
+      width="30%"
     >
       <el-form ref="userForm" :model="formData" label-width="80px">
         <el-form-item
           label="用户账号"
           prop="userAccount"
-          :rules="[{required:true,validator:validateAccount,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateAccount, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.userAccount" maxlength="50" clearable></el-input>
+          <el-input
+            v-model.trim="formData.userAccount"
+            maxlength="50"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="用户名称"
           prop="userName"
-          :rules="[{required:true,message:'请填写用户姓名',trigger:'blur'}]"
+          :rules="[
+            { required: true, message: '请填写用户姓名', trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.userName" maxlength="50" clearable></el-input>
+          <el-input
+            v-model.trim="formData.userName"
+            maxlength="50"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="手机号码"
           prop="userMobile"
-          :rules="[{required:true,validator:validateInsideMobile,trigger:'blur'}]"
+          :rules="[
+            {
+              required: true,
+              validator: validateInsideMobile,
+              trigger: 'blur',
+            },
+          ]"
         >
           <el-input v-model.trim="formData.userMobile" clearable></el-input>
         </el-form-item>
         <el-form-item
           label="电子邮箱"
           prop="userMail"
-          :rules="[{required:true,validator:validateEmail,trigger:'blur'}]"
+          :rules="[
+            { required: true, validator: validateEmail, trigger: 'blur' },
+          ]"
         >
           <el-input v-model.trim="formData.userMail" clearable></el-input>
         </el-form-item>
@@ -48,22 +69,28 @@
         <el-form-item
           label="所在部门"
           prop="orgIdList"
-          :rules="[{required:true,message:'请选择部门',trigger:'blur'}]"
+          :rules="[{ required: true, message: '请选择部门', trigger: 'blur' }]"
         >
           <el-cascader
             ref="cascader"
             v-model="formData.orgIdList"
             :options="treeData"
             :show-all-levels="false"
-            :props="{ checkStrictly: true, expandTrigger: 'click',value:'orgId',label:'orgName',children:'sonTree' }"
+            :props="{
+              checkStrictly: true,
+              expandTrigger: 'click',
+              value: 'orgId',
+              label: 'orgName',
+              children: 'sonTree',
+            }"
             @change="selectIdChange"
+            style="width: 100%"
           ></el-cascader>
         </el-form-item>
         <el-form-item
           label="用户密码"
           prop="loginPwd"
-          :rules="[
-          {required:true,validator:validatePwd ,trigger:'blur'}]"
+          :rules="[{ required: true, validator: validatePwd, trigger: 'blur' }]"
         >
           <el-input v-model.trim="formData.loginPwd" show-password></el-input>
         </el-form-item>
@@ -72,16 +99,32 @@
           label="确认密码"
           prop="confirmPwd"
           :rules="[
-          {required:true,validator:validateConfirmPwd ,trigger:'blur'}]"
+            { required: true, validator: validateConfirmPwd, trigger: 'blur' },
+          ]"
         >
-          <el-input v-model.trim="formData.confirmPwd" show-password clearable></el-input>
-        </el-form-item>
-
-        <el-form-item prop="sortIndex">
-          <el-button :loading="loading" @click="saveUser">确定</el-button>
-          <el-button :disabled="loading" @click="cancel">取消</el-button>
+          <el-input
+            v-model.trim="formData.confirmPwd"
+            show-password
+            clearable
+          ></el-input>
         </el-form-item>
       </el-form>
+      <div class="operating-box">
+        <el-button
+          type="primary"
+          :loading="loading"
+          class="tl-btn amt-bg-slip"
+          @click="saveUser"
+          >确定</el-button
+        >
+        <el-button
+          :disabled="loading"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="cancel"
+          >取消</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>

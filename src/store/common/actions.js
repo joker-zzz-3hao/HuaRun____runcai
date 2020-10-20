@@ -11,6 +11,14 @@ export default {
           console.log('getuser');
           commit('setRoleCode', response.data.data.roleList.map((item) => item.roleCode));
         }
+        if (response.data.data.orgList && response.data.data.orgList.length > 0) {
+          try {
+            const orgFullId = response.data.data.orgList.filter((item) => item.orgId == response.data.data.orgId);
+            commit('setOrgFullId', orgFullId[0].orgFullId);
+          } catch (err) {
+            console.log(err);
+          }
+        }
         commit('setUserInfo', response.data.data);
         return response.data;
       }

@@ -294,7 +294,7 @@ export default {
         projectName: this.keyWord,
         projectStatus: this.formData.projectStatus,
         projectInputTypeCode: this.formData.projectInputTypeCode,
-        projectType: this.formData.projectType,
+        projectTypeCode: this.formData.projectType,
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       };
       this.server.projectPageList(param).then((res) => {

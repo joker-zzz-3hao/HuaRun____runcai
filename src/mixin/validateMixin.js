@@ -61,8 +61,8 @@ export default {
     validateObjectName(rule, value, callback) {
       if (!value) {
         callback('请输入目标名称');
-      } else if (value.length > 50) {
-        callback('不能超过50个字符');
+      } else if (value.length > 200) {
+        callback('不能超过200个字符');
       } else {
         callback();
       }
@@ -72,8 +72,8 @@ export default {
       value = this.getValue(rule);
       if (!value) {
         callback('请填写关键结果KR名称');
-      } else if (value.length > 100) {
-        callback('不能超过100个字符');
+      } else if (value.length > 200) {
+        callback('不能超过200个字符');
       } else {
         callback();
       }
