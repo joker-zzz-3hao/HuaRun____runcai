@@ -177,40 +177,11 @@
               @click.stop="clearPersonNode(searchTaskUser, p)"
             ></i>
           </dd>
-          <el-popover placement="bottom" width="270" trigger="click">
-            <div>
-              <el-input
-                placeholder="搜索"
-                v-model="keyword"
-                class="tl-input"
-                clearable
-                maxlength="64"
-              >
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
-              </el-input>
-              <el-checkbox-group
-                v-model="searchTaskUser"
-                @change="getTableList()"
-              >
-                <el-checkbox
-                  v-for="item in filterTask"
-                  :label="item.userId"
-                  :key="item.userId"
-                >
-                  <em>{{ item.userName }}</em>
-                  <em>（{{ item.userAccount }}）</em>
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-            <div slot="reference">
-              <div>
-                <span v-if="searchTaskUser.length >= 9"
-                  >({{ searchTaskUser.length }}人)</span
-                >
-                <i class="el-icon-circle-plus-outline"></i>
-              </div>
-            </div>
-          </el-popover>
+          <tl-personmultiple
+            :userList="userList"
+            v-model="searchTaskUser"
+            :showSelect="false"
+          ></tl-personmultiple>
         </dl>
         <dl
           class="condition-lists tag-lists"
@@ -224,52 +195,11 @@
               @click.stop="clearPersonNode(searchCreateUser, p)"
             ></i>
           </dd>
-
-          <el-popover placement="bottom" width="270" trigger="click">
-            <div>
-              <el-input
-                placeholder="搜索"
-                v-model="keyword"
-                class="tl-input"
-                clearable
-                maxlength="64"
-              >
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
-              </el-input>
-              <el-checkbox-group
-                v-model="searchCreateUser"
-                @change="getTableList()"
-              >
-                <el-checkbox
-                  v-for="item in filterCreate"
-                  :label="item.userId"
-                  :key="item.userId"
-                >
-                  <!-- <el-avatar
-                    :size="30"
-                    :src="item.headUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="item.userName" class="user-name">
-                      <em>{{
-                        item.userName.substring(item.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar> -->
-                  <em>{{ item.userName }}</em>
-                  <em>（{{ item.userAccount }}）</em>
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-            <div slot="reference">
-              <div>
-                <span v-if="searchCreateUser.length >= 9"
-                  >({{ searchCreateUser.length }}人)</span
-                >
-                <i class="el-icon-circle-plus-outline"></i>
-              </div>
-            </div>
-          </el-popover>
+          <tl-personmultiple
+            :userList="userList"
+            v-model="searchCreateUser"
+            :showSelect="false"
+          ></tl-personmultiple>
         </dl>
       </div>
       <tl-crcloud-table
@@ -433,6 +363,7 @@
 <script>
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
+import personMultiple from '@/components/personMultiple';
 import assignment from './components/assignment';
 import createTask from './components/createTask';
 import editTask from './components/editTask';
@@ -450,6 +381,7 @@ export default {
     'tl-createtask': createTask,
     'tl-edittask': editTask,
     'tl-tasksum': taskSum,
+    'tl-personmultiple': personMultiple,
   },
   data() {
     return {

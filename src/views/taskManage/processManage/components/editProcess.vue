@@ -16,7 +16,8 @@
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">编辑任务过程</div>
+      <div class="drawer-title" v-if="canEdit">编辑任务过程</div>
+      <div class="drawer-title" v-else>任务过程详情</div>
     </div>
     <el-scrollbar>
       <el-form ref="dataForm" :model="formData">
@@ -54,59 +55,22 @@
               小范围使用
               <span>(所加入的成员均可使用)</span>
             </el-checkbox>
-            <div v-if="processObj.processType == '2'">
-              <!-- <span style="marginLeft:10px" v-for="user in selectUserList" :key="user">
-                <el-avatar :size="30" :src="user.headerUrl" @error="errorHandler">
-                  <div v-if="user.userName" class="user-name">
-                    <em>{{user.userName.substring(user.userName.length-2)}}</em>
-                  </div>
-                </el-avatar>
-                <span>{{user.userName}}</span>
-              </span>-->
-              <span>添加成员</span>
-              <i
-                style="cursor: pointer"
-                @click="addMember"
-                class="el-icon-plus"
-              ></i>
-              <el-select
-                v-model.trim="formData.userIdList"
-                filterable
-                placeholder="请输入成员姓名"
-                remote
-                :remote-method="remoteMethod"
-                @visible-change="visibleChange"
-                clearable
-                multiple
-              >
-                <el-option
-                  v-for="item in userList"
-                  :key="item.userId"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                  <span style="float: left">
-                    <el-avatar
-                      :size="30"
-                      :src="item.headUrl"
-                      @error="errorHandler"
-                    >
-                      <div v-if="item.userName" class="user-name">
-                        <em>{{
-                          item.userName.substring(item.userName.length - 2)
-                        }}</em>
-                      </div>
-                    </el-avatar>
-                  </span>
-                  <span style="float: left; marginleft: 5px">{{
-                    item.userName
-                  }}</span>
-                  <!-- <span style="float: right">
-                  <el-checkbox @change="selectChange(item)" v-model="item.userId"></el-checkbox>
-                  </span>-->
-                </el-option>
-              </el-select>
-            </div>
+            <dl v-if="processObj.processType == '2'" style="display: flex">
+              <dt>添加成员</dt>
+              <dd v-for="p in cutPic" :key="p.userId" class="user-info">
+                <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+                <div v-else class="user-name">
+                  <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+                </div>
+              </dd>
+              <dd v-if="canEdit">
+                <tl-personmultiple
+                  :userList="userList"
+                  v-model="formData.userIdList"
+                  :showSelect="false"
+                ></tl-personmultiple>
+              </dd>
+            </dl>
             <el-checkbox disabled :checked="processObj.processType == '3'"
               >个人使用</el-checkbox
             >
@@ -138,12 +102,14 @@
 </template>
 
 <script>
+import personMultiple from '@/components/personMultiple';
 import validateMixin from '../validateMixin';
 
 export default {
   name: 'createdic',
   mixins: [validateMixin],
   components: {
+    'tl-personmultiple': personMultiple,
   },
   props: {
     server: {
@@ -188,7 +154,19 @@ export default {
   },
   mounted() {
   },
-  computed: {},
+  computed: {
+    cutPic() {
+      const list = [];
+      this.formData.userIdList.forEach((id) => {
+        this.userList.forEach((uitem) => {
+          if (uitem.userId == id) {
+            list.push(uitem);
+          }
+        });
+      });
+      return list;
+    },
+  },
   methods: {
     show(type = 'detail') {
       this.init();
