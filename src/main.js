@@ -10,6 +10,7 @@ import $ajax from './ajax/index';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/styles/public.css';
 import 'swiper/swiper-bundle.css';
+import directives from './directives/index';
 // 全局组建注册
 import crcloudTable from './components/crcloudTable';
 
@@ -36,6 +37,8 @@ if (process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com' || process.env.VU
 window.$ajax = $ajax;
 // 注入自定义minxin
 Vue.mixin(mixin);
+// 注入自定义指令
+directives(Vue);
 window.$store = store;
 
 Vue.config.productionTip = false;
