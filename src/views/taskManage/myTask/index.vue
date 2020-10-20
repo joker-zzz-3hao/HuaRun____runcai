@@ -524,7 +524,7 @@ export default {
       params.pageSize = this.pageSize;
       params.selectType = this.currentIndex;
       params.taskTitle = this.searchMsg;
-      params.psList = this.psList || this.searchList;
+      params.psList = this.searchList.concat(this.psList || []);
       params.accept = this.accept;
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();

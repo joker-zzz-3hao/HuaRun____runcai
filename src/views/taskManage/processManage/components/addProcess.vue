@@ -75,7 +75,12 @@
               </el-checkbox>
               <dl v-if="localUser">
                 <dt>添加成员</dt>
-                <dd v-for="p in cutPic" :key="p.userId" class="user-info">
+                <dd
+                  v-for="p in cutPic"
+                  :key="p.userId"
+                  class="user-info"
+                  style="display: flex"
+                >
                   <img v-if="p.headUrl" :src="p.headUrl" alt="" />
                   <div v-else class="user-name">
                     <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
