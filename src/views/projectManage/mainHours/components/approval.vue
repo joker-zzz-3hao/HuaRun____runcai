@@ -33,7 +33,7 @@
       <span slot="footer" class="dialog-footer">
         <span>共投入工时{{ timeSheet }}天</span>
         <span v-if="remark">原因：{{ remark }}</span>
-        <el-popover placement="top" width="160" v-model="popoverVisible">
+        <el-popover placement="top" width="300" v-model="popoverVisible">
           <el-input-number
             v-model="confirmSheet"
             :precision="1"
