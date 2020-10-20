@@ -27,16 +27,13 @@
             :src="file.url"
             alt=""
           />
-          <!-- <a class="el-upload-list__item-name" @click="handleClick(file)">
-          <i class="el-icon-document"></i>{{file.name}}
-          <span>{{file.uploadDate}}</span>
-        </a> -->
           <a
             class="el-upload-list__item-name c-upload-list__item-name"
             @click="handleClick(file)"
           >
             <label class="c-upload-item-name">
-              <i class="el-icon-document"></i>{{ file.name }}</label
+              <i class="el-icon-document"></i
+              >{{ file.name || file.resourceName }}</label
             >
             <span class="c-upload-item-date">{{ file.uploadDate }}</span>
           </a>
@@ -51,11 +48,21 @@
             ></i>
           </label>
           <span
-            v-if="images_map[file.response && file.response.data.resourceType]"
+            v-if="images_map[file.resourceType]"
+            @click="openExistFile(file)"
+            >预览</span
+          >
+          <span
+            v-else-if="images_map[cutType(file.resourceName)]"
             @click="openFile(file)"
             >预览</span
           >
-          <!-- <span @click="downFile(file)">下载</span> -->
+
+          <!-- 只有taskid存在才能下载 -->
+          <span v-if="file.sourceType == 'TASK'" @click="downExistFile(file)"
+            >下载</span
+          >
+          <span v-else @click="downFile(file)">下载</span>
           <i
             class="el-icon-close"
             v-if="!disabled"
@@ -132,8 +139,14 @@ export default {
     },
     handlePreview: Function,
     listType: String,
+    taskId: String,
   },
   methods: {
+    cutType(name) {
+      if (name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
     parsePercentage(val) {
       return parseInt(val, 10);
     },
@@ -143,8 +156,10 @@ export default {
       this.handlePreview && this.handlePreview(file);
     },
     // 预览
-    openFile(res) {
-      const fileObj = res.response.data;
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    openExistFile(fileObj) {
       const images = {
         jpg: true,
         jpeg: true,
@@ -157,12 +172,19 @@ export default {
       }
     },
     // 下载
-    downFile(res) {
+    downFile(fileObj) {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const fileObj = res.response.data;
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
+      window.open(url);
+    },
+    // 下载
+    downExistFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
       window.open(url);
     },
   },
