@@ -14,6 +14,7 @@
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
+    "accounting-js": "^1.1.1",
     "@quasar/extras": "^1.0.0",
     "animate.css": "^4.1.0",
     "axios": "^0.18.0",
