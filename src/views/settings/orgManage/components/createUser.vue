@@ -116,10 +116,18 @@
         </el-form-item> -->
       </el-form>
       <div class="operating-box">
-        <el-button type="primary" class="tl-btn amt-bg-slip" @click="saveUser"
+        <el-button
+          :loading="loading"
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          @click="saveUser"
           >确定</el-button
         >
-        <el-button plain class="tl-btn amt-border-fadeout" @click="cancel"
+        <el-button
+          :disabled="loading"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="cancel"
           >取消</el-button
         >
       </div>
