@@ -83,6 +83,19 @@ export default [{
     },
     component: () => import('@/views/admin/systemPrivilege/sysUserManage/index'),
   },
+  {
+    // 监听数据统计
+    path: '/listenerData',
+    name: 'listenerData',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
+      title: 'listenerData',
+      power: '',
+    },
+    component: () => import('@/views/admin/listenerData/index'),
+  },
   ],
 },
 ];
