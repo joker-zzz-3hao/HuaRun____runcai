@@ -94,11 +94,22 @@
         <el-input style="width:320px" v-model="form.title" placeholder="请输入标题名称"></el-input>
       </el-form-item>-->
     </el-form>
-    <div>
-      <el-button type="primary" @click="validateForm" :loading="btnLoad"
+
+    <div class="operating-box">
+      <el-button
+        :loading="btnLoad"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="validateForm"
         >确定</el-button
       >
-      <el-button @click="close">取 消</el-button>
+      <el-button
+        :disabled="loading"
+        plain
+        class="tl-btn amt-border-fadeout"
+        @click="close"
+        >取消</el-button
+      >
     </div>
   </el-drawer>
 </template>

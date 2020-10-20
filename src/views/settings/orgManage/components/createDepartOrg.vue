@@ -12,13 +12,20 @@
       <el-form-item
         label="当前部门"
         prop="orgIdList"
-        :rules="[{required:true,message:'请选择上级部门',trigger:'blur'}]"
+        :rules="[
+          { required: true, message: '请选择上级部门', trigger: 'blur' },
+        ]"
       >
         <el-cascader
           v-model="form.orgIdList"
           :options="treeData"
           :show-all-levels="false"
-          :props="{ checkStrictly: true,value:'orgId',label:'orgName',children:'sonTree' }"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'sonTree',
+          }"
           @change="selectIdChange"
         ></el-cascader>
       </el-form-item>
@@ -31,12 +38,28 @@
           @clear.stop="clearUser"
         ></el-input>
         <span @click.stop="closeshowMember">关闭</span>
-        <tl-select-member @click.native.stop @getMember="selectMb" v-show="showSelect"></tl-select-member>
+        <tl-select-member
+          @click.native.stop
+          @getMember="selectMb"
+          v-show="showSelect"
+        ></tl-select-member>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="submit"
+        class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button
+        :disabled="loading"
+        plain
+        @click="close"
+        class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -63,6 +86,7 @@ export default {
   data() {
     return {
       server,
+      loading: false,
       form: {
         region: [],
       },

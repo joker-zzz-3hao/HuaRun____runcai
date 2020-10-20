@@ -27,7 +27,7 @@
                       placeholder="请输入目标名称"
                       v-model="oitem.okrDetailObjectKr"
                       class="tl-input"
-                      maxlength="100"
+                      maxlength="200"
                     ></el-input>
                   </el-form-item>
                 </div>
@@ -160,7 +160,7 @@
                     placeholder="请输入关键结果"
                     v-model="kitem.okrDetailObjectKr"
                     class="tl-input"
-                    maxlength="100"
+                    maxlength="200"
                   ></el-input>
                 </el-form-item>
               </div>

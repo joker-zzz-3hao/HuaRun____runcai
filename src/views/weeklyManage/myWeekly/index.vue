@@ -16,7 +16,8 @@
         </div>
       </div>
     </div>
-    <div class="cont-area" v-show="weeklyTypeList.length > 0">
+    <!-- <div class="cont-area" v-show="weeklyTypeList.length > 0"> -->
+    <div class="cont-area">
       <!-- 日期 -->
       <tl-calendar
         @setCalendarId="setCalendarId"
@@ -265,6 +266,7 @@ export default {
       return false;
     },
     getWeeklyById(item) {
+      this.newPage = false;// 防止日历标签间点击页面闪烁
       this.noWrite = false;
       this.timeDisabled = this.newEdit(item);
       this.canEdit = item.canEdit;
