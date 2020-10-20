@@ -124,7 +124,7 @@
             <!-- @click.capture.stop="dataChange(scope.row)" -->
             <el-input
               @blur="editClassifyName(classify)"
-              @keyup.enter.native="editClassifyName(classify)"
+              @keyup.enter.native="$event.target.blur"
               v-if="classify.isEdit"
               v-model="typeName"
             ></el-input>
@@ -398,17 +398,32 @@ export default {
         }
       });
     },
-    deleteClassify(classify) {
-      this.server.updateClassify({
-        available: 0,
-        processId: this.processId,
-        typeId: classify.typeId,
-      }).then((res) => {
-        if (res.code == 200) {
-          console.log(res);
-          this.queryProcessClassify({ processId: this.processId });
-        }
-      });
+    async  deleteClassify(classify) {
+      const checkres = await this.server.deleteCheck({ typeId: classify.typeId });
+      if (checkres.data) {
+        this.$xconfirm({
+          content: '',
+          title: '当前分类有任务项，是否删除',
+        }).then(() => {
+          this.server.deleteProcess({
+            typeId: classify.typeId,
+          }).then((res) => {
+            if (res.code == 200) {
+              console.log(res);
+              this.queryProcessClassify({ processId: this.processId });
+            }
+          }).catch(() => {});
+        });
+      } else {
+        this.server.deleteProcess({
+          typeId: classify.typeId,
+        }).then((res) => {
+          if (res.code == 200) {
+            console.log(res);
+            this.queryProcessClassify({ processId: this.processId });
+          }
+        });
+      }
     },
     selectProcessItem(process) {
       this.processId = process.processId;
