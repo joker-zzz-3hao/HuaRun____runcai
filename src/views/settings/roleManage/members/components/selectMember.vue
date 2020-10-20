@@ -3,7 +3,7 @@
     <el-input
       placeholder="输入用户名称/LDAP账号"
       minlength="64"
-      @keyup.native="fuzzyQueryUser()"
+      @keyup.native="searchOut()"
       v-model="keyWord"
       class="tl-input-search"
     >
@@ -13,13 +13,16 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em>
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''"
+              >润联科技</em
+            >
             <em
-              :class="light==item.id?'is-subset':''"
-              v-for="(item,index) in selectList"
+              :class="light == item.id ? 'is-subset' : ''"
+              v-for="(item, index) in selectList"
               :key="index"
               @click="getqueryOrgAndUser(item)"
-            >{{item.name}}</em>
+              >{{ item.name }}</em
+            >
           </div>
         </div>
         <el-scrollbar>
@@ -97,22 +100,28 @@
               <em>云门户是发撒大法</em>
               <i class="el-icon-arrow-right"></i>
             </li>-->
-            <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
+            <li
+              v-for="(item, index) in data"
+              :key="index"
+              @click="getqueryOrgAndUser(item)"
+            >
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                @change="checkMember($event,item)"
+                @change="checkMember($event, item)"
                 v-model="value[item.id]"
-                v-if="item.type=='USER'"
+                v-if="item.type == 'USER'"
               >
                 <div class="img-user">
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                  <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                  <div class="user-name" v-else>
+                    {{ checkName(item.name) }}
+                  </div>
                 </div>
-                <em>{{item.name}}</em>
+                <em>{{ item.name }}({{ item.userAccount }})</em>
               </el-checkbox>
               <div v-else class="flex-sb">
-                <em>{{item.name}}</em>
+                <em>{{ item.name }}</em>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </li>
@@ -123,19 +132,25 @@
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
-            <em>{{roulelist.length}}</em>人
+            <em>{{ roulelist.length }}</em
+            >人
           </div>
           <div class="clear" @click="clearMember">清空</div>
         </div>
         <el-scrollbar>
           <ul class="txt-list">
-            <li v-for="(item,index) in roulelist" :key="index">
+            <li v-for="(item, index) in roulelist" :key="index">
               <div class="img-user">
                 <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>{{checkName(item.userName)}}</div>
+                <div class="user-name" v-else>
+                  {{ checkName(item.userName) }}
+                </div>
               </div>
-              <em>{{item.userName}}</em>
-              <i class="el-icon-close" @click="deleteMember(index,item.userId)"></i>
+              <em>{{ item.userName }}({{ item.userAccount }})</em>
+              <i
+                class="el-icon-close"
+                @click="deleteMember(index, item.userId)"
+              ></i>
             </li>
           </ul>
         </el-scrollbar>
@@ -163,6 +178,7 @@ export default {
       keyWord: '',
       light: 0,
       showLoad: true,
+      time: null,
     };
   },
   mounted() {
@@ -208,6 +224,7 @@ export default {
           userName: data.name,
           userId: data.id,
           roleId: this.$route.query.roleId,
+          userAccount: data.userAccount,
           orgId: data.parentId,
         });
       } else {
@@ -245,6 +262,7 @@ export default {
           id: item.userId,
           name: item.userName,
           parentId: item.orgId,
+          userAccount: item.userAccount,
           type: 'USER',
         }));
       });
@@ -254,7 +272,12 @@ export default {
       this.$set(this.value, id, false);
       this.roulelist.splice(index, 1);
     },
-
+    searchOut() {
+      clearTimeout(this.time);
+      this.time = setTimeout(() => {
+        this.fuzzyQueryUser();
+      }, 300);
+    },
   },
 };
 </script>
