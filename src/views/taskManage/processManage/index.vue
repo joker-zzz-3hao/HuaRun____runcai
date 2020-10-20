@@ -5,7 +5,14 @@
       <div class="operating-box">
         <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
           <el-form-item>
-            <el-select v-model="keyWord" placeholder="请选择使用范围" clearable>
+            <el-select
+              v-model="keyWord"
+              placeholder="请选择使用范围"
+              clearable
+              class="tl-select"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+            >
               <el-option :value="1" label="团队使用">团队使用</el-option>
               <el-option :value="2" label="小范围使用">小范围使用</el-option>
               <el-option :value="3" label="个人使用">个人使用</el-option>
@@ -13,12 +20,12 @@
           </el-form-item>
         </el-form>
         <el-button
-          type="primary"
-          icon="el-icon-plus"
-          class="tl-btn amt-bg-slip"
+          plain
+          icon="el-icon-document-add"
+          class="tl-btn amt-border-slip"
           @click="customProcess"
-          >新建任务过程</el-button
-        >
+          ><em>新建任务过程</em><span class="lines"></span
+        ></el-button>
       </div>
     </div>
     <div class="cont-area">
@@ -118,6 +125,7 @@
                   type="text"
                   @click="editProcess(scope.row, 'edit')"
                   size="small"
+                  class="tl-btn"
                   >编辑</el-button
                 >
               </template>
