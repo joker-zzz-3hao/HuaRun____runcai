@@ -161,6 +161,7 @@
         :periodName="writeInfo.periodName"
         :currentOption="okrParentId"
         :server="server"
+        :okrBelongType="okrmain.okrBelongType"
       ></tl-undertaketable>
       <div class="operating-box">
         <div class="flex-auto">

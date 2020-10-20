@@ -329,6 +329,7 @@
           formData.okrInfoList[this.selectIndex].currentOption
         "
         :selectRadioPhil.sync="formData.okrInfoList[this.selectIndex].cultureId"
+        :okrBelongType="searchForm.okrType"
       ></undertake-table>
       <div class="operating-box">
         <el-button

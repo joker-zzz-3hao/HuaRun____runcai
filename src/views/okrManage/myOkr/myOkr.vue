@@ -154,7 +154,7 @@
               <!-- o的进度更新 -->
               <template slot="weight-bar" slot-scope="props">
                 <div
-                  v-if="item.okrMain.status == '1'"
+                  v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
                   @click="openUpdate(props.okritem)"
                 >
                   <el-button plain class="tl-btn btn-lineheight"
