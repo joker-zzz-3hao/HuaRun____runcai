@@ -108,7 +108,7 @@
           <el-form-item label="附件">
             <file-upload
               ref="fileUpload"
-              :fileList="formData.fileList"
+              :fileList="fileList"
               :limit="10"
               @change="fileChange"
             ></file-upload>
@@ -182,7 +182,6 @@ export default {
         processNum: 0,
         taskDesc: null,
         taskUserId: null,
-        fileList: [], // 文件列表
       },
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
@@ -210,12 +209,14 @@ export default {
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
       dataParams: { validateCode: '', ...this.params },
+      fileList: [], // 文件列表
       loading: false,
     };
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      orgFullId: (state) => state.orgFullId,
     }),
     action() {
       const origin = window.location.origin
@@ -262,7 +263,7 @@ export default {
       });
     },
     getUserList() {
-      this.server.listOrgUserPage({ orgFullId: this.userInfo.orgList[0].orgFullId }).then((res) => {
+      this.server.listOrgUserPage({ orgFullId: this.orgFullId }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data;
         }

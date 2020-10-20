@@ -201,8 +201,8 @@ export default {
       default: '',
     },
     okrBelongType: {
-      type: String,
-      default: '1',
+      type: Number,
+      default: 1,
     },
     server: {
       type: Object,

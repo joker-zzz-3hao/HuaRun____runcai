@@ -733,6 +733,15 @@ export default {
       },
       deep: true,
     },
+    'searchForm.okrType': {
+      handler() {
+        for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
+          this.formData.okrInfoList[i].undertakeOkrVo = {};
+          this.formData.okrInfoList[i].cultureId = '';
+          this.formData.okrInfoList[i].cultureName = '';
+        }
+      },
+    },
     searchForm: {
       handler() {
         if (['6', '8'].includes(this.searchForm.okrStatus)) {

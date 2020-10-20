@@ -203,13 +203,13 @@ export default {
         periodId: this.periodId,
         status: this.searchForm.status,
         myOrOrg: this.$route.name !== 'grassStaff' ? 'org' : 'my',
-        userId: this.$route.name !== 'grassStaff' ? this.$route.query.userId : '',
+        userId: this.$route.name == 'grassStaff' ? this.$route.query.userId : '',
         tenantId: this.$route.query.tenantId,
         orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1') {
+          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
             this.changeTestModel(true);
             this.reload();
             sessionStorage.setItem('modelOkr', '1');
