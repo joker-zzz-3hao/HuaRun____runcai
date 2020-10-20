@@ -77,6 +77,7 @@
         type="primary"
         @click="validateForm('form')"
         class="tl-btn amt-bg-slip"
+        :loading="btnLoad"
         >确定</el-button
       >
       <el-button @click="close" class="tl-btn amt-border-fadeout"
@@ -110,6 +111,7 @@ export default {
     return {
       list: [],
       postMenu: false,
+      btnLoad: false,
       menuTreeList: [],
       server,
       showMenu: false,
@@ -168,7 +170,7 @@ export default {
                 callback('请输入手机号');
               } else if (!(/^[1][3456789][0-9]{9}$/
                 .test(value) || /^[0][1-9]{2,3}-[0-9]{5,10}$/.test(value))) {
-                callback('联系电话格式不正确,示例0596-12345678');
+                callback('请输入11位正确手机号或联系电话 示例:0596-12345678');
               } else {
                 callback();
               }
@@ -213,6 +215,7 @@ export default {
     },
     // 提交创建数据
     creatForm() {
+      this.btnLoad = true;
       this.form.menuTree = this.list.map((item) => ({ functionId: item }));
       this.server.insertTenant({
         tenantName: this.form.tenantName,
@@ -225,6 +228,7 @@ export default {
         menuTree: this.form.menuTree,
       })
         .then((res) => {
+          this.btnLoad = false;
           if (res.code == 200) {
             this.$emit('getTenantList');
             this.$message.success('创建成功');

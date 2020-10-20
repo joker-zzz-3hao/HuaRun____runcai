@@ -22,7 +22,11 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+      <el-button
+        type="primary"
+        @click="submit"
+        class="tl-btn amt-bg-slip"
+        :loading="btnLoad"
         >确定</el-button
       >
       <el-button plain @click="close" class="tl-btn amt-border-fadeout"
@@ -51,6 +55,7 @@ export default {
   },
   data() {
     return {
+      btnLoad: false,
       server,
       form: {
         region: [],
@@ -71,9 +76,11 @@ export default {
       this.listUser = data;
     },
     submit() {
+      this.btnLoad = true;
       this.server.addUserRole({
         listUser: this.listUser,
       }).then((res) => {
+        this.btnLoad = false;
         if (res.code == 200) {
           this.$message.success(res.msg);
           this.$emit('getTableList');

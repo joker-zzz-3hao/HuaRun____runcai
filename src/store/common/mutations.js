@@ -91,4 +91,8 @@ export default {
   setLoading: (state, okrLoading = false) => {
     state.okrLoading = okrLoading;
   },
+  // 设置监听左侧菜单点击时DOM宽度变化
+  setListenerWidth: (state, listenerWidth = false) => {
+    state.listenerWidth = listenerWidth;
+  },
 };

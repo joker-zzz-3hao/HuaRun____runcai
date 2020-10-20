@@ -103,6 +103,10 @@ export default {
       type: Function,
       default: noop,
     },
+    taskId: {
+      type: String,
+      default: '', //
+    },
   },
 
   data() {
@@ -283,6 +287,7 @@ export default {
         <UploadList
           disabled={this.uploadDisabled}
           listType={this.listType}
+          taskId={this.taskId}
           files={this.uploadFiles}
           on-remove={this.handleRemove}
           handlePreview={this.onPreview}>

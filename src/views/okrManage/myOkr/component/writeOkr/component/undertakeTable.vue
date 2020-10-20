@@ -200,6 +200,10 @@ export default {
       type: String,
       default: '',
     },
+    okrBelongType: {
+      type: String,
+      default: '1',
+    },
     server: {
       type: Object,
       required: true,
@@ -229,6 +233,7 @@ export default {
         menuName: '虚拟汇报',
       }],
       hasParent: true,
+
     };
   },
   created() {
@@ -263,7 +268,7 @@ export default {
     //   });
     // },
     getUndertakeOkr() {
-      this.server.getUndertakeOkr().then((res) => {
+      this.server.getUndertakeOkr({ okrBelongType: this.okrBelongType }).then((res) => {
         if (res.code == 200) {
           this.parentUndertake = [];
           this.periodList = [];

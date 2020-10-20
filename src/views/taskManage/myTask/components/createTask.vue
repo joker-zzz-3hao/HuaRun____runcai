@@ -36,11 +36,9 @@
               <el-select
                 v-model.trim="formData.taskUserId"
                 placeholder="添加执行人"
-                filterable
                 popper-class="tl-select-dropdown set-manage"
                 class="tl-select"
-                remote
-                :remote-method="getUserList"
+                filterable
               >
                 <el-option
                   v-for="item in userList"
@@ -95,47 +93,6 @@
               ></el-date-picker
             >
           </el-form-item>
-          <!-- <el-form-item label="归属项目" prop="projectVal">
-            <el-input
-              v-model.trim="formData.projectVal.projectNameCn"
-              placeholder="请选择归属项目"
-              maxlength="0"
-              @focus="projectInputFocus()"
-              class="tl-input"
-            ></el-input>
-          </el-form-item> -->
-          <!-- <div class="item-flex">
-            <el-form-item label="归属OKR" prop="okrDetailId">
-              <el-select
-                v-model.trim="formData.okrDetailId"
-                placeholder="请选择归属OKR"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="item in okrList"
-                  :key="item.okrDetailId"
-                  :label="item.okrDetailObjectKr"
-                  :value="item.okrDetailId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="归属任务过程" prop="processId">
-              <el-select
-                v-model.trim="formData.processId"
-                placeholder="请选择任务过程"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="item in processList"
-                  :key="item.processId"
-                  :label="item.processName"
-                  :value="item.processId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </div> -->
           <el-form-item label="任务描述" prop="taskDesc">
             <el-input
               placeholder="请输入任务描述"
@@ -152,7 +109,7 @@
             <file-upload
               ref="fileUpload"
               :fileList="formData.fileList"
-              :limit="5"
+              :limit="10"
               @change="fileChange"
             ></file-upload>
 
@@ -197,13 +154,6 @@
         >取消</el-button
       >
     </div>
-    <tl-selectproject
-      ref="selectProject"
-      :showProjectDialog.sync="showProjectDialog"
-      v-if="showProjectDialog"
-      :server="server"
-      @closeProjectDia="closeProjectDia"
-    ></tl-selectproject>
   </el-drawer>
 </template>
 
@@ -211,7 +161,6 @@
 import { mapState } from 'vuex';
 import fileUpload from '@/components/fileUpload/index';
 import levelblock from '@/components/levelblock';
-import selectProject from './selectProject';
 import Server from '../server';
 import CONST from '../const';
 
@@ -258,7 +207,6 @@ export default {
           },
         },
       },
-      showProjectDialog: false,
       // 文件
       acceptType: '.jpeg, .jpg, .png, .bmp, .gif, .tif, .word, .excel, .txt, .ppt, .pptx',
       dataParams: { validateCode: '', ...this.params },
@@ -281,7 +229,6 @@ export default {
 
   },
   components: {
-    'tl-selectproject': selectProject,
     'file-upload': fileUpload,
     'tl-levelblock': levelblock,
   },
@@ -314,16 +261,10 @@ export default {
         }
       });
     },
-    getUserList(name = '') {
-      const params = {
-        currentPage: 1,
-        pageSize: 20,
-        orgFullId: this.userInfo.orgList[0].orgFullId,
-        userName: name.trim(),
-      };
-      this.server.getUserListByOrgId(params).then((res) => {
+    getUserList() {
+      this.server.listOrgUserPage({ orgFullId: this.userInfo.orgList[0].orgFullId }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data;
         }
       });
     },
@@ -337,27 +278,6 @@ export default {
           this.processList = res.data.content || [];
         }
       });
-    },
-    // lengthChange(data) {
-    //   const str = data.html.replace(/<[^>]+>/g, '');
-    //   this.amount = str.length;
-    //   this.$refs.dataForm.validateField('taskDesc');
-    //   if (str.length > 500) {
-    //     this.$refs.dataForm.validateField('taskDesc');
-    //     // this.$Message.error({ content: '内容长度最大为500', duration: 3 });
-    //   }
-    // },
-    projectInputFocus() {
-      this.showProjectDialog = true;
-      this.$nextTick(() => {
-        this.$refs.selectProject.show();
-      });
-    },
-    closeProjectDia(data) {
-      this.formData.projectVal = data.project;
-    },
-    errorHandler() {
-      return true;
     },
     // 文件
     beforeUpload(file) {

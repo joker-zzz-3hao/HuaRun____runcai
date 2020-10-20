@@ -24,15 +24,21 @@
           </el-dropdown>
         </dt>
         <dd>
-          <span>项目描述:</span
-          ><em
+          <span>项目描述:</span>
+          <p
             ref="projectDesc"
             id="projectDesc"
             :class="openFlag ? 'unfold' : 'fold'"
-            >{{ `${baseInfo.projectDescription || "--"}` }}</em
           >
-          <div class="toggle-state" v-if="emHeight > 20">
-            <span @click="openFlag = !openFlag">展开</span><i></i>
+            <em id="projectDescInside">{{
+              `${baseInfo.projectDescription || "--"}`
+            }}</em>
+          </p>
+          <div class="toggle-state" v-if="pWidth == emWidth">
+            <span @click="openFlag = !openFlag">{{
+              openFlag ? "收起" : "展开"
+            }}</span
+            ><i></i>
           </div>
         </dd>
       </dl>
@@ -104,12 +110,7 @@
         </div>
       </div> -->
       <div>
-        <tl-crcloud-table
-          :total="total"
-          :currentPage.sync="currentPage"
-          :pageSize.sync="pageSize"
-          @searchList="searchProject"
-        >
+        <tl-crcloud-table :isPage="false">
           <div slot="tableContainer" class="table-container">
             <el-table :data="baseInfo.projectUserVoList" class="tl-table">
               <el-table-column prop="userName" label="姓名" min-width="140">
@@ -221,7 +222,8 @@ export default {
       isManage: false,
       openFlag: false,
       codes: [],
-      emHeight: '',
+      pWidth: '',
+      emWidth: '',
     };
   },
   components: {
@@ -245,6 +247,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      listenerWidth: (state) => state.listenerWidth,
     }),
   },
   mounted() {
@@ -358,11 +361,19 @@ export default {
       handler(val) {
         console.log(val);
         this.$nextTick(() => {
-          this.emHeight = document.getElementById('projectDesc').clientHeight;
-          console.log(this.emHeight);
+          this.pWidth = document.getElementById('projectDesc').clientWidth;
+          this.emWidth = document.getElementById('projectDescInside').clientWidth;
         });
       },
 
+    },
+    listenerWidth: {
+      handler(val) {
+        console.log(val);
+        this.pWidth = document.getElementById('projectDesc').clientWidth;
+        this.emWidth = document.getElementById('projectDescInside').clientWidth;
+      },
+      deep: true,
     },
   },
 };

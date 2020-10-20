@@ -102,7 +102,9 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="validateForm">确定</el-button>
+      <el-button type="primary" @click="validateForm" :loading="btnLoad"
+        >确定</el-button
+      >
       <el-button @click="close">取 消</el-button>
     </div>
   </el-dialog>
@@ -138,6 +140,7 @@ export default {
       labelPosition: 'left',
       server,
       showOption: false,
+      btnLoad: false,
       form: {
         functionType: 'PAGE',
         status: 'Y',
@@ -199,8 +202,10 @@ export default {
         form.classTag = '';
         form.functionEvent = '';
       }
+      this.btnLoad = true;
       this.server.addOrUpdate(form).then((res) => {
         if (res.code == 200) {
+          this.btnLoad = false;
           this.$message.success(res.msg);
           this.$emit('getMenuList');
           this.closed();

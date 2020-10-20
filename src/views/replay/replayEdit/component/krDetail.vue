@@ -175,8 +175,8 @@ export default {
       //   this.$message.error('请填写改进措施');
       //   return false;
       // }
-      if (!this.okrMain.okrReviewPojoList[index].krs[i].measure) {
-        this.okrMain.okrReviewPojoList[index].krs[i].measure = [];
+      if (this.okrMain.okrReviewPojoList[index].krs[i].measure.length == 0) {
+        this.okrMain.okrReviewPojoList[index].krs[i].measure = [''];
       }
       this.okrMain.okrReviewPojoList[index].krs[i].measure.push('');
     },

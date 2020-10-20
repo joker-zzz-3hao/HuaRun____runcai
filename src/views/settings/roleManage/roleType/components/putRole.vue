@@ -57,7 +57,11 @@
       </el-form-item>
     </el-form>
     <div class="operating-box">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+      <el-button
+        type="primary"
+        @click="submitForm"
+        class="tl-btn amt-bg-slip"
+        :loading="btnLoad"
         >保存</el-button
       >
       <el-button plain @click="close" class="tl-btn amt-border-fadeout"
@@ -93,6 +97,7 @@ export default {
       server,
       menuTreeList: [],
       selectArr: [],
+      btnLoad: false,
       showMenu: false,
       selectList: [],
       form: {
@@ -166,8 +171,10 @@ export default {
       form.functionList = this.list.map((item) => ({ functionId: item, roleId: this.roleInfo.roleId }));
       form.roleType = 'CREATION';
       form.roleId = this.roleInfo.roleId;
+      this.btnLoad = true;
       this.server.updateRole(form).then((res) => {
         if (res.code == 200) {
+          this.btnLoad = false;
           this.$emit('getSearchList');
           this.$message.success(res.msg);
           this.closed();

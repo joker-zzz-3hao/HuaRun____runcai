@@ -25,6 +25,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/system-service/sys/user/listUserPage', param);
   }
 
+  // 查询组织包含的实体和虚线汇报成员
+  listOrgUserPage(param) {
+    return this._ajaxPost('/gateway/system-service/sys/teamManagement/listOrgUserPage', param);
+  }
+
   // 查询任务过程
   queryProcess(param) {
     return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
