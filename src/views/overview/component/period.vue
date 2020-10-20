@@ -98,7 +98,7 @@ export default {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
           this.options = res.data;
-          if (res.data.length == 0 && sessionStorage.getItem('model') !== '1') {
+          if (res.data.length == 0 && sessionStorage.getItem('model') !== '1' && !this.$route.query.id) {
             this.changeTestModel(true);
             this.reload();
             sessionStorage.setItem('model', '1');
