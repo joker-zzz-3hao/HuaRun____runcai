@@ -12,6 +12,16 @@
             >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
           >
           <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              <i class="el-icon-more"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="closeProject"
+                >结束项目</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </dt>
         <dd>
           <span>项目描述:</span
