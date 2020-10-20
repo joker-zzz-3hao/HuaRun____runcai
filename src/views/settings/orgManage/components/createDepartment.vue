@@ -66,16 +66,20 @@
           ></el-input-number
           >（用于部门显示顺序）
         </el-form-item>
-        <!-- <el-form-item prop="orgSort">
-          <el-button :loading="loading" @click="saveDepart">确定</el-button>
-          <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item> -->
       </el-form>
       <div class="operating-box">
-        <el-button type="primary" class="tl-btn amt-bg-slip" @click="saveDepart"
+        <el-button
+          :loading="loading"
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          @click="saveDepart"
           >确定</el-button
         >
-        <el-button plain class="tl-btn amt-border-fadeout" @click="cancel"
+        <el-button
+          :disabled="loading"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="cancel"
           >取消</el-button
         >
       </div>

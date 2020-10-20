@@ -130,7 +130,6 @@ export default {
     switchOrg() {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
-          console.log(res.data);
           window.location.reload();
         }
       });

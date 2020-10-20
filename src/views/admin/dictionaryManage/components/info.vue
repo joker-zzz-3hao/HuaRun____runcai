@@ -21,16 +21,16 @@
     <div class="modelCreate">
       <el-form ref="dicForm" label-width="80px">
         <el-form-item label="字典编号">
-          <span>{{dicInfo.code}}</span>
+          <span>{{ dicInfo.code }}</span>
         </el-form-item>
         <el-form-item label="字典名称">
-          <span>{{dicInfo.name}}</span>
+          <span>{{ dicInfo.name }}</span>
         </el-form-item>
         <el-form-item label="状态">
-          <span>{{dicInfo.enabledFlag == "Y" ?"启用" :"停用"}}</span>
+          <span>{{ dicInfo.enabledFlag == "Y" ? "启用" : "停用" }}</span>
         </el-form-item>
         <el-form-item label="备注">
-          <span>{{dicInfo.description}}</span>
+          <span>{{ dicInfo.description || "--" }}</span>
         </el-form-item>
       </el-form>
       <el-table ref="dicTable" v-loading="tableLoading" :data="dicInfo.subList">
@@ -48,16 +48,31 @@
             ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="description"></el-table-column>
+        <el-table-column label="备注" prop="description">
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row.description || "--" }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column label="创建时间" prop="createTime">
           <template slot-scope="scope">
-            <div>{{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createTime) )}}</div>
+            <div>
+              {{
+                dateFormat(
+                  "YYYY-mm-dd HH:MM:SS",
+                  new Date(scope.row.createTime)
+                )
+              }}
+            </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="cancel">确定</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="cancel"
+        >确定</el-button
+      >
     </div>
   </el-drawer>
 </template>
