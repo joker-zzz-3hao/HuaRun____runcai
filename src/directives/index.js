@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { formatNumber } from 'accounting-js';
 
 export default (Vue) => {

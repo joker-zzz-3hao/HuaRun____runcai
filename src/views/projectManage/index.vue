@@ -17,6 +17,7 @@
           </el-form-item>
         </el-form>
         <el-button
+          :disabled="!codes.length > 0"
           type="primary"
           icon="el-icon-plus"
           @click="addProject"
@@ -55,7 +56,13 @@
               prop="projectBudget"
               label="项目总预算(元)"
               min-width="120"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <em
+                  v-money="{ value: scope.row.projectBudget, precision: 0 }"
+                ></em>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="projectCurrency"
               label="币种"
@@ -162,6 +169,7 @@
       v-if="showCreateManage"
       :server="server"
       @success="addSuccess"
+      :codes="codes"
     ></tl-create-manage>
   </div>
 </template>
@@ -187,6 +195,7 @@ export default {
       tableData: [],
       showCreateManage: false,
       isTalent: false,
+      codes: [],
     };
   },
   components: {
@@ -199,6 +208,13 @@ export default {
     }),
   },
   mounted() {
+    this.server.queryByCodes({
+      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+    }).then((res) => {
+      if (res.code == '200') {
+        this.codes = res.data;
+      }
+    });
     this.searchManage();
   },
   methods: {

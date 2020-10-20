@@ -8,10 +8,10 @@
           <div class="panner-title">
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
-            <div v-if="riskList.length > 6">
-              <el-button @click="prevSwiper">左</el-button>
-              <el-button @click="nextSwiper">右</el-button>
-            </div>
+          </div>
+          <div v-if="riskList.length > 6">
+            <i class="el-icon-caret-left" @click="prevSwiper"></i>
+            <i class="el-icon-caret-right" @click="nextSwiper"></i>
           </div>
         </div>
         <div
