@@ -48,6 +48,9 @@
           maxlength="13"
         ></el-input>
       </el-form-item>
+      <el-button @click="selectAllfun(true)" type="text">全选</el-button>
+      <el-button @click="selectAllfun(false)" type="text">清空</el-button>
+
       <el-form-item label="开放菜单功能">
         <div class="menuTreeList">
           <div class="list" v-for="(item, index) in menuTreeList" :key="index">
@@ -110,6 +113,7 @@ export default {
   data() {
     return {
       list: [],
+      checked: false,
       postMenu: false,
       btnLoad: false,
       menuTreeList: [],
@@ -209,9 +213,17 @@ export default {
         }
       });
     },
+
     // 获取选中tree key值 展示选中
     handleCheckChange() {
       this.list = this.$refs.treeMenu.getCheckedKeys();
+    },
+    selectAllfun(node) {
+      if (node) {
+        this.$refs.treeMenu.setCheckedNodes(this.data);
+      } else {
+        this.$refs.treeMenu.setCheckedNodes([]);
+      }
     },
     // 提交创建数据
     creatForm() {

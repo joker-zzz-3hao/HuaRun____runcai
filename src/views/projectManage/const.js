@@ -61,6 +61,9 @@ const APPROVAL_STATUS_LIST = [
   { value: '0', label: '待审批' },
   { value: '1', label: '已审批' },
 ];
+const PROJECT_SOURCE_MAP = [
+  { value: 'TENANT', label: '虚拟项目' },
+];
 
 export default {
   THROW_TYPE_MAP,
@@ -74,4 +77,5 @@ export default {
   PROJECT_STATUS_MAP,
   APPROVAL_STATUS_MAP,
   APPROVAL_STATUS_LIST,
+  PROJECT_SOURCE_MAP,
 };
