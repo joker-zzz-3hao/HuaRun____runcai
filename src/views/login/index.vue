@@ -14,7 +14,10 @@
             </dt>
             <dd
               class="tl-input-account"
-              :class="{'amt-txt-slip': isInputAccount,'is-error': isLoginError}"
+              :class="{
+                'amt-txt-slip': isInputAccount,
+                'is-error': isLoginError,
+              }"
             >
               <el-input
                 placeholder="请输入账户名"
@@ -26,7 +29,7 @@
                 @mouseout.native="mouseout('input-txt')"
                 ref="input-txt"
                 class="tl-input-line"
-                :class="{'amt-line-elastic': focusName == 'input-txt'}"
+                :class="{ 'amt-line-elastic': focusName == 'input-txt' }"
               ></el-input>
               <div
                 @click="removeAccound"
@@ -34,10 +37,12 @@
                 @mouseout="mouseout('input-txt')"
                 class="remove-current"
               ></div>
-              <div class="error-msg">{{errorMessage || '您输入的账户名或密码有误！'}}</div>
+              <div class="error-msg">
+                {{ errorMessage || "您输入的账户名或密码有误！" }}
+              </div>
               <div class="prompt-info">账户名</div>
             </dd>
-            <dd class="tl-input-pwd" :class="{'amt-txt-slip': isInputPwd}">
+            <dd class="tl-input-pwd" :class="{ 'amt-txt-slip': isInputPwd }">
               <el-input
                 type="password"
                 placeholder="请输入密码"
@@ -49,7 +54,7 @@
                 @mouseout.native="mouseout('input-pwd')"
                 ref="input-pwd"
                 class="tl-input-line"
-                :class="{'amt-line-elastic': focusName == 'input-pwd'}"
+                :class="{ 'amt-line-elastic': focusName == 'input-pwd' }"
                 @keyup.native.enter="login"
               ></el-input>
               <div
@@ -61,13 +66,19 @@
               <div class="prompt-info">密码</div>
             </dd>
             <dd>
-              <el-button type="primary" @click="login" class="tl-btn amt-bg-slip">
+              <el-button
+                type="primary"
+                @click="login"
+                class="tl-btn amt-bg-slip"
+              >
                 <em>登</em>
                 <em>录</em>
               </el-button>
             </dd>
             <dd>
-              <el-checkbox v-model="checked" class="tl-checkbox">记住登录账号</el-checkbox>
+              <el-checkbox v-model="checked" class="tl-checkbox"
+                >记住登录账号</el-checkbox
+              >
             </dd>
           </dl>
         </div>
@@ -113,26 +124,33 @@ export default {
     login() {
       const self = this;
       self.focusName = '';
-      self.server.login({
-        ciphertext: '',
-        loginName: self.loginName,
-        loginPwd: self.loginPwd,
-      }).then((res) => {
-        if (res.code == '200') {
-          localSave('token', res.data);
-          this.$router.push({
-            name: 'transfer',
-            query: {
-              token: res.data,
-            },
-          });
-        } else {
-          self.isLoginError = true;
-          self.focusName = '';
-          self.errorMessage = res.msg;
+      debugger;
+      if (self.loginName == '' || self.loginPwd == '') {
+        self.isLoginError = true;
+        self.focusName = '';
+        self.errorMessage = '请输入用户名和密码';
+      } else {
+        self.server.login({
+          ciphertext: '',
+          loginName: self.loginName,
+          loginPwd: self.loginPwd,
+        }).then((res) => {
+          if (res.code == '200') {
+            localSave('token', res.data);
+            this.$router.push({
+              name: 'transfer',
+              query: {
+                token: res.data,
+              },
+            });
+          } else {
+            self.isLoginError = true;
+            self.focusName = '';
+            self.errorMessage = res.msg;
           // self.$message.error(res.msg);
-        }
-      });
+          }
+        });
+      }
     },
     changeFocus(ref) {
       this.focusName = ref;

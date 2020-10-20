@@ -104,12 +104,7 @@
         </div>
       </div> -->
       <div>
-        <tl-crcloud-table
-          :total="total"
-          :currentPage.sync="currentPage"
-          :pageSize.sync="pageSize"
-          @searchList="searchProject"
-        >
+        <tl-crcloud-table :isPage="false">
           <div slot="tableContainer" class="table-container">
             <el-table :data="baseInfo.projectUserVoList" class="tl-table">
               <el-table-column prop="userName" label="姓名" min-width="140">
