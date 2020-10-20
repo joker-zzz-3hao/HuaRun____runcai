@@ -25,10 +25,13 @@
         </dt>
         <dd>
           <span>项目描述:</span
-          ><em :class="openFlag ? 'unfold' : 'fold'">{{
-            `${baseInfo.projectDescription || "--"}`
-          }}</em>
-          <div class="toggle-state">
+          ><em
+            ref="projectDesc"
+            id="projectDesc"
+            :class="openFlag ? 'unfold' : 'fold'"
+            >{{ `${baseInfo.projectDescription || "--"}` }}</em
+          >
+          <div class="toggle-state" v-if="emHeight > 20">
             <span @click="openFlag = !openFlag">展开</span><i></i>
           </div>
         </dd>
@@ -222,6 +225,7 @@ export default {
       isManage: false,
       openFlag: false,
       codes: [],
+      emHeight: '',
     };
   },
   components: {
@@ -353,6 +357,17 @@ export default {
       });
     },
   },
-  watch: {},
+  watch: {
+    'baseInfo.projectDescription': {
+      handler(val) {
+        console.log(val);
+        this.$nextTick(() => {
+          this.emHeight = document.getElementById('projectDesc').clientHeight;
+          console.log(this.emHeight);
+        });
+      },
+
+    },
+  },
 };
 </script>
