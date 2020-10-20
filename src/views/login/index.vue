@@ -6,6 +6,7 @@
           <div class="login-info-title">
             <em>润才</em>
             <span>CR-Talent</span>
+            <em v-money="{ value: 1000000, precision: 3 }"></em>
           </div>
           <dl>
             <dt>
