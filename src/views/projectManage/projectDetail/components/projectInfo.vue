@@ -77,7 +77,7 @@
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
-            <em>{{ baseInfo.projectBudget || "0" }}</em
+            <em v-money="{ value: baseInfo.projectBudget, precision: 0 }"></em
             ><span>元</span
             ><span
               >({{
