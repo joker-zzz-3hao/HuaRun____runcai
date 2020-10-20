@@ -52,6 +52,7 @@
         </div>
         <div class="operating-right">
           <el-button
+            v-if="hasPower('tenant-user-add')"
             type="primary"
             icon="el-icon-plus"
             @click="createUser"
@@ -59,6 +60,7 @@
             >创建用户</el-button
           >
           <el-button
+            v-if="hasPower('tenant-org-add')"
             type="primary"
             icon="el-icon-plus"
             @click="createDepart"
@@ -66,6 +68,7 @@
             >创建部门</el-button
           >
           <el-button
+            v-if="hasPower('tenant-user-batch-import')"
             plain
             icon="el-icon-minus"
             @click="batchImport"
@@ -107,13 +110,19 @@
                 <i class="el-icon-more el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="createDepart(data, 'create')"
+                <el-dropdown-item
+                  v-if="hasPower('tenant-org-add')"
+                  @click.native="createDepart(data, 'create')"
                   >创建部门</el-dropdown-item
                 >
-                <el-dropdown-item @click.native="createDepart(data, 'edit')"
+                <el-dropdown-item
+                  v-if="hasPower('TNT_ORG_EDIT')"
+                  @click.native="createDepart(data, 'edit')"
                   >编辑部门</el-dropdown-item
                 >
-                <el-dropdown-item @click.native="deleteDepart(data)"
+                <el-dropdown-item
+                  v-if="hasPower('TNT_ORG_EDIT')"
+                  @click.native="deleteDepart(data)"
                   >删除</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -181,7 +190,15 @@
             </el-table-column>
             <el-table-column min-width="100" align="left" label="部门负责人">
               <template slot-scope="scope">
-                <div @click="queryOrgAdmin(scope.row)" style="cursor: pointer">
+                <div
+                  @click="
+                    hasPower('set-depart-leader') &&
+                    hasPower('cancel-depart-leader')
+                      ? queryOrgAdmin(scope.row)
+                      : ''
+                  "
+                  style="cursor: pointer"
+                >
                   <el-tooltip
                     class="item"
                     effect="dark"
@@ -213,6 +230,7 @@
                     inactive-value="50"
                     v-model="scope.row.userStatus"
                     class="tl-switch"
+                    :disabled="!hasPower('TNT_ORG_EDIT')"
                   ></el-switch>
                 </div>
               </template>
@@ -595,9 +613,11 @@ export default {
 
     },
     dataChange(user) {
-      // this.$confirm('确认更改用户状态？').then(() => {
-      this.changeStatus(user);
-      // });
+      if (this.hasPower('TNT_ORG_EDIT')) {
+        // this.$confirm('确认更改用户状态？').then(() => {
+        this.changeStatus(user);
+        // });
+      }
     },
     changeStatus(user) {
       const params = {
