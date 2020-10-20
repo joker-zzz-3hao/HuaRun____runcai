@@ -16,6 +16,7 @@ const PROJECT_TYPE_MAP = {
 };
 
 const PROJECT_TYPE_LIST = [
+  { value: '', label: '全部' },
   { value: '0', label: '可行性研究项目' },
   { value: '1', label: '研发项目' },
   { value: '2', label: '运营项目' },
@@ -38,12 +39,19 @@ const FUNC_LIST = [
   { value: '4', label: '售后' },
 ];
 const THROW_TYPE_LIST = [
+  { value: '', label: '全部' },
   { value: '0', label: '经营性支出' },
   { value: '1', label: '研发支出' },
 ];
 const CURRENCY_LIST = [
   { value: '0', label: '人民币' },
   { value: '1', label: '港币' },
+];
+
+const PROJECT_STATUS_LIST = [
+  { value: '', label: '全部' },
+  { value: '0', label: '进行中' },
+  { value: '1', label: '已关闭' },
 ];
 
 const PROJECT_STATUS_MAP = {
@@ -78,4 +86,5 @@ export default {
   APPROVAL_STATUS_MAP,
   APPROVAL_STATUS_LIST,
   PROJECT_SOURCE_MAP,
+  PROJECT_STATUS_LIST,
 };

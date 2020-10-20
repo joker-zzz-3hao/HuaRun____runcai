@@ -93,9 +93,17 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.approvalStatus">{{
-                  CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
-                }}</span>
+                <span v-if="scope.row.approvalStatus">
+                  <i
+                    :class="{
+                      'el-icon-basketball': scope.row.approvalStatus == '0',
+                      'el-icon-basketball': scope.row.approvalStatus == '1',
+                    }"
+                  ></i>
+                  {{
+                    CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
+                  }}</span
+                >
                 <span v-else>--</span>
               </template>
             </el-table-column>

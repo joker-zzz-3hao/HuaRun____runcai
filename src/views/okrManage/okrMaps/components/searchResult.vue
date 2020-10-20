@@ -1,13 +1,17 @@
 <template>
   <div class="tab-cont-list">
-    <dl v-for="item in searchData" :key="item.resource_id">
+    <dl
+      v-for="item in searchData"
+      :key="item.resource_id"
+      @click="gotoView(item)"
+    >
       <dt v-if="searchType == '1'">{{ item.periodName }}</dt>
       <dd>
         <div class="user-info">
           <span>负责人</span>
           <img v-if="true" src="@/assets/images/user/user.jpg" alt />
           <em v-else class="user-name">{{ cutName(item.userName) }}</em>
-          <em @click="gotoView(item)">{{ item.userName }}</em>
+          <em>{{ item.userName }}</em>
         </div>
         <div v-if="searchType == '3'">
           <span>部门</span>
@@ -30,7 +34,7 @@
           <span>当前进度</span>
           <el-progress
             type="circle"
-            :percentage="item.okrDetailProgress"
+            :percentage="`${parseInt(item.okrDetailProgress, 10)}`"
             :width="60"
             :stroke-width="5"
             color="#4ccd79"
@@ -100,8 +104,8 @@ export default {
       this.$emit('showDetail', okrid);
     },
     gotoView(row) {
-      const data = { node: row };
-      this.$emit('takeOvierview', data);
+      // const data = { node: row };
+      this.$emit('takeOvierview', row);
     },
   },
   watch: {},
