@@ -21,4 +21,5 @@ export default {
   identity: {},
   cycleList: [],
   okrLoading: false,
+  listenerWidth: 0,
 };

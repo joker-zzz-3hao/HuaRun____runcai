@@ -30,9 +30,11 @@
             id="projectDesc"
             :class="openFlag ? 'unfold' : 'fold'"
           >
-            <em>{{ `${baseInfo.projectDescription || "--"}` }}</em>
+            <em id="projectDescInside">{{
+              `${baseInfo.projectDescription || "--"}`
+            }}</em>
           </p>
-          <div class="toggle-state">
+          <div class="toggle-state" v-if="pWidth == emWidth">
             <span @click="openFlag = !openFlag">{{
               openFlag ? "收起" : "展开"
             }}</span
@@ -220,7 +222,7 @@ export default {
       isManage: false,
       openFlag: false,
       codes: [],
-      emHeight: '',
+      pWidth: '',
       emWidth: '',
     };
   },
@@ -245,6 +247,7 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      listenerWidth: (state) => state.listenerWidth,
     }),
   },
   mounted() {
@@ -358,13 +361,19 @@ export default {
       handler(val) {
         console.log(val);
         this.$nextTick(() => {
-          this.emHeight = document.getElementById('projectDesc').clientHeight;
-          this.emWidth = document.getElementById('projectDesc').clientWidth;
-          console.log(this.emHeight);
-          console.log(this.emWidth);
+          this.pWidth = document.getElementById('projectDesc').clientWidth;
+          this.emWidth = document.getElementById('projectDescInside').clientWidth;
         });
       },
 
+    },
+    listenerWidth: {
+      handler(val) {
+        console.log(val);
+        this.pWidth = document.getElementById('projectDesc').clientWidth;
+        this.emWidth = document.getElementById('projectDescInside').clientWidth;
+      },
+      deep: true,
     },
   },
 };
