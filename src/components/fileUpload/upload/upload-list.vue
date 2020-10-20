@@ -143,7 +143,8 @@ export default {
   },
   methods: {
     cutType(name) {
-      if (name.indexOf('.') > -1) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
         return name.split('.')[1];
       } return '';
     },
