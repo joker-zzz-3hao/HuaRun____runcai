@@ -64,7 +64,11 @@
     </template>
 
     <template v-else>
-      <div class="tl-card-panel no-data" v-if="$route.query.id">
+      <div
+        class="tl-card-panel no-data"
+        v-if="$route.query.id"
+        style="box-shadow: none"
+      >
         <span class="bg-no-data"></span>
       </div>
 
@@ -104,7 +108,7 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div>下级部门：</div>
+      <div>子部门：</div>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"

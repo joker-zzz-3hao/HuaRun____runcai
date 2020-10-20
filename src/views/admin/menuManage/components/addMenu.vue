@@ -9,6 +9,7 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
+    width="30%"
   >
     <el-form
       ref="form"
@@ -101,11 +102,27 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <!-- <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="validateForm" :loading="btnLoad"
         >确定</el-button
       >
       <el-button @click="close">取 消</el-button>
+    </div> -->
+    <div class="operating-box">
+      <el-button
+        :loading="btnLoad"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="validateForm"
+        >确定</el-button
+      >
+      <el-button
+        :disabled="loading"
+        plain
+        class="tl-btn amt-border-fadeout"
+        @click="close"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>
