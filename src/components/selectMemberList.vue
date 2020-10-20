@@ -3,7 +3,7 @@
     <el-input
       placeholder="输入用户名称/LDAP账号"
       minlength="64"
-      @keyup.native="fuzzyQueryUser()"
+      @keyup.native="searchOut()"
       v-model="keyWord"
       class="tl-input-search"
     >
@@ -118,6 +118,7 @@ export default {
       keyWord: '',
       light: 0,
       showLoad: true,
+      time: null,
     };
   },
   mounted() {
@@ -255,6 +256,12 @@ export default {
       this.roulelist.splice(index, 1);
       this.member = this.roulelist;
       this.$emit('getMember', this.member);
+    },
+    searchOut() {
+      clearTimeout(this.time);
+      this.time = setTimeout(() => {
+        this.fuzzyQueryUser();
+      }, 300);
     },
 
   },
