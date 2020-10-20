@@ -124,7 +124,6 @@ export default {
     login() {
       const self = this;
       self.focusName = '';
-      debugger;
       if (self.loginName == '' || self.loginPwd == '') {
         self.isLoginError = true;
         self.focusName = '';
