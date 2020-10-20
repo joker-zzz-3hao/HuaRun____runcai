@@ -55,7 +55,13 @@
               prop="projectBudget"
               label="项目总预算(元)"
               min-width="120"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <em
+                  v-money="{ value: scope.row.projectBudget, precision: 0 }"
+                ></em>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="projectCurrency"
               label="币种"
