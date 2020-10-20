@@ -3,7 +3,7 @@
     <el-input
       placeholder="输入用户名称/LDAP账号"
       minlength="64"
-      @keyup.native="fuzzyQueryUser()"
+      @keyup.native="searchOut()"
       v-model="keyWord"
       class="tl-input-search"
     >
@@ -48,12 +48,12 @@
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
                   <div class="user-name" v-else>{{ checkName(item.name) }}</div>
                 </div>
-                <el-tooltip
+                <!-- <el-tooltip
                   :content="'LDAP账号：' + item.userAccount"
                   placement="top"
-                >
-                  <em>{{ item.name }}</em>
-                </el-tooltip>
+                > -->
+                <em>{{ item.name }}({{ item.userAccount }})</em>
+                <!-- </el-tooltip> -->
               </el-checkbox>
               <div v-else class="flex-sb">
                 <em>{{ item.name }}</em>
@@ -118,6 +118,7 @@ export default {
       keyWord: '',
       light: 0,
       showLoad: true,
+      time: null,
     };
   },
   mounted() {
@@ -245,6 +246,7 @@ export default {
           name: item.userName,
           orgId: item.orgId,
           parentId: item.orgId,
+          userAccount: item.userAccount,
           type: 'USER',
         }));
       });
@@ -254,6 +256,12 @@ export default {
       this.roulelist.splice(index, 1);
       this.member = this.roulelist;
       this.$emit('getMember', this.member);
+    },
+    searchOut() {
+      clearTimeout(this.time);
+      this.time = setTimeout(() => {
+        this.fuzzyQueryUser();
+      }, 300);
     },
 
   },
