@@ -106,7 +106,7 @@ import personMultiple from '@/components/personMultiple';
 import validateMixin from '../validateMixin';
 
 export default {
-  name: 'createdic',
+  name: 'editProcess',
   mixins: [validateMixin],
   components: {
     'tl-personmultiple': personMultiple,
@@ -116,12 +116,6 @@ export default {
       type: Object,
       default() {
         return {};
-      },
-    },
-    optionType: {
-      type: String,
-      default() {
-        return 'add';
       },
     },
     processObj: {
