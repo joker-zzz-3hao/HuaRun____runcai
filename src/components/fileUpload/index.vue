@@ -58,7 +58,7 @@ export default {
     },
     accept: {
       type: String,
-      default: 'image/jpeg, image/png, image/bmp, image/gif, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf',
+      default: 'image/jpeg, image/png, image/bmp, image/gif, application/msword, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .pptx',
     },
     tips: {
       type: String,
@@ -182,19 +182,19 @@ export default {
         let result = null;
         if (file.response && file.response.code == 200) {
           const {
-            url, resourceId, resourceName, itsmResourceId, uploadDate,
+            url, resourceId, resourceName, itsmResourceId, uploadDate, resourceUrl,
           } = file.response.data;
           result = {
-            name: resourceName, url, resourceId, resourceName, itsmResourceId, uploadDate,
+            name: resourceName, url, resourceId, resourceName, itsmResourceId, uploadDate, resourceUrl,
           };
         } else {
           const data = this.fileList.filter((item) => item.uid == file.uid)[0];
           if (data) {
             const {
-              url, resourceId, resourceName, itsmResourceId, uploadDate,
+              url, resourceId, resourceName, itsmResourceId, uploadDate, resourceUrl,
             } = data;
             result = {
-              name: resourceName, url, resourceId, resourceName, itsmResourceId, uploadDate,
+              name: resourceName, url, resourceId, resourceName, itsmResourceId, uploadDate, resourceUrl,
             };
           }
         }
