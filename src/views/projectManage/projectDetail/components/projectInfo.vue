@@ -143,7 +143,10 @@
             </el-table-column>
             <el-table-column label="项目经理" min-width="120">
               <template slot-scope="scope">
-                <div v-if="scope.row.projectUserType == '1'">
+                <div
+                  v-if="scope.row.projectUserType == '1'"
+                  :class="{ 'is-focus': scope.row.projectUserType == '1' }"
+                >
                   <i class="el-icon-medal"></i>
                   <span>项目经理</span>
                 </div>

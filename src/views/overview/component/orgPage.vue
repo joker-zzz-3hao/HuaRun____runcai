@@ -209,7 +209,7 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1') {
+          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
             this.changeTestModel(true);
             this.reload();
             sessionStorage.setItem('modelOkr', '1');
