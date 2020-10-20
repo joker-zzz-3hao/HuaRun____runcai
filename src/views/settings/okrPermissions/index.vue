@@ -33,7 +33,7 @@
             >
           </dd>
         </dl>
-        <el-form ref="form" label-width="110px" class="tl-form">
+        <el-form ref="form" label-width="130px" class="tl-form">
           <dt style="margin-bottom: 20px">
             <span>公司OKR ( 根组织OKR ) 审批人设置</span>
           </dt>
@@ -57,11 +57,11 @@
           <dt style="margin-bottom: 20px">
             <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
           </dt>
-          <el-form-item label="设置审批人：">
+          <el-form-item label="设置复盘沟通人：">
             <el-input
               v-model="khUser.userName"
               :disabled="true"
-              placeholder="请设置公司OKR（根组织OKR）审批人"
+              placeholder="请设置公司OKR（根组织OKR）复盘沟通人"
               style="width: 350px"
               class="tl-input"
             ></el-input>

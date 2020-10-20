@@ -273,17 +273,19 @@ export default {
       // this.queryPersonalOkr();
       this.weeklyData = {};
       if (item.weeklyId) {
-        this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
-          if (res.code == 200) {
-            this.weeklyType = String(res.data.weeklyType);
-            this.weeklyData = res.data;
-          }
-          this.newPage = false;// 清空页面实例，重新加载新页面
-          this.$nextTick(() => {
-            this.newPage = true;
+        if (this.hasPower('weekly-detail-query')) {
+          this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
+            if (res.code == 200) {
+              this.weeklyType = String(res.data.weeklyType);
+              this.weeklyData = res.data;
+            }
+            this.newPage = false;// 清空页面实例，重新加载新页面
+            this.$nextTick(() => {
+              this.newPage = true;
+            });
+            this.getTypeConfig();// 在这调用，防止俩标签闪烁
           });
-          this.getTypeConfig();// 在这调用，防止俩标签闪烁
-        });
+        }
       } else if (!item.weeklyId && !this.timeDisabled) { // 以前的周 未填写周报
         this.newPage = false;// 清空页面实例，重新加载新页面
         this.$nextTick(() => {

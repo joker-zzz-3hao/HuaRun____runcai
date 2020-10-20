@@ -518,7 +518,7 @@
           </div>
           <!-- 点赞 -->
           <div style="margintop: 50px">
-            <el-button @click="support(1)"
+            <el-button @click="support(1)" v-if="hasPower('weekly-support')"
               >送金条({{ supportCount }})</el-button
             >
           </div>

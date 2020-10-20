@@ -553,18 +553,20 @@ export default {
       const params = {
         ...this.formData,
       };
-      this.server.queryTeamWeeklyList(params).then((res) => {
-        if (res.code == 200) {
-          this.tableData = res.data.content;
-          this.total = res.data.total;
-          this.formData.currentPage = res.data.currentPage;
-          this.formData.pageSize = res.data.pageSize;
-        } else {
-          this.$message.error(res.msg);
-        }
-        this.tableLoading = true;
-        this.isQuickLook = false;
-      });
+      if (this.hasPower('weekly-list')) {
+        this.server.queryTeamWeeklyList(params).then((res) => {
+          if (res.code == 200) {
+            this.tableData = res.data.content;
+            this.total = res.data.total;
+            this.formData.currentPage = res.data.currentPage;
+            this.formData.pageSize = res.data.pageSize;
+          } else {
+            this.$message.error(res.msg);
+          }
+          this.tableLoading = true;
+          this.isQuickLook = false;
+        });
+      }
     },
     weeklyInfo(weekly) {
       if (weekly.weeklyId) {
@@ -696,15 +698,17 @@ export default {
         this.canEdit = calender.canEdit;
       }
       if (this.formData.queryType) {
-        this.server.lookQuickly(this.formData).then((res) => {
-          if (res.code == 200) {
-            this.tableData = res.data.content;
-            this.total = res.data.total;
-            this.formData.currentPage = res.data.currentPage;
-            this.formData.pageSize = res.data.pageSize;
-          }
-          this.tableLoading = true;
-        });
+        if (this.hasPower('weekly-look')) {
+          this.server.lookQuickly(this.formData).then((res) => {
+            if (res.code == 200) {
+              this.tableData = res.data.content;
+              this.total = res.data.total;
+              this.formData.currentPage = res.data.currentPage;
+              this.formData.pageSize = res.data.pageSize;
+            }
+            this.tableLoading = true;
+          });
+        }
       } else {
         this.getTeamWeekly();
       }
@@ -762,7 +766,7 @@ export default {
           //  1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
           // 2、当组织切换至别的部门时不显示该按钮:
           // 3、不是部门负责人不显示该按钮:
-          this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId && val.isLeader;
+          this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId && val.isLeader && this.hasPower('weekly-notice');
         }
       },
     },
