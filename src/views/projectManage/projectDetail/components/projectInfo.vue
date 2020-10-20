@@ -141,7 +141,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevel" label="项目经理" min-width="120">
+            <el-table-column label="项目经理" min-width="120">
               <template slot-scope="scope">
                 <div v-if="scope.row.projectUserType == '1'">
                   <i class="el-icon-medal"></i>
@@ -157,10 +157,10 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevel" label="级别" min-width="120">
+            <el-table-column prop="userLevelName" label="级别" min-width="120">
               <template slot-scope="scope">
-                <span v-if="scope.row.userLevel">{{
-                  scope.row.userLevel
+                <span v-if="scope.row.userLevelName">{{
+                  scope.row.userLevelName
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -171,9 +171,23 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPost" label="职能" min-width="180">
+            <el-table-column prop="userPostName" label="职能" min-width="180">
               <template slot-scope="scope">
-                <span v-if="scope.row.userPost">{{ scope.row.userPost }}</span>
+                <span v-if="scope.row.userPostName">{{
+                  scope.row.userPostName
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="userCompanyName"
+              label="所属公司"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.userCompanyName">{{
+                  scope.row.userCompanyName
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>

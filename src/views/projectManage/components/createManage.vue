@@ -71,16 +71,30 @@
           </el-option>
         </el-select>
         <el-select
+          v-model="formData.userCompany"
+          placeholder="请选择所属公司"
+          popper-class="select-dialog"
+          class="tl-select"
+        >
+          <el-option
+            v-for="item in companyList"
+            :key="item.value"
+            :label="item.meaning"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
           v-model="formData.userLevel"
           placeholder="请选择级别"
           popper-class="select-dialog"
           class="tl-select"
         >
           <el-option
-            v-for="item in CONST.LEVEL_LIST"
+            v-for="item in levelList"
             :key="item.value"
-            :label="item.label"
-            :value="item.label"
+            :label="item.meaning"
+            :value="item.value"
           >
           </el-option>
         </el-select>
@@ -183,16 +197,20 @@ export default {
         projectName: '',
         projectDesc: '',
         projectManager: '',
+        userCompany: '',
         totalBudget: 0,
         currency: '0',
         projectDate: [],
+        userLevel: '',
         startDate: '',
         endDate: '',
         orgIdList: [],
       },
       projectManagerList: [],
       projectTypeList: [],
-      throwTypeList: [],
+      levelList: [],
+      funcList: [],
+      companyList: [],
       departmentData: [],
       rules: {
         projectName: [
@@ -233,6 +251,12 @@ export default {
         return {};
       },
     },
+    codes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   computed: {},
   mounted() {
@@ -242,6 +266,21 @@ export default {
   methods: {
     show() {
       this.visible = true;
+      this.codes.forEach((item) => {
+        switch (item.code) {
+          case 'PROJECT_EMPLOYEE_LEVEL':
+            this.levelList = item.subList;
+            break;
+          case 'PROJECT_TECH_TYPE':
+            this.funcList = item.subList;
+            break;
+          case 'PROJECT_EMPLOYEE_COMPANY':
+            this.companyList = item.subList;
+            break;
+          default:
+            break;
+        }
+      });
     },
     getUserList() {
       this.server.projectUserList({}).then((res) => {
@@ -280,6 +319,7 @@ export default {
             projectBeginDate: this.formData.startDate,
             projectEndDate: this.formData.endDate,
             userLevel: this.formData.userLevel,
+            userCompany: this.formData.userCompany,
             projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
             if (res.code == '200') {
