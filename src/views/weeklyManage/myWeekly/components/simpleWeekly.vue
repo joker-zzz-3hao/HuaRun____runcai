@@ -369,7 +369,7 @@
         </span>
       </dd>
     </dl>
-    <div class="btn-box">
+    <div class="btn-box" v-if="hasPower('weekly-submit')">
       <el-button
         v-if="canEdit && canUpdate"
         type="primary"
@@ -926,7 +926,6 @@ export default {
         }
       });
     },
-
     renderHeader(h, { column }) {
       // 这里在最外层插入一个div标签
       return h('div', [// h即为cerateElement的简写

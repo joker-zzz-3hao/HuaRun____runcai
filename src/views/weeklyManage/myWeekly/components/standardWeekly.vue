@@ -524,7 +524,7 @@
         </span>
       </dd>
     </dl>
-    <div class="btn-box">
+    <div class="btn-box" v-if="hasPower('weekly-submit')">
       <el-button
         :loading="commitLoading"
         v-if="canEdit && canUpdate"

@@ -6,7 +6,6 @@
         :pageSize.sync="formData.pageSize"
         :currentPage.sync="formData.currentPage"
         @searchList="searchList"
-        layout="prev, pager, next, jumper"
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" :empty-text="emptyText" class="tl-table">
