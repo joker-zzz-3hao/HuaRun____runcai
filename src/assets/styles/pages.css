@@ -3647,6 +3647,7 @@
 }
 
 .project-description {
+  margin: 0 0 30px 0;
   padding: 20px;
   background: #f4f6f8;
 }
@@ -3718,6 +3719,79 @@
   display: flex;
   flex: 1;
   color: #879099;
+}
+
+.project-description .dl-list {
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project-description .dl-item {
+  margin: 10px 30px 10px 0;
+  flex: 0;
+  flex-basis: calc(33% - 18px);
+}
+
+.project-description .dl-item:nth-child(3n) {
+  margin-right: 0;
+}
+
+.project-description .dl-item + .dl-item:last-child {
+  margin: 10px 30px 10px 0;
+}
+
+.project-description .dl-item dt {
+  margin: 0 20px 0 0;
+  display: flex;
+}
+
+.project-description .dl-item dt span {
+  color: #acb6bf;
+  min-width: 86px;
+}
+
+.project-description .dl-item dd {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+}
+
+.project-description .dl-item dd .user-info {
+  margin: 0 6px 0 0;
+}
+
+.project-members .card-title {
+  margin: 0;
+}
+
+.project-members .tl-btn.is-plain {
+  padding-right: 0;
+}
+
+.project-members .user-info {
+  margin: 0 6px 0 0;
+}
+
+.project-manage .table-container > .tl-table td,
+.project-members .tl-table td {
+  height: 54px;
+}
+
+.tl-dialog .add-members {
+  width: 80vw;
+}
+
+.tl-dialog .add-members .tl-table {
+  margin: 20px 0 0 0;
+}
+
+.tl-dialog .add-members .tl-table .el-form-item {
+  margin-bottom: 0;
+}
+
+.tl-dialog .add-members .tl-table td {
+  height: 54px;
 }
 
 /* =========================================================租户管理================================================================== */

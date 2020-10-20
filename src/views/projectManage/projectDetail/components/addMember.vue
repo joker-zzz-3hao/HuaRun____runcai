@@ -1,36 +1,43 @@
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :visible="visible"
-      @close="close"
-      title="添加成员"
-      :close-on-click-modal="false"
-    >
-      <span>成员:</span>
-      <el-select
-        v-model="keyword"
-        placeholder="请输入成员姓名"
-        filterable
-        reserve-keyword
-        :remote-method="filterMembers"
-        popper-class="tl-select-dropdown user-list"
-        class="tl-select"
-        @change="changeMember"
-        :loading="loading"
-      >
-        <el-option
-          v-for="(item, index) in projectManagerList"
-          :key="index + item.userId"
-          :label="item.userName"
-          :value="item.userId"
-        >
-          <dl class="user-info">
-            <dd>{{ item.userName }}</dd>
-            <dd>{{ item.orgName }}</dd>
-          </dl>
-        </el-option>
-      </el-select>
+  <el-dialog
+    :append-to-body="true"
+    :visible="visible"
+    @closed="closed"
+    :before-close="close"
+    title="添加成员"
+    :close-on-click-modal="false"
+    custom-class="add-members"
+    class="tl-dialog"
+  >
+    <div class="cont-area">
+      <dl class="layout-rows">
+        <dt><em>成员</em></dt>
+        <dd>
+          <el-select
+            v-model="keyword"
+            placeholder="请输入成员姓名"
+            filterable
+            reserve-keyword
+            :remote-method="filterMembers"
+            popper-class="tl-select-dropdown user-list"
+            class="tl-select"
+            @change="changeMember"
+            :loading="loading"
+          >
+            <el-option
+              v-for="(item, index) in projectManagerList"
+              :key="index + item.userId"
+              :label="item.userName"
+              :value="item.userId"
+            >
+              <dl class="user-info">
+                <dd>{{ item.userName }}</dd>
+                <dd>{{ item.orgName }}</dd>
+              </dl>
+            </el-option>
+          </el-select>
+        </dd>
+      </dl>
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-form :model="dataForm" ref="dataForm">
@@ -55,6 +62,7 @@
                     <el-select
                       v-model="scope.row.level"
                       placeholder="请选择级别"
+                      class="tl-select"
                     >
                       <el-option
                         v-for="item in levelList"
@@ -82,6 +90,7 @@
                     <el-select
                       v-model="scope.row.funcName"
                       placeholder="请选择职能"
+                      class="tl-select"
                     >
                       <el-option
                         v-for="item in funcList"
@@ -113,6 +122,7 @@
                     <el-select
                       v-model="scope.row.companyName"
                       placeholder="请选择所属公司"
+                      class="tl-select"
                     >
                       <el-option
                         v-for="item in companyList"
@@ -130,7 +140,7 @@
                 label="所属部门"
                 min-width="140"
               ></el-table-column>
-              <el-table-column fixed="right" label="操作" width="180">
+              <el-table-column label="操作" width="55">
                 <template slot-scope="scope">
                   <el-button
                     @click="deleteMember(scope.$index)"
@@ -144,23 +154,19 @@
           </el-form>
         </div>
       </tl-crcloud-table>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="addMembers">确 定</el-button>
-      </span> -->
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addMembers" class="tl-btn amt-bg-slip"
-          >确定</el-button
-        >
-        <el-button
-          plain
-          @click="visible = false"
-          class="tl-btn amt-border-fadeout"
-          >取消</el-button
-        >
-      </div>
-    </el-dialog>
-  </div>
+    </div>
+    <div class="operating-box">
+      <el-button
+        plain
+        @click="visible = false"
+        class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
+      <el-button type="primary" @click="addMembers" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+    </div>
+  </el-dialog>
 </template>
 
 <script>
