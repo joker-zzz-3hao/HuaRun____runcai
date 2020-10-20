@@ -302,7 +302,7 @@ export default {
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: user.userId, name: chename, userId: user.userId, tenantId: user.tenantId,
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
             },
           });
         }

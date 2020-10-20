@@ -297,7 +297,7 @@ export default {
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: node.userId, name: encodeURI(node.userName), userId: node.userId, tenantId: node.tenantId,
+              id: node.orgId, name: encodeURI(node.userName), userId: node.userId, tenantId: node.tenantId,
             },
           });
         }
