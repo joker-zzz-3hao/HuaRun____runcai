@@ -77,6 +77,7 @@
             <el-input
               maxlength="50"
               v-model.trim="formData.taskTitle"
+              placeholder="请输入任务标题"
               class="tl-input"
             ></el-input
           ></el-form-item>
@@ -244,6 +245,7 @@ export default {
   data() {
     return {
       server,
+      route: '',
       showDialog: false,
       userList: [],
       treeData: [],
@@ -286,6 +288,7 @@ export default {
         name: '通知',
       }];
     }
+    this.route = this.$route.name;
   },
   mounted() {},
   computed: {
@@ -295,7 +298,14 @@ export default {
   },
   methods: {
     showDia() {
-      this.showDialog = true;
+      this.showDialog = !this.showDialog;
+      this.formData = {
+        userId: '',
+        noticeType: '1',
+        noticeContent: '',
+        taskTitle: '',
+        userName: '',
+      };
     },
     remoteMethod(name) {
       this.server.getUserListByOrgId({
@@ -334,11 +344,12 @@ export default {
             this.server.sendMessage(params).then((res) => {
               if (res.code == 200) {
                 this.$message.success('发送成功');
-                this.showDialog = false;
                 this.formData = {
                   userId: '',
                   noticeType: '1',
                   noticeContent: '',
+                  taskTitle: '',
+                  userName: '',
                 };
               }
             });
@@ -350,9 +361,14 @@ export default {
             };
             this.server.appointSave(params).then((res) => {
               if (res.code == 200) {
-                this.$message.success('提交成功');
-                this.$emit('success');
-                this.close();
+                this.$message.success('发送成功');
+                this.formData = {
+                  userId: '',
+                  noticeType: '2',
+                  noticeContent: '',
+                  taskTitle: '',
+                  userName: '',
+                };
               }
             });
           }
@@ -378,7 +394,19 @@ export default {
       this.$refs.asistant.clearValidate();
     },
   },
-  watch: {},
+  watch: {
+    // 路由切换关闭小助手
+    '$route.name': {
+      handler(newVal) {
+        if (this.route != newVal) {
+          this.showDialog = false;
+          this.route = '';
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   updated() {},
   beforeDestroy() {},
 };

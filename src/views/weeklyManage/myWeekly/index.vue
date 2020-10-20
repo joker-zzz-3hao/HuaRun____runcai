@@ -131,11 +131,13 @@ export default {
       });
     },
     getProjectList() {
-      this.server.queryOrgProject({ flag: '0' }).then((res) => {
-        if (res.code == 200) {
-          this.projectList = res.data;
-        }
-      });
+      if (this.hasPower('weekly-project-query')) {
+        this.server.queryOrgProject({ flag: '0' }).then((res) => {
+          if (res.code == 200) {
+            this.projectList = res.data;
+          }
+        });
+      }
     },
     // queryTeamOkr() {
     //   if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
