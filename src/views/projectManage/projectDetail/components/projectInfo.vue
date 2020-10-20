@@ -97,10 +97,10 @@
         <dl class="dl-item">
           <dt><span>项目类型</span></dt>
           <dd>
-            <em>{{ CONST.PROJECT_TYPE_MAP[baseInfo.projectType] || "--" }}</em
-            ><span v-if="baseInfo.projectSourceSystem">{{
-              baseInfo.projectSourceSystem
-            }}</span>
+            <em>{{ baseInfo.projectType || "--" }}</em
+            ><span v-if="baseInfo.projectSourceSystem == 'TENANT'"
+              >虚拟项目</span
+            >
           </dd>
         </dl>
       </div>
