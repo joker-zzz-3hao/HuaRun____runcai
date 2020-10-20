@@ -33,19 +33,21 @@
         </el-checkbox-group>
       </div>
       <div slot="reference">
-        <div v-if="modelVal.length < 1">{{ this.title }}</div>
-        <div v-for="p in cutPic" :key="p.userId" class="user-info">
-          <img v-if="p.headUrl" :src="p.headUrl" alt="" />
-          <div v-else class="user-name">
-            <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+        <template v-if="showSelect">
+          <div v-if="modelVal.length < 1">{{ this.title }}</div>
+          <div v-for="p in cutPic" :key="p.userId" class="user-info">
+            <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+            <div v-else class="user-name">
+              <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+            </div>
           </div>
-        </div>
-        <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
-        <span v-if="modelVal.length > 0" @click="clear">
-          <i class="el-icon-circle-close"></i
-        ></span>
-
-        <i :class="arrowClass"></i>
+          <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
+          <span v-if="modelVal.length > 0" @click="clear">
+            <i class="el-icon-circle-close"></i
+          ></span>
+          <i :class="arrowClass"></i>
+        </template>
+        <template v-else><i class="el-icon-circle-plus-outline"></i></template>
       </div>
     </el-popover>
   </div>
@@ -96,6 +98,10 @@ export default {
       type: String,
       default: '请选择',
     },
+    showSelect: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     filterCreate() {
@@ -118,6 +124,7 @@ export default {
     },
   },
   created() {
+    this.searchUser = this.modelVal;
   },
   methods: {
     handleClick() {

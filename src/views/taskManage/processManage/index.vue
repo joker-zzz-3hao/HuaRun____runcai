@@ -136,7 +136,6 @@
     </div>
     <tl-add-process
       ref="customProcess"
-      :optionType="optionType"
       :processObj="processObj"
       @closeAddProcess="closeAddProcess"
       v-if="showCustomProcess"
@@ -149,7 +148,6 @@
       :exist.sync="showEditProcessDialog"
       :server="server"
       :processObj="processObj"
-      :optionType="optionType"
       @closeDialog="closeDialog"
     ></tl-edit-process>
   </div>

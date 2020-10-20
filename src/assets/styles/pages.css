@@ -3651,18 +3651,38 @@
   background: #f4f6f8;
 }
 
-.project-description > dl dt {
+.project-description > dl dt,
+.project-description > dl dd {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .project-description > dl dt em {
-  margin: 0 10px 0 0;
+  margin: 0 10px;
   flex: 1;
   font-size: 16px;
   font-weight: 500;
   color: #26282b;
+}
+
+.project-description > dl .el-dropdown {
+  color: #bcc4cc;
+  transition: all .4s ease-out;
+}
+
+.project-description > dl .el-dropdown:hover {
+  color: #685df1;
+}
+
+.project-description > dl dd span {
+  color: #879099;
+}
+
+.project-description > dl dd em {
+  margin: 0 10px 0 4px;
+  flex: 1;
+  color: #879099;
 }
 
 /* =========================================================租户管理================================================================== */

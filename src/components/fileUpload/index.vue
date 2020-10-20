@@ -53,7 +53,7 @@ export default {
     // 单位M
     maxFileSzie: {
       type: Number,
-      default: 5,
+      default: 30,
     },
     accept: {
       type: String,

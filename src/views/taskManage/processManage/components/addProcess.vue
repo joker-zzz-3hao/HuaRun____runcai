@@ -73,51 +73,20 @@
                 小范围使用
                 <span>(所加入的成员均可使用)</span>
               </el-checkbox>
-              <div v-if="localUser">
-                <span>添加成员</span>
-                <i
-                  style="cursor: pointer"
-                  @click="addMember"
-                  class="el-icon-plus"
-                ></i>
-                <el-select
-                  v-model.trim="formData.userIdList"
-                  filterable
-                  placeholder="请输入成员姓名"
-                  remote
-                  :remote-method="remoteMethod"
-                  @visible-change="visibleChange"
-                  clearable
-                  multiple
-                >
-                  <el-option
-                    v-for="item in userList"
-                    :key="item.userId"
-                    :label="item.userName"
-                    :value="item.userId"
-                  >
-                    <span style="float: left">
-                      <el-avatar
-                        :size="30"
-                        :src="item.headUrl"
-                        @error="errorHandler"
-                      >
-                        <div v-if="item.userName" class="user-name">
-                          <em>{{
-                            item.userName.substring(item.userName.length - 2)
-                          }}</em>
-                        </div>
-                      </el-avatar>
-                    </span>
-                    <span style="float: left; marginleft: 5px">{{
-                      item.userName
-                    }}</span>
-                    <!-- <span style="float: right">
-                  <el-checkbox @change="selectChange(item)" v-model="item.userId"></el-checkbox>
-                  </span>-->
-                  </el-option>
-                </el-select>
-              </div>
+              <dl v-if="localUser">
+                <dt>添加成员</dt>
+                <dd v-for="p in cutPic" :key="p.userId" class="user-info">
+                  <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+                  <div v-else class="user-name">
+                    <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+                  </div>
+                </dd>
+                <tl-personmultiple
+                  :userList="userList"
+                  v-model="formData.userIdList"
+                  :showSelect="false"
+                ></tl-personmultiple>
+              </dl>
               <el-checkbox v-model="personalUser" @change="selectPersonalUser"
                 >个人使用</el-checkbox
               >
@@ -170,19 +139,16 @@
 
 <script>
 import { mapState } from 'vuex';
+import personMultiple from '@/components/personMultiple';
 import Server from '../server';
 
 const server = new Server();
 export default {
-  name: '',
-  components: {},
+  name: 'addProcess',
+  components: {
+    'tl-personmultiple': personMultiple,
+  },
   props: {
-    optionType: {
-      type: String,
-      default() {
-        return 'create';
-      },
-    },
     processObj: {
       type: Object,
       default() {
@@ -236,19 +202,6 @@ export default {
     }
     this.formData.orgId = this.userInfo.orgId;
     this.remoteMethod();
-    // if (this.optionType == 'edit') {
-    //   this.server.queryProcessInfo({ processId: this.processObj.processId }).then((res) => {
-    //     if (res.code == 200) {
-    //       res.data.forEach((user) => {
-    //         if (user.userId) {
-    //           this.formData.userIdList.push(user.userId);
-    //         }
-    //       });
-    //     }
-    //   });
-    //   this.formData.taskProcessQueryType = this.processObj.taskProcessQueryType;
-    //   this.formData.processName = this.processObj.processName;
-    // }
   },
   mounted() {},
   computed: {
@@ -264,6 +217,17 @@ export default {
     },
     personalUser() {
       return this.formData.taskProcessQueryType == '3';
+    },
+    cutPic() {
+      const list = [];
+      this.formData.userIdList.forEach((id) => {
+        this.userList.forEach((uitem) => {
+          if (uitem.userId == id) {
+            list.push(uitem);
+          }
+        });
+      });
+      return list;
     },
   },
   methods: {
