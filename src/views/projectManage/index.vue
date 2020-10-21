@@ -210,7 +210,12 @@
               min-width="120"
             ></el-table-column>
 
-            <el-table-column fixed="right" label="操作" width="50">
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="50"
+              v-if="tableData.length > 0"
+            >
               <template slot-scope="scope">
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
