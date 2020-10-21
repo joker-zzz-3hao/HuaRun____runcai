@@ -11,7 +11,7 @@ export default {
 
         /* eslint no-useless-escape:off */
       } else if (!/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*()])/.test(value)) {
-        callback('只支持设置以大小写字母、数字和包含特殊字符~!@#$%^&*()为组合的密码');
+        callback('请以字母开头，可包含大小写字母、数字和包含特殊字符~!@#$%^&*()');
       } else if (/[\u4E00-\u9FA5]/g.test(value)) {
         callback('不支持中文');
       } else {

@@ -1,6 +1,6 @@
 <template>
   <div class="assistant" :class="{ 'is-focus': showDialog }">
-    <i @click="showDia" class="el-icon-chat-dot-round"></i>
+    <i @click="showDia"></i>
     <div
       class="assistant-popup"
       v-if="showDialog"
