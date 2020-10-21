@@ -11,7 +11,7 @@
             <em>状态</em>
           </dt>
           <dd>
-            <!-- <i class="el-icon-sunny"></i> -->
+            <i class="el-icon-sunny"></i>
             <em>{{ CONST.STATUS_LIST_MAP[okrMain.status] }}</em>
           </dd>
         </dl>
@@ -29,13 +29,10 @@
         </dl>
         <dl class="okr-follow">
           <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
-            <i class="el-icon-plus"></i><em>关注</em>
+            <i></i><em>关注</em>
           </dd>
           <dd v-show="okrMain.supported == '1'" @click="cancelFocus(okrMain)">
-            <div :class="{ 'is-follow': okrMain.supported == '1' }">
-              <i class="el-icon-check"></i>
-            </div>
-            <em>已关注</em>
+            <i></i><em>已关注</em>
           </dd>
         </dl>
         <dl class="okr-progress">
@@ -179,11 +176,13 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  beforeUpdate() {
-    if (!this.periodId) {
-      this.setList();
-    }
-  },
+  // created() {
+  //   if (!this.periodId) {
+  //     this.$nextTick(() => {
+  //       this.setList();
+  //     });
+  //   }
+  // },
   methods: {
     ...mapMutations('common', ['setOrg', 'changeTestModel', 'setCycleList']),
     goUndertakeMaps(id, name) {
