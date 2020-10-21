@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-drawer
-      title="通知内容"
       :visible.sync="showDetail"
       :with-header="true"
       @close="closed"
@@ -11,21 +10,27 @@
       :modal-append-to-body="false"
       :close-on-click-modal="false"
       :show-close="true"
+      custom-class="custom-drawer"
       class="tl-drawer"
     >
-      <div>
-        <div>{{data.msgContent}}</div>
-        <div style="display:flex;justify-content: space-between;">
-          <div>
-            <span>通知人：</span>
-            <span>{{data.sendUserId}}</span>
-          </div>
-          <div>
-            <span>通知时间：</span>
-            <span>{{data.createDate}}</span>
+      <div slot="title" class="flex-sb">
+        <div class="drawer-title">通知内容</div>
+      </div>
+      <el-scrollbar>
+        <div class="cont-box">
+          <div>{{ data.msgContent }}</div>
+          <div style="display: flex; justify-content: space-between">
+            <div>
+              <span>通知人：</span>
+              <span>{{ data.sendUserId }}</span>
+            </div>
+            <div>
+              <span>通知时间：</span>
+              <span>{{ data.createDate }}</span>
+            </div>
           </div>
         </div>
-      </div>
+      </el-scrollbar>
     </el-drawer>
   </div>
 </template>
