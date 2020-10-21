@@ -70,7 +70,6 @@
         <div class="no-data-bg"></div>
         <div class="no-data-txt">您暂未填写OKR</div>
         <el-button
-          v-show="showLoad"
           v-if="!$route.query.id"
           type="primary"
           icon="el-icon-plus"
