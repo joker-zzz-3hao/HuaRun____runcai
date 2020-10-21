@@ -375,7 +375,7 @@
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
-        当工作项中的任务支撑OKR，才能修改相关OKR完成度
+        <span>当工作项中的任务支撑个人OKR，才能修改相关OKR完成度</span>
       </dd>
       <dd
         class="undertake-okr-list"
@@ -508,23 +508,27 @@
       </dd>
     </dl>
     <!-- 本周心情 -->
-    <dl class="dl-card-panel">
+    <dl class="dl-card-panel mood">
       <dt class="card-title"><em>本周心情</em></dt>
       <dd>
-        <span>
-          本周心情
-          <el-button @click="setEmotion(100)">有收获</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
-            >有收获</span
+        <ul>
+          <li
+            class="has-harvest"
+            :class="{ 'is-selected': weeklyEmotion === 100 }"
           >
-          <el-button @click="setEmotion(50)">还行吧</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="setEmotion(0)">让我静静</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
-            >让我静静</span
+            <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
+          </li>
+          <li
+            class="not-too-bad"
+            :class="{ 'is-selected': weeklyEmotion === 50 }"
           >
-          <span v-if="showEmotionError">请选择本周心情</span>
-        </span>
+            <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
+          </li>
+          <li class="let-quiet" :class="{ 'is-selected': weeklyEmotion === 0 }">
+            <i @click="canUpdate ? setEmotion(0) : ''"></i><i></i>
+          </li>
+        </ul>
+        <span v-if="showEmotionError">请选择本周心情</span>
       </dd>
     </dl>
     <div class="btn-box" v-if="hasPower('weekly-submit')">
@@ -944,7 +948,7 @@ export default {
       });
     },
     setWorkTableData() {
-      this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion || '100';// 心情
+      this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         this.$set(element, 'randomId', Math.random().toString(36).substr(3));
         const valueIdList = [];

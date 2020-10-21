@@ -52,6 +52,15 @@
   background-position-y: -210px;
 }
 
+/* 60 */
+.assistant > i,
+.mood i:first-child {
+  width: 40px;
+  height: 40px;
+  background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
+  background-size: 240px 240px;
+}
+
 /* 删除 */
 .icon-clear {
   display: flex;
@@ -120,4 +129,52 @@
   text-align: center;
   vertical-align: middle;
   margin: 10% auto;
+}
+
+/* 小助手 */
+.assistant > i {
+  background-position-x: -10px;
+  background-position-y: -10px;
+}
+
+/* 周报心情 */
+.mood i:first-child {
+  background-position-x: -10px;
+}
+
+.mood .is-selected i:first-child {
+  background-position-x: -70px;
+}
+
+.mood .has-harvest i:first-child {
+  background-position-y: -70px;
+}
+
+.mood .not-too-bad i:first-child {
+  background-position-y: -130px;
+}
+
+.mood .let-quiet i:first-child {
+  background-position-y: -190px;
+}
+
+
+
+.mood .has-harvest i:last-child {
+  width: 88px;
+  height: 28px;
+  background: url('~@/assets/images/has_harvest.png') no-repeat;
+}
+
+.mood .not-too-bad i:last-child {
+  margin: 16px 0 0 0;
+  width: 92px;
+  height: 28px;
+  background: url('~@/assets/images/not_too_bad.png') no-repeat;
+}
+
+.mood .let-quiet i:last-child {
+  width: 126px;
+  height: 28px;
+  background: url('~@/assets/images/let_quiet.png') no-repeat;
 }

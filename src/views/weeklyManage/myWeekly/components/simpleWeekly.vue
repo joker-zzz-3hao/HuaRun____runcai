@@ -85,6 +85,7 @@
                   <el-input
                     v-model="scope.row.workProgress"
                     @change="tableProcessChange(scope.row)"
+                    class="tl-input"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -109,7 +110,7 @@
                   v-if="canUpdate"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
-                  style="width: 60px"
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
               <!-- 编辑完提交后展示 -->
@@ -350,23 +351,27 @@
       </dd>
     </dl>
     <!-- 本周心情 -->
-    <dl class="dl-card-panel">
+    <dl class="dl-card-panel mood">
       <dt class="card-title"><em>本周心情</em></dt>
       <dd>
-        <span>
-          本周心情
-          <el-button @click="setEmotion(100)">有收获</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
-            >有收获</span
+        <ul>
+          <li
+            class="has-harvest"
+            :class="{ 'is-selected': weeklyEmotion === 100 }"
           >
-          <el-button @click="setEmotion(50)">还行吧</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="setEmotion(0)">让我静静</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
-            >让我静静</span
+            <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
+          </li>
+          <li
+            class="not-too-bad"
+            :class="{ 'is-selected': weeklyEmotion === 50 }"
           >
-          <span v-if="showEmotionError">请选择本周心情</span>
-        </span>
+            <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
+          </li>
+          <li class="let-quiet" :class="{ 'is-selected': weeklyEmotion === 0 }">
+            <i @click="canUpdate ? setEmotion(0) : ''"></i><i></i>
+          </li>
+        </ul>
+        <span v-if="showEmotionError">请选择本周心情</span>
       </dd>
     </dl>
     <div class="btn-box" v-if="hasPower('weekly-submit')">
