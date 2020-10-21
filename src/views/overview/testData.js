@@ -24,15 +24,15 @@ const mainData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      orgName: 'A部门', orgAdminUserName: '周帅', orgNumber: 10, weeklyNumber: 3, weeklyType0Number: 2, weeklyType1Number: 1, visitSum: 42, visitUserNumber: 10, supportSum: 0,
+      orgName: 'A部门', orgAdminUserName: 'A部门', orgNumber: 10, weeklyNumber: 3, weeklyType0Number: 2, weeklyType1Number: 1, visitSum: 42, visitUserNumber: 10, supportSum: 0,
     }, {
-      orgName: 'B部门', orgAdminUserName: '张丽丽', orgNumber: 22, weeklyNumber: 77, weeklyType0Number: 33, weeklyType1Number: 44, visitSum: 23, visitUserNumber: 20, supportSum: 0,
+      orgName: 'B部门', orgAdminUserName: 'A部门', orgNumber: 22, weeklyNumber: 77, weeklyType0Number: 33, weeklyType1Number: 44, visitSum: 23, visitUserNumber: 20, supportSum: 0,
     }, {
-      orgName: 'C部门', orgAdminUserName: '王坤逸', orgNumber: 30, weeklyNumber: 17, weeklyType0Number: 10, weeklyType1Number: 13, visitSum: 43, visitUserNumber: 30, supportSum: 0,
+      orgName: 'C部门', orgAdminUserName: 'A部门', orgNumber: 30, weeklyNumber: 17, weeklyType0Number: 10, weeklyType1Number: 13, visitSum: 43, visitUserNumber: 30, supportSum: 0,
     }, {
-      orgName: 'D部门', orgAdminUserName: '刘伊汶', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
+      orgName: 'D部门', orgAdminUserName: 'A部门', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
     }, {
-      orgName: 'E部门', orgAdminUserName: '唐娅', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
+      orgName: 'E部门', orgAdminUserName: 'A部门', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
     }],
   },
   timeData: ['2020-08-01', '2020-08-07', '2020-08-14', '2020-08-21', '2020-08-28', '2020-09-05'],
@@ -113,49 +113,45 @@ const teamData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      userName: '刘林', okrDetailObjectKr: '完成目标', okrDetailId: '1243273803975811076', okrDetailType: '1', odetailId: '1243273803975811075',
+      userName: '用户A', okrDetailObjectKr: '完成最新分配任务', okrDetailId: '1243273803975811076', okrDetailType: '1', odetailId: '1243273803975811075',
     }, {
-      userName: '张小萍', okrDetailObjectKr: '完成目标', okrDetailId: '1259957209311141893', okrDetailType: '1', odetailId: '1259957209311141891',
+      userName: '用户B', okrDetailObjectKr: '寻找优质的产品引入', okrDetailId: '1259957209311141893', okrDetailType: '1', odetailId: '1259957209311141891',
     }, {
-      userName: '周明明', okrDetailObjectKr: '完成目标', okrDetailId: '1302737282636865543', okrDetailType: '1', odetailId: '1302737282636865541',
+      userName: '用户C', okrDetailObjectKr: '完成2款自研新产品设计与开发', okrDetailId: '1302737282636865543', okrDetailType: '1', odetailId: '1302737282636865541',
     }, {
-      userName: '刘伊汶', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822281', okrDetailType: '1', odetailId: '1302758826192822279',
+      userName: '用户D', okrDetailObjectKr: '形成个别生态能力的解决方案，为下半年营收做准备', okrDetailId: '1302758826192822281', okrDetailType: '1', odetailId: '1302758826192822279',
     }, {
-      userName: '王逸坤', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822291', okrDetailType: '1', odetailId: '1302758826192822289',
+      userName: '用户H', okrDetailObjectKr: '发布到生产环境，自动搜索优质文章', okrDetailId: '1302758826192822291', okrDetailType: '1', odetailId: '1302758826192822289',
     }, {
-      userName: '曾伟明', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822296', okrDetailType: '1', odetailId: '1302758826192822294',
+      userName: '用户I', okrDetailObjectKr: '持续探索外部机会，寻找优质的产品引入，为下半年营收做准备', okrDetailId: '1302758826192822296', okrDetailType: '1', odetailId: '1302758826192822294',
     }, {
-      userName: '许雨', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822301', okrDetailType: '1', odetailId: '1302758826192822299',
-    }, {
-      userName: '张丽丽', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822306', okrDetailType: '1', odetailId: '1302758826192822304',
-    }, {
-      userName: '徐明', okrDetailObjectKr: '完成目标', okrDetailId: '1302758826192822311', okrDetailType: '1', odetailId: '1302758826192822309',
+      userName: '用户J', okrDetailObjectKr: '线下业务数据线上化研发支持，线下操作线上化研发支持', okrDetailId: '1302758826192822301', okrDetailType: '1', odetailId: '1302758826192822299',
     }],
   },
   // eslint-disable-next-line max-len
-  mainDataY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 80, 40],
-  mainDataX: ['刘林', '周明明', '张小萍', '林衣衣', '唐娅', '刘伊汶', '唐帅', '许雨', '王逸坤', '曾伟明', '张丽丽', '徐明', '车晓慧', '李林林'],
+  mainDataY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20],
+  mainDataX: ['用户A', '用户B', '用户C', '用户D', '用户E', '用户F', '用户G', '用户H', '用户I', '用户J'],
   // eslint-disable-next-line max-len
-  mainDatapreY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20, 80, 40, 80, 40],
+  mainDatapreY: [80, 40, 20, 20, 80, 40, 30, 80, 40, 20],
   okrData: {
     code: 200,
     msg: 'response.success',
     data: [{
-      orgId: null, orgFullId: null, orgName: '云门户', orgAdminUserName: '张聪', orgNumber: 10, weeklyNumber: 2, weeklyType0Number: 1, weeklyType1Number: 1, visitSum: 10, visitUserNumber: 10, supportSum: 10,
+      orgId: null, orgFullId: null, orgName: '云门户', orgAdminUserName: '用户A', orgNumber: 10, weeklyNumber: 2, weeklyType0Number: 1, weeklyType1Number: 1, visitSum: 10, visitUserNumber: 10, supportSum: 10,
     }],
   },
-  mainDatapreX: ['刘林', '周明明', '张小萍', '林衣衣', '唐娅', '刘伊汶', '唐帅', '许雨', '王逸坤', '曾伟明', '张丽丽', '徐明', '车晓慧', '李林林'],
+  mainDatapreX: ['用户A', '用户B', '用户C', '用户D', '用户E', '用户F', '用户G', '用户H', '用户I', '用户J'],
   weekY: [['08-31 ~ 09-06', 5, 40, 20], ['09-07 ~ 09-13', 5, 20, 30], ['08-14 ~ 09-20', 5, 30, 40], ['08-21 ~ 09-27', 2, 5, 10], ['08-28 ~ 10-04', 5, 20, 30]],
   weekX: [['08-31 ~ 09-06', 10, 40], ['09-07 ~ 09-13', 30, 25], ['08-14 ~ 09-20', 5, 10], ['08-21 ~ 09-27', 10, 30], ['08-28 ~ 10-04', 25, 15]],
   roundData: {
     code: 200,
     msg: 'response.success',
     data: [{
-      riskName: '高', riskCode: 1, count: 30, ratio: '40',
+      riskName: '信心指数高', riskCode: 1, count: 30, ratio: '40',
     }, {
-      riskName: '中', riskCode: 2, count: 40, ratio: '30',
+      riskName: '信心指数中', riskCode: 2, count: 40, ratio: '30',
     }, {
-      riskName: '低', riskCode: 3, count: 30, ratio: '30',
+      riskName: '信心指数低', riskCode: 3, count: 30, ratio: '30',
     }],
   },
 };
@@ -210,7 +206,7 @@ const okrData = {
   msg: 'response.success',
   data: {
     okrMain: {
-      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '王五', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
+      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '用户A', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
     },
     okrDetails: [{
       detailId: '1259957209311141889',
@@ -318,7 +314,7 @@ const okrDataTeam = {
   msg: 'response.success',
   data: {
     okrMain: {
-      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '张三', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
+      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 1, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '用户A', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
     },
     okrDetails: [{
       detailId: '1259957209311141889',
@@ -395,26 +391,26 @@ const okrDataTeam = {
       }],
     }],
     orgTable: [{
-      orgId: '1233236980796686336', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '刘林', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233236980796686336:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 09:58:41', updateTime: '2020-08-29 09:58:41', userId: '1233259623864270848', userName: '佳俊二级负责人',
+      orgId: '1233236980796686336', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户A', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233236980796686336:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 09:58:41', updateTime: '2020-08-29 09:58:41', userId: '1233259623864270848', userName: '佳俊二级负责人',
     }, {
-      orgId: '1233240313691308032', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '张小萍', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233240313691308032:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:17', updateTime: '2020-08-29 10:00:17', userId: '1233264571666595840', userName: '佳俊部部负责人',
+      orgId: '1233240313691308032', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户B', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233240313691308032:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:17', updateTime: '2020-08-29 10:00:17', userId: '1233264571666595840', userName: '佳俊部部负责人',
     }, {
-      orgId: '1233241688080842752', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '周明明', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233241688080842752:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:57', updateTime: '2020-08-29 10:00:57', userId: '1233265980415868928', userName: '佳俊门门负责人',
+      orgId: '1233241688080842752', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户C', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233241688080842752:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:57', updateTime: '2020-08-29 10:00:57', userId: '1233265980415868928', userName: '佳俊门门负责人',
     }, {
-      orgId: '1284529713665425408', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '刘伊汶', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284529713665425408:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:38:55', updateTime: '2020-09-15 16:38:55', userId: '1284536448174145536', userName: '炜哥一负责人',
+      orgId: '1284529713665425408', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户D', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284529713665425408:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:38:55', updateTime: '2020-09-15 16:38:55', userId: '1284536448174145536', userName: '炜哥一负责人',
     }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '王逸坤', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户E', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     },
     {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '曾伟明', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户F', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '许雨', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户G', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '张丽丽', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户H', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '徐明', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户I', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }, {
-      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '李林林', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
+      orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户J', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }],
     orgUser: null,
   },
@@ -426,7 +422,7 @@ const okrUser = {
   msg: 'response.success',
   data: {
     okrMain: {
-      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 2, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '王丽丽', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
+      okrId: '1243273803975811073', tenantId: 'CR0011000054', orgId: '1233235675126628352', userId: '1233255981732003840', periodId: '1240066906512007168', okrBelongType: 2, okrVersion: 1, okrProgress: 30, createBy: '1233255981732003840', updateBy: null, createTime: '2020-09-01 19:07:10', updateTime: null, status: 1, userName: '用户A', periodName: '2002年第4季度OKR', orgName: '华润一级部门',
     },
     okrDetails: [{
       detailId: '1259957209311141889',
