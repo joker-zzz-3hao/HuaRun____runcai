@@ -166,6 +166,10 @@
   background: url('~@/assets/images/has_harvest.png') no-repeat;
 }
 
+.mood .has-harvest.is-selected i:last-child {
+  background: url('~@/assets/images/has_harvest_h.png') no-repeat;
+}
+
 .mood .not-too-bad i:last-child {
   margin: 16px 0 0 0;
   width: 92px;
@@ -173,8 +177,16 @@
   background: url('~@/assets/images/not_too_bad.png') no-repeat;
 }
 
+.mood .not-too-bad.is-selected i:last-child {
+  background: url('~@/assets/images/not_too_bad_h.png') no-repeat;
+}
+
 .mood .let-quiet i:last-child {
   width: 126px;
   height: 28px;
   background: url('~@/assets/images/let_quiet.png') no-repeat;
+}
+
+.mood .let-quiet.is-selected i:last-child {
+  background: url('~@/assets/images/let_quiet_h.png') no-repeat;
 }

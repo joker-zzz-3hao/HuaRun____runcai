@@ -2,7 +2,7 @@
   <el-dialog
     title="创建虚拟项目"
     :visible="visible"
-    @closed="closed"
+    @closed="close"
     :before-close="close"
     :append-to-body="true"
     :close-on-click-modal="false"
@@ -344,7 +344,7 @@ export default {
       this.visible = false;
     },
     cancel() {
-      this.closed();
+      this.close();
     },
     changeDate(data) {
       if (data && data.length > 0) {

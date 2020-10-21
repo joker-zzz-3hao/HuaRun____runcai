@@ -12,18 +12,29 @@
     <div slot="title" class="flex-sb">
       <div class="drawer-title">{{ drawerTitle }}</div>
       <div
-        v-show="showFocus && !isFromOkrSummarize"
+        v-show="
+          showFocus &&
+          !isFromOkrSummarize &&
+          tabMenuList[currentIndex].menuName != '操作历史'
+        "
         @click="addFocus"
         class="okr-follow"
       >
-        <i></i><em>关注</em>
+        <i class="el-icon-plus"></i><em>关注</em>
       </div>
       <div
-        v-show="!showFocus && !isFromOkrSummarize"
+        v-show="
+          !showFocus &&
+          !isFromOkrSummarize &&
+          tabMenuList[currentIndex].menuName != '操作历史'
+        "
         @click="cancelFocus"
         class="okr-follow"
       >
-        <i></i><em>已关注</em>
+        <div :class="{ 'is-follow': !showFocus && !isFromOkrSummarize }">
+          <i class="el-icon-check"></i>
+        </div>
+        <em>已关注</em>
       </div>
     </div>
     <el-scrollbar ref="detailscrollbar">

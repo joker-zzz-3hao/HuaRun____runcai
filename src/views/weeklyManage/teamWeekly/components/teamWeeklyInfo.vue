@@ -312,13 +312,6 @@
                   :width="30"
                   :marginLeft="2"
                 ></tl-process>
-                <el-slider
-                  v-if="timeDisabled"
-                  v-model="item.progressAfter"
-                  :step="1"
-                  @change="processChange(item)"
-                  tooltip-class="slider-tooltip"
-                ></el-slider>
                 <em>{{ item.progressAfter }}</em>
                 <span>%</span>
               </div>
@@ -334,6 +327,57 @@
           <dd v-if="weeklyOkrVoList.length < 1" class="no-data">
             <em>周报暂无支撑OKR或价值观</em>
           </dd>
+        </dl>
+        <dl class="dl-card-panel who-browse">
+          <dt class="card-title"><em>谁浏览了</em></dt>
+          <dd>
+            <div class="img-list">
+              <dl v-for="user in visitUserNameList" :key="user">
+                <dt class="user-info">
+                  <img v-if="user.headerUrl" :src="user.headerUrl" alt />
+                  <div class="user-name" v-else>
+                    <em>{{
+                      user.userName.substring(user.userName.length - 2)
+                    }}</em>
+                  </div>
+                </dt>
+                <dd>{{ user.headerUrl }}</dd>
+              </dl>
+            </div>
+          </dd>
+          <dd>
+            <div class="btn-box">
+              <el-button
+                type="primary"
+                @click="support(1)"
+                v-if="hasPower('weekly-support')"
+                class="tl-btn amt-bg-slip"
+                >送金条({{ supportCount }})</el-button
+              >
+            </div>
+          </dd>
+          <!-- 谁浏览了 -->
+          <!-- <div style="margintop: 50px">
+              <h2>谁浏览了</h2>
+              <span
+                style="marginleft: 10px"
+                v-for="user in visitUserNameList"
+                :key="user"
+              >
+                <el-avatar
+                  :size="30"
+                  :src="user.headerUrl"
+                  @error="errorHandler"
+                >
+                  <div v-if="user.userName" class="user-name">
+                    <em>{{
+                      user.userName.substring(user.userName.length - 2)
+                    }}</em>
+                  </div>
+                </el-avatar>
+                <span>{{ user.userName }}</span>
+              </span>
+            </div> -->
         </dl>
         <div class="current-user-info">
           <div>
@@ -492,35 +536,6 @@
                 </div>
               </div>
             </div> -->
-            <!-- 谁浏览了 -->
-            <div style="margintop: 50px">
-              <h2>谁浏览了</h2>
-              <span
-                style="marginleft: 10px"
-                v-for="user in visitUserNameList"
-                :key="user"
-              >
-                <el-avatar
-                  :size="30"
-                  :src="user.headerUrl"
-                  @error="errorHandler"
-                >
-                  <!-- <img src="@/assets/images/login-error.png" /> -->
-                  <div v-if="user.userName" class="user-name">
-                    <em>{{
-                      user.userName.substring(user.userName.length - 2)
-                    }}</em>
-                  </div>
-                </el-avatar>
-                <span>{{ user.userName }}</span>
-              </span>
-            </div>
-          </div>
-          <!-- 点赞 -->
-          <div style="margintop: 50px">
-            <el-button @click="support(1)" v-if="hasPower('weekly-support')"
-              >送金条({{ supportCount }})</el-button
-            >
           </div>
         </div>
       </template>
@@ -532,13 +547,16 @@
 </template>
 
 <script>
+import tlProcess from '@/components/process';
 import { mapState } from 'vuex';
 import Server from '../server';
 
 const server = new Server();
 export default {
   name: 'teamWeeklyInfo',
-  components: {},
+  components: {
+    'tl-process': tlProcess,
+  },
   props: {
 
   },
@@ -659,7 +677,10 @@ export default {
     goback() {
       this.$router.go('-1');
     },
-
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
   },
   watch: {},
   updated() {},

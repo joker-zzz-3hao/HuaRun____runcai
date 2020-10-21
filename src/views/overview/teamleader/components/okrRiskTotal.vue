@@ -103,7 +103,14 @@ export default {
         riskCode,
       }).then((res) => {
         this.loading = false;
-        this.okrData = this.testModel ? teamData.okrListData.data : res.data;
+        const list = JSON.parse(JSON.stringify(teamData.okrListData.data));
+        if (riskCode == 1 || riskCode == 3) {
+          list.splice(3, 5);
+        } else {
+          list.splice(4, 5);
+        }
+
+        this.okrData = this.testModel ? list : res.data;
         this.visible = true;
       });
     },

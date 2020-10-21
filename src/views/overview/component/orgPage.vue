@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-card-panel" v-loading="fullscreenLoading">
+  <div class="tl-card-panel">
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length > 0">
       <div class="card-panel-head">
@@ -29,10 +29,13 @@
         </dl>
         <dl class="okr-follow">
           <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
-            <i></i><em>关注</em>
+            <i class="el-icon-plus"></i><em>关注</em>
           </dd>
           <dd v-show="okrMain.supported == '1'" @click="cancelFocus(okrMain)">
-            <i></i><em>已关注</em>
+            <div :class="{ 'is-follow': okrMain.supported == '1' }">
+              <i class="el-icon-check"></i>
+            </div>
+            <em>已关注</em>
           </dd>
         </dl>
         <dl class="okr-progress">
@@ -67,7 +70,6 @@
         <div class="no-data-bg"></div>
         <div class="no-data-txt">您暂未填写OKR</div>
         <el-button
-          v-show="showLoad"
           v-if="!$route.query.id"
           type="primary"
           icon="el-icon-plus"
