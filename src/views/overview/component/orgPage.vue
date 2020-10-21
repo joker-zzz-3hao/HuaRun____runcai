@@ -87,7 +87,6 @@
           })
         "
         class="tl-btn amt-bg-slip"
-        :class="'button-overview'"
         >去创建OKR</el-button
       >
     </template>
@@ -356,9 +355,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.button-overview {
-  margin: 50px auto;
-  display: block;
-}
-</style>
