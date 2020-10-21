@@ -312,6 +312,10 @@
   flex: 0 0 100px;
 }
 
+.overview .img-list dl {
+  margin: 0 10px 0 0;
+}
+
 .department-view .tl-card-panel-group {
   margin: 20px 0 0 0;
   justify-content: space-between;
