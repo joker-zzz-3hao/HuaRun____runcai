@@ -220,7 +220,11 @@
                             <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
-                            <span>名称变更为</span>
+                            <span
+                              >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
+                            >
+                            <em>{{ uitem.updateContents.beforeName }}</em>
+                            <span> 变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
@@ -370,7 +374,11 @@
                             <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
-                            <span>名称变更为</span>
+                            <span
+                              >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
+                            >
+                            <em>{{ uitem.updateContents.beforeName }}</em>
+                            <span> 变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
