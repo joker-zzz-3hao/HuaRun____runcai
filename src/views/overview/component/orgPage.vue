@@ -64,7 +64,11 @@
     </template>
 
     <template v-else>
-      <div class="tl-card-panel no-data" v-if="$route.query.id">
+      <div
+        class="tl-card-panel no-data"
+        v-if="$route.query.id"
+        style="box-shadow: none"
+      >
         <span class="bg-no-data"></span>
       </div>
 
@@ -83,7 +87,6 @@
           })
         "
         class="tl-btn amt-bg-slip"
-        :class="'button-overview'"
         >去创建OKR</el-button
       >
     </template>
@@ -104,7 +107,10 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div>下级部门：</div>
+      <div v-if="$route.name == 'teamleader' || $route.name == 'departleader'">
+        子部门：
+      </div>
+      <div v-else>团队成员：</div>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"
@@ -328,7 +334,7 @@ export default {
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: user.userId, name: chename, userId: user.userId, tenantId: user.tenantId,
+              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
             },
           });
         }
@@ -352,9 +358,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.button-overview {
-  margin: 50px auto;
-  display: block;
-}
-</style>

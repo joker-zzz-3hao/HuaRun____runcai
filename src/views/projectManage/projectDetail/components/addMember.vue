@@ -140,7 +140,11 @@
                 label="所属部门"
                 min-width="140"
               ></el-table-column>
-              <el-table-column label="操作" width="55">
+              <el-table-column
+                label="操作"
+                width="55"
+                v-if="dataForm.tableData.length > 0"
+              >
                 <template slot-scope="scope">
                   <el-button
                     @click="deleteMember(scope.$index)"

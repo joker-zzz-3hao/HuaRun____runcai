@@ -1,5 +1,5 @@
 <template>
-  <div class="role-type">
+  <div class="msg-notice">
     <div class="operating-area">
       <div class="page-title">消息通知</div>
       <div class="operating-box">
@@ -23,7 +23,7 @@
     <div class="cont-area">
       <!-- 业务通知，系统消息 -->
       <tl-crcloud-table
-        v-if="messageType=='10'"
+        v-if="messageType == '10'"
         :total="totalSystem"
         :currentPage.sync="currentPageSystem"
         :pageSize.sync="pageSizeSystem"
@@ -33,22 +33,35 @@
           <el-table :data="tableDataSystem" class="tl-table">
             <el-table-column prop="msgContent" label="通知内容" min-width="140">
               <template slot-scope="scope">
-                <a @click="showDetail(scope.row)">{{scope.row.msgContent}}</a>
+                <a @click="showDetail(scope.row)">{{ scope.row.msgContent }}</a>
               </template>
             </el-table-column>
-            <el-table-column v-if="messageType=='10'" prop="msgType" label="通知类型" min-width="160">
+            <el-table-column
+              v-if="messageType == '10'"
+              prop="msgType"
+              label="通知类型"
+              min-width="160"
+            >
               <template slot-scope="scope">
-                <span>{{CONST.MSG_MAP[scope.row.msgType]}}</span>
+                <span>{{ CONST.MSG_MAP[scope.row.msgType] }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="sendUserId" label="通知人" min-width="120"></el-table-column>
-            <el-table-column prop="createDate" label="通知时间" min-width="180"></el-table-column>
+            <el-table-column
+              prop="sendUserId"
+              label="通知人"
+              min-width="120"
+            ></el-table-column>
+            <el-table-column
+              prop="createDate"
+              label="通知时间"
+              min-width="180"
+            ></el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
       <!-- 互动消息 -->
       <tl-crcloud-table
-        v-if="messageType=='30'"
+        v-if="messageType == '30'"
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
@@ -58,15 +71,23 @@
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="msgContent" label="通知内容" min-width="140">
               <template slot-scope="scope">
-                <a @click="showDetail(scope.row)">{{scope.row.msgContent}}</a>
+                <a @click="showDetail(scope.row)">{{ scope.row.msgContent }}</a>
               </template>
             </el-table-column>
-            <el-table-column prop="createDate" label="通知时间" min-width="160"></el-table-column>
+            <el-table-column
+              prop="createDate"
+              label="通知时间"
+              min-width="160"
+            ></el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-notice-detail v-if="detailExist" ref="detail" @close="close"></tl-notice-detail>
+    <tl-notice-detail
+      v-if="detailExist"
+      ref="detail"
+      @close="close"
+    ></tl-notice-detail>
   </div>
 </template>
 

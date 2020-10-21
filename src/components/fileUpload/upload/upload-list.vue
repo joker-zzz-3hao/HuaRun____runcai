@@ -18,57 +18,57 @@
         @click="focusing = false"
       >
         <slot :file="file">
-          <img
-            class="el-upload-list__item-thumbnail"
-            v-if="
-              file.status !== 'uploading' &&
-              ['picture-card', 'picture'].indexOf(listType) > -1
-            "
-            :src="file.url"
-            alt=""
-          />
-          <a
-            class="el-upload-list__item-name c-upload-list__item-name"
-            @click="handleClick(file)"
-          >
-            <label class="c-upload-item-name">
+          <div class="el-upload-list__item-name c-upload-list__item-name">
+            <img
+              class="el-upload-list__item-thumbnail"
+              v-if="
+                file.status !== 'uploading' &&
+                ['picture-card', 'picture'].indexOf(listType) > -1
+              "
+              :src="file.url"
+              alt=""
+            />
+            <span class="c-upload-item-name">
               <i class="el-icon-document"></i
-              >{{ file.name || file.resourceName }}</label
+              >{{ file.name || file.resourceName }}</span
             >
             <span class="c-upload-item-date">{{ file.uploadDate }}</span>
-          </a>
-          <label class="el-upload-list__item-status-label">
-            <i
-              :class="{
-                'el-icon-upload-success': true,
-                'el-icon-circle-check': listType === 'text',
-                'el-icon-check':
-                  ['picture-card', 'picture'].indexOf(listType) > -1,
-              }"
-            ></i>
-          </label>
-          <span
-            v-if="images_map[file.resourceType]"
-            @click="openExistFile(file)"
-            >预览</span
-          >
-          <span
-            v-else-if="images_map[cutType(file.resourceName)]"
-            @click="openFile(file)"
-            >预览</span
-          >
+          </div>
+          <div class="upload-option">
+            <!-- <span class="el-upload-list__item-status-label">
+              <i
+                :class="{
+                  'el-icon-upload-success': true,
+                  'el-icon-circle-check': listType === 'text',
+                  'el-icon-check':
+                    ['picture-card', 'picture'].indexOf(listType) > -1,
+                }"
+              ></i>
+            </span> -->
+            <span
+              v-if="images_map[file.resourceType]"
+              @click="openExistFile(file)"
+              >预览</span
+            >
+            <span
+              v-else-if="images_map[cutType(file.resourceName)]"
+              @click="openFile(file)"
+              >预览</span
+            >
+            <!-- 只有taskid存在才能下载 -->
+            <span v-if="file.sourceType == 'TASK'" @click="downExistFile(file)"
+              >下载</span
+            >
+            <span v-else @click="downFile(file)">下载</span>
+            <span
+              ><i
+                class="el-icon-close"
+                v-if="!disabled"
+                @click="$emit('remove', file)"
+              ></i
+            ></span>
+          </div>
 
-          <!-- 只有taskid存在才能下载 -->
-          <span v-if="file.sourceType == 'TASK'" @click="downExistFile(file)"
-            >下载</span
-          >
-          <span v-else @click="downFile(file)">下载</span>
-          <i
-            class="el-icon-close"
-            v-if="!disabled"
-            @click="$emit('remove', file)"
-          ></i>
-          <!--因为close按钮只在li:focus的时候 display, li blur后就不存在了，所以键盘导航时永远无法 focus到 close按钮上-->
           <el-progress
             v-if="file.status === 'uploading'"
             :type="listType === 'picture-card' ? 'circle' : 'line'"
@@ -76,6 +76,7 @@
             :percentage="parsePercentage(file.percentage)"
           >
           </el-progress>
+          <!-- 图片类型 -->
           <span
             class="el-upload-list__item-actions"
             v-if="listType === 'picture-card'"

@@ -1,41 +1,63 @@
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :visible="visible"
-      @close="close"
-      :title="info.projectNameCn"
-      :close-on-click-modal="false"
-    >
-      <div v-for="item in info.weeklyItemList" :key="item.id">
+  <el-dialog
+    :append-to-body="true"
+    :visible="visible"
+    @close="close"
+    :before-close="close"
+    :title="info.projectNameCn"
+    :close-on-click-modal="false"
+    custom-class="approval-detail"
+    class="tl-dialog"
+    width="620px"
+  >
+    <el-scrollbar>
+      <div class="dl-list" v-for="item in info.weeklyItemList" :key="item.id">
+        <dl class="dl-item">
+          <dt><span>工作项</span></dt>
+          <dd>
+            {{ item.workContent }}
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>进度</span></dt>
+          <dd>
+            <tl-process :data="item.workProgress"></tl-process>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>时间</span></dt>
+          <dd>
+            <em>{{ info.startTime }}</em
+            ><span>至</span><em>{{ info.endTime }}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>填报工时</span></dt>
+          <dd>
+            <span>投入</span><em>{{ item.workTime }}</em
+            ><span>天</span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>内容</span></dt>
+          <dd>
+            <em>{{ item.workDesc }}</em>
+          </dd>
+        </dl>
+      </div>
+    </el-scrollbar>
+    <div slot="footer" class="dialog-footer flex-sb">
+      <div class="dialog-footer-l">
         <div>
-          <span>工作项:</span>
-          <span>{{ item.workContent }}</span>
+          <span>确认工时</span> <em>{{ info.timeSheet }}</em
+          ><span>天</span>
         </div>
         <div>
-          <span>进度:</span>
-          <tl-process :data="item.workProgress"></tl-process>
-          <span>{{ item.workProgress }}%</span>
-        </div>
-        <div>
-          <span>时间:</span>
-          <span>{{ info.startTime }}至{{ info.endTime }}</span>
-        </div>
-        <div>
-          <span>填报工时:</span>
-          <span>投入{{ item.workTime }}天</span>
-        </div>
-        <div>
-          <span>内容:</span>
-          <span>{{ item.workDesc }}</span>
+          <span>原因</span><em>{{ info.remark }}</em>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <span>确认工时: {{ info.timeSheet }}</span>
-        <span>原因: {{ info.remark }}</span>
-      </span>
-    </el-dialog>
-  </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script>

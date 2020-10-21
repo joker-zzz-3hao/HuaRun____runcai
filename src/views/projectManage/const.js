@@ -24,6 +24,14 @@ const PROJECT_TYPE_LIST = [
   { value: '4', label: '内部管理项目' },
   { value: '5', label: '售前项目' },
 ];
+const PROJECT_TYPE_CREATE_LIST = [
+  { value: '0', label: '可行性研究项目' },
+  { value: '1', label: '研发项目' },
+  { value: '2', label: '运营项目' },
+  { value: '3', label: '建设项目' },
+  { value: '4', label: '内部管理项目' },
+  { value: '5', label: '售前项目' },
+];
 const LEVEL_LIST = [
   { value: '0', label: 'L3' },
   { value: '1', label: 'L4' },
@@ -40,6 +48,10 @@ const FUNC_LIST = [
 ];
 const THROW_TYPE_LIST = [
   { value: '', label: '全部' },
+  { value: '0', label: '经营性支出' },
+  { value: '1', label: '研发支出' },
+];
+const THROW_TYPE_CREATE_LIST = [
   { value: '0', label: '经营性支出' },
   { value: '1', label: '研发支出' },
 ];
@@ -87,4 +99,6 @@ export default {
   APPROVAL_STATUS_LIST,
   PROJECT_SOURCE_MAP,
   PROJECT_STATUS_LIST,
+  PROJECT_TYPE_CREATE_LIST,
+  THROW_TYPE_CREATE_LIST,
 };
