@@ -6,7 +6,7 @@
     :before-close="close"
     :append-to-body="true"
     :close-on-click-modal="false"
-    custom-class="custom-dialog"
+    custom-class="custom-dialog creat-project"
     class="tl-dialog"
   >
     <el-form
