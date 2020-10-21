@@ -20,7 +20,7 @@
                 <em>状态</em>
               </dt>
               <dd>
-                <i class="el-icon-sunny"></i>
+                <!-- <i class="el-icon-sunny"></i> -->
                 <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
               </dd>
             </dl>

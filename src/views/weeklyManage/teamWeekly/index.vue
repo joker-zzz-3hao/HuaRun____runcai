@@ -44,24 +44,6 @@
         :isFromTeam="true"
       ></tl-calendar>
       <div class="flex-sb">
-        <el-select
-          v-model="formData.queryType"
-          @change="lookChange"
-          placeholder="周报速看"
-          clearable
-          @clear="clear"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select el-icon-view"
-        >
-          <el-option
-            v-for="item in lookItemList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-
         <!-- <span>周报状态：</span> -->
         <el-select
           v-model="submitedOrLooked"
@@ -75,6 +57,23 @@
         >
           <el-option
             v-for="item in submitedOrLookedList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-select
+          v-model="formData.queryType"
+          @change="lookChange"
+          placeholder="周报速看"
+          clearable
+          @clear="clear"
+          :popper-append-to-body="false"
+          popper-class="tl-select-dropdown"
+          class="tl-select el-icon-view"
+        >
+          <el-option
+            v-for="item in lookItemList"
             :key="item.value"
             :label="item.label"
             :value="item.value"
