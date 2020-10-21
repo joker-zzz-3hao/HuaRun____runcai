@@ -101,7 +101,7 @@
                   <el-input
                     v-model="scope.row.workProgress"
                     @change="tableProcessChange(scope.row)"
-                    style="width: 60px"
+                    class="tl-input"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -126,6 +126,7 @@
                   v-if="canUpdate"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
+                  class="tl-input"
                 >
                 </el-input>
               </el-form-item>
@@ -305,7 +306,6 @@
     <!-- 下周计划 -->
     <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>下周计划</em></dt>
-
       <dd v-if="formData.weeklyPlanSaveList.length > 0">
         <el-form :model="formData" class="tl-form">
           <el-table
@@ -330,24 +330,27 @@
                     placeholder="建议添加多条做下周计划项，显得计划比较详实"
                     class="tl-input"
                   ></el-input>
-                  <el-tooltip
-                    v-if="canUpdate"
-                    class="icon-clear"
-                    :class="{
-                      'is-disabled': formData.weeklyPlanSaveList.length == 1,
-                    }"
-                    effect="dark"
-                    :content="'删除'"
-                    placement="top"
-                    popper-class="tl-tooltip-popper"
-                    @click.native="deletePlanItem(scope.row)"
-                  >
-                    <i class="el-icon-minus"></i>
-                  </el-tooltip>
                   <!-- 编辑完之后 -->
                   <em v-else>{{ scope.row.planContent }}</em>
                 </el-form-item>
               </template>
+            </el-table-column>
+            <el-table-column width="40">
+              <template slot-scope="scope"
+                ><el-tooltip
+                  v-if="canUpdate"
+                  class="icon-clear"
+                  :class="{
+                    'is-disabled': formData.weeklyPlanSaveList.length == 1,
+                  }"
+                  effect="dark"
+                  :content="'删除'"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                  @click.native="deletePlanItem(scope.row)"
+                >
+                  <i class="el-icon-minus"></i> </el-tooltip
+              ></template>
             </el-table-column>
           </el-table>
         </el-form>
