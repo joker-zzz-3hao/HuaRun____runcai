@@ -17,14 +17,8 @@
       :on-exceed="handleExceed"
       :taskId="taskId"
     >
-      <div slot="tip" class="el-upload__tip">{{ tips }}</div>
-      <el-button
-        size="small"
-        type="primary"
-        icon="el-icon-upload2"
-        class="width-auto"
-        >添加附件</el-button
-      >
+      <el-button type="text" class="tl-btn up-btn">+添加附件</el-button>
+      <span class="el-upload__tip">{{ tips }}</span>
     </upload-custom>
   </div>
 </template>
