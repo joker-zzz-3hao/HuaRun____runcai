@@ -335,6 +335,44 @@
             <em>周报暂无支撑OKR或价值观</em>
           </dd>
         </dl>
+        <dl class="dl-card-panel who-browse">
+          <dt class="card-title"><em>谁浏览了</em></dt>
+          <dd>
+            <!-- <div class="img-list">
+              <dl v-for="user in visitUserNameList" :key="user">
+                <dt class="user-info">
+                  <img v-if="user.headerUrl" :src="user.headerUrl" alt />
+                  <div class="user-name" v-else>
+                    <em>{{ cutName(user.headerUrl) }}</em>
+                  </div>
+                </dt>
+                <dd>{{ user.headerUrl }}</dd>
+              </dl>
+            </div> -->
+          </dd>
+          <!-- 谁浏览了 -->
+          <!-- <div style="margintop: 50px">
+              <h2>谁浏览了</h2>
+              <span
+                style="marginleft: 10px"
+                v-for="user in visitUserNameList"
+                :key="user"
+              >
+                <el-avatar
+                  :size="30"
+                  :src="user.headerUrl"
+                  @error="errorHandler"
+                >
+                  <div v-if="user.userName" class="user-name">
+                    <em>{{
+                      user.userName.substring(user.userName.length - 2)
+                    }}</em>
+                  </div>
+                </el-avatar>
+                <span>{{ user.userName }}</span>
+              </span>
+            </div> -->
+        </dl>
         <div class="current-user-info">
           <div>
             <!-- 本周工作项 -->
@@ -492,29 +530,6 @@
                 </div>
               </div>
             </div> -->
-            <!-- 谁浏览了 -->
-            <div style="margintop: 50px">
-              <h2>谁浏览了</h2>
-              <span
-                style="marginleft: 10px"
-                v-for="user in visitUserNameList"
-                :key="user"
-              >
-                <el-avatar
-                  :size="30"
-                  :src="user.headerUrl"
-                  @error="errorHandler"
-                >
-                  <!-- <img src="@/assets/images/login-error.png" /> -->
-                  <div v-if="user.userName" class="user-name">
-                    <em>{{
-                      user.userName.substring(user.userName.length - 2)
-                    }}</em>
-                  </div>
-                </el-avatar>
-                <span>{{ user.userName }}</span>
-              </span>
-            </div>
           </div>
           <!-- 点赞 -->
           <div style="margintop: 50px">
@@ -659,7 +674,10 @@ export default {
     goback() {
       this.$router.go('-1');
     },
-
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
   },
   watch: {},
   updated() {},
