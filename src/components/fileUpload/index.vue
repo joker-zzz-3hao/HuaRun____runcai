@@ -51,7 +51,7 @@ export default {
     },
     accept: {
       type: String,
-      default: 'image/jpeg, image/png, image/bmp, image/gif, application/msword, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .pptx',
+      default: 'image/jpeg, image/png, image/bmp, image/gif, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .pptx, .xlsx',
     },
     tips: {
       type: String,
@@ -65,25 +65,30 @@ export default {
       type: String,
       default: '',
     },
-    fileFormatFn: {
-      type: Function,
-      default: (file) => {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isBMP = file.type === 'image/bmp';
-        const isGIF = file.type === 'image/gif';
-        const isDOC = file.type === 'application/msword';
-        const isDOCX = file.type
-        === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        const isPDF = file.type === 'application/pdf';
-        if (!isJPG && !isPNG && !isBMP && !isGIF && !isDOC && !isPDF && !isDOCX) {
-          this.$message.error(
-            '上传附件只能是 JPG、PNG、BMP、GIF、DOC、DOCX、PDF格式',
-          );
-        }
-        return (isJPG || isPNG || isBMP || isGIF || isDOC || isDOCX || isPDF);
-      },
-    },
+    // fileFormatFn: {
+    //   type: Function,
+    //   default: (file) => {
+    //     const isJPG = file.type === 'image/jpeg';
+    //     const isPNG = file.type === 'image/png';
+    //     const isBMP = file.type === 'image/bmp';
+    //     const isGIF = file.type === 'image/gif';
+    //     const isDOC = file.type === 'application/msword';
+    //     const isDOCX = file.type
+    //     === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    //     const isPDF = file.type === 'application/pdf';
+    //     console.log('文件类型fileFormatFn', file.type);
+    //     console.log('文件类型fileFormatFn', (!isJPG && !isPNG && !isBMP && !isGIF && !isDOC && !isPDF && !isDOCX));
+    //     this.$message.error(
+    //       '上传附件只能是 JPG、PNG、BMP、GIF、DOC、DOCX、PDF格式',
+    //     );
+    //     if (!isJPG && !isPNG && !isBMP && !isGIF && !isDOC && !isPDF && !isDOCX) {
+    //       this.$message.error(
+    //         '上传附件只能是 JPG、PNG、BMP、GIF、DOC、DOCX、PDF格式',
+    //       );
+    //     }
+    //     return (isJPG || isPNG || isBMP || isGIF || isDOC || isDOCX || isPDF);
+    //   },
+    // },
     userId: {
       type: String,
       default: '',
@@ -139,27 +144,34 @@ export default {
       });
     },
     beforeUpload(file) {
-      console.log('文件大小', file.size);
       const biggerThanMaxFileSize = file.size / 1024 / 1024 < this.maxFileSzie;
       const isNameLength = file.name && file.name.length < 100;
-      const fileFormatResult = this.fileFormatFn(file);
+      console.log('文件大小', file.size);
       if (file.size == 0) {
         this.$message.error(
           '上传附件大小不能为0KB',
         );
         return false;
-      } if (!fileFormatResult) {
-        return false;
-      } if (!biggerThanMaxFileSize) {
+      }
+      console.log('文件大小', !biggerThanMaxFileSize);
+      if (!biggerThanMaxFileSize) {
         this.$message.error(
           `上传附件大小不能超过 ${this.maxFileSzie}MB`,
         );
         return false;
-      } if (!isNameLength) {
+      }
+      // const fileFormatResult = this.fileFormatFn(file);
+
+      // if (!this.fileFormatFn(file)) {
+      //   return false;
+      // }
+      // console.log('文件类型beforeUpload', fileFormatResult);
+      if (!isNameLength) {
         this.$message.error('上传附件文件名长度最多为99个字符');
         return false;
       }
       const isSize = new Promise((resolve, reject) => {
+        const fileFormatResult = this.fileFormatFn(file);
         if (!fileFormatResult) {
           reject();
         } else {
@@ -224,6 +236,25 @@ export default {
     },
     clearFiles() {
       this.$refs.uploadFile.clearFiles();
+    },
+    fileFormatFn(file) {
+      console.log('文件类型fileFormatFn', file.type);
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isBMP = file.type === 'image/bmp';
+      const isGIF = file.type === 'image/gif';
+      const isDOC = file.type === 'application/msword';
+      const isDOCX = file.type
+        === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      const isPDF = file.type === 'application/pdf';
+      const isPPTX = file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+      const isxlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      if (!isJPG && !isPNG && !isBMP && !isGIF && !isDOC && !isPDF && !isDOCX && !isPPTX && !isxlsx) {
+        this.$message.error(
+          '您上传的附件格式不支持',
+        );
+      }
+      return (isJPG || isPNG || isBMP || isGIF || isDOC || isDOCX || isPDF || isPPTX || isxlsx);
     },
   },
 };

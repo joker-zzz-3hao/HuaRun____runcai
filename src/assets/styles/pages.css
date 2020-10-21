@@ -314,12 +314,14 @@
 
 .overview .img-list dl {
   margin: 0 10px 0 0;
+  width: 86px;
 }
 
 .department-view .tl-card-panel-group {
   margin: 20px 0 0 0;
   justify-content: space-between;
   width: 100%;
+  height: 160px;
 }
 
 .department-view .tl-card-panel-group dl {
@@ -420,6 +422,14 @@
   margin: 0 0 0 20px;
 }
 
+.department-view .swiper-slide {
+  height: 130px;
+}
+
+.department-view .swiper-slide dt {
+  flex-basis: 152px;
+}
+
 /* ==========================================================OKR管理================================================================== */
 .my-okr,
 .undertake-maps,
@@ -476,7 +486,7 @@
   padding: 0 30px 0 0;
 }
 
-.department-view .operating-area-inside  {
+.overview .operating-area-inside  {
   padding: 0 30px 0 30px;
 }
 
@@ -3138,6 +3148,10 @@
   margin: 0 0 0 16px;
 }
 
+.toggle-department .tl-select .el-input__inner {
+  background: #f4f6f8;
+}
+
 .toggle-department .tl-select-dropdown .el-select-dropdown__item {
   display: flex;
   justify-content: space-between;
@@ -3838,6 +3852,11 @@
 
 .tl-dialog .add-members .tl-table td {
   height: 54px;
+}
+
+.creat-project .tl-input-number,
+.creat-project .tl-input-number .el-input {
+  width: 380px;
 }
 
 /* working-hours */

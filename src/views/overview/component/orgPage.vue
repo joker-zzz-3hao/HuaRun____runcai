@@ -62,36 +62,31 @@
         ></tl-okr-table>
       </div>
     </template>
-
     <template v-else>
-      <div
-        class="tl-card-panel no-data"
-        v-if="$route.query.id"
-        style="box-shadow: none"
-      >
-        <span class="bg-no-data"></span>
+      <div class="no-data">
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">您暂未填写OKR</div>
+        <el-button
+          v-show="showLoad"
+          type="primary"
+          icon="el-icon-plus"
+          @click="
+            $router.push({
+              name: 'myOkr',
+              query: {
+                openWriteOkr: true,
+                periodId,
+              },
+            })
+          "
+          class="tl-btn amt-bg-slip"
+          >去创建OKR</el-button
+        >
       </div>
-
-      <el-button
-        v-else
-        v-show="showLoad"
-        type="primary"
-        icon="el-icon-plus"
-        @click="
-          $router.push({
-            name: 'myOkr',
-            query: {
-              openWriteOkr: true,
-              periodId,
-            },
-          })
-        "
-        class="tl-btn amt-bg-slip"
-        >去创建OKR</el-button
-      >
     </template>
     <div class="card-panel-body img-list" v-if="orgUser.length > 0">
-      <div>团队成员：</div>
+      <div v-if="$route.name == 'departleader'">子部门：</div>
+      <div v-if="$route.name == 'teamleader'">团队成员：</div>
       <dl
         v-for="(item, index) in orgUser"
         :key="item.userId + index"
@@ -107,10 +102,8 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div v-if="$route.name == 'teamleader' || $route.name == 'departleader'">
-        子部门：
-      </div>
-      <div v-else>团队成员：</div>
+      <div v-if="$route.name == 'departleader'">子部门：</div>
+      <div v-if="$route.name == 'teamleader'">团队成员：</div>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"

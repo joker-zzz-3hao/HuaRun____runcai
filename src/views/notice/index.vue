@@ -31,7 +31,12 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableDataSystem" class="tl-table">
-            <el-table-column prop="msgContent" label="通知内容" min-width="140">
+            <el-table-column
+              prop="msgContent"
+              label="通知内容"
+              align="left"
+              min-width="200px"
+            >
               <template slot-scope="scope">
                 <a @click="showDetail(scope.row)">{{ scope.row.msgContent }}</a>
               </template>
@@ -40,21 +45,18 @@
               v-if="messageType == '10'"
               prop="msgType"
               label="通知类型"
-              min-width="160"
+              align="left"
             >
               <template slot-scope="scope">
                 <span>{{ CONST.MSG_MAP[scope.row.msgType] }}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="sendUserId"
-              label="通知人"
-              min-width="120"
-            ></el-table-column>
+            <el-table-column prop="sendUserId" label="通知人" align="left">
+            </el-table-column>
             <el-table-column
               prop="createDate"
               label="通知时间"
-              min-width="180"
+              align="left"
             ></el-table-column>
           </el-table>
         </div>
@@ -69,7 +71,12 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="msgContent" label="通知内容" min-width="140">
+            <el-table-column
+              prop="msgContent"
+              label="通知内容"
+              min-width="200px"
+              align="left"
+            >
               <template slot-scope="scope">
                 <a @click="showDetail(scope.row)">{{ scope.row.msgContent }}</a>
               </template>
@@ -77,7 +84,7 @@
             <el-table-column
               prop="createDate"
               label="通知时间"
-              min-width="160"
+              align="left"
             ></el-table-column>
           </el-table>
         </div>

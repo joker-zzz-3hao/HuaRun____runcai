@@ -9,7 +9,7 @@
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
           </div>
-          <div v-if="riskList.length > 6">
+          <div>
             <i class="el-icon-caret-left" @click="prevSwiper"></i>
             <i class="el-icon-caret-right" @click="nextSwiper"></i>
           </div>
@@ -19,10 +19,7 @@
           v-swiper:mySwiper="swiperOption"
           ref="mySwiper"
         >
-          <div
-            class="tl-card-panel-group swiper-wrapper"
-            style="justify-content: flex-start"
-          >
+          <div class="tl-card-panel-group swiper-wrapper">
             <dl
               v-for="(item, index) in riskList"
               :key="index"
@@ -89,8 +86,10 @@ export default {
       orgUser: [],
       riskList: [],
       swiperOption: {
-        slidesPerView: 6,
-        spaceBetween: 30,
+        spaceBetween: 10,
+        observer: true,
+        observeParents: true,
+        width: 291,
       },
     };
   },
