@@ -3222,6 +3222,12 @@
   min-height: calc(100vh - 244px);
 }
 
+/* 任务过程 */
+.main-menu .sub-menu .taskprocess {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
   margin-top: 10px;
@@ -3936,6 +3942,15 @@
 
 .project-description .dl-item dd .user-info {
   margin: 0 6px 0 0;
+}
+
+.project-description .project-type dd div {
+  margin: 0 0 0 10px;
+  padding: 2px 10px 2px 5px;
+  background: #e5eaf7;
+  border-radius: 2px 2px 100px 2px;
+  font-size: 12px;
+  color: #5b84f7;
 }
 
 .project-members .card-title {

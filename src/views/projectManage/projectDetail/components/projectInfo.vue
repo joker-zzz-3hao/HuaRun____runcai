@@ -90,13 +90,11 @@
             }}</em>
           </dd>
         </dl>
-        <dl class="dl-item">
+        <dl class="dl-item project-type">
           <dt><span>项目类型</span></dt>
           <dd>
-            <em>{{ baseInfo.projectType || "--" }}</em
-            ><span v-if="baseInfo.projectSourceSystem == 'TENANT'"
-              >虚拟项目</span
-            >
+            <em>{{ baseInfo.projectType || "--" }}</em>
+            <div v-if="baseInfo.projectSourceSystem == 'TENANT'">虚拟项目</div>
           </dd>
         </dl>
         <dl class="dl-item">
