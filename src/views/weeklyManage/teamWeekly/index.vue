@@ -107,10 +107,10 @@
                   </div>
                   <div class="user-txt">
                     <p>
-                      <em>{{ weekly.userName }}</em
-                      ><span>{{
+                      <em>{{ weekly.userName }}</em>
+                      <!-- <span>{{
                         weekly.isadmin == "1" ? "(部门负责人)" : ""
-                      }}</span>
+                      }}</span> -->
                     </p>
                     <div class="user-from">
                       <em>{{ weekly.orgName }}</em>

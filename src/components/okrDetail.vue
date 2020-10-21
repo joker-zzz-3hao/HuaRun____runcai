@@ -20,7 +20,7 @@
         @click="addFocus"
         class="okr-follow"
       >
-        <i></i><em>关注</em>
+        <i class="el-icon-plus"></i><em>关注</em>
       </div>
       <div
         v-show="
@@ -31,7 +31,10 @@
         @click="cancelFocus"
         class="okr-follow"
       >
-        <i></i><em>已关注</em>
+        <div :class="{ 'is-follow': !showFocus && !isFromOkrSummarize }">
+          <i class="el-icon-check"></i>
+        </div>
+        <em>已关注</em>
       </div>
     </div>
     <el-scrollbar ref="detailscrollbar">

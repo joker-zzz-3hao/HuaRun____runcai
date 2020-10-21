@@ -125,7 +125,7 @@ export default {
         this.nextBtn = true;
         this.prevBtn = false;
       }
-      console.log(this.riskList.length);
+
       this.$refs.mySwiper.swiper.slidePrev();
     },
     nextSwiper() {
@@ -135,7 +135,7 @@ export default {
       if (this.$refs.mySwiper.swiper.activeIndex == this.riskList.length - 2) {
         this.nextBtn = false;
       }
-      // console.log(this.$refs.mySwiper.swiper.activeIndex);
+
       this.$refs.mySwiper.swiper.slideNext();
     },
     // 切换周期
