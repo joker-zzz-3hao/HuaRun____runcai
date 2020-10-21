@@ -152,7 +152,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="180"
+              v-if="tableData.length > 0"
+            >
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '0'"
