@@ -529,20 +529,6 @@
           </li>
         </ul>
         <span v-if="showEmotionError">请选择本周心情</span>
-        <!-- <span>
-          本周心情
-          <el-button @click="setEmotion(100)">有收获</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
-            >有收获</span
-          >
-          <el-button @click="setEmotion(50)">还行吧</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 50 }">还行吧</span>
-          <el-button @click="setEmotion(0)">让我静静</el-button>
-          <span :class="{ 'text-color-red': weeklyEmotion == 0 }"
-            >让我静静</span
-          >
-          <span v-if="showEmotionError">请选择本周心情</span>
-        </span> -->
       </dd>
     </dl>
     <div class="btn-box" v-if="hasPower('weekly-submit')">
