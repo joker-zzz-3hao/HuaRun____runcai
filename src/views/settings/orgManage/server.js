@@ -13,7 +13,6 @@ export default class Server extends ServerBase {
 
   // 创建用户
   createUser(param) {
-    debugger;
     return this._ajaxPost('gateway/system-service/sys/user/insertOrgUser', param);
   }
 
