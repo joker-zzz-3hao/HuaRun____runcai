@@ -89,8 +89,10 @@ export default {
       orgUser: [],
       riskList: [],
       swiperOption: {
-        slidesPerView: 6,
         spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        width: 230,
       },
     };
   },
