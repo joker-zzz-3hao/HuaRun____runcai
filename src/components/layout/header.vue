@@ -15,7 +15,7 @@
           v-else
           v-model="orgId"
           @change="switchOrg"
-          :popper-append-to-body="false"
+          :popper-append-to-body="true"
           popper-class="tl-select-dropdown"
           class="tl-select"
         >
