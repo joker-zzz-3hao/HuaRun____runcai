@@ -52,6 +52,10 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
+                <el-cascader-panel
+                  :options="taskoptions"
+                  v-if="options.subClassTag == 'taskprocess'"
+                ></el-cascader-panel>
               </router-link>
             </dl>
           </template>
@@ -85,6 +89,16 @@ export default {
       menuIndex: '',
       changeZindex: false,
       isMainMenu: false,
+      taskoptions: [{
+        value: '1',
+        label: '团队使用',
+      }, {
+        value: '2',
+        label: '小范围使用',
+      }, {
+        value: '3',
+        label: '个人使用',
+      }],
     };
   },
   props: {

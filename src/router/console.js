@@ -464,6 +464,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
+      isLevelThree: true,
       parentRoute: 'myTask',
       title: 'taskProcess',
       power: '',
