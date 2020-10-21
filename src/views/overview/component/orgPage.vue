@@ -85,8 +85,8 @@
       </div>
     </template>
     <div class="card-panel-body img-list" v-if="orgUser.length > 0">
-      <div v-if="$route.name == 'teamleader'">子部门：</div>
-      <div v-if="$route.name == 'departleader'">团队成员：</div>
+      <div v-if="$route.name == 'departleader'">子部门：</div>
+      <div v-if="$route.name == 'teamleader'">团队成员：</div>
       <dl
         v-for="(item, index) in orgUser"
         :key="item.userId + index"
