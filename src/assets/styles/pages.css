@@ -312,6 +312,32 @@
   flex: 0 0 100px;
 }
 
+.overview .tl-card-panel .okr-follow .el-icon-plus {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.overview .tl-card-panel .okr-follow dd {
+  display: flex;
+  align-items: center;
+}
+
+.overview .tl-card-panel .is-follow {
+  margin: 0 6px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #72c981;
+  border-radius: 50%;
+  background: #eff9f1;
+}
+
+.overview .tl-card-panel .is-follow .el-icon-check {
+  color: #72c981;
+}
+
 .overview .img-list dl {
   margin: 0 10px 0 0;
   width: 86px;
@@ -3072,6 +3098,12 @@
 .my-weekly .dl-card-panel > dd,
 .teams-weekly-detail .dl-card-panel > dd {
   margin: 10px 0 20px 0;
+}
+
+.teams-weekly-detail .dl-card-panel .btn-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .is-sub-menu + .my-weekly .footer-panel .tl-btn,

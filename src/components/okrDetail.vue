@@ -16,14 +16,17 @@
         @click="addFocus"
         class="okr-follow"
       >
-        <i></i><em>关注</em>
+        <i class="el-icon-plus"></i><em>关注</em>
       </div>
       <div
         v-show="!showFocus && !isFromOkrSummarize"
         @click="cancelFocus"
         class="okr-follow"
       >
-        <i></i><em>已关注</em>
+        <div :class="{ 'is-follow': !showFocus && !isFromOkrSummarize }">
+          <i></i>
+        </div>
+        <em>已关注</em>
       </div>
     </div>
     <el-scrollbar ref="detailscrollbar">
