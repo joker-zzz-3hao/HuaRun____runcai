@@ -372,7 +372,7 @@
                   placeholder="请输入考核指标"
                   v-model="kritem.checkQuota"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
               <em v-else>{{ kritem.checkQuota }}</em>
@@ -403,7 +403,7 @@
                   placeholder="请输入衡量办法"
                   v-model="kritem.judgeMethod"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
               <em v-else>{{ kritem.judgeMethod }}</em>
@@ -523,7 +523,7 @@
                   placeholder="请输入考核指标"
                   v-model="newItem.checkQuota"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                   @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>
@@ -542,7 +542,7 @@
                   placeholder="请输入衡量办法"
                   v-model="newItem.judgeMethod"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                   @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>

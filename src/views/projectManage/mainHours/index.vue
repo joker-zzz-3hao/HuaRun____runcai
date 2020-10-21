@@ -1,16 +1,18 @@
 <template>
-  <div class="role-type">
+  <div class="working-hours">
     <div class="operating-area">
       <div class="page-title">工时审批</div>
       <div class="operating-box">
-        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item label="项目">
+        <dl class="dl-item">
+          <dt>项目</dt>
+          <dd>
             <el-select
               v-model="formData.projectId"
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
               clearable
+              popper-class="tl-select-dropdown"
               class="tl-select"
             >
               <el-option
@@ -20,14 +22,18 @@
                 :value="item.projectId"
               ></el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="审批状态">
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>审批状态</dt>
+          <dd>
             <el-select
               v-model="formData.approvalStatus"
               :popper-append-to-body="false"
               placeholder="请选择审批状态"
               @change="changeStatus"
               clearable
+              popper-class="tl-select-dropdown"
               class="tl-select"
             >
               <el-option
@@ -37,28 +43,35 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item>
-            <span>项目总预算:</span>
-            <span>{{ projectBudgetAmount || 0 }}</span>
-            <span>{{ projectBudgetCurrency || "" }}</span>
-          </el-form-item>
-          <el-form-item>
-            <span>项目已确认人力成本:</span>
-            <span>{{ projectConfirmAmount || 0 }}</span>
-            <span>{{ projectConfirmCurrency || "" }}</span>
-          </el-form-item>
-        </el-form>
+          </dd>
+        </dl>
       </div>
     </div>
     <div class="cont-area">
+      <div class="dl-list">
+        <dl class="dl-item">
+          <dt><span>项目总预算</span></dt>
+          <dd>
+            <em v-money="{ value: projectBudgetAmount, precision: 2 }"></em
+            ><span>元</span><span>{{ projectBudgetCurrency || "人民币" }}</span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目已确认人力成本</span></dt>
+          <dd>
+            <em v-money="{ value: projectConfirmAmount, precision: 2 }"></em
+            ><span>元</span
+            ><span>{{ projectConfirmCurrency || "人民币" }}</span>
+          </dd>
+        </dl>
+      </div>
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="searchList"
       >
-        <div slot="tableContainer" class="table-container">
+        <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="applyTime" label="填报人" min-width="180">
               <template slot-scope="scope">
@@ -139,7 +152,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+            <el-table-column
+              fixed="right"
+              label="操作"
+              width="180"
+              v-if="tableData.length > 0"
+            >
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '0'"

@@ -107,7 +107,7 @@
           class="tl-select"
         >
           <el-option
-            v-for="item in CONST.PROJECT_TYPE_LIST"
+            v-for="item in CONST.PROJECT_TYPE_CREATE_LIST"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -123,7 +123,7 @@
           class="tl-select"
         >
           <el-option
-            v-for="item in CONST.THROW_TYPE_LIST"
+            v-for="item in CONST.THROW_TYPE_CREATE_LIST"
             :key="item.value"
             :label="item.label"
             :value="item.value"
