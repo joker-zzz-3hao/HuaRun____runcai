@@ -243,7 +243,7 @@
                   placeholder="请输入考核指标"
                   v-model="kitem.checkQuota"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
               <el-form-item
@@ -265,7 +265,7 @@
                   placeholder="请输入衡量办法"
                   v-model="kitem.judgeMethod"
                   maxlength="1500"
-                  class="tl-input"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
             </dd>

@@ -3,15 +3,17 @@
     :wrapperClosable="false"
     :modal-append-to-body="true"
     :append-to-body="true"
-    title="任务"
     :visible.sync="visible"
     @closed="closed"
     :before-close="close"
-    custom-class="custom-drawer create-task create-okr"
+    custom-class="custom-drawer create-task"
     class="tl-drawer"
   >
+    <div slot="title" class="flex-sb">
+      <div class="drawer-title">任务</div>
+    </div>
     <el-scrollbar>
-      <div class="task-fenlan">
+      <div class="cont-box task-fenlan">
         <el-form ref="dataForm" :model="formData" class="tl-form">
           <dl>
             <dt>
@@ -32,6 +34,7 @@
                   v-model.trim="formData.taskTitle"
                   maxlength="100"
                   show-word-limit
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
               <div>
@@ -111,6 +114,9 @@
                   :disabled="canEdit"
                   v-model.trim="formData.taskLevel"
                   placeholder="请选择优先级"
+                  class="tl-select"
+                  popper-class="tl-select-dropdown"
+                  :popper-append-to-body="false"
                 >
                   <el-option
                     v-for="item in CONST.PRIORITY_LIST"
@@ -129,6 +135,9 @@
                   :disabled="canEdit"
                   v-model.trim="formData.processId"
                   placeholder="请选择任务过程"
+                  class="tl-select"
+                  popper-class="tl-select-dropdown"
+                  :popper-append-to-body="false"
                 >
                   <el-option
                     v-for="item in processList"
@@ -156,6 +165,8 @@
                   placeholder="请选择关联项目"
                   @change="projectChange(scope.row)"
                   class="tl-select"
+                  popper-class="tl-select-dropdown"
+                  :popper-append-to-body="false"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -182,6 +193,9 @@
                   :disabled="canEdit"
                   v-model.trim="formData.okrDetailId"
                   placeholder="请选择归属OKR"
+                  class="tl-select"
+                  popper-class="tl-select-dropdown"
+                  :popper-append-to-body="false"
                 >
                   <el-option
                     v-for="item in okrList"
@@ -237,6 +251,7 @@
                   v-model="formData.taskProgressRemark"
                   show-word-limit
                   resize="none"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
 
@@ -250,6 +265,7 @@
                   show-word-limit
                   v-model="formData.taskDesc"
                   resize="none"
+                  class="tl-textarea"
                 ></el-input>
               </el-form-item>
               <el-form-item label="附件">
