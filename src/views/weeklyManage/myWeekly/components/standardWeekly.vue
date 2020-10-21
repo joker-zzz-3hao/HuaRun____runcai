@@ -508,10 +508,28 @@
       </dd>
     </dl>
     <!-- 本周心情 -->
-    <dl class="dl-card-panel">
+    <dl class="dl-card-panel mood">
       <dt class="card-title"><em>本周心情</em></dt>
       <dd>
-        <span>
+        <ul>
+          <li
+            class="has-harvest"
+            :class="{ 'is-selected': weeklyEmotion == 100 }"
+          >
+            <i @click="setEmotion(100)"></i><i></i>
+          </li>
+          <li
+            class="not-too-bad"
+            :class="{ 'is-selected': weeklyEmotion == 50 }"
+          >
+            <i @click="setEmotion(50)"></i><i></i>
+          </li>
+          <li class="let-quiet" :class="{ 'is-selected': weeklyEmotion == 0 }">
+            <i @click="setEmotion(0)"></i><i></i>
+          </li>
+        </ul>
+        <span v-if="showEmotionError">请选择本周心情</span>
+        <!-- <span>
           本周心情
           <el-button @click="setEmotion(100)">有收获</el-button>
           <span :class="{ 'text-color-red': weeklyEmotion == 100 }"
@@ -524,7 +542,7 @@
             >让我静静</span
           >
           <span v-if="showEmotionError">请选择本周心情</span>
-        </span>
+        </span> -->
       </dd>
     </dl>
     <div class="btn-box" v-if="hasPower('weekly-submit')">
