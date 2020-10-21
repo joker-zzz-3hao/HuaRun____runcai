@@ -68,6 +68,7 @@
         <div class="no-data-txt">您暂未填写OKR</div>
         <el-button
           v-show="showLoad"
+          v-if="!$route.query.id"
           type="primary"
           icon="el-icon-plus"
           @click="
@@ -85,8 +86,8 @@
       </div>
     </template>
     <div class="card-panel-body img-list" v-if="orgUser.length > 0">
-      <div v-if="$route.name == 'departleader'">子部门：</div>
-      <div v-if="$route.name == 'teamleader'">团队成员：</div>
+      <em v-if="$route.name == 'departleader'">子部门：</em>
+      <em v-if="$route.name == 'teamleader'">团队成员：</em>
       <dl
         v-for="(item, index) in orgUser"
         :key="item.userId + index"
@@ -102,8 +103,8 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div v-if="$route.name == 'departleader'">子部门：</div>
-      <div v-if="$route.name == 'teamleader'">团队成员：</div>
+      <em v-if="$route.name == 'departleader'">子部门：</em>
+      <em v-if="$route.name == 'teamleader'">团队成员：</em>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"
