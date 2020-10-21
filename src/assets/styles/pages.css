@@ -753,6 +753,33 @@
   margin: 0;
   width: 850px;
 }
+
+.okr-detail .flex-sb .okr-follow .el-icon-plus {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.okr-detail .flex-sb .okr-follow {
+  display: flex;
+  align-items: center;
+}
+
+.okr-detail .flex-sb .is-follow {
+  margin: 0 6px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #72c981;
+  border-radius: 50%;
+  background: #eff9f1;
+}
+
+.okr-detail .flex-sb .is-follow .el-icon-check {
+  color: #72c981;
+}
+
 /* 演示需要 原720 改为 950 */
 .associated-undertaking .el-drawer__body {
   margin-top: 10px;

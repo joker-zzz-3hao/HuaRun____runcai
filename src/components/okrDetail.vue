@@ -32,7 +32,7 @@
         class="okr-follow"
       >
         <div :class="{ 'is-follow': !showFocus && !isFromOkrSummarize }">
-          <i></i>
+          <i class="el-icon-check"></i>
         </div>
         <em>已关注</em>
       </div>
