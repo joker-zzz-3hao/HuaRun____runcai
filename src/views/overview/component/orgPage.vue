@@ -108,7 +108,15 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div>子部门：</div>
+      <div
+        v-if="
+          $route.query.name == 'teamleader' ||
+          $route.query.name == 'departleader'
+        "
+      >
+        子部门：
+      </div>
+      <div v-else>团队成员：</div>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"

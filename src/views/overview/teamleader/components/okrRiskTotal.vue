@@ -5,12 +5,16 @@
       <div id="okr-risk-total-bag"></div>
     </div>
     <div class="tl-card-panel-group">
-      <dl v-for="(item,index) in tableData" :key="index" @click="okrRiskUserInfo(item.riskCode);">
-        <dt>{{item.count}}</dt>
-        <dd>{{item.riskName}}(个)</dd>
+      <dl
+        v-for="(item, index) in tableData"
+        :key="index"
+        @click="okrRiskUserInfo(item.riskCode)"
+      >
+        <dt>{{ item.count }}</dt>
+        <dd>{{ item.riskName }}(个)</dd>
         <dd>
           <tl-process
-            :data="parseInt(item.ratio,10)"
+            :data="parseInt(item.ratio, 10)"
             :showNumber="false"
             :width="30"
             :marginLeft="6"
@@ -26,9 +30,21 @@
       :visible.sync="dialogVisible"
       :append-to-body="true"
     >
-      <el-table class="tl-table" :data="okrData" style="width: 100%">
-        <el-table-column prop="userName" label="负责人" width="180"></el-table-column>
-        <el-table-column prop="okrDetailObjectKr" label="KR名称"></el-table-column>
+      <el-table
+        class="tl-table"
+        :data="okrData"
+        style="width: 100%"
+        v-loading="loading"
+      >
+        <el-table-column
+          prop="userName"
+          label="负责人"
+          width="180"
+        ></el-table-column>
+        <el-table-column
+          prop="okrDetailObjectKr"
+          label="KR名称"
+        ></el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -59,6 +75,7 @@ export default {
   data() {
     return {
       server,
+      loading: false,
       dialogVisible: false,
       aroundData: [],
       okrData: [],
@@ -78,12 +95,14 @@ export default {
   methods: {
 
     okrRiskUserInfo(riskCode) {
+      this.loading = true;
       this.dialogVisible = true;
       this.server.okrRiskUserInfo({
         periodId: this.periodId,
         orgId: this.setOrgId,
         riskCode,
       }).then((res) => {
+        this.loading = false;
         this.okrData = this.testModel ? teamData.okrListData.data : res.data;
         this.visible = true;
       });
@@ -125,7 +144,7 @@ export default {
         },
         series: [
           {
-            name: '风险统计',
+            name: '信心统计',
             type: 'pie',
             radius: ['30%', '40%'],
             avoidLabelOverlap: false,
