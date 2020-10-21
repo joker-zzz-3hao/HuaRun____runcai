@@ -753,11 +753,15 @@
   margin: 0;
   width: 850px;
 }
-
-.associated-undertaking .el-drawer__body,
+/* 演示需要 原720 改为 950 */
+.associated-undertaking .el-drawer__body {
+  margin-top: 10px;
+  width: 950px;
+}
+/* 演示需要 原720 改为 850 */
 .history-version .el-drawer__body {
   margin-top: 10px;
-  width: 720px;
+  width: 850px;
 }
 
 .create-okr .allocation-info {
