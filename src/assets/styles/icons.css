@@ -190,3 +190,25 @@
 .mood .let-quiet.is-selected i:last-child {
   background: url('~@/assets/images/let_quiet_h.png') no-repeat;
 }
+
+/* 30 */
+.toggle-view i {
+  width: 32px;
+  height: 32px;
+  background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
+  background-size: 120px 2160px;
+}
+
+.toggle-view .column-view {
+  background-position-x: 0;
+  background-position-y: -120px;
+}
+
+.toggle-view .table-view {
+  background-position-x: 0;
+  background-position-y: -150px;
+}
+
+.toggle-view i.is-selected {
+  background-position-x: -30px;
+}
