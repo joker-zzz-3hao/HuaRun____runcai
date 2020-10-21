@@ -291,7 +291,8 @@ export default {
           if (res.data) {
             this.departmentData = [];
             this.departmentData.push(res.data);
-            this.orgFullId = this.departmentData[0].orgFullId;
+            // 默认取第二层润联科技
+            this.orgFullId = this.departmentData[0].children[0].orgFullId;
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
