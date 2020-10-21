@@ -241,6 +241,10 @@
   font-size: 14px;
 }
 
+.overview .cont-area > .tl-card-panel:first-child {
+  min-height: 370px;
+}
+
 .overview .cont-area > .tl-card-panel:first-child .tl-table .sub-tr .okr-kr-name {
   flex: 0 0 73%;
   width: 73%;
@@ -464,9 +468,12 @@
 }
 
 .team-view .operating-area-inside,
-.staff-view .operating-area-inside,
-.department-view .operating-area-inside  {
+.staff-view .operating-area-inside {
   padding: 0 30px 0 0;
+}
+
+.department-view .operating-area-inside  {
+  padding: 0 30px 0 30px;
 }
 
 .team-view .operating-area-inside > em,
@@ -3123,6 +3130,10 @@
   margin-left: 20px;
 }
 /* 切换部门--by xinquan  */
+.toggle-department {
+  margin: 0 0 0 16px;
+}
+
 .toggle-department .tl-select-dropdown .el-select-dropdown__item {
   display: flex;
   justify-content: space-between;
