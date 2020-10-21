@@ -113,19 +113,15 @@ const teamData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      userName: '用户A', okrDetailObjectKr: '完成最新分配任务', okrDetailId: '1243273803975811076', okrDetailType: '1', odetailId: '1243273803975811075',
+      userName: '用户A', okrDetailObjectKr: '完成所有新产品网站的更新', okrDetailId: '1243273803975811076', okrDetailType: '1', odetailId: '1243273803975811075',
     }, {
-      userName: '用户B', okrDetailObjectKr: '寻找优质的产品引入', okrDetailId: '1259957209311141893', okrDetailType: '1', odetailId: '1259957209311141891',
+      userName: '用户B', okrDetailObjectKr: '为客户和合作伙伴提供独家的启动前更新', okrDetailId: '1259957209311141893', okrDetailType: '1', odetailId: '1259957209311141891',
     }, {
-      userName: '用户C', okrDetailObjectKr: '完成2款自研新产品设计与开发', okrDetailId: '1302737282636865543', okrDetailType: '1', odetailId: '1302737282636865541',
+      userName: '用户C', okrDetailObjectKr: '应用中心评分超过 4 星，重点客户调研满意度达到 85%', okrDetailId: '1302737282636865543', okrDetailType: '1', odetailId: '1302737282636865541',
     }, {
-      userName: '用户D', okrDetailObjectKr: '形成个别生态能力的解决方案，为下半年营收做准备', okrDetailId: '1302758826192822281', okrDetailType: '1', odetailId: '1302758826192822279',
+      userName: '用户D', okrDetailObjectKr: '第四季度保持至少90%订单续费率', okrDetailId: '1302758826192822281', okrDetailType: '1', odetailId: '1302758826192822279',
     }, {
-      userName: '用户H', okrDetailObjectKr: '发布到生产环境，自动搜索优质文章', okrDetailId: '1302758826192822291', okrDetailType: '1', odetailId: '1302758826192822289',
-    }, {
-      userName: '用户I', okrDetailObjectKr: '持续探索外部机会，寻找优质的产品引入，为下半年营收做准备', okrDetailId: '1302758826192822296', okrDetailType: '1', odetailId: '1302758826192822294',
-    }, {
-      userName: '用户J', okrDetailObjectKr: '线下业务数据线上化研发支持，线下操作线上化研发支持', okrDetailId: '1302758826192822301', okrDetailType: '1', odetailId: '1302758826192822299',
+      userName: '用户H', okrDetailObjectKr: '提高用户体验', okrDetailId: '1302758826192822291', okrDetailType: '1', odetailId: '1302758826192822289',
     }],
   },
   // eslint-disable-next-line max-len
@@ -147,11 +143,11 @@ const teamData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      riskName: '信心指数高', riskCode: 1, count: 30, ratio: '40',
+      riskName: '信心指数高', riskCode: 1, count: 3, ratio: '40',
     }, {
-      riskName: '信心指数中', riskCode: 2, count: 40, ratio: '30',
+      riskName: '信心指数中', riskCode: 2, count: 4, ratio: '30',
     }, {
-      riskName: '信心指数低', riskCode: 3, count: 30, ratio: '30',
+      riskName: '信心指数低', riskCode: 3, count: 3, ratio: '30',
     }],
   },
 };

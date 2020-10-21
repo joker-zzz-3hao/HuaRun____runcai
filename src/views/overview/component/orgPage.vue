@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-card-panel" v-loading="fullscreenLoading">
+  <div class="tl-card-panel">
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length > 0">
       <div class="card-panel-head">
