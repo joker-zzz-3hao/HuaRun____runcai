@@ -81,7 +81,11 @@
       </div>
     </el-scrollbar>
     <div class="operating-box">
-      <el-button type="primary" @click="submitMember" class="tl-btn amt-bg-slip"
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="submitMember"
+        class="tl-btn amt-bg-slip"
         >保存</el-button
       >
     </div>
@@ -117,6 +121,7 @@ export default {
   data() {
     return {
       showEditTeam: false,
+      loading: false,
       data: {},
       formData: {
         orgName: '',
@@ -137,8 +142,6 @@ export default {
   computed: {},
   methods: {
     show(data) {
-      console.log(this.teamMembers);
-      console.log(this.data);
       this.data = data;
       this.formData.orgName = data.orgName;
       this.chargeMember.orgLeader = data.orgLeader;
@@ -153,7 +156,6 @@ export default {
         }
       });
       this.showEditTeam = true;
-      console.log(this.chargeMembersValue);
     },
     getMember(data) {
       this.chargeMember = this.teamMembers.filter((item) => item.userId == data)[0] || {};
@@ -189,6 +191,7 @@ export default {
           userId: item.userId,
         });
       });
+      this.loading = true;
       this.server.updateVirtualOrg({
         orgName: this.formData.orgName,
         orgId: this.data.orgId,
@@ -196,6 +199,7 @@ export default {
         userId: this.chargeMember.userId,
         virtualOrgUser: this.virtualOrgUser,
       }).then((res) => {
+        this.loading = false;
         if (res.code == '200') {
           this.close();
           this.$emit('success');

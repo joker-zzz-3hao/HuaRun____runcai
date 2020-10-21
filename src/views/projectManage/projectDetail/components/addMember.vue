@@ -157,12 +157,17 @@
     </div>
     <div class="operating-box">
       <el-button
+        :disabled="commitLoading"
         plain
         @click="visible = false"
         class="tl-btn amt-border-fadeout"
         >取消</el-button
       >
-      <el-button type="primary" @click="addMembers" class="tl-btn amt-bg-slip"
+      <el-button
+        :loading="commitLoading"
+        type="primary"
+        @click="addMembers"
+        class="tl-btn amt-bg-slip"
         >确定</el-button
       >
     </div>
@@ -180,6 +185,7 @@ export default {
       CONST,
       visible: false,
       loading: false,
+      commitLoading: false,
       keyword: '',
       projectManagerList: [],
       tableData: [],
@@ -283,7 +289,9 @@ export default {
               userCompany: item.companyName,
             });
           });
+          this.commitLoading = true;
           this.server.addProjectUser(params).then((res) => {
+            this.commitLoading = false;
             if (res.code == '200') {
               this.visible = false;
               this.$emit('addSuccess');
