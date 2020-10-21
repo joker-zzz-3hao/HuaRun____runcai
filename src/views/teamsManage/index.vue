@@ -328,10 +328,14 @@ export default {
           self.server.queryOrgParent({ orgFullId: res.data.orgFullId }).then((response) => {
             if (response.code == '200') {
               console.log(response);
-              response.data.forEach((tItem) => {
-                tItem.parentId = self.baseInfo.orgId;
-                self.teamTreeData.push(tItem);
-              });
+              if (response.data) {
+                if (response.data) {
+                  response.data.forEach((tItem) => {
+                    tItem.parentId = self.baseInfo.orgId;
+                    self.teamTreeData.push(tItem);
+                  });
+                }
+              }
               // 手动添加最后一个添加虚拟组织的按钮
               self.teamTreeData.push({
                 parentId: self.baseInfo.orgId,
