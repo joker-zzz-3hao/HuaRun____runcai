@@ -2018,6 +2018,8 @@
 .teams-weekly .cont-area,
 .teams-weekly-detail .cont-area,
 .my-task .cont-area,
+.process-manage .cont-area,
+.task-process .cont-area,
 .replay-okr .cont-area,
 .project-manage .cont-area,
 .working-hours .cont-area,
@@ -3226,7 +3228,41 @@
 .main-menu .sub-menu .taskprocess {
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
 }
+
+.task-process .tl-dropdown + .tl-custom-btn {
+  margin: 0 0 0 20px;
+}
+
+.task-process .cont-area {
+  display: flex;
+}
+
+.task-process .list-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-process .screening-condition {
+  margin: 20px 0 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.task-process .board-view {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 过程管理 */
+.process-manage .cont-area {
+  display: flex;
+}
+
 
 /* 创建任务--by xinquan */ 
 .create-task .el-drawer__body {
