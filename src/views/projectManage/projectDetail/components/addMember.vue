@@ -38,7 +38,7 @@
           </el-select>
         </dd>
       </dl>
-      <tl-crcloud-table :isPage="false">
+      <tl-crcloud-table v-if="dataForm.tableData.length > 0" :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-form :model="dataForm" ref="dataForm">
             <el-table :data="dataForm.tableData" class="tl-table">
