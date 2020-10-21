@@ -22,10 +22,18 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="submit"
+        class="tl-btn amt-bg-slip"
         >确定</el-button
       >
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+      <el-button
+        :disabled="loading"
+        plain
+        @click="close"
+        class="tl-btn amt-border-fadeout"
         >取消</el-button
       >
     </div>
@@ -66,6 +74,7 @@ export default {
   data() {
     return {
       server,
+      loading: false,
       form: {
         region: [],
       },
@@ -85,7 +94,11 @@ export default {
       this.listUser = data;
     },
     submit() {
+      this.loading = true;
       this.$emit('submitFunctin', this.listUser);
+      setTimeout(() => {
+        this.loading = false;
+      }, 800);
     },
     close() {
       this.dialogTableVisible = false;

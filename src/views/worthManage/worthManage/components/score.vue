@@ -71,8 +71,15 @@
             v-model.trim="description"
           ></el-input>
         </div>
-        <div>
-          <el-button @click="submitScore">发送</el-button>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button
+            :loading="loading"
+            type="primary"
+            @click="submitScore"
+            class="tl-btn amt-bg-slip"
+            >发送</el-button
+          >
         </div>
       </div>
     </el-dialog>
@@ -88,6 +95,7 @@ export default {
     return {
       CONST,
       showScore: false,
+      loading: false,
       inputVisible: false,
       worthName: '',
       scoreId: '',
@@ -175,12 +183,14 @@ export default {
         this.$message.error('请输入评价');
         return;
       }
+      this.loading = true;
       this.server.score({
         id: this.data.id,
         score: this.scoreId,
         scoreDesc: this.description,
         scoreLabel: this.otherLabelList.length > 0 ? this.otherLabelList[0].label : '',
       }).then((res) => {
+        this.loading = false;
         if (res.code == '200') {
           this.$message.success('评价成功');
           this.$emit('success');
