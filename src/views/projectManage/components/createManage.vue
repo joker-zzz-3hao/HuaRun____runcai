@@ -172,10 +172,18 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="createManage" class="tl-btn amt-bg-slip"
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="createManage"
+        class="tl-btn amt-bg-slip"
         >确定</el-button
       >
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+      <el-button
+        :disabled="loading"
+        plain
+        @click="close"
+        class="tl-btn amt-border-fadeout"
         >取消</el-button
       >
     </div>
@@ -304,6 +312,7 @@ export default {
           const currencyObj = this.CONST.CURRENCY_LIST.filter(
             (item) => item.value == this.formData.currency,
           ) || [];
+          this.loading = true;
           this.server.createProject({
             projectNameCn: this.formData.projectName,
             projectDescription: this.formData.projectDesc,
@@ -322,6 +331,7 @@ export default {
             userCompany: this.formData.userCompany,
             projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
+            this.loading = false;
             if (res.code == '200') {
               this.$emit('success');
               this.visible = false;

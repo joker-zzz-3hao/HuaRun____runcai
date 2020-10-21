@@ -34,10 +34,18 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click="submitForm"
+        class="tl-btn amt-bg-slip"
         >确定</el-button
       >
-      <el-button plain @click="closed" class="tl-btn amt-border-fadeout"
+      <el-button
+        :disabled="loading"
+        plain
+        @click="closed"
+        class="tl-btn amt-border-fadeout"
         >取 消</el-button
       >
     </div>
@@ -54,6 +62,7 @@ export default {
   data() {
     return {
       server,
+      loading: false,
       dialogTableVisible: false,
       isEdit: false,
       title: '创建价值观',
@@ -100,7 +109,10 @@ export default {
             url = 'updateCulture';
             params.id = this.form.id;
           }
+          this.loading = true;
           this.server[url](params).then((res) => {
+            this.loading = false;
+
             if (res.code == '200') {
               this.$emit('success');
               this.dialogTableVisible = false;

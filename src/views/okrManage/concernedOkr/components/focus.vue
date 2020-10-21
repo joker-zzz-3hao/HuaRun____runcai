@@ -23,33 +23,42 @@
         <div class="select-target">
           <div class="transfer-head">
             <div class="crumbs">
-              <em @click="clearUser" :class="light==0?'is-subset':''">润联科技</em>
+              <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''"
+                >润联科技</em
+              >
               <em
-                :class="light==item.id?'is-subset':''"
-                v-for="(item,index) in selectList"
+                :class="light == item.id ? 'is-subset' : ''"
+                v-for="(item, index) in selectList"
                 :key="index"
                 @click="getqueryOrgAndUser(item)"
-              >{{item.name}}</em>
+                >{{ item.name }}</em
+              >
             </div>
           </div>
           <el-scrollbar>
             <ul class="txt-list" v-show="showLoad">
-              <li v-for="(item,index) in data" :key="index" @click="getqueryOrgAndUser(item)">
+              <li
+                v-for="(item, index) in data"
+                :key="index"
+                @click="getqueryOrgAndUser(item)"
+              >
                 <el-checkbox
                   :key="item.id"
                   class="tl-checkbox"
-                  @change="checkMember($event,item)"
+                  @change="checkMember($event, item)"
                   v-model="value[item.id]"
-                  v-if="item.type=='USER'"
+                  v-if="item.type == 'USER'"
                 >
                   <div class="img-user">
                     <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                    <div class="user-name" v-else>{{checkName(item.name)}}</div>
+                    <div class="user-name" v-else>
+                      {{ checkName(item.name) }}
+                    </div>
                   </div>
-                  <em>{{item.name}}</em>
+                  <em>{{ item.name }}</em>
                 </el-checkbox>
                 <div v-else class="flex-sb">
-                  <em>{{item.name}}</em>
+                  <em>{{ item.name }}</em>
                   <i class="el-icon-arrow-right"></i>
                 </div>
               </li>
@@ -60,19 +69,25 @@
           <div class="transfer-head">
             <div class="selected-number">
               <span>已选</span>
-              <em>{{roulelist.length}}</em>人
+              <em>{{ roulelist.length }}</em
+              >人
             </div>
             <div class="clear" @click="clearMember">清空</div>
           </div>
           <el-scrollbar>
             <ul class="txt-list">
-              <li v-for="(item,index) in roulelist" :key="index">
+              <li v-for="(item, index) in roulelist" :key="index">
                 <div class="img-user">
                   <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                  <div class="user-name" v-else>{{checkName(item.userName)}}</div>
+                  <div class="user-name" v-else>
+                    {{ checkName(item.userName) }}
+                  </div>
                 </div>
-                <em>{{item.userName}}</em>
-                <i class="el-icon-close" @click="deleteMember(index,item.userId)"></i>
+                <em>{{ item.userName }}</em>
+                <i
+                  class="el-icon-close"
+                  @click="deleteMember(index, item.userId)"
+                ></i>
               </li>
             </ul>
           </el-scrollbar>
@@ -80,8 +95,10 @@
       </div>
     </div>
     <div>
-      <el-button type="text" @click="focus">确认</el-button>
-      <el-button type="text" @click="handleClose">取消</el-button>
+      <el-button type="text" :loading="loading" @click="focus">确认</el-button>
+      <el-button type="text" :disabled="loading" @click="handleClose"
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -94,6 +111,7 @@ export default {
   data() {
     return {
       server,
+      loading: false,
       filterText: '',
       dialogTableVisible: false,
       roulelist: [],
@@ -134,9 +152,11 @@ export default {
           supported: 1,
         });
       });
+      this.loading = true;
       this.server.addFocus(
         params,
       ).then((res) => {
+        this.loading = false;
         if (res.code == '200') {
           console.log(res);
           this.$emit('success');
