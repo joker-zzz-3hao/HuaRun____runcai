@@ -18,8 +18,16 @@
             <span v-show="testModel">示例数据</span>
           </div>
           <div>
-            <i class="el-icon-caret-left" @click="prevSwiper"></i>
-            <i class="el-icon-caret-right" @click="nextSwiper"></i>
+            <i
+              class="el-icon-caret-left"
+              v-show="prevBtn"
+              @click="prevSwiper"
+            ></i>
+            <i
+              class="el-icon-caret-right"
+              v-show="nextBtn"
+              @click="nextSwiper"
+            ></i>
           </div>
         </div>
         <div
@@ -93,11 +101,14 @@ export default {
       mainData: [],
       orgUser: [],
       riskList: [],
+      nextBtn: true,
+      prevBtn: false,
       swiperOption: {
         spaceBetween: 10,
         observer: true,
         observeParents: true,
         width: 291,
+
       },
     };
   },
@@ -110,9 +121,21 @@ export default {
   },
   methods: {
     prevSwiper() {
+      if (this.$refs.mySwiper.swiper.activeIndex == 1) {
+        this.nextBtn = true;
+        this.prevBtn = false;
+      }
+      console.log(this.riskList.length);
       this.$refs.mySwiper.swiper.slidePrev();
     },
     nextSwiper() {
+      if (this.$refs.mySwiper.swiper.activeIndex + 1 > 0) {
+        this.prevBtn = true;
+      }
+      if (this.$refs.mySwiper.swiper.activeIndex == this.riskList.length - 2) {
+        this.nextBtn = false;
+      }
+      // console.log(this.$refs.mySwiper.swiper.activeIndex);
       this.$refs.mySwiper.swiper.slideNext();
     },
     // 切换周期
