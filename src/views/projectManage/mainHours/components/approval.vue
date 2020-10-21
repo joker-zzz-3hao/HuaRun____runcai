@@ -1,68 +1,103 @@
 <template>
-  <div>
-    <el-dialog
-      :append-to-body="true"
-      :visible="visible"
-      @close="close"
-      :title="info.projectNameCn"
-      :close-on-click-modal="false"
-    >
-      <div v-for="item in info.weeklyItemList" :key="item.id">
+  <el-dialog
+    :append-to-body="true"
+    :visible="visible"
+    @close="close"
+    :before-close="close"
+    :title="info.projectNameCn"
+    :close-on-click-modal="false"
+    custom-class="approval"
+    class="tl-dialog"
+    width="620px"
+  >
+    <el-scrollbar>
+      <div class="dl-list" v-for="item in info.weeklyItemList" :key="item.id">
+        <dl class="dl-item">
+          <dt><span>工作项</span></dt>
+          <dd>
+            {{ item.workContent }}
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>进度</span></dt>
+          <dd>
+            <tl-process :data="item.workProgress"></tl-process>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>时间</span></dt>
+          <dd>
+            <em>{{ item.startTime }}</em
+            ><span>至</span><em>{{ item.endTime }}</em>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>填报工时</span></dt>
+          <dd>
+            <span>投入</span><em>{{ item.workTime }}</em
+            ><span>天</span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>内容</span></dt>
+          <dd>
+            <em>{{ item.workDesc }}</em>
+          </dd>
+        </dl>
+      </div>
+    </el-scrollbar>
+    <div slot="footer" class="dialog-footer flex-sb">
+      <div class="dialog-footer-l">
         <div>
-          <span>工作项:</span>
-          <span>{{ item.workContent }}</span>
+          <span>共投入工时</span> <em>{{ timeSheet }}</em
+          ><span>天</span>
+          <el-popover
+            placement="top"
+            width="300"
+            v-model="popoverVisible"
+            popper-class="approval-pop"
+          >
+            <el-button plain slot="reference" class="tl-btn btn-lineheight"
+              >点击修改</el-button
+            >
+            <el-input-number
+              v-model="confirmSheet"
+              controls-position="right"
+              :precision="1"
+              :step="0.5"
+              :min="0.5"
+              class="tl-input-number"
+            ></el-input-number>
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="editRemark"
+              class="tl-textarea"
+            >
+            </el-input>
+            <div class="flex-end">
+              <el-button
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                @click="confirmTimeSheet"
+                >确定</el-button
+              >
+            </div>
+          </el-popover>
         </div>
-        <div>
-          <span>进度:</span>
-          <tl-process :data="item.workProgress"></tl-process>
-          <span>{{ item.workProgress }}%</span>
-        </div>
-        <div>
-          <span>时间:</span>
-          <span>{{ item.startTime }}至{{ item.endTime }}</span>
-        </div>
-        <div>
-          <span>填报工时:</span>
-          <span>投入{{ item.workTime }}天</span>
-        </div>
-        <div>
-          <span>内容:</span>
-          <span>{{ item.workDesc }}</span>
+        <div v-if="remark">
+          <span>修改原因</span><em>{{ remark }}</em>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <span>共投入工时{{ timeSheet }}天</span>
-        <span v-if="remark">原因：{{ remark }}</span>
-        <el-popover placement="top" width="300" v-model="popoverVisible">
-          <el-input-number
-            v-model="confirmSheet"
-            :precision="1"
-            :step="0.5"
-            :min="0.5"
-          ></el-input-number>
-          <el-input
-            type="textarea"
-            :rows="2"
-            placeholder="请输入内容"
-            v-model="editRemark"
-          >
-          </el-input>
-          <div style="text-align: right; margin: 0">
-            <!-- <el-button size="mini" type="text" @click="popoverVisible = false"
-              >取消</el-button
-            > -->
-            <el-button type="primary" size="mini" @click="confirmTimeSheet"
-              >确定</el-button
-            >
-          </div>
-          <el-button slot="reference">点击修改</el-button>
-        </el-popover>
-
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="approval">提交</el-button>
-      </span>
-    </el-dialog>
-  </div>
+      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+        >取消</el-button
+      >
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="approval"
+        >提交</el-button
+      >
+    </div>
+  </el-dialog>
 </template>
 
 <script>
