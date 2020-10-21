@@ -514,18 +514,18 @@
         <ul>
           <li
             class="has-harvest"
-            :class="{ 'is-selected': weeklyEmotion == 100 }"
+            :class="{ 'is-selected': weeklyEmotion === 100 }"
           >
-            <i @click="setEmotion(100)"></i><i></i>
+            <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
           </li>
           <li
             class="not-too-bad"
-            :class="{ 'is-selected': weeklyEmotion == 50 }"
+            :class="{ 'is-selected': weeklyEmotion === 50 }"
           >
-            <i @click="setEmotion(50)"></i><i></i>
+            <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
           </li>
-          <li class="let-quiet" :class="{ 'is-selected': weeklyEmotion == 0 }">
-            <i @click="setEmotion(0)"></i><i></i>
+          <li class="let-quiet" :class="{ 'is-selected': weeklyEmotion === 0 }">
+            <i @click="canUpdate ? setEmotion(0) : ''"></i><i></i>
           </li>
         </ul>
         <span v-if="showEmotionError">请选择本周心情</span>
@@ -962,7 +962,7 @@ export default {
       });
     },
     setWorkTableData() {
-      this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion || '100';// 心情
+      this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         this.$set(element, 'randomId', Math.random().toString(36).substr(3));
         const valueIdList = [];
