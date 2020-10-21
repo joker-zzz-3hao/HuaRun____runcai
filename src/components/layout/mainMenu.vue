@@ -54,7 +54,7 @@
                 </span>
                 <el-cascader-panel
                   :options="taskoptions"
-                  v-if="options.subClassTag == 'taskprocess'"
+                  v-if="options.subClassTag == 'taskProcess'"
                 ></el-cascader-panel>
               </router-link>
             </dl>
@@ -92,12 +92,15 @@ export default {
       taskoptions: [{
         value: '1',
         label: '团队使用',
+        children: [],
       }, {
         value: '2',
         label: '小范围使用',
+        children: [],
       }, {
         value: '3',
         label: '个人使用',
+        children: [],
       }],
     };
   },
@@ -108,6 +111,9 @@ export default {
         return [];
       },
     },
+  },
+  created() {
+
   },
   computed: {
     ...mapState('common', {
@@ -123,6 +129,47 @@ export default {
   mounted() {},
   methods: {
     ...mapMutations('common', ['setListenerWidth']),
+    queryTaskProcessList(processType) {
+      // 搜索任务过程
+      this.server.queryTaskProcessList({
+        currentPage: 1,
+        pageSize: 1000,
+        processType: processType || '',
+        enable: 1,
+      }).then((res) => {
+        if (res.code == 200) {
+          if (processType == '1') {
+            this.teamList = res.data.content;
+            this.teamList.forEach((item) => {
+              this.taskoptions[0].children.push({
+                value: item.processId,
+                label: item.processName,
+              });
+            });
+            // if (this.teamList.length > 0) {
+            //   this.processId = this.teamList[0].processId;
+            //   this.selectProcess(this.teamList[0]);
+            // }
+          } else if (processType == '2') {
+            this.littleRangeList = res.data.content;
+            this.littleRangeList.forEach((item) => {
+              this.taskoptions[1].children.push({
+                value: item.processId,
+                label: item.processName,
+              });
+            });
+          } else if (processType == '3') {
+            this.personList = res.data.content;
+            this.personList.forEach((item) => {
+              this.taskoptions[2].children.push({
+                value: item.processId,
+                label: item.processName,
+              });
+            });
+          }
+        }
+      });
+    },
     fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {
         if (typeof (parameter) === 'string') {
@@ -180,6 +227,11 @@ export default {
     '$route.name': {
       handler(newVal) {
         this.selectMenu = newVal;
+        if (newVal == 'taskProcess') {
+          this.queryTaskProcessList('1');
+          this.queryTaskProcessList('2');
+          this.queryTaskProcessList('3');
+        }
       },
       deep: true,
       immediate: true,
