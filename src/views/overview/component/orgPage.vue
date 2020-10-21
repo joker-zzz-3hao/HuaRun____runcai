@@ -107,12 +107,7 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <div
-        v-if="
-          $route.query.name == 'teamleader' ||
-          $route.query.name == 'departleader'
-        "
-      >
+      <div v-if="$route.name == 'teamleader' || $route.name == 'departleader'">
         子部门：
       </div>
       <div v-else>团队成员：</div>
