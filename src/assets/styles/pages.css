@@ -242,7 +242,7 @@
 }
 
 .overview .cont-area > .tl-card-panel:first-child {
-  min-height: 370px;
+  min-height: 290px;
 }
 
 .overview .cont-area > .tl-card-panel:first-child .tl-table .sub-tr .okr-kr-name {
@@ -310,6 +310,32 @@
 
 .overview .tl-card-panel .okr-follow {
   flex: 0 0 100px;
+}
+
+.overview .tl-card-panel .okr-follow .el-icon-plus {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.overview .tl-card-panel .okr-follow dd {
+  display: flex;
+  align-items: center;
+}
+
+.overview .tl-card-panel .is-follow {
+  margin: 0 6px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #72c981;
+  border-radius: 50%;
+  background: #eff9f1;
+}
+
+.overview .tl-card-panel .is-follow .el-icon-check {
+  color: #72c981;
 }
 
 .overview .img-list dl {
@@ -728,10 +754,41 @@
   width: 850px;
 }
 
-.associated-undertaking .el-drawer__body,
+.okr-detail .flex-sb .okr-follow .el-icon-plus {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.okr-detail .flex-sb .okr-follow {
+  display: flex;
+  align-items: center;
+}
+
+.okr-detail .flex-sb .is-follow {
+  margin: 0 6px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #72c981;
+  border-radius: 50%;
+  background: #eff9f1;
+}
+
+.okr-detail .flex-sb .is-follow .el-icon-check {
+  color: #72c981;
+}
+
+/* 演示需要 原720 改为 950 */
+.associated-undertaking .el-drawer__body {
+  margin-top: 10px;
+  width: 950px;
+}
+/* 演示需要 原720 改为 850 */
 .history-version .el-drawer__body {
   margin-top: 10px;
-  width: 720px;
+  width: 850px;
 }
 
 .create-okr .allocation-info {
@@ -1947,6 +2004,11 @@
 }
 
 /* 周报 */
+.my-weekly {
+  margin: 16px 16px 116px 16px;
+  min-height: calc(100vh - 202px);
+}
+
 .my-weekly .operating-area {
   height: 36px;
 }
@@ -2591,6 +2653,14 @@
   padding: 0 24px 0 2px;
 }
 
+.my-weekly .okr-completion .no-data {
+  align-items: flex-start;
+}
+
+.my-weekly .okr-completion .no-data span {
+  color: #879099;
+}
+
 .mood ul {
   display: flex;
   align-items: center;
@@ -2601,6 +2671,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.mood.is-edit ul li {
   cursor: pointer;
 }
 
@@ -3056,6 +3129,23 @@
 .my-weekly .dl-card-panel > dd,
 .teams-weekly-detail .dl-card-panel > dd {
   margin: 10px 0 20px 0;
+}
+
+.teams-weekly-detail .dl-card-panel .btn-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.is-sub-menu + .my-weekly .footer-panel .tl-btn,
+.is-sub-menu + .my-weekly .footer-panel > span {
+  margin: 0 0 0 248px;
+  transition: all .4s ease-out;
+}
+
+.is-sub-menu.is-shrink + .my-weekly .footer-panel .tl-btn,
+.is-sub-menu.is-shrink + .my-weekly .footer-panel > span {
+  margin: 0 0 0 96px;
 }
 
 .no-data em {

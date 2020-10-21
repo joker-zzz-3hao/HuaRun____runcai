@@ -41,12 +41,12 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 24;
+  z-index: 26;
 }
 
 .view-cont {
   position: relative;
-  z-index: 21;
+  z-index: 25;
   flex: 1 1 auto;
   margin: 16px;
   display: flex;

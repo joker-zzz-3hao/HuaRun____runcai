@@ -319,7 +319,7 @@
               type="index"
               width="55"
             ></el-table-column>
-            <el-table-column label="计划项" min-width="420">
+            <el-table-column label="计划项" width="930">
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
@@ -508,7 +508,7 @@
       </dd>
     </dl>
     <!-- 本周心情 -->
-    <dl class="dl-card-panel mood">
+    <dl class="dl-card-panel mood" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>本周心情</em></dt>
       <dd>
         <ul>
@@ -531,7 +531,7 @@
         <span v-if="showEmotionError">请选择本周心情</span>
       </dd>
     </dl>
-    <div class="btn-box" v-if="hasPower('weekly-submit')">
+    <div class="footer-panel" v-if="hasPower('weekly-submit')">
       <el-button
         :loading="commitLoading"
         v-if="canEdit && canUpdate"

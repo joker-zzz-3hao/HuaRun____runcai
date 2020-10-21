@@ -29,10 +29,13 @@
         </dl>
         <dl class="okr-follow">
           <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
-            <i></i><em>关注</em>
+            <i class="el-icon-plus"></i><em>关注</em>
           </dd>
           <dd v-show="okrMain.supported == '1'" @click="cancelFocus(okrMain)">
-            <i></i><em>已关注</em>
+            <div :class="{ 'is-follow': okrMain.supported == '1' }">
+              <i class="el-icon-check"></i>
+            </div>
+            <em>已关注</em>
           </dd>
         </dl>
         <dl class="okr-progress">

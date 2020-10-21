@@ -4,12 +4,11 @@
     :before-close="close"
     @closed="close"
     :close-on-click-modal="false"
-    :title="title"
     :visible.sync="dialogTableVisible"
-    class="tl-dialog"
-    style="marginleft: 20%; marginright: 20%"
+    class="tl-dialog check-judge"
     width="700px"
   >
+    <div slot="title" class="check-title">{{ title }}</div>
     <!-- 使命愿景 -->
     <div v-if="type == '1'">
       <div>
@@ -80,14 +79,18 @@
     </div>
     <!-- 公司价值观宣导 -->
     <div v-else-if="type == '3'">
-      <div v-for="culture in cultureContent" :key="culture.id">
-        <h3>
+      <dl
+        v-for="culture in cultureContent"
+        :key="culture.id"
+        class="check-item"
+      >
+        <dt>
           {{ culture.cultureName }}
-        </h3>
-        <p>
+        </dt>
+        <dd>
           {{ culture.cultureDesc }}
-        </p>
-      </div>
+        </dd>
+      </dl>
     </div>
   </el-dialog>
 </template>
