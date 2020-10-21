@@ -85,6 +85,7 @@
                   <el-input
                     v-model="scope.row.workProgress"
                     @change="tableProcessChange(scope.row)"
+                    class="tl-input"
                   ></el-input>
                 </el-form-item>
               </template>
@@ -109,7 +110,7 @@
                   v-if="canUpdate"
                   v-model.trim="scope.row.workTime"
                   @change="workTimeChange(scope.row)"
-                  style="width: 60px"
+                  class="tl-input"
                 ></el-input>
               </el-form-item>
               <!-- 编辑完提交后展示 -->
