@@ -64,6 +64,9 @@
               <el-dropdown-item @click.native="go('personalCenter')">
                 <em>个人中心</em>
               </el-dropdown-item>
+              <el-dropdown-item @click.native="downloadHelpFile">
+                <em>帮助文档</em>
+              </el-dropdown-item>
               <!-- <el-dropdown-item @click.native="go('personConfig')">
                 <em>个人设置</em>
               </el-dropdown-item> -->
@@ -134,6 +137,16 @@ export default {
         if (res.code == 200) {
           window.location.reload();
         }
+      });
+    },
+    downloadHelpFile() {
+      this.$xconfirm({
+        title: '',
+        content: '确认下载润才帮助文档?',
+
+      }).then(() => {
+        // 下载
+        window.open('');
       });
     },
   },
