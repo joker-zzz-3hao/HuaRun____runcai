@@ -3224,6 +3224,45 @@
   min-height: calc(100vh - 244px);
 }
 
+.eidt-task .el-drawer__body {
+  width: 980px;
+}
+
+.eidt-task .cont-box.flex-sb {
+  align-items: stretch;
+}
+
+.eidt-task .task-tab {
+  width: 440px;
+}
+
+.eidt-task .tl-form {
+  padding: 0 20px 0 0;
+  flex: 1;
+}
+
+.eidt-task .tl-form > dl dt .el-form-item {
+  margin: 0;
+}
+
+.eidt-task .tl-custom-tabs {
+  height: 50px;
+}
+
+.eidt-task .tl-custom-tabs .border-slip {
+  height: 1px;
+}
+
+.eidt-task .tab-list li {
+  flex: 1;
+  justify-content: center;
+  font-weight: normal;
+}
+
+.eidt-task .tab-list li.is-focus {
+  font-weight: 500;
+}
+
 /* 任务过程 */
 .main-menu .sub-menu .taskprocess {
   flex-direction: column;
