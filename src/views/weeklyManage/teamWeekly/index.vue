@@ -161,13 +161,10 @@
                   </div>
                 </dd>
                 <dd>
-                  <span>更新时间</span>
+                  <span>时间</span>
                   <em>{{
                     weekly.updateTime
-                      ? dateFormat(
-                          "YYYY-mm-dd HH:MM:SS",
-                          new Date(weekly.updateTime)
-                        )
+                      ? dateFormat("mm/dd HH:MM", new Date(weekly.updateTime))
                       : "--"
                   }}</em>
                 </dd>
