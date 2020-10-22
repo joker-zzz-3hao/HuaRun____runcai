@@ -79,6 +79,15 @@
               min-width="165"
             ></el-table-column>
             <el-table-column
+              prop="okrBelongType"
+              label="OkR所属类型"
+              min-width="165"
+            >
+              <template slot-scope="scope">
+                {{ CONST.OKR_BELONGTYPE[scope.row.okrBelongType] }}
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="periodName"
               label="OKR周期"
               min-width="170"

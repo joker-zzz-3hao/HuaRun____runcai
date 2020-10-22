@@ -4,6 +4,11 @@ const REVIEW_STATUS = {
   3: '复盘结束',
 };
 
+const OKR_BELONGTYPE = {
+  1: '组织',
+  2: '个人',
+};
+
 const REVIEW_STATUS_LIST = [
   { name: '全部', status: '' },
   { name: '待复盘', status: 1 },
@@ -14,4 +19,5 @@ const REVIEW_STATUS_LIST = [
 export default {
   REVIEW_STATUS,
   REVIEW_STATUS_LIST,
+  OKR_BELONGTYPE,
 };
