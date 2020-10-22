@@ -1,5 +1,5 @@
 <template>
-  <div class="row" style="display: flex">
+  <div class="board-view">
     <!-- <draggable
       class="list-group parent"
       :list="rootData"
@@ -204,21 +204,34 @@ export default {
 </script>
 <style  >
 .list-group {
-  height: 300px;
+  padding: 16px;
+  min-height: 300px;
+  background: #f4f6f8;
+  border-radius: 6px;
 }
+
+.list-group-item:not(:last-child) {
+  margin: 0 0 16px 0;
+}
+
 .list-group-item {
-  border: 1px solid rgb(0, 0, 0);
-  width: 80%;
-  height: 120px;
-  margin: 10px;
+  background: #fff;
+  border-radius: 4px;
 }
 
 .parent {
   display: flex;
 }
+
 .child {
   margin-left: 300px;
 }
+
+.col-4 > div:first-child {
+  display: flex;
+  align-items: flex-start;
+}
+
 .col-4 {
   width: 25%;
 }

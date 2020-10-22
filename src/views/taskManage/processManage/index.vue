@@ -1,10 +1,10 @@
 <template>
-  <div class="tenant-management">
+  <div class="process-manage">
     <div class="operating-area">
       <div class="page-title">过程管理</div>
       <div class="operating-box">
-        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item>
+        <dl class="dl-item">
+          <dd>
             <el-select
               v-model="keyWord"
               placeholder="请选择使用范围"
@@ -17,8 +17,8 @@
               <el-option :value="2" label="小范围使用">小范围使用</el-option>
               <el-option :value="3" label="个人使用">个人使用</el-option>
             </el-select>
-          </el-form-item>
-        </el-form>
+          </dd>
+        </dl>
         <el-button
           plain
           icon="el-icon-document-add"
@@ -36,7 +36,7 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table v-loading="loading" :data="tableData">
+          <el-table v-loading="loading" :data="tableData" class="tl-table">
             <el-table-column
               min-width="100px"
               align="left"
@@ -124,7 +124,6 @@
                   "
                   type="text"
                   @click="editProcess(scope.row, 'edit')"
-                  size="small"
                   class="tl-btn"
                   >编辑</el-button
                 >
