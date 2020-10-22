@@ -3329,6 +3329,14 @@
   justify-content: flex-end;
 }
 
+.task-process .screening-condition .tl-input-search + .tl-custom-popover {
+  margin: 0 20px;
+}
+
+.task-process .screening-condition .tl-input-search .el-input__inner {
+  border-radius: 2px;
+}
+
 .task-process .board-view {
   flex: 1;
   display: flex;
