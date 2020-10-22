@@ -106,8 +106,12 @@
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary" @click="submit">确认沟通</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click="submit" :loading="submitLoad"
+        >确认沟通</el-button
+      >
+      <el-button type="primary" @click="save" :loading="saveLoad"
+        >保存</el-button
+      >
 
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
@@ -126,7 +130,8 @@ export default {
       form: {},
       activeNames: [1],
       server,
-
+      submitLoad: false,
+      saveLoad: false,
       oldList: [],
       active: {},
       communication: {},
@@ -191,6 +196,7 @@ export default {
       mainData.communicationLabel = value;
     },
     save() {
+      this.saveLoad = true;
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
@@ -200,6 +206,7 @@ export default {
         list: this.list,
       };
       this.server.okrReviewCommunicationSave(params).then((res) => {
+        this.saveLoad = false;
         if (res.code == 200) {
           this.$message.success('保存成功');
         } else {
@@ -249,6 +256,7 @@ export default {
       });
     },
     submit() {
+      this.submitLoad = true;
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
@@ -263,6 +271,7 @@ export default {
         return false;
       }
       this.server.okrReviewCommunicationSubmit(params).then((res) => {
+        this.submitLoad = false;
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.$router.push('/replayList');
