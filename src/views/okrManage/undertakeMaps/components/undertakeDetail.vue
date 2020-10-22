@@ -55,6 +55,7 @@
             >
               <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
               <el-button
+                v-if="checkStatus === 0"
                 type="primary"
                 @click="openUpdate(okrItem)"
                 class="tl-btn amt-bg-slip"

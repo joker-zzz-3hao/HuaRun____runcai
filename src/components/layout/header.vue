@@ -7,33 +7,35 @@
       <div class="logo-bg">
         <div class="logo"></div>
       </div>
-      <div class="toggle-department">
-        <span v-if="userInfo.orgList && userInfo.orgList.length <= 1">{{
-          userInfo.orgName
-        }}</span>
-        <el-select
-          v-else
-          v-model="orgId"
-          @change="switchOrg"
-          :popper-append-to-body="true"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in userInfo.orgList"
-            :key="item.orgId"
-            :label="item.orgName"
-            :value="item.orgId"
+      <dl class="toggle-department">
+        <dt v-if="userInfo.orgList && userInfo.orgList.length > 1">切换团队</dt>
+        <dd v-if="userInfo.orgList && userInfo.orgList.length <= 1">
+          {{ userInfo.orgName }}
+        </dd>
+        <dd v-else>
+          <el-select
+            v-model="orgId"
+            @change="switchOrg"
+            :popper-append-to-body="true"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
           >
-            <span>{{ item.orgName }}</span>
-            <span v-if="item.orgFlag == 1">（虚线汇报）</span>
-            <span v-if="item.orgFlag == 2">（代理）</span>
-            <span v-if="item.orgId == userInfo.orgId">
-              <i class="el-icon-check"></i>
-            </span>
-          </el-option>
-        </el-select>
-      </div>
+            <el-option
+              v-for="item in userInfo.orgList"
+              :key="item.orgId"
+              :label="item.orgName"
+              :value="item.orgId"
+            >
+              <span>{{ item.orgName }}</span>
+              <span v-if="item.orgFlag == 1">（虚线汇报）</span>
+              <span v-if="item.orgFlag == 2">（代理）</span>
+              <span v-if="item.orgId == userInfo.orgId">
+                <i class="el-icon-check"></i>
+              </span>
+            </el-option>
+          </el-select>
+        </dd>
+      </dl>
     </div>
     <div class="area-right">
       <ul class="top-menu">

@@ -408,6 +408,7 @@ export default {
       this.init();
     },
     closedAddTeam() {
+      this.addTeamExist = false;
       this.init();
     },
     setSuccess() {

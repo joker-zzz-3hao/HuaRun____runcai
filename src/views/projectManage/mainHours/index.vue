@@ -11,7 +11,6 @@
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
-              clearable
               popper-class="tl-select-dropdown"
               class="tl-select"
             >
@@ -155,7 +154,7 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="180"
+              width="100"
               v-if="tableData.length > 0"
             >
               <template slot-scope="scope">
