@@ -101,7 +101,7 @@ export default {
       this.server.riskStatistics({
         periodId: this.periodId,
         personOrOrg: 'person',
-        userId: this.$route.query.id,
+        userId: this.$route.query.userId,
       }).then((res) => {
         if (res.code == 200) {
           this.okrData = res.data;
