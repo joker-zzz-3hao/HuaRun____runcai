@@ -155,7 +155,7 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="180"
+              width="100"
               v-if="tableData.length > 0"
             >
               <template slot-scope="scope">
