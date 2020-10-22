@@ -212,12 +212,17 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column align="left" prop="taskTitle" label="任务">
+            <el-table-column
+              align="left"
+              prop="taskTitle"
+              label="任务"
+              min-width="180"
+            >
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
               </template>
             </el-table-column>
-            <el-table-column min-width="150px" align="left" label="创建信息">
+            <el-table-column width="220" align="left" label="创建信息">
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -231,7 +236,12 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="processName" label="过程">
+            <el-table-column
+              align="left"
+              prop="processName"
+              label="过程"
+              min-width="180"
+            >
               <template slot-scope="scope">
                 <div v-if="scope.row.processName && scope.row.stepName">
                   <span>{{ scope.row.processName }}</span>
@@ -241,7 +251,12 @@
                 <div v-else>未设置任务过程</div>
               </template>
             </el-table-column>
-            <el-table-column align="left" prop="taskStatus" label="状态">
+            <el-table-column
+              align="left"
+              prop="taskStatus"
+              label="状态"
+              width="80"
+            >
               <template slot-scope="scope">
                 <i
                   :class="
@@ -254,7 +269,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              min-width="150px"
+              width="220px"
               align="left"
               prop="userName"
               label="执行信息"

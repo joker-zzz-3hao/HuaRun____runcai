@@ -2034,8 +2034,8 @@
 
 /* 周报 */
 .my-weekly {
-  margin: 16px 16px 116px 16px;
-  min-height: calc(100vh - 202px);
+  margin: 16px 16px 86px 16px;
+  min-height: calc(100vh - 172px);
 }
 
 .my-weekly .operating-area {
@@ -3256,6 +3256,10 @@
 
 .my-task .tl-table td {
   height: 64px;
+}
+
+.my-task .tl-table .cell {
+  padding: 20px 0;
 }
 
 .eidt-task .el-drawer__body {
