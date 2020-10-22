@@ -3259,7 +3259,7 @@
 }
 
 .my-task .tl-table .cell {
-  padding: 20px 0;
+  padding: 20px 10px;
 }
 
 .eidt-task .el-drawer__body {
@@ -4471,6 +4471,7 @@
   border-right: 1px solid transparent !important;
 }
 
+.el-table__fixed-right::before, .el-table__fixed::before,
 .header-wrap::after,
 .card-panel-body .tl-table .el-table__expanded-cell::before,
 .card-panel-body .tl-table .el-table__row.expanded td:first-child::after,
