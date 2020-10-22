@@ -3254,6 +3254,10 @@
   min-height: calc(100vh - 244px);
 }
 
+.my-task .tl-table td {
+  height: 64px;
+}
+
 .eidt-task .el-drawer__body {
   width: 980px;
 }
@@ -4456,6 +4460,11 @@
 .el-input__inner,
 .el-textarea__inner {
   border-color: #999 !important;
+}
+
+.tl-table td,
+.tl-table.el-table--border td, .tl-table.el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed, .tl-table.el-table--border th {
+  border-right: 1px solid transparent !important;
 }
 
 .header-wrap::after,

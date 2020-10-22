@@ -285,7 +285,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="250" label="操作" fixed="right">
+            <el-table-column width="200" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   :disabled="

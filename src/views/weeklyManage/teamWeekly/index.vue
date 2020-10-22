@@ -299,7 +299,11 @@
                   <!-- 有进度的OKR -->
                   <template v-if="formData.queryType == '3'">
                     <!-- 循环这个dl（weekly.contentList） -->
-                    <dl class="tag-kind">
+                    <dl
+                      class="tag-kind"
+                      v-for="(work, index) in weekly.contentList"
+                      :key="work + index"
+                    >
                       <dd class="update-progress">
                         <span>本次更新进度</span
                         ><em
