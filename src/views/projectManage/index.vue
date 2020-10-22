@@ -107,7 +107,7 @@
             <el-table-column
               prop="projectManager"
               label="项目经理"
-              min-width="160"
+              min-width="100"
             ></el-table-column>
             <el-table-column
               prop="projectBudget"
