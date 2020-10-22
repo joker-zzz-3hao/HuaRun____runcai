@@ -1086,7 +1086,15 @@
 }
 
 .okr-detail .timeline-list .operate-kind li {
-  margin: 10px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 1px dotted transparent;
+  background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.3em,#fff 0,#fff 0.5em);
+}
+
+.okr-detail .timeline-list .operate-kind li {
+  padding: 20px 0;
+  margin: 0;
   justify-content: space-between;
 }
 
@@ -1095,20 +1103,37 @@
   color: #222426;
 }
 
-.okr-detail .timeline-list .operate-kind li > div:first-child {
-  margin: 0;
+.okr-detail .timeline-list .operate-kind li > div {
+  margin: 6px 0;
   flex: 1;
-  overflow: hidden;
+  width: 100%;
+  /* overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; */
+}
+
+.okr-detail .timeline-list .operate-kind li > .data-long em {
+  flex: 1;
 }
 
 .okr-detail .timeline-list .operate-kind li > div span {
   margin: 0 10px 0 0;
   color: #879099;
+}
+
+.okr-detail .timeline-list .operate-kind li > div span:first-child + em {
+  margin: 0 10px 0 0;
+}
+
+.okr-detail .timeline-list .operate-kind li .width-auto {
+  flex: 0 0 44px;
+}
+
+.okr-detail .timeline-list .operate-kind li .width-auto3 {
+  flex: 0 0 74px;
 }
 
 .okr-detail .timeline-list .list-title::before {
@@ -1117,6 +1142,10 @@
   background: #e5e9ee;
   border: 2px solid #fff;
   box-shadow: 0 0 3px 0 #E6E6E6;
+}
+
+.okr-detail .timeline-list .operate-reason {
+  margin: 20px 0 0 0;
 }
 
 .okr-detail .timeline-list dt .list-title::before {
@@ -3381,6 +3410,12 @@
   margin: 0;
 }
 
+.teams-manage .cont-area .dl-card-panel dt,
+.teams-manage .cont-area .dl-card-panel dd {
+  display: flex;
+  align-items: center;
+}
+
 .teams-manage .card-title {
   margin: 0 0 10px 0;
   justify-content: flex-start;
@@ -4404,4 +4439,45 @@
 
 .worth-manage .event-book .tl-table td {
   height: 66px;
+}
+
+
+
+
+
+
+
+
+
+/* 演示用 用完删除 */
+.tl-table td,
+.tl-table th.is-leaf,
+.teams-manage .cont-area,
+.el-input__inner {
+  border-color: #999 !important;
+}
+
+.header-wrap::after,
+.card-panel-body .tl-table .el-table__expanded-cell::before,
+.card-panel-body .tl-table .el-table__row.expanded td:first-child::after,
+.tl-table .sub-tr .okr-kr-name::before,
+.card-panel-body .tl-table .el-table__row.expanded td:first-child::before,
+.tl-table .sub-tr .okr-kr-name::after {
+  background: #999;
+}
+
+.teams-manage .card-title ~ dd > p,
+.teams-manage .card-title ~ dd > span:nth-of-type(2), .teams-manage .dl-card-panel .img-list + span,
+.teams-manage .dl-card-panel dt span,
+.department-info>span, .department-info em,
+.tl-table th,
+.okr-risk-total .tl-card-panel-group dl dd:nth-of-type(1),
+.my-okr .card-panel-head .update-time em,
+.tl-table-fix .tl-thead li,
+.card-panel-head dt {
+  color: #888;
+}
+
+.maps-card {
+  border: 1px solid #999;
 }

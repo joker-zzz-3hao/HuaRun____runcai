@@ -207,11 +207,12 @@
                               v-if="
                                 JSON.stringify(uitem.updateContents) == '{}'
                               "
+                              class="width-auto"
                               >新增{{
                                 CONST.OKR_KIND_MAP[uitem.type || 0]
                               }}</span
                             >
-                            <span v-else>{{
+                            <span v-else class="width-auto3">{{
                               CONST.OKR_KIND_MAP[uitem.type || 0]
                             }}</span>
                             <em v-if="uitem.updateContents.beforeName">{{
@@ -224,7 +225,7 @@
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
                             <em>{{ uitem.updateContents.beforeName }}</em> -->
-                            <span> 变更为</span>
+                            <span class="width-auto">变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
@@ -235,13 +236,19 @@
                             <em>{{ uitem.updateContents.afterWeight }}</em>
                             <span>%</span>
                           </div>
-                          <div v-if="uitem.updateContents.beforeCheckQuota">
-                            <span>考核指标由</span>
+                          <div
+                            v-if="uitem.updateContents.beforeCheckQuota"
+                            class="data-long"
+                          >
+                            <span class="width-auto3">考核指标由</span>
                             <em>{{ uitem.updateContents.beforeCheckQuota }}</em>
-                            <span>变更为</span>
+                            <span class="width-auto">变更为</span>
                             <em>{{ uitem.updateContents.afterCheckQuota }}</em>
                           </div>
-                          <div v-if="uitem.updateContents.beforeJudgeMethod">
+                          <div
+                            v-if="uitem.updateContents.beforeJudgeMethod"
+                            class="data-long"
+                          >
                             <span>衡量办法由</span>
                             <em>{{
                               uitem.updateContents.beforeJudgeMethod
@@ -378,7 +385,7 @@
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
                             <em>{{ uitem.updateContents.beforeName }}</em> -->
-                            <span> 变更为</span>
+                            <span>变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">

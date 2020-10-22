@@ -328,6 +328,33 @@
             <em>周报暂无支撑OKR或价值观</em>
           </dd>
         </dl>
+        <!-- 本周心情 -->
+        <dl class="dl-card-panel mood">
+          <dt class="card-title"><em>本周心情</em></dt>
+          <dd>
+            <ul>
+              <li
+                class="has-harvest"
+                :class="{ 'is-selected': weeklyEmotion === 100 }"
+              >
+                <i></i><i></i>
+              </li>
+              <li
+                class="not-too-bad"
+                :class="{ 'is-selected': weeklyEmotion === 50 }"
+              >
+                <i></i><i></i>
+              </li>
+              <li
+                class="let-quiet"
+                :class="{ 'is-selected': weeklyEmotion === 0 }"
+              >
+                <i></i><i></i>
+              </li>
+            </ul>
+            <span v-if="showEmotionError">请选择本周心情</span>
+          </dd>
+        </dl>
         <dl class="dl-card-panel who-browse">
           <dt class="card-title"><em>谁浏览了</em></dt>
           <dd>
@@ -352,8 +379,15 @@
                 @click="support(1)"
                 v-if="hasPower('weekly-support')"
                 class="tl-btn amt-bg-slip"
-                >送金条({{ supportCount }})</el-button
-              >
+                >送金条({{ supportCount }})
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <div slot="content">
+                    1931年夏，时任中央特科负责人的陈云，在上海交给秦邦礼两根金条，指示他以此做资本，以开店为掩护，为党建立秘<br />
+                    密交通站，筹集和提供无线电、药品等秘密战略物资。就是这两根金条，成为了新中国最大外贸企业华润公司的初始资金。
+                  </div>
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </el-button>
             </div>
           </dd>
           <!-- 谁浏览了 -->
@@ -573,6 +607,7 @@ export default {
       openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
+      weeklyEmotion: '',
       riskMap: {
         1: '高',
         2: '中',
@@ -608,6 +643,7 @@ export default {
         return result.join('、');
       };
     },
+
   },
   methods: {
     init() {
@@ -637,6 +673,7 @@ export default {
       this.server.queryWeekly({ weeklyId: this.$route.query.weeklyId }).then((res) => {
         if (res.code == 200) {
           this.weeklyType = res.data.weeklyType;
+          this.weeklyEmotion = res.data.weeklyEmotion;
           this.weeklyWorkVoList = res.data.weeklyWorkVoList;
           this.weeklyThoughtList = res.data.weeklyThoughtList;
           this.weeklyPlanList = res.data.weeklyPlanList;
