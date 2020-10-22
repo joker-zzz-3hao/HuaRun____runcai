@@ -127,8 +127,12 @@
       </el-collapse>
     </div>
     <div>
-      <el-button type="primary" @click="submit">提交复盘</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button type="primary" @click="submit" :loading="submitLoad"
+        >提交复盘</el-button
+      >
+      <el-button type="primary" @click="save" :loading="saveLoad"
+        >保存</el-button
+      >
       <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
     </div>
   </div>
@@ -144,6 +148,8 @@ export default {
   data() {
     return {
       reviewType: 0,
+      submitLoad: false,
+      saveLoad: false,
       form: {},
       activeNames: [1],
       server,
@@ -200,6 +206,7 @@ export default {
     },
 
     save() {
+      this.saveLoad = true;
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
@@ -209,6 +216,7 @@ export default {
         list: this.list,
       };
       this.server.okrReviewSave(params).then((res) => {
+        this.saveLoad = false;
         if (res.code == 200) {
           this.$emit('getView');
           this.getOldList();
@@ -238,8 +246,7 @@ export default {
         this.$router.push('/replayList');
         return false;
       }
-      console.log(JSON.stringify(this.oldList));
-      console.log(JSON.stringify(this.list));
+
       if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
         this.$router.push('/replayList');
         return false;
@@ -272,6 +279,7 @@ export default {
       });
     },
     submit() {
+      this.submitLoad = true;
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
@@ -287,6 +295,7 @@ export default {
         return false;
       }
       this.server.okrReviewSubmit(params).then((res) => {
+        this.submitLoad = false;
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.$router.push('/replayList');

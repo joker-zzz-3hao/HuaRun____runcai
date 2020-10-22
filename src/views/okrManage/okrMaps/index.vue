@@ -115,13 +115,13 @@
           </dl>
           <div class="toggle-view" v-if="showDepartmentSelect">
             <i
-              class="el-icon-s-grid"
-              :class="showOkrMap ? 'is-select' : ''"
+              class="table-view"
+              :class="showOkrMap ? 'is-selected' : ''"
               @click="showOkrMap = true"
             ></i>
             <i
-              class="el-icon-menu"
-              :class="!showOkrMap ? 'select' : ''"
+              class="column-view"
+              :class="!showOkrMap ? 'is-selected' : ''"
               @click="showOkrMap = false"
             ></i>
           </div>

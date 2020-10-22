@@ -386,7 +386,7 @@ const okrDataTeam = {
         detailId: '125995720931141892', okrDetailId: '125995720931141893', okrParentId: null, parentKrOId: null, okrMainId: '124323803975811073', okrDetailVersion: 0, okrDetailObjectKr: '提高用户体验', okrDetailProgress: 0, okrWeight: 100, okrDetailConfidence: 1, okrDetailType: 1, okrFullId: '125995709311141893', allFullId: null, createTime: '2020-09-07 09:59:41', updateTime: null, status: 1, approveStatus: 0, okrDetailParentVersion: 0, isTrue: 1, cultureId: null, remark: null, checkQuota: null, judgeMethod: null, parentObjectKr: null, orgName: null, parentUpdate: false, continueCount: 1, versionCount: 1, userName: null, userId: null, okrBelongType: null, krList: null, krContinueList: null, odetailId: '1259957209311141891',
       }],
     }],
-    orgTable: [{
+    orgUser: [{
       orgId: '1233236980796686336', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户A', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233236980796686336:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 09:58:41', updateTime: '2020-08-29 09:58:41', userId: '1233259623864270848', userName: '佳俊二级负责人',
     }, {
       orgId: '1233240313691308032', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户B', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1233240313691308032:', orgType: 0, orgAvailable: 0, createTime: '2020-08-29 10:00:17', updateTime: '2020-08-29 10:00:17', userId: '1233264571666595840', userName: '佳俊部部负责人',
@@ -408,7 +408,7 @@ const okrDataTeam = {
     }, {
       orgId: '1284530366500454400', orgParentId: '1233235675126628352', tenantId: 'CR0011000054', orgName: '用户J', orgFullId: 'CR0011000054:1233234953572122624:1233235675126628352:1284530366500454400:', orgType: 0, orgAvailable: 0, createTime: '2020-09-15 16:39:14', updateTime: '2020-09-15 16:39:14', userId: '1284539059514261504', userName: '炜哥二负责人',
     }],
-    orgUser: null,
+    orgTable: null,
   },
 
 };

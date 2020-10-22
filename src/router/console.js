@@ -222,7 +222,7 @@ export default [{
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayEdit/index'),
+        component: () => import('@/views/replay/replayEdit/editpic'),
       },
 
       {
@@ -235,17 +235,19 @@ export default [{
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayDetail/index'),
+        component: () => import('@/views/replay/replayDetail/detailpic'),
       },
       {
         path: '/replayLink',
         name: 'replayLink',
         meta: {
+          hasMainMenu: true,
+          isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayLink/index'),
+        component: () => import('@/views/replay/replayLink/linkpic'),
       },
       {
         path: '/replayList',
@@ -464,6 +466,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
+      isLevelThree: true,
       parentRoute: 'myTask',
       title: 'taskProcess',
       power: '',

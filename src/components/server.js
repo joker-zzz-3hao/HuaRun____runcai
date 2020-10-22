@@ -24,4 +24,9 @@ export default class Server extends ServerBase {
   addFocus(param) {
     return this._ajaxPost('gateway/talent-okr/okr/focus/add', param);
   }
+
+  // 查询所有任务过程
+  queryTaskProcessList(param) {
+    return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
+  }
 }

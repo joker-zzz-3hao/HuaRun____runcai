@@ -3643,7 +3643,7 @@
 .main-menu .sub-menu dd {
   display: flex;
   align-items: center;
-  height: 36px;
+  min-height: 36px;
   background: #fff;
 }
 
