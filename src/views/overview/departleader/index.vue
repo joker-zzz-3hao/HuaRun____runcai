@@ -17,7 +17,7 @@
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
           </div>
-          <div>
+          <div v-if="riskList.length > 4">
             <i
               class="el-icon-caret-left"
               v-show="prevBtn"

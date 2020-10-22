@@ -213,8 +213,8 @@ export default {
             this.reload();
             sessionStorage.setItem('modelOkr', '1');
           }
-          this.setList(res.data);
         }
+        this.setList(res.data);
       });
     },
     cancelFocus(data) {
