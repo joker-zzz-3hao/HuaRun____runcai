@@ -220,10 +220,10 @@
                             <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
-                            <span
+                            <!-- <span
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
-                            <em>{{ uitem.updateContents.beforeName }}</em>
+                            <em>{{ uitem.updateContents.beforeName }}</em> -->
                             <span> 变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
@@ -374,10 +374,10 @@
                             <em v-else>{{ uitem.okrDetailObjectKr }}</em>
                           </div>
                           <div v-if="uitem.updateContents.afterName">
-                            <span
+                            <!-- <span
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
-                            <em>{{ uitem.updateContents.beforeName }}</em>
+                            <em>{{ uitem.updateContents.beforeName }}</em> -->
                             <span> 变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
