@@ -751,7 +751,7 @@
 
 .okr-detail .el-drawer__body {
   margin: 0;
-  width: 850px;
+  width: 1050px;
 }
 
 .okr-detail .flex-sb .okr-follow .el-icon-plus {
@@ -2655,7 +2655,8 @@
   padding: 0 24px 0 2px;
 }
 
-.my-weekly .okr-completion .no-data {
+.my-weekly .okr-completion .no-data,
+.teams-weekly-detail .okr-completion .no-data {
   align-items: flex-start;
 }
 
