@@ -23,4 +23,5 @@ export default {
   okrLoading: false,
   listenerWidth: 0,
   orgFullId: '',
+  processVal: '',
 };

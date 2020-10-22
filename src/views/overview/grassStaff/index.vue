@@ -89,7 +89,7 @@ export default {
         orgId: this.$route.query.orgId ? this.$route.query.orgId : this.userInfo.orgId,
       };
       // eslint-disable-next-line no-unused-expressions
-      this.$route.query.id ? form.user = this.$route.query.id : form.user = '';
+      this.$route.query.id ? form.user = this.$route.query.userId : form.user = '';
       this.server.okrStatistics(form).then((res) => {
         this.mainData = res.data;
       });
@@ -101,7 +101,7 @@ export default {
       this.server.riskStatistics({
         periodId: this.periodId,
         personOrOrg: 'person',
-        userId: this.$route.query.id,
+        userId: this.$route.query.userId,
       }).then((res) => {
         if (res.code == 200) {
           this.okrData = res.data;

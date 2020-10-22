@@ -52,10 +52,16 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
-                <!-- <el-cascader-panel
+                <el-cascader-panel
+                  v-model="processId"
                   :options="taskoptions"
-                  v-if="options.subClassTag == 'taskprocess'"
-                ></el-cascader-panel> -->
+                  v-if="options.subClassTag == 'taskProcess'"
+                  @change="selectProcessItem"
+                  :props="{
+                    value: 'processId',
+                    label: 'processName',
+                  }"
+                ></el-cascader-panel>
               </router-link>
             </dl>
           </template>
@@ -89,17 +95,18 @@ export default {
       menuIndex: '',
       changeZindex: false,
       isMainMenu: false,
+      processId: '',
       taskoptions: [{
-        value: '1',
-        label: '团队使用',
+        processId: '1',
+        processName: '团队使用',
         children: [],
       }, {
-        value: '2',
-        label: '小范围使用',
+        processId: '2',
+        processName: '小范围使用',
         children: [],
       }, {
-        value: '3',
-        label: '个人使用',
+        processId: '3',
+        processName: '个人使用',
         children: [],
       }],
     };
@@ -128,7 +135,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapMutations('common', ['setListenerWidth']),
+    ...mapMutations('common', ['setListenerWidth', 'setProcessId']),
     queryTaskProcessList(processType) {
       // 搜索任务过程
       this.server.queryTaskProcessList({
@@ -140,35 +147,34 @@ export default {
         if (res.code == 200) {
           if (processType == '1') {
             this.teamList = res.data.content;
-            this.teamList.forEach((item) => {
-              this.taskoptions[0].children.push({
-                value: item.processId,
-                label: item.processName,
-              });
-            });
-            // if (this.teamList.length > 0) {
-            //   this.processId = this.teamList[0].processId;
-            //   this.selectProcess(this.teamList[0]);
-            // }
+            this.taskoptions[0].children = res.data.content;
+
+            if (this.teamList.length > 0) {
+              this.processId = ['1', this.teamList[0].processId];
+              this.selectProcessItem(this.processId);
+            }
           } else if (processType == '2') {
             this.littleRangeList = res.data.content;
-            this.littleRangeList.forEach((item) => {
-              this.taskoptions[1].children.push({
-                value: item.processId,
-                label: item.processName,
-              });
-            });
+            this.taskoptions[1].children = res.data.content;
           } else if (processType == '3') {
             this.personList = res.data.content;
-            this.personList.forEach((item) => {
-              this.taskoptions[2].children.push({
-                value: item.processId,
-                label: item.processName,
-              });
-            });
+            this.taskoptions[2].children = res.data.content;
           }
         }
       });
+    },
+    selectProcessItem(value) {
+      let processList = [];
+      if (value[0] == '1') {
+        processList = this.teamList;
+      } else if (value[0] == '2') {
+        processList = this.littleRangeList;
+      } else {
+        processList = this.personList;
+      }
+      const processVal = processList.filter((pitem) => value[1] == pitem.processId)[0] || {};
+      console.log('selectProcessItem', processVal);
+      this.setProcessId(processVal);
     },
     fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {
@@ -227,11 +233,11 @@ export default {
     '$route.name': {
       handler(newVal) {
         this.selectMenu = newVal;
-        // if (newVal == 'taskProcess') {
-        //   this.queryTaskProcessList('1');
-        //   this.queryTaskProcessList('2');
-        //   this.queryTaskProcessList('3');
-        // }
+        if (newVal == 'taskProcess') {
+          this.queryTaskProcessList('1');
+          this.queryTaskProcessList('2');
+          this.queryTaskProcessList('3');
+        }
       },
       deep: true,
       immediate: true,

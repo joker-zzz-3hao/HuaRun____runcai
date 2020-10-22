@@ -99,7 +99,7 @@ export default {
       this.dialogVisible = true;
       this.server.okrRiskUserInfo({
         periodId: this.periodId,
-        orgId: this.setOrgId,
+        orgId: this.$route.query.id ? this.$route.query.id : this.setOrgId,
         riskCode,
       }).then((res) => {
         this.loading = false;

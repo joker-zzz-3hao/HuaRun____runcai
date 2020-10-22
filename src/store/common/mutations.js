@@ -99,4 +99,8 @@ export default {
   setOrgFullId: (state, orgFullId = '') => {
     state.orgFullId = orgFullId;
   },
+  // 设置过程
+  setProcessId: (state, processVal = '') => {
+    state.processVal = processVal;
+  },
 };

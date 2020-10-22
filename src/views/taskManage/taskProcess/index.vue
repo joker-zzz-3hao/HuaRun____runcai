@@ -1,6 +1,6 @@
 <template>
   <div class="task-process">
-    <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
+    <!-- <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
       <el-submenu index="1">
         <template slot="title">任务过程</template>
         <el-submenu index="1-1">
@@ -41,7 +41,7 @@
           >
         </el-submenu>
       </el-submenu>
-    </el-menu>
+    </el-menu> -->
     <div class="operating-area">
       <div class="page-title">
         <em>{{ processObj.processName }}</em>
@@ -264,12 +264,13 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       orgFullId: (state) => state.orgFullId,
+      processVal: (state) => state.processVal,
     }),
   },
   created() {
-    this.init('1');
-    this.init('2');
-    this.init('3');
+    // this.init('1');
+    // this.init('2');
+    // this.init('3');
   },
   methods: {
     init(processType) {
@@ -413,10 +414,11 @@ export default {
         });
       }
     },
-    selectProcessItem(process) {
-      this.processId = process.processId;
-      this.selectProcess(process);
-    },
+    // 选择过程
+    // selectProcessItem(process) {
+    //   this.processId = process.processId;
+    //   this.selectProcess(process);
+    // },
     filedAll() {
       this.server.filedAll({ processId: this.processId }).then((res) => {
         if (res.code == 200) {
@@ -427,11 +429,23 @@ export default {
     },
   },
   watch: {
-    processId: {
-      handler() {
-        this.queryUser();
+    // processId: {
+    //   handler() {
+    //     this.queryUser();
+    //   },
+    //   immediate: true,
+    // },
+    processVal: {
+      handler(newVal) {
+        if (newVal) {
+          this.processId = newVal.processId;
+          console.log('processVal', newVal);
+          this.queryUser();
+          this.selectProcess(newVal);
+        }
       },
-      immediate: true,
+      // immediate: true,
+      deep: true,
     },
   },
 };
