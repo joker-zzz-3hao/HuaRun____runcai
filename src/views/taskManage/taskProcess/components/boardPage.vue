@@ -1,5 +1,7 @@
 <template>
-  <div class="board-view">
+  <div>
+    <!-- 影响图片，暂时屏蔽 -->
+    <!--  class="board-view" -->
     <!-- <draggable
       class="list-group parent"
       :list="rootData"
@@ -8,61 +10,70 @@
       id="norun"
       :options="options"
     >-->
-    <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
-      <div>
-        <h3>{{ stepData.stepName }}</h3>
-        <span v-if="stepData.stepTaskList.length">{{
-          stepData.stepTaskList.length
-        }}</span>
-      </div>
-      <!-- <el-button style="width:380px" @click="addTask(stepData)">
+    <template v-if="showReal && stepList.length > 0 && processObj.processId">
+      <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
+        <div>
+          <h3>{{ stepData.stepName }}</h3>
+          <span v-if="stepData.stepTaskList.length">{{
+            stepData.stepTaskList.length
+          }}</span>
+        </div>
+        <!-- <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
       </el-button> -->
-      <draggable
-        class="list-group"
-        :list="stepData.stepTaskList"
-        :clone="cloneDog"
-        @end="onMove"
-        id="norun"
-        :options="options"
-      >
-        <div
-          class="list-group-item"
-          v-for="element in stepData.stepTaskList"
-          :key="element.taskId"
+        <draggable
+          class="list-group"
+          :list="stepData.stepTaskList"
+          :clone="cloneDog"
+          @end="onMove"
+          id="norun"
+          :options="options"
         >
-          <div>
-            <tl-levelblock :value="element.taskLevel"></tl-levelblock>
+          <div
+            class="list-group-item"
+            v-for="element in stepData.stepTaskList"
+            :key="element.taskId"
+          >
+            <div>
+              <tl-levelblock :value="element.taskLevel"></tl-levelblock>
+            </div>
+            <div @click="openEdit(element)">
+              {{ element.taskTitle }}
+            </div>
+            <tl-process
+              :data="element.taskProgress"
+              :width="36"
+              :marginLeft="6"
+            ></tl-process>
+            <div>
+              <i class="el-icon-time"></i>
+              <span v-if="element.taskBegDate"
+                >{{
+                  dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
+                }}~{{
+                  dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
+                }}</span
+              >
+              <span v-else>未设置起止时间</span>
+            </div>
+            <div>
+              <el-avatar :size="30" :src="element.headerUrl">
+                <div v-if="element.userName" class="user-name">
+                  <em>
+                    {{
+                      element.userName.substring(element.userName.length - 2)
+                    }}
+                  </em>
+                </div>
+              </el-avatar>
+            </div>
           </div>
-          <div @click="openEdit(element)">
-            {{ element.taskTitle }}
-          </div>
-          <tl-process
-            :data="element.taskProgress"
-            :width="36"
-            :marginLeft="6"
-          ></tl-process>
-          <div>
-            <i class="el-icon-time"></i>
-            <span v-if="element.taskBegDate"
-              >{{ dateFormat("YYYY-mm-dd", new Date(element.taskBegDate)) }}~{{
-                dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
-              }}</span
-            >
-            <span v-else>未设置起止时间</span>
-          </div>
-          <div>
-            <el-avatar :size="30" :src="element.headerUrl">
-              <div v-if="element.userName" class="user-name">
-                <em>
-                  {{ element.userName.substring(element.userName.length - 2) }}
-                </em>
-              </div>
-            </el-avatar>
-          </div>
-        </div>
-      </draggable>
-      <!-- </draggable> -->
+        </draggable>
+        <!-- </draggable> -->
+      </div>
+    </template>
+    <div v-else class="pic-kanban">
+      <!-- <img src="~@/assets/images/demoPic/kanban.png" /> -->
     </div>
     <tl-edittask
       ref="editTask"
@@ -126,6 +137,7 @@ export default {
         // dragClass: 'dragitem', // 被拖拽元素
       },
       existEditTask: false,
+      showReal: false,
     };
   },
   created() {
@@ -202,7 +214,19 @@ export default {
   },
 };
 </script>
-<style  >
+<style>
+.pic-kanban {
+  background: url("~@/assets/images/demoPic/kanban.png") no-repeat;
+  background-size: 100%;
+  /* background-size: cover; */
+  height: calc(100vh);
+  display: flex;
+}
+.pic-kanban img {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+}
 .list-group {
   padding: 16px;
   min-height: 300px;

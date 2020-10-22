@@ -6,7 +6,7 @@
       style="margin-bottom: 10px; width: 100%"
       size="medium"
       :hit="true"
-      >以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</el-tag
+      >该周期暂无内容。以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</el-tag
     >
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
@@ -111,3 +111,14 @@ export default {
   },
 };
 </script>
+<style  scoped>
+.el-tag.el-tag--success.is-hit {
+  border-color: #f5c28e;
+}
+
+.el-tag.el-tag--success {
+  background-color: #f6eee4;
+  border-color: #f5c28e;
+  color: #d99328;
+}
+</style>

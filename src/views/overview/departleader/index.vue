@@ -6,7 +6,7 @@
       style="margin-bottom: 10px; width: 100%"
       size="medium"
       :hit="true"
-      >以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</el-tag
+      >该周期暂无内容。以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</el-tag
     >
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
@@ -17,7 +17,7 @@
             <em>OKR承接与变更统计</em>
             <span v-show="testModel">示例数据</span>
           </div>
-          <div>
+          <div v-if="riskList.length > 4">
             <i
               class="el-icon-caret-left"
               v-show="prevBtn"
@@ -61,6 +61,7 @@
       <tl-weeking :periodId="periodId"></tl-weeking>
       <tl-weekTable :periodId="periodId"></tl-weekTable>
     </div>
+
     <tl-period @getPeriod="getPeriod" :showBack="false"></tl-period>
   </div>
 </template>

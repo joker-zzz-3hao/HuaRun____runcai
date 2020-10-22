@@ -1,49 +1,47 @@
 <template>
   <div class="task-process">
-    <!-- <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
-        <el-submenu index="1">
-          <template slot="title">任务过程</template>
-          <el-submenu index="1-1">
-            <template slot="title">团队使用</template>
-            <el-menu-item v-if="teamList.length == 0"
-              >暂无任务过程</el-menu-item
-            >
-            <el-menu-item
-              @click.native="selectProcessItem(team)"
-              v-for="team in teamList"
-              :index="team.processId"
-              :key="team.processId"
-              >{{ team.processName }}</el-menu-item
-            >
-          </el-submenu>
-          <el-submenu index="1-2">
-            <template slot="title">小范围使用</template>
-            <el-menu-item v-if="littleRangeList.length == 0"
-              >暂无任务过程</el-menu-item
-            >
-            <el-menu-item
-              @click.native="selectProcessItem(littleRange)"
-              v-for="littleRange in littleRangeList"
-              :index="littleRange.processId"
-              :key="littleRange.processId"
-              >{{ littleRange.processName }}</el-menu-item
-            >
-          </el-submenu>
-          <el-submenu index="1-3">
-            <template slot="title">个人使用</template>
-            <el-menu-item v-if="personList.length == 0"
-              >暂无任务过程</el-menu-item
-            >
-            <el-menu-item
-              @click.native="selectProcessItem(person)"
-              v-for="person in personList"
-              :index="person.processId"
-              :key="person.processId"
-              >{{ person.processName }}</el-menu-item
-            >
-          </el-submenu>
+    <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
+      <el-submenu index="1">
+        <template slot="title">任务过程</template>
+        <el-submenu index="1-1">
+          <template slot="title">团队使用</template>
+          <el-menu-item v-if="teamList.length == 0">暂无任务过程</el-menu-item>
+          <el-menu-item
+            @click.native="selectProcessItem(team)"
+            v-for="team in teamList"
+            :index="team.processId"
+            :key="team.processId"
+            >{{ team.processName }}</el-menu-item
+          >
         </el-submenu>
-      </el-menu> -->
+        <el-submenu index="1-2">
+          <template slot="title">小范围使用</template>
+          <el-menu-item v-if="littleRangeList.length == 0"
+            >暂无任务过程</el-menu-item
+          >
+          <el-menu-item
+            @click.native="selectProcessItem(littleRange)"
+            v-for="littleRange in littleRangeList"
+            :index="littleRange.processId"
+            :key="littleRange.processId"
+            >{{ littleRange.processName }}</el-menu-item
+          >
+        </el-submenu>
+        <el-submenu index="1-3">
+          <template slot="title">个人使用</template>
+          <el-menu-item v-if="personList.length == 0"
+            >暂无任务过程</el-menu-item
+          >
+          <el-menu-item
+            @click.native="selectProcessItem(person)"
+            v-for="person in personList"
+            :index="person.processId"
+            :key="person.processId"
+            >{{ person.processName }}</el-menu-item
+          >
+        </el-submenu>
+      </el-submenu>
+    </el-menu>
     <div class="operating-area">
       <div class="page-title">
         <em>{{ processObj.processName }}</em>
@@ -182,14 +180,14 @@
         :processClassifyList="processClassifyList"
         :processObj="processObj"
         :stepList="stepList"
-        v-if="taskType == 1 && processObj.processId"
+        v-if="taskType == 1"
         :searchParams="searchParams"
       ></tl-list>
       <tl-board
         ref="board"
         :processObj="processObj"
         :stepList="stepList"
-        v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
+        v-if="taskType == 2"
         :searchParams="searchParams"
       ></tl-board>
     </div>

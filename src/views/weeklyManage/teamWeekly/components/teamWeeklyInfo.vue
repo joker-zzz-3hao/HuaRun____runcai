@@ -368,7 +368,7 @@
                     }}</em>
                   </div>
                 </dt>
-                <dd>{{ user.headerUrl }}</dd>
+                <dd>{{ user.userName }}</dd>
               </dl>
             </div>
           </dd>

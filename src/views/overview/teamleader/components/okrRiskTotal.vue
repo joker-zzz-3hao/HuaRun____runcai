@@ -11,7 +11,7 @@
         @click="okrRiskUserInfo(item.riskCode)"
       >
         <dt>{{ item.count }}</dt>
-        <dd>{{ item.riskName }}(个)</dd>
+        <dd>{{ item.riskName }}</dd>
         <dd>
           <tl-process
             :data="parseInt(item.ratio, 10)"

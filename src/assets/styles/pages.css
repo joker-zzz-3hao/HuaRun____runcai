@@ -751,7 +751,7 @@
 
 .okr-detail .el-drawer__body {
   margin: 0;
-  width: 850px;
+  width: 1050px;
 }
 
 .okr-detail .flex-sb .okr-follow .el-icon-plus {
@@ -2655,7 +2655,8 @@
   padding: 0 24px 0 2px;
 }
 
-.my-weekly .okr-completion .no-data {
+.my-weekly .okr-completion .no-data,
+.teams-weekly-detail .okr-completion .no-data {
   align-items: flex-start;
 }
 
@@ -3224,6 +3225,45 @@
   min-height: calc(100vh - 244px);
 }
 
+.eidt-task .el-drawer__body {
+  width: 980px;
+}
+
+.eidt-task .cont-box.flex-sb {
+  align-items: stretch;
+}
+
+.eidt-task .task-tab {
+  width: 440px;
+}
+
+.eidt-task .tl-form {
+  padding: 0 20px 0 0;
+  flex: 1;
+}
+
+.eidt-task .tl-form > dl dt .el-form-item {
+  margin: 0;
+}
+
+.eidt-task .tl-custom-tabs {
+  height: 50px;
+}
+
+.eidt-task .tl-custom-tabs .border-slip {
+  height: 1px;
+}
+
+.eidt-task .tab-list li {
+  flex: 1;
+  justify-content: center;
+  font-weight: normal;
+}
+
+.eidt-task .tab-list li.is-focus {
+  font-weight: 500;
+}
+
 /* 任务过程 */
 .main-menu .sub-menu .taskprocess {
   flex-direction: column;
@@ -3256,6 +3296,11 @@
   flex: 1;
   display: flex;
   justify-content: space-between;
+}
+
+/* 用于演示，用完删除，仅此一条 */
+.task-process .el-menu-demo {
+  margin: 0 0 20px 0;
 }
 
 /* 过程管理 */
@@ -3306,6 +3351,13 @@
 /* 切换部门--by xinquan  */
 .toggle-department {
   margin: 0 0 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-department dt {
+  margin: 0 10px 0 0;
+  color: #879099;
 }
 
 .toggle-department .tl-select .el-input__inner {
