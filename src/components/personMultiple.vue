@@ -23,12 +23,8 @@
             :label="item.userId"
             :key="item.userId"
           >
-            <el-avatar :size="30" :src="item.headUrl">
-              <div v-if="item.userName" class="user-name">
-                <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
-              </div>
-            </el-avatar>
-            <span>{{ item.userName }}</span>
+            <em>{{ item.userName }}</em>
+            <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
           </el-checkbox>
         </el-checkbox-group>
       </div>

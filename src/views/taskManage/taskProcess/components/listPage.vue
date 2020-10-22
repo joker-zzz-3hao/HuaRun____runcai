@@ -48,7 +48,30 @@
             </el-table-column>
             <el-table-column label="所属分类" prop="typeName">
               <template slot-scope="scope">
-                <div>{{ scope.row.typeName || "暂无分类" }}</div>
+                <em>{{ scope.row.typeName || "暂无分类" }}</em>
+                <el-dropdown class="tl-dropdown" trigger="click">
+                  <div class="el-dropdown-link">
+                    <i class="el-icon-edit"></i>
+                  </div>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-if="processClassifyList.length == 0"
+                      >暂无分类</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click.native="changeClassify(scope.row, calssify)"
+                      v-for="calssify in processClassifyList"
+                      :index="calssify.typeId"
+                      :key="calssify.typeId"
+                    >
+                      <em
+                        :class="{
+                          'high-light': scope.row.typeId == calssify.typeId,
+                        }"
+                        >{{ calssify.typeName }}</em
+                      >
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </el-table-column>
             <el-table-column
@@ -65,7 +88,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column min-width="140px" align="left" label="执行信息">
+            <el-table-column min-width="140" align="left" label="执行信息">
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -92,7 +115,12 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="180px" align="left" label="操作">
+            <el-table-column
+              width="200"
+              align="left"
+              label="操作"
+              fixed="right"
+            >
               <template slot-scope="scope">
                 <el-button
                   plain
@@ -121,43 +149,16 @@
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <el-menu
-                  :default-active="'1'"
-                  mode="horizontal"
-                  @select="handleSelect"
-                >
-                  <el-submenu index="1">
-                    <template slot="title">
-                      <i class="el-icon-more el-icon--right"></i>
-                    </template>
-                    <el-menu-item @click.native="finish(scope.row)"
-                      >任务归档</el-menu-item
+                <el-dropdown trigger="click">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item @click.native="finish(scope.row)"
+                      >任务归档</el-dropdown-item
                     >
-                    <!-- <el-menu-item @click.native="deleteTask(scope.row)"
-                      >删除任务</el-menu-item
-                    > -->
-
-                    <el-submenu index="1-2">
-                      <template slot="title">移动分类</template>
-                      <el-menu-item v-if="processClassifyList.length == 0"
-                        >暂无分类</el-menu-item
-                      >
-                      <el-menu-item
-                        @click.native="changeClassify(scope.row, calssify)"
-                        v-for="calssify in processClassifyList"
-                        :index="calssify.typeId"
-                        :key="calssify.typeId"
-                      >
-                        <em
-                          :class="{
-                            'high-light': scope.row.typeId == calssify.typeId,
-                          }"
-                          >{{ calssify.typeName }}</em
-                        >
-                      </el-menu-item>
-                    </el-submenu>
-                  </el-submenu>
-                </el-menu>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </el-table-column>
           </el-table>
