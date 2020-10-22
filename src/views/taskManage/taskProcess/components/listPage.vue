@@ -1,157 +1,169 @@
 <template>
   <div class="list-view">
-    <el-tabs v-model="tabName" @tab-click="selectTab(tabName)" class="tl-tabs">
-      <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane
-        :label="step.stepName"
-        :name="step.stepId"
-        v-for="step in stepList"
-        :key="step.stepId"
-      ></el-tab-pane>
-    </el-tabs>
-    <crcloud-table
-      :total="total"
-      :pageSize.sync="pageSize"
-      :currentPage.sync="currentPage"
-      @searchList="searchList"
-    >
-      <div slot="tableContainer">
-        <el-table ref="taskTable" v-loading="loading" :data="tableData">
-          <el-table-column align="left" prop="taskTitle" label="任务">
-            <template slot-scope="scope">
-              <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
-            </template>
-          </el-table-column>
-          <el-table-column
-            min-width="120px"
-            align="left"
-            prop="userName"
-            label="创建信息"
-          >
-            <template slot-scope="scope">
-              <div>
-                <p>
-                  <i class="el-icon-user"></i>
-                  <span>{{ scope.row.createByUserName }}</span>
-                </p>
-                <p>
-                  <i class="el-icon-date"></i>
-                  <span>{{ scope.row.createTime }}</span>
-                </p>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="所属分类" prop="typeName">
-            <template slot-scope="scope">
-              <div>{{ scope.row.typeName || "暂无分类" }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            min-width="100px"
-            align="left"
-            prop="taskProgress"
-            label="进度"
-          >
-            <template slot-scope="scope">
-              <div>
-                <tl-process
-                  :data="parseInt(scope.row.taskProgress, 10)"
-                ></tl-process>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="140px" align="left" label="执行信息">
-            <template slot-scope="scope">
-              <div>
-                <p>
-                  <i class="el-icon-user"></i>
-                  <span>{{ scope.row.userName || "无执行人" }}</span>
-                </p>
-                <p>
-                  <i class="el-icon-date"></i>
-                  <span v-if="scope.row.taskBegDate"
-                    >{{
-                      dateFormat("YYYY-mm-dd", new Date(scope.row.taskBegDate))
-                    }}~{{
-                      dateFormat("YYYY-mm-dd", new Date(scope.row.taskEndDate))
-                    }}</span
-                  >
-                  <span v-else>未设置起止时间</span>
-                </p>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column width="180px" align="left" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                plain
-                class="tl-btn amt-border-fadeout"
-                @click="openEdit(scope.row)"
-                >编辑</el-button
-              >
-              <el-dropdown class="tl-dropdown">
-                <div class="el-dropdown-link">
-                  <el-button plain class="tl-btn amt-border-fadeout"
-                    >移动</el-button
-                  >
+    <template v-if="asdfsadf">
+      <el-tabs
+        v-model="tabName"
+        @tab-click="selectTab(tabName)"
+        class="tl-tabs"
+      >
+        <el-tab-pane label="全部" name="all"></el-tab-pane>
+        <el-tab-pane
+          :label="step.stepName"
+          :name="step.stepId"
+          v-for="step in stepList"
+          :key="step.stepId"
+        ></el-tab-pane>
+      </el-tabs>
+      <crcloud-table
+        :total="total"
+        :pageSize.sync="pageSize"
+        :currentPage.sync="currentPage"
+        @searchList="searchList"
+      >
+        <div slot="tableContainer">
+          <el-table ref="taskTable" v-loading="loading" :data="tableData">
+            <el-table-column align="left" prop="taskTitle" label="任务">
+              <template slot-scope="scope">
+                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
+              </template>
+            </el-table-column>
+            <el-table-column
+              min-width="120px"
+              align="left"
+              prop="userName"
+              label="创建信息"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <p>
+                    <i class="el-icon-user"></i>
+                    <span>{{ scope.row.createByUserName }}</span>
+                  </p>
+                  <p>
+                    <i class="el-icon-date"></i>
+                    <span>{{ scope.row.createTime }}</span>
+                  </p>
                 </div>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    @click.native="changeStep(scope.row, step)"
-                    v-for="step in stepList"
-                    :index="step.stepId"
-                    :key="step.stepId"
-                  >
-                    <em>{{ step.stepName }}</em>
-
-                    <span v-if="scope.row.stepId == step.stepId"
-                      >（当前节点）</span
+              </template>
+            </el-table-column>
+            <el-table-column label="所属分类" prop="typeName">
+              <template slot-scope="scope">
+                <div>{{ scope.row.typeName || "暂无分类" }}</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="taskProgress"
+              label="进度"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <tl-process
+                    :data="parseInt(scope.row.taskProgress, 10)"
+                  ></tl-process>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="140px" align="left" label="执行信息">
+              <template slot-scope="scope">
+                <div>
+                  <p>
+                    <i class="el-icon-user"></i>
+                    <span>{{ scope.row.userName || "无执行人" }}</span>
+                  </p>
+                  <p>
+                    <i class="el-icon-date"></i>
+                    <span v-if="scope.row.taskBegDate"
+                      >{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskBegDate)
+                        )
+                      }}~{{
+                        dateFormat(
+                          "YYYY-mm-dd",
+                          new Date(scope.row.taskEndDate)
+                        )
+                      }}</span
                     >
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <el-menu
-                :default-active="'1'"
-                mode="horizontal"
-                @select="handleSelect"
-              >
-                <el-submenu index="1">
-                  <template slot="title">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </template>
-                  <el-menu-item @click.native="finish(scope.row)"
-                    >任务归档</el-menu-item
-                  >
-                  <!-- <el-menu-item @click.native="deleteTask(scope.row)"
+                    <span v-else>未设置起止时间</span>
+                  </p>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="180px" align="left" label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  plain
+                  class="tl-btn amt-border-fadeout"
+                  @click="openEdit(scope.row)"
+                  >编辑</el-button
+                >
+                <el-dropdown class="tl-dropdown">
+                  <div class="el-dropdown-link">
+                    <el-button plain class="tl-btn amt-border-fadeout"
+                      >移动</el-button
+                    >
+                  </div>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      @click.native="changeStep(scope.row, step)"
+                      v-for="step in stepList"
+                      :index="step.stepId"
+                      :key="step.stepId"
+                    >
+                      <em>{{ step.stepName }}</em>
+
+                      <span v-if="scope.row.stepId == step.stepId"
+                        >（当前节点）</span
+                      >
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <el-menu
+                  :default-active="'1'"
+                  mode="horizontal"
+                  @select="handleSelect"
+                >
+                  <el-submenu index="1">
+                    <template slot="title">
+                      <i class="el-icon-more el-icon--right"></i>
+                    </template>
+                    <el-menu-item @click.native="finish(scope.row)"
+                      >任务归档</el-menu-item
+                    >
+                    <!-- <el-menu-item @click.native="deleteTask(scope.row)"
                       >删除任务</el-menu-item
                     > -->
 
-                  <el-submenu index="1-2">
-                    <template slot="title">移动分类</template>
-                    <el-menu-item v-if="processClassifyList.length == 0"
-                      >暂无分类</el-menu-item
-                    >
-                    <el-menu-item
-                      @click.native="changeClassify(scope.row, calssify)"
-                      v-for="calssify in processClassifyList"
-                      :index="calssify.typeId"
-                      :key="calssify.typeId"
-                    >
-                      <em
-                        :class="{
-                          'high-light': scope.row.typeId == calssify.typeId,
-                        }"
-                        >{{ calssify.typeName }}</em
+                    <el-submenu index="1-2">
+                      <template slot="title">移动分类</template>
+                      <el-menu-item v-if="processClassifyList.length == 0"
+                        >暂无分类</el-menu-item
                       >
-                    </el-menu-item>
+                      <el-menu-item
+                        @click.native="changeClassify(scope.row, calssify)"
+                        v-for="calssify in processClassifyList"
+                        :index="calssify.typeId"
+                        :key="calssify.typeId"
+                      >
+                        <em
+                          :class="{
+                            'high-light': scope.row.typeId == calssify.typeId,
+                          }"
+                          >{{ calssify.typeName }}</em
+                        >
+                      </el-menu-item>
+                    </el-submenu>
                   </el-submenu>
-                </el-submenu>
-              </el-menu>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </crcloud-table>
+                </el-menu>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </crcloud-table>
+    </template>
     <tl-edittask
       ref="editTask"
       v-if="existEditTask"

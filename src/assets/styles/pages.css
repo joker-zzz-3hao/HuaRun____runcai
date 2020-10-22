@@ -3258,6 +3258,11 @@
   justify-content: space-between;
 }
 
+/* 用于演示，用完删除，仅此一条 */
+.task-process .el-menu-demo {
+  margin: 0 0 20px 0;
+}
+
 /* 过程管理 */
 .process-manage .cont-area {
   display: flex;
