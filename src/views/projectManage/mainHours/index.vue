@@ -11,7 +11,6 @@
               :popper-append-to-body="false"
               placeholder="请选择项目"
               @change="changeProject"
-              clearable
               popper-class="tl-select-dropdown"
               class="tl-select"
             >
