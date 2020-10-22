@@ -3293,14 +3293,14 @@
   margin: 0 0 30px 0;
 }
 
-.dl-card-panel dt,
-.dl-card-panel dd {
+.dl-card-panel > dt,
+.dl-card-panel > dd {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.dl-card-panel dt {
+.dl-card-panel > dt {
   margin: 0 20px 0 0;
 }
 
