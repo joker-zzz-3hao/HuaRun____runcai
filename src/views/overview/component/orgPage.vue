@@ -1,5 +1,5 @@
 <template>
-  <div class="tl-card-panel">
+  <div class="tl-card-panel" v-loading="fullscreenLoading">
     <em v-show="testModel">示例数据</em>
     <template v-if="tableList.length > 0">
       <div class="card-panel-head">
@@ -63,7 +63,7 @@
       </div>
     </template>
     <template v-else>
-      <div class="no-data">
+      <div class="no-data" v-show="showLoad">
         <div class="no-data-bg"></div>
         <div class="no-data-txt">您暂未填写OKR</div>
         <el-button
@@ -174,13 +174,7 @@ export default {
       return [this.tableList[0].okrDetailId];
     },
   },
-  // created() {
-  //   if (!this.periodId) {
-  //     this.$nextTick(() => {
-  //       this.setList();
-  //     });
-  //   }
-  // },
+
   methods: {
     ...mapMutations('common', ['setOrg', 'changeTestModel', 'setCycleList']),
     goUndertakeMaps(id, name) {
@@ -208,13 +202,13 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
-            this.changeTestModel(true);
-            this.reload();
-            sessionStorage.setItem('modelOkr', '1');
-          }
+          // if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
+          //   this.changeTestModel(true);
+          //   this.reload();
+          //   sessionStorage.setItem('modelOkr', '1');
+          // }
+          this.setList(res.data);
         }
-        this.setList(res.data);
       });
     },
     cancelFocus(data) {
@@ -265,13 +259,14 @@ export default {
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-
+      setTimeout(() => {
+        this.showLoad = true;
+        this.fullscreenLoading = false;
+      }, 1000);
+      // clearTimeout(time);
       // this.$nextTick(() => {
       //   Bus.$emit('getOrgTable', this.orgTable);
       // });
-
-      this.showLoad = true;
-      this.fullscreenLoading = false;
     },
 
     // 认证身份跳转对应身份首页
@@ -339,10 +334,9 @@ export default {
     periodId: {
       handler(newVal) {
         if (newVal) {
-          this.okrCycle = this.periodList.filter(
-            (citem) => citem.periodId === newVal,
-          )[0] || {};
           this.searchOkr();
+        } else {
+          this.setList();
         }
       },
       immediate: true,

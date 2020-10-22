@@ -137,3 +137,14 @@ export default {
   },
 };
 </script>
+<style  scoped>
+.el-tag.el-tag--success.is-hit {
+  border-color: #f5c28e;
+}
+
+.el-tag.el-tag--success {
+  background-color: #f6eee4;
+  border-color: #f5c28e;
+  color: #d99328;
+}
+</style>
