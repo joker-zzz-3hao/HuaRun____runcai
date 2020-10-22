@@ -1,6 +1,6 @@
 <template>
   <div class="list-view">
-    <template v-if="asdfsadf">
+    <template v-if="processObj.processId">
       <el-tabs
         v-model="tabName"
         @tab-click="selectTab(tabName)"

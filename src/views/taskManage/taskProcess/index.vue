@@ -180,14 +180,14 @@
         :processClassifyList="processClassifyList"
         :processObj="processObj"
         :stepList="stepList"
-        v-if="taskType == 1 && processObj.processId"
+        v-if="taskType == 1"
         :searchParams="searchParams"
       ></tl-list>
       <tl-board
         ref="board"
         :processObj="processObj"
         :stepList="stepList"
-        v-if="taskType == 2 && stepList.length > 0 && processObj.processId"
+        v-if="taskType == 2"
         :searchParams="searchParams"
       ></tl-board>
     </div>
