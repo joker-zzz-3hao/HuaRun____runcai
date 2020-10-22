@@ -22,7 +22,7 @@ export default {
   background: url("~@/assets/images/demoPic/fupan04.png") no-repeat;
   background-size: 100%;
   /* background-size: cover; */
-  height: calc(380vh);
+  height: calc(230vh);
   display: flex;
 }
 </style>
