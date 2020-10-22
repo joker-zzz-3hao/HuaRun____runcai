@@ -275,11 +275,11 @@ export default {
         return false;
       }
       if (this.userInfo.userId == user.userId) {
-        this.$message.success('此为当前团队负责人');
+        this.$message.success('此页面已是您要查看的页面');
         return false;
       }
       if (this.$route.query.userId == user.userId) {
-        this.$message.success('此为当前团队负责人');
+        this.$message.success('此页面已是您要查看的页面');
         return false;
       }
       if (!user.userId) {
