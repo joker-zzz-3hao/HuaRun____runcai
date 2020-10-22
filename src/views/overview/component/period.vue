@@ -83,6 +83,7 @@ export default {
       testModel: (state) => state.testModel,
     }),
   },
+
   methods: {
     ...mapMutations('common', ['setOrg', 'changeTestModel']),
     back() {
@@ -104,7 +105,11 @@ export default {
             sessionStorage.setItem('model', '1');
           }
           if (this.options.length > 0) {
-            this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
+            if (sessionStorage.getItem('selectPer')) {
+              this.value = sessionStorage.getItem('selectPer');
+            } else {
+              this.value = this.options.filter((item) => item.checkStatus == '1')[0].periodId || {};
+            }
           } else {
             this.value = '';
           }
@@ -114,6 +119,7 @@ export default {
       });
     },
     selectPeriod(value) {
+      sessionStorage.setItem('selectPer', value);
       this.$emit('getPeriod', value);
     },
   },

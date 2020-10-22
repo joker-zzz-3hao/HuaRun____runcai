@@ -29,6 +29,9 @@ export default {
       setOrgId: (state) => state.setOrgId,
     }),
   },
+  destroyed() {
+    sessionStorage.removeItem('selectPer');
+  },
   methods: {
     reload() {
       this.isRouterAlive = false;
