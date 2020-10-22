@@ -190,6 +190,7 @@ export default {
       const approvalTime = new Date(date).getTime();
       const startTime = new Date(this.form.startTime).getTime();
       const endTime = new Date(this.form.endTime).getTime();
+
       if (startTime > approvalTime || approvalTime > endTime) {
         this.$message.error('请设置在周期起始时间范围内');
         this.form.approvalEndTime = '';
@@ -198,6 +199,7 @@ export default {
     selfAssessTime(date) {
       const selfAssessTime = new Date(date).getTime();
       const endTime = new Date(this.form.endTime).getTime();
+
       if (selfAssessTime < endTime + 24 * 60 * 60 * 1000) {
         this.$message.error('自评举证时间请大于周期结束时间');
         this.form.selfAssessReminderTime = '';
@@ -208,12 +210,13 @@ export default {
       const selfAssessReminderTime = new Date(this.form.selfAssessReminderTime).getTime();
       const startTime = new Date(date[0]).getTime();
       const endTime = new Date(date[1]).getTime();
+
       if (draftingStartTime + 24 * 60 * 60 * 1000 > startTime) {
         this.$message.error('周期开始时间不能小于起草时间');
         this.dateTime = '';
         return false;
       }
-      if (selfAssessReminderTime < endTime + 24 * 60 * 60 * 1000) {
+      if (selfAssessReminderTime < endTime + 24 * 60 * 60 * 1000 && selfAssessReminderTime) {
         this.$message.error('周期结束时间不能大于自评举证时间');
         this.dateTime = '';
         return false;

@@ -52,6 +52,7 @@
               placeholder="请输入用户名称"
               clearable
               @keyup.enter.native="okrReviewList"
+              @clear="okrReviewList"
               class="tl-input-search"
             >
               <i
