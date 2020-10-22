@@ -4453,7 +4453,8 @@
 .tl-table td,
 .tl-table th.is-leaf,
 .teams-manage .cont-area,
-.el-input__inner {
+.el-input__inner,
+.el-textarea__inner {
   border-color: #999 !important;
 }
 
@@ -4466,6 +4467,9 @@
   background: #999;
 }
 
+
+.create-okr .allocation-info dt,
+.collpase-panel dd>div i:first-child, .collpase-panel dd>div i:first-child+span,
 .teams-manage .card-title ~ dd > p,
 .teams-manage .card-title ~ dd > span:nth-of-type(2), .teams-manage .dl-card-panel .img-list + span,
 .teams-manage .dl-card-panel dt span,
