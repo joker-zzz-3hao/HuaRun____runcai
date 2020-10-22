@@ -6,7 +6,7 @@
     :visible.sync="visible"
     @closed="closed"
     :before-close="close"
-    custom-class="custom-drawer eidt-task"
+    custom-class="custom-drawer edit-task"
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">

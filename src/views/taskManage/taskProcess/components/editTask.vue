@@ -6,14 +6,14 @@
     :visible.sync="visible"
     @closed="closed"
     :before-close="close"
-    custom-class="custom-drawer create-task"
+    custom-class="custom-drawer edit-task"
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
       <div class="drawer-title">任务</div>
     </div>
     <el-scrollbar>
-      <div class="cont-box task-fenlan">
+      <div class="cont-box flex-sb">
         <el-form ref="dataForm" :model="formData" class="tl-form">
           <dl>
             <dt>
