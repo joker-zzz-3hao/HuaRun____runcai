@@ -224,7 +224,7 @@
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
                             <em>{{ uitem.updateContents.beforeName }}</em> -->
-                            <span> 变更为</span>
+                            <span class="width-auto">变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
@@ -236,9 +236,9 @@
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.beforeCheckQuota">
-                            <span>考核指标由</span>
+                            <span class="width-auto3">考核指标由</span>
                             <em>{{ uitem.updateContents.beforeCheckQuota }}</em>
-                            <span>变更为</span>
+                            <span class="width-auto">变更为</span>
                             <em>{{ uitem.updateContents.afterCheckQuota }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeJudgeMethod">
@@ -378,7 +378,7 @@
                               >{{ CONST.OKR_KIND_MAP[uitem.type || 0] }}由</span
                             >
                             <em>{{ uitem.updateContents.beforeName }}</em> -->
-                            <span> 变更为</span>
+                            <span>变更为</span>
                             <em>{{ uitem.updateContents.afterName }}</em>
                           </div>
                           <div v-if="uitem.updateContents.beforeWeight">
