@@ -7,6 +7,7 @@
           <el-input
             placeholder="输入用户姓名/账号/手机号"
             v-model.trim="searchForm.keyWord"
+            @keyup.enter.native="searchList"
             clearable
             class="tl-input-search"
             @clear="clear"
