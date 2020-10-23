@@ -4303,7 +4303,8 @@
   margin: 0;
 }
 
-.organize-management .operating-area .flex-auto .is-plain {
+.organize-management .operating-area .flex-auto .is-plain,
+.user-manage .operating-area .operating-box .is-plain {
   margin: 0 0 0 10px;
   background: #f0effe;
 }
