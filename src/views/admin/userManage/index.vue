@@ -17,8 +17,8 @@
 
           <el-button
             v-if="hasPower('sys-tenant-user-list')"
-            type="primary"
-            class="tl-btn amt-bg-slip"
+            plain
+            class="tl-btn"
             @click="searchList"
             >查询</el-button
           >
