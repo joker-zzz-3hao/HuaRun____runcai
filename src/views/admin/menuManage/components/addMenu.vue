@@ -9,7 +9,7 @@
     :close-on-click-modal="false"
     :title="title"
     :visible.sync="dialogTableVisible"
-    width="30%"
+    width="35%"
   >
     <el-form
       ref="form"

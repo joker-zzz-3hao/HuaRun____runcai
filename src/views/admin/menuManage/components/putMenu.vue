@@ -11,7 +11,6 @@
     :visible.sync="dialogTableVisible"
     :modal="false"
     class="tl-drawer tl-drawer-tenant-edit"
-    size="35%"
   >
     <el-form
       ref="form"
