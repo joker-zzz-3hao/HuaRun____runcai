@@ -310,11 +310,22 @@
 
 .overview .tl-card-panel .okr-follow {
   flex: 0 0 100px;
+  cursor: pointer;
 }
 
 .overview .tl-card-panel .okr-follow .el-icon-plus {
   font-size: 16px;
   font-weight: 900;
+  transition: all .4s ease-out;
+}
+
+.overview .tl-card-panel .okr-follow .el-icon-plus + em {
+  transition: all .4s ease-out;
+}
+
+.overview .tl-card-panel .okr-follow:hover .el-icon-plus,
+.overview .tl-card-panel .okr-follow:hover .el-icon-plus + em {
+  color: #685df1;
 }
 
 .overview .tl-card-panel .okr-follow dd {
@@ -782,8 +793,7 @@
 
 /* 演示需要 原720 改为 950 */
 .associated-undertaking .el-drawer__body {
-  margin-top: 10px;
-  width: 950px;
+  width: 676px;
 }
 /* 演示需要 原720 改为 850 */
 .history-version .el-drawer__body {
@@ -828,7 +838,7 @@
   color: #4d5155;
 }
 
-.associated-undertaking .el-scrollbar {
+.associated-undertaking > .el-scrollbar {
   margin: 0 0 30px 0;
 }
 
@@ -3928,7 +3938,8 @@
   align-self: start;
 }
 
-.project-manage .operating-box .el-input {
+.project-manage .operating-box .el-input,
+.user-manage .operating-box .el-input {
   width: unset;
 }
 
