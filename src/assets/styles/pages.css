@@ -3179,6 +3179,10 @@
   justify-content: center;
 }
 
+.tl-tooltip-popper.send-gold {
+  margin: 0 0 20px 0;
+}
+
 .is-sub-menu + .my-weekly .footer-panel .tl-btn,
 .is-sub-menu + .my-weekly .footer-panel > span {
   margin: 0 0 0 248px;

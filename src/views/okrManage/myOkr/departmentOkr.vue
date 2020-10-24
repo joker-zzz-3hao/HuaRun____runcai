@@ -9,8 +9,7 @@
               <!-- <i class="el-icon-set-up"></i> -->
               <em>状态</em>
             </dt>
-            <dd>
-              <i class="el-icon-sunny"></i>
+            <dd class="is-highlighted">
               <em>{{ CONST.STATUS_LIST_MAP[searchForm.status] }}</em>
             </dd>
           </dl>

@@ -374,13 +374,13 @@
         <span v-if="showEmotionError">请选择本周心情</span>
       </dd>
     </dl>
-    <div class="btn-box" v-if="hasPower('weekly-submit')">
+    <div class="footer-panel" v-if="hasPower('weekly-submit')">
       <el-button
+        :loading="commitLoading"
         v-if="canEdit && canUpdate"
         type="primary"
         @click="commitWeekly"
         class="tl-btn amt-bg-slip"
-        :loading="commitLoading"
         >提交</el-button
       >
       <el-button

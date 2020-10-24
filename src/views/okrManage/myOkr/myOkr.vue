@@ -19,7 +19,7 @@
                 <i class></i>
                 <em>状态</em>
               </dt>
-              <dd>
+              <dd class="is-highlighted">
                 <!-- <i class="el-icon-sunny"></i> -->
                 <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
               </dd>
