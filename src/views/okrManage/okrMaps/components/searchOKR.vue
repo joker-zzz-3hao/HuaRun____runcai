@@ -1,16 +1,23 @@
 <template>
   <ul class="tab-cont-list">
+    <div v-if="searchData.length == 0" class="no-data">
+      <div class="bg-no-data-search"></div>
+      <div class="no-data-txt">暂无数据</div>
+    </div>
+
     <li v-for="item in searchData" :key="item.resource_id">
       <dl>
         <dt class="tag-kind" @click="goDetail(item.okrId)">
-          <span class="kind-parent">{{CONST.OKR_TYPE_MAP[item.okrDetailType]}}</span>
+          <span class="kind-parent">{{
+            CONST.OKR_TYPE_MAP[item.okrDetailType]
+          }}</span>
           <em v-html="item.okrDetailContent"></em>
         </dt>
         <dd>
           <div>
             <span>当前进度</span>
             <tl-process
-              :data="parseInt(item.okrDetailProgress,10)"
+              :data="parseInt(item.okrDetailProgress, 10)"
               :width="40"
               :marginLeft="6"
               :class="item.okrDetailType == 0 ? 'is-o' : 'is-kr'"
@@ -18,13 +25,13 @@
           </div>
           <div>
             <span>来自</span>
-            <em>{{item.orgName}}</em>
+            <em>{{ item.orgName }}</em>
           </div>
           <div class="user-info">
             <span>负责人</span>
             <img v-if="true" src="@/assets/images/user/user.jpg" alt />
-            <em v-else class="user-name">{{cutName(item.userName)}}</em>
-            <em @click="gotoView(item)">{{item.userName}}</em>
+            <em v-else class="user-name">{{ cutName(item.userName) }}</em>
+            <em @click="gotoView(item)">{{ item.userName }}</em>
           </div>
         </dd>
       </dl>
