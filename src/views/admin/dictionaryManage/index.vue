@@ -1,5 +1,5 @@
 <template>
-  <div class="tenant-management">
+  <div class="dictionary-management">
     <div class="operating-area">
       <div class="page-title">数据字典管理</div>
       <div class="operating-box">

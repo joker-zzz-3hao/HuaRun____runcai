@@ -1,93 +1,106 @@
 <template>
-  <div class="tenant-management">
+  <div class="user-manage">
     <div class="operating-area">
       <div class="page-title">用户管理</div>
-      <div class="operating-box">
-        <el-form
-          :inline="true"
-          class="tl-form-inline"
-          @keyup.enter.native="searchList()"
-        >
-          <el-form-item>
-            <el-select
-              v-model.trim="searchForm.tenantId"
-              placeholder="选择租户"
-            >
-              <el-option
-                v-for="item in tenantList"
-                :key="item.tenantId"
-                :label="item.tenantName"
-                :value="item.tenantId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select
-              v-model.trim="searchForm.userType"
-              placeholder="用户类型"
-              clearable
-              @change="searchList"
-            >
-              <el-option
-                v-for="item in CONST.USER_TYPE_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select
-              v-model.trim="searchForm.userStatus"
-              placeholder="用户状态"
-              clearable
-              @change="searchList"
-            >
-              <el-option
-                v-for="item in CONST.USER_STATUS_LIST"
-                :key="item.key"
-                :label="item.label"
-                :value="item.key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input
-              placeholder="输入用户姓名/账号/手机号"
-              v-model.trim="searchForm.keyWord"
-              clearable
-              class="tl-input-search"
-              @clear="clear"
-            >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-            </el-input>
-          </el-form-item>
-        </el-form>
-        <el-button
-          v-if="hasPower('sys-tenant-user-list')"
-          plain
-          class="tl-btn"
-          @click="searchList"
-          >查询</el-button
-        >
-        <el-button
-          v-if="hasPower('sys_user_add')"
-          @click="createOrEditUser"
-          type="primary"
-          icon="el-icon-plus"
-          class="tl-btn amt-bg-slip"
-          >创建用户</el-button
-        >
-        <el-button
-          v-if="hasPower('sys_user_batch_import')"
-          plain
-          icon="el-icon-minus"
-          class="tl-btn amt-border-slip"
-          @click="batchImport"
-        >
-          批量导入
-          <span class="lines"></span>
-        </el-button>
+      <div class="operating-box-group">
+        <div class="operating-box">
+          <el-input
+            placeholder="输入用户姓名/账号/手机号"
+            v-model.trim="searchForm.keyWord"
+            @keyup.enter.native="searchList"
+            clearable
+            class="tl-input-search"
+            @clear="clear"
+          >
+            <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+          </el-input>
+
+          <el-button
+            v-if="hasPower('sys-tenant-user-list')"
+            plain
+            class="tl-btn"
+            @click="searchList"
+            >查询</el-button
+          >
+        </div>
+        <div class="operating-box">
+          <dl class="dl-item">
+            <dd>
+              <el-select
+                v-model.trim="searchForm.tenantId"
+                placeholder="选择租户"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in tenantList"
+                  :key="item.tenantId"
+                  :label="item.tenantName"
+                  :value="item.tenantId"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dd>
+              <el-select
+                v-model.trim="searchForm.userType"
+                placeholder="用户类型"
+                :popper-append-to-body="false"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                @change="searchList"
+              >
+                <el-option
+                  v-for="item in CONST.USER_TYPE_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dd>
+              <el-select
+                :popper-append-to-body="false"
+                v-model.trim="searchForm.userStatus"
+                placeholder="用户状态"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                @change="searchList"
+              >
+                <el-option
+                  v-for="item in CONST.USER_STATUS_LIST"
+                  :key="item.key"
+                  :label="item.label"
+                  :value="item.key"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <el-button
+            v-if="hasPower('sys_user_add')"
+            @click="createOrEditUser"
+            type="primary"
+            icon="el-icon-plus"
+            class="tl-btn amt-bg-slip"
+            >创建用户</el-button
+          >
+          <el-button
+            v-if="hasPower('sys_user_batch_import')"
+            plain
+            icon="el-icon-minus"
+            class="tl-btn amt-border-slip"
+            @click="batchImport"
+          >
+            批量导入
+            <span class="lines"></span>
+          </el-button>
+        </div>
       </div>
     </div>
     <div class="cont-area">

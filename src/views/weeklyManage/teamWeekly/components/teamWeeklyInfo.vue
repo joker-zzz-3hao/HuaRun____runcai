@@ -380,10 +380,13 @@
                 v-if="hasPower('weekly-support')"
                 class="tl-btn amt-bg-slip"
                 >送金条({{ supportCount }})
-                <el-tooltip class="item" effect="dark" placement="top">
+                <el-tooltip
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper send-gold"
+                >
                   <div slot="content">
-                    1931年夏，时任中央特科负责人的陈云，在上海交给秦邦礼两根金条，指示他以此做资本，以开店为掩护，为党建立秘<br />
-                    密交通站，筹集和提供无线电、药品等秘密战略物资。就是这两根金条，成为了新中国最大外贸企业华润公司的初始资金。
+                    若有收获，那就送他(她)一根金条吧～～～
                   </div>
                   <i class="el-icon-question"></i>
                 </el-tooltip>

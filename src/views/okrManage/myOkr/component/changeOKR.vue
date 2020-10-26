@@ -139,7 +139,6 @@
         >取消</el-button
       >
     </div>
-
     <el-drawer
       :visible.sync="innerDrawer"
       :modal="false"
@@ -187,7 +186,6 @@
         >
       </div>
     </el-drawer>
-
     <tl-okr-history
       v-if="historyDrawer"
       :exist.sync="historyDrawer"

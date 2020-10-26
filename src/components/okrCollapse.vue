@@ -147,25 +147,26 @@
               <div v-else-if="canWrite && item.parentObjectKr">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p @click="goUndertake(index, 'new')">
-                  <a
-                    v-if="
-                      item.undertakeOkrVo &&
-                      item.undertakeOkrVo.undertakeOkrContent
-                    "
-                    >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
-                  >
-                  <a v-else>{{ item.parentObjectKr }}</a>
-                  <a
-                    v-if="
-                      (item.undertakeOkrVo &&
-                        item.undertakeOkrVo.undertakeOkrContent) ||
-                      (item.parentObjectKr && item.cultureName)
-                    "
-                    >、</a
-                  >
-                  <a>{{ item.cultureName }}</a>
-                </p>
+                <a
+                  v-if="
+                    item.undertakeOkrVo &&
+                    item.undertakeOkrVo.undertakeOkrContent
+                  "
+                  @click="goUndertake(index, 'new')"
+                  >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
+                >
+                <a v-else @click="goUndertake(index, 'new')">{{
+                  item.parentObjectKr
+                }}</a>
+                <a
+                  v-if="
+                    (item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent) ||
+                    (item.parentObjectKr && item.cultureName)
+                  "
+                  >、</a
+                >
+                <a @click="goUndertake(index, 'new')">{{ item.cultureName }}</a>
               </div>
               <!-- 变更 原无承接 -->
               <div v-else-if="canWrite">

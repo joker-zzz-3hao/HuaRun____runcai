@@ -6,20 +6,20 @@
     <div>
       <el-form class="tl-form" v-if="hasPower('sys_auth')">
         <el-form-item label="用户账号">
-          <span>{{ userInfo.userAccount }}</span>
+          <em>{{ userInfo.userAccount }}</em>
         </el-form-item>
         <el-form-item label="用户角色">
-          <span>系统管理员</span>
+          <em>系统管理员</em>
         </el-form-item>
         <el-form-item label="账号类型">
-          <span>内置用户</span>
+          <em>内置用户</em>
         </el-form-item>
         <el-form-item label="创建时间">
-          <span>{{
+          <em>{{
             userInfo.createTime
               ? dateFormat("YYYY-mm-dd HH:MM:SS", new Date(userInfo.createTime))
               : "--"
-          }}</span>
+          }}</em>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetPwd" class="tl-btn amt-border-fadeout" plain

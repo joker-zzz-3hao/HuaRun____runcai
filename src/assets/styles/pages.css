@@ -310,11 +310,22 @@
 
 .overview .tl-card-panel .okr-follow {
   flex: 0 0 100px;
+  cursor: pointer;
 }
 
 .overview .tl-card-panel .okr-follow .el-icon-plus {
   font-size: 16px;
   font-weight: 900;
+  transition: all .4s ease-out;
+}
+
+.overview .tl-card-panel .okr-follow .el-icon-plus + em {
+  transition: all .4s ease-out;
+}
+
+.overview .tl-card-panel .okr-follow:hover .el-icon-plus,
+.overview .tl-card-panel .okr-follow:hover .el-icon-plus + em {
+  color: #685df1;
 }
 
 .overview .tl-card-panel .okr-follow dd {
@@ -782,8 +793,7 @@
 
 /* 演示需要 原720 改为 950 */
 .associated-undertaking .el-drawer__body {
-  margin-top: 10px;
-  width: 950px;
+  width: 676px;
 }
 /* 演示需要 原720 改为 850 */
 .history-version .el-drawer__body {
@@ -828,7 +838,7 @@
   color: #4d5155;
 }
 
-.associated-undertaking .el-scrollbar {
+.associated-undertaking > .el-scrollbar {
   margin: 0 0 30px 0;
 }
 
@@ -3169,6 +3179,10 @@
   justify-content: center;
 }
 
+.tl-tooltip-popper.send-gold {
+  margin: 0 0 20px 0;
+}
+
 .is-sub-menu + .my-weekly .footer-panel .tl-btn,
 .is-sub-menu + .my-weekly .footer-panel > span {
   margin: 0 0 0 248px;
@@ -3928,7 +3942,8 @@
   align-self: start;
 }
 
-.project-manage .operating-box .el-input {
+.project-manage .operating-box .el-input,
+.user-manage .operating-box .el-input {
   width: unset;
 }
 
@@ -4292,7 +4307,8 @@
   margin: 0;
 }
 
-.organize-management .operating-area .flex-auto .is-plain {
+.organize-management .operating-area .flex-auto .is-plain,
+.user-manage .operating-area .operating-box .is-plain {
   margin: 0 0 0 10px;
   background: #f0effe;
 }
@@ -4455,55 +4471,4 @@
 
 .worth-manage .event-book .tl-table td {
   height: 66px;
-}
-
-
-
-
-
-
-
-
-
-/* 演示用 用完删除 */
-.tl-table td,
-.tl-table th.is-leaf,
-.teams-manage .cont-area,
-.el-input__inner,
-.el-textarea__inner {
-  border-color: #999 !important;
-}
-
-.tl-table td,
-.tl-table.el-table--border td, .tl-table.el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed, .tl-table.el-table--border th {
-  border-right: 1px solid transparent !important;
-}
-
-.el-table__fixed-right::before, .el-table__fixed::before,
-.header-wrap::after,
-.card-panel-body .tl-table .el-table__expanded-cell::before,
-.card-panel-body .tl-table .el-table__row.expanded td:first-child::after,
-.tl-table .sub-tr .okr-kr-name::before,
-.card-panel-body .tl-table .el-table__row.expanded td:first-child::before,
-.tl-table .sub-tr .okr-kr-name::after {
-  background: #999;
-}
-
-
-.create-okr .allocation-info dt,
-.collpase-panel dd>div i:first-child, .collpase-panel dd>div i:first-child+span,
-.teams-manage .card-title ~ dd > p,
-.teams-manage .card-title ~ dd > span:nth-of-type(2), .teams-manage .dl-card-panel .img-list + span,
-.teams-manage .dl-card-panel dt span,
-.department-info>span, .department-info em,
-.tl-table th,
-.okr-risk-total .tl-card-panel-group dl dd:nth-of-type(1),
-.my-okr .card-panel-head .update-time em,
-.tl-table-fix .tl-thead li,
-.card-panel-head dt {
-  color: #888;
-}
-
-.maps-card {
-  border: 1px solid #999;
 }
