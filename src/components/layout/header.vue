@@ -40,7 +40,7 @@
     <div class="area-right">
       <ul class="top-menu">
         <li>
-          <div @click="go('serviceManual')">使用手册</div>
+          <div @click="openDoc">使用手册</div>
         </li>
         <li v-if="showTeam">
           <div @click="go('teamsManage')">团队管理</div>
@@ -111,6 +111,11 @@ export default {
       userInfo: (state) => state.userInfo,
       totalMeaasge: (state) => state.totalMeaasge,
     }),
+    // showServiceManual() {
+    //   return window.location.origin ? window.location.origin : window.location.href.split(
+    //     '/#',
+    //   )[0] != 'https://talent.crcloud.com';
+    // },
   },
   mounted() {
     this.orgId = this.userInfo.orgId;
@@ -151,6 +156,9 @@ export default {
         // 下载
         window.open('');
       });
+    },
+    openDoc() {
+      window.open('https://z3zs5t1od8.crc.feishu.cn/docs/dockalvLv50B4VpwQ578K6lYFn0?new_source=message');
     },
   },
 };
