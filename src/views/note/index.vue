@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <div v-if="showpic">暂未开放，敬请期待~</div>
+    <div v-if="showpic" class="no-data">
+      <div class="note-wait-bg"></div>
+      <div class="task-wait-txt">更多功能敬请期待~</div>
+    </div>
     <div v-else>
       <div class="pic-noteIndex" v-if="changeNote == 'index'">
         <div @click="changeNote = 'detail'" class="click-detail"></div>

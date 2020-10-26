@@ -1,5 +1,8 @@
 <template>
-  <div v-if="showpic" class="task-process">暂未开放，敬请期待~</div>
+  <div v-if="showpic" class="no-data">
+    <div class="task-wait-bg"></div>
+    <div class="task-wait-txt">更多功能敬请期待~</div>
+  </div>
   <div v-else class="task-process">
     <div class="operating-area">
       <div class="page-title">
