@@ -25,7 +25,10 @@
       ></tl-calendar>
       <div class="weekly-area" v-if="newPage">
         <!-- 以前的周报未填写，友情提示 -->
-        <div v-if="noWrite">周报未填写</div>
+        <div v-if="noWrite" class="no-data">
+          <div class="no-data-bg"></div>
+          <div class="no-data-txt">周报未填写</div>
+        </div>
         <!-- 标准版 -->
         <div v-if="!noWrite && myOkrLoadFinish && teamOkrLoadFinish">
           <standard-Weekly
