@@ -132,10 +132,12 @@
             trigger="hover"
             :append-to-body="false"
           >
-            <span>
-              您承接的OKR有变更，请在变更中处理。
+            <span v-if="showUpdate">
+              您关联的OKR有变更，请在变更中处理。
               <a @click="opensome">申请变更</a>
             </span>
+            <span v-else>关联的OKR有变更</span>
+
             <i class="el-icon-warning" slot="reference"></i>
           </el-popover>
           <el-tooltip
