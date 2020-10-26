@@ -14,7 +14,7 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
-        <dl class="dl-list" v-show="configItemCode == 'S'">
+        <dl class="dl-list" v-show="configItemCodeOKR == 'S'">
           <el-radio-group v-model="noOkr">
             <el-radio
               class="tl-radio"
@@ -67,7 +67,7 @@
             暂无可支撑的OKR
           </dd>
         </dl>
-        <dl class="dl-list" v-show="configItemCode == 'O'">
+        <dl class="dl-list" v-show="configItemCodeOKR == 'O'">
           <dt class="list-title">
             <em>个人目标</em>
             <el-select
@@ -222,6 +222,10 @@ export default {
       type: String,
       default: '支撑OKR/价值观',
     },
+    configItemCodeOKR: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -247,24 +251,10 @@ export default {
       thisPageMyOkrList: [],
       thisPageOrgOkrList: [],
       noOkr: '',
-      configItemCode: '',
     };
   },
   created() {
-    this.server.getTypeConfig({
-      configType: 'OKR',
-      configTypeDetail: 'O-2',
-      level: 'T',
-      sourceId: this.userInfo.tenantId,
-    }).then((res) => {
-      if (res.code == 200) {
-        if (!!res.data && res.data.length > 0) {
-          this.configItemCode = res.data[0].configItemCode;
-        } else {
-          this.configItemCode = 'S';
-        }
-      }
-    });
+
   },
   mounted() {
     this.init();

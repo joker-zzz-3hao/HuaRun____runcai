@@ -43,6 +43,7 @@
             :canEdit="canEdit"
             @refreshMyOkr="refreshMyOkr"
             :timeDisabled="timeDisabled"
+            :configItemCodeOKR="configItemCodeOKR"
             v-if="weeklyType == '1'"
           ></standard-Weekly>
           <!-- 简单版 -->
@@ -59,6 +60,7 @@
             :cultureList="cultureList"
             :projectList="projectList"
             :canEdit="canEdit"
+            :configItemCodeOKR="configItemCodeOKR"
             @refreshMyOkr="refreshMyOkr"
             v-else
           ></simple-weekly>
@@ -106,6 +108,7 @@ export default {
       timeDisabled: false,
       orgId: '',
       projectList: [],
+      configItemCodeOKR: '',
     };
   },
   created() {
@@ -117,6 +120,21 @@ export default {
       this.queryTeamOkr();
       this.getValues();
       this.getProjectList();
+      // 周报关联okr配置查询
+      this.server.getTypeConfig({
+        configType: 'OKR',
+        configTypeDetail: 'O-2',
+        level: 'T',
+        sourceId: this.userInfo.tenantId,
+      }).then((res) => {
+        if (res.code == 200) {
+          if (!!res.data && res.data.length > 0) {
+            this.configItemCodeOKR = res.data[0].configItemCode;
+          } else {
+            this.configItemCodeOKR = 'S';
+          }
+        }
+      });
     },
     refreshMyOkr() {
       this.teamOkrLoadFinish = false;

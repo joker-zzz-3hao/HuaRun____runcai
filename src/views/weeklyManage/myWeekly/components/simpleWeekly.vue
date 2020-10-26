@@ -214,7 +214,7 @@
       </el-form>
     </div>
     <!-- 个人OKR完成度 -->
-    <dl class="dl-card-panel okr-completion">
+    <dl class="dl-card-panel okr-completion" v-if="configItemCodeOKR == 'O'">
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
@@ -409,6 +409,7 @@
       :orgOkrPeriodList="orgOkrPeriodList"
       :myOkrPeriodList="myOkrPeriodList"
       :cultureList="cultureList"
+      :configItemCodeOKR="configItemCodeOKR"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
     <select-project
@@ -515,6 +516,10 @@ export default {
       default() {
         return true;
       },
+    },
+    configItemCodeOKR: {
+      type: String,
+      default: '',
     },
     // canUpdate: {
     //   type: Boolean,
