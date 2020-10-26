@@ -12,12 +12,15 @@
   background-size: 120px 270px;
 }
 
+.top-menu-manual i::before,
+.top-menu-teams i::before,
+.top-menu-remind i::before,
 .toggle-view i,
 .assistant.is-focus > i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
-  background-size: 120px 2160px;
+  background-size: 120px 2190px;
 }
 
 /* 60 */
@@ -219,4 +222,40 @@
 
 .toggle-view i.is-selected {
   background-position-x: -30px;
+}
+
+/* 顶部菜单 */
+.top-menu-manual i::before,
+.top-menu-teams i::before,
+.top-menu-remind i::before {
+  content: '';
+  background-position-x: -2px;
+}
+
+.top-menu-manual i::before {
+  background-position-x: -1px;
+}
+
+.top-menu-manual:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-teams:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-remind:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-remind i::before {
+  background-position-y: -630px;
+}
+
+.top-menu-teams i::before {
+  background-position-y: -1830px;
+}
+
+.top-menu-manual i::before {
+  background-position-y: -2160px;
 }

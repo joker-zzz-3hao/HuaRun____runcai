@@ -3451,6 +3451,12 @@
   cursor: pointer;
 }
 
+.top-menu-manual:hover em,
+.top-menu-teams:hover em,
+.top-menu-remind:hover em {
+  color: #685df1;
+}
+
 .top-menu i {
   display: flex;
   align-items: center;

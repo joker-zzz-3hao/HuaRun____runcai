@@ -39,20 +39,20 @@
     </div>
     <div class="area-right">
       <ul class="top-menu">
-        <li>
-          <div @click="openDoc">使用手册</div>
+        <li class="top-menu-manual">
+          <i></i>
+          <em @click="openDoc">使用手册</em>
         </li>
-        <li v-if="showTeam">
-          <i class="el-icon-bell"></i>
+        <li v-if="showTeam" class="top-menu-teams">
+          <i></i>
           <em @click="go('teamsManage')">团队管理</em>
         </li>
-        <li @click="go('notice')">
-          <i class="el-icon-bell"></i>
+        <li @click="go('notice')" class="top-menu-remind">
+          <i></i>
           <em>通知</em>
           <div v-if="!(totalMeaasge == '0')" class="badge">
             {{ totalMeaasge }}
           </div>
-          <div class="remind-state"></div>
         </li>
         <li>
           <el-dropdown class="tl-dropdown">
