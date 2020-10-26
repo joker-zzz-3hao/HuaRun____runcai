@@ -3586,6 +3586,7 @@
 .menu-cont-inside li em {
   margin: 0 0 0 0;
   color: #fff;
+  font-size: 13px;
 }
 
 .menu-cont-inside li:not(.is-active):hover em {

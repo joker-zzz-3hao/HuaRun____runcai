@@ -12,6 +12,23 @@
   background-size: 120px 270px;
 }
 
+.toggle-view i,
+.assistant.is-focus > i {
+  width: 32px;
+  height: 32px;
+  background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
+  background-size: 120px 2160px;
+}
+
+/* 60 */
+.assistant > i,
+.mood i:first-child {
+  width: 40px;
+  height: 40px;
+  background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
+  background-size: 240px 240px;
+}
+
 .main-menu li:not(.is-active):hover i {
   background-position-x: -30px;
 }
@@ -52,13 +69,9 @@
   background-position-y: -210px;
 }
 
-/* 60 */
-.assistant > i,
-.mood i:first-child {
-  width: 40px;
-  height: 40px;
-  background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
-  background-size: 240px 240px;
+.assistant.is-focus > i {
+  background-position-x: -60px;
+  background-position-y: -180px;
 }
 
 /* 删除 */
@@ -157,47 +170,43 @@
   background-position-y: -190px;
 }
 
-
-
 .mood .has-harvest i:last-child {
-  width: 88px;
-  height: 28px;
+  width: 44px;
+  height: 14px;
   background: url('~@/assets/images/has_harvest.png') no-repeat;
+  background-size: 44px 14px;
 }
 
 .mood .has-harvest.is-selected i:last-child {
   background: url('~@/assets/images/has_harvest_h.png') no-repeat;
+  background-size: 44px 14px;
 }
 
 .mood .not-too-bad i:last-child {
-  margin: 16px 0 0 0;
-  width: 92px;
-  height: 28px;
+  width: 46px;
+  height: 14px;
   background: url('~@/assets/images/not_too_bad.png') no-repeat;
+  background-size: 46px 14px;
 }
 
 .mood .not-too-bad.is-selected i:last-child {
   background: url('~@/assets/images/not_too_bad_h.png') no-repeat;
+  background-size: 46px 14px;
 }
 
 .mood .let-quiet i:last-child {
-  width: 126px;
-  height: 28px;
+  width: 63px;
+  height: 14px;
   background: url('~@/assets/images/let_quiet.png') no-repeat;
+  background-size: 63px 14px;
 }
 
 .mood .let-quiet.is-selected i:last-child {
   background: url('~@/assets/images/let_quiet_h.png') no-repeat;
+  background-size: 63px 14px;
 }
 
 /* 30 */
-.toggle-view i {
-  width: 32px;
-  height: 32px;
-  background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
-  background-size: 120px 2160px;
-}
-
 .toggle-view .column-view {
   background-position-x: 0;
   background-position-y: -120px;
