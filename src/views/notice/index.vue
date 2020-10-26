@@ -3,21 +3,23 @@
     <div class="operating-area">
       <div class="page-title">消息通知</div>
       <div class="operating-box">
-        <el-form ref="ruleForm" :inline="true" class="tl-form-inline">
-          <el-form-item>
-            <el-radio-group v-model="messageType" @change="change">
-              <el-radio-button label="10">系统消息</el-radio-button>
-              <el-radio-button label="30">互动消息</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-radio-group v-model="readValue" @change="change">
-              <el-radio-button label>全部</el-radio-button>
-              <el-radio-button label="0">未读</el-radio-button>
-              <el-radio-button label="1">已读</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
+        <el-radio-group
+          v-model="messageType"
+          @change="change"
+          class="tl-radio-group"
+        >
+          <el-radio-button label="10">系统消息</el-radio-button>
+          <el-radio-button label="30">互动消息</el-radio-button>
+        </el-radio-group>
+        <el-radio-group
+          v-model="readValue"
+          @change="change"
+          class="tl-radio-group"
+        >
+          <el-radio-button label>全部</el-radio-button>
+          <el-radio-button label="0">未读</el-radio-button>
+          <el-radio-button label="1">已读</el-radio-button>
+        </el-radio-group>
       </div>
     </div>
     <div class="cont-area">

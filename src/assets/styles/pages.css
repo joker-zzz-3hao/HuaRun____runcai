@@ -4349,6 +4349,31 @@
   margin: 30px 0 10px 0;
 }
 
+/* msg-notice */
+.msg-notice .cont-area {
+  display: flex;
+}
+
+.msg-notice .tl-radio-group {
+  margin: 0 0 0 20px;
+}
+
+.msg-notice .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  background-color: #f0effe;
+  color: #685df1;
+  border-color: transparent;
+  box-shadow: unset;
+}
+
+.msg-notice .el-radio-button__inner,
+.msg-notice .el-radio-button:first-child .el-radio-button__inner {
+  border-color: transparent;
+}
+
+.msg-notice .el-radio-button__inner:hover {
+  color: #685df1;
+}
+
 /* =========================================================租户管理================================================================== */
 /* 部门管理 */
 .organize-management .operating-area .operating-box {
