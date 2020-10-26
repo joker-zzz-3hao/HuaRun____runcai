@@ -67,7 +67,7 @@
     <template v-else>
       <div class="no-data" v-show="showLoad">
         <div class="no-data-bg"></div>
-        <div class="no-data-txt">您暂未填写OKR</div>
+        <div class="no-data-txt">暂未填写OKR</div>
         <el-button
           v-if="!$route.query.id"
           type="primary"

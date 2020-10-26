@@ -357,6 +357,19 @@ export default [{
     component: () => import('@/views/weeklyManage/teamWeekly/components/teamWeeklyInfo'),
   },
   {
+    // 使用手册
+    path: '/serviceManual',
+    name: 'serviceManual',
+    meta: {
+      hasMainMenu: true,
+      noSubMenu: true,
+      parentRoute: 'serviceManual',
+      title: 'serviceManual',
+      power: '',
+    },
+    component: () => import('@/views/serviceManual/index'),
+  },
+  {
     // 团队管理
     path: '/teamsManage',
     name: 'teamsManage',

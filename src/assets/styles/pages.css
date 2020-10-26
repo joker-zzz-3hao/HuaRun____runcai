@@ -878,6 +878,7 @@
 
 /* change by xinquan */
 .associated-undertaking .no-data{
+  margin: 20px 0 0 0;
   color: #879099;
 }
 .associated-undertaking .operating-area-inside{
@@ -4529,4 +4530,29 @@
 
 .worth-manage .event-book .tl-table td {
   height: 66px;
+}
+
+/* 敬请期待背景图：change by xinquan */
+
+.task-wait-bg {
+  margin-top: 200px;
+  width: 709px;
+  height: 367px;
+  background: url("~@/assets/images/task_waiting.png") no-repeat;
+  background-size: 709px 367px;
+  text-align: center;
+  vertical-align: middle;
+}
+.task-wait-txt {
+  margin: 20px 0 30px 0;
+  color: #879099;
+}
+.note-wait-bg {
+  margin-top: 160px;
+  width: 567px;
+  height: 345px;
+  background: url("~@/assets/images/note_waiting.png") no-repeat;
+  background-size: 567px 345px;
+  text-align: center;
+  vertical-align: middle;
 }

@@ -40,6 +40,7 @@ const mainData = {
     type: 'line',
     symbol: 'circle',
     symbolSize: 7,
+    name: 'A部门',
     showAllSymbol: true,
     itemStyle: {
       normal: {
@@ -63,6 +64,7 @@ const mainData = {
     type: 'line',
     symbol: 'circle',
     symbolSize: 7,
+    name: 'B部门',
     showAllSymbol: true,
     itemStyle: {
       normal: {
@@ -86,6 +88,7 @@ const mainData = {
     type: 'line',
     symbol: 'circle',
     symbolSize: 7,
+    name: 'C部门',
     showAllSymbol: true,
     itemStyle: {
       normal: {
@@ -104,6 +107,76 @@ const mainData = {
       },
     },
     data: [['2020-08-01', 4], ['2020-08-07', 1], ['2020-08-14', 4], ['2020-08-21', 4], ['2020-08-28', 4], ['2020-09-05', 4]],
+  }, {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 7,
+    name: 'D部门',
+    showAllSymbol: true,
+    itemStyle: {
+      normal: {
+        color(params) {
+          if (params.value[1] == 1) {
+            return '#4CCD79';
+          }
+          if (params.value[1] == 4) {
+            return '#FFBC20';
+          }
+          if (params.value[1] == 7) {
+            return '#FB4C59 ';
+          }
+        },
+
+      },
+    },
+    data: [['2020-08-01', 4], ['2020-08-07', 1], ['2020-08-14', 4], ['2020-08-21', 4], ['2020-08-28', 4], ['2020-09-05', 4]],
+  }, {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 7,
+    name: 'E部门',
+    showAllSymbol: true,
+    itemStyle: {
+      normal: {
+        color(params) {
+          if (params.value[1] == 1) {
+            return '#4CCD79';
+          }
+          if (params.value[1] == 4) {
+            return '#FFBC20';
+          }
+          if (params.value[1] == 7) {
+            return '#FB4C59 ';
+          }
+        },
+
+      },
+    },
+    data: [['2020-08-01', 1], ['2020-08-07', 7], ['2020-08-14', 7], ['2020-08-21', 7], ['2020-08-28', 4], ['2020-09-05', 7]],
+  },
+  {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 7,
+    name: 'F部门',
+    showAllSymbol: true,
+    itemStyle: {
+      normal: {
+        color(params) {
+          if (params.value[1] == 1) {
+            return '#4CCD79';
+          }
+          if (params.value[1] == 4) {
+            return '#FFBC20';
+          }
+          if (params.value[1] == 7) {
+            return '#FB4C59 ';
+          }
+        },
+
+      },
+    },
+    data: [['2020-08-01', 1], ['2020-08-07', 1], ['2020-08-14', 1], ['2020-08-21', 1], ['2020-08-28', 4], ['2020-09-05', 1]],
   }],
 
 };

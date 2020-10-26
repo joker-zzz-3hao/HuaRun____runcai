@@ -186,7 +186,7 @@ export default {
             type: 'line',
             smooth: true,
             symbol: 'circle',
-            symbolSize: 0,
+            symbolSize: !that.testModel && that.mainDataY.length == 1 ? 7 : 0,
             areaStyle: {
               normal: {
                 color: new echarts.graphic.LinearGradient(

@@ -1,12 +1,7 @@
 <template>
   <el-scrollbar>
     <div class="cont-box">
-      <!-- tab 点击调接口查 -->
-      <!-- <tl-tabs
-        :current.sync="currentIndex"
-        :tabMenuList="tabMenuList"
-      ></tl-tabs> -->
-      <dl class="dl-list" v-if="periodList.length > 0">
+      <dl class="dl-list">
         <dt class="operating-area-inside">
           <em>父目标周期</em>
           <el-select
@@ -85,61 +80,11 @@
             </el-radio>
           </el-radio-group>
         </dd>
-      </dl>
-      <dl
-        v-else-if="periodList.length == 0 || !hasParent"
-        class="dl-list no-data"
-      >
-        暂无可关联的父目标
-      </dl>
-      <!-- <dl v-if="!showPhil" class="dl-list">
-        <dt class="list-title">
-          <em>{{ departmentName }}{{ periodName }}</em>
-          <span>(单选)</span>
-        </dt>
-        <dd class="tag-kind">
-          <el-radio-group v-model="modelDepart">
-            <el-radio
-              @click.native="selectDepartokr($event, index, item)"
-              class="tl-radio"
-              :label="item.okrDetailId + item.okrDetailVersion"
-              v-for="(item, index) in departokrList"
-              :key="item.okrDetailId + index"
-            >
-              <div
-                v-if="currentOption.includes(item.okrDetailId)"
-                class="undertake-change"
-              >
-                <span
-                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
-                  >{{ item.typeName }}</span
-                >
-                <em v-if="item.currentOption">
-                  <em>「历史版本{{ item.okrDetailVersion }}」</em>
-                  <em>(当前选择)</em>
-                </em>
-                <em v-else-if="currentOption.includes(item.okrDetailId)"
-                  >「最新版本」</em
-                >
-                <div>
-                  <p>{{ item.okrDetailObjectKr }}</p>
-                  <p v-if="item.modifyReason">
-                    <span>变更原因</span>
-                    {{ item.modifyReason }}
-                  </p>
-                </div>
-              </div>
-              <template v-else>
-                <span
-                  :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
-                  >{{ item.typeName }}</span
-                >
-                <em>{{ item.okrDetailObjectKr }}</em>
-              </template>
-            </el-radio>
-          </el-radio-group>
+        <!-- 无数据 -->
+        <dd class="no-data" v-if="!hasParent || periodList.length == 0">
+          暂无可关联的父目标
         </dd>
-      </dl> -->
+      </dl>
       <!-- 价值观 -->
       <dl class="dl-list">
         <dt class="list-title">
@@ -158,9 +103,7 @@
             >
           </el-radio-group>
         </dd>
-      </dl>
-      <dl v-if="philosophyList.length == 0" class="dl-list no-data">
-        暂无数据
+        <dd v-if="philosophyList.length == 0" class="no-data">暂无数据</dd>
       </dl>
     </div>
   </el-scrollbar>
@@ -224,7 +167,7 @@ export default {
       periodList: [],
       searchForm: {
         okrCycle: {},
-        periodId: 0,
+        periodId: '',
       },
       tabMenuList: [{
         menuName: '实体组织',
