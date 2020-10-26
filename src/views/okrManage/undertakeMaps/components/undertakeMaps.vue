@@ -134,7 +134,7 @@ export default {
       orgFullId: '',
       orgFullIdList: [],
       showCascader: false,
-      cardHight: 59, // 块高度的一半
+      cardHight: 55, // 块高度的一半
       blockHeight: 170,
       loading: true,
     };
