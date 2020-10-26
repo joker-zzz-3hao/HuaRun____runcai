@@ -81,7 +81,7 @@
             <tl-okr-table :tableList="item.tableList"></tl-okr-table>
           </div>
         </div>
-        <div v-if="tableList.length == 0" class="no-data">
+        <div v-if="loading && tableList.length == 0" class="no-data">
           <div class="no-data-bg"></div>
           <div class="no-data-txt">暂无数据</div>
         </div>
@@ -254,6 +254,7 @@ export default {
       selectUserId: '',
       tableList: [],
       totalData: [],
+      loading: true,
     };
   },
   computed: {
@@ -318,6 +319,7 @@ export default {
     queryOKR(data) {
       if (this.hasPower('okr-focus-user-detail')) {
         this.tableList = [];
+        this.loading = false;
         this.server.queryFocusUserOkr({
           userId: data.userId,
         }).then((response) => {
@@ -329,6 +331,7 @@ export default {
               });
             });
           }
+          this.loading = true;
         });
       }
     },
