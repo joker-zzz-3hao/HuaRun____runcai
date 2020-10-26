@@ -2428,7 +2428,13 @@
   font-weight: 500;
   color: #222426;
 }
-
+/* change by xinquan */
+.weekly-area .no-data {
+  margin: 200px 0 0 0;
+}
+.quick-look .no-data {
+  margin: 200px 0 0 0;
+}
 .weekly-thoughts dd:not(:last-child) {
   margin: 20px 0;
 }
