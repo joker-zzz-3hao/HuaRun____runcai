@@ -39,6 +39,9 @@
     </div>
     <div class="area-right">
       <ul class="top-menu">
+        <li>
+          <div @click="go('serviceManual')">使用手册</div>
+        </li>
         <li v-if="showTeam">
           <div @click="go('teamsManage')">团队管理</div>
         </li>
