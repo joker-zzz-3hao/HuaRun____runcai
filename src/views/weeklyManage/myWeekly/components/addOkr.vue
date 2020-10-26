@@ -255,7 +255,7 @@ export default {
       configType: 'OKR',
       configTypeDetail: 'O-2',
       level: 'T',
-      sourceId: '1000000005',
+      sourceId: this.userInfo.tenantId,
     }).then((res) => {
       if (res.code == 200) {
         if (!!res.data && res.data.length > 0) {
