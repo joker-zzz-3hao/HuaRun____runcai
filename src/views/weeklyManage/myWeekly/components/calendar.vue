@@ -142,9 +142,9 @@ export default {
            && new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth()
             - new Date(this.weekList[this.weekList.length - 1].weekBegin).getMonth() == 1
            && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth())) {
+            this.currentMonthWeekList = [...this.weekList];
             // 只有当前月的数据才保存为当前月数据：1、如果选中月是最后一周，说明是上个月的尾周
             if (this.weekList.indexOf(week) != this.weekList.length - 1) {
-              this.currentMonthWeekList = [...this.weekList];
               this.currentWeekIndex = this.weekList.indexOf(week);
             }
           }

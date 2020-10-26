@@ -1,5 +1,6 @@
 <template>
-  <div class="my-task">
+  <div v-if="showpic">暂未开放，敬请期待~</div>
+  <div v-else class="my-task">
     <div class="operating-area">
       <div class="page-title">
         <em v-show="showTask">我的任务</em>
@@ -444,6 +445,7 @@ export default {
       weekBegin: '',
       weekEnd: '',
       weekName: '',
+      showpic: true, // 展示图片
     };
   },
   created() {
@@ -474,11 +476,13 @@ export default {
   },
   mounted() {
     // 状态
-    const liWidth = document.querySelectorAll('.tab-list li');
-    const selfLeft = document.querySelectorAll('.tab-list li')[0].offsetLeft;
-    const borderWidth = document.querySelector('.border-slip');
-    borderWidth.style.left = `${selfLeft}px`;
-    borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
+    if (document.querySelectorAll('.tab-list li')) {
+      const liWidth = document.querySelectorAll('.tab-list li');
+      const selfLeft = document.querySelectorAll('.tab-list li')[0].offsetLeft;
+      const borderWidth = document.querySelector('.border-slip');
+      borderWidth.style.left = `${selfLeft}px`;
+      borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
+    }
   },
   methods: {
     canEdit(row) {
