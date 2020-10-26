@@ -224,7 +224,12 @@
                 </div>
               </el-card> -->
             </li>
-            <li v-if="tableData.length < 1">暂无数据</li>
+            <li v-if="tableData.length < 1">
+              <div class="no-data">
+                <div class="no-data-bg"></div>
+                <div class="no-data-txt">暂无数据</div>
+              </div>
+            </li>
           </ul>
           <ul v-else class="quick-look">
             <li
@@ -412,7 +417,12 @@
                   </ul>
                 </span> -->
             </li>
-            <li v-if="tableData.length < 1">暂无数据</li>
+            <li v-if="tableData.length < 1">
+              <div class="no-data">
+                <div class="no-data-bg"></div>
+                <div class="no-data-txt">暂无数据</div>
+              </div>
+            </li>
           </ul>
         </div>
       </crcloud-table>

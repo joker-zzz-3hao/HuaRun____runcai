@@ -2428,7 +2428,13 @@
   font-weight: 500;
   color: #222426;
 }
-
+/* change by xinquan */
+.weekly-area .no-data {
+  margin: 200px 0 0 0;
+}
+.quick-look .no-data {
+  margin: 200px 0 0 0;
+}
 .weekly-thoughts dd:not(:last-child) {
   margin: 20px 0;
 }
@@ -4347,6 +4353,31 @@
 
 .approval-pop .flex-end {
   margin: 30px 0 10px 0;
+}
+
+/* msg-notice */
+.msg-notice .cont-area {
+  display: flex;
+}
+
+.msg-notice .tl-radio-group {
+  margin: 0 0 0 20px;
+}
+
+.msg-notice .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  background-color: #f0effe;
+  color: #685df1;
+  border-color: transparent;
+  box-shadow: unset;
+}
+
+.msg-notice .el-radio-button__inner,
+.msg-notice .el-radio-button:first-child .el-radio-button__inner {
+  border-color: transparent;
+}
+
+.msg-notice .el-radio-button__inner:hover {
+  color: #685df1;
 }
 
 /* =========================================================租户管理================================================================== */
