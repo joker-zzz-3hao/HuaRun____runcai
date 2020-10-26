@@ -18,7 +18,11 @@
               v-for="(item, index) in orgTable"
               :key="index"
               :class="{ active: active[item.orgId] }"
-              @click="changIdAction(item.orgId, index)"
+              @click="
+                testModel
+                  ? legendList(item.orgName, item.orgId)
+                  : changIdAction(item.orgId, index)
+              "
             >
               {{ item.orgName }}
             </li>
@@ -114,6 +118,18 @@ export default {
   },
 
   methods: {
+    legendList(name, id) {
+      if (this.active[id]) {
+        this.$set(this.active, id, false);
+      } else {
+        this.$set(this.active, id, true);
+      }
+      this.myChart.dispatchAction({
+        type: 'legendToggleSelect',
+        // 图例名称
+        name,
+      });
+    },
     fetchData() {
       const date = new Date();
       const y = date.getFullYear();
@@ -281,7 +297,7 @@ export default {
     init() {
       const that = this;
 
-      const myChart = echarts.init(document.getElementById('week-depart'));
+      that.myChart = echarts.init(document.getElementById('week-depart'));
       const option = {
         xAxis: {
           data: that.testModel ? mainData.timeData : that.echartDataX,
@@ -298,11 +314,12 @@ export default {
             },
           },
         },
-        // legend: {
-        //   data: that.legendTable,
-        //   bottom: 'bottom',
-        //   icon: 'rect',
-        // },
+        legend: {
+          data: that.testModel ? that.echartDataY.map((item) => item.name) : that.legendTable,
+          bottom: 'bottom',
+          show: false,
+          icon: 'rect',
+        },
 
         yAxis: {
           min: 0,
@@ -339,12 +356,13 @@ export default {
         },
         tooltip: {
           formatter(params) {
+            console.log(params);
             if (params.value[1] == 1) {
-              return `${params.value[0]},高`;
+              return `${params.value[0]},${params.seriesName}：高`;
             } if (params.value[1] == 4) {
-              return `${params.value[0]},中`;
+              return `${params.value[0]},${params.seriesName}：中`;
             } if (params.value[1] == 7) {
-              return `${params.value[0]},低`;
+              return `${params.value[0]},${params.seriesName}：低`;
             }
           },
         },
@@ -352,9 +370,19 @@ export default {
 
       };
 
-      myChart.setOption(option, true);
-      myChart.resize();
-      window.addEventListener('resize', myChart.resize);
+      that.myChart.setOption(option, true);
+      that.myChart.resize();
+      window.addEventListener('resize', that.myChart.resize);
+      that.orgTable.forEach((item, index) => {
+        if (index > 0) {
+          this.myChart.dispatchAction({
+            type: 'legendToggleSelect',
+            // 图例名称
+            name: item.orgName,
+          });
+        }
+      });
+
       // if (myChart._$handlers.legendselectchanged) {
       //   myChart._$handlers.legendselectchanged.length = 0;
       // }
