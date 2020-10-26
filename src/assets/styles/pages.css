@@ -1751,6 +1751,13 @@
   background: #f0effe;
   color: #685df1;
 }
+/* change by 心荃 */
+.concerned-okr .followed-okrs .no-data{
+  margin-top: 200px;
+}
+.concerned-okr .followed-users .no-data{
+  cursor: auto;
+}
 
 /* okr-approval */
 .okr-approval .operating-area-inside .el-form,

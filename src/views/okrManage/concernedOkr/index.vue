@@ -45,6 +45,9 @@
               </el-dropdown>
             </div>
           </dd>
+          <dd v-if="focusList.length == 0" class="no-data no-data-txt">
+            暂无关注人
+          </dd>
         </dl>
       </div>
       <div class="followed-okrs">
@@ -77,6 +80,10 @@
           <div class="card-panel-body">
             <tl-okr-table :tableList="item.tableList"></tl-okr-table>
           </div>
+        </div>
+        <div v-if="tableList.length == 0" class="no-data">
+          <div class="no-data-bg"></div>
+          <div class="no-data-txt">暂无数据</div>
         </div>
       </div>
     </div>
