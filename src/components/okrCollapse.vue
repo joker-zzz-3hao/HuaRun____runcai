@@ -220,7 +220,7 @@
                   trigger="hover"
                   :append-to-body="false"
                 >
-                  <span>您承接的OKR有变更，请在变更中处理。</span>
+                  <span>您关联的OKR有变更，请在变更中处理。</span>
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
                 <em>{{ item.parentObjectKr }}</em>

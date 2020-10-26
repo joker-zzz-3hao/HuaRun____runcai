@@ -167,7 +167,7 @@ export default {
       periodList: [],
       searchForm: {
         okrCycle: {},
-        periodId: '',
+        periodId: 0,
       },
       tabMenuList: [{
         menuName: '实体组织',
