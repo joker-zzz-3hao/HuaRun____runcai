@@ -1,10 +1,11 @@
 const OKR_TYPE_MAP = {
-  0: '目标',
-  1: 'KR',
-};
-const OKR_KIND_MAP = {
   1: '部门',
   2: '个人',
+  3: '公司',
+};
+const OKR_KIND_MAP = {
+  0: '目标',
+  1: 'KR',
 };
 const OKR_TYPE_NAME_MAP = {
   0: '目标O',
