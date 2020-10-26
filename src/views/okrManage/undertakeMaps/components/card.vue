@@ -27,8 +27,9 @@
       :marginLeft="6"
     ></tl-process>
     <div class="department-info" @click.stop="takeOvierview(node)">
-      <span>负责人</span>
-      <em>{{ node.userName }}</em>
+      <p>
+        <span>负责人</span> <em>{{ node.userName }}</em>
+      </p>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{
         CONST.OKR_KIND_MAP[node.okrBelongType]
       }}</el-button>

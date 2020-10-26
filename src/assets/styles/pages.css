@@ -1881,6 +1881,8 @@
 
 .okr-approval-detail .okr-change-list dd {
   margin: 14px 0 0 0;
+  display: flex;
+  align-items: flex-start;
 }
 
 .okr-approval-detail .okr-change-list dd div {
@@ -1888,12 +1890,10 @@
 }
 
 .okr-approval-detail .okr-change-list dd div > span:nth-of-type(1) {
-  margin: 0 10px 0 0;
   color: #acb6bf;
 }
 
 .okr-approval-detail .okr-change-list dd div > i:nth-of-type(1) {
-  margin: 0 6px 0 0;
   color: #acb6bf;
 }
 
@@ -2040,6 +2040,56 @@
 
 .okr-approval-detail .el-form-item__content .el-radio-group {
   margin: 3px 0 0 0;
+}
+
+.okr-approval-detail .dl-card-panel dt {
+  margin: 0 10px 0 0;
+}
+
+.okr-approval-detail .dl-card-panel dt.tag-kind,
+.okr-approval-detail .dl-card-panel dt.tag-kind span:last-child {
+  margin: 0;
+}
+
+.okr-approval-detail .dl-card-panel > dt {
+  margin-bottom: 16px;
+}
+
+.okr-approval-detail .okr-change-list dd:nth-last-of-type(1) > div,
+.okr-approval-detail .okr-change-list dd:nth-last-of-type(2) > div {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.okr-approval-detail .okr-change-list dd:nth-last-of-type(1) > div span,
+.okr-approval-detail .okr-change-list dd:nth-last-of-type(2) > div span {
+  flex: 0 0 60px;
+}
+
+.okr-approval-detail .okr-change-list .tag-kind + dd > div span {
+  flex-basis: unset;
+}
+
+.okr-approval-detail .okr-change-list dd:nth-of-type(1) > div:nth-child(3) span {
+  flex: 0 0 64px;
+}
+
+.okr-approval-detail .okr-change-list .tag-kind + dd > div {
+  align-items: flex-start;
+}
+
+.okr-approval-detail .okr-change-list .tag-kind + dd > div > i {
+  margin-top: 3px;
+}
+
+.okr-approval-detail .okr-change-list .state-grid {
+  margin: 3px 10px 0 0;
+}
+
+.okr-approval-detail .okr-change-list .change-group dd > div > em em + em,
+.okr-approval-detail .okr-change-list dt.tag-kind + dd > div > em em + em {
+  margin: 0 0 0 10px;
 }
 
 /* 周报 */
@@ -2254,6 +2304,14 @@
 
 .weekly-area {
   margin: 20px 0 0 0;
+}
+
+.my-weekly .write-weekly .dl-card-panel:last-of-type {
+  margin: 0;
+}
+
+.my-weekly .write-weekly .dl-card-panel:last-of-type dd {
+  margin-bottom: 0;
 }
 
 .supporting-values .el-drawer__body {
