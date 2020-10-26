@@ -6,8 +6,9 @@ const STATUS_MAP = {
 };
 
 const OKR_TYPE_MAP = {
-  0: '目标O',
-  1: '关键结果KR',
+  1: '部门',
+  2: '个人',
+  3: '公司',
 };
 
 const SEARCH_TYPE_LIST = [

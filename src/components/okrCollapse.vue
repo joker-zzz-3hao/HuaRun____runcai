@@ -147,57 +147,64 @@
               <div v-else-if="canWrite && item.parentObjectKr">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <a
-                  v-if="
+                <em v-if="!item.hasUpdate" @click="goUndertake(index, 'new')">{{
+                  item.parentObjectKr
+                }}</em>
+                <em
+                  v-else-if="
                     item.undertakeOkrVo &&
                     item.undertakeOkrVo.undertakeOkrContent
                   "
                   @click="goUndertake(index, 'new')"
-                  >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
+                  >{{ item.undertakeOkrVo.undertakeOkrContent }}</em
                 >
-                <a v-else @click="goUndertake(index, 'new')">{{
-                  item.parentObjectKr
-                }}</a>
-                <a
+                <em @click="goUndertake(index, 'new')">{{
+                  item.cultureName
+                }}</em>
+                <el-button
                   v-if="
-                    (item.undertakeOkrVo &&
-                      item.undertakeOkrVo.undertakeOkrContent) ||
-                    (item.parentObjectKr && item.cultureName)
+                    item.hasUpdate &&
+                    !(
+                      item.undertakeOkrVo &&
+                      item.undertakeOkrVo.undertakeOkrContent
+                    ) &&
+                    !item.cultureName
                   "
-                  >、</a
+                  type="text"
+                  plain
+                  @click.native="goUndertake(index, 'new')"
+                  class="tl-btn dotted-line"
                 >
-                <a @click="goUndertake(index, 'new')">{{ item.cultureName }}</a>
+                  <i class="el-icon-plus"></i>
+                  关联
+                </el-button>
               </div>
               <!-- 变更 原无承接 -->
               <div v-else-if="canWrite">
                 <i class="el-icon-attract"></i>
                 <span>关联父目标</span>
-                <p
-                  @click="goUndertake(index, 'new')"
+                <template
                   v-if="
                     (item.undertakeOkrVo &&
                       item.undertakeOkrVo.undertakeOkrContent) ||
                     item.cultureName
                   "
                 >
-                  <a
+                  <em
+                    @click="goUndertake(index, 'new')"
                     v-if="
                       item.undertakeOkrVo &&
                       item.undertakeOkrVo.undertakeOkrContent
                     "
-                    >{{ item.undertakeOkrVo.undertakeOkrContent }}</a
-                  >
-                  <em
-                    v-if="
-                      item.undertakeOkrVo &&
-                      item.undertakeOkrVo.undertakeOkrContent &&
-                      item.cultureName
-                    "
-                    >、</em
+                    >{{ item.undertakeOkrVo.undertakeOkrContent }}</em
                   >
 
-                  <a v-if="item.cultureName">{{ item.cultureName }}</a>
-                </p>
+                  <em
+                    @click="goUndertake(index, 'new')"
+                    v-if="item.cultureName"
+                    >{{ item.cultureName }}</em
+                  >
+                </template>
                 <el-button
                   type="text"
                   plain
@@ -220,7 +227,7 @@
                   trigger="hover"
                   :append-to-body="false"
                 >
-                  <span>您关联的OKR有变更，请在变更中处理。</span>
+                  <span>关联的父目标有变更</span>
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
                 <em>{{ item.parentObjectKr }}</em>

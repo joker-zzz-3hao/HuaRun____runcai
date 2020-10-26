@@ -1215,7 +1215,8 @@
   background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
 }
 
-.okr-change .tl-collapse .collpase-panel .has-third-child>div:nth-child(3) span {
+.okr-change .tl-collapse .collpase-panel .has-third-child>div:nth-child(3) span,
+.okr-detail .tl-collapse .collpase-panel .has-third-child>div:nth-child(3) span {
   flex-basis: unset;
 }
 

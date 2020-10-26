@@ -167,7 +167,7 @@ export default {
       periodList: [],
       searchForm: {
         okrCycle: {},
-        periodId: 0,
+        periodId: '',
       },
       tabMenuList: [{
         menuName: '实体组织',
@@ -216,6 +216,7 @@ export default {
           this.parentUndertake = [];
           this.periodList = [];
           if (res.data.parentUndertakeOkrInfoResults) {
+            this.searchForm.periodId = 0;
             res.data.parentUndertakeOkrInfoResults.forEach((pItem, pindex) => {
               this.periodList.push({ periodId: pindex, periodName: pItem.okrPeriodEntity.periodName });
               const departokrList = [];
