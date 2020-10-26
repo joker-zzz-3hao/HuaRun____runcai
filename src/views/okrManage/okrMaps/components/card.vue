@@ -24,8 +24,9 @@
         :marginLeft="6"
       ></tl-process>
       <div class="department-info" @click.stop="takeOvierview(node.node)">
-        <span>负责人</span>
-        <em>{{ node.node.userName }}</em>
+        <p>
+          <span>负责人</span><em>{{ node.node.userName }}</em>
+        </p>
         <el-button type="text" plain class="tl-btn btn-lineheight">{{
           node.node.orgName
         }}</el-button>

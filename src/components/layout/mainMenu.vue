@@ -45,8 +45,6 @@
                   },
                 ]"
                 :to="{ name: options.subToName }"
-                @mouseover.native="changeIndex"
-                @mouseleave.native="rmChangeIndex"
               >
                 <!-- <i></i> -->
                 <span>

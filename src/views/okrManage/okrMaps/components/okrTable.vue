@@ -13,14 +13,14 @@
             <span @click="gotoView(scope.row)">{{ scope.row.orgName }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="userName" label="负责人" min-width="100">
+        <el-table-column prop="userName" label="负责人" width="80">
           <template slot-scope="scope">
             <span @click="gotoView(scope.row)">{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="periodName" label="周期" min-width="116">
         </el-table-column>
-        <el-table-column prop="okrProgress" label="进度" min-width="116">
+        <el-table-column prop="okrProgress" label="进度" width="150">
           <template slot-scope="scope">
             <tl-process :data="scope.row.okrProgress"></tl-process>
           </template>
@@ -39,9 +39,9 @@
         <el-table-column
           prop="krCount"
           label="关键结果（KR）"
-          min-width="90"
+          width="130"
         ></el-table-column>
-        <el-table-column prop="status" label="状态" width="80">
+        <el-table-column prop="status" label="状态" width="70">
           <template slot-scope="scope">
             <span>{{ CONST.TABLE_STATUS_MAP[scope.row.status] }}</span>
           </template>
