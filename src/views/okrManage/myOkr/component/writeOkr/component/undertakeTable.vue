@@ -88,7 +88,7 @@
       <!-- 价值观 -->
       <dl class="dl-list">
         <dt class="list-title">
-          <em>公司管理价值观</em>
+          <em>公司价值观</em>
           <span>(单选)</span>
         </dt>
         <dd>
