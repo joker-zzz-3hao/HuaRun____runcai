@@ -38,7 +38,7 @@
           v-swiper:mySwiper="swiperOption"
           ref="mySwiper"
         >
-          <div class="tl-card-panel-group swiper-wrapper">
+          <div class="tl-card-panel-group swiper-wrapper swiper-no-swiping">
             <dl
               v-for="(item, index) in riskList"
               :key="index"
