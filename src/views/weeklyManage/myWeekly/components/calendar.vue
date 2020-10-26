@@ -137,16 +137,15 @@ export default {
           // - new Date(this.weekList[this.weekList.length-1].weekEnd).weekBegin() == 1
           // 且是时间所在月跟该周的最后一天是同一个月份 new Date().getMonth()
           // == new Date(this.weekList[this.weekList.length-1].weekEnd).weekBegin()
-          if (new Date(this.monthDate).getMonth() == new Date().getMonth()
-          || (this.weekIndex == this.weekList.length - 1
-           && new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth()
-            - new Date(this.weekList[this.weekList.length - 1].weekBegin).getMonth() == 1
-           && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth())) {
+          // if (new Date(this.monthDate).getMonth() == new Date().getMonth()
+          // || (this.weekIndex == this.weekList.length - 1
+          //  && new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth()
+          //   - new Date(this.weekList[this.weekList.length - 1].weekBegin).getMonth() == 1
+          //  && new Date().getMonth() == new Date(this.weekList[this.weekList.length - 1].weekEnd).getMonth())) {
+          // 本月
+          if (new Date(this.monthDate).getMonth() == new Date().getMonth()) {
             this.currentMonthWeekList = [...this.weekList];
-            // 只有当前月的数据才保存为当前月数据：1、如果选中月是最后一周，说明是上个月的尾周
-            if (this.weekList.indexOf(week) != this.weekList.length - 1) {
-              this.currentWeekIndex = this.weekList.indexOf(week);
-            }
+            this.currentWeekIndex = this.weekList.indexOf(week);
           }
         }
       });
