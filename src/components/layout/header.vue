@@ -67,9 +67,9 @@
               <el-dropdown-item @click.native="go('personalCenter')">
                 <em>个人中心</em>
               </el-dropdown-item>
-              <el-dropdown-item @click.native="downloadHelpFile">
+              <!-- <el-dropdown-item @click.native="downloadHelpFile">
                 <em>帮助文档</em>
-              </el-dropdown-item>
+              </el-dropdown-item> -->
               <!-- <el-dropdown-item @click.native="go('personConfig')">
                 <em>个人设置</em>
               </el-dropdown-item> -->
