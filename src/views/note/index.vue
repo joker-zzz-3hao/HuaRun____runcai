@@ -1,11 +1,16 @@
 <template>
   <div class="home">
-    <div v-if="!showReal">
+    <div v-if="showpic">暂未开放，敬请期待~</div>
+    <div v-else>
       <div class="pic-noteIndex" v-if="changeNote == 'index'">
         <div @click="changeNote = 'detail'" class="click-detail"></div>
         <div class="click-write" @click="changeNote = 'write'"></div>
       </div>
-      <div class="show-pic" v-if="changeNote == 'detail'" @click="changeNote = 'index'">
+      <div
+        class="show-pic"
+        v-if="changeNote == 'detail'"
+        @click="changeNote = 'index'"
+      >
         <div class="pic-detail01">
           <img src="~@/assets/images/demoPic/detail01.png" />
         </div>
@@ -13,7 +18,11 @@
           <img src="~@/assets/images/demoPic/detail02.png" />
         </div>
       </div>
-      <div v-if="changeNote == 'write'" class="pic-writenote" @click="changeNote = 'index'"></div>
+      <div
+        v-if="changeNote == 'write'"
+        class="pic-writenote"
+        @click="changeNote = 'index'"
+      ></div>
     </div>
   </div>
 </template>
@@ -26,6 +35,7 @@ export default {
   data() {
     return {
       changeNote: 'index',
+      showpic: true,
     };
   },
   created() {},
