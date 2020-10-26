@@ -71,10 +71,14 @@
           prop="visitUserNumber"
           label="浏览人数"
         ></el-table-column>
-        <el-table-column
-          prop="orgAdminUserName"
-          label="负责人"
-        ></el-table-column>
+        <el-table-column prop="orgAdminUserName" label="负责人">
+          <template slot-scope="scope">
+            <span v-if="scope.row.orgAdminUserName">{{
+              scope.row.orgAdminUserName
+            }}</span>
+            <span v-else>--</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>

@@ -22,12 +22,16 @@
             popper-class="tl-month-popper"
             class="tl-month-editor"
           ></el-date-picker>
-          <el-select v-model="calendarId" @change="orgWeekly" placeholder="请选择">
+          <el-select
+            v-model="calendarId"
+            @change="orgWeekly"
+            placeholder="请选择"
+          >
             <el-option
               :key="index"
               :value="item.calendarId"
-              v-for="(item,index) in dateOption"
-              :label="item.weekBegin+' 至 '+item.weekEnd"
+              v-for="(item, index) in dateOption"
+              :label="item.weekBegin + ' 至 ' + item.weekEnd"
             ></el-option>
           </el-select>
         </div>
@@ -36,12 +40,26 @@
           <el-table-column prop="orgNumber" label="部门人数"></el-table-column>
           <el-table-column label="标准/简单模式">
             <template slot-scope="scope">
-              <span>{{scope.row.weeklyType0Number}}/{{scope.row.weeklyType1Number}}</span>
+              <span
+                >{{ scope.row.weeklyType0Number }}/{{
+                  scope.row.weeklyType1Number
+                }}</span
+              >
             </template>
           </el-table-column>
           <el-table-column prop="visitSum" label="浏览次数"></el-table-column>
-          <el-table-column prop="visitUserNumber" label="浏览人数"></el-table-column>
-          <el-table-column prop="orgAdminUserName" label="负责人"></el-table-column>
+          <el-table-column
+            prop="visitUserNumber"
+            label="浏览人数"
+          ></el-table-column>
+          <el-table-column prop="orgAdminUserName" label="负责人">
+            <template slot-scope="scope">
+              <span v-if="scope.row.orgAdminUserName">{{
+                scope.row.orgAdminUserName
+              }}</span>
+              <span v-else>--</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
