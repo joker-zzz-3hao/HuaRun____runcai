@@ -260,6 +260,8 @@ export default {
       if (res.code == 200) {
         if (!!res.data && res.data.length > 0) {
           this.configItemCode = res.data[0].configItemCode;
+        } else {
+          this.configItemCode = 'S';
         }
       }
     });
