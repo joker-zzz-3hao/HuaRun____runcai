@@ -18,16 +18,19 @@
             <span v-show="testModel">示例数据</span>
           </div>
           <div v-if="riskList.length > 4">
-            <i
-              class="el-icon-caret-left"
-              v-show="prevBtn"
+            <el-button
+              icon="el-icon-caret-left"
+              circle
+              :disabled="!prevBtn"
               @click="prevSwiper"
-            ></i>
-            <i
-              class="el-icon-caret-right"
-              v-show="nextBtn"
+            ></el-button>
+
+            <el-button
+              icon="el-icon-caret-right"
+              circle
+              :disabled="!nextBtn"
               @click="nextSwiper"
-            ></i>
+            ></el-button>
           </div>
         </div>
         <div

@@ -1,5 +1,9 @@
 <template>
   <div class="tab-cont-list">
+    <div v-if="searchData.length == 0" class="no-data">
+      <div class="bg-no-data-search"></div>
+      <div class="no-data-txt">暂无数据</div>
+    </div>
     <dl
       v-for="item in searchData"
       :key="item.resource_id"

@@ -1,5 +1,9 @@
 <template>
-  <div class="process-manage">
+  <div v-if="showpic" class="no-data">
+    <div class="task-wait-bg"></div>
+    <div class="task-wait-txt">更多功能敬请期待~</div>
+  </div>
+  <div v-else class="process-manage">
     <div class="operating-area">
       <div class="page-title">过程管理</div>
       <div class="operating-box">
@@ -185,6 +189,7 @@ export default {
       // codeId: '',
       optionType: 'create',
       processTypeMap,
+      showpic: true, // 展示图片
     };
   },
   created() {

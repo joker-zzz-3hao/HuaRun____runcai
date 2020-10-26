@@ -1,5 +1,9 @@
 <template>
-  <div class="replay-okr">
+  <div v-if="showpic" class="no-data">
+    <div class="note-wait-bg"></div>
+    <div class="task-wait-txt">更多功能敬请期待~</div>
+  </div>
+  <div v-else class="replay-okr">
     <div class="operating-area">
       <div class="page-title">OKR复盘</div>
       <div class="operating-box">
@@ -215,6 +219,7 @@ export default {
       pageSize: 20,
       totalpage: 0,
       reviewStatus: '',
+      showpic: true,
     };
   },
   created() {

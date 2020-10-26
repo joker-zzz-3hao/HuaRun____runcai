@@ -25,10 +25,9 @@
             <em>加载中...</em>
           </div>
           <!-- 暂无数据 -->
-          <div v-else>
-            <div class="bg-no-data-blue">
-              <span>暂无数据</span>
-            </div>
+          <div v-else class="no-data">
+            <div class="bg-no-data-map"></div>
+            <div class="no-data-txt">暂无数据</div>
           </div>
         </div>
         <!-- OKR表格 -->
