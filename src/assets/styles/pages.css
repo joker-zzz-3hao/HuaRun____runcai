@@ -748,8 +748,12 @@
   padding: 10px 30px;
 }
 
+.department-okr .img-list {
+  padding: 0 0 0 10px;
+}
+
 .department-okr .img-list dl {
-  margin: 0 12px 10px 14px;
+  margin: 0 4px 10px 6px;
 }
 
 
