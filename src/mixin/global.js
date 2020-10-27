@@ -4,6 +4,17 @@ import Vue from 'vue';
 const $bus = new Vue();
 export default {
   methods: {
+    replaceName(data) {
+      const parentName = data.orgName;
+      if (data.children && data.children.length > 0) {
+        data.children.forEach((item) => {
+          if (item.orgName.indexOf(parentName) > -1) {
+            item.orgName = item.orgName.replace(`${parentName}-`, '');
+          }
+          this.replaceName(item);
+        });
+      }
+    },
     hasPower(power) {
       console.log(power);
       const userPowers = (window.$store.state.common.userInfo.allMenuList || []).map((item) => item

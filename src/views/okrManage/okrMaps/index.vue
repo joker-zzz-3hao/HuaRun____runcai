@@ -179,6 +179,7 @@
 </template>
 
 <script>
+import global from '@/mixin/global';
 import svgtree from '@/components/svgtree';
 import okrDetail from '@/components/okrDetail';
 import { mapMutations } from 'vuex';
@@ -220,6 +221,7 @@ export default {
       loading: true,
     };
   },
+  mixins: [global],
   components: {
     svgtree,
     card,
@@ -283,6 +285,17 @@ export default {
         });
       }
     },
+    // replaceName(data) {
+    //   const parentName = data.orgName;
+    //   if (data.children && data.children.length > 0) {
+    //     data.children.forEach((item) => {
+    //       if (item.orgName.indexOf(parentName) > -1) {
+    //         item.orgName = item.orgName.replace(`${parentName}-`, '');
+    //       }
+    //       this.replaceName(item);
+    //     });
+    //   }
+    // },
     getOrgTable() {
       // 查询组织树
       this.server.getOrgTable().then((res) => {
@@ -290,6 +303,9 @@ export default {
           if (res.data) {
             this.departmentData = [];
             this.departmentData.push(res.data);
+            if (this.departmentData.length > 0) {
+              this.replaceName(this.departmentData[0]);
+            }
             // 默认取第二层润联科技
             this.orgFullId = this.departmentData[0].children[0].orgFullId;
             this.orgFullIdList = this.orgFullId.split(':');
