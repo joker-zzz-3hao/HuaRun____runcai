@@ -9,7 +9,7 @@
       <dl>
         <dt class="tag-kind" @click="goDetail(item.okrId)">
           <span class="kind-parent">{{
-            CONST.OKR_TYPE_MAP[item.okrDetailType]
+            CONST.OKR_KIND_MAP[item.okrDetailType]
           }}</span>
           <em v-html="item.okrDetailContent"></em>
         </dt>

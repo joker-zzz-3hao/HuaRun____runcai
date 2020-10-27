@@ -351,7 +351,6 @@
 
 .overview .img-list dl {
   margin: 0 10px 0 0;
-  width: 86px;
 }
 
 .department-view .tl-card-panel-group {
@@ -748,8 +747,12 @@
   padding: 10px 30px;
 }
 
+.department-okr .img-list {
+  padding: 0 0 0 10px;
+}
+
 .department-okr .img-list dl {
-  margin: 0 12px 10px 14px;
+  margin: 0 4px 10px 6px;
 }
 
 
@@ -768,11 +771,22 @@
 .okr-detail .flex-sb .okr-follow .el-icon-plus {
   font-size: 16px;
   font-weight: 900;
+  transition: all .4s ease-out;
+}
+
+.okr-detail .flex-sb .okr-follow em {
+  transition: all .4s ease-out;
+}
+
+.okr-detail .flex-sb .okr-follow:hover .el-icon-plus,
+.okr-detail .flex-sb .okr-follow:hover i + em {
+  color: #685df1;
 }
 
 .okr-detail .flex-sb .okr-follow {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .okr-detail .flex-sb .is-follow {
@@ -789,6 +803,14 @@
 
 .okr-detail .flex-sb .is-follow .el-icon-check {
   color: #72c981;
+}
+
+.okr-detail .collpase-panel dd div:last-child em {
+  cursor: default;
+}
+
+.okr-detail .collpase-panel dd div:last-child em:hover {
+  color: unset;
 }
 
 /* 演示需要 原720 改为 950 */
@@ -1750,6 +1772,13 @@
   font-size: 12px;
   background: #f0effe;
   color: #685df1;
+}
+/* change by 心荃 */
+.concerned-okr .followed-okrs .no-data{
+  margin-top: 200px;
+}
+.concerned-okr .followed-users .no-data{
+  cursor: auto;
 }
 
 /* okr-approval */

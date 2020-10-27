@@ -3,7 +3,7 @@
     <dl class="okr-info">
       <dt class="tag-kind">
         <span :class="node.okrDetailType == 0 ? 'kind-parent' : 'kind-child'">{{
-          CONST.OKR_TYPE_MAP[node.okrDetailType]
+          CONST.OKR_KIND_MAP[node.okrDetailType]
         }}</span>
         <em>{{ node.okrDetailObjectKr }}</em>
         <el-button
@@ -31,7 +31,7 @@
         <span>负责人</span> <em>{{ node.userName }}</em>
       </p>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{
-        CONST.OKR_KIND_MAP[node.okrBelongType]
+        CONST.OKR_TYPE_MAP[node.okrBelongType]
       }}</el-button>
     </div>
     <div class="has-child" v-if="node.children">
