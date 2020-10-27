@@ -14,6 +14,7 @@
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
           </el-input>
           <el-button
+            v-show="isTenantAdmin"
             :disabled="!codes.length > 0"
             type="primary"
             icon="el-icon-plus"
@@ -274,6 +275,12 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    isTenantAdmin() {
+      if (this.userInfo.roleList && this.userInfo.roleList.length > 0 && this.userInfo.roleList[0].roleCode == 'TENANT_ADMIN') {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
     this.server.queryByCodes({
