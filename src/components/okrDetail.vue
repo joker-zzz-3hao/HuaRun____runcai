@@ -433,8 +433,8 @@
     <div v-if="showSupport && !isFromOkrSummarize" class="img-list">
       <dl>
         <dt class="user-info" @click="like()">
-          <div class="user-name">
-            <em class="el-icon-star-on"></em>
+          <div class="user-name gave-praise">
+            <em><i></i></em>
           </div>
         </dt>
         <dd v-if="!supportType">点赞</dd>
