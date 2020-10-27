@@ -118,6 +118,7 @@ export default {
   },
 
   methods: {
+
     legendList(name, id) {
       if (this.active[id]) {
         this.$set(this.active, id, false);

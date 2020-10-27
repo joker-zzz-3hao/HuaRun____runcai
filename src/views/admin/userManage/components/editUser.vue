@@ -57,10 +57,21 @@
             v-model.trim="formData.newPwd"
             show-password
             clearable
-            style="width: 90%"
+            style="width: 66%"
           ></el-input>
-          <el-button v-if="!isEditPwd" @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd" @click="cancelEditPwd">取消</el-button>
+          <el-button
+            v-if="!isEditPwd"
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="editPwd"
+            >修改密码</el-button
+          >
+          <el-button
+            v-if="isEditPwd"
+            class="tl-btn amt-border-fadeout"
+            @click="cancelEditPwd"
+            >取消</el-button
+          >
         </el-form-item>
         <!-- <el-form-item
         v-if="isEditPwd"

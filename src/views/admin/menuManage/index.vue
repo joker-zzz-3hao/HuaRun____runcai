@@ -154,7 +154,6 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  size="small"
                   @click="menuPut(scope.row)"
                   v-if="hasPower('sys_menu_add')"
                   >修改</el-button
@@ -162,13 +161,11 @@
                 <el-button
                   v-if="hasPower('sys_menu_add')"
                   type="text"
-                  size="small"
                   @click="menuAdd(scope.row)"
                   >新增</el-button
                 >
                 <el-button
                   type="text"
-                  size="small"
                   @click="deleteList(scope.row.functionId)"
                   v-if="hasPower('sys-menu-remove')"
                   >删除</el-button
