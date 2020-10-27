@@ -28,8 +28,10 @@
                     placement="top"
                     popper-class="tl-tooltip-popper"
                   >
-                    <div slot="content">{{ scope.row.orgName }}</div>
-                    <em>{{ scope.row.orgName }}</em>
+                    <div slot="content">
+                      {{ cutOrgName(scope.row.orgName) }}
+                    </div>
+                    <em>{{ cutOrgName(scope.row.orgName) }}</em>
                   </el-tooltip>
                 </div>
               </template>
