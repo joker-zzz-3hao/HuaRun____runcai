@@ -112,7 +112,7 @@ export default {
         children: [],
       }],
       showtask: process.env.VUE_APP_PORTAL
-                        == 'https://cr-talent-uat.crcloud.com',
+                        != 'https://talent.crcloud.com',
     };
   },
   props: {

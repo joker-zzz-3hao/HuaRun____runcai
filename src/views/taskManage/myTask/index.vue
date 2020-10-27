@@ -448,16 +448,18 @@ export default {
       weekBegin: '',
       weekEnd: '',
       weekName: '',
-      showpic: process.env.VUE_APP_PORTAL != 'https://cr-talent-uat.crcloud.com', // 展示图片
+      showpic: process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com', // 展示图片
     };
   },
   created() {
-    this.getTableList();
-    this.getProcess();
-    this.getUserList();
-    this.getWeek();
-    if (this.$route.query && this.$route.query.openCreate) {
-      this.goCreateTask();
+    if (process.env.VUE_APP_PORTAL != 'https://talent.crcloud.com') {
+      this.getTableList();
+      this.getProcess();
+      this.getUserList();
+      this.getWeek();
+      if (this.$route.query && this.$route.query.openCreate) {
+        this.goCreateTask();
+      }
     }
   },
   computed: {
