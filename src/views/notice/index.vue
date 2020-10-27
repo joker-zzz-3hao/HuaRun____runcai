@@ -25,7 +25,7 @@
     <div class="cont-area">
       <!-- 业务通知，系统消息 -->
       <tl-crcloud-table
-        v-if="messageType == '10'"
+        v-if="messageType == '10' && loading"
         :total="totalSystem"
         :currentPage.sync="currentPageSystem"
         :pageSize.sync="pageSizeSystem"
@@ -65,7 +65,7 @@
       </tl-crcloud-table>
       <!-- 互动消息 -->
       <tl-crcloud-table
-        v-if="messageType == '30'"
+        v-if="messageType == '30' && loading"
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
@@ -125,6 +125,7 @@ export default {
       tableData: [],
       tableDataSystem: [],
       detailExist: false,
+      loading: true,
     };
   },
   components: {
@@ -152,6 +153,7 @@ export default {
       }
       params.msgType = this.messageType;
       params.readedStatus = this.readValue;
+      this.loading = false;
       this.server.innermsg(params).then((res) => {
         if (res.code == '200') {
           if (type == '10') {
@@ -161,6 +163,7 @@ export default {
             this.tableData = res.data.content;
             this.total = res.data.total;
           }
+          this.loading = true;
         }
       });
     },
