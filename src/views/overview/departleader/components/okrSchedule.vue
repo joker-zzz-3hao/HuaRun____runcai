@@ -62,11 +62,16 @@ export default {
   },
   methods: {
     checkData() {
+    //  this.mainData.sort((a, b) => a.okrProgress - b.okrProgress);
       this.mainDataY = this.mainData.map((item) => item.okrProgress);
       this.mainDataX = this.mainData.map((item) => item.orgName);
+      // this.mainDataY.unshift(0);
+      // this.mainDataX.unshift('');
       this.mainCount = this.mainData.map((item) => item.okrProgressUpdateCount);
       // eslint-disable-next-line max-len
-      this.mainDataYBar = this.testModel ? mainData.mainDataY.map((item) => item + 10) : this.mainData.map((item) => item.okrProgress + 10);
+      this.mainDataYBar = this.testModel ? mainData.mainDataY.map((item) => item) : this.mainData.map((item) => item.okrProgress);
+      // eslint-disable-next-line no-unused-expressions
+      // this.testModel ? '' : this.mainDataYBar.unshift(0);
       this.init();
       this.initCount();
     },
@@ -211,16 +216,24 @@ export default {
           },
           {
             type: 'bar',
-            barWidth: '50',
-            color: 'rgba(255,255,255,0)',
+            barWidth: '10',
             itemStyle: {
-              normal: {
-                color: 'rgba(255,255,255,0)',
-                shadowBlur: 400,
-                shadowColor: 'rgba(0,0,0,0.50)',
-              },
               emphasis: {
-                color: 'rgba(255,255,255,0.64)',
+                barBorderRadius: 5,
+              },
+              normal: {
+                barBorderRadius: 5,
+                color: '#FFBC20',
+                label: {
+                  show: false,
+                  position: 'top',
+                  textStyle: { // 数值样式
+                    color: 'black',
+                    fontSize: 12,
+
+                  },
+
+                },
               },
             },
 

@@ -35,8 +35,10 @@ export default {
   methods: {
     getmainData() {
       this.mainDataX = this.mainData.map((item) => item.months);
+      //  this.mainDataX.unshift('');
       this.mainDataY = this.mainData.map((item) => item.okrProgress);
-      this.mainDataBar = this.testModel ? userData.mainDataY.map((item) => item + 10) : this.mainDataY;
+      //  this.mainDataY.unshift(0);
+      this.mainDataBar = this.testModel ? userData.mainDataY.map((item) => item) : this.mainDataY;
       this.init();
     },
     init() {
@@ -99,7 +101,7 @@ export default {
           type: 'line',
           smooth: true,
           symbol: 'circle',
-          symbolSize: !that.testModel && that.mainDataY.length == 1 ? 7 : 0,
+          symbolSize: 0,
           areaStyle: {
             normal: {
               color: new echarts.graphic.LinearGradient(
@@ -122,17 +124,9 @@ export default {
 
         }, {
           type: 'bar',
-          barWidth: '50',
-          color: 'rgba(255,255,255,0)',
+          barWidth: '10',
           itemStyle: {
-            normal: {
-              color: 'rgba(255,255,255,0)',
-              shadowBlur: 400,
-              shadowColor: 'rgba(0,0,0,0.50)',
-            },
-            emphasis: {
-              color: 'rgba(255,255,255,0.64)',
-            },
+            normal: { barBorderRadius: 5, color: '#FFBC20' },
           },
 
           data: that.testModel ? userData.mainDataY : that.mainDataY,
@@ -143,15 +137,15 @@ export default {
       if (that.testModel) {
         return false;
       }
-      const checkData = that.testModel ? userData.mainDataY : that.mainDataY;
-      myChart.on('mousemove', 'series.line', (params) => {
-        option.series[1].data[params.dataIndex] = checkData[params.dataIndex] + 20;
-        myChart.setOption(option);
-      });
-      myChart.on('mouseout', 'series.line', (params) => {
-        option.series[1].data[params.dataIndex] = 0;
-        myChart.setOption(option);
-      });
+      // const checkData = that.testModel ? userData.mainDataY : that.mainDataY;
+      // myChart.on('mousemove', 'series.line', (params) => {
+      //   option.series[1].data[params.dataIndex] = checkData[params.dataIndex] + 20;
+      //   myChart.setOption(option);
+      // });
+      // myChart.on('mouseout', 'series.line', (params) => {
+      //   option.series[1].data[params.dataIndex] = 0;
+      //   myChart.setOption(option);
+      // });
     },
   },
   watch: {

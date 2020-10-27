@@ -148,6 +148,7 @@ export default {
 
       if (echartData.datas) {
         const echartDataFil = echartData.datas.filter((item) => item);
+
         this.echartDataY = {
           type: 'line',
           symbol: 'circle',
