@@ -16,7 +16,8 @@
 .top-menu-teams i::before,
 .top-menu-remind i::before,
 .toggle-view i,
-.assistant.is-focus > i {
+.assistant.is-focus > i,
+.gave-praise i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -258,4 +259,12 @@
 
 .top-menu-manual i::before {
   background-position-y: -2160px;
+}
+
+.gave-praise i {
+  background-position-y: -900px;
+}
+
+.gave-praise:hover i {
+  background-position-x: -30px;
 }
