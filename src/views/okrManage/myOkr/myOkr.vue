@@ -580,7 +580,6 @@ export default {
       });
     },
     openCheckjudge(item) {
-      console.log('openCheckjudge', item);
       this.checkjudgeData = {
         checkQuota: item.checkQuota,
         judgeMethod: item.judgeMethod,
