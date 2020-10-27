@@ -121,6 +121,10 @@ export default {
     selectPeriod(value) {
       sessionStorage.setItem('selectPer', value);
       this.$emit('getPeriod', value);
+      if (this.testModel) {
+        this.changeTestModel(false);
+        this.reload();
+      }
     },
   },
 };

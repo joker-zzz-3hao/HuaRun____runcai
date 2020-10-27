@@ -24,15 +24,15 @@ const mainData = {
     code: 200,
     msg: 'response.success',
     data: [{
-      orgName: 'A部门', orgAdminUserName: 'A部门', orgNumber: 10, weeklyNumber: 3, weeklyType0Number: 2, weeklyType1Number: 1, visitSum: 42, visitUserNumber: 10, supportSum: 0,
+      orgName: 'A部门', orgAdminUserName: 'A部门负责人', orgNumber: 10, weeklyNumber: 3, weeklyType0Number: 2, weeklyType1Number: 1, visitSum: 42, visitUserNumber: 10, supportSum: 0,
     }, {
-      orgName: 'B部门', orgAdminUserName: 'A部门', orgNumber: 22, weeklyNumber: 77, weeklyType0Number: 33, weeklyType1Number: 44, visitSum: 23, visitUserNumber: 20, supportSum: 0,
+      orgName: 'B部门', orgAdminUserName: 'B部门负责人', orgNumber: 22, weeklyNumber: 77, weeklyType0Number: 33, weeklyType1Number: 44, visitSum: 23, visitUserNumber: 20, supportSum: 0,
     }, {
-      orgName: 'C部门', orgAdminUserName: 'A部门', orgNumber: 30, weeklyNumber: 17, weeklyType0Number: 10, weeklyType1Number: 13, visitSum: 43, visitUserNumber: 30, supportSum: 0,
+      orgName: 'C部门', orgAdminUserName: 'C部门负责人', orgNumber: 30, weeklyNumber: 17, weeklyType0Number: 10, weeklyType1Number: 13, visitSum: 43, visitUserNumber: 30, supportSum: 0,
     }, {
-      orgName: 'D部门', orgAdminUserName: 'A部门', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
+      orgName: 'D部门', orgAdminUserName: 'D部门负责人', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
     }, {
-      orgName: 'E部门', orgAdminUserName: 'A部门', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
+      orgName: 'E部门', orgAdminUserName: 'E部门负责人', orgNumber: 40, weeklyNumber: 12, weeklyType0Number: 33, weeklyType1Number: 12, visitSum: 21, visitUserNumber: 40, supportSum: 0,
     }],
   },
   timeData: ['2020-08-01', '2020-08-07', '2020-08-14', '2020-08-21', '2020-08-28', '2020-09-05'],
