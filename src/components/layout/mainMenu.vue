@@ -50,16 +50,20 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
-                <!-- <el-cascader-panel
+                <el-cascader-panel
                   v-model="processId"
                   :options="taskoptions"
-                  v-if="options.subClassTag == 'taskProcess'"
+                  v-if="
+                    (options.subClassTag == 'taskProcess' ||
+                      options.subClassTag == 'taskprocess') &&
+                    showtask
+                  "
                   @change="selectProcessItem"
                   :props="{
                     value: 'processId',
                     label: 'processName',
                   }"
-                ></el-cascader-panel> -->
+                ></el-cascader-panel>
               </router-link>
             </dl>
           </template>
@@ -107,6 +111,8 @@ export default {
         processName: '个人使用',
         children: [],
       }],
+      showtask: process.env.VUE_APP_PORTAL
+                        == 'https://cr-talent-uat.crcloud.com',
     };
   },
   props: {

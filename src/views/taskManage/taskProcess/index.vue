@@ -218,7 +218,7 @@ export default {
       },
       userList: [],
       userMap: {},
-      showpic: true, // 展示图片
+      showpic: process.env.VUE_APP_PORTAL != 'https://cr-talent-uat.crcloud.com', // 展示图片
     };
   },
   computed: {
