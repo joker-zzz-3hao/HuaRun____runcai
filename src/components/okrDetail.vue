@@ -94,6 +94,10 @@
                   </el-tooltip>
                 </template>
                 <template slot="body-bar" slot-scope="props">
+                  <!-- 考核指标衡量办法 -->
+                  <em @click="openCheckjudge(props.okritem)"
+                    >考核指标、衡量办法</em
+                  >
                   <el-tooltip
                     v-if="props.okritem.versionCount > 1"
                     class="history-version"
@@ -127,7 +131,7 @@
                           'is-update': cycleFirst.operateType == 'update',
                         }"
                       >
-                        <em>{{ userName }}</em>
+                        <em>{{ cycleFirst.userName }}</em>
                         <span v-if="cycleFirst.operateType == 'add'"
                           >创建了OKR</span
                         >
@@ -288,7 +292,7 @@
                     <div class="list-title">{{ activity.createTime }}</div>
                     <div class="list-cont">
                       <div class="operate-type">
-                        <em>{{ userName }}</em>
+                        <em>{{ activity.userName }}</em>
                         <span v-if="activity.operateType == 'add'"
                           >创建了OKR</span
                         >
@@ -452,7 +456,8 @@
         </dl>
         <dl v-if="voteLength > 10 && showMore" class="show-more">
           <dt class="user-info">
-            <div class="user-name">
+            <img v-if="item.headUrl" :src="item.headUrl" alt="" />
+            <div v-else class="user-name">
               <em @click="showMore = !showMore">{{ voteLength }}+</em>
             </div>
           </dt>
@@ -465,17 +470,8 @@
             <div class="user-name">
               <em>{{ cutName(item.userName) }}</em>
             </div>
-            <!-- <img src="@/assets/images/user/user3.jpg" alt /> -->
           </dt>
           <dd>{{ item.userName }}</dd>
-        </dl>
-        <dl>
-          <dt class="user-info">
-            <!-- <img v-if="userInfo.headUrl" :src="userInfo.headUrl" alt /> -->
-            <img src="@/assets/images/user/user3.jpg" alt />
-            <!-- <div class="user-name">娜丽</div> -->
-          </dt>
-          <dd>欧阳娜丽</dd>
         </dl>
         <dl class="is-fold">
           <dt class="user-info">
@@ -499,6 +495,12 @@
       :okrDetailId="okrDetailId"
       :okrmain="okrmain"
     ></tl-okr-history>
+    <tl-checkjudge
+      :exist.sync="checkjudgeExist"
+      v-if="checkjudgeExist"
+      ref="checkjudge"
+      :checkjudgeData="checkjudgeData"
+    ></tl-checkjudge>
   </el-drawer>
 </template>
 
@@ -507,6 +509,7 @@ import { mapState } from 'vuex';
 import process from '@/components/process';
 import okrCollapse from '@/components/okrCollapse';
 import tabs from '@/components/tabs';
+import checkJudge from './checkJudge';
 import okrHistory from './okrHistory';
 import Server from './server';
 
@@ -539,6 +542,8 @@ export default {
       showFocus: true,
       param: [],
       cancelParam: [],
+      checkjudgeExist: false,
+      checkjudgeData: {},
     };
   },
   components: {
@@ -546,6 +551,7 @@ export default {
     'tl-okr-collapse': okrCollapse,
     'tl-process': process,
     'tl-tabs': tabs,
+    'tl-checkjudge': checkJudge,
   },
   props: {
     dialogExist: {
@@ -762,6 +768,16 @@ export default {
       this.innerDrawer = true;
       this.$nextTick(() => {
         this.$refs.okrhistory.show();
+      });
+    },
+    openCheckjudge(item) {
+      this.checkjudgeData = {
+        checkQuota: item.checkQuota,
+        judgeMethod: item.judgeMethod,
+      };
+      this.checkjudgeExist = true;
+      this.$nextTick(() => {
+        this.$refs.checkjudge.show();
       });
     },
     cutName(userName) {
