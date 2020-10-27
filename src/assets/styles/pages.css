@@ -814,19 +814,21 @@
 }
 
 /* change by xinquan */
-.okr-detail .collpase-panel.has-third-child~dl dt em {
-  color: #4d5155;
-  font-size: 12px;
-  margin-left: 10px;
-}
 .okr-detail .tl-collapse .collpase-panel dt div+em {
   color: #4d5155;
   font-size: 12px;
   margin-left: 10px;
+  cursor: pointer;
+}
+.okr-detail .tl-collapse .collpase-panel dt div+em:hover {
+  color: #685df1;
 }
 .tl-dialog+.v-modal{
   opacity: .1;
   z-index: 2002 !important;
+}
+.tl-dialog {
+  z-index: 2003 !important;
 }
 /* 演示需要 原720 改为 950 */
 .associated-undertaking .el-drawer__body {
