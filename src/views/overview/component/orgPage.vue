@@ -103,7 +103,7 @@
       </dl>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
-      <em>成员：</em>
+      <em>子部门：</em>
       <dl
         v-for="(item, index) in orgTable"
         :key="item.orgId + index"
