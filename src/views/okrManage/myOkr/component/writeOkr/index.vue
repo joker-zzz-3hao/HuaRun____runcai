@@ -328,7 +328,7 @@
                         {
                           required: true,
                           trigger: 'blur',
-                          message: '请输入考核指标',
+                          validator: validateCheck,
                         },
                       ]"
                     >
@@ -354,7 +354,7 @@
                         {
                           required: true,
                           trigger: 'blur',
-                          message: '请输入衡量办法',
+                          validator: validateJudge,
                         },
                       ]"
                     >
@@ -537,6 +537,12 @@ export default {
       loading: false,
       activeList: [0],
       currentPage: 1,
+      // errormsg
+      oerror: '',
+      krerror: '',
+      checkerror: '',
+      judgeerror: '',
+      weighterror: '',
     };
   },
   computed: {
@@ -734,6 +740,12 @@ export default {
     },
     // 提交表单
     summit() {
+      // errormsg
+      this.oerror = '';
+      this.krerror = '';
+      this.checkerror = '';
+      this.judgeerror = '';
+      this.weighterror = '';
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           // 校验权重比例
@@ -774,7 +786,7 @@ export default {
             this.summitNew();
           }
         } else {
-          this.$message.error('您有必填项未填');
+          this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
         }
       });
     },
