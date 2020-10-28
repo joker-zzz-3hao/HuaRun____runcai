@@ -877,6 +877,10 @@
   color: #4d5155;
 }
 
+.create-okr .tl-form .el-form-item__error {
+  display: none;
+}
+
 .associated-undertaking > .el-scrollbar {
   margin: 0 0 30px 0;
 }
@@ -1263,7 +1267,7 @@
 .collpase-panel.has-third-child dt,
 .collpase-panel.has-third-child ~ .collpase-panel dt,
 .collpase-panel dt.is-edit {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   height: 40px;
 }
 
@@ -2169,7 +2173,8 @@
 .replay-okr .cont-area,
 .project-manage .cont-area,
 .working-hours .cont-area,
-.msg-notice .cont-area {
+.msg-notice .cont-area,
+.monitor-data .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -4653,4 +4658,18 @@
 }
 .weight-tip .el-popper .popper__arrow::after{
   border-top-color: #7e7e7e;
+}
+/* 监控数据 */
+.monitor-data .monitor-area{
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+.monitor-data .monitor-area>div{
+  margin: 20px 0 0 0 ;
+}
+.monitor-data .monitor-area .title {
+  font-size: 18px;
+    color: #4d5155;
+    font-weight: 600;
 }
