@@ -134,6 +134,7 @@
                   placeholder="请选择关联项目"
                   @change="projectChange(scope.row)"
                   class="tl-select"
+                  :class="{ 'select-error': !!projectError }"
                 >
                   <el-option
                     v-for="item in projectList"
@@ -191,6 +192,7 @@
                     </li>
                     <li
                       class="icon-bg"
+                      :class="{ 'okr-error': !!OKRError }"
                       v-if="scope.row.selectedOkr.length < 1"
                       @click="addSupportOkr(scope.row)"
                     >
@@ -547,19 +549,22 @@ export default {
           workContent: {
             type: 'string',
             required: true,
-            message: '请填写任务项',
+            validator: this.validateWorkContent,
+            // message: '请填写任务项',
             trigger: 'blur',
           },
           projectId: {
             type: 'string',
             required: true,
-            message: '请选择关联项目',
+            validator: this.validateProject,
+            // message: '请选择关联项目',
             trigger: 'change',
           },
           valueOrOkrIds: {
             type: 'string',
             required: true,
-            message: '请选择支撑项',
+            // message: '请选择支撑项',
+            validator: this.validateOkr,
             trigger: 'change',
           },
           workProgress: {
@@ -595,6 +600,12 @@ export default {
         },
       ],
       showTaskProcess: false,
+      emotionError: '',
+      processError: '',
+      workTimeError: '',
+      workItemError: '',
+      projectError: '',
+      OKRError: '',
     };
   },
   created() {
@@ -903,6 +914,12 @@ export default {
       this.$forceUpdate();
     },
     commitWeekly() {
+      this.emotionError = '';
+      this.processError = '';
+      this.workTimeError = '';
+      this.workItemError = '';
+      this.projectError = '';
+      this.OKRError = '';
       // 表单校验
       const params = {
         calendarId: this.calendarId,
@@ -914,10 +931,10 @@ export default {
       };
       if (this.weeklyEmotion === '') {
         this.showEmotionError = true;
-        return;
+        this.emotionError = '本周心情';
       }
       this.$refs.formDom.validate((valid) => {
-        if (valid) {
+        if (valid && this.weeklyEmotion !== '') {
           this.commitLoading = true;
           this.server.commitWeekly(params).then((res) => {
             this.commitLoading = false;
@@ -933,6 +950,9 @@ export default {
               });
             }
           });
+        } else {
+          this.$forceUpdate();
+          this.$message.error(`您有 ${this.processError} ${this.workTimeError} ${this.workItemError} ${this.projectError} ${this.OKRError} ${this.emotionError} 未填写`);
         }
       });
     },
@@ -1005,6 +1025,7 @@ export default {
     },
     changeConfidence() {},
     projectChange(work) {
+      this.projectError = '';
       this.formData.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
           this.projectList.forEach((project) => {
@@ -1098,3 +1119,12 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.select-error .el-input__inner {
+  border: 1px solid #f56c6c !important;
+  border-radius: 2px;
+}
+.okr-error {
+  background: #f56c6c !important;
+}
+</style>
