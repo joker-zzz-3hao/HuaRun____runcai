@@ -8,25 +8,24 @@
         <span>在线总人数：</span>
         <em>{{ formData.total }}</em>
       </div>
-      <div
-        v-for="tenant in formData.tenantUserDtoList"
-        :key="tenant.tenantDto.tenantId"
-      >
-        <dl>
-          <dt class="title">
+      <el-collapse>
+        <el-collapse-item
+          v-for="tenant in formData.tenantUserDtoList"
+          :key="tenant.tenantDto.tenantId"
+        >
+          <template slot="title">
             <span>{{ tenant.tenantDto.tenantName }}</span>
             <span>在线人数：{{ tenant.sum }}</span>
-          </dt>
-          <dd>
-            <el-table :data="tenant.userDtoList">
-              <el-table-column
-                label="所属部门"
-                prop="orgName"
-              ></el-table-column>
-              <el-table-column label="姓名" prop="userName"></el-table-column>
-            </el-table>
-          </dd>
-        </dl>
+          </template>
+          <el-table :data="tenant.userDtoList">
+            <el-table-column label="所属部门" prop="orgName"></el-table-column>
+            <el-table-column label="姓名" prop="userName"></el-table-column>
+          </el-table>
+        </el-collapse-item>
+      </el-collapse>
+      <div class="title">
+        <span>历史累计登录人数：</span>
+        <em>{{ formData.historyVisitNumber }}</em>
       </div>
     </div>
   </div>
