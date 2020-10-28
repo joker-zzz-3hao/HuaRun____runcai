@@ -53,7 +53,7 @@
                 <span>{{ CONST.MSG_MAP[scope.row.msgType] }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="sendUserId" label="通知人" align="left">
+            <el-table-column prop="sendUserName" label="通知人" align="left">
             </el-table-column>
             <el-table-column
               prop="createDate"
