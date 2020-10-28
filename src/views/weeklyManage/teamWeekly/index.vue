@@ -98,7 +98,11 @@
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
+                    <img
+                      v-if="hasValue(weekly.headerUrl)"
+                      :src="weekly.headerUrl"
+                      alt
+                    />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)
@@ -240,7 +244,11 @@
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
+                    <img
+                      v-if="hasValue(weekly.headerUrl)"
+                      :src="weekly.headerUrl"
+                      alt
+                    />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)

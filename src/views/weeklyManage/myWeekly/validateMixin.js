@@ -3,7 +3,7 @@ export default {
     // 进度
     validateProcess(rule, value, callback) {
       if (!value) {
-        callback('');
+        callback('请填写进度');
         this.processError = '进度';
       } else if (!/(^[0-9]\d*$)/.test(value)) {
         callback('只能填写正整数');
@@ -16,7 +16,7 @@ export default {
     // 工时
     validateTime(rule, value, callback) {
       if (!value) {
-        callback('');
+        callback('请填写工时');
         this.workTimeError = '工时';
       } else if (value > 100) {
         callback('工时不能超过100天');
@@ -31,7 +31,7 @@ export default {
     // 任务项
     validateWorkContent(rule, value, callback) {
       if (!value) {
-        callback('');
+        callback('请填写工作项');
         this.workItemError = '工作项';
       } else {
         callback();
@@ -40,7 +40,7 @@ export default {
     // 项目
     validateProject(rule, value, callback) {
       if (!value) {
-        callback('');
+        callback('请选择项目');
         this.projectError = '项目';
       } else {
         callback();
@@ -49,7 +49,7 @@ export default {
     // 项目
     validateOkr(rule, value, callback) {
       if (!value) {
-        callback('');
+        callback('请填写支撑OKR/价值观');
         this.OKRError = '支撑OKR/价值观';
       } else {
         callback();

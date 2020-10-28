@@ -310,5 +310,8 @@ export default {
         return namelist[namelist.length - 1];
       } return orgName;
     },
+    hasValue(value) {
+      return ![undefined, null, ''].includes(value);
+    },
   },
 };

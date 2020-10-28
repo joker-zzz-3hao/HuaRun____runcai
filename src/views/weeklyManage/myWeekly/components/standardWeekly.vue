@@ -389,7 +389,7 @@
         v-for="item in weeklyOkrSaveList"
         :key="item.o.okrdetailId"
       >
-        <div class="o-kr-group" v-if="item.kr">
+        <div class="o-kr-group" v-if="hasValue(item.kr)">
           <div class="tag-kind">
             <span class="kind-parent">目标</span>
             <el-tooltip
@@ -404,7 +404,7 @@
           </div>
         </div>
         <div class="o-kr-group">
-          <template v-if="item.kr">
+          <template v-if="hasValue(item.kr)">
             <div class="tag-kind">
               <span class="kind-child">KR</span>
               <el-tooltip
@@ -440,7 +440,7 @@
               >
             </div>
           </template>
-          <div class="okr-risk" v-if="item.kr">
+          <div class="okr-risk" v-if="hasValue(item.kr)">
             <span>信心指数</span>
             <template v-if="canUpdate">
               <tl-confidence
@@ -787,6 +787,7 @@ export default {
   },
   created() {
     this.init();
+    console.log('测试方法****************', this.hasValue());
   },
   computed: {
     setOkrStyle() {
@@ -1178,32 +1179,29 @@ export default {
         this.showEmotionError = true;
         this.emotionError = '本周心情';
       }
-      const v1 = new Promise((resolve) => {
-        this.$refs.formDom.validate((valid) => {
-          if (valid && this.weeklyEmotion !== '') { resolve(); } else {
-            this.$forceUpdate();
-            this.$message.error(`您有 ${this.processError} ${this.workTimeError} ${this.workItemError} ${this.projectError} ${this.OKRError} ${this.emotionError} 未填写`);
-          }
-        });
-      });
-
-      Promise.all([v1]).then(() => {
-        this.commitLoading = true;
-
-        this.server.commitWeekly(params).then((res) => {
-          this.commitLoading = false;
-          if (res.code == 200) {
-            this.$message.success('提交成功');
-            // 刷新日历数据
-            this.$busEmit('refreshCalendar');
-            // 更新个人okr数据
-            this.$emit('refreshMyOkr');
-            // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
-            this.$router.push({
-              query: merge({}, { params: 'clear' }),
-            });
-          }
-        });
+      this.$refs.formDom.validate((valid) => {
+        debugger;
+        if (valid && this.weeklyEmotion !== '') {
+          this.commitLoading = true;
+          this.server.commitWeekly(params).then((res) => {
+            this.commitLoading = false;
+            if (res.code == 200) {
+              this.$message.success('提交成功');
+              // 刷新日历数据
+              this.$busEmit('refreshCalendar');
+              // 更新个人okr数据
+              this.$emit('refreshMyOkr');
+              // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
+              this.$router.push({
+                query: merge({}, { params: 'clear' }),
+              });
+            }
+          });
+        } else {
+          this.$forceUpdate();
+          this.$message.error(`您有 ${this.processError} ${this.workTimeError} ${this.workItemError} ${this.projectError} ${this.OKRError} ${this.emotionError} 未填写`);
+          debugger;
+        }
       });
     },
     renderHeader(h, { column }) {
