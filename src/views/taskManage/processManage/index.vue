@@ -189,11 +189,13 @@ export default {
       // codeId: '',
       optionType: 'create',
       processTypeMap,
-      showpic: process.env.VUE_APP_PORTAL != 'https://cr-talent-uat.crcloud.com', // 展示图片
+      showpic: process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com', // 展示图片
     };
   },
   created() {
-    this.searchList();
+    if (process.env.VUE_APP_PORTAL != 'https://talent.crcloud.com') {
+      this.searchList();
+    }
   },
   computed: {
     ...mapState('common', {
