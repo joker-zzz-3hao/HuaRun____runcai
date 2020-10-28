@@ -6,9 +6,9 @@
     <div class="monitor-area">
       <div class="title">
         <span>在线总人数：</span>
-        <em>{{ formData.total }}</em>
+        <em>{{ formData.total || 0 }}</em>
       </div>
-      <el-collapse>
+      <el-collapse v-if="formData.tenantUserDtoList.length > 0">
         <el-collapse-item
           v-for="tenant in formData.tenantUserDtoList"
           :key="tenant.tenantDto.tenantId"
@@ -25,7 +25,7 @@
       </el-collapse>
       <div class="title">
         <span>历史累计登录人数：</span>
-        <em>{{ formData.historyVisitNumber }}</em>
+        <em>{{ formData.historyVisitNumber || 0 }}</em>
       </div>
     </div>
   </div>
