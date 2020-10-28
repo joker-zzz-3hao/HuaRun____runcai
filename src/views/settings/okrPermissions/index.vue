@@ -155,11 +155,17 @@ export default {
   },
   methods: {
     getPressUser(data) {
+      if (data.length == 0) {
+        this.$message.error('审批人不能为空');
+      }
       this.spUser.userName = data[0].userName;
       this.spUser.userId = data[0].userId;
       this.okrspUserexist = false;
     },
     getAssessUser(data) {
+      if (data.length == 0) {
+        this.$message.error('复盘沟通人不能为空');
+      }
       this.khUser.userName = data[0].userName;
       this.khUser.userId = data[0].userId;
       this.okrkhUserexist = false;
