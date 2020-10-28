@@ -1,4 +1,5 @@
 import ServerBase from '@/ajax/serverBase';
+import qs from 'qs';
 
 export default class Server extends ServerBase {
   getDepartmentList(param) {
@@ -28,5 +29,9 @@ export default class Server extends ServerBase {
   // 查询所有任务过程
   queryTaskProcessList(param) {
     return this._ajaxPost('gateway/task-service/task/taskProcess/query', param);
+  }
+
+  identity(param) {
+    return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);
   }
 }

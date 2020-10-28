@@ -107,6 +107,7 @@ export default {
       showTeam: false,
     };
   },
+
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
@@ -144,7 +145,27 @@ export default {
     switchOrg() {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
+          if (this.$route.name == 'overview' || this.$route.name == 'departleader' || this.$route.name == 'grassStaff' || this.$route.name == 'teamleader') {
+            this.checkUserType();
+            return false;
+          }
           window.location.reload();
+        }
+      });
+    },
+    checkUserType() {
+      this.server.identity({
+        user: this.userInfo.userId,
+        orgId: this.orgId,
+      }).then((response) => {
+        if (response.data.identityType == 'org') {
+          this.$router.push({ path: '/departleader' });
+        }
+        if (response.data.identityType == 'team') {
+          this.$router.push({ path: '/teamleader' });
+        }
+        if (response.data.identityType == 'person') {
+          this.$router.push({ path: '/grassStaff' });
         }
       });
     },

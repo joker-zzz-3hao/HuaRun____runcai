@@ -41,5 +41,12 @@ export default {
     },
 
   },
+  watch: {
+    '$route.query.id': {
+      handler() {
+        this.reload();
+      },
+    },
+  },
 };
 </script>
