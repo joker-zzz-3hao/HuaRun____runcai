@@ -1,0 +1,270 @@
+.logo {
+  width: 48px;
+  height: 48px;
+  background: url('~@/assets/images/logo@2x.png') 0 0 no-repeat;
+  background-size: 48px 48px;
+}
+
+.main-menu li i {
+  width: 30px;
+  height: 30px;
+  background: url('~@/assets/images/icon_30_y.png') 0 0 no-repeat;
+  background-size: 120px 270px;
+}
+
+.top-menu-manual i::before,
+.top-menu-teams i::before,
+.top-menu-remind i::before,
+.toggle-view i,
+.assistant.is-focus > i,
+.gave-praise i {
+  width: 32px;
+  height: 32px;
+  background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
+  background-size: 120px 2190px;
+}
+
+/* 60 */
+.assistant > i,
+.mood i:first-child {
+  width: 40px;
+  height: 40px;
+  background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
+  background-size: 240px 240px;
+}
+
+.main-menu li:not(.is-active):hover i {
+  background-position-x: -30px;
+}
+
+.main-menu li.is-active i {
+  background-position-x: -60px;
+}
+
+.main-menu .workbench i {
+  background-position-y: -120px;
+}
+
+.main-menu .okr-menu i {
+  background-position-y: -150px;
+}
+
+.main-menu .weekly-menu i {
+  background-position-y: -180px;
+}
+
+.main-menu .project-menu i {
+  background-position-y: 0;
+}
+
+.main-menu .company-menu i {
+  background-position-y: -240px;
+}
+
+.main-menu .sys-menu i {
+  background-position-y: -90px;
+}
+
+.main-menu .task-menu i {
+  background-position-y: -60px;
+}
+
+.main-menu .note-menu i {
+  background-position-y: -210px;
+}
+
+.assistant.is-focus > i {
+  background-position-x: -60px;
+  background-position-y: -180px;
+}
+
+/* 删除 */
+.icon-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #e5e9ee;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* 暂无数据 */
+.no-data {
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-data-bg {
+  width: 304px;
+  height: 180px;
+  background: url("~@/assets/images//no_data.png") no-repeat;
+}
+
+.no-data-txt {
+  margin: 20px 0 30px 0;
+  color: #879099;
+}
+
+/* change by xinquan */
+.bg-no-data {
+  width: 400px;
+  height: 400px;
+  text-align: center;
+  vertical-align: middle;
+  background: url("~@/assets/images/demoPic/nodata.png") no-repeat;
+  background-size: 100%;
+}
+
+.bg-no-data-map {
+  margin-top: 200px;
+  width: 634px;
+  height: 240px;
+  text-align: center;
+  vertical-align: middle;
+  background: url("~@/assets/images/map_nodata.png") no-repeat;
+  background-size:  634px 240px;
+  position: relative;
+}
+
+.bg-loading {
+  width: 400px;
+  height: 400px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10% auto;
+}
+.bg-no-data-search {
+  margin-top: 200px;
+  width: 244px;
+  height: 160px;
+  text-align: center;
+  vertical-align: middle;
+  background: url("~@/assets/images/not_search.png") no-repeat;
+  background-size:  244px 160px;
+}
+
+/* 小助手 */
+.assistant > i {
+  background-position-x: -10px;
+  background-position-y: -10px;
+}
+
+/* 周报心情 */
+.mood i:first-child {
+  background-position-x: -10px;
+}
+
+.mood .is-selected i:first-child {
+  background-position-x: -70px;
+}
+
+.mood .has-harvest i:first-child {
+  background-position-y: -70px;
+}
+
+.mood .not-too-bad i:first-child {
+  background-position-y: -130px;
+}
+
+.mood .let-quiet i:first-child {
+  background-position-y: -190px;
+}
+
+.mood .has-harvest i:last-child {
+  width: 44px;
+  height: 14px;
+  background: url('~@/assets/images/has_harvest.png') no-repeat;
+  background-size: 44px 14px;
+}
+
+.mood .has-harvest.is-selected i:last-child {
+  background: url('~@/assets/images/has_harvest_h.png') no-repeat;
+  background-size: 44px 14px;
+}
+
+.mood .not-too-bad i:last-child {
+  width: 46px;
+  height: 14px;
+  background: url('~@/assets/images/not_too_bad.png') no-repeat;
+  background-size: 46px 14px;
+}
+
+.mood .not-too-bad.is-selected i:last-child {
+  background: url('~@/assets/images/not_too_bad_h.png') no-repeat;
+  background-size: 46px 14px;
+}
+
+.mood .let-quiet i:last-child {
+  width: 63px;
+  height: 14px;
+  background: url('~@/assets/images/let_quiet.png') no-repeat;
+  background-size: 63px 14px;
+}
+
+.mood .let-quiet.is-selected i:last-child {
+  background: url('~@/assets/images/let_quiet_h.png') no-repeat;
+  background-size: 63px 14px;
+}
+
+/* 30 */
+.toggle-view .column-view {
+  background-position-x: 0;
+  background-position-y: -120px;
+}
+
+.toggle-view .table-view {
+  background-position-x: 0;
+  background-position-y: -150px;
+}
+
+.toggle-view i.is-selected {
+  background-position-x: -30px;
+}
+
+/* 顶部菜单 */
+.top-menu-manual i::before,
+.top-menu-teams i::before,
+.top-menu-remind i::before {
+  content: '';
+  background-position-x: -2px;
+}
+
+.top-menu-manual i::before {
+  background-position-x: -1px;
+}
+
+.top-menu-manual:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-teams:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-remind:hover i::before {
+  background-position-x: -32px;
+}
+
+.top-menu-remind i::before {
+  background-position-y: -630px;
+}
+
+.top-menu-teams i::before {
+  background-position-y: -1830px;
+}
+
+.top-menu-manual i::before {
+  background-position-y: -2160px;
+}
+
+.gave-praise i {
+  background-position-y: -900px;
+}
+
+.gave-praise:hover i {
+  background-position-x: -30px;
+}

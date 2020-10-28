@@ -1,0 +1,161 @@
+/* 整体框架布局 */
+.console-layout,
+.login-layout,
+.admin-layout,
+.settings-layout,
+.demo,
+.view-cont {
+  height: 100%;
+}
+
+.el-scrollbar .el-scrollbar__view:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 26;
+}
+
+.area-left {
+  display: flex;
+  align-items: center;
+}
+
+/* 主区域 */
+.main-wrap {
+  flex: 1 1 auto;
+  display: flex;
+  background: #f7fafc;
+}
+
+.menu-cont-inside {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 26;
+}
+
+.view-cont {
+  position: relative;
+  z-index: 25;
+  flex: 1 1 auto;
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 102px);
+  min-height: calc(100vh - 102px);
+}
+
+.el-popup-parent--hidden .view-cont {
+  z-index: 23 !important;
+}
+
+/* 内容容器 */
+.main-wrap.toggle-bg {
+  background: #fff;
+}
+
+.cont-wrap {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.box-wrap {
+  margin: 0 auto;
+}
+
+.cont-area {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cont-area .operating-box .el-button {
+  min-width: 90px;
+  height: 40px;
+}
+
+.operating-panel {
+  display: flex;
+  align-items: center;
+}
+
+.operating-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.operating-box-group .operating-box:last-child {
+  margin: 10px 0 0 0;
+}
+
+.operating-area .operating-box {
+  flex: 1;
+}
+
+.operating-box .flex-auto {
+  flex: 1;
+}
+
+.operating-area .operating-box .flex-auto {
+  display: flex;
+  align-items: center;
+}
+
+.flex-sb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.flex-end {
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.dl-item {
+  display: flex;
+  align-items: center;
+}
+
+.dl-item + .dl-item:last-child {
+  margin: 0;
+}
+
+i + em,
+i + span,
+i + span + em,
+i + span + .el-button,
+i + span + p,
+span + em + em:last-of-type,
+i + span + em + i {
+  margin: 0 0 0 6px;
+}
+
+.layout-rows {
+  display: flex;
+  align-items: center;
+}
+
+.layout-rows dt {
+  margin: 0 20px 0 0;
+}

@@ -1,0 +1,87 @@
+@-moz-document url-prefix() {
+  #talent>.el-scrollbar .el-scrollbar__wrap {
+    padding: 0 28px 0 0;
+    overflow-y: scroll;
+    width: 102%;
+  }
+
+  .custom-drawer .el-scrollbar__wrap {
+    padding: 0 20px 0 0;
+    overflow-y: scroll;
+    width: 102%;
+  }
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .associated-undertaking .el-drawer__body {
+  overflow: hidden;
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .associated-undertaking .el-scrollbar,
+.create-okr .el-drawer__body>.el-scrollbar {
+  margin: 0;
+  height: 100%;
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .associated-undertaking .operating-box,
+.create-okr .operating-box {
+  margin: 30px 28px 0 0;
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .my-okr .operating-panel .tl-select {
+  width: 189px;
+}
+
+@media screen and (min-width:1367px) {
+  .tl-table .sub-tr .okr-kr-name::before {
+    left: -53px;
+    width: 46px;
+  }
+
+  .calendar-select {
+    justify-content: space-between;
+  }
+
+  .teams-weekly .table-container > ul li {
+    width: 25%;
+  }
+
+  .weekly-select li:last-child {
+    margin-right: 0;
+  }
+
+  @-moz-document url-prefix() {
+    #talent>.el-scrollbar .el-scrollbar__wrap {
+      width: 1946px
+    }
+  }
+}
+
+@media screen and (min-width:1921px) {
+  .tl-table .sub-tr .okr-kr-name::before {
+    left: -95px;
+    width: 86px;
+  }
+
+  @-moz-document url-prefix() {
+    #talent>.el-scrollbar .el-scrollbar__wrap {
+      width: 2586px
+    }
+  }
+}
+
+.teams-weekly .operating-area .el-select .el-input .el-input__inner:-ms-input-placeholder {
+  color:#fff !important;
+}
+
+.teams-weekly .operating-area .el-select .el-input input::-moz-placeholder {
+  color:#fff !important;
+}
+

@@ -1,0 +1,80 @@
+/* 背景滑动 */
+.amt-bg-slip.el-button--primary::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 200%;
+  height: 500%;
+  background: #5c50e9;
+  transform-origin: 0% 0%;
+  transform: translateX(calc(53% - 25px)) translateY(20%) rotate(-45deg);
+  transition: transform .3s ease-out;
+}
+
+.amt-bg-slip.el-button--primary:hover::after {
+  transform: translateY(21%) translateX(-25px) rotate(-45deg);
+}
+
+/* 边框滑动 */
+.amt-border-slip.is-plain::before,
+.amt-border-slip.is-plain .lines::before,
+.amt-border-slip.is-plain::after,
+.amt-border-slip.is-plain .lines::after {
+  transition: transform .3s ease-out;
+}
+
+.amt-border-slip.is-plain:hover::before {
+  transform: translateX(-100%);
+}
+
+.amt-border-slip.is-plain:hover .lines::before {
+  transform: translateY(-100%);
+}
+
+.amt-border-slip.is-plain:hover .lines::after {
+  transform: translateY(100%);
+}
+
+.amt-border-slip.is-plain:hover::after {
+  transform: translateX(100%);
+}
+
+/* 边框淡入 */
+.amt-border-fadeout.is-plain:hover {
+  background: #f0effe;
+}
+
+.amt-border-fadeout.is-plain:hover::before {
+  border-width: 2px;
+  transform: translateY(0);
+}
+
+/* line 缩放 */
+.amt-line-elastic::before {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.amt-line-elastic + .remove-current {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* 文本滑动 */
+.amt-txt-slip .prompt-info,
+.login-info .is-error .error-msg {
+  transform: translateY(-26px);
+  opacity: 1;
+}
+
+@keyframes waves {
+  from {
+    transform: perspective(100px) rotateY(180deg) translateZ(24px) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(100px) rotateY(0) translateZ(24px) scale(1);
+    opacity: 1;
+  }
+}

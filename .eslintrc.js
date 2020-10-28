@@ -11,8 +11,8 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': 'off',
+    'no-debugger': 'warn',
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',
@@ -44,7 +44,6 @@ module.exports = {
       "ignoreTemplateLiterals": true,// ignores lines that contain a template literal
       "ignoreRegExpLiterals": true,// ignores lines that contain a RegExp literal
     }],
-    'no-console': ['off'],
     'consistent-return': ['off'],
     'no-underscore-dangle': ['off'],
     'eqeqeq': ['off'],
