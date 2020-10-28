@@ -2177,7 +2177,8 @@
 .replay-okr .cont-area,
 .project-manage .cont-area,
 .working-hours .cont-area,
-.msg-notice .cont-area {
+.msg-notice .cont-area,
+.monitor-data .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -4661,4 +4662,18 @@
 }
 .weight-tip .el-popper .popper__arrow::after{
   border-top-color: #7e7e7e;
+}
+/* 监控数据 */
+.monitor-data .monitor-area{
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+.monitor-data .monitor-area>div{
+  margin: 20px 0 0 0 ;
+}
+.monitor-data .monitor-area .title {
+  font-size: 18px;
+    color: #4d5155;
+    font-weight: 600;
 }

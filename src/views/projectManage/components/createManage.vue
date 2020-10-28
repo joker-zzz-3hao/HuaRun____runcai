@@ -50,54 +50,68 @@
           class="tl-cascader"
         ></el-cascader>
       </el-form-item>
-      <el-form-item label="项目经理" prop="projectManager">
-        <el-select
-          v-model="formData.projectManager"
-          placeholder="请选择"
-          filterable
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="(item, index) in projectManagerList"
-            :key="index + item.userAccount"
-            :label="item.userName"
-            :value="item.userAccount"
-          >
-            <dl class="user-info">
-              <dd>{{ item.userName }}</dd>
-              <dd>{{ item.orgName }}</dd>
-            </dl>
-          </el-option>
-        </el-select>
-        <el-select
-          v-model="formData.userCompany"
-          placeholder="请选择所属公司"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in companyList"
-            :key="item.value"
-            :label="item.meaning"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <el-select
-          v-model="formData.userLevel"
-          placeholder="请选择级别"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in levelList"
-            :key="item.value"
-            :label="item.meaning"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+      <el-form-item label="项目经理" required>
+        <el-col :span="8">
+          <el-form-item prop="projectManager">
+            <el-select
+              v-model="formData.projectManager"
+              placeholder="请选择"
+              filterable
+              popper-class="select-dialog"
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in projectManagerList"
+                :key="index + item.userAccount"
+                :label="item.userName"
+                :value="item.userAccount"
+              >
+                <dl class="user-info">
+                  <dd>{{ item.userName }}</dd>
+                  <dd>{{ item.orgName }}</dd>
+                </dl>
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+        <el-col :span="7">
+          <el-form-item prop="userCompany">
+            <el-select
+              v-model="formData.userCompany"
+              placeholder="请选择所属公司"
+              popper-class="select-dialog"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in companyList"
+                :key="item.value"
+                :label="item.meaning"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+        <el-col :span="7">
+          <el-form-item prop="userLevel">
+            <el-select
+              v-model="formData.userLevel"
+              placeholder="请选择级别"
+              popper-class="select-dialog"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in levelList"
+                :key="item.value"
+                :label="item.meaning"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <el-form-item label="项目类型" prop="projectType">
         <el-select
@@ -231,6 +245,12 @@ export default {
         ],
         projectManager: [
           { required: true, message: '请选择项目经理', trigger: 'change' },
+        ],
+        userCompany: [
+          { required: true, message: '请选择所属公司', trigger: 'change' },
+        ],
+        userLevel: [
+          { required: true, message: '请选择级别', trigger: 'change' },
         ],
         projectType: [
           { required: true, message: '请选择项目类型', trigger: 'change' },
