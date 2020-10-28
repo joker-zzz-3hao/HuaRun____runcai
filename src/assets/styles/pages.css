@@ -2395,7 +2395,6 @@
 
 .weekly-cont .tag-lists li {
   margin: 5px 0 5px 18px;
-  min-width: 110px;
   max-width: 110px;
   cursor: pointer;
 }
@@ -2459,10 +2458,6 @@
 
 .weekly-cont .tl-table.is-edit .el-table__body-wrapper .el-table__row td:nth-child(5) .cell .el-form-item {
   flex: 0 0 54px;
-}
-
-.weekly-cont .tag-lists li em {
-  padding: 0 10px 0 0;
 }
 
 .write-weekly .btn-box {

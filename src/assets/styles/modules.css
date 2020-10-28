@@ -1196,7 +1196,8 @@
   width: 92px;
 }
 
-.tl-input-number+span {
+.weight-tip + span,
+.tl-input-number + span {
   margin: 0 0 0 6px;
 }
 
