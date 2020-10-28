@@ -150,15 +150,27 @@
                             },
                           ]"
                         >
-                          <el-input-number
-                            v-model="oitem.okrWeight"
-                            controls-position="right"
-                            :min="0"
-                            :max="100"
-                            :step="0.1"
-                            step-strictly
-                            class="tl-input-number"
-                          ></el-input-number>
+                          <el-popover
+                            :content="lastWeightmsg"
+                            placement="top-start"
+                            :value="oitem.showTip"
+                            trigger="manual"
+                            class="weight-tip"
+                            :append-to-body="false"
+                            popper-class="weight-tip"
+                          >
+                            <el-input-number
+                              slot="reference"
+                              v-model="oitem.okrWeight"
+                              controls-position="right"
+                              :min="0"
+                              :max="100"
+                              :step="0.1"
+                              step-strictly
+                              class="tl-input-number"
+                              @focus="showTip('o', index, 0)"
+                            ></el-input-number>
+                          </el-popover>
                           <span>%</span>
                         </el-form-item>
                       </div>
@@ -285,15 +297,28 @@
                         },
                       ]"
                     >
-                      <el-input-number
-                        v-model.trim="kitem.okrWeight"
-                        controls-position="right"
-                        :min="0"
-                        :max="100"
-                        :step="0.1"
-                        step-strictly
-                        class="tl-input-number"
-                      ></el-input-number>
+                      <el-popover
+                        :content="lastWeightmsg"
+                        placement="top-start"
+                        :value="kitem.showTip"
+                        trigger="manual"
+                        class="weight-tip"
+                        :append-to-body="false"
+                        popper-class="weight-tip"
+                      >
+                        <el-input-number
+                          slot="reference"
+                          v-model.trim="kitem.okrWeight"
+                          controls-position="right"
+                          :min="0"
+                          :max="100"
+                          :step="0.1"
+                          step-strictly
+                          class="tl-input-number"
+                          @focus="showTip('kr', index, kindex)"
+                          @blur="hideTip('kr', index, kindex)"
+                        ></el-input-number>
+                      </el-popover>
                       <span>%</span>
                     </el-form-item>
                     <el-form-item label="当前进度">
@@ -328,7 +353,7 @@
                         {
                           required: true,
                           trigger: 'blur',
-                          message: '请输入考核指标',
+                          validator: validateCheck,
                         },
                       ]"
                     >
@@ -354,7 +379,7 @@
                         {
                           required: true,
                           trigger: 'blur',
-                          message: '请输入衡量办法',
+                          validator: validateJudge,
                         },
                       ]"
                     >
@@ -537,6 +562,14 @@ export default {
       loading: false,
       activeList: [0],
       currentPage: 1,
+      // errormsg
+      oerror: '',
+      krerror: '',
+      checkerror: '',
+      judgeerror: '',
+      weighterror: '',
+      // 权重计算
+      lastWeightmsg: '剩余权重 计算中...',
     };
   },
   computed: {
@@ -734,6 +767,12 @@ export default {
     },
     // 提交表单
     summit() {
+      // errormsg
+      this.oerror = '';
+      this.krerror = '';
+      this.checkerror = '';
+      this.judgeerror = '';
+      this.weighterror = '';
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           // 校验权重比例
@@ -774,7 +813,7 @@ export default {
             this.summitNew();
           }
         } else {
-          this.$message.error('您有必填项未填');
+          this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
         }
       });
     },
@@ -873,12 +912,33 @@ export default {
         console.log('fanyele', this.currentPage);
       }
     },
-    // saveDraft() {
-    //   this.$refs.okrform.saveDraft();
-    // },
-    // summit() {
-    //   this.$refs.okrform.summit();
-    // },
+    showTip(type, oindex, krindex) {
+      if (type == 'o') {
+        let opercent = 0;
+        this.formData.okrInfoList.forEach((oitem) => {
+          opercent += oitem.okrWeight;
+        });
+        this.lastWeightmsg = `剩余可填权重${100 - opercent}%`;
+        this.formData.okrInfoList[oindex].showTip = true;
+        this.$forceUpdate();
+      } else {
+        let keypercent = 0;
+        this.formData.okrInfoList[oindex].krList.forEach((kitem) => {
+          keypercent += kitem.okrWeight;
+        });
+        this.lastWeightmsg = `剩余可填权重${100 - keypercent}%`;
+        this.formData.okrInfoList[oindex].krList[krindex].showTip = true;
+        this.$forceUpdate();
+      }
+    },
+    hideTip(type, oindex, krindex) {
+      if (type == 'o') {
+        this.formData.okrInfoList[oindex].showTip = false;
+      } else {
+        this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
+      }
+      this.lastWeightmsg = '剩余权重 计算中...';
+    },
   },
   watch: {
     'searchForm.periodId': {

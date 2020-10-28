@@ -61,6 +61,7 @@ export default {
     validateObjectName(rule, value, callback) {
       if (!value) {
         callback('请输入目标名称');
+        this.oerror = '目标名称';
       } else if (value.length > 200) {
         callback('不能超过200个字符');
       } else {
@@ -69,9 +70,10 @@ export default {
     },
     // 关键结果kr校验
     validateKRName(rule, value, callback) {
-      value = this.getValue(rule);
+      value = value || this.getValue(rule);
       if (!value) {
         callback('请填写关键结果KR名称');
+        this.krerror = '关键结果KR名称';
       } else if (value.length > 200) {
         callback('不能超过200个字符');
       } else {
@@ -112,9 +114,10 @@ export default {
       };
     },
     validatePercent(rule, value, callback) {
-      value = this.getValue(rule);
+      value = value || this.getValue(rule);
       if (!value) {
         callback('请输入权重');
+        this.weighterror = '权重';
       } else if (value === 0) {
         callback('不能为0');
       } else {
@@ -122,9 +125,10 @@ export default {
       }
     },
     validateCheck(rule, value, callback) {
-      value = this.getValue(rule);
+      value = value || this.getValue(rule);
       if (!value) {
         callback('请输入考核指标');
+        this.checkerror = '考核指标';
       } else {
         callback();
       }
@@ -133,6 +137,7 @@ export default {
       value = this.getValue(rule);
       if (!value) {
         callback('请输入衡量办法');
+        this.judgeerror = '衡量办法';
       } else {
         callback();
       }
