@@ -773,6 +773,8 @@ export default {
           } else {
             this.summitNew();
           }
+        } else {
+          this.$message.error('您有必填项未填');
         }
       });
     },

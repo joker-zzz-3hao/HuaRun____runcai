@@ -487,7 +487,7 @@ export default {
           console.log('表单都校验通过', validateResult);
           this.summit();
         } else {
-          console.log('表单未校验通过');
+          this.$message.error('您有必填项未填');
         }
       });
     },
