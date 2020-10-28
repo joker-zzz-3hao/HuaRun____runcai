@@ -7,7 +7,10 @@
       <div class="title">
         <span>在线总人数：</span>
         <em>{{ formData.total || 0 }}</em>
+        <span>历史累计登录人数：</span>
+        <em>{{ formData.historyVisitNumber || 0 }}</em>
       </div>
+
       <el-collapse v-if="formData.tenantUserDtoList.length > 0">
         <el-collapse-item
           v-for="tenant in formData.tenantUserDtoList"
@@ -23,10 +26,6 @@
           </el-table>
         </el-collapse-item>
       </el-collapse>
-      <div class="title">
-        <span>历史累计登录人数：</span>
-        <em>{{ formData.historyVisitNumber || 0 }}</em>
-      </div>
     </div>
   </div>
 </template>

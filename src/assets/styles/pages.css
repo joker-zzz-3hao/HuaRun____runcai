@@ -877,6 +877,7 @@
   color: #4d5155;
 }
 
+.okr-change .tl-form .el-form-item__error,
 .create-okr .tl-form .el-form-item__error {
   display: none;
 }
@@ -2394,7 +2395,6 @@
 
 .weekly-cont .tag-lists li {
   margin: 5px 0 5px 18px;
-  min-width: 110px;
   max-width: 110px;
   cursor: pointer;
 }
@@ -2458,10 +2458,6 @@
 
 .weekly-cont .tl-table.is-edit .el-table__body-wrapper .el-table__row td:nth-child(5) .cell .el-form-item {
   flex: 0 0 54px;
-}
-
-.weekly-cont .tag-lists li em {
-  padding: 0 10px 0 0;
 }
 
 .write-weekly .btn-box {
@@ -4676,4 +4672,17 @@
   font-size: 18px;
     color: #4d5155;
     font-weight: 600;
+}
+
+.monitor-data .monitor-area .title>span:nth-of-type(2) {
+  margin: 0 0 0 60px ;
+}
+.monitor-data .el-collapse-item__header{
+  font-size: 16px;
+    color: #4d5155;
+    font-weight: 600;
+}
+.monitor-data .el-collapse-item__header>span:nth-of-type(1){
+  color: #909399;
+  margin: 0 20px 0 0;
 }
