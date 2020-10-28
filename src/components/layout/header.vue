@@ -167,7 +167,6 @@ export default {
         if (response.data.identityType == 'person') {
           this.$router.push({ path: '/grassStaff' });
         }
-        // window.location.reload();
       });
     },
     downloadHelpFile() {
