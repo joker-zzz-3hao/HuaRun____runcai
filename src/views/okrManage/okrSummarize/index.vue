@@ -2,6 +2,33 @@
   <div class="okr-maps">
     <div class="operating-area">
       <div class="operating-area-inside">
+        <!-- <div class="operating-box-group"> -->
+        <div class="operating-box">
+          <el-input
+            placeholder="成员姓名"
+            v-model="userName"
+            @keyup.enter.native="searchList"
+            class="tl-input"
+            clearable
+            @clear="searchList"
+          >
+            <i
+              slot="prefix"
+              class="el-input__icon el-icon-search"
+              @click="searchList"
+            ></i>
+          </el-input>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="searchList"
+            >查询</el-button
+          >
+          <el-button @click="goback" plain class="tl-btn amt-border-slip">
+            返回
+            <span class="lines"></span>
+          </el-button>
+        </div>
         <div class="operating-box">
           <dl class="dl-item">
             <dt>周期</dt>
@@ -91,32 +118,6 @@
               </div>
             </dd>
           </dl>
-          <dl class="dl-item">
-            <el-input
-              placeholder="成员姓名"
-              v-model="userName"
-              @keyup.enter.native="searchList"
-              class="tl-input"
-              clearable
-              @clear="searchList"
-            >
-              <i
-                slot="prefix"
-                class="el-input__icon el-icon-search"
-                @click="searchList"
-              ></i>
-            </el-input>
-          </dl>
-          <el-button
-            type="primary"
-            class="tl-btn amt-bg-slip"
-            @click="searchList"
-            >查询</el-button
-          >
-          <el-button @click="goback" plain class="tl-btn amt-border-slip">
-            返回
-            <span class="lines"></span>
-          </el-button>
         </div>
       </div>
     </div>
