@@ -4643,3 +4643,14 @@
   text-align: center;
   vertical-align: middle;
 }
+
+.weight-tip .el-popper{
+  background-color: #7e7e7e;
+  color: #fff;
+  width: 50px;
+  font-size: 12px;
+  height: 25px;
+}
+.weight-tip .el-popper .popper__arrow::after{
+  border-top-color: #7e7e7e;
+}
