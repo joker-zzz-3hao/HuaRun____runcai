@@ -72,7 +72,7 @@
             @click="shrinkMenus"
             @mouseover.stop="rmChangeIndex"
           >
-            <span></span>
+            <i></i>
           </div>
         </div>
       </div>
