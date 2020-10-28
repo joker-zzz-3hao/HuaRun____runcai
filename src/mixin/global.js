@@ -304,5 +304,11 @@ export default {
         window.open(url);
       }
     },
+    cutOrgName(orgName) {
+      const namelist = orgName.split('-');
+      if (namelist.length) {
+        return namelist[namelist.length - 1];
+      } return orgName;
+    },
   },
 };

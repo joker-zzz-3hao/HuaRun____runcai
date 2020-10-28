@@ -115,7 +115,7 @@
             <em>{{ cutName(item.orgName) }}</em>
           </div>
         </dt>
-        <dd>{{ item.orgName }}</dd>
+        <dd>{{ cutOrgName(item.orgName) }}</dd>
       </dl>
     </div>
   </div>

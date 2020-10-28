@@ -12,6 +12,7 @@
           plain
           class="tl-btn btn-lineheight"
           v-if="
+            showbutton &&
             node.children &&
             node.children.length &&
             node.userId === userInfo.userId
@@ -64,13 +65,20 @@ export default {
   data() {
     return {
       CONST,
+      showbutton: false,
     };
+  },
+  created() {
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.showbutton = true;
+    }
   },
   mounted() {
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
     }),
   },
   methods: {

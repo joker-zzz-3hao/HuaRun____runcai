@@ -30,7 +30,7 @@ require('echarts/lib/chart/pie');
 Vue.prototype.$echarts = echarts;
 if (process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com' || process.env.VUE_APP_PORTAL == 'https://cr-talent-uat.crcloud.com') {
   // eslint-disable-next-line func-names
-  // console.log = function () { };
+  console.log = function () { };
 }
 
 // 引入全局axios实例$ajax

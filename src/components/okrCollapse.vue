@@ -370,7 +370,7 @@
                   {
                     required: true,
                     trigger: 'blur',
-                    message: '请输入考核指标',
+                    validator: validateCheck,
                   },
                 ]"
               >
@@ -401,7 +401,7 @@
                   {
                     required: true,
                     trigger: 'blur',
-                    message: '请输入衡量办法',
+                    validator: validateJudge,
                   },
                 ]"
               >
@@ -593,6 +593,12 @@ export default {
       okrmain: {},
       formData: { tableList: [] },
       innerActiveList: [],
+      // errormsg
+      oerror: '',
+      krerror: '',
+      checkerror: '',
+      judgeerror: '',
+      weighterror: '',
     };
   },
   props: {

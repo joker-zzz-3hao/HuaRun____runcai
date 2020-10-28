@@ -110,11 +110,11 @@
         <div class="card-panel-head">
           <div class="pannel-title">
             <template v-if="memberList.length > 0">
-              <em>{{ departmentName }}</em>
+              <em>{{ cutOrgName(departmentName) }}</em>
               <span>成员OKR</span>
             </template>
             <template v-if="orgTable.length > 0">
-              <em>{{ departmentName }}</em>
+              <em>{{ cutOrgName(departmentName) }}</em>
             </template>
           </div>
         </div>
@@ -146,7 +146,7 @@
                   <em>{{ cutName(item.orgName) }}</em>
                 </div>
               </dt>
-              <dd>{{ item.orgName }}</dd>
+              <dd>{{ cutOrgName(item.orgName) }}</dd>
             </dl>
           </template>
         </div>
@@ -235,7 +235,6 @@ export default {
   methods: {
     searchOkr() { // 默认搜索进行时
       if (this.okrCycle.periodId) {
-        console.log('123', this.departmentName, this.orgId);
         this.loading = true;
         this.server.getorgOkr({
           myOrOrg: 'org',

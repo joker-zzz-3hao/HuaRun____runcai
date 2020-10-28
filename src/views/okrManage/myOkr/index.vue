@@ -138,13 +138,13 @@ export default {
     // 如果是负责人并且有上级，则展示上级
     if (this.roleCode.includes('ORG_ADMIN')
     && this.userInfo.orgParentName) {
-      this.departmentName = this.userInfo.orgParentName;
+      this.departmentName = this.cutOrgName(this.userInfo.orgParentName);
       // 如果是负责人并且是根节点
     } else if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgId == 'CR0011000054') {
       this.departmentName = '润联科技';
       // 普通用户
     } else {
-      this.departmentName = this.userInfo.orgName || '部门';
+      this.departmentName = this.cutOrgName(this.userInfo.orgName) || '部门';
     }
 
     // TODO: 加orgId
