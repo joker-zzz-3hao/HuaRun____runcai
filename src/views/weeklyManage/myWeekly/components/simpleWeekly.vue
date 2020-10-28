@@ -934,7 +934,6 @@ export default {
         this.emotionError = '本周心情';
       }
       this.$refs.formDom.validate((valid) => {
-        debugger;
         if (valid && this.weeklyEmotion !== '') {
           this.commitLoading = true;
           this.server.commitWeekly(params).then((res) => {

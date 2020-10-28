@@ -99,7 +99,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectNameCn">{{
+                <span v-if="hasValue(scope.row.projectNameCn)">{{
                   scope.row.projectNameCn
                 }}</span>
                 <span v-else>--</span>
@@ -127,7 +127,7 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectCurrency">{{
+                <span v-if="hasValue(scope.row.projectCurrency)">{{
                   scope.row.projectCurrency
                 }}</span>
                 <span v-else>--</span>
@@ -150,7 +150,7 @@
               min-width="160"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectApplyDepName">{{
+                <span v-if="hasValue(scope.row.projectApplyDepName)">{{
                   scope.row.projectApplyDepName
                 }}</span>
                 <span v-else>--</span>
@@ -162,7 +162,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectType">{{
+                <span v-if="hasValue(scope.row.projectType)">{{
                   scope.row.projectType
                 }}</span>
                 <span v-else>--</span>
@@ -174,7 +174,7 @@
               min-width="120"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectStatus">
+                <span v-if="hasValue(scope.row.projectStatus)">
                   <i
                     :class="{
                       'el-icon-basketball': scope.row.projectStatus == '0',
@@ -192,7 +192,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectInputType">{{
+                <span v-if="hasValue(scope.row.projectInputType)">{{
                   scope.row.projectInputType
                 }}</span>
                 <span v-else>--</span>

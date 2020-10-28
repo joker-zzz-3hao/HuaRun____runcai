@@ -35,8 +35,8 @@
         }}</el-button>
       </div>
     </div>
-    <div class="has-child" v-if="node.node.children">
-      <div class="is-extend" v-if="node.node.open">
+    <div class="has-child" v-if="hasValue(node.node.children)">
+      <div class="is-extend" v-if="hasValue(node.node.open)">
         <span></span>
       </div>
       <div v-else>{{ node.node.children.length }}</div>

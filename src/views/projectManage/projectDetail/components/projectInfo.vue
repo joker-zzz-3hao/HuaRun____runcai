@@ -4,7 +4,7 @@
       <dl>
         <dt>
           <span
-            v-if="baseInfo.projectStatus"
+            v-if="hasValue(baseInfo.projectStatus)"
             :class="{
               'is-ongoing': baseInfo.projectStatus == '0',
               'is-over': baseInfo.projectStatus == '1',
@@ -47,7 +47,11 @@
           <dt><span>项目经理</span></dt>
           <dd>
             <div class="user-info">
-              <img v-if="baseInfo.headUrl" :src="baseInfo.headUrl" alt />
+              <img
+                v-if="hasValue(baseInfo.headUrl)"
+                :src="baseInfo.headUrl"
+                alt
+              />
               <div v-else-if="baseInfo.projectManager" class="user-name">
                 <em>{{
                   baseInfo.projectManager.substring(
@@ -64,7 +68,7 @@
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
-            <em v-if="baseInfo.parentOrgName">{{
+            <em v-if="hasValue(baseInfo.parentOrgName)">{{
               `${baseInfo.parentOrgName}-`
             }}</em>
             <em>{{ baseInfo.orgName }}</em>
@@ -125,7 +129,11 @@
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info" @click="setManager(scope.row)">
-                  <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                  <img
+                    v-if="hasValue(scope.row.headUrl)"
+                    :src="scope.row.headUrl"
+                    alt
+                  />
                   <div v-else-if="scope.row.userName" class="user-name">
                     <em>{{
                       scope.row.userName.substring(
@@ -160,7 +168,7 @@
             </el-table-column>
             <el-table-column prop="userLevelName" label="级别" min-width="120">
               <template slot-scope="scope">
-                <span v-if="scope.row.userLevelName">{{
+                <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
                 }}</span>
                 <span v-else>--</span>
@@ -168,13 +176,15 @@
             </el-table-column>
             <el-table-column prop="orgName" label="所属部门" min-width="160">
               <template slot-scope="scope">
-                <span v-if="scope.row.orgName">{{ scope.row.orgName }}</span>
+                <span v-if="hasValue(scope.row.orgName)">{{
+                  scope.row.orgName
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="userPostName" label="职能" min-width="180">
               <template slot-scope="scope">
-                <span v-if="scope.row.userPostName">{{
+                <span v-if="hasValue(scope.row.userPostName)">{{
                   scope.row.userPostName
                 }}</span>
                 <span v-else>--</span>
@@ -186,7 +196,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.userCompanyName">{{
+                <span v-if="hasValue(scope.row.userCompanyName)">{{
                   scope.row.userCompanyName
                 }}</span>
                 <span v-else>--</span>

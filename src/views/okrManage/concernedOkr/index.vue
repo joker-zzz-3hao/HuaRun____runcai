@@ -23,7 +23,7 @@
             @click="selectUser(item)"
           >
             <div class="user-info">
-              <img v-if="item.headUrl" :src="item.headUrl" alt />
+              <img v-if="hasValue(item.headUrl)" :src="item.headUrl" alt />
               <div v-else-if="item.userName" class="user-name">
                 <em>{{ item.userName.substring(item.userName.length - 2) }}</em>
               </div>

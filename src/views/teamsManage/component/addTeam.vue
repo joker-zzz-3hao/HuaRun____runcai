@@ -47,7 +47,11 @@
           <dd class="img-list">
             <dl v-for="item in formData.chargeMembers" :key="item.userId">
               <dt class="user-info">
-                <img v-if="item.headerUrl" :src="item.headerUrl" alt />
+                <img
+                  v-if="hasValue(item.headerUrl)"
+                  :src="item.headerUrl"
+                  alt
+                />
                 <div class="user-name" v-else>
                   <em>{{ cutName(item.userName) }}</em>
                 </div>

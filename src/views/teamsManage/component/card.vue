@@ -10,7 +10,11 @@
       <dt>
         <template v-if="!node.node.orgType && node.node.userName">
           <div class="user-info">
-            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <img
+              v-if="hasValue(node.node.headerUrl)"
+              :src="node.node.headerUrl"
+              alt
+            />
             <div v-else-if="node.node.userName" class="user-name">
               <em>{{
                 node.node.userName.substring(node.node.userName.length - 2)
@@ -21,18 +25,24 @@
         </template>
         <template v-if="node.node.orgType == '0'">
           <div class="user-info">
-            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <img
+              v-if="hasValue(node.node.headerUrl)"
+              :src="node.node.headerUrl"
+              alt
+            />
             <div v-else-if="node.node.orgLeader" class="user-name">
               <em>{{
                 node.node.orgLeader.substring(node.node.orgLeader.length - 2)
               }}</em>
             </div>
           </div>
-          <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
-          <span v-if="node.node.orgLeader">(组织负责人)</span>
+          <em v-if="hasValue(node.node.orgLeader)">{{
+            node.node.orgLeader
+          }}</em>
+          <span v-if="hasValue(node.node.orgLeader)">(组织负责人)</span>
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
-        <template v-if="node.node.add">
+        <template v-if="hasValue(node.node.add)">
           <el-cascader
             v-model="fictitiousOrgId"
             ref="cascader"
@@ -56,15 +66,21 @@
         </template>
         <template v-if="node.node.orgType == '1'">
           <div class="user-info">
-            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <img
+              v-if="hasValue(node.node.headerUrl)"
+              :src="node.node.headerUrl"
+              alt
+            />
             <div v-else-if="node.node.orgLeader" class="user-name">
               <em>{{
                 node.node.orgLeader.substring(node.node.orgLeader.length - 2)
               }}</em>
             </div>
           </div>
-          <em v-if="node.node.orgLeader">{{ node.node.orgLeader }}</em>
-          <span v-if="node.node.orgLeader">(组织负责人)</span>
+          <em v-if="hasValue(node.node.orgLeader)">{{
+            node.node.orgLeader
+          }}</em>
+          <span v-if="hasValue(node.node.orgLeader)">(组织负责人)</span>
           <span v-else>提示：此组织尚未设置负责人</span>
         </template>
       </dt>
