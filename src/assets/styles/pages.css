@@ -877,6 +877,10 @@
   color: #4d5155;
 }
 
+.create-okr .tl-form .el-form-item__error {
+  display: none;
+}
+
 .associated-undertaking > .el-scrollbar {
   margin: 0 0 30px 0;
 }
@@ -1263,7 +1267,7 @@
 .collpase-panel.has-third-child dt,
 .collpase-panel.has-third-child ~ .collpase-panel dt,
 .collpase-panel dt.is-edit {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   height: 40px;
 }
 

@@ -1437,8 +1437,8 @@
 
 .tl-collapse .el-collapse-item__header {
   position: relative;
-  margin: 0 0 26px 0;
-  padding: 20px;
+  margin: 0 0 10px 0;
+  padding: 10px 20px;
   flex-direction: column;
   align-items: flex-start;
   border-bottom: unset;
@@ -2937,12 +2937,12 @@
 
 .collpase-panel.has-third-child .has-third-child,
 .collpase-panel.has-third-child~dl .has-third-child {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .collpase-panel.has-third-child .has-third-child+dd>div,
 .collpase-panel.has-third-child~dl .has-third-child+dd>div {
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .collpase-panel.has-third-child .has-third-child+dd>div .el-form-item__content,
@@ -2968,6 +2968,10 @@
 .collpase-panel.has-third-child dd .el-form-item__content,
 .collpase-panel.has-third-child~dl dd .el-form-item__content {
   flex: unset;
+}
+
+.collpase-panel.has-third-child dd:last-child {
+  margin: 0;
 }
 
 .card-panel-body .sub-tr .tl-progress-bar .progress-number {
