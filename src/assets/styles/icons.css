@@ -17,7 +17,8 @@
 .top-menu-remind i::before,
 .toggle-view i,
 .assistant.is-focus > i,
-.gave-praise i {
+.gave-praise i,
+.menu-control-button i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -76,6 +77,17 @@
 .assistant.is-focus > i {
   background-position-x: -60px;
   background-position-y: -180px;
+}
+
+.menu-control-button i {
+  width: 24px;
+  height: 24px;
+  background-position-x: -3px;
+  background-position-y: -2073px;
+}
+
+.menu-control-button:hover i {
+  background-position-x: -33px;
 }
 
 /* 删除 */

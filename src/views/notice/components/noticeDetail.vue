@@ -22,7 +22,7 @@
           <div style="display: flex; justify-content: space-between">
             <div>
               <span>通知人：</span>
-              <span>{{ data.sendUserId }}</span>
+              <span>{{ data.sendUserName }}</span>
             </div>
             <div>
               <span>通知时间：</span>

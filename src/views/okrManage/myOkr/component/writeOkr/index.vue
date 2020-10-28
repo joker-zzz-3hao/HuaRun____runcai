@@ -169,6 +169,7 @@
                               step-strictly
                               class="tl-input-number"
                               @focus="showTip('o', index, 0)"
+                              @blur="hideTip('o', index, 0)"
                             ></el-input-number>
                           </el-popover>
                           <span>%</span>

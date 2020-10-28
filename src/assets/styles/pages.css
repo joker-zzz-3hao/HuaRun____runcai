@@ -877,6 +877,11 @@
   color: #4d5155;
 }
 
+.okr-change .tl-form .el-form-item__error,
+.create-okr .tl-form .el-form-item__error {
+  display: none;
+}
+
 .associated-undertaking > .el-scrollbar {
   margin: 0 0 30px 0;
 }
@@ -1250,6 +1255,10 @@
   background: linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(-45deg,#e1e6eb 0, #e1e6eb 0.4em,#fff 0,#fff 0.6em);
 }
 
+.okr-detail .el-collapse-item__content .collpase-panel:not(:last-of-type) {
+  padding: 0 0 4px 0;
+}
+
 .okr-change .tl-collapse .collpase-panel .has-third-child>div:nth-child(3) span,
 .okr-detail .tl-collapse .collpase-panel .has-third-child>div:nth-child(3) span {
   flex-basis: unset;
@@ -1263,7 +1272,7 @@
 .collpase-panel.has-third-child dt,
 .collpase-panel.has-third-child ~ .collpase-panel dt,
 .collpase-panel dt.is-edit {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   height: 40px;
 }
 
@@ -2169,7 +2178,8 @@
 .replay-okr .cont-area,
 .project-manage .cont-area,
 .working-hours .cont-area,
-.msg-notice .cont-area {
+.msg-notice .cont-area,
+.monitor-data .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
@@ -2385,7 +2395,6 @@
 
 .weekly-cont .tag-lists li {
   margin: 5px 0 5px 18px;
-  min-width: 110px;
   max-width: 110px;
   cursor: pointer;
 }
@@ -2449,10 +2458,6 @@
 
 .weekly-cont .tl-table.is-edit .el-table__body-wrapper .el-table__row td:nth-child(5) .cell .el-form-item {
   flex: 0 0 54px;
-}
-
-.weekly-cont .tag-lists li em {
-  padding: 0 10px 0 0;
 }
 
 .write-weekly .btn-box {
@@ -4653,4 +4658,31 @@
 }
 .weight-tip .el-popper .popper__arrow::after{
   border-top-color: #7e7e7e;
+}
+/* 监控数据 */
+.monitor-data .monitor-area{
+  padding: 20px 30px;
+  border-radius: 4px;
+  background: #fff;
+}
+.monitor-data .monitor-area>div{
+  margin: 20px 0 0 0 ;
+}
+.monitor-data .monitor-area .title {
+  font-size: 18px;
+    color: #4d5155;
+    font-weight: 600;
+}
+
+.monitor-data .monitor-area .title>span:nth-of-type(2) {
+  margin: 0 0 0 60px ;
+}
+.monitor-data .el-collapse-item__header{
+  font-size: 16px;
+    color: #4d5155;
+    font-weight: 600;
+}
+.monitor-data .el-collapse-item__header>span:nth-of-type(1){
+  color: #909399;
+  margin: 0 20px 0 0;
 }
