@@ -65,27 +65,15 @@
                       },
                     ]"
                   >
-                    <el-popover
-                      :content="lastWeightmsg"
-                      placement="top-start"
-                      :value="oitem.showTip"
-                      trigger="manual"
-                      class="weight-tip"
-                      :append-to-body="false"
-                    >
-                      <el-input-number
-                        slot="reference"
-                        v-model="oitem.okrWeight"
-                        controls-position="right"
-                        :min="0"
-                        :max="100"
-                        :step="0.1"
-                        step-strictly
-                        class="tl-input-number"
-                        @focus="showTip('o', index, 0)"
-                        @blur="hideTip('o', index, 0)"
-                      ></el-input-number>
-                    </el-popover>
+                    <el-input-number
+                      v-model="oitem.okrWeight"
+                      controls-position="right"
+                      :min="0"
+                      :max="100"
+                      :step="0.1"
+                      step-strictly
+                      class="tl-input-number"
+                    ></el-input-number>
                     <span>%</span>
                   </el-form-item>
                 </div>
@@ -206,27 +194,15 @@
                   },
                 ]"
               >
-                <el-popover
-                  :content="lastWeightmsg"
-                  placement="top-start"
-                  :value="kitem.showTip"
-                  trigger="manual"
-                  class="weight-tip"
-                  :append-to-body="false"
-                >
-                  <el-input-number
-                    slot="reference"
-                    v-model.trim="kitem.okrWeight"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="0.1"
-                    step-strictly
-                    class="tl-input-number"
-                    @focus="showTip('kr', index, kindex)"
-                    @blur="hideTip('kr', index, kindex)"
-                  ></el-input-number>
-                </el-popover>
+                <el-input-number
+                  v-model.trim="kitem.okrWeight"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="0.1"
+                  step-strictly
+                  class="tl-input-number"
+                ></el-input-number>
                 <span>%</span>
               </el-form-item>
               <el-form-item label="当前进度">

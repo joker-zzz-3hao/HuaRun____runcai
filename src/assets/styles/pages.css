@@ -877,6 +877,7 @@
   color: #4d5155;
 }
 
+.okr-change .tl-form .el-form-item__error,
 .create-okr .tl-form .el-form-item__error {
   display: none;
 }
