@@ -188,7 +188,7 @@ export default {
     queryTeamOkr() {
       this.originalOrgOkrList = [];
       this.orgOkrPeriodList = [];
-      this.server.getOrgOkr().then((res) => {
+      this.server.getOrgOkr({ okrBelongType: 1 }).then((res) => {
         if (res.code == 200) {
           // 将所有团队目标、周期整合到一个数组
           if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
