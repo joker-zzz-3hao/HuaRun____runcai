@@ -55,12 +55,15 @@
                 :rules="formData.rules.workContent"
               >
                 <el-input
-                  v-model.trim="scope.row.workContent"
-                  maxlength="20"
+                  autosize
+                  type="textarea"
+                  :rows="1"
+                  v-model="scope.row.workContent"
+                  maxlength="500"
                   v-if="canUpdate"
                   clearable
-                  placeholder="简短概括任务，20字以内"
-                  class="tl-input"
+                  placeholder="简短概括任务，50字以内"
+                  class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
                 <em v-else>{{ scope.row.workContent }}</em>

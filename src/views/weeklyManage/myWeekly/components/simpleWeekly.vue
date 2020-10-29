@@ -55,8 +55,11 @@
                 :rules="formData.rules.workContent"
               >
                 <el-input
-                  v-model.trim="scope.row.workContent"
-                  maxlength="20"
+                  autosize
+                  type="textarea"
+                  :rows="1"
+                  v-model="scope.row.workContent"
+                  maxlength="50"
                   v-if="canUpdate"
                   clearable
                   placeholder="简短概括任务，20字以内"
