@@ -79,11 +79,7 @@
           <dd>
             <em v-money="{ value: baseInfo.projectBudget, precision: 0 }"></em
             ><span>元</span
-            ><span
-              >({{
-                CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"
-              }})</span
-            >
+            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -186,6 +182,14 @@
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userPostName)">{{
                   scope.row.userPostName
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createDate" label="加入时间" min-width="180">
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.createDate)">{{
+                  scope.row.createDate
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -339,9 +343,15 @@ export default {
             managerName = item.userName;
           }
         });
+        let content = '';
+        if (managerName == '') {
+          content = `是否设置「${data.userName}」为项目经理?`;
+        } else {
+          content = `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`;
+        }
         this.$xconfirm({
           title: '设置项目经理',
-          content: `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`,
+          content,
         }).then(() => {
           this.server.setProjectManager({
             userId: data.userId,

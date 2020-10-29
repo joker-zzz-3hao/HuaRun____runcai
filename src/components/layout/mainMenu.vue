@@ -50,21 +50,79 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
-                <el-cascader-panel
+                <!-- <el-cascader-panel
                   v-model="processId"
                   :options="taskoptions"
-                  v-if="
-                    (options.subClassTag == 'taskProcess' ||
-                      options.subClassTag == 'taskprocess') &&
-                    showtask
-                  "
+                  v-if="options.subClassTag == 'taskprocess'"
                   @change="selectProcessItem"
                   :props="{
                     value: 'processId',
                     label: 'processName',
                   }"
-                ></el-cascader-panel>
+                ></el-cascader-panel> -->
               </router-link>
+              <dd class="level-three-menu" v-if="$route.name == 'taskProcess'">
+                <el-popover
+                  placement="right"
+                  trigger="click"
+                  :append-to-body="false"
+                  :visible-arrow="false"
+                  v-model="teamvisible"
+                >
+                  <ul>
+                    <li
+                      v-for="teamitem in taskoptions[0].children"
+                      :key="teamitem.processId"
+                      @click="selectProcessItem(teamitem)"
+                    >
+                      {{ teamitem.processName }}
+                    </li>
+                  </ul>
+                  <div slot="reference">
+                    <em>团队使用</em><i class="el-icon-arrow-right"></i>
+                  </div>
+                </el-popover>
+                <el-popover
+                  placement="right"
+                  trigger="click"
+                  :append-to-body="false"
+                  :visible-arrow="false"
+                  v-model="littleRangevisible"
+                >
+                  <ul>
+                    <li
+                      v-for="lritem in taskoptions[1].children"
+                      :key="lritem.processId"
+                      @click="selectProcessItem(lritem)"
+                    >
+                      {{ lritem.processName }}
+                    </li>
+                  </ul>
+                  <div slot="reference">
+                    <em>小范围使用</em><i class="el-icon-arrow-right"></i>
+                  </div>
+                </el-popover>
+                <el-popover
+                  placement="right"
+                  trigger="click"
+                  :append-to-body="false"
+                  :visible-arrow="false"
+                  v-model="personvisible"
+                >
+                  <ul>
+                    <li
+                      v-for="personitem in taskoptions[2].children"
+                      :key="personitem.processId"
+                      @click="selectProcessItem(personitem)"
+                    >
+                      {{ personitem.processName }}
+                    </li>
+                  </ul>
+                  <div slot="reference">
+                    <em>个人使用</em><i class="el-icon-arrow-right"></i>
+                  </div>
+                </el-popover>
+              </dd>
             </dl>
           </template>
           <div
@@ -113,6 +171,9 @@ export default {
       }],
       showtask: process.env.VUE_APP_PORTAL
                         != 'https://talent.crcloud.com',
+      teamvisible: false,
+      littleRangevisible: false,
+      personvisible: false,
     };
   },
   props: {
@@ -154,8 +215,8 @@ export default {
             this.taskoptions[0].children = res.data.content;
 
             if (this.teamList.length > 0) {
-              this.processId = ['1', this.teamList[0].processId];
-              this.selectProcessItem(this.processId);
+              // this.processId = ['1', this.teamList[0].processId];
+              this.selectProcessItem(this.teamList[0]);
             }
           } else if (processType == '2') {
             this.littleRangeList = res.data.content;
@@ -168,18 +229,13 @@ export default {
       });
     },
     selectProcessItem(value) {
-      let processList = [];
-      if (value[0] == '1') {
-        processList = this.teamList;
-      } else if (value[0] == '2') {
-        processList = this.littleRangeList;
-      } else {
-        processList = this.personList;
-      }
-      const processVal = processList.filter((pitem) => value[1] == pitem.processId)[0] || {};
-      console.log('selectProcessItem', processVal);
-      this.setProcessId(processVal);
+      console.log('selectProcessItem', value);
+      this.teamvisible = false;
+      this.littleRangevisible = false;
+      this.personvisible = false;
+      this.setProcessId(value);
     },
+
     fnHandle(str, index, parameter) {
       if (str.length > 0 && index < str.length) {
         if (typeof (parameter) === 'string') {

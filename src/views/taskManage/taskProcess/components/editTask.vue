@@ -307,15 +307,27 @@
           <div class="tab-cont" v-if="currentIndex === 0">
             <div class="tl-custom-timeline">
               <dl class="timeline-list">
-                <dd v-for="item in historyList" :key="item.createTime">
+                <dd
+                  v-for="(item, pindex) in historyList"
+                  :key="item.createTime"
+                >
                   <div class="list-info">
                     <div class="list-title">{{ item.createTime }}</div>
                     <div
                       class="list-cont"
-                      v-for="content in item.contentList"
+                      v-for="(content, cindex) in item.contentList"
                       :key="content.operationId"
                     >
-                      <div class="operate-type">
+                      <div
+                        v-if="pindex == historyList.length - 1 && cindex == 0"
+                      >
+                        <em>{{ content.userName }}</em>
+                        <span>创建了</span>
+                      </div>
+                      <div
+                        v-else-if="pindex != historyList.length - 1"
+                        class="operate-type"
+                      >
                         <em>{{ content.userName }}</em>
                         <span v-if="content.contents.operate == 'ADD'"
                           >添加了</span
@@ -326,11 +338,17 @@
                         <span v-else-if="content.contents.operate == 'DELETE'"
                           >删除了</span
                         >
+                      </div>
+                      <div
+                        class="operate-kind"
+                        v-if="
+                          pindex != historyList.length - 1 ||
+                          content.contents.field != 'taskProgress'
+                        "
+                      >
                         <span>{{
                           CONST.FIEID_MAP[content.contents.field]
                         }}</span>
-                      </div>
-                      <div class="operate-kind">
                         <span v-if="content.contents.field == 'taskProgress'">
                           {{ content.contents.value }}%</span
                         >
