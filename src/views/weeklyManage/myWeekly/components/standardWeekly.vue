@@ -71,6 +71,7 @@
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
+                  autosize
                   type="textarea"
                   :rows="1"
                   v-if="canUpdate"
@@ -268,12 +269,12 @@
           </div>
         </div>
         <el-input
-          v-if="canUpdate"
-          v-model.trim="item.thoughtContent"
+          autosize
           type="textarea"
-          maxlength="100"
           :rows="1"
-          resize="none"
+          v-if="canUpdate"
+          v-model="item.thoughtContent"
+          maxlength="10000"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
