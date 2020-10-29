@@ -61,7 +61,7 @@
                   maxlength="50"
                   v-if="canUpdate"
                   clearable
-                  placeholder="简短概括任务，20字以内"
+                  placeholder="简短概括任务"
                   class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->

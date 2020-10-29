@@ -57,31 +57,30 @@
                 <el-input
                   :autosize="{ minRows: 1, maxRows: 8 }"
                   type="textarea"
-                  :rows="1"
                   v-model="scope.row.workContent"
                   maxlength="50"
                   v-if="canUpdate"
                   clearable
-                  placeholder="简短概括任务，50字以内"
+                  placeholder="简短概括任务"
                   class="tl-textarea"
                 ></el-input>
-                <!-- 编辑完提交后展示 -->
                 <em v-else>{{ scope.row.workContent }}</em>
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column label="内容" prop="workDesc" width="400">
+          <el-table-column label="内容" prop="workDesc" min-width="400">
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
                   :autosize="{ minRows: 1, maxRows: 8 }"
                   type="textarea"
                   v-if="canUpdate"
-                  placeholder="请多留点信息描述任务项，便于领导了解工作情况"
+                  placeholder="请描述任务项"
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
+                  clearable
+                  maxlength="50"
                 ></el-input>
-                <!-- 编辑完提交后展示 -->
                 <pre v-else class="font-normal">{{ scope.row.workDesc }}</pre>
               </el-form-item>
             </template>
