@@ -33,17 +33,11 @@
               <i :class="{ 'el-icon-check': !item.noOpen }"></i>
             </div>
             <em v-if="hasValue(item.weeklyId)">已提交</em>
-            <em v-if="!hasValue(item.weeklyId) && !hasValue(item.noOpen)"
-              >未提交</em
-            >
-            <em v-if="hasValue(item.noOpen)">未开放</em>
+            <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
+            <em v-if="item.noOpen">未开放</em>
           </div>
           <el-tooltip
-            v-if="
-              !hasValue(item.weeklyId) &&
-              !hasValue(item.noOpen) &&
-              !hasValue(item.canEdit)
-            "
+            v-if="!hasValue(item.weeklyId) && !item.noOpen && !item.canEdit"
             class
             effect="dark"
             content="本周之前周报不可提交"
