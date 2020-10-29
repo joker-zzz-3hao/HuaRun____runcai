@@ -44,42 +44,50 @@
         :isFromTeam="true"
       ></tl-calendar>
       <div class="flex-sb">
-        <span>周报状态</span>
-        <el-select
-          v-model="submitedOrLooked"
-          @change="submitedOrLookedChange"
-          placeholder="周报状态"
-          clearable
-          @clear="clearSubmitOrLooked"
-          :disabled="!!formData.queryType"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in submitedOrLookedList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <span>周报速看</span>
-        <el-select
-          v-model="formData.queryType"
-          @change="lookChange"
-          placeholder="周报速看"
-          clearable
-          @clear="clear"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select el-icon-view"
-        >
-          <el-option
-            v-for="item in lookItemList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <dl class="dl-item">
+          <dt>周报状态</dt>
+          <dd>
+            <el-select
+              v-model="submitedOrLooked"
+              @change="submitedOrLookedChange"
+              placeholder="周报状态"
+              clearable
+              @clear="clearSubmitOrLooked"
+              :disabled="!!formData.queryType"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in submitedOrLookedList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>周报速看</dt>
+          <dd>
+            <el-select
+              v-model="formData.queryType"
+              @change="lookChange"
+              placeholder="周报速看"
+              clearable
+              @clear="clear"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select el-icon-view"
+            >
+              <el-option
+                v-for="item in lookItemList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
       <crcloud-table
         :total="total"
