@@ -207,13 +207,6 @@
                             >{{ oitem.undertakeOkrVo.undertakeOkrContent }}</em
                           >
                           <em
-                            v-if="
-                              oitem.undertakeOkrVo.undertakeOkrContent &&
-                              oitem.cultureId
-                            "
-                            >、</em
-                          >
-                          <em
                             v-if="oitem.cultureId"
                             @click="openUndertake(index)"
                             >{{ oitem.cultureName }}</em
@@ -675,6 +668,7 @@ export default {
           } else {
             item.currentOption = '';
           }
+          console.log('123', item.undertakeOkrVo.undertakeOkrContent);
           // this.$forceUpdate();
         });
       }
@@ -945,11 +939,12 @@ export default {
     'searchForm.periodId': {
       handler(newVal) {
         if (newVal) {
+          console.log('这是草稿');
           this.searchForm.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
           )[0] || {};
           this.periodName = this.searchForm.okrCycle.periodName;
-          if (this.selectIndex !== '') {
+          if (this.selectIndex !== '' && this.writeInfo.canWrite != 'draft') {
             for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
               this.formData.okrInfoList[i].undertakeOkrVo = {};
               this.formData.okrInfoList[i].cultureId = '';
@@ -958,15 +953,19 @@ export default {
           }
         }
       },
+      immediate: false,
     },
     'searchForm.okrType': {
       handler() {
-        for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
-          this.formData.okrInfoList[i].undertakeOkrVo = {};
-          this.formData.okrInfoList[i].cultureId = '';
-          this.formData.okrInfoList[i].cultureName = '';
+        if (this.writeInfo.canWrite != 'draft') {
+          for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
+            this.formData.okrInfoList[i].undertakeOkrVo = {};
+            this.formData.okrInfoList[i].cultureId = '';
+            this.formData.okrInfoList[i].cultureName = '';
+          }
         }
       },
+      immediate: false,
     },
   },
 };
