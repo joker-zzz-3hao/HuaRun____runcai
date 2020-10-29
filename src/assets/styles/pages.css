@@ -2572,6 +2572,10 @@
   padding: 5px 0 5px 10px;
 }
 
+.week-plan .el-table__body .el-table__row:first-child td:nth-child(2) .cell {
+  padding-top: 10px;
+}
+
 .week-plan .el-table__body .el-table__row td:nth-child(2) .el-form-item {
   width: 100%;
 }
