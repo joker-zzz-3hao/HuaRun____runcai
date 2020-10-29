@@ -3,8 +3,8 @@ const THROW_TYPE_MAP = {
   1: '研发支出',
 };
 const CURRENCY_MAP = {
-  0: '人民币',
-  1: '港币',
+  0: '港币',
+  1: '人民币',
 };
 const PROJECT_TYPE_MAP = {
   0: '可行性研究项目',
@@ -56,8 +56,8 @@ const THROW_TYPE_CREATE_LIST = [
   { value: '1', label: '研发支出' },
 ];
 const CURRENCY_LIST = [
-  { value: '0', label: '人民币' },
-  { value: '1', label: '港币' },
+  { value: '0', label: '港币' },
+  { value: '1', label: '人民币' },
 ];
 
 const PROJECT_STATUS_LIST = [
