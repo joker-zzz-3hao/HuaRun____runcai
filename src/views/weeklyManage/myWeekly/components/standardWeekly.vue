@@ -55,12 +55,15 @@
                 :rules="formData.rules.workContent"
               >
                 <el-input
-                  v-model.trim="scope.row.workContent"
-                  maxlength="20"
+                  autosize
+                  type="textarea"
+                  :rows="1"
+                  v-model="scope.row.workContent"
+                  maxlength="50"
                   v-if="canUpdate"
                   clearable
-                  placeholder="简短概括任务，20字以内"
-                  class="tl-input"
+                  placeholder="简短概括任务，50字以内"
+                  class="tl-textarea"
                 ></el-input>
                 <!-- 编辑完提交后展示 -->
                 <em v-else>{{ scope.row.workContent }}</em>
@@ -71,6 +74,7 @@
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
+                  autosize
                   type="textarea"
                   :rows="1"
                   v-if="canUpdate"
@@ -268,12 +272,12 @@
           </div>
         </div>
         <el-input
-          v-if="canUpdate"
-          v-model.trim="item.thoughtContent"
+          autosize
           type="textarea"
-          maxlength="100"
           :rows="1"
-          resize="none"
+          v-if="canUpdate"
+          v-model="item.thoughtContent"
+          maxlength="10000"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
