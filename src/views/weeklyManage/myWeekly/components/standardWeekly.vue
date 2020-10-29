@@ -333,7 +333,7 @@
                     v-model.trim="scope.row.planContent"
                     maxlength="100"
                     clearable
-                    placeholder="建议添加多条做下周计划项，显得计划比较详实"
+                    placeholder="建议添加多条作为下周计划项，显得计划比较详实"
                     class="tl-input"
                   ></el-input>
                   <!-- 编辑完之后 -->
