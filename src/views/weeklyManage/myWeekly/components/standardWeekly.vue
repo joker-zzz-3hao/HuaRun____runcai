@@ -1157,30 +1157,31 @@ export default {
       this.workItemError = '';
       this.projectError = '';
       this.OKRError = '';
-      // 将下周计划、感想有未填写的内容的数据删除
-      this.formData.weeklyThoughtSaveList = this.formData.weeklyThoughtSaveList.filter(
-        (thought) => !!thought.thoughtContent,
-      );
-      this.formData.weeklyPlanSaveList = this.formData.weeklyPlanSaveList.filter(
-        (plan) => !!plan.planContent,
-      );
-      // 表单校验
-      const params = {
-        calendarId: this.calendarId,
-        weeklyEmotion: this.weeklyEmotion,
-        weeklyId: this.weeklyId,
-        weeklyType: this.weeklyType,
-        weeklyOkrSaveList: this.weeklyOkrSaveList,
-        weeklyPlanSaveList: this.formData.weeklyPlanSaveList,
-        weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
-        weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
-      };
+
       if (this.weeklyEmotion === '') {
         this.showEmotionError = true;
         this.emotionError = '本周心情';
       }
       this.$refs.formDom.validate((valid) => {
         if (valid && this.weeklyEmotion !== '') {
+          // 将下周计划、感想有未填写的内容的数据删除
+          this.formData.weeklyThoughtSaveList = this.formData.weeklyThoughtSaveList.filter(
+            (thought) => !!thought.thoughtContent,
+          );
+          this.formData.weeklyPlanSaveList = this.formData.weeklyPlanSaveList.filter(
+            (plan) => !!plan.planContent,
+          );
+          // 表单校验
+          const params = {
+            calendarId: this.calendarId,
+            weeklyEmotion: this.weeklyEmotion,
+            weeklyId: this.weeklyId,
+            weeklyType: this.weeklyType,
+            weeklyOkrSaveList: this.weeklyOkrSaveList,
+            weeklyPlanSaveList: this.formData.weeklyPlanSaveList,
+            weeklyThoughtSaveList: this.formData.weeklyThoughtSaveList,
+            weeklyWorkVoSaveList: this.formData.weeklyWorkVoSaveList,
+          };
           this.commitLoading = true;
           this.server.commitWeekly(params).then((res) => {
             this.commitLoading = false;
