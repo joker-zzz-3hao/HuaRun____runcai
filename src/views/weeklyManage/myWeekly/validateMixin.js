@@ -6,7 +6,7 @@ export default {
         callback('请填写进度');
         this.processError = '进度';
       } else if (!/(^[0-9]\d*$)/.test(value)) {
-        callback('只能填写正整数');
+        callback('填写正整数');
       } else if (value > 100) {
         callback('不能大于100');
       } else {
