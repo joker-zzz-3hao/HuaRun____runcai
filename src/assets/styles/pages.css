@@ -2878,11 +2878,11 @@
   padding: 0 15px;
 }
 
-.teams-weekly .flex-sb .el-select:last-child .el-input__inner {
+.teams-weekly .flex-sb .dl-item:last-child .el-select .el-input__inner {
   padding: 0 0 0 30px;
 }
 
-.teams-weekly .flex-sb .el-select:last-child:before {
+.teams-weekly .flex-sb .dl-item:last-child .el-select:before {
   position: absolute;
   left: 8px;
   top: 13px;
@@ -2893,16 +2893,16 @@
   color: #fff;
 }
 
-.teams-weekly .flex-sb .el-select:last-child .el-input .el-input__inner {
+.teams-weekly .flex-sb .dl-item:last-child .el-select .el-input .el-input__inner {
   background: #685df1;
 }
 
-.teams-weekly .flex-sb .el-select:last-child .el-input__inner,
-.teams-weekly .flex-sb .el-select:last-child .el-input .el-select__caret {
+.teams-weekly .flex-sb .dl-item:last-child .el-select .el-input__inner,
+.teams-weekly .flex-sb .dl-item:last-child .el-select .el-input .el-select__caret {
   color: #fff;
 }
 
-.teams-weekly .flex-sb .el-select:last-child .el-input .el-input__inner::-webkit-input-placeholder{
+.teams-weekly .flex-sb .dl-item:last-child .el-select .el-input .el-input__inner::-webkit-input-placeholder{
   color:#fff !important;
 }
 
@@ -3326,6 +3326,14 @@
 
 .teams-weekly .tl-month-editor {
   flex: 0 0 150px;
+}
+
+.teams-weekly .cont-area .flex-sb .dl-item {
+  margin: 0 0 0 20px;
+}
+
+.teams-weekly .cont-area .flex-sb .dl-item dt {
+  margin: 0 10px 0 0;
 }
 
 .tl-tooltip-popper.send-gold {
