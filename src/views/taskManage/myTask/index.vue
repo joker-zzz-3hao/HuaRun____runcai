@@ -492,7 +492,7 @@ export default {
   methods: {
     canEdit(row) {
       return (row.taskStatus == 10
-                      && row.createBy != this.userInfo.userId);
+                      && row.taskUserId != this.userInfo.userId);
     },
     toggleState() {
       this.showTask = !this.showTask;

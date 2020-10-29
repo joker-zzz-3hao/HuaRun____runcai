@@ -123,6 +123,7 @@
             >
               <template slot-scope="scope">
                 <el-button
+                  :disabled="canEdit(scope.row)"
                   plain
                   class="tl-btn amt-border-fadeout"
                   @click="openEdit(scope.row)"
@@ -244,6 +245,10 @@ export default {
     }),
   },
   methods: {
+    canEdit(row) {
+      return (row.taskStatus == 10
+                      && row.taskUserId != this.userInfo.userId);
+    },
     init(typeId) {
       this.rootData = [];
       // 切换分类时
