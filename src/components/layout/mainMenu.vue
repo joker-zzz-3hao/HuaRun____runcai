@@ -25,7 +25,7 @@
           </li>
         </ul>
         <div class="sub-menu" :class="{ 'change-index': changeZindex }">
-          <template v-for="item in menuList">
+          <template v-for="(item, mindex) in menuList">
             <dl
               :key="item.id"
               v-if="item.subMenuList"
@@ -66,12 +66,13 @@
                   placement="right"
                   trigger="click"
                   :visible-arrow="false"
+                  v-model="item.teamvisible"
                 >
                   <ul>
                     <li
                       v-for="teamitem in taskoptions[0].children"
                       :key="teamitem.processId"
-                      @click="selectProcessItem(teamitem)"
+                      @click="selectProcessItem(mindex, teamitem)"
                     >
                       {{ teamitem.processName }}
                     </li>
@@ -87,12 +88,13 @@
                   placement="right"
                   trigger="click"
                   :visible-arrow="false"
+                  v-model="item.littleRangevisible"
                 >
                   <ul>
                     <li
                       v-for="lritem in taskoptions[1].children"
                       :key="lritem.processId"
-                      @click="selectProcessItem(lritem)"
+                      @click="selectProcessItem(mindex, lritem)"
                     >
                       {{ lritem.processName }}
                     </li>
@@ -108,12 +110,13 @@
                   placement="right"
                   trigger="click"
                   :visible-arrow="false"
+                  v-model="item.personvisible"
                 >
                   <ul>
                     <li
                       v-for="personitem in taskoptions[2].children"
                       :key="personitem.processId"
-                      @click="selectProcessItem(personitem)"
+                      @click="selectProcessItem(mindex, personitem)"
                     >
                       {{ personitem.processName }}
                     </li>
@@ -231,11 +234,11 @@ export default {
         }
       });
     },
-    selectProcessItem(value) {
+    selectProcessItem(index, value) {
       console.log('selectProcessItem', value);
-      // this.teamvisible = false;
-      // this.littleRangevisible = false;
-      // this.personvisible = false;
+      this.menuList[index].teamvisible = false;
+      this.menuList[index].littleRangevisible = false;
+      this.menuList[index].personvisible = false;
       this.setProcessId(value);
     },
 
