@@ -9,7 +9,7 @@ export default class Server extends ServerBase {
 
   // 查okr列表
   getmyOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/okr', param);
   }
 
   // 查全部okr列表

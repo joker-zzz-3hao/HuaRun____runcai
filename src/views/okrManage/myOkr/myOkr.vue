@@ -423,9 +423,13 @@ export default {
                 this.handleJSON(this.searchForm.status, draftList);
               }
             } else {
-              this.okrList[0].tableList = res.data.okrDetails || [];
-              this.okrList[0].okrMain = res.data.okrMain || {};
-              this.okrId = this.okrList[0].okrMain.okrId || '';
+              this.okrList = [];
+              res.data.forEach((okritem, okrindex) => {
+                this.okrList[okrindex] = {};
+                this.okrList[okrindex].tableList = okritem.okrDetails || [];
+                this.okrList[okrindex].okrMain = okritem.okrMain || {};
+                this.okrId = this.okrList[okrindex].okrMain.okrId || '';
+              });
             }
             this.loading = false;
           }
