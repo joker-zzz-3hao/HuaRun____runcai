@@ -296,6 +296,7 @@ export default [{
       hasMainMenu: true,
       isSubMenu: true,
       parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
       title: 'projectDetail',
       power: 'projectList',
     },

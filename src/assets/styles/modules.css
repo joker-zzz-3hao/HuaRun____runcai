@@ -3675,6 +3675,8 @@
 }
 
 .main-menu .sub-menu dl {
+  display: flex;
+  flex-direction: column;
   padding: 10px 20px 20px 10px;
   position: absolute;
   left: 0;
@@ -3683,6 +3685,10 @@
   z-index: 1;
   opacity: 0;
   transition: all .4s ease-out;
+}
+
+.main-menu .sub-menu dl dt {
+  order: 0;
 }
 
 .main-menu .sub-menu dl.is-focus {
@@ -3706,13 +3712,6 @@
 
 .main-menu .sub-menu dd {
   padding: 0 0 0 10px;
-}
-
-.main-menu .sub-menu dd i {
-  margin: 0 6px 0 0;
-  width: 24px;
-  height: 24px;
-  background: #eee;
 }
 
 .main-menu .sub-menu dd.is-active {

@@ -50,21 +50,24 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
-                <el-cascader-panel
+                <!-- <el-cascader-panel
                   v-model="processId"
                   :options="taskoptions"
-                  v-if="
-                    (options.subClassTag == 'taskProcess' ||
-                      options.subClassTag == 'taskprocess') &&
-                    showtask
-                  "
+                  v-if="options.subClassTag == 'taskprocess'"
                   @change="selectProcessItem"
                   :props="{
                     value: 'processId',
                     label: 'processName',
                   }"
-                ></el-cascader-panel>
+                ></el-cascader-panel> -->
               </router-link>
+              <dd class="level-three-menu" v-if="$route.name == 'taskProcess'">
+                <div><em>团队使用</em><i class="el-icon-arrow-right"></i></div>
+                <div>
+                  <em>小范围使用</em><i class="el-icon-arrow-right"></i>
+                </div>
+                <div><em>个人使用</em><i class="el-icon-arrow-right"></i></div>
+              </dd>
             </dl>
           </template>
           <div
