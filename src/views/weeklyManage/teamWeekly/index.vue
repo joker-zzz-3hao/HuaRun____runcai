@@ -44,7 +44,7 @@
         :isFromTeam="true"
       ></tl-calendar>
       <div class="flex-sb">
-        <!-- <span>周报状态：</span> -->
+        <span>周报状态</span>
         <el-select
           v-model="submitedOrLooked"
           @change="submitedOrLookedChange"
@@ -62,6 +62,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
+        <span>周报速看</span>
         <el-select
           v-model="formData.queryType"
           @change="lookChange"
@@ -478,6 +479,10 @@ export default {
       tenantId: null,
       lookItemList: [
         {
+          value: '',
+          label: '全部',
+        },
+        {
           value: '0',
           label: '工作项',
         },
@@ -495,10 +500,10 @@ export default {
         },
       ],
       submitedOrLookedList: [
-        // {
-        //   value: '',
-        //   label: '全部',
-        // },
+        {
+          value: '',
+          label: '全部',
+        },
         {
           value: '1',
           label: '已查看',
