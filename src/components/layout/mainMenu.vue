@@ -61,7 +61,10 @@
                   }"
                 ></el-cascader-panel> -->
               </router-link>
-              <dd class="level-three-menu" v-if="$route.name == 'taskProcess'">
+              <dd
+                class="level-three-menu"
+                v-if="showtask && $route.name == 'taskProcess'"
+              >
                 <el-popover
                   placement="right"
                   trigger="click"
@@ -73,6 +76,9 @@
                       v-for="teamitem in taskoptions[0].children"
                       :key="teamitem.processId"
                       @click="selectProcessItem(mindex, teamitem)"
+                      :class="{
+                        'hight-line': selectId == teamitem.processId,
+                      }"
                     >
                       {{ teamitem.processName }}
                     </li>
@@ -80,7 +86,10 @@
                       暂无过程，可以去「过程管理」创建哦
                     </li>
                   </ul>
-                  <div slot="reference">
+                  <div
+                    slot="reference"
+                    :class="{ 'hight-line': selectType == 1 }"
+                  >
                     <em>团队使用</em><i class="el-icon-arrow-right"></i>
                   </div>
                 </el-popover>
@@ -95,6 +104,9 @@
                       v-for="lritem in taskoptions[1].children"
                       :key="lritem.processId"
                       @click="selectProcessItem(mindex, lritem)"
+                      :class="{
+                        'hight-line': selectId == lritem.processId,
+                      }"
                     >
                       {{ lritem.processName }}
                     </li>
@@ -102,7 +114,10 @@
                       暂无过程，可以去「过程管理」创建哦
                     </li>
                   </ul>
-                  <div slot="reference">
+                  <div
+                    slot="reference"
+                    :class="{ 'hight-line': selectType == 2 }"
+                  >
                     <em>小范围使用</em><i class="el-icon-arrow-right"></i>
                   </div>
                 </el-popover>
@@ -117,6 +132,9 @@
                       v-for="personitem in taskoptions[2].children"
                       :key="personitem.processId"
                       @click="selectProcessItem(mindex, personitem)"
+                      :class="{
+                        'hight-line': selectId == personitem.processId,
+                      }"
                     >
                       {{ personitem.processName }}
                     </li>
@@ -124,7 +142,10 @@
                       暂无过程，可以去「过程管理」创建哦
                     </li>
                   </ul>
-                  <div slot="reference">
+                  <div
+                    slot="reference"
+                    :class="{ 'hight-line': selectType == 3 }"
+                  >
                     <em>个人使用</em><i class="el-icon-arrow-right"></i>
                   </div>
                 </el-popover>
@@ -180,6 +201,8 @@ export default {
       teamvisible: false,
       littleRangevisible: false,
       personvisible: false,
+      selectId: '',
+      selectType: 1,
     };
   },
   props: {
@@ -222,7 +245,7 @@ export default {
 
             if (this.teamList.length > 0) {
               // this.processId = ['1', this.teamList[0].processId];
-              this.selectProcessItem(this.teamList[0]);
+              this.selectProcessItem(0, this.teamList[0]);
             }
           } else if (processType == '2') {
             this.littleRangeList = res.data.content;
@@ -239,6 +262,8 @@ export default {
       this.menuList[index].teamvisible = false;
       this.menuList[index].littleRangevisible = false;
       this.menuList[index].personvisible = false;
+      this.selectId = value.processId;
+      this.selectType = value.processType;
       this.setProcessId(value);
     },
 
