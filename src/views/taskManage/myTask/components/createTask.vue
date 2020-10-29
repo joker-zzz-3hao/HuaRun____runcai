@@ -237,7 +237,10 @@ export default {
 
   },
   methods: {
-    show() {
+    show(row = '') {
+      if (row) {
+        this.formData = row;
+      }
       this.queryOkr();
       this.getUserList();
       this.getProcess();

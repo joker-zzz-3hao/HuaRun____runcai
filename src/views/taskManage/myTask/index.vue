@@ -515,6 +515,13 @@ export default {
       });
     },
     openEdit(row) {
+      if (row.taskStatus === 0) {
+        this.existCreatetask = true;
+        this.$nextTick(() => {
+          this.$refs.createtask.show();
+        });
+        return;
+      }
       this.existEditTask = true;
       this.$nextTick(() => {
         this.$refs.editTask.show(row.taskId, this.canEdit(row));
