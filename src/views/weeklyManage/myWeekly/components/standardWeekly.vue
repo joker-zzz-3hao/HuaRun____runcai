@@ -55,7 +55,7 @@
                 :rules="formData.rules.workContent"
               >
                 <el-input
-                  autosize
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   type="textarea"
                   :rows="1"
                   v-model="scope.row.workContent"
@@ -74,9 +74,8 @@
             <template slot-scope="scope">
               <el-form-item>
                 <el-input
-                  autosize
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   type="textarea"
-                  :rows="1"
                   v-if="canUpdate"
                   placeholder="请多留点信息描述任务项，便于领导了解工作情况"
                   v-model="scope.row.workDesc"
@@ -272,9 +271,8 @@
           </div>
         </div>
         <el-input
-          autosize
+          :autosize="{ minRows: 1, maxRows: 8 }"
           type="textarea"
-          :rows="1"
           v-if="canUpdate"
           v-model="item.thoughtContent"
           maxlength="10000"
@@ -329,12 +327,14 @@
               <template slot-scope="scope">
                 <el-form-item>
                   <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 8 }"
                     v-if="canUpdate"
-                    v-model.trim="scope.row.planContent"
+                    v-model="scope.row.planContent"
                     maxlength="100"
                     clearable
                     placeholder="建议添加多条做下周计划项，显得计划比较详实"
-                    class="tl-input"
+                    class="tl-textarea"
                   ></el-input>
                   <!-- 编辑完之后 -->
                   <em v-else>{{ scope.row.planContent }}</em>

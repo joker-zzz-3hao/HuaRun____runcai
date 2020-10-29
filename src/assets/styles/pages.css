@@ -2204,7 +2204,7 @@
   justify-content: space-between;
   margin: 5px 12px;
   padding: 0 10px;
-  width: 226px;
+  max-width: 226px;
   height: 40px;
   border: 1px #e5e9ee solid;
   border-radius: 2px;
@@ -2569,7 +2569,7 @@
 }
 
 .week-plan .el-table__body .el-table__row td:nth-child(2) .cell {
-  padding: 0;
+  padding: 5px 0 5px 10px;
 }
 
 .week-plan .el-table__body .el-table__row td:nth-child(2) .el-form-item {
@@ -2583,7 +2583,7 @@
 }
 
 .week-plan .tl-table td {
-  height: 60px;
+  height: unset;
 }
 
 .write-weekly .week-plan .btn-box {
@@ -3318,6 +3318,10 @@
   flex: 1;
   display: flex;
   justify-content: center;
+}
+
+.teams-weekly .tl-month-editor {
+  flex: 0 0 150px;
 }
 
 .tl-tooltip-popper.send-gold {
