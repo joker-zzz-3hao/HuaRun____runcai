@@ -79,11 +79,7 @@
           <dd>
             <em v-money="{ value: baseInfo.projectBudget, precision: 0 }"></em
             ><span>元</span
-            ><span
-              >({{
-                CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"
-              }})</span
-            >
+            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
         </dl>
         <dl class="dl-item">
