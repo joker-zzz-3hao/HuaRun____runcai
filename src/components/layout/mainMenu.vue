@@ -65,9 +65,7 @@
                 <el-popover
                   placement="right"
                   trigger="click"
-                  :append-to-body="false"
                   :visible-arrow="false"
-                  v-model="teamvisible"
                 >
                   <ul>
                     <li
@@ -77,6 +75,9 @@
                     >
                       {{ teamitem.processName }}
                     </li>
+                    <li v-if="taskoptions[0].children.length == 0">
+                      暂无过程，可以去「过程管理」创建哦
+                    </li>
                   </ul>
                   <div slot="reference">
                     <em>团队使用</em><i class="el-icon-arrow-right"></i>
@@ -85,9 +86,7 @@
                 <el-popover
                   placement="right"
                   trigger="click"
-                  :append-to-body="false"
                   :visible-arrow="false"
-                  v-model="littleRangevisible"
                 >
                   <ul>
                     <li
@@ -97,6 +96,9 @@
                     >
                       {{ lritem.processName }}
                     </li>
+                    <li v-if="taskoptions[1].children.length == 0">
+                      暂无过程，可以去「过程管理」创建哦
+                    </li>
                   </ul>
                   <div slot="reference">
                     <em>小范围使用</em><i class="el-icon-arrow-right"></i>
@@ -105,9 +107,7 @@
                 <el-popover
                   placement="right"
                   trigger="click"
-                  :append-to-body="false"
                   :visible-arrow="false"
-                  v-model="personvisible"
                 >
                   <ul>
                     <li
@@ -116,6 +116,9 @@
                       @click="selectProcessItem(personitem)"
                     >
                       {{ personitem.processName }}
+                    </li>
+                    <li v-if="taskoptions[2].children.length == 0">
+                      暂无过程，可以去「过程管理」创建哦
                     </li>
                   </ul>
                   <div slot="reference">
@@ -230,9 +233,9 @@ export default {
     },
     selectProcessItem(value) {
       console.log('selectProcessItem', value);
-      this.teamvisible = false;
-      this.littleRangevisible = false;
-      this.personvisible = false;
+      // this.teamvisible = false;
+      // this.littleRangevisible = false;
+      // this.personvisible = false;
       this.setProcessId(value);
     },
 
