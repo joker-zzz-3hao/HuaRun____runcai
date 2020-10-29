@@ -134,6 +134,11 @@
               </template>
             </el-table-column>
             <el-table-column
+              prop="projectUserCount"
+              label="项目成员(位)"
+              min-width="120"
+            ></el-table-column>
+            <el-table-column
               prop="projectBeginDate"
               label="开始时间"
               min-width="120"
@@ -204,13 +209,6 @@
               min-width="180"
             >
             </el-table-column>
-
-            <el-table-column
-              prop="projectUserCount"
-              label="项目成员(位)"
-              min-width="120"
-            ></el-table-column>
-
             <el-table-column
               fixed="right"
               label="操作"
