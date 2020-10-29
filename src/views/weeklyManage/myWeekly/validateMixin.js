@@ -19,11 +19,11 @@ export default {
         callback('请填写工时');
         this.workTimeError = '工时';
       } else if (value > 100) {
-        callback('工时不能超过100天');
+        callback('最多100天');
       } else if (!/^(\d{1,2}(\.\d{1})?|100)$/.test(value)) {
-        callback('请保留一位小数');
+        callback('保留一位小数');
       } else if (value < 0.5) {
-        callback('最小值为0.5');
+        callback('最小值0.5');
       } else {
         callback();
       }
