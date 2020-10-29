@@ -1002,10 +1002,17 @@ export default {
         if (row.randomId == work.randomId) {
           // 数据转换为0.5单位
           const tempArr = String(work.workTime).split('.');
+          // eslint-disable-next-line no-restricted-globals
+          if (isNaN(work.workTime)) { // 不是数字，清空
+            work.workTime = 0.5;
+          }
+          if (work.workTime < 0) {
+            work.workTime = 0.5;
+          }
           if (tempArr.length > 1) { // 有小数位
             // if (tempArr[1].length == 1) {
             // work.workTime.toFixed();
-            if (tempArr[1] != 5) { //  小数点后不为5
+            if (tempArr[1] != 5) { // 小数点后不为5
               work.workTime = Number(work.workTime).toFixed(0);
             }
             // }
@@ -1019,6 +1026,13 @@ export default {
           work.workProgress = Number(work.workProgress).toFixed(0);
           if (work.workProgress > 100) {
             work.workProgress = 100;
+          }
+          if (work.workProgress < 0) {
+            work.workProgress = '';
+          }
+          // eslint-disable-next-line no-restricted-globals
+          if (isNaN(work.workProgress)) { // 不是数字，清空
+            work.workProgress = '';
           }
         }
       });
