@@ -146,11 +146,11 @@ export default {
     switchOrg() {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
+          window.location.reload();
           if (this.$route.name == 'overview' || this.$route.name == 'departleader' || this.$route.name == 'grassStaff' || this.$route.name == 'teamleader') {
             this.checkUserType();
             return false;
           }
-          window.location.reload();
         }
       });
     },
