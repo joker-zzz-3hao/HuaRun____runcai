@@ -94,35 +94,34 @@ export default {
           containLabel: true,
         },
 
-        // dataZoom: [// 给x轴设置滚动条
-        //   {
-        //     start: 0, // 默认为0
-        //     end: 100 - 1500 / 31, // 默认为100
-        //     type: 'slider',
-        //     show: false,
-        //     xAxisIndex: [0],
-        //     handleSize: 0, // 滑动条的 左右2个滑动条的大小
-        //     height: 10, // 组件高度
-        //     left: '10%', // 左边的距离
-        //     right: '10%', // 右边的距离
-        //     bottom: 0, // 右边的距离
-        //     borderRadius: 5,
-        //     showDataShadow: false, // 是否显示数据阴影 默认auto
-        //     showDetail: false, // 即拖拽时候是否显示详细数值信息 默认true
-        //     realtime: true, // 是否实时更新
-        //     filterMode: 'filter',
-
-        //   },
-        //   // 下面这个属性是里面拖到
-        //   {
-        //     type: 'inside',
-        //     zoomLock: true,
-        //     show: true,
-        //     xAxisIndex: [0],
-        //     start: 0, // 默认为1
-        //     end: 100 - 1500 / 31, // 默认为100
-        //   },
-        // ],
+        dataZoom: [{
+          type: 'slider', // slider表示有滑动块的，inside表示内置的
+          // startValue: 8,//可用于设置开始显示的柱子的长度
+          // endValue: 1,//可用于设置结束显示的柱子的长度
+          show: that.mainDataX.length > 9 && !that.testModel,
+          xAxisIndex: [0],
+          handleSize: 0, // 滑动条的 左右2个滑动条的大小
+          height: 12, // 组件高度
+          left: '10%', // 左边的距离
+          right: '10%', // 右边的距离
+          bottom: -3, // 右边的距离
+          borderColor: '#F4F4F4',
+          fillerColor: '#E7E7E7',
+          backgroundColor: '#F4F4F4', // 两边未选中的滑动条区域的颜色
+          showDataShadow: false, // 是否显示数据阴影 默认auto
+          showDetail: false, // 即拖拽时候是否显示详细数值信息 默认true
+          realtime: true, // 是否实时更新
+          filterMode: 'filter',
+          handleColor: '#FFBC20',
+          // eslint-disable-next-line no-dupe-keys
+          start: 0,
+          // eslint-disable-next-line no-dupe-keys
+          end: 90,
+          handleStyle: {
+            borderRadius: '20',
+            background: '#F4F6F8',
+          },
+        }],
         xAxis: {
           boundaryGap: false,
           data: that.testModel ? mainData.mainDataX : that.mainDataX,
@@ -323,7 +322,34 @@ export default {
             },
           },
         ],
-
+        dataZoom: [{
+          type: 'slider', // slider表示有滑动块的，inside表示内置的
+          // startValue: 8,//可用于设置开始显示的柱子的长度
+          // endValue: 1,//可用于设置结束显示的柱子的长度
+          show: that.mainDataX.length > 9 && !that.testModel,
+          xAxisIndex: [0],
+          handleSize: 0, // 滑动条的 左右2个滑动条的大小
+          height: 12, // 组件高度
+          left: '10%', // 左边的距离
+          right: '10%', // 右边的距离
+          bottom: -3, // 右边的距离
+          borderColor: '#F4F4F4',
+          fillerColor: '#E7E7E7',
+          backgroundColor: '#F4F4F4', // 两边未选中的滑动条区域的颜色
+          showDataShadow: false, // 是否显示数据阴影 默认auto
+          showDetail: false, // 即拖拽时候是否显示详细数值信息 默认true
+          realtime: true, // 是否实时更新
+          filterMode: 'filter',
+          handleColor: '#FFBC20',
+          // eslint-disable-next-line no-dupe-keys
+          start: 0,
+          // eslint-disable-next-line no-dupe-keys
+          end: 90,
+          handleStyle: {
+            borderRadius: '20',
+            background: '#F4F6F8',
+          },
+        }],
         series: [{
           // eslint-disable-next-line max-len
           data: that.testModel ? mainData.mainCount : that.mainCount,
