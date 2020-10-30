@@ -8,4 +8,8 @@ export default class Server extends ServerBase {
   onlineUserInfo(param) {
     return this._ajaxPost('gateway/account-service/collect/onlineUserInfo', param);
   }
+
+  getLoginLogPage(param) {
+    return this._ajaxPost('gateway/account-service/getLoginLogPage', param);
+  }
 }
