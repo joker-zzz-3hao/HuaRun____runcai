@@ -35,7 +35,12 @@
             class="tl-month-editor"
           ></el-date-picker>
         </div>
-        <el-table :data="tableData" :show-header="false" style="width: 100%">
+        <el-table
+          :data="tableData"
+          :show-header="true"
+          class="tl-table"
+          style="width: 100%"
+        >
           <el-table-column label="周报">
             <template slot-scope="scope">
               <span>{{ scope.row.weekBegin }}~{{ scope.row.weekEnd }}</span>
@@ -288,11 +293,11 @@ export default {
               if (value == 0) {
                 console.log('');
               } else if (value == 1) {
-                texts.push('高');
+                texts.push('信心指数高');
               } else if (value == 4) {
-                texts.push('中');
+                texts.push('信心指数中');
               } else if (value == 7) {
-                texts.push('低');
+                texts.push('信心指数低');
               }
               return texts;
             },
