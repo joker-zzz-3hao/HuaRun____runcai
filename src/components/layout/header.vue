@@ -17,7 +17,7 @@
             v-model="orgId"
             @change="switchOrg"
             :popper-append-to-body="true"
-            popper-class="tl-select-dropdown"
+            popper-class="tl-select-dropdown toggle-teams"
             class="tl-select"
           >
             <el-option
