@@ -758,7 +758,7 @@ export default {
     },
     visibleChange(name) {
       if (!name) {
-        this.remoteMethod();
+        // this.remoteMethod();
       }
     },
     nameChange(userId) {
