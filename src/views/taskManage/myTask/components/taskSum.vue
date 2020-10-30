@@ -1,5 +1,13 @@
 <template>
   <div class="task-sum tl-table-fix">
+    <div>
+      <span>当前任务汇报时间：</span>
+      <em>{{ weekName }}</em>
+      <em>{{ weekBegin }}</em>
+      <span>~</span>
+      <em>{{ weekEnd }}</em>
+    </div>
+    <em>温馨提示：仅统计当前周时间段内的所有工作任务</em>
     <el-table
       :data="tableList"
       class="tl-table"
