@@ -124,7 +124,7 @@ const OPERTYPE_MAP = {
   1: '系统登录',
   2: 'ldap登录',
   3: '润工作登录',
-  0: '登出',
+  4: '登出',
 };
 const server = new Server();
 export default {
