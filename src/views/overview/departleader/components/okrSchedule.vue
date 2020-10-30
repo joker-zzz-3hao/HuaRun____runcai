@@ -114,9 +114,9 @@ export default {
           filterMode: 'filter',
           handleColor: '#FFBC20',
           // eslint-disable-next-line no-dupe-keys
-          start: 0,
+          start: 18,
           // eslint-disable-next-line no-dupe-keys
-          end: 90,
+          end: 1,
           handleStyle: {
             borderRadius: '20',
             background: '#F4F6F8',
@@ -342,9 +342,9 @@ export default {
           filterMode: 'filter',
           handleColor: '#FFBC20',
           // eslint-disable-next-line no-dupe-keys
-          start: 0,
+          start: 18,
           // eslint-disable-next-line no-dupe-keys
-          end: 90,
+          end: 1,
           handleStyle: {
             borderRadius: '20',
             background: '#F4F6F8',

@@ -9,17 +9,6 @@
         <em v-show="showTask">我的任务</em>
         <em v-show="!showTask">任务汇总</em>
       </div>
-      <!-- 任务汇总提示 -->
-      <div v-show="!showTask">
-        <div>
-          <span>当前任务汇报时间：</span>
-          <em>{{ weekName }}</em>
-          <em>{{ weekBegin }}</em>
-          <span>~</span>
-          <em>{{ weekEnd }}</em>
-        </div>
-        <em>温馨提示：仅统计当前周时间段内的所有工作任务</em>
-      </div>
       <div class="operating-box">
         <el-button
           type="primary"

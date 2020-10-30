@@ -80,29 +80,21 @@
       >
         <div slot="tableContainer">
           <el-table :data="historyTable">
-            <el-table-column
-              label="姓名（账号）"
-              prop="userName"
-              min-width="120px"
-            >
-              <template slot-scope="scope">
-                <span>{{ scope.row.userName }}</span>
-                <span v-if="scope.row.userAccount"
-                  >（{{ scope.row.userAccount }}）</span
-                >
-              </template>
+            <el-table-column label="姓名（账号）" prop="userName">
             </el-table-column>
+            <el-table-column label="账号" prop="userAccount"></el-table-column>
             <el-table-column
               label="所属租户"
               prop="tenantName"
             ></el-table-column>
             <el-table-column label="所属部门" prop="orgName"></el-table-column>
+            <el-table-column label="操作类型" prop="operType">
+              <template slot-scope="scope">
+                <span>{{ OPERTYPE_MAP[scope.row.operType] }}</span>
+              </template>
+            </el-table-column>
 
             <el-table-column label="操作时间" prop="createTime">
-              <template slot-scope="scope">
-                <span>{{ scope.row.createTime }}</span>
-                <span>（{{ OPERTYPE_MAP[scope.row.operType] }}）</span>
-              </template>
             </el-table-column>
             <el-table-column label="操作系统/浏览器" prop="os">
               <template slot-scope="scope">
