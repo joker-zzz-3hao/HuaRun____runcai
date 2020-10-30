@@ -1,5 +1,5 @@
 <template>
-  <div class="task-sum">
+  <div class="task-sum tl-table-fix">
     <el-table
       :data="tableList"
       class="tl-table"
@@ -7,7 +7,7 @@
       :expand-row-keys="expands"
       default-expand-all
     >
-      <el-table-column type="expand" width="5%">
+      <el-table-column type="expand">
         <template slot-scope="scope">
           <dl
             v-for="item in scope.row.tableData"
