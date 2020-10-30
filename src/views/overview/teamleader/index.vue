@@ -1,13 +1,18 @@
 <template>
   <div class="team-view">
-    <el-tag
+    <el-alert
       v-show="testModel"
-      type="success"
-      style="margin-bottom: 10px; width: 100%"
-      size="medium"
-      :hit="true"
-      >该周期暂无内容。以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</el-tag
+      type="warning"
+      class="tl-alert"
+      style="margin-bottom: 10px"
     >
+      <div slot="title">
+        <i>温馨提示：</i>
+        <span
+          >该周期暂无内容。以下为示例数据内容，润才提供综合数据视图，多种维度可视化报告，帮助管理者与个人关注目标的合理性与团队能力</span
+        >
+      </div>
+    </el-alert>
     <div class="cont-area">
       <tl-org-page :periodId="periodId"></tl-org-page>
       <div class="tl-card-panel">
