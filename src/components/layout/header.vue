@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import { loginOut } from '@/lib/util';
 import global from '@/mixin/global';
 import Server from '../server';
@@ -132,6 +132,7 @@ export default {
   mixins: [global],
   methods: {
     ...mapMutations('common', ['setTotalMeaasge', 'changeTestModel']),
+    ...mapActions('common', ['getUserInfo']),
     init() {
       this.server.unread().then((res) => {
         if (res.code == '200') {
@@ -146,11 +147,12 @@ export default {
     switchOrg() {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
-          window.location.reload();
           if (this.$route.name == 'overview' || this.$route.name == 'departleader' || this.$route.name == 'grassStaff' || this.$route.name == 'teamleader') {
             this.checkUserType();
+            this.getUserInfo();
             return false;
           }
+          window.location.reload();
         }
       });
     },
