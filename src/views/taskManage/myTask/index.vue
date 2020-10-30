@@ -491,8 +491,10 @@ export default {
   },
   methods: {
     canEdit(row) {
-      return (row.taskStatus == 10
-                      && row.taskUserId != this.userInfo.userId);
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                      || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
     },
     toggleState() {
       this.showTask = !this.showTask;
@@ -518,7 +520,7 @@ export default {
       if (row.taskStatus === 0) {
         this.existCreatetask = true;
         this.$nextTick(() => {
-          this.$refs.createtask.show();
+          this.$refs.createtask.show(row);
         });
         return;
       }
