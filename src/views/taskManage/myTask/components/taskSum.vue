@@ -167,10 +167,10 @@ export default {
           this.owntableData = [];
           this.assigntableData = [];
           this.tableData.forEach((item) => {
-            if (item.taskUserId == this.userInfo.userId) {
+            if (item.taskUserId == this.userInfo.userId && item.taskStatus !== 0) {
               this.owntableData.push(item);
             }
-            if (item.createBy == this.userInfo.userId) {
+            if (item.createBy == this.userInfo.userId && item.taskStatus !== 0) {
               this.assigntableData.push(item);
             }
           });
@@ -199,7 +199,7 @@ export default {
       return '当前已用时长 0天 0小时 0分';
     },
     submit() {
-      this.go('myWeekly', { params: { weeklySumParams: this.tableData } });
+      this.go('myWeekly', { params: { weeklySumParams: this.owntableData } });
     },
   },
 };

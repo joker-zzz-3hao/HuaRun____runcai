@@ -17,7 +17,11 @@
       <div>
         <el-form ref="addTask" :model="formData">
           <el-form-item prop="taskTitle">
-            <el-input maxlength="100" placeholder="请输入任务标题" v-model.trim="formData.taskTitle"></el-input>
+            <el-input
+              maxlength="100"
+              placeholder="请输入任务标题"
+              v-model.trim="formData.taskTitle"
+            ></el-input>
           </el-form-item>
           <el-form-item prop="taskUserId">
             <el-select
@@ -36,14 +40,22 @@
                 :label="item.userName"
                 :value="item.userId"
               >
-                <span style="float:left">
-                  <el-avatar :size="30" :src="item.headUrl" @error="errorHandler">
+                <span style="float: left">
+                  <el-avatar
+                    :size="30"
+                    :src="item.headUrl"
+                    @error="errorHandler"
+                  >
                     <div v-if="item.userName" class="user-name">
-                      <em>{{item.userName.substring(item.userName.length-2)}}</em>
+                      <em>{{
+                        item.userName.substring(item.userName.length - 2)
+                      }}</em>
                     </div>
                   </el-avatar>
                 </span>
-                <span style="float:left;marginLeft:5px">{{item.userName}}</span>
+                <span style="float: left; marginleft: 5px">{{
+                  item.userName
+                }}</span>
               </el-option>
             </el-select>
           </el-form-item>
@@ -80,7 +92,7 @@
               @change="processChange"
               :step="1"
               show-input
-              style="width:60%"
+              style="width: 60%"
             ></el-slider>
           </el-form-item>
           <el-form-item label="当前进度更新原因说明" prop="taskProgressRemark">
@@ -93,8 +105,19 @@
           </el-form-item>
         </el-form>
         <div class="operating-box">
-          <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="create">确定</el-button>
-          <el-button class="tl-btn amt-border-fadeout" :disabled="loading" @click="closed">取消</el-button>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            :loading="loading"
+            @click="create"
+            >确定</el-button
+          >
+          <el-button
+            class="tl-btn amt-border-fadeout"
+            :disabled="loading"
+            @click="closed"
+            >取消</el-button
+          >
         </div>
       </div>
     </el-dialog>
@@ -179,7 +202,7 @@ export default {
     },
     visibleChange(name) {
       if (!name) {
-        this.remoteMethod();
+        // this.remoteMethod();
       }
     },
     create() {

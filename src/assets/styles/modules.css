@@ -3533,6 +3533,12 @@
   height: 34px;
 }
 
+.toggle-teams li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* 主内容区--左侧菜单 */
 .main-wrap {
   margin-top: 70px;
