@@ -219,7 +219,7 @@ export default {
       pageSize: 20,
       totalpage: 0,
       reviewStatus: '',
-      showpic: true,
+      showpic: process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com', // 展示图片
     };
   },
   created() {
