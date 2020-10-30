@@ -88,35 +88,39 @@
     </template>
     <div class="card-panel-body img-list" v-if="orgUser.length > 0">
       <em>成员：</em>
-      <dl
-        v-for="(item, index) in orgUser"
-        :key="item.userId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <img v-if="item.headUrl" :src="item.headUrl" alt />
-          <div class="user-name" v-else>
-            <em>{{ cutName(item.userName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ item.userName }}</dd>
-      </dl>
+      <div class="dl-group">
+        <dl
+          v-for="(item, index) in orgUser"
+          :key="item.userId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <img v-if="item.headUrl" :src="item.headUrl" alt />
+            <div class="user-name" v-else>
+              <em>{{ cutName(item.userName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ item.userName }}</dd>
+        </dl>
+      </div>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
       <em>子部门：</em>
-      <dl
-        v-for="(item, index) in orgTable"
-        :key="item.orgId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <img v-if="item.headUrl" :src="item.headUrl" alt />
-          <div class="user-name" v-else>
-            <em>{{ cutName(item.orgName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ cutOrgName(item.orgName) }}</dd>
-      </dl>
+      <div class="dl-group">
+        <dl
+          v-for="(item, index) in orgTable"
+          :key="item.orgId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <img v-if="item.headUrl" :src="item.headUrl" alt />
+            <div class="user-name" v-else>
+              <em>{{ cutName(item.orgName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ cutOrgName(item.orgName) }}</dd>
+        </dl>
+      </div>
     </div>
   </div>
 </template>

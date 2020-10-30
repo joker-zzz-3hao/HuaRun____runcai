@@ -526,6 +526,20 @@
   padding: 0 30px 0 30px;
 }
 
+.overview .img-list {
+  flex-wrap: unset;
+}
+
+.overview .img-list > em {
+  flex: 0 0 60px;
+}
+
+.overview .img-list .dl-group {
+  margin: 0 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .team-view .operating-area-inside > em,
 .staff-view .operating-area-inside > em,
 .department-view .operating-area-inside > em {

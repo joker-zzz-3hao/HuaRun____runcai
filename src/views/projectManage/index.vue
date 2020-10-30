@@ -13,11 +13,7 @@
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
           </el-input>
-          <el-button
-            type="primary"
-            class="tl-btn amt-bg-slip"
-            @click="searchManage"
-          >
+          <el-button plain class="tl-btn" @click="searchManage">
             搜索
           </el-button>
           <el-button
