@@ -2193,8 +2193,12 @@
   align-items: center;
 }
 
+.calendar-select {
+  justify-content: space-between;
+}
+
 .weekly-select {
-  margin: 0 0 0 15px;
+  margin: 0 16px 0 15px;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
@@ -2208,6 +2212,10 @@
   height: 40px;
   border: 1px #e5e9ee solid;
   border-radius: 2px;
+}
+
+.weekly-select li:last-child {
+  margin-right: 0;
 }
 
 .weekly-select li:not(.is-unopen) {
@@ -2400,7 +2408,7 @@
 
 .weekly-cont .tag-lists li {
   margin: 0 0 0 18px;
-  max-width: 110px;
+  max-width: 115px;
   cursor: pointer;
 }
 
@@ -2569,10 +2577,14 @@
 }
 
 .week-plan .el-table__body .el-table__row td:nth-child(2) .cell {
+  padding: 10px 0 10px 10px;
+}
+
+.week-plan .is-edit .el-table__body .el-table__row td:nth-child(2) .cell {
   padding: 5px 0 5px 10px;
 }
 
-.week-plan .el-table__body .el-table__row:first-child td:nth-child(2) .cell {
+.week-plan .is-edit .el-table__body .el-table__row:first-child td:nth-child(2) .cell {
   padding-top: 10px;
 }
 
