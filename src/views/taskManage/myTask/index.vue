@@ -74,7 +74,7 @@
       <div class="tl-condition-screening" v-show="showTask">
         <dl
           class="screening-results tag-lists"
-          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-top'"
+          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
         >
           <dt>所有筛选</dt>
           <dd v-for="(item, index) in searchList" :key="index">
