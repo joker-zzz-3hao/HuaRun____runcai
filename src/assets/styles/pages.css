@@ -943,6 +943,9 @@
   display: flex;
   align-items: center;
   }
+  .associated-undertaking .operating-area-inside .el-select{
+    width: 300px;
+  }
 .associated-undertaking .operating-area-inside em{
   margin-right: 10px;
 }

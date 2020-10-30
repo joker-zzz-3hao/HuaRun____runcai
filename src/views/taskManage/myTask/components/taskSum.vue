@@ -1,10 +1,52 @@
 <template>
   <div class="task-sum tl-table-fix">
     <el-table
-      :data="tableList"
+      :data="tableListown"
       class="tl-table"
       row-key="titleLabel"
-      :expand-row-keys="expands"
+      default-expand-all
+    >
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <dl
+            v-for="item in scope.row.tableData"
+            :key="item.taskId"
+            class="sub-tr"
+          >
+            <dd class="okr-line"></dd>
+            <dd>
+              <a @click="openEdit(item.taskId)">{{ item.taskTitle }}</a>
+            </dd>
+            <dd>{{ item.createByUserName }}</dd>
+            <dd>{{ computedTime(item.createTime) }}</dd>
+            <dd>
+              <div v-if="item.processName && item.stepName">
+                <span>{{ item.processName }}</span>
+                <span>-</span>
+                <span>{{ item.stepName }}</span>
+              </div>
+              <div v-else>未设置任务过程</div>
+            </dd>
+            <dd>
+              <span>{{ CONST.TASK_STATUS_MAP[item.taskStatus] }}</span>
+            </dd>
+            <dd>
+              <tl-process :data="parseInt(item.taskProgress, 10)"></tl-process>
+            </dd>
+          </dl>
+        </template>
+      </el-table-column>
+      <el-table-column prop="titleLabel"></el-table-column>
+      <el-table-column prop="userLabel"></el-table-column>
+      <el-table-column prop="createLabel"></el-table-column>
+      <el-table-column prop="processLabel"></el-table-column>
+      <el-table-column prop="statusLabel"></el-table-column>
+      <el-table-column prop="progressLabel"></el-table-column>
+    </el-table>
+    <el-table
+      :data="tableListassign"
+      class="tl-table"
+      row-key="titleLabel"
       default-expand-all
     >
       <el-table-column type="expand">
@@ -181,7 +223,9 @@ export default {
       weekEnd: '',
       weekName: '',
       loading: false,
-      tableList: [{
+      expands1: [],
+      expands2: [],
+      tableListown: [{
         titleLabel: '我负责的',
         userLabel: '创建人',
         createLabel: '时长统计',
@@ -189,7 +233,8 @@ export default {
         statusLabel: '状态',
         progressLabel: '进度',
         tableData: [],
-      }, {
+      }],
+      tableListassign: [{
         titleLabel: '我指派的',
         userLabel: '创建人',
         createLabel: '时长统计',
@@ -227,16 +272,16 @@ export default {
           this.tableData = res.data || [];
           this.owntableData = [];
           this.assigntableData = [];
-          this.tableList[0].tableData = [];
-          this.tableList[1].tableData = [];
+          this.tableListown[0].tableData = [];
+          this.tableListassign[0].tableData = [];
           this.tableData.forEach((item) => {
             if (item.taskUserId == this.userInfo.userId && item.taskStatus !== 0) {
               this.owntableData.push(item);
-              this.tableList[0].tableData.push(item);
+              this.tableListown[0].tableData.push(item);
             }
             if (item.createBy == this.userInfo.userId && item.taskStatus !== 0) {
               this.assigntableData.push(item);
-              this.tableList[1].tableData.push(item);
+              this.tableListassign[0].tableData.push(item);
             }
           });
         }
