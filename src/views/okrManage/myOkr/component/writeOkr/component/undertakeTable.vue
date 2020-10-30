@@ -218,7 +218,7 @@ export default {
           if (res.data.parentUndertakeOkrInfoResults) {
             this.searchForm.periodId = 0;
             res.data.parentUndertakeOkrInfoResults.forEach((pItem, pindex) => {
-              this.periodList.push({ periodId: pindex, periodName: pItem.okrPeriodEntity.periodName });
+              this.periodList.push({ periodId: pindex, periodName: `${pItem.okrPeriodEntity.periodName}（${this.cutOrgName(pItem.orgName)}）` });
               const departokrList = [];
               pItem.okrList.forEach((item) => {
                 if (this.selectRadioDepart == item.o.okrDetailId
