@@ -8,11 +8,18 @@
             maxlength="64"
             @keyup.enter.native="searchManage"
             v-model="keyWord"
-            placeholder="请输入项目名称"
+            placeholder="请输入项目名称或者项目经理"
             class="tl-input-search"
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
           </el-input>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="searchManage"
+          >
+            搜索
+          </el-button>
           <el-button
             v-show="isTenantAdmin"
             :disabled="!codes.length > 0"

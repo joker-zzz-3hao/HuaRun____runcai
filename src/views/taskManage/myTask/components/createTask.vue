@@ -81,7 +81,7 @@
           </div>
           <el-form-item label="任务时间" prop="timeVal">
             <el-date-picker
-              v-model.trim="formData.timeVal"
+              v-model.trim="timeVal"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -183,6 +183,7 @@ export default {
         taskDesc: null,
         taskUserId: null,
       },
+      timeVal: '',
       okrList: [], // 归属okr列表
       projectList: [], // 项目列表
       userList: [], // 执行人列表
@@ -237,7 +238,14 @@ export default {
 
   },
   methods: {
-    show() {
+    show(row = '') {
+      if (row) {
+        this.formData = row;
+        if (row.taskBegDate) {
+          this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(row.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(row.taskEndDate))];
+        }
+        console.log('row');
+      }
       this.queryOkr();
       this.getUserList();
       this.getProcess();
@@ -301,18 +309,19 @@ export default {
       const userVal = this.userList.filter((item) => item.userId == this.formData.taskUserId)[0] || {};
       let taskBegDate = null;
       let taskEndDate = null;
-      if (this.formData.timeVal) {
-        taskBegDate = `${this.formData.timeVal[0]}  00:00:00` || null;
-        taskEndDate = `${this.formData.timeVal[1]}  23:59:59` || null;
+      if (this.timeVal) {
+        taskBegDate = `${this.timeVal[0]}  00:00:00` || null;
+        taskEndDate = `${this.timeVal[1]}  23:59:59` || null;
       }
       const params = {
+        taskId: this.formData.taskId,
         attachmentList: this.fileList, // TODO: 附件
         // headerHrl: '',
         okrDetailId: this.formData.okrDetailId,
         okrDetailName: okrVal.okrDetailObjectKr,
         processId: this.formData.processId,
-        projectId: this.formData.projectVal.projectId,
-        projectName: this.formData.projectVal.projectNameCn,
+        // projectId: this.formData.projectVal.projectId,
+        // projectName: this.formData.projectVal.projectNameCn,
         taskDesc: this.formData.taskDesc,
         taskBegDate,
         taskEndDate,

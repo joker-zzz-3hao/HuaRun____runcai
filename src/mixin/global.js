@@ -311,7 +311,7 @@ export default {
       } return orgName;
     },
     hasValue(value) {
-      return ![undefined, null, ''].includes(value);
+      return (value != false) && ![undefined, null, ''].includes(value);
     },
   },
 };

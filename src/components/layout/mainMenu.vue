@@ -324,7 +324,7 @@ export default {
     '$route.name': {
       handler(newVal) {
         this.selectMenu = newVal;
-        if (newVal == 'taskProcess') {
+        if (newVal == 'taskProcess' && this.showtask) {
           this.queryTaskProcessList('1');
           this.queryTaskProcessList('2');
           this.queryTaskProcessList('3');
