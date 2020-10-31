@@ -19,9 +19,9 @@
         </el-input>
         <el-checkbox-group v-model="searchUser" @change="handleClick">
           <el-checkbox
-            v-for="item in filterCreate"
+            v-for="(item, index) in filterCreate"
             :label="item.userId"
-            :key="item.userId"
+            :key="item.userId + index"
           >
             <em>{{ item.userName }}</em>
             <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>

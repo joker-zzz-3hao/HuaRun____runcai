@@ -397,6 +397,12 @@ export default {
     initMood() {
       const that = this;
       const myChartmood = echarts.init(document.getElementById('mood-depart'));
+      let endLength;
+      if (that.moodDataX.length > 9) {
+        endLength = (100 / that.moodDataX.length).toFixed(2) * 9;
+      } else {
+        endLength = 100;
+      }
       const option = {
         dataset: {
           source: that.testModel ? mainData.moodData : that.moodDataY,
@@ -438,7 +444,7 @@ export default {
           // eslint-disable-next-line no-dupe-keys
           start: 0,
           // eslint-disable-next-line no-dupe-keys
-          end: 90,
+          end: endLength,
           handleStyle: {
             borderRadius: '20',
             background: '#F4F6F8',

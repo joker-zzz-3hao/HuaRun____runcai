@@ -73,37 +73,6 @@
       </div>
       <div class="tl-condition-screening" v-show="showTask">
         <dl
-          class="screening-results tag-lists"
-          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
-        >
-          <dt>所有筛选</dt>
-          <dd v-for="(item, index) in searchList" :key="index">
-            <em>{{ item.name }}</em>
-            <i class="el-icon-close" @click.stop="clearNode(index)"></i>
-          </dd>
-          <dd v-if="searchTaskUser.length > 0">
-            <span>执行人：</span>
-            <em v-for="p in searchTaskUser.slice(0, 2)" :key="p">{{
-              userMap[p]
-            }}</em>
-            <em>（{{ searchTaskUser.length }}人）</em>
-            <i class="el-icon-close" @click.stop="clearAllPerson('task')"></i>
-          </dd>
-          <dd v-if="searchCreateUser.length > 0">
-            <span>创建人：</span>
-            <em v-for="p in searchCreateUser.slice(0, 2)" :key="p">{{
-              userMap[p]
-            }}</em>
-            <em>（{{ searchCreateUser.length }}人）</em>
-            <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
-          </dd>
-          <!-- 确认接收 -->
-          <dd v-if="accept !== null">
-            <em> {{ accept == true ? "已确认" : "待确认" }}</em>
-            <i class="el-icon-close" @click.stop="clearaccept"></i>
-          </dd>
-        </dl>
-        <dl
           class="condition-lists tag-lists"
           v-show="arrowClass == 'el-icon-caret-top'"
         >
@@ -532,7 +501,8 @@ export default {
       params.pageSize = this.pageSize;
       params.selectType = this.currentIndex;
       params.taskTitle = this.searchMsg;
-      params.psList = this.searchList.concat(this.psList || []);
+      // params.psList = this.searchList.concat(this.psList || []);
+      params.psList = this.searchList;
       params.accept = this.accept;
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();
@@ -661,7 +631,7 @@ export default {
         this.selectStatus({ label: '全部', value: null, isSelected: true });
         this.resetIsSelected(this.taskProcessList, 'init');
       } else {
-        this.psList = [{ processId: parentCate.value }];
+        this.searchList = [{ processId: parentCate.value }];
         this.getTableList();
       }
       const params = {
@@ -704,13 +674,13 @@ export default {
           console.log(stepList.toString());
           return;
         }
-        this.searchList.push({
+        this.searchList = [{
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
           processName: this.taskProcess.label,
           stepId: childCate.value,
           stepName: childCate.label,
-        });
+        }];
         // this.searchList = Array.from(new Set(this.searchList));
       }
     },
@@ -732,17 +702,17 @@ export default {
       const index = userList.indexOf(pId);
       if (index >= 0) {
         userList.splice(index, 1);
-        this.getTableList();
+        // this.getTableList();
       }
     },
     // 删除全部执行人
     clearAllPerson(listType) {
       if (listType == 'task') {
-        this.searchTaskUser = [];
+        this.searchTaskUser.splice(0, this.searchTaskUser.length);
       } else {
-        this.searchCreateUser = [];
+        this.searchCreateUser.splice(0, this.searchCreateUser.length);
       }
-      this.getTableList();
+      // this.getTableList();
     },
     // 重置
     resetIsSelected(list, init) {
@@ -796,6 +766,18 @@ export default {
   },
   watch: {
     searchList: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchTaskUser: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchCreateUser: {
       handler() {
         this.getTableList();
       },
