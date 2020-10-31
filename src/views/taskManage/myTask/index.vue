@@ -74,7 +74,7 @@
       <div class="tl-condition-screening" v-show="showTask">
         <dl
           class="screening-results tag-lists"
-          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
+          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-top'"
         >
           <dt>所有筛选</dt>
           <dd v-for="(item, index) in searchList" :key="index">
@@ -742,17 +742,17 @@ export default {
       const index = userList.indexOf(pId);
       if (index >= 0) {
         userList.splice(index, 1);
-        this.getTableList();
+        // this.getTableList();
       }
     },
     // 删除全部执行人
     clearAllPerson(listType) {
       if (listType == 'task') {
-        this.searchTaskUser = [];
+        this.searchTaskUser.splice(0, this.searchTaskUser.length);
       } else {
-        this.searchCreateUser = [];
+        this.searchCreateUser.splice(0, this.searchCreateUser.length);
       }
-      this.getTableList();
+      // this.getTableList();
     },
     // 重置
     resetIsSelected(list, init) {
@@ -806,6 +806,18 @@ export default {
   },
   watch: {
     searchList: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchTaskUser: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchCreateUser: {
       handler() {
         this.getTableList();
       },
