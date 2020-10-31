@@ -284,17 +284,19 @@ export default {
         taskUserIds: this.searchParams.searchExecutor.toString(),
         createByIds: this.searchParams.searchCreator.toString(),
       };
-      self.server.queryTaskTableList(params).then((res) => {
-        if (res.code == 200) {
-          this.currentPage = res.data.currentPage;
-          this.pageSize = res.data.pageSize;
-          this.total = res.data.total;
-          this.tableData = res.data.content;
-          this.tableData.forEach((task) => {
-            this.$set(task, 'showChangeUser', false);
-          });
-        }
-      });
+      if (self.processObj.processId) {
+        self.server.queryTaskTableList(params).then((res) => {
+          if (res.code == 200) {
+            this.currentPage = res.data.currentPage;
+            this.pageSize = res.data.pageSize;
+            this.total = res.data.total;
+            this.tableData = res.data.content;
+            this.tableData.forEach((task) => {
+              this.$set(task, 'showChangeUser', false);
+            });
+          }
+        });
+      }
     },
     // 切换步骤
     selectTab(tab) {
