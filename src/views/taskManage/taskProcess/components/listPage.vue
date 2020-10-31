@@ -48,30 +48,33 @@
             </el-table-column>
             <el-table-column label="所属分类" prop="typeName">
               <template slot-scope="scope">
-                <em>{{ scope.row.typeName || "暂无分类" }}</em>
-                <el-dropdown class="tl-dropdown" trigger="click">
-                  <div class="el-dropdown-link">
-                    <i class="el-icon-edit"></i>
-                  </div>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-if="processClassifyList.length == 0"
-                      >暂无分类</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      @click.native="changeClassify(scope.row, calssify)"
-                      v-for="calssify in processClassifyList"
-                      :index="calssify.typeId"
-                      :key="calssify.typeId"
-                    >
-                      <em
-                        :class="{
-                          'high-light': scope.row.typeId == calssify.typeId,
-                        }"
-                        >{{ calssify.typeName }}</em
+                <div v-if="canEdit(scope.row)">--</div>
+                <div v-else>
+                  <em>{{ scope.row.typeName || "暂无分类" }}</em>
+                  <el-dropdown class="tl-dropdown" trigger="click">
+                    <div class="el-dropdown-link">
+                      <i class="el-icon-edit"></i>
+                    </div>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item v-if="processClassifyList.length == 0"
+                        >暂无分类</el-dropdown-item
                       >
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                      <el-dropdown-item
+                        @click.native="changeClassify(scope.row, calssify)"
+                        v-for="calssify in processClassifyList"
+                        :index="calssify.typeId"
+                        :key="calssify.typeId"
+                      >
+                        <em
+                          :class="{
+                            'high-light': scope.row.typeId == calssify.typeId,
+                          }"
+                          >{{ calssify.typeName }}</em
+                        >
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -246,8 +249,10 @@ export default {
   },
   methods: {
     canEdit(row) {
-      return (row.taskStatus == 10
-                      && row.taskUserId != this.userInfo.userId);
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                      || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
     },
     init(typeId) {
       this.rootData = [];
