@@ -10,7 +10,7 @@
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">创建任务</div>
+      <div class="drawer-title">{{ title }}</div>
     </div>
     <el-scrollbar>
       <div class="cont-box">
@@ -212,6 +212,7 @@ export default {
       dataParams: { validateCode: '', ...this.params },
       fileList: [], // 文件列表
       loading: false,
+      title: '创建任务',
     };
   },
   computed: {
@@ -241,6 +242,7 @@ export default {
     show(row = '') {
       if (row) {
         this.formData = row;
+        this.title = '编辑任务';
         if (row.taskBegDate) {
           this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(row.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(row.taskEndDate))];
         }
