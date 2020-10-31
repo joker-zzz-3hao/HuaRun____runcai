@@ -244,12 +244,7 @@
                 <div v-else>未设置任务过程</div>
               </template>
             </el-table-column>
-            <el-table-column
-              align="left"
-              prop="taskStatus"
-              label="状态"
-              width="80"
-            >
+            <el-table-column prop="taskStatus" label="状态" width="80">
               <template slot-scope="scope">
                 <i
                   :class="
@@ -258,15 +253,10 @@
                     { 'is-confirm': scope.row.taskStatus == '20' })
                   "
                 ></i>
-                <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                <em>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</em>
               </template>
             </el-table-column>
-            <el-table-column
-              width="220px"
-              align="left"
-              prop="userName"
-              label="执行信息"
-            >
+            <el-table-column width="220px" prop="userName" label="执行信息">
               <template slot-scope="scope">
                 <div>
                   <p>
@@ -293,7 +283,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="200" label="操作" fixed="right">
+            <el-table-column width="180" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   :disabled="
@@ -304,7 +294,7 @@
                   "
                   @click="acceptTask(scope.row.taskId)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   >确认接收</el-button
                 >
                 <!-- 已确认且执行人不是我 不能编辑-->
@@ -312,7 +302,7 @@
                 <el-button
                   :disabled="canEdit(scope.row)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >

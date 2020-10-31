@@ -2376,14 +2376,22 @@
 
 .my-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
 .my-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.my-weekly .el-table__body tr.hover-row.current-row>td,
-.my-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.my-weekly .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td,
+.my-weekly .el-table__body tr.hover-row.current-row > td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+.my-weekly .el-table__body tr.hover-row.el-table__row--striped > td,
+.my-weekly .el-table__body tr.hover-row > td,
+.my-task .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
+.my-task .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
+.my-task .el-table__body tr.hover-row.current-row > td,
+.my-task .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+.my-task .el-table__body tr.hover-row.el-table__row--striped > td,
+.my-task .el-table__body tr.hover-row > td,
 .teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body tr:hover > td,
 .teams-weekly-detail .tl-table .el-table__body-wrapper .el-table__body .expanded > td,
-.teams-weekly-detail .el-table__body tr.hover-row.current-row>td,
-.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
+.teams-weekly-detail .el-table__body tr.hover-row.current-row > td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+.teams-weekly-detail .el-table__body tr.hover-row.el-table__row--striped > td,
+.teams-weekly-detail .el-table__body tr.hover-row > td {
   background: unset;
 }
 
@@ -3460,6 +3468,17 @@
 
 .my-task .tl-table .cell {
   padding: 20px 10px;
+}
+
+.my-task .task-statistical dt {
+  margin: 0 0 6px 0;
+  color: #002115;
+  font-weight: 500;
+}
+
+.my-task .task-statistical dd {
+  font-size: 12px;
+  color: #bdc5cd;
 }
 
 .edit-task .el-drawer__body {
