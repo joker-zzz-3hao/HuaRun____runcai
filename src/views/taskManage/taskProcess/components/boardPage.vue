@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <!-- 影响图片，暂时屏蔽 -->
-    <!--  class="board-view" -->
+  <div class="board-view">
     <!-- <draggable
       class="list-group parent"
       :list="rootData"
@@ -10,7 +8,7 @@
       id="norun"
       :options="options"
     >-->
-    <template v-if="showReal && stepList.length > 0 && processObj.processId">
+    <template v-if="stepList.length > 0 && processObj.processId">
       <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
         <div>
           <h3>{{ stepData.stepName }}</h3>
@@ -72,9 +70,7 @@
         <!-- </draggable> -->
       </div>
     </template>
-    <div v-else class="pic-kanban">
-      <!-- <img src="~@/assets/images/demoPic/kanban.png" /> -->
-    </div>
+
     <tl-edittask
       ref="editTask"
       v-if="existEditTask"
@@ -137,7 +133,7 @@ export default {
         // dragClass: 'dragitem', // 被拖拽元素
       },
       existEditTask: false,
-      showReal: false,
+      showReal: true,
     };
   },
   created() {
