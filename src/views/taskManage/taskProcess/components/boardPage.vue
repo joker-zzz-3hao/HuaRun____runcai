@@ -147,8 +147,8 @@ export default {
         processId: this.processObj.processId,
         typeId: typeId || this.searchParams.typeId,
         taskTitle: this.searchParams.taskTitle || '',
-        taskUserIds: this.searchParams.searchCreator.toString(),
-        createByIds: this.searchParams.searchExecutor.toString(),
+        createByIds: this.searchParams.searchCreator.toString(),
+        taskUserIds: this.searchParams.searchExecutor.toString(),
       };
       this.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {
