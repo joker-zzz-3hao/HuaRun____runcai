@@ -96,6 +96,9 @@
             {{ culture.cultureDesc }}
           </dd>
         </dl>
+        <div v-if="cultureContent.length == 0" class="no-data">
+          <div class="bg-no-data"></div>
+        </div>
       </div>
     </el-scrollbar>
   </el-dialog>
@@ -113,7 +116,7 @@ export default {
       dialogTableVisible: false,
       title: '',
       type: '',
-      cultureContent: '',
+      cultureContent: [],
     };
   },
   mounted() {},
@@ -128,7 +131,7 @@ export default {
     getCultureContent() {
       this.server.getCultureContent().then((res) => {
         if (res.code == 200) {
-          this.cultureContent = res.data;
+          this.cultureContent = res.data || [];
         }
       });
     },
