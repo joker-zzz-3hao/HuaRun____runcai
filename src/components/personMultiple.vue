@@ -5,6 +5,7 @@
     trigger="click"
     @show="show"
     @hide="hide"
+    v-model="visible"
   >
     <div>
       <el-input
@@ -26,6 +27,9 @@
           <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
         </el-checkbox>
       </el-checkbox-group>
+      <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
     </div>
     <div slot="reference">
       <template v-if="showSelect">
@@ -62,6 +66,7 @@ export default {
       keyword: '',
       searchUser: [],
       arrowClass: 'el-icon-caret-bottom',
+      visible: false,
     };
   },
 
@@ -134,6 +139,9 @@ export default {
     },
     hide() {
       this.arrowClass = 'el-icon-caret-bottom';
+    },
+    closepop() {
+      this.visible = false;
     },
   },
 };
