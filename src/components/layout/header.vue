@@ -165,12 +165,18 @@ export default {
       }).then((response) => {
         if (response.data.identityType == 'org') {
           this.$router.push({ path: '/departleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'departleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'team') {
           this.$router.push({ path: '/teamleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'teamleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'person') {
           this.$router.push({ path: '/grassStaff' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'grassStaff' ? window.location.reload() : '';
         }
       });
     },
