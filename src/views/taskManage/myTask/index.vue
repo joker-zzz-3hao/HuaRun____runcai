@@ -216,40 +216,42 @@
             <el-table-column prop="taskStatus" label="状态" width="80">
               <template slot-scope="scope">
                 <i
-                  :class="
-                    ({ 'is-draft': scope.row.taskStatus == '0' },
-                    { 'not-confirm': scope.row.taskStatus == '10' },
-                    { 'is-confirm': scope.row.taskStatus == '20' })
-                  "
+                  :class="{
+                    'is-draft': scope.row.taskStatus == '0',
+                    'not-confirm': scope.row.taskStatus == '10',
+                    'is-confirm': scope.row.taskStatus == '20',
+                  }"
                 ></i>
                 <em>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</em>
               </template>
             </el-table-column>
             <el-table-column width="220px" prop="userName" label="执行信息">
               <template slot-scope="scope">
-                <div>
-                  <p>
+                <dl>
+                  <dd>
                     <i class="el-icon-user"></i>
                     <span>{{ scope.row.userName || "无执行人" }}</span>
-                  </p>
-                  <p>
+                  </dd>
+                  <dd>
                     <i class="el-icon-date"></i>
-                    <span v-if="scope.row.taskBegDate"
-                      >{{
+                    <template v-if="scope.row.taskBegDate">
+                      <em>{{
                         dateFormat(
                           "YYYY-mm-dd",
                           new Date(scope.row.taskBegDate)
                         )
-                      }}~{{
+                      }}</em
+                      ><span>~</span
+                      ><em>{{
                         dateFormat(
                           "YYYY-mm-dd",
                           new Date(scope.row.taskEndDate)
                         )
-                      }}</span
-                    >
-                    <span v-else>未设置起止时间</span>
-                  </p>
-                </div>
+                      }}</em>
+                    </template>
+                    <em v-else>未设置起止时间</em>
+                  </dd>
+                </dl>
               </template>
             </el-table-column>
             <el-table-column width="180" label="操作" fixed="right">

@@ -164,13 +164,13 @@
 
 .tl-btn.is-plain.btn-small,
 .tl-btn.is-plain.btn-small.is-disabled {
-  padding: 0;
-  min-width: 44px;
+  padding: 0 10px;
   font-size: 12px;
   height: 28px;
   background: #f4f6f8;
   color: #acb6bf;
-  border-color: transparent;
+  border: unset;
+  min-width: unset;
 }
 
 .tl-btn.is-plain.btn-small.is-disabled:hover {
@@ -178,14 +178,15 @@
   color: #acb6bf;
 }
 
-.tl-btn.is-plain.btn-small.is-disabled {
-  min-width: 68px;
-}
 
 .tl-btn.is-plain.btn-small {
   color: #685df1;
   background: #f0effe;
 }
+
+/* .tl-btn.is-plain.btn-small span {
+  padding: 0 10px;
+} */
 
 .tl-btn + .el-dropdown {
   margin: 0 0 0 16px;
