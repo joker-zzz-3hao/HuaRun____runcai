@@ -37,6 +37,12 @@ export default {
     init() {
       const that = this;
       const myChart = echarts.init(document.getElementById('okr-update'));
+      let endLength;
+      if (that.mainDataX.length > 9) {
+        endLength = (100 / that.mainDataX.length).toFixed(2) * 9;
+      } else {
+        endLength = 100;
+      }
       const option = {
         xAxis: {
           type: 'category',
@@ -89,12 +95,12 @@ export default {
           type: 'slider', // slider表示有滑动块的，inside表示内置的
           // startValue: 8,//可用于设置开始显示的柱子的长度
           // endValue: 1,//可用于设置结束显示的柱子的长度
-          show: that.mainDataX.length > 8 && !that.testModel,
+          show: that.mainDataX.length > 9 && !that.testModel,
           xAxisIndex: [0],
           handleSize: 0, // 滑动条的 左右2个滑动条的大小
           height: 12, // 组件高度
-          left: '10%', // 左边的距离
-          right: '10%', // 右边的距离
+          left: '0%', // 左边的距离
+          right: '0%', // 右边的距离
           bottom: -2, // 右边的距离
           borderColor: '#F4F4F4',
           fillerColor: '#E7E7E7',
@@ -105,9 +111,9 @@ export default {
           filterMode: 'filter',
           handleColor: '#FFBC20',
           // eslint-disable-next-line no-dupe-keys
-          start: 18,
+          start: 0,
           // eslint-disable-next-line no-dupe-keys
-          end: 1,
+          end: endLength,
           handleStyle: {
             borderRadius: '20',
             background: '#F4F6F8',
