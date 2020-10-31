@@ -19,7 +19,7 @@
             </dt>
             <dd>{{ CONST.OKR_TYPE_MAP[okrMain.okrBelongType || 1] }}</dd>
           </dl>
-          <dl class="okr-responsible">
+          <dl v-show="okrMain.userName" class="okr-responsible">
             <dt>
               <!-- <i class="el-icon-user"></i> -->
               <em>负责人</em>
