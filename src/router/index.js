@@ -116,6 +116,7 @@ router.beforeEach((to, from, next) => {
             next('/grassStaff');
           }
         } else {
+          console.log(window.$store.getters['common/userInfo'].orgId);
           window.$store.dispatch('common/getUserType', {
             user: window.$store.getters['common/userInfo'].userId,
             orgId: window.$store.getters['common/userInfo'].orgId,

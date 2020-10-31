@@ -222,7 +222,7 @@ export default [{
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayEdit/editpic'),
+        component: () => import('@/views/replay/replayEdit/index'),
       },
 
       {
@@ -235,7 +235,7 @@ export default [{
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayDetail/detailpic'),
+        component: () => import('@/views/replay/replayDetail/index'),
       },
       {
         path: '/replayLink',
@@ -247,7 +247,7 @@ export default [{
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayLink/linkpic'),
+        component: () => import('@/views/replay/replayLink/index'),
       },
       {
         path: '/replayList',

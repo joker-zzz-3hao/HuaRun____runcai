@@ -148,10 +148,12 @@ export default {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
           if (this.$route.name == 'overview' || this.$route.name == 'departleader' || this.$route.name == 'grassStaff' || this.$route.name == 'teamleader') {
-            this.checkUserType();
-            this.getUserInfo();
+            this.getUserInfo().then(() => {
+              this.checkUserType();
+            });
             return false;
           }
+
           window.location.reload();
         }
       });
@@ -163,12 +165,18 @@ export default {
       }).then((response) => {
         if (response.data.identityType == 'org') {
           this.$router.push({ path: '/departleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'departleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'team') {
           this.$router.push({ path: '/teamleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'teamleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'person') {
           this.$router.push({ path: '/grassStaff' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'grassStaff' ? window.location.reload() : '';
         }
       });
     },

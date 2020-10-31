@@ -1,13 +1,14 @@
 <template>
-  <div class="task-sum tl-table-fix">
-    <div>
-      <span>当前任务汇报时间：</span>
-      <em>{{ weekName }}</em>
-      <em>{{ weekBegin }}</em>
-      <span>~</span>
-      <em>{{ weekEnd }}</em>
-    </div>
-    <em>温馨提示：仅统计当前周时间段内的所有工作任务</em>
+  <div class="task-sum">
+    <dl class="task-statistical">
+      <dt>
+        <span>当前任务汇报时间：</span><em>{{ weekName }}</em>
+        <em>{{ weekBegin }}</em>
+        <span>~</span>
+        <em>{{ weekEnd }}</em>
+      </dt>
+      <dd><span>温馨提示：仅统计当前周时间段内的所有工作任务</span></dd>
+    </dl>
     <el-table
       :data="tableListown"
       class="tl-table"

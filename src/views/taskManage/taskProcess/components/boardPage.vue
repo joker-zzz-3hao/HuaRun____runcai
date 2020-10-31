@@ -32,6 +32,24 @@
             v-for="element in stepData.stepTaskList"
             :key="element.taskId"
           >
+            <el-dropdown class="tl-dropdown">
+              <div class="el-dropdown-link">
+                <i class="el-icon-more el-icon--right"></i>
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  @click.native="changeStep(element, step)"
+                  v-for="step in stepList"
+                  :index="step.stepId"
+                  :key="step.stepId"
+                >
+                  <em>{{ step.stepName }}</em>
+
+                  <span v-if="element.stepId == step.stepId">（当前节点）</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+
             <div>
               <tl-levelblock :value="element.taskLevel"></tl-levelblock>
             </div>
@@ -147,8 +165,8 @@ export default {
         processId: this.processObj.processId,
         typeId: typeId || this.searchParams.typeId,
         taskTitle: this.searchParams.taskTitle || '',
-        taskUserIds: this.searchParams.searchCreator.toString(),
-        createByIds: this.searchParams.searchExecutor.toString(),
+        createByIds: this.searchParams.searchCreator.toString(),
+        taskUserIds: this.searchParams.searchExecutor.toString(),
       };
       this.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {
@@ -205,6 +223,18 @@ export default {
       this.existEditTask = true;
       this.$nextTick(() => {
         this.$refs.editTask.show(row.taskId, false);
+      });
+    },
+    // 移动步骤
+    changeStep(task, step) {
+      this.server.move({
+        taskId: task.taskId,
+        stepIdAfter: step.stepId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('移动成功');
+          this.init();
+        }
       });
     },
   },

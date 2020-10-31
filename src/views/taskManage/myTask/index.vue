@@ -73,37 +73,6 @@
       </div>
       <div class="tl-condition-screening" v-show="showTask">
         <dl
-          class="screening-results tag-lists"
-          v-if="searchList.length > 0 || arrowClass == 'el-icon-caret-bottom'"
-        >
-          <dt>所有筛选</dt>
-          <dd v-for="(item, index) in searchList" :key="index">
-            <em>{{ item.name }}</em>
-            <i class="el-icon-close" @click.stop="clearNode(index)"></i>
-          </dd>
-          <dd v-if="searchTaskUser.length > 0">
-            <span>执行人：</span>
-            <em v-for="p in searchTaskUser.slice(0, 2)" :key="p">{{
-              userMap[p]
-            }}</em>
-            <em>（{{ searchTaskUser.length }}人）</em>
-            <i class="el-icon-close" @click.stop="clearAllPerson('task')"></i>
-          </dd>
-          <dd v-if="searchCreateUser.length > 0">
-            <span>创建人：</span>
-            <em v-for="p in searchCreateUser.slice(0, 2)" :key="p">{{
-              userMap[p]
-            }}</em>
-            <em>（{{ searchCreateUser.length }}人）</em>
-            <i class="el-icon-close" @click.stop="clearAllPerson('create')"></i>
-          </dd>
-          <!-- 确认接收 -->
-          <dd v-if="accept !== null">
-            <em> {{ accept == true ? "已确认" : "待确认" }}</em>
-            <i class="el-icon-close" @click.stop="clearaccept"></i>
-          </dd>
-        </dl>
-        <dl
           class="condition-lists tag-lists"
           v-show="arrowClass == 'el-icon-caret-top'"
         >
@@ -244,56 +213,48 @@
                 <div v-else>未设置任务过程</div>
               </template>
             </el-table-column>
-            <el-table-column
-              align="left"
-              prop="taskStatus"
-              label="状态"
-              width="80"
-            >
+            <el-table-column prop="taskStatus" label="状态" width="80">
               <template slot-scope="scope">
                 <i
-                  :class="
-                    ({ 'is-draft': scope.row.taskStatus == '0' },
-                    { 'not-confirm': scope.row.taskStatus == '10' },
-                    { 'is-confirm': scope.row.taskStatus == '20' })
-                  "
+                  :class="{
+                    'is-draft': scope.row.taskStatus == '0',
+                    'not-confirm': scope.row.taskStatus == '10',
+                    'is-confirm': scope.row.taskStatus == '20',
+                  }"
                 ></i>
-                <span>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</span>
+                <em>{{ CONST.TASK_STATUS_MAP[scope.row.taskStatus] }}</em>
               </template>
             </el-table-column>
-            <el-table-column
-              width="220px"
-              align="left"
-              prop="userName"
-              label="执行信息"
-            >
+            <el-table-column width="220px" prop="userName" label="执行信息">
               <template slot-scope="scope">
-                <div>
-                  <p>
+                <dl>
+                  <dd>
                     <i class="el-icon-user"></i>
                     <span>{{ scope.row.userName || "无执行人" }}</span>
-                  </p>
-                  <p>
+                  </dd>
+                  <dd>
                     <i class="el-icon-date"></i>
-                    <span v-if="scope.row.taskBegDate"
-                      >{{
+                    <template v-if="scope.row.taskBegDate">
+                      <em>{{
                         dateFormat(
                           "YYYY-mm-dd",
                           new Date(scope.row.taskBegDate)
                         )
-                      }}~{{
+                      }}</em
+                      ><span>~</span
+                      ><em>{{
                         dateFormat(
                           "YYYY-mm-dd",
                           new Date(scope.row.taskEndDate)
                         )
-                      }}</span
-                    >
-                    <span v-else>未设置起止时间</span>
-                  </p>
-                </div>
+                      }}</em>
+                    </template>
+                    <em v-else>未设置起止时间</em>
+                  </dd>
+                </dl>
               </template>
             </el-table-column>
-            <el-table-column width="200" label="操作" fixed="right">
+            <el-table-column width="180" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   :disabled="
@@ -304,7 +265,7 @@
                   "
                   @click="acceptTask(scope.row.taskId)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   >确认接收</el-button
                 >
                 <!-- 已确认且执行人不是我 不能编辑-->
@@ -312,7 +273,7 @@
                 <el-button
                   :disabled="canEdit(scope.row)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
@@ -542,7 +503,8 @@ export default {
       params.pageSize = this.pageSize;
       params.selectType = this.currentIndex;
       params.taskTitle = this.searchMsg;
-      params.psList = this.searchList.concat(this.psList || []);
+      // params.psList = this.searchList.concat(this.psList || []);
+      params.psList = this.searchList;
       params.accept = this.accept;
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();
@@ -671,7 +633,7 @@ export default {
         this.selectStatus({ label: '全部', value: null, isSelected: true });
         this.resetIsSelected(this.taskProcessList, 'init');
       } else {
-        this.psList = [{ processId: parentCate.value }];
+        this.searchList = [{ processId: parentCate.value }];
         this.getTableList();
       }
       const params = {
@@ -714,13 +676,13 @@ export default {
           console.log(stepList.toString());
           return;
         }
-        this.searchList.push({
+        this.searchList = [{
           name: `${this.taskProcess.label}-${childCate.label}`,
           processId: this.taskProcess.value,
           processName: this.taskProcess.label,
           stepId: childCate.value,
           stepName: childCate.label,
-        });
+        }];
         // this.searchList = Array.from(new Set(this.searchList));
       }
     },
@@ -742,17 +704,17 @@ export default {
       const index = userList.indexOf(pId);
       if (index >= 0) {
         userList.splice(index, 1);
-        this.getTableList();
+        // this.getTableList();
       }
     },
     // 删除全部执行人
     clearAllPerson(listType) {
       if (listType == 'task') {
-        this.searchTaskUser = [];
+        this.searchTaskUser.splice(0, this.searchTaskUser.length);
       } else {
-        this.searchCreateUser = [];
+        this.searchCreateUser.splice(0, this.searchCreateUser.length);
       }
-      this.getTableList();
+      // this.getTableList();
     },
     // 重置
     resetIsSelected(list, init) {
@@ -806,6 +768,18 @@ export default {
   },
   watch: {
     searchList: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchTaskUser: {
+      handler() {
+        this.getTableList();
+      },
+      deep: true,
+    },
+    searchCreateUser: {
       handler() {
         this.getTableList();
       },
