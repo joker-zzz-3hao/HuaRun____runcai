@@ -8,9 +8,10 @@
     <li v-for="item in searchData" :key="item.resource_id">
       <dl>
         <dt class="tag-kind" @click="goDetail(item.okrId)">
-          <span class="kind-parent">{{
-            CONST.OKR_KIND_MAP[item.okrDetailType]
-          }}</span>
+          <span
+            :class="item.okrDetailType == '0' ? 'kind-parent' : 'kind-child'"
+            >{{ CONST.OKR_KIND_MAP[item.okrDetailType] }}</span
+          >
           <em v-html="item.okrDetailContent"></em>
         </dt>
         <dd>

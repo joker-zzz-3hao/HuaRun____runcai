@@ -173,7 +173,11 @@
         layout="prev, pager, next, jumper"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
+          <el-table
+            :data="tableData"
+            class="tl-table"
+            :class="{ 'no-data': tableData.length === 0 }"
+          >
             <el-table-column
               align="left"
               prop="taskTitle"

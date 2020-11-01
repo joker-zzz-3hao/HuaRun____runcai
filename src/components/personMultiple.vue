@@ -7,30 +7,28 @@
     @hide="hide"
     v-model="visible"
   >
-    <div>
-      <el-input
-        placeholder="搜索"
-        v-model="keyword"
-        class="tl-input"
-        clearable
-        maxlength="64"
+    <el-input
+      placeholder="搜索"
+      v-model="keyword"
+      class="tl-input"
+      clearable
+      maxlength="64"
+    >
+      <i slot="prefix" class="el-input__icon el-icon-search"></i>
+    </el-input>
+    <el-checkbox-group v-model="searchUser" @change="handleClick">
+      <el-checkbox
+        v-for="(item, index) in filterCreate"
+        :label="item.userId"
+        :key="item.userId + index"
       >
-        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-      </el-input>
-      <el-checkbox-group v-model="searchUser" @change="handleClick">
-        <el-checkbox
-          v-for="(item, index) in filterCreate"
-          :label="item.userId"
-          :key="item.userId + index"
-        >
-          <em>{{ item.userName }}</em>
-          <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
-        </el-checkbox>
-      </el-checkbox-group>
-      <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
-        >确定</el-button
-      >
-    </div>
+        <em>{{ item.userName }}</em>
+        <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
+      </el-checkbox>
+    </el-checkbox-group>
+    <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
+      >确定</el-button
+    >
     <div slot="reference">
       <template v-if="showSelect">
         <div v-if="modelVal.length < 1">{{ this.title }}</div>

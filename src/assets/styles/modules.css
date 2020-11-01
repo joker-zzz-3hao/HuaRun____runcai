@@ -3094,6 +3094,14 @@
   width: 4%;
 }
 
+.tl-table.no-data .el-table__fixed-right::before {
+  background-color: transparent;
+}
+
+.tl-table.no-data .el-table__fixed-right {
+  box-shadow: unset;
+}
+
 /* tl-card-list */
 .tl-card-list {
   background: #fff;
