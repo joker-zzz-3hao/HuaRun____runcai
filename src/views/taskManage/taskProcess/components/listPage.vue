@@ -21,7 +21,13 @@
         @searchList="searchList"
       >
         <div slot="tableContainer">
-          <el-table ref="taskTable" v-loading="loading" :data="tableData">
+          <el-table
+            ref="taskTable"
+            v-loading="loading"
+            :data="tableData"
+            class="tl-table"
+            :class="{ 'no-data': tableData.length === 0 }"
+          >
             <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
@@ -118,23 +124,18 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              width="200"
-              align="left"
-              label="操作"
-              fixed="right"
-            >
+            <el-table-column width="170" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   :disabled="canEdit(scope.row)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
                 <el-dropdown class="tl-dropdown">
                   <div class="el-dropdown-link">
-                    <el-button plain class="tl-btn amt-border-fadeout"
+                    <el-button plain class="tl-btn btn-lineheight btn-small"
                       >移动</el-button
                     >
                   </div>
@@ -153,7 +154,7 @@
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <el-dropdown trigger="click">
+                <el-dropdown trigger="click" class="tl-dropdown">
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
                   </span>

@@ -50,16 +50,6 @@
                 <span>
                   <em>{{ options.subMenuTitle }}</em>
                 </span>
-                <!-- <el-cascader-panel
-                  v-model="processId"
-                  :options="taskoptions"
-                  v-if="options.subClassTag == 'taskprocess'"
-                  @change="selectProcessItem"
-                  :props="{
-                    value: 'processId',
-                    label: 'processName',
-                  }"
-                ></el-cascader-panel> -->
               </router-link>
               <dd
                 class="level-three-menu"
@@ -71,13 +61,13 @@
                   :visible-arrow="false"
                   v-model="item.teamvisible"
                 >
-                  <ul>
+                  <ul class="tl-popover-list">
                     <li
                       v-for="teamitem in taskoptions[0].children"
                       :key="teamitem.processId"
                       @click="selectProcessItem(mindex, teamitem)"
                       :class="{
-                        'hight-line': selectId == teamitem.processId,
+                        'is-selected': selectId == teamitem.processId,
                       }"
                     >
                       {{ teamitem.processName }}
@@ -88,7 +78,7 @@
                   </ul>
                   <div
                     slot="reference"
-                    :class="{ 'hight-line': selectType == 1 }"
+                    :class="{ 'is-selected': selectType == 1 }"
                   >
                     <em>团队使用</em><i class="el-icon-arrow-right"></i>
                   </div>
@@ -99,13 +89,13 @@
                   :visible-arrow="false"
                   v-model="item.littleRangevisible"
                 >
-                  <ul>
+                  <ul class="tl-popover-list">
                     <li
                       v-for="lritem in taskoptions[1].children"
                       :key="lritem.processId"
                       @click="selectProcessItem(mindex, lritem)"
                       :class="{
-                        'hight-line': selectId == lritem.processId,
+                        'is-selected': selectId == lritem.processId,
                       }"
                     >
                       {{ lritem.processName }}
@@ -116,7 +106,7 @@
                   </ul>
                   <div
                     slot="reference"
-                    :class="{ 'hight-line': selectType == 2 }"
+                    :class="{ 'is-selected': selectType == 2 }"
                   >
                     <em>小范围使用</em><i class="el-icon-arrow-right"></i>
                   </div>
@@ -127,13 +117,13 @@
                   :visible-arrow="false"
                   v-model="item.personvisible"
                 >
-                  <ul>
+                  <ul class="tl-popover-list">
                     <li
                       v-for="personitem in taskoptions[2].children"
                       :key="personitem.processId"
                       @click="selectProcessItem(mindex, personitem)"
                       :class="{
-                        'hight-line': selectId == personitem.processId,
+                        'is-selected': selectId == personitem.processId,
                       }"
                     >
                       {{ personitem.processName }}
@@ -144,7 +134,7 @@
                   </ul>
                   <div
                     slot="reference"
-                    :class="{ 'hight-line': selectType == 3 }"
+                    :class="{ 'is-selected': selectType == 3 }"
                   >
                     <em>个人使用</em><i class="el-icon-arrow-right"></i>
                   </div>

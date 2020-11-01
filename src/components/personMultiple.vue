@@ -6,6 +6,7 @@
     @show="show"
     @hide="hide"
     v-model="visible"
+    popper-class="search-popover"
   >
     <el-input
       placeholder="搜索"
@@ -21,14 +22,17 @@
         v-for="(item, index) in filterCreate"
         :label="item.userId"
         :key="item.userId + index"
+        class="tl-checkbox"
       >
         <em>{{ item.userName }}</em>
         <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
       </el-checkbox>
     </el-checkbox-group>
-    <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
-      >确定</el-button
-    >
+    <div class="flex-end">
+      <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+    </div>
     <div slot="reference">
       <template v-if="showSelect">
         <div v-if="modelVal.length < 1">{{ this.title }}</div>

@@ -128,7 +128,7 @@
           </dd>
         </dl>
         <dl
-          class="condition-lists tag-lists"
+          class="condition-lists tag-lists has-delete"
           v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>执行人</dt>
@@ -139,14 +139,16 @@
               @click.stop="clearPersonNode(searchTaskUser, p)"
             ></i>
           </dd>
-          <tl-personmultiple
-            :userList="userList"
-            v-model="searchTaskUser"
-            :showSelect="false"
-          ></tl-personmultiple>
+          <dd>
+            <tl-personmultiple
+              :userList="userList"
+              v-model="searchTaskUser"
+              :showSelect="false"
+            ></tl-personmultiple>
+          </dd>
         </dl>
         <dl
-          class="condition-lists tag-lists"
+          class="condition-lists tag-lists has-delete"
           v-show="arrowClass == 'el-icon-caret-top'"
         >
           <dt>创建人</dt>
@@ -157,11 +159,13 @@
               @click.stop="clearPersonNode(searchCreateUser, p)"
             ></i>
           </dd>
-          <tl-personmultiple
-            :userList="userList"
-            v-model="searchCreateUser"
-            :showSelect="false"
-          ></tl-personmultiple>
+          <dd>
+            <tl-personmultiple
+              :userList="userList"
+              v-model="searchCreateUser"
+              :showSelect="false"
+            ></tl-personmultiple>
+          </dd>
         </dl>
       </div>
       <tl-crcloud-table

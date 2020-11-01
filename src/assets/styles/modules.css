@@ -184,12 +184,21 @@
   background: #f0effe;
 }
 
-/* .tl-btn.is-plain.btn-small span {
-  padding: 0 10px;
-} */
-
 .tl-btn + .el-dropdown {
   margin: 0 0 0 16px;
+}
+
+.tl-btn.is-plain.btn-grey {
+  padding: 0 16px;
+  background: #f7fafc;
+  border-radius: 2px;
+  color: #879099;
+  font-weight: normal;
+}
+
+.tl-btn.is-plain.btn-grey.is-selected {
+  background-color: #685df1;
+  color: #fff;
 }
 
 /* input */
@@ -2265,6 +2274,53 @@
   line-height: 22px;
 }
 
+/* tl-popover */
+.search-popover {
+  padding: 16px 0;
+  min-height: 200px;
+}
+
+.search-popover .tl-input {
+  margin: 0 16px 16px 16px;
+  width: unset;
+}
+
+.search-popover .el-input__inner {
+  height: 36px;
+  border-color: transparent;
+  background-color: #f4f6f8;
+  color: #bcc4cc;
+}
+
+.search-popover .el-input__inner:focus {
+  border-color: transparent;
+}
+
+.search-popover .el-input__icon {
+  line-height: 36px;
+}
+
+.search-popover .tl-checkbox {
+  padding: 0 16px;
+  margin: 0;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.search-popover .tl-checkbox:hover {
+  background: #f4f6f8;
+}
+
+.search-popover .flex-end {
+  margin: 16px 16px 0 0;
+  width: unset;
+}
+
+.search-popover .el-checkbox__label {
+  padding: 0;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* tl-custom-btn */
 .tl-custom-btn {
@@ -2498,10 +2554,10 @@
 
 /* tag-lists */
 .tag-lists dd {
-  padding: 5px 40px 5px 12px;
-  position: relative;
+  padding: 5px 12px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #4d5155;
   background: #f4f6f8;
   border-radius: 14px;
@@ -2509,6 +2565,17 @@
   font-size: 12px;
   cursor: pointer;
   transition: all .4s ease-out;
+}
+
+.tag-lists.has-delete dd {
+  padding-right: 6px;
+  background-color: #f0effe;
+  color: #685df1;
+}
+
+.tag-lists.has-delete dd:last-child {
+  padding: 0;
+  background-color: transparent;
 }
 
 .tag-lists .is-selected {
@@ -2521,7 +2588,7 @@
 }
 
 .tag-lists dd i {
-  position: absolute;
+  margin: 0 0 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2529,9 +2596,17 @@
   height: 22px;
   border-radius: 50%;
   background: #bcc4cc;
-  right: 4px;
-  top: 3px;
   color: #fff;
+}
+
+.tag-lists.has-delete dd .el-popover__reference i {
+  margin: 0;
+  background-color: transparent;
+  color: #879099;
+}
+
+.tag-lists.has-delete dd .el-popover__reference i:hover {
+  color: #685df1;
 }
 
 /* 标记 */
@@ -3457,6 +3532,19 @@
   color: #685df1;
 }
 
+/* tl-popover-list */
+.tl-popover-list li {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+}
+
+.tl-popover-list li.is-selected,
+.main-menu .level-three-menu .is-selected em {
+  color: #685df1;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -3721,7 +3809,7 @@
 .main-menu .sub-menu dl {
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 20px 10px;
+  padding: 10px 20px 20px 20px;
   position: absolute;
   left: 0;
   top: 0;
