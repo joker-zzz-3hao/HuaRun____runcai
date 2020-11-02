@@ -205,7 +205,7 @@
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
                 <el-dropdown
-                  v-if="['1', '7', 1, 7].includes(item.okrMain.status)"
+                  v-if="['1', '7', 1, 7, 2, 3, 4].includes(item.okrMain.status)"
                   trigger="click"
                 >
                   <span class="el-dropdown-link">
