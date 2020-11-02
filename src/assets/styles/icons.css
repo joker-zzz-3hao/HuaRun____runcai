@@ -5,6 +5,11 @@
   background-size: 48px 48px;
 }
 
+.is-full-screen .logo {
+  background: url('~@/assets/images/logo_white@2x.png') 0 0 no-repeat;
+  background-size: 48px 48px;
+}
+
 .main-menu li i {
   width: 30px;
   height: 30px;

@@ -1,7 +1,7 @@
 <template>
   <section
     class="header-wrap"
-    :class="{ 'no-mainnav': !$route.meta.hasMainMenu }"
+    :class="{ 'is-full-screen': !$route.meta.hasMainMenu }"
   >
     <div class="area-left">
       <div class="logo-bg">

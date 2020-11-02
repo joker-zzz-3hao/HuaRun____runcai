@@ -2242,6 +2242,13 @@
   border-radius: 2px;
 }
 
+/* replay-link */
+.replay-link {
+  margin: 0 auto;
+  width: 1060px;
+  flex: unset;
+}
+
 /* 周报 */
 .my-weekly {
   margin: 16px 16px 86px 16px;
