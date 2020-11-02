@@ -210,7 +210,10 @@
               fixed="right"
               label="操作"
               width="100"
-              v-if="baseInfo.projectUserVoList.length > 0"
+              v-if="
+                baseInfo.projectUserVoList &&
+                baseInfo.projectUserVoList.length > 0
+              "
             >
               <template slot-scope="scope">
                 <el-button
@@ -233,6 +236,13 @@
       :codes="codes"
       @addSuccess="addSuccess"
     ></tl-add-member>
+    <tl-check-manager
+      ref="checkManager"
+      v-if="checkManager"
+      :server="server"
+      :baseInfo="baseInfo"
+      @checkSuccess="checkSuccess"
+    ></tl-check-manager>
   </div>
 </template>
 
@@ -240,6 +250,7 @@
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import addMember from './addMember';
+import checkManager from './checkManager';
 import CONST from '../../const';
 
 export default {
@@ -252,6 +263,7 @@ export default {
       pageSize: 0,
       isTalentAdmin: false,
       showAddMember: false,
+      checkManager: false,
       tableData: [],
       isManage: false,
       openFlag: false,
@@ -263,6 +275,7 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
     'tl-add-member': addMember,
+    'tl-check-manager': checkManager,
   },
   props: {
     server: {
@@ -336,9 +349,10 @@ export default {
       });
     },
     setManager(data) {
+      const self = this;
       if (data.projectUserType == '0') {
         let managerName = '';
-        this.baseInfo.projectUserVoList.forEach((item) => {
+        self.baseInfo.projectUserVoList.forEach((item) => {
           if (item.projectUserType == '1') {
             managerName = item.userName;
           }
@@ -349,18 +363,33 @@ export default {
         } else {
           content = `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`;
         }
-        this.$xconfirm({
+        self.$xconfirm({
           title: '设置项目经理',
           content,
         }).then(() => {
-          this.server.setProjectManager({
+          self.server.setProjectManager({
             userId: data.userId,
             projectId: data.projectId,
           }).then((res) => {
             if (res.code == '200') {
-              this.$router.push({
-                name: 'projectManage',
+              // 1，进入项目详情页优先检测项目经理信息是否完整，如果不完整就弹框提示，让其在弹框中完善项目经理信息，否则不弹框
+              // 2，设置完项目经理后，如果自己不是项目经理或者租户管理员就跳转项目管理列表，否则还在当前页
+              let isManager = false;
+              self.userInfo.roleList.forEach((item) => {
+                if (item.roleCode == 'TENANT_ADMIN') {
+                  isManager = true;
+                }
               });
+              if (data.userId == self.userInfo.userId) {
+                isManager = true;
+              }
+              if (isManager == true) {
+                self.searchProject();
+              } else {
+                self.$router.push({
+                  name: 'projectManage',
+                });
+              }
             }
           });
         });
@@ -374,6 +403,10 @@ export default {
     },
     addSuccess() {
       this.showAddMember = false;
+      this.searchProject();
+    },
+    checkSuccess() {
+      this.checkManager = false;
       this.searchProject();
     },
     searchProject() {
@@ -405,7 +438,33 @@ export default {
           this.emWidth = document.getElementById('projectDescInside').clientWidth;
         });
       },
-
+    },
+    'baseInfo.projectId': {
+      handler() {
+        let flag = false;
+        if (this.baseInfo.projectUserVoList.length > 0) {
+          this.baseInfo.projectUserVoList.forEach((item) => {
+            if (this.baseInfo.projectManagerCode.toLocaleLowerCase() == item.userAccount.toLocaleLowerCase()) {
+              if (this.hasValue(item.userCompany) && this.hasValue(item.userLevel)) {
+                flag = true;
+              }
+            }
+            if (item.projectUserType == '1') {
+              if (item.userId == this.userInfo.userId) {
+                this.isManage = true;
+              }
+            }
+          });
+        } else {
+          flag = false;
+        }
+        if (flag == false) {
+          this.checkManager = true;
+          this.$nextTick(() => {
+            this.$refs.checkManager.show();
+          });
+        }
+      },
     },
     listenerWidth: {
       handler(val) {
