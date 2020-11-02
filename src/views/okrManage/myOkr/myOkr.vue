@@ -239,19 +239,16 @@
                   <div slot="content">
                     <em>更新进展</em>
                   </div>
-                  <div
+                  <tl-process
                     :class="{
                       update: ['1', 1, 3, '3'].includes(item.okrMain.status),
                     }"
-                  >
-                    <tl-process
-                      @click.native="
-                        ['1', 1, 3, '3'].includes(item.okrMain.status) &&
-                          openUpdate(props.okritem)
-                      "
-                      :data="parseInt(props.okritem.okrDetailProgress, 10)"
-                    ></tl-process>
-                  </div>
+                    @click.native="
+                      ['1', 1, 3, '3'].includes(item.okrMain.status) &&
+                        openUpdate(props.okritem)
+                    "
+                    :data="parseInt(props.okritem.okrDetailProgress, 10)"
+                  ></tl-process>
                 </el-tooltip>
               </template>
             </tl-okr-table>
