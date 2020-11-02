@@ -52,7 +52,7 @@
             <span class="lines"></span>
           </el-button>
         </div>
-        <div>
+        <div class="okr-summarize-info">
           <template v-if="hasValue(summaryData.orgSumUser)">
             <el-row :gutter="24">
               <el-col :span="10"
@@ -243,24 +243,12 @@
         </crcloud-table>
       </div>
     </div>
-    <!-- <tl-okr-detail
-      v-if="detailExist"
-      :exist.sync="detailExist"
-      ref="okrdetail"
-      :server="server"
-      :okrId="okrId"
-      :CONST="CONST"
-      :showSupport="true"
-      :drawerTitle="drawerTitle"
-      :isFromOkrSummarize="true"
-    ></tl-okr-detail> -->
   </div>
 </template>
 
 <script>
 
 import { mapMutations, mapState } from 'vuex';
-// import okrDetail from '@/components/okrDetail';
 import Server from '../server';
 import CONST from '../const';
 
@@ -272,9 +260,7 @@ export default {
     return {
       server,
       CONST,
-      // detailExist: false,
       okrId: '',
-      // drawerTitle: '',
       tableData: [],
       loading: false,
       treeData: [],
@@ -437,14 +423,6 @@ export default {
       this.$router.go('-1');
     },
 
-    // okrInfo(okr) {
-    //   this.okrId = okr.okrId;
-    //   this.drawerTitle = this.okrCycle.periodName;
-    //   this.detailExist = true;
-    //   this.$nextTick(() => {
-    //     this.$refs.okrdetail.showOkrDialog();
-    //   });
-    // },
     checkOkr(row) {
       // 1、查询okr详情
       this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
@@ -465,3 +443,10 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.okr-summarize-info {
+  width: 100%;
+  background: #f4f6f8;
+  padding: 20px;
+}
+</style>
