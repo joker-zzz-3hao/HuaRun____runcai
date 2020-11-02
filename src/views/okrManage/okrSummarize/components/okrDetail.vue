@@ -1,6 +1,5 @@
 <template>
   <div class="okr-approval-detail">
-    <!-- <h1>{{ okrData.okrMain.periodName }}</h1> -->
     <dl class="dl-card-panel">
       <dt class="card-title">
         <em>基本信息</em>
@@ -8,7 +7,9 @@
         <a @click="backList">返回</a>
       </dt>
       <dd>
-        <em>{{ okrData.okrMain.periodName }}</em>
+        <em>{{
+          isApprovaling ? okrData.periodName : okrData.okrMain.periodName
+        }}</em>
       </dd>
       <dd>
         <dl class="dl-item">
@@ -17,7 +18,9 @@
             <span>提交人</span>
           </dt>
           <dd>
-            <em>{{ okrData.okrMain.userName }}</em>
+            <em>{{
+              isApprovaling ? okrData.userName : okrData.okrMain.userName
+            }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -26,7 +29,11 @@
             <span>OKR状态</span>
           </dt>
           <dd>
-            <em>{{ CONST.TABLE_STATUS_MAP[okrData.okrMain.status] }}</em>
+            <em>{{
+              CONST.TABLE_STATUS_MAP[
+                isApprovaling ? okrData.status : okrData.okrMain.status
+              ]
+            }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -37,7 +44,11 @@
           <dd>
             <el-progress
               type="circle"
-              :percentage="okrData.okrMain.okrProgress"
+              :percentage="
+                isApprovaling
+                  ? okrData.okrProgress
+                  : okrData.okrMain.okrProgress
+              "
               :width="60"
               :stroke-width="5"
               color="#4ccd79"
@@ -57,7 +68,7 @@
     </dl>
     <dl
       class="dl-card-panel"
-      v-if="![1, 2].includes(okrData.okrMain.readStatus)"
+      v-if="!isApprovaling && ![1, 2].includes(okrData.okrMain.readStatus)"
     >
       <dt>
         <em>审阅意见</em>
@@ -104,7 +115,10 @@
         >
       </div>
     </dl>
-    <dl class="dl-card-panel" v-else>
+    <dl
+      class="dl-card-panel"
+      v-if="!isApprovaling && [1, 2].includes(okrData.okrMain.readStatus)"
+    >
       <dt>
         <em>审阅结果</em>
       </dt>
@@ -146,6 +160,7 @@ export default {
         readStatus: '',
         readRemark: '',
       },
+      isApprovaling: false,
     };
   },
   components: {
@@ -189,8 +204,14 @@ export default {
     okrSummarizeDetail: {
       handler(newVal) {
         if (newVal) {
+          this.isApprovaling = false;
           this.okrData = JSON.parse(newVal);
-          this.tableList = this.okrData.okrDetails;
+          if (this.okrData.status === 0) { // 审批中
+            this.isApprovaling = true;
+            this.tableList = JSON.parse(this.okrData.paramJson).okrInfoList;
+          } else {
+            this.tableList = this.okrData.okrDetails;
+          }
         }
       },
       deep: true,

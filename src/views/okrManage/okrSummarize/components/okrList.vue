@@ -220,18 +220,14 @@
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
-                <!-- 待审批的不展示操作按钮 -->
-                <el-button
-                  v-if="[1, 3, 4, 6].includes(scope.row.status)"
-                  @click="checkOkr(scope.row)"
-                  type="text"
+                <el-button @click="checkOkr(scope.row)" type="text"
                   >详情</el-button
                 >
                 <el-button
                   v-if="
                     ![1, 2].includes(scope.row.readStatus) &&
                     rootRole &&
-                    [1, 3, 4, 6].includes(scope.row.status)
+                    [1, 2, 3, 4].includes(scope.row.status)
                   "
                   @click="checkOkr(scope.row)"
                   type="text"
@@ -311,8 +307,6 @@ export default {
           this.periodId = this.okrCycle.periodId;
           // 查询组织树
           this.getOrgTable();
-
-          this.getSummaryOkrInfo();
         }
       });
       this.userInfo.roleList.forEach((element) => {
@@ -337,6 +331,7 @@ export default {
             }
 
             this.searchList();
+            this.getSummaryOkrInfo();
           }
         }
       });
@@ -407,12 +402,17 @@ export default {
 
     checkOkr(row) {
       // 1、查询okr详情
-      this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
-        if (res.code == 200) {
-          if (res.data) { this.setOkrSummarizeDetailData(JSON.stringify(res.data)); }
-        }
-      });
-      this.setOkrSummarizeStep('2');
+      if (row.status === 0) { // 如果是审批中，从行数据中取数据
+        this.setOkrSummarizeDetailData(JSON.stringify(row));
+        this.setOkrSummarizeStep('2');
+      } else {
+        this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
+          if (res.code == 200) {
+            if (res.data) { this.setOkrSummarizeDetailData(JSON.stringify(res.data)); }
+            this.setOkrSummarizeStep('2');
+          }
+        });
+      }
     },
     periodChange() {
       this.searchList();

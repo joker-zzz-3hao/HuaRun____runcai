@@ -462,13 +462,13 @@
                 ></div>
                 <div
                   :class="{
+                    'is-no-risk': item.confidenceAfter == 1,
                     'is-risks': item.confidenceAfter == 2,
-                    'is-uncontrollable': item.confidenceAfter == 3,
                   }"
                 ></div>
                 <div
                   :class="{
-                    'is-uncontrollable': item.confidenceAfter == 3,
+                    'is-no-risk': item.confidenceAfter == 1,
                   }"
                 ></div>
               </div>
