@@ -55,6 +55,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/queryOAndKrList', param);
   }
 
+  updateSyncHistoryStatus(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/updateSyncHistoryStatus', param);
+  }
+
   // 传入orgId与userId判断首页身份
   identity(param) {
     return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);

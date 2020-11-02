@@ -429,8 +429,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 27%;
-  width: 27%;
+  flex: 0 0 36%;
+  width: 36%;
   position: relative;
 }
 
@@ -3138,7 +3138,7 @@
 }
 
 .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 27%;
+  width: 36%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(3) {
@@ -3161,11 +3161,11 @@
   width: 16%;
 }
 
-.tl-table-fix .tl-thead li:nth-child(8) {
+/* .tl-table-fix .tl-thead li:nth-child(8) {
   width: 9%;
-}
+} */
 
-.tl-table-fix .tl-thead li:nth-child(9) {
+.tl-table-fix .tl-thead li:nth-child(8) {
   width: 4%;
 }
 

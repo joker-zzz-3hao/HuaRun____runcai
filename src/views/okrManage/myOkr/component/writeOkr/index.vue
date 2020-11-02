@@ -138,7 +138,7 @@
                     </dt>
                     <dd class="is-edit has-third-child">
                       <div>
-                        <i></i>
+                        <i class="el-icon-medal"></i>
                         <span>权重</span>
                         <el-form-item
                           :prop="'okrInfoList.' + index + '.okrWeight'"

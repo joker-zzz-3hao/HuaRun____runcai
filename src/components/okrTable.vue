@@ -97,7 +97,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="27%">
+      <el-table-column prop="okrDetailObjectKr" width="36%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
@@ -210,11 +210,11 @@
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
-      <el-table-column width="9%">
+      <!-- <el-table-column width="9%">
         <template slot-scope="scope" v-if="showUpdate">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- label="操作"  -->
       <el-table-column width="4%">
         <template slot-scope="scope">

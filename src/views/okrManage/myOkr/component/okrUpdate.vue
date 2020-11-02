@@ -118,7 +118,7 @@
           </el-form> -->
           <el-form :model="formData" ref="dataForm" class="tl-form">
             <dl class="timeline-list">
-              <dt>
+              <dd>
                 <div class="list-info">
                   <div class="list-title">
                     <em>{{
@@ -131,7 +131,7 @@
                       <tl-process
                         :data="parseInt(formData.okrDetailProgress, 10)"
                         :showNumber="false"
-                        :width="64"
+                        :width="68"
                         :marginLeft="6"
                       ></tl-process>
                       <el-slider
@@ -159,7 +159,7 @@
                     </div>
                   </div>
                 </div>
-              </dt>
+              </dd>
             </dl>
             <dl class="change-reason">
               <!-- <dt>更新说明</dt> -->
