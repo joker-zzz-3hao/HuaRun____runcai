@@ -7,6 +7,10 @@ export default {
   setOkrSummarizeStep: (state, okrSummarizeStep = {}) => {
     state.okrSummarizeStep = okrSummarizeStep;
   },
+  // 设置OKR汇总操作类型
+  setSummasizeOptionType: (state, optionType = {}) => {
+    state.optionType = optionType;
+  },
   // 设置承接地图和对齐详情切换
   setUndertakeMapsStep: (state, undertakeMapsStep = {}) => {
     state.undertakeMapsStep = undertakeMapsStep;

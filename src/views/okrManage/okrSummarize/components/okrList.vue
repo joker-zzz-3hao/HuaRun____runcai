@@ -220,7 +220,7 @@
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
-                <el-button @click="checkOkr(scope.row)" type="text"
+                <el-button @click="checkOkr(scope.row, 'info')" type="text"
                   >详情</el-button
                 >
                 <!-- 根节点、未审阅、非进行中 -->
@@ -230,7 +230,7 @@
                     rootRole &&
                     [1, 2, 3, 4].includes(scope.row.status)
                   "
-                  @click="checkOkr(scope.row)"
+                  @click="checkOkr(scope.row, 'check')"
                   type="text"
                   >审阅</el-button
                 >
@@ -413,7 +413,8 @@ export default {
       this.$router.go('-1');
     },
 
-    checkOkr(row) {
+    checkOkr(row, optionType) {
+      this.setSummasizeOptionType(optionType);
       // 1、查询okr详情
       if (row.status === 0) { // 如果是审批中，从行数据中取数据
         this.setOkrSummarizeDetailData(JSON.stringify(row));
