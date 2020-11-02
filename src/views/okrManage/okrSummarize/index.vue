@@ -1,7 +1,7 @@
 <template>
   <div class="okr-summarize">
-    <tl-okr-list v-if="okrSummarizeStep == '1'"></tl-okr-list>
-    <tl-okr-detail v-if="okrSummarizeStep == '2'"></tl-okr-detail>
+    <tl-okr-list v-show="okrSummarizeStep == '1'"></tl-okr-list>
+    <tl-okr-detail v-show="okrSummarizeStep == '2'"></tl-okr-detail>
   </div>
 </template>
 
