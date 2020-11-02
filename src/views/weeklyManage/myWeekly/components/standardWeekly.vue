@@ -485,15 +485,16 @@
               :width="30"
               :marginLeft="2"
             ></tl-process>
+            <!-- kr支持更改进度 -->
             <el-slider
-              v-if="canUpdate"
+              v-if="canUpdate && item.kr"
               v-model="item.progressAfter"
               :step="1"
               @change="processChange(item)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
-              v-if="canUpdate"
+              v-if="canUpdate && item.kr"
               v-model="item.progressAfter"
               controls-position="right"
               :min="0"
@@ -1090,28 +1091,6 @@ export default {
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
     },
-    // deleteOkr(okr, randomId) {
-    //   // 删除已选择的价值观、okr
-    //   for (const item of this.formData.weeklyWorkVoSaveList) {
-    //     if (item.randomId == randomId) {
-    //       item.selectedOkr = item.selectedOkr.filter((element) => element.okrDetailId != okr.okrDetailId);
-    //       let valueIdList = [];
-    //       let okrIdList = [];
-    //       // 删除对应okr、价值观id
-    //       valueIdList = item.valueIdList.filter((id) => okr.okrDetailId != id);
-    //       okrIdList = item.okrIdList.filter((id) => okr.okrDetailId != id);
-    //       item.okrCultureValueIds = valueIdList.join(',');
-    //       item.okrIds = okrIdList.join(',');
-    //       this.$set(item, 'okrIdList', okrIdList);
-    //       this.$set(item, 'valueIdList', valueIdList);
-    //       // 添加该字段用于校验支撑项
-    //       this.$set(item, 'valueOrOkrIds', item.okrCultureValueIds + item.okrIds);
-    //       // 删掉对应的支撑项
-    //       delete item.supportMyOkrObj;
-    //     }
-    //   }
-    // },
-
     closeOkrDialog(selectedData) {
       for (const item of this.formData.weeklyWorkVoSaveList) {
         const valueIdList = [];

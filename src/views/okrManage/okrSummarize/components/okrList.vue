@@ -1,247 +1,242 @@
 <template>
-  <div class="okr-maps">
+  <div class="okr-summarize-list">
     <div class="operating-area">
-      <div class="operating-area-inside">
-        <!-- <div class="operating-box-group"> -->
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>周期</dt>
-            <dd>
-              <div>
-                <el-select
-                  v-model="periodId"
-                  placeholder="请选择目标周期"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                  @change="periodChange"
-                >
-                  <el-option
-                    v-for="item in periodList"
-                    :key="item.periodId"
-                    :label="item.periodName"
-                    :value="item.periodId"
-                  ></el-option>
-                </el-select>
-              </div>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>组织</dt>
-            <dd>
-              <el-cascader
-                v-model="orgFullIdList"
-                ref="cascader"
-                :options="departmentData"
-                :show-all-levels="false"
-                :props="{
-                  checkStrictly: true,
-                  value: 'orgId',
-                  label: 'orgName',
-                  children: 'children',
-                }"
-                @change="selectIdChange"
-                popper-class="tl-cascader-popper"
-                class="tl-cascader"
-              ></el-cascader>
-            </dd>
-          </dl>
-
-          <el-button @click="goback" plain class="tl-btn amt-border-slip">
-            返回
-            <span class="lines"></span>
-          </el-button>
-        </div>
-        <div class="okr-summarize-info">
-          <template v-if="hasValue(summaryData.orgSumUser)">
-            <el-row :gutter="24">
-              <el-col :span="10"
-                ><div class="grid-content bg-purple">
-                  <span>组织：</span><span>{{ orgName }}</span>
-                </div></el-col
+      <div class="page-title">OKR汇总</div>
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>周期</dt>
+          <dd>
+            <div>
+              <el-select
+                v-model="periodId"
+                placeholder="请选择目标周期"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                @change="periodChange"
               >
-              <el-col :span="10"
-                ><div class="grid-content bg-purple">
-                  <span>已提交/未提交：</span
-                  ><span>{{
-                    `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
-                  }}</span>
-                </div></el-col
-              >
-            </el-row>
-            <el-row :gutter="24">
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>成员总数：</span
-                  ><span>{{ summaryData.orgSumUser }}</span>
-                </div></el-col
-              >
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>进行中：</span
-                  ><span>{{ summaryData.okrProgressNum }}</span>
-                </div></el-col
-              >
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>待审批：</span
-                  ><span>{{ summaryData.okrApprovalNum }}</span>
-                </div></el-col
-              >
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>复盘中：</span
-                  ><span>{{ summaryData.okrReviewNum }}</span>
-                </div></el-col
-              >
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>已完成：</span><span>{{ summaryData.okrDoneNum }}</span>
-                </div></el-col
-              >
-              <el-col :span="4"
-                ><div class="grid-content bg-purple">
-                  <span>已结束：</span
-                  ><span>{{ summaryData.okrCompleteNum }}</span>
-                </div></el-col
-              >
-            </el-row>
-          </template>
-        </div>
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>OKR类型</dt>
-            <dd>
-              <div>
-                <el-select
-                  v-model="okrBelongType"
-                  placeholder="全部"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                  @change="searchList"
-                  clearable
-                >
-                  <el-option
-                    v-for="item in okrBelongTypeList"
-                    :key="item.okrBelongType"
-                    :label="item.okrBelongTypeName"
-                    :value="item.okrBelongType"
-                  ></el-option>
-                </el-select>
-              </div>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>OKR状态</dt>
-            <dd>
-              <div>
-                <el-select
-                  v-model="status"
-                  placeholder="全部"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                  @change="searchList"
-                  clearable
-                >
-                  <el-option
-                    v-for="item in statusList"
-                    :key="item.status"
-                    :label="item.statusName"
-                    :value="item.status"
-                  ></el-option>
-                </el-select>
-              </div>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-input
-                placeholder="成员姓名"
-                v-model="userName"
-                @keyup.enter.native="searchList"
-                class="tl-input"
-                clearable
-                @clear="searchList"
-              >
-                <i
-                  slot="prefix"
-                  class="el-input__icon el-icon-search"
-                  @click="searchList"
-                ></i>
-              </el-input>
-            </dd>
-          </dl>
-          <el-button
-            type="primary"
-            class="tl-btn amt-bg-slip"
-            @click="searchList"
-            >查询</el-button
-          >
-        </div>
+                <el-option
+                  v-for="item in periodList"
+                  :key="item.periodId"
+                  :label="item.periodName"
+                  :value="item.periodId"
+                ></el-option>
+              </el-select>
+            </div>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>组织</dt>
+          <dd>
+            <el-cascader
+              v-model="orgFullIdList"
+              ref="cascader"
+              :options="departmentData"
+              :show-all-levels="false"
+              :props="{
+                checkStrictly: true,
+                value: 'orgId',
+                label: 'orgName',
+                children: 'children',
+              }"
+              @change="selectIdChange"
+              popper-class="tl-cascader-popper"
+              class="tl-cascader"
+            ></el-cascader>
+          </dd>
+        </dl>
       </div>
     </div>
-    <div>
-      <div class="cont-area">
-        <crcloud-table
-          :total="total"
-          :pageSize.sync="pageSize"
-          :currentPage.sync="currentPage"
-          @searchList="searchList"
-        >
-          <div slot="tableContainer">
-            <el-table ref="dicTable" v-loading="loading" :data="tableData">
-              <el-table-column
-                min-width="100px"
-                align="left"
-                prop="userName"
-                label="姓名"
-              ></el-table-column>
-              <el-table-column
-                min-width="100px"
-                align="left"
-                prop="orgName"
-                label="部门"
-              ></el-table-column>
-              <el-table-column
-                min-width="100px"
-                align="left"
-                prop="okrProgress"
-                label="okr进度"
-              >
-                <template slot-scope="scope">
-                  <div>{{ scope.row.okrProgress }}%</div>
-                </template>
-              </el-table-column>
-              <el-table-column
-                min-width="100px"
-                align="left"
-                prop="status"
-                label="状态"
-              >
-                <template slot-scope="scope">{{
-                  STATUS_MAP[scope.row.status]
-                }}</template>
-              </el-table-column>
-              <el-table-column width="180" label="操作">
-                <template slot-scope="scope">
-                  <el-button @click="checkOkr(scope.row)" type="text"
-                    >详情</el-button
-                  >
-                  <el-button
-                    v-if="![1, 2].includes(scope.row.readStatus) && rootRole"
-                    @click="checkOkr(scope.row)"
-                    type="text"
-                    >审阅</el-button
-                  >
-                  <el-button disabled type="text" v-else>--</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </crcloud-table>
+    <div class="cont-area">
+      <div class="dl-list-group">
+        <div class="dl-list-info">
+          <dl class="dl-item">
+            <dt><span>组织</span></dt>
+            <dd>
+              <em>{{ orgName }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已提交/未提交</span></dt>
+            <dd>
+              <em>{{
+                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
+              }}</em>
+            </dd>
+          </dl>
+        </div>
+        <div class="dl-list-detail">
+          <dl class="dl-item">
+            <dt><span>成员总数</span></dt>
+            <dd>
+              <em>{{ summaryData.orgSumUser }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>进行中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrProgressNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>进行中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrProgressNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>待审批</span></dt>
+            <dd>
+              <em>{{ summaryData.okrApprovalNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>复盘中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrReviewNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已完成</span></dt>
+            <dd>
+              <em>{{ summaryData.okrDoneNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已结束</span></dt>
+            <dd>
+              <em>{{ summaryData.okrCompleteNum }}</em>
+            </dd>
+          </dl>
+        </div>
       </div>
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>OKR类型</dt>
+          <dd>
+            <el-select
+              v-model="okrBelongType"
+              placeholder="全部"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchList"
+              clearable
+            >
+              <el-option
+                v-for="item in CONST.BELONG_TYPE_LIST"
+                :key="item.okrBelongType"
+                :label="item.okrBelongTypeName"
+                :value="item.okrBelongType"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>OKR状态</dt>
+          <dd>
+            <el-select
+              v-model="status"
+              placeholder="全部"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchList"
+              clearable
+            >
+              <el-option
+                v-for="item in CONST.STATUS_LIST"
+                :key="item.status"
+                :label="item.statusName"
+                :value="item.status"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              placeholder="成员姓名"
+              v-model="userName"
+              @keyup.enter.native="searchList"
+              class="tl-input"
+              clearable
+              @clear="searchList"
+            >
+              <i
+                slot="prefix"
+                class="el-input__icon el-icon-search"
+                @click="searchList"
+              ></i>
+            </el-input>
+          </dd>
+        </dl>
+        <el-button type="primary" class="tl-btn amt-bg-slip" @click="searchList"
+          >查询</el-button
+        >
+      </div>
+      <crcloud-table
+        :total="total"
+        :pageSize.sync="pageSize"
+        :currentPage.sync="currentPage"
+        @searchList="searchList"
+      >
+        <div slot="tableContainer">
+          <el-table
+            ref="dicTable"
+            v-loading="loading"
+            :data="tableData"
+            class="tl-table"
+          >
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="userName"
+              label="姓名"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="orgName"
+              label="部门"
+            ></el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="okrProgress"
+              label="okr进度"
+            >
+              <template slot-scope="scope">
+                <div>{{ scope.row.okrProgress }}%</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              min-width="100px"
+              align="left"
+              prop="status"
+              label="状态"
+            >
+              <template slot-scope="scope">{{
+                CONST.TABLE_STATUS_MAP[scope.row.status]
+              }}</template>
+            </el-table-column>
+            <el-table-column width="180" label="操作">
+              <template slot-scope="scope">
+                <el-button @click="checkOkr(scope.row)" type="text"
+                  >详情</el-button
+                >
+                <el-button
+                  v-if="![1, 2].includes(scope.row.readStatus) && rootRole"
+                  @click="checkOkr(scope.row)"
+                  type="text"
+                  >审阅</el-button
+                >
+                <el-button disabled type="text" v-else>--</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </crcloud-table>
     </div>
   </div>
 </template>
@@ -267,27 +262,7 @@ export default {
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-      okrBelongTypeList: [{
-        okrBelongType: '1',
-        okrBelongTypeName: '部门',
-      }, {
-        okrBelongType: '2',
-        okrBelongTypeName: '个人',
-      }],
-      statusList: [
-        { status: '0', statusName: '待审批' },
-        { status: '1', statusName: '进行中' },
-        { status: '3', statusName: '已完成' },
-        { status: '6', statusName: '复盘中' },
-        { status: '4', statusName: '已结束' },
-      ],
-      STATUS_MAP: {
-        0: '待审批',
-        1: '进行中',
-        3: '已完成',
-        6: '复盘中',
-        4: '已结束',
-      },
+
       periodId: '',
       okrBelongType: '1',
       status: '',

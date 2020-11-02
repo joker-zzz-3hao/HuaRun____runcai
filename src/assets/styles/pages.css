@@ -681,6 +681,7 @@
 .my-okr .card-panel-head dt em,
 .my-okr .card-panel-head dt i {
   transition: all .4s ease-out;
+  margin-left: 2px;
 }
 
 .my-okr .card-panel-head .okr-change:hover em,
@@ -2182,6 +2183,65 @@
   margin: 0 0 0 10px;
 }
 
+/* OKR汇总 */
+.okr-summarize .operating-box .tl-cascader {
+  line-height: unset;
+}
+
+.okr-summarize-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-summarize-list .cont-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-summarize-list .dl-list-info {
+  display: flex;
+  align-items: center;
+}
+
+.okr-summarize-list .dl-item ~ .dl-item {
+  margin: 0 0 0 20px;
+}
+
+.okr-summarize-list .dl-item dt {
+  margin: 0 10px 0 0;
+  color: #acb6bf;
+}
+
+.okr-summarize-list .dl-item dd {
+  color: #4d5155;
+}
+
+.okr-summarize-list .dl-list-detail {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.okr-summarize-list .dl-list-detail dd em {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #685df1;
+}
+
+.okr-summarize-list .dl-list-detail .dl-item ~ .dl-item {
+  margin: 0 0 0 50px;
+}
+
+.okr-summarize-list .cont-area .tl-input {
+  margin: 0;
+}
+
+.okr-summarize-list .cont-area .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
 /* 周报 */
 .my-weekly {
   margin: 16px 16px 86px 16px;
@@ -2203,7 +2263,8 @@
 .project-manage .cont-area,
 .working-hours .cont-area,
 .msg-notice .cont-area,
-.monitor-data .cont-area {
+.monitor-data .cont-area,
+.okr-summarize .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;

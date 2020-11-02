@@ -3908,7 +3908,11 @@
 }
 
 .main-menu .sub-menu dl dd:nth-child(7) em {
-  transition-delay: .54s;
+  transition-delay: .56s;
+}
+
+.main-menu .sub-menu dl dd:nth-child(8) em {
+  transition-delay: .64s;
 }
 
 .main-menu .sub-menu span {

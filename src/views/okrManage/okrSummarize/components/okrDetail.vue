@@ -26,7 +26,7 @@
             <span>OKR状态</span>
           </dt>
           <dd>
-            <em>{{ okrData.okrMain.status }}</em>
+            <em>{{ CONST.TABLE_STATUS_MAP[okrData.okrMain.status] }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -123,9 +123,10 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 // import okrCollapse from '@/components/okrCollapse';
-import CONST from '@/lib/const';
+// import CONST from '@/lib/const';
 import Server from '../server';
 import createOkrComponent from './createOkrComponent';
+import CONST from '../const';
 
 const server = new Server();
 
@@ -172,6 +173,7 @@ export default {
               okrId: this.okrData.okrMain.okrId,
               readStatus: this.formData.readStatus,
               readRemark: this.formData.readRemark,
+              userId: this.okrData.okrMain.userId,
             }).then((res) => {
               if (res.code == 200) {
                 this.$message.success('审阅完成');
