@@ -173,10 +173,15 @@ export default {
       okrSummarizeDetail: (state) => state.okrSummarizeDetail,
     }),
   },
-  mounted() {},
+  mounted() {
+    this.$busOn('clearInput', () => {
+      this.$refs.read.resetField();
+    });
+  },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeStep']),
     backList() {
+      this.$busEmit('refreshPage');
       this.setOkrSummarizeStep('1');
     },
     okrSummaryRead(readStatus) {
