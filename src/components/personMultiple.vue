@@ -1,52 +1,56 @@
 <template>
-  <div class="tl-custom-popover">
-    <el-popover
-      placement="bottom"
-      width="200"
-      trigger="click"
-      @show="show"
-      @hide="hide"
+  <el-popover
+    placement="bottom"
+    width="200"
+    trigger="click"
+    @show="show"
+    @hide="hide"
+    v-model="visible"
+    popper-class="search-popover"
+  >
+    <el-input
+      placeholder="搜索"
+      v-model="keyword"
+      class="tl-input"
+      clearable
+      maxlength="64"
     >
-      <div>
-        <el-input
-          placeholder="搜索"
-          v-model="keyword"
-          class="tl-input"
-          clearable
-          maxlength="64"
-        >
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-        <el-checkbox-group v-model="searchUser" @change="handleClick">
-          <el-checkbox
-            v-for="(item, index) in filterCreate"
-            :label="item.userId"
-            :key="item.userId + index"
-          >
-            <em>{{ item.userName }}</em>
-            <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div slot="reference">
-        <template v-if="showSelect">
-          <div v-if="modelVal.length < 1">{{ this.title }}</div>
-          <div v-for="p in cutPic" :key="p.userId" class="user-info">
-            <img v-if="p.headUrl" :src="p.headUrl" alt="" />
-            <div v-else class="user-name">
-              <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
-            </div>
+      <i slot="prefix" class="el-input__icon el-icon-search"></i>
+    </el-input>
+    <el-checkbox-group v-model="searchUser" @change="handleClick">
+      <el-checkbox
+        v-for="(item, index) in filterCreate"
+        :label="item.userId"
+        :key="item.userId + index"
+        class="tl-checkbox"
+      >
+        <em>{{ item.userName }}</em>
+        <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
+      </el-checkbox>
+    </el-checkbox-group>
+    <div class="flex-end">
+      <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+    </div>
+    <div slot="reference">
+      <template v-if="showSelect">
+        <div v-if="modelVal.length < 1">{{ this.title }}</div>
+        <div v-for="p in cutPic" :key="p.userId" class="user-info">
+          <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+          <div v-else class="user-name">
+            <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
           </div>
-          <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
-          <span v-if="modelVal.length > 0" @click="clear">
-            <i class="el-icon-circle-close"></i
-          ></span>
-          <i :class="arrowClass"></i>
-        </template>
-        <template v-else><i class="el-icon-circle-plus-outline"></i></template>
-      </div>
-    </el-popover>
-  </div>
+        </div>
+        <div v-if="modelVal.length > 0">（{{ modelVal.length }}人）</div>
+        <span v-if="modelVal.length > 0" @click="clear">
+          <i class="el-icon-circle-close"></i
+        ></span>
+        <i :class="arrowClass"></i>
+      </template>
+      <template v-else><i class="el-icon-circle-plus-outline"></i></template>
+    </div>
+  </el-popover>
 </template>
 
 <script>
@@ -64,6 +68,7 @@ export default {
       keyword: '',
       searchUser: [],
       arrowClass: 'el-icon-caret-bottom',
+      visible: false,
     };
   },
 
@@ -136,6 +141,9 @@ export default {
     },
     hide() {
       this.arrowClass = 'el-icon-caret-bottom';
+    },
+    closepop() {
+      this.visible = false;
     },
   },
 };

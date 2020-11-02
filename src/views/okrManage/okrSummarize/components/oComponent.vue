@@ -21,20 +21,11 @@
       <div>
         <i class="el-icon-attract"></i>
         <span>关联父目标</span>
-        <em
-          v-if="
-            oData.undertakeOkrDto && oData.undertakeOkrDto.undertakeOkrContent
-          "
-          ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
+        <em v-if="oData.parentObjectKr"
+          ><em>{{ oData.parentObjectKr }}</em
           ><em>{{ oData.cultureName }}</em></em
         >
-        <em
-          v-else-if="
-            oData.undertakeOkrVo && oData.undertakeOkrVo.undertakeOkrContent
-          "
-          ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
-          ><em>{{ oData.cultureName }}</em></em
-        >
+
         <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
         <em v-else>暂无</em>
       </div>
@@ -66,9 +57,7 @@ export default {
       default: '',
     },
   },
-  mounted() {
-    console.log('*****************55*********************', this.oData);
-  },
+  mounted() {},
   computed: {},
   methods: {},
   watch: {},

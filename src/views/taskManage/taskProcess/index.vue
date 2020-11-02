@@ -61,20 +61,20 @@
       <div class="category-labels">
         <el-button
           plain
-          class="tl-btn amt-border-fadeout"
+          class="tl-btn btn-grey"
           @click="queryTaskByClassify('')"
-          :class="{ 'is-select': searchParams.typeId == '' }"
+          :class="{ 'is-selected': searchParams.typeId == '' }"
           >全部分类</el-button
         >
         <el-button
           v-for="classify in processClassifyList"
           :key="classify.typeId"
           plain
-          class="tl-btn amt-border-fadeout"
+          class="tl-btn btn-grey"
           @click="queryTaskByClassify(classify.typeId)"
           :disabled="classify.isEdit"
           :class="{
-            'is-select': searchParams.typeId == classify.typeId,
+            'is-selected': searchParams.typeId == classify.typeId,
           }"
         >
           <el-input
@@ -98,11 +98,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </el-button>
-        <i
-          @click="addClassify"
-          style="cursor: pointer"
-          class="el-icon-circle-plus-outline"
-        ></i>
+        <i @click="addClassify" class="el-icon-circle-plus-outline"></i>
       </div>
       <div class="screening-condition">
         <el-input
@@ -120,20 +116,30 @@
             @click="getTableList"
           ></i>
         </el-input>
-        <tl-personmultiple
-          title="请选择执行人"
-          :userList="userList"
-          :userMap="userMap"
-          v-model="searchParams.searchExecutor"
-          @change="getTableList"
-        ></tl-personmultiple>
-        <tl-personmultiple
-          title="请选择创建人"
-          :userList="userList"
-          :userMap="userMap"
-          v-model="searchParams.searchCreator"
-          @change="getTableList"
-        ></tl-personmultiple>
+        <dl class="dl-item">
+          <dt>执行人</dt>
+          <dd>
+            <tl-personmultiple
+              title="请选择执行人"
+              :userList="userList"
+              :userMap="userMap"
+              v-model="searchParams.searchExecutor"
+              @change="getTableList"
+            ></tl-personmultiple>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>创建人</dt>
+          <dd>
+            <tl-personmultiple
+              title="请选择创建人"
+              :userList="userList"
+              :userMap="userMap"
+              v-model="searchParams.searchCreator"
+              @change="getTableList"
+            ></tl-personmultiple>
+          </dd>
+        </dl>
       </div>
       <tl-list
         ref="list"

@@ -34,7 +34,9 @@ export default {
     return {
     };
   },
-  mounted() {},
+  mounted() {
+    console.log('*****************', this.tableList);
+  },
   computed: {},
   methods: {},
   watch: {},
