@@ -291,6 +291,7 @@ export default {
               userName: item.userName,
               userPost: item.funcName,
               userCompany: item.companyName,
+              projectUserTyp: '0',
             });
           });
           this.commitLoading = true;
