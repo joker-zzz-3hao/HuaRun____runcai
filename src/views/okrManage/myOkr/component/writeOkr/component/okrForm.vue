@@ -81,16 +81,7 @@
                   <i class="el-icon-odometer"></i>
                   <span>当前进度</span>
                   <el-form-item>
-                    <el-input-number
-                      v-model="oitem.okrDetailProgress"
-                      controls-position="right"
-                      :min="0"
-                      :max="100"
-                      :step="1"
-                      :precision="0"
-                      class="tl-input-number"
-                    ></el-input-number>
-                    <span>%</span>
+                    <span>0 %</span>
                   </el-form-item>
                 </div>
                 <div>

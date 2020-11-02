@@ -138,7 +138,7 @@
                     </dt>
                     <dd class="is-edit has-third-child">
                       <div>
-                        <i class="el-icon-medal"></i>
+                        <i></i>
                         <span>权重</span>
                         <el-form-item
                           :prop="'okrInfoList.' + index + '.okrWeight'"
@@ -176,10 +176,10 @@
                         </el-form-item>
                       </div>
                       <div>
-                        <i class="el-icon-odometer"></i>
+                        <i></i>
                         <span>当前进度</span>
                         <el-form-item>
-                          <el-input-number
+                          <!-- <el-input-number
                             v-model="oitem.okrDetailProgress"
                             controls-position="right"
                             :min="0"
@@ -187,12 +187,12 @@
                             :step="1"
                             :precision="0"
                             class="tl-input-number"
-                          ></el-input-number>
-                          <span>%</span>
+                          ></el-input-number> -->
+                          <span>0 %</span>
                         </el-form-item>
                       </div>
                       <div>
-                        <i class="el-icon-attract"></i>
+                        <i></i>
                         <span>关联父目标</span>
                         <template
                           v-if="
@@ -253,7 +253,7 @@
                           placeholder="请输入关键结果"
                           v-model="kitem.okrDetailObjectKr"
                           class="tl-input"
-                          maxlength="200"
+                          maxlength="500"
                         ></el-input>
                       </el-form-item>
                     </div>
@@ -426,7 +426,7 @@
         @click="summit"
         class="tl-btn amt-bg-slip"
         :loading="createokrDrawer && okrLoading"
-        >创建目标</el-button
+        >创建OKR</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
@@ -802,11 +802,16 @@ export default {
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.okrDraftId = this.searchForm.draftId;
           this.formData.approvalId = this.searchForm.approvalId;
-          if (this.searchForm.approvalType == 1) {
-            this.summitChange();
-          } else {
-            this.summitNew();
-          }
+          this.$xconfirm({
+            content: '',
+            title: '提交后将会流转至上级领导审批且不能撤回，请确定填写无误后提交',
+          }).then(() => {
+            if (this.searchForm.approvalType == 1) {
+              this.summitChange();
+            } else {
+              this.summitNew();
+            }
+          }).catch(() => {});
         } else {
           this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
         }
@@ -886,6 +891,36 @@ export default {
         }
       });
     },
+    // 变更
+    summitChange() {
+      // 拼入参
+      this.formData.okrInfoList.forEach((item) => {
+        // 新增或变更承接项
+        if (item.undertakeOkrVo) {
+          item.undertakeOkr = item.undertakeOkrVo;
+          // 原有承接不改变
+        }
+      });
+
+      const formChangeData = {
+        okrInfoList: this.formData.okrInfoList,
+        periodId: this.formData.periodId,
+        okrProgress: this.formData.okrProgress,
+        modifyReason: this.reason.modifyReason,
+        okrMainId: this.formData.okrMainId,
+        okrBelongType: this.formData.okrBelongType,
+        approvalId: this.formData.approvalId,
+      };
+      this.server.modifyOkrInfo(formChangeData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+          this.close();
+        } else if (res.code === 30000) {
+          this.$message.warning('变更申请正在审批中，请勿重复提交');
+        }
+      });
+    },
+
     // 获取滚动条当前的位置
     getScrollTop() {
       let scrollTop = 0;
