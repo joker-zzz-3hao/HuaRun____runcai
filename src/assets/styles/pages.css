@@ -2217,6 +2217,31 @@
   color: #4d5155;
 }
 
+.okr-summarize-list .dl-list-detail {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.okr-summarize-list .dl-list-detail dd em {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #685df1;
+}
+
+.okr-summarize-list .dl-list-detail .dl-item ~ .dl-item {
+  margin: 0 0 0 50px;
+}
+
+.okr-summarize-list .cont-area .tl-input {
+  margin: 0;
+}
+
+.okr-summarize-list .cont-area .tl-select .el-input__inner {
+  border: 1px solid #d5dde3;
+  border-radius: 2px;
+}
+
 /* 周报 */
 .my-weekly {
   margin: 16px 16px 86px 16px;

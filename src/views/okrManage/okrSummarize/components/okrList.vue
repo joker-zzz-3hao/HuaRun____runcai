@@ -67,109 +67,90 @@
         </div>
         <div class="dl-list-detail">
           <dl class="dl-item">
-            <dt><span>已提交/未提交</span></dt>
+            <dt><span>成员总数</span></dt>
             <dd>
-              <em>{{
-                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
-              }}</em>
+              <em>{{ summaryData.orgSumUser }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>进行中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrProgressNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>进行中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrProgressNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>待审批</span></dt>
+            <dd>
+              <em>{{ summaryData.okrApprovalNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>复盘中</span></dt>
+            <dd>
+              <em>{{ summaryData.okrReviewNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已完成</span></dt>
+            <dd>
+              <em>{{ summaryData.okrDoneNum }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已结束</span></dt>
+            <dd>
+              <em>{{ summaryData.okrCompleteNum }}</em>
             </dd>
           </dl>
         </div>
       </div>
-      <!-- <template v-if="hasValue(summaryData.orgSumUser)">
-        <el-row :gutter="24">
-          <el-col :span="10"
-            ><div class="grid-content bg-purple">
-              <span>组织：</span><span>{{ orgName }}</span>
-            </div></el-col
-          >
-          <el-col :span="10"
-            ><div class="grid-content bg-purple">
-              <span>已提交/未提交：</span
-              ><span>{{
-                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
-              }}</span>
-            </div></el-col
-          >
-        </el-row>
-        <el-row :gutter="24">
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>成员总数：</span><span>{{ summaryData.orgSumUser }}</span>
-            </div></el-col
-          >
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>进行中：</span><span>{{ summaryData.okrProgressNum }}</span>
-            </div></el-col
-          >
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>待审批：</span><span>{{ summaryData.okrApprovalNum }}</span>
-            </div></el-col
-          >
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>复盘中：</span><span>{{ summaryData.okrReviewNum }}</span>
-            </div></el-col
-          >
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>已完成：</span><span>{{ summaryData.okrDoneNum }}</span>
-            </div></el-col
-          >
-          <el-col :span="4"
-            ><div class="grid-content bg-purple">
-              <span>已结束：</span><span>{{ summaryData.okrCompleteNum }}</span>
-            </div></el-col
-          >
-        </el-row>
-      </template> -->
-      <div class="operating-box121">
+      <div class="operating-box">
         <dl class="dl-item">
           <dt>OKR类型</dt>
           <dd>
-            <div>
-              <el-select
-                v-model="okrBelongType"
-                placeholder="全部"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchList"
-                clearable
-              >
-                <el-option
-                  v-for="item in CONST.BELONG_TYPE_LIST"
-                  :key="item.okrBelongType"
-                  :label="item.okrBelongTypeName"
-                  :value="item.okrBelongType"
-                ></el-option>
-              </el-select>
-            </div>
+            <el-select
+              v-model="okrBelongType"
+              placeholder="全部"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchList"
+              clearable
+            >
+              <el-option
+                v-for="item in CONST.BELONG_TYPE_LIST"
+                :key="item.okrBelongType"
+                :label="item.okrBelongTypeName"
+                :value="item.okrBelongType"
+              ></el-option>
+            </el-select>
           </dd>
         </dl>
         <dl class="dl-item">
           <dt>OKR状态</dt>
           <dd>
-            <div>
-              <el-select
-                v-model="status"
-                placeholder="全部"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchList"
-                clearable
-              >
-                <el-option
-                  v-for="item in CONST.STATUS_LIST"
-                  :key="item.status"
-                  :label="item.statusName"
-                  :value="item.status"
-                ></el-option>
-              </el-select>
-            </div>
+            <el-select
+              v-model="status"
+              placeholder="全部"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              @change="searchList"
+              clearable
+            >
+              <el-option
+                v-for="item in CONST.STATUS_LIST"
+                :key="item.status"
+                :label="item.statusName"
+                :value="item.status"
+              ></el-option>
+            </el-select>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -201,7 +182,12 @@
         @searchList="searchList"
       >
         <div slot="tableContainer">
-          <el-table ref="dicTable" v-loading="loading" :data="tableData">
+          <el-table
+            ref="dicTable"
+            v-loading="loading"
+            :data="tableData"
+            class="tl-table"
+          >
             <el-table-column
               min-width="100px"
               align="left"
