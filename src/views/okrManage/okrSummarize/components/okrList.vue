@@ -248,13 +248,18 @@ export default {
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-      okrBelongTypeList: [{
-        okrBelongType: '1',
-        okrBelongTypeName: '部门',
-      }, {
-        okrBelongType: '2',
-        okrBelongTypeName: '个人',
-      }],
+      okrBelongTypeList: [
+        {
+          okrBelongType: '',
+          okrBelongTypeName: '全部',
+        },
+        {
+          okrBelongType: '1',
+          okrBelongTypeName: '部门',
+        }, {
+          okrBelongType: '2',
+          okrBelongTypeName: '个人',
+        }],
 
       periodId: '',
       okrBelongType: '1',
