@@ -25,10 +25,10 @@ const BELONG_TYPE_LIST = [
     okrBelongTypeName: '个人',
   }];
 const TABLE_STATUS_MAP = {
-  0: '待审批',
+  0: '审批中',
   1: '进行中',
   3: '已完成',
-  6: '复盘中',
+  2: '复盘中',
   4: '已结束',
 };
 const OKR_KIND_MAP = {
@@ -42,10 +42,10 @@ const CONFIDENCE_MAP = {
 };
 const STATUS_LIST = [
   { status: '', statusName: '全部' },
-  { status: '0', statusName: '待审批' },
+  { status: '0', statusName: '审批中' },
   { status: '1', statusName: '进行中' },
   { status: '3', statusName: '已完成' },
-  { status: '6', statusName: '复盘中' },
+  { status: '2', statusName: '复盘中' },
   { status: '4', statusName: '已结束' },
 ];
 export default {

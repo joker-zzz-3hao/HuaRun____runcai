@@ -241,7 +241,7 @@ export default [{
         path: '/replayLink',
         name: 'replayLink',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
@@ -263,19 +263,6 @@ export default [{
       },
     ],
   },
-  // {
-  //   // 项目管理
-  //   path: '/projectManage',
-  //   name: 'projectManage',
-  //   meta: {
-  //     hasMainMenu: true,
-  //     noSubMenu: true,
-  //     parentRoute: 'projectManage',
-  //     title: 'projectManage',
-  //     power: '',
-  //   },
-  //   component: () => import('@/views/projectManage/index'),
-  // },
   // 项目
   {
     path: '/projectManage',

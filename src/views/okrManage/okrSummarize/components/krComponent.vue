@@ -31,12 +31,14 @@
           ></div>
           <div
             :class="{
+              'is-no-risk': krData.okrDetailConfidence == 1,
               'is-risks': krData.okrDetailConfidence == 2,
-              'is-uncontrollable': krData.okrDetailConfidence == 3,
             }"
           ></div>
           <div
-            :class="{ 'is-uncontrollable': krData.okrDetailConfidence == 3 }"
+            :class="{
+              'is-no-risk': krData.okrDetailConfidence == 1,
+            }"
           ></div>
         </div>
         <div class="state-txt">

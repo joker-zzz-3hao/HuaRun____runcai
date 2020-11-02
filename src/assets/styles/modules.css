@@ -3558,7 +3558,7 @@
   background: #fff;
 }
 
-.no-mainnav .logo-bg {
+.is-full-screen .logo-bg {
   background: unset;
 }
 
