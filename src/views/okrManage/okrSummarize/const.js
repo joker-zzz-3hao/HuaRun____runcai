@@ -45,6 +45,7 @@ const CONFIDENCE_MAP = {
   3: '低',
 };
 const STATUS_LIST = [
+  { status: '', statusName: '全部' },
   { status: '0', statusName: '待审批' },
   { status: '1', statusName: '进行中' },
   { status: '3', statusName: '已完成' },

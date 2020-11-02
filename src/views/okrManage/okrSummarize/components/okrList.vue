@@ -124,7 +124,7 @@
               clearable
             >
               <el-option
-                v-for="item in okrBelongTypeList"
+                v-for="item in CONST.BELONG_TYPE_LIST"
                 :key="item.okrBelongType"
                 :label="item.okrBelongTypeName"
                 :value="item.okrBelongType"
@@ -262,18 +262,6 @@ export default {
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-      okrBelongTypeList: [
-        {
-          okrBelongType: '',
-          okrBelongTypeName: '全部',
-        },
-        {
-          okrBelongType: '1',
-          okrBelongTypeName: '部门',
-        }, {
-          okrBelongType: '2',
-          okrBelongTypeName: '个人',
-        }],
 
       periodId: '',
       okrBelongType: '1',
