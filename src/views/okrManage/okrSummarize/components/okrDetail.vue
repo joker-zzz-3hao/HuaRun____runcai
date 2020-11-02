@@ -173,6 +173,7 @@ export default {
               okrId: this.okrData.okrMain.okrId,
               readStatus: this.formData.readStatus,
               readRemark: this.formData.readRemark,
+              userId: this.okrData.okrMain.userId,
             }).then((res) => {
               if (res.code == 200) {
                 this.$message.success('审阅完成');
