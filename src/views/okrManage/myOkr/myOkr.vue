@@ -46,7 +46,9 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <div slot="content">OKR进度由目标O进度自动计算</div>
+                  <div slot="content">
+                    OKR总进度由目标权重和进度自动计算得来
+                  </div>
                   <i class="el-icon-question"></i>
                 </el-tooltip>
               </dt>
@@ -237,16 +239,19 @@
                   <div slot="content">
                     <em>更新进展</em>
                   </div>
-                  <tl-process
+                  <div
                     :class="{
                       update: ['1', 1, 3, '3'].includes(item.okrMain.status),
                     }"
-                    @click.native="
-                      ['1', 1, 3, '3'].includes(item.okrMain.status) &&
-                        openUpdate(props.okritem)
-                    "
-                    :data="parseInt(props.okritem.okrDetailProgress, 10)"
-                  ></tl-process>
+                  >
+                    <tl-process
+                      @click.native="
+                        ['1', 1, 3, '3'].includes(item.okrMain.status) &&
+                          openUpdate(props.okritem)
+                      "
+                      :data="parseInt(props.okritem.okrDetailProgress, 10)"
+                    ></tl-process>
+                  </div>
                 </el-tooltip>
               </template>
             </tl-okr-table>

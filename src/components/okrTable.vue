@@ -207,9 +207,18 @@
           <!-- <tl-process
             :data="parseInt(scope.row.okrDetailProgress, 10)"
           ></tl-process> -->
-          <span class="progress-number"
-            >{{ scope.row.okrDetailProgress }}%</span
+          <el-tooltip
+            :disabled="!showUpdate"
+            effect="dark"
+            placement="top"
+            popper-class="tl-tooltip-popper"
           >
+            <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
+            <span class="progress-number"
+              >{{ scope.row.okrDetailProgress }}%
+              <i v-if="showUpdate" class="el-icon-question"></i
+            ></span>
+          </el-tooltip>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
