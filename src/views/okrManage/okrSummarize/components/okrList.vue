@@ -309,7 +309,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations('common', ['setOkrSummarizeDetailData', 'setOkrSummarizeStep']),
+    ...mapMutations('common', ['setOkrSummarizeDetailData', 'setOkrSummarizeStep', 'setSummasizeOptionType']),
     init() {
       this.rootRole = false;
       // 查询周期
