@@ -115,7 +115,6 @@
               popper-class="tl-select-dropdown"
               class="tl-select"
               @change="searchList"
-              clearable
             >
               <el-option
                 v-for="item in CONST.BELONG_TYPE_LIST"

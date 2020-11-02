@@ -18,10 +18,6 @@ const SEARCH_TYPE_LIST = [
 ];
 const BELONG_TYPE_LIST = [
   {
-    okrBelongType: '',
-    okrBelongTypeName: '全部',
-  },
-  {
     okrBelongType: '1',
     okrBelongTypeName: '部门',
   }, {

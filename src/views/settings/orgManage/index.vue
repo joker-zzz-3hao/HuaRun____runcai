@@ -216,6 +216,26 @@
               </template>
             </el-table-column>
             <el-table-column
+              min-width="130"
+              align="left"
+              prop="agentOrgName"
+              label="综合岗"
+            >
+              <template slot-scope="scope">
+                <span
+                  type="text"
+                  v-if="scope.row.agentOrg"
+                  @click="showexistEdit(scope.row)"
+                  >{{ changeOrgAndId(scope.row.agentOrg) }}</span
+                >
+                <span v-else>
+                  <el-button type="text" @click="showexistEdit(scope.row)"
+                    >设置</el-button
+                  >
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column
               min-width="100"
               align="left"
               prop="userStatus"
