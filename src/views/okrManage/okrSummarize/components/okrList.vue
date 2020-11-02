@@ -146,7 +146,7 @@
                   clearable
                 >
                   <el-option
-                    v-for="item in statusList"
+                    v-for="item in CONST.STATUS_LIST"
                     :key="item.status"
                     :label="item.statusName"
                     :value="item.status"
@@ -221,7 +221,7 @@
                 label="状态"
               >
                 <template slot-scope="scope">{{
-                  STATUS_MAP[scope.row.status]
+                  CONST.TABLE_STATUS_MAP[scope.row.status]
                 }}</template>
               </el-table-column>
               <el-table-column width="180" label="操作">
@@ -274,20 +274,7 @@ export default {
         okrBelongType: '2',
         okrBelongTypeName: '个人',
       }],
-      statusList: [
-        { status: '0', statusName: '待审批' },
-        { status: '1', statusName: '进行中' },
-        { status: '3', statusName: '已完成' },
-        { status: '6', statusName: '复盘中' },
-        { status: '4', statusName: '已结束' },
-      ],
-      STATUS_MAP: {
-        0: '待审批',
-        1: '进行中',
-        3: '已完成',
-        6: '复盘中',
-        4: '已结束',
-      },
+
       periodId: '',
       okrBelongType: '1',
       status: '',

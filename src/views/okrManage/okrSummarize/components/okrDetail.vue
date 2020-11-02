@@ -26,7 +26,7 @@
             <span>OKR状态</span>
           </dt>
           <dd>
-            <em>{{ okrData.okrMain.status }}</em>
+            <em>{{ CONST.TABLE_STATUS_MAP[okrData.okrMain.status] }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -123,9 +123,10 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 // import okrCollapse from '@/components/okrCollapse';
-import CONST from '@/lib/const';
+// import CONST from '@/lib/const';
 import Server from '../server';
 import createOkrComponent from './createOkrComponent';
+import CONST from '../const';
 
 const server = new Server();
 
