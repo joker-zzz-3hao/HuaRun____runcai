@@ -2702,7 +2702,9 @@
 }
 
 .tl-custom-timeline .list-title span {
-  margin: 0 0 10px 0;
+  margin: 15px 0 0 0;
+}
+.timeline-list .list-title em {
   color: #acb6bf;
 }
 

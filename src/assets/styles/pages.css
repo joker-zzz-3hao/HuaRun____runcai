@@ -724,9 +724,10 @@
   color: #879099;
 }
 
+/* change by xinquan */
 .update-progress .el-dialog__body {
   width: 102%;
-  height: 530px;
+  height: 400px;
   overflow: hidden;
 }
 
@@ -5067,4 +5068,9 @@
 .monitor-data .el-collapse-item__header>span:nth-of-type(1){
   color: #909399;
   margin: 0 20px 0 0;
+}
+
+/* 问号 */
+.el-icon-question{
+  color: #acb6bf;
 }
