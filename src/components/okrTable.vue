@@ -204,9 +204,12 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="16%">
         <template slot-scope="scope">
-          <tl-process
+          <!-- <tl-process
             :data="parseInt(scope.row.okrDetailProgress, 10)"
-          ></tl-process>
+          ></tl-process> -->
+          <span class="progress-number"
+            >{{ scope.row.okrDetailProgress }}%</span
+          >
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->
