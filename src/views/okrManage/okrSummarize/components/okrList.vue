@@ -163,7 +163,7 @@
                 clearable
               >
                 <el-option
-                  v-for="item in statusList"
+                  v-for="item in CONST.STATUS_LIST"
                   :key="item.status"
                   :label="item.statusName"
                   :value="item.status"
@@ -231,7 +231,7 @@
               label="状态"
             >
               <template slot-scope="scope">{{
-                STATUS_MAP[scope.row.status]
+                CONST.TABLE_STATUS_MAP[scope.row.status]
               }}</template>
             </el-table-column>
             <el-table-column width="180" label="操作">
@@ -276,13 +276,18 @@ export default {
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-      okrBelongTypeList: [{
-        okrBelongType: '1',
-        okrBelongTypeName: '部门',
-      }, {
-        okrBelongType: '2',
-        okrBelongTypeName: '个人',
-      }],
+      okrBelongTypeList: [
+        {
+          okrBelongType: '',
+          okrBelongTypeName: '全部',
+        },
+        {
+          okrBelongType: '1',
+          okrBelongTypeName: '部门',
+        }, {
+          okrBelongType: '2',
+          okrBelongTypeName: '个人',
+        }],
 
       periodId: '',
       okrBelongType: '1',

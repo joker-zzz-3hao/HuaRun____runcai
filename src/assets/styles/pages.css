@@ -681,6 +681,7 @@
 .my-okr .card-panel-head dt em,
 .my-okr .card-panel-head dt i {
   transition: all .4s ease-out;
+  margin-left: 2px;
 }
 
 .my-okr .card-panel-head .okr-change:hover em,

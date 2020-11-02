@@ -16,7 +16,18 @@ const SEARCH_TYPE_LIST = [
   { label: 'OKR', value: '2' },
   { label: '成员', value: '3' },
 ];
-
+const BELONG_TYPE_LIST = [
+  {
+    okrBelongType: '',
+    okrBelongTypeName: '全部',
+  },
+  {
+    okrBelongType: '1',
+    okrBelongTypeName: '部门',
+  }, {
+    okrBelongType: '2',
+    okrBelongTypeName: '个人',
+  }];
 const TABLE_STATUS_MAP = {
   0: '待审批',
   1: '进行中',
@@ -42,6 +53,7 @@ const STATUS_LIST = [
 ];
 export default {
   // STATUS_MAP,
+  BELONG_TYPE_LIST,
   STATUS_LIST,
   OKR_TYPE_MAP,
   SEARCH_TYPE_LIST,

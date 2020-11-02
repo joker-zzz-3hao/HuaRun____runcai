@@ -13,7 +13,7 @@
     <el-scrollbar>
       <div class="okr-info">
         <div class="tl-custom-timeline">
-          <el-form :model="formData" ref="dataForm" class="tl-form">
+          <!-- <el-form :model="formData" ref="dataForm" class="tl-form">
             <dl class="timeline-list">
               <dt>
                 <div class="list-info">
@@ -115,6 +115,78 @@
                 </el-form-item>
               </dd>
             </dl>
+          </el-form> -->
+          <el-form :model="formData" ref="dataForm" class="tl-form">
+            <dl class="timeline-list">
+              <dt>
+                <div class="list-info">
+                  <div class="list-title">
+                    <em>{{
+                      formData.okrDetailType === 0 ? "目标O" : "关键结果"
+                    }}</em>
+                    <span>{{ formData.okrDetailObjectKr }}</span>
+                  </div>
+                  <div class="list-cont">
+                    <div class="tl-progress-group">
+                      <tl-process
+                        :data="parseInt(formData.okrDetailProgress, 10)"
+                        :showNumber="false"
+                        :width="64"
+                        :marginLeft="6"
+                      ></tl-process>
+                      <el-slider
+                        v-model="formData.okrDetailProgress"
+                        :step="1"
+                        @change="changeProgress(formData)"
+                        tooltip-class="slider-tooltip"
+                      ></el-slider>
+                      <el-input-number
+                        v-model="formData.okrDetailProgress"
+                        controls-position="right"
+                        :min="0"
+                        :max="100"
+                        :step="1"
+                        :precision="0"
+                        class="tl-input-number"
+                      ></el-input-number>
+                      <span>%</span>
+                    </div>
+                    <div class="okr-risk" v-if="formData.okrDetailConfidence">
+                      <span>信心指数</span>
+                      <tl-confidence
+                        v-model="formData.okrDetailConfidence"
+                      ></tl-confidence>
+                    </div>
+                  </div>
+                </div>
+              </dt>
+            </dl>
+            <dl class="change-reason">
+              <!-- <dt>更新说明</dt> -->
+              <dd>
+                <el-form-item
+                  label="更新说明"
+                  prop="updateexplain"
+                  :rules="[
+                    {
+                      trigger: 'blur',
+                      message: '请输入更新说明',
+                      required: true,
+                    },
+                  ]"
+                >
+                  <el-input
+                    placeholder="请输入更新说明"
+                    maxlength="200"
+                    v-model="formData.updateexplain"
+                    type="textarea"
+                    :rows="3"
+                    resize="none"
+                    class="tl-textarea"
+                  ></el-input>
+                </el-form-item>
+              </dd>
+            </dl>
           </el-form>
         </div>
       </div>
@@ -207,26 +279,36 @@ export default {
       }
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          this.summitForm = {
-            oupdateProcessDto: {
-              detailId: this.formData.detailId,
-              okrDetailProgress: this.formData.okrDetailProgress,
-            },
-            remark: this.formData.updateexplain,
+          // this.summitForm = {
+          //   oupdateProcessDto: {
+          //     detailId: this.formData.detailId,
+          //     okrDetailProgress: this.formData.okrDetailProgress,
+          //   },
+          //   remark: this.formData.updateexplain,
+          //   periodId: this.periodId,
+          // };
+          // if (this.formData.krList && this.formData.krList.length > 0) {
+          //   this.summitForm.krUpdateProcessDtos = [];
+          //   this.formData.krList.forEach((item) => {
+          //     this.summitForm.krUpdateProcessDtos.push({
+          //       detailId: item.detailId,
+          //       okrDetailConfidence: item.okrDetailConfidence,
+          //       okrDetailProgress: item.okrDetailProgress,
+          //     });
+          //   });
+          // }
+          const summitForm = {
+            detailId: this.formData.detailId,
+            okrDetailConfidence: this.formData.okrDetailConfidence || 1,
+            okrDetailId: this.formData.okrDetailId,
+            okrDetailProgress: this.formData.okrDetailProgress,
+            okrMainId: this.formData.okrMainId,
             periodId: this.periodId,
+            remark: this.formData.updateexplain,
           };
-          if (this.formData.krList && this.formData.krList.length > 0) {
-            this.summitForm.krUpdateProcessDtos = [];
-            this.formData.krList.forEach((item) => {
-              this.summitForm.krUpdateProcessDtos.push({
-                detailId: item.detailId,
-                okrDetailConfidence: item.okrDetailConfidence,
-                okrDetailProgress: item.okrDetailProgress,
-              });
-            });
-          }
+          console.log(summitForm);
           this.loading = true;
-          this.server.summitUpdate(this.summitForm).then((res) => {
+          this.server.singleUpdate(summitForm).then((res) => {
             this.loading = false;
             if (res.code == 200) {
               this.$message('更新成功');

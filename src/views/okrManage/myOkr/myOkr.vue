@@ -40,8 +40,15 @@
             </dl>
             <dl class="okr-progress">
               <dt>
-                <!-- <i class="el-icon-odometer"></i> -->
                 <em>OKR进度</em>
+                <el-tooltip
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <div slot="content">OKR进度由目标O进度自动计算</div>
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
               </dt>
               <dd>
                 <el-progress
@@ -56,7 +63,9 @@
             </dl>
             <dl
               v-if="
-                ['1', 1, '6', 6, '8', 8, 3, '3'].includes(item.okrMain.status)
+                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
+                  item.okrMain.status
+                )
               "
             >
               <dt>
@@ -73,7 +82,11 @@
                       <em>申请变更</em>
                     </el-dropdown-item>
                     <el-dropdown-item
-                      v-if="['1', 1].includes(item.okrMain.status)"
+                      v-if="
+                        ['1', 1, 2, '2', 3, '3', 4].includes(
+                          item.okrMain.status
+                        )
+                      "
                       @click.native="openDialog(item)"
                     >
                       <em>操作历史</em>
@@ -156,7 +169,7 @@
                 <div v-else-if="showUndertake">暂无</div>
               </template>
               <!-- o的进度更新 -->
-              <template slot="weight-bar" slot-scope="props">
+              <!-- <template slot="weight-bar" slot-scope="props">
                 <div
                   v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
                   @click="openUpdate(props.okritem)"
@@ -165,7 +178,7 @@
                     >更新进展</el-button
                   >
                 </div>
-              </template>
+              </template> -->
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-dropdown
@@ -212,6 +225,22 @@
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
+              </template>
+              <!-- kr更新进展 -->
+              <template slot="progress-krbar" slot-scope="props">
+                <el-tooltip
+                  :disabled="!['1', 1, 3, '3'].includes(item.okrMain.status)"
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <div slot="content">
+                    <div @click="openUpdate(props.okritem)">更新进展</div>
+                  </div>
+                  <tl-process
+                    :data="parseInt(props.okritem.okrDetailProgress, 10)"
+                  ></tl-process>
+                </el-tooltip>
               </template>
             </tl-okr-table>
           </div>
@@ -285,6 +314,7 @@ import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrHistory from '@/components/okrHistory';
+import process from '@/components/process';
 import okrUpdate from './component/okrUpdate';
 import changeOKR from './component/changeOKR';
 import checkJudge from './component/checkJudge';
@@ -304,6 +334,7 @@ export default {
     'tl-changeokr': changeOKR,
     'tl-okr-history': okrHistory,
     'tl-checkjudge': checkJudge,
+    'tl-process': process,
   },
   data() {
     return {
