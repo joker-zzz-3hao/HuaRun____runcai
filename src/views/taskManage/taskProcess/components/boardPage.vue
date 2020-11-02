@@ -32,6 +32,7 @@
           @end="onMove"
           id="norun"
           :options="options"
+          :class="{ 'no-data': stepData.stepTaskList.length == 0 }"
         >
           <div
             class="drag-list-item"
