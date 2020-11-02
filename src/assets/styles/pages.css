@@ -2244,9 +2244,61 @@
 
 /* replay-link */
 .replay-link {
-  margin: 0 auto;
+  margin: 16px auto;
   width: 1060px;
   flex: unset;
+}
+
+.replay-info dt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.replay-info .replay-title > span,
+.replay-info .replay-title em:first-of-type {
+  margin: 0 6px 0 0;
+  color: #26282b;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.replay-info .replay-title em:last-of-type {
+  color: #879099;
+}
+
+.replay-info > dd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.replay-info > dd:not(:last-child) {
+  background: #f4f6f8;
+}
+
+.replay-info .dl-list-group {
+  margin: 16px 0 16px 0;
+  padding: 16px 20px;
+}
+
+.replay-info .dl-list-group dt span {
+  margin: 0 20px 0 0;
+  color: #acb6bf;
+}
+
+.replay-info .user-info .user-name em {
+  width: 54px;
+  height: 54px;
+}
+
+.replay-info .user-info dd:first-of-type {
+  margin: 0 20px 0 0;
+}
+
+.replay-info .flex-end {
+  justify-content: flex-end;
+  color: #879099;
 }
 
 /* 周报 */
