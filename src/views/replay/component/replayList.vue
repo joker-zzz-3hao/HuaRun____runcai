@@ -165,7 +165,7 @@
                       },
                     })
                   "
-                  >待复盘</el-button
+                  >复盘</el-button
                 >
                 <el-button
                   type="text"
