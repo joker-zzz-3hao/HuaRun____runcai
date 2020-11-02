@@ -2187,6 +2187,35 @@
   line-height: unset;
 }
 
+.okr-summarize-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-summarize-list .cont-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.okr-summarize-list .dl-list-info {
+  display: flex;
+  align-items: center;
+}
+
+.okr-summarize-list .dl-item ~ .dl-item {
+  margin: 0 0 0 20px;
+}
+
+.okr-summarize-list .dl-item dt {
+  margin: 0 10px 0 0;
+  color: #acb6bf;
+}
+
+.okr-summarize-list .dl-item dd {
+  color: #4d5155;
+}
+
 /* 周报 */
 .my-weekly {
   margin: 16px 16px 86px 16px;

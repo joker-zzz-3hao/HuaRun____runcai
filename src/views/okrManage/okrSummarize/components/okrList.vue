@@ -48,7 +48,35 @@
       </div>
     </div>
     <div class="cont-area">
-      <template v-if="hasValue(summaryData.orgSumUser)">
+      <div class="dl-list-group">
+        <div class="dl-list-info">
+          <dl class="dl-item">
+            <dt><span>组织</span></dt>
+            <dd>
+              <em>{{ orgName }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>已提交/未提交</span></dt>
+            <dd>
+              <em>{{
+                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
+              }}</em>
+            </dd>
+          </dl>
+        </div>
+        <div class="dl-list-detail">
+          <dl class="dl-item">
+            <dt><span>已提交/未提交</span></dt>
+            <dd>
+              <em>{{
+                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
+              }}</em>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <!-- <template v-if="hasValue(summaryData.orgSumUser)">
         <el-row :gutter="24">
           <el-col :span="10"
             ><div class="grid-content bg-purple">
@@ -96,7 +124,7 @@
             </div></el-col
           >
         </el-row>
-      </template>
+      </template> -->
       <div class="operating-box121">
         <dl class="dl-item">
           <dt>OKR类型</dt>
