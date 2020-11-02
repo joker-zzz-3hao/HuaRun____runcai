@@ -18,12 +18,11 @@
           style="width: 50px; height: 50px; border-radius: 50%"
           :src="okrMain.okrMainVo.headUrl"
         />
-        <!-- <div class="user-info" v-else>
-          <div class="user-name">
-            {{ cutName(okrMain.okrMainVo.userName) }}
-          </div>
-          {{ okrMain.okrMainVo.userName }}
-        </div> -->
+
+        <div class="user-name" v-else>
+          {{ cutName(okrMain.okrMainVo.userName) }}
+        </div>
+        {{ okrMain.okrMainVo.userName }}
       </div>
       <div class="list">
         <dl class="okr-progress">
