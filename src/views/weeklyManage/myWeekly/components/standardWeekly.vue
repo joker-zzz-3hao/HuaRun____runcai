@@ -79,7 +79,7 @@
                   v-model="scope.row.workDesc"
                   class="tl-textarea"
                   clearable
-                  maxlength="50"
+                  maxlength="500"
                 ></el-input>
                 <pre v-else class="font-normal">{{ scope.row.workDesc }}</pre>
               </el-form-item>
