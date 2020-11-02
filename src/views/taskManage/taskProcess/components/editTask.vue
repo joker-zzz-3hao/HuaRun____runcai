@@ -132,6 +132,7 @@
             <dd>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
+                  v-if="processList.length > 0"
                   :disabled="canEdit"
                   v-model.trim="formData.processId"
                   placeholder="请选择任务过程"
@@ -146,6 +147,56 @@
                     :value="item.processId"
                   ></el-option>
                 </el-select>
+              </el-form-item>
+
+              <el-form-item label="时长统计">
+                <span>{{ formData.timeSum }}</span>
+              </el-form-item>
+              <el-form-item label="当前进度">
+                <div class="tl-progress-group">
+                  <tl-process
+                    :data="parseInt(formData.taskProgress, 10)"
+                    :showNumber="false"
+                    :width="40"
+                    :marginLeft="6"
+                  ></tl-process>
+                  <el-slider
+                    :disabled="canEdit"
+                    v-model.trim="formData.taskProgress"
+                    :step="1"
+                    tooltip-class="slider-tooltip"
+                    @change="showRemark = true"
+                  ></el-slider>
+                  <el-input-number
+                    :disabled="canEdit"
+                    v-model.trim="formData.taskProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                    class="tl-input-number"
+                    @focus="showRemark = true"
+                  ></el-input-number>
+                  <span>%</span>
+                </div>
+              </el-form-item>
+              <el-form-item
+                v-if="showRemark"
+                label="进度更新原因说明"
+                prop="taskProgressRemark"
+              >
+                <el-input
+                  :disabled="canEdit"
+                  type="textarea"
+                  :rows="3"
+                  maxlength="220"
+                  placeholder="请输入进度更新原因"
+                  v-model="formData.taskProgressRemark"
+                  show-word-limit
+                  resize="none"
+                  class="tl-textarea"
+                ></el-input>
               </el-form-item>
               <el-form-item
                 v-if="formData.taskProgress == 100"
@@ -205,56 +256,6 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="时长统计">
-                <span>{{ formData.timeSum }}</span>
-              </el-form-item>
-              <el-form-item label="当前进度">
-                <div class="tl-progress-group">
-                  <tl-process
-                    :data="parseInt(formData.taskProgress, 10)"
-                    :showNumber="false"
-                    :width="40"
-                    :marginLeft="6"
-                  ></tl-process>
-                  <el-slider
-                    :disabled="canEdit"
-                    v-model.trim="formData.taskProgress"
-                    :step="1"
-                    tooltip-class="slider-tooltip"
-                    @change="showRemark = true"
-                  ></el-slider>
-                  <el-input-number
-                    :disabled="canEdit"
-                    v-model.trim="formData.taskProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                    class="tl-input-number"
-                    @focus="showRemark = true"
-                  ></el-input-number>
-                  <span>%</span>
-                </div>
-              </el-form-item>
-              <el-form-item
-                v-if="showRemark"
-                label="进度更新原因说明"
-                prop="taskProgressRemark"
-              >
-                <el-input
-                  :disabled="canEdit"
-                  type="textarea"
-                  :rows="3"
-                  maxlength="220"
-                  placeholder="请输入进度更新原因"
-                  v-model="formData.taskProgressRemark"
-                  show-word-limit
-                  resize="none"
-                  class="tl-textarea"
-                ></el-input>
-              </el-form-item>
-
               <el-form-item label="任务描述" prop="taskDesc">
                 <el-input
                   placeholder="请输入任务描述"
@@ -539,12 +540,13 @@ export default {
       this.canEdit = canedit;
       this.getUserList();
       this.queryOkr();
-      this.getProcess();
       this.getProjectList();
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
           if (res.code == 200 && res.data) {
             this.formData = res.data;
+            this.getProcess(res.data.processId);
+
             this.taskUserId = this.formData.taskUserId;
             this.fileList = this.formData.attachmentList;
             if (res.data.taskBegDate) {
@@ -628,11 +630,12 @@ export default {
       });
     },
     // 查询过程
-    getProcess() {
+    getProcess(id) {
       this.server.queryProcess({
         currentPage: 1,
         pageSize: 1000,
         enable: 1,
+        processId: id,
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];
