@@ -215,7 +215,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               min-width="130"
               align="left"
               prop="agentOrgName"
@@ -225,7 +225,7 @@
                 <span
                   type="text"
                   v-if="scope.row.agentOrg"
-                  @click="showexistEdit(scope.row)"
+                  @click="setSecretary(scope.row)"
                   >{{ changeOrgAndId(scope.row.agentOrg) }}</span
                 >
                 <span v-else>
@@ -234,7 +234,7 @@
                   >
                 </span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               min-width="100"
               align="left"
@@ -372,6 +372,7 @@
       @createLeader="createLeader"
       @searchList="searchList"
     ></edit-departOrg>
+    <add-secretary></add-secretary>
   </div>
 </template>
 
@@ -434,6 +435,10 @@ export default {
         children: 'sonTree',
         label: 'orgName',
       },
+      //  this.userData = row;
+      // this.existSecretary = true;
+      userData: {},
+      existSecretary: false,
     };
   },
   created() {
@@ -465,6 +470,10 @@ export default {
     showexistEdit(row) {
       this.rowData = row;
       this.existEdit = true;
+    },
+    setSecretary(row) {
+      this.userData = row;
+      this.existSecretary = true;
     },
     filterNode(value, data) {
       if (!value) return true;
