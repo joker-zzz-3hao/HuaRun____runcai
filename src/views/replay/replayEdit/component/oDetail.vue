@@ -284,6 +284,7 @@ export default {
       const params = {
         okrMainVo: {
           reviewType: this.reviewType,
+          okrBelongType: this.okrMain.okrMainVo.okrBelongType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
