@@ -14,9 +14,9 @@
         <em v-if="!overview">关联父目标</em>
       </li>
       <li>进度</li>
-      <li>
+      <!-- <li>
         <em v-if="!overview && showUpdate">更新进展</em>
-      </li>
+      </li> -->
       <li></li>
     </ul>
     <el-table
@@ -81,12 +81,14 @@
             <dd class="undertake-target"></dd>
             <!-- kr进度 -->
             <dd class="okr-progress">
+              <slot name="progress-krbar" :okritem="kritem"></slot>
               <tl-process
+                v-if="!showUpdate"
                 :data="parseInt(kritem.okrDetailProgress, 10)"
               ></tl-process>
             </dd>
             <!-- kr无更新进度 仅占位-->
-            <dd class="okr-update"></dd>
+            <!-- <dd class="okr-update"></dd> -->
             <!-- kr更多操作 -->
             <dd class="okr-operating">
               <slot name="moreHandle-krbar" :okritem="kritem"></slot>

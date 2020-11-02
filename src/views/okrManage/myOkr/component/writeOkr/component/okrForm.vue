@@ -160,7 +160,7 @@
                     placeholder="请输入关键结果"
                     v-model="kitem.okrDetailObjectKr"
                     class="tl-input"
-                    maxlength="200"
+                    maxlength="500"
                   ></el-input>
                 </el-form-item>
               </div>
