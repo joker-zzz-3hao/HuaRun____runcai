@@ -270,6 +270,7 @@ export default {
       };
       const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
       if (CheckNull) {
+        this.submitLoad = false;
         this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
         return false;
       }
