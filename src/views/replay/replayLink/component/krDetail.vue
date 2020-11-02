@@ -213,6 +213,8 @@ export default {
       this.server.okrReviewCommunicationSave(params).then((res) => {
         this.saveLoad = false;
         if (res.code == 200) {
+          this.$emit('getView');
+          this.getOldList();
           this.$message.success('保存成功');
         } else {
           this.$message.error(res.msg);

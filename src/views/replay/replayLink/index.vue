@@ -18,9 +18,9 @@
           style="width: 50px; height: 50px; border-radius: 50%"
           :src="okrMain.okrMainVo.headUrl"
         />
-        <!-- <div class="user-name" v-else>
+        <div class="user-name" v-else>
           <em>{{ cutName(okrMain.okrMainVo.userName) }}</em>
-        </div> -->
+        </div>
         {{ okrMain.okrMainVo.userName }}
       </div>
       <div class="list">
