@@ -28,7 +28,7 @@
         <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
       </el-checkbox>
     </el-checkbox-group>
-    <div class="flex-end">
+    <div class="flex-end" v-if="filterCreate.length > 0">
       <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
         >确定</el-button
       >
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit('change', this.searchUser);
+      // this.$emit('change', this.searchUser);
     },
     // 删除
     clear() {
@@ -143,6 +143,7 @@ export default {
       this.arrowClass = 'el-icon-caret-bottom';
     },
     closepop() {
+      this.$emit('change', this.searchUser);
       this.visible = false;
     },
   },

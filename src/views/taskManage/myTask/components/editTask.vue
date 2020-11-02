@@ -148,6 +148,56 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
+
+              <el-form-item label="时长统计">
+                <span>{{ formData.timeSum }}</span>
+              </el-form-item>
+              <el-form-item label="当前进度">
+                <div class="tl-progress-group">
+                  <tl-process
+                    :data="parseInt(formData.taskProgress, 10)"
+                    :showNumber="false"
+                    :width="40"
+                    :marginLeft="6"
+                  ></tl-process>
+                  <el-slider
+                    :disabled="canEdit"
+                    v-model.trim="formData.taskProgress"
+                    :step="1"
+                    tooltip-class="slider-tooltip"
+                    @change="showRemark = true"
+                  ></el-slider>
+                  <el-input-number
+                    :disabled="canEdit"
+                    v-model.trim="formData.taskProgress"
+                    controls-position="right"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    :precision="0"
+                    class="tl-input-number"
+                    @focus="showRemark = true"
+                  ></el-input-number>
+                  <span>%</span>
+                </div>
+              </el-form-item>
+              <el-form-item
+                v-if="showRemark"
+                label="进度更新原因说明"
+                prop="taskProgressRemark"
+              >
+                <el-input
+                  :disabled="canEdit"
+                  type="textarea"
+                  :rows="3"
+                  maxlength="220"
+                  placeholder="请输入进度更新原因"
+                  v-model="formData.taskProgressRemark"
+                  show-word-limit
+                  resize="none"
+                  class="tl-textarea"
+                ></el-input>
+              </el-form-item>
               <el-form-item
                 v-if="formData.taskProgress == 100"
                 label="归属项目"
@@ -206,56 +256,6 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="时长统计">
-                <span>{{ formData.timeSum }}</span>
-              </el-form-item>
-              <el-form-item label="当前进度">
-                <div class="tl-progress-group">
-                  <tl-process
-                    :data="parseInt(formData.taskProgress, 10)"
-                    :showNumber="false"
-                    :width="40"
-                    :marginLeft="6"
-                  ></tl-process>
-                  <el-slider
-                    :disabled="canEdit"
-                    v-model.trim="formData.taskProgress"
-                    :step="1"
-                    tooltip-class="slider-tooltip"
-                    @change="showRemark = true"
-                  ></el-slider>
-                  <el-input-number
-                    :disabled="canEdit"
-                    v-model.trim="formData.taskProgress"
-                    controls-position="right"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    :precision="0"
-                    class="tl-input-number"
-                    @focus="showRemark = true"
-                  ></el-input-number>
-                  <span>%</span>
-                </div>
-              </el-form-item>
-              <el-form-item
-                v-if="showRemark"
-                label="进度更新原因说明"
-                prop="taskProgressRemark"
-              >
-                <el-input
-                  :disabled="canEdit"
-                  type="textarea"
-                  :rows="3"
-                  maxlength="220"
-                  placeholder="请输入进度更新原因"
-                  v-model="formData.taskProgressRemark"
-                  show-word-limit
-                  resize="none"
-                  class="tl-textarea"
-                ></el-input>
-              </el-form-item>
-
               <el-form-item label="任务描述" prop="taskDesc">
                 <el-input
                   placeholder="请输入任务描述"
