@@ -220,20 +220,30 @@
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
-                <el-button @click="checkOkr(scope.row)" type="text"
+                <el-button @click="checkOkr(scope.row, 'info')" type="text"
                   >详情</el-button
                 >
+                <!-- 根节点、未审阅、非进行中 -->
                 <el-button
                   v-if="
                     ![1, 2].includes(scope.row.readStatus) &&
                     rootRole &&
                     [1, 2, 3, 4].includes(scope.row.status)
                   "
-                  @click="checkOkr(scope.row)"
+                  @click="checkOkr(scope.row, 'check')"
                   type="text"
                   >审阅</el-button
                 >
-                <el-button disabled type="text" v-else>--</el-button>
+                <!-- 根节点、已审阅||审批中 -->
+                <el-button
+                  disabled
+                  type="text"
+                  v-if="
+                    (rootRole && [1, 2].includes(scope.row.readStatus)) ||
+                    ![1, 2, 3, 4].includes(scope.row.status)
+                  "
+                  >--</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -288,6 +298,9 @@ export default {
   mounted() {
     const self = this;
     self.init();
+    this.$busOn('refreshPage', () => {
+      this.searchList();
+    });
   },
   computed: {
     ...mapState('common', {
@@ -400,15 +413,18 @@ export default {
       this.$router.go('-1');
     },
 
-    checkOkr(row) {
+    checkOkr(row, optionType) {
+      this.setSummasizeOptionType(optionType);
       // 1、查询okr详情
       if (row.status === 0) { // 如果是审批中，从行数据中取数据
         this.setOkrSummarizeDetailData(JSON.stringify(row));
+        this.$busEmit('clearInput');
         this.setOkrSummarizeStep('2');
       } else {
         this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
           if (res.code == 200) {
             if (res.data) { this.setOkrSummarizeDetailData(JSON.stringify(res.data)); }
+            this.$busEmit('clearInput');
             this.setOkrSummarizeStep('2');
           }
         });

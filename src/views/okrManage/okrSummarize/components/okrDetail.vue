@@ -68,7 +68,11 @@
     </dl>
     <dl
       class="dl-card-panel"
-      v-if="!isApprovaling && ![1, 2].includes(okrData.okrMain.readStatus)"
+      v-if="
+        !isApprovaling &&
+        ![1, 2].includes(okrData.okrMain.readStatus) &&
+        optionType == 'check'
+      "
     >
       <dt>
         <em>审阅意见</em>
@@ -117,7 +121,11 @@
     </dl>
     <dl
       class="dl-card-panel"
-      v-if="!isApprovaling && [1, 2].includes(okrData.okrMain.readStatus)"
+      v-if="
+        !isApprovaling &&
+        [1, 2].includes(okrData.okrMain.readStatus) &&
+        optionType == 'info'
+      "
     >
       <dt>
         <em>审阅结果</em>
@@ -171,12 +179,18 @@ export default {
   computed: {
     ...mapState('common', {
       okrSummarizeDetail: (state) => state.okrSummarizeDetail,
+      optionType: (state) => state.optionType,
     }),
   },
-  mounted() {},
+  mounted() {
+    this.$busOn('clearInput', () => {
+      this.$refs.read.resetField();
+    });
+  },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeStep']),
     backList() {
+      this.$busEmit('refreshPage');
       this.setOkrSummarizeStep('1');
     },
     okrSummaryRead(readStatus) {

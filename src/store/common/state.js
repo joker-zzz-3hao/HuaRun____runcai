@@ -26,4 +26,5 @@ export default {
   listenerWidth: 0,
   orgFullId: '',
   processVal: '',
+  optionType: '',
 };
