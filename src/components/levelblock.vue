@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="state-group">
     <div class="state-grid">
       <div
         :class="{

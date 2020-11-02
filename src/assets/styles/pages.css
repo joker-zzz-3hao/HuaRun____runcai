@@ -3668,6 +3668,65 @@
   margin: 0 0 0 16px;
 }
 
+.task-process .board-view .drag-column {
+  flex: 0 0 366px;
+  width: 366px;
+}
+
+.task-process .board-view .drag-title {
+  display: flex;
+}
+
+.task-process .board-view .drag-title > div {
+  position: relative;
+}
+
+.task-process .board-view .drag-title .badge {
+  right: -15px;
+  top: -16px;
+}
+
+.task-process .board-view .drag-column:not(:last-child) {
+  margin: 0 30px 0 0;
+}
+
+.task-process .board-view .drag-list-group {
+  padding: 16px;
+  min-height: 300px;
+  background: #f4f6f8;
+  border-radius: 6px;
+}
+
+.task-process .board-view .drag-list-item {
+  padding: 16px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.task-process .board-view .drag-list-item:not(:last-child) {
+  margin: 0 0 16px 0;
+}
+
+.task-process .board-view .drag-list-item .flex-sb:first-child,
+.task-process .board-view .drag-list-title,
+.task-process .board-view .drag-list-item .tl-progress-bar {
+  margin: 0 0 16px 0;
+}
+
+.task-process .board-view .drag-list-title {
+  font-size: 16px;
+  color: #4d5155;
+}
+
+.task-process .board-view .drag-list-item .user-info {
+  display: flex;
+  align-items: center;
+}
+
+.task-process .board-view .drag-list-item .user-info dd + dd {
+  margin: 0 0 0 10px;
+}
+
 .category-labels {
   display: flex;
   align-items: center;
@@ -3699,9 +3758,12 @@
 }
 
 .task-process .board-view {
+  padding: 20px 0 0 0;
   flex: 1;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: space-between;
+  overflow-x: auto;
 }
 
 .my-task-menu {

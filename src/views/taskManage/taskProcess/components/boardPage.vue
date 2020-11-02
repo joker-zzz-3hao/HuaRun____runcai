@@ -9,18 +9,24 @@
       :options="options"
     >-->
     <template v-if="stepList.length > 0 && processObj.processId">
-      <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
-        <div>
-          <h3>{{ stepData.stepName }}</h3>
-          <span v-if="stepData.stepTaskList.length">{{
-            stepData.stepTaskList.length
-          }}</span>
+      <div
+        class="drag-column"
+        v-for="stepData in rootData"
+        :key="stepData.stepId"
+      >
+        <div class="drag-title">
+          <div>
+            <em>{{ stepData.stepName }}</em>
+            <div class="badge" v-if="stepData.stepTaskList.length">
+              {{ stepData.stepTaskList.length }}
+            </div>
+          </div>
         </div>
         <!-- <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
       </el-button> -->
         <draggable
-          class="list-group"
+          class="drag-list-group"
           :list="stepData.stepTaskList"
           :clone="cloneDog"
           @end="onMove"
@@ -28,60 +34,63 @@
           :options="options"
         >
           <div
-            class="list-group-item"
+            class="drag-list-item"
             v-for="element in stepData.stepTaskList"
             :key="element.taskId"
           >
-            <el-dropdown class="tl-dropdown">
-              <div class="el-dropdown-link">
-                <i class="el-icon-more el-icon--right"></i>
-              </div>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  @click.native="changeStep(element, step)"
-                  v-for="step in stepList"
-                  :index="step.stepId"
-                  :key="step.stepId"
-                >
-                  <em>{{ step.stepName }}</em>
-
-                  <span v-if="element.stepId == step.stepId">（当前节点）</span>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-
-            <div>
+            <div class="flex-sb">
               <tl-levelblock :value="element.taskLevel"></tl-levelblock>
+              <el-dropdown class="tl-dropdown">
+                <div class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    @click.native="changeStep(element, step)"
+                    v-for="step in stepList"
+                    :index="step.stepId"
+                    :key="step.stepId"
+                  >
+                    <em>{{ step.stepName }}</em>
+
+                    <span v-if="element.stepId == step.stepId"
+                      >（当前节点）</span
+                    >
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
-            <div @click="openEdit(element)">
-              {{ element.taskTitle }}
+            <div @click="openEdit(element)" class="drag-list-title">
+              <em>{{ element.taskTitle }}</em>
             </div>
             <tl-process
               :data="element.taskProgress"
               :width="36"
               :marginLeft="6"
             ></tl-process>
-            <div>
-              <i class="el-icon-time"></i>
-              <span v-if="element.taskBegDate"
-                >{{
-                  dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
-                }}~{{
-                  dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
-                }}</span
-              >
-              <span v-else>未设置起止时间</span>
-            </div>
-            <div>
-              <el-avatar :size="30" :src="element.headerUrl">
-                <div v-if="element.userName" class="user-name">
-                  <em>
-                    {{
-                      element.userName.substring(element.userName.length - 2)
-                    }}
-                  </em>
-                </div>
-              </el-avatar>
+            <div class="flex-sb">
+              <div class="drag-list-ttime">
+                <i class="el-icon-time"></i>
+                <span v-if="element.taskBegDate"
+                  >{{
+                    dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
+                  }}~{{
+                    dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
+                  }}</span
+                >
+                <span v-else>未设置起止时间</span>
+              </div>
+              <dl class="user-info">
+                <dd v-if="element.headerUrl">
+                  <img :src="element.headUrl" alt />
+                </dd>
+                <dd v-else class="user-name">
+                  <em>{{
+                    element.userName.substring(element.userName.length - 2)
+                  }}</em>
+                </dd>
+                <dd>{{ element.userName }}</dd>
+              </dl>
             </div>
           </div>
         </draggable>
@@ -283,7 +292,7 @@ export default {
 }
 
 .col-4 {
-  width: 25%;
+  width: 28%;
 }
 
 .chosendiv {

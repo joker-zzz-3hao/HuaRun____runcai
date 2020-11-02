@@ -79,12 +79,6 @@
             </dd>
           </dl>
           <dl class="dl-item">
-            <dt><span>进行中</span></dt>
-            <dd>
-              <em>{{ summaryData.okrProgressNum }}</em>
-            </dd>
-          </dl>
-          <dl class="dl-item">
             <dt><span>待审批</span></dt>
             <dd>
               <em>{{ summaryData.okrApprovalNum }}</em>
@@ -207,7 +201,12 @@
               label="okr进度"
             >
               <template slot-scope="scope">
-                <div>{{ scope.row.okrProgress }}%</div>
+                <tl-process
+                  :data="parseInt(scope.row.okrProgress, 10)"
+                  :showNumber="true"
+                  :width="30"
+                  :marginLeft="2"
+                ></tl-process>
               </template>
             </el-table-column>
             <el-table-column
@@ -222,11 +221,19 @@
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
-                <el-button @click="checkOkr(scope.row)" type="text"
+                <!-- 待审批的不展示操作按钮 -->
+                <el-button
+                  v-if="[1, 3, 4, 6].includes(scope.row.status)"
+                  @click="checkOkr(scope.row)"
+                  type="text"
                   >详情</el-button
                 >
                 <el-button
-                  v-if="![1, 2].includes(scope.row.readStatus) && rootRole"
+                  v-if="
+                    ![1, 2].includes(scope.row.readStatus) &&
+                    rootRole &&
+                    [1, 3, 4, 6].includes(scope.row.status)
+                  "
                   @click="checkOkr(scope.row)"
                   type="text"
                   >审阅</el-button
@@ -244,6 +251,7 @@
 <script>
 
 import { mapMutations, mapState } from 'vuex';
+import tlProcess from '@/components/process';
 import Server from '../server';
 import CONST from '../const';
 
@@ -280,7 +288,7 @@ export default {
     };
   },
   components: {
-    // 'tl-okr-detail': okrDetail,
+    tlProcess,
   },
   mounted() {
     const self = this;
