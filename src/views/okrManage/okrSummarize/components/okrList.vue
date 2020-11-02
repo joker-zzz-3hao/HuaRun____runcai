@@ -59,9 +59,9 @@
           <dl class="dl-item">
             <dt><span>已提交/未提交</span></dt>
             <dd>
-              <em>{{
-                `${summaryData.submitOkrUser}/${summaryData.unSubmitOkrUser}`
-              }}</em>
+              <em>{{ summaryData.submitOkrUser }}</em
+              ><em>/</em>
+              <em>{{ summaryData.unSubmitOkrUser }}</em>
             </dd>
           </dl>
         </div>
