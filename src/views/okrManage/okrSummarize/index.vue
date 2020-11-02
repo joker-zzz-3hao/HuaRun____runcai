@@ -1,11 +1,5 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年10月30日 14:28:46
-  备注：
--->
 <template>
-  <div>
+  <div class="okr-summarize">
     <tl-okr-list v-if="okrSummarizeStep == '1'"></tl-okr-list>
     <tl-okr-detail v-if="okrSummarizeStep == '2'"></tl-okr-detail>
   </div>

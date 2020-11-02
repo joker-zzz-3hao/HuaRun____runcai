@@ -2183,6 +2183,11 @@
   margin: 0 0 0 10px;
 }
 
+/* OKR汇总 */
+.okr-summarize .operating-box .tl-cascader {
+  line-height: unset;
+}
+
 /* 周报 */
 .my-weekly {
   margin: 16px 16px 86px 16px;
@@ -2204,7 +2209,8 @@
 .project-manage .cont-area,
 .working-hours .cont-area,
 .msg-notice .cont-area,
-.monitor-data .cont-area {
+.monitor-data .cont-area,
+.okr-summarize .cont-area {
   padding: 20px 30px;
   border-radius: 4px;
   background: #fff;
