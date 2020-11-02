@@ -135,7 +135,7 @@
                 clearable
               >
                 <el-option
-                  v-for="item in statusList"
+                  v-for="item in CONST.STATUS_LIST"
                   :key="item.status"
                   :label="item.statusName"
                   :value="item.status"
@@ -203,7 +203,7 @@
               label="状态"
             >
               <template slot-scope="scope">{{
-                STATUS_MAP[scope.row.status]
+                CONST.TABLE_STATUS_MAP[scope.row.status]
               }}</template>
             </el-table-column>
             <el-table-column width="180" label="操作">
