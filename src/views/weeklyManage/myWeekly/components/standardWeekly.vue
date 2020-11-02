@@ -1021,7 +1021,7 @@ export default {
         plan.randomId = Math.random().toString(36).substr(3);
       });
       if (this.formData.weeklyPlanSaveList.length < 1) {
-        this.addPlanItem();
+        // this.addPlanItem();
       }
     },
     addItem() { // 添加本地数据
