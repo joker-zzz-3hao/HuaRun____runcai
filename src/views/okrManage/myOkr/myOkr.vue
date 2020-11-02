@@ -235,9 +235,16 @@
                   popper-class="tl-tooltip-popper"
                 >
                   <div slot="content">
-                    <div @click="openUpdate(props.okritem)">更新进展</div>
+                    <em>更新进展</em>
                   </div>
                   <tl-process
+                    :class="{
+                      update: ['1', 1, 3, '3'].includes(item.okrMain.status),
+                    }"
+                    @click.native="
+                      ['1', 1, 3, '3'].includes(item.okrMain.status) &&
+                        openUpdate(props.okritem)
+                    "
                     :data="parseInt(props.okritem.okrDetailProgress, 10)"
                   ></tl-process>
                 </el-tooltip>

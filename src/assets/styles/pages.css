@@ -691,6 +691,11 @@
   color: #685df1;
 }
 
+.tl-table .sub-tr .okr-progress .update{
+  cursor: pointer;
+  }
+
+/* 更新进展 */
 .update-progress .list-cont {
   padding: 20px;
   border: 1px solid #f4f6f8;
