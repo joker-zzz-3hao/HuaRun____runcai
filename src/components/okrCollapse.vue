@@ -267,7 +267,7 @@
                   placeholder="请输入关键结果"
                   v-model="kritem.okrDetailObjectKr"
                   class="tl-input"
-                  maxlength="200"
+                  maxlength="500"
                 ></el-input>
               </el-form-item>
               <span v-else>{{ kritem.okrDetailObjectKr }}</span>
@@ -454,7 +454,7 @@
                     v-model="newItem.okrDetailObjectKr"
                     @input="updateokrCollapse"
                     class="tl-input"
-                    maxlength="200"
+                    maxlength="500"
                   ></el-input>
                 </el-form-item>
               </div>

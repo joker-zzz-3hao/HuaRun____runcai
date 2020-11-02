@@ -132,6 +132,7 @@
             <dd>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
+                  v-if="processList.length > 0"
                   :disabled="canEdit"
                   v-model.trim="formData.processId"
                   placeholder="请选择任务过程"
@@ -539,12 +540,13 @@ export default {
       this.canEdit = canedit;
       this.getUserList();
       this.queryOkr();
-      this.getProcess();
       this.getProjectList();
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
           if (res.code == 200 && res.data) {
             this.formData = res.data;
+            this.getProcess(res.data.processId);
+
             this.taskUserId = this.formData.taskUserId;
             this.fileList = this.formData.attachmentList;
             if (res.data.taskBegDate) {
@@ -628,11 +630,12 @@ export default {
       });
     },
     // 查询过程
-    getProcess() {
+    getProcess(id) {
       this.server.queryProcess({
         currentPage: 1,
         pageSize: 1000,
         enable: 1,
+        processId: id,
       }).then((res) => {
         if (res.code == 200) {
           this.processList = res.data.content || [];

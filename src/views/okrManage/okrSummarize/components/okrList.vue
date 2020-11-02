@@ -230,7 +230,6 @@
 <script>
 
 import { mapMutations, mapState } from 'vuex';
-// import okrDetail from '@/components/okrDetail';
 import Server from '../server';
 import CONST from '../const';
 
@@ -242,9 +241,7 @@ export default {
     return {
       server,
       CONST,
-      // detailExist: false,
       okrId: '',
-      // drawerTitle: '',
       tableData: [],
       loading: false,
       treeData: [],
@@ -258,20 +255,7 @@ export default {
         okrBelongType: '2',
         okrBelongTypeName: '个人',
       }],
-      statusList: [
-        { status: '0', statusName: '待审批' },
-        { status: '1', statusName: '进行中' },
-        { status: '3', statusName: '已完成' },
-        { status: '6', statusName: '复盘中' },
-        { status: '4', statusName: '已结束' },
-      ],
-      STATUS_MAP: {
-        0: '待审批',
-        1: '进行中',
-        3: '已完成',
-        6: '复盘中',
-        4: '已结束',
-      },
+
       periodId: '',
       okrBelongType: '1',
       status: '',
@@ -407,14 +391,6 @@ export default {
       this.$router.go('-1');
     },
 
-    // okrInfo(okr) {
-    //   this.okrId = okr.okrId;
-    //   this.drawerTitle = this.okrCycle.periodName;
-    //   this.detailExist = true;
-    //   this.$nextTick(() => {
-    //     this.$refs.okrdetail.showOkrDialog();
-    //   });
-    // },
     checkOkr(row) {
       // 1、查询okr详情
       this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
@@ -435,3 +411,10 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.okr-summarize-info {
+  width: 100%;
+  background: #f4f6f8;
+  padding: 20px;
+}
+</style>
