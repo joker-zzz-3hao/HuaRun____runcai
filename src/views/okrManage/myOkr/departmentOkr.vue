@@ -243,11 +243,27 @@ export default {
           orgId: this.orgId,
         }).then((res) => {
           if (res.code == 200) {
-            this.tableList = res.data.okrDetails || [];
-            this.okrMain = res.data.okrMain || {};
-            this.okrId = this.okrMain.okrId || '';
             this.memberList = res.data.orgUser || [];
             this.orgTable = res.data.orgTable || [];
+            if (res.data.okrMain) {
+              this.tableList = res.data.okrDetails || [];
+              this.okrMain = res.data.okrMain || {};
+              this.okrId = this.okrMain.okrId || '';
+            } else if (res.data.okrApprovalVo) {
+              const okrInfo = JSON.parse(res.data.okrApprovalVo.paramJson) || {};
+              this.tableList = okrInfo.okrInfoList || [];
+              this.searchForm.status = res.data.okrApprovalVo.approvalStatus == 2 ? 8 : 7;
+              this.okrMain = {
+                userName: res.data.okrApprovalVo.userName,
+                okrProgress: res.data.okrApprovalVo.okrProgress || 0,
+                updateTime: res.data.okrApprovalVo.updateTime || res.data.okrApprovalVo.createTime || '--',
+                okrBelongType: okrInfo.okrBelongType,
+                status: this.searchForm.status,
+                periodName: res.data.okrApprovalVo.periodName,
+              };
+            } else {
+              this.tableList = [];
+            }
           }
           this.loading = false;
         });

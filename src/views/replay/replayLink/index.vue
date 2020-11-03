@@ -20,6 +20,7 @@ import Server from '../server';
 import krDetail from './component/krDetail';
 import odetail from './component/odetail';
 import replayUser from '../component/repayUser';
+import replayHistory from '../component/replayHistory';
 
 const server = new Server();
 export default {
@@ -28,6 +29,7 @@ export default {
     'tl-o-detail': odetail,
     'tl-kr-detail': krDetail,
     'tl-replayUser': replayUser,
+    'tl-replayHistory': replayHistory,
   },
   data() {
     return {

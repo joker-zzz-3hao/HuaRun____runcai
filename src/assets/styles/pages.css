@@ -695,6 +695,10 @@
   cursor: pointer;
   }
 
+.my-okr .okr-tag span{
+  width: 100%;
+}
+  
 /* 更新进展 */
 .update-progress .list-cont {
   padding: 20px;
