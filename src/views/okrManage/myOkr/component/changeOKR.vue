@@ -298,9 +298,10 @@ export default {
         this.server.getokrDetail({ okrId: this.searchForm.okrId }).then((res) => {
           if (res.code == 200) {
             this.originalObject = JSON.stringify(res.data.okrDetails);
-            this.tableList = res.data.okrDetails;
-            this.okrmain = res.data.okrMain;
+            this.tableList = res.data.okrDetails || [];
+            this.okrmain = res.data.okrMain || {};
             this.okrMainId = res.data.okrMain.okrId;
+            this.searchForm.okrType = this.okrmain.okrBelongType;
             // this.voteUser = res.data.voteUser;
             this.tableList.forEach((item) => {
               if (item.parentUpdate) {
