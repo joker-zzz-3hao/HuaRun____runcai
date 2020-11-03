@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import personMultiple from '@/components/personMultiple';
 import validateMixin from '../validateMixin';
 
@@ -160,6 +161,10 @@ export default {
       });
       return list;
     },
+    ...mapState('common', {
+
+      orgFullId: (state) => state.orgFullId,
+    }),
   },
   methods: {
     show(type = 'detail') {
@@ -196,14 +201,12 @@ export default {
     errorHandler() {
       return true;
     },
-    remoteMethod(name) {
-      this.server.getUserListByOrgId({
-        currentPage: 1,
-        pageSize: 20,
-        userName: name ? name.trim() : '',
+    remoteMethod() {
+      this.server.listOrgUserPage({
+        orgFullId: this.orgFullId,
       }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data || [];
         }
       });
     },
