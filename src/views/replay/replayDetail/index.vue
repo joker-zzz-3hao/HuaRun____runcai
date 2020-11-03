@@ -11,17 +11,7 @@
         :okrMain="okrMain"
       />
     </div>
-    <div>
-      <div>复盘记录</div>
-      <el-timeline :reverse="false">
-        <el-timeline-item
-          v-for="(item, index) in activities"
-          :key="index"
-          :timestamp="item.createTime"
-          >{{ item.userName }} {{ item.content }}</el-timeline-item
-        >
-      </el-timeline>
-    </div>
+    <tl-replayHistory :activities="activities"></tl-replayHistory>
   </div>
 </template>
 
@@ -32,6 +22,7 @@ import krDetail from './component/krDetail.vue';
 import oDetail from './component/oDetail.vue';
 import Server from '../server';
 import replayUser from '../component/repayUser';
+import replayHistory from '../component/replayHistory';
 
 const server = new Server();
 export default {
@@ -51,6 +42,7 @@ export default {
     'tl-kr-detail': krDetail,
     'tl-o-detail': oDetail,
     'tl-replayUser': replayUser,
+    'tl-replayHistory': replayHistory,
   },
   mounted() {
     this.getOkrReviewDetail();
