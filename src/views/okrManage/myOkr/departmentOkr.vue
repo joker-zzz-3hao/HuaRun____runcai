@@ -323,7 +323,7 @@ export default {
               this.okrMain = {
                 userName: res.data.okrApprovalVo.userName,
                 okrProgress: res.data.okrApprovalVo.okrProgress || 0,
-                updateTime: res.data.okrApprovalVo.updateTime || res.data.okrApprovalVo.createTime || '--',
+                updateTime: res.data.okrApprovalVo.approveTime || res.data.okrApprovalVo.createTime || '--',
                 okrBelongType: okrInfo.okrBelongType,
                 status: this.searchForm.status,
                 periodName: res.data.okrApprovalVo.periodName,
