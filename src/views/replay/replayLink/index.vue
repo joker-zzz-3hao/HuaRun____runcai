@@ -54,39 +54,38 @@
       <dd class="flex-end">
         <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
         <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>
-        <!-- <el-radio-group v-model="okrMain.okrMainVo.reviewType">
-          <el-radio :label="1" v-if="okrMain.okrMainVo.reviewType == 1"
-            >以关键结果KR复盘</el-radio
-          >
-          <el-radio :label="0" v-if="okrMain.okrMainVo.reviewType == 0"
-            >以目标O复盘</el-radio
-          >
-        </el-radio-group> -->
       </dd>
     </dl>
-    <div>
-      <tl-kr-detail
-        v-if="okrMain.okrMainVo.reviewType == 1"
-        @getView="getOkrReviewDetail"
-        :okrMain="okrMain"
-      />
-      <tl-o-detail
-        v-if="okrMain.okrMainVo.reviewType == 0"
-        @getView="getOkrReviewDetail"
-        :okrMain="okrMain"
-      />
-    </div>
-    <div>
-      <div>复盘记录</div>
-      <el-timeline :reverse="false">
-        <el-timeline-item
-          v-for="(item, index) in activities"
-          :key="index"
-          :timestamp="item.createTime"
-          >{{ item.userName }} {{ item.content }}</el-timeline-item
-        >
-      </el-timeline>
-    </div>
+    <tl-kr-detail
+      v-if="okrMain.okrMainVo.reviewType == 1"
+      @getView="getOkrReviewDetail"
+      :okrMain="okrMain"
+    />
+    <tl-o-detail
+      v-if="okrMain.okrMainVo.reviewType == 0"
+      @getView="getOkrReviewDetail"
+      :okrMain="okrMain"
+    />
+    <dl class="dl-card-panel replay-record">
+      <dt><em>复盘记录</em></dt>
+      <dd>
+        <div class="tl-custom-timeline">
+          <dl class="timeline-list">
+            <dd v-for="(item, index) in activities" :key="index">
+              <div class="list-info">
+                <div class="list-title">{{ item.createTime }}</div>
+                <div class="list-cont">
+                  <div class="operate-type">
+                    <em>{{ item.userName }}</em>
+                    <span>{{ item.content }}</span>
+                  </div>
+                </div>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </dd>
+    </dl>
   </div>
 </template>
 

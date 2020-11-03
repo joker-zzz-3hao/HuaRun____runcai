@@ -114,7 +114,9 @@
       </el-table-column>
       <!-- o label="权重" -->
       <el-table-column prop="okrWeight" width="6%">
-        <template slot-scope="scope">{{ scope.row.okrWeight }}%</template>
+        <template slot-scope="scope"
+          ><em class="okr-weight">{{ scope.row.okrWeight }}%</em></template
+        >
       </el-table-column>
       <!-- o label="承接地图" -->
       <el-table-column width="8%">
