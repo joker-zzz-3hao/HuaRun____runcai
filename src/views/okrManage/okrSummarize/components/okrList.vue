@@ -114,6 +114,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
+              style="width: 120px"
               @change="searchList"
             >
               <el-option
@@ -134,6 +135,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
+              style="width: 120px"
               @change="searchList"
               clearable
             >
@@ -194,7 +196,7 @@
               label="部门"
             ></el-table-column>
             <el-table-column
-              min-width="100px"
+              min-width="140px"
               align="left"
               prop="okrProgress"
               label="okr进度"
@@ -209,7 +211,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              min-width="100px"
+              width="130px"
               align="left"
               prop="status"
               label="状态"
