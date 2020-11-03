@@ -2265,6 +2265,7 @@
   margin: 16px auto;
   width: 1060px;
   flex: unset;
+  min-height: calc(100vh - 172px);
 }
 
 .replay-info dt {
@@ -2445,7 +2446,7 @@
 .replay-link .okr-change-list dd:nth-of-type(4) {
   padding: 20px;
   flex-direction: column;
-  background: #f4f6f8;
+  background: #f7f8fa;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl {
@@ -2490,6 +2491,43 @@
   margin: 0;
 }
 
+.replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists dd {
+  margin: 0 10px 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  width: 85px;
+  color: #7a828a;
+  font-size: 14px;
+  border: 1px dashed transparent;
+  background: linear-gradient(#f7f8fa, #f7f8fa) padding-box, repeating-linear-gradient(-45deg, #d5dde3 0, #d5dde3 0.4em,#f7f8fa 0, #f7f8fa 0.6em);
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .super-good.is-selected {
+  background: #edfaf1 !important;
+  color: #4ccd79 !important;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .good.is-selected {
+  background: #e6f6f6 !important;
+  color: #06aca9 !important;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .work-hard.is-selected {
+  background: #fff8e8 !important;
+  color: #ffbc20 !important;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .refuel.is-selected {
+  background: #feefe5 !important;
+  color: #fa6400 !important;
+}
+
+.replay-link .footer-panel {
+  right: 0;
+}
 
 /* 周报 */
 .my-weekly {
