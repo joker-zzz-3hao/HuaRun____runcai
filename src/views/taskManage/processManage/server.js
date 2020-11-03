@@ -56,4 +56,9 @@ export default class Server extends ServerBase {
   updateEnable(param) {
     return this._ajaxPost(`gateway/task-service/task/taskProcess/enable?enable=${param.enable}&processId=${param.processId}`);
   }
+
+  // 查询组织包含的实体和虚线汇报成员
+  listOrgUserPage(param) {
+    return this._ajaxPost('/gateway/system-service/sys/teamManagement/listOrgUserPage', param);
+  }
 }

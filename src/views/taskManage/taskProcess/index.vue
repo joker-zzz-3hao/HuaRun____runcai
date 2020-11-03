@@ -235,6 +235,7 @@ export default {
     }),
   },
   created() {
+    this.queryUser();
     // this.init('1');
     // this.init('2');
     // this.init('3');
@@ -268,14 +269,6 @@ export default {
       this.server.listOrgUserPage({ orgFullId: this.orgFullId }).then((res) => {
         if (res.code == 200) {
           this.userList = res.data || [];
-          this.userList.map(
-            (obj) => {
-              const rObj = {};
-              rObj[obj.userId] = obj.userName;
-              Object.assign(this.userMap, rObj);
-              return rObj;
-            },
-          );
         }
       });
     },
@@ -407,7 +400,6 @@ export default {
         if (newVal) {
           this.processId = newVal.processId;
           console.log('processVal', newVal);
-          this.queryUser();
           this.selectProcess(newVal);
         }
       },

@@ -240,7 +240,7 @@ export default {
   },
   created() {
     this.init();
-    this.remoteMethod();
+    // this.remoteMethod();
   },
   mounted() {},
   computed: {
@@ -380,7 +380,7 @@ export default {
     },
     visibleChange(name) {
       if (!name) {
-        // this.remoteMethod();
+        this.remoteMethod();
       }
     },
     userChange(userId) {
