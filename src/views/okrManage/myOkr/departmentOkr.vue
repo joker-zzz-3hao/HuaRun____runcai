@@ -239,7 +239,7 @@ export default {
         this.server.getorgOkr({
           myOrOrg: 'org',
           periodId: this.okrCycle.periodId,
-          status: this.searchForm.status,
+          status: '1',
           orgId: this.orgId,
         }).then((res) => {
           if (res.code == 200) {
@@ -249,6 +249,7 @@ export default {
               this.tableList = res.data.okrDetails || [];
               this.okrMain = res.data.okrMain || {};
               this.okrId = this.okrMain.okrId || '';
+              this.searchForm.status = this.okrMain.status;
             } else if (res.data.okrApprovalVo) {
               const okrInfo = JSON.parse(res.data.okrApprovalVo.paramJson) || {};
               this.tableList = okrInfo.okrInfoList || [];
