@@ -5258,3 +5258,13 @@
 .el-icon-question{
   color: #acb6bf;
 }
+.hide-more{
+  /* color: #7a828a; */
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  transition: all .4s ease-out;
+}

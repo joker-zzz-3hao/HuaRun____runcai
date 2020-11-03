@@ -176,12 +176,6 @@
                       "
                     >
                       <span>承接地图</span>
-                      <i
-                        :class="{
-                          'has-undertake': props.okritem.continueCount > 0,
-                        }"
-                        class="el-icon-link"
-                      ></i>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -219,12 +213,6 @@
                       "
                     >
                       <span>承接地图</span>
-                      <i
-                        :class="{
-                          'has-undertake': props.okritem.continueCount > 0,
-                        }"
-                        class="el-icon-link"
-                      ></i>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
