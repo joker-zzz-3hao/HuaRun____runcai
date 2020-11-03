@@ -218,7 +218,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               min-width="130"
               align="left"
               prop="agentOrgName"
@@ -243,7 +243,7 @@
                   >
                 </span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               min-width="100"
               align="left"
