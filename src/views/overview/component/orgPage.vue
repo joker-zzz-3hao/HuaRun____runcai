@@ -208,11 +208,6 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          // if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
-          //   this.changeTestModel(true);
-          //   this.reload();
-          //   sessionStorage.setItem('modelOkr', '1');
-          // }
           this.setList(res.data);
         }
       });
@@ -262,6 +257,19 @@ export default {
       }
       this.tableList = listData.okrDetails || [];
       this.okrMain = listData.okrMain || {};
+      if (listData.okrApprovalVo) {
+        const okrInfo = JSON.parse(listData.okrApprovalVo.paramJson) || {};
+        this.tableList = okrInfo.okrInfoList || [];
+        this.searchForm.status = listData.okrApprovalVo.approvalStatus == 2 ? 8 : 7;
+        this.okrMain = {
+          userName: listData.okrApprovalVo.userName,
+          okrProgress: listData.okrApprovalVo.okrProgress || 0,
+          updateTime: listData.okrApprovalVo.updateTime || listData.okrApprovalVo.createTime || '--',
+          okrBelongType: okrInfo.okrBelongType,
+          status: this.searchForm.status,
+          periodName: listData.okrApprovalVo.periodName,
+        };
+      }
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
