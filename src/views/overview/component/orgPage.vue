@@ -26,7 +26,10 @@
           </dt>
           <dd>{{ okrMain.userName }}</dd>
         </dl>
-        <dl class="okr-follow">
+        <dl
+          class="okr-follow"
+          v-if="okrMain.approvalStatus != 2 && okrMain.approvalStatus != 0"
+        >
           <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
             <i class="el-icon-plus"></i><em>关注</em>
           </dd>
@@ -267,6 +270,7 @@ export default {
           updateTime: listData.okrApprovalVo.updateTime || listData.okrApprovalVo.createTime || '--',
           okrBelongType: okrInfo.okrBelongType,
           status: this.searchForm.status,
+          approvalStatus: listData.okrApprovalVo.approvalStatus,
           periodName: listData.okrApprovalVo.periodName,
         };
       }
