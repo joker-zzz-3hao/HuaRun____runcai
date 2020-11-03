@@ -12,6 +12,19 @@
       </template>
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
+          <div
+            class="okr-tag"
+            v-if="
+              ['1', 1, 3, 4, 5].includes(item.okrMain.status) &&
+              item.okrMain.readStatus != 0
+            "
+          >
+            <el-tag type="warning" size="medium" :hit="true"
+              >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
+                CONST.READ_RESULT_MAP[item.okrMain.readStatus]
+              }}{{ item.okrMain.readRemark }}</el-tag
+            >
+          </div>
           <div class="card-panel-head">
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">

@@ -214,9 +214,8 @@
             >
               <template slot-scope="scope">
                 <div v-if="scope.row.processName && scope.row.stepName">
-                  <span>{{ scope.row.processName }}</span>
-                  <span>-</span>
-                  <span>{{ scope.row.stepName }}</span>
+                  <p>{{ scope.row.processName }}</p>
+                  <p>{{ scope.row.stepName }}</p>
                 </div>
                 <div v-else>未设置任务过程</div>
               </template>
