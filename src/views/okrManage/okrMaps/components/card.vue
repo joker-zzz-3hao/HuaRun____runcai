@@ -31,7 +31,7 @@
           }}</em>
         </p>
         <el-button type="text" plain class="tl-btn btn-lineheight">{{
-          node.node.orgName
+          cutOrgName(node.node.orgName)
         }}</el-button>
       </div>
     </div>
@@ -71,6 +71,10 @@ export default {
   },
   computed: {},
   methods: {
+    cutOrgName(name) {
+      const orgName = name.split('-');
+      return orgName[orgName.length - 1];
+    },
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
     },
