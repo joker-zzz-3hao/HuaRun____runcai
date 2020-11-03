@@ -147,7 +147,9 @@
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-dropdown
                   v-if="
-                    ['1', '7', 1, 7, 2, 3, 4].includes(item.okrMain.status) &&
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(
+                      item.okrMain.status
+                    ) &&
                     (props.okritem.versionCount > 1 ||
                       props.okritem.continueCount > 0)
                   "
@@ -164,8 +166,6 @@
                     >
                       <em>历史版本</em>
                     </el-dropdown-item>
-                  </el-dropdown-menu>
-                  <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                       v-if="props.okritem.continueCount > 0"
                       @click.native="
@@ -176,12 +176,6 @@
                       "
                     >
                       <span>承接地图</span>
-                      <i
-                        :class="{
-                          'has-undertake': props.okritem.continueCount > 0,
-                        }"
-                        class="el-icon-link"
-                      ></i>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -189,7 +183,9 @@
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
                 <el-dropdown
-                  v-if="['1', '7', 1, 7, 2, 3, 4].includes(item.okrMain.status)"
+                  v-if="
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(item.okrMain.status)
+                  "
                   trigger="click"
                 >
                   <span class="el-dropdown-link">
@@ -217,12 +213,6 @@
                       "
                     >
                       <span>承接地图</span>
-                      <i
-                        :class="{
-                          'has-undertake': props.okritem.continueCount > 0,
-                        }"
-                        class="el-icon-link"
-                      ></i>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
