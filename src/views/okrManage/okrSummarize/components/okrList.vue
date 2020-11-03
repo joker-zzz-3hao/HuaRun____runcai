@@ -244,7 +244,7 @@
                     (rootRole && [1, 2].includes(scope.row.readStatus)) ||
                     ![1, 2, 3, 4].includes(scope.row.status)
                   "
-                  >--</el-button
+                  >已审阅</el-button
                 >
               </template>
             </el-table-column>
