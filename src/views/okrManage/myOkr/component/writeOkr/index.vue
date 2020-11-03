@@ -336,23 +336,7 @@
                     </el-form-item>
                   </dd>
                   <dd>
-                    <el-form-item
-                      label="考核指标"
-                      :prop="
-                        'okrInfoList.' +
-                        index +
-                        '.krList.' +
-                        kindex +
-                        '.checkQuota'
-                      "
-                      :rules="[
-                        {
-                          required: true,
-                          trigger: 'blur',
-                          validator: validateCheck,
-                        },
-                      ]"
-                    >
+                    <el-form-item label="考核指标">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"
@@ -362,23 +346,7 @@
                         class="tl-textarea"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item
-                      label="衡量办法"
-                      :prop="
-                        'okrInfoList.' +
-                        index +
-                        '.krList.' +
-                        kindex +
-                        '.judgeMethod'
-                      "
-                      :rules="[
-                        {
-                          required: true,
-                          trigger: 'blur',
-                          validator: validateJudge,
-                        },
-                      ]"
-                    >
+                    <el-form-item label="衡量办法">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"

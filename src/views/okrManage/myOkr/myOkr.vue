@@ -143,63 +143,15 @@
               @openchange="goChangeOkr(item)"
               :expands="expands"
             >
-              <!-- o的承接地图 -->
-              <template slot="head-undertake" slot-scope="props">
-                <div
-                  v-if="props.okritem.continueCount > 0"
-                  @click="
-                    goUndertakeMaps(
-                      props.okritem.okrDetailId,
-                      props.okritem.okrDetailObjectKr
-                    )
-                  "
-                >
-                  <i
-                    :class="{
-                      'has-undertake': props.okritem.continueCount > 0,
-                    }"
-                    class="el-icon-link"
-                  ></i>
-                </div>
-                <div v-else-if="showUndertake">暂无</div>
-              </template>
-              <!-- kr的承接地图 -->
-              <template slot="body-bar" slot-scope="props">
-                <div
-                  v-if="props.okritem.continueCount > 0"
-                  @click="
-                    goUndertakeMaps(
-                      props.okritem.okrDetailId,
-                      props.okritem.okrDetailObjectKr
-                    )
-                  "
-                >
-                  <i
-                    :class="{
-                      'has-undertake': props.okritem.continueCount > 0,
-                    }"
-                    class="el-icon-link"
-                  ></i>
-                </div>
-                <div v-else-if="showUndertake">暂无</div>
-              </template>
-              <!-- o的进度更新 -->
-              <!-- <template slot="weight-bar" slot-scope="props">
-                <div
-                  v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
-                  @click="openUpdate(props.okritem)"
-                >
-                  <el-button plain class="tl-btn btn-lineheight"
-                    >更新进展</el-button
-                  >
-                </div>
-              </template> -->
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-dropdown
                   v-if="
-                    ['1', '7', 1, 7].includes(item.okrMain.status) &&
-                    props.okritem.versionCount > 1
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(
+                      item.okrMain.status
+                    ) &&
+                    (props.okritem.versionCount > 1 ||
+                      props.okritem.continueCount > 0)
                   "
                   trigger="click"
                   class="tl-dropdown"
@@ -214,13 +166,32 @@
                     >
                       <em>历史版本</em>
                     </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="props.okritem.continueCount > 0"
+                      @click.native="
+                        goUndertakeMaps(
+                          props.okritem.okrDetailId,
+                          props.okritem.okrDetailObjectKr
+                        )
+                      "
+                    >
+                      <span>承接地图</span>
+                      <i
+                        :class="{
+                          'has-undertake': props.okritem.continueCount > 0,
+                        }"
+                        class="el-icon-link"
+                      ></i>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
                 <el-dropdown
-                  v-if="['1', '7', 1, 7, 2, 3, 4].includes(item.okrMain.status)"
+                  v-if="
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(item.okrMain.status)
+                  "
                   trigger="click"
                 >
                   <span class="el-dropdown-link">
@@ -237,6 +208,23 @@
                       @click.native="openCheckjudge(props.okritem)"
                     >
                       <em>考核指标、衡量办法</em>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="props.okritem.continueCount > 0"
+                      @click="
+                        goUndertakeMaps(
+                          props.okritem.okrDetailId,
+                          props.okritem.okrDetailObjectKr
+                        )
+                      "
+                    >
+                      <span>承接地图</span>
+                      <i
+                        :class="{
+                          'has-undertake': props.okritem.continueCount > 0,
+                        }"
+                        class="el-icon-link"
+                      ></i>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
