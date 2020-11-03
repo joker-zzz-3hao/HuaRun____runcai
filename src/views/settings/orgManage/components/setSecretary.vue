@@ -121,51 +121,6 @@ export default {
     this.getqueryMenu();
   },
   methods: {
-    // handleCheckChange(data) {
-    // this.selectArr = data;
-    // let temparr = data;
-    // this.selectArr.forEach((newVal) => {
-    //   this.tempSelectedNode.forEach((oldVal) => {
-    //     if (newVal == oldVal) {
-    //       temparr = temparr.filter((item) => item != newVal);
-    //     }
-    //   });
-    // });
-    // debugger;
-    // this.tempSelectedNode = [...this.selectArr];
-    // // 获取最后一次选中的节点,取消的不算
-    // if (temparr.length == 0) {
-    //   return false;
-    // }
-    // debugger;
-    // this.server.queryOrgAdmin({
-    //   orgId: temparr[0],
-    // }).then((res) => {
-    //   // 如果选中的部门负责人/代理负责人已经是该用户了，则不能够设置该用户为该部门的综合岗
-    //   if (res.data.orgAdminUserName == this.userData.userName) {
-    //     this.$alert('您已经是该部门负责人，不能设置为该部门的综合岗。', '提示', {
-    //       confirmButtonText: '确定',
-    //       type: 'warning',
-    //       callback: () => {
-    //         // 取消该组织的勾选
-    //         this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-    //         this.$forceUpdate();
-    //       },
-    //     });
-    //   } else if (res.data.teamAdminUserName) {
-    //     this.$confirm(`目前该部门的综合岗是'${res.data.teamAdminUserName}'，是否要覆盖他？`, '提示', {
-    //       confirmButtonText: '覆盖',
-    //       cancelButtonText: '取消',
-    //       type: 'warning',
-    //     }).then(() => {
-
-    //     }).catch(() => {
-    //       // 取消该组织的勾选
-    //       this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-    //     });
-    //   }
-    // });
-    // },
     saveTree() {
       const node = this.$refs.treeMenu.getCheckedNodes();
       this.menuTreeList = node;

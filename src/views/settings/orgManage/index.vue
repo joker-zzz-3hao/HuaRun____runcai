@@ -175,13 +175,16 @@
               label="代理部门"
             >
               <template slot-scope="scope">
-                <span
-                  type="text"
-                  v-if="scope.row.agentOrg"
-                  @click="showexistEdit(scope.row)"
-                  >{{ changeOrgAndId(scope.row.agentOrg) }}</span
-                >
-                <span v-else>
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <span slot="content">{{ orgTip(scope.row.agentOrg) }} </span>
+                  <span
+                    type="text"
+                    v-if="hasValue(scope.row.agentOrg)"
+                    @click="showexistEdit(scope.row)"
+                    >{{ changeOrgAndId(scope.row.agentOrg) }}</span
+                  >
+                </el-tooltip>
+                <span v-if="!hasValue(scope.row.agentOrg)">
                   <el-button type="text" @click="showexistEdit(scope.row)"
                     >设置</el-button
                   >
@@ -222,14 +225,19 @@
               label="综合岗"
             >
               <template slot-scope="scope">
-                <span
-                  type="text"
-                  style="cursor: pointer"
-                  v-if="scope.row.teamAdmin"
-                  @click="showSecretary(scope.row)"
-                  >{{ changeOrgAndId(scope.row.teamAdmin) }}</span
-                >
-                <span v-else>
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <span slot="content">
+                    {{ orgTip(scope.row.teamAdmin) }}
+                  </span>
+                  <span
+                    type="text"
+                    style="cursor: pointer"
+                    v-if="hasValue(scope.row.teamAdmin)"
+                    @click="showSecretary(scope.row)"
+                    >{{ changeOrgAndId(scope.row.teamAdmin) }}</span
+                  >
+                </el-tooltip>
+                <span v-if="!hasValue(scope.row.teamAdmin)">
                   <el-button type="text" @click="showSecretary(scope.row)"
                     >设置</el-button
                   >
@@ -474,6 +482,13 @@ export default {
         if (orgName.length > 2) {
           return `${orgName[0]},${orgName[1]}...`;
         }
+        return orgName.join(',');
+      }
+    },
+    orgTip(data) {
+      if (data) {
+        const list = data.split(',');
+        const orgName = list.map((item) => item.split('/')[0]);
         return orgName.join(',');
       }
     },
