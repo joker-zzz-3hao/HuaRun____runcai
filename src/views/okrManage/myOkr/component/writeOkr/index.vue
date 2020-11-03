@@ -21,7 +21,7 @@
     </div>
     <el-scrollbar ref="okrFormscrollbar">
       <div class="cont-box">
-        <template v-if="searchForm.modifyReason">
+        <template v-if="hasValue(searchForm.modifyReason)">
           <el-alert type="warning" class="tl-alert">
             <div slot="title">
               <div class="alert-title">审批退回原因：</div>
@@ -53,7 +53,7 @@
             <dt>OKR类型</dt>
             <dd>
               <el-select
-                v-if="showMoreType"
+                v-if="hasValue(showMoreType)"
                 v-model="searchForm.okrType"
                 placeholder="请选择类型"
                 :popper-append-to-body="false"
@@ -72,7 +72,7 @@
           </dl>
           <dl class="user-info">
             <dt>负责人</dt>
-            <dd v-if="userInfo.headUrl">
+            <dd v-if="hasValue(userInfo.headUrl)">
               <img :src="userInfo.headUrl" alt />
             </dd>
             <dd v-else class="user-name">
@@ -202,12 +202,14 @@
                           "
                         >
                           <em
-                            v-if="oitem.undertakeOkrVo.undertakeOkrContent"
+                            v-if="
+                              hasValue(oitem.undertakeOkrVo.undertakeOkrContent)
+                            "
                             @click="openUndertake(index)"
                             >{{ oitem.undertakeOkrVo.undertakeOkrContent }}</em
                           >
                           <em
-                            v-if="oitem.cultureId"
+                            v-if="hasValue(oitem.cultureId)"
                             @click="openUndertake(index)"
                             >{{ oitem.cultureName }}</em
                           >

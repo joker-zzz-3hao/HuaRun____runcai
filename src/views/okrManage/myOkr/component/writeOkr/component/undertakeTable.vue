@@ -24,7 +24,7 @@
           v-for="pItem in parentUndertake[searchForm.periodId]"
           :key="pItem.periodName"
         >
-          <el-radio-group v-model="modelDepart" v-if="pItem.isupdate">
+          <el-radio-group v-model="modelDepart" v-if="hasValue(pItem.isupdate)">
             <el-radio
               @click.native="selectDepartokr($event, index, item)"
               class="tl-radio"
@@ -40,7 +40,7 @@
                   :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
                   >{{ item.typeName }}</span
                 >
-                <em v-if="item.currentOption">
+                <em v-if="hasValue(item.currentOption)">
                   <em>「历史版本{{ item.okrDetailVersion }}」</em>
                   <em>(当前选择)</em>
                 </em>
@@ -49,7 +49,7 @@
                 >
                 <div>
                   <p>{{ item.okrDetailObjectKr }}</p>
-                  <p v-if="item.modifyReason">
+                  <p v-if="hasValue(item.modifyReason)">
                     <span>变更原因</span>
                     {{ item.modifyReason }}
                   </p>
@@ -263,7 +263,6 @@ export default {
               });
               console.log(this.periodName, pItem.okrPeriodEntity.periodName);
               if (this.periodName == pItem.okrPeriodEntity.periodName && this.departokrList) {
-                console.log('isupdate');
                 this.parentUndertake.push({
                   pindex: {
                     isupdate: true,
@@ -279,6 +278,7 @@ export default {
                   },
                 });
               }
+              console.log(this.parentUndertake);
             });
             if (this.departokrList && this.selectRadioDepart) {
               console.log('这是变更');

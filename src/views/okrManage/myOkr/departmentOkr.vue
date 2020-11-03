@@ -126,7 +126,7 @@
               @click="getidentity(item)"
             >
               <dt class="user-info">
-                <img v-if="item.headUrl" :src="item.headUrl" alt />
+                <img v-if="hasValue(item.headUrl)" :src="item.headUrl" alt />
                 <div v-else class="user-name">
                   <em>{{ cutName(item.userName) }}</em>
                 </div>
@@ -141,7 +141,7 @@
               @click="getidentity(item)"
             >
               <dt class="user-info">
-                <img v-if="item.headUrl" :src="item.headUrl" alt />
+                <img v-if="hasValue(item.headUrl)" :src="item.headUrl" alt />
                 <div v-else class="user-name">
                   <em>{{ cutName(item.orgName) }}</em>
                 </div>
@@ -155,7 +155,7 @@
 
     <tl-okr-detail
       :exist.sync="detailExist"
-      v-if="detailExist"
+      v-if="hasValue(detailExist)"
       ref="okrdetail"
       :server="server"
       :okrId="okrId"
