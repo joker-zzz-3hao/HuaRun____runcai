@@ -2306,8 +2306,47 @@
 }
 
 .replay-info .flex-end {
+  margin-bottom: 0;
   justify-content: flex-end;
   color: #879099;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd:first-child .list-title::before {
+  background: rgba(76, 205, 121, 0.16);
+  border: 2px solid #4ccd79;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type em {
+  margin: 0 10px 0 0;
+  color: #879099;
+}
+
+.replay-link .tl-collapse .el-collapse-item,
+.replay-link .tl-collapse .el-collapse-item__header.is-active {
+  box-shadow: unset;
+}
+
+.replay-link .tl-collapse .el-collapse-item__header {
+  padding: 0;
+  margin: 0;
+}
+
+.replay-link .okr-change-list .el-collapse-item {
+  border: 1px solid #e5e9ee;
+}
+
+.replay-link .okr-change-list .is-o {
+  padding: 20px;
+}
+
+.replay-link .okr-change-list dl.is-o::before {
+  position: absolute;
+  left: -2px;
+  top: -1px;
+  bottom: 0;
+  content: '';
+  width: 3px;
+  background: #4ccd79;
 }
 
 /* 周报 */

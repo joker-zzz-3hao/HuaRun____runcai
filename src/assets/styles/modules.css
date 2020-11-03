@@ -2278,11 +2278,12 @@
 .search-popover {
   padding: 16px 0;
   min-height: 200px;
+  width: 300px !important;
 }
 
 .search-popover .tl-input {
   margin: 0 16px 16px 16px;
-  width: unset;
+  width: calc(100% - 32px);
 }
 
 .search-popover .el-input__inner {
@@ -3169,6 +3170,17 @@
 
 .tl-table-fix .tl-thead li:nth-child(8) {
   width: 4%;
+}
+
+.tl-table-fix em.okr-weight,
+.tl-table-fix .progress-number,
+.tl-table-fix dd.okr-proportion {
+  font-weight: 500;
+  font-family: DINAlternate-Bold;
+}
+
+.tl-table-fix dd.okr-proportion {
+  color: #929ba3;
 }
 
 .tl-table.no-data .el-table__fixed-right::before {

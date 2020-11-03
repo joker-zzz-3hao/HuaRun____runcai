@@ -187,7 +187,7 @@
       </div>
     </el-drawer>
     <tl-okr-history
-      v-if="historyDrawer"
+      v-if="hasValue(historyDrawer)"
       :exist.sync="historyDrawer"
       ref="okrhistory"
       :server="server"

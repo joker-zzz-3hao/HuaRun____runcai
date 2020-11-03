@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="o-replay">
     <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
       <el-collapse v-model="activeNames">
         <el-collapse-item :name="index + 1">
@@ -295,34 +295,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-.rightweight {
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-}
-
-.title-row {
-  display: flex;
-  width: 100%;
-  height: 50px;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.flex {
-  display: flex;
-  width: 50%;
-  flex-direction: row;
-}
-</style>
