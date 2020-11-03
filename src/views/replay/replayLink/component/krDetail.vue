@@ -120,12 +120,13 @@
             </dl>
             <dl>
               <dt>改进措施</dt>
-              <!-- <dd>{{ list.disadvantage }}</dd> -->
+              <dd>{{ list.disadvantage }}</dd>
             </dl>
             <dl>
               <dt>复盘沟通</dt>
               <dd>
                 <el-input
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   type="textarea"
                   placeholder="不超过1000字符"
                   maxlength="1000"
@@ -137,13 +138,16 @@
             <dl>
               <dt>描述</dt>
               <dd>
-                <el-button
-                  :type="btnText == list.communicationLabel ? 'primary' : ''"
-                  @click="selectCommunicationLabel(btnText, index, i)"
-                  v-for="(btnText, key) in listBtn"
-                  :key="key"
-                  >{{ btnText }}</el-button
-                >
+                <dl class="tag-lists">
+                  <dd
+                    @click="selectCommunicationLabel(btnText, index, i)"
+                    v-for="(btnText, key) in listBtn"
+                    :key="key"
+                    :class="{ 'is-selected': listBtnIdx == key }"
+                  >
+                    <em>{{ btnText }}</em>
+                  </dd>
+                </dl>
               </dd>
             </dl>
           </dd>
@@ -196,6 +200,7 @@ export default {
         '继续努力',
         '要加油哦',
       ],
+      listBtnIdx: -1,
     };
   },
   created() {
@@ -253,9 +258,10 @@ export default {
     inputCommunication(value, index, i) {
       this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
     },
-    selectCommunicationLabel(value, index, i) {
+    selectCommunicationLabel(value, index, i, key) {
       const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
       mainData.communicationLabel = value;
+      this.listBtnIdx = key;
     },
     save() {
       this.saveLoad = true;

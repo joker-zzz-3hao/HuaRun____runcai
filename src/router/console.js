@@ -216,7 +216,7 @@ export default [{
         path: '/replayEdit',
         name: 'replayEdit',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
@@ -229,7 +229,7 @@ export default [{
         path: '/replayDetail',
         name: 'replayDetail',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
