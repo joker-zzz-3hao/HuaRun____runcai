@@ -6,7 +6,6 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
-    custom-class="update-progress"
     width="700px"
     :title="title"
     :center="true"

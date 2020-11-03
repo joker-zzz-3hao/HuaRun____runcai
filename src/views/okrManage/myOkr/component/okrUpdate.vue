@@ -151,7 +151,10 @@
                       ></el-input-number>
                       <span>%</span>
                     </div>
-                    <div class="okr-risk" v-if="formData.okrDetailConfidence">
+                    <div
+                      class="okr-risk"
+                      v-if="hasValue(formData.okrDetailConfidence)"
+                    >
                       <span>信心指数</span>
                       <tl-confidence
                         v-model="formData.okrDetailConfidence"

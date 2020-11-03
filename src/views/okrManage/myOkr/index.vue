@@ -74,7 +74,7 @@
     <tl-writeokr
       ref="writeokr"
       :exist.sync="writeokrExist"
-      v-if="writeokrExist"
+      v-if="hasValue(writeokrExist)"
       :userName="userInfo.userName"
       :writeInfo="writeInfo"
     ></tl-writeokr>

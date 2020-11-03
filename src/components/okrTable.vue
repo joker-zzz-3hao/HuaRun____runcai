@@ -114,7 +114,9 @@
       </el-table-column>
       <!-- o label="权重" -->
       <el-table-column prop="okrWeight" width="6%">
-        <template slot-scope="scope">{{ scope.row.okrWeight }}%</template>
+        <template slot-scope="scope"
+          ><em class="okr-weight">{{ scope.row.okrWeight }}%</em></template
+        >
       </el-table-column>
       <!-- o label="承接地图" -->
       <el-table-column width="8%">
@@ -207,9 +209,18 @@
           <!-- <tl-process
             :data="parseInt(scope.row.okrDetailProgress, 10)"
           ></tl-process> -->
-          <span class="progress-number"
-            >{{ scope.row.okrDetailProgress }}%</span
+          <el-tooltip
+            :disabled="!showUpdate"
+            effect="dark"
+            placement="top"
+            popper-class="tl-tooltip-popper"
           >
+            <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
+            <span class="progress-number"
+              >{{ scope.row.okrDetailProgress }}%
+              <i v-if="showUpdate" class="el-icon-question"></i
+            ></span>
+          </el-tooltip>
         </template>
       </el-table-column>
       <!-- label="更新进度"  -->

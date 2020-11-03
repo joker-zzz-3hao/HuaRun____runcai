@@ -1,92 +1,17 @@
 <template>
   <div class="replay-link">
-    <dl class="replay-info">
-      <dt>
-        <div class="replay-title">
-          <span>复盘对象:</span><em>{{ okrMain.okrMainVo.periodName }}</em
-          ><em
-            >({{
-              dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
-              "~" +
-              dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
-            }})</em
-          >
-        </div>
-        <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
-      </dt>
-      <dd class="dl-list-group">
-        <dl class="dl-item user-info">
-          <dd v-if="okrMain.okrMainVo.headUrl">
-            <img :src="okrMain.okrMainVo.headUrl" alt />
-          </dd>
-          <dd v-else class="user-name">
-            <em>{{ cutName(okrMain.okrMainVo.userName) }}</em>
-          </dd>
-          <dd>{{ okrMain.okrMainVo.userName }}</dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>复盘时间</span></dt>
-          <dd>
-            <em>{{
-              okrMain.okrMainVo.reviewCommitTime
-                ? okrMain.okrMainVo.reviewCommitTime
-                : "--"
-            }}</em>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>OKR进度</span></dt>
-          <dd>
-            <el-progress
-              type="circle"
-              :percentage="parseInt(okrMain.okrMainVo.okrProgress, 10) || 0"
-              :width="70"
-              :stroke-width="5"
-              color="#4ccd79"
-              class="tl-progress-circle"
-            ></el-progress>
-          </dd>
-        </dl>
-      </dd>
-      <dd class="flex-end">
-        <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
-        <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>
-        <!-- <el-radio-group v-model="okrMain.okrMainVo.reviewType">
-          <el-radio :label="1" v-if="okrMain.okrMainVo.reviewType == 1"
-            >以关键结果KR复盘</el-radio
-          >
-          <el-radio :label="0" v-if="okrMain.okrMainVo.reviewType == 0"
-            >以目标O复盘</el-radio
-          >
-        </el-radio-group> -->
-      </dd>
-    </dl>
-    <div>
-      <tl-kr-detail
-        v-if="okrMain.okrMainVo.reviewType == 1"
-        @getView="getOkrReviewDetail"
-        :okrMain="okrMain"
-      />
-      <tl-o-detail
-        v-if="okrMain.okrMainVo.reviewType == 0"
-        @getView="getOkrReviewDetail"
-        :okrMain="okrMain"
-      />
-    </div>
-    <div>
-      <div>复盘记录</div>
-      <el-timeline :reverse="false">
-        <el-timeline-item
-          v-for="(item, index) in activities"
-          :key="index"
-          :timestamp="item.createTime"
-          >{{ item.userName }} {{ item.content }}</el-timeline-item
-        >
-      </el-timeline>
-    </div>
+    <tl-replayUser :okrMain="okrMain"></tl-replayUser>
+    <tl-kr-detail
+      v-if="okrMain.okrMainVo.reviewType == 1"
+      @getView="getOkrReviewDetail"
+      :okrMain="okrMain"
+    />
+    <tl-o-detail
+      v-if="okrMain.okrMainVo.reviewType == 0"
+      @getView="getOkrReviewDetail"
+      :okrMain="okrMain"
+    />
+    <tl-replayHistory :activities="activities"></tl-replayHistory>
   </div>
 </template>
 
@@ -94,6 +19,8 @@
 import Server from '../server';
 import krDetail from './component/krDetail';
 import odetail from './component/odetail';
+import replayUser from '../component/repayUser';
+import replayHistory from '../component/replayHistory';
 
 const server = new Server();
 export default {
@@ -101,6 +28,8 @@ export default {
   components: {
     'tl-o-detail': odetail,
     'tl-kr-detail': krDetail,
+    'tl-replayUser': replayUser,
+    'tl-replayHistory': replayHistory,
   },
   data() {
     return {

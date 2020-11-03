@@ -724,9 +724,10 @@
   color: #879099;
 }
 
+/* change by xinquan */
 .update-progress .el-dialog__body {
   width: 102%;
-  height: 530px;
+  height: 400px;
   overflow: hidden;
 }
 
@@ -734,6 +735,9 @@
   padding: 0 14px 0 0;
 }
 
+.update-progress .tl-custom-timeline .list-title span {
+  margin: 15px 0 0 0;
+}
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
   position: relative;
@@ -2302,8 +2306,47 @@
 }
 
 .replay-info .flex-end {
+  margin-bottom: 0;
   justify-content: flex-end;
   color: #879099;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd:first-child .list-title::before {
+  background: rgba(76, 205, 121, 0.16);
+  border: 2px solid #4ccd79;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type em {
+  margin: 0 10px 0 0;
+  color: #879099;
+}
+
+.replay-link .tl-collapse .el-collapse-item,
+.replay-link .tl-collapse .el-collapse-item__header.is-active {
+  box-shadow: unset;
+}
+
+.replay-link .tl-collapse .el-collapse-item__header {
+  padding: 0;
+  margin: 0;
+}
+
+.replay-link .okr-change-list .el-collapse-item {
+  border: 1px solid #e5e9ee;
+}
+
+.replay-link .okr-change-list .is-o {
+  padding: 20px;
+}
+
+.replay-link .okr-change-list dl.is-o::before {
+  position: absolute;
+  left: -2px;
+  top: -1px;
+  bottom: 0;
+  content: '';
+  width: 3px;
+  background: #4ccd79;
 }
 
 /* 周报 */
@@ -5067,4 +5110,9 @@
 .monitor-data .el-collapse-item__header>span:nth-of-type(1){
   color: #909399;
   margin: 0 20px 0 0;
+}
+
+/* 问号 */
+.el-icon-question{
+  color: #acb6bf;
 }

@@ -12,6 +12,19 @@
       </template>
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
+          <div
+            class="okr-tag"
+            v-if="
+              ['1', 1, 3, 4, 5].includes(item.okrMain.status) &&
+              item.okrMain.readStatus != 0
+            "
+          >
+            <el-tag type="warning" size="medium" :hit="true"
+              >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
+                CONST.READ_RESULT_MAP[item.okrMain.readStatus]
+              }}{{ item.okrMain.readRemark }}</el-tag
+            >
+          </div>
           <div class="card-panel-head">
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">
@@ -35,7 +48,7 @@
                 <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
               </dt>
-              <dd v-if="item.okrMain">{{ item.okrMain.userName }}</dd>
+              <dd v-if="hasValue(item.okrMain)">{{ item.okrMain.userName }}</dd>
               <dd v-else>{{ userInfo.userName }}</dd>
             </dl>
             <dl class="okr-progress">
@@ -46,7 +59,9 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <div slot="content">OKR进度由目标O进度自动计算</div>
+                  <div slot="content">
+                    OKR总进度由目标权重和进度自动计算得来
+                  </div>
                   <i class="el-icon-question"></i>
                 </el-tooltip>
               </dt>
@@ -266,7 +281,7 @@
     <tl-writeokr
       ref="tl-writeokr"
       :exist.sync="writeokrExist"
-      v-if="writeokrExist"
+      v-if="hasValue(writeokrExist)"
       :writeInfo="writeInfo"
       :userName="userInfo.userName"
       @success="searchOkr(searchForm.status)"
@@ -274,7 +289,7 @@
     <tl-changeokr
       ref="tl-changeokr"
       :exist.sync="changeokrExist"
-      v-if="changeokrExist"
+      v-if="hasValue(changeokrExist)"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
       @success="searchOkr(searchForm.status)"
@@ -282,7 +297,7 @@
     <tl-okr-detail
       ref="tl-okr-detail"
       :exist.sync="detailExist"
-      v-if="detailExist"
+      v-if="hasValue(detailExist)"
       :server="server"
       :okrId="okrId"
       :CONST="CONST"
@@ -292,7 +307,7 @@
     <tl-okr-update
       ref="tl-okr-update"
       :exist.sync="updateExist"
-      v-if="updateExist"
+      v-if="hasValue(updateExist)"
       :server="server"
       :okrId="okrId"
       :okrItem="okrItem"
@@ -301,7 +316,7 @@
     ></tl-okr-update>
     <tl-okr-history
       :exist.sync="historyExist"
-      v-if="historyExist"
+      v-if="hasValue(historyExist)"
       ref="okrhistory"
       :server="server"
       :okrDetailId="historyId"
@@ -309,7 +324,7 @@
     ></tl-okr-history>
     <tl-checkjudge
       :exist.sync="checkjudgeExist"
-      v-if="checkjudgeExist"
+      v-if="hasValue(checkjudgeExist)"
       ref="checkjudge"
       :checkjudgeData="checkjudgeData"
     ></tl-checkjudge>
@@ -379,6 +394,7 @@ export default {
       historyTitle: {},
       checkjudgeExist: false,
       checkjudgeData: {},
+      orgId: '',
     };
   },
   computed: {
@@ -462,11 +478,11 @@ export default {
               }
             } else {
               this.okrList = [];
-              res.data.forEach((okritem, okrindex) => {
-                this.okrList[okrindex] = {};
-                this.okrList[okrindex].tableList = okritem.okrDetails || [];
-                this.okrList[okrindex].okrMain = okritem.okrMain || {};
-                this.okrId = this.okrList[okrindex].okrMain.okrId || '';
+              res.data.forEach((okritem) => {
+                this.handleNormal(okritem);
+                // this.okrList[okrindex] = {};
+                // this.okrList[okrindex].tableList = okritem.okrDetails || [];
+                // this.okrList[okrindex].okrMain = okritem.okrMain || {};
               });
             }
             this.loading = false;
@@ -519,6 +535,7 @@ export default {
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
       });
+      this.orgId = object.okrMain.orgId || '';
     },
 
     // 打开详情
@@ -592,7 +609,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.orgId,
         },
       });
     },

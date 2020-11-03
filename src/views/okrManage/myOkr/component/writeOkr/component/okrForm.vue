@@ -106,9 +106,11 @@
                       "
                       >、</em
                     >
-                    <em v-if="oitem.cultureId" @click="openUndertake(index)">{{
-                      oitem.cultureName
-                    }}</em>
+                    <em
+                      v-if="hasValue(oitem.cultureId)"
+                      @click="openUndertake(index)"
+                      >{{ oitem.cultureName }}</em
+                    >
                   </template>
                   <el-button
                     type="text"
