@@ -791,7 +791,6 @@ export default {
   },
   created() {
     this.init();
-    console.log('测试方法****************', this.hasValue());
   },
   computed: {
     setOkrStyle() {
