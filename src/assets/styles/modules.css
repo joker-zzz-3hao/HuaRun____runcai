@@ -429,8 +429,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 36%;
-  width: 36%;
+  flex: 0 0 42%;
+  width: 42%;
   position: relative;
 }
 
@@ -474,13 +474,13 @@
 }
 
 .tl-table .sub-tr .undertake-target {
-  flex: 0 0 11%;
-  width: 11%;
+  flex: 0 0 12%;
+  width: 12%;
 }
 
 .tl-table .sub-tr .okr-progress {
-  flex: 0 0 16%;
-  width: 16%;
+  flex: 0 0 17%;
+  width: 17%;
 }
 
 .tl-table .sub-tr .okr-update {
@@ -3141,15 +3141,19 @@
 }
 
 .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 36%;
+  width: 42%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(3) {
   width: 6%;
 }
 
-.tl-table-fix .tl-thead li:nth-child(4) {
+/* .tl-table-fix .tl-thead li:nth-child(4) {
   width: 8%;
+} */
+
+.tl-table-fix .tl-thead li:nth-child(4) {
+  width: 12%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(5) {
@@ -3157,18 +3161,14 @@
 }
 
 .tl-table-fix .tl-thead li:nth-child(6) {
-  width: 11%;
-}
-
-.tl-table-fix .tl-thead li:nth-child(7) {
-  width: 16%;
+  width: 17%;
 }
 
 /* .tl-table-fix .tl-thead li:nth-child(8) {
   width: 9%;
 } */
 
-.tl-table-fix .tl-thead li:nth-child(8) {
+.tl-table-fix .tl-thead li:nth-child(7) {
   width: 4%;
 }
 
