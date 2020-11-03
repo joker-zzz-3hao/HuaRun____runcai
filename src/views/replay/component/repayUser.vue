@@ -70,5 +70,11 @@
 <script>
 export default {
   props: ['okrMain'],
+  methods: {
+    cutName(userName) {
+      const nameLength = userName.length;
+      return userName.substring(nameLength - 2, nameLength);
+    },
+  },
 };
 </script>
