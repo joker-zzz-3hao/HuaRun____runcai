@@ -63,4 +63,9 @@ export default class Server extends ServerBase {
   queryOrgAdmin(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/queryOrgAdmin', param);
   }
+
+  // 设置部门综合岗
+  setSecretary(param) {
+    return this._ajaxPost('gateway/system-service/sys/userRole/setTeamAdminRoleList', param);
+  }
 }
