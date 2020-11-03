@@ -140,12 +140,17 @@
               <dd>
                 <dl class="tag-lists">
                   <dd
-                    @click="selectCommunicationLabel(btnText, index, i)"
+                    @click="selectCommunicationLabel(btnText.txt, index, i)"
                     v-for="(btnText, key) in listBtn"
                     :key="key"
-                    :class="{ 'is-selected': listBtnIdx == key }"
+                    :class="[
+                      {
+                        'is-selected': list.communicationLabel == btnText.txt,
+                      },
+                      btnText.clsName,
+                    ]"
                   >
-                    <em>{{ btnText }}</em>
+                    <em>{{ btnText.txt }}</em>
                   </dd>
                 </dl>
               </dd>
@@ -154,15 +159,27 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div>
-      <el-button type="primary" @click="submit" :loading="submitLoad"
+    <div class="footer-panel">
+      <el-button
+        type="primary"
+        @click="submit"
+        :loading="submitLoad"
+        class="tl-btn amt-bg-slip"
         >确认沟通</el-button
       >
-      <el-button type="primary" @click="save" :loading="saveLoad"
+      <el-button
+        plain
+        @click="save"
+        :loading="saveLoad"
+        class="tl-btn amt-border-fadeout"
         >保存</el-button
       >
-
-      <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
+      <el-button
+        plain
+        @click="handleDeleteOne"
+        class="tl-btn amt-border-fadeout"
+        >关闭</el-button
+      >
     </div>
   </div>
 </template>
@@ -195,12 +212,23 @@ export default {
       communicationLabel: {},
       list: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
-      listBtnIdx: -1,
     };
   },
   created() {
@@ -258,10 +286,9 @@ export default {
     inputCommunication(value, index, i) {
       this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
     },
-    selectCommunicationLabel(value, index, i, key) {
+    selectCommunicationLabel(value, index, i) {
       const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
       mainData.communicationLabel = value;
-      this.listBtnIdx = key;
     },
     save() {
       this.saveLoad = true;

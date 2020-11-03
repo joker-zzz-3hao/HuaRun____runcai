@@ -152,7 +152,7 @@
             popper-class="tl-tooltip-popper"
           >
             <div slot="content">{{ scope.row.parentObjectKr }}</div>
-            <em>{{ scope.row.parentObjectKr }}</em>
+            <em class="hide-more">{{ scope.row.parentObjectKr }}</em>
           </el-tooltip>
           <el-tooltip
             v-else-if="
@@ -165,12 +165,10 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrDto.undertakeOkrContent }}
-              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <span>
-              <em>{{ scope.row.undertakeOkrDto.undertakeOkrContent }} </em>
-              <!-- <em>{{ scope.row.cultureName }}</em> -->
-            </span>
+            <em class="hide-more"
+              >{{ scope.row.undertakeOkrDto.undertakeOkrContent }}
+            </em>
           </el-tooltip>
           <el-tooltip
             v-else-if="
@@ -183,12 +181,10 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrVo.undertakeOkrContent }}
-              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <span>
-              <em>{{ scope.row.undertakeOkrVo.undertakeOkrContent }}</em>
-              <!-- <em>{{ scope.row.cultureName }}</em> -->
-            </span>
+            <em class="hide-more">{{
+              scope.row.undertakeOkrVo.undertakeOkrContent
+            }}</em>
           </el-tooltip>
           <el-tooltip
             v-else-if="scope.row.cultureName"
@@ -199,7 +195,7 @@
             <div slot="content">
               {{ scope.row.cultureName }}
             </div>
-            <em>{{ scope.row.cultureName }}</em>
+            <em class="hide-more">{{ scope.row.cultureName }}</em>
           </el-tooltip>
           <em v-else>暂无</em>
         </template>
