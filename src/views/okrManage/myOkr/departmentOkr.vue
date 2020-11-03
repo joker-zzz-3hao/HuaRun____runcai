@@ -95,6 +95,75 @@
               </div>
               <div v-else>暂无</div>
             </template>
+            <!-- o的操作栏 -->
+            <template slot="moreHandle-obar" slot-scope="props">
+              <el-dropdown
+                v-if="
+                  [1, 2, 3, 4, 5].includes(okrMain.status) &&
+                  props.okritem.continueCount > 0
+                "
+                trigger="click"
+                class="tl-dropdown"
+              >
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    v-if="props.okritem.continueCount > 0"
+                    @click.native="
+                      goUndertakeMaps(
+                        props.okritem.okrDetailId,
+                        props.okritem.okrDetailObjectKr
+                      )
+                    "
+                  >
+                    <span>承接地图</span>
+                    <i
+                      :class="{
+                        'has-undertake': props.okritem.continueCount > 0,
+                      }"
+                      class="el-icon-link"
+                    ></i>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+            <!-- kr的操作栏 -->
+            <template slot="moreHandle-krbar" slot-scope="props">
+              <el-dropdown
+                v-if="[1, 2, 3, 4, 5].includes(okrMain.status)"
+                trigger="click"
+              >
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    @click.native="openCheckjudge(props.okritem)"
+                  >
+                    <em>考核指标、衡量办法</em>
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    v-if="props.okritem.continueCount > 0"
+                    @click="
+                      goUndertakeMaps(
+                        props.okritem.okrDetailId,
+                        props.okritem.okrDetailObjectKr
+                      )
+                    "
+                  >
+                    <span>承接地图</span>
+                    <i
+                      :class="{
+                        'has-undertake': props.okritem.continueCount > 0,
+                      }"
+                      class="el-icon-link"
+                    ></i>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
           </tl-okr-table>
         </div>
       </div>
@@ -162,6 +231,12 @@
       :CONST="CONST"
       :drawerTitle="drawerTitle"
     ></tl-okr-detail>
+    <tl-checkjudge
+      :exist.sync="checkjudgeExist"
+      v-if="hasValue(checkjudgeExist)"
+      ref="checkjudge"
+      :checkjudgeData="checkjudgeData"
+    ></tl-checkjudge>
   </div>
 </template>
 
@@ -169,6 +244,7 @@
 import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
+import checkJudge from './component/checkJudge';
 import Server from './server';
 import CONST from './const';
 
@@ -179,6 +255,7 @@ export default {
   components: {
     'tl-okr-table': okrTable,
     'tl-okr-detail': okrDetail,
+    'tl-checkjudge': checkJudge,
   },
   data() {
     return {
@@ -200,6 +277,7 @@ export default {
       drawerTitle: 'OKR详情',
       detailExist: false,
       loading: true,
+      checkjudgeExist: false,
       orgId: '',
     };
   },
@@ -277,6 +355,16 @@ export default {
         params: {
           okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrMain.orgId,
         },
+      });
+    },
+    openCheckjudge(item) {
+      this.checkjudgeData = {
+        checkQuota: item.checkQuota,
+        judgeMethod: item.judgeMethod,
+      };
+      this.checkjudgeExist = true;
+      this.$nextTick(() => {
+        this.$refs.checkjudge.show();
       });
     },
     cutName(userName) {

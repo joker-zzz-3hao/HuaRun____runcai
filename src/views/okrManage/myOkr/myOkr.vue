@@ -166,8 +166,6 @@
                     >
                       <em>历史版本</em>
                     </el-dropdown-item>
-                  </el-dropdown-menu>
-                  <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                       v-if="props.okritem.continueCount > 0"
                       @click.native="
