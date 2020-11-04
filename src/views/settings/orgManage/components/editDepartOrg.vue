@@ -238,6 +238,16 @@ export default {
                 this.$forceUpdate();
               },
             });
+          } else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
+            this.$alert('您已经是该部门综合岗，不能设置为该部门的负责人。', '提示', {
+              confirmButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+              callback: () => {
+                // 取消该组织的勾选
+                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+              },
+            });
           } else if (res.data.orgAdminUserName) {
             this.$confirm(`当前部门已经存在负责人'${res.data.orgAdminUserName}',继续将自动替换`, '提示', {
               confirmButtonText: '覆盖',
@@ -249,16 +259,6 @@ export default {
             }).catch(() => {
               // 取消该组织的勾选
               this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-            });
-          } else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
-            this.$alert('您已经是该部门综合岗，不能设置为该部门的负责人。', '提示', {
-              confirmButtonText: '取消',
-              type: 'warning',
-              closeOnClickModal: false,
-              callback: () => {
-                // 取消该组织的勾选
-                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-              },
             });
           }
         });

@@ -10,7 +10,10 @@
     :before-close="close"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">{{ drawerTitle }}</div>
+      <div class="drawer-title">
+        <em v-if="showSupport">{{ cutOrgName(okrmain.orgName) }}</em>
+        <em> {{ drawerTitle }}</em>
+      </div>
       <div
         v-show="
           showFocus &&
