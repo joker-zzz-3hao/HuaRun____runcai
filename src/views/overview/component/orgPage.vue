@@ -248,19 +248,18 @@ export default {
         }
       });
     },
-    setList(listDataPro = {}) {
-      let listData = {};
+    setList(listData = {}) {
       if (this.$route.name == 'teamleader') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrDataTeam.data : listDataPro;
+        this.testModel ? listData = okrDataTeam.data : listData;
       }
       if (this.$route.name == 'departleader') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrData.data : listDataPro;
+        this.testModel ? listData = okrData.data : listData;
       }
       if (this.$route.name == 'grassStaff') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrUser.data : listDataPro;
+        this.testModel ? listData = okrUser.data : listData;
       }
       this.tableList = listData.okrDetails || [];
       this.okrMain = listData.okrMain || {};
