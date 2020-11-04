@@ -1045,6 +1045,7 @@ export default {
         selectedOkr: [],
         workOkrList: [],
         okrCultureValueList: [],
+        valueOrOkrIds: '',
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
       this.$forceUpdate();
@@ -1139,6 +1140,12 @@ export default {
         this.showEmotionError = true;
         this.emotionError = '本周心情';
       }
+      // 校验关联okr
+      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+        if (!work.valueOrOkrIds) {
+          this.OKRError = '支撑OKR/价值观';
+        }
+      });
       this.$refs.formDom.validate((valid) => {
         if (valid && this.weeklyEmotion !== '') {
           // 将下周计划、感想有未填写的内容的数据删除
