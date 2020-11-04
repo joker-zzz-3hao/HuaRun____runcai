@@ -9,12 +9,7 @@
       </dt>
       <dd><span>温馨提示：仅统计当前周时间段内的所有工作任务</span></dd>
     </dl>
-    <el-table
-      :data="tableListown"
-      class="tl-table"
-      row-key="titleLabel"
-      default-expand-all
-    >
+    <el-table :data="tableListown" class="tl-table" row-key="titleLabel">
       <el-table-column type="expand">
         <template slot-scope="scope">
           <dl
@@ -56,7 +51,8 @@
       :data="tableListassign"
       class="tl-table"
       row-key="titleLabel"
-      default-expand-all
+      :expand-row-keys="expandArray"
+      @expand-change="expand"
     >
       <el-table-column type="expand">
         <template slot-scope="scope">
@@ -319,6 +315,9 @@ export default {
     },
     submit() {
       this.go('myWeekly', { params: { weeklySumParams: this.owntableData } });
+    },
+    expand(enec) {
+      console.log(enec);
     },
   },
 };
