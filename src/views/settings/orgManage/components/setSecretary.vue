@@ -165,6 +165,10 @@ export default {
     setSecretary() {
       const newOrgIdList = this.selectArr.map((item) => ({ orgId: item }));
       const { orgIdList } = this;
+      if (newOrgIdList.length == 0 && orgIdList.length == 0) {
+        this.closed();
+        return;
+      }
       this.server.setSecretary({
         newOrgIdList,
         orgIdList,

@@ -230,7 +230,7 @@ export default {
               },
               normal: {
                 barBorderRadius: 5,
-                color: '#FFBC20',
+                color: '#3f7dff',
                 label: {
                   show: false,
                   position: 'top',
@@ -358,7 +358,7 @@ export default {
           // eslint-disable-next-line no-dupe-keys
           start: 0,
           // eslint-disable-next-line no-dupe-keys
-          end: endLength,
+          end: that.testModel ? 100 : endLength,
           handleStyle: {
             borderRadius: '20',
             background: '#F4F6F8',

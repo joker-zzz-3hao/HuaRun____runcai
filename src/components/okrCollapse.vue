@@ -337,13 +337,13 @@
                 ></div>
                 <div
                   :class="{
+                    'is-no-risk': kritem.okrDetailConfidence == 1,
                     'is-risks': kritem.okrDetailConfidence == 2,
-                    'is-uncontrollable': kritem.okrDetailConfidence == 3,
                   }"
                 ></div>
                 <div
                   :class="{
-                    'is-uncontrollable': kritem.okrDetailConfidence == 3,
+                    'is-no-risk': kritem.okrDetailConfidence == 1,
                   }"
                 ></div>
               </div>

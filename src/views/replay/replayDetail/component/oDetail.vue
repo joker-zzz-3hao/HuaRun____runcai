@@ -98,40 +98,72 @@
             </div> -->
           </dd>
         </dl>
-        <dd>
-          <dl>
-            <dt>价值与收获</dt>
-            <dd>{{ item.o.advantage }}</dd>
-          </dl>
-          <dl>
-            <dt>问题与不足</dt>
-            <dd>{{ item.o.disadvantage }}</dd>
-          </dl>
-          <dl>
-            <dt>改进措施</dt>
-            <!-- <dd>{{ list.disadvantage }}</dd> -->
-          </dl>
-          <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-            <dt>复盘沟通</dt>
-            <dd>
-              {{ item.o.communication }}
-            </dd>
-          </dl>
-          <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-            <dt>描述</dt>
-            <dd>
-              <el-button :type="'primary'">{{
-                item.o.communication
-              }}</el-button>
-            </dd>
-          </dl>
-        </dd>
+        <dl class="is-kr">
+          <dd>
+            <div>
+              <span>考核指标</span>
+              <em> {{ item.o.checkQuota }}</em>
+            </div>
+          </dd>
+          <dd>
+            <div>
+              <span>衡量方法</span>
+              <em> {{ item.o.judgeMethod }}</em>
+            </div>
+          </dd>
+          <dd></dd>
+          <dd>
+            <dl>
+              <dt>价值与收获</dt>
+              <dd>{{ item.o.advantage }}</dd>
+            </dl>
+
+            <dl>
+              <dt>问题与不足</dt>
+              <dd>{{ item.o.disadvantage }}</dd>
+            </dl>
+
+            <dl>
+              <dt>改进措施</dt>
+              <dd v-for="(li, d) in item.o.measure || []" :key="d">{{ li }}</dd>
+            </dl>
+
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+              <dt>复盘沟通</dt>
+              <dd>
+                {{ item.o.communication }}
+              </dd>
+            </dl>
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+              <dt>评论</dt>
+              <dd>
+                <dl class="tag-lists">
+                  <dd
+                    :class="[
+                      {
+                        'is-selected':
+                          item.o.communicationLabel ==
+                          selectColor(item.o.communicationLabel).txt,
+                      },
+                      selectColor(item.o.communicationLabel).clsName,
+                    ]"
+                  >
+                    <em>{{ item.o.communicationLabel }}</em>
+                  </dd>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
       </elcollapseitem>
     </elcollapse>
   </div>
 </template>
 
 <script>
+import elcollapse from '@/components/collapse/collapse';
+import elcollapseitem from '@/components/collapse/collapse-item';
+import process from '@/components/process';
 import Server from '../../server';
 
 const server = new Server();
@@ -142,7 +174,7 @@ export default {
     return {
       reviewType: 0,
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       active: {},
       deficiency: {},
@@ -150,15 +182,35 @@ export default {
       communicationLabel: {},
       list: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
     };
   },
-
+  components: {
+    elcollapse,
+    elcollapseitem,
+    'tl-process': process,
+  },
   methods: {
+    selectColor(txt) {
+      const data = this.listBtn.filter((item) => item.txt == txt);
+      return data[0];
+    },
     deleteProduce(index, i) {
       this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
     },
