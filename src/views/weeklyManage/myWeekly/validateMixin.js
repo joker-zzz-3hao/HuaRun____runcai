@@ -46,7 +46,7 @@ export default {
         callback();
       }
     },
-    // 项目
+    // 关联项
     validateOkr(rule, value, callback) {
       if (!value) {
         callback('请填写支撑OKR/价值观');

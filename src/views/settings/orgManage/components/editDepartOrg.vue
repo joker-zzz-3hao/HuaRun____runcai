@@ -227,22 +227,29 @@ export default {
           orgId: temparr[0],
         }).then((res) => {
           // 如果选中的部门负责人/代理负责人已经是该用户了，则不能够设置该用户为该部门的综合岗
-          // if (res.data.orgAdminUserName == this.rowData.userName) {
-          //   this.$alert('您已经是该部门负责人，不能设置为该部门的负责人。', '提示', {
-          //     confirmButtonText: '取消',
-          //     type: 'warning',
-          //     closeOnClickModal: false,
-          //     callback: () => {
-          //       // 取消该组织的勾选
-          //       this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-          //       this.$forceUpdate();
-          //     },
-          //   });
-          // } else
-          //  if (res.data.orgAdminUserName) {
-          if (res.data.userName) {
-            // this.$confirm(`当前部门已经存在负责人'${res.data.orgAdminUserName}',继续将自动替换`, '提示', {
-            this.$confirm(`当前部门已经存在负责人'${res.data.userName}',继续将自动替换`, '提示', {
+          if (res.data.orgAdminUserName == this.rowData.userName) {
+            this.$alert('您已经是该部门负责人，不能设置为该部门的负责人。', '提示', {
+              confirmButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+              callback: () => {
+                // 取消该组织的勾选
+                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+                this.$forceUpdate();
+              },
+            });
+          } else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
+            this.$alert('您已经是该部门综合岗，不能设置为该部门的负责人。', '提示', {
+              confirmButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+              callback: () => {
+                // 取消该组织的勾选
+                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+              },
+            });
+          } else if (res.data.orgAdminUserName) {
+            this.$confirm(`当前部门已经存在负责人'${res.data.orgAdminUserName}',继续将自动替换`, '提示', {
               confirmButtonText: '覆盖',
               cancelButtonText: '取消',
               type: 'warning',
@@ -254,17 +261,6 @@ export default {
               this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
             });
           }
-          // else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
-          //   this.$alert('您已经是该部门综合岗，不能设置为该部门的负责人。', '提示', {
-          //     confirmButtonText: '取消',
-          //     type: 'warning',
-          //     closeOnClickModal: false,
-          //     callback: () => {
-          //       // 取消该组织的勾选
-          //       this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
-          //     },
-          //   });
-          // }
         });
       },
     },
