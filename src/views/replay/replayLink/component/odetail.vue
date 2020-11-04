@@ -98,19 +98,21 @@
             </div> -->
           </dd>
         </dl>
-        <div>
+
+        <dl class="is-kr">
           <dd>
             <div>
               <span>考核指标</span>
-              <em>{{ item.o.checkQuota }}</em>
+              <em> {{ item.o.checkQuota }}</em>
             </div>
           </dd>
           <dd>
             <div>
               <span>衡量方法</span>
-              <em>{{ item.o.judgeMethod }}</em>
+              <em> {{ item.o.judgeMethod }}</em>
             </div>
           </dd>
+          <dd></dd>
           <dd>
             <dl>
               <dt>价值与收获</dt>
@@ -122,39 +124,53 @@
             </dl>
             <dl>
               <dt>改进措施</dt>
-              <!-- <dd>{{ list.disadvantage }}</dd> -->
+              <dd v-for="(li, d) in item.o.measure" :key="d">
+                {{ li }}
+              </dd>
+            </dl>
+            <dl>
+              <dt>复盘沟通</dt>
+              <dd>
+                <el-input
+                  :autosize="{ minRows: 1, maxRows: 8 }"
+                  type="textarea"
+                  placeholder="不超过1000字符"
+                  maxlength="1000"
+                  v-model="item.o.communication"
+                  class="tl-textarea"
+                ></el-input>
+              </dd>
+            </dl>
+            <dl>
+              <dt>评论</dt>
+              <dd>
+                <dl class="tag-lists">
+                  <dd
+                    @click="selectCommunicationLabel(btnText.txt, index, i)"
+                    v-for="(btnText, key) in listBtn"
+                    :key="key"
+                    :class="[
+                      {
+                        'is-selected': item.o.communicationLabel == btnText.txt,
+                      },
+                      btnText.clsName,
+                    ]"
+                  >
+                    <em>{{ btnText.txt }}</em>
+                  </dd>
+                </dl>
+              </dd>
             </dl>
           </dd>
-          <div>复盘沟通</div>
-          <el-input
-            type="textarea"
-            placeholder="不超过1000字符"
-            v-model="item.o.communication"
-          ></el-input>
-          <div>
-            <em>请选择：</em>
-            <el-button
-              :type="btnText == item.o.communicationLabel ? 'primary' : ''"
-              @click="selectCommunicationLabel(btnText, index, i)"
-              v-for="(btnText, key) in listBtn"
-              :key="key"
-              >{{ btnText }}</el-button
-            >
-          </div>
-        </div>
+        </dl>
       </elcollapseitem>
     </elcollapse>
 
-    <div>
-      <el-button type="primary" @click="submit" :loading="submitLoad"
-        >确认沟通</el-button
-      >
-      <el-button type="primary" @click="save" :loading="saveLoad"
-        >保存</el-button
-      >
-
-      <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
-    </div>
+    <tl-footer
+      @submit="submit"
+      @save="save"
+      @handleDeleteOne="handleDeleteOne"
+    ></tl-footer>
   </div>
 </template>
 
@@ -162,6 +178,7 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
+import replayFoot from '../../component/replayFoot';
 import Server from '../../server';
 
 const server = new Server();
@@ -171,7 +188,7 @@ export default {
   data() {
     return {
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       submitLoad: false,
       saveLoad: false,
@@ -181,10 +198,22 @@ export default {
       communicationLabel: {},
       list: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
     };
   },
@@ -192,6 +221,7 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
+    'tl-footer': replayFoot,
   },
   created() {
     this.getOldList();
@@ -318,6 +348,7 @@ export default {
       const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
       if (CheckNull) {
         this.submitLoad = false;
+        console.log(this.list);
         this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
         return false;
       }

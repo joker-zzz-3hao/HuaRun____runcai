@@ -10,7 +10,10 @@
     :before-close="close"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">{{ drawerTitle }}</div>
+      <div class="drawer-title">
+        <em> {{ drawerTitle }}</em>
+        <em v-if="showSupport">-{{ cutOrgName(okrmain.orgName) }}</em>
+      </div>
       <div
         v-show="
           showFocus &&
@@ -161,7 +164,7 @@
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.afterConfidence">
-                            <span>风险状态为</span>
+                            <span>信心指数为</span>
                             <div class="state-grid">
                               <div
                                 :class="{
@@ -322,7 +325,7 @@
                             <span>%</span>
                           </div>
                           <div v-if="uitem.updateContents.afterConfidence">
-                            <span>风险状态修改为</span>
+                            <span>信心指数修改为</span>
                             <div class="state-grid">
                               <div
                                 :class="{
