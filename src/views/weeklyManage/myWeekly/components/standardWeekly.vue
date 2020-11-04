@@ -174,7 +174,6 @@
           >
             <!-- okrIds -->
             <template slot-scope="scope">
-              <!-- 临时项目可不选择支撑项 -->
               <el-form-item
                 :prop="
                   'weeklyWorkVoSaveList.' + scope.$index + '.valueOrOkrIds'
@@ -717,7 +716,6 @@ export default {
             type: 'string',
             required: true,
             validator: this.validateWorkContent,
-            // message: '请填写任务项',
             trigger: 'blur',
           },
           workDesc: {
@@ -731,14 +729,12 @@ export default {
             type: 'string',
             required: true,
             validator: this.validateProject,
-            // message: '请选择关联项目',
             trigger: 'change',
           },
           valueOrOkrIds: {
             type: 'string',
             required: true,
             validator: this.validateOkr,
-            // message: '请选择支撑项',
             trigger: 'change',
           },
           workProgress: {
@@ -1180,7 +1176,7 @@ export default {
           });
         } else {
           this.$forceUpdate();
-          this.$message.error(`您有 ${this.processError} ${this.workTimeError} ${this.workItemError} ${this.projectError} ${this.OKRError} ${this.emotionError} 未填写`);
+          this.$message.error(`您有 ${this.workItemError} ${this.processError} ${this.workTimeError} ${this.projectError} ${this.OKRError} ${this.emotionError} 未填写`);
         }
       });
     },
@@ -1307,7 +1303,6 @@ export default {
       this.weeklyEmotion = emotion;
       this.showEmotionError = false;
     },
-
   },
   watch: {
     'formData.weeklyWorkVoSaveList': {
