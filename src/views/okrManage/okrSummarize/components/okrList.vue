@@ -241,11 +241,16 @@
                   disabled
                   type="text"
                   v-if="
-                    (rootRole && [1, 2].includes(scope.row.readStatus)) ||
-                    ![1, 2, 3, 4].includes(scope.row.status)
+                    rootRole &&
+                    ([1, 2].includes(scope.row.readStatus) ||
+                      ![1, 2, 3, 4].includes(scope.row.status))
                   "
-                  >已审阅</el-button
-                >
+                  ><span v-if="[1, 2].includes(scope.row.readStatus)">
+                    已审阅</span
+                  ><span v-if="![1, 2, 3, 4].includes(scope.row.status)">
+                    审阅</span
+                  >
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
