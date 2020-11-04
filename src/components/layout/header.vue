@@ -27,12 +27,12 @@
               :value="item.orgId"
             >
               <span>{{ item.orgName }}</span>
-              <span v-if="item.orgFlag == 1">（虚线汇报）</span>
-              <span v-if="item.orgFlag == 2">（代理）</span>
-              <span v-if="item.orgFlag == 3">（综合岗）</span>
               <span v-if="item.orgId == userInfo.orgId">
                 <i class="el-icon-check"></i>
               </span>
+              <span v-if="item.orgFlag == 1">（虚线汇报）</span>
+              <span v-if="item.orgFlag == 2">（代理）</span>
+              <span v-if="item.orgFlag == 3">（综合岗）</span>
             </el-option>
           </el-select>
         </dd>
