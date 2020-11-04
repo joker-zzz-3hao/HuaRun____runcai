@@ -120,7 +120,7 @@
             </dl>
             <dl>
               <dt>改进措施</dt>
-              <dd>{{ list.disadvantage }}</dd>
+              <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
             <dl>
               <dt>复盘沟通</dt>

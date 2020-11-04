@@ -144,7 +144,7 @@
                 <dd v-for="(li, d) in item.o.measure || []" :key="d">
                   <el-input
                     type="textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="item.o.measure[d]"
                   ></el-input>
 
