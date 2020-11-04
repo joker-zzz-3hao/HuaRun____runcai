@@ -168,7 +168,7 @@ export default {
     return {
       reviewType: 1,
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       active: {},
       deficiency: {},

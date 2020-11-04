@@ -1,15 +1,13 @@
 <template>
   <div class="kr-replay">
-
-           <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
         :key="index"
         :name="index"
       >
-
-             <template slot="title">
+        <template slot="title">
           <dl class="is-o">
             <dt class="tag-kind">
               <span class="kind-parent">目标</span>
@@ -53,12 +51,12 @@
             </dd>
           </dl>
         </template>
-           <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
+        <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
           <dt class="tag-kind">
             <span class="kind-child">KR</span>
             <em>{{ list.okrDetailObjectKr }}</em>
           </dt>
-            <dd>
+          <dd>
             <div>
               <i class="el-icon-medal"></i>
               <span>权重</span>
@@ -100,84 +98,84 @@
             </div> -->
           </dd>
 
-                <dd>
+          <dd>
             <div>
               <span>考核指标</span>
               <em>{{ list.checkQuota }}</em>
             </div>
           </dd>
-             <dd>
+          <dd>
             <div>
               <span>衡量方法</span>
               <em>{{ list.judgeMethod }}</em>
             </div>
           </dd>
 
-              <dd>
-                 <dl>
+          <dd>
+            <dl>
               <dt>价值与收获</dt>
 
-                <dd>
+              <dd>
                 <el-input
-                    maxlength="2000"
-                    v-model="list.advantage"
-                    type="textarea"
-                     class="tl-textarea"
-                    placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
-                  ></el-input>
-                  </dd>
+                  maxlength="2000"
+                  v-model="list.advantage"
+                  type="textarea"
+                  class="tl-textarea"
+                  placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
+                ></el-input>
+              </dd>
             </dl>
-              <dl>
+            <dl>
               <dt>问题与不足</dt>
 
-                <dd>
+              <dd>
                 <el-input
-                    maxlength="2000"
-                    v-model="list.disadvantage"
-                    type="textarea"
-                     class="tl-textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                  ></el-input>
-                  </dd>
-            </dl>
-             <dl>
-              <dt>改进措施</dt>
-                 <template v-if="list.measure.length > 1">
-              <dd v-for="(li, d) in list.measure || []" :key="d">
-                <el-input
-                  :autosize="{ minRows: 1, maxRows: 8 }"
-                     type="textarea"
-                          class="tl-textarea"
-                        placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                        v-model="list.measure[d]"
+                  maxlength="2000"
+                  v-model="list.disadvantage"
+                  type="textarea"
+                  class="tl-textarea"
+                  placeholder="事情做的有那些不足，自己表现有哪些不足？"
                 ></el-input>
-                      <!-- <el-button
+              </dd>
+            </dl>
+            <dl>
+              <dt>改进措施</dt>
+              <template v-if="list.measure.length > 1">
+                <dd v-for="(li, d) in list.measure || []" :key="d">
+                  <el-input
+                    :autosize="{ minRows: 1, maxRows: 8 }"
+                    type="textarea"
+                    class="tl-textarea"
+                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    v-model="list.measure[d]"
+                  ></el-input>
+                  <!-- <el-button
                         v-if="list.measure.length == d + 1"
                         type="text"
                         @click="addDefic(index, i)"
                         >添加</el-button
                       > -->
-              </dd>
-                   </template>
-                       <template v-else>
-                         <dd>
-                            <el-input
-                  :autosize="{ minRows: 1, maxRows: 8 }"
-                    type="textarea"
-                        placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                        v-model="list.measure[0]"
-                  class="tl-textarea"
-                ></el-input>
                 </dd>
-                    <!-- <el-button type="text" @click="addDefic(index, i)"
+              </template>
+              <template v-else>
+                <dd>
+                  <el-input
+                    :autosize="{ minRows: 1, maxRows: 8 }"
+                    type="textarea"
+                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    v-model="list.measure[0]"
+                    class="tl-textarea"
+                  ></el-input>
+                </dd>
+                <!-- <el-button type="text" @click="addDefic(index, i)"
                       >添加</el-button
                     > -->
- </template>
+              </template>
             </dl>
-                   <dl></dl>
-            </dd>
+            <dl></dl>
+          </dd>
 
-              <!-- <div>
+          <!-- <div>
                 <div>改进措施</div>
                 <div>
                   <template v-if="list.measure.length > 1">
@@ -216,17 +214,15 @@
                   </template>
                 </div>
               </div> -->
-
-          </dl>
-           </elcollapseitem>
+        </dl>
+      </elcollapseitem>
     </elcollapse>
 
-       <tl-footer
+    <tl-footer
       @submit="submit"
       @save="save"
       @handleDeleteOne="handleDeleteOne"
     ></tl-footer>
-    </div>
   </div>
 </template>
 
@@ -247,7 +243,7 @@ export default {
       form: {},
       submitLoad: false,
       saveLoad: false,
-      activeNames: [1],
+      activeNames: [0],
       server,
       active: {},
       deficiency: {},

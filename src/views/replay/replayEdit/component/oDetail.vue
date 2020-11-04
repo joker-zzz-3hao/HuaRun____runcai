@@ -201,7 +201,7 @@ export default {
       submitLoad: false,
       saveLoad: false,
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       active: {},
       deficiency: {},

@@ -187,7 +187,7 @@ export default {
   data() {
     return {
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       submitLoad: false,
       saveLoad: false,
