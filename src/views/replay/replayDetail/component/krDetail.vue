@@ -122,13 +122,13 @@
               <dt>改进措施</dt>
               <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <dl>
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
               <dt>复盘沟通</dt>
               <dd>
                 {{ list.communication }}
               </dd>
             </dl>
-            <dl>
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
               <dt>评论</dt>
               <dd>
                 <dl class="tag-lists">
@@ -147,6 +147,7 @@
                 </dl>
               </dd>
             </dl>
+            <dl v-else></dl>
           </dd>
         </dl>
       </elcollapseitem>
@@ -202,8 +203,11 @@ export default {
   },
   methods: {
     selectColor(txt) {
-      const data = this.listBtn.filter((item) => item.txt == txt);
-      return data[0];
+      if (txt) {
+        const data = this.listBtn.filter((item) => item.txt == txt);
+        return data[0];
+      }
+      return '';
     },
     deleteProduce(index, i) {
       this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
