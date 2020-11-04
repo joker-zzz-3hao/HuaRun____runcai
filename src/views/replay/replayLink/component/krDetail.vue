@@ -136,7 +136,7 @@
               </dd>
             </dl>
             <dl>
-              <dt>评论</dt>
+              <dt>评定</dt>
               <dd>
                 <dl class="tag-lists">
                   <dd
