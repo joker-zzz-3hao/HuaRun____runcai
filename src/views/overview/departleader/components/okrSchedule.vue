@@ -230,7 +230,7 @@ export default {
               },
               normal: {
                 barBorderRadius: 5,
-                color: '#FFBC20',
+                color: '#3f7dff',
                 label: {
                   show: false,
                   position: 'top',

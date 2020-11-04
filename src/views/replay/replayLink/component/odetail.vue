@@ -125,7 +125,7 @@
             <dl>
               <dt>改进措施</dt>
               <dd v-for="(li, d) in item.o.measure" :key="d">
-                {{ d + 1 }}.{{ li }}
+                {{ li }}
               </dd>
             </dl>
             <dl>

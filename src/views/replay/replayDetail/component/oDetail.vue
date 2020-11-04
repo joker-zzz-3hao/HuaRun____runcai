@@ -125,7 +125,7 @@
 
             <dl>
               <dt>改进措施</dt>
-              <!-- <dd>{{ list.disadvantage }}</dd> -->
+              <dd v-for="(li, d) in item.o.measure || []" :key="d">{{ li }}</dd>
             </dl>
 
             <dl v-if="okrMain.okrMainVo.reviewStatus == 3">

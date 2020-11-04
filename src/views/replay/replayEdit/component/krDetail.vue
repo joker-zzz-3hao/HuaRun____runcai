@@ -146,7 +146,7 @@
                     :autosize="{ minRows: 1, maxRows: 8 }"
                     type="textarea"
                     class="tl-textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="list.measure[d]"
                   ></el-input>
                   <!-- <el-button
