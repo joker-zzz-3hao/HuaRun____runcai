@@ -136,7 +136,7 @@
               </dd>
             </dl>
             <dl>
-              <dt>描述</dt>
+              <dt>评论</dt>
               <dd>
                 <dl class="tag-lists">
                   <dd
@@ -159,28 +159,11 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div class="footer-panel">
-      <el-button
-        type="primary"
-        @click="submit"
-        :loading="submitLoad"
-        class="tl-btn amt-bg-slip"
-        >确认沟通</el-button
-      >
-      <el-button
-        plain
-        @click="save"
-        :loading="saveLoad"
-        class="tl-btn amt-border-fadeout"
-        >保存</el-button
-      >
-      <el-button
-        plain
-        @click="handleDeleteOne"
-        class="tl-btn amt-border-fadeout"
-        >关闭</el-button
-      >
-    </div>
+    <tl-footer
+      @submit="submit"
+      @save="save"
+      @handleDeleteOne="handleDeleteOne"
+    ></tl-footer>
   </div>
 </template>
 
@@ -188,6 +171,7 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
+import replayFoot from '../../component/replayFoot';
 import Server from '../../server';
 
 const server = new Server();
@@ -198,6 +182,7 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
+    'tl-footer': replayFoot,
   },
   data() {
     return {

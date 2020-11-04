@@ -2449,6 +2449,12 @@
   background: #f7f8fa;
 }
 
+.replay-link .okr-change-list dd:nth-of-type(4) {
+  padding: 20px;
+  flex-direction: column;
+  background: #f7f8fa;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) dl {
   width: 100%;
 }

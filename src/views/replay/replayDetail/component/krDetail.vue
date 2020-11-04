@@ -129,11 +129,22 @@
               </dd>
             </dl>
             <dl>
-              <dt>描述</dt>
+              <dt>评论</dt>
               <dd>
-                <el-button :type="'primary'">{{
-                  list.communicationLabel
-                }}</el-button>
+                <dl class="tag-lists">
+                  <dd
+                    :class="[
+                      {
+                        'is-selected':
+                          list.communicationLabel ==
+                          selectColor(list.communicationLabel).txt,
+                      },
+                      selectColor(list.communicationLabel).clsName,
+                    ]"
+                  >
+                    <em>{{ list.communicationLabel }}</em>
+                  </dd>
+                </dl>
               </dd>
             </dl>
           </dd>
@@ -165,10 +176,22 @@ export default {
       communicationLabel: {},
       list: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
     };
   },
@@ -178,6 +201,10 @@ export default {
     'tl-process': process,
   },
   methods: {
+    selectColor(txt) {
+      const data = this.listBtn.filter((item) => item.txt == txt);
+      return data[0];
+    },
     deleteProduce(index, i) {
       this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
     },

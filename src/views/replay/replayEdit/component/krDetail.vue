@@ -53,59 +53,131 @@
             </dd>
           </dl>
         </template>
-          <div v-for="(list, i) in item.krs" :key="i + 'k'">
+           <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
+          <dt class="tag-kind">
+            <span class="kind-child">KR</span>
+            <em>{{ list.okrDetailObjectKr }}</em>
+          </dt>
+            <dd>
             <div>
-              <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
-              <div class="right" style="width: 200px">
-                <em style="float: left; width: 100px"
-                  >权重
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(list.okrWeight) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </em>
-                <em style="float: left; width: 100px"
-                  >进度
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(list.okrDetailProgress) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </em>
+              <i class="el-icon-medal"></i>
+              <span>权重</span>
+              <em>{{ list.okrWeight }}%</em>
+            </div>
+            <div>
+              <i class="el-icon-odometer"></i>
+              <span>进度</span>
+              <tl-process
+                :data="parseInt(list.okrDetailProgress, 10)"
+              ></tl-process>
+            </div>
+            <!-- <div>
+              <i class="el-icon-bell"></i>
+              <span>信心指数</span>
+              <div class="state-grid">
+                <div
+                  :class="{
+                    'is-no-risk': krData.okrDetailConfidence == 1,
+                    'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
               </div>
-            </div>
+              <div class="state-txt">
+                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
+              </div>
+            </div> -->
+          </dd>
 
+                <dd>
             <div>
-              考核指标
-              {{ list.checkQuota }}
+              <span>考核指标</span>
+              <em>{{ list.checkQuota }}</em>
             </div>
-            <el-form ref="form">
-              <div>衡量办法 {{ list.judgeMethod }}</div>
-              <div>
-                <div>价值与收获</div>
-                <el-form-item>
-                  <el-input
+          </dd>
+             <dd>
+            <div>
+              <span>衡量方法</span>
+              <em>{{ list.judgeMethod }}</em>
+            </div>
+          </dd>
+
+              <dd>
+                 <dl>
+              <dt>价值与收获</dt>
+
+                <dd>
+                <el-input
                     maxlength="2000"
                     v-model="list.advantage"
                     type="textarea"
+                     class="tl-textarea"
                     placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
                   ></el-input>
-                </el-form-item>
-              </div>
-              <div>
-                <div>问题与不足</div>
+                  </dd>
+            </dl>
+              <dl>
+              <dt>问题与不足</dt>
 
-                <el-form-item>
-                  <el-input
+                <dd>
+                <el-input
+                    maxlength="2000"
                     v-model="list.disadvantage"
                     type="textarea"
-                    maxlength="1000"
+                     class="tl-textarea"
                     placeholder="事情做的有那些不足，自己表现有哪些不足？"
                   ></el-input>
-                </el-form-item>
-              </div>
-              <div>
+                  </dd>
+            </dl>
+             <dl>
+              <dt>改进措施</dt>
+                 <template v-if="list.measure.length > 1">
+              <dd v-for="(li, d) in list.measure || []" :key="d">
+                <el-input
+                  :autosize="{ minRows: 1, maxRows: 8 }"
+                     type="textarea"
+                          class="tl-textarea"
+                        placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                        v-model="list.measure[d]"
+                ></el-input>
+                      <!-- <el-button
+                        v-if="list.measure.length == d + 1"
+                        type="text"
+                        @click="addDefic(index, i)"
+                        >添加</el-button
+                      > -->
+              </dd>
+                   </template>
+                       <template v-else>
+                         <dd>
+                            <el-input
+                  :autosize="{ minRows: 1, maxRows: 8 }"
+                    type="textarea"
+                        placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                        v-model="list.measure[0]"
+                  class="tl-textarea"
+                ></el-input>
+                </dd>
+                    <!-- <el-button type="text" @click="addDefic(index, i)"
+                      >添加</el-button
+                    > -->
+ </template>
+            </dl>
+                   <dl></dl>
+            </dd>
+
+              <!-- <div>
                 <div>改进措施</div>
                 <div>
                   <template v-if="list.measure.length > 1">
@@ -143,25 +215,26 @@
                     >
                   </template>
                 </div>
-              </div>
-            </el-form>
-          </div>
+              </div> -->
+
+          </dl>
            </elcollapseitem>
     </elcollapse>
 
-      <el-button type="primary" @click="submit" :loading="submitLoad"
-        >提交复盘</el-button
-      >
-      <el-button type="primary" @click="save" :loading="saveLoad"
-        >保存</el-button
-      >
-
-      <el-button type="primary" @click="handleDeleteOne">关闭</el-button>
+       <tl-footer
+      @submit="submit"
+      @save="save"
+      @handleDeleteOne="handleDeleteOne"
+    ></tl-footer>
     </div>
   </div>
 </template>
 
 <script>
+import elcollapse from '@/components/collapse/collapse';
+import elcollapseitem from '@/components/collapse/collapse-item';
+import process from '@/components/process';
+import replayFoot from '../../component/replayFoot';
 import Server from '../../server';
 
 const server = new Server();
@@ -183,15 +256,33 @@ export default {
       list: [],
       oldList: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
     };
   },
   created() {
     this.getOldList();
+  },
+  components: {
+    elcollapse,
+    elcollapseitem,
+    'tl-process': process,
+    'tl-footer': replayFoot,
   },
   methods: {
 
