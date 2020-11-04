@@ -245,18 +245,19 @@ export default {
         }
       });
     },
-    setList(listData = {}) {
+    setList(listDataPro = {}) {
+      let listData = {};
       if (this.$route.name == 'teamleader') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrDataTeam.data : listData;
+        this.testModel ? listData = okrDataTeam.data : listDataPro;
       }
       if (this.$route.name == 'departleader') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrData.data : listData;
+        this.testModel ? listData = okrData.data : listDataPro;
       }
       if (this.$route.name == 'grassStaff') {
         // eslint-disable-next-line no-unused-expressions
-        this.testModel ? listData = okrUser.data : listData;
+        this.testModel ? listData = okrUser.data : listDataPro;
       }
       this.tableList = listData.okrDetails || [];
       this.okrMain = listData.okrMain || {};
@@ -275,8 +276,10 @@ export default {
         };
       }
       this.okrId = this.okrMain.okrId || '';
-      this.orgUser = listData.orgUser || [];
+      this.$set(this, 'orgUser', listData.orgUser || []);
+      // this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
+
       setTimeout(() => {
         this.showLoad = true;
         this.fullscreenLoading = false;

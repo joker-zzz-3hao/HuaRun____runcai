@@ -1,12 +1,7 @@
 <template>
   <div class="replay-link">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
-    <div>
-      <el-radio-group v-model="okrMain.okrMainVo.reviewType">
-        <el-radio :label="1">以关键结果KR复盘</el-radio>
-        <el-radio :label="0">以目标O复盘</el-radio>
-      </el-radio-group>
-    </div>
+
     <div>
       <tl-kr-detail
         v-if="okrMain.okrMainVo.reviewType == 1"
