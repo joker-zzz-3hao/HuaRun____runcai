@@ -31,12 +31,12 @@
           }}</em>
         </p>
         <el-button type="text" plain class="tl-btn btn-lineheight">{{
-          node.node.orgName
+          cutOrgName(node.node.orgName)
         }}</el-button>
       </div>
     </div>
-    <div class="has-child" v-if="node.node.children">
-      <div class="is-extend" v-if="node.node.open">
+    <div class="has-child" v-if="hasValue(node.node.children)">
+      <div class="is-extend" v-if="hasValue(node.node.open)">
         <span></span>
       </div>
       <div v-else>{{ node.node.children.length }}</div>
@@ -71,6 +71,10 @@ export default {
   },
   computed: {},
   methods: {
+    cutOrgName(name) {
+      const orgName = name.split('-');
+      return orgName[orgName.length - 1];
+    },
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
     },

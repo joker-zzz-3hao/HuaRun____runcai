@@ -4,7 +4,7 @@
       <dl>
         <dt>
           <span
-            v-if="baseInfo.projectStatus"
+            v-if="hasValue(baseInfo.projectStatus)"
             :class="{
               'is-ongoing': baseInfo.projectStatus == '0',
               'is-over': baseInfo.projectStatus == '1',
@@ -47,7 +47,11 @@
           <dt><span>项目经理</span></dt>
           <dd>
             <div class="user-info">
-              <img v-if="baseInfo.headUrl" :src="baseInfo.headUrl" alt />
+              <img
+                v-if="hasValue(baseInfo.headUrl)"
+                :src="baseInfo.headUrl"
+                alt
+              />
               <div v-else-if="baseInfo.projectManager" class="user-name">
                 <em>{{
                   baseInfo.projectManager.substring(
@@ -64,7 +68,7 @@
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
-            <em v-if="baseInfo.parentOrgName">{{
+            <em v-if="hasValue(baseInfo.parentOrgName)">{{
               `${baseInfo.parentOrgName}-`
             }}</em>
             <em>{{ baseInfo.orgName }}</em>
@@ -75,11 +79,7 @@
           <dd>
             <em v-money="{ value: baseInfo.projectBudget, precision: 0 }"></em
             ><span>元</span
-            ><span
-              >({{
-                CONST.CURRENCY_MAP[baseInfo.projectCurrencyCode] || "人民币"
-              }})</span
-            >
+            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -125,7 +125,11 @@
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info" @click="setManager(scope.row)">
-                  <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                  <img
+                    v-if="hasValue(scope.row.headUrl)"
+                    :src="scope.row.headUrl"
+                    alt
+                  />
                   <div v-else-if="scope.row.userName" class="user-name">
                     <em>{{
                       scope.row.userName.substring(
@@ -160,7 +164,7 @@
             </el-table-column>
             <el-table-column prop="userLevelName" label="级别" min-width="120">
               <template slot-scope="scope">
-                <span v-if="scope.row.userLevelName">{{
+                <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
                 }}</span>
                 <span v-else>--</span>
@@ -168,14 +172,24 @@
             </el-table-column>
             <el-table-column prop="orgName" label="所属部门" min-width="160">
               <template slot-scope="scope">
-                <span v-if="scope.row.orgName">{{ scope.row.orgName }}</span>
+                <span v-if="hasValue(scope.row.orgName)">{{
+                  scope.row.orgName
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="userPostName" label="职能" min-width="180">
               <template slot-scope="scope">
-                <span v-if="scope.row.userPostName">{{
+                <span v-if="hasValue(scope.row.userPostName)">{{
                   scope.row.userPostName
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createDate" label="加入时间" min-width="180">
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.createDate)">{{
+                  scope.row.createDate
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -186,7 +200,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.userCompanyName">{{
+                <span v-if="hasValue(scope.row.userCompanyName)">{{
                   scope.row.userCompanyName
                 }}</span>
                 <span v-else>--</span>
@@ -196,7 +210,10 @@
               fixed="right"
               label="操作"
               width="100"
-              v-if="baseInfo.projectUserVoList.length > 0"
+              v-if="
+                baseInfo.projectUserVoList &&
+                baseInfo.projectUserVoList.length > 0
+              "
             >
               <template slot-scope="scope">
                 <el-button
@@ -219,6 +236,13 @@
       :codes="codes"
       @addSuccess="addSuccess"
     ></tl-add-member>
+    <tl-check-manager
+      ref="checkManager"
+      v-if="checkManager"
+      :server="server"
+      :baseInfo="baseInfo"
+      @checkSuccess="checkSuccess"
+    ></tl-check-manager>
   </div>
 </template>
 
@@ -226,6 +250,7 @@
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import addMember from './addMember';
+import checkManager from './checkManager';
 import CONST from '../../const';
 
 export default {
@@ -238,6 +263,7 @@ export default {
       pageSize: 0,
       isTalentAdmin: false,
       showAddMember: false,
+      checkManager: false,
       tableData: [],
       isManage: false,
       openFlag: false,
@@ -249,6 +275,7 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
     'tl-add-member': addMember,
+    'tl-check-manager': checkManager,
   },
   props: {
     server: {
@@ -322,25 +349,47 @@ export default {
       });
     },
     setManager(data) {
+      const self = this;
       if (data.projectUserType == '0') {
         let managerName = '';
-        this.baseInfo.projectUserVoList.forEach((item) => {
+        self.baseInfo.projectUserVoList.forEach((item) => {
           if (item.projectUserType == '1') {
             managerName = item.userName;
           }
         });
-        this.$xconfirm({
+        let content = '';
+        if (managerName == '') {
+          content = `是否设置「${data.userName}」为项目经理?`;
+        } else {
+          content = `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`;
+        }
+        self.$xconfirm({
           title: '设置项目经理',
-          content: `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`,
+          content,
         }).then(() => {
-          this.server.setProjectManager({
+          self.server.setProjectManager({
             userId: data.userId,
             projectId: data.projectId,
           }).then((res) => {
             if (res.code == '200') {
-              this.$router.push({
-                name: 'projectManage',
+              // 1，进入项目详情页优先检测项目经理信息是否完整，如果不完整就弹框提示，让其在弹框中完善项目经理信息，否则不弹框
+              // 2，设置完项目经理后，如果自己不是项目经理或者租户管理员就跳转项目管理列表，否则还在当前页
+              let isManager = false;
+              self.userInfo.roleList.forEach((item) => {
+                if (item.roleCode == 'TENANT_ADMIN') {
+                  isManager = true;
+                }
               });
+              if (data.userId == self.userInfo.userId) {
+                isManager = true;
+              }
+              if (isManager == true) {
+                self.searchProject();
+              } else {
+                self.$router.push({
+                  name: 'projectManage',
+                });
+              }
             }
           });
         });
@@ -354,6 +403,10 @@ export default {
     },
     addSuccess() {
       this.showAddMember = false;
+      this.searchProject();
+    },
+    checkSuccess() {
+      this.checkManager = false;
       this.searchProject();
     },
     searchProject() {
@@ -385,7 +438,33 @@ export default {
           this.emWidth = document.getElementById('projectDescInside').clientWidth;
         });
       },
-
+    },
+    'baseInfo.projectId': {
+      handler() {
+        let flag = false;
+        if (this.baseInfo.projectUserVoList.length > 0) {
+          this.baseInfo.projectUserVoList.forEach((item) => {
+            if (this.baseInfo.projectManagerCode.toLocaleLowerCase() == item.userAccount.toLocaleLowerCase()) {
+              if (this.hasValue(item.userCompany) && this.hasValue(item.userLevel)) {
+                flag = true;
+              }
+            }
+            if (item.projectUserType == '1') {
+              if (item.userId == this.userInfo.userId) {
+                this.isManage = true;
+              }
+            }
+          });
+        } else {
+          flag = false;
+        }
+        if (flag == false) {
+          this.checkManager = true;
+          this.$nextTick(() => {
+            this.$refs.checkManager.show();
+          });
+        }
+      },
     },
     listenerWidth: {
       handler(val) {

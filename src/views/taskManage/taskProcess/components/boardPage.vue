@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <!-- 影响图片，暂时屏蔽 -->
-    <!--  class="board-view" -->
+  <div class="board-view">
     <!-- <draggable
       class="list-group parent"
       :list="rootData"
@@ -10,71 +8,97 @@
       id="norun"
       :options="options"
     >-->
-    <template v-if="showReal && stepList.length > 0 && processObj.processId">
-      <div class="col-4" v-for="stepData in rootData" :key="stepData.stepId">
-        <div>
-          <h3>{{ stepData.stepName }}</h3>
-          <span v-if="stepData.stepTaskList.length">{{
-            stepData.stepTaskList.length
-          }}</span>
+    <template v-if="stepList.length > 0 && processObj.processId">
+      <div
+        class="drag-column"
+        v-for="stepData in rootData"
+        :key="stepData.stepId"
+      >
+        <div class="drag-title">
+          <div>
+            <em>{{ stepData.stepName }}</em>
+            <div class="badge" v-if="stepData.stepTaskList.length">
+              {{ stepData.stepTaskList.length }}
+            </div>
+          </div>
         </div>
         <!-- <el-button style="width:380px" @click="addTask(stepData)">
         <i class="el-icon-plus"></i>
       </el-button> -->
         <draggable
-          class="list-group"
+          class="drag-list-group"
           :list="stepData.stepTaskList"
           :clone="cloneDog"
           @end="onMove"
           id="norun"
           :options="options"
+          :class="{ 'no-data': stepData.stepTaskList.length == 0 }"
         >
           <div
-            class="list-group-item"
+            class="drag-list-item"
             v-for="element in stepData.stepTaskList"
             :key="element.taskId"
           >
-            <div>
+            <div class="flex-sb">
               <tl-levelblock :value="element.taskLevel"></tl-levelblock>
+              <el-dropdown class="tl-dropdown">
+                <div class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    @click.native="changeStep(element, step)"
+                    v-for="step in stepList"
+                    :index="step.stepId"
+                    :key="step.stepId"
+                  >
+                    <em>{{ step.stepName }}</em>
+
+                    <span v-if="element.stepId == step.stepId"
+                      >（当前节点）</span
+                    >
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
-            <div @click="openEdit(element)">
-              {{ element.taskTitle }}
+            <div @click="openEdit(element)" class="drag-list-title">
+              <em>{{ element.taskTitle }}</em>
             </div>
             <tl-process
               :data="element.taskProgress"
               :width="36"
               :marginLeft="6"
             ></tl-process>
-            <div>
-              <i class="el-icon-time"></i>
-              <span v-if="element.taskBegDate"
-                >{{
-                  dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
-                }}~{{
-                  dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
-                }}</span
-              >
-              <span v-else>未设置起止时间</span>
-            </div>
-            <div>
-              <el-avatar :size="30" :src="element.headerUrl">
-                <div v-if="element.userName" class="user-name">
-                  <em>
-                    {{
-                      element.userName.substring(element.userName.length - 2)
-                    }}
-                  </em>
-                </div>
-              </el-avatar>
+            <div class="flex-sb">
+              <div class="drag-list-ttime">
+                <i class="el-icon-time"></i>
+                <span v-if="element.taskBegDate"
+                  >{{
+                    dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
+                  }}~{{
+                    dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
+                  }}</span
+                >
+                <span v-else>未设置起止时间</span>
+              </div>
+              <dl class="user-info">
+                <dd v-if="element.headerUrl">
+                  <img :src="element.headUrl" alt />
+                </dd>
+                <dd v-else class="user-name">
+                  <em>{{
+                    element.userName.substring(element.userName.length - 2)
+                  }}</em>
+                </dd>
+                <dd>{{ element.userName }}</dd>
+              </dl>
             </div>
           </div>
         </draggable>
         <!-- </draggable> -->
       </div>
     </template>
-    <div v-else class="pic-kanban">
-      <!-- <img src="~@/assets/images/demoPic/kanban.png" /> -->
-    </div>
+
     <tl-edittask
       ref="editTask"
       v-if="existEditTask"
@@ -137,7 +161,7 @@ export default {
         // dragClass: 'dragitem', // 被拖拽元素
       },
       existEditTask: false,
-      showReal: false,
+      showReal: true,
     };
   },
   created() {
@@ -151,8 +175,8 @@ export default {
         processId: this.processObj.processId,
         typeId: typeId || this.searchParams.typeId,
         taskTitle: this.searchParams.taskTitle || '',
-        taskUserIds: this.searchParams.searchCreator.toString(),
-        createByIds: this.searchParams.searchExecutor.toString(),
+        createByIds: this.searchParams.searchCreator.toString(),
+        taskUserIds: this.searchParams.searchExecutor.toString(),
       };
       this.server.queryTaskList(params).then((res) => {
         if (res.code == 200) {
@@ -211,6 +235,18 @@ export default {
         this.$refs.editTask.show(row.taskId, false);
       });
     },
+    // 移动步骤
+    changeStep(task, step) {
+      this.server.move({
+        taskId: task.taskId,
+        stepIdAfter: step.stepId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('移动成功');
+          this.init();
+        }
+      });
+    },
   },
 };
 </script>
@@ -257,7 +293,7 @@ export default {
 }
 
 .col-4 {
-  width: 25%;
+  width: 28%;
 }
 
 .chosendiv {

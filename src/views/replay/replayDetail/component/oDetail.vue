@@ -1,98 +1,133 @@
 <template>
-  <div>
-    <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item :name="index + 1">
-          <template slot="title">
-            <div class="title-row">
+  <div class="kr-replay">
+    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+      <elcollapseitem
+        ref="o-kr-replay"
+        v-for="(item, index) in okrMain.okrReviewPojoList"
+        :key="index"
+        :name="index"
+      >
+        <template slot="title">
+          <dl class="is-o">
+            <dt class="tag-kind">
+              <span class="kind-parent">目标</span>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+            </dt>
+            <dd>
               <div>
-                <em>目标{{ index + 1 }}</em
-                ><em>{{ item.o.okrDetailObjectKr }}</em>
+                <i class="el-icon-medal"></i>
+                <span>权重</span>
+                <em>{{ item.o.okrWeight }}%</em>
               </div>
-              <div style="width: 200px">
-                <div style="width: 100px; float: left">
-                  <span>权重</span>
-
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(item.o.okrWeight) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </div>
-                <div style="width: 100px; float: left">
-                  <span>进度</span>
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(item.o.okrDetailProgress) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </div>
-              </div>
-            </div>
-          </template>
-          <div v-for="(list, i) in item.krs" :key="i + 'k'">
-            <div>
-              <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
-              <div class="right" style="width: 200px">
-                <em style="float: left; width: 100px"
-                  >权重
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(list.okrWeight) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </em>
-                <em style="float: left; width: 100px"
-                  >进度
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(list.okrDetailProgress) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </em>
-              </div>
-            </div>
-
-            <div>
-              考核指标
-              {{ list.checkQuota }}
-            </div>
-            <div>衡量办法 {{ list.judgeMethod }}</div>
-          </div>
-          <div>
-            <div>
-              <div>价值与收获</div>
-              <div>{{ item.o.advantage }}</div>
-            </div>
-            <div>
-              <div>问题与不足</div>
-
-              <div>{{ item.o.disadvantage }}</div>
-            </div>
-            <div>
-              <div>改进措施</div>
               <div>
-                <div v-for="(li, i) in item.o.measure || []" :key="i">
-                  <em> {{ i + 1 }}. {{ li }} </em>
-                </div>
+                <i class="el-icon-odometer"></i>
+                <span>进度</span>
+                <tl-process
+                  :data="parseInt(item.o.okrDetailProgress, 10)"
+                ></tl-process>
               </div>
-            </div>
-          </div>
-          <div v-if="okrMain.okrMainVo.reviewStatus == 3">
-            <div>复盘沟通</div>
-
-            <div>{{ item.o.communication }}</div>
-
+              <!-- <div>
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <em
+                  v-if="
+                    oData.undertakeOkrDto &&
+                    oData.undertakeOkrDto.undertakeOkrContent
+                  "
+                  ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
+                  ><em>{{ oData.cultureName }}</em></em
+                >
+                <em
+                  v-else-if="
+                    oData.undertakeOkrVo &&
+                    oData.undertakeOkrVo.undertakeOkrContent
+                  "
+                  ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
+                  ><em>{{ oData.cultureName }}</em></em
+                >
+                <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
+                <em v-else>暂无</em>
+              </div> -->
+            </dd>
+          </dl>
+        </template>
+        <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
+          <dt class="tag-kind">
+            <span class="kind-child">KR</span>
+            <em>{{ list.okrDetailObjectKr }}</em>
+          </dt>
+          <dd>
             <div>
-              <!-- <em>请选择：</em> -->
+              <i class="el-icon-medal"></i>
+              <span>权重</span>
+              <em>{{ list.okrWeight }}%</em>
+            </div>
+            <div>
+              <i class="el-icon-odometer"></i>
+              <span>进度</span>
+              <tl-process
+                :data="parseInt(list.okrDetailProgress, 10)"
+              ></tl-process>
+            </div>
+            <!-- <div>
+              <i class="el-icon-bell"></i>
+              <span>信心指数</span>
+              <div class="state-grid">
+                <div
+                  :class="{
+                    'is-no-risk': krData.okrDetailConfidence == 1,
+                    'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-risks': krData.okrDetailConfidence == 2,
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
+                <div
+                  :class="{
+                    'is-uncontrollable': krData.okrDetailConfidence == 3,
+                  }"
+                ></div>
+              </div>
+              <div class="state-txt">
+                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
+              </div>
+            </div> -->
+          </dd>
+        </dl>
+        <dd>
+          <dl>
+            <dt>价值与收获</dt>
+            <dd>{{ item.o.advantage }}</dd>
+          </dl>
+          <dl>
+            <dt>问题与不足</dt>
+            <dd>{{ item.o.disadvantage }}</dd>
+          </dl>
+          <dl>
+            <dt>改进措施</dt>
+            <!-- <dd>{{ list.disadvantage }}</dd> -->
+          </dl>
+          <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+            <dt>复盘沟通</dt>
+            <dd>
+              {{ item.o.communication }}
+            </dd>
+          </dl>
+          <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+            <dt>描述</dt>
+            <dd>
               <el-button :type="'primary'">{{
-                item.o.communicationLabel
+                item.o.communication
               }}</el-button>
-            </div>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
-    </div>
+            </dd>
+          </dl>
+        </dd>
+      </elcollapseitem>
+    </elcollapse>
   </div>
 </template>
 

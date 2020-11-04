@@ -21,7 +21,7 @@
     </div>
     <el-scrollbar ref="okrFormscrollbar">
       <div class="cont-box">
-        <template v-if="searchForm.modifyReason">
+        <template v-if="hasValue(searchForm.modifyReason)">
           <el-alert type="warning" class="tl-alert">
             <div slot="title">
               <div class="alert-title">审批退回原因：</div>
@@ -53,7 +53,7 @@
             <dt>OKR类型</dt>
             <dd>
               <el-select
-                v-if="showMoreType"
+                v-if="hasValue(showMoreType)"
                 v-model="searchForm.okrType"
                 placeholder="请选择类型"
                 :popper-append-to-body="false"
@@ -72,7 +72,7 @@
           </dl>
           <dl class="user-info">
             <dt>负责人</dt>
-            <dd v-if="userInfo.headUrl">
+            <dd v-if="hasValue(userInfo.headUrl)">
               <img :src="userInfo.headUrl" alt />
             </dd>
             <dd v-else class="user-name">
@@ -176,10 +176,10 @@
                         </el-form-item>
                       </div>
                       <div>
-                        <i class="el-icon-odometer"></i>
+                        <i></i>
                         <span>当前进度</span>
                         <el-form-item>
-                          <el-input-number
+                          <!-- <el-input-number
                             v-model="oitem.okrDetailProgress"
                             controls-position="right"
                             :min="0"
@@ -187,12 +187,12 @@
                             :step="1"
                             :precision="0"
                             class="tl-input-number"
-                          ></el-input-number>
-                          <span>%</span>
+                          ></el-input-number> -->
+                          <span>0 %</span>
                         </el-form-item>
                       </div>
                       <div>
-                        <i class="el-icon-attract"></i>
+                        <i></i>
                         <span>关联父目标</span>
                         <template
                           v-if="
@@ -202,19 +202,14 @@
                           "
                         >
                           <em
-                            v-if="oitem.undertakeOkrVo.undertakeOkrContent"
+                            v-if="
+                              hasValue(oitem.undertakeOkrVo.undertakeOkrContent)
+                            "
                             @click="openUndertake(index)"
                             >{{ oitem.undertakeOkrVo.undertakeOkrContent }}</em
                           >
                           <em
-                            v-if="
-                              oitem.undertakeOkrVo.undertakeOkrContent &&
-                              oitem.cultureId
-                            "
-                            >、</em
-                          >
-                          <em
-                            v-if="oitem.cultureId"
+                            v-if="hasValue(oitem.cultureId)"
                             @click="openUndertake(index)"
                             >{{ oitem.cultureName }}</em
                           >
@@ -260,7 +255,7 @@
                           placeholder="请输入关键结果"
                           v-model="kitem.okrDetailObjectKr"
                           class="tl-input"
-                          maxlength="200"
+                          maxlength="500"
                         ></el-input>
                       </el-form-item>
                     </div>
@@ -341,23 +336,7 @@
                     </el-form-item>
                   </dd>
                   <dd>
-                    <el-form-item
-                      label="考核指标"
-                      :prop="
-                        'okrInfoList.' +
-                        index +
-                        '.krList.' +
-                        kindex +
-                        '.checkQuota'
-                      "
-                      :rules="[
-                        {
-                          required: true,
-                          trigger: 'blur',
-                          validator: validateCheck,
-                        },
-                      ]"
-                    >
+                    <el-form-item label="考核指标">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"
@@ -367,23 +346,7 @@
                         class="tl-textarea"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item
-                      label="衡量办法"
-                      :prop="
-                        'okrInfoList.' +
-                        index +
-                        '.krList.' +
-                        kindex +
-                        '.judgeMethod'
-                      "
-                      :rules="[
-                        {
-                          required: true,
-                          trigger: 'blur',
-                          validator: validateJudge,
-                        },
-                      ]"
-                    >
+                    <el-form-item label="衡量办法">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"
@@ -433,7 +396,7 @@
         @click="summit"
         class="tl-btn amt-bg-slip"
         :loading="createokrDrawer && okrLoading"
-        >创建目标</el-button
+        >创建OKR</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
@@ -675,6 +638,7 @@ export default {
           } else {
             item.currentOption = '';
           }
+          console.log('123', item.undertakeOkrVo.undertakeOkrContent);
           // this.$forceUpdate();
         });
       }
@@ -808,11 +772,16 @@ export default {
           this.formData.okrBelongType = this.searchForm.okrType;
           this.formData.okrDraftId = this.searchForm.draftId;
           this.formData.approvalId = this.searchForm.approvalId;
-          if (this.searchForm.approvalType == 1) {
-            this.summitChange();
-          } else {
-            this.summitNew();
-          }
+          this.$xconfirm({
+            content: '',
+            title: '提交后将会流转至上级领导审批且不能撤回，请确定填写无误后提交',
+          }).then(() => {
+            if (this.searchForm.approvalType == 1) {
+              this.summitChange();
+            } else {
+              this.summitNew();
+            }
+          }).catch(() => {});
         } else {
           this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
         }
@@ -892,6 +861,36 @@ export default {
         }
       });
     },
+    // 变更
+    summitChange() {
+      // 拼入参
+      this.formData.okrInfoList.forEach((item) => {
+        // 新增或变更承接项
+        if (item.undertakeOkrVo) {
+          item.undertakeOkr = item.undertakeOkrVo;
+          // 原有承接不改变
+        }
+      });
+
+      const formChangeData = {
+        okrInfoList: this.formData.okrInfoList,
+        periodId: this.formData.periodId,
+        okrProgress: this.formData.okrProgress,
+        modifyReason: this.reason.modifyReason,
+        okrMainId: this.formData.okrMainId,
+        okrBelongType: this.formData.okrBelongType,
+        approvalId: this.formData.approvalId,
+      };
+      this.server.modifyOkrInfo(formChangeData).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+          this.close();
+        } else if (res.code === 30000) {
+          this.$message.warning('变更申请正在审批中，请勿重复提交');
+        }
+      });
+    },
+
     // 获取滚动条当前的位置
     getScrollTop() {
       let scrollTop = 0;
@@ -945,11 +944,12 @@ export default {
     'searchForm.periodId': {
       handler(newVal) {
         if (newVal) {
+          console.log('这是草稿');
           this.searchForm.okrCycle = this.periodList.filter(
             (citem) => citem.periodId === newVal,
           )[0] || {};
           this.periodName = this.searchForm.okrCycle.periodName;
-          if (this.selectIndex !== '') {
+          if (this.selectIndex !== '' && this.writeInfo.canWrite != 'draft') {
             for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
               this.formData.okrInfoList[i].undertakeOkrVo = {};
               this.formData.okrInfoList[i].cultureId = '';
@@ -958,15 +958,19 @@ export default {
           }
         }
       },
+      immediate: false,
     },
     'searchForm.okrType': {
       handler() {
-        for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
-          this.formData.okrInfoList[i].undertakeOkrVo = {};
-          this.formData.okrInfoList[i].cultureId = '';
-          this.formData.okrInfoList[i].cultureName = '';
+        if (this.writeInfo.canWrite != 'draft') {
+          for (let i = 0; i < this.formData.okrInfoList.length; i += 1) {
+            this.formData.okrInfoList[i].undertakeOkrVo = {};
+            this.formData.okrInfoList[i].cultureId = '';
+            this.formData.okrInfoList[i].cultureName = '';
+          }
         }
       },
+      immediate: false,
     },
   },
 };

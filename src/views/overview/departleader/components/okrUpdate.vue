@@ -24,6 +24,7 @@ export default {
   methods: {
     init() {
       const myChart = echarts.init(document.getElementById('okrUpdate'));
+
       const option = {
         xAxis: {
           type: 'category',

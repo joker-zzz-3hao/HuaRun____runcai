@@ -8,11 +8,14 @@
             maxlength="64"
             @keyup.enter.native="searchManage"
             v-model="keyWord"
-            placeholder="请输入项目名称"
+            placeholder="请输入项目名称或者项目经理"
             class="tl-input-search"
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
           </el-input>
+          <el-button plain class="tl-btn" @click="searchManage">
+            搜索
+          </el-button>
           <el-button
             v-show="isTenantAdmin"
             :disabled="!codes.length > 0"
@@ -99,7 +102,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectNameCn">{{
+                <span v-if="hasValue(scope.row.projectNameCn)">{{
                   scope.row.projectNameCn
                 }}</span>
                 <span v-else>--</span>
@@ -127,12 +130,17 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectCurrency">{{
+                <span v-if="hasValue(scope.row.projectCurrency)">{{
                   scope.row.projectCurrency
                 }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
+            <el-table-column
+              prop="projectUserCount"
+              label="项目成员(位)"
+              min-width="120"
+            ></el-table-column>
             <el-table-column
               prop="projectBeginDate"
               label="开始时间"
@@ -150,7 +158,7 @@
               min-width="160"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectApplyDepName">{{
+                <span v-if="hasValue(scope.row.projectApplyDepName)">{{
                   scope.row.projectApplyDepName
                 }}</span>
                 <span v-else>--</span>
@@ -162,7 +170,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectType">{{
+                <span v-if="hasValue(scope.row.projectType)">{{
                   scope.row.projectType
                 }}</span>
                 <span v-else>--</span>
@@ -174,7 +182,7 @@
               min-width="120"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectStatus">
+                <span v-if="hasValue(scope.row.projectStatus)">
                   <i
                     :class="{
                       'el-icon-basketball': scope.row.projectStatus == '0',
@@ -192,7 +200,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectInputType">{{
+                <span v-if="hasValue(scope.row.projectInputType)">{{
                   scope.row.projectInputType
                 }}</span>
                 <span v-else>--</span>
@@ -204,13 +212,6 @@
               min-width="180"
             >
             </el-table-column>
-
-            <el-table-column
-              prop="projectUserCount"
-              label="项目成员(位)"
-              min-width="120"
-            ></el-table-column>
-
             <el-table-column
               fixed="right"
               label="操作"

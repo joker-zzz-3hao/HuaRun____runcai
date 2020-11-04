@@ -1,9 +1,9 @@
-const STATUS_MAP = {
-  1: '进行中',
-  2: '复盘中',
-  3: '已完成',
-  4: '已结束',
-};
+// const STATUS_MAP = {
+//   1: '进行中',
+//   2: '复盘中',
+//   3: '已完成',
+//   4: '已结束',
+// };
 
 const OKR_TYPE_MAP = {
   1: '部门',
@@ -16,13 +16,20 @@ const SEARCH_TYPE_LIST = [
   { label: 'OKR', value: '2' },
   { label: '成员', value: '3' },
 ];
-
+const BELONG_TYPE_LIST = [
+  {
+    okrBelongType: '1',
+    okrBelongTypeName: '部门',
+  }, {
+    okrBelongType: '2',
+    okrBelongTypeName: '个人',
+  }];
 const TABLE_STATUS_MAP = {
+  0: '审批中',
   1: '进行中',
-  2: '复盘中',
   3: '已完成',
+  2: '复盘中',
   4: '已结束',
-  5: '未开始',
 };
 const OKR_KIND_MAP = {
   0: '目标',
@@ -33,8 +40,18 @@ const CONFIDENCE_MAP = {
   2: '中',
   3: '低',
 };
+const STATUS_LIST = [
+  { status: '', statusName: '全部' },
+  { status: '0', statusName: '审批中' },
+  { status: '1', statusName: '进行中' },
+  { status: '3', statusName: '已完成' },
+  { status: '2', statusName: '复盘中' },
+  { status: '4', statusName: '已结束' },
+];
 export default {
-  STATUS_MAP,
+  // STATUS_MAP,
+  BELONG_TYPE_LIST,
+  STATUS_LIST,
   OKR_TYPE_MAP,
   SEARCH_TYPE_LIST,
   TABLE_STATUS_MAP,

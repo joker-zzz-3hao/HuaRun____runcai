@@ -1,11 +1,11 @@
 <template>
   <ul class="okr-change-list">
-    <li v-for="(item,index) in tableList" :key="index">
+    <li v-for="(item, index) in tableList" :key="index">
       <tl-oComponent :oData="item" class="is-o"></tl-oComponent>
       <tl-krComponent
         :krData="kItem"
-        v-for="(kItem,kIndex) in item.krList"
-        :key="kItem.okrDetailConfidence+kIndex"
+        v-for="(kItem, kIndex) in item.krList"
+        :key="kItem.okrDetailConfidence + kIndex"
         class="is-kr"
       ></tl-krComponent>
     </li>

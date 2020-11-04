@@ -55,11 +55,18 @@
             >
               <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
               <el-button
-                v-if="checkStatus === 0"
+                v-if="checkStatus === 0 && okrItem.okrDetailType == 1"
                 type="primary"
                 @click="openUpdate(okrItem)"
                 class="tl-btn amt-bg-slip"
                 >更新进展</el-button
+              >
+              <el-button
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                v-if="checkStatus === 0 && okrItem.okrDetailType == 0"
+                @click="updateSyncHistoryStatus(okrItem)"
+                >已阅</el-button
               >
             </dd>
             <!-- <dd v-else>暂无可对齐的支撑项</dd> -->
@@ -319,6 +326,15 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.tlokrupdate.showOkrDialog();
+      });
+    },
+    updateSyncHistoryStatus(info) {
+      console.log(info);
+      // debugger;
+      this.server.updateSyncHistoryStatus({ detailId: info.detailId }).then((res) => {
+        if (res.code == 200) {
+          this.queryOAndKrList();
+        }
       });
     },
     goback() {

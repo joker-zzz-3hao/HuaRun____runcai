@@ -21,7 +21,13 @@
         @searchList="searchList"
       >
         <div slot="tableContainer">
-          <el-table ref="taskTable" v-loading="loading" :data="tableData">
+          <el-table
+            ref="taskTable"
+            v-loading="loading"
+            :data="tableData"
+            class="tl-table"
+            :class="{ 'no-data': tableData.length === 0 }"
+          >
             <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
@@ -48,30 +54,33 @@
             </el-table-column>
             <el-table-column label="所属分类" prop="typeName">
               <template slot-scope="scope">
-                <em>{{ scope.row.typeName || "暂无分类" }}</em>
-                <el-dropdown class="tl-dropdown" trigger="click">
-                  <div class="el-dropdown-link">
-                    <i class="el-icon-edit"></i>
-                  </div>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-if="processClassifyList.length == 0"
-                      >暂无分类</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      @click.native="changeClassify(scope.row, calssify)"
-                      v-for="calssify in processClassifyList"
-                      :index="calssify.typeId"
-                      :key="calssify.typeId"
-                    >
-                      <em
-                        :class="{
-                          'high-light': scope.row.typeId == calssify.typeId,
-                        }"
-                        >{{ calssify.typeName }}</em
+                <div v-if="canEdit(scope.row)">--</div>
+                <div v-else>
+                  <em>{{ scope.row.typeName || "暂无分类" }}</em>
+                  <el-dropdown class="tl-dropdown" trigger="click">
+                    <div class="el-dropdown-link">
+                      <i class="el-icon-edit"></i>
+                    </div>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item v-if="processClassifyList.length == 0"
+                        >暂无分类</el-dropdown-item
                       >
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                      <el-dropdown-item
+                        @click.native="changeClassify(scope.row, calssify)"
+                        v-for="calssify in processClassifyList"
+                        :index="calssify.typeId"
+                        :key="calssify.typeId"
+                      >
+                        <em
+                          :class="{
+                            'high-light': scope.row.typeId == calssify.typeId,
+                          }"
+                          >{{ calssify.typeName }}</em
+                        >
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -115,22 +124,18 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              width="200"
-              align="left"
-              label="操作"
-              fixed="right"
-            >
+            <el-table-column width="170" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
+                  :disabled="canEdit(scope.row)"
                   plain
-                  class="tl-btn amt-border-fadeout"
+                  class="tl-btn btn-lineheight btn-small"
                   @click="openEdit(scope.row)"
                   >编辑</el-button
                 >
                 <el-dropdown class="tl-dropdown">
                   <div class="el-dropdown-link">
-                    <el-button plain class="tl-btn amt-border-fadeout"
+                    <el-button plain class="tl-btn btn-lineheight btn-small"
                       >移动</el-button
                     >
                   </div>
@@ -149,7 +154,7 @@
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <el-dropdown trigger="click">
+                <el-dropdown trigger="click" class="tl-dropdown">
                   <span class="el-dropdown-link">
                     <i class="el-icon-more el-icon--right"></i>
                   </span>
@@ -235,7 +240,7 @@ export default {
   },
   created() {
     this.init();
-    this.remoteMethod();
+    // this.remoteMethod();
   },
   mounted() {},
   computed: {
@@ -244,6 +249,12 @@ export default {
     }),
   },
   methods: {
+    canEdit(row) {
+      return (row.taskStatus == 20
+                      && row.taskUserId != this.userInfo.userId)
+                      || (row.taskStatus == 10
+                      && row.createBy != this.userInfo.userId);
+    },
     init(typeId) {
       this.rootData = [];
       // 切换分类时
@@ -274,17 +285,19 @@ export default {
         taskUserIds: this.searchParams.searchExecutor.toString(),
         createByIds: this.searchParams.searchCreator.toString(),
       };
-      self.server.queryTaskTableList(params).then((res) => {
-        if (res.code == 200) {
-          this.currentPage = res.data.currentPage;
-          this.pageSize = res.data.pageSize;
-          this.total = res.data.total;
-          this.tableData = res.data.content;
-          this.tableData.forEach((task) => {
-            this.$set(task, 'showChangeUser', false);
-          });
-        }
-      });
+      if (self.processObj.processId) {
+        self.server.queryTaskTableList(params).then((res) => {
+          if (res.code == 200) {
+            this.currentPage = res.data.currentPage;
+            this.pageSize = res.data.pageSize;
+            this.total = res.data.total;
+            this.tableData = res.data.content;
+            this.tableData.forEach((task) => {
+              this.$set(task, 'showChangeUser', false);
+            });
+          }
+        });
+      }
     },
     // 切换步骤
     selectTab(tab) {

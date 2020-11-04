@@ -75,7 +75,11 @@
             <el-table-column prop="applyTime" label="填报人" min-width="180">
               <template slot-scope="scope">
                 <div class="user-info">
-                  <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+                  <img
+                    v-if="hasValue(scope.row.headUrl)"
+                    :src="scope.row.headUrl"
+                    alt
+                  />
                   <div v-else-if="scope.row.userName" class="user-name">
                     <em>{{
                       scope.row.userName.substring(
@@ -93,7 +97,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.projectNameCn">{{
+                <span v-if="hasValue(scope.row.projectNameCn)">{{
                   scope.row.projectNameCn
                 }}</span>
                 <span v-else>--</span>
@@ -105,7 +109,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.approvalStatus">
+                <span v-if="hasValue(scope.row.approvalStatus)">
                   <i
                     :class="{
                       'el-icon-basketball': scope.row.approvalStatus == '0',
@@ -121,7 +125,7 @@
             </el-table-column>
             <el-table-column prop="submitTime" label="提交日期" min-width="180">
               <template slot-scope="scope">
-                <span v-if="scope.row.submitTime">{{
+                <span v-if="hasValue(scope.row.submitTime)">{{
                   scope.row.submitTime
                 }}</span>
                 <span v-else>--</span>
@@ -133,7 +137,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.approvalTime">{{
+                <span v-if="hasValue(scope.row.approvalTime)">{{
                   scope.row.approvalTime
                 }}</span>
                 <span v-else>--</span>
@@ -145,7 +149,7 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.approvalUserName">{{
+                <span v-if="hasValue(scope.row.approvalUserName)">{{
                   scope.row.approvalUserName
                 }}</span>
                 <span v-else>--</span>

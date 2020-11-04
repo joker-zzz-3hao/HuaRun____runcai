@@ -44,41 +44,50 @@
         :isFromTeam="true"
       ></tl-calendar>
       <div class="flex-sb">
-        <!-- <span>周报状态：</span> -->
-        <el-select
-          v-model="submitedOrLooked"
-          @change="submitedOrLookedChange"
-          placeholder="周报状态"
-          clearable
-          @clear="clearSubmitOrLooked"
-          :disabled="!!formData.queryType"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in submitedOrLookedList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-select
-          v-model="formData.queryType"
-          @change="lookChange"
-          placeholder="周报速看"
-          clearable
-          @clear="clear"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select el-icon-view"
-        >
-          <el-option
-            v-for="item in lookItemList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <dl class="dl-item">
+          <dt>周报状态</dt>
+          <dd>
+            <el-select
+              v-model="submitedOrLooked"
+              @change="submitedOrLookedChange"
+              placeholder="周报状态"
+              clearable
+              @clear="clearSubmitOrLooked"
+              :disabled="!!formData.queryType"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="item in submitedOrLookedList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>周报速看</dt>
+          <dd>
+            <el-select
+              v-model="formData.queryType"
+              @change="lookChange"
+              placeholder="周报速看"
+              clearable
+              @clear="clear"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select el-icon-view"
+            >
+              <el-option
+                v-for="item in lookItemList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
       <crcloud-table
         :total="total"
@@ -98,7 +107,11 @@
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
+                    <img
+                      v-if="hasValue(weekly.headerUrl)"
+                      :src="weekly.headerUrl"
+                      alt
+                    />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)
@@ -240,7 +253,11 @@
               <dl class="tl-card-list">
                 <dt>
                   <div class="user-info">
-                    <img v-if="weekly.headerUrl" :src="weekly.headerUrl" alt />
+                    <img
+                      v-if="hasValue(weekly.headerUrl)"
+                      :src="weekly.headerUrl"
+                      alt
+                    />
                     <div v-else-if="weekly.userName" class="user-name">
                       <em>{{
                         weekly.userName.substring(weekly.userName.length - 2)
@@ -470,6 +487,10 @@ export default {
       tenantId: null,
       lookItemList: [
         {
+          value: '',
+          label: '全部',
+        },
+        {
           value: '0',
           label: '工作项',
         },
@@ -487,10 +508,10 @@ export default {
         },
       ],
       submitedOrLookedList: [
-        // {
-        //   value: '',
-        //   label: '全部',
-        // },
+        {
+          value: '',
+          label: '全部',
+        },
         {
           value: '1',
           label: '已查看',
@@ -737,7 +758,7 @@ export default {
     },
     visibleChange(name) {
       if (!name) {
-        this.remoteMethod();
+        // this.remoteMethod();
       }
     },
     nameChange(userId) {

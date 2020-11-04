@@ -74,8 +74,8 @@ export default {
       if (!value) {
         callback('请填写关键结果KR名称');
         this.krerror = '关键结果KR名称';
-      } else if (value.length > 200) {
-        callback('不能超过200个字符');
+      } else if (value.length > 500) {
+        callback('不能超过500个字符');
       } else {
         callback();
       }

@@ -42,7 +42,9 @@
                 <dl>
                   <dd>
                     <em>{{ item.userName }}</em>
-                    <em v-if="item.userMobile">{{ `(${item.userMobile})` }}</em>
+                    <em v-if="hasValue(item.userMobile)">{{
+                      `(${item.userMobile})`
+                    }}</em>
                     <el-checkbox
                       v-model="item.checkStatus"
                       class="tl-checkbox"

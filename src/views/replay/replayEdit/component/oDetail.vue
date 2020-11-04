@@ -284,6 +284,7 @@ export default {
       const params = {
         okrMainVo: {
           reviewType: this.reviewType,
+          okrBelongType: this.okrMain.okrMainVo.okrBelongType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
@@ -291,6 +292,7 @@ export default {
       const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
 
       if (CheckNull) {
+        this.submitLoad = false;
         this.$message.error('未完成复盘，尚有未填写内容，请检查');
         return false;
       }

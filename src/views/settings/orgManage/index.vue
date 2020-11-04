@@ -175,13 +175,16 @@
               label="代理部门"
             >
               <template slot-scope="scope">
-                <span
-                  type="text"
-                  v-if="scope.row.agentOrg"
-                  @click="showexistEdit(scope.row)"
-                  >{{ changeOrgAndId(scope.row.agentOrg) }}</span
-                >
-                <span v-else>
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <span slot="content">{{ orgTip(scope.row.agentOrg) }} </span>
+                  <span
+                    type="text"
+                    v-if="hasValue(scope.row.agentOrg)"
+                    @click="showexistEdit(scope.row)"
+                    >{{ changeOrgAndId(scope.row.agentOrg) }}</span
+                  >
+                </el-tooltip>
+                <span v-if="!hasValue(scope.row.agentOrg)">
                   <el-button type="text" @click="showexistEdit(scope.row)"
                     >设置</el-button
                   >
@@ -213,6 +216,32 @@
                     <span>设置</span>
                   </i>
                 </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              min-width="130"
+              align="left"
+              prop="agentOrgName"
+              label="综合岗"
+            >
+              <template slot-scope="scope">
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <span slot="content">
+                    {{ orgTip(scope.row.teamAdmin) }}
+                  </span>
+                  <span
+                    type="text"
+                    style="cursor: pointer"
+                    v-if="hasValue(scope.row.teamAdmin)"
+                    @click="showSecretary(scope.row)"
+                    >{{ changeOrgAndId(scope.row.teamAdmin) }}</span
+                  >
+                </el-tooltip>
+                <span v-if="!hasValue(scope.row.teamAdmin)">
+                  <el-button type="text" @click="showSecretary(scope.row)"
+                    >设置</el-button
+                  >
+                </span>
               </template>
             </el-table-column>
             <el-table-column
@@ -352,6 +381,14 @@
       @createLeader="createLeader"
       @searchList="searchList"
     ></edit-departOrg>
+    <set-secretary
+      v-if="existSecretary"
+      :exist.sync="existSecretary"
+      :title="'设置综合岗'"
+      :userData="userData"
+      @setSecretary="setSecretary"
+      @searchList="searchList"
+    ></set-secretary>
   </div>
 </template>
 
@@ -362,6 +399,7 @@ import editUser from './components/editUser';
 import userInfo from './components/userInfo';
 import createDepartOrg from './components/createDepartOrg';
 import editDepartOrg from './components/editDepartOrg';
+import setSecretary from './components/setSecretary';
 import createUser from './components/createUser';
 import Server from './server';
 import CONST from './const';
@@ -377,6 +415,7 @@ export default {
     'tl-user-info': userInfo,
     'create-departOrg': createDepartOrg,
     'edit-departOrg': editDepartOrg,
+    'set-secretary': setSecretary,
   },
   data() {
     return {
@@ -414,6 +453,8 @@ export default {
         children: 'sonTree',
         label: 'orgName',
       },
+      userData: {},
+      existSecretary: false,
     };
   },
   created() {
@@ -435,22 +476,44 @@ export default {
       this.exist = true;
     },
     changeOrgAndId(data) {
-      const list = data.split(',');
-      const orgName = list.map((item) => item.split('/')[0]);
-      if (orgName.length > 2) {
-        return `${orgName[0]},${orgName[1]}...`;
+      if (data) {
+        const list = data.split(',');
+        const orgName = list.map((item) => item.split('/')[0]);
+        if (orgName.length > 2) {
+          return `${orgName[0]},${orgName[1]}...`;
+        }
+        return orgName.join(',');
       }
-      return orgName.join(',');
+    },
+    orgTip(data) {
+      if (data) {
+        const list = data.split(',');
+        const orgName = list.map((item) => item.split('/')[0]);
+        return orgName.join(',');
+      }
     },
     showexistEdit(row) {
       this.rowData = row;
       this.existEdit = true;
+    },
+    showSecretary(row) {
+      this.userData = row;
+      this.existSecretary = true;
     },
     filterNode(value, data) {
       if (!value) return true;
       return data.orgName.indexOf(value) !== -1;
     },
     createLeader(user) {
+      this.server.setDepartLeader({
+        tenantId: this.tenantId, userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN',
+      }).then((res) => {
+        if (res.code == 200) {
+          this.searchList();
+        }
+      });
+    },
+    setSecretary(user) {
       this.server.setDepartLeader({
         tenantId: this.tenantId, userId: user.userId, orgId: user.orgId, roleCode: 'ORG_ADMIN',
       }).then((res) => {

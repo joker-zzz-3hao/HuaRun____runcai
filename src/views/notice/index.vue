@@ -20,6 +20,13 @@
           <el-radio-button label="0">未读</el-radio-button>
           <el-radio-button label="1">已读</el-radio-button>
         </el-radio-group>
+        <el-button
+          plain
+          @click="$router.go('-1')"
+          class="tl-btn amt-border-slip"
+        >
+          <em>返回</em><span class="lines"></span>
+        </el-button>
       </div>
     </div>
     <div class="cont-area">

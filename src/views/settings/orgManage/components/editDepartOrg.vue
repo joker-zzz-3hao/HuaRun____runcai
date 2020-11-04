@@ -2,6 +2,7 @@
   <el-dialog
     @click.native="closeshowMember"
     :modal-append-to-body="false"
+    :append-to-body="true"
     :before-close="close"
     @closed="closed"
     :close-on-click-modal="false"
@@ -18,7 +19,7 @@
       class="tl-form"
     >
       <el-form-item label="当前部门">
-        <span>{{rowData.orgName}}</span>
+        <span>{{ rowData.orgName }}</span>
       </el-form-item>
 
       <el-form-item label="代理部门">
@@ -26,12 +27,17 @@
           <div class="postMenu">
             <el-cascader-panel
               change-on-select
-              @change="handleCheckChange"
               ref="treeMenu"
               v-model="selectArr"
               :options="data"
-              :props="{ multiple: true,value:'orgId',children:'sonTree',
-                label:'orgName',checkStrictly:true,emitPath:false }"
+              :props="{
+                multiple: true,
+                value: 'orgId',
+                children: 'sonTree',
+                label: 'orgName',
+                checkStrictly: true,
+                emitPath: false,
+              }"
               node-key="id"
             ></el-cascader-panel>
           </div>
@@ -39,8 +45,12 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip">确定</el-button>
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout">取 消</el-button>
+      <el-button type="primary" @click="submitForm" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取 消</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -98,6 +108,8 @@ export default {
           },
         ],
       },
+      tempSelectedNode: [],
+      initPage: true,
     };
   },
 
@@ -126,10 +138,15 @@ export default {
       this.menuTreeList = node;
     },
     changeOrgId(data) {
+      this.initPage = true;
       const list = data.split(',');
       const orgId = list.map((item) => item.split('/')[1]);
       this.orgIdList = orgId.map((item) => ({ orgId: item }));
       this.selectArr = orgId;
+      this.tempSelectedNode = [...this.selectArr];
+      this.$nextTick(() => {
+        this.initPage = false;
+      });
     },
     clearNodeAll() {
       this.$refs.treeMenu.clearCheckedNodes();
@@ -142,6 +159,8 @@ export default {
           this.data = res.data;
           if (this.rowData.agentOrg) {
             this.changeOrgId(this.rowData.agentOrg);
+          } else {
+            this.initPage = false;
           }
         });
     },
@@ -183,6 +202,67 @@ export default {
     },
     closeshowMember() {
       this.dialogVisible = false;
+    },
+  },
+  watch: {
+    selectArr: {
+      handler(data) {
+        if (this.initPage) {
+          return;
+        }
+        let temparr = data;
+        this.selectArr.forEach((newVal) => {
+          this.tempSelectedNode.forEach((oldVal) => {
+            if (newVal == oldVal) {
+              temparr = temparr.filter((item) => item != newVal);
+            }
+          });
+        });
+        this.tempSelectedNode = [...this.selectArr];
+        // 获取最后一次选中的节点,取消的不算
+        if (temparr.length == 0) {
+          return;
+        }
+        this.server.queryOrgAdmin({
+          orgId: temparr[0],
+        }).then((res) => {
+          // 如果选中的部门负责人/代理负责人已经是该用户了，则不能够设置该用户为该部门的综合岗
+          if (res.data.orgAdminUserName == this.rowData.userName) {
+            this.$alert('您已经是该部门负责人，不能设置为该部门的负责人。', '提示', {
+              confirmButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+              callback: () => {
+                // 取消该组织的勾选
+                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+                this.$forceUpdate();
+              },
+            });
+          } else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
+            this.$alert('您已经是该部门综合岗，不能设置为该部门的负责人。', '提示', {
+              confirmButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+              callback: () => {
+                // 取消该组织的勾选
+                this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+              },
+            });
+          } else if (res.data.orgAdminUserName) {
+            this.$confirm(`当前部门已经存在负责人'${res.data.orgAdminUserName}',继续将自动替换`, '提示', {
+              confirmButtonText: '覆盖',
+              cancelButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+            }).then(() => {
+
+            }).catch(() => {
+              // 取消该组织的勾选
+              this.selectArr = this.selectArr.filter((item) => temparr[0] != item);
+            });
+          }
+        });
+      },
     },
   },
 };

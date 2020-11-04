@@ -1,7 +1,7 @@
 <template>
   <section
     class="header-wrap"
-    :class="{ 'no-mainnav': !$route.meta.hasMainMenu }"
+    :class="{ 'is-full-screen': !$route.meta.hasMainMenu }"
   >
     <div class="area-left">
       <div class="logo-bg">
@@ -17,7 +17,7 @@
             v-model="orgId"
             @change="switchOrg"
             :popper-append-to-body="true"
-            popper-class="tl-select-dropdown"
+            popper-class="tl-select-dropdown toggle-teams"
             class="tl-select"
           >
             <el-option
@@ -29,6 +29,7 @@
               <span>{{ item.orgName }}</span>
               <span v-if="item.orgFlag == 1">（虚线汇报）</span>
               <span v-if="item.orgFlag == 2">（代理）</span>
+              <span v-if="item.orgFlag == 3">（综合岗）</span>
               <span v-if="item.orgId == userInfo.orgId">
                 <i class="el-icon-check"></i>
               </span>
@@ -91,7 +92,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import { loginOut } from '@/lib/util';
 import global from '@/mixin/global';
 import Server from '../server';
@@ -131,6 +132,7 @@ export default {
   mixins: [global],
   methods: {
     ...mapMutations('common', ['setTotalMeaasge', 'changeTestModel']),
+    ...mapActions('common', ['getUserInfo']),
     init() {
       this.server.unread().then((res) => {
         if (res.code == '200') {
@@ -146,9 +148,12 @@ export default {
       this.server.switchorg({ orgId: this.orgId }).then((res) => {
         if (res.code == 200) {
           if (this.$route.name == 'overview' || this.$route.name == 'departleader' || this.$route.name == 'grassStaff' || this.$route.name == 'teamleader') {
-            this.checkUserType();
+            this.getUserInfo().then(() => {
+              this.checkUserType();
+            });
             return false;
           }
+
           window.location.reload();
         }
       });
@@ -160,12 +165,18 @@ export default {
       }).then((response) => {
         if (response.data.identityType == 'org') {
           this.$router.push({ path: '/departleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'departleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'team') {
           this.$router.push({ path: '/teamleader' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'teamleader' ? window.location.reload() : '';
         }
         if (response.data.identityType == 'person') {
           this.$router.push({ path: '/grassStaff' });
+          // eslint-disable-next-line no-unused-expressions
+          this.$route.name == 'grassStaff' ? window.location.reload() : '';
         }
       });
     },

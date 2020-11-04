@@ -2,6 +2,15 @@
   <div class="teams-manage">
     <div class="operating-area">
       <div class="page-title">团队管理</div>
+      <div class="operating-box">
+        <el-button
+          plain
+          @click="$router.go('-1')"
+          class="tl-btn amt-border-slip"
+        >
+          <em>返回</em><span class="lines"></span>
+        </el-button>
+      </div>
     </div>
     <div class="cont-area">
       <dl class="dl-card-panel">
@@ -10,7 +19,7 @@
         </dt>
         <dd>
           <span>所属部门</span>
-          <em v-if="baseInfo.orgParentName">{{
+          <em v-if="hasValue(baseInfo.orgParentName)">{{
             `${baseInfo.orgParentName} - `
           }}</em>
           <em>{{ baseInfo.orgName }}</em>
@@ -26,7 +35,9 @@
         </dt>
         <dd>
           <span>团队综合管理员</span>
-          <em v-if="baseInfo.teamManager">{{ baseInfo.teamManager }}</em>
+          <em v-if="hasValue(baseInfo.teamManager)">{{
+            baseInfo.teamManager
+          }}</em>
           <em v-else>未设置</em>
           <el-button
             v-if="userInfo.userId == baseInfo.userId"
@@ -96,7 +107,11 @@
               @click="setFictitious(tItem)"
             >
               <dt class="user-info">
-                <img v-if="tItem.headerUrl" :src="tItem.headerUrl" alt />
+                <img
+                  v-if="hasValue(tItem.headerUrl)"
+                  :src="tItem.headerUrl"
+                  alt
+                />
                 <div class="user-name" v-else>
                   <em>{{ cutName(tItem.userName) }}</em>
                 </div>
@@ -112,7 +127,11 @@
               <template v-if="fictitiousList.length > 0">
                 <dl v-for="fItem in fictitiousList" :key="fItem.userId">
                   <dt class="user-info">
-                    <img v-if="fItem.headerUrl" :src="fItem.headerUrl" alt />
+                    <img
+                      v-if="hasValue(fItem.headerUrl)"
+                      :src="fItem.headerUrl"
+                      alt
+                    />
                     <div class="user-name" v-else>
                       <em>{{ cutName(fItem.userName) }}</em>
                     </div>

@@ -344,11 +344,11 @@ export default {
               if (value == 0) {
                 console.log(1);
               } else if (value == 1) {
-                texts.push('高');
+                texts.push('信心指数高');
               } else if (value == 4) {
-                texts.push('中');
+                texts.push('信心指数中');
               } else if (value == 7) {
-                texts.push('低');
+                texts.push('信心指数低');
               }
               return texts;
             },
@@ -397,12 +397,18 @@ export default {
     initMood() {
       const that = this;
       const myChartmood = echarts.init(document.getElementById('mood-depart'));
+      let endLength;
+      if (that.moodDataX.length > 9) {
+        endLength = (100 / that.moodDataX.length).toFixed(2) * 9;
+      } else {
+        endLength = 100;
+      }
       const option = {
         dataset: {
           source: that.testModel ? mainData.moodData : that.moodDataY,
         },
         legend: {
-          bottom: 'bottom',
+          top: 'top',
           data: ['0', '50', '100'],
           formatter(params) {
             if (params == '0') {
@@ -416,6 +422,34 @@ export default {
             }
           },
         },
+        dataZoom: [{
+          type: 'slider', // slider表示有滑动块的，inside表示内置的
+          // startValue: 8,//可用于设置开始显示的柱子的长度
+          // endValue: 1,//可用于设置结束显示的柱子的长度
+          show: that.moodDataX.length > 9 && !that.testModel,
+          xAxisIndex: [0],
+          handleSize: 0, // 滑动条的 左右2个滑动条的大小
+          height: 12, // 组件高度
+          left: '10%', // 左边的距离
+          right: '10%', // 右边的距离
+          bottom: -3, // 右边的距离
+          borderColor: '#F4F4F4',
+          fillerColor: '#E7E7E7',
+          backgroundColor: '#F4F4F4', // 两边未选中的滑动条区域的颜色
+          showDataShadow: false, // 是否显示数据阴影 默认auto
+          showDetail: false, // 即拖拽时候是否显示详细数值信息 默认true
+          realtime: true, // 是否实时更新
+          filterMode: 'filter',
+          handleColor: '#FFBC20',
+          // eslint-disable-next-line no-dupe-keys
+          start: 0,
+          // eslint-disable-next-line no-dupe-keys
+          end: endLength,
+          handleStyle: {
+            borderRadius: '20',
+            background: '#F4F6F8',
+          },
+        }],
         tooltip: {
           trigger: 'item',
           position: 'top',

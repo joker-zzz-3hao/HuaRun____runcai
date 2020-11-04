@@ -2,9 +2,13 @@
   <div class="maps-card">
     <dl v-if="node.node.orgId != 'add'">
       <dt>
-        <template v-if="node.node.orgLeader">
+        <template v-if="hasValue(node.node.orgLeader)">
           <div class="user-info">
-            <img v-if="node.node.headerUrl" :src="node.node.headerUrl" alt />
+            <img
+              v-if="hasValue(node.node.headerUrl)"
+              :src="node.node.headerUrl"
+              alt
+            />
             <div v-else-if="node.node.orgLeader" class="user-name">
               <em>{{
                 node.node.orgLeader.substring(node.node.orgLeader.length - 2)

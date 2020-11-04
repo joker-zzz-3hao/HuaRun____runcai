@@ -165,7 +165,7 @@
                       },
                     })
                   "
-                  >待复盘</el-button
+                  >复盘</el-button
                 >
                 <el-button
                   type="text"
@@ -196,15 +196,15 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
-// eslint-disable-next-line import/extensions
 import process from '@/components/process';
-// eslint-disable-next-line import/extensions
-import Server from '../server.js';
+import processenv from './processenv';
+import Server from '../server';
 import CONST from '../const';
 
 const server = new Server();
 export default {
-  name: 'home',
+  name: 'replayList',
+  mixins: [processenv],
   data() {
     return {
       form: {},
@@ -219,10 +219,10 @@ export default {
       pageSize: 20,
       totalpage: 0,
       reviewStatus: '',
-      showpic: true,
     };
   },
   created() {
+    console.log(process);
     this.getOkrCycleList();
   },
   methods: {

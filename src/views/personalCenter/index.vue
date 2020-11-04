@@ -3,6 +3,15 @@
     <div class="cont-wrap">
       <div class="operating-area">
         <div class="page-title">基本设置</div>
+        <div class="operating-box">
+          <el-button
+            plain
+            @click="$router.go('-1')"
+            class="tl-btn amt-border-slip"
+          >
+            <em>返回</em><span class="lines"></span>
+          </el-button>
+        </div>
       </div>
       <div class="cont-area">
         <div class="cont-panel">

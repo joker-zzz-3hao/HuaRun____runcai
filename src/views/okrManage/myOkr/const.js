@@ -59,6 +59,11 @@ const OKR_KIND_MAP = {
   0: '目标',
   1: '关键结果',
 };
+const READ_RESULT_MAP = {
+  0: '未阅',
+  1: '无异议',
+  2: '建议调整，',
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
@@ -67,4 +72,5 @@ export default {
   STATUS_LIST_MAP,
   OKR_TYPE_LIST,
   OKR_KIND_MAP,
+  READ_RESULT_MAP,
 };

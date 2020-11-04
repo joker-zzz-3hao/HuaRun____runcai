@@ -26,7 +26,10 @@
           </dt>
           <dd>{{ okrMain.userName }}</dd>
         </dl>
-        <dl class="okr-follow">
+        <dl
+          class="okr-follow"
+          v-if="okrMain.approvalStatus != 2 && okrMain.approvalStatus != 0"
+        >
           <dd v-show="okrMain.supported != '1'" @click="addFocus(okrMain)">
             <i class="el-icon-plus"></i><em>关注</em>
           </dd>
@@ -88,35 +91,39 @@
     </template>
     <div class="card-panel-body img-list" v-if="orgUser.length > 0">
       <em>成员：</em>
-      <dl
-        v-for="(item, index) in orgUser"
-        :key="item.userId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <img v-if="item.headUrl" :src="item.headUrl" alt />
-          <div class="user-name" v-else>
-            <em>{{ cutName(item.userName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ item.userName }}</dd>
-      </dl>
+      <div class="dl-group">
+        <dl
+          v-for="(item, index) in orgUser"
+          :key="item.userId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <img v-if="item.headUrl" :src="item.headUrl" alt />
+            <div class="user-name" v-else>
+              <em>{{ cutName(item.userName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ item.userName }}</dd>
+        </dl>
+      </div>
     </div>
     <div class="card-panel-body img-list" v-if="orgTable.length > 0">
       <em>子部门：</em>
-      <dl
-        v-for="(item, index) in orgTable"
-        :key="item.orgId + index"
-        @click="getidentity(item)"
-      >
-        <dt class="user-info">
-          <img v-if="item.headUrl" :src="item.headUrl" alt />
-          <div class="user-name" v-else>
-            <em>{{ cutName(item.orgName) }}</em>
-          </div>
-        </dt>
-        <dd>{{ cutOrgName(item.orgName) }}</dd>
-      </dl>
+      <div class="dl-group">
+        <dl
+          v-for="(item, index) in orgTable"
+          :key="item.orgId + index"
+          @click="getidentity(item)"
+        >
+          <dt class="user-info">
+            <img v-if="item.headUrl" :src="item.headUrl" alt />
+            <div class="user-name" v-else>
+              <em>{{ cutName(item.orgName) }}</em>
+            </div>
+          </dt>
+          <dd>{{ cutOrgName(item.orgName) }}</dd>
+        </dl>
+      </div>
     </div>
   </div>
 </template>
@@ -204,11 +211,6 @@ export default {
         type: 'INDEX',
       }).then((res) => {
         if (res.code == 200) {
-          // if (res.data.okrMain == null && sessionStorage.getItem('modelOkr') !== '1' && !this.$route.query.id) {
-          //   this.changeTestModel(true);
-          //   this.reload();
-          //   sessionStorage.setItem('modelOkr', '1');
-          // }
           this.setList(res.data);
         }
       });
@@ -258,6 +260,20 @@ export default {
       }
       this.tableList = listData.okrDetails || [];
       this.okrMain = listData.okrMain || {};
+      if (listData.okrApprovalVo) {
+        const okrInfo = JSON.parse(listData.okrApprovalVo.paramJson) || {};
+        this.tableList = okrInfo.okrInfoList || [];
+        this.searchForm.status = listData.okrApprovalVo.approvalStatus == 2 ? 8 : 7;
+        this.okrMain = {
+          userName: listData.okrApprovalVo.userName,
+          okrProgress: listData.okrApprovalVo.okrProgress || 0,
+          updateTime: listData.okrApprovalVo.updateTime || listData.okrApprovalVo.createTime || '--',
+          okrBelongType: okrInfo.okrBelongType,
+          status: this.searchForm.status,
+          approvalStatus: listData.okrApprovalVo.approvalStatus,
+          periodName: listData.okrApprovalVo.periodName,
+        };
+      }
       this.okrId = this.okrMain.okrId || '';
       this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];

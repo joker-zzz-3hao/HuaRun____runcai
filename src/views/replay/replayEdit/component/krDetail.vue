@@ -1,35 +1,58 @@
 <template>
-  <div>
-    <div v-for="(item, index) in okrMain.okrReviewPojoList" :key="index">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item :name="index + 1">
-          <template slot="title">
-            <div class="title-row">
-              <div>
-                <em>目标{{ index + 1 }}</em
-                ><em>{{ item.o.okrDetailObjectKr }}</em>
-              </div>
-              <div style="width: 200px">
-                <div style="width: 100px; float: left">
-                  <span>权重</span>
+  <div class="kr-replay">
 
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(item.o.okrWeight) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </div>
-                <div style="width: 100px; float: left">
-                  <span>进度</span>
-                  <el-progress
-                    :width="50"
-                    :percentage="parseInt(item.o.okrDetailProgress) || 0"
-                    :show-text="true"
-                  ></el-progress>
-                </div>
+           <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+      <elcollapseitem
+        ref="o-kr-replay"
+        v-for="(item, index) in okrMain.okrReviewPojoList"
+        :key="index"
+        :name="index"
+      >
+
+             <template slot="title">
+          <dl class="is-o">
+            <dt class="tag-kind">
+              <span class="kind-parent">目标</span>
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+            </dt>
+            <dd>
+              <div>
+                <i class="el-icon-medal"></i>
+                <span>权重</span>
+                <em>{{ item.o.okrWeight }}%</em>
               </div>
-            </div>
-          </template>
+              <div>
+                <i class="el-icon-odometer"></i>
+                <span>进度</span>
+                <tl-process
+                  :data="parseInt(item.o.okrDetailProgress, 10)"
+                ></tl-process>
+              </div>
+              <!-- <div>
+                <i class="el-icon-attract"></i>
+                <span>关联父目标</span>
+                <em
+                  v-if="
+                    oData.undertakeOkrDto &&
+                    oData.undertakeOkrDto.undertakeOkrContent
+                  "
+                  ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
+                  ><em>{{ oData.cultureName }}</em></em
+                >
+                <em
+                  v-else-if="
+                    oData.undertakeOkrVo &&
+                    oData.undertakeOkrVo.undertakeOkrContent
+                  "
+                  ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
+                  ><em>{{ oData.cultureName }}</em></em
+                >
+                <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
+                <em v-else>暂无</em>
+              </div> -->
+            </dd>
+          </dl>
+        </template>
           <div v-for="(list, i) in item.krs" :key="i + 'k'">
             <div>
               <em>KR{{ i + 1 }} </em><em>{{ list.okrDetailObjectKr }}</em>
@@ -123,10 +146,9 @@
               </div>
             </el-form>
           </div>
-        </el-collapse-item>
-      </el-collapse>
-    </div>
-    <div>
+           </elcollapseitem>
+    </elcollapse>
+
       <el-button type="primary" @click="submit" :loading="submitLoad"
         >提交复盘</el-button
       >
@@ -287,12 +309,14 @@ export default {
       const params = {
         okrMainVo: {
           reviewType: this.reviewType,
+          okrBelongType: this.okrMain.okrMainVo.okrBelongType,
           okrId: this.okrMain.okrMainVo.okrId,
         },
         list: this.list,
       };
       const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
       if (CheckNull) {
+        this.submitLoad = false;
         this.$message.error('未完成复盘，尚有未填写内容，请检查');
         return false;
       }

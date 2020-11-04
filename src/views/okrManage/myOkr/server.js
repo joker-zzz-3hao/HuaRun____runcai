@@ -9,7 +9,7 @@ export default class Server extends ServerBase {
 
   // 查okr列表
   getmyOkr(param) {
-    return this._ajaxPost('gateway/talent-query/okr/query/myOkr', param);
+    return this._ajaxPost('gateway/talent-query/okr/query/okr', param);
   }
 
   // 查全部okr列表
@@ -99,5 +99,10 @@ export default class Server extends ServerBase {
 
   identity(param) {
     return this._ajaxPost(`gateway/talent-query/home/person/identity?${qs.stringify(param)}`);
+  }
+
+  // 单独更新
+  singleUpdate(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/singleUpdateProcess', param);
   }
 }

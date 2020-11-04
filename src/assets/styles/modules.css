@@ -162,6 +162,45 @@
   background: #f0effe;
 }
 
+.tl-btn.is-plain.btn-small,
+.tl-btn.is-plain.btn-small.is-disabled {
+  padding: 0 10px;
+  font-size: 12px;
+  height: 28px;
+  background: #f4f6f8;
+  color: #acb6bf;
+  border: unset;
+  min-width: unset;
+}
+
+.tl-btn.is-plain.btn-small.is-disabled:hover {
+  background: #f4f6f8;
+  color: #acb6bf;
+}
+
+
+.tl-btn.is-plain.btn-small {
+  color: #685df1;
+  background: #f0effe;
+}
+
+.tl-btn + .el-dropdown {
+  margin: 0 0 0 16px;
+}
+
+.tl-btn.is-plain.btn-grey {
+  padding: 0 16px;
+  background: #f7fafc;
+  border-radius: 2px;
+  color: #879099;
+  font-weight: normal;
+}
+
+.tl-btn.is-plain.btn-grey.is-selected {
+  background-color: #685df1;
+  color: #fff;
+}
+
 /* input */
 .tl-input,
 .tl-date-editor,
@@ -390,8 +429,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 27%;
-  width: 27%;
+  flex: 0 0 42%;
+  width: 42%;
   position: relative;
 }
 
@@ -435,13 +474,13 @@
 }
 
 .tl-table .sub-tr .undertake-target {
-  flex: 0 0 11%;
-  width: 11%;
+  flex: 0 0 12%;
+  width: 12%;
 }
 
 .tl-table .sub-tr .okr-progress {
-  flex: 0 0 16%;
-  width: 16%;
+  flex: 0 0 17%;
+  width: 17%;
 }
 
 .tl-table .sub-tr .okr-update {
@@ -2235,6 +2274,54 @@
   line-height: 22px;
 }
 
+/* tl-popover */
+.search-popover {
+  padding: 16px 0;
+  min-height: 200px;
+  width: 300px !important;
+}
+
+.search-popover .tl-input {
+  margin: 0 16px 16px 16px;
+  width: calc(100% - 32px);
+}
+
+.search-popover .el-input__inner {
+  height: 36px;
+  border-color: transparent;
+  background-color: #f4f6f8;
+  color: #bcc4cc;
+}
+
+.search-popover .el-input__inner:focus {
+  border-color: transparent;
+}
+
+.search-popover .el-input__icon {
+  line-height: 36px;
+}
+
+.search-popover .tl-checkbox {
+  padding: 0 16px;
+  margin: 0;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.search-popover .tl-checkbox:hover {
+  background: #f4f6f8;
+}
+
+.search-popover .flex-end {
+  margin: 16px 16px 0 0;
+  width: unset;
+}
+
+.search-popover .el-checkbox__label {
+  padding: 0;
+}
+
 /* ==========================================================常用基础组件=================================================================== */
 /* tl-custom-btn */
 .tl-custom-btn {
@@ -2468,10 +2555,10 @@
 
 /* tag-lists */
 .tag-lists dd {
-  padding: 5px 40px 5px 12px;
-  position: relative;
+  padding: 5px 12px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #4d5155;
   background: #f4f6f8;
   border-radius: 14px;
@@ -2479,6 +2566,17 @@
   font-size: 12px;
   cursor: pointer;
   transition: all .4s ease-out;
+}
+
+.tag-lists.has-delete dd {
+  padding-right: 6px;
+  background-color: #f0effe;
+  color: #685df1;
+}
+
+.tag-lists.has-delete dd:last-child {
+  padding: 0;
+  background-color: transparent;
 }
 
 .tag-lists .is-selected {
@@ -2491,7 +2589,7 @@
 }
 
 .tag-lists dd i {
-  position: absolute;
+  margin: 0 0 0 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2499,9 +2597,17 @@
   height: 22px;
   border-radius: 50%;
   background: #bcc4cc;
-  right: 4px;
-  top: 3px;
   color: #fff;
+}
+
+.tag-lists.has-delete dd .el-popover__reference i {
+  margin: 0;
+  background-color: transparent;
+  color: #879099;
+}
+
+.tag-lists.has-delete dd .el-popover__reference i:hover {
+  color: #685df1;
 }
 
 /* 标记 */
@@ -2598,6 +2704,8 @@
 
 .tl-custom-timeline .list-title span {
   margin: 0 0 10px 0;
+}
+.timeline-list .list-title em {
   color: #acb6bf;
 }
 
@@ -2735,7 +2843,7 @@
 
 /* tl-card-panel */
 .tl-card-panel {
-  margin: 0 0 25px 0;
+  margin: 0 0 16px 0;
   padding: 30px;
   background: #fff;
   box-shadow: 0 0 14px 0 #f4f6f8;
@@ -3033,15 +3141,19 @@
 }
 
 .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 27%;
+  width: 42%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(3) {
   width: 6%;
 }
 
-.tl-table-fix .tl-thead li:nth-child(4) {
+/* .tl-table-fix .tl-thead li:nth-child(4) {
   width: 8%;
+} */
+
+.tl-table-fix .tl-thead li:nth-child(4) {
+  width: 12%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(5) {
@@ -3049,19 +3161,34 @@
 }
 
 .tl-table-fix .tl-thead li:nth-child(6) {
-  width: 11%;
+  width: 17%;
 }
+
+/* .tl-table-fix .tl-thead li:nth-child(8) {
+  width: 9%;
+} */
 
 .tl-table-fix .tl-thead li:nth-child(7) {
-  width: 16%;
-}
-
-.tl-table-fix .tl-thead li:nth-child(8) {
-  width: 9%;
-}
-
-.tl-table-fix .tl-thead li:nth-child(9) {
   width: 4%;
+}
+
+.tl-table-fix em.okr-weight,
+.tl-table-fix .progress-number,
+.tl-table-fix dd.okr-proportion {
+  font-weight: 500;
+  font-family: DINAlternate-Bold;
+}
+
+.tl-table-fix dd.okr-proportion {
+  color: #929ba3;
+}
+
+.tl-table.no-data .el-table__fixed-right::before {
+  background-color: transparent;
+}
+
+.tl-table.no-data .el-table__fixed-right {
+  box-shadow: unset;
 }
 
 /* tl-card-list */
@@ -3419,6 +3546,25 @@
   color: #685df1;
 }
 
+/* tl-popover-list */
+.tl-popover-list li {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+}
+
+.tl-popover-list li.is-selected,
+.main-menu .level-three-menu .is-selected em {
+  color: #685df1;
+}
+
+/* 状态 */
+.state-group {
+  display: flex;
+  align-items: center;
+}
+
 /* ========================================================公共页面布局组件================================================================== */
 /* Header */
 .header-wrap {
@@ -3426,7 +3572,7 @@
   background: #fff;
 }
 
-.no-mainnav .logo-bg {
+.is-full-screen .logo-bg {
   background: unset;
 }
 
@@ -3531,6 +3677,12 @@
 .header-wrap .user-info .user-name em {
   width: 34px;
   height: 34px;
+}
+
+.toggle-teams li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* 主内容区--左侧菜单 */
@@ -3675,7 +3827,9 @@
 }
 
 .main-menu .sub-menu dl {
-  padding: 10px 20px 20px 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px 20px 20px;
   position: absolute;
   left: 0;
   top: 0;
@@ -3683,6 +3837,10 @@
   z-index: 1;
   opacity: 0;
   transition: all .4s ease-out;
+}
+
+.main-menu .sub-menu dl dt {
+  order: 0;
 }
 
 .main-menu .sub-menu dl.is-focus {
@@ -3706,13 +3864,6 @@
 
 .main-menu .sub-menu dd {
   padding: 0 0 0 10px;
-}
-
-.main-menu .sub-menu dd i {
-  margin: 0 6px 0 0;
-  width: 24px;
-  height: 24px;
-  background: #eee;
 }
 
 .main-menu .sub-menu dd.is-active {
@@ -3777,7 +3928,11 @@
 }
 
 .main-menu .sub-menu dl dd:nth-child(7) em {
-  transition-delay: .54s;
+  transition-delay: .56s;
+}
+
+.main-menu .sub-menu dl dd:nth-child(8) em {
+  transition-delay: .64s;
 }
 
 .main-menu .sub-menu span {

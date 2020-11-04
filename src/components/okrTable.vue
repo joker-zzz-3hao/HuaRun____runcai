@@ -4,19 +4,33 @@
       <li></li>
       <li></li>
       <li>权重</li>
-      <li>
+      <!-- <li>
         <em v-if="!overview && showUndertake">承接地图</em>
+      </li> -->
+      <li>
+        <em v-if="!overview">关联父目标</em>
       </li>
       <li>
         <em v-if="!overview">信心指数</em>
       </li>
+
       <li>
-        <em v-if="!overview">关联父目标</em>
+        <el-tooltip
+          :disabled="!showUpdate"
+          effect="dark"
+          placement="top"
+          popper-class="tl-tooltip-popper"
+        >
+          <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
+          <span class="progress-number"
+            >进度 <i v-if="showUpdate" class="el-icon-question"> </i
+          ></span>
+        </el-tooltip>
       </li>
-      <li>进度</li>
-      <li>
+
+      <!-- <li>
         <em v-if="!overview && showUpdate">更新进展</em>
-      </li>
+      </li> -->
       <li></li>
     </ul>
     <el-table
@@ -48,9 +62,11 @@
             <!-- kr权重 -->
             <dd class="okr-proportion">{{ kritem.okrWeight }}%</dd>
             <!-- kr承接项 -->
-            <dd class="okr-undertake">
+            <!-- <dd class="okr-undertake">
               <slot name="body-bar" :okritem="kritem"></slot>
-            </dd>
+            </dd> -->
+            <!-- kr无关联父目标 仅占位-->
+            <dd class="undertake-target"></dd>
             <!-- kr风险状态 -->
             <dd class="okr-risk">
               <div class="state-grid" v-if="!overview">
@@ -77,16 +93,17 @@
                 {{ CONFIDENCE_MAP[kritem.okrDetailConfidence] }}
               </div>
             </dd>
-            <!-- kr无关联父目标 仅占位-->
-            <dd class="undertake-target"></dd>
             <!-- kr进度 -->
             <dd class="okr-progress">
+              <slot name="progress-krbar" :okritem="kritem"></slot>
               <tl-process
+                v-if="!showUpdate"
                 :data="parseInt(kritem.okrDetailProgress, 10)"
               ></tl-process>
             </dd>
+
             <!-- kr无更新进度 仅占位-->
-            <dd class="okr-update"></dd>
+            <!-- <dd class="okr-update"></dd> -->
             <!-- kr更多操作 -->
             <dd class="okr-operating">
               <slot name="moreHandle-krbar" :okritem="kritem"></slot>
@@ -95,7 +112,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="27%">
+      <el-table-column prop="okrDetailObjectKr" width="42%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
@@ -112,18 +129,18 @@
       </el-table-column>
       <!-- o label="权重" -->
       <el-table-column prop="okrWeight" width="6%">
-        <template slot-scope="scope">{{ scope.row.okrWeight }}%</template>
+        <template slot-scope="scope"
+          ><em class="okr-weight">{{ scope.row.okrWeight }}%</em></template
+        >
       </el-table-column>
       <!-- o label="承接地图" -->
-      <el-table-column width="8%">
+      <!-- <el-table-column width="8%">
         <template slot-scope="scope">
           <slot name="head-undertake" :okritem="scope.row"></slot>
         </template>
-      </el-table-column>
-      <!-- o无风险状态 label="信心指数" -->
-      <el-table-column width="14%"></el-table-column>
+      </el-table-column> -->
       <!-- o label="关联父目标" -->
-      <el-table-column prop="parentObjectKr" width="11%">
+      <el-table-column prop="parentObjectKr" width="12%">
         <template slot-scope="scope" v-if="!overview">
           <el-popover
             v-if="scope.row.parentUpdate"
@@ -147,7 +164,7 @@
             popper-class="tl-tooltip-popper"
           >
             <div slot="content">{{ scope.row.parentObjectKr }}</div>
-            <em>{{ scope.row.parentObjectKr }}</em>
+            <em class="hide-more">{{ scope.row.parentObjectKr }}</em>
           </el-tooltip>
           <el-tooltip
             v-else-if="
@@ -160,12 +177,10 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrDto.undertakeOkrContent }}
-              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <span>
-              <em>{{ scope.row.undertakeOkrDto.undertakeOkrContent }} </em>
-              <!-- <em>{{ scope.row.cultureName }}</em> -->
-            </span>
+            <em class="hide-more"
+              >{{ scope.row.undertakeOkrDto.undertakeOkrContent }}
+            </em>
           </el-tooltip>
           <el-tooltip
             v-else-if="
@@ -178,12 +193,10 @@
           >
             <div slot="content">
               {{ scope.row.undertakeOkrVo.undertakeOkrContent }}
-              <!-- {{ scope.row.cultureName }} -->
             </div>
-            <span>
-              <em>{{ scope.row.undertakeOkrVo.undertakeOkrContent }}</em>
-              <!-- <em>{{ scope.row.cultureName }}</em> -->
-            </span>
+            <em class="hide-more">{{
+              scope.row.undertakeOkrVo.undertakeOkrContent
+            }}</em>
           </el-tooltip>
           <el-tooltip
             v-else-if="scope.row.cultureName"
@@ -194,25 +207,27 @@
             <div slot="content">
               {{ scope.row.cultureName }}
             </div>
-            <em>{{ scope.row.cultureName }}</em>
+            <em class="hide-more">{{ scope.row.cultureName }}</em>
           </el-tooltip>
           <em v-else>暂无</em>
         </template>
       </el-table-column>
+      <!-- o无风险状态 label="信心指数" -->
+      <el-table-column width="14%"></el-table-column>
+
       <!-- o label="进度" -->
-      <el-table-column prop="okrDetailProgress" width="16%">
+      <el-table-column prop="okrDetailProgress" width="17%">
         <template slot-scope="scope">
-          <tl-process
-            :data="parseInt(scope.row.okrDetailProgress, 10)"
-          ></tl-process>
+          {{ scope.row.okrDetailProgress }}%
         </template>
       </el-table-column>
+
       <!-- label="更新进度"  -->
-      <el-table-column width="9%">
+      <!-- <el-table-column width="9%">
         <template slot-scope="scope" v-if="showUpdate">
           <slot name="weight-bar" :okritem="scope.row"></slot>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- label="操作"  -->
       <el-table-column width="4%">
         <template slot-scope="scope">

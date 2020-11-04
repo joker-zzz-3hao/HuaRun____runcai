@@ -5,7 +5,11 @@
         <el-table-column prop="userName" label="姓名" min-width="140">
           <template slot-scope="scope">
             <div class="user-info">
-              <img v-if="scope.row.headUrl" :src="scope.row.headUrl" alt />
+              <img
+                v-if="hasValue(scope.row.headUrl)"
+                :src="scope.row.headUrl"
+                alt
+              />
               <div v-else-if="scope.row.userName" class="user-name">
                 <em>{{
                   scope.row.userName.substring(scope.row.userName.length - 2)
@@ -17,7 +21,9 @@
         </el-table-column>
         <el-table-column prop="orgName" label="部门" min-width="160">
           <template slot-scope="scope">
-            <span v-if="scope.row.orgName">{{ scope.row.orgName }}</span>
+            <span v-if="hasValue(scope.row.orgName)">{{
+              scope.row.orgName
+            }}</span>
             <span v-else>--</span>
           </template>
         </el-table-column>

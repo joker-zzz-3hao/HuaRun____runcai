@@ -216,38 +216,38 @@ export default [{
         path: '/replayEdit',
         name: 'replayEdit',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayEdit/editpic'),
+        component: () => import('@/views/replay/replayEdit/index'),
       },
 
       {
         path: '/replayDetail',
         name: 'replayDetail',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayDetail/detailpic'),
+        component: () => import('@/views/replay/replayDetail/index'),
       },
       {
         path: '/replayLink',
         name: 'replayLink',
         meta: {
-          hasMainMenu: true,
+          hasMainMenu: false,
           isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replay',
           power: '',
         },
-        component: () => import('@/views/replay/replayLink/linkpic'),
+        component: () => import('@/views/replay/replayLink/index'),
       },
       {
         path: '/replayList',
@@ -263,19 +263,6 @@ export default [{
       },
     ],
   },
-  // {
-  //   // 项目管理
-  //   path: '/projectManage',
-  //   name: 'projectManage',
-  //   meta: {
-  //     hasMainMenu: true,
-  //     noSubMenu: true,
-  //     parentRoute: 'projectManage',
-  //     title: 'projectManage',
-  //     power: '',
-  //   },
-  //   component: () => import('@/views/projectManage/index'),
-  // },
   // 项目
   {
     path: '/projectManage',
@@ -296,6 +283,7 @@ export default [{
       hasMainMenu: true,
       isSubMenu: true,
       parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
       title: 'projectDetail',
       power: 'projectList',
     },

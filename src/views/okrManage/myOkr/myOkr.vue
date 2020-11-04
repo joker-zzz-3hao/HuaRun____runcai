@@ -12,6 +12,19 @@
       </template>
       <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
+          <div
+            class="okr-tag"
+            v-if="
+              ['1', 1, 3, 4, 5].includes(item.okrMain.status) &&
+              item.okrMain.readStatus != 0
+            "
+          >
+            <el-tag type="warning" size="medium" :hit="true"
+              >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
+                CONST.READ_RESULT_MAP[item.okrMain.readStatus]
+              }}{{ item.okrMain.readRemark }}</el-tag
+            >
+          </div>
           <div class="card-panel-head">
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">
@@ -35,13 +48,22 @@
                 <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
               </dt>
-              <dd v-if="item.okrMain">{{ item.okrMain.userName }}</dd>
+              <dd v-if="hasValue(item.okrMain)">{{ item.okrMain.userName }}</dd>
               <dd v-else>{{ userInfo.userName }}</dd>
             </dl>
             <dl class="okr-progress">
               <dt>
-                <!-- <i class="el-icon-odometer"></i> -->
                 <em>OKR进度</em>
+                <el-tooltip
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <div slot="content">
+                    OKR总进度由目标权重和进度自动计算得来
+                  </div>
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
               </dt>
               <dd>
                 <el-progress
@@ -56,7 +78,9 @@
             </dl>
             <dl
               v-if="
-                ['1', 1, '6', 6, '8', 8, 3, '3'].includes(item.okrMain.status)
+                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
+                  item.okrMain.status
+                )
               "
             >
               <dt>
@@ -73,7 +97,11 @@
                       <em>申请变更</em>
                     </el-dropdown-item>
                     <el-dropdown-item
-                      v-if="['1', 1].includes(item.okrMain.status)"
+                      v-if="
+                        ['1', 1, 2, '2', 3, '3', 4].includes(
+                          item.okrMain.status
+                        )
+                      "
                       @click.native="openDialog(item)"
                     >
                       <em>操作历史</em>
@@ -115,63 +143,15 @@
               @openchange="goChangeOkr(item)"
               :expands="expands"
             >
-              <!-- o的承接地图 -->
-              <template slot="head-undertake" slot-scope="props">
-                <div
-                  v-if="props.okritem.continueCount > 0"
-                  @click="
-                    goUndertakeMaps(
-                      props.okritem.okrDetailId,
-                      props.okritem.okrDetailObjectKr
-                    )
-                  "
-                >
-                  <i
-                    :class="{
-                      'has-undertake': props.okritem.continueCount > 0,
-                    }"
-                    class="el-icon-link"
-                  ></i>
-                </div>
-                <div v-else-if="showUndertake">暂无</div>
-              </template>
-              <!-- kr的承接地图 -->
-              <template slot="body-bar" slot-scope="props">
-                <div
-                  v-if="props.okritem.continueCount > 0"
-                  @click="
-                    goUndertakeMaps(
-                      props.okritem.okrDetailId,
-                      props.okritem.okrDetailObjectKr
-                    )
-                  "
-                >
-                  <i
-                    :class="{
-                      'has-undertake': props.okritem.continueCount > 0,
-                    }"
-                    class="el-icon-link"
-                  ></i>
-                </div>
-                <div v-else-if="showUndertake">暂无</div>
-              </template>
-              <!-- o的进度更新 -->
-              <template slot="weight-bar" slot-scope="props">
-                <div
-                  v-if="['1', 1, 3, '3'].includes(item.okrMain.status)"
-                  @click="openUpdate(props.okritem)"
-                >
-                  <el-button plain class="tl-btn btn-lineheight"
-                    >更新进展</el-button
-                  >
-                </div>
-              </template>
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
                 <el-dropdown
                   v-if="
-                    ['1', '7', 1, 7].includes(item.okrMain.status) &&
-                    props.okritem.versionCount > 1
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(
+                      item.okrMain.status
+                    ) &&
+                    (props.okritem.versionCount > 1 ||
+                      props.okritem.continueCount > 0)
                   "
                   trigger="click"
                   class="tl-dropdown"
@@ -186,13 +166,26 @@
                     >
                       <em>历史版本</em>
                     </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="props.okritem.continueCount > 0"
+                      @click.native="
+                        goUndertakeMaps(
+                          props.okritem.okrDetailId,
+                          props.okritem.okrDetailObjectKr
+                        )
+                      "
+                    >
+                      <span>承接地图</span>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
               <!-- kr的操作栏 -->
               <template slot="moreHandle-krbar" slot-scope="props">
                 <el-dropdown
-                  v-if="['1', '7', 1, 7].includes(item.okrMain.status)"
+                  v-if="
+                    ['1', '7', 1, 7, 2, 3, 4, 5].includes(item.okrMain.status)
+                  "
                   trigger="click"
                 >
                   <span class="el-dropdown-link">
@@ -210,8 +203,42 @@
                     >
                       <em>考核指标、衡量办法</em>
                     </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="props.okritem.continueCount > 0"
+                      @click.native="
+                        goUndertakeMaps(
+                          props.okritem.okrDetailId,
+                          props.okritem.okrDetailObjectKr
+                        )
+                      "
+                    >
+                      <span>承接地图</span>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
+              </template>
+              <!-- kr更新进展 -->
+              <template slot="progress-krbar" slot-scope="props">
+                <el-tooltip
+                  :disabled="!['1', 1, 3, '3'].includes(item.okrMain.status)"
+                  effect="dark"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <div slot="content">
+                    <em>更新进展</em>
+                  </div>
+                  <tl-process
+                    :class="{
+                      update: ['1', 1, 3, '3'].includes(item.okrMain.status),
+                    }"
+                    @click.native="
+                      ['1', 1, 3, '3'].includes(item.okrMain.status) &&
+                        openUpdate(props.okritem)
+                    "
+                    :data="parseInt(props.okritem.okrDetailProgress, 10)"
+                  ></tl-process>
+                </el-tooltip>
               </template>
             </tl-okr-table>
           </div>
@@ -230,7 +257,7 @@
     <tl-writeokr
       ref="tl-writeokr"
       :exist.sync="writeokrExist"
-      v-if="writeokrExist"
+      v-if="hasValue(writeokrExist)"
       :writeInfo="writeInfo"
       :userName="userInfo.userName"
       @success="searchOkr(searchForm.status)"
@@ -238,7 +265,7 @@
     <tl-changeokr
       ref="tl-changeokr"
       :exist.sync="changeokrExist"
-      v-if="changeokrExist"
+      v-if="hasValue(changeokrExist)"
       :writeInfo="writeInfo"
       :drawerTitle="drawerTitle"
       @success="searchOkr(searchForm.status)"
@@ -246,7 +273,7 @@
     <tl-okr-detail
       ref="tl-okr-detail"
       :exist.sync="detailExist"
-      v-if="detailExist"
+      v-if="hasValue(detailExist)"
       :server="server"
       :okrId="okrId"
       :CONST="CONST"
@@ -256,7 +283,7 @@
     <tl-okr-update
       ref="tl-okr-update"
       :exist.sync="updateExist"
-      v-if="updateExist"
+      v-if="hasValue(updateExist)"
       :server="server"
       :okrId="okrId"
       :okrItem="okrItem"
@@ -265,7 +292,7 @@
     ></tl-okr-update>
     <tl-okr-history
       :exist.sync="historyExist"
-      v-if="historyExist"
+      v-if="hasValue(historyExist)"
       ref="okrhistory"
       :server="server"
       :okrDetailId="historyId"
@@ -273,7 +300,7 @@
     ></tl-okr-history>
     <tl-checkjudge
       :exist.sync="checkjudgeExist"
-      v-if="checkjudgeExist"
+      v-if="hasValue(checkjudgeExist)"
       ref="checkjudge"
       :checkjudgeData="checkjudgeData"
     ></tl-checkjudge>
@@ -285,6 +312,7 @@ import { mapState } from 'vuex';
 import okrTable from '@/components/okrTable';
 import okrDetail from '@/components/okrDetail';
 import okrHistory from '@/components/okrHistory';
+import process from '@/components/process';
 import okrUpdate from './component/okrUpdate';
 import changeOKR from './component/changeOKR';
 import checkJudge from './component/checkJudge';
@@ -304,6 +332,7 @@ export default {
     'tl-changeokr': changeOKR,
     'tl-okr-history': okrHistory,
     'tl-checkjudge': checkJudge,
+    'tl-process': process,
   },
   data() {
     return {
@@ -341,6 +370,7 @@ export default {
       historyTitle: {},
       checkjudgeExist: false,
       checkjudgeData: {},
+      orgId: '',
     };
   },
   computed: {
@@ -423,9 +453,13 @@ export default {
                 this.handleJSON(this.searchForm.status, draftList);
               }
             } else {
-              this.okrList[0].tableList = res.data.okrDetails || [];
-              this.okrList[0].okrMain = res.data.okrMain || {};
-              this.okrId = this.okrList[0].okrMain.okrId || '';
+              this.okrList = [];
+              res.data.forEach((okritem) => {
+                this.handleNormal(okritem);
+                // this.okrList[okrindex] = {};
+                // this.okrList[okrindex].tableList = okritem.okrDetails || [];
+                // this.okrList[okrindex].okrMain = okritem.okrMain || {};
+              });
             }
             this.loading = false;
           }
@@ -477,6 +511,7 @@ export default {
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
       });
+      this.orgId = object.okrMain.orgId || '';
     },
 
     // 打开详情
@@ -550,7 +585,7 @@ export default {
       this.$router.push({
         name: 'undertakeMaps',
         params: {
-          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.okrId,
+          okrDetailId: id, objectName: name, showOne: true, periodId: this.okrCycle.periodId, orgId: this.orgId,
         },
       });
     },

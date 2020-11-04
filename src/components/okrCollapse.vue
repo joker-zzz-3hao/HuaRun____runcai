@@ -267,7 +267,7 @@
                   placeholder="请输入关键结果"
                   v-model="kritem.okrDetailObjectKr"
                   class="tl-input"
-                  maxlength="200"
+                  maxlength="500"
                 ></el-input>
               </el-form-item>
               <span v-else>{{ kritem.okrDetailObjectKr }}</span>
@@ -361,19 +361,7 @@
           >
             <div>
               <span>考核指标</span>
-              <el-form-item
-                v-if="kritem.showCheckEdit"
-                :prop="
-                  'tableList.' + index + '.krList.' + krIndex + '.checkQuota'
-                "
-                :rules="[
-                  {
-                    required: true,
-                    trigger: 'blur',
-                    validator: validateCheck,
-                  },
-                ]"
-              >
+              <el-form-item v-if="kritem.showCheckEdit">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -392,19 +380,7 @@
             </div>
             <div>
               <span>衡量办法</span>
-              <el-form-item
-                v-if="kritem.showJudgeEdit"
-                :prop="
-                  'tableList.' + index + '.krList.' + krIndex + '.judgeMethod'
-                "
-                :rules="[
-                  {
-                    required: true,
-                    trigger: 'blur',
-                    validator: validateJudge,
-                  },
-                ]"
-              >
+              <el-form-item v-if="kritem.showJudgeEdit">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -454,7 +430,7 @@
                     v-model="newItem.okrDetailObjectKr"
                     @input="updateokrCollapse"
                     class="tl-input"
-                    maxlength="200"
+                    maxlength="500"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -516,15 +492,7 @@
               </el-form-item>
             </dd>
             <dd>
-              <el-form-item
-                label="考核指标"
-                :prop="
-                  'tableList.' + index + '.newkrList.' + kindex + '.checkQuota'
-                "
-                :rules="[
-                  { required: true, trigger: 'blur', validator: validateCheck },
-                ]"
-              >
+              <el-form-item label="考核指标">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -535,15 +503,7 @@
                   @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>
-              <el-form-item
-                label="衡量办法"
-                :prop="
-                  'tableList.' + index + '.newkrList.' + kindex + '.judgeMethod'
-                "
-                :rules="[
-                  { required: true, trigger: 'blur', validator: validateJudge },
-                ]"
-              >
+              <el-form-item label="衡量办法">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"

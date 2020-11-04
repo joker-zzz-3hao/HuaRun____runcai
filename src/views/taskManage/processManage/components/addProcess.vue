@@ -213,6 +213,7 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
+      orgFullId: (state) => state.orgFullId,
     }),
     teamUser() {
       return this.formData.taskProcessQueryType == '1';
@@ -249,20 +250,18 @@ export default {
 
     },
     addMember() {},
-    remoteMethod(name) {
-      this.server.getUserListByOrgId({
-        currentPage: 1,
-        pageSize: 20,
-        userName: name ? name.trim() : '',
+    remoteMethod() {
+      this.server.listOrgUserPage({
+        orgFullId: this.orgFullId,
       }).then((res) => {
         if (res.code == 200) {
-          this.userList = res.data.content;
+          this.userList = res.data || [];
         }
       });
     },
     visibleChange(name) {
       if (!name) {
-        this.remoteMethod();
+        // this.remoteMethod();
       }
     },
     errorHandler() {

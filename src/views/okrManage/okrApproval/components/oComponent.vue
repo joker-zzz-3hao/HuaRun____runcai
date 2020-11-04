@@ -66,7 +66,9 @@ export default {
       default: '',
     },
   },
-  mounted() {},
+  mounted() {
+    console.log('*****************55*********************', this.oData);
+  },
   computed: {},
   methods: {},
   watch: {},

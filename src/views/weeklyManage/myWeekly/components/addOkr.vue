@@ -14,18 +14,18 @@
     </div>
     <el-scrollbar>
       <div class="cont-box">
+        <el-radio-group v-model="noOkr">
+          <el-radio
+            class="tl-radio"
+            v-for="(item, index) in [{ id: 'noOkr', name: '不关联任何OKR' }]"
+            :label="item.id"
+            :key="item.id"
+            @click.native="noOkrChange($event, index, item)"
+          >
+            <em>{{ item.name }}</em>
+          </el-radio>
+        </el-radio-group>
         <dl class="dl-list" v-show="configItemCodeOKR == 'S'">
-          <el-radio-group v-model="noOkr">
-            <el-radio
-              class="tl-radio"
-              v-for="(item, index) in [{ id: 'noOkr', name: '不关联任何OKR' }]"
-              :label="item.id"
-              :key="item.id"
-              @click.native="noOkrChange($event, index, item)"
-            >
-              <em>{{ item.name }}</em>
-            </el-radio>
-          </el-radio-group>
           <dt class="list-title operating-area-inside">
             <em>部门目标</em>
             <el-select

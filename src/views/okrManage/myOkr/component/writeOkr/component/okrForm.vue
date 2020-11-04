@@ -81,16 +81,7 @@
                   <i class="el-icon-odometer"></i>
                   <span>当前进度</span>
                   <el-form-item>
-                    <el-input-number
-                      v-model="oitem.okrDetailProgress"
-                      controls-position="right"
-                      :min="0"
-                      :max="100"
-                      :step="1"
-                      :precision="0"
-                      class="tl-input-number"
-                    ></el-input-number>
-                    <span>%</span>
+                    <span>0 %</span>
                   </el-form-item>
                 </div>
                 <div>
@@ -115,9 +106,11 @@
                       "
                       >、</em
                     >
-                    <em v-if="oitem.cultureId" @click="openUndertake(index)">{{
-                      oitem.cultureName
-                    }}</em>
+                    <em
+                      v-if="hasValue(oitem.cultureId)"
+                      @click="openUndertake(index)"
+                      >{{ oitem.cultureName }}</em
+                    >
                   </template>
                   <el-button
                     type="text"
@@ -160,7 +153,7 @@
                     placeholder="请输入关键结果"
                     v-model="kitem.okrDetailObjectKr"
                     class="tl-input"
-                    maxlength="200"
+                    maxlength="500"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -224,19 +217,7 @@
               </el-form-item>
             </dd>
             <dd>
-              <el-form-item
-                label="考核指标"
-                :prop="
-                  'okrInfoList.' + index + '.krList.' + kindex + '.checkQuota'
-                "
-                :rules="[
-                  {
-                    required: true,
-                    trigger: 'blur',
-                    message: '请输入考核指标',
-                  },
-                ]"
-              >
+              <el-form-item label="考核指标">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -246,19 +227,7 @@
                   class="tl-textarea"
                 ></el-input>
               </el-form-item>
-              <el-form-item
-                label="衡量办法"
-                :prop="
-                  'okrInfoList.' + index + '.krList.' + kindex + '.judgeMethod'
-                "
-                :rules="[
-                  {
-                    required: true,
-                    trigger: 'blur',
-                    message: '请输入衡量办法',
-                  },
-                ]"
-              >
+              <el-form-item label="衡量办法">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"

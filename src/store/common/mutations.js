@@ -3,6 +3,14 @@ export default {
   setOkrApprovalStep: (state, okrApprovalStep = {}) => {
     state.okrApprovalStep = okrApprovalStep;
   },
+  // 设置OKR汇总列表和详情切换
+  setOkrSummarizeStep: (state, okrSummarizeStep = {}) => {
+    state.okrSummarizeStep = okrSummarizeStep;
+  },
+  // 设置OKR汇总操作类型
+  setSummasizeOptionType: (state, optionType = {}) => {
+    state.optionType = optionType;
+  },
   // 设置承接地图和对齐详情切换
   setUndertakeMapsStep: (state, undertakeMapsStep = {}) => {
     state.undertakeMapsStep = undertakeMapsStep;
@@ -14,6 +22,10 @@ export default {
   // 设置OKR审批列表和详情切换
   setDetailData: (state, okrApprovalDetail = {}) => {
     state.okrApprovalDetail = okrApprovalDetail;
+  },
+  // 设置OKR审批列表和详情切换
+  setOkrSummarizeDetailData: (state, okrSummarizeDetail = {}) => {
+    state.okrSummarizeDetail = okrSummarizeDetail;
   },
   // 设置润才菜单
   setCrMenu: (state, crMenuList = []) => {

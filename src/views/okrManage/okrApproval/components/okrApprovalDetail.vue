@@ -13,7 +13,7 @@
         <dl class="dl-item">
           <dt>
             <i class="el-icon-user"></i>
-            <span>申请人</span>
+            <span>提交人</span>
           </dt>
           <dd>
             <em>{{ data.userName }}</em>

@@ -22,14 +22,14 @@
         </dl>
         <dl class="dl-list">
           <dt>
-            <span>周报中支撑个人OKR或团队OKR</span>
+            <span>周报中支撑个人OKR或上级OKR</span>
           </dt>
           <dd>
             <el-radio v-model="radio['O-2']" label="O" class="tl-radio"
               >个人</el-radio
             >
             <el-radio v-model="radio['O-2']" label="S" class="tl-radio"
-              >团队</el-radio
+              >上级</el-radio
             >
           </dd>
         </dl>
