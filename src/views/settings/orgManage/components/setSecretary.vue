@@ -218,7 +218,7 @@ export default {
         }).then((res) => {
           // 如果选中的部门负责人/代理负责人已经是该用户了，则不能够设置该用户为该部门的综合岗
           if (res.data.orgAdminUserName == this.userData.userName) {
-            this.$alert(`${this.userData.userName}已经是该部门负责人，不能设置为该部门的综合岗。`, '提示', {
+            this.$alert(`'${this.userData.userName}'已经是该部门负责人，不能再设置为综合岗。`, '提示', {
               confirmButtonText: '取消',
               type: 'warning',
               closeOnClickModal: false,
@@ -229,7 +229,7 @@ export default {
               },
             });
           } else if (!!res.data.teamAdminUserName && this.userData.userName != res.data.teamAdminUserName) {
-            this.$confirm(`目前该部门的综合岗是'${res.data.teamAdminUserName}'，是否将其替换？`, '提示', {
+            this.$confirm(`目前该部门的综合岗是'${res.data.teamAdminUserName}'，是否将其替换为'${this.userData.userName}'？`, '提示', {
               confirmButtonText: '替换',
               cancelButtonText: '取消',
               type: 'warning',
