@@ -52,18 +52,21 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="所属分类" prop="typeName">
+            <el-table-column label="所属标签" prop="typeName">
               <template slot-scope="scope">
-                <div v-if="canEdit(scope.row)">--</div>
-                <div v-else>
-                  <em>{{ scope.row.typeName || "暂无分类" }}</em>
-                  <el-dropdown class="tl-dropdown" trigger="click">
+                <div>
+                  <em>{{ scope.row.typeName || "暂无标签" }}</em>
+                  <el-dropdown
+                    class="tl-dropdown"
+                    trigger="click"
+                    v-if="!canEdit(scope.row)"
+                  >
                     <div class="el-dropdown-link">
                       <i class="el-icon-edit"></i>
                     </div>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item v-if="processClassifyList.length == 0"
-                        >暂无分类</el-dropdown-item
+                        >暂无标签</el-dropdown-item
                       >
                       <el-dropdown-item
                         @click.native="changeClassify(scope.row, calssify)"
