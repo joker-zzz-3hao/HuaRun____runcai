@@ -14,7 +14,19 @@
         <em v-if="!overview">信心指数</em>
       </li>
 
-      <li>进度</li>
+      <li>
+        <el-tooltip
+          :disabled="!showUpdate"
+          effect="dark"
+          placement="top"
+          popper-class="tl-tooltip-popper"
+        >
+          <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
+          <span class="progress-number"
+            >进度 <i v-if="showUpdate" class="el-icon-question"> </i
+          ></span>
+        </el-tooltip>
+      </li>
 
       <!-- <li>
         <em v-if="!overview && showUpdate">更新进展</em>
@@ -206,21 +218,7 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="17%">
         <template slot-scope="scope">
-          <!-- <tl-process
-            :data="parseInt(scope.row.okrDetailProgress, 10)"
-          ></tl-process> -->
-          <el-tooltip
-            :disabled="!showUpdate"
-            effect="dark"
-            placement="top"
-            popper-class="tl-tooltip-popper"
-          >
-            <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
-            <span class="progress-number"
-              >{{ scope.row.okrDetailProgress }}%
-              <i v-if="showUpdate" class="el-icon-question"></i
-            ></span>
-          </el-tooltip>
+          {{ scope.row.okrDetailProgress }}%
         </template>
       </el-table-column>
 

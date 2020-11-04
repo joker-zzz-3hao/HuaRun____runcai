@@ -140,7 +140,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="props.okritem.continueCount > 0"
-                    @click="
+                    @click.native="
                       goUndertakeMaps(
                         props.okritem.okrDetailId,
                         props.okritem.okrDetailObjectKr
