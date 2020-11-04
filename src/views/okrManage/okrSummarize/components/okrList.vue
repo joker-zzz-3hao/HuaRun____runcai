@@ -45,6 +45,27 @@
             ></el-cascader>
           </dd>
         </dl>
+        <dl class="dl-item">
+          <dt>OKR类型</dt>
+          <dd>
+            <el-select
+              v-model="okrBelongType"
+              placeholder="全部"
+              :popper-append-to-body="false"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+              style="width: 120px"
+              @change="okrTypeChange"
+            >
+              <el-option
+                v-for="item in CONST.BELONG_TYPE_LIST"
+                :key="item.okrBelongType"
+                :label="item.okrBelongTypeName"
+                :value="item.okrBelongType"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
     </div>
     <div class="cont-area">
@@ -93,39 +114,18 @@
           <dl class="dl-item">
             <dt><span>已完成</span></dt>
             <dd>
-              <em>{{ summaryData.okrDoneNum }}</em>
+              <em>{{ summaryData.okrCompleteNum }}</em>
             </dd>
           </dl>
           <dl class="dl-item">
             <dt><span>已结束</span></dt>
             <dd>
-              <em>{{ summaryData.okrCompleteNum }}</em>
+              <em>{{ summaryData.okrDoneNum }}</em>
             </dd>
           </dl>
         </div>
       </div>
       <div class="operating-box">
-        <dl class="dl-item">
-          <dt>OKR类型</dt>
-          <dd>
-            <el-select
-              v-model="okrBelongType"
-              placeholder="全部"
-              :popper-append-to-body="false"
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-              style="width: 120px"
-              @change="searchList"
-            >
-              <el-option
-                v-for="item in CONST.BELONG_TYPE_LIST"
-                :key="item.okrBelongType"
-                :label="item.okrBelongTypeName"
-                :value="item.okrBelongType"
-              ></el-option>
-            </el-select>
-          </dd>
-        </dl>
         <dl class="dl-item">
           <dt>OKR状态</dt>
           <dd>
@@ -241,11 +241,16 @@
                   disabled
                   type="text"
                   v-if="
-                    (rootRole && [1, 2].includes(scope.row.readStatus)) ||
-                    ![1, 2, 3, 4].includes(scope.row.status)
+                    rootRole &&
+                    ([1, 2].includes(scope.row.readStatus) ||
+                      ![1, 2, 3, 4].includes(scope.row.status))
                   "
-                  >已审阅</el-button
-                >
+                  ><span v-if="[1, 2].includes(scope.row.readStatus)">
+                    已审阅</span
+                  ><span v-if="![1, 2, 3, 4].includes(scope.row.status)">
+                    审阅</span
+                  >
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -386,6 +391,10 @@ export default {
       this.orgFullIdList = data;
       this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
+      this.searchList();
+      this.getSummaryOkrInfo();
+    },
+    okrTypeChange() {
       this.searchList();
       this.getSummaryOkrInfo();
     },

@@ -5,6 +5,9 @@
       <div class="card-panel-head">
         <div class="okr-title">
           {{ testModel ? "2020年下半年的OKR" : okrMain.periodName }}
+          <em v-if="!testModel && okrMain.okrBelongType == 1"
+            >-{{ cutOrgName(okrMain.orgName) }}</em
+          >
         </div>
         <dl class="okr-state">
           <dt>
@@ -275,8 +278,10 @@ export default {
         };
       }
       this.okrId = this.okrMain.okrId || '';
-      this.orgUser = listData.orgUser || [];
+      this.$set(this, 'orgUser', listData.orgUser || []);
+      // this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
+
       setTimeout(() => {
         this.showLoad = true;
         this.fullscreenLoading = false;

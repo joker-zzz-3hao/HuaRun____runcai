@@ -64,7 +64,7 @@
           class="tl-btn btn-grey"
           @click="queryTaskByClassify('')"
           :class="{ 'is-selected': searchParams.typeId == '' }"
-          >全部分类</el-button
+          >全部标签</el-button
         >
         <el-button
           v-for="classify in processClassifyList"
@@ -90,10 +90,10 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="editClassify(classify)"
-                >重新命名分类</el-dropdown-item
+                >重新命名标签</el-dropdown-item
               >
               <el-dropdown-item @click.native="deleteClassify(classify)"
-                >删除分类</el-dropdown-item
+                >删除标签</el-dropdown-item
               >
             </el-dropdown-menu>
           </el-dropdown>
@@ -324,7 +324,7 @@ export default {
       this.server.addProcessType({
         available: 1,
         processId: this.processId,
-        typeName: `新分类${index}`,
+        typeName: `新标签${index}`,
       }).then((res) => {
         if (res.code == 200) {
           this.queryProcessClassify({ processId: this.processId });
@@ -352,7 +352,7 @@ export default {
       if (checkres.data) {
         this.$xconfirm({
           content: '',
-          title: '当前分类有任务项，是否删除',
+          title: '当前标签有任务项，是否删除',
         }).then(() => {
           this.server.deleteProcess({
             typeId: classify.typeId,

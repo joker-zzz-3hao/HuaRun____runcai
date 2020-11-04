@@ -126,7 +126,7 @@ export default {
           type: 'bar',
           barWidth: '10',
           itemStyle: {
-            normal: { barBorderRadius: 5, color: '#FFBC20' },
+            normal: { barBorderRadius: 5, color: '#3f7dff' },
           },
 
           data: that.testModel ? userData.mainDataY : that.mainDataY,

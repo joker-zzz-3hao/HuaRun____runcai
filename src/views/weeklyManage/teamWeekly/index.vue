@@ -182,60 +182,6 @@
                   }}</em>
                 </dd>
               </dl>
-              <!-- <el-card>
-                <div>
-                  <el-avatar
-                    :size="30"
-                    :src="weekly.headerUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="weekly.userName" class="user-name">
-                      <em>{{
-                        weekly.userName.substring(weekly.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar>
-                  <span
-                    >{{ weekly.userName
-                    }}{{ weekly.isadmin == "1" ? "(部门负责人)" : "" }}</span
-                  >
-                  <span v-if="weekly.weeklyId">
-                    <i class="el-icon-circle-check"></i>已提交
-                  </span>
-                  <span v-else>
-                    <i class="el-icon-warning-outline"></i>未提交
-                  </span>
-                  <div>{{ weekly.orgName }}</div>
-                </div>
-                <div>
-                  <div>
-                    本周心情
-                    <span v-if="weekly.weeklyEmotion == 0">
-                      <i class="el-icon-user"></i> 沮丧
-                    </span>
-                    <span v-else-if="weekly.weeklyEmotion == 50">
-                      <i class="el-icon-user"></i>平常
-                    </span>
-                    <span v-else-if="weekly.weeklyEmotion == 100">
-                      <i class="el-icon-user"></i>开心
-                    </span>
-                    <span v-else>--</span>
-                  </div>
-                  <div>
-                    更新时间
-                    <span>
-                      {{
-                        weekly.updateTime
-                          ? dateFormat(
-                              "YYYY-mm-dd HH:MM:SS",
-                              new Date(weekly.updateTime)
-                            )
-                          : "--"
-                      }}
-                    </span>
-                  </div>
-                </div>
-              </el-card> -->
             </li>
             <li v-if="tableData.length < 1">
               <div class="no-data">
@@ -353,86 +299,6 @@
                   </template>
                 </dd>
               </dl>
-              <!-- <span>
-                  <el-avatar
-                    :size="30"
-                    :src="weekly.headerUrl"
-                    @error="errorHandler"
-                  >
-                    <div v-if="weekly.userName" class="user-name">
-                      <em>{{
-                        weekly.userName.substring(weekly.userName.length - 2)
-                      }}</em>
-                    </div>
-                  </el-avatar>
-                  <span>{{ weekly.userName }}</span>
-                  <span>{{ weekly.orgName }}</span>
-                </span> -->
-              <!-- 任务项 -->
-              <!-- <span v-if="formData.queryType == '0'">
-                  <ul>
-                    <li v-for="work in weekly.contentList" :key="work">
-                      {{ work.workContent }}
-                    </li>
-                  </ul>
-                </span> -->
-              <!-- 感想 -->
-              <!-- <span v-if="formData.queryType == '1'">
-                  <ul>
-                    <li v-for="work in weekly.contentList" :key="work">
-                      {{ work.thoughtContent }}
-                    </li>
-                  </ul>
-                </span> -->
-              <!-- 下周计划 -->
-              <!-- <span v-if="formData.queryType == '2'">
-                  <ul>
-                    <li v-for="work in weekly.contentList" :key="work">
-                      {{ work.planContent }}
-                    </li>
-                  </ul>
-                </span> -->
-              <!-- 有进度的okr -->
-              <!-- <span v-if="formData.queryType == '3'">
-                  <ul>
-                    <li v-for="work in weekly.contentList" :key="work">
-                      <span v-if="work.okrDetailType == 0">
-                        <span>目标</span>
-                        <span>{{ work.okrDetailObjectKr }}</span>
-                        <span>
-                          本次更新进度
-                          {{
-                            work.progressAfter - work.progressBefor > 0
-                              ? "+"
-                              : ""
-                          }}
-                          {{ work.progressAfter - work.progressBefor }}%
-                        </span>
-                      </span>
-                      <span v-else>
-                        <ul>
-                          <li>
-                            <span>目标</span>
-                            <span>{{ work.pokrDetailObjectKr }}</span>
-                          </li>
-                          <li>
-                            <span>KR</span>
-                            <span>{{ work.okrDetailObjectKr }}</span>
-                            <span>
-                              本次更新进度
-                              {{
-                                work.progressAfter - work.progressBefor > 0
-                                  ? "+"
-                                  : ""
-                              }}
-                              {{ work.progressAfter - work.progressBefor }}%
-                            </span>
-                          </li>
-                        </ul>
-                      </span>
-                    </li>
-                  </ul>
-                </span> -->
             </li>
             <li v-if="tableData.length < 1">
               <div class="no-data">
@@ -544,7 +410,7 @@ export default {
     severalData() {
       let isLeader = false;
       this.userInfo.roleList.forEach((role) => {
-        if (role.roleCode == 'ORG_ADMIN') {
+        if (role.roleCode == 'ORG_ADMIN' || role.roleCode == 'TEAM_ADMIN') {
           isLeader = true;
         }
       });

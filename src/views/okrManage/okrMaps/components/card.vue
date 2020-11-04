@@ -20,7 +20,7 @@
       <tl-process
         @click.stop="goDetail(node.node.okrId)"
         :data="node.node.okrProgress"
-        :width="36"
+        :width="38"
         :marginLeft="6"
       ></tl-process>
       <div class="department-info">
