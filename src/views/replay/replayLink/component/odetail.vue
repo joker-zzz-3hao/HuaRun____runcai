@@ -69,7 +69,21 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
+          </dd>
+
+          <dd>
+            <div>
+              <span>考核指标</span>
+              <em> {{ list.checkQuota }}</em>
+            </div>
+          </dd>
+          <dd>
+            <div>
+              <span>衡量方法</span>
+              <em> {{ list.judgeMethod }}</em>
+            </div>
+          </dd>
+          <!-- <div>
               <i class="el-icon-bell"></i>
               <span>信心指数</span>
               <div class="state-grid">
@@ -96,23 +110,12 @@
                 {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
               </div>
             </div> -->
-          </dd>
         </dl>
 
         <dl class="is-kr">
-          <dd>
-            <div>
-              <span>考核指标</span>
-              <em> {{ item.o.checkQuota }}</em>
-            </div>
-          </dd>
-          <dd>
-            <div>
-              <span>衡量方法</span>
-              <em> {{ item.o.judgeMethod }}</em>
-            </div>
-          </dd>
-          <dd></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
           <dd>
             <dl>
               <dt>价值与收获</dt>
