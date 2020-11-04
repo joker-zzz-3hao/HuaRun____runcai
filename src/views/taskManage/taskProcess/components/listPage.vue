@@ -56,11 +56,7 @@
               <template slot-scope="scope">
                 <div>
                   <em>{{ scope.row.typeName || "暂无标签" }}</em>
-                  <el-dropdown
-                    class="tl-dropdown"
-                    trigger="click"
-                    v-if="!canEdit(scope.row)"
-                  >
+                  <el-dropdown class="tl-dropdown" trigger="click">
                     <div class="el-dropdown-link">
                       <i class="el-icon-edit"></i>
                     </div>
