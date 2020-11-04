@@ -219,6 +219,7 @@
     </elcollapse>
 
     <tl-footer
+      :btnText="'提交复盘'"
       @submit="submit"
       @save="save"
       @handleDeleteOne="handleDeleteOne"
