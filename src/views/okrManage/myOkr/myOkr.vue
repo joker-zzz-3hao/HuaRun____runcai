@@ -629,9 +629,9 @@ export default {
         this.$refs.checkjudge.show();
       });
     },
+    // 展示收起
     handleOpen(val) {
       if (val.expands.length == 0) {
-        // val.expands = [];
         val.tableList.forEach((item) => {
           val.expands.push(item.okrDetailId);
           console.log(item);
@@ -639,10 +639,6 @@ export default {
       } else {
         val.expands = [];
       }
-
-      // console.log();
-      // val.forEach((item) => {
-      // });
     },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
