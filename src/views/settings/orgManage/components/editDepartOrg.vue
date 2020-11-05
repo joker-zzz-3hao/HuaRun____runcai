@@ -243,7 +243,7 @@ export default {
               },
             });
           } else if (!!res.data.teamAdminUserName && this.rowData.userName == res.data.teamAdminUserName) {
-            this.$alert(`'${res.data.orgAdminUserName}'已经是该部门综合岗，不能再设置为代理负责人。`, '提示', {
+            this.$alert(`'${res.data.teamAdminUserName}'已经是该部门综合岗，不能再设置为代理负责人。`, '提示', {
               confirmButtonText: '取消',
               type: 'warning',
               closeOnClickModal: false,
