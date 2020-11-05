@@ -28,7 +28,7 @@
         <el-table-column
           prop="okrDetailObjectKr"
           label="目标（O）"
-          min-width="180"
+          min-width="160"
         >
           <template slot-scope="scope">
             <span @click="goDetail(scope.row.okrId)">{{
