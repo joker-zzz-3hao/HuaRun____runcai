@@ -21,6 +21,12 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      saveLoad: false,
+      submitLoad: false,
+    };
+  },
   props: ['btnText'],
   methods: {
     submit() {
