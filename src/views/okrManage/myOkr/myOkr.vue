@@ -25,6 +25,11 @@
               }}{{ item.okrMain.readRemark }}</el-tag
             >
           </div>
+          <el-button @click="handleOpen(item)">
+            <span v-if="item.expands.length > 0">收起</span>
+            <span v-else>展开</span></el-button
+          >
+
           <div class="card-panel-head">
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">
@@ -43,7 +48,7 @@
               </dt>
               <dd>{{ CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType || 2] }}</dd>
             </dl>
-            <dl class="okr-responsible">
+            <dl class="okr-responsible" v-if="hasValue(item.okrMain.userName)">
               <dt>
                 <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
@@ -141,7 +146,7 @@
               :disabled="false"
               :status="item.okrMain.status"
               @openchange="goChangeOkr(item)"
-              :expands="expands"
+              :expands.sync="item.expands"
             >
               <!-- o的操作栏 -->
               <template slot="moreHandle-obar" slot-scope="props">
@@ -414,6 +419,7 @@ export default {
       this.okrList = [{
         tableList: [], // okr列表
         okrMain: {},
+        expands: [],
       }];
       this.loading = true;
       if (this.searchForm.status == 'all') {
@@ -456,9 +462,6 @@ export default {
               this.okrList = [];
               res.data.forEach((okritem) => {
                 this.handleNormal(okritem);
-                // this.okrList[okrindex] = {};
-                // this.okrList[okrindex].tableList = okritem.okrDetails || [];
-                // this.okrList[okrindex].okrMain = okritem.okrMain || {};
               });
             }
             this.loading = false;
@@ -490,6 +493,7 @@ export default {
           status = this.searchForm.status;
         }
         this.okrList.push({
+          expands: this.okrList.length === 0 ? [okrInfo.okrInfoList[0].okrDetailId] : [],
           tableList: okrInfo.okrInfoList,
           okrMain: {
             userName: item.userName,
@@ -508,6 +512,7 @@ export default {
     },
     handleNormal(object) {
       this.okrList.push({
+        expands: this.okrList.length === 0 ? [object.okrDetails[0].okrDetailId] : [],
         tableList: object.okrDetails || [],
         okrMain: object.okrMain || {},
       });
@@ -624,8 +629,20 @@ export default {
         this.$refs.checkjudge.show();
       });
     },
-    handleClick() {
-      console.log();
+    handleOpen(val) {
+      if (val.expands.length == 0) {
+        // val.expands = [];
+        val.tableList.forEach((item) => {
+          val.expands.push(item.okrDetailId);
+          console.log(item);
+        });
+      } else {
+        val.expands = [];
+      }
+
+      // console.log();
+      // val.forEach((item) => {
+      // });
     },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');

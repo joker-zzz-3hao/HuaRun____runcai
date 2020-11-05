@@ -57,7 +57,7 @@
         </dl>
       </dd>
     </dl>
-    <dl class="dl-card-panel">
+    <dl class="dl-card-panel" v-if="okrApprovalStep == '2'">
       <dt>
         <em>OKR信息</em>
       </dt>
@@ -231,6 +231,7 @@ export default {
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
+      okrApprovalStep: (state) => state.okrApprovalStep,
     }),
   },
   mounted() {},

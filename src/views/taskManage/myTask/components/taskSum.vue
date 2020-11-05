@@ -9,94 +9,9 @@
       </dt>
       <dd><span>温馨提示：仅统计当前周时间段内的所有工作任务</span></dd>
     </dl>
-    <el-table
-      :data="tableListown"
-      class="tl-table"
-      row-key="titleLabel"
-      default-expand-all
-    >
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <dl
-            v-for="item in scope.row.tableData"
-            :key="item.taskId"
-            class="sub-tr"
-          >
-            <dd class="okr-line"></dd>
-            <dd>
-              <a @click="openEdit(item.taskId)">{{ item.taskTitle }}</a>
-            </dd>
-            <dd>{{ item.createByUserName }}</dd>
-            <dd>{{ computedTime(item.createTime) }}</dd>
-            <dd>
-              <div v-if="item.processName && item.stepName">
-                <span>{{ item.processName }}</span>
-                <span>-</span>
-                <span>{{ item.stepName }}</span>
-              </div>
-              <div v-else>未设置任务过程</div>
-            </dd>
-            <dd>
-              <span>{{ CONST.TASK_STATUS_MAP[item.taskStatus] }}</span>
-            </dd>
-            <dd>
-              <tl-process :data="parseInt(item.taskProgress, 10)"></tl-process>
-            </dd>
-          </dl>
-        </template>
-      </el-table-column>
-      <el-table-column prop="titleLabel"></el-table-column>
-      <el-table-column prop="userLabel"></el-table-column>
-      <el-table-column prop="createLabel"></el-table-column>
-      <el-table-column prop="processLabel"></el-table-column>
-      <el-table-column prop="statusLabel"></el-table-column>
-      <el-table-column prop="progressLabel"></el-table-column>
-    </el-table>
-    <el-table
-      :data="tableListassign"
-      class="tl-table"
-      row-key="titleLabel"
-      default-expand-all
-    >
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <dl
-            v-for="item in scope.row.tableData"
-            :key="item.taskId"
-            class="sub-tr"
-          >
-            <dd class="okr-line"></dd>
-            <dd>
-              <a @click="openEdit(item.taskId)">{{ item.taskTitle }}</a>
-            </dd>
-            <dd>{{ item.createByUserName }}</dd>
-            <dd>{{ computedTime(item.createTime) }}</dd>
-            <dd>
-              <div v-if="item.processName && item.stepName">
-                <span>{{ item.processName }}</span>
-                <span>-</span>
-                <span>{{ item.stepName }}</span>
-              </div>
-              <div v-else>未设置任务过程</div>
-            </dd>
-            <dd>
-              <span>{{ CONST.TASK_STATUS_MAP[item.taskStatus] }}</span>
-            </dd>
-            <dd>
-              <tl-process :data="parseInt(item.taskProgress, 10)"></tl-process>
-            </dd>
-          </dl>
-        </template>
-      </el-table-column>
-      <el-table-column prop="titleLabel"></el-table-column>
-      <el-table-column prop="userLabel"></el-table-column>
-      <el-table-column prop="createLabel"></el-table-column>
-      <el-table-column prop="processLabel"></el-table-column>
-      <el-table-column prop="statusLabel"></el-table-column>
-      <el-table-column prop="progressLabel"></el-table-column>
-    </el-table>
+
     <!-- 我负责的 -->
-    <!-- <el-table :data="owntableData" class="tl-table" v-loading="loading">
+    <el-table :data="owntableData" class="tl-table" v-loading="loading">
       <el-table-column
         min-width="100px"
         align="left"
@@ -125,9 +40,8 @@
       <el-table-column align="left" prop="processName" label="过程">
         <template slot-scope="scope">
           <div v-if="scope.row.processName && scope.row.stepName">
-            <span>{{ scope.row.processName }}</span>
-            <span>-</span>
-            <span>{{ scope.row.stepName }}</span>
+            <p>{{ scope.row.processName }}</p>
+            <p>{{ scope.row.stepName }}</p>
           </div>
           <div v-else>未设置任务过程</div>
         </template>
@@ -149,9 +63,9 @@
           <tl-process :data="parseInt(scope.row.taskProgress, 10)"></tl-process>
         </template>
       </el-table-column>
-    </el-table> -->
+    </el-table>
     <!-- 我指派的 -->
-    <!-- <el-table :data="assigntableData" class="tl-table" v-loading="loading">
+    <el-table :data="assigntableData" class="tl-table" v-loading="loading">
       <el-table-column
         min-width="100px"
         align="left"
@@ -180,9 +94,8 @@
       <el-table-column align="left" prop="processName" label="过程">
         <template slot-scope="scope">
           <div v-if="scope.row.processName && scope.row.stepName">
-            <span>{{ scope.row.processName }}</span>
-            <span>-</span>
-            <span>{{ scope.row.stepName }}</span>
+            <p>{{ scope.row.processName }}</p>
+            <p>{{ scope.row.stepName }}</p>
           </div>
           <div v-else>未设置任务过程</div>
         </template>
@@ -197,7 +110,7 @@
           <tl-process :data="parseInt(scope.row.taskProgress, 10)"></tl-process>
         </template>
       </el-table-column>
-    </el-table> -->
+    </el-table>
     <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
       >任务汇总到周报</el-button
     >
@@ -232,8 +145,6 @@ export default {
       weekEnd: '',
       weekName: '',
       loading: false,
-      expands1: [],
-      expands2: [],
       tableListown: [{
         titleLabel: '我负责的',
         userLabel: '创建人',
@@ -281,16 +192,16 @@ export default {
           this.tableData = res.data || [];
           this.owntableData = [];
           this.assigntableData = [];
-          this.tableListown[0].tableData = [];
-          this.tableListassign[0].tableData = [];
+          // this.tableListown[0].tableData = [];
+          // this.tableListassign[0].tableData = [];
           this.tableData.forEach((item) => {
             if (item.taskUserId == this.userInfo.userId && item.taskStatus !== 0) {
               this.owntableData.push(item);
-              this.tableListown[0].tableData.push(item);
+              // this.tableListown[0].tableData.push(item);
             }
             if (item.createBy == this.userInfo.userId && item.taskStatus !== 0) {
               this.assigntableData.push(item);
-              this.tableListassign[0].tableData.push(item);
+              // this.tableListassign[0].tableData.push(item);
             }
           });
         }
@@ -313,9 +224,9 @@ export default {
           hourNum -= 1;
         }
         const dateNum = yearNum * 365 + mouthNum * 30 + dayNum;
-        return `当前已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
+        return `已用时长 ${dateNum}天 ${hourNum}小时 ${minuteNum}分`;
       }
-      return '当前已用时长 0天 0小时 0分';
+      return '已用时长 0天 0小时 0分';
     },
     submit() {
       this.go('myWeekly', { params: { weeklySumParams: this.owntableData } });

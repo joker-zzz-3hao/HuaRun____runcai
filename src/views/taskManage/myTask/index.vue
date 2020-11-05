@@ -641,7 +641,7 @@ export default {
         this.resetIsSelected(this.taskProcessList, 'init');
       } else {
         this.searchList = [{ processId: parentCate.value }];
-        this.getTableList();
+        // this.getTableList();
       }
       const params = {
         available: 1,
