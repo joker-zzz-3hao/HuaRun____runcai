@@ -698,7 +698,21 @@
 .my-okr .okr-tag span{
   width: 100%;
 }
-
+.my-okr .kr-num{
+  margin: 0 6px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 48px;
+  height: 18px;
+  font-size: 12px;
+  border-radius: 2px;
+  background: #acb6bf;
+  color: #fff;
+}
+.my-okr .expands{
+  position: absolute;
+}
 /* 更新进展 */
 .update-progress .list-cont {
   padding: 20px;

@@ -25,10 +25,6 @@
               }}{{ item.okrMain.readRemark }}</el-tag
             >
           </div>
-          <el-button @click="handleOpen(item)">
-            <span v-if="item.expands.length > 0">收起</span>
-            <span v-else>展开</span></el-button
-          >
 
           <div class="card-panel-head">
             <div class="okr-title">{{ okrCycle.periodName }}</div>
@@ -140,6 +136,14 @@
               </dd>
             </dl>
           </div>
+          <el-button
+            @click="handleOpen(item)"
+            plain
+            class="expands tl-btn btn-lineheight btn-small"
+          >
+            <span v-if="item.expands.length > 0">全部收起</span>
+            <span v-else>全部展开</span>
+          </el-button>
           <div class="card-panel-body">
             <tl-okr-table
               :tableList="item.tableList"

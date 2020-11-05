@@ -2,10 +2,6 @@
   <div class="department-okr">
     <div class="cont-panel">
       <div v-if="tableList.length > 0" class="tl-card-panel">
-        <el-button @click="handleOpen()">
-          <span v-if="expands.length > 0">收起</span>
-          <span v-else>展开</span></el-button
-        >
         <div class="card-panel-head">
           <div class="okr-title">{{ okrMain.periodName }}</div>
           <dl class="okr-state">
@@ -56,6 +52,14 @@
             </dd>
           </dl>
         </div>
+        <el-button
+          @click="handleOpen()"
+          plain
+          class="expands tl-btn btn-lineheight btn-small"
+        >
+          <span v-if="expands.length > 0">全部收起</span>
+          <span v-else>全部展开</span>
+        </el-button>
         <div class="card-panel-body">
           <tl-okr-table
             :tableList="tableList"

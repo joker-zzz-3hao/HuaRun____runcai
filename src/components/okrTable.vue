@@ -118,7 +118,7 @@
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
             <!-- kr数量  -->
-            <span class="kr-num">kr：{{ scope.row.krList.length }}个</span>
+            <span class="kr-num">kr:{{ scope.row.krList.length }}个</span>
             <el-tooltip
               effect="dark"
               placement="top"
