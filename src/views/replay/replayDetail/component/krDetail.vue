@@ -120,22 +120,34 @@
             </dl>
             <dl>
               <dt>改进措施</dt>
-              <!-- <dd>{{ list.disadvantage }}</dd> -->
+              <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <dl>
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
               <dt>复盘沟通</dt>
               <dd>
                 {{ list.communication }}
               </dd>
             </dl>
-            <dl>
-              <dt>描述</dt>
+            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+              <dt>评论</dt>
               <dd>
-                <el-button :type="'primary'">{{
-                  list.communicationLabel
-                }}</el-button>
+                <dl class="tag-lists">
+                  <dd
+                    :class="[
+                      {
+                        'is-selected':
+                          list.communicationLabel ==
+                          selectColor(list.communicationLabel).txt,
+                      },
+                      selectColor(list.communicationLabel).clsName,
+                    ]"
+                  >
+                    <em>{{ list.communicationLabel }}</em>
+                  </dd>
+                </dl>
               </dd>
             </dl>
+            <dl v-else></dl>
           </dd>
         </dl>
       </elcollapseitem>
@@ -157,7 +169,7 @@ export default {
     return {
       reviewType: 1,
       form: {},
-      activeNames: [1],
+      activeNames: [0],
       server,
       active: {},
       deficiency: {},
@@ -165,10 +177,22 @@ export default {
       communicationLabel: {},
       list: [],
       listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
+        {
+          txt: '超级优秀',
+          clsName: 'super-good',
+        },
+        {
+          txt: '优秀',
+          clsName: 'good',
+        },
+        {
+          txt: '继续努力',
+          clsName: 'work-hard',
+        },
+        {
+          txt: '要加油哦',
+          clsName: 'refuel',
+        },
       ],
     };
   },
@@ -178,6 +202,13 @@ export default {
     'tl-process': process,
   },
   methods: {
+    selectColor(txt) {
+      if (txt) {
+        const data = this.listBtn.filter((item) => item.txt == txt);
+        return data[0];
+      }
+      return '';
+    },
     deleteProduce(index, i) {
       this.okrMain.okrReviewPojoList[index].krs[i].measure.splice(i, 1);
     },

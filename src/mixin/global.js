@@ -305,10 +305,13 @@ export default {
       }
     },
     cutOrgName(orgName) {
-      const namelist = orgName.split('-');
-      if (namelist.length) {
-        return namelist[namelist.length - 1];
-      } return orgName;
+      if (this.hasValue(orgName)) {
+        const namelist = orgName.split('-');
+        if (namelist.length) {
+          return namelist[namelist.length - 1];
+        }
+      }
+      return orgName;
     },
     hasValue(value) {
       return ((value !== false) && ![undefined, null, ''].includes(value)) || (value === 0) || (value === '0');
