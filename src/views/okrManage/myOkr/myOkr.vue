@@ -48,7 +48,7 @@
               </dt>
               <dd>{{ CONST.OKR_TYPE_MAP[item.okrMain.okrBelongType || 2] }}</dd>
             </dl>
-            <dl class="okr-responsible">
+            <dl class="okr-responsible" v-if="hasValue(item.okrMain.userName)">
               <dt>
                 <!-- <i class="el-icon-user"></i> -->
                 <em>负责人</em>
