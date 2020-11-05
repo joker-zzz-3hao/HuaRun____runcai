@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column prop="periodName" label="周期" min-width="116">
         </el-table-column>
-        <el-table-column prop="okrProgress" label="进度" width="150">
+        <el-table-column prop="okrProgress" label="进度" width="180">
           <template slot-scope="scope">
             <tl-process :data="scope.row.okrProgress"></tl-process>
           </template>
