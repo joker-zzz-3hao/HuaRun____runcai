@@ -218,7 +218,7 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="17%">
         <template slot-scope="scope">
-          {{ scope.row.okrDetailProgress }}%
+          <em class="progress-number">{{ scope.row.okrDetailProgress }}%</em>
         </template>
       </el-table-column>
 
