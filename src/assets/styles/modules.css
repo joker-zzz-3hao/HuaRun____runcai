@@ -1037,7 +1037,8 @@
 }
 
 .tl-drawer+.v-modal,
-.el-popup-parent--hidden .v-modal {
+.el-popup-parent--hidden .v-modal,
+.el-message-box__wrapper .v-modal{
   opacity: .1;
   z-index: 2000 !important;
 }
@@ -2278,6 +2279,8 @@
   padding: 16px 0;
   min-height: 200px;
   width: 300px !important;
+  height: 400px;
+  overflow: hidden;
 }
 
 .search-popover .tl-input {
@@ -2320,7 +2323,15 @@
 .search-popover .el-checkbox__label {
   padding: 0;
 }
-
+.search-popover .el-scrollbar{
+height: 70%;
+}
+.search-popover .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+.search-popover .el-scrollbar__view {
+  padding: 0 14px 0 0;
+}
 /* ==========================================================常用基础组件=================================================================== */
 /* tl-custom-btn */
 .tl-custom-btn {
