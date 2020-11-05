@@ -133,7 +133,7 @@
               <dd>
                 <el-input
                   maxlength="2000"
-                  v-model="item.o.advantage"
+                  v-model="item.o.disadvantage"
                   type="textarea"
                   class="tl-textarea"
                   placeholder="事情做的有那些不足，自己表现有哪些不足？"
@@ -147,6 +147,7 @@
                 <dd v-for="(li, d) in item.o.measure || []" :key="d">
                   <el-input
                     type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 8 }"
                     placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="item.o.measure[d]"
                   ></el-input>
@@ -166,6 +167,7 @@
                 <dd>
                   <el-input
                     type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 8 }"
                     placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="item.o.measure[0]"
                   ></el-input>
@@ -390,56 +392,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-
-.rightweight {
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-}
-
-.title-row {
-  display: flex;
-  width: 100%;
-  height: 50px;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.flex {
-  display: flex;
-  width: 50%;
-  flex-direction: row;
-}
-</style>
