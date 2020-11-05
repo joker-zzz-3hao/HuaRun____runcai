@@ -2322,6 +2322,7 @@
   color: #acb6bf;
 }
 
+.replay-info .user-info img,
 .replay-info .user-info .user-name em {
   width: 54px;
   height: 54px;
@@ -2549,6 +2550,10 @@
 
 .replay-link .footer-panel {
   right: 0;
+}
+
+.replay-link .okr-change-list .is-kr dd:nth-of-type(2) span {
+  align-self: start;
 }
 
 /* 周报 */
