@@ -615,13 +615,24 @@ export default {
             value: 'all',
             isSelected: true,
           });
-          this.processList.forEach((item) => {
+          let processIds = '';
+          this.processList.forEach((item, index) => {
             this.taskProcessList.push({
               label: item.processName,
               value: item.processId,
               isSelected: false,
               childCateList: [],
             });
+            processIds = `${processIds + item.processId},`;
+            // console.log(item.processId, processIds);
+            if (index + 1 == this.processList.length) {
+              this.taskProcessList.push({
+                label: '其他',
+                value: processIds,
+                isSelected: false,
+                childCateList: [],
+              });
+            }
           });
         }
       });

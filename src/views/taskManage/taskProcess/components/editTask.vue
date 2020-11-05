@@ -37,32 +37,30 @@
                   class="tl-input"
                 ></el-input>
               </el-form-item>
+              <!-- 更多操作 -->
+              <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    @click.native="deleteTask"
+                    :disabled="formData.taskStatus !== 0"
+                    >删除</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    @click.native="filedTask"
+                    :disabled="formData.taskProgress != 100"
+                    >任务归档</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </el-dropdown>
+            </dt>
+            <dd>
               <div>
                 <span>创建时间：</span>
                 <em>{{ formData.createTime }}</em>
               </div>
-              <!-- 更多操作 -->
-              <div>
-                <el-dropdown trigger="click">
-                  <span class="el-dropdown-link">
-                    <i class="el-icon-more el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      @click.native="deleteTask"
-                      :disabled="formData.taskStatus !== 0"
-                      >删除</el-dropdown-item
-                    >
-                    <el-dropdown-item
-                      @click.native="filedTask"
-                      :disabled="formData.taskProgress != 100"
-                      >任务归档</el-dropdown-item
-                    >
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </dt>
-            <dd>
               <el-form-item label="指派给">
                 <el-select
                   :disabled="canEdit"
@@ -128,8 +126,6 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-            </dd>
-            <dd>
               <el-form-item label="归属任务过程" prop="processId">
                 <el-select
                   v-if="processList.length > 0"
