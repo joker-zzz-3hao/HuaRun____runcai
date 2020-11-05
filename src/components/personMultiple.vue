@@ -17,17 +17,19 @@
     >
       <i slot="prefix" class="el-input__icon el-icon-search"></i>
     </el-input>
-    <el-checkbox-group v-model="searchUser" @change="handleClick">
-      <el-checkbox
-        v-for="(item, index) in filterCreate"
-        :label="item.userId"
-        :key="item.userId + index"
-        class="tl-checkbox"
-      >
-        <em>{{ item.userName }}</em>
-        <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
-      </el-checkbox>
-    </el-checkbox-group>
+    <el-scrollbar>
+      <el-checkbox-group v-model="searchUser" @change="handleClick">
+        <el-checkbox
+          v-for="(item, index) in filterCreate"
+          :label="item.userId"
+          :key="item.userId + index"
+          class="tl-checkbox"
+        >
+          <em>{{ item.userName }}</em>
+          <em v-if="item.userAccount">{{ `(${item.userAccount})` }}</em>
+        </el-checkbox>
+      </el-checkbox-group>
+    </el-scrollbar>
     <div class="flex-end" v-if="filterCreate.length > 0">
       <el-button @click="closepop" type="primary" class="tl-btn amt-bg-slip"
         >确定</el-button
