@@ -38,6 +38,7 @@
       class="tl-table"
       row-key="okrDetailId"
       :expand-row-keys="expands"
+      @expand-change="echange"
     >
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
@@ -116,6 +117,8 @@
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
+            <!-- kr数量  -->
+            <span class="kr-num">kr：{{ scope.row.krList.length }}个</span>
             <el-tooltip
               effect="dark"
               placement="top"
@@ -218,7 +221,7 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="17%">
         <template slot-scope="scope">
-          {{ scope.row.okrDetailProgress }}%
+          <em class="progress-number">{{ scope.row.okrDetailProgress }}%</em>
         </template>
       </el-table-column>
 
@@ -345,6 +348,12 @@ export default {
     },
     opensome() {
       this.$emit('openchange');
+    },
+    echange(a, b) {
+      const result = b.map((ii) => ii.okrDetailId);
+      console.log(a);
+      console.log(result);
+      this.$emit('update:expands', result);
     },
   },
   watch: {

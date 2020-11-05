@@ -690,7 +690,7 @@
 .my-okr .card-panel-head .okr-delete:hover i {
   color: #685df1;
 }
-
+/* change by xinquan */
 .tl-table .sub-tr .okr-progress .update{
   cursor: pointer;
   }
@@ -698,7 +698,7 @@
 .my-okr .okr-tag span{
   width: 100%;
 }
-  
+
 /* 更新进展 */
 .update-progress .list-cont {
   padding: 20px;
@@ -734,7 +734,9 @@
   height: 400px;
   overflow: hidden;
 }
-
+.update-progress .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 .update-progress .el-scrollbar__view {
   padding: 0 14px 0 0;
 }
