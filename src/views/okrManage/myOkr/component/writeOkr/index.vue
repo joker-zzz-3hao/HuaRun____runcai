@@ -396,7 +396,7 @@
         @click="summit"
         class="tl-btn amt-bg-slip"
         :loading="createokrDrawer && okrLoading"
-        >创建OKR</el-button
+        >提交</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
