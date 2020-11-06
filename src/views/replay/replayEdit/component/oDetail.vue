@@ -121,6 +121,7 @@
               <dd>
                 <el-input
                   maxlength="2000"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   v-model="item.o.advantage"
                   type="textarea"
                   class="tl-textarea"
@@ -133,6 +134,7 @@
               <dd>
                 <el-input
                   maxlength="2000"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   v-model="item.o.disadvantage"
                   type="textarea"
                   class="tl-textarea"
