@@ -2,9 +2,9 @@
   <div class="tl-table-fix">
     <ul class="tl-thead">
       <li>
-        <i class="el-icon-arrow-right"></i>
-        <span v-if="true">全部收起</span>
-        <span v-else>全部展开</span>
+        <i class="el-icon-arrow-right" @click="handleOpen"></i>
+        <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
+        <span v-else @click="handleOpen">全部展开</span>
       </li>
       <li>权重</li>
       <!-- <li>
@@ -354,10 +354,23 @@ export default {
     opensome() {
       this.$emit('openchange');
     },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        let allexpands = [];
+        allexpands = this.tableList.map((item) => item.okrDetailId);
+        // this.tableList.forEach((item) => {
+        //   this.expands.push(item.okrDetailId);
+        //   console.log(item);
+        // });
+        this.$emit('update:expands', allexpands);
+      } else {
+        this.$emit('update:expands', []);
+        // this.expands = [];
+      }
+    },
     echange(a, b) {
       const result = b.map((ii) => ii.okrDetailId);
-      console.log(a);
-      console.log(result);
       this.$emit('update:expands', result);
     },
   },

@@ -625,17 +625,6 @@ export default {
         this.$refs.checkjudge.show();
       });
     },
-    // 展示收起
-    handleOpen(val) {
-      if (val.expands.length == 0) {
-        val.tableList.forEach((item) => {
-          val.expands.push(item.okrDetailId);
-          console.log(item);
-        });
-      } else {
-        val.expands = [];
-      }
-    },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;

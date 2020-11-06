@@ -492,7 +492,14 @@
               </el-form-item>
             </dd>
             <dd>
-              <el-form-item label="考核指标">
+              <div @click="openMore(newItem)">
+                <span>考核办法（如有）</span>
+                <i
+                  class="el-icon-arrow-right"
+                  :class="{ 'is-active': newItem.openMore }"
+                ></i>
+              </div>
+              <el-form-item label="考核指标" v-show="newItem.openMore">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -503,7 +510,7 @@
                   @input="updateokrCollapse"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="衡量办法">
+              <el-form-item label="衡量办法" v-show="newItem.openMore">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 1, maxRows: 8 }"
@@ -643,7 +650,11 @@ export default {
       okritem.newkrList.splice(krindex, 1);
       this.$forceUpdate();
     },
-
+    // 展开考核指标衡量办法
+    openMore(item) {
+      item.openMore = !item.openMore;
+      this.$forceUpdate();
+    },
   },
   watch: {
     tableList: {
