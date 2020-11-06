@@ -3171,6 +3171,17 @@ height: 70%;
   width: 47%;
 }
 
+.tl-table-fix .fold i,
+.tl-table-fix .fold span {
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.tl-table-fix .fold:hover i,
+.tl-table-fix .fold:hover span {
+  color: #685df1;
+}
+
 .tl-table-fix .tl-thead li:nth-child(2) {
   width: 6%;
 }
