@@ -1,7 +1,7 @@
 <template>
   <div class="tl-table-fix">
     <ul class="tl-thead">
-      <li class="fold">
+      <li class="fold" :class="{ 'is-toggle': expands.length > 0 }">
         <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
         <span v-else @click="handleOpen">全部展开</span>
         <i class="el-icon-arrow-right" @click="handleOpen"></i>

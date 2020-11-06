@@ -3189,9 +3189,14 @@ height: 70%;
 }
 
 .tl-table-fix .fold i,
+.tl-table-fix .is-toggle i,
 .tl-table-fix .fold span {
   cursor: pointer;
   transition: all .4s ease-out;
+}
+
+.tl-table-fix .is-toggle i {
+  transform: rotate(90deg);
 }
 
 .tl-table-fix .fold span:hover,
