@@ -507,7 +507,7 @@
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
 .department-view .operating-area-inside {
-  padding: 0 30px 0 206px;
+  padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2578,7 +2578,7 @@
 .msg-notice .cont-area,
 .monitor-data .cont-area,
 .okr-summarize .cont-area {
-  padding: 20px 30px;
+  padding: 20px;
   border-radius: 4px;
   background: #fff;
 }

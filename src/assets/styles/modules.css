@@ -2875,7 +2875,7 @@ height: 70%;
 /* tl-card-panel */
 .tl-card-panel {
   margin: 0 0 16px 0;
-  padding: 30px;
+  padding: 20px;
   background: #fff;
   box-shadow: 0 0 14px 0 #f4f6f8;
   border-radius: 4px;
@@ -3752,14 +3752,26 @@ height: 70%;
 }
 
 .menu-cont.is-sub-menu {
+  width: 196px;
+}
+
+.menu-cont.is-sub-menu.is-shrink.is-long-menu {
+  width: 90px;
+}
+
+.menu-cont.is-sub-menu.is-long-menu {
   width: 248px;
 }
 
-.is-sub-menu+.view-cont {
+.is-sub-menu + .view-cont {
+  width: calc(100vw - 228px);
+}
+
+.is-sub-menu.is-long-menu + .view-cont {
   width: calc(100vw - 280px);
 }
 
-.is-shrink+.view-cont {
+.is-shrink + .view-cont {
   width: calc(100vw - 122px);
 }
 
@@ -3830,7 +3842,7 @@ height: 70%;
   width: 70px;
 }
 
-.main-menu>ul {
+.main-menu > ul {
   padding: 10px 0 0 0;
   position: absolute;
   left: 0;
@@ -3840,16 +3852,21 @@ height: 70%;
   z-index: 0;
 }
 
-.main-menu .sub-menu {
+.main-menu .sub-menu,
+.is-long-menu .main-menu .sub-menu {
   position: absolute;
   left: 70px;
   top: 0;
-  width: 178px;
+  width: 126px;
   height: calc(100vh - 70px);
   background: #fff;
   z-index: -1;
   transform: translateX(-190px);
   transition: all .4s;
+}
+
+.is-long-menu .main-menu .sub-menu {
+  width: 178px;
 }
 
 .main-menu .sub-menu.change-index {
@@ -3865,6 +3882,10 @@ height: 70%;
 }
 
 .is-shrink .main-menu .sub-menu {
+  transform: translateX(-106px);
+}
+
+.is-shrink.is-long-menu .main-menu .sub-menu {
   transform: translateX(-158px);
 }
 
