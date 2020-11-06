@@ -492,7 +492,7 @@
               </el-form-item>
             </dd>
             <dd>
-              <div @click="openMore(newItem)">
+              <div class="open-more" @click="openMore(newItem)">
                 <span>考核办法（如有）</span>
                 <i
                   class="el-icon-arrow-right"

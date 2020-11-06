@@ -217,7 +217,7 @@
               </el-form-item>
             </dd>
             <dd>
-              <div @click="openMore(kitem)">
+              <div class="open-more" @click="openMore(kitem)">
                 <span>考核办法（如有）</span>
                 <i
                   class="el-icon-arrow-right"
