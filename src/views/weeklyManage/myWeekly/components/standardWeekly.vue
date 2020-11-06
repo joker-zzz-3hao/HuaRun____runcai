@@ -273,7 +273,7 @@
           type="textarea"
           v-if="canUpdate"
           v-model="item.thoughtContent"
-          maxlength="10000"
+          maxlength="500"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
         ></el-input>
