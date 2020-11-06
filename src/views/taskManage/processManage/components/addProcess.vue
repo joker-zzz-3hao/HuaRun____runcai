@@ -53,6 +53,7 @@
               <dt>任务过程使用范围设置</dt>
               <dd>
                 <el-checkbox
+                  class="tl-checkbox"
                   v-model="teamUser"
                   @change="selectTeamUser"
                   :disabled="
@@ -66,7 +67,11 @@
                 <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>
               </dd>
               <dd>
-                <el-checkbox v-model="localUser" @change="selectLocalUser">
+                <el-checkbox
+                  class="tl-checkbox"
+                  v-model="localUser"
+                  @change="selectLocalUser"
+                >
                   小范围使用
                   <span>(所加入的成员均可使用)</span>
                 </el-checkbox>
@@ -88,7 +93,10 @@
                 </dl>
               </dd>
               <dd>
-                <el-checkbox v-model="personalUser" @change="selectPersonalUser"
+                <el-checkbox
+                  class="tl-checkbox"
+                  v-model="personalUser"
+                  @change="selectPersonalUser"
                   >个人使用
                 </el-checkbox>
               </dd>

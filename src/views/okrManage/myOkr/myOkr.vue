@@ -25,7 +25,9 @@
                   CONST.READ_RESULT_MAP[item.okrMain.readStatus]
                 }}。
               </span>
-              <span>审批建议：{{ item.okrMain.readRemark }}。</span>
+              <span v-if="item.okrMain.readRemark"
+                >审批建议：{{ item.okrMain.readRemark }}。</span
+              >
             </el-alert>
           </div>
 

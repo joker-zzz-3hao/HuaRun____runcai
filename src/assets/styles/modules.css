@@ -1740,6 +1740,9 @@
 }
 
 /* change by xinquan 考核指标衡量办法*/
+.tl-collapse .collpase-panel .open-more{
+  cursor: pointer;
+}
 .tl-collapse .collpase-panel .el-icon-arrow-right{
 transition: transform .3s;
 }
