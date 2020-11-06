@@ -8,12 +8,12 @@
         :data="treeData"
         class="tl-table"
       >
-        <el-table-column prop="orgName" label="名称" min-width="180">
+        <el-table-column prop="orgName" label="名称" min-width="170">
           <template slot-scope="scope">
             <span @click="gotoView(scope.row)">{{ scope.row.orgName }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="userName" label="负责人" width="80">
+        <el-table-column prop="userName" label="负责人" width="120">
           <template slot-scope="scope">
             <span @click="gotoView(scope.row)">{{ scope.row.userName }}</span>
           </template>
