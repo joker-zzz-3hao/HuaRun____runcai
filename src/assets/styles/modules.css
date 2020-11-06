@@ -1742,7 +1742,6 @@
 /* change by xinquan 考核指标衡量办法*/
 .tl-collapse .collpase-panel .open-more{
   cursor: pointer;
-  margin: 5px 0 0 50px;
 }
 .tl-collapse .collpase-panel .el-icon-arrow-right{
 transition: transform .3s;

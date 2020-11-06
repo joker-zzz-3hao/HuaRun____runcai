@@ -52,6 +52,14 @@
             </dd>
           </dl>
         </div>
+        <el-button
+          @click="handleOpen()"
+          plain
+          class="expands tl-btn btn-lineheight btn-small"
+        >
+          <span v-if="expands.length > 0">全部收起</span>
+          <span v-else>全部展开</span>
+        </el-button>
         <div class="card-panel-body">
           <tl-okr-table
             :tableList="tableList"
@@ -402,6 +410,7 @@ export default {
         }
       });
     },
+
     openDialog(val) {
       this.okrItem = val;
       this.drawerTitle = this.okrCycle.periodName;
@@ -409,6 +418,17 @@ export default {
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();
       });
+    },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        this.tableList.forEach((item) => {
+          this.expands.push(item.okrDetailId);
+          console.log(item);
+        });
+      } else {
+        this.expands = [];
+      }
     },
   },
   watch: {
