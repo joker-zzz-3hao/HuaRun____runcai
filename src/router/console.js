@@ -413,6 +413,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
+      longMenu: true,
       parentRoute: 'myTask',
       title: 'myTask',
       power: '',
@@ -468,6 +469,7 @@ export default [{
       hasMainMenu: true,
       isSubMenu: true,
       isLevelThree: true,
+      longMenu: true,
       parentRoute: 'myTask',
       title: 'taskProcess',
       power: '',
@@ -494,6 +496,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
+      longMenu: true,
       parentRoute: 'myTask',
       title: 'processManage',
       power: '',

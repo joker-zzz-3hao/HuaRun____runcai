@@ -19,11 +19,16 @@
               item.okrMain.readStatus != 0
             "
           >
-            <el-tag type="warning" size="medium" :hit="true"
-              >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
-                CONST.READ_RESULT_MAP[item.okrMain.readStatus]
-              }}{{ item.okrMain.readRemark }}</el-tag
-            >
+            <el-alert type="warning" class="tl-alert" :closable="false">
+              <span>
+                您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
+                  CONST.READ_RESULT_MAP[item.okrMain.readStatus]
+                }}。
+              </span>
+              <span v-if="item.okrMain.readRemark"
+                >审批建议：{{ item.okrMain.readRemark }}。</span
+              >
+            </el-alert>
           </div>
 
           <div class="card-panel-head">
@@ -136,14 +141,6 @@
               </dd>
             </dl>
           </div>
-          <el-button
-            @click="handleOpen(item)"
-            plain
-            class="expands tl-btn btn-lineheight btn-small"
-          >
-            <span v-if="item.expands.length > 0">全部收起</span>
-            <span v-else>全部展开</span>
-          </el-button>
           <div class="card-panel-body">
             <tl-okr-table
               :tableList="item.tableList"
@@ -632,17 +629,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.checkjudge.show();
       });
-    },
-    // 展示收起
-    handleOpen(val) {
-      if (val.expands.length == 0) {
-        val.tableList.forEach((item) => {
-          val.expands.push(item.okrDetailId);
-          console.log(item);
-        });
-      } else {
-        val.expands = [];
-      }
     },
     borderSlip(index) {
       const borderWidth = document.querySelector('.border-slip');

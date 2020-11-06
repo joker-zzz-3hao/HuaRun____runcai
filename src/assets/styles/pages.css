@@ -507,7 +507,7 @@
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
 .department-view .operating-area-inside {
-  padding: 0 30px 0 206px;
+  padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -707,8 +707,7 @@
   height: 18px;
   font-size: 12px;
   border-radius: 2px;
-  background: #acb6bf;
-  color: #fff;
+  color: #879099;
 }
 .my-okr .expands{
   position: absolute;
@@ -2529,22 +2528,22 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .super-good.is-selected {
-  background: #edfaf1 !important;
+  background: #d4f3df !important;
   color: #4ccd79 !important;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .good.is-selected {
-  background: #e6f6f6 !important;
+  background: #ceefee !important;
   color: #06aca9 !important;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .work-hard.is-selected {
-  background: #fff8e8 !important;
+  background: #fff2d2 !important;
   color: #ffbc20 !important;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists .refuel.is-selected {
-  background: #feefe5 !important;
+  background: #ffe1cd !important;
   color: #fa6400 !important;
 }
 
@@ -2579,7 +2578,7 @@
 .msg-notice .cont-area,
 .monitor-data .cont-area,
 .okr-summarize .cont-area {
-  padding: 20px 30px;
+  padding: 20px;
   border-radius: 4px;
   background: #fff;
 }
