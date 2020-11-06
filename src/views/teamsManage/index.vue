@@ -311,6 +311,14 @@ export default {
   methods: {
     selectUserCheck(userId) {
       console.log(userId);
+      this.server.selectOrgAdminByUserIdAndOrgId({
+        userId,
+        orgId: this.baseTeamOrgId,
+      }).then((res) => {
+        if (res.data) {
+          this.$message.success('该用户已经是该部门的负责人,不能再设置为虚线汇报成员');
+        }
+      });
     },
     listRoleUser(member) {
       const params = member.map((item) => ({ userId: item.userId }));
