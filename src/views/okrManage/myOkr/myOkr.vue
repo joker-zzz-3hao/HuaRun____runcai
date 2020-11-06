@@ -19,10 +19,10 @@
               item.okrMain.readStatus != 0
             "
           >
-            <el-tag type="warning" size="medium" :hit="true"
+            <el-alert type="warning" class="tl-alert" :closable="false"
               >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
                 CONST.READ_RESULT_MAP[item.okrMain.readStatus]
-              }}{{ item.okrMain.readRemark }}</el-tag
+              }}{{ item.okrMain.readRemark }}</el-alert
             >
           </div>
 
