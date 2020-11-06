@@ -203,7 +203,7 @@
                   style="cursor: pointer"
                 >
                   <el-tooltip
-                    class="item"
+                    popper-class="tl-tooltip-popper"
                     effect="dark"
                     content="部门负责人"
                     placement="top-start"
