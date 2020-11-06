@@ -65,7 +65,7 @@
                   !this.roleCode.includes('TEAM_ADMIN')
                 "
               >
-                团队申请
+                团队使用
                 <span>(创建后的任务过程其组织下成员均可使用)</span>
               </el-checkbox>
               <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>

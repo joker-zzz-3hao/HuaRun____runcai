@@ -78,15 +78,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-</style>

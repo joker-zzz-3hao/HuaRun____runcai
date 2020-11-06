@@ -175,7 +175,7 @@
               label="代理部门"
             >
               <template slot-scope="scope">
-                <el-tooltip class="item" effect="dark" placement="top">
+                <el-tooltip popper-class="tl-tooltip-popper" placement="top">
                   <span slot="content">{{ orgTip(scope.row.agentOrg) }} </span>
                   <span
                     type="text"
@@ -203,7 +203,7 @@
                   style="cursor: pointer"
                 >
                   <el-tooltip
-                    class="item"
+                    popper-class="tl-tooltip-popper"
                     effect="dark"
                     content="部门负责人"
                     placement="top-start"
@@ -225,7 +225,7 @@
               label="综合岗"
             >
               <template slot-scope="scope">
-                <el-tooltip class="item" effect="dark" placement="top">
+                <el-tooltip popper-class="tl-tooltip-popper" placement="top">
                   <span slot="content">
                     {{ orgTip(scope.row.teamAdmin) }}
                   </span>
