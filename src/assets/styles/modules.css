@@ -3171,14 +3171,28 @@ height: 70%;
   width: 47%;
 }
 
+.tl-table-fix .fold {
+  display: flex;
+  align-items: center;
+}
+
+.tl-table-fix .fold span {
+  order: 2;
+}
+
+.tl-table-fix .fold i {
+  margin: 0 6px 0 0;
+  order: 1;
+}
+
 .tl-table-fix .fold i,
 .tl-table-fix .fold span {
   cursor: pointer;
   transition: all .4s ease-out;
 }
 
-.tl-table-fix .fold:hover i,
-.tl-table-fix .fold:hover span {
+.tl-table-fix .fold span:hover,
+.tl-table-fix .fold span:hover + i {
   color: #685df1;
 }
 
