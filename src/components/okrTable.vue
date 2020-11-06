@@ -349,10 +349,23 @@ export default {
     opensome() {
       this.$emit('openchange');
     },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        let allexpands = [];
+        allexpands = this.tableList.map((item) => item.okrDetailId);
+        // this.tableList.forEach((item) => {
+        //   this.expands.push(item.okrDetailId);
+        //   console.log(item);
+        // });
+        this.$emit('update:expands', allexpands);
+      } else {
+        this.$emit('update:expands', []);
+        // this.expands = [];
+      }
+    },
     echange(a, b) {
       const result = b.map((ii) => ii.okrDetailId);
-      console.log(a);
-      console.log(result);
       this.$emit('update:expands', result);
     },
   },
