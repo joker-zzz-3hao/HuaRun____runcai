@@ -19,11 +19,14 @@
               item.okrMain.readStatus != 0
             "
           >
-            <el-alert type="warning" class="tl-alert" :closable="false"
-              >您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
-                CONST.READ_RESULT_MAP[item.okrMain.readStatus]
-              }}{{ item.okrMain.readRemark }}</el-alert
-            >
+            <el-alert type="warning" class="tl-alert" :closable="false">
+              <span>
+                您的OKR已被{{ item.okrMain.readUserName }}审阅，审阅结果：{{
+                  CONST.READ_RESULT_MAP[item.okrMain.readStatus]
+                }}。
+              </span>
+              <span>审批建议：{{ item.okrMain.readRemark }}。</span>
+            </el-alert>
           </div>
 
           <div class="card-panel-head">

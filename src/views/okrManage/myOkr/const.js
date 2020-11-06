@@ -62,7 +62,7 @@ const OKR_KIND_MAP = {
 const READ_RESULT_MAP = {
   0: '未阅',
   1: '无异议',
-  2: '建议调整，',
+  2: '建议调整',
 };
 export default {
   STATUS_LIST,
