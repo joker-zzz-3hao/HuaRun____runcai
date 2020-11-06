@@ -31,7 +31,6 @@ export default {
     return {
       form: {},
       server,
-      activeNames: ['1'],
       activities: [],
       okrMain: {
         okrMainVo: {},
@@ -49,10 +48,7 @@ export default {
     this.getOkrReviewHistoryList();
   },
   methods: {
-    cutName(userName) {
-      const nameLength = userName.length;
-      return userName.substring(nameLength - 2, nameLength);
-    },
+
     getOkrReviewHistoryList() {
       this.server.getOkrReviewHistoryList({
         okrMainId: this.$route.query.okrId,

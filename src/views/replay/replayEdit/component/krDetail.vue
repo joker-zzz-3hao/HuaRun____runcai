@@ -118,6 +118,7 @@
               <dd>
                 <el-input
                   maxlength="2000"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   v-model="list.advantage"
                   type="textarea"
                   class="tl-textarea"
@@ -130,6 +131,7 @@
 
               <dd>
                 <el-input
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   maxlength="2000"
                   v-model="list.disadvantage"
                   type="textarea"
@@ -162,7 +164,7 @@
                   <el-input
                     :autosize="{ minRows: 1, maxRows: 8 }"
                     type="textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="list.measure[0]"
                     class="tl-textarea"
                   ></el-input>
@@ -219,6 +221,7 @@
     </elcollapse>
 
     <tl-footer
+      :btnText="'提交复盘'"
       @submit="submit"
       @save="save"
       @handleDeleteOne="handleDeleteOne"

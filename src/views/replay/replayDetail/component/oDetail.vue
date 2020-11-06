@@ -69,7 +69,21 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
+          </dd>
+
+          <dd>
+            <div>
+              <span>考核指标</span>
+              <em> {{ list.checkQuota }}</em>
+            </div>
+          </dd>
+          <dd>
+            <div>
+              <span>衡量方法</span>
+              <em> {{ list.judgeMethod }}</em>
+            </div>
+          </dd>
+          <!-- <div>
               <i class="el-icon-bell"></i>
               <span>信心指数</span>
               <div class="state-grid">
@@ -96,22 +110,11 @@
                 {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
               </div>
             </div> -->
-          </dd>
         </dl>
         <dl class="is-kr">
-          <dd>
-            <div>
-              <span>考核指标</span>
-              <em> {{ item.o.checkQuota }}</em>
-            </div>
-          </dd>
-          <dd>
-            <div>
-              <span>衡量方法</span>
-              <em> {{ item.o.judgeMethod }}</em>
-            </div>
-          </dd>
-          <dd></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
           <dd>
             <dl>
               <dt>价值与收获</dt>
@@ -211,109 +214,7 @@ export default {
       const data = this.listBtn.filter((item) => item.txt == txt);
       return data[0];
     },
-    deleteProduce(index, i) {
-      this.okrMain.okrReviewPojoList[index].o.measure.splice(i, 1);
-    },
-    addDefic(value, index) {
-      if (!this.okrMain.okrReviewPojoList[index].o.measure) {
-        this.okrMain.okrReviewPojoList[index].o.measure = [];
-      }
-      this.okrMain.okrReviewPojoList[index].o.measure.push(value);
-    },
-    checkDatakrs(clear) {
-      const krsList = this.okrMain.okrReviewPojoList.map((item) => item.o);
-      if (clear) {
-        this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          okrDetailId: item.okrDetailId,
-          communication: '',
-          communicationLabel: '',
-          advantage: '',
-          disadvantage: '',
-          measure: [],
-        }));
-      } else {
-        this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          okrDetailId: item.okrDetailId,
-          communication: item.communication,
-          advantage: item.advantage,
-          disadvantage: item.disadvantage,
-          measure: item.measure,
-          communicationLabel: item.communicationLabel,
-        }));
-      }
-    },
 
-    save() {
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          reviewType: this.reviewType,
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('保存成功');
-        }
-      });
-    },
-    handleDeleteOne() {
-      this.$xconfirm({ title: '关闭后您填写内容将被清除，请确认是否关闭?', content: '' })
-        .then(() => {
-          this.clearClose();
-        })
-        .catch(() => {});
-    },
-    clearClose() {
-      this.checkDatakrs(true);
-      const params = {
-        okrMainVo: {
-          reviewType: this.reviewType,
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$route.push('/replayList');
-        }
-      });
-    },
-    submit() {
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          reviewType: this.reviewType,
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
-      };
-      const CheckNull = this.list.some((item) => item.advantage == '' || item.disadvantage == '' || item.measure.length == 0);
-      if (CheckNull) {
-        this.$message.error('未复盘完毕，请检查');
-        return false;
-      }
-      this.server.okrReviewSubmit(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$router.push('/replayList');
-        }
-      });
-    },
-    handleChange(val) {
-      console.log(val);
-    },
-    getOkrReviewDetail() {
-      this.server.getOkrReviewDetail({
-        okrMainId: this.$route.query.okrId,
-      }).then((res) => {
-        this.okrMain = res.data;
-        this.checkDatakrs();
-      });
-    },
   },
 };
 </script>

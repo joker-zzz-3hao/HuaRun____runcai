@@ -5,7 +5,7 @@
       @click="submit"
       :loading="submitLoad"
       class="tl-btn amt-bg-slip"
-      >确认沟通</el-button
+      >{{ btnText }}</el-button
     >
     <el-button
       plain
@@ -21,6 +21,13 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      saveLoad: false,
+      submitLoad: false,
+    };
+  },
+  props: ['btnText'],
   methods: {
     submit() {
       this.$emit('submit');
