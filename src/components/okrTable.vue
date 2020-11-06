@@ -1,8 +1,11 @@
 <template>
   <div class="tl-table-fix">
     <ul class="tl-thead">
-      <li></li>
-      <li></li>
+      <li>
+        <i class="el-icon-arrow-right"></i>
+        <span v-if="true">全部收起</span>
+        <span v-else>全部展开</span>
+      </li>
       <li>权重</li>
       <!-- <li>
         <em v-if="!overview && showUndertake">承接地图</em>
