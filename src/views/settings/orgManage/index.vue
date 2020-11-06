@@ -225,7 +225,11 @@
               label="综合岗"
             >
               <template slot-scope="scope">
-                <el-tooltip popper-class="tl-tooltip-popper" placement="top">
+                <el-tooltip
+                  effect="dark"
+                  popper-class="tl-tooltip-popper"
+                  placement="top"
+                >
                   <span slot="content">
                     {{ orgTip(scope.row.teamAdmin) }}
                   </span>
