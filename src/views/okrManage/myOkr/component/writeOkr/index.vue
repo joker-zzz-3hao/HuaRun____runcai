@@ -336,26 +336,34 @@
                     </el-form-item>
                   </dd>
                   <dd>
-                    <el-form-item label="考核指标">
-                      <el-input
-                        type="textarea"
-                        :autosize="{ minRows: 1, maxRows: 8 }"
-                        placeholder="请输入考核指标"
-                        v-model="kitem.checkQuota"
-                        maxlength="1500"
-                        class="tl-textarea"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="衡量办法">
-                      <el-input
-                        type="textarea"
-                        :autosize="{ minRows: 1, maxRows: 8 }"
-                        placeholder="请输入衡量办法"
-                        v-model="kitem.judgeMethod"
-                        maxlength="1500"
-                        class="tl-textarea"
-                      ></el-input>
-                    </el-form-item>
+                    <div @click="openMore(kitem)">
+                      <span>考核办法（如有）</span>
+                      <i
+                        class="el-icon-arrow-right"
+                        :class="{ 'is-active': kitem.openMore }"
+                      ></i>
+                    </div>
+                    <template v-if="kitem.openMore">
+                      <el-form-item label="考核指标">
+                        <el-input
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 8 }"
+                          placeholder="请输入考核指标"
+                          v-model="kitem.checkQuota"
+                          maxlength="1500"
+                          class="tl-textarea"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item label="衡量办法">
+                        <el-input
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 8 }"
+                          placeholder="请输入衡量办法"
+                          v-model="kitem.judgeMethod"
+                          maxlength="1500"
+                          class="tl-textarea"
+                        ></el-input> </el-form-item
+                    ></template>
                   </dd>
                 </dl>
                 <el-button
@@ -938,6 +946,11 @@ export default {
         this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
       }
       this.lastWeightmsg = '剩余权重 计算中...';
+    },
+    // 展开考核指标衡量办法
+    openMore(item) {
+      item.openMore = !item.openMore;
+      this.$forceUpdate();
     },
   },
   watch: {

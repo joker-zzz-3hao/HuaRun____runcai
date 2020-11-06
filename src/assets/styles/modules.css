@@ -1728,6 +1728,16 @@
   color: #685df1;
 }
 
+/* change by xinquan 考核指标衡量办法*/
+.tl-collapse .collpase-panel .el-icon-arrow-right{
+transition: transform .3s;
+}
+
+.tl-collapse .collpase-panel .el-icon-arrow-right.is-active{
+  transform: rotate(90deg);
+}
+
+
 .collpase-panel dd i+span+span {
   margin: 0 10px;
 }
