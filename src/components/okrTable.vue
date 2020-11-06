@@ -2,9 +2,9 @@
   <div class="tl-table-fix">
     <ul class="tl-thead">
       <li>
-        <i class="el-icon-arrow-right"></i>
-        <span v-if="true">全部收起</span>
-        <span v-else>全部展开</span>
+        <i class="el-icon-arrow-right" @click="handleOpen"></i>
+        <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
+        <span v-else @click="handleOpen">全部展开</span>
       </li>
       <li>权重</li>
       <!-- <li>
