@@ -55,7 +55,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  activated() {
     this.getOkrReviewDetail();
     this.getOkrReviewHistoryList();
   },

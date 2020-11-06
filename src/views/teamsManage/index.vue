@@ -230,6 +230,8 @@
       v-if="exist"
       :selectListed="fictitiousList"
       :exist.sync="exist"
+      @selectUserCheck="selectUserCheck"
+      :userType="true"
       :disabledId="baseTeamOrgId"
       title="添加虚线汇报人"
       :rouleType="rouleType"
@@ -307,6 +309,9 @@ export default {
     this.init();
   },
   methods: {
+    selectUserCheck(userId) {
+      console.log(userId);
+    },
     listRoleUser(member) {
       const params = member.map((item) => ({ userId: item.userId }));
       const oldParams = this.fictitiousList.map((item) => ({ userId: item.userId }));
