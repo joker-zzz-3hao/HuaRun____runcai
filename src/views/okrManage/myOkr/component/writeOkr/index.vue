@@ -343,27 +343,26 @@
                         :class="{ 'is-active': kitem.openMore }"
                       ></i>
                     </div>
-                    <template v-if="kitem.openMore">
-                      <el-form-item label="考核指标">
-                        <el-input
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 8 }"
-                          placeholder="请输入考核指标"
-                          v-model="kitem.checkQuota"
-                          maxlength="1500"
-                          class="tl-textarea"
-                        ></el-input>
-                      </el-form-item>
-                      <el-form-item label="衡量办法">
-                        <el-input
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 8 }"
-                          placeholder="请输入衡量办法"
-                          v-model="kitem.judgeMethod"
-                          maxlength="1500"
-                          class="tl-textarea"
-                        ></el-input> </el-form-item
-                    ></template>
+                    <el-form-item label="考核指标" v-show="kitem.openMore">
+                      <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 8 }"
+                        placeholder="请输入考核指标"
+                        v-model="kitem.checkQuota"
+                        maxlength="1500"
+                        class="tl-textarea"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="衡量办法" v-show="kitem.openMore">
+                      <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 8 }"
+                        placeholder="请输入衡量办法"
+                        v-model="kitem.judgeMethod"
+                        maxlength="1500"
+                        class="tl-textarea"
+                      ></el-input>
+                    </el-form-item>
                   </dd>
                 </dl>
                 <el-button
