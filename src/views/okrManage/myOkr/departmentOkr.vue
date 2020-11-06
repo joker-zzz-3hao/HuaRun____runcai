@@ -52,6 +52,14 @@
             </dd>
           </dl>
         </div>
+        <el-button
+          @click="handleOpen()"
+          plain
+          class="expands tl-btn btn-lineheight btn-small"
+        >
+          <span v-if="expands.length > 0">全部收起</span>
+          <span v-else>全部展开</span>
+        </el-button>
         <div class="card-panel-body">
           <tl-okr-table
             :tableList="tableList"
@@ -59,7 +67,7 @@
             :showUpdate="false"
             :status="searchForm.status"
             @openDialog="openDialog"
-            :expands="expands"
+            :expands.sync="expands"
           >
             <template slot="head-undertake" slot-scope="props">
               <div
@@ -267,6 +275,7 @@ export default {
       loading: true,
       checkjudgeExist: false,
       orgId: '',
+      expands: [],
     };
   },
   props: {
@@ -278,9 +287,9 @@ export default {
       roleCode: (state) => state.roleCode,
       okrCycle: (state) => state.okrCycle,
     }),
-    expands() {
-      return [this.tableList[0].okrDetailId];
-    },
+    // expands() {
+    //   return [this.tableList[0].okrDetailId];
+    // },
   },
   created() {
     if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
@@ -316,6 +325,7 @@ export default {
               this.okrMain = res.data.okrMain || {};
               this.okrId = this.okrMain.okrId || '';
               this.searchForm.status = this.okrMain.status;
+              this.expands = [this.tableList[0].okrDetailId];
             } else if (res.data.okrApprovalVo) {
               const okrInfo = JSON.parse(res.data.okrApprovalVo.paramJson) || {};
               this.tableList = okrInfo.okrInfoList || [];
@@ -328,6 +338,7 @@ export default {
                 status: this.searchForm.status,
                 periodName: res.data.okrApprovalVo.periodName,
               };
+              this.expands = [this.tableList[0].okrDetailId];
             } else {
               this.tableList = [];
             }
@@ -407,6 +418,17 @@ export default {
       this.$nextTick(() => {
         this.$refs.okrdetail.showOkrDialog();
       });
+    },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        this.tableList.forEach((item) => {
+          this.expands.push(item.okrDetailId);
+          console.log(item);
+        });
+      } else {
+        this.expands = [];
+      }
     },
   },
   watch: {

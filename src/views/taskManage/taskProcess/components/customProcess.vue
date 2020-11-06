@@ -24,7 +24,7 @@
         <el-form-item>
           <div style="display: flex; flex-direction: column">
             <el-checkbox v-model="teamUser" @change="selectTeamUser">
-              团队申请
+              团队使用
               <span>(组织下的成员可以使用)</span>
             </el-checkbox>
             <el-checkbox v-model="localUser" @change="selectLocalUser">
