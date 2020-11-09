@@ -70,79 +70,80 @@
             >
           </dd>
         </dl>
-        <el-form ref="form" label-width="130px" class="tl-form">
-          <dt style="margin-bottom: 20px">
-            <span>okr审阅人设置</span
-            ><span>提示：审阅人在OKR汇总中可以审阅OKR</span>
-          </dt>
-          <el-form-item label="审阅人：">
-            <el-input
-              v-model="checkUserNameStr"
-              :disabled="true"
-              placeholder="请设置okr审阅人"
-              style="width: 350px"
-              class="tl-input"
-            ></el-input>
-            <el-button
-              v-if="hasPower('tenant-okr-rootorg-user-save')"
-              type="primary"
-              style="margin-left: 20px"
-              class="tl-btn amt-bg-slip"
-              @click="okrCheckExist = true"
-              >设置</el-button
-            >
-          </el-form-item>
-          <dt style="margin-bottom: 20px">
-            <span>公司OKR ( 根组织OKR ) 审批人设置</span>
-          </dt>
-          <el-form-item label="审批人：">
-            <el-input
-              v-model="approvalNameStr"
-              :disabled="true"
-              placeholder="请设置公司OKR（根组织OKR）审批人"
-              style="width: 350px"
-              class="tl-input"
-            ></el-input>
-            <el-button
-              type="primary"
-              style="margin-left: 20px"
-              class="tl-btn amt-bg-slip"
-              v-if="hasPower('tenant-okr-rootorg-user-save')"
-              @click="okrspUserexist = true"
-              >设置</el-button
-            >
-          </el-form-item>
-          <dt style="margin-bottom: 20px">
-            <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
-          </dt>
-          <el-form-item label="复盘沟通人：">
-            <el-input
-              v-model="talkNameStr"
-              :disabled="true"
-              placeholder="请设置公司OKR（根组织OKR）复盘沟通人"
-              style="width: 350px"
-              class="tl-input"
-            ></el-input>
-            <el-button
-              v-if="hasPower('tenant-okr-rootorg-user-save')"
-              type="primary"
-              style="margin-left: 20px"
-              class="tl-btn amt-bg-slip"
-              @click="okrkhUserexist = true"
-              >设置</el-button
-            >
-          </el-form-item>
-        </el-form>
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>okr审阅人设置</span
+              ><span class="check-tip">提示：审阅人在OKR汇总中可以审阅OKR</span>
+            </dt>
+            <el-form-item label="审阅人：">
+              <el-input
+                v-model="checkUserNameStr"
+                :disabled="true"
+                placeholder="请设置okr审阅人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                @click="okrCheckExist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>公司OKR ( 根组织OKR ) 审批人设置</span>
+            </dt>
+            <el-form-item label="审批人：">
+              <el-input
+                v-model="approvalNameStr"
+                :disabled="true"
+                placeholder="请设置公司OKR（根组织OKR）审批人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                @click="okrspUserexist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
+            </dt>
+            <el-form-item label="复盘沟通人：">
+              <el-input
+                v-model="talkNameStr"
+                :disabled="true"
+                placeholder="请设置公司OKR（根组织OKR）复盘沟通人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                @click="okrkhUserexist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
       </div>
-      <!-- <div class="operating-box">
-        <el-button
-          type="primary"
-          :disabled="BtnDisabled"
-          @click="submitRadioData"
-          class="tl-btn amt-bg-slip"
-          >保存更改</el-button
-        >
-      </div> -->
     </div>
     <addMember
       v-if="okrspUserexist"
@@ -200,7 +201,7 @@ export default {
         'O-3': 'S',
       },
       setList: [{
-        configItemCode: 'O',
+        configItemCode: 'S',
         configType: 'OKR',
         configTypeDetail: 'O-1',
         level: 'T',
@@ -470,5 +471,10 @@ export default {
 }
 .okr-permissions .dl-list {
   margin: 0 0 15px 0;
+}
+.okr-permissions .check-tip {
+  font-size: 12px;
+  color: #d0cbcb;
+  margin-left: 10px;
 }
 </style>
