@@ -16,7 +16,7 @@ export default {
       }
     },
     hasPower(power) {
-      console.log(power);
+      // console.log(power);
       const userPowers = (window.$store.state.common.userInfo.allMenuList || []).map((item) => item
         .functionCode);
       if (typeof power == 'string') {

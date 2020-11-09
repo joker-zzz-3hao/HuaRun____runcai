@@ -71,10 +71,7 @@ export default {
   },
   computed: {},
   methods: {
-    cutOrgName(name) {
-      const orgName = name.split('-');
-      return orgName[orgName.length - 1];
-    },
+
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
     },
