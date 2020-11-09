@@ -35,7 +35,7 @@
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                :disabled="disabledId == item.orgId"
+                :disabled="disabledId == item.orgId || item.id == orgUserId"
                 @change="
                   !rouleType
                     ? checkOneMember($event, item)
@@ -100,7 +100,7 @@ import Server from './server';
 const server = new Server();
 export default {
   name: 'selectMember',
-  props: ['rouleType', 'selectListed', 'disabledId', 'userType'],
+  props: ['rouleType', 'selectListed', 'disabledId', 'userType', 'orgUserId'],
   ...mapState('common', {
     userInfo: (state) => state.userInfo,
   }),
@@ -123,6 +123,7 @@ export default {
   },
   mounted() {
     console.log(this.disabledId);
+    console.log(this.orgUserId);
     this.getSelected();
 
     this.dialogTableVisible = true;

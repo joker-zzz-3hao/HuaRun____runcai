@@ -232,6 +232,7 @@
       :exist.sync="exist"
       @selectUserCheck="selectUserCheck"
       :userType="true"
+      :orgUserId="baseInfo.userId"
       :disabledId="baseTeamOrgId"
       title="添加虚线汇报人"
       :rouleType="rouleType"
@@ -343,6 +344,7 @@ export default {
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          console.log(res.data);
           this.baseTeamOrgId = res.data.orgId;
           self.queryTeamMember(self.baseInfo.orgFullId);
           if (self.baseInfo.weeklySee == 'O') {
