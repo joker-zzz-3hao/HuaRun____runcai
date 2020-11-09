@@ -160,6 +160,7 @@
       </elcollapseitem>
     </elcollapse>
     <tl-footer
+      :btnText="'确认沟通'"
       @submit="submit"
       @save="save"
       @handleDeleteOne="handleDeleteOne"

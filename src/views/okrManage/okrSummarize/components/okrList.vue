@@ -88,7 +88,9 @@
         </div>
         <div class="dl-list-detail">
           <dl class="dl-item">
-            <dt><span>成员总数</span></dt>
+            <dt>
+              <span>{{ okrBelongType == "2" ? "成员" : "部门" }}总数</span>
+            </dt>
             <dd>
               <em>{{ summaryData.orgSumUser }}</em>
             </dd>

@@ -336,7 +336,14 @@
                     </el-form-item>
                   </dd>
                   <dd>
-                    <el-form-item label="考核指标">
+                    <div class="open-more" @click="openMore(kitem)">
+                      <span>考核办法（如有）</span>
+                      <i
+                        class="el-icon-arrow-right"
+                        :class="{ 'is-active': kitem.openMore }"
+                      ></i>
+                    </div>
+                    <el-form-item label="考核指标" v-show="kitem.openMore">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"
@@ -346,7 +353,7 @@
                         class="tl-textarea"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="衡量办法">
+                    <el-form-item label="衡量办法" v-show="kitem.openMore">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 1, maxRows: 8 }"
@@ -396,7 +403,7 @@
         @click="summit"
         class="tl-btn amt-bg-slip"
         :loading="createokrDrawer && okrLoading"
-        >创建OKR</el-button
+        >提交</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
@@ -938,6 +945,11 @@ export default {
         this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
       }
       this.lastWeightmsg = '剩余权重 计算中...';
+    },
+    // 展开考核指标衡量办法
+    openMore(item) {
+      item.openMore = !item.openMore;
+      this.$forceUpdate();
     },
   },
   watch: {

@@ -5,6 +5,7 @@
       'no-sub-menu': noSubMenu,
       'is-sub-menu': isSubMenu,
       'is-shrink': isShrinkMenus,
+      'is-long-menu': longMenu,
     }"
   >
     <div class="menu-cont-inside" :class="{ 'is-zindex': zIndex }">
@@ -215,6 +216,9 @@ export default {
     },
     isSubMenu() {
       return this.$route.meta.isSubMenu;
+    },
+    longMenu() {
+      return this.$route.meta.longMenu;
     },
   },
   mounted() {},

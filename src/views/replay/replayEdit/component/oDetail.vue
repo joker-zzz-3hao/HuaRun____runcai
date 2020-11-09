@@ -69,7 +69,21 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
+          </dd>
+
+          <dd>
+            <div>
+              <span>考核指标</span>
+              <em> {{ list.checkQuota }}</em>
+            </div>
+          </dd>
+          <dd>
+            <div>
+              <span>衡量方法</span>
+              <em> {{ list.judgeMethod }}</em>
+            </div>
+          </dd>
+          <!-- <div>
               <i class="el-icon-bell"></i>
               <span>信心指数</span>
               <div class="state-grid">
@@ -96,28 +110,18 @@
                 {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
               </div>
             </div> -->
-          </dd>
         </dl>
         <dl class="is-kr">
-          <dd>
-            <div>
-              <span>考核指标</span>
-              <em> {{ item.o.checkQuota }}</em>
-            </div>
-          </dd>
-          <dd>
-            <div>
-              <span>衡量方法</span>
-              <em> {{ item.o.judgeMethod }}</em>
-            </div>
-          </dd>
-          <dd></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
+          <dd v-show="false"></dd>
           <dd>
             <dl>
               <dt>价值与收获</dt>
               <dd>
                 <el-input
                   maxlength="2000"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
                   v-model="item.o.advantage"
                   type="textarea"
                   class="tl-textarea"
@@ -130,7 +134,8 @@
               <dd>
                 <el-input
                   maxlength="2000"
-                  v-model="item.o.advantage"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
+                  v-model="item.o.disadvantage"
                   type="textarea"
                   class="tl-textarea"
                   placeholder="事情做的有那些不足，自己表现有哪些不足？"
@@ -144,6 +149,7 @@
                 <dd v-for="(li, d) in item.o.measure || []" :key="d">
                   <el-input
                     type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 8 }"
                     placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="item.o.measure[d]"
                   ></el-input>
@@ -163,7 +169,8 @@
                 <dd>
                   <el-input
                     type="textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
+                    :autosize="{ minRows: 1, maxRows: 8 }"
+                    placeholder="请针对问题与不足进行改进措施陈述。"
                     v-model="item.o.measure[0]"
                   ></el-input>
                 </dd>
@@ -177,6 +184,7 @@
     </elcollapse>
 
     <tl-footer
+      :btnText="'提交复盘'"
       @submit="submit"
       @save="save"
       @handleDeleteOne="handleDeleteOne"
@@ -386,56 +394,3 @@ export default {
   },
 };
 </script>
-<style  scoped>
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-.replay-user {
-  display: flex;
-  flex-direction: row;
-}
-.replay-user .list {
-  margin-right: 40px;
-}
-.right {
-  float: right;
-}
-
-.rightweight {
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-}
-
-.title-row {
-  display: flex;
-  width: 100%;
-  height: 50px;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.flex {
-  display: flex;
-  width: 50%;
-  flex-direction: row;
-}
-</style>

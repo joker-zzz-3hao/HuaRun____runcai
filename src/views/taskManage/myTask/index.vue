@@ -405,6 +405,7 @@ export default {
       weekBegin: '',
       weekEnd: '',
       weekName: '',
+      otherProcesses: '',
       showpic: process.env.VUE_APP_PORTAL == 'https://talent.crcloud.com', // 展示图片
     };
   },
@@ -515,7 +516,7 @@ export default {
       params.accept = this.accept;
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();
-
+      params.otherProcesses = this.otherProcesses;
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;
@@ -615,13 +616,24 @@ export default {
             value: 'all',
             isSelected: true,
           });
-          this.processList.forEach((item) => {
+          let processIds = '';
+          this.processList.forEach((item, index) => {
             this.taskProcessList.push({
               label: item.processName,
               value: item.processId,
               isSelected: false,
               childCateList: [],
             });
+            processIds = `${processIds + item.processId},`;
+            // console.log(item.processId, processIds);
+            if (index + 1 == this.processList.length) {
+              this.taskProcessList.push({
+                label: '其他过程',
+                value: processIds,
+                isSelected: false,
+                childCateList: [],
+              });
+            }
           });
         }
       });
@@ -635,13 +647,17 @@ export default {
       this.taskProcess = parentCate;
       this.resetIsSelected(this.taskProcessList);
       parentCate.isSelected = true;
+      this.otherProcesses = '';
       // 如果选择全部，清空选择
       if (parentCate.value == 'all') {
         this.selectStatus({ label: '全部', value: null, isSelected: true });
         this.resetIsSelected(this.taskProcessList, 'init');
+      } else if (parentCate.label == '其他过程') {
+        this.searchList = [];
+        this.otherProcesses = parentCate.value;
       } else {
         this.searchList = [{ processId: parentCate.value }];
-        this.getTableList();
+        // this.getTableList();
       }
       const params = {
         available: 1,
@@ -674,6 +690,8 @@ export default {
       this.psList = '';
       childCate.isSelected = true;
       if (this.taskProcess.value == 'all') {
+        this.searchList = [];
+      } else if (this.taskProcess.label == '其他过程') {
         this.searchList = [];
       } else {
         // 验重
