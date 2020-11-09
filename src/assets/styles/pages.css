@@ -703,6 +703,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 0 0 92px;
   min-width: 48px;
   height: 18px;
   font-size: 12px;
@@ -1603,6 +1604,14 @@
   flex-basis: unset;
   width: unset;
   height: 19px;
+}
+
+.okr-maps .maps-view .el-table__placeholder {
+  width: 54px;
+}
+
+.okr-maps .maps-view .tl-table.el-table--border .el-table__body .el-table__row--level-2 td {
+  border-bottom-color: #e5e9ee;
 }
 
 /* undertake-maps */
@@ -3863,7 +3872,35 @@
 }
 
 .my-task .tl-table .cell {
-  padding: 20px 10px;
+  padding: 10px;
+}
+
+.my-task .table-container .tl-table .el-table__body .el-table__row td:nth-child(3) .cell {
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.my-task .table-container .tl-table .el-table__body .el-table__row td:nth-child(3) .cell::before,
+.my-task .table-container .tl-table .el-table__body .el-table__row td:nth-child(3) .cell::after {
+  position: absolute;
+  top: 40px;
+  left: 24px;
+  content: '';
+  width: 1px;
+  height: 15px;
+  background: #acb6bf;
+}
+
+.my-task .table-container .tl-table .el-table__body .el-table__row td:nth-child(3) .cell::after {
+  top: 54px;
+  left: 24px;
+  width: 18px;
+  height: 1px;
+}
+
+.my-task .table-container .tl-table .el-table__body .el-table__row td:nth-child(3) .cell > div:not(.tag-item) {
+  color: #acb6bf;
 }
 
 .my-task .task-statistical dt {
@@ -3879,6 +3916,60 @@
 
 .my-task .unfold-more {
   cursor: pointer;
+}
+
+.my-task .tag-item {
+  margin: 0 0 6px 0;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  background: #f4f6f8;
+  border-radius: 14px;
+  height: 28px;
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  max-width: 150px;
+}
+
+.my-task .tag-item + p {
+  position: relative;
+  padding: 0 0 0 40px;
+  color: #879099;
+}
+
+.my-task .tag-item + p::before {
+  position: absolute;
+  content: '';
+  top: 8px;
+  left: 27px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #acb6bf;
+}
+
+.my-task .is-draft,
+.my-task .is-confirm,
+.my-task .not-confirm {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffbc20;
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 0 #e6e6e6;
+}
+
+.my-task .is-confirm {
+  background: #4ccd79;
+}
+
+.my-task .not-confirm {
+  background: #fb4c59;
 }
 
 .edit-task .el-drawer__body {
