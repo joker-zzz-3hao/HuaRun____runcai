@@ -314,11 +314,10 @@ export default {
         orgId: user.orgId,
       }).then((res) => {
         if (res.data.identityType == 'org') {
-          const chename = encodeURI(user.orgName);
           this.$router.push({
             name: 'departleader',
             query: {
-              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+              id: user.orgId, userId: user.userId,
             },
           });
           // eslint-disable-next-line no-unused-expressions
@@ -327,11 +326,10 @@ export default {
           return false;
         }
         if (res.data.identityType == 'team') {
-          const chename = encodeURI(user.orgName || user.userName);
           this.$router.push({
             name: 'teamleader',
             query: {
-              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+              id: user.orgId, userId: user.userId,
             },
           });
 
@@ -341,11 +339,10 @@ export default {
           return false;
         }
         if (res.data.identityType == 'person') {
-          const chename = encodeURI(user.userName);
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: user.orgId, name: chename, userId: user.userId, tenantId: user.tenantId,
+              id: user.orgId, userId: user.userId,
             },
           });
         }
