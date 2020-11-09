@@ -78,7 +78,7 @@
         <em>审阅意见</em>
       </dt>
       <dd>
-        <el-form ref="read" :model="formData"
+        <el-form ref="read" :model="formData" v-if="showTextInput"
           ><el-form-item
             prop="readRemark"
             :rules="
@@ -101,6 +101,10 @@
               maxlength="1000"
             ></el-input> </el-form-item
         ></el-form>
+        <el-button @click="setText('好好干')">好好干</el-button>
+        <el-button @click="setText('好好吃')">好好吃</el-button>
+        <el-button @click="setText('好好玩')">好好玩</el-button>
+        <el-button @click="inputText">其他</el-button>
       </dd>
       <div class="operating-box" style="margin-top: 20px">
         <el-button
@@ -169,6 +173,7 @@ export default {
         readRemark: '',
       },
       isApprovaling: false,
+      showTextInput: false,
     };
   },
   components: {
@@ -212,6 +217,14 @@ export default {
           }
         });
       });
+    },
+    setText(text) {
+      this.showTextInput = false;
+      this.formData.readRemark = text;
+    },
+    inputText() {
+      this.showTextInput = true;
+      this.formData.readRemark = '';
     },
   },
   watch: {
