@@ -60,4 +60,8 @@ export default class Server extends ServerBase {
   fuzzyQueryUser(param) {
     return this._ajaxPost('/gateway/system-service/sys/user/fuzzyQueryUser', param);
   }
+
+  selectOrgAdminByUserIdAndOrgId(param) {
+    return this._ajaxPost('/gateway/system-service/sys/userRole/selectOrgAdminByUserIdAndOrgId ', param);
+  }
 }

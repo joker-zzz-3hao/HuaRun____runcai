@@ -230,6 +230,8 @@
       v-if="exist"
       :selectListed="fictitiousList"
       :exist.sync="exist"
+      @selectUserCheck="selectUserCheck"
+      :userType="true"
       :disabledId="baseTeamOrgId"
       title="添加虚线汇报人"
       :rouleType="rouleType"
@@ -307,6 +309,17 @@ export default {
     this.init();
   },
   methods: {
+    selectUserCheck(userId) {
+      console.log(userId);
+      this.server.selectOrgAdminByUserIdAndOrgId({
+        userId,
+        orgId: this.baseTeamOrgId,
+      }).then((res) => {
+        if (res.data) {
+          this.$message.success('该用户已经是该部门的负责人,不能再设置为虚线汇报成员');
+        }
+      });
+    },
     listRoleUser(member) {
       const params = member.map((item) => ({ userId: item.userId }));
       const oldParams = this.fictitiousList.map((item) => ({ userId: item.userId }));

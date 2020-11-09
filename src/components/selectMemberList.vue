@@ -100,7 +100,7 @@ import Server from './server';
 const server = new Server();
 export default {
   name: 'selectMember',
-  props: ['rouleType', 'selectListed', 'disabledId'],
+  props: ['rouleType', 'selectListed', 'disabledId', 'userType'],
   ...mapState('common', {
     userInfo: (state) => state.userInfo,
   }),
@@ -179,6 +179,8 @@ export default {
     },
     checkMember(node, data) {
       if (node) {
+        // eslint-disable-next-line no-unused-expressions
+        this.userType ? this.$emit('selectUserCheck', data.id) : '';
         this.roulelist.push({
           userName: data.name,
           userId: data.id,

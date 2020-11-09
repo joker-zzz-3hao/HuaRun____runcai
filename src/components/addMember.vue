@@ -18,6 +18,8 @@
           :rouleType="rouleType"
           :selectListed="selectListed"
           :disabledId="disabledId"
+          @selectUserCheck="selectUserCheck"
+          :userType="userType"
         ></tl-select-member>
       </el-form-item>
     </el-form>
@@ -69,6 +71,11 @@ export default {
       // eslint-disable-next-line vue/require-valid-default-prop
       default: '',
     },
+    userType: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data() {
@@ -90,6 +97,9 @@ export default {
     this.dialogTableVisible = true;
   },
   methods: {
+    selectUserCheck(id) {
+      this.$emit('selectUserCheck', id);
+    },
     selectMb(data) {
       this.listUser = data;
     },

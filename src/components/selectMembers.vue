@@ -61,6 +61,7 @@ export default {
     },
   },
   computed: {
+
     data() {
       let result = [];
       if (this.keyWord) {

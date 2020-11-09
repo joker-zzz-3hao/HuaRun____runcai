@@ -43,7 +43,7 @@ export default {
     'tl-replayUser': replayUser,
     'tl-replayHistory': replayHistory,
   },
-  mounted() {
+  activated() {
     this.getOkrReviewDetail();
     this.getOkrReviewHistoryList();
   },
