@@ -383,7 +383,7 @@ export default {
           this.$router.push({
             name: 'departleader',
             query: {
-              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+              id: node.orgId, userId: node.userId,
             },
           });
           return false;
@@ -392,7 +392,7 @@ export default {
           this.$router.push({
             name: 'teamleader',
             query: {
-              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+              id: node.orgId, userId: node.userId,
             },
           });
           return false;
@@ -401,7 +401,7 @@ export default {
           this.$router.push({
             name: 'grassStaff',
             query: {
-              id: node.orgId, name: encodeURI(node.orgName), userId: node.userId, tenantId: node.tenantId,
+              id: node.orgId, userId: node.userId,
             },
           });
         }
