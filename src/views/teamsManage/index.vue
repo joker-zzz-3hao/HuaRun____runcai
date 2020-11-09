@@ -310,7 +310,6 @@ export default {
   },
   methods: {
     selectUserCheck(userId) {
-      console.log(userId);
       this.server.selectOrgAdminByUserIdAndOrgId({
         userId,
         orgId: this.baseTeamOrgId,

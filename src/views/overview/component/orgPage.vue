@@ -297,7 +297,7 @@ export default {
       if (this.testModel) {
         return false;
       }
-      if (this.userInfo.userId == user.userId) {
+      if (this.userInfo.userId == user.userId && !this.$route.query.userId) {
         this.$message.success('此页面已是您要查看的页面');
         return false;
       }
