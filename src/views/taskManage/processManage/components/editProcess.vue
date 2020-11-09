@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年08月04日 15:38:15
-  备注：
--->
 <template>
   <el-drawer
     :wrapperClosable="false"
@@ -20,70 +14,88 @@
       <div class="drawer-title" v-else>任务过程详情</div>
     </div>
     <el-scrollbar>
-      <el-form ref="dataForm" :model="formData">
-        <el-form-item label="任务过程名称：">
-          <el-input
-            :disabled="!canEdit"
-            placeholder="请输入任务标题"
-            v-model="formData.processName"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          label="显示排序"
-          prop="indexNumber"
-          :rules="[{ trigger: 'blur', required: true, message: '请输入排序' }]"
-        >
-          <el-input-number
-            :disabled="!canEdit"
-            v-model="formData.indexNumber"
-            controls-position="right"
-            :min="0"
-            :max="100"
-            :step="1"
-            :precision="0"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item>
-          <h1>任务过程使用范围设置</h1>
-          <div style="display: flex; flex-direction: column">
-            <el-checkbox disabled :checked="processObj.processType == '1'">
-              团队申请
-              <span>(创建后的任务过程其组织下成员均可使用)</span>
-            </el-checkbox>
-            <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>
-            <el-checkbox disabled :checked="processObj.processType == '2'">
-              小范围使用
-              <span>(所加入的成员均可使用)</span>
-            </el-checkbox>
-            <dl v-if="processObj.processType == '2'" style="display: flex">
-              <dt>添加成员</dt>
-              <dd v-for="p in cutPic" :key="p.userId" class="user-info">
-                <img v-if="p.headUrl" :src="p.headUrl" alt="" />
-                <div v-else class="user-name">
-                  <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
-                </div>
-              </dd>
-              <dd v-if="canEdit">
-                <tl-personmultiple
-                  :userList="userList"
-                  v-model="formData.userIdList"
-                  :showSelect="false"
-                ></tl-personmultiple>
-              </dd>
-            </dl>
-            <el-checkbox disabled :checked="processObj.processType == '3'"
-              >个人使用</el-checkbox
-            >
-          </div>
-        </el-form-item>
-        <el-form-item>
-          <h1>任务过程设置</h1>
-          <p v-for="(step, index) in formData.stepList" :key="step.stepId">
-            <span>步骤{{ index + 1 }}</span>
-            <span>{{ step.stepName }}</span>
-          </p>
-        </el-form-item>
-      </el-form>
+      <div class="cont-box">
+        <el-form ref="dataForm" :model="formData" class="tl-form">
+          <el-form-item
+            label="任务过程名称"
+            :rules="[
+              {
+                trigger: 'blur',
+                required: true,
+                message: '请输入任务过程名称',
+              },
+            ]"
+          >
+            <el-input
+              :disabled="!canEdit"
+              placeholder="请输入任务标题"
+              v-model="formData.processName"
+              maxlength="24"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="显示排序"
+            prop="indexNumber"
+            :rules="[
+              { trigger: 'blur', required: true, message: '请输入排序' },
+            ]"
+          >
+            <el-input-number
+              :disabled="!canEdit"
+              v-model="formData.indexNumber"
+              controls-position="right"
+              :min="0"
+              :max="100"
+              :step="1"
+              :precision="0"
+            ></el-input-number>
+          </el-form-item>
+          <dl>
+            <dt>任务过程使用范围设置</dt>
+            <dd>
+              <el-checkbox disabled :checked="processObj.processType == '1'">
+                团队使用
+                <span>(创建后的任务过程其组织下成员均可使用)</span>
+              </el-checkbox>
+              <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>
+            </dd>
+            <dd>
+              <el-checkbox disabled :checked="processObj.processType == '2'">
+                <span>小范围使用</span>
+                <span>(所加入的成员均可使用)</span>
+              </el-checkbox>
+              <dl v-if="processObj.processType == '2'" style="display: flex">
+                <dt>添加成员</dt>
+                <dd v-for="p in cutPic" :key="p.userId" class="user-info">
+                  <img v-if="p.headUrl" :src="p.headUrl" alt="" />
+                  <div v-else class="user-name">
+                    <em>{{ p.userName.substring(p.userName.length - 2) }}</em>
+                  </div>
+                </dd>
+                <dd v-if="canEdit">
+                  <tl-personmultiple
+                    :userList="userList"
+                    v-model="formData.userIdList"
+                    :showSelect="false"
+                  ></tl-personmultiple>
+                </dd>
+              </dl>
+            </dd>
+            <dd>
+              <el-checkbox disabled :checked="processObj.processType == '3'">
+                个人使用
+              </el-checkbox>
+            </dd>
+          </dl>
+          <dl>
+            <dt>任务过程设置</dt>
+            <dd v-for="(step, index) in formData.stepList" :key="step.stepId">
+              <span>步骤{{ index + 1 }}</span>
+              <span>{{ step.stepName }}</span>
+            </dd>
+          </dl>
+        </el-form>
+      </div>
     </el-scrollbar>
     <div class="operating-box">
       <el-button
@@ -94,7 +106,11 @@
         @click="updateProcess"
         >确定</el-button
       >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+      <el-button
+        plain
+        class="tl-btn amt-border-fadeout"
+        :loading="loading"
+        @click="close"
         >取消</el-button
       >
     </div>

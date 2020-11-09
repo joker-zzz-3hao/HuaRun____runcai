@@ -33,7 +33,7 @@
       <el-table
         class="tl-table"
         :data="okrData"
-        style="width: 100%"
+        style="width: 100%; overflow-y: scroll; height: 400px"
         v-loading="loading"
       >
         <el-table-column
@@ -256,3 +256,5 @@ export default {
   },
 };
 </script>
+<style  scoped>
+</style>

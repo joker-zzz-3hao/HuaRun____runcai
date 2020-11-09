@@ -1,8 +1,11 @@
 <template>
   <div class="tl-table-fix">
     <ul class="tl-thead">
-      <li></li>
-      <li></li>
+      <li class="fold" :class="{ 'is-toggle': expands.length > 0 }">
+        <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
+        <span v-else @click="handleOpen">全部展开</span>
+        <i class="el-icon-arrow-right" @click="handleOpen"></i>
+      </li>
       <li>权重</li>
       <!-- <li>
         <em v-if="!overview && showUndertake">承接地图</em>
@@ -38,6 +41,7 @@
       class="tl-table"
       row-key="okrDetailId"
       :expand-row-keys="expands"
+      @expand-change="echange"
     >
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
@@ -116,6 +120,10 @@
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
+            <!-- kr数量  -->
+            <span class="kr-num"
+              >「{{ scope.row.krList.length }}个关键结果」</span
+            >
             <el-tooltip
               effect="dark"
               placement="top"
@@ -345,6 +353,25 @@ export default {
     },
     opensome() {
       this.$emit('openchange');
+    },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        let allexpands = [];
+        allexpands = this.tableList.map((item) => item.okrDetailId);
+        // this.tableList.forEach((item) => {
+        //   this.expands.push(item.okrDetailId);
+        //   console.log(item);
+        // });
+        this.$emit('update:expands', allexpands);
+      } else {
+        this.$emit('update:expands', []);
+        // this.expands = [];
+      }
+    },
+    echange(a, b) {
+      const result = b.map((ii) => ii.okrDetailId);
+      this.$emit('update:expands', result);
     },
   },
   watch: {
