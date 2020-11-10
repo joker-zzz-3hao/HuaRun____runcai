@@ -8,6 +8,7 @@
           <dd>
             <div>
               <el-select
+                v-if="periodList.length > 0"
                 v-model="periodId"
                 placeholder="请选择目标周期"
                 :popper-append-to-body="false"
@@ -431,13 +432,13 @@ export default {
       // 1、查询okr详情
       if (row.status === 0) { // 如果是审批中，从行数据中取数据
         this.setOkrSummarizeDetailData(JSON.stringify(row));
-        this.$busEmit('clearInput');
+        // this.$busEmit('clearInput');
         this.setOkrSummarizeStep('2');
       } else {
         this.server.getokrDetail({ okrId: row.okrId }).then((res) => {
           if (res.code == 200) {
             if (res.data) { this.setOkrSummarizeDetailData(JSON.stringify(res.data)); }
-            this.$busEmit('clearInput');
+            // this.$busEmit('clearInput');
             this.setOkrSummarizeStep('2');
           }
         });

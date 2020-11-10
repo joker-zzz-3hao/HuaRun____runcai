@@ -30,7 +30,7 @@
         </dl>
         <dl class="dl-list">
           <dt>
-            <span>周报中支撑个人OKR或团队OKR</span>
+            <span>周报中支撑个人OKR或部门OKR</span>
           </dt>
           <dd>
             <el-radio
@@ -45,31 +45,11 @@
               v-model="radio['O-2']"
               label="S"
               class="tl-radio"
-              >团队</el-radio
+              >部门</el-radio
             >
           </dd>
         </dl>
-        <dl class="dl-list">
-          <dt>
-            <span>综合岗是否可以审批OKR</span>
-          </dt>
-          <dd>
-            <el-radio
-              @change="submitSecretaryData"
-              v-model="radio['O-3']"
-              label="O"
-              class="tl-radio"
-              >是（开启后综合岗可以审批OKR）</el-radio
-            >
-            <el-radio
-              @change="submitSecretaryData"
-              v-model="radio['O-3']"
-              label="S"
-              class="tl-radio"
-              >否（开启后综合岗不可以审批OKR）</el-radio
-            >
-          </dd>
-        </dl>
+
         <dl class="dl-list">
           <el-form ref="form" label-width="130px" class="tl-form">
             <dt style="margin-bottom: 20px">
@@ -147,24 +127,21 @@
     </div>
     <addMember
       v-if="okrspUserexist"
+      :selectListed="approvalUserList"
       :exist.sync="okrspUserexist"
       :title="'（根组织ＯＫＲ）审批人'"
       @submitFunctin="getPressUser"
     ></addMember>
     <addMember
       v-if="okrkhUserexist"
+      :selectListed="talkUserList"
       :exist.sync="okrkhUserexist"
       :title="'（根组织ＯＫＲ）考核人'"
       @submitFunctin="getAssessUser"
     ></addMember>
-    <!-- <tl-selectMembers
-      v-if="okrCheckExist"
-      :exist.sync="okrCheckExist"
-      @submitFunctin="setCheckUserList"
-    ></tl-selectMembers> -->
     <addMember
       v-if="okrCheckExist"
-      :selectListed="selectedUserList"
+      :selectListed="checkUserList"
       :exist.sync="okrCheckExist"
       @selectUserCheck="selectUserCheck"
       :userType="true"
@@ -196,12 +173,12 @@ export default {
       ruleForm: {},
       server,
       radio: {
-        'O-1': 'O',
-        'O-2': 'O',
+        'O-1': 'S',
+        'O-2': 'S',
         'O-3': 'S',
       },
       setList: [{
-        configItemCode: 'S',
+        configItemCode: 'O',
         configType: 'OKR',
         configTypeDetail: 'O-1',
         level: 'T',
@@ -225,7 +202,6 @@ export default {
       selectList: [],
       spUser: { type: '0', userName: '', userId: '' },
       khUser: { type: '1', userName: '', userId: '' },
-      selectedUserList: [],
       checkUserList: [],
       approvalUserList: [],
       talkUserList: [],
@@ -388,15 +364,7 @@ export default {
         level: 'T',
       });
     },
-    // 综合岗是否可审批
-    submitSecretaryData() {
-      this.submitRadioData({
-        configItemCode: 'O',
-        configType: 'OKR',
-        configTypeDetail: 'O-3',
-        level: 'T',
-      });
-    },
+
     submitRadioData(item) {
       const sysConfigDtos = {
         level: 'T',
@@ -471,10 +439,14 @@ export default {
 }
 .okr-permissions .dl-list {
   margin: 0 0 15px 0;
+  padding-bottom: 10px;
 }
 .okr-permissions .check-tip {
   font-size: 12px;
   color: #d0cbcb;
   margin-left: 10px;
+}
+.okr-permissions .tl-radio {
+  margin: 0;
 }
 </style>
