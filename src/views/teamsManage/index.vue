@@ -50,42 +50,29 @@
         </dd>
         <dd>
           <span>综合岗审批OKR</span>
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="O"
-            class="tl-radio"
-            >是（综合岗可以审批OKR）</el-radio
-          >
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="S"
-            class="tl-radio"
-            >否（综合岗不可以审批OKR）</el-radio
-          >
+          <template v-if="isLeader">
+            <el-radio
+              @change="submitSecretaryData"
+              v-model="canApproval"
+              label="O"
+              class="tl-radio"
+              >是（综合岗可以审批OKR）</el-radio
+            >
+            <el-radio
+              @change="submitSecretaryData"
+              v-model="canApproval"
+              label="S"
+              class="tl-radio"
+              >否（综合岗不可以审批OKR）</el-radio
+            >
+          </template>
+          <template v-else>
+            <span>{{
+              canApproval == "O" ? "综合岗可以审批OKR" : "综合岗不可以审批OKR"
+            }}</span>
+          </template>
         </dd>
-        <!-- <dl class="dl-list"> -->
-        <!-- <dt>
-          <span>综合岗是否可以审批OKR</span>
-        </dt>
-        <dd>
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="O"
-            class="tl-radio"
-            >是（开启后综合岗可以审批OKR）</el-radio
-          >
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="S"
-            class="tl-radio"
-            >否（开启后综合岗不可以审批OKR）</el-radio
-          >
-        </dd> -->
-        <!-- </dl> -->
+
         <dd>
           <span>
             <em>周报是否开放</em>
@@ -271,6 +258,7 @@
       :exist.sync="exist"
       @selectUserCheck="selectUserCheck"
       :userType="true"
+      :orgUserId="baseInfo.userId"
       :disabledId="baseTeamOrgId"
       title="添加虚线汇报人"
       :rouleType="rouleType"
@@ -343,6 +331,14 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    isLeader() {
+      this.userInfo.roleList.forEach((role) => {
+        if (role.roleCode == 'ORG_ADMIN') {
+          return true;
+        }
+      });
+      return false;
+    },
   },
   mounted() {
     this.overview = this.userInfo.defaultJump || '';
@@ -350,7 +346,6 @@ export default {
   },
   methods: {
     selectUserCheck(userId) {
-      console.log(userId);
       this.server.selectOrgAdminByUserIdAndOrgId({
         userId,
         orgId: this.baseTeamOrgId,
@@ -384,6 +379,7 @@ export default {
       self.server.queryTeamBaseInfo().then((res) => {
         if (res.code == '200') {
           self.baseInfo = res.data;
+          console.log(res.data);
           this.baseTeamOrgId = res.data.orgId;
           self.queryTeamMember(self.baseInfo.orgFullId);
           if (self.baseInfo.weeklySee == 'O') {
