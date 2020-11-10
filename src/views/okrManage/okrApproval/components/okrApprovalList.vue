@@ -111,7 +111,8 @@
                   type="text"
                   v-if="
                     scope.row.approvalStatus == '0' &&
-                    hasPower('okr-approval-pass')
+                    hasPower('okr-approval-pass') &&
+                    canApproval
                   "
                   @click.native.prevent="okrApproval(scope.row)"
                   class="tl-btn"
@@ -234,7 +235,12 @@ export default {
   components: {
     'tl-process': process,
   },
-  props: {},
+  props: {
+    canApproval: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       CONST,
@@ -251,7 +257,6 @@ export default {
         currentPage: 1,
         okrCycle: {}, // 当前选择的周期
       },
-
       periodList: [], // 周期列表
     };
   },
@@ -277,6 +282,7 @@ export default {
         }
       });
     },
+
     searchList() {
       if (this.hasPower('okr-approval-list')) {
         this.tableData = [];

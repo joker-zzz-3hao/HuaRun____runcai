@@ -16,4 +16,9 @@ export default class Server extends ServerBase {
   okrOperationHistory(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrOperateHistory/getOkrApproveHistory', param);
   }
+
+  // 查询综合管理员是否可审批
+  getTypeConfig(param) {
+    return this._ajaxPost('gateway/system-service/sys/config/query', param);
+  }
 }

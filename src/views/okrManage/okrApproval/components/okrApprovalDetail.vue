@@ -80,7 +80,7 @@
       </dt>
       <dd>{{ JSON.parse(data.paramJson).modifyReason }}</dd>
     </dl>
-    <dl class="dl-card-panel" v-if="data.approvalStatus == '0'">
+    <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
       <dt>
         <em>审批</em>
       </dt>
@@ -227,7 +227,12 @@ export default {
     'tl-okrItem': okrItem,
     'tl-create-okrComponent': createOkrComponent,
   },
-  props: {},
+  props: {
+    canApproval: {
+      type: Boolean,
+      default: true,
+    },
+  },
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
