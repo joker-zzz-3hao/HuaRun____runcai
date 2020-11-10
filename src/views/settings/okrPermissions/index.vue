@@ -49,27 +49,7 @@
             >
           </dd>
         </dl>
-        <dl class="dl-list">
-          <dt>
-            <span>综合岗是否可以审批OKR</span>
-          </dt>
-          <dd>
-            <el-radio
-              @change="submitSecretaryData"
-              v-model="radio['O-3']"
-              label="O"
-              class="tl-radio"
-              >是（开启后综合岗可以审批OKR）</el-radio
-            >
-            <el-radio
-              @change="submitSecretaryData"
-              v-model="radio['O-3']"
-              label="S"
-              class="tl-radio"
-              >否（开启后综合岗不可以审批OKR）</el-radio
-            >
-          </dd>
-        </dl>
+
         <dl class="dl-list">
           <el-form ref="form" label-width="130px" class="tl-form">
             <dt style="margin-bottom: 20px">
@@ -388,15 +368,7 @@ export default {
         level: 'T',
       });
     },
-    // 综合岗是否可审批
-    submitSecretaryData() {
-      this.submitRadioData({
-        configItemCode: 'O',
-        configType: 'OKR',
-        configTypeDetail: 'O-3',
-        level: 'T',
-      });
-    },
+
     submitRadioData(item) {
       const sysConfigDtos = {
         level: 'T',
