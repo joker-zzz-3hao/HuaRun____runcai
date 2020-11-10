@@ -127,24 +127,21 @@
     </div>
     <addMember
       v-if="okrspUserexist"
+      :selectListed="approvalUserList"
       :exist.sync="okrspUserexist"
       :title="'（根组织ＯＫＲ）审批人'"
       @submitFunctin="getPressUser"
     ></addMember>
     <addMember
       v-if="okrkhUserexist"
+      :selectListed="talkUserList"
       :exist.sync="okrkhUserexist"
       :title="'（根组织ＯＫＲ）考核人'"
       @submitFunctin="getAssessUser"
     ></addMember>
-    <!-- <tl-selectMembers
-      v-if="okrCheckExist"
-      :exist.sync="okrCheckExist"
-      @submitFunctin="setCheckUserList"
-    ></tl-selectMembers> -->
     <addMember
       v-if="okrCheckExist"
-      :selectListed="selectedUserList"
+      :selectListed="checkUserList"
       :exist.sync="okrCheckExist"
       @selectUserCheck="selectUserCheck"
       :userType="true"
@@ -205,7 +202,6 @@ export default {
       selectList: [],
       spUser: { type: '0', userName: '', userId: '' },
       khUser: { type: '1', userName: '', userId: '' },
-      selectedUserList: [],
       checkUserList: [],
       approvalUserList: [],
       talkUserList: [],
