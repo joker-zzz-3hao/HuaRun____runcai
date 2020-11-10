@@ -78,45 +78,29 @@
         <em>审阅意见</em>
       </dt>
       <dd>
-        <el-form ref="read" :model="formData"
-          ><el-form-item
-            prop="readRemark"
-            :rules="
-              formData.readStatus == 2
-                ? [
-                    {
-                      required: true,
-                      message: '请输入调整建议',
-                      trigger: 'blur',
-                    },
-                  ]
-                : ''
-            "
-          >
-            <el-input
-              style="width: 100%"
-              type="textarea"
-              v-model="formData.readRemark"
-              :autosize="{ minRows: 4, maxRows: 8 }"
-              maxlength="1000"
-            ></el-input> </el-form-item
-        ></el-form>
+        <el-radio-group v-model="feedback" @change="setText">
+          <el-radio :label="1">加油，看好你！</el-radio>
+          <el-radio :label="2">努力，加油干！</el-radio>
+          <el-radio :label="3">辛苦了</el-radio>
+        </el-radio-group>
       </dd>
-      <div class="operating-box" style="margin-top: 20px">
+
+      <div style="margin-top: 25px">
         <el-button
-          :loading="loading"
           plain
           class="tl-btn amt-border-fadeout"
-          @click="okrSummaryRead(1)"
+          @click="okrSummaryRead"
           >已阅-无异议</el-button
         >
+
         <el-button
-          :loading="loading"
-          type="primary"
-          class="tl-btn amt-bg-slip"
-          @click="okrSummaryRead(2)"
-          >已阅-建议调整</el-button
-        >
+          slot="reference"
+          plain
+          style="margin-left: 5px"
+          class="tl-btn amt-border-fadeout"
+          @click="showDia"
+          >已阅-建议调整
+        </el-button>
       </div>
     </dl>
     <dl
@@ -139,6 +123,51 @@
         <em>{{ okrData.okrMain.readRemark }}</em>
       </dd>
     </dl>
+    <el-dialog
+      :append-to-body="true"
+      :visible="showDialog"
+      @close="close"
+      title=""
+      :close-on-click-modal="false"
+      width="30%"
+    >
+      <el-form ref="read" :model="formData"
+        ><el-form-item
+          prop="readRemark"
+          :rules="[
+            {
+              required: true,
+              message: '请输入调整建议',
+              trigger: 'blur',
+            },
+          ]"
+        >
+          <el-input
+            style="width: 100%"
+            type="textarea"
+            placeholder="请输入调整建议"
+            v-model="formData.readRemark"
+            :autosize="{ minRows: 4, maxRows: 8 }"
+            maxlength="1000"
+          ></el-input> </el-form-item
+      ></el-form>
+      <div class="operating-box">
+        <el-button
+          :loading="loading"
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          @click="submitFeedback"
+          >确定</el-button
+        >
+        <el-button
+          :disabled="loading"
+          plain
+          class="tl-btn amt-border-fadeout"
+          @click="close"
+          >取消</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -159,6 +188,7 @@ export default {
       server,
       CONST,
       okrId: '',
+      feedback: '',
       okrData: {},
       tableList: [],
       loading: false,
@@ -169,6 +199,7 @@ export default {
         readRemark: '',
       },
       isApprovaling: false,
+      showDialog: false,
     };
   },
   components: {
@@ -183,9 +214,9 @@ export default {
     }),
   },
   mounted() {
-    this.$busOn('clearInput', () => {
-      this.$refs.read.resetField();
-    });
+    // this.$busOn('clearInput', () => {
+    //   this.$refs.read.resetField();
+    // });
   },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeStep']),
@@ -193,25 +224,73 @@ export default {
       this.$busEmit('refreshPage');
       this.setOkrSummarizeStep('1');
     },
-    okrSummaryRead(readStatus) {
-      this.formData.readStatus = readStatus;
+    okrSummaryRead() {
       this.$nextTick(() => {
-        this.$refs.read.validate((valid) => {
-          if (valid) {
-            this.server.okrSummaryRead({
-              okrId: this.okrData.okrMain.okrId,
-              readStatus: this.formData.readStatus,
-              readRemark: this.formData.readRemark,
-              userId: this.okrData.okrMain.userId,
-            }).then((res) => {
-              if (res.code == 200) {
-                this.$message.success('审阅完成');
-                this.backList();
-              }
-            });
-          }
+        this.$confirm('确认提交？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          closeOnClickModal: false,
+        }).then(() => {
+          this.server.okrSummaryRead({
+            okrId: this.okrData.okrMain.okrId,
+            readStatus: 1,
+            readRemark: this.formData.readRemark,
+            userId: this.okrData.okrMain.userId,
+          }).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('审阅完成');
+              this.backList();
+            }
+          });
+        }).catch(() => {
         });
       });
+    },
+    submitFeedback() {
+      this.$refs.read.validate((valid) => {
+        if (valid) {
+          this.server.okrSummaryRead({
+            okrId: this.okrData.okrMain.okrId,
+            readStatus: 2,
+            readRemark: this.formData.readRemark,
+            userId: this.okrData.okrMain.userId,
+          }).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('审阅完成');
+              this.close();
+              this.backList();
+            }
+          });
+        }
+      });
+    },
+    okrSuggestChange() {
+
+    },
+    setText(feedback) {
+      this.showDialog = false;
+      switch (feedback) {
+        case 1:
+          this.formData.readRemark = '加油，看好你！';
+          break;
+        case 2:
+          this.formData.readRemark = '努力，加油干！';
+          break;
+        case 3:
+          this.formData.readRemark = '辛苦了！';
+          break;
+        default:
+          break;
+      }
+    },
+    showDia() {
+      this.showDialog = true;
+      this.feedback = '';
+      this.formData.readRemark = '';
+    },
+    close() {
+      this.showDialog = false;
     },
   },
   watch: {

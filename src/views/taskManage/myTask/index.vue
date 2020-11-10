@@ -186,7 +186,7 @@
               align="left"
               prop="taskTitle"
               label="任务"
-              min-width="180"
+              min-width="340"
             >
               <template slot-scope="scope">
                 <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
@@ -213,10 +213,18 @@
               min-width="180"
             >
               <template slot-scope="scope">
-                <div v-if="scope.row.processName && scope.row.stepName">
-                  <p>{{ scope.row.processName }}</p>
+                <template v-if="scope.row.processName && scope.row.stepName">
+                  <el-tooltip
+                    class="process-tag"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
+                    <em slot="content">{{ scope.row.processName }}</em>
+                    <div class="tag-item">{{ scope.row.processName }}</div>
+                  </el-tooltip>
                   <p>{{ scope.row.stepName }}</p>
-                </div>
+                </template>
                 <div v-else>未设置任务过程</div>
               </template>
             </el-table-column>

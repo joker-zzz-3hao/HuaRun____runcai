@@ -10,7 +10,7 @@
           </div>
         </el-alert>
       </template>
-      <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
+      <template v-if="okrList[0] && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
           <div
             class="okr-tag"
@@ -86,7 +86,9 @@
               v-if="
                 ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
                   item.okrMain.status
-                )
+                ) ||
+                (['7', 7].includes(item.okrMain.status) &&
+                  item.approvalType == 0)
               "
             >
               <dt>
@@ -125,6 +127,14 @@
                       <!-- <i class="el-icon-delete"></i> -->
                       <em>删除</em>
                     </el-dropdown-item>
+                    <el-dropdown-item
+                      v-if="
+                        ['7', 7].includes(item.okrMain.status) &&
+                        item.approvalType == 0
+                      "
+                      @click.native="recall(item.approvalId)"
+                      >撤回</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </el-dropdown>
               </dt>
@@ -310,6 +320,13 @@
       ref="checkjudge"
       :checkjudgeData="checkjudgeData"
     ></tl-checkjudge>
+    <tl-recallokr
+      :exist.sync="recallokrExist"
+      v-if="hasValue(recallokrExist)"
+      ref="recallokr"
+      :server="server"
+      @success="searchOkr(searchForm.status)"
+    ></tl-recallokr>
   </div>
 </template>
 
@@ -322,6 +339,7 @@ import process from '@/components/process';
 import okrUpdate from './component/okrUpdate';
 import changeOKR from './component/changeOKR';
 import checkJudge from './component/checkJudge';
+import recallOkr from './component/recallOkr';
 import writeOkr from './component/writeOkr/index';
 import Server from './server';
 import CONST from './const';
@@ -339,6 +357,7 @@ export default {
     'tl-okr-history': okrHistory,
     'tl-checkjudge': checkJudge,
     'tl-process': process,
+    'tl-recallokr': recallOkr,
   },
   data() {
     return {
@@ -377,6 +396,7 @@ export default {
       checkjudgeExist: false,
       checkjudgeData: {},
       orgId: '',
+      recallokrExist: false,
     };
   },
   computed: {
@@ -442,8 +462,8 @@ export default {
                 }
               });
             }
-            this.loading = false;
           }
+          this.loading = false;
         });
       } else {
         this.server.getmyOkr({
@@ -465,8 +485,9 @@ export default {
                 this.handleNormal(okritem);
               });
             }
-            this.loading = false;
           }
+          this.loading = false;
+          console.log('this.loading', this.okrList[0]);
         });
       }
     },
@@ -482,13 +503,16 @@ export default {
         let status = '';
         if (this.searchForm.status == 'all') {
           // 草稿
-          if (okrStatus == '1') {
-            status = '6';
+          if (okrStatus == 1) {
+            status = 6;
           } else if (item.approvalStatus == 2) {
             // 退回
-            status = '8';
+            status = 8;
+          } else if (item.approvalStatus == 3) {
+            // 撤回
+            status = 6;
           } else {
-            status = '7';
+            status = 7;
           }
         } else {
           status = this.searchForm.status;
@@ -598,8 +622,8 @@ export default {
 
     deleteDraft(draftId) {
       this.$xconfirm({
-        content: '请问您是否确定删除？',
-        title: '如果您要确定删除，该OKR将无法恢复',
+        content: '确定删除后，该OKR将无法恢复',
+        title: '请问您是否确定删除？',
       }).then(() => {
         // 提交确认弹窗
         this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {
@@ -610,6 +634,12 @@ export default {
           }
         });
       }).catch(() => {});
+    },
+    recall(id) {
+      this.recallokrExist = true;
+      this.$nextTick(() => {
+        this.$refs.recallokr.show(id);
+      });
     },
     openHistory(okrMain, item) {
       console.log('lishi', item);
@@ -642,9 +672,10 @@ export default {
   watch: {
     okrCycle: {
       handler(newVal) {
-        if (newVal) {
+        if (newVal.periodId) {
           this.searchForm.periodId = newVal.periodId;
           this.searchOkr();
+          console.log('无数据');
         }
       },
       deep: true,

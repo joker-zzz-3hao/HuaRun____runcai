@@ -12,91 +12,143 @@
             <span>是否可变更</span>
           </dt>
           <dd>
-            <el-radio v-model="radio['O-1']" label="O" class="tl-radio"
-              >开启 ( 开启后OKR在审核后可再次编辑 )</el-radio
+            <el-radio
+              @change="submitOKRChangeData"
+              v-model="radio['O-1']"
+              label="O"
+              class="tl-radio"
+              >是 ( 开启后OKR可申请变更 )</el-radio
             >
-            <el-radio v-model="radio['O-1']" label="S" class="tl-radio"
-              >关闭 ( 开启后OKR在审核后不可再次编辑 )</el-radio
+            <el-radio
+              @change="submitOKRChangeData"
+              v-model="radio['O-1']"
+              label="S"
+              class="tl-radio"
+              >否 ( 开启后OKR不可以申请变更)</el-radio
             >
           </dd>
         </dl>
         <dl class="dl-list">
           <dt>
-            <span>周报中支撑个人OKR或上级OKR</span>
+            <span>周报中支撑个人OKR或部门OKR</span>
           </dt>
           <dd>
-            <el-radio v-model="radio['O-2']" label="O" class="tl-radio"
+            <el-radio
+              @change="submitWeeklyData"
+              v-model="radio['O-2']"
+              label="O"
+              class="tl-radio"
               >个人</el-radio
             >
-            <el-radio v-model="radio['O-2']" label="S" class="tl-radio"
-              >上级</el-radio
+            <el-radio
+              @change="submitWeeklyData"
+              v-model="radio['O-2']"
+              label="S"
+              class="tl-radio"
+              >部门</el-radio
             >
           </dd>
         </dl>
-        <el-form ref="form" label-width="130px" class="tl-form">
-          <dt style="margin-bottom: 20px">
-            <span>公司OKR ( 根组织OKR ) 审批人设置</span>
-          </dt>
-          <el-form-item label="设置审批人：">
-            <el-input
-              v-model="spUser.userName"
-              :disabled="true"
-              placeholder="请设置公司OKR（根组织OKR）审批人"
-              style="width: 350px"
-              class="tl-input"
-            ></el-input>
-            <el-button
-              type="primary"
-              style="margin-left: 20px"
-              class="tl-btn amt-bg-slip"
-              v-if="hasPower('tenant-okr-rootorg-user-save')"
-              @click="okrspUserexist = true"
-              >设置</el-button
-            >
-          </el-form-item>
-          <dt style="margin-bottom: 20px">
-            <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
-          </dt>
-          <el-form-item label="设置复盘沟通人：">
-            <el-input
-              v-model="khUser.userName"
-              :disabled="true"
-              placeholder="请设置公司OKR（根组织OKR）复盘沟通人"
-              style="width: 350px"
-              class="tl-input"
-            ></el-input>
-            <el-button
-              v-if="hasPower('tenant-okr-rootorg-user-save')"
-              type="primary"
-              style="margin-left: 20px"
-              class="tl-btn amt-bg-slip"
-              @click="okrkhUserexist = true"
-              >设置</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-      <div class="operating-box">
-        <el-button
-          type="primary"
-          :disabled="BtnDisabled"
-          @click="getSave"
-          class="tl-btn amt-bg-slip"
-          >保存更改</el-button
-        >
+
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>okr审阅人设置</span
+              ><span class="check-tip">提示：审阅人在OKR汇总中可以审阅OKR</span>
+            </dt>
+            <el-form-item label="审阅人：">
+              <el-input
+                v-model="checkUserNameStr"
+                :disabled="true"
+                placeholder="请设置okr审阅人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                @click="okrCheckExist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>公司OKR ( 根组织OKR ) 审批人设置</span>
+            </dt>
+            <el-form-item label="审批人：">
+              <el-input
+                v-model="approvalNameStr"
+                :disabled="true"
+                placeholder="请设置公司OKR（根组织OKR）审批人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                @click="okrspUserexist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
+        <dl class="dl-list">
+          <el-form ref="form" label-width="130px" class="tl-form">
+            <dt style="margin-bottom: 20px">
+              <span>公司OKR ( 根组织OKR ) 复盘沟通人设置</span>
+            </dt>
+            <el-form-item label="复盘沟通人：">
+              <el-input
+                v-model="talkNameStr"
+                :disabled="true"
+                placeholder="请设置公司OKR（根组织OKR）复盘沟通人"
+                style="width: 350px"
+                class="tl-input"
+              ></el-input>
+              <el-button
+                v-if="hasPower('tenant-okr-rootorg-user-save')"
+                type="primary"
+                style="margin-left: 20px"
+                class="tl-btn amt-bg-slip"
+                @click="okrkhUserexist = true"
+                >设置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </dl>
       </div>
     </div>
     <addMember
       v-if="okrspUserexist"
+      :selectListed="approvalUserList"
       :exist.sync="okrspUserexist"
       :title="'（根组织ＯＫＲ）审批人'"
       @submitFunctin="getPressUser"
     ></addMember>
     <addMember
       v-if="okrkhUserexist"
+      :selectListed="talkUserList"
       :exist.sync="okrkhUserexist"
       :title="'（根组织ＯＫＲ）考核人'"
       @submitFunctin="getAssessUser"
+    ></addMember>
+    <addMember
+      v-if="okrCheckExist"
+      :selectListed="checkUserList"
+      :exist.sync="okrCheckExist"
+      @selectUserCheck="selectUserCheck"
+      :userType="true"
+      :disabledId="''"
+      title="设置OKR审阅人"
+      :rouleType="true"
+      @submitFunctin="setCheckUserList"
     ></addMember>
   </div>
 </template>
@@ -116,12 +168,14 @@ export default {
     return {
       okrspUserexist: false,
       okrkhUserexist: false,
+      okrCheckExist: false,
       okrspUser: '',
       ruleForm: {},
       server,
       radio: {
-        'O-1': 'O',
-        'O-2': 'O',
+        'O-1': 'S',
+        'O-2': 'S',
+        'O-3': 'S',
       },
       setList: [{
         configItemCode: 'O',
@@ -134,6 +188,12 @@ export default {
         configType: 'OKR',
         configTypeDetail: 'O-2',
         level: 'T',
+      },
+      {
+        configItemCode: 'O',
+        configType: 'OKR',
+        configTypeDetail: 'O-3',
+        level: 'T',
       }],
       sysConfigDtos: [],
       BtnDisabled: true,
@@ -142,33 +202,114 @@ export default {
       selectList: [],
       spUser: { type: '0', userName: '', userId: '' },
       khUser: { type: '1', userName: '', userId: '' },
+      checkUserList: [],
+      approvalUserList: [],
+      talkUserList: [],
+
     };
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    checkUserNameStr() {
+      let str = '';
+      if (this.checkUserList.length < 1) {
+        return;
+      }
+      this.checkUserList.forEach((element) => {
+        str = `${str}${str ? '、' : ''}${element.userName}`;
+      });
+      return str;
+    },
+    approvalNameStr() {
+      let str = '';
+      if (this.approvalUserList.length < 1) {
+        return;
+      }
+      this.approvalUserList.forEach((element) => {
+        str = `${str}${str ? '、' : ''}${element.userName}`;
+      });
+      return str;
+    },
+    talkNameStr() {
+      let str = '';
+      if (this.talkUserList.length < 1) {
+        return;
+      }
+      this.talkUserList.forEach((element) => {
+        str = `${str}${str ? '、' : ''}${element.userName}`;
+      });
+      return str;
+    },
   },
   created() {
     this.getOkrCycle();
-    this.rootOrgQuery();
+    // this.rootOrgQuery();
   },
   methods: {
     getPressUser(data) {
       if (data.length == 0) {
         this.$message.error('审批人不能为空');
+        return;
       }
+      this.approvalUserList = data;
       this.spUser.userName = data[0].userName;
       this.spUser.userId = data[0].userId;
       this.okrspUserexist = false;
+      let userIds = '';
+      data.forEach((user) => {
+        userIds = `${userIds}${userIds ? ',' : ''}${user.userId}`;
+      });
+      this.submitPersonData({
+        configId: '',
+        configItemCode: userIds,
+        configType: 'OKR',
+        configTypeDetail: 'O-5',
+        level: 'T',
+
+      });
     },
     getAssessUser(data) {
       if (data.length == 0) {
         this.$message.error('复盘沟通人不能为空');
+        return;
       }
+      this.talkUserList = data;
       this.khUser.userName = data[0].userName;
       this.khUser.userId = data[0].userId;
       this.okrkhUserexist = false;
+      let userIds = '';
+      data.forEach((user) => {
+        userIds = `${userIds}${userIds ? ',' : ''}${user.userId}`;
+      });
+      this.submitPersonData({
+        configId: '',
+        configItemCode: userIds,
+        configType: 'OKR',
+        configTypeDetail: 'O-6',
+        level: 'T',
+
+      });
+    },
+    setCheckUserList(data) {
+      if (data.length == 0) {
+        this.$message.error('OKR审阅人不能为空');
+        return;
+      }
+      this.checkUserList = data;
+      this.okrCheckExist = false;
+      let userIds = '';
+      data.forEach((user) => {
+        userIds = `${userIds}${userIds ? ',' : ''}${user.userId}`;
+      });
+      this.submitPersonData({
+        configId: '',
+        configItemCode: userIds,
+        configType: 'OKR',
+        configTypeDetail: 'O-4',
+        level: 'T',
+      });
     },
     getOkrCycle() {
       this.server.configQuery({
@@ -178,6 +319,22 @@ export default {
       })
         .then((res) => {
           this.selectList = res.data;
+          this.selectList.forEach((element) => {
+            switch (element.configTypeDetail) {
+              case 'O-4':
+                this.checkUserList = element.userList;
+                break;
+              case 'O-5':
+                this.approvalUserList = element.userList;
+                break;
+              case 'O-6':
+                this.talkUserList = element.userList;
+                break;
+
+              default:
+                break;
+            }
+          });
           this.selectList.forEach((item) => {
             this.radio[item.configTypeDetail] = item.configItemCode;
             this.setList.forEach((li, i) => {
@@ -189,19 +346,34 @@ export default {
           });
         });
     },
-    getSave() {
-      if (this.spUser.userName == '' || this.khUser.userName == '') {
-        this.$message.error('请设置审批人与考核人');
-        return false;
-      }
-      const sysConfigDtos = this.setList.map((item) => ({
+    // OKR是否可变更
+    submitOKRChangeData() {
+      this.submitRadioData({
+        configItemCode: 'O',
+        configType: 'OKR',
+        configTypeDetail: 'O-1',
+        level: 'T',
+      });
+    },
+    // 周报配置
+    submitWeeklyData() {
+      this.submitRadioData({
+        configItemCode: 'O',
+        configType: 'OKR',
+        configTypeDetail: 'O-2',
+        level: 'T',
+      });
+    },
+
+    submitRadioData(item) {
+      const sysConfigDtos = {
         level: 'T',
         configType: 'OKR',
-        tenantId: this.userInfo.tenantId,
+        sourceId: this.userInfo.tenantId,
         configTypeDetail: item.configTypeDetail,
         configId: item.configId || '',
         configItemCode: this.radio[item.configTypeDetail],
-      }));
+      };
       this.server.addOrUpdate(
         sysConfigDtos,
       ).then((res) => {
@@ -211,26 +383,29 @@ export default {
           this.$message.error(res.msg);
         }
       });
-      this.rootOrgSave();
     },
-    rootOrgQuery() {
-      this.server.rootOrgQuery().then((res) => {
+    submitPersonData(item) {
+      const sysConfigDtos = {
+        level: 'T',
+        configType: 'OKR',
+        sourceId: this.userInfo.tenantId,
+        configTypeDetail: item.configTypeDetail,
+        configId: item.configId || '',
+        configItemCode: item.configItemCode,
+      };
+      this.server.addOrUpdate(
+        sysConfigDtos,
+      ).then((res) => {
         if (res.code == 200) {
-          if (res.data.length > 0) {
-            // eslint-disable-next-line prefer-destructuring
-            this.spUser = res.data.filter((item) => item.type == '0')[0];
-            // eslint-disable-next-line prefer-destructuring
-            this.khUser = res.data.filter((item) => item.type == '1')[0];
-          }
+          this.$message.success(res.msg);
+        } else {
+          this.$message.error(res.msg);
         }
       });
     },
-    rootOrgSave() {
-      const setUser = [this.spUser, this.khUser];
-      this.server.rootOrgSave(setUser).then((res) => {
-        console.log(res);
-      });
-    },
+
+    selectUserCheck() {},
+    setMember() {},
   },
   watch: {
     radio: {
@@ -254,3 +429,24 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.okr-permissions .dl-list .el-radio {
+  border-bottom: 0ch;
+  padding: 10px 0;
+}
+.okr-permissions .tl-radio {
+  margin: 0;
+}
+.okr-permissions .dl-list {
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+}
+.okr-permissions .check-tip {
+  font-size: 12px;
+  color: #d0cbcb;
+  margin-left: 10px;
+}
+.okr-permissions .tl-radio {
+  margin: 0;
+}
+</style>

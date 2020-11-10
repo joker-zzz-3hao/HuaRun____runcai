@@ -80,7 +80,7 @@
       </dt>
       <dd>{{ JSON.parse(data.paramJson).modifyReason }}</dd>
     </dl>
-    <dl class="dl-card-panel" v-if="data.approvalStatus == '0'">
+    <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
       <dt>
         <em>审批</em>
       </dt>
@@ -161,6 +161,9 @@
                       <span v-if="cycleFirst.approvalStatus === 0"
                         >变更原因</span
                       >
+                      <span v-if="cycleFirst.approvalStatus === 3"
+                        >撤回原因</span
+                      >
                       <span v-else>审批意见</span>
                     </template>
                     <em v-if="cycleFirst.reason">{{
@@ -181,6 +184,7 @@
                     }}</span>
                     <template v-if="item.reason">
                       <span v-if="item.approvalStatus === 0">变更原因</span>
+                      <span v-if="item.approvalStatus === 3">撤回原因 </span>
                       <span v-else>审批意见</span>
                     </template>
                     <em v-if="item.reason">{{ `「${item.reason}」` }}</em>
@@ -227,7 +231,12 @@ export default {
     'tl-okrItem': okrItem,
     'tl-create-okrComponent': createOkrComponent,
   },
-  props: {},
+  props: {
+    canApproval: {
+      type: Boolean,
+      default: true,
+    },
+  },
   computed: {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
@@ -268,10 +277,14 @@ export default {
           if (res.code == 200) {
             this.cycleList = res.data;
             this.cycleList.forEach((item) => {
-              const contents = JSON.parse(item.remark);
-              item.approvalStatus = contents.approvalStatus;
+              if (item.remark) {
+                const contents = JSON.parse(item.remark);
+                item.approvalStatus = contents.approvalStatus;
+              } else { item.approvalStatus = 0; }
             });
             this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
+            console.log(this.cycleFirst);
+            console.log(this.cycleList);
           }
         });
       }
