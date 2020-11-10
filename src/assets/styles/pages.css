@@ -2303,6 +2303,10 @@
   min-height: calc(100vh - 172px);
 }
 
+.replay-link.is-padding {
+  padding: 0 0 56px 0;
+}
+
 .replay-info dt {
   display: flex;
   align-items: center;

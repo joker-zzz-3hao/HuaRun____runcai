@@ -50,42 +50,29 @@
         </dd>
         <dd>
           <span>综合岗审批OKR</span>
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="O"
-            class="tl-radio"
-            >是（综合岗可以审批OKR）</el-radio
-          >
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="S"
-            class="tl-radio"
-            >否（综合岗不可以审批OKR）</el-radio
-          >
+          <template v-if="isLeader">
+            <el-radio
+              @change="submitSecretaryData"
+              v-model="canApproval"
+              label="O"
+              class="tl-radio"
+              >是（综合岗可以审批OKR）</el-radio
+            >
+            <el-radio
+              @change="submitSecretaryData"
+              v-model="canApproval"
+              label="S"
+              class="tl-radio"
+              >否（综合岗不可以审批OKR）</el-radio
+            >
+          </template>
+          <template v-else>
+            <span>{{
+              canApproval == "O" ? "综合岗可以审批OKR" : "综合岗不可以审批OKR"
+            }}</span>
+          </template>
         </dd>
-        <!-- <dl class="dl-list"> -->
-        <!-- <dt>
-          <span>综合岗是否可以审批OKR</span>
-        </dt>
-        <dd>
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="O"
-            class="tl-radio"
-            >是（开启后综合岗可以审批OKR）</el-radio
-          >
-          <el-radio
-            @change="submitSecretaryData"
-            v-model="canApproval"
-            label="S"
-            class="tl-radio"
-            >否（开启后综合岗不可以审批OKR）</el-radio
-          >
-        </dd> -->
-        <!-- </dl> -->
+
         <dd>
           <span>
             <em>周报是否开放</em>
@@ -344,6 +331,14 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+    isLeader() {
+      this.userInfo.roleList.forEach((role) => {
+        if (role.roleCode == 'ORG_ADMIN') {
+          return true;
+        }
+      });
+      return false;
+    },
   },
   mounted() {
     this.overview = this.userInfo.defaultJump || '';

@@ -84,9 +84,11 @@
             </dl>
             <dl
               v-if="
-                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4, 7, '7'].includes(
+                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
                   item.okrMain.status
-                )
+                ) ||
+                (['7', 7].includes(item.okrMain.status) &&
+                  item.approvalType == 0)
               "
             >
               <dt>
@@ -620,8 +622,8 @@ export default {
 
     deleteDraft(draftId) {
       this.$xconfirm({
-        content: '请问您是否确定删除？',
-        title: '如果您要确定删除，该OKR将无法恢复',
+        content: '确定删除后，该OKR将无法恢复',
+        title: '请问您是否确定删除？',
       }).then(() => {
         // 提交确认弹窗
         this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {

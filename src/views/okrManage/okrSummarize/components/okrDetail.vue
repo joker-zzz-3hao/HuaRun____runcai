@@ -66,6 +66,7 @@
         <tl-create-okrComponent :tableList="tableList"></tl-create-okrComponent>
       </dd>
     </dl>
+    <!-- <dl class="dl-card-panel"> -->
     <dl
       class="dl-card-panel"
       v-if="
@@ -77,19 +78,62 @@
       <dt>
         <em>审阅意见</em>
       </dt>
-      <dd>
+      <!-- <dd>
         <el-radio-group v-model="feedback" @change="setText">
           <el-radio :label="1">加油，看好你！</el-radio>
           <el-radio :label="2">努力，加油干！</el-radio>
           <el-radio :label="3">辛苦了</el-radio>
         </el-radio-group>
-      </dd>
-
+      </dd> -->
+      <el-form ref="read" :model="formData"
+        ><el-form-item
+          prop="readRemark"
+          :rules="
+            formData.readStatus == 2
+              ? [
+                  {
+                    required: true,
+                    message: '请输入调整建议',
+                    trigger: 'blur',
+                  },
+                ]
+              : ''
+          "
+        >
+          <el-input
+            style="width: 70%"
+            type="textarea"
+            placeholder="请输入调整建议"
+            v-model="formData.readRemark"
+            :autosize="{ minRows: 5, maxRows: 8 }"
+            maxlength="1000"
+          ></el-input>
+          <span class="tip-btn"
+            ><dl>
+              <dd>
+                <el-button @click="setText('通过')" size="small"
+                  >通过</el-button
+                >
+              </dd>
+              <dd>
+                <el-button @click="setText('加油')" size="small"
+                  >加油</el-button
+                >
+              </dd>
+              <dd>
+                <el-button @click="setText('认真落实')" size="small"
+                  >认真落实</el-button
+                >
+              </dd>
+            </dl></span
+          >
+        </el-form-item></el-form
+      >
       <div style="margin-top: 25px">
         <el-button
           plain
           class="tl-btn amt-border-fadeout"
-          @click="okrSummaryRead"
+          @click="okrSummaryRead(1)"
           >已阅-无异议</el-button
         >
 
@@ -98,7 +142,7 @@
           plain
           style="margin-left: 5px"
           class="tl-btn amt-border-fadeout"
-          @click="showDia"
+          @click="okrSummaryRead(2)"
           >已阅-建议调整
         </el-button>
       </div>
@@ -123,7 +167,7 @@
         <em>{{ okrData.okrMain.readRemark }}</em>
       </dd>
     </dl>
-    <el-dialog
+    <!-- <el-dialog
       :append-to-body="true"
       :visible="showDialog"
       @close="close"
@@ -167,7 +211,7 @@
           >取消</el-button
         >
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -214,9 +258,9 @@ export default {
     }),
   },
   mounted() {
-    // this.$busOn('clearInput', () => {
-    //   this.$refs.read.resetField();
-    // });
+    this.$busOn('clearInput', () => {
+      this.$refs.read.resetField();
+    });
   },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeStep']),
@@ -224,65 +268,59 @@ export default {
       this.$busEmit('refreshPage');
       this.setOkrSummarizeStep('1');
     },
-    okrSummaryRead() {
+    okrSummaryRead(readStatus) {
+      this.formData.readStatus = readStatus;
       this.$nextTick(() => {
-        this.$confirm('确认提交？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          closeOnClickModal: false,
-        }).then(() => {
-          this.server.okrSummaryRead({
-            okrId: this.okrData.okrMain.okrId,
-            readStatus: 1,
-            readRemark: this.formData.readRemark,
-            userId: this.okrData.okrMain.userId,
-          }).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('审阅完成');
-              this.backList();
-            }
-          });
-        }).catch(() => {
+        this.$refs.read.validate((valid) => {
+          if (valid) {
+            this.$confirm('确认提交？', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+              closeOnClickModal: false,
+            }).then(() => {
+              this.server.okrSummaryRead({
+                okrId: this.okrData.okrMain.okrId,
+                readStatus,
+                readRemark: this.formData.readRemark,
+                userId: this.okrData.okrMain.userId,
+              }).then((res) => {
+                if (res.code == 200) {
+                  this.$message.success('审阅完成');
+                  this.backList();
+                  this.formData.readRemark = '';
+                }
+              });
+            }).catch(() => {
+            });
+          }
         });
       });
     },
-    submitFeedback() {
-      this.$refs.read.validate((valid) => {
-        if (valid) {
-          this.server.okrSummaryRead({
-            okrId: this.okrData.okrMain.okrId,
-            readStatus: 2,
-            readRemark: this.formData.readRemark,
-            userId: this.okrData.okrMain.userId,
-          }).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('审阅完成');
-              this.close();
-              this.backList();
-            }
-          });
-        }
-      });
-    },
+    // submitFeedback() {
+    //   this.$refs.read.validate((valid) => {
+    //     if (valid) {
+    //       this.server.okrSummaryRead({
+    //         okrId: this.okrData.okrMain.okrId,
+    //         readStatus: 2,
+    //         readRemark: this.formData.readRemark,
+    //         userId: this.okrData.okrMain.userId,
+    //       }).then((res) => {
+    //         if (res.code == 200) {
+    //           this.$message.success('审阅完成');
+    //           this.close();
+    //           this.backList();
+    //         }
+    //       });
+    //     }
+    //   });
+    // },
     okrSuggestChange() {
 
     },
-    setText(feedback) {
-      this.showDialog = false;
-      switch (feedback) {
-        case 1:
-          this.formData.readRemark = '加油，看好你！';
-          break;
-        case 2:
-          this.formData.readRemark = '努力，加油干！';
-          break;
-        case 3:
-          this.formData.readRemark = '辛苦了！';
-          break;
-        default:
-          break;
-      }
+    setText(text) {
+      // this.showDialog = false;
+      this.formData.readRemark = text;
     },
     showDia() {
       this.showDialog = true;
@@ -313,3 +351,12 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.tip-btn {
+  margin-left: 10px;
+}
+.tip-btn button {
+  background-color: rgb(255, 255, 255);
+  margin-top: 7px;
+}
+</style>
