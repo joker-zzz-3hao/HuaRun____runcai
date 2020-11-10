@@ -155,7 +155,7 @@
             placement="bottom"
             width="200"
             trigger="hover"
-            :append-to-body="false"
+            :append-to-body="true"
           >
             <span v-if="showUpdate">
               您关联的父目标有变更，请在变更中处理。

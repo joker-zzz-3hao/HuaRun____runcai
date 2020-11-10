@@ -3691,7 +3691,7 @@ height: 70%;
   margin: 0 36px 0 0;
   width: 70px;
   height: 70px;
-  background: #162565;
+  background: #2d3660;
 }
 
 .logo {
@@ -3799,10 +3799,14 @@ height: 70%;
 }
 
 .menu-cont-inside .management-platform,
-.menu-cont-inside .main-menu>ul {
+.menu-cont-inside .main-menu > ul {
   display: flex;
   flex-direction: column;
   background: #162565;
+}
+
+.menu-cont-inside .main-menu > ul {
+  background: linear-gradient(180deg, #2D3660 0%, #1B2543 100%);
 }
 
 .menu-cont-inside > ul {
@@ -3822,12 +3826,23 @@ height: 70%;
 
 .menu-cont-inside li em {
   margin: 0 0 0 0;
-  color: #fff;
+  color: #7f859d;
   font-size: 13px;
 }
 
-.menu-cont-inside li:not(.is-active):hover em {
-  color: #fcb621;
+.menu-cont-inside li:hover em,
+.menu-cont-inside li.is-active em {
+  color: #fff;
+}
+
+.menu-cont-inside ul > .is-active::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  content: '';
+  background: #685df1;
 }
 
 .menu-cont-inside.is-zindex {
@@ -3844,7 +3859,7 @@ height: 70%;
 }
 
 .main-menu .is-active {
-  background: linear-gradient(#ffbc20, #d66d2c);
+  background: #202848;
 }
 
 .no-sub-menu .main-menu {
@@ -4115,7 +4130,7 @@ height: 70%;
   align-items: center;
   justify-content: center;
   position: fixed;
-  right: 0;
+  right: 10px;
   bottom: 116px;
   width: 60px;
   height: 60px;
