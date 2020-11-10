@@ -524,7 +524,7 @@ export default {
             okrBelongType: okrInfo.okrBelongType,
             status,
           },
-          id: item.okrMainId,
+          id: item.id,
           approvalId: item.approvalId,
           params: item.paramJson,
           remark: item.remark || '',

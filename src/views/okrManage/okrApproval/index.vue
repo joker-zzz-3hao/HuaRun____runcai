@@ -53,7 +53,7 @@ export default {
         this.canApproval = false;
         const params = {
           configType: 'OKR',
-          configTypeDetail: 'O-1',
+          configTypeDetail: 'O-3',
           level: 'T',
           sourceId: this.userInfo.tenantId,
         };
