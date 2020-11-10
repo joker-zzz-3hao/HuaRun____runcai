@@ -110,7 +110,9 @@
                 </el-popover>
                 <el-button
                   v-if="
-                    item.hasUpdate && !item.undertakeOkrVo.undertakeOkrContent
+                    item.hasUpdate &&
+                    !item.undertakeOkrVo.undertakeOkrContent &&
+                    !item.cultureName
                   "
                   type="text"
                   plain
@@ -128,15 +130,13 @@
                   @click="goUndertake(index, 'change')"
                   :class="{ 'is-change': canWrite }"
                   >{{ item.undertakeOkrVo.undertakeOkrContent }}
-                  <em v-if="item.cultureName">、</em></em
-                >
+                </em>
                 <em
                   v-else
                   @click="goUndertake(index, 'change')"
                   :class="{ 'is-change': canWrite }"
-                  ><em v-if="item.cultureName">、</em
-                  >{{ item.parentObjectKr }}</em
-                >
+                  >{{ item.parentObjectKr }}
+                </em>
                 <em
                   @click="goUndertake(index, 'change')"
                   :class="{ 'is-change': canWrite }"
@@ -231,7 +231,6 @@
                   <i class="el-icon-warning" slot="reference"></i>
                 </el-popover>
                 <em>{{ item.parentObjectKr }}</em>
-                <em v-if="item.parentObjectKr && item.cultureName">、</em>
                 <em>{{ item.cultureName }}</em>
               </div>
             </dd>
