@@ -13,9 +13,9 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''"
-              >润联科技</em
-            >
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">{{
+              userInfo.tenantInfo.tenantName
+            }}</em>
             <em
               :class="light == item.id ? 'is-subset' : ''"
               v-for="(item, index) in selectList"
@@ -101,9 +101,11 @@ const server = new Server();
 export default {
   name: 'selectMember',
   props: ['rouleType', 'selectListed', 'disabledId', 'userType', 'orgUserId'],
-  ...mapState('common', {
-    userInfo: (state) => state.userInfo,
-  }),
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   data() {
     return {
       server,
@@ -122,7 +124,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.disabledId);
+    console.log(`11${this.userInfo}`);
     console.log(this.orgUserId);
     this.getSelected();
 
