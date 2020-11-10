@@ -54,8 +54,8 @@ export default {
         const params = {
           configType: 'OKR',
           configTypeDetail: 'O-3',
-          level: 'T',
-          sourceId: this.userInfo.tenantId,
+          level: 'O',
+          sourceId: this.userInfo.orgId,
         };
         this.server.getTypeConfig(params).then((res) => {
           if (res.code == 200) {
