@@ -84,9 +84,11 @@
             </dl>
             <dl
               v-if="
-                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4, 7, '7'].includes(
+                ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
                   item.okrMain.status
-                )
+                ) ||
+                (['7', 7].includes(item.okrMain.status) &&
+                  item.approvalType == 0)
               "
             >
               <dt>
