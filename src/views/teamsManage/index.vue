@@ -49,6 +49,44 @@
           <span>提示：团队综合管理员可以协助团队负责人完成OKR审批等工作</span>
         </dd>
         <dd>
+          <span>综合岗审批OKR</span>
+          <el-radio
+            @change="submitSecretaryData"
+            v-model="canApproval"
+            label="O"
+            class="tl-radio"
+            >是（综合岗可以审批OKR）</el-radio
+          >
+          <el-radio
+            @change="submitSecretaryData"
+            v-model="canApproval"
+            label="S"
+            class="tl-radio"
+            >否（综合岗不可以审批OKR）</el-radio
+          >
+        </dd>
+        <!-- <dl class="dl-list"> -->
+        <!-- <dt>
+          <span>综合岗是否可以审批OKR</span>
+        </dt>
+        <dd>
+          <el-radio
+            @change="submitSecretaryData"
+            v-model="canApproval"
+            label="O"
+            class="tl-radio"
+            >是（开启后综合岗可以审批OKR）</el-radio
+          >
+          <el-radio
+            @change="submitSecretaryData"
+            v-model="canApproval"
+            label="S"
+            class="tl-radio"
+            >否（开启后综合岗不可以审批OKR）</el-radio
+          >
+        </dd> -->
+        <!-- </dl> -->
+        <dd>
           <span>
             <em>周报是否开放</em>
             <span>(周报的查看权限)</span>
@@ -94,6 +132,7 @@
           <span>提示：设置后团队所有成员登录后会看到这个页面</span>
         </dd>
       </dl>
+
       <dl class="dl-card-panel">
         <dt class="card-title">
           <em>团队成员</em>
@@ -288,6 +327,7 @@ export default {
       baseTeamOrgId: '',
       cardHight: 52, // 块高度的一半
       blockHeight: 150,
+      canApproval: 'S',
     };
   },
   components: {
@@ -380,6 +420,22 @@ export default {
               }
             }
           });
+        }
+      });
+      // 查询综合岗审批OKR配置
+      this.server.configQuery({
+        configType: 'OKR',
+        level: 'O',
+        sourceId: this.userInfo.orgId,
+      }).then((res) => {
+        if (res.code == 200) {
+          if (res.data.length > 0) {
+            res.data.forEach((config) => {
+              if (config.configTypeDetail == 'O-3') {
+                this.canApproval = config.configItemCode;
+              }
+            });
+          }
         }
       });
     },
@@ -552,6 +608,25 @@ export default {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
     },
+    // 综合岗是否可审批
+    submitSecretaryData() {
+      const params = {
+        level: 'O', // 部门
+        configType: 'OKR',
+        sourceId: this.userInfo.orgId,
+        configTypeDetail: 'O-3',
+        configItemCode: this.canApproval,
+      };
+      this.server.addOrUpdate(
+        params,
+      ).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.msg);
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
   },
   watch: {
     // teamSelect: {
@@ -566,3 +641,13 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.dl-card-panel {
+  padding-bottom: 30px;
+  margin: 0 0 20px 0;
+  border-bottom: solid 1px #e5e9ee;
+}
+.teams-manage .card-title {
+  margin: 0 0 20px 0;
+}
+</style>

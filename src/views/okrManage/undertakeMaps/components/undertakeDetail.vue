@@ -329,13 +329,16 @@ export default {
       });
     },
     updateSyncHistoryStatus(info) {
-      console.log(info);
-      // debugger;
-      this.server.updateSyncHistoryStatus({ detailId: info.detailId }).then((res) => {
-        if (res.code == 200) {
-          this.queryOAndKrList();
-        }
-      });
+      this.$xconfirm({
+        content: '',
+        title: '确认已阅？',
+      }).then(() => {
+        this.server.updateSyncHistoryStatus({ detailId: info.detailId }).then((res) => {
+          if (res.code == 200) {
+            this.queryOAndKrList();
+          }
+        });
+      }).catch(() => {});
     },
     goback() {
       this.setUndertakeMapsStep('1');

@@ -64,4 +64,13 @@ export default class Server extends ServerBase {
   selectOrgAdminByUserIdAndOrgId(param) {
     return this._ajaxPost('/gateway/system-service/sys/userRole/selectOrgAdminByUserIdAndOrgId ', param);
   }
+
+  // 综合岗是否可以审批OKR
+  addOrUpdate(param) {
+    return this._ajaxPost('gateway/system-service/sys/config/addOrUpdate', param);
+  }
+
+  configQuery(param) {
+    return this._ajaxPost('gateway/system-service/sys/config/okr', param);
+  }
 }
