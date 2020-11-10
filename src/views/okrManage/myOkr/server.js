@@ -105,4 +105,9 @@ export default class Server extends ServerBase {
   singleUpdate(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/singleUpdateProcess', param);
   }
+
+  // 单独更新
+  recall(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/recall', param);
+  }
 }
