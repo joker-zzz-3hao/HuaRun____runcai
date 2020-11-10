@@ -35,6 +35,7 @@ const APPROVAL_HISTROY_MAP = {
   0: '提交',
   1: '通过',
   2: '退回',
+  3: '撤回',
 };
 
 export default {

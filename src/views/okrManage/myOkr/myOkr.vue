@@ -10,7 +10,7 @@
           </div>
         </el-alert>
       </template>
-      <template v-if="okrList[0].tableList && okrList[0].tableList.length > 0">
+      <template v-if="okrList[0] && okrList[0].tableList.length > 0">
         <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
           <div
             class="okr-tag"
@@ -460,8 +460,8 @@ export default {
                 }
               });
             }
-            this.loading = false;
           }
+          this.loading = false;
         });
       } else {
         this.server.getmyOkr({
@@ -483,8 +483,9 @@ export default {
                 this.handleNormal(okritem);
               });
             }
-            this.loading = false;
           }
+          this.loading = false;
+          console.log('this.loading', this.okrList[0]);
         });
       }
     },
@@ -669,9 +670,10 @@ export default {
   watch: {
     okrCycle: {
       handler(newVal) {
-        if (newVal) {
+        if (newVal.periodId) {
           this.searchForm.periodId = newVal.periodId;
           this.searchOkr();
+          console.log('无数据');
         }
       },
       deep: true,
