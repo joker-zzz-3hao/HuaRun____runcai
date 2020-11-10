@@ -2388,6 +2388,17 @@ transition: transform .3s;
   margin-left: 16px;
 }
 
+.el-message-box.confirm .tip-icon {
+  margin: 0 0 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.el-message-box .dialog-title dt {
+  font-size: 16px;
+  color: #4d5155;
+}
+
 /* tl-popover */
 .search-popover {
   padding: 16px 0;
