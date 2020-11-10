@@ -116,7 +116,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="42%">
+      <el-table-column prop="okrDetailObjectKr" width="45%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
@@ -221,7 +221,7 @@
         </template>
       </el-table-column>
       <!-- o无风险状态 label="信心指数" -->
-      <el-table-column width="14%"></el-table-column>
+      <el-table-column width="11%"></el-table-column>
 
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="17%">

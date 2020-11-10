@@ -914,7 +914,7 @@ export default {
 
     // 滚动事件触发下拉加载
     onScroll() {
-      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage / 2) {
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage / 4) {
         this.currentPage += 1;
         console.log('fanyele', this.currentPage);
       }

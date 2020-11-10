@@ -429,8 +429,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 42%;
-  width: 42%;
+  flex: 0 0 45%;
+  width: 45%;
   position: relative;
 }
 
@@ -469,8 +469,8 @@
 }
 
 .tl-table .sub-tr .okr-risk {
-  flex: 0 0 14%;
-  width: 14%;
+  flex: 0 0 11%;
+  width: 11%;
 }
 
 .tl-table .sub-tr .undertake-target {
@@ -3172,7 +3172,7 @@ height: 70%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(1) {
-  width: 47%;
+  width: 50%;
 }
 
 .tl-table-fix .fold {
@@ -3218,7 +3218,7 @@ height: 70%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(4) {
-  width: 14%;
+  width: 11%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(5) {
