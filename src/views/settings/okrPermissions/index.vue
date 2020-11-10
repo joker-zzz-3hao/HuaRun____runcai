@@ -30,7 +30,7 @@
         </dl>
         <dl class="dl-list">
           <dt>
-            <span>周报中支撑个人OKR或团队OKR</span>
+            <span>周报中支撑个人OKR或部门OKR</span>
           </dt>
           <dd>
             <el-radio
@@ -45,7 +45,7 @@
               v-model="radio['O-2']"
               label="S"
               class="tl-radio"
-              >团队</el-radio
+              >部门</el-radio
             >
           </dd>
         </dl>
@@ -196,12 +196,12 @@ export default {
       ruleForm: {},
       server,
       radio: {
-        'O-1': 'O',
-        'O-2': 'O',
+        'O-1': 'S',
+        'O-2': 'S',
         'O-3': 'S',
       },
       setList: [{
-        configItemCode: 'S',
+        configItemCode: 'O',
         configType: 'OKR',
         configTypeDetail: 'O-1',
         level: 'T',
@@ -471,10 +471,14 @@ export default {
 }
 .okr-permissions .dl-list {
   margin: 0 0 15px 0;
+  padding-bottom: 10px;
 }
 .okr-permissions .check-tip {
   font-size: 12px;
   color: #d0cbcb;
   margin-left: 10px;
+}
+.okr-permissions .tl-radio {
+  margin: 0;
 }
 </style>
