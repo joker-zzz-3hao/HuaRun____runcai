@@ -620,8 +620,8 @@ export default {
 
     deleteDraft(draftId) {
       this.$xconfirm({
-        content: '请问您是否确定删除？',
-        title: '如果您要确定删除，该OKR将无法恢复',
+        content: '确定删除后，该OKR将无法恢复',
+        title: '请问您是否确定删除？',
       }).then(() => {
         // 提交确认弹窗
         this.server.deleteOkrDraft({ okrDraftId: draftId }).then((res) => {
