@@ -2397,6 +2397,7 @@ transition: transform .3s;
 .el-message-box .dialog-title dt {
   font-size: 16px;
   color: #4d5155;
+  text-align: center;
 }
 
 /* tl-popover */
