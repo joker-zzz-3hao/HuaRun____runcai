@@ -315,8 +315,7 @@ export default {
       })
         .then(() => {
           this.save();
-          this.$router.push('/replayList');
-        })
+        }).then(() => { this.$router.push('/replayList'); })
         .catch(() => {
           this.clearClose();
           this.$router.push('/replayList');
