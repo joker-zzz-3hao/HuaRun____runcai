@@ -43,12 +43,11 @@ export default {
     'tl-replayUser': replayUser,
     'tl-replayHistory': replayHistory,
   },
-  activated() {
+  mounted() {
     this.getOkrReviewDetail();
     this.getOkrReviewHistoryList();
   },
   methods: {
-
     getOkrReviewHistoryList() {
       this.server.getOkrReviewHistoryList({
         okrMainId: this.$route.query.okrId,

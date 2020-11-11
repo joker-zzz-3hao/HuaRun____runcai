@@ -199,18 +199,19 @@
               label="部门"
             ></el-table-column>
             <el-table-column
-              min-width="140px"
+              min-width="70px"
               align="left"
               prop="okrProgress"
               label="okr进度"
             >
               <template slot-scope="scope">
-                <tl-process
+                <!-- <tl-process
                   :data="parseInt(scope.row.okrProgress, 10)"
                   :showNumber="true"
                   :width="30"
                   :marginLeft="2"
-                ></tl-process>
+                ></tl-process> -->
+                {{ `${scope.row.okrProgress}%` }}
               </template>
             </el-table-column>
             <el-table-column
@@ -222,6 +223,41 @@
               <template slot-scope="scope">{{
                 CONST.TABLE_STATUS_MAP[scope.row.status]
               }}</template>
+            </el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrConfidence"
+              label="信心指数"
+            >
+              <template slot-scope="scope">{{
+                scope.row.okrConfidence || "--"
+              }}</template>
+            </el-table-column>
+            <el-table-column
+              width="180px"
+              align="left"
+              prop="updateTime"
+              label="最后更新时间"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrUpdateCount"
+              label="更新次数"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrUpContinueCount"
+              label="承接数"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrDownContinueCount"
+              label="被承接数"
+            >
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
@@ -266,7 +302,7 @@
 <script>
 
 import { mapMutations, mapState } from 'vuex';
-import tlProcess from '@/components/process';
+// import tlProcess from '@/components/process';
 import Server from '../server';
 import CONST from '../const';
 
@@ -303,7 +339,7 @@ export default {
     };
   },
   components: {
-    tlProcess,
+    // tlProcess,
   },
   mounted() {
     const self = this;
