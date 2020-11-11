@@ -16,11 +16,9 @@
     >
       <el-form ref="userForm" :model="formData" label-width="80px">
         <el-form-item
-          label="用户名称"
+          label="姓名"
           prop="userName"
-          :rules="[
-            { required: true, message: '请填写用户名称', trigger: 'blur' },
-          ]"
+          :rules="[{ required: true, message: '请填写姓名', trigger: 'blur' }]"
         >
           <el-input
             v-model.trim="formData.userName"
@@ -177,7 +175,7 @@ export default {
       loading: false,
       initUserAccount: '',
       formData: {
-        userName: '', // 用户名称
+        userName: '', // 姓名
         loginPwd: '', // 密码
         confirmPwd: '',
         userMobile: '', // 手机

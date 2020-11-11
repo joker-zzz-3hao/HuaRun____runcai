@@ -47,15 +47,9 @@ export default {
       communication: {},
       communicationLabel: {},
       list: [],
-      listBtn: [
-        '超级优秀',
-        '优秀',
-        '继续努力',
-        '要加油哦',
-      ],
     };
   },
-  activated() {
+  mounted() {
     this.getOkrReviewDetail();
     this.getOkrReviewHistoryList();
   },
@@ -67,92 +61,6 @@ export default {
 
       }).then((res) => {
         this.activities = res.data;
-      });
-    },
-    cutName(userName) {
-      const nameLength = userName.length;
-      return userName.substring(nameLength - 2, nameLength);
-    },
-    checkDatakrs(clear) {
-      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
-      const krs = [];
-      let krsList;
-      krsData.forEach((item) => {
-        krsList = krs.concat(item);
-      });
-      if (clear) {
-        this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          okrDetailId: item.okrDetailId,
-          communication: '',
-          communicationLabel: '',
-        }));
-      } else {
-        this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          okrDetailId: item.okrDetailId,
-          communication: item.communication,
-          communicationLabel: item.communicationLabel,
-        }));
-      }
-    },
-    inputCommunication(value, index, i) {
-      this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
-    },
-    selectCommunicationLabel(value, index, i) {
-      const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
-      mainData.communicationLabel = value;
-    },
-    save() {
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-          reviewType: 1,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('保存成功');
-        }
-      });
-    },
-    handleDeleteOne() {
-      this.$xconfirm({ title: '该数据删除将无法恢复，确认要删除吗？', content: '' })
-        .then(() => {
-          this.clearClose();
-        })
-        .catch(() => {});
-    },
-    clearClose() {
-      this.checkDatakrs(true);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-          reviewType: 1,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('保存成功');
-        }
-      });
-    },
-    submit() {
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-          reviewType: 1,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewCommunicationSubmit(params).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-        }
       });
     },
 

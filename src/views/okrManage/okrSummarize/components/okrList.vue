@@ -205,12 +205,13 @@
               label="okr进度"
             >
               <template slot-scope="scope">
-                <tl-process
+                <!-- <tl-process
                   :data="parseInt(scope.row.okrProgress, 10)"
                   :showNumber="true"
                   :width="30"
                   :marginLeft="2"
-                ></tl-process>
+                ></tl-process> -->
+                {{ `${scope.row.okrProgress}%` }}
               </template>
             </el-table-column>
             <el-table-column
@@ -221,6 +222,16 @@
             >
               <template slot-scope="scope">{{
                 CONST.TABLE_STATUS_MAP[scope.row.status]
+              }}</template>
+            </el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="status"
+              label="信心指数"
+            >
+              <template slot-scope="scope">{{
+                CONST.CONFIDENCE_MAP[scope.row.status]
               }}</template>
             </el-table-column>
             <el-table-column width="180" label="操作">
@@ -266,7 +277,7 @@
 <script>
 
 import { mapMutations, mapState } from 'vuex';
-import tlProcess from '@/components/process';
+// import tlProcess from '@/components/process';
 import Server from '../server';
 import CONST from '../const';
 
@@ -303,7 +314,7 @@ export default {
     };
   },
   components: {
-    tlProcess,
+    // tlProcess,
   },
   mounted() {
     const self = this;

@@ -11,7 +11,12 @@
           }})</em
         >
       </div>
-      <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+      <el-button
+        plain
+        @click="$router.back()"
+        class="tl-btn amt-border-slip"
+        v-if="$route.name == 'replayDetail'"
+      >
         返回
         <span class="lines"></span>
       </el-button>
@@ -78,8 +83,10 @@ export default {
   props: ['okrMain'],
   methods: {
     cutName(userName) {
-      const nameLength = userName.length;
-      return userName.substring(nameLength - 2, nameLength);
+      if (userName) {
+        const nameLength = userName.length;
+        return userName.substring(nameLength - 2, nameLength);
+      }
     },
   },
 };

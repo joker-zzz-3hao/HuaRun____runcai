@@ -227,6 +227,7 @@ export default {
   },
   methods: {
     okrReviewList() {
+      sessionStorage.setItem('historyPer', this.periodId);
       this.server.okrReviewList({
 
         periodId: this.periodId, // 周期id，必传
@@ -243,7 +244,12 @@ export default {
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        if (sessionStorage.getItem('historyPer')) {
+          this.periodId = sessionStorage.getItem('historyPer');
+        } else {
+          this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        }
+
         this.okrReviewList();
       });
     },

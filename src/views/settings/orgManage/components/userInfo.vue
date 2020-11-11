@@ -18,30 +18,36 @@
   >
     <div>
       <el-form ref="userForm" :model="formData" label-width="80px">
-        <el-form-item label="用户名称">
-          <span>{{formData.userName}}</span>
+        <el-form-item label="姓名">
+          <span>{{ formData.userName }}</span>
         </el-form-item>
         <el-form-item label="用户账号">
-          <span>{{formData.userAccount}}</span>
+          <span>{{ formData.userAccount }}</span>
         </el-form-item>
         <el-form-item label="手机号">
-          <span>{{formData.userMobile}}</span>
+          <span>{{ formData.userMobile }}</span>
         </el-form-item>
         <el-form-item label="电子邮箱">
-          <span>{{formData.userMail}}</span>
+          <span>{{ formData.userMail }}</span>
         </el-form-item>
         <el-form-item label="所属租户">
-          <span>{{formData.tenantName}}</span>
+          <span>{{ formData.tenantName }}</span>
         </el-form-item>
         <el-form-item label="所在部门">
           <span>
-            <span>{{orgName}}</span>
+            <span>{{ orgName }}</span>
           </span>
         </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
-      <el-button type="primary" class="tl-btn amt-bg-slip" :loading="loading" @click="cancel">确定</el-button>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :loading="loading"
+        @click="cancel"
+        >确定</el-button
+      >
     </div>
   </el-drawer>
 </template>

@@ -302,9 +302,7 @@
                       @click.native="deleteTask(scope.row.taskId)"
                       >删除</el-dropdown-item
                     >
-                    <el-dropdown-item
-                      @click.native="filedTask(scope.row.taskId)"
-                      :disabled="scope.row.taskProgress != 100"
+                    <el-dropdown-item @click.native="filedTask(scope.row)"
                       >任务归档</el-dropdown-item
                     >
                   </el-dropdown-menu>
@@ -386,6 +384,7 @@ export default {
         { menuName: '我收到的' },
         { menuName: '我创建的' },
         { menuName: '我的草稿' },
+        { menuName: '已归档任务' },
       ],
       currentIndex: 0,
       searchMsg: '',
@@ -558,18 +557,22 @@ export default {
         });
       }).catch(() => {});
     },
-    filedTask(id) {
-      this.$xconfirm({
-        content: '',
-        title: '确定要将该任务归档吗？',
-      }).then(() => {
-        this.server.filedTask({ taskId: id }).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('归档成功');
-            this.getTableList();
-          }
-        });
-      }).catch(() => {});
+    filedTask(row) {
+      if (row.taskProgress == 100) {
+        this.$xconfirm({
+          content: '',
+          title: '确定要将该任务归档吗？',
+        }).then(() => {
+          this.server.filedTask({ taskId: row.taskId }).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('归档成功');
+              this.getTableList();
+            }
+          });
+        }).catch(() => {});
+      } else {
+        this.$message.warning('任务进度未到100%，暂时无法归档');
+      }
     },
     acceptTask(id) {
       this.server.acceptTask({ taskId: id }).then((res) => {

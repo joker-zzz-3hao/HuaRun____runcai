@@ -106,7 +106,7 @@
                     您关联的父目标有变更，
                     <a @click="goUndertake(index, 'change')">查看详情</a>
                   </span>
-                  <i class="el-icon-warning" slot="reference"></i>
+                  <i class="icon-remind" slot="reference"></i>
                 </el-popover>
                 <el-button
                   v-if="
@@ -228,7 +228,7 @@
                   :append-to-body="false"
                 >
                   <span>关联的父目标有变更</span>
-                  <i class="el-icon-warning" slot="reference"></i>
+                  <i class="icon-remind" slot="reference"></i>
                 </el-popover>
                 <em>{{ item.parentObjectKr }}</em>
                 <em>{{ item.cultureName }}</em>

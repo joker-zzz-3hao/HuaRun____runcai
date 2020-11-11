@@ -50,7 +50,7 @@
         </dd>
         <dd>
           <span>综合岗审批OKR</span>
-          <template v-if="isLeader">
+          <template v-if="isLeader()">
             <el-radio
               @change="submitSecretaryData"
               v-model="canApproval"
@@ -67,9 +67,9 @@
             >
           </template>
           <template v-else>
-            <span>{{
+            <em>{{
               canApproval == "O" ? "综合岗可以审批OKR" : "综合岗不可以审批OKR"
-            }}</span>
+            }}</em>
           </template>
         </dd>
 
@@ -331,20 +331,22 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    isLeader() {
-      this.userInfo.roleList.forEach((role) => {
-        if (role.roleCode == 'ORG_ADMIN') {
-          return true;
-        }
-      });
-      return false;
-    },
+
   },
   mounted() {
     this.overview = this.userInfo.defaultJump || '';
     this.init();
   },
   methods: {
+    isLeader() {
+      let result = false;
+      this.userInfo.roleList.forEach((role) => {
+        if (role.roleCode == 'ORG_ADMIN') {
+          result = true;
+        }
+      });
+      return result;
+    },
     selectUserCheck(userId) {
       this.server.selectOrgAdminByUserIdAndOrgId({
         userId,

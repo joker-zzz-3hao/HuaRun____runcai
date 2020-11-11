@@ -15,6 +15,7 @@
         <tl-select-member
           @click.native.stop
           @getMember="selectMb"
+          :orgUserId="orgUserId"
           :rouleType="rouleType"
           :selectListed="selectListed"
           :disabledId="disabledId"
@@ -75,6 +76,10 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    orgUserId: {
+      type: String,
+      required: false,
     },
   },
 

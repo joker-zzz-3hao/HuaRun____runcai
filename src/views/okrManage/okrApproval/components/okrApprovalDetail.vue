@@ -161,7 +161,7 @@
                       <span v-if="cycleFirst.approvalStatus === 0"
                         >变更原因</span
                       >
-                      <span v-if="cycleFirst.approvalStatus === 3"
+                      <span v-else-if="cycleFirst.approvalStatus === 3"
                         >撤回原因</span
                       >
                       <span v-else>审批意见</span>
@@ -184,7 +184,9 @@
                     }}</span>
                     <template v-if="item.reason">
                       <span v-if="item.approvalStatus === 0">变更原因</span>
-                      <span v-if="item.approvalStatus === 3">撤回原因 </span>
+                      <span v-else-if="item.approvalStatus === 3"
+                        >撤回原因
+                      </span>
                       <span v-else>审批意见</span>
                     </template>
                     <em v-if="item.reason">{{ `「${item.reason}」` }}</em>
@@ -262,6 +264,15 @@ export default {
               this.ruleForm.approvalStatus = '1';
               this.ruleForm.refuseInfo = '';
               this.setOkrApprovalStep('1');
+            } else if (res.code == 30000) {
+              this.$xwarning({
+                title: 'OKR已被提交人撤回！',
+                content: `撤回原因：${res.msg}`,
+              }).then(() => {
+                this.ruleForm.approvalStatus = '1';
+                this.ruleForm.refuseInfo = '';
+                this.setOkrApprovalStep('1');
+              });
             }
             this.loading = false;
           });
