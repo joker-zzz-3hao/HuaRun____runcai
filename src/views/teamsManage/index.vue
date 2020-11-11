@@ -339,12 +339,13 @@ export default {
   },
   methods: {
     isLeader() {
+      let result = false;
       this.userInfo.roleList.forEach((role) => {
         if (role.roleCode == 'ORG_ADMIN') {
-          return true;
+          result = true;
         }
       });
-      return false;
+      return result;
     },
     selectUserCheck(userId) {
       this.server.selectOrgAdminByUserIdAndOrgId({
