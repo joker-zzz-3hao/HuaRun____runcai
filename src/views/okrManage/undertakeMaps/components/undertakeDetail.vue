@@ -47,15 +47,21 @@
               </template>
               <a v-else @click="okrCheck(okrItem.okrDetailId, 0)">返回</a>
             </dt>
-            <dd
-              v-if="
-                personList.length > 0 ||
-                (okrItem.undertakeCount > 0 && checkStatus === 0)
-              "
-            >
-              <span>以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span>
+            <!-- 对齐 -->
+            <dd>
+              <span
+                v-if="
+                  personList.length > 0 ||
+                  (okrItem.undertakeCount > 0 && checkStatus === 0)
+                "
+                >以下人员承接了你的OKR，他们的工作进展用于你的OKR更新</span
+              >
               <el-button
-                v-if="checkStatus === 0 && okrItem.okrDetailType == 1"
+                v-if="
+                  okrItem.undertakeCount > 0 &&
+                  checkStatus === 0 &&
+                  okrItem.okrDetailType == 1
+                "
                 type="primary"
                 @click="openUpdate(okrItem)"
                 class="tl-btn amt-bg-slip"
@@ -64,7 +70,11 @@
               <el-button
                 type="primary"
                 class="tl-btn amt-bg-slip"
-                v-if="checkStatus === 0 && okrItem.okrDetailType == 0"
+                v-if="
+                  okrItem.undertakeCount > 0 &&
+                  checkStatus === 0 &&
+                  okrItem.okrDetailType == 0
+                "
                 @click="updateSyncHistoryStatus(okrItem)"
                 >已阅</el-button
               >
@@ -72,7 +82,7 @@
             <!-- <dd v-else>暂无可对齐的支撑项</dd> -->
           </dl>
 
-          <!-- 对齐的内容 -->
+          <!-- 历史对齐的内容 -->
           <div v-if="checkStatus === 1">
             <!-- 暂无数据 -->
             <div class="no-data" v-if="personList.length == 0">
