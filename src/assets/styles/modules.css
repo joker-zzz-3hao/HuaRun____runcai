@@ -1753,8 +1753,8 @@ transition: transform .3s;
 }
 
 
-.collpase-panel dd i+span+span {
-  margin: 0 10px;
+.collpase-panel dd i + span + span {
+  margin: 0 0 0 10px;
 }
 
 .collpase-panel dd i+span+span a {

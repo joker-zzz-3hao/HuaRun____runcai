@@ -23,7 +23,8 @@
 .toggle-view i,
 .assistant.is-focus > i,
 .gave-praise i,
-.menu-control-button i {
+.menu-control-button i,
+.icon-remind::before {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -299,6 +300,7 @@
   background-position-x: -10px;
   background-position-y: -486px;
 }
+
 .el-message-box.warning .tip-icon i {
   display: block;
   width: 50px;
@@ -306,6 +308,7 @@
   background-position-x: -10px;
   background-position-y: -244px;
 }
+
 .el-message-box.success .tip-icon i {
   display: block;
   width: 48px;
@@ -313,6 +316,7 @@
   background-position-x: -10px;
   background-position-y: -304px;
 }
+
 .el-message-box.error .tip-icon i {
   display: block;
   width: 48px;
@@ -320,10 +324,31 @@
   background-position-x: -10px;
   background-position-y: -362px;
 }
+
 .el-message-box.waiting .tip-icon i {
   display: block;
   width: 50px;
   height: 50px;
   background-position-x: -7px;
   background-position-y: -423px;
+}
+
+.icon-remind {
+  margin: 0 6px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: #fceeef;
+  border-radius: 50%;
+}
+
+.icon-remind::before {
+  width: 16px;
+  height: 16px;
+  content: '';
+  background-position-x: -7px;
+  background-position-y: -487px;
 }

@@ -162,8 +162,7 @@
               <a @click="opensome">申请变更</a>
             </span>
             <span v-else>关联的父目标有变更</span>
-
-            <i class="el-icon-warning" slot="reference"></i>
+            <i class="icon-remind" slot="reference"></i>
           </el-popover>
           <el-tooltip
             v-if="scope.row.parentObjectKr"
