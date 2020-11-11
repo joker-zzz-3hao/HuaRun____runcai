@@ -128,7 +128,7 @@
           </dl>
         </div>
       </div>
-      <div class="operating-box">
+      <div class="operating-box" style="margin-bottom: 20px">
         <dl class="dl-item">
           <dt>OKR状态</dt>
           <dd>
@@ -193,7 +193,7 @@
               label="姓名"
             ></el-table-column>
             <el-table-column
-              min-width="100px"
+              min-width="150px"
               align="left"
               prop="orgName"
               label="部门"
@@ -215,7 +215,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              width="130px"
+              width="100px"
               align="left"
               prop="status"
               label="状态"
@@ -225,7 +225,7 @@
               }}</template>
             </el-table-column>
             <el-table-column
-              width="130px"
+              width="100px"
               align="left"
               prop="okrConfidence"
               label="信心指数"
@@ -241,19 +241,19 @@
               label="最后更新时间"
             ></el-table-column>
             <el-table-column
-              width="130px"
+              width="100px"
               align="left"
               prop="okrUpdateCount"
               label="更新次数"
             ></el-table-column>
             <el-table-column
-              width="130px"
+              width="100px"
               align="left"
               prop="okrUpContinueCount"
-              label="承接数"
+              label="向上承接数"
             ></el-table-column>
             <el-table-column
-              width="130px"
+              width="100px"
               align="left"
               prop="okrDownContinueCount"
               label="被承接数"
