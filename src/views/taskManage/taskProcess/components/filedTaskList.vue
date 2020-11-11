@@ -28,7 +28,6 @@
           ></i>
         </el-input>
         <el-select
-          v-show="processList.length > 0"
           v-model="searchParams.processId"
           placeholder="全部任务过程"
           clearable
