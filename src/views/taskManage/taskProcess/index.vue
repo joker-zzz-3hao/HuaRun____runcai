@@ -16,16 +16,20 @@
           icon="el-icon-s-claim"
           >创建任务</el-button
         >
-        <el-dropdown class="tl-dropdown">
-          <div class="el-dropdown-link">
-            <el-button
-              plain
-              class="tl-btn amt-border-slip"
-              icon="el-icon-s-cooperation"
-            >
-              <em>查看归档任务</em><span class="lines"></span
-            ></el-button>
-          </div>
+        <el-button
+          plain
+          class="tl-btn amt-border-slip"
+          icon="el-icon-s-cooperation"
+          @click.native="
+            go('filedTaskList', {
+              query: { processId: processObj.processId },
+            })
+          "
+        >
+          <em>查看归档任务</em><span class="lines"></span
+        ></el-button>
+        <!-- <el-dropdown class="tl-dropdown">
+          <div class="el-dropdown-link"></div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="filedAll">
               归档任务过程所有已完成的任务</el-dropdown-item
@@ -40,7 +44,7 @@
               查看任务归档</el-dropdown-item
             >
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
         <template v-if="taskTypeList.length > 0">
           <div
             class="tl-custom-btn"

@@ -30,7 +30,7 @@
         <el-select
           v-show="processList.length > 0"
           v-model="searchParams.processId"
-          placeholder="请选择任务过程"
+          placeholder="全部任务过程"
           clearable
           class="tl-select"
           :popper-append-to-body="false"
@@ -194,7 +194,7 @@ export default {
   },
   methods: {
     init() {
-      this.searchParams.processId = this.$route.query.processId;
+      // this.searchParams.processId = this.$route.query.processId;
       this.searchList();
       this.queryUser();
       this.queryProcessList();
