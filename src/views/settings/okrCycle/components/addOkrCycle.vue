@@ -191,7 +191,7 @@ export default {
       const startTime = new Date(date[0]).getTime();
       const endTime = new Date(date[1]).getTime();
       if (draftingStartTime + 24 * 60 * 60 * 1000 > startTime) {
-        this.$message.error('周期开始时间不能小于起草时间');
+        this.$message.error('起草时间不能大于周期开始时间');
         this.dateTime = '';
         return false;
       }
