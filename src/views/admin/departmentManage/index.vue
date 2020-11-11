@@ -23,7 +23,7 @@
             </el-form-item>
             <el-form-item>
               <el-input
-                placeholder="输入姓名/账号/手机号"
+                placeholder="输入用户姓名/账号/手机号"
                 v-model.trim="searchData.keyWord"
                 clearable
                 class="tl-input"
@@ -129,7 +129,7 @@
               min-width="150px"
               align="left"
               prop="userName"
-              label="姓名"
+              label="用户姓名"
             ></el-table-column>
             <el-table-column
               min-width="150px"
@@ -536,7 +536,7 @@ export default {
     },
     changeStatus(user) {
       const params = {
-        userName: user.userName, // 姓名
+        userName: user.userName, // 用户名称
         userMobile: user.userMobile, // 手机
         userMail: user.userMail, // 邮箱
         userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
