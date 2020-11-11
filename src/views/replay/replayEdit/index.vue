@@ -55,7 +55,7 @@ export default {
     'tl-o-detail': oDetail,
     'tl-replayUser': replayUser,
   },
-  activated() {
+  mounted() {
     this.getOkrReviewDetail();
   },
 
