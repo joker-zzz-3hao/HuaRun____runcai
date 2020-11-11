@@ -41,7 +41,7 @@
             </el-form-item>
             <el-form-item>
               <el-input
-                placeholder="输入用户姓名/账号/手机号"
+                placeholder="输入姓名/账号/手机号"
                 v-model.trim="searchData.keyWord"
                 clearable
                 class="tl-input"
@@ -148,7 +148,7 @@
               min-width="150"
               align="left"
               prop="userName"
-              label="用户姓名"
+              label="姓名"
             ></el-table-column>
             <el-table-column
               min-width="150"
