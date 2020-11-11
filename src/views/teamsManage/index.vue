@@ -67,9 +67,9 @@
             >
           </template>
           <template v-else>
-            <span>{{
+            <em>{{
               canApproval == "O" ? "综合岗可以审批OKR" : "综合岗不可以审批OKR"
-            }}</span>
+            }}</em>
           </template>
         </dd>
 
@@ -331,6 +331,13 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
+
+  },
+  mounted() {
+    this.overview = this.userInfo.defaultJump || '';
+    this.init();
+  },
+  methods: {
     isLeader() {
       this.userInfo.roleList.forEach((role) => {
         if (role.roleCode == 'ORG_ADMIN') {
@@ -339,12 +346,6 @@ export default {
       });
       return false;
     },
-  },
-  mounted() {
-    this.overview = this.userInfo.defaultJump || '';
-    this.init();
-  },
-  methods: {
     selectUserCheck(userId) {
       this.server.selectOrgAdminByUserIdAndOrgId({
         userId,
