@@ -10,7 +10,9 @@
       >
         <el-table-column prop="orgName" label="名称" min-width="170">
           <template slot-scope="scope">
-            <span @click="gotoView(scope.row)">{{ scope.row.orgName }}</span>
+            <span @click="gotoView(scope.row)">{{
+              cutOrgName(scope.row.orgName)
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="userName" label="负责人" width="120">

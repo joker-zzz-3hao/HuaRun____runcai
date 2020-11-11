@@ -13,9 +13,9 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''"
-              >润联科技</em
-            >
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">{{
+              userInfo.tenantInfo.tenantName
+            }}</em>
             <em
               :class="light == item.id ? 'is-subset' : ''"
               v-for="(item, index) in selectList"
@@ -159,6 +159,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import Server from '../server';
 
 const server = new Server();
@@ -180,6 +181,11 @@ export default {
       showLoad: true,
       time: null,
     };
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
   },
   mounted() {
     this.dialogTableVisible = true;

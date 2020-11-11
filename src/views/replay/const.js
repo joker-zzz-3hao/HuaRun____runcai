@@ -5,7 +5,7 @@ const REVIEW_STATUS = {
 };
 
 const OKR_BELONGTYPE = {
-  1: '组织',
+  1: '部门',
   2: '个人',
 };
 
