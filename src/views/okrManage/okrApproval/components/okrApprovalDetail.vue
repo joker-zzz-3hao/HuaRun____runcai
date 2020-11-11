@@ -264,6 +264,15 @@ export default {
               this.ruleForm.approvalStatus = '1';
               this.ruleForm.refuseInfo = '';
               this.setOkrApprovalStep('1');
+            } else if (res.code == 30000) {
+              this.$xwarning({
+                title: 'OKR已被提交人撤回！',
+                content: `撤回原因：${res.msg}`,
+              }).then(() => {
+                this.ruleForm.approvalStatus = '1';
+                this.ruleForm.refuseInfo = '';
+                this.setOkrApprovalStep('1');
+              });
             }
             this.loading = false;
           });

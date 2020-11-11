@@ -129,7 +129,7 @@
               min-width="150px"
               align="left"
               prop="userName"
-              label="用户姓名"
+              label="姓名"
             ></el-table-column>
             <el-table-column
               min-width="150px"
