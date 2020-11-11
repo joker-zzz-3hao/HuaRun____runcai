@@ -199,7 +199,7 @@
               label="部门"
             ></el-table-column>
             <el-table-column
-              min-width="140px"
+              min-width="70px"
               align="left"
               prop="okrProgress"
               label="okr进度"
@@ -227,12 +227,37 @@
             <el-table-column
               width="130px"
               align="left"
-              prop="status"
+              prop="okrConfidence"
               label="信心指数"
             >
               <template slot-scope="scope">{{
-                CONST.CONFIDENCE_MAP[scope.row.status]
+                scope.row.okrConfidence || "--"
               }}</template>
+            </el-table-column>
+            <el-table-column
+              width="180px"
+              align="left"
+              prop="updateTime"
+              label="最后更新时间"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrUpdateCount"
+              label="更新次数"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrUpContinueCount"
+              label="承接数"
+            ></el-table-column>
+            <el-table-column
+              width="130px"
+              align="left"
+              prop="okrDownContinueCount"
+              label="被承接数"
+            >
             </el-table-column>
             <el-table-column width="180" label="操作">
               <template slot-scope="scope">
