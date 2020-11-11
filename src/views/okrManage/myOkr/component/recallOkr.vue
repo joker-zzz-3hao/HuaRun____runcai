@@ -85,6 +85,14 @@ export default {
                 this.$message.success('okr已撤回');
                 this.$emit('success');
                 this.close();
+              } else if (res.code == 30000) {
+                this.$xwarning({
+                  title: '您的OKR已被审批，无法撤回',
+                  content: '',
+                }).then(() => {
+                  this.$emit('success');
+                  this.close();
+                });
               }
             });
           }

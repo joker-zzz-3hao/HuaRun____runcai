@@ -781,7 +781,7 @@ export default {
           this.formData.approvalId = this.searchForm.approvalId;
           this.$xconfirm({
             content: '',
-            title: '提交后将会流转至上级领导审批且不能撤回，请确定填写无误后提交',
+            title: '提交后将会流转至上级领导审批，请确定填写无误后提交',
           }).then(() => {
             if (this.searchForm.approvalType == 1) {
               this.summitChange();

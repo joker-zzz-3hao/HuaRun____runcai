@@ -49,7 +49,7 @@ export default {
       list: [],
     };
   },
-  activated() {
+  mounted() {
     this.getOkrReviewDetail();
     this.getOkrReviewHistoryList();
   },
