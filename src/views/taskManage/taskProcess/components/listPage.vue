@@ -332,14 +332,19 @@ export default {
     },
     finish(task) {
       if (task.taskProgress == 100) {
-        this.server.finishTask({ taskId: task.taskId }).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('任务归档成功');
-            this.init();
-          }
-        });
+        this.$xconfirm({
+          content: '',
+          title: '确定要将该任务归档吗？',
+        }).then(() => {
+          this.server.finishTask({ taskId: task.taskId }).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('任务归档成功');
+              this.init();
+            }
+          });
+        }).catch(() => {});
       } else {
-        this.$message.warning('未完成的任务，暂时无法归档');
+        this.$message.warning('任务进度未到100%，暂时无法归档');
       }
     },
     deleteTask(task) {
