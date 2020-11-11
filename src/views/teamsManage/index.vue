@@ -50,7 +50,7 @@
         </dd>
         <dd>
           <span>综合岗审批OKR</span>
-          <template v-if="isLeader">
+          <template v-if="isLeader()">
             <el-radio
               @change="submitSecretaryData"
               v-model="canApproval"
