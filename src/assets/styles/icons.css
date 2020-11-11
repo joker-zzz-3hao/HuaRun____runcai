@@ -33,7 +33,11 @@
 /* 60 */
 .assistant > i,
 .mood i:first-child,
-.el-message-box.confirm .tip-icon i {
+.el-message-box.confirm .tip-icon i,
+.el-message-box.warning .tip-icon i,
+.el-message-box.success .tip-icon i,
+.el-message-box.error .tip-icon i,
+.el-message-box.waiting .tip-icon i {
   width: 40px;
   height: 40px;
   background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
@@ -294,4 +298,32 @@
   height: 48px;
   background-position-x: -10px;
   background-position-y: -486px;
+}
+.el-message-box.warning .tip-icon i {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-position-x: -10px;
+  background-position-y: -244px;
+}
+.el-message-box.success .tip-icon i {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background-position-x: -10px;
+  background-position-y: -304px;
+}
+.el-message-box.error .tip-icon i {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background-position-x: -10px;
+  background-position-y: -362px;
+}
+.el-message-box.waiting .tip-icon i {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-position-x: -7px;
+  background-position-y: -423px;
 }
