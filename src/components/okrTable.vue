@@ -157,7 +157,7 @@
             trigger="hover"
             :append-to-body="true"
           >
-            <span v-if="showUpdate">
+            <span v-if="showUpdate && ['1', 1, 3, '3'].includes(status)">
               您关联的父目标有变更，请在变更中处理。
               <a @click="opensome">申请变更</a>
             </span>
@@ -310,7 +310,7 @@ export default {
       default: true,
     },
     status: {
-      defalut: '1',
+      defalut: 1,
     },
   },
   mounted() {
