@@ -187,13 +187,13 @@
             class="tl-table"
           >
             <el-table-column
-              min-width="100px"
+              min-width="80px"
               align="left"
               prop="userName"
               label="姓名"
             ></el-table-column>
             <el-table-column
-              min-width="150px"
+              min-width="170px"
               align="left"
               prop="orgName"
               label="部门"
@@ -215,7 +215,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              width="100px"
+              min-width="70px"
               align="left"
               prop="status"
               label="状态"
@@ -225,7 +225,7 @@
               }}</template>
             </el-table-column>
             <el-table-column
-              width="100px"
+              min-width="80px"
               align="left"
               prop="okrConfidence"
               label="信心指数"
@@ -241,25 +241,25 @@
               label="最后更新时间"
             ></el-table-column>
             <el-table-column
-              width="100px"
+              min-width="80px"
               align="left"
               prop="okrUpdateCount"
               label="更新次数"
             ></el-table-column>
             <el-table-column
-              width="100px"
+              min-width="90px"
               align="left"
               prop="okrUpContinueCount"
               label="向上承接数"
             ></el-table-column>
             <el-table-column
-              width="100px"
+              min-width="80px"
               align="left"
               prop="okrDownContinueCount"
               label="被承接数"
             >
             </el-table-column>
-            <el-table-column width="180" label="操作">
+            <el-table-column fixed="right" width="95" label="操作">
               <template slot-scope="scope">
                 <el-button @click="checkOkr(scope.row, 'info')" type="text"
                   >详情</el-button
