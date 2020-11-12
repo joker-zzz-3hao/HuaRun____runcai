@@ -1,5 +1,5 @@
 <template>
-  <div class="browser">请用最佳浏览器进行体验……</div>
+  <div class="browser-background-color"></div>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      
+
     };
   },
   computed: {},
@@ -18,3 +18,8 @@ export default {
   methods: {},
 };
 </script>
+<style lang="css">
+.browser-background-color {
+  background: url("~@/assets/images/browaer.png") no-repeat;
+}
+</style>
