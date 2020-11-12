@@ -41,7 +41,9 @@
             <dt>
               <template v-if="checkStatus === 0">
                 <i class="el-icon-time"></i>
-                <span @click="okrCheck(okrItem.okrDetailId, 1)"
+                <span
+                  class="can-click"
+                  @click="okrCheck(okrItem.okrDetailId, 1)"
                   >历史okr对齐</span
                 >
               </template>

@@ -10,14 +10,16 @@
       >
         <el-table-column prop="orgName" label="名称" min-width="170">
           <template slot-scope="scope">
-            <span @click="gotoView(scope.row)">{{
+            <span class="can-click" @click="gotoView(scope.row)">{{
               cutOrgName(scope.row.orgName)
             }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="userName" label="负责人" width="120">
           <template slot-scope="scope">
-            <span @click="gotoView(scope.row)">{{ scope.row.userName }}</span>
+            <span class="can-click" @click="gotoView(scope.row)">{{
+              scope.row.userName
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="periodName" label="周期" min-width="116">
@@ -33,7 +35,7 @@
           min-width="160"
         >
           <template slot-scope="scope">
-            <span @click="goDetail(scope.row.okrId)">{{
+            <span class="can-click" @click="goDetail(scope.row.okrId)">{{
               scope.row.okrDetailObjectKr
             }}</span>
           </template>
