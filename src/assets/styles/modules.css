@@ -3336,6 +3336,7 @@ height: 70%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(5) {
+  display: flex;
   width: 17%;
 }
 
@@ -3352,6 +3353,11 @@ height: 70%;
 .tl-table-fix dd.okr-proportion {
   font-weight: 500;
   font-family: DINAlternate-Bold;
+}
+
+.tl-table-fix .progress-number {
+  display: flex;
+  align-items: center;
 }
 
 .tl-table-fix dd.okr-proportion {

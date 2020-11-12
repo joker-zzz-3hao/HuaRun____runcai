@@ -518,5 +518,6 @@ export default [{
     component: () => import('@/views/taskManage/taskProcess/components/filedTaskList'),
 
   },
+
   ],
 }];

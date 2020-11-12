@@ -175,7 +175,7 @@
           > -->
         </div>
       </div>
-      <div class="operating-box" style="margin-bottom: 20px">
+      <div class="operating-box">
         <dl class="dl-item">
           <dt>OKR状态</dt>
           <dd>
@@ -538,12 +538,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.okr-summarize-info {
-  width: 100%;
-  background: #f4f6f8;
-  padding: 20px;
-}
-.okr-summarize-search-form {
-}
-</style>

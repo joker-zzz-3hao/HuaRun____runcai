@@ -21,13 +21,7 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      saveLoad: false,
-      submitLoad: false,
-    };
-  },
-  props: ['btnText'],
+  props: ['btnText', 'submitLoad', 'saveLoad'],
   methods: {
     submit() {
       this.$emit('submit');

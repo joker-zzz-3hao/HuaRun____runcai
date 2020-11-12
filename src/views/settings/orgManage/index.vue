@@ -116,12 +116,12 @@
                   >创建部门</el-dropdown-item
                 >
                 <el-dropdown-item
-                  v-if="hasPower('TNT_ORG_EDIT')"
+                  v-if="hasPower('TNT_ORG_EDIT') && data.orgSource == 0"
                   @click.native="createDepart(data, 'edit')"
                   >编辑部门</el-dropdown-item
                 >
                 <el-dropdown-item
-                  v-if="hasPower('TNT_ORG_EDIT')"
+                  v-if="hasPower('TNT_ORG_EDIT') && data.orgSource == 0"
                   @click.native="deleteDepart(data)"
                   >删除</el-dropdown-item
                 >

@@ -1,5 +1,6 @@
 <template>
   <section
+    v-if="!$route.meta.isBrowser"
     class="header-wrap"
     :class="{ 'is-full-screen': !$route.meta.hasMainMenu }"
   >
@@ -69,12 +70,6 @@
               <el-dropdown-item @click.native="go('personalCenter')">
                 <em>个人中心</em>
               </el-dropdown-item>
-              <!-- <el-dropdown-item @click.native="downloadHelpFile">
-                <em>帮助文档</em>
-              </el-dropdown-item> -->
-              <!-- <el-dropdown-item @click.native="go('personConfig')">
-                <em>个人设置</em>
-              </el-dropdown-item> -->
               <el-dropdown-item @click.native="loginOut">
                 <em>退出登录</em>
               </el-dropdown-item>
@@ -82,11 +77,6 @@
           </el-dropdown>
         </li>
       </ul>
-      <!-- <ul class="person-select">
-        <li @click="go('personalCenter')">个人中心</li>
-        <li @click="go('personConfig')">个人设置</li>
-        <li @click="loginOut">退出登录</li>
-      </ul>-->
     </div>
   </section>
 </template>
@@ -196,17 +186,3 @@ export default {
   },
 };
 </script>
-<style>
-.area-right:hover .person-select {
-  display: block;
-}
-.person-select {
-  display: none;
-  position: absolute;
-  right: 50px;
-}
-.person-select li {
-  padding: 5px 20px;
-  border: 1px solid blue;
-}
-</style>

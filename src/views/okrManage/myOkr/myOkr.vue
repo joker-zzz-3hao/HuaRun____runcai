@@ -26,7 +26,7 @@
                 }}。
               </span>
               <span v-if="item.okrMain.readRemark"
-                >审批建议：{{ item.okrMain.readRemark }}。</span
+                >审阅建议：{{ item.okrMain.readRemark }}。</span
               >
             </el-alert>
           </div>
@@ -68,7 +68,7 @@
                   <div slot="content">
                     OKR总进度由目标权重和进度自动计算得来
                   </div>
-                  <i class="el-icon-question"></i>
+                  <i class="icon-help"></i>
                 </el-tooltip>
               </dt>
               <dd>
