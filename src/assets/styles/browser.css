@@ -1,4 +1,4 @@
-@-moz-document url-prefix() {
+/* @-moz-document url-prefix() {
   #talent>.el-scrollbar .el-scrollbar__wrap {
     padding: 0 28px 0 0;
     overflow-y: scroll;
@@ -10,7 +10,7 @@
     overflow-y: scroll;
     width: 102%;
   }
-}
+} */
 
 _::-webkit-full-page-media,
 _:future,
@@ -58,9 +58,9 @@ _:future,
   }
 
   @-moz-document url-prefix() {
-    #talent>.el-scrollbar .el-scrollbar__wrap {
+    /* #talent>.el-scrollbar .el-scrollbar__wrap {
       width: 1946px
-    }
+    } */
   }
 }
 
@@ -71,9 +71,9 @@ _:future,
   }
 
   @-moz-document url-prefix() {
-    #talent>.el-scrollbar .el-scrollbar__wrap {
+    /* #talent>.el-scrollbar .el-scrollbar__wrap {
       width: 2586px
-    }
+    } */
   }
 }
 
