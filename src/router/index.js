@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
     localSave('token', urlCrctoken);
   }
   // 判断浏览器是否是chrome、edge、firefox、safari
-  if (['FF', 'Edge', 'Safari', 'Chrome'].includes(judeBrowser()) && (to.name != 'browser')) {
+  if (!['FF', 'Edge', 'Safari', 'Chrome'].includes(judeBrowser()) && (to.name != 'browser')) {
     next('/browser');
   } else if (to.name == 'browser') {
     next();
