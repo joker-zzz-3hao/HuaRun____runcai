@@ -182,6 +182,7 @@ export default {
       }],
       hasParent: true,
       currentOption: '',
+      newVersion: '',
     };
   },
   created() {
@@ -232,7 +233,6 @@ export default {
               pItem.okrList.forEach((item) => {
                 if (this.selectRadioDepart == item.o.okrDetailId
                 || this.selectRadioDepart == item.o.okrDetailId + item.o.okrDetailVersion) {
-                  console.log(this.selectRadioDepart);
                   this.selectDepartRow = {
                     typeName: '目标',
                     okrKind: 'o',
@@ -345,6 +345,8 @@ export default {
                         currentOption: oItem.currentOption,
                         modifyReason: oItem.remark,
                       };
+                    } else {
+                      this.newVersion = oItem.okrDetailVersion;
                     }
                     departokrList.push({
                       typeName: '目标',
@@ -373,6 +375,8 @@ export default {
                         currentOption: krItem.currentOption,
                         modifyReason: krItem.remark,
                       };
+                    } else {
+                      this.newVersion = krItem.okrDetailVersion;
                     }
                     departokrList.push({
                       typeName: 'KR',
