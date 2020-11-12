@@ -207,6 +207,7 @@ export default {
         return result;
       });
       this.fileNum = list.length;
+      // this.$emit('update:fileList', list);
       this.$emit('change', { list, action: this.actionName });
     },
     imgUploadSuccess(response, file, fileList) {
