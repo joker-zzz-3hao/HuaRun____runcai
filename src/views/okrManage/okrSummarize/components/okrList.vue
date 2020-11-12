@@ -126,6 +126,53 @@
               <em>{{ summaryData.okrDoneNum }}</em>
             </dd>
           </dl>
+
+          <!-- <dl class="dl-item okr-summarize-search-form">
+            <dt>OKR状态</dt>
+            <dd>
+              <el-select
+                v-model="status"
+                placeholder="全部"
+                :popper-append-to-body="false"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                style="width: 120px"
+                @change="searchList"
+                clearable
+              >
+                <el-option
+                  v-for="item in CONST.STATUS_LIST"
+                  :key="item.status"
+                  :label="item.statusName"
+                  :value="item.status"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item okr-summarize-search-form">
+            <dd>
+              <el-input
+                placeholder="成员姓名"
+                v-model="userName"
+                @keyup.enter.native="searchList"
+                class="tl-input"
+                clearable
+                @clear="searchList"
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-search"
+                  @click="searchList"
+                ></i>
+              </el-input>
+            </dd>
+          </dl>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip okr-summarize-search-form"
+            @click="searchList"
+            >查询</el-button
+          > -->
         </div>
       </div>
       <div class="operating-box" style="margin-bottom: 20px">
@@ -275,7 +322,7 @@
                   type="text"
                   >审阅</el-button
                 >
-                <!-- 根节点、已审阅||审批中 -->
+                <!-- 根节点、已审阅||待审批 -->
                 <el-button
                   disabled
                   type="text"
@@ -466,7 +513,7 @@ export default {
     checkOkr(row, optionType) {
       this.setSummasizeOptionType(optionType);
       // 1、查询okr详情
-      if (row.status === 0) { // 如果是审批中，从行数据中取数据
+      if (row.status === 0) { // 如果是待审批，从行数据中取数据
         this.setOkrSummarizeDetailData(JSON.stringify(row));
         this.$busEmit('clearInput');
         this.setOkrSummarizeStep('2');
@@ -496,5 +543,7 @@ export default {
   width: 100%;
   background: #f4f6f8;
   padding: 20px;
+}
+.okr-summarize-search-form {
 }
 </style>
