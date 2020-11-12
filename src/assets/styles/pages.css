@@ -678,10 +678,10 @@
   cursor: pointer;
 }
 
-.my-okr .card-panel-head dt em,
-.my-okr .card-panel-head dt i {
+.my-okr .card-panel-head dt em + i,
+.my-okr .card-panel-head dt i + em {
   transition: all .4s ease-out;
-  margin-left: 2px;
+  margin-left: 6px;
 }
 
 .my-okr .card-panel-head .okr-change:hover em,

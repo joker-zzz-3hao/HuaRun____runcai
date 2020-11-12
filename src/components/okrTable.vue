@@ -18,6 +18,7 @@
       </li>
 
       <li>
+        <span>进度</span>
         <el-tooltip
           :disabled="!showUpdate"
           effect="dark"
@@ -25,9 +26,9 @@
           popper-class="tl-tooltip-popper"
         >
           <div slot="content">目标进度由关键结果权重及进度自动计算得来</div>
-          <span class="progress-number"
-            >进度 <i v-if="showUpdate" class="el-icon-question"> </i
-          ></span>
+          <div class="progress-number">
+            <i v-if="showUpdate" class="icon-help"></i>
+          </div>
         </el-tooltip>
       </li>
 
