@@ -1,5 +1,9 @@
 <template>
-  <div class="assistant" :class="{ 'is-focus': showDialog }">
+  <div
+    class="assistant"
+    :class="{ 'is-focus': showDialog }"
+    v-if="!$route.meta.isBrowser"
+  >
     <i @click="showDia"></i>
     <div
       class="assistant-popup"

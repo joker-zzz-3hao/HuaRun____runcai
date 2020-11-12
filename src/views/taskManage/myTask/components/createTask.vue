@@ -108,9 +108,10 @@
           <el-form-item label="附件">
             <file-upload
               ref="fileUpload"
-              :fileList="fileList"
               :limit="10"
               @change="fileChange"
+              :fileList="fileList"
+              :taskId="this.formData.taskId"
             ></file-upload>
 
             <!-- <el-upload
@@ -182,6 +183,7 @@ export default {
         processNum: 0,
         taskDesc: null,
         taskUserId: null,
+        attachmentList: [],
       },
       timeVal: '',
       okrList: [], // 归属okr列表
@@ -240,17 +242,23 @@ export default {
   },
   methods: {
     show(row = '') {
+      this.queryOkr();
+      this.getUserList();
+      this.getProcess();
       if (row) {
         this.formData = row;
         this.title = '编辑任务';
         if (row.taskBegDate) {
           this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(row.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(row.taskEndDate))];
         }
-        console.log('row');
+        this.server.queryTaskDetail({ taskId: row.taskId }).then((res) => {
+          if (res.code == 200 && res.data) {
+            this.formData = res.data;
+            this.fileList = this.formData.attachmentList;
+          }
+        });
       }
-      this.queryOkr();
-      this.getUserList();
-      this.getProcess();
+
       this.visible = true;
     },
     close() {
@@ -303,8 +311,8 @@ export default {
       }
     },
     fileChange(data) {
-      this.fileList = data.list;
-      console.log(this.fileList);
+      this.formData.attachmentList = data.list;
+      console.log(data);
     },
     handlerData() {
       const okrVal = this.okrList.filter((item) => item.okrDetailId == this.formData.okrDetailId)[0] || {};
@@ -317,7 +325,7 @@ export default {
       }
       const params = {
         taskId: this.formData.taskId,
-        attachmentList: this.fileList, // TODO: 附件
+        attachmentList: this.formData.attachmentList, // TODO: 附件
         // headerHrl: '',
         okrDetailId: this.formData.okrDetailId,
         okrDetailName: okrVal.okrDetailObjectKr,
