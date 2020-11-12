@@ -40,8 +40,16 @@ function hasPower(power) {
     return result;
   }
 }
+// 判断浏览器是否是chrome、edge、firefox、sarif
+function judeBrowser() {
+  let inBrowser = typeof window !== 'undefined'
+  let UA = inBrowser && window.navigator.userAgent.toLowerCase();
+  let isEdge = UA && UA.indexOf('edge/') > 0
+}
 
 router.beforeEach((to, from, next) => {
+  // 判断浏览器是否是chrome、edge、firefox、sarif
+  judeBrowser();
   const urlParams = getParams(window.location.href);
   const urlCrctoken = urlParams.token;
   const origin = getOrigin();
