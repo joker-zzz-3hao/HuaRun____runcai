@@ -29,12 +29,12 @@
               @click.native="selectDepartokr($event, index, item)"
               class="tl-radio"
               :label="item.okrDetailId + item.okrDetailVersion"
-              v-for="(item, index) in departokrList"
-              :key="item.okrDetailId + index"
+              v-for="(item, index) in pItem.departokrList"
+              :key="item.okrDetailId"
             >
               <div
-                v-if="currentOption.includes(item.okrDetailId)"
                 class="undertake-change"
+                v-if="currentOption.includes(item.okrDetailId)"
               >
                 <span
                   :class="item.okrKind == 'o' ? 'kind-parent' : 'kind-child'"
@@ -123,11 +123,11 @@ export default {
     departokrList: {
       type: Array,
     },
-    showPhil: {
-      type: Boolean,
-      default: true,
-    },
     periodName: {
+      type: String,
+      default: '',
+    },
+    periodId: {
       type: String,
       default: '',
     },
@@ -139,10 +139,6 @@ export default {
       type: String,
       default: '',
     },
-    currentOption: {
-      type: String,
-      default: '',
-    },
     okrBelongType: {
       type: Number,
       default: 1,
@@ -150,6 +146,15 @@ export default {
     server: {
       type: Object,
       required: true,
+    },
+    parentUpdate: {
+      default: false,
+    },
+    row: {
+      type: Object,
+      defalut() {
+        return {};
+      },
     },
   },
   data() {
@@ -176,7 +181,7 @@ export default {
         menuName: '虚拟汇报',
       }],
       hasParent: true,
-
+      currentOption: '',
     };
   },
   created() {
@@ -189,7 +194,11 @@ export default {
       this.hasParent = false;
     }
     // this.getCycle();
-    this.getUndertakeOkr();
+    if (this.parentUpdate) {
+      this.getOkrModifyUndertakeOkrList(this.row);
+    } else {
+      this.getUndertakeOkr();
+    }
     this.getCultureList();
   },
   computed: {
@@ -299,6 +308,95 @@ export default {
             this.selectPhilRow = this.philosophyList.filter(
               (item) => item.id == this.selectRadioPhil,
             )[0] || {};
+          }
+        }
+      });
+    },
+    // 可变更的关联承接项
+    getOkrModifyUndertakeOkrList(okritem) {
+      const formData = {
+        periodId: this.periodId,
+        detailId: okritem.detailId,
+        okrDetailId: okritem.okrDetailId,
+        okrParentId: okritem.okrParentId,
+        okrDetailParentVersion: okritem.okrDetailParentVersion,
+        okrBelongType: this.okrBelongType,
+      };
+      this.server.getOkrModifyUndertakeOkrList(formData).then((res) => {
+        if (res.code == 200) {
+          this.parentUndertake = [];
+          this.periodList = [];
+          if (res.data.parentUndertakeOkrInfoResults) {
+            this.searchForm.periodId = 0;
+            res.data.parentUndertakeOkrInfoResults.forEach((pItem, pindex) => {
+              this.periodList.push({ periodId: pindex, periodName: `${pItem.okrPeriodEntity.periodName}（${this.cutOrgName(pItem.orgName)}）` });
+              const departokrList = [];
+              pItem.okrList.forEach((item) => {
+                if (item.olist && item.olist.length > 0) {
+                  item.olist.forEach((oItem) => {
+                    if (this.selectRadioDepart == oItem.okrDetailId
+                || this.selectRadioDepart == oItem.okrDetailId + oItem.okrDetailVersion) {
+                      this.selectDepartRow = {
+                        typeName: '目标',
+                        okrKind: 'o',
+                        okrDetailObjectKr: oItem.okrDetailObjectKr,
+                        okrDetailId: oItem.okrDetailId,
+                        okrDetailVersion: oItem.okrDetailVersion,
+                        currentOption: oItem.currentOption,
+                        modifyReason: oItem.remark,
+                      };
+                    }
+                    departokrList.push({
+                      typeName: '目标',
+                      okrKind: 'o',
+                      okrDetailObjectKr: oItem.okrDetailObjectKr,
+                      okrDetailId: oItem.okrDetailId,
+                      okrDetailVersion: oItem.okrDetailVersion,
+                      currentOption: oItem.currentOption,
+                      modifyReason: oItem.remark,
+                    });
+                    if (oItem.currentOption) {
+                      this.currentOption = oItem.okrDetailId + oItem.okrDetailVersion;
+                    }
+                  });
+                }
+                if (item.krList && item.krList.length > 0) {
+                  item.krList.forEach((krItem) => {
+                    if (this.selectRadioDepart == krItem.okrDetailId
+                || this.selectRadioDepart == krItem.okrDetailId + krItem.okrDetailVersion) {
+                      this.selectDepartRow = {
+                        typeName: 'KR',
+                        okrKind: 'k',
+                        okrDetailObjectKr: krItem.okrDetailObjectKr,
+                        okrDetailId: krItem.okrDetailId,
+                        okrDetailVersion: krItem.okrDetailVersion,
+                        currentOption: krItem.currentOption,
+                        modifyReason: krItem.remark,
+                      };
+                    }
+                    departokrList.push({
+                      typeName: 'KR',
+                      okrKind: 'k',
+                      okrDetailObjectKr: krItem.okrDetailObjectKr,
+                      okrDetailId: krItem.okrDetailId,
+                      okrDetailVersion: krItem.okrDetailVersion,
+                      currentOption: krItem.currentOption,
+                      modifyReason: krItem.remark,
+                    });
+                    if (krItem.currentOption) {
+                      this.currentOption = krItem.okrDetailId + krItem.okrDetailVersion;
+                    }
+                  });
+                }
+              });
+              this.parentUndertake.push({
+                pindex: {
+                  isupdate: true,
+                  periodName: pItem.okrPeriodEntity.periodName,
+                  departokrList,
+                },
+              });
+            });
           }
         }
       });
