@@ -48,9 +48,11 @@
               label="任务过程"
             >
               <template slot-scope="scope">
-                <a @click="editProcess(scope.row, 'detail')">{{
-                  scope.row.processName
-                }}</a>
+                <span
+                  class="can-click"
+                  @click="editProcess(scope.row, 'detail')"
+                  >{{ scope.row.processName }}</span
+                >
               </template>
             </el-table-column>
             <el-table-column
