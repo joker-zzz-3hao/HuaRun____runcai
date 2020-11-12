@@ -2237,6 +2237,10 @@
 }
 
 /* OKR汇总 */
+.okr-summarize .cont-area .operating-box {
+  margin: 0 0 20px 0;
+}
+
 .okr-summarize .operating-box .tl-cascader {
   line-height: unset;
 }
