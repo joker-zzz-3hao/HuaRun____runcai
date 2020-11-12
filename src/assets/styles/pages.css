@@ -703,7 +703,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 92px;
+  flex: 0 0 96px;
   min-width: 48px;
   height: 18px;
   font-size: 12px;
@@ -4140,11 +4140,19 @@
 .task-process .board-view .drag-list-title {
   font-size: 16px;
   color: #4d5155;
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+.task-process .board-view .drag-list-title:hover {
+  color: #685df1;
 }
 
 .task-process .board-view .drag-list-item .user-info {
   display: flex;
   align-items: center;
+}
+.task-process .board-view .drag-list-item .user-info img{
+  cursor: default;
 }
 
 .task-process .board-view .drag-list-item .user-info dd + dd {
@@ -5447,4 +5455,14 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
+}
+
+/* change by xinquan */
+.can-click {
+  cursor: pointer;
+  transition: all .4s ease-out;
+}
+
+.can-click:hover {
+  color: #685df1;
 }
