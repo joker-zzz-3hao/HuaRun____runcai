@@ -40,16 +40,34 @@ function hasPower(power) {
     return result;
   }
 }
-// 判断浏览器是否是chrome、edge、firefox、sarif
+// 判断浏览器是否是chrome、edge、firefox、safari
 function judeBrowser() {
-  let inBrowser = typeof window !== 'undefined'
-  let UA = inBrowser && window.navigator.userAgent.toLowerCase();
-  let isEdge = UA && UA.indexOf('edge/') > 0
+  const { userAgent } = navigator; // 取得浏览器的userAgent字符串
+  //  let isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+  //  let isIE = userAgent.indexOf("compatible") > -1
+  //         && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+  const isEdge = userAgent.indexOf('Edge') > -1; // 判断是否IE的Edge浏览器
+  const isFF = userAgent.indexOf('Firefox') > -1; // 判断是否Firefox浏览器
+  const isSafari = userAgent.indexOf('Safari') > -1
+            && userAgent.indexOf('Chrome') == -1; // 判断是否Safari浏览器
+  const isChrome = userAgent.indexOf('Chrome') > -1
+            && userAgent.indexOf('Safari') > -1; // 判断Chrome浏览器
+
+  if (isEdge) {
+    return 'Edge';
+  }
+  if (isFF) {
+    return 'FF';
+  }
+  if (isSafari) {
+    return 'Safari';
+  }
+  if (isChrome) {
+    return 'Chrome';
+  }
 }
 
 router.beforeEach((to, from, next) => {
-  // 判断浏览器是否是chrome、edge、firefox、sarif
-  judeBrowser();
   const urlParams = getParams(window.location.href);
   const urlCrctoken = urlParams.token;
   const origin = getOrigin();
@@ -57,8 +75,12 @@ router.beforeEach((to, from, next) => {
   if (urlCrctoken) {
     localSave('token', urlCrctoken);
   }
-  // 首先判断localStorage是否有token,没有token就跳转到ladp登录页
-  if (!localStorage.token || localStorage.token === null) {
+  // 判断浏览器是否是chrome、edge、firefox、safari
+  if (['FF', 'Edge', 'Safari', 'Chrome'].includes(judeBrowser()) && (to.name != 'browser')) {
+    next('/browser');
+  } else if (to.name == 'browser') {
+    next();
+  } else if (!localStorage.token || localStorage.token === null) {
     // 当token不存在时，如果是环境上就需要跳转到ladp登录页面，如果是本地启动就直接跳转login页面
     if (origin == 'https://talent.crcloud.com' && !urlParams.isAdmin) {
       window.$store.commit('common/setUserInfo', { userInfo: {} });
