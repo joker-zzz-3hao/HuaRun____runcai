@@ -186,6 +186,8 @@
     <tl-footer
       :btnText="'提交复盘'"
       @submit="submit"
+      :saveLoad="saveLoad"
+      :submitLoad="submitLoad"
       @save="save"
       @handleDeleteOne="handleDeleteOne"
     ></tl-footer>
