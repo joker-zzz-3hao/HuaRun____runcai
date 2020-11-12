@@ -288,6 +288,9 @@ export default {
       this.myokrDrawer = true;
     },
     closed() {
+      if (this.selectIndex != '' && this.tableList[this.selectIndex].hasUpdate) {
+        this.$emit('success');
+      }
       this.$emit('update:exist', false);
     },
     close() {
@@ -393,7 +396,7 @@ export default {
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {
-          this.$message.success('提交成功');
+          this.$message.success('忽略成功');
         }
       });
     },
