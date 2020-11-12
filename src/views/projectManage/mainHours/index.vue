@@ -12,7 +12,7 @@
               placeholder="请选择项目"
               @change="changeProject"
               popper-class="tl-select-dropdown"
-              class="tl-select"
+              class="tl-select project-select"
             >
               <el-option
                 v-for="(item, index) in projectList"
@@ -91,7 +91,7 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectNameCn"
               label="项目名称"
               min-width="180"
@@ -102,7 +102,7 @@
                 }}</span>
                 <span v-else>--</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="approvalStatus"
               label="审批状态"
