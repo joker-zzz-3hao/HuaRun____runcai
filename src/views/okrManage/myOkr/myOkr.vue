@@ -26,7 +26,7 @@
                 }}。
               </span>
               <span v-if="item.okrMain.readRemark"
-                >审批建议：{{ item.okrMain.readRemark }}。</span
+                >审阅建议：{{ item.okrMain.readRemark }}。</span
               >
             </el-alert>
           </div>
