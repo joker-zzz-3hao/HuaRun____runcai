@@ -677,8 +677,8 @@ export default {
     },
     // --------文件---------
     fileChange(data) {
-      this.fileList = data.list;
-      console.log(this.fileList);
+      this.formData.attachmentList = data.list;
+      console.log(data);
     },
     // 下载or预览
     openFile(fileObj) {
@@ -739,7 +739,7 @@ export default {
               this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
               this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
-            this.formData.attachmentList = this.fileList;
+            // this.formData.attachmentList = this.fileList;
             this.loading = true;
             this.server.saveTask(this.formData).then((res) => {
               if (res.code == 200) {
@@ -839,7 +839,7 @@ export default {
               this.formData.taskBegDate = this.timeVal[0] ? `${this.timeVal[0]}  00:00:00` : null;
               this.formData.taskEndDate = this.timeVal[1] ? `${this.timeVal[1]}  23:59:59` : null;
             }
-            this.formData.attachmentList = this.fileList;
+            // this.formData.attachmentList = this.fileList;
             this.loading = true;
             this.server.appointSave(this.formData).then((res) => {
               if (res.code == 200) {
