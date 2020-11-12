@@ -30,7 +30,9 @@
           >
             <el-table-column align="left" prop="taskTitle" label="任务">
               <template slot-scope="scope">
-                <a @click="openEdit(scope.row)">{{ scope.row.taskTitle }}</a>
+                <span class="can-click" @click="openEdit(scope.row)">{{
+                  scope.row.taskTitle
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column

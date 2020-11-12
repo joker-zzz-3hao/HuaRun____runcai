@@ -270,7 +270,9 @@ export default {
             } else {
               this.treeTableData = [];
             }
-            this.replaceName(this.treeTableData[0]);
+            if (this.treeTableData.length > 0) {
+              this.replaceName(this.treeTableData[0]);
+            }
             // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
             if (res.data.okrTree.length > 0) {
               res.data.okrTree.forEach((item) => {
@@ -284,6 +286,8 @@ export default {
           }
           this.loading = false;
         });
+      } else {
+        this.loading = false;
       }
     },
     // replaceName(data) {
