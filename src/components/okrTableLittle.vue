@@ -15,6 +15,7 @@
       class="tl-table"
       row-key="okrDetailId"
       :expand-row-keys="expands"
+      @expand-change="echange"
     >
       <el-table-column type="expand" width="5%">
         <template slot-scope="scope">
@@ -116,12 +117,6 @@ export default {
         return [];
       },
     },
-    overview: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
     // disabled(不能收起：true;能收起展开：false)
     disabled: {
       type: Boolean,
@@ -196,6 +191,10 @@ export default {
         this.$emit('update:expands', []);
         // this.expands = [];
       }
+    },
+    echange(a, b) {
+      const result = b.map((ii) => ii.okrDetailId);
+      this.$emit('update:expands', result);
     },
   },
   watch: {

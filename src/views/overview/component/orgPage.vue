@@ -61,11 +61,7 @@
       </div>
       <div class="card-panel-body">
         <tl-okr-table
-          :overview="true"
           :tableList="tableList"
-          :disabled="false"
-          :showOKRInfoLabel="true"
-          :status="searchForm.status"
           :expands.sync="expands"
         ></tl-okr-table>
       </div>
