@@ -660,6 +660,30 @@
   padding: 0 0 10px 0;
 }
 
+.my-okr .card-panel-head .okr-title {
+  flex: 0 0 30%;
+}
+
+.my-okr .card-panel-head .okr-state {
+  flex: 0 0 15%;
+}
+
+.my-okr .card-panel-head .okr-type {
+  flex: 0 0 15%;
+}
+
+.my-okr .card-panel-head .okr-responsible {
+  flex: 0 0 14%;
+}
+
+.my-okr .card-panel-head .okr-progress {
+  flex: 0 0 23%;
+}
+
+.my-okr .card-panel-head .okr-operation {
+  flex: 0 0 3%;
+}
+
 .my-okr .card-panel-head .update-time {
   position: absolute;
   left: 0;
@@ -702,9 +726,8 @@
 .my-okr .kr-num {
   margin: 0 6px 0 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex: 0 0 96px;
+  flex: 0 0 62px;
   min-width: 48px;
   height: 18px;
   font-size: 12px;
