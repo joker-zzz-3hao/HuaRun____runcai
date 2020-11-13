@@ -6,7 +6,6 @@
         <span v-else @click="handleOpen">全部展开</span>
         <i class="el-icon-arrow-right" @click="handleOpen"></i>
       </li>
-      <li></li>
       <li>权重</li>
       <li>进度</li>
     </ul>
@@ -49,7 +48,7 @@
         </template>
       </el-table-column>
       <!-- 目标O名称 无label -->
-      <el-table-column prop="okrDetailObjectKr" width="76%">
+      <el-table-column prop="okrDetailObjectKr" width="69%">
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
@@ -67,11 +66,11 @@
         </template>
       </el-table-column>
       <!-- o label="权重" -->
-      <el-table-column prop="okrWeight" width="5%">
+      <el-table-column prop="okrWeight" width="8%">
         <template slot-scope="scope">{{ scope.row.okrWeight }}%</template>
       </el-table-column>
       <!-- o label="进度" -->
-      <el-table-column prop="okrDetailProgress" width="14%">
+      <el-table-column prop="okrDetailProgress" width="18%">
         <template slot-scope="scope">
           <em class="progress-number">{{ scope.row.okrDetailProgress }}%</em>
         </template>

@@ -246,12 +246,42 @@
 }
 
 .overview .cont-area>.tl-card-panel:first-child .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 73%;
-  width: 73%;
+  flex: 0 0 69%;
+  width: 69%;
 }
 
-.overview .cont-area>.tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 73%;
+.overview .tl-table .sub-tr .okr-proportion {
+  flex: 0 0 8%;
+  width: 8%;
+}
+
+.concerned-okr .tl-table .sub-tr .okr-proportion {
+  flex: 0 0 8%;
+  width: 8%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(1) {
+  width: 74%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(1) {
+  width: 78%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 8%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 8%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(3) {
+  width: 14%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(3) {
+  width: 19%;
 }
 
 .overview .department-view .cont-area>.tl-card-panel:nth-child(2),
@@ -723,7 +753,9 @@
   width: 100%;
 }
 
-.my-okr .kr-num {
+.overview .kr-num,
+.my-okr .kr-num,
+.concerned-okr .kr-num {
   display: flex;
   align-items: center;
   flex: 0 0 62px;
@@ -968,6 +1000,14 @@
 .create-okr .list-add {
   margin: 0 0 0 25px;
   width: calc(100% - 30px);
+}
+
+.create-okr .tl-collapse .collpase-panel dd + dd > div span {
+  flex-basis: unset;
+}
+
+.create-okr .tl-collapse .collpase-panel .open-more {
+  margin-left: 30px;
 }
 
 .associated-undertaking>.el-scrollbar {
@@ -1861,8 +1901,8 @@
 }
 
 .concerned-okr .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 65%;
-  width: 65%;
+  flex: 0 0 67%;
+  width: 67%;
 }
 
 .concerned-okr .followed-users dd,
