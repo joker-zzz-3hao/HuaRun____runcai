@@ -518,17 +518,6 @@ export default [{
     component: () => import('@/views/taskManage/taskProcess/components/filedTaskList'),
 
   },
-  {
-    // 浏览器选择页
-    path: '/browser',
-    name: 'browser',
-    meta: {
-      title: '最佳浏览器体验',
-      power: '',
-      isBrowser: true,
-    },
-    component: () => import('@/views/browser/index'),
 
-  },
   ],
 }];
