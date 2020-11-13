@@ -31,6 +31,7 @@
                 placeholder="请输入任务标题"
                 v-model="formData.processName"
                 maxlength="24"
+                class="tl-input"
               ></el-input>
             </el-form-item>
             <el-form-item
@@ -47,6 +48,7 @@
                 :max="100"
                 :step="1"
                 :precision="0"
+                class="tl-input-number"
               ></el-input-number>
             </el-form-item>
             <dl>
@@ -119,17 +121,26 @@
                 >
                   <span>步骤{{ index + 1 }}</span>
 
-                  <el-input v-model.trim="step.name" maxlength="24"></el-input>
+                  <el-input
+                    v-model.trim="step.name"
+                    maxlength="24"
+                    class="tl-input"
+                  ></el-input>
                   <el-button
                     @click="deleteName(step)"
                     v-if="formData.stepList.length > 1"
-                    >删除</el-button
-                  >
+                    plain
+                    class="tl-btn amt-border-slip"
+                    >删除<span class="lines"></span>
+                  </el-button>
                   <el-button
                     @click="addName"
                     v-if="index == formData.stepList.length - 1"
-                    >添加</el-button
-                  >
+                    plain
+                    class="tl-btn amt-border-slip"
+                    >添加
+                    <span class="lines"></span>
+                  </el-button>
                 </el-form-item>
               </dd>
             </dl>
