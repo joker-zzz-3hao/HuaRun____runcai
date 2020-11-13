@@ -1,7 +1,11 @@
 <template>
   <div class="tl-table-fix">
     <ul class="tl-thead">
-      <li></li>
+      <li class="fold" :class="{ 'is-toggle': expands.length > 0 }">
+        <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
+        <span v-else @click="handleOpen">全部展开</span>
+        <i class="el-icon-arrow-right" @click="handleOpen"></i>
+      </li>
       <li></li>
       <li>权重</li>
       <li>进度</li>
@@ -48,6 +52,8 @@
         <template slot-scope="scope">
           <div class="tag-kind">
             <span class="kind-parent">目标{{ scope.$index + 1 }}</span>
+            <!-- kr数量  -->
+            <span class="kr-num">「{{ scope.row.krList.length }}个KR」</span>
             <el-tooltip
               effect="dark"
               placement="top"
@@ -66,9 +72,7 @@
       <!-- o label="进度" -->
       <el-table-column prop="okrDetailProgress" width="14%">
         <template slot-scope="scope">
-          <tl-process
-            :data="parseInt(scope.row.okrDetailProgress, 10)"
-          ></tl-process>
+          <em class="progress-number">{{ scope.row.okrDetailProgress }}%</em>
         </template>
       </el-table-column>
     </el-table>
@@ -176,6 +180,21 @@ export default {
         this.$emit('goDraft', row);
       } else {
         this.$emit('openDialog', row);
+      }
+    },
+    // 展示收起
+    handleOpen() {
+      if (this.expands.length == 0) {
+        let allexpands = [];
+        allexpands = this.tableList.map((item) => item.okrDetailId);
+        // this.tableList.forEach((item) => {
+        //   this.expands.push(item.okrDetailId);
+        //   console.log(item);
+        // });
+        this.$emit('update:expands', allexpands);
+      } else {
+        this.$emit('update:expands', []);
+        // this.expands = [];
       }
     },
   },
