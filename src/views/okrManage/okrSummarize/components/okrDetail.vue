@@ -132,6 +132,8 @@
       <div style="margin-top: 25px">
         <el-button
           plain
+          :loading="loadingNoOpinion"
+          :disabled="loadingHasOpinion"
           class="tl-btn amt-border-fadeout"
           @click="okrSummaryRead(1)"
           >已阅-无异议</el-button
@@ -139,6 +141,8 @@
 
         <el-button
           slot="reference"
+          :loading="loadingHasOpinion"
+          :disabled="loadingNoOpinion"
           plain
           style="margin-left: 5px"
           class="tl-btn amt-border-fadeout"
@@ -231,6 +235,8 @@ export default {
     return {
       server,
       CONST,
+      loadingNoOpinion: false,
+      loadingHasOpinion: false,
       okrId: '',
       feedback: '',
       okrData: {},
@@ -270,6 +276,7 @@ export default {
     },
     okrSummaryRead(readStatus) {
       this.formData.readStatus = readStatus;
+
       this.$nextTick(() => {
         this.$refs.read.validate((valid) => {
           if (valid) {
@@ -279,6 +286,12 @@ export default {
               type: 'warning',
               closeOnClickModal: false,
             }).then(() => {
+              this.loadingNoOpinion = false;
+              this.loadingHasOpinion = true;
+              if (readStatus == 1) {
+                this.loadingNoOpinion = true;
+                this.loadingHasOpinion = false;
+              }
               this.server.okrSummaryRead({
                 okrId: this.okrData.okrMain.okrId,
                 readStatus,
@@ -290,6 +303,8 @@ export default {
                   this.backList();
                   this.formData.readRemark = '';
                 }
+                this.loadingNoOpinion = false;
+                this.loadingHasOpinion = false;
               });
             }).catch(() => {
             });
