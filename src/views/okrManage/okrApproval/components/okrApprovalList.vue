@@ -83,11 +83,15 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="createTime"
-              label="提交时间"
-              min-width="170"
-            ></el-table-column>
+            <el-table-column prop="createTime" label="提交时间" min-width="170">
+              <template slot-scope="scope">
+                <span>{{
+                  scope.row.updateTime
+                    ? scope.row.updateTime
+                    : scope.row.createTime
+                }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="approveTime"
               label="审批时间"

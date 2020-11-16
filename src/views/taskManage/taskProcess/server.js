@@ -166,4 +166,14 @@ export default class Server extends ServerBase {
   deleteProcess(param) {
     return this._ajaxPost(`gateway/task-service/taskProcessType/delete?typeId=${param.typeId}`);
   }
+
+  // 查部门okr列表
+  getorgOkr(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgOkr', param);
+  }
+
+  // 查周期
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
 }
