@@ -452,6 +452,7 @@ export default {
       this.loadokring = true;
       const name = `${this.userInfo.orgName}润联科技OKR汇总（所有).xlsx`;
       this.exportExcel('/gateway/system-service/sys/excelOkr/exportExcel', {}, name);
+      this.loadokring = false;
     },
     showprempt(data) {
       this.upDateType = data;
