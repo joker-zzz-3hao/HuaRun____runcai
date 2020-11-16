@@ -560,6 +560,7 @@
         >不好意思同学，历史周报不能编辑（补写），让往事随风吧，向前看</span
       >
     </div>
+
     <!-- 添加支撑项 -->
     <add-okr
       ref="addOkr"
@@ -595,7 +596,6 @@ import tlProcess from '@/components/process';
 import confidenceSelect from '@/components/confidenceSelect';
 import merge from 'webpack-merge';
 import CONST from '@/components/const';
-import { mapState } from 'vuex';
 import Server from '../server';
 import selectProject from './selectProject';
 import addOkr from './addOkr';
@@ -612,7 +612,19 @@ export default {
     'tl-confidence': confidenceSelect,
   },
   props: {
-    week: {
+    calendarId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    weeklyType: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    weeklyData: {
       type: Object,
       default() {
         return {};
@@ -688,11 +700,10 @@ export default {
     return {
       server,
       CONST,
-      weeklyData: {},
-      canUpdate: false,
+      canUpdate: !this.weeklyData.weeklyId,
       weeklyEmotion: '',
       showEmotionError: false,
-      weeklyId: '',
+      weeklyId: this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '',
       tableLoading: false,
       currenItemrandomId: '',
       showAddOkr: false,
@@ -778,10 +789,6 @@ export default {
     this.init();
   },
   computed: {
-    ...mapState('weekly', {
-      weekList: (state) => state.weekList,
-      weeklyDataList: (state) => state.weeklyDataList,
-    }),
     setOkrStyle() {
       return (okr) => {
         if (okr && okr.length > 5) {
@@ -806,13 +813,6 @@ export default {
   },
   methods: {
     init() {
-      this.weeklyDataList.forEach((weeklyData) => {
-        if (this.week.calendarId == weeklyData.calendarId) {
-          this.weeklyData = weeklyData;
-        }
-      });
-      this.canUpdate = !this.weeklyData.weeklyId;
-      this.weeklyId = this.weeklyData.weeklyId ? this.weeklyData.weeklyId : '';
       this.weeklyDataCopy = { ...this.weeklyData };
       if (!this.weeklyDataCopy.weeklyId) {
         if (!(this.$route.params && this.$route.params.weeklySumParams)) {
@@ -1157,7 +1157,7 @@ export default {
           );
           // 表单校验
           const params = {
-            calendarId: this.week.calendarId,
+            calendarId: this.calendarId,
             weeklyEmotion: this.weeklyEmotion,
             weeklyId: this.weeklyId,
             weeklyType: this.weeklyType,
@@ -1397,6 +1397,7 @@ export default {
           }
         }
         this.weeklyOkrSaveList = result;
+        console.log(this.weeklyOkrSaveList);
         if (this.weeklyOkrSaveList.length > 0) {
           this.$nextTick(() => {
             this.showTaskProcess = true;
@@ -1406,7 +1407,6 @@ export default {
       },
       deep: true,
     },
-
   },
 };
 </script>
