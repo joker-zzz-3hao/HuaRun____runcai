@@ -3551,7 +3551,7 @@ height: 70%;
 }
 
 .tag-kind em {
-  color: #7a828a;
+  color: #26282a;
   overflow: hidden;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
@@ -3559,6 +3559,10 @@ height: 70%;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
+}
+
+.okr-kr-name.tag-kind em {
+  color: #7a828a;
 }
 
 .tag-kind .el-radio__label {
