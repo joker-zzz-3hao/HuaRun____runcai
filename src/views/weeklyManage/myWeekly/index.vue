@@ -41,7 +41,6 @@
               :myOkrPeriodList="myOkrPeriodList"
               :cultureList="cultureList"
               :projectList="projectList"
-              :canEdit="canEdit"
               @refreshMyOkr="refreshMyOkr"
               :timeDisabled="timeDisabled"
               :configItemCodeOKR="configItemCodeOKR"
@@ -57,7 +56,6 @@
               :myOkrPeriodList="myOkrPeriodList"
               :cultureList="cultureList"
               :projectList="projectList"
-              :canEdit="canEdit"
               :configItemCodeOKR="configItemCodeOKR"
               @refreshMyOkr="refreshMyOkr"
               v-else
@@ -110,7 +108,6 @@ export default {
       orgOkrPeriodList: [],
       cultureList: [],
       projectList: [],
-      canEdit: false,
       timeDisabled: false,
       configItemCodeOKR: 'O',
       showWeekly: false,
