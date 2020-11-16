@@ -78,7 +78,10 @@
             </dl>
           </div>
           <div class="card-panel-body">
-            <tl-okr-table :tableList="item.tableList"></tl-okr-table>
+            <tl-okr-table
+              :tableList="item.tableList"
+              :expands.sync="expands"
+            ></tl-okr-table>
           </div>
         </div>
         <div v-if="loading && tableList.length == 0" class="no-data">
@@ -232,7 +235,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import okrTable from './components/okrTable';
+import okrTable from '@/components/okrTableLittle';
 import CONST from './const';
 import Server from './server';
 
@@ -255,18 +258,19 @@ export default {
       tableList: [],
       totalData: [],
       loading: true,
+      expands: [],
     };
   },
   computed: {
     ...mapState('common', {
       roleCode: (state) => state.roleCode,
     }),
-    expands() {
-      if (this.tableList.length > 0) {
-        return [this.tableList[0].okrDetailId];
-      }
-      return [];
-    },
+    // expands() {
+    //   if (this.tableList.length > 0) {
+    //     return [this.tableList[0].okrDetailId];
+    //   }
+    //   return [];
+    // },
     showUndertake() {
       if (this.roleCode.includes('ORG_ADMIN')) {
         return true;
