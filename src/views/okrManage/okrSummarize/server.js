@@ -41,4 +41,8 @@ export default class Server extends ServerBase {
   selectOkrHistoryVersion(param) {
     return this._ajaxPost(`gateway/talent-okr/okr/main/selectOkrHistoryVersion?okrDetailId=${param.okrDetailId}`, param);
   }
+
+  getOrg(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
+  }
 }
