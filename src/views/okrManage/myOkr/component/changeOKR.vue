@@ -582,6 +582,7 @@ export default {
         modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
         okrBelongType: this.okrmain.okrBelongType,
+        attachmentList: this.attachmentList,
       };
       // 校验权重比例
       let opercent = 0;
