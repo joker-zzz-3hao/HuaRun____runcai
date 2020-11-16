@@ -450,9 +450,12 @@ export default {
     },
     loadOkr() {
       this.loadokring = true;
-      const name = `${this.userInfo.orgName}润联科技OKR汇总（所有).xlsx`;
-      this.exportExcel('/gateway/system-service/sys/excelOkr/exportExcel', {}, name);
-      this.loadokring = false;
+      const name = `${this.userInfo.tenantInfo.tenantName}润联科技OKR汇总（所有).xlsx`;
+      this.exportExcel('/gateway/system-service/sys/excelOkr/exportExcel', {
+        periodId: this.periodId,
+      }, name).then(() => {
+        this.loadokring = false;
+      });
     },
     showprempt(data) {
       this.upDateType = data;
