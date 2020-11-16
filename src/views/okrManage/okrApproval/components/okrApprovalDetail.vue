@@ -80,6 +80,21 @@
       </dt>
       <dd>{{ JSON.parse(data.paramJson).modifyReason }}</dd>
     </dl>
+    <!-- 附件 -->
+    <dl class="dl-card-panel" v-if="data.approvalType == '1'">
+      <dt>
+        <em>附件</em>
+      </dt>
+      <dd v-for="file in attachmentList" :key="file.resourceId">
+        <span>{{ file.resourceName }}</span>
+        <em
+          v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+          @click="openFile(file)"
+          >预览</em
+        >
+        <em @click="downFile(file)">下载</em>
+      </dd>
+    </dl>
     <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
       <dt>
         <em>审批</em>
@@ -198,11 +213,13 @@
         </div>
       </dd>
     </dl>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import imgDialog from '@/components/imgDialog';
 // import okrCollapse from '@/components/okrCollapse';
 import CONST from '@/lib/const';
 import okrItem from './okrItem';
@@ -227,11 +244,18 @@ export default {
       },
       cycleList: [],
       cycleFirst: {},
+      attachmentList: [{
+        name: '润联科技.jpg',
+        resourceId: '217980e1-5877-4ebb-ae76-4877c6cb7fd9',
+        resourceName: '润联科技.jpg',
+        resourceUrl: 'http://cr-talent-test.crc.oss-hn01.crcloud.com/%2Ftalent-dev/CR0011000054/217980e1-5877-4ebb-ae76-4877c6cb7fd9?AWSAccessKeyId=VGFsZW50RGV2VXNlcg%3D%3D&Expires=1606586772&Signature=g%2Ba9hGD3ySZ%2Bs91xCrpo%2BvYYzlY%3D',
+      }],
     };
   },
   components: {
     'tl-okrItem': okrItem,
     'tl-create-okrComponent': createOkrComponent,
+    'img-dialog': imgDialog,
   },
   props: {
     canApproval: {
@@ -308,6 +332,26 @@ export default {
       this.ruleForm.approvalStatus = '1';
       this.ruleForm.refuseInfo = '';
       this.setOkrApprovalStep('1');
+    },
+    // -------------文件-------------
+    // 截取文件类型
+    cutType(name) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
+    // 预览
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
+      window.open(url);
     },
   },
   watch: {
