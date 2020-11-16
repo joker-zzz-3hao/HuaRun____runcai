@@ -526,6 +526,7 @@ export default {
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();
       params.otherProcesses = this.otherProcesses;
+      params.filed = this.currentIndex === 4 ? 0 : 1;
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;
