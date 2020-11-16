@@ -61,12 +61,8 @@
       </div>
       <div class="card-panel-body">
         <tl-okr-table
-          :overview="true"
           :tableList="tableList"
-          :disabled="false"
-          :showOKRInfoLabel="true"
-          :status="searchForm.status"
-          :expands="expands"
+          :expands.sync="expands"
         ></tl-okr-table>
       </div>
     </template>
@@ -173,6 +169,7 @@ export default {
       okrCycle: {}, // 当前选择的周期
       periodList: [], // 周期列表
       param: [],
+      expands: [],
     };
   },
   inject: ['reload'],
@@ -182,9 +179,9 @@ export default {
       testModel: (state) => state.testModel,
       userInfo: (state) => state.userInfo,
     }),
-    expands() {
-      return [this.tableList[0].okrDetailId];
-    },
+    // expands() {
+    //   return [this.tableList[0].okrDetailId];
+    // },
   },
 
   methods: {
@@ -282,7 +279,7 @@ export default {
       this.$set(this, 'orgUser', listData.orgUser || []);
       // this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-
+      this.expands = [this.tableList[0].okrDetailId];
       setTimeout(() => {
         this.showLoad = true;
         this.fullscreenLoading = false;

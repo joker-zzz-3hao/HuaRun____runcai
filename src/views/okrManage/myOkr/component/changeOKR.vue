@@ -154,13 +154,14 @@
         v-if="selectIndex !== '' && innerDrawer"
         ref="undertake"
         :departokrList="tableList[this.selectIndex].departokrList"
-        :showPhil="undertakeType == 'new'"
         :selectRadioDepart.sync="selectRadioDepart"
         :selectRadioPhil.sync="tableList[this.selectIndex].cultureId"
         :periodName="writeInfo.periodName"
-        :currentOption="okrParentId"
+        :periodId="writeInfo.periodId"
         :server="server"
         :okrBelongType="okrmain.okrBelongType"
+        :parentUpdate="tableList[this.selectIndex].parentUpdate"
+        :row="tableList[this.selectIndex]"
       ></tl-undertaketable>
       <div class="operating-box">
         <div class="flex-auto">
@@ -287,6 +288,9 @@ export default {
       this.myokrDrawer = true;
     },
     closed() {
+      if (this.selectIndex != '' && this.tableList[this.selectIndex].hasUpdate) {
+        this.$emit('success');
+      }
       this.$emit('update:exist', false);
     },
     close() {
@@ -303,12 +307,12 @@ export default {
             this.okrMainId = res.data.okrMain.okrId;
             this.searchForm.okrType = this.okrmain.okrBelongType;
             // this.voteUser = res.data.voteUser;
-            this.tableList.forEach((item) => {
-              if (item.parentUpdate) {
-                // 关联承接变更接口
-                this.getOkrModifyUndertakeOkrList(item);
-              }
-            });
+            // this.tableList.forEach((item) => {
+            //   if (item.parentUpdate) {
+            //     // 关联承接变更接口
+            //     this.getOkrModifyUndertakeOkrList(item);
+            //   }
+            // });
           }
         });
       }
@@ -379,20 +383,20 @@ export default {
       this.innerDrawer = false;
       this.$refs.okrCollapse.updateokrCollapse();
       // 取忽略的最新版本
-      let newVersion = '';
-      this.tableList[this.selectIndex].departokrList.forEach((item) => {
-        if (item.okrDetailId == this.tableList[this.selectIndex].okrParentId && !item.currentOption) {
-          newVersion = item.okrDetailVersion;
-        }
-      });
+      // let newVersion = '';
+      // this.tableList[this.selectIndex].departokrList.forEach((item) => {
+      //   if (item.okrDetailId == this.tableList[this.selectIndex].okrParentId && !item.currentOption) {
+      //     newVersion = item.okrDetailVersion;
+      //   }
+      // });
       const undertakeOkrVo = {
         okrDetailId: this.tableList[this.selectIndex].okrDetailId,
         undertakeOkrDetailId: this.tableList[this.selectIndex].okrParentId,
-        undertakeOkrVersion: newVersion,
+        // undertakeOkrVersion: this.$refs.undertake.newVersion,
       };
       this.server.ignoreUndertake(undertakeOkrVo).then((res) => {
         if (res.code == 200) {
-          this.$message.success('提交成功');
+          this.$message.success('忽略成功');
         }
       });
     },

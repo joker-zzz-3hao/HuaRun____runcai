@@ -97,7 +97,7 @@
                   >创建部门</el-dropdown-item
                 >
                 <el-dropdown-item
-                  v-if="hasPower('sys_department_edit')"
+                  v-if="hasPower('sys_department_edit') && data.orgSource == 0"
                   @click.native="createDepart(data, 'edit')"
                   >编辑部门</el-dropdown-item
                 >
