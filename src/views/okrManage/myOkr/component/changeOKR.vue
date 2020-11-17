@@ -134,6 +134,15 @@
               @change="fileChange"
               :okrId="writeInfo.okrId"
               sourceType="OKRMODIFY"
+              accept="
+              .jpg,
+              .jpeg,
+              image/png,
+              application/msword,
+              application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+              .pptx,
+              .xlsx"
+              tips="支持word、excel、ppt类型，jpg、jpeg、png格式的图片，最多上传10个文件，单个文件不超过30M"
             ></file-upload>
           </dd>
         </dl>
