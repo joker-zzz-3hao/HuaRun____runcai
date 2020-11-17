@@ -66,7 +66,6 @@
         <tl-create-okrComponent :tableList="tableList"></tl-create-okrComponent>
       </dd>
     </dl>
-    <!-- <dl class="dl-card-panel"> -->
     <dl
       class="dl-card-panel"
       v-if="
@@ -78,13 +77,6 @@
       <dt>
         <em>审阅意见</em>
       </dt>
-      <!-- <dd>
-        <el-radio-group v-model="feedback" @change="setText">
-          <el-radio :label="1">加油，看好你！</el-radio>
-          <el-radio :label="2">努力，加油干！</el-radio>
-          <el-radio :label="3">辛苦了</el-radio>
-        </el-radio-group>
-      </dd> -->
       <el-form ref="read" :model="formData"
         ><el-form-item
           prop="readRemark"
@@ -132,6 +124,8 @@
       <div style="margin-top: 25px">
         <el-button
           plain
+          :loading="loadingNoOpinion"
+          :disabled="loadingHasOpinion"
           class="tl-btn amt-border-fadeout"
           @click="okrSummaryRead(1)"
           >已阅-无异议</el-button
@@ -139,6 +133,8 @@
 
         <el-button
           slot="reference"
+          :loading="loadingHasOpinion"
+          :disabled="loadingNoOpinion"
           plain
           style="margin-left: 5px"
           class="tl-btn amt-border-fadeout"
@@ -167,51 +163,6 @@
         <em>{{ okrData.okrMain.readRemark }}</em>
       </dd>
     </dl>
-    <!-- <el-dialog
-      :append-to-body="true"
-      :visible="showDialog"
-      @close="close"
-      title=""
-      :close-on-click-modal="false"
-      width="30%"
-    >
-      <el-form ref="read" :model="formData"
-        ><el-form-item
-          prop="readRemark"
-          :rules="[
-            {
-              required: true,
-              message: '请输入调整建议',
-              trigger: 'blur',
-            },
-          ]"
-        >
-          <el-input
-            style="width: 100%"
-            type="textarea"
-            placeholder="请输入调整建议"
-            v-model="formData.readRemark"
-            :autosize="{ minRows: 4, maxRows: 8 }"
-            maxlength="1000"
-          ></el-input> </el-form-item
-      ></el-form>
-      <div class="operating-box">
-        <el-button
-          :loading="loading"
-          type="primary"
-          class="tl-btn amt-bg-slip"
-          @click="submitFeedback"
-          >确定</el-button
-        >
-        <el-button
-          :disabled="loading"
-          plain
-          class="tl-btn amt-border-fadeout"
-          @click="close"
-          >取消</el-button
-        >
-      </div>
-    </el-dialog> -->
   </div>
 </template>
 
@@ -231,6 +182,8 @@ export default {
     return {
       server,
       CONST,
+      loadingNoOpinion: false,
+      loadingHasOpinion: false,
       okrId: '',
       feedback: '',
       okrData: {},
@@ -270,6 +223,7 @@ export default {
     },
     okrSummaryRead(readStatus) {
       this.formData.readStatus = readStatus;
+
       this.$nextTick(() => {
         this.$refs.read.validate((valid) => {
           if (valid) {
@@ -279,6 +233,12 @@ export default {
               type: 'warning',
               closeOnClickModal: false,
             }).then(() => {
+              this.loadingNoOpinion = false;
+              this.loadingHasOpinion = true;
+              if (readStatus == 1) {
+                this.loadingNoOpinion = true;
+                this.loadingHasOpinion = false;
+              }
               this.server.okrSummaryRead({
                 okrId: this.okrData.okrMain.okrId,
                 readStatus,
@@ -290,6 +250,8 @@ export default {
                   this.backList();
                   this.formData.readRemark = '';
                 }
+                this.loadingNoOpinion = false;
+                this.loadingHasOpinion = false;
               });
             }).catch(() => {
             });
@@ -297,29 +259,7 @@ export default {
         });
       });
     },
-    // submitFeedback() {
-    //   this.$refs.read.validate((valid) => {
-    //     if (valid) {
-    //       this.server.okrSummaryRead({
-    //         okrId: this.okrData.okrMain.okrId,
-    //         readStatus: 2,
-    //         readRemark: this.formData.readRemark,
-    //         userId: this.okrData.okrMain.userId,
-    //       }).then((res) => {
-    //         if (res.code == 200) {
-    //           this.$message.success('审阅完成');
-    //           this.close();
-    //           this.backList();
-    //         }
-    //       });
-    //     }
-    //   });
-    // },
-    okrSuggestChange() {
-
-    },
     setText(text) {
-      // this.showDialog = false;
       this.formData.readRemark = text;
     },
     showDia() {

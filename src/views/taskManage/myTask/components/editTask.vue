@@ -479,6 +479,7 @@ export default {
       visible: false,
       canEdit: true, // 是否能编辑
       loading: false,
+      periodId: '',
       // tab
       currentIndex: 0,
       tabMenuList: [{
@@ -535,7 +536,7 @@ export default {
       this.visible = true;
       this.canEdit = canedit;
       this.getUserList();
-      this.queryOkr();
+      this.getOkrCycleList();
       this.getProjectList();
       if (id) {
         this.server.queryTaskDetail({ taskId: id }).then((res) => {
@@ -604,14 +605,27 @@ export default {
     closed() {
       this.$emit('update:existEditTask', false);
     },
+    // 周期
+    getOkrCycleList() {
+      this.server.getOkrCycleList().then((res) => {
+        if (res.code == 200) {
+          // this.periodList = res.data || [];
+          const periodList = res.data || [];
+          const okrCycle = periodList.filter((item) => item.checkStatus == '1')[0] || {};
+          this.periodId = okrCycle.periodId;
+          this.queryOkr();
+        }
+      });
+    },
     // 查询okr
     queryOkr() {
       const params = {
         myOrOrg: 'org',
         status: '1',
         orgId: this.userInfo.orgId,
+        periodId: this.periodId,
       };
-      this.server.queryOkr(params).then((res) => {
+      this.server.getorgOkr(params).then((res) => {
         if (res.code == 200) {
           this.okrList = res.data.okrDetails || [];
         }

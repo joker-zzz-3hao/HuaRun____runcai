@@ -246,12 +246,42 @@
 }
 
 .overview .cont-area>.tl-card-panel:first-child .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 73%;
-  width: 73%;
+  flex: 0 0 69%;
+  width: 69%;
 }
 
-.overview .cont-area>.tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 73%;
+.overview .tl-table .sub-tr .okr-proportion {
+  flex: 0 0 8%;
+  width: 8%;
+}
+
+.concerned-okr .tl-table .sub-tr .okr-proportion {
+  flex: 0 0 8%;
+  width: 8%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(1) {
+  width: 74%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(1) {
+  width: 78%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 8%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(2) {
+  width: 8%;
+}
+
+.overview .cont-area > .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(3) {
+  width: 14%;
+}
+
+.concerned-okr .cont-area .tl-card-panel:first-child .tl-table-fix .tl-thead li:nth-child(3) {
+  width: 19%;
 }
 
 .overview .department-view .cont-area>.tl-card-panel:nth-child(2),
@@ -540,6 +570,11 @@
   flex-wrap: wrap;
 }
 
+.overview .tl-table-fix .progress-bg {
+  width: 28px !important;
+  margin-left: 4px !important;
+}
+
 .team-view .operating-area-inside>em,
 .staff-view .operating-area-inside>em,
 .department-view .operating-area-inside>em {
@@ -660,6 +695,30 @@
   padding: 0 0 10px 0;
 }
 
+.my-okr .card-panel-head .okr-title {
+  flex: 0 0 30%;
+}
+
+.my-okr .card-panel-head .okr-state {
+  flex: 0 0 15%;
+}
+
+.my-okr .card-panel-head .okr-type {
+  flex: 0 0 15%;
+}
+
+.my-okr .card-panel-head .okr-responsible {
+  flex: 0 0 14%;
+}
+
+.my-okr .card-panel-head .okr-progress {
+  flex: 0 0 23%;
+}
+
+.my-okr .card-panel-head .okr-operation {
+  flex: 0 0 3%;
+}
+
 .my-okr .card-panel-head .update-time {
   position: absolute;
   left: 0;
@@ -699,12 +758,12 @@
   width: 100%;
 }
 
-.my-okr .kr-num {
-  margin: 0 6px 0 0;
+.overview .kr-num,
+.my-okr .kr-num,
+.concerned-okr .kr-num {
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex: 0 0 96px;
+  flex: 0 0 62px;
   min-width: 48px;
   height: 18px;
   font-size: 12px;
@@ -946,6 +1005,14 @@
 .create-okr .list-add {
   margin: 0 0 0 25px;
   width: calc(100% - 30px);
+}
+
+.create-okr .tl-collapse .collpase-panel dd + dd > div span {
+  flex-basis: unset;
+}
+
+.create-okr .tl-collapse .collpase-panel .open-more {
+  margin-left: 30px;
 }
 
 .associated-undertaking>.el-scrollbar {
@@ -1839,8 +1906,8 @@
 }
 
 .concerned-okr .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 65%;
-  width: 65%;
+  flex: 0 0 67%;
+  width: 67%;
 }
 
 .concerned-okr .followed-users dd,

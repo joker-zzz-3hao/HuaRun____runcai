@@ -67,6 +67,21 @@
             </el-select>
           </dd>
         </dl>
+        <!-- <dl class="dl-item">
+          <el-dropdown @command="showprempt">
+            <span class="el-dropdown-link">
+              提醒设置<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="progress"
+                >OKR进度更新提醒</el-dropdown-item
+              >
+              <el-dropdown-item command="update"
+                >OKR更新次数提醒</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
+        </dl> -->
       </div>
     </div>
     <div class="cont-area">
@@ -175,7 +190,7 @@
           > -->
         </div>
       </div>
-      <div class="operating-box">
+      <div class="operating-box" style="margin-bottom: 20px">
         <dl class="dl-item">
           <dt>OKR状态</dt>
           <dd>
@@ -218,6 +233,13 @@
         </dl>
         <el-button type="primary" class="tl-btn amt-bg-slip" @click="searchList"
           >查询</el-button
+        >
+        <el-button
+          plain
+          class="tl-btn amt-border-fadeout"
+          :loading="loadokring"
+          @click="loadOkr"
+          >全部导出</el-button
         >
       </div>
       <crcloud-table
@@ -343,6 +365,7 @@
         </div>
       </crcloud-table>
     </div>
+    <tl-prempt ref="prempt" :upDateType="upDateType"></tl-prempt>
   </div>
 </template>
 
@@ -351,6 +374,7 @@
 import { mapMutations, mapState } from 'vuex';
 // import tlProcess from '@/components/process';
 import Server from '../server';
+import prempt from './prempt';
 import CONST from '../const';
 
 const server = new Server();
@@ -364,6 +388,7 @@ export default {
       okrId: '',
       tableData: [],
       loading: false,
+      loadokring: false,
       treeData: [],
       periodList: [],
       orgFullIdList: [],
@@ -382,11 +407,13 @@ export default {
       orgName: '',
       summaryData: {},
       rootRole: false,
-
+      upDateType: '',
     };
   },
   components: {
     // tlProcess,
+    // eslint-disable-next-line vue/no-unused-components
+    'tl-prempt': prempt,
   },
   mounted() {
     const self = this;
@@ -419,6 +446,21 @@ export default {
         if (element.roleCode == 'ROOT_ADMIN') {
           this.rootRole = true;
         }
+      });
+    },
+    loadOkr() {
+      this.loadokring = true;
+      const name = `${this.userInfo.tenantInfo.tenantName}润联科技OKR汇总（所有).xlsx`;
+      this.exportExcel('/gateway/system-service/sys/excelOkr/exportExcel', {
+        periodId: this.periodId,
+      }, name).then(() => {
+        this.loadokring = false;
+      });
+    },
+    showprempt(data) {
+      this.upDateType = data;
+      this.$nextTick(() => {
+        this.$refs.prempt.show();
       });
     },
     getOrgTable() {
@@ -538,3 +580,12 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.okr-summarize-info {
+  width: 100%;
+  background: #f4f6f8;
+  padding: 20px;
+}
+.okr-summarize-search-form {
+}
+</style>

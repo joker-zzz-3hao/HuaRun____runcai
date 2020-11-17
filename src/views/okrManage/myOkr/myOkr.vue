@@ -43,7 +43,7 @@
                 <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
               </dd>
             </dl>
-            <dl class="okr-responsible">
+            <dl class="okr-type">
               <dt>
                 <em>OKR类型</em>
               </dt>
@@ -83,6 +83,7 @@
               </dd>
             </dl>
             <dl
+              class="okr-operation"
               v-if="
                 ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
                   item.okrMain.status

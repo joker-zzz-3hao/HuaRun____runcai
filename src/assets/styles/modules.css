@@ -429,8 +429,8 @@
 }
 
 .tl-table .sub-tr .okr-kr-name {
-  flex: 0 0 45%;
-  width: 45%;
+  flex: 0 0 43%;
+  width: 43%;
   position: relative;
 }
 
@@ -458,34 +458,20 @@
 }
 
 .tl-table .sub-tr .okr-proportion {
-  flex: 0 0 6%;
-  width: 6%;
+  padding: 0 0 0 12px;
+  flex: 0 0 25%;
+  width: 25%;
   font-weight: 500;
 }
 
-.tl-table .sub-tr .okr-undertake {
-  flex: 0 0 8%;
-  width: 8%;
-}
-
 .tl-table .sub-tr .okr-risk {
-  flex: 0 0 11%;
-  width: 11%;
-}
-
-.tl-table .sub-tr .undertake-target {
-  flex: 0 0 12%;
-  width: 12%;
+  flex: 0 0 9%;
+  width: 9%;
 }
 
 .tl-table .sub-tr .okr-progress {
-  flex: 0 0 17%;
-  width: 17%;
-}
-
-.tl-table .sub-tr .okr-update {
-  flex: 0 0 9%;
-  width: 9%;
+  flex: 0 0 14%;
+  width: 14%;
 }
 
 .tl-table .sub-tr .okr-operating {
@@ -3151,6 +3137,10 @@ height: 70%;
   background: #e4e9ed;
 }
 
+.card-panel-body .tl-table .el-table__row td:nth-child(7) .el-icon--right {
+  margin-left: 4px;
+}
+
 .card-panel-body .tl-table .el-table__body-wrapper .el-table__expand-icon .el-icon {
   position: unset;
   margin: 0;
@@ -3286,7 +3276,7 @@ height: 70%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(1) {
-  width: 50%;
+  width: 48%;
 }
 
 .tl-table-fix .fold {
@@ -3320,7 +3310,7 @@ height: 70%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(2) {
-  width: 6%;
+  width: 5%;
 }
 
 /* .tl-table-fix .tl-thead li:nth-child(4) {
@@ -3328,16 +3318,16 @@ height: 70%;
 } */
 
 .tl-table-fix .tl-thead li:nth-child(3) {
-  width: 12%;
+  width: 20%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(4) {
-  width: 11%;
+  width: 9%;
 }
 
 .tl-table-fix .tl-thead li:nth-child(5) {
   display: flex;
-  width: 17%;
+  width: 18%;
 }
 
 /* .tl-table-fix .tl-thead li:nth-child(8) {
@@ -3561,7 +3551,7 @@ height: 70%;
 }
 
 .tag-kind em {
-  color: #7a828a;
+  color: #26282a;
   overflow: hidden;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
@@ -3569,6 +3559,10 @@ height: 70%;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   transition: all .4s ease-out;
+}
+
+.okr-kr-name.tag-kind em {
+  color: #7a828a;
 }
 
 .tag-kind .el-radio__label {

@@ -22,6 +22,14 @@ function sessionTimeOut(data) {
   }
 }
 
+const loadFile = axios.create({
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+    Pragma: 'no-cache',
+    // token: localStorage.token,
+  },
+});
+
 const ajax = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
@@ -178,6 +186,10 @@ export default {
   post(url, data = {}, config = {}) {
     ajax.defaults.headers.token = localStorage.token;
     return ajax.post(url, data, config);
+  },
+  file(url, data = {}, config = {}) {
+    loadFile.defaults.headers.token = localStorage.token;
+    return loadFile.post(url, data, config);
   },
   options: ajax.defaults,
 };
