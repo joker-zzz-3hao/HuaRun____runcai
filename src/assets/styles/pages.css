@@ -4099,6 +4099,8 @@
 
 .edit-task .task-tab {
   width: 440px;
+  /* change by xinquan 任务操作历史加滚动条 */
+  height: 635px;
 }
 
 .edit-task .tl-form {
@@ -4133,7 +4135,12 @@
 .edit-task .tab-list li.is-focus {
   font-weight: 500;
 }
-
+.edit-task dl dt .el-dropdown{
+  margin: auto;
+}
+.edit-task dl dt .el-dropdown .el-icon--right{
+  transform: rotate(90deg);
+}
 /* 任务过程 */
 .main-menu .sub-menu .taskprocess {
   flex-direction: column;
