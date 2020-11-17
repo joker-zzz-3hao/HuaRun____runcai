@@ -22,6 +22,7 @@
             value: 'orgFullId',
             children: 'sonTree',
             emitPath: false,
+            disabled: 'disabled',
           }"
           node-key="orgFullId"
         ></el-cascader>
@@ -67,13 +68,14 @@ export default {
     };
   },
   mounted() {
-    this.queryMenu();
+
   },
   methods: {
     show() {
       this.orgId = '';
       this.selectType = '';
       this.dialogTableVisible = true;
+      this.queryMenu();
     },
     close() {
       this.dialogTableVisible = false;
@@ -81,17 +83,25 @@ export default {
     queryMenu() {
       this.server.getOrg().then((res) => {
         // this.options = res.data;
-        this.options = res.data;
+        // this.options = res.data;
       //  console.log(this.options);
+        this.options = this.changeData(res.data);
       });
     },
+    disabledFun(fullId) {
+      const funBool = this.selectlist.some((item) => fullId == item.orgData.orgId);
+      return funBool;
+    },
     changeData(data) {
-      const list = data.map((item) => ({
-        orgName: item.orgName,
-        orgId: item.orgFullId,
-        sonTree: this.changeData(item.sonTree),
-        disabled: true,
-      }));
+      let list = [];
+      if (data) {
+        list = data.map((item) => ({
+          orgName: item.orgName,
+          orgFullId: item.orgFullId,
+          sonTree: this.changeData(item.sonTree).length == 0 ? '' : this.changeData(item.sonTree),
+          disabled: this.disabledFun(item.orgFullId),
+        }));
+      }
       return list;
     },
     getOrgListName() {
