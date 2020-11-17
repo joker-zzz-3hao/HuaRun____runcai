@@ -132,6 +132,8 @@
               :fileList="fileList"
               :limit="10"
               @change="fileChange"
+              :okrId="writeInfo.okrId"
+              sourceType="OKR_CHANGE"
             ></file-upload>
           </dd>
         </dl>

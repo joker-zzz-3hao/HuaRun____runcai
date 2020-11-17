@@ -85,7 +85,7 @@
       <dt>
         <em>附件</em>
       </dt>
-      <dd v-for="file in attachmentList" :key="file.resourceId">
+      <dd v-for="file in okrData.attachmentList" :key="file.resourceId">
         <em>{{ file.resourceName }}</em>
         <span>
           <span
@@ -239,6 +239,7 @@ export default {
       okrId: '',
       data: {},
       tableList: [],
+      okrData: {},
       loading: false,
       ruleForm: {
         approvalStatus: '1',
@@ -349,10 +350,11 @@ export default {
     },
     // 下载
     downFile(fileObj) {
+      console.log(this.data);
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_CHANGE&sourceKey=${this.data.okrMainId}`;
       window.open(url);
     },
   },
@@ -367,6 +369,7 @@ export default {
             this.okrData = JSON.parse(this.data.paramJson);
             this.tableList = this.okrData.okrInfoList;
           } else if (this.data.approvalType == '1' && this.data.updateJson) {
+            this.okrData = JSON.parse(this.data.paramJson);
             this.tableList = JSON.parse(this.data.updateJson);
           } else {
             this.okrData = {};
