@@ -6,19 +6,18 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
+    :modal="true"
     :title="title"
   >
     <el-form class="tl-form" :label-position="'left'">
-      <el-form-item
-        :label="upDateType == 'update' ? 'OKR更新次数小于：' : 'OKR进度小于：'"
-        prop="name"
-      >
+      <el-form-item :label="upDateName" prop="name">
         <el-input-number v-model="num" :min="1"></el-input-number>
         <span v-if="upDateType == 'update'"> %</span>
+        <span v-if="upDateType == 'time'"> 天，未更新OKR进展</span>
       </el-form-item>
       <em v-for="(item, index) in selectlist" :key="index"
         >{{ item.orgData.orgName }}({{
-          item.selectType == 0 ? "负责人" : "成员"
+          item.remindType == 1 ? "负责人" : "成员"
         }}) <i class="el-icon-error" @click="deleteList(index)"></i
       ></em>
       <el-form-item label="提醒范围：">
@@ -39,7 +38,11 @@
         >取 消</el-button
       >
     </div>
-    <tl-selectOrg ref="selectOrg" @getOrgData="getOrgData"></tl-selectOrg>
+    <tl-selectOrg
+      ref="selectOrg"
+      @getOrgData="getOrgData"
+      :selectlist="selectlist"
+    ></tl-selectOrg>
   </el-dialog>
 </template>
 <script>
@@ -50,7 +53,7 @@ const server = new Server();
 export default {
   data() {
     return {
-      title: 'OKR进度更新提醒',
+      title: '',
       dialogTableVisible: false,
       num: 20,
       server,
@@ -59,9 +62,12 @@ export default {
       selectType: '',
       btnLoad: false,
       selectlist: [],
+      upDateName: '',
+      type: '',
+      showUser: false,
     };
   },
-  props: ['upDateType'],
+  props: ['upDateType', 'periodId'],
   mounted() {
     this.queryMenu();
   },
@@ -71,6 +77,21 @@ export default {
   methods: {
     show() {
       this.dialogTableVisible = true;
+      this.num = 20;
+      this.selectlist = [];
+      if (this.upDateType == 'update') {
+        this.title = 'OKR更新次数提醒';
+        this.type = 1;
+        this.upDateName = 'OKR更新次数少于';
+      } else if (this.upDateType == 'progress') {
+        this.title = 'OKR进度更新提醒';
+        this.type = 0;
+        this.upDateName = 'OKR进度小于：';
+      } else {
+        this.type = 2;
+        this.title = '自定义时间更新进展提醒';
+        this.upDateName = '超过';
+      }
     },
     getOrgData(data) {
       this.selectlist.push(data);
@@ -89,7 +110,30 @@ export default {
         this.options = res.data;
       });
     },
-    submitForm() {},
+    submitForm() {
+      const params = {};
+      this.orgRemindTypeList = this.selectlist.map((item) => ({ orgId: item.orgData.orgId, remindType: item.remindType }));
+      params.type = this.type;
+      if (this.type == 0) {
+        params.okrProgress = this.num;
+      }
+      if (this.type == 1) {
+        params.okrUpdateCount = this.num;
+      }
+      if (this.type == 2) {
+        params.okrUpdateTimeCount = this.num;
+      }
+      params.orgRemindTypeList = this.orgRemindTypeList;
+      params.periodId = this.periodId;
+      this.server.sendOkrRemindMsg(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('发送成功');
+          this.close();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
   },
 };
 </script>

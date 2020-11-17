@@ -6,6 +6,7 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
+    :modal="false"
     :title="title"
   >
     <el-form class="tl-form" :label-position="'left'">
@@ -17,19 +18,21 @@
           :options="options"
           :props="{
             checkStrictly: true,
-            id: 'orgId',
+            id: 'orgFullId',
             label: 'orgName',
-            value: 'orgId',
+            value: 'orgFullId',
             children: 'sonTree',
             emitPath: false,
+            disabled: 'disabled',
+            orgParentId: 'orgParentId',
           }"
-          node-key="orgId"
+          node-key="orgFullId"
         ></el-cascader>
       </el-form-item>
       <el-form-item label="发送类型：">
         <el-radio-group v-model="selectType" class="tl-radio-group">
-          <el-radio :label="1" class="tl-radio">负责人</el-radio>
-          <el-radio :label="0" class="tl-radio">成员</el-radio>
+          <el-radio label="1" class="tl-radio">负责人</el-radio>
+          <el-radio label="2" class="tl-radio">成员</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -52,6 +55,7 @@ import Server from '../server';
 
 const server = new Server();
 export default {
+  props: ['selectlist'],
   data() {
     return {
       title: '添加部门',
@@ -63,32 +67,58 @@ export default {
       selectType: '',
       btnLoad: false,
       orgData: {},
+      orgParentId: '',
     };
   },
   mounted() {
-    this.queryMenu();
+
   },
   methods: {
     show() {
+      this.orgId = '';
+      this.selectType = '';
       this.dialogTableVisible = true;
+      this.queryMenu();
     },
     close() {
       this.dialogTableVisible = false;
     },
     queryMenu() {
       this.server.getOrg().then((res) => {
+        // this.options = res.data;
         this.options = res.data;
+      //  console.log(this.options);
+        // this.options = this.changeData(res.data);
       });
+    },
+    disabledFun(fullId) {
+      const funBool = this.selectlist.some((item) => fullId == item.orgData.orgId);
+      // const parentBool = this.selectlist.some((item) => fullId == item.orgData.orgId.split(':')[0]);
+      return funBool;
+    },
+    changeData(data) {
+      let list = [];
+      if (data) {
+        list = data.map((item) => ({
+          orgName: item.orgName,
+          orgFullId: item.orgFullId,
+          sonTree: this.changeData(item.sonTree).length == 0 ? '' : this.changeData(item.sonTree),
+          disabled: this.disabledFun(item.orgFullId),
+          orgParentId: item.orgParentId,
+        }));
+      }
+      return list;
     },
     getOrgListName() {
       const orgName = this.$refs.treeMenu.getCheckedNodes(true)[0].label;
       this.orgData = {
         orgName,
         orgId: this.orgId,
+        orgParentId: this.$refs.treeMenu.getCheckedNodes(true)[0].orgParentId,
       };
     },
     submitForm() {
-      this.$emit('getOrgData', { orgData: this.orgData, selectType: this.selectType });
+      this.$emit('getOrgData', { orgData: this.orgData, remindType: this.selectType });
       this.close();
     },
   },

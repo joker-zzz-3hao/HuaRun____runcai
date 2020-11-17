@@ -2,13 +2,13 @@
   <div class="tl-progress-bar">
     <div
       class="progress-bg"
-      :style="{width: `${width}px`,marginLeft: `${marginLeft}px`}"
+      :style="{ width: `${width}px`, marginLeft: `${marginLeft}px` }"
       v-for="item in processList"
       :key="item.id"
     >
       <div class="current-progress" :style="item.width"></div>
     </div>
-    <div v-if="showNumber" class="progress-number">{{data}}%</div>
+    <div v-if="showNumber" class="progress-number">{{ data }}%</div>
   </div>
 </template>
 

@@ -55,11 +55,16 @@
               @click="openFile(file)"
               >预览</span
             >
+            <span
+              v-else-if="images_map[cutType(file.name)]"
+              @click="openresFile(file)"
+              >预览</span
+            >
             <!-- 只有taskid存在才能下载 -->
             <span v-if="file.sourceType == 'TASK'" @click="downExistFile(file)"
               >下载</span
             >
-            <span v-else @click="downFile(file)">下载</span>
+            <!-- <span v-else @click="downFile(file)">下载</span> -->
             <span
               ><i
                 class="el-icon-close"
@@ -171,6 +176,13 @@ export default {
       };
       if (images[fileObj.resourceType]) {
         this.$refs.imgDialog.show(fileObj.resourceUrl);
+      }
+    },
+    openresFile(file) {
+      if (file.response && file.response.data) {
+        const url = file.response.data.resourceUrl;
+        console.log(url);
+        this.$refs.imgDialog.show(url);
       }
     },
     // 下载
