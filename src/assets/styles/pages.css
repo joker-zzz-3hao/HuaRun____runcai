@@ -2344,6 +2344,23 @@
   margin: 0 0 0 10px;
 }
 
+/* 审批详情附件 change by xinquan */
+.okr-approval-detail .upload-list dd{
+  margin: 10px 0;
+  justify-content: space-between;
+  display: flex;
+}
+
+.okr-approval-detail .upload-list dd span{
+  color: #BCC4CC;
+  letter-spacing: 0;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.okr-approval-detail .upload-list dd span:hover{
+  color: #685df1;
+}
+
 /* OKR汇总 */
 .okr-summarize .cont-area .operating-box {
   margin: 0 0 20px 0;
@@ -4411,6 +4428,10 @@
   color: #BCC4CC;
   letter-spacing: 0;
   margin-left: 20px;
+  cursor: pointer;
+}
+.el-upload-list li .upload-option span:hover{
+  color: #685df1;
 }
 
 /* 切换部门--by xinquan  */
