@@ -49,4 +49,8 @@ export default class Server extends ServerBase {
   exportExcel(param) {
     return this._ajaxPost('gateway/system-service/sys/excelOkr/exportExcel', param);
   }
+
+  sendOkrRemindMsg(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/main/sendOkrRemindMsg', param);
+  }
 }

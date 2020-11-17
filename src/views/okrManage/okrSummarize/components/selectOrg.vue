@@ -17,19 +17,19 @@
           :options="options"
           :props="{
             checkStrictly: true,
-            id: 'orgId',
+            id: 'orgFullId',
             label: 'orgName',
-            value: 'orgId',
+            value: 'orgFullId',
             children: 'sonTree',
             emitPath: false,
           }"
-          node-key="orgId"
+          node-key="orgFullId"
         ></el-cascader>
       </el-form-item>
       <el-form-item label="发送类型：">
         <el-radio-group v-model="selectType" class="tl-radio-group">
-          <el-radio :label="1" class="tl-radio">负责人</el-radio>
-          <el-radio :label="0" class="tl-radio">成员</el-radio>
+          <el-radio label="1" class="tl-radio">负责人</el-radio>
+          <el-radio label="2" class="tl-radio">成员</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -52,6 +52,7 @@ import Server from '../server';
 
 const server = new Server();
 export default {
+  props: ['selectlist'],
   data() {
     return {
       title: '添加部门',
@@ -70,6 +71,8 @@ export default {
   },
   methods: {
     show() {
+      this.orgId = '';
+      this.selectType = '';
       this.dialogTableVisible = true;
     },
     close() {
@@ -77,8 +80,19 @@ export default {
     },
     queryMenu() {
       this.server.getOrg().then((res) => {
+        // this.options = res.data;
         this.options = res.data;
+      //  console.log(this.options);
       });
+    },
+    changeData(data) {
+      const list = data.map((item) => ({
+        orgName: item.orgName,
+        orgId: item.orgFullId,
+        sonTree: this.changeData(item.sonTree),
+        disabled: true,
+      }));
+      return list;
     },
     getOrgListName() {
       const orgName = this.$refs.treeMenu.getCheckedNodes(true)[0].label;
@@ -88,7 +102,7 @@ export default {
       };
     },
     submitForm() {
-      this.$emit('getOrgData', { orgData: this.orgData, selectType: this.selectType });
+      this.$emit('getOrgData', { orgData: this.orgData, remindType: this.selectType });
       this.close();
     },
   },
