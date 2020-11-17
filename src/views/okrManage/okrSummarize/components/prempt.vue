@@ -6,6 +6,7 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
+    :modal="true"
     :title="title"
   >
     <el-form class="tl-form" :label-position="'left'">

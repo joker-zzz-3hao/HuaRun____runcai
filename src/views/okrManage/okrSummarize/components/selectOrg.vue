@@ -6,6 +6,7 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
+    :modal="false"
     :title="title"
   >
     <el-form class="tl-form" :label-position="'left'">
@@ -23,6 +24,7 @@
             children: 'sonTree',
             emitPath: false,
             disabled: 'disabled',
+            orgParentId: 'orgParentId',
           }"
           node-key="orgFullId"
         ></el-cascader>
@@ -65,6 +67,7 @@ export default {
       selectType: '',
       btnLoad: false,
       orgData: {},
+      orgParentId: '',
     };
   },
   mounted() {
@@ -83,13 +86,14 @@ export default {
     queryMenu() {
       this.server.getOrg().then((res) => {
         // this.options = res.data;
-        // this.options = res.data;
+        this.options = res.data;
       //  console.log(this.options);
-        this.options = this.changeData(res.data);
+        // this.options = this.changeData(res.data);
       });
     },
     disabledFun(fullId) {
       const funBool = this.selectlist.some((item) => fullId == item.orgData.orgId);
+      // const parentBool = this.selectlist.some((item) => fullId == item.orgData.orgId.split(':')[0]);
       return funBool;
     },
     changeData(data) {
@@ -100,6 +104,7 @@ export default {
           orgFullId: item.orgFullId,
           sonTree: this.changeData(item.sonTree).length == 0 ? '' : this.changeData(item.sonTree),
           disabled: this.disabledFun(item.orgFullId),
+          orgParentId: item.orgParentId,
         }));
       }
       return list;
@@ -109,6 +114,7 @@ export default {
       this.orgData = {
         orgName,
         orgId: this.orgId,
+        orgParentId: this.$refs.treeMenu.getCheckedNodes(true)[0].orgParentId,
       };
     },
     submitForm() {

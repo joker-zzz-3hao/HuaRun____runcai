@@ -67,7 +67,7 @@
             </el-select>
           </dd>
         </dl>
-        <!-- <dl class="dl-item">
+        <dl class="dl-item">
           <el-dropdown @command="showprempt">
             <span class="el-dropdown-link">
               提醒设置<i class="el-icon-arrow-down el-icon--right"></i>
@@ -84,7 +84,7 @@
               >
             </el-dropdown-menu>
           </el-dropdown>
-        </dl> -->
+        </dl>
       </div>
     </div>
     <div class="cont-area">
