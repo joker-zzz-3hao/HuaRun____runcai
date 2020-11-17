@@ -260,6 +260,21 @@ export default {
     },
     fileFormatFn(file) {
       console.log('文件类型fileFormatFn', file.type);
+      if (this.sourceType == 'OKRMODIFY') {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isxlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const isPPTX = file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        const isDOC = file.type === 'application/msword';
+        const isDOCX = file.type
+        === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        if (!isJPG && !isPNG && !isDOC && !isDOCX && !isPPTX && !isxlsx) {
+          this.$message.error(
+            '您上传的附件格式不支持',
+          );
+        }
+        return (isJPG || isPNG || isDOC || isDOCX || isPPTX || isxlsx);
+      }
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isBMP = file.type === 'image/bmp';
