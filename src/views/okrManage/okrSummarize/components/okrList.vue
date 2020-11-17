@@ -67,7 +67,7 @@
             </el-select>
           </dd>
         </dl>
-        <!-- <dl class="dl-item">
+        <dl class="dl-item">
           <el-dropdown @command="showprempt">
             <span class="el-dropdown-link">
               提醒设置<i class="el-icon-arrow-down el-icon--right"></i>
@@ -79,9 +79,12 @@
               <el-dropdown-item command="update"
                 >OKR更新次数提醒</el-dropdown-item
               >
+              <el-dropdown-item command="time"
+                >自定义时间更新进展提醒</el-dropdown-item
+              >
             </el-dropdown-menu>
           </el-dropdown>
-        </dl> -->
+        </dl>
       </div>
     </div>
     <div class="cont-area">
@@ -365,7 +368,11 @@
         </div>
       </crcloud-table>
     </div>
-    <tl-prempt ref="prempt" :upDateType="upDateType"></tl-prempt>
+    <tl-prempt
+      ref="prempt"
+      :upDateType="upDateType"
+      :periodId="periodId"
+    ></tl-prempt>
   </div>
 </template>
 
@@ -393,7 +400,7 @@ export default {
       periodList: [],
       orgFullIdList: [],
       departmentData: [],
-
+      showSelectOrg: false,
       periodId: '',
       okrBelongType: '1',
       status: '',
@@ -450,7 +457,7 @@ export default {
     },
     loadOkr() {
       this.loadokring = true;
-      const name = `${this.userInfo.tenantInfo.tenantName}OKR汇总（所有).xlsx`;
+      const name = `${this.userInfo.tenantInfo.tenantName}OKR汇总(所有).xlsx`;
       this.exportExcel('/gateway/system-service/sys/excelOkr/exportExcel', {
         periodId: this.periodId,
       }, name).then(() => {
