@@ -26,6 +26,7 @@
               <!-- searchForm.periodId 单选 -->
               <!-- multperiod 多选 -->
               <el-select
+                :disabled="periodList.length == 0"
                 v-model="searchForm.periodId"
                 placeholder="请选择目标周期"
                 :popper-append-to-body="false"

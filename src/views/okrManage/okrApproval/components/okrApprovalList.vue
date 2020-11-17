@@ -147,6 +147,7 @@
             <el-form-item>
               <p>周期</p>
               <el-select
+                :disabled="periodList.length == 0"
                 v-model="formData.periodId"
                 placeholder="请选择目标周期"
                 :popper-append-to-body="false"

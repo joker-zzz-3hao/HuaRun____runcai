@@ -11,6 +11,7 @@
           <dt>周期</dt>
           <dd>
             <el-select
+              :disabled="periodIdList.length == 0"
               v-model.trim="periodId"
               placeholder="用户类型"
               :popper-append-to-body="false"

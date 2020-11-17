@@ -570,10 +570,13 @@
   flex-wrap: wrap;
 }
 
-.overview .tl-table-fix .progress-bg {
+/* .overview .tl-table-fix .progress-bg {
   width: 28px !important;
-  margin-left: 4px !important;
 }
+
+.overview .tl-table-fix .progress-bg:not(:first-child) {
+  margin-left: 4px !important;
+} */
 
 .team-view .operating-area-inside>em,
 .staff-view .operating-area-inside>em,
