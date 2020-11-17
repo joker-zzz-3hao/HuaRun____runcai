@@ -153,7 +153,7 @@
                   <tl-process
                     :data="parseInt(formData.taskProgress, 10)"
                     :showNumber="false"
-                    :width="40"
+                    :width="55"
                     :marginLeft="6"
                   ></tl-process>
                   <el-slider
@@ -301,90 +301,96 @@
         <div class="task-tab">
           <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
           </tl-tabs>
-          <div class="tab-cont" v-if="currentIndex === 0">
-            <div class="tl-custom-timeline">
-              <dl class="timeline-list">
-                <dd
-                  v-for="(item, pindex) in historyList"
-                  :key="item.createTime"
-                >
-                  <div class="list-info">
-                    <div class="list-title">{{ item.createTime }}</div>
-                    <div
-                      class="list-cont"
-                      v-for="(content, cindex) in item.contentList"
-                      :key="content.operationId"
-                    >
+          <el-scrollbar>
+            <div class="tab-cont" v-if="currentIndex === 0">
+              <div class="tl-custom-timeline">
+                <dl class="timeline-list">
+                  <dd
+                    v-for="(item, pindex) in historyList"
+                    :key="item.createTime"
+                  >
+                    <div class="list-info">
+                      <div class="list-title">{{ item.createTime }}</div>
                       <div
-                        v-if="pindex == historyList.length - 1 && cindex == 0"
+                        class="list-cont"
+                        v-for="(content, cindex) in item.contentList"
+                        :key="content.operationId"
                       >
-                        <em>{{ content.userName }}</em>
-                        <span>创建了</span>
-                      </div>
-                      <div
-                        v-else-if="pindex != historyList.length - 1"
-                        class="operate-type"
-                      >
-                        <em>{{ content.userName }}</em>
-                        <span v-if="content.contents.operate == 'ADD'"
-                          >添加了</span
+                        <div
+                          v-if="pindex == historyList.length - 1 && cindex == 0"
                         >
-                        <span v-else-if="content.contents.operate == 'SET'"
-                          >设置了</span
+                          <em>{{ content.userName }}</em>
+                          <span>创建了</span>
+                        </div>
+                        <div
+                          v-else-if="pindex != historyList.length - 1"
+                          class="operate-type"
                         >
-                        <span v-else-if="content.contents.operate == 'DELETE'"
-                          >删除了</span
+                          <em>{{ content.userName }}</em>
+                          <span v-if="content.contents.operate == 'ADD'"
+                            >添加了</span
+                          >
+                          <span v-else-if="content.contents.operate == 'SET'"
+                            >设置了</span
+                          >
+                          <span v-else-if="content.contents.operate == 'DELETE'"
+                            >删除了</span
+                          >
+                        </div>
+                        <div
+                          class="operate-kind"
+                          v-if="
+                            pindex != historyList.length - 1 ||
+                            content.contents.field != 'taskProgress'
+                          "
                         >
-                      </div>
-                      <div
-                        class="operate-kind"
-                        v-if="
-                          pindex != historyList.length - 1 ||
-                          content.contents.field != 'taskProgress'
-                        "
-                      >
-                        <span>{{
-                          CONST.FIEID_MAP[content.contents.field]
-                        }}</span>
-                        <span v-if="content.contents.field == 'taskProgress'">
-                          {{ content.contents.value }}%</span
-                        >
-                        <span v-else-if="content.contents.field == 'taskLevel'">
-                          {{ CONST.PRIORITY_MAP[content.contents.value] }}</span
-                        >
-                        <span v-else>{{ content.contents.value }}</span>
+                          <span>{{
+                            CONST.FIEID_MAP[content.contents.field]
+                          }}</span>
+                          <span v-if="content.contents.field == 'taskProgress'">
+                            {{ content.contents.value }}%</span
+                          >
+                          <span
+                            v-else-if="content.contents.field == 'taskLevel'"
+                          >
+                            {{
+                              CONST.PRIORITY_MAP[content.contents.value]
+                            }}</span
+                          >
+                          <span v-else>{{ content.contents.value }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </dd>
-              </dl>
+                  </dd>
+                </dl>
+              </div>
             </div>
-          </div>
-          <div class="tab-cont" v-else>
-            <div class="tl-custom-timeline">
-              <dl class="timeline-list">
-                <dd v-for="item in updateList" :key="item.operationId">
-                  <div class="list-info">
-                    <div class="list-title">{{ item.createTime }}</div>
-                    <div class="list-cont">
-                      <div class="operate-type">
-                        <span>操作人：</span>
-                        <em>{{ item.userName }}</em>
-                      </div>
-                      <div class="operate-kind">
-                        <span>更新进度为：</span>
-                        <em>{{ item.contents.value }}%</em>
-                      </div>
-                      <div class="operate-kind">
-                        <span>进度更新进度说明：</span>
-                        <em>{{ item.contents.explain || "暂无" }}</em>
+            <div class="tab-cont" v-else>
+              <div class="tl-custom-timeline">
+                <dl class="timeline-list">
+                  <dd v-for="item in updateList" :key="item.operationId">
+                    <div class="list-info">
+                      <div class="list-title">{{ item.createTime }}</div>
+                      <div class="list-cont">
+                        <div class="operate-type">
+                          <span>操作人：</span>
+                          <em>{{ item.userName }}</em>
+                        </div>
+                        <div class="operate-kind">
+                          <span>更新进度为：</span>
+                          <em>{{ item.contents.value }}%</em>
+                        </div>
+                        <div class="operate-kind">
+                          <span>进度更新进度说明：</span>
+                          <em>{{ item.contents.explain || "暂无" }}</em>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </dd>
-              </dl>
+                  </dd>
+                </dl>
+              </div>
             </div>
-          </div>
+          </el-scrollbar>
         </div>
       </div>
     </el-scrollbar>
