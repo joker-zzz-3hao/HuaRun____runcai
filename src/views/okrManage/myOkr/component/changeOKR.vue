@@ -124,6 +124,19 @@
             </el-form>
           </dd>
         </dl>
+        <dl class="upload-file">
+          <dt>附件上传</dt>
+          <dd>
+            <file-upload
+              ref="fileUpload"
+              :fileList="fileList"
+              :limit="10"
+              @change="fileChange"
+              :okrId="writeInfo.okrId"
+              sourceType="OKR_CHANGE"
+            ></file-upload>
+          </dd>
+        </dl>
       </div>
     </el-scrollbar>
     <div class="operating-box">
@@ -204,6 +217,7 @@ import validateMixin from '@/mixin/validateMixin';
 import { mapMutations } from 'vuex';
 import okrCollapse from '@/components/okrCollapse';
 import okrHistory from '@/components/okrHistory';
+import fileUpload from '@/components/fileUpload/index';
 import okrForm from './writeOkr/component/okrForm';
 import undertakeTable from './writeOkr/component/undertakeTable';
 import CONST from '../const';
@@ -247,6 +261,7 @@ export default {
       okrParentId: '',
       historyDrawer: false,
       loading: false,
+      fileList: [], // 文件列表
     };
   },
   components: {
@@ -255,6 +270,7 @@ export default {
     'tl-okrform': okrForm,
     'tl-process': process,
     'tl-okr-history': okrHistory,
+    'file-upload': fileUpload,
   },
   props: {
     writeInfo: {
@@ -572,6 +588,7 @@ export default {
         modifyReason: this.reason.modifyReason,
         okrMainId: this.okrMainId,
         okrBelongType: this.okrmain.okrBelongType,
+        attachmentList: this.attachmentList,
       };
       // 校验权重比例
       let opercent = 0;
@@ -625,6 +642,11 @@ export default {
       this.$nextTick(() => {
         this.$refs.okrhistory.show();
       });
+    },
+    // 文件
+    fileChange(data) {
+      this.attachmentList = data.list;
+      console.log(data);
     },
   },
   watch: {

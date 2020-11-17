@@ -97,6 +97,14 @@ export default {
       type: String,
       default: '',
     },
+    okrId: {
+      type: String,
+      default: '',
+    },
+    sourceType: {
+      type: String,
+      default: 'TASK',
+    },
   },
   components: {
     'upload-custom': uploadCustom,
@@ -104,11 +112,23 @@ export default {
   data() {
     return {
       server,
-      dataParams: { sourceType: 'TASK', ...this.params },
+      dataParams: { },
       fileNum: 0,
       fileUploadList: [],
       validateCode: '',
     };
+  },
+  created() {
+    if (this.okrId) {
+      this.dataParams = {
+        sourceType: this.sourceType, ...this.params, sourcekye: this.okrId,
+      };
+      this.taskId = this.okrId;
+    } else {
+      this.dataParams = {
+        sourceType: this.sourceType, ...this.params,
+      };
+    }
   },
   computed: {
     action() {

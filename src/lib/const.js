@@ -37,7 +37,13 @@ const APPROVAL_HISTROY_MAP = {
   2: '退回',
   3: '撤回',
 };
-
+const IMAGES_MAP = {
+  jpg: true,
+  jpeg: true,
+  png: true,
+  bmp: true,
+  gif: true,
+};
 export default {
   bbb,
   CYCLE_LIST,
@@ -47,4 +53,5 @@ export default {
   APPROVAL_STATUS_MAP,
   APPROVAL_TYPE_MAP,
   APPROVAL_HISTROY_MAP,
+  IMAGES_MAP,
 };
