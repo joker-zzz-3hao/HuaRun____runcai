@@ -216,6 +216,7 @@
               <template slot-scope="scope">
                 <template v-if="scope.row.processName && scope.row.stepName">
                   <el-tooltip
+                    :disabled="scope.row.processName.length <= 8"
                     class="process-tag"
                     effect="dark"
                     placement="top"
