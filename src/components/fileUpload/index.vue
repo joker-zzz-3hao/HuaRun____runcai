@@ -121,7 +121,7 @@ export default {
   created() {
     if (this.okrId) {
       this.dataParams = {
-        sourceType: this.sourceType, ...this.params, sourcekye: this.okrId,
+        sourceType: this.sourceType, ...this.params, sourceKey: this.okrId,
       };
       this.taskId = this.okrId;
     } else {

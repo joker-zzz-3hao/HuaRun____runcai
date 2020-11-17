@@ -4425,6 +4425,10 @@
   color: #BCC4CC;
   letter-spacing: 0;
   margin-left: 20px;
+  cursor: pointer;
+}
+.el-upload-list li .upload-option span:hover{
+  color: #685df1;
 }
 
 /* 切换部门--by xinquan  */
