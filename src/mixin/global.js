@@ -1,9 +1,64 @@
 /* eslint-disable operator-linebreak */
 import Vue from 'vue';
+import axios from 'axios';
 
 const $bus = new Vue();
 export default {
   methods: {
+    exportExcel(url, param = {}, fileName) {
+      const origin = window.location.origin ?
+        window.location.origin :
+        window.location.href.split('/#')[0];
+      return new Promise((resolve) => {
+        axios({
+          method: 'post', // 方法
+          url: `${origin}${url}`, // 地址
+          responseType: 'blob',
+          headers: {
+            token: localStorage.token,
+          },
+          data: param || {},
+        }).then((response) => {
+          resolve();
+          if (!response.data) {
+            return;
+          }
+          const fileUrl = window.URL.createObjectURL(new Blob([response.data]));
+          // try {
+          //   const _fileName = response.headers['content-disposition'].split('=');
+          //   fileName =
+          //     param.name ||
+          //     (!!_fileName && _fileName.length > 1 ? _fileName[1] : 'file');
+          // } catch (err) {
+          //   console.log(err);
+          // }
+          // 兼容IE10+、edge
+          if (
+            window.URL.createObjectURL(new Blob()).indexOf(window.location.host) < 0
+          ) {
+            if (window.navigator.msSaveOrOpenBlob) {
+              // IE10+方法
+              const blobObject = new Blob([response.data], {
+                type: 'application/vnd.ms-excel',
+              });
+              window.navigator.msSaveOrOpenBlob(
+                blobObject,
+                decodeURI(fileName),
+              );
+            }
+            // 兼容chrome、fireFox
+          } else {
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = fileUrl;
+            link.setAttribute('download', decodeURI(fileName));
+            document.body.appendChild(link);
+            link.click();
+          }
+          this.$message.success('导出成功');
+        });
+      });
+    },
     replaceName(data) {
       const parentName = data.orgName;
       if (data.children && data.children.length > 0) {
@@ -317,4 +372,5 @@ export default {
       return ((value !== false) && ![undefined, null, ''].includes(value)) || (value === 0) || (value === '0');
     },
   },
+
 };

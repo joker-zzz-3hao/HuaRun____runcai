@@ -26,7 +26,7 @@
                 }}。
               </span>
               <span v-if="item.okrMain.readRemark"
-                >审批建议：{{ item.okrMain.readRemark }}。</span
+                >审阅建议：{{ item.okrMain.readRemark }}。</span
               >
             </el-alert>
           </div>
@@ -43,7 +43,7 @@
                 <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
               </dd>
             </dl>
-            <dl class="okr-responsible">
+            <dl class="okr-type">
               <dt>
                 <em>OKR类型</em>
               </dt>
@@ -68,7 +68,7 @@
                   <div slot="content">
                     OKR总进度由目标权重和进度自动计算得来
                   </div>
-                  <i class="el-icon-question"></i>
+                  <i class="icon-help"></i>
                 </el-tooltip>
               </dt>
               <dd>
@@ -83,6 +83,7 @@
               </dd>
             </dl>
             <dl
+              class="okr-operation"
               v-if="
                 ['1', 1, '6', 6, '8', 8, 3, '3', 2, '2', 4].includes(
                   item.okrMain.status

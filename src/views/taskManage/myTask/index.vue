@@ -174,7 +174,6 @@
         :pageSize.sync="pageSize"
         @searchList="getTableList"
         v-show="showTask"
-        layout="prev, pager, next, jumper"
       >
         <div slot="tableContainer" class="table-container">
           <el-table
@@ -285,8 +284,6 @@
                   class="tl-btn btn-lineheight btn-small"
                   >确认接收</el-button
                 >
-                <!-- 已确认且执行人不是我 不能编辑-->
-                <!-- 未确认且创建人不是我 不能编辑 -->
                 <el-button
                   :disabled="canEdit(scope.row)"
                   plain
@@ -526,6 +523,7 @@ export default {
       params.taskUserIds = this.searchTaskUser.toString();
       params.createByIds = this.searchCreateUser.toString();
       params.otherProcesses = this.otherProcesses;
+      params.filed = this.currentIndex === 4 ? 0 : 1;
       this.server.searchMyTask(params).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;

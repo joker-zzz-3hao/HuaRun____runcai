@@ -242,7 +242,7 @@ export default {
   },
   methods: {
     show(row = '') {
-      this.queryOkr();
+      // this.queryOkr();
       this.getUserList();
       this.getProcess();
       if (row) {
@@ -273,7 +273,7 @@ export default {
         status: '1',
         orgId: this.userInfo.orgId,
       };
-      this.server.queryOkr(params).then((res) => {
+      this.server.getorgOkr(params).then((res) => {
         if (res.code == 200) {
           this.okrList = res.data.okrDetails || [];
           console.log(res.data);

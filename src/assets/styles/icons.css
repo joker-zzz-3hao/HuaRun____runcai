@@ -24,7 +24,8 @@
 .assistant.is-focus > i,
 .gave-praise i,
 .menu-control-button i,
-.icon-remind::before {
+.icon-remind::before,
+.icon-help::before {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -333,7 +334,8 @@
   background-position-y: -423px;
 }
 
-.icon-remind {
+.icon-remind,
+.icon-help {
   margin: 0 6px 0 0;
   display: flex;
   align-items: center;
@@ -351,4 +353,17 @@
   content: '';
   background-position-x: -7px;
   background-position-y: -487px;
+}
+
+.icon-help {
+  margin: 0 0 0 6px;
+  background: #f2f5f7;
+}
+
+.icon-help::before {
+  width: 16px;
+  height: 16px;
+  content: '';
+  background-position-x: -6px;
+  background-position-y: -607px;
 }

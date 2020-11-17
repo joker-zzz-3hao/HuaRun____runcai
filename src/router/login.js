@@ -55,6 +55,18 @@ export default [
         },
         component: () => import('@/views/login/exception404'),
       },
+      {
+        // 浏览器选择页
+        path: '/browser',
+        name: 'browser',
+        meta: {
+          title: '最佳浏览器体验',
+          power: 'browser',
+          isBrowser: true,
+        },
+        component: () => import('@/views/browser/index'),
+
+      },
     ],
   },
 ];

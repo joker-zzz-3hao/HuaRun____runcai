@@ -31,6 +31,7 @@
               placeholder="请输入任务标题"
               v-model="formData.processName"
               maxlength="24"
+              class="tl-input"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -48,19 +49,28 @@
               :max="100"
               :step="1"
               :precision="0"
+              class="tl-input-number"
             ></el-input-number>
           </el-form-item>
           <dl>
             <dt>任务过程使用范围设置</dt>
             <dd>
-              <el-checkbox disabled :checked="processObj.processType == '1'">
+              <el-checkbox
+                class="tl-checkbox"
+                disabled
+                :checked="processObj.processType == '1'"
+              >
                 团队使用
                 <span>(创建后的任务过程其组织下成员均可使用)</span>
               </el-checkbox>
               <p>温馨提示：团队使用的任务过程只允许部门负责人进行创建</p>
             </dd>
             <dd>
-              <el-checkbox disabled :checked="processObj.processType == '2'">
+              <el-checkbox
+                class="tl-checkbox"
+                disabled
+                :checked="processObj.processType == '2'"
+              >
                 <span>小范围使用</span>
                 <span>(所加入的成员均可使用)</span>
               </el-checkbox>
@@ -82,7 +92,11 @@
               </dl>
             </dd>
             <dd>
-              <el-checkbox disabled :checked="processObj.processType == '3'">
+              <el-checkbox
+                class="tl-checkbox"
+                disabled
+                :checked="processObj.processType == '3'"
+              >
                 个人使用
               </el-checkbox>
             </dd>
