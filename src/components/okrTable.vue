@@ -1,8 +1,13 @@
 <template>
   <div class="tl-table-fix">
     <ul class="tl-thead">
-      <li class="fold" :class="{ 'is-toggle': expands.length > 0 }">
-        <span v-if="expands.length > 0" @click="handleOpen">全部收起</span>
+      <li
+        class="fold"
+        :class="{ 'is-toggle': expands.length == tableList.length }"
+      >
+        <span v-if="expands.length == tableList.length" @click="handleOpen"
+          >全部收起</span
+        >
         <span v-else @click="handleOpen">全部展开</span>
         <i class="el-icon-arrow-right" @click="handleOpen"></i>
       </li>
@@ -336,7 +341,7 @@ export default {
     },
     // 展示收起
     handleOpen() {
-      if (this.expands.length == 0) {
+      if (this.expands.length < this.tableList.length) {
         let allexpands = [];
         allexpands = this.tableList.map((item) => item.okrDetailId);
         // this.tableList.forEach((item) => {
