@@ -81,18 +81,20 @@
       <dd>{{ JSON.parse(data.paramJson).modifyReason }}</dd>
     </dl>
     <!-- 附件 -->
-    <dl class="dl-card-panel" v-if="data.approvalType == '1'">
+    <dl class="dl-card-panel upload-list" v-if="data.approvalType == '1'">
       <dt>
         <em>附件</em>
       </dt>
       <dd v-for="file in attachmentList" :key="file.resourceId">
-        <span>{{ file.resourceName }}</span>
-        <em
-          v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-          @click="openFile(file)"
-          >预览</em
-        >
-        <em @click="downFile(file)">下载</em>
+        <em>{{ file.resourceName }}</em>
+        <span>
+          <span
+            v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+            @click="openFile(file)"
+            >预览</span
+          >
+          <span @click="downFile(file)">下载</span>
+        </span>
       </dd>
     </dl>
     <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
