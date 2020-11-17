@@ -279,7 +279,9 @@ export default {
       this.$set(this, 'orgUser', listData.orgUser || []);
       // this.orgUser = listData.orgUser || [];
       this.orgTable = listData.orgTable || [];
-      this.expands = [this.tableList[0].okrDetailId];
+      if (this.tableList[0]) {
+        this.expands = [this.tableList[0].okrDetailId];
+      }
       setTimeout(() => {
         this.showLoad = true;
         this.fullscreenLoading = false;
