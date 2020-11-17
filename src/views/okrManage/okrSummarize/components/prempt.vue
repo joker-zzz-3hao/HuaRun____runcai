@@ -16,7 +16,7 @@
       </el-form-item>
       <em v-for="(item, index) in selectlist" :key="index"
         >{{ item.orgData.orgName }}({{
-          item.selectType == 1 ? "负责人" : "成员"
+          item.remindType == 1 ? "负责人" : "成员"
         }}) <i class="el-icon-error" @click="deleteList(index)"></i
       ></em>
       <el-form-item label="提醒范围：">
@@ -77,6 +77,7 @@ export default {
     show() {
       this.dialogTableVisible = true;
       this.num = 20;
+      this.selectlist = [];
       if (this.upDateType == 'update') {
         this.title = 'OKR更新次数提醒';
         this.type = 1;
@@ -93,7 +94,6 @@ export default {
     },
     getOrgData(data) {
       this.selectlist.push(data);
-      this.orgRemindTypeList = this.selectlist.map((item) => ({ orgId: item.orgData.orgId, remindType: item.remindType }));
     },
     deleteList(index) {
       this.selectlist.splice(index, 1);
@@ -111,6 +111,7 @@ export default {
     },
     submitForm() {
       const params = {};
+      this.orgRemindTypeList = this.selectlist.map((item) => ({ orgId: item.orgData.orgId, remindType: item.remindType }));
       params.type = this.type;
       if (this.type == 0) {
         params.okrProgress = this.num;

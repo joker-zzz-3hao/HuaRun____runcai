@@ -77,6 +77,7 @@
             <dt>周期</dt>
             <dd>
               <el-select
+                :disabled="periodList.length == 0"
                 v-model="periodId"
                 placeholder="请选择目标周期"
                 :popper-append-to-body="false"
