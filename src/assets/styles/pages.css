@@ -222,6 +222,14 @@
   background: #fb4c59;
 }
 
+.okr-risk-total .progress-bg {
+  width: 30px !important;
+}
+
+.okr-risk-total .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
+}
+
 .weeking .card-panel-body {
   position: relative;
 }
@@ -3986,6 +3994,17 @@
   color: #acb6bf;
 }
 
+.my-weekly .progress-bg,
+.teams-weekly-detail .progress-bg {
+  width: 30px !important;
+}
+
+.my-weekly .progress-bg:not(:first-child),
+.teams-weekly-detail .progress-bg:not(:first-child) {
+  margin-left: 3px !important;
+}
+
+
 /* 任务 */
 .my-task .tl-custom-tabs {
   height: 60px;
@@ -4217,6 +4236,13 @@
 .edit-task dl dt .el-dropdown .el-icon--right{
   transform: rotate(90deg);
 }
+.edit-task .progress-bg {
+  width: 55px !important;
+}
+.edit-task .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
+}
+ 
 /* 任务过程 */
 .main-menu .sub-menu .taskprocess {
   flex-direction: column;
@@ -4356,6 +4382,14 @@
 
 .task-process .board-view .drag-list-item .user-info dd+dd {
   margin: 0 0 0 10px;
+}
+
+.task-process .board-view .progress-bg {
+  width: 40px !important;
+}
+
+.task-process .board-view .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
 }
 
 .category-labels {

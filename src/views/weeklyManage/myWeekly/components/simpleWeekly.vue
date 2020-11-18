@@ -218,7 +218,11 @@
       </el-form>
     </div>
     <!-- 个人OKR完成度 -->
-    <dl class="dl-card-panel okr-completion" v-if="configItemCodeOKR == 'O'">
+    <dl
+      class="dl-card-panel okr-completion"
+      v-if="configItemCodeOKR == 'O'"
+      :class="{ 'is-edit': canUpdate }"
+    >
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
       <dd v-if="weeklyOkrSaveList.length < 1" class="no-data">
@@ -342,7 +346,7 @@
               class="tl-input-number"
               @blur="progressAfterBlur(item)"
             ></el-input-number>
-            <em>{{ item.progressAfter }}</em>
+            <em v-else>{{ item.progressAfter }}</em>
             <span>%</span>
           </div>
           <div class="week-change">
