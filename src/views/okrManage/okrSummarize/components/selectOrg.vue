@@ -118,6 +118,10 @@ export default {
       };
     },
     submitForm() {
+      if (!this.orgData || !this.selectType) {
+        this.$message.error('请选择部门与发送类型');
+        return false;
+      }
       this.$emit('getOrgData', { orgData: this.orgData, remindType: this.selectType });
       this.close();
     },

@@ -11,8 +11,9 @@
   >
     <el-form class="tl-form" :label-position="'left'">
       <el-form-item :label="upDateName" prop="name">
-        <el-input-number v-model="num" :min="1"></el-input-number>
-        <span v-if="upDateType == 'update'"> %</span>
+        <el-input-number v-model="num" :min="0"></el-input-number>
+        <span v-if="upDateType == 'update'"> 次</span>
+        <span v-if="upDateType == 'progress'"> %</span>
         <span v-if="upDateType == 'time'"> 天，未更新OKR进展</span>
       </el-form-item>
       <em v-for="(item, index) in selectlist" :key="index"
@@ -55,7 +56,7 @@ export default {
     return {
       title: '',
       dialogTableVisible: false,
-      num: 20,
+      num: 0,
       server,
       options: '',
       orgList: '',
@@ -77,7 +78,7 @@ export default {
   methods: {
     show() {
       this.dialogTableVisible = true;
-      this.num = 20;
+      this.num = 0;
       this.selectlist = [];
       if (this.upDateType == 'update') {
         this.title = 'OKR更新次数提醒';
@@ -111,6 +112,10 @@ export default {
       });
     },
     submitForm() {
+      if (this.selectlist.length == 0) {
+        this.$message.error('请选择提醒范围');
+        return false;
+      }
       const params = {};
       this.orgRemindTypeList = this.selectlist.map((item) => ({ orgId: item.orgData.orgId, remindType: item.remindType }));
       params.type = this.type;
