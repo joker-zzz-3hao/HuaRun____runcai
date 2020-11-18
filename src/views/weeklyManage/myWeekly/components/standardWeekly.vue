@@ -893,15 +893,19 @@ export default {
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
           day.disabled = false;
-          if (selectedData.data.id == day.id) {
-            day.disabled = true;
-          }
+          this.$nextTick(() => {
+            if (selectedData.data.id == day.id) {
+              day.disabled = true;
+            }
+          });
           if (day.children && day.children.length > 0) {
             day.children.forEach((dayChild) => {
               dayChild.disabled = false;
-              if (selectedData.data.id == dayChild.id) {
-                dayChild.disabled = true;
-              }
+              this.$nextTick(() => {
+                if (selectedData.data.id == dayChild.id) {
+                  dayChild.disabled = true;
+                }
+              });
             });
           }
         });
@@ -918,7 +922,6 @@ export default {
           selectedList = [...selectedList, ...list];
         }
       }
-      debugger;
       // 遍历级联框数据，将整理好的数据禁用
       this.setDisabledSelectedData(selectedList);
     },
@@ -927,44 +930,44 @@ export default {
       const dayList = [];
       let daySet = [];
       const dayAndTimeTypeList = [];
-      if (workItem.timeList.length > 0) {
+      // if (workItem.timeList.length > 0) {
+      workItem.timeList.forEach((day) => {
+        // 日期遍历
+        dayList.push(day[0]);
+      });
+      // 去重
+      daySet = Array.from(new Set(dayList));
+      // 将同一天的数据合并为一条数据
+      daySet.forEach((item) => {
+        dayAndTimeTypeList.push({
+          date: item,
+          timeTypeList: [],
+        });
         workItem.timeList.forEach((day) => {
-          // 日期遍历
-          dayList.push(day[0]);
-        });
-        // 去重
-        daySet = Array.from(new Set(dayList));
-        // 将同一天的数据合并为一条数据
-        daySet.forEach((item) => {
-          dayAndTimeTypeList.push({
-            date: item,
-            timeTypeList: [],
-          });
-          workItem.timeList.forEach((day) => {
-            if (day[0] == item) {
-              dayAndTimeTypeList[daySet.indexOf(item)].timeTypeList.push(day[1]);
-            }
-          });
-        });
-        // 将选中的数据转换成后端数据格式
-        dayAndTimeTypeList.forEach((element) => {
-          let timeType = 0;// 上、下午、全天
-          if (element.timeTypeList.length == 1) {
-            // eslint-disable-next-line prefer-destructuring
-            timeType = element.timeTypeList[0];
-          } else if (element.timeTypeList.length == 2) {
-            timeType = 0;
+          if (day[0] == item) {
+            dayAndTimeTypeList[daySet.indexOf(item)].timeTypeList.push(day[1]);
           }
-          // 日期转换
-          const begindate = new Date(this.week.weekBegin);
-          begindate.setDate(begindate.getDate() + Number(element.date));
-          workItem.weekList.push({
-            weekDate: this.dateFormat('YYYY-mm-dd', begindate),
-            weekTimeType: timeType,
-          });
         });
-        this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
-      }
+      });
+      // 将选中的数据转换成后端数据格式
+      dayAndTimeTypeList.forEach((element) => {
+        let timeType = 0;// 上、下午、全天
+        if (element.timeTypeList.length == 1) {
+          // eslint-disable-next-line prefer-destructuring
+          timeType = element.timeTypeList[0];
+        } else if (element.timeTypeList.length == 2) {
+          timeType = 0;
+        }
+        // 日期转换
+        const begindate = new Date(this.week.weekBegin);
+        begindate.setDate(begindate.getDate() + Number(element.date));
+        workItem.weekList.push({
+          weekDate: this.dateFormat('YYYY-mm-dd', begindate),
+          weekTimeType: timeType,
+        });
+      });
+      this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
+      // }
     },
 
   },
