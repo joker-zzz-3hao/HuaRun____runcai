@@ -1,4 +1,142 @@
 export default {
+  data() {
+    return {
+
+      weekDataList: [
+        {
+          value: '0',
+          label: '周一',
+          id: 'zero',
+          disabled: false,
+          children: [{
+            value: '1',
+            id: 'zero_1',
+            label: '上午',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'zero_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '1',
+          label: '周二',
+          id: 'two',
+          disabled: false,
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'two_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'two_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '2',
+          label: '周三',
+          id: 'three',
+          disabled: false,
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'three_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'three_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '3',
+          label: '周四',
+          id: 'four',
+          disabled: false,
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'four_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'four_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '4',
+          label: '周五',
+          id: 'five',
+          disabled: false,
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'five_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'five_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '5',
+          label: '周六',
+          id: 'six',
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'six_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'six_2',
+            disabled: false,
+
+          }],
+        },
+        {
+          value: '6',
+          label: '周日',
+          id: 'seven',
+          disabled: false,
+          children: [{
+            value: '1',
+            label: '上午',
+            id: 'seven_1',
+            disabled: false,
+
+          }, {
+            value: '2',
+            label: '下午',
+            id: 'seven_2',
+            disabled: false,
+          }],
+        },
+      ],
+    };
+  },
   methods: {
     // 进度
     validateProcess(rule, value, callback) {

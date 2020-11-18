@@ -19,7 +19,7 @@
 
     <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
     </tl-calendar-tabs>
-    <div v-if="showWeekly">
+    <div>
       <div
         v-for="(week, index) in weekList"
         v-show="weekIndex == index"
@@ -40,13 +40,13 @@
               :orgOkrPeriodList="orgOkrPeriodList"
               :myOkrPeriodList="myOkrPeriodList"
               :cultureList="cultureList"
-              :projectList="projectList"
               @refreshMyOkr="refreshMyOkr"
               :timeDisabled="timeDisabled"
               :configItemCodeOKR="configItemCodeOKR"
               v-if="weeklyType == '1'"
             ></standard-Weekly>
             <simple-weekly
+              :week="week"
               :weeklyData="weeklyData"
               :myOkrList="myOkrList"
               :orgOkrList="orgOkrList"
@@ -55,7 +55,6 @@
               :orgOkrPeriodList="orgOkrPeriodList"
               :myOkrPeriodList="myOkrPeriodList"
               :cultureList="cultureList"
-              :projectList="projectList"
               :configItemCodeOKR="configItemCodeOKR"
               @refreshMyOkr="refreshMyOkr"
               v-else
@@ -68,7 +67,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import calendarTabs from '../components/calendarTabs';
 import Server from './server';
 import standardWeekly from './components/standardWeekly';
@@ -107,22 +106,20 @@ export default {
       originalOrgOkrList: [],
       orgOkrPeriodList: [],
       cultureList: [],
-      projectList: [],
+
       timeDisabled: false,
       configItemCodeOKR: 'O',
       showWeekly: false,
     };
   },
   created() {
-    // this.$busOn('refreshCalendar', () => {
-    //   this.getWeek();
-    // });
+  //  查询项目
+    this.getProjectList();
   },
   mounted() {},
   computed: {
     ...mapState('weekly', {
       weekList: (state) => state.weekList,
-      weeklyDataList: (state) => state.weeklyDataList,
       myOkrList: (state) => state.myOkrList,
       orgOkrList: (state) => state.orgOkrList,
       weeklyTypeList: (state) => state.weeklyTypeList,
@@ -137,6 +134,16 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('weekly', ['setProjectList']),
+    getProjectList() {
+      if (this.hasPower('weekly-project-query')) {
+        this.server.queryOrgProject({ flag: '0' }).then((res) => {
+          if (res.code == 200) {
+            this.setProjectList(res.data);
+          }
+        });
+      }
+    },
     refreshMyOkr() {
 
     },
@@ -174,14 +181,7 @@ export default {
         console.log(val);
       },
     },
-    weeklyDataList: {
-      handler() {
-        this.showWeekly = false;
-        this.$nextTick(() => {
-          this.showWeekly = true;
-        });
-      },
-    },
+
   },
   updated() {},
   beforeDestroy() {},

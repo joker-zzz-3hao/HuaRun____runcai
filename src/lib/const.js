@@ -37,6 +37,108 @@ const APPROVAL_HISTROY_MAP = {
   2: '退回',
   3: '撤回',
 };
+const WEEKLY_DATE_LIST = [
+  {
+    value: '0',
+    label: '周一',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '1',
+    label: '周二',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '2',
+    label: '周三',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '3',
+    label: '周四',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '4',
+    label: '周五',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '5',
+    label: '周六',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+  {
+    value: '6',
+    label: '周日',
+    children: [{
+      value: '1',
+      label: '上午',
+
+    }, {
+      value: '2',
+      label: '下午',
+
+    }],
+  },
+];
+const WEEK_MAP = {
+  1: '周一',
+  2: '周二',
+  3: '周三',
+  4: '周四',
+  5: '周五',
+  6: '周六',
+  7: '周日',
+};
 
 export default {
   bbb,
@@ -47,4 +149,6 @@ export default {
   APPROVAL_STATUS_MAP,
   APPROVAL_TYPE_MAP,
   APPROVAL_HISTROY_MAP,
+  WEEKLY_DATE_LIST,
+  WEEK_MAP,
 };

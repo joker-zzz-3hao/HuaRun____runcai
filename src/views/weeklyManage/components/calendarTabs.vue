@@ -120,7 +120,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('weekly', ['setWeeklyTypeList', 'setWeekList', 'setWeeklyType', 'setWeeklyData']),
+    ...mapMutations('weekly', ['setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType', 'setWeeklyData']),
     borderSlip(item, index) {
       if (!item.noOpen) {
         this.weekIndex = index;
@@ -134,6 +134,7 @@ export default {
         });
       }
       this.setWeeklyTypeListData(item);
+      this.setSelectWeek(item);
     },
     getWeekItem(item, index) {
       if (item.calendarId) {
@@ -155,7 +156,7 @@ export default {
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
           // 加载所有周报数据
-          this.getThisWeekData();
+          // this.getThisWeekData();
         }
       });
     },
@@ -206,6 +207,7 @@ export default {
           // 选种本周按钮
           item.btnType = 'success';
           this.setWeeklyTypeListData(item);
+          this.setSelectWeek(item);
           this.$emit('update:weekIndex', this.weekList.indexOf(item));
         }
       }
@@ -214,22 +216,56 @@ export default {
         this.weekList[this.weekList.length - 1].btnType = 'success';
       }
     },
-    setPreviousMonthData() { // 1、选中月是上个月
+    setCurrentMonthData() {
+      for (let i = 0; i < this.weekList.length; i += 1) {
+        // 本周是第一周、第二周
+        if (this.weekIndex < 2) {
+          if (i > this.weekIndex) {
+            this.weekList[i].canClick = false;
+            this.weekList[i].canEdit = false;
+            this.weekList[i].noOpen = true;
+          } else {
+            this.weekList[i].canClick = true;
+            this.weekList[i].canEdit = true;
+            this.weekList[i].noOpen = false;
+          }
+        } else { // 本周是第三周或以后的周
+          // 本周、上周之前
+          // eslint-disable-next-line no-lonely-if
+          if (i < this.weekIndex - 1) {
+            this.weekList[i].canClick = true;
+            this.weekList[i].canEdit = false;
+            this.weekList[i].noOpen = false;
+          } else if (i > this.weekIndex) { // 本周、上周之后
+            this.weekList[i].canClick = false;
+            this.weekList[i].canEdit = false;
+            this.weekList[i].noOpen = true;
+          } else { // 本周、上周
+            this.weekList[i].canClick = true;
+            this.weekList[i].canEdit = true;
+            this.weekList[i].noOpen = false;
+          }
+        }
+      }
+    },
+    setPreviousMonthData() {
+      // 一、选中月是上个月
       if (new Date(this.currentMonthWeekList[2].weekBegin).getMonth() - new Date(this.monthDate).getMonth() == 1) {
         // 1、 上个月最后一周是本月第一周
         // 被选择月份的最后一周的数据跟本月第一周数据相同
-        if (this.weekList[this.weekList.length - 1].weekBegin == this.currentMonthWeekList[0].weekBegin) {
-          // 1、如果本周是本月第二周及以后的周，则上个月以前的周都不可编辑
-          if (this.currentWeekIndex > 0) {
+        if (this.weekList[this.weekList.length - 1].weekBegin
+         == this.currentMonthWeekList[0].weekBegin) {
+          // 1、如果本周是本月第三周及以后的周，则上个月以前的周都不可编辑
+          if (this.currentWeekIndex > 1) {
             this.weekList.forEach((week) => {
               week.canEdit = false;
               week.canClick = true;
               week.noOpen = false;
             });
-            // 2、如果本周是第一周，则上个月最后一周可编辑
+            // 2、如果本周是第一周，则上个月后两周可编辑
           } else if (this.currentWeekIndex == 0) {
             for (let i = 0; i < this.weekList.length; i += 1) {
-              if (i == this.weekList.length - 1) {
+              if (i == this.weekList.length - 1 || i == this.weekList.length - 2) {
                 this.weekList[i].canEdit = true;
                 this.weekList[i].canClick = true;
                 this.weekList[i].noOpen = false;
@@ -239,9 +275,10 @@ export default {
                 this.weekList[i].noOpen = false;
               }
             }
-          } else if (this.currentWeekIndex == 0) { // 3、如果本周是第一周，则上个月后两周可编辑
+            // 3、如果本周是第二周，则上个月后两一周可编辑
+          } else if (this.currentWeekIndex == 1) {
             for (let i = 0; i < this.weekList.length; i += 1) {
-              if (i > this.weekList.length - 3) {
+              if (i == this.weekList.length - 1) {
                 this.weekList[i].canEdit = true;
                 this.weekList[i].canClick = true;
                 this.weekList[i].noOpen = false;
@@ -277,7 +314,7 @@ export default {
             }
           }
         }
-        // 被选择月份是上月以前的月份
+        // 二、被选择月份是上月以前的月份
       } else {
         this.weekList.forEach((week) => {
           week.canEdit = false;
@@ -286,25 +323,10 @@ export default {
         });
       }
     },
-    setCurrentMonthData() {
-      for (let i = 0; i < this.weekList.length; i += 1) {
-        if (i > this.weekIndex) { // 本周之后
-          this.weekList[i].canClick = false;
-          this.weekList[i].canEdit = false;// true是为了控制之后的周不显示文案（两周前不可补写文案）
-          this.weekList[i].noOpen = true;
-        } else if (i < this.weekIndex) { // 本周之前
-          this.weekList[i].canClick = true;
-          this.weekList[i].canEdit = false;
-          this.weekList[i].noOpen = false;
-        } else { // 本周 上周
-          this.weekList[i].canClick = true;
-          this.weekList[i].canEdit = true;
-          this.weekList[i].noOpen = false;
-        }
-      }
-    },
+
     getThisWeekData() {
       const weeklyDataListTemp = [];
+      this.setWeeklyData(weeklyDataListTemp);
       this.weekList.forEach((week) => {
         if (week.weeklyId) {
           if (this.hasPower('weekly-detail-query')) {
