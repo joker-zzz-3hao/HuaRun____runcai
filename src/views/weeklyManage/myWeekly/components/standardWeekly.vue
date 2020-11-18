@@ -5,7 +5,7 @@
         :ref="workForm.workFormIndex"
         :model="workForm"
         :key="workForm.randomId"
-        v-for="workForm in workFormList"
+        v-for="workForm in weeklyWorkVoSaveList"
         label-width="80px"
       >
         <el-form-item
@@ -381,7 +381,7 @@
           <div class="tl-progress-group">
             <span>当前进度</span>
             <tl-process
-              :data="parseInt(item.progressAfter, 10)"
+              :data="parseInt(item.workProgress, 10)"
               :showNumber="false"
               :width="30"
               :marginLeft="2"
@@ -389,30 +389,30 @@
             <!-- kr支持更改进度 -->
             <el-slider
               v-if="canUpdate && item.kr"
-              v-model="item.progressAfter"
+              v-model="item.workProgress"
               :step="1"
               @change="processChange(item)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
               v-if="canUpdate && item.kr"
-              v-model="item.progressAfter"
+              v-model="item.workProgress"
               controls-position="right"
               :min="0"
               :max="100"
               :step="1"
               :precision="0"
               class="tl-input-number"
-              @blur="progressAfterBlur(item)"
+              @blur="workProgressBlur(item)"
             ></el-input-number>
-            <em v-else>{{ item.progressAfter }}</em>
+            <em v-else>{{ item.workProgress }}</em>
             <span>%</span>
           </div>
           <div class="week-change">
             <span>本周变化</span
             ><em
-              >{{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
-              }}{{ item.progressAfter - item.progressBefor }}%</em
+              >{{ item.workProgress - item.progressBefor > 0 ? "+" : ""
+              }}{{ item.workProgress - item.progressBefor }}%</em
             >
           </div>
         </div>
@@ -470,14 +470,6 @@
       :currenItemrandomId="currenItemrandomId"
       :selectedOkr="selectedOkr"
       :server="server"
-      :myOkrList="myOkrList"
-      :orgOkrList="orgOkrList"
-      :orgOkrPeriodList="orgOkrPeriodList"
-      :myOkrPeriodList="myOkrPeriodList"
-      :originalMyOkrList="originalMyOkrList"
-      :originalOrgOkrList="originalOrgOkrList"
-      :cultureList="cultureList"
-      :configItemCodeOKR="configItemCodeOKR"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
     <select-project
@@ -566,10 +558,6 @@ export default {
       },
     },
 
-    configItemCodeOKR: {
-      type: String,
-      default: '',
-    },
   },
   data() {
     return {
@@ -586,9 +574,10 @@ export default {
       showAddOkr: false,
       showProjectDialog: false,
       commitLoading: false,
-      workFormList: [],
+      // workFormList: [],
       weeklyThoughtSaveList: [],
       weeklyPlanSaveList: [],
+      weeklyWorkVoSaveList: [],
 
       selectedOkr: [],
       tempResult: [],
@@ -630,6 +619,8 @@ export default {
     ...mapState('weekly', {
       weekList: (state) => state.weekList,
       projectList: (state) => state.projectList,
+      configItemCodeOKR: (state) => state.configItemCodeOKR,
+
     }),
     setOkrStyle() {
       return (okr) => {
@@ -642,10 +633,10 @@ export default {
     itemIndex() {
       return (okr) => {
         const result = [];
-        this.formData.weeklyWorkVoSaveList.forEach((item) => {
+        this.weeklyWorkVoSaveList.forEach((item) => {
           item.selectedOkr.forEach((element) => {
             if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.formData.weeklyWorkVoSaveList.indexOf(item) + 1);
+              result.push(this.weeklyWorkVoSaveList.indexOf(item) + 1);
             }
           });
         });
@@ -689,7 +680,7 @@ export default {
       }
     },
     initPage() {
-      this.workFormList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+      this.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
 
       const self = this;
       // 来自任务的数据,同步至本周任务中
@@ -710,7 +701,7 @@ export default {
         if (self.$route.params && self.$route.params.weeklySumParams) {
           // 初始化
           self.$route.params.weeklySumParams.forEach((work) => {
-            self.formData.weeklyWorkVoSaveList.push({
+            self.weeklyWorkVoSaveList.push({
               okrCultureValueIds: '',
               okrIds: '',
               okrDetailId: work.okrDetailId || '',
@@ -730,20 +721,20 @@ export default {
             });
           });
           // 合并后端取回数据
-          self.workFormList = [
-            ...self.workFormList,
+          self.weeklyWorkVoSaveList = [
+            ...self.weeklyWorkVoSaveList,
             ...self.weeklyDataCopy.weeklyWorkVoList,
           ];
         } else {
           // 后端查询数据
-          self.workFormList = self.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+          self.weeklyWorkVoSaveList = self.weeklyDataCopy.weeklyWorkVoList;// 列表数据
         }
       } else if (!self.weeklyDataCopy.weeklyId) {
         // 任务汇总传过来的数据
         if (self.$route.params && self.$route.params.weeklySumParams) {
           // 初始化
           self.$route.params.weeklySumParams.forEach((work) => {
-            self.workFormList.push({
+            self.weeklyWorkVoSaveList.push({
               okrCultureValueIds: '',
               okrIds: '',
               projectId: work.projectId || '',
@@ -774,8 +765,8 @@ export default {
 
     setWorkTableData() {
       this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
-      if (this.workFormList && this.workFormList.length > 0) {
-        this.workFormList.forEach((element) => {
+      if (this.weeklyWorkVoSaveList && this.weeklyWorkVoSaveList.length > 0) {
+        this.weeklyWorkVoSaveList.forEach((element) => {
           this.$set(element, 'randomId', Math.random().toString(36).substr(3));
           const valueIdList = [];
           const okrIdList = [];
@@ -854,7 +845,7 @@ export default {
       return result;
     },
     addWork() {
-      this.workFormList.push({
+      this.weeklyWorkVoSaveList.push({
         workContent: '',
         workDesc: '',
         projectId: '',
@@ -891,7 +882,7 @@ export default {
     },
     deleteItem(item) {
       // 本地数据
-      this.formData.weeklyWorkVoSaveList = this.formData.weeklyWorkVoSaveList.filter(
+      this.weeklyWorkVoSaveList = this.weeklyWorkVoSaveList.filter(
         (thisWeek) => thisWeek.randomId != item.randomId,
       );
     },
@@ -907,7 +898,7 @@ export default {
       this.showAddOkr = true;
     },
     closeOkrDialog(selectedData) {
-      for (const item of this.formData.weeklyWorkVoSaveList) {
+      for (const item of this.weeklyWorkVoSaveList) {
         const valueIdList = [];
         const okrIdList = [];
         if (item.randomId == selectedData.currenItemrandomId) {
@@ -958,7 +949,7 @@ export default {
     commitWeekly() {
       const self = this;
       const validateForms = [];
-      self.workFormList.forEach((workForm) => {
+      self.weeklyWorkVoSaveList.forEach((workForm) => {
         // 将表单放在一起
         validateForms.push(this.checkForm(workForm.workFormIndex));
       });
@@ -973,7 +964,7 @@ export default {
         this.emotionError = '本周心情';
       }
       // 校验关联okr
-      // this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      // this.weeklyWorkVoSaveList.forEach((work) => {
       //   if (!work.valueOrOkrIds) {
       //     this.OKRError = '支撑OKR/价值观';
       //   }
@@ -994,7 +985,7 @@ export default {
         weeklyOkrSaveList: this.weeklyOkrSaveList,
         weeklyPlanSaveList: this.weeklyPlanSaveList,
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
-        weeklyWorkVoSaveList: this.workFormList,
+        weeklyWorkVoSaveList: this.weeklyWorkVoSaveList,
       };
 
       // const params = {
@@ -1075,13 +1066,13 @@ export default {
       });
     },
     projectDelete() {
-      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      this.weeklyWorkVoSaveList.forEach((work) => {
         work.projectId = '';
         work.projectNameCn = '';
       });
     },
     closeProjectDia(data) {
-      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      this.weeklyWorkVoSaveList.forEach((work) => {
         if (work.randomId == data.randomIdForProject) {
           work.projectId = data.project.projectId;
           work.projectNameCn = data.project.projectNameCn;
@@ -1090,7 +1081,7 @@ export default {
       this.$forceUpdate();
     },
     workTimeChange(row) {
-      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      this.weeklyWorkVoSaveList.forEach((work) => {
         if (row.randomId == work.randomId) {
           // 数据转换为0.5单位
           const tempArr = String(work.workTime).split('.');
@@ -1122,7 +1113,7 @@ export default {
       }
     },
     tableProcessChange(row) {
-      this.formData.weeklyWorkVoSaveList.forEach((work) => {
+      this.weeklyWorkVoSaveList.forEach((work) => {
         if (row.randomId == work.randomId) {
           work.workProgress = Number(work.workProgress).toFixed(0);
           if (work.workProgress > 100) {
@@ -1141,7 +1132,7 @@ export default {
     changeConfidence() {},
     projectChange(work) {
       this.projectError = '';
-      this.workFormList.forEach((element) => {
+      this.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
           this.projectList.forEach((project) => {
             if (project.projectId == work.projectId) {
@@ -1194,7 +1185,7 @@ export default {
       const self = this;
       // 1、找出被选中的数据
       this.$nextTick(() => {
-        self.workFormList.forEach((item) => {
+        self.weeklyWorkVoSaveList.forEach((item) => {
           if (item.randomId != workForm.randomId) {
             console.log(self.$refs);
             const list = self.$refs[item.randomId][0].getCheckedNodes(true);
@@ -1251,7 +1242,7 @@ export default {
       // }
     },
     selectedNodes(workItem) {
-      this.workFormList.forEach((element) => {
+      this.weeklyWorkVoSaveList.forEach((element) => {
         if (element.randomId == workItem.randomId) {
           const selectedList = this.$refs[element.randomId][0].getCheckedNodes(false);
           return selectedList;
@@ -1260,7 +1251,7 @@ export default {
     },
   },
   watch: {
-    'formData.weeklyWorkVoSaveList': {
+    weeklyWorkVoSaveList: {
       handler(tableData) {
         // *****************将本周未完成任务自动同步至下周计划*************
         // 先清空本周未完成任务同步至下周任务数据(周边那你编辑时不需要)
@@ -1345,6 +1336,7 @@ export default {
           }
         }
         this.weeklyOkrSaveList = result;
+        debugger;
         if (this.weeklyOkrSaveList.length > 0) {
           this.$nextTick(() => {
             this.showTaskProcess = true;

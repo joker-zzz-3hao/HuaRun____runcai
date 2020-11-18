@@ -33,29 +33,15 @@
           <div>
             <standard-Weekly
               :week="week"
-              :myOkrList="myOkrList"
               :orgOkrList="orgOkrList"
-              :originalMyOkrList="originalMyOkrList"
-              :originalOrgOkrList="originalOrgOkrList"
-              :orgOkrPeriodList="orgOkrPeriodList"
-              :myOkrPeriodList="myOkrPeriodList"
-              :cultureList="cultureList"
               @refreshMyOkr="refreshMyOkr"
               :timeDisabled="timeDisabled"
-              :configItemCodeOKR="configItemCodeOKR"
               v-if="weeklyType == '1'"
             ></standard-Weekly>
             <simple-weekly
               :week="week"
               :weeklyData="weeklyData"
-              :myOkrList="myOkrList"
               :orgOkrList="orgOkrList"
-              :originalMyOkrList="originalMyOkrList"
-              :originalOrgOkrList="originalOrgOkrList"
-              :orgOkrPeriodList="orgOkrPeriodList"
-              :myOkrPeriodList="myOkrPeriodList"
-              :cultureList="cultureList"
-              :configItemCodeOKR="configItemCodeOKR"
               @refreshMyOkr="refreshMyOkr"
               v-else
             ></simple-weekly>
@@ -98,29 +84,31 @@ export default {
         },
       },
       noWrite: false,
-      teamOkrLoadFinish: false,
-      myOkrLoadFinish: false,
       weeklyType: '1',
-      originalMyOkrList: [],
-      myOkrPeriodList: [],
-      originalOrgOkrList: [],
-      orgOkrPeriodList: [],
-      cultureList: [],
 
       timeDisabled: false,
-      configItemCodeOKR: 'O',
       showWeekly: false,
     };
   },
   created() {
   //  查询项目
     this.getProjectList();
+    // 查询个人okr
+    this.queryPersonalOkr();
+    // 查询团队okr
+    this.queryTeamOkr();
+    // 价值观
+    this.getValues();
+    // 查询okr配置
+    this.getOkrConfig();
   },
   mounted() {},
   computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
     ...mapState('weekly', {
       weekList: (state) => state.weekList,
-      myOkrList: (state) => state.myOkrList,
       orgOkrList: (state) => state.orgOkrList,
       weeklyTypeList: (state) => state.weeklyTypeList,
     }),
@@ -134,7 +122,18 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('weekly', ['setProjectList']),
+    ...mapMutations('weekly',
+      [
+        'setOriginalOrgOkrList',
+        'setOrgOkrPeriodList',
+        'setOrgOkrList',
+        'setMyOkrList',
+        'setMyOkrPeriodList',
+        'setProjectList',
+        'setOriginalMyOkrList',
+        'setCultureList',
+        'setConfigItemCodeOKR',
+      ]),
     getProjectList() {
       if (this.hasPower('weekly-project-query')) {
         this.server.queryOrgProject({ flag: '0' }).then((res) => {
@@ -143,6 +142,118 @@ export default {
           }
         });
       }
+    },
+    queryPersonalOkr() {
+      let originalMyOkrList = [];
+      const myOkrPeriodList = [];
+      this.server.queryPersonalOkr().then((res) => {
+        if (res.code == 200) {
+          // 将所有个人目标、周期整合到一个数组
+          if (res.data && res.data.length > 0) {
+            res.data.forEach((element) => {
+              // 周期
+              myOkrPeriodList.push(element.okrMain);
+              element.okrDetails.forEach((okr) => {
+                okr.periodId = element.okrMain.periodId;
+              });
+              originalMyOkrList = [...originalMyOkrList, ...element.okrDetails];
+            });
+            if (originalMyOkrList) {
+              this.getMyOkrList(originalMyOkrList);
+            }
+          }
+          this.setOriginalMyOkrList(originalMyOkrList);
+          this.setMyOkrPeriodList(myOkrPeriodList);
+        }
+      });
+    },
+    getMyOkrList(okrDetails) {
+      const tempResult = [];
+      for (const okr of okrDetails) {
+        okr.indexText = '目标O';
+        this.$set(okr, 'okrType', 'O');
+        this.$set(okr, 'periodId', okr.periodId);
+        tempResult.push(okr);
+        if (okr.krList && okr.krList.length > 0) {
+          let krIndex = 0;
+          for (const kr of okr.krList) {
+            krIndex += 1;
+            kr.indexText = `KR${krIndex}`;
+            this.$set(kr, 'okrType', 'KR');
+            this.$set(kr, 'periodId', okr.periodId);
+            tempResult.push(kr);
+          }
+        }
+      }
+      this.setMyOkrList(tempResult);
+    },
+    queryTeamOkr() {
+      let originalOrgOkrList = [];
+      const orgOkrPeriodList = [];
+      this.server.getOrgOkr({ okrBelongType: 1 }).then((res) => {
+        if (res.code == 200) {
+          // 将所有团队目标、周期整合到一个数组
+          if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
+            res.data.parentUndertakeOkrInfoResults.forEach((element) => {
+              // 周期
+              orgOkrPeriodList.push(element.okrPeriodEntity);
+              element.okrList.forEach((okr) => {
+                okr.periodId = element.okrPeriodEntity.periodId;
+              });
+              originalOrgOkrList = [...originalOrgOkrList, ...element.okrList];
+            });
+            if (originalOrgOkrList) {
+              this.getOrgOkrList(originalOrgOkrList);
+            }
+          }
+          this.setOriginalOrgOkrList(originalOrgOkrList);
+          this.setOrgOkrPeriodList(orgOkrPeriodList);
+        }
+      });
+    },
+    getOrgOkrList(okrDetails) {
+      const tempResult = [];
+      for (const okr of okrDetails) {
+        okr.o.indexText = '目标O';
+        this.$set(okr.o, 'okrType', 'O');
+        this.$set(okr.o, 'periodId', okr.periodId);
+        tempResult.push(okr.o);
+        if (okr.krList && okr.krList.length > 0) {
+          let krIndex = 0;
+          for (const kr of okr.krList) {
+            krIndex += 1;
+            kr.indexText = `KR${krIndex}`;
+            this.$set(kr, 'okrType', 'KR');
+            this.$set(kr, 'periodId', okr.periodId);
+            tempResult.push(kr);
+          }
+        }
+      }
+      this.setOrgOkrList(tempResult);
+    },
+    getValues() {
+      this.server.getValues().then((res) => {
+        if (res.code == 200) {
+          this.setCultureList(res.data);
+        }
+      });
+    },
+    // 周报关联okr配置查询
+    getOkrConfig() {
+      let configItemCodeOKR = 'S';
+      this.server.getTypeConfig({
+        configType: 'OKR',
+        configTypeDetail: 'O-2',
+        level: 'T',
+        sourceId: this.userInfo.tenantId,
+      }).then((res) => {
+        if (res.code == 200) {
+          if (!!res.data && res.data.length > 0) {
+            configItemCodeOKR = res.data[0].configItemCode;
+          }
+        }
+        this.setConfigItemCodeOKR(configItemCodeOKR);
+      });
     },
     refreshMyOkr() {
 

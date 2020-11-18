@@ -5,4 +5,12 @@ export default {
   weeklyTypeList: [],
   week: {},
   projectList: [],
+  originalMyOkrList: [],
+  myOkrPeriodList: [],
+  myOkrList: [],
+  originalOrgOkrList: [],
+  orgOkrPeriodList: [],
+  orgOkrList: [],
+  cultureList: [],
+  configItemCodeOKR: '',
 };

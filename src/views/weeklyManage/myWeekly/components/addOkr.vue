@@ -176,56 +176,12 @@ export default {
         return [];
       },
     },
-    myOkrList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    orgOkrList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    orgOkrPeriodList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    myOkrPeriodList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    originalMyOkrList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    originalOrgOkrList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    cultureList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+
     drawerTitle: {
       type: String,
       default: '支撑OKR/价值观',
     },
-    configItemCodeOKR: {
-      type: String,
-      default: '',
-    },
+
   },
   data() {
     return {
@@ -262,6 +218,16 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+    }),
+    ...mapState('weekly', {
+      cultureList: (state) => state.cultureList,
+      myOkrList: (state) => state.myOkrList,
+      orgOkrList: (state) => state.orgOkrList,
+      orgOkrPeriodList: (state) => state.orgOkrPeriodList,
+      myOkrPeriodList: (state) => state.myOkrPeriodList,
+      originalMyOkrList: (state) => state.originalMyOkrList,
+      originalOrgOkrList: (state) => state.originalOrgOkrList,
+      configItemCodeOKR: (state) => state.configItemCodeOKR,
     }),
   },
   methods: {
