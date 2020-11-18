@@ -14,7 +14,7 @@
         <em>考核指标</em>
       </dt>
       <dd>
-        <em>{{checkjudgeData.checkQuota}}</em>
+        <em>{{ checkjudgeData.checkQuota || "暂未填写" }}</em>
       </dd>
     </dl>
     <dl class="check-item">
@@ -22,7 +22,7 @@
         <em>衡量办法</em>
       </dt>
       <dd>
-        <em>{{checkjudgeData.judgeMethod}}</em>
+        <em>{{ checkjudgeData.judgeMethod || "暂未填写" }}</em>
       </dd>
     </dl>
   </el-dialog>
