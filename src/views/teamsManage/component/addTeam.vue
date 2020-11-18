@@ -168,11 +168,11 @@ export default {
       this.showCreateTeam = false;
     },
     submitMember() {
-      if (this.formData.orgName == '') {
+      if (!this.formData.teamName) {
         this.$message.error('组织名称不能为空');
         return false;
       }
-      if (this.formData.teamName == '') {
+      if (!this.formData.userId) {
         this.$message.error('请选择指定组织负责人');
         return false;
       }

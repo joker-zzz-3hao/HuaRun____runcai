@@ -190,15 +190,14 @@ export default {
       this.showEditTeam = false;
     },
     submitMember() {
-      if (this.formData.orgName == '') {
+      if (!this.formData.orgName) {
         this.$message.error('组织名称不能为空');
         return false;
       }
-      if (this.chargeMember.userId == '') {
+      if (!this.chargeMember.userId) {
         this.$message.error('请选择指定组织负责人');
         return false;
       }
-      console.log(this.formData.chargeMembers);
       if (this.formData.chargeMembers.length == 0) {
         this.$message.error('请添加组织成员');
         return false;
