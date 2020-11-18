@@ -39,8 +39,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.test = this.$refs.progressBg;
-      console.log(`testHeight:${this.test[0].clientHeight}`);
-      console.log(`testWidth:${this.test[0].clientWidth}`);
       this.changeWidth();
     });
   },
