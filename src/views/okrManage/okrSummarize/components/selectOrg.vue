@@ -10,15 +10,15 @@
           :collapse-tags="false"
           :props="{
             multiple: true,
-            checkStrictly: false,
-            id: 'orgFullId',
+            checkStrictly: true,
+            id: 'orgId',
             label: 'orgName',
-            value: 'orgFullId',
+            value: 'orgId',
             children: 'sonTree',
             emitPath: false,
             orgParentId: 'orgParentId',
           }"
-          node-key="orgFullId"
+          node-key="orgId"
         ></el-cascader-panel>
       </el-form-item>
       <el-form-item label="发送类型">

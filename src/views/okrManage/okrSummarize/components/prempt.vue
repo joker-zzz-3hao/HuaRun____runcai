@@ -16,6 +16,7 @@
           controls-position="right"
           v-model="num"
           :min="0"
+          :max="upDateType == 'progress' ? 100 : ''"
           class="tl-input-number"
         ></el-input-number>
         <span v-if="upDateType == 'update'"> 次</span>
