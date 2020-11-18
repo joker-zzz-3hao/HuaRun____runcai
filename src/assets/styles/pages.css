@@ -778,6 +778,14 @@
   position: absolute;
 }
 
+.my-okr .tl-table-fix .progress-bg {
+  width: 16px !important;
+}
+
+.my-okr .tl-table-fix .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
+}
+
 /* 更新进展 */
 .update-progress .list-cont {
   padding: 20px;
@@ -826,6 +834,15 @@
   margin: 15px 0 0 0;
 }
 
+.update-progress .progress-bg {
+  width: 68px !important;
+}
+
+.update-progress .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
+}
+
+/* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
   position: relative;
@@ -1709,6 +1726,14 @@
   border-bottom-color: #e5e9ee;
 }
 
+.okr-maps .progress-bg {
+  width: 38px !important;
+}
+
+.okr-maps .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
+}
+
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
@@ -1852,6 +1877,14 @@
   color: #879099;
 }
 
+
+.undertake-maps .progress-bg {
+  width: 36px !important;
+}
+
+.undertake-maps .progress-bg:not(:first-child) {
+  margin-left: 6px !important;
+}
 /* concerned-okr */
 .concerned-okr .cont-area {
   display: flex;
@@ -1987,6 +2020,14 @@
 
 .concerned-okr .followed-users .no-data {
   cursor: auto;
+}
+
+.concerned-okr .tl-table-fix .progress-bg {
+  width: 15px !important;
+}
+
+.concerned-okr .tl-table-fix .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
 }
 
 /* okr-approval */
@@ -2361,6 +2402,13 @@
   color: #685df1;
 }
 
+.okr-approval  .progress-bg {
+  width: 16px !important;
+}
+
+.okr-approval .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
+}
 /* OKR汇总 */
 .okr-summarize .cont-area .operating-box {
   margin: 0 0 20px 0;
@@ -2706,6 +2754,14 @@
 
 .replay-link .okr-change-list .is-kr dd:nth-of-type(2) span {
   align-self: start;
+}
+
+.replay-link .progress-bg {
+  width: 16px !important;
+}
+
+.replay-link .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
 }
 
 /* 周报 */
@@ -4929,6 +4985,13 @@
   display: flex;
 }
 
+.replay-okr .progress-bg {
+  width: 16px !important;
+}
+
+.replay-okr .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
+}
 /* personal-center */
 .personal-center .cont-wrap {
   flex-direction: column;
