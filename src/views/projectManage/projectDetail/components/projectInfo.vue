@@ -156,8 +156,17 @@
                   v-else-if="scope.row.projectUserType == '0'"
                   @click="setManager(scope.row)"
                 >
-                  <i class="el-icon-medal"></i>
-                  <span>设置项目经理</span>
+                  <el-tooltip
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
+                    <div slot="content">设置项目经理</div>
+                    <span class="can-click">
+                      <i class="el-icon-medal"></i>
+                      <span>--</span>
+                    </span>
+                  </el-tooltip>
                 </div>
                 <div v-else>--</div>
               </template>
