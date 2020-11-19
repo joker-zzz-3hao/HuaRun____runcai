@@ -47,7 +47,7 @@
         >
           <el-input v-model="workForm.workContent"></el-input>
         </el-form-item>
-        <el-form-item label="内容">
+        <el-form-item label="内容" v-show="weeklyType == 1">
           <el-input
             v-model="workForm.workDesc"
             :autosize="{ minRows: 3, maxRows: 8 }"

@@ -25,10 +25,10 @@
       :key="week.calendarId"
     >
       <div class="weekly-area">
-        <!-- <div v-if="noWrite" class="no-data">
+        <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
           <div class="no-data-bg"></div>
           <div class="no-data-txt">周报未填写</div>
-        </div> -->
+        </div>
         <div>
           <standard-Weekly
             :week="week"
@@ -36,12 +36,6 @@
             @refreshMyOkr="refreshMyOkr"
             :timeDisabled="timeDisabled"
           ></standard-Weekly>
-          <!-- <simple-weekly
-              :week="week"
-              :orgOkrList="orgOkrList"
-              @refreshMyOkr="refreshMyOkr"
-              v-else
-            ></simple-weekly> -->
         </div>
       </div>
     </div>
@@ -53,7 +47,6 @@ import { mapState, mapMutations } from 'vuex';
 import calendarTabs from '../components/calendarTabs';
 import Server from './server';
 import standardWeekly from './components/standardWeekly';
-// import simpleWeekly from './components/simpleWeekly';
 
 const server = new Server();
 export default {
@@ -61,7 +54,6 @@ export default {
   components: {
     'tl-calendar-tabs': calendarTabs,
     'standard-Weekly': standardWeekly,
-    // 'simple-weekly': simpleWeekly,
   },
   props: {
 
