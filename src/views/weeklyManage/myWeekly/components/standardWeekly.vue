@@ -542,7 +542,7 @@
 <script>
 
 import tlProcess from '@/components/process';
-// import confidenceSelect from '@/components/confidenceSelect';
+import confidenceSelect from '@/components/confidenceSelect';
 import merge from 'webpack-merge';
 import CONST from '@/components/const';
 import CONST1 from '@/lib/const';
@@ -558,9 +558,9 @@ export default {
   mixins: [mixin],
   components: {
     'add-okr': addOkr,
-    selectProject,
+    'select-project': selectProject,
     'tl-process': tlProcess,
-    // 'tl-confidence': confidenceSelect,
+    'tl-confidence': confidenceSelect,
   },
   props: {
     week: {
@@ -585,7 +585,6 @@ export default {
       showAddOkr: false,
       showProjectDialog: false,
       submitLoading: false,
-      // workFormList: [],
       weeklyThoughtSaveList: [],
       weeklyPlanSaveList: [],
       weeklyWorkVoSaveList: [],
