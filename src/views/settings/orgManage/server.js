@@ -68,4 +68,9 @@ export default class Server extends ServerBase {
   setSecretary(param) {
     return this._ajaxPost('gateway/system-service/sys/userRole/setTeamAdminRoleList', param);
   }
+
+  // 设置用户状态
+  updateOrgUserStatus(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/updateOrgUserStatus', param);
+  }
 }

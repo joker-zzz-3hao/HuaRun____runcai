@@ -80,9 +80,12 @@
               <template slot-scope="scope">
                 <el-switch
                   :disabled="
-                    !roleCode.includes('ORG_ADMIN') &&
-                    !roleCode.includes('TEAM_ADMIN') &&
-                    scope.row.processType == 1
+                    (!roleCode.includes('ORG_ADMIN') &&
+                      !roleCode.includes('TEAM_ADMIN') &&
+                      scope.row.processType == 1) ||
+                    (scope.row.processType == 2 &&
+                      scope.row.createBy != userInfo.userId) ||
+                    scope.row.innerType == 1
                   "
                   v-model.trim="scope.row.enable"
                   :active-text="scope.row.enable == 1 ? '启用' : '禁用'"

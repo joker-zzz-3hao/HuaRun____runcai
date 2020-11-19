@@ -123,7 +123,7 @@ export default {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params, sourceKey: this.okrId,
       };
-      this.taskId = this.okrId;
+      // this.taskId = this.okrId;
     } else {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params,
