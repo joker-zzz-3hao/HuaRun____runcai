@@ -389,26 +389,20 @@ export default {
       if (!this.hasPower('sys_user_edit')) {
         return;
       }
-      // this.$confirm('确认更改用户状态？').then(() => {
-      this.changeStatus(user);
-      // });
-    },
-    changeStatus(user) {
-      const params = {
-        userName: user.userName, // 姓名
-        userMobile: user.userMobile, // 手机
-        userMail: user.userMail, // 邮箱
-        userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
-        orgId: user.orgId, // 用户所在部门ID
-        userId: user.userId,
-        userType: 2,
-      };
-      this.server.updateOrgUser(params).then((res) => {
-        if (res.code == 200) {
-          this.searchList();
-        }
+      this.$confirm('确认更改用户状态？').then(() => {
+        const params = {
+          userStatus: user.userStatus == '0' ? '50' : '0', // 状态 0有效50：禁用
+          userId: user.userId,
+          tenantId: this.searchForm.tenantId,
+        };
+        this.server.updateOrgUserStatus(params).then((res) => {
+          if (res.code == 200) {
+            this.searchList();
+          }
+        });
       });
     },
+
     // 设置负责人
     setLeader(user) {
       const option = user.tenantLeader == '1' ? 'removeDepartLeder' : 'setDepartLeader';

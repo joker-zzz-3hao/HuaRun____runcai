@@ -45,4 +45,9 @@ export default class Server extends ServerBase {
   judgeUser(param) {
     return this._ajaxPost('gateway/system-service/sys/user/judgeUser', param);
   }
+
+  // 设置用户状态
+  updateOrgUserStatus(param) {
+    return this._ajaxPost('gateway/system-service/sys/user/updateOrgUserStatus', param);
+  }
 }
