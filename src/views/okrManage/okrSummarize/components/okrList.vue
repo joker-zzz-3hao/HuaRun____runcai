@@ -130,7 +130,7 @@
                 type="primary"
                 @click="alertLink"
                 class="tl-btn amt-bg-slip"
-                >确定</el-button
+                >发送</el-button
               >
               <!-- <el-button
                 plain
