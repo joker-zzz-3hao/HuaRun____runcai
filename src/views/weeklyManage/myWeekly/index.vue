@@ -2,7 +2,7 @@
   <div>
     <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <div class="operating-box">
+      <!-- <div class="operating-box">
         <div
           class="tl-custom-btn"
           v-for="item in weeklyTypeList"
@@ -14,38 +14,34 @@
         >
           <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
     </tl-calendar-tabs>
-    <div>
-      <div
-        v-for="(week, index) in weekList"
-        v-show="weekIndex == index"
-        :key="week.calendarId"
-      >
-        <div class="weekly-area">
-          <!-- <div v-if="noWrite" class="no-data">
+    <div
+      v-for="(week, index) in weekList"
+      v-show="weekIndex == index"
+      :key="week.calendarId"
+    >
+      <div class="weekly-area">
+        <!-- <div v-if="noWrite" class="no-data">
           <div class="no-data-bg"></div>
           <div class="no-data-txt">周报未填写</div>
         </div> -->
-          <div>
-            <standard-Weekly
+        <div>
+          <standard-Weekly
+            :week="week"
+            :orgOkrList="orgOkrList"
+            @refreshMyOkr="refreshMyOkr"
+            :timeDisabled="timeDisabled"
+          ></standard-Weekly>
+          <!-- <simple-weekly
               :week="week"
-              :orgOkrList="orgOkrList"
-              @refreshMyOkr="refreshMyOkr"
-              :timeDisabled="timeDisabled"
-              v-if="weeklyType == '1'"
-            ></standard-Weekly>
-            <simple-weekly
-              :week="week"
-              :weeklyData="weeklyData"
               :orgOkrList="orgOkrList"
               @refreshMyOkr="refreshMyOkr"
               v-else
-            ></simple-weekly>
-          </div>
+            ></simple-weekly> -->
         </div>
       </div>
     </div>
@@ -84,10 +80,8 @@ export default {
         },
       },
       noWrite: false,
-      weeklyType: '1',
 
       timeDisabled: false,
-      showWeekly: false,
     };
   },
   created() {
@@ -101,6 +95,7 @@ export default {
     this.getValues();
     // 查询okr配置
     this.getOkrConfig();
+    this.getWeeklyTypeConfig();
   },
   mounted() {},
   computed: {
@@ -110,7 +105,7 @@ export default {
     ...mapState('weekly', {
       weekList: (state) => state.weekList,
       orgOkrList: (state) => state.orgOkrList,
-      weeklyTypeList: (state) => state.weeklyTypeList,
+      weeklyType: (state) => state.weeklyType,
     }),
     isChecked() {
       return (weeklyId) => {
@@ -133,6 +128,7 @@ export default {
         'setOriginalMyOkrList',
         'setCultureList',
         'setConfigItemCodeOKR',
+        'setWeeklyTypeList',
       ]),
     getProjectList() {
       if (this.hasPower('weekly-project-query')) {
@@ -281,10 +277,22 @@ export default {
     goCurrentWeek() {
       this.getWeek(this.dateFormat('YYYY-mm-dd', new Date()));
     },
-    setWeeklyType(data) {
-      this.weeklyType = data;
-    },
 
+    getWeeklyTypeConfig() {
+      let weeklyTypeListTemp = [];
+      this.server.getTypeConfig({
+        sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
+      }).then((res) => {
+        if (res.code == 200) {
+          if (res.data.length > 0) {
+            weeklyTypeListTemp = res.data[0].configItemCode.split(',');
+          } else {
+            weeklyTypeListTemp = ['1', '2'];
+          }
+        }
+        this.setWeeklyTypeList(weeklyTypeListTemp);
+      });
+    },
   },
   watch: {
     weekIndex: {

@@ -1,8 +1,5 @@
 export default {
   weekList: [],
-  weeklyDataList: [{}],
-  setWeeklyType: {},
-  weeklyTypeList: [],
   week: {},
   projectList: [],
   originalMyOkrList: [],
@@ -13,4 +10,6 @@ export default {
   orgOkrList: [],
   cultureList: [],
   configItemCodeOKR: '',
+  weeklyType: '',
+  weeklyTypeList: [],
 };

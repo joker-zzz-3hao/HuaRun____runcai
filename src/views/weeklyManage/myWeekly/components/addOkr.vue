@@ -34,7 +34,6 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
-              @change="periodChange"
             >
               <el-option
                 v-for="item in orgOkrPeriodList"
@@ -76,7 +75,6 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
-              @change="periodChange"
             >
               <el-option
                 v-for="item in myOkrPeriodList"
@@ -406,6 +404,7 @@ export default {
       this.orgOkr = [];
       this.personalOkr = [];
       this.selectedCultureList = [];
+      this.valueSelectData = '';
       if (e.target.tagName != 'INPUT') return;
       if (this.noOkrIndex === index) { // 取消选中
         this.noOkrIndex = undefined;
@@ -418,9 +417,6 @@ export default {
         this.noOkrIndex = index;
       }
       this.$forceUpdate();
-    },
-    periodChange(period) {
-      console.log(period);
     },
   },
   watch: {

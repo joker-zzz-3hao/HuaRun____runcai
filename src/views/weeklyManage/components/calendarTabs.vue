@@ -107,7 +107,6 @@ export default {
   created() {
     // 获取每月日历
     this.getWeek();
-    this.getTypeConfig();
   },
   computed: {
     ...mapState('common', {
@@ -120,7 +119,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('weekly', ['setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType', 'setWeeklyData']),
+    ...mapMutations('weekly', ['setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
         this.weekIndex = index;
@@ -133,7 +132,6 @@ export default {
           }
         });
       }
-      this.setWeeklyTypeListData(item);
       this.setSelectWeek(item);
     },
     getWeekItem(item, index) {
@@ -155,8 +153,6 @@ export default {
           this.setWeekClickOrEditStatus(this.monthDate);
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
           this.selectCurrentWeek();
-          // 加载所有周报数据
-          // this.getThisWeekData();
         }
       });
     },
@@ -206,7 +202,6 @@ export default {
           currentBelongsToSelectedMonth = true;
           // 选种本周按钮
           item.btnType = 'success';
-          this.setWeeklyTypeListData(item);
           this.setSelectWeek(item);
           this.$emit('update:weekIndex', this.weekList.indexOf(item));
         }
@@ -322,47 +317,6 @@ export default {
           week.noOpen = false;
         });
       }
-    },
-
-    getThisWeekData() {
-      const weeklyDataListTemp = [];
-      this.setWeeklyData(weeklyDataListTemp);
-      this.weekList.forEach((week) => {
-        if (week.weeklyId) {
-          if (this.hasPower('weekly-detail-query')) {
-            this.server.queryWeekly({ weeklyId: week.weeklyId }).then((res) => {
-              if (res.code == 200) {
-                // 将所有数据保存
-                weeklyDataListTemp.push(res.data);
-                this.setWeeklyData(weeklyDataListTemp);
-              }
-            });
-          }
-        }
-      });
-    },
-    getTypeConfig() {
-      this.server.getTypeConfig({
-        sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
-      }).then((res) => {
-        if (res.code == 200) {
-          if (res.data.length > 0) {
-            this.weeklyTypeListTemp = res.data[0].configItemCode.split(',');
-          } else {
-            this.weeklyTypeListTemp = ['1', '2'];
-          }
-        }
-        this.setWeeklyTypeList(this.weeklyTypeListTemp);
-      });
-    },
-    setWeeklyTypeListData(week) {
-      // 设置右上角周报模式
-      this.setWeeklyTypeList(this.weeklyTypeListTemp);
-      this.weeklyDataList.forEach((weeklyData) => {
-        if (weeklyData.calendarId == week.calendarId) {
-          this.setWeeklyTypeList([weeklyData.weeklyType]);
-        }
-      });
     },
   },
   watch: {
