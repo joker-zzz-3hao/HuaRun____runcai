@@ -12,7 +12,7 @@
               placeholder="请选择项目"
               @change="changeProject"
               popper-class="tl-select-dropdown"
-              class="tl-select project-select"
+              class="tl-select"
             >
               <el-option
                 v-for="(item, index) in projectList"
@@ -44,6 +44,31 @@
             </el-select>
           </dd>
         </dl>
+        <dl class="dl-item">
+          <dt>时间</dt>
+          <dd>
+            <el-date-picker
+              v-model="value1"
+              type="week"
+              format="yyyy 第 WW 周"
+              placeholder="选择周"
+            >
+            </el-date-picker>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              maxlength="64"
+              v-model="keyWord"
+              placeholder="请输入项目名称或者项目经理"
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix"></i>
+            </el-input>
+            <el-button plain class="tl-btn"> 搜索 </el-button>
+          </dd>
+        </dl>
       </div>
     </div>
     <div class="cont-area">
@@ -71,8 +96,12 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="applyTime" label="填报人" min-width="180">
+          <el-table :data="tableData" class="tl-table" height="500px">
+            <el-table-column type="selection" width="55"> </el-table-column>
+            <el-table-column label="工作项"> </el-table-column>
+            <el-table-column label="工作项内容"> </el-table-column>
+
+            <el-table-column prop="applyTime" label="提交人" min-width="180">
               <template slot-scope="scope">
                 <div class="user-info">
                   <img
@@ -91,6 +120,43 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
+            <el-table-column label="周期时间"> </el-table-column>
+            <el-table-column label="投入工时" min-width="200px">
+              <template slot-scope="scope">
+                <div>
+                  <el-popover
+                    placement="top"
+                    width="300"
+                    v-model="popoverVisible"
+                    popper-class="approval-pop"
+                  >
+                    <el-input
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容"
+                      class="tl-textarea"
+                    >
+                    </el-input>
+                    <div class="flex-end">
+                      <el-button
+                        type="primary"
+                        class="tl-btn amt-bg-slip"
+                        @click="confirmTimeSheet"
+                        >确定</el-button
+                      >
+                    </div>
+                  </el-popover>
+
+                  <div>
+                    <em>1.5天</em>
+                    <el-button type="text" @click="popoverVisible = true"
+                      >修改</el-button
+                    >
+                  </div>
+                  <div>周一全天,周二全天</div>
+                </div>
+              </template>
+            </el-table-column>
             <!-- <el-table-column
               prop="projectNameCn"
               label="项目名称"
@@ -103,6 +169,15 @@
                 <span v-else>--</span>
               </template>
             </el-table-column> -->
+
+            <el-table-column prop="submitTime" label="提交日期" min-width="180">
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.submitTime)">{{
+                  scope.row.submitTime
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="approvalStatus"
               label="审批状态"
@@ -123,34 +198,14 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="submitTime" label="提交日期" min-width="180">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.submitTime)">{{
-                  scope.row.submitTime
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
             <el-table-column
               prop="approvalTime"
-              label="审批日期"
+              label="审批时间"
               min-width="180"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
                   scope.row.approvalTime
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="approvalUserName"
-              label="审批人"
-              min-width="180"
-            >
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.approvalUserName)">{{
-                  scope.row.approvalUserName
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -167,14 +222,14 @@
                   @click="approval(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >审批</el-button
+                  >确认审批</el-button
                 >
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
                   @click="detail(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >查看</el-button
+                  >已审批</el-button
                 >
               </template>
             </el-table-column>
@@ -193,6 +248,7 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
+    <div class="dialog-footer-l"></div>
   </div>
 </template>
 
@@ -210,6 +266,7 @@ export default {
   data() {
     return {
       CONST,
+      value1: '',
       server,
       keyWord: '',
       total: 0,
@@ -219,6 +276,8 @@ export default {
       showApprovalDetail: false,
       tableData: [],
       projectList: [],
+      popoverVisible: false,
+      editRemark: '',
       formData: {
         projectId: '',
         approvalStatus: '',
@@ -257,6 +316,9 @@ export default {
     });
   },
   methods: {
+    confirmTimeSheet() {
+      this.popoverVisible = true;
+    },
     searchList() {
       this.server.timeSheetList({
         currentPage: this.currentPage,
