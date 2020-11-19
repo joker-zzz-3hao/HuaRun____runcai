@@ -16,7 +16,7 @@
           controls-position="right"
           v-model="num"
           :min="0"
-          :max="upDateType == 'progress' ? 100 : ''"
+          :max="upDateType == 'progress' ? 100 : 100000"
           class="tl-input-number"
         ></el-input-number>
         <span v-if="upDateType == 'update'"> 次</span>
@@ -113,6 +113,7 @@ export default {
         this.options = res.data;
       });
     },
+
     alertLink() {
       if (this.orgRemindTypeList.length == 0) {
         this.$message.error('请选择部门');
