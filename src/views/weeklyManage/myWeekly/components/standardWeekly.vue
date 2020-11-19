@@ -867,15 +867,23 @@ export default {
     },
     setThoughts() {
       this.weeklyThoughtSaveList = this.weeklyDataCopy.weeklyThoughtList;
-      this.weeklyThoughtSaveList.forEach((thought) => {
-        thought.randomId = Math.random().toString(36).substr(3);
-      });
+      if (!!this.weeklyThoughtSaveList && this.weeklyThoughtSaveList.length > 0) {
+        this.weeklyThoughtSaveList.forEach((thought) => {
+          thought.randomId = Math.random().toString(36).substr(3);
+        });
+      } else {
+        this.addThought();
+      }
     },
     setNextWeekPlan() {
       this.weeklyPlanSaveList = this.weeklyDataCopy.weeklyPlanList;
-      this.weeklyPlanSaveList.forEach((plan) => {
-        plan.randomId = Math.random().toString(36).substr(3);
-      });
+      if (!!this.weeklyPlanSaveList && this.weeklyPlanSaveList.length > 0) {
+        this.weeklyPlanSaveList.forEach((plan) => {
+          plan.randomId = Math.random().toString(36).substr(3);
+        });
+      } else {
+        this.addNextWeekWork();
+      }
     },
     setTimeList(weekList) {
       const result = [];
