@@ -71,8 +71,8 @@
     </div>
     <div class="cont-area">
       <div class="unfold-more flex-end-okr center-okr">
-        <span v-if="arrowClass" @click="showSearchBar">发送提醒</span>
-        <span v-else>收起发送提醒</span>
+        <span v-if="arrowClass" @click="showSearchBar">OKR提醒</span>
+        <span v-else>OKR提醒</span>
 
         <i :class="arrowClass"></i>
       </div>
@@ -83,8 +83,8 @@
             <dt class="orkpading">发送对象</dt>
             <dd>
               <el-radio-group v-model="remindType" class="tl-radio-group">
-                <el-radio label="1" class="tl-radio">负责人</el-radio>
-                <el-radio label="2" class="tl-radio">成员</el-radio>
+                <el-radio label="1" class="tl-radio">部门负责人</el-radio>
+                <el-radio label="2" class="tl-radio">所有人员</el-radio>
               </el-radio-group>
             </dd>
           </dl>
@@ -94,11 +94,19 @@
               <el-input-number
                 controls-position="right"
                 v-model="params.okrProgress"
-                :min="0"
+                :min="1"
+                :max="100"
+                :precision="0"
                 class="tl-input-number"
               ></el-input-number>
               <span> %</span>
             </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrProgress, '0')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
           </dl>
           <dl class="condition-lists list-okr">
             <dt class="orkpading">更新次数小于</dt>
@@ -106,11 +114,18 @@
               <el-input-number
                 controls-position="right"
                 v-model="params.okrUpdateCount"
-                :min="0"
+                :precision="0"
+                :min="1"
                 class="tl-input-number"
               ></el-input-number>
               <span> 次</span>
             </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrUpdateCount, '1')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
           </dl>
           <dl class="condition-lists list-okr">
             <dt class="orkpading">上次更新距今</dt>
@@ -118,27 +133,18 @@
               <el-input-number
                 controls-position="right"
                 v-model="params.okrUpdateTimeCount"
-                :min="0"
+                :min="1"
+                :precision="0"
                 class="tl-input-number"
               ></el-input-number>
               <span> 天</span>
             </dd>
-          </dl>
-          <dl class="condition-lists list-okr flex-end-okr">
-            <dd>
-              <el-button
-                type="primary"
-                @click="alertLink"
-                class="tl-btn amt-bg-slip"
-                >发送</el-button
-              >
-              <!-- <el-button
-                plain
-                @click="showSearchBar"
-                class="tl-btn amt-border-fadeout"
-                >取 消</el-button
-              > -->
-            </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrUpdateTimeCount, '2')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
           </dl>
         </div>
       </div>
@@ -469,9 +475,7 @@ export default {
       userName: '',
       okrCycle: {},
       params: {
-        okrProgress: 0,
-        okrUpdateCount: 0,
-        okrUpdateTimeCount: 0,
+
       },
       orgName: '',
       summaryData: {},
@@ -500,13 +504,30 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeDetailData', 'setOkrSummarizeStep', 'setSummasizeOptionType']),
-    alertLink() {
-      const text = this.remindType == '1' ? '负责人' : '成员';
+    partZreo() {
+      if (this.params.okrProgress == '') {
+        this.params.okrProgress = 0;
+      }
+      if (this.params.okrUpdateCount == '') {
+        // eslint-disable-next-line no-unused-expressions
+        this.params.okrUpdateCount = 0;
+      }
+      if (this.params.okrUpdateTimeCount == '') {
+        // eslint-disable-next-line no-unused-expressions
+        this.params.okrUpdateTimeCount = 0;
+      }
+    },
+    alertLink(progress, type) {
+      if (!progress) {
+        this.$message.error('请填写发送条件');
+        return false;
+      }
+      const text = this.remindType == '1' ? '部门负责人' : '所有人员';
       this.$xconfirm({
         title: '',
         content: `确认对该条件下${text}的邮箱发送提醒吗？点击确认后，将立即发送`,
       }).then(() => {
-        this.sumbitMax();
+        this.sumbitMax(type);
       });
     },
     close() {
@@ -521,11 +542,26 @@ export default {
         this.hideSend = true;
       }
     },
-    sumbitMax() {
-      const params = {
-        remindType: this.remindType,
-        orgRemindTypeList: [{ type: '0', value: this.params.okrProgress }, { type: '1', value: this.params.okrUpdateCount }, { type: '2', value: this.params.okrUpdateTimeCount }],
-      };
+    sumbitMax(type) {
+      let params = {};
+      if (type == '0') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrProgress }],
+        };
+      }
+      if (type == '1') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrUpdateCount }],
+        };
+      }
+      if (type == '2') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrUpdateTimeCount }],
+        };
+      }
       this.server.sendOkrRemindMsg(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('发送成功');
@@ -713,5 +749,8 @@ export default {
   height: 1px;
   background: #e8ecf0;
   margin: 20px 0;
+}
+.marLeft {
+  margin-left: 25px;
 }
 </style>

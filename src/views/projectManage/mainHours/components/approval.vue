@@ -68,6 +68,7 @@
               :min="0.5"
               class="tl-input-number"
             ></el-input-number>
+
             <el-input
               type="textarea"
               :rows="2"
