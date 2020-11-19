@@ -305,7 +305,7 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      @success="searchOkr(searchForm.status)"
+      @success="updateSearch()"
     ></tl-okr-update>
     <tl-okr-history
       :exist.sync="historyExist"
@@ -430,13 +430,10 @@ export default {
     borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
   },
   methods: {
-    searchOkr(status = '', index = 'not') {
+    searchOkr(status = '') {
       this.searchForm.status = status || this.searchForm.status;
       if (!this.searchForm.periodId) {
         return;
-      }
-      if (index != 'not') {
-        this.borderSlip(index);
       }
       this.okrList = [{
         tableList: [], // okr列表
@@ -544,7 +541,43 @@ export default {
       });
       this.orgId = object.okrMain.orgId || '';
     },
-
+    updateSearch() {
+      if (!this.searchForm.periodId) {
+        return;
+      }
+      this.loading = true;
+      if (this.searchForm.status == 'all') {
+        this.server.getallOkr({
+          myOrOrg: 'my',
+          periodId: this.okrCycle.periodId,
+          status: this.searchForm.status,
+        }).then((res) => {
+          const totalList = res.data || [];
+          if (totalList.length > 0) {
+            totalList.forEach((allitem, index) => {
+              if (['3'].includes(allitem.okrStatus)) {
+                this.okrList[index].tableList = allitem.object.okrDetails;
+                this.okrList[index].okrMain = allitem.object.okrMain;
+              }
+            });
+          }
+        });
+      } else {
+        this.server.getmyOkr({
+          myOrOrg: 'my',
+          periodId: this.okrCycle.periodId,
+          status: this.searchForm.status,
+        }).then((res) => {
+          if (res.code == 200) {
+            const totalList = res.data || [];
+            totalList.forEach((okritem, index) => {
+              this.okrList[index].tableList = okritem.okrDetails;
+              this.okrList[index].okrMain = okritem.okrMain;
+            });
+          }
+        });
+      }
+    },
     // 打开详情
     openDialog(val) {
       console.log('详情', val);

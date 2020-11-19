@@ -473,6 +473,7 @@
               </el-form-item>
               <el-form-item label="当前进度">
                 <el-input-number
+                  @input="updateokrCollapse"
                   v-model="newItem.okrDetailProgress"
                   controls-position="right"
                   :min="0"
@@ -480,6 +481,7 @@
                   :step="1"
                   :precision="0"
                   class="tl-input-number"
+                  @blur="progressChange(newItem)"
                 ></el-input-number>
                 <span>%</span>
               </el-form-item>
@@ -653,6 +655,13 @@ export default {
     openMore(item) {
       item.openMore = !item.openMore;
       this.$forceUpdate();
+    },
+    // 进度默认值
+    progressChange(newItem) {
+      if (!newItem.okrDetailProgress) {
+        newItem.okrDetailProgress = 0;
+        this.$forceUpdate();
+      }
     },
   },
   watch: {

@@ -1306,6 +1306,12 @@
   background: #e5e9ee;
 }
 
+.tl-progress-bar .progress-bg {
+  width: 16px;
+}
+.tl-progress-bar .progress-bg:not(:first-child) {
+  margin-left: 2px !important;
+}
 .tl-progress-bar .progress-bg:first-child {
   margin-left: 0 !important;
 }

@@ -67,27 +67,87 @@
             </el-select>
           </dd>
         </dl>
-        <dl class="dl-item">
-          <el-dropdown @command="showprempt">
-            <span class="el-dropdown-link">
-              提醒设置<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="progress"
-                >OKR进度更新提醒</el-dropdown-item
-              >
-              <el-dropdown-item command="update"
-                >OKR更新次数提醒</el-dropdown-item
-              >
-              <el-dropdown-item command="time"
-                >自定义时间更新进展提醒</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
-        </dl>
       </div>
     </div>
     <div class="cont-area">
+      <div class="unfold-more flex-end-okr center-okr">
+        <span v-if="arrowClass" @click="showSearchBar">OKR提醒</span>
+        <span v-else>OKR提醒</span>
+
+        <i :class="arrowClass"></i>
+      </div>
+      <div class="border-okr"></div>
+      <div class="my-task" style="padding-bottom: 30px" v-show="hideSend">
+        <div class="tl-condition-screening">
+          <dl class="condition-lists list-okr">
+            <dt class="orkpading">发送对象</dt>
+            <dd>
+              <el-radio-group v-model="remindType" class="tl-radio-group">
+                <el-radio label="1" class="tl-radio">部门负责人</el-radio>
+                <el-radio label="2" class="tl-radio">所有人员</el-radio>
+              </el-radio-group>
+            </dd>
+          </dl>
+          <dl class="condition-lists list-okr">
+            <dt class="orkpading">当前进度小于</dt>
+            <dd>
+              <el-input-number
+                controls-position="right"
+                v-model="params.okrProgress"
+                :min="1"
+                :max="100"
+                :precision="0"
+                class="tl-input-number"
+              ></el-input-number>
+              <span> %</span>
+            </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrProgress, '0')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
+          </dl>
+          <dl class="condition-lists list-okr">
+            <dt class="orkpading">更新次数小于</dt>
+            <dd>
+              <el-input-number
+                controls-position="right"
+                v-model="params.okrUpdateCount"
+                :precision="0"
+                :min="1"
+                class="tl-input-number"
+              ></el-input-number>
+              <span> 次</span>
+            </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrUpdateCount, '1')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
+          </dl>
+          <dl class="condition-lists list-okr">
+            <dt class="orkpading">上次更新距今</dt>
+            <dd>
+              <el-input-number
+                controls-position="right"
+                v-model="params.okrUpdateTimeCount"
+                :min="1"
+                :precision="0"
+                class="tl-input-number"
+              ></el-input-number>
+              <span> 天</span>
+            </dd>
+            <el-button
+              type="primary"
+              @click="alertLink(params.okrUpdateTimeCount, '2')"
+              class="tl-btn amt-bg-slip marLeft"
+              >发送</el-button
+            >
+          </dl>
+        </div>
+      </div>
       <div class="dl-list-group">
         <div class="dl-list-info">
           <dl class="dl-item">
@@ -390,9 +450,13 @@ export default {
   name: 'okrMaps',
   data() {
     return {
+      selectType: '1',
+      hideSend: false,
       server,
       CONST,
       okrId: '',
+      num: 1,
+      arrowClass: 'el-icon-caret-bottom',
       tableData: [],
       loading: false,
       loadokring: false,
@@ -410,9 +474,12 @@ export default {
       total: 0,
       userName: '',
       okrCycle: {},
+      params: {
 
+      },
       orgName: '',
       summaryData: {},
+      remindType: '1',
       rootRole: false,
       upDateType: '',
     };
@@ -437,6 +504,72 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeDetailData', 'setOkrSummarizeStep', 'setSummasizeOptionType']),
+    partZreo() {
+      if (this.params.okrProgress == '') {
+        this.params.okrProgress = 0;
+      }
+      if (this.params.okrUpdateCount == '') {
+        // eslint-disable-next-line no-unused-expressions
+        this.params.okrUpdateCount = 0;
+      }
+      if (this.params.okrUpdateTimeCount == '') {
+        // eslint-disable-next-line no-unused-expressions
+        this.params.okrUpdateTimeCount = 0;
+      }
+    },
+    alertLink(progress, type) {
+      if (!progress) {
+        this.$message.error('请填写发送条件');
+        return false;
+      }
+      const text = this.remindType == '1' ? '部门负责人' : '所有人员';
+      this.$xconfirm({
+        title: '',
+        content: `确认对该条件下${text}的邮箱发送提醒吗？点击确认后，将立即发送`,
+      }).then(() => {
+        this.sumbitMax(type);
+      });
+    },
+    close() {
+      this.hideSend = false;
+    },
+    showSearchBar() {
+      if (this.arrowClass == 'el-icon-caret-top') {
+        this.arrowClass = 'el-icon-caret-bottom';
+        this.hideSend = false;
+      } else {
+        this.arrowClass = 'el-icon-caret-top';
+        this.hideSend = true;
+      }
+    },
+    sumbitMax(type) {
+      let params = {};
+      if (type == '0') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrProgress }],
+        };
+      }
+      if (type == '1') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrUpdateCount }],
+        };
+      }
+      if (type == '2') {
+        params = {
+          remindType: this.remindType,
+          orgRemindTypeList: [{ type, value: this.params.okrUpdateTimeCount }],
+        };
+      }
+      this.server.sendOkrRemindMsg(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('发送成功');
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     init() {
       this.rootRole = false;
       // 查询周期
@@ -593,6 +726,31 @@ export default {
   background: #f4f6f8;
   padding: 20px;
 }
-.okr-summarize-search-form {
+
+.list-okr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.orkpading {
+  flex: 0 0 100px !important;
+}
+
+.flex-end-okr {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.center-okr {
+  align-items: center;
+}
+.border-okr {
+  height: 1px;
+  background: #e8ecf0;
+  margin: 20px 0;
+}
+.marLeft {
+  margin-left: 25px;
 }
 </style>

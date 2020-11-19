@@ -326,6 +326,7 @@
                         :step="1"
                         :precision="0"
                         class="tl-input-number"
+                        @blur="progressChange(kitem)"
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
@@ -950,6 +951,12 @@ export default {
     openMore(item) {
       item.openMore = !item.openMore;
       this.$forceUpdate();
+    },
+    // 进度默认值
+    progressChange(kitem) {
+      if (!kitem.okrDetailProgress) {
+        kitem.okrDetailProgress = 0;
+      }
     },
   },
   watch: {

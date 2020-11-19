@@ -148,6 +148,7 @@
                         :step="1"
                         :precision="0"
                         class="tl-input-number"
+                        @blur="progressChange"
                       ></el-input-number>
                       <span>%</span>
                     </div>
@@ -325,6 +326,12 @@ export default {
     // 取整
     changeProgress(item) {
       item.okrDetailProgress = Math.round(item.okrDetailProgress);
+    },
+    // 进度默认值
+    progressChange() {
+      if (!this.formData.okrDetailProgress) {
+        this.formData.okrDetailProgress = 0;
+      }
     },
   },
   watch: {
