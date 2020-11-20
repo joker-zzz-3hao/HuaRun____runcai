@@ -1,28 +1,29 @@
 <template>
-  <div>
+  <div class="my-weekly">
     <div class="operating-area">
       <div class="page-title">我的周报</div>
     </div>
-
-    <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
-    </tl-calendar-tabs>
-    <div
-      v-for="(week, index) in weekList"
-      v-show="weekIndex == index"
-      :key="week.calendarId"
-    >
-      <div class="weekly-area">
-        <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
-          <div class="no-data-bg"></div>
-          <div class="no-data-txt">周报未填写</div>
-        </div>
-        <div v-else>
-          <standard-Weekly
-            :week="week"
-            :orgOkrList="orgOkrList"
-            @refreshMyOkr="refreshMyOkr"
-            :timeDisabled="timeDisabled"
-          ></standard-Weekly>
+    <div class="cont-area">
+      <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
+      </tl-calendar-tabs>
+      <div
+        v-for="(week, index) in weekList"
+        v-show="weekIndex == index"
+        :key="week.calendarId"
+      >
+        <div class="weekly-area">
+          <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
+            <div class="no-data-bg"></div>
+            <div class="no-data-txt">周报未填写</div>
+          </div>
+          <div v-else>
+            <standard-Weekly
+              :week="week"
+              :orgOkrList="orgOkrList"
+              @refreshMyOkr="refreshMyOkr"
+              :timeDisabled="timeDisabled"
+            ></standard-Weekly>
+          </div>
         </div>
       </div>
     </div>
