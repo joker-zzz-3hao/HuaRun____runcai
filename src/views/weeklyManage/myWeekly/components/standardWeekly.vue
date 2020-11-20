@@ -1039,8 +1039,6 @@ export default {
       const tempList = [...this.weeklyWorkVoSaveList];
       tempList.forEach((workItem) => {
         delete workItem.selectedNodeList;
-        delete workItem.timeList;
-        delete workItem.timeSpanList;
       });
       const params = {
         calendarId: this.week.calendarId,
@@ -1054,8 +1052,6 @@ export default {
       };
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
-        console.log(params);
-        debugger;
         this.submitLoading = false;
         if (res.code == 200) {
           this.$message.success('保存成功');
