@@ -1,33 +1,32 @@
 const STATUS_LIST = [
   {
-    name: '全部', id: 'all',
+    name: '全部', id: 'all', className: 'all',
   }, {
-    name: '进行中', id: '1',
+    name: '进行中', id: '1', className: 'running',
   }, {
-    name: '起草中', id: '6',
+    name: '起草中', id: '6', className: 'draft',
   }, {
-    name: '审批中', id: '7',
+    name: '审批中', id: '7', className: 'approve',
   }, {
-    name: '被退回', id: '8',
+    name: '被退回', id: '8', className: 'recall',
   }, {
-    name: '已完成', id: '3',
+    name: '已完成', id: '3', className: 'finish',
   }, {
-    name: '复盘中', id: '2',
+    name: '复盘中', id: '2', className: 'replay',
   }, {
-    name: '已结束', id: '4',
+    name: '已结束', id: '4', className: 'ending',
   }, {
-    name: '未开始', id: '5',
+    name: '未开始', id: '5', className: 'not-started',
   }];
 const STATUS_LIST_MAP = {
-  all: '全部',
-  1: '进行中',
-  2: '复盘中',
-  3: '已完成',
-  4: '已结束',
-  5: '未开始',
-  6: '起草中',
-  7: '审批中',
-  8: '被退回',
+  1: { name: '进行中', className: 'running' },
+  2: { name: '复盘中', className: 'replay' },
+  3: { name: '已完成', className: 'finish' },
+  4: { name: '已结束', className: 'ending' },
+  5: { name: '未开始', className: 'not-started' },
+  6: { name: '起草中', className: 'draft' },
+  7: { name: '审批中', className: 'approve' },
+  8: { name: '被退回', className: 'recall' },
 };
 const CONFIDENCE = [{
   label: '高', value: '1',
