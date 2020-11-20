@@ -25,7 +25,8 @@
 .gave-praise i,
 .menu-control-button i,
 .icon-remind::before,
-.icon-help::before {
+.icon-help::before,
+.my-weekly .tl-month-editor::before {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -373,4 +374,8 @@
   content: '';
   background-position-x: -6px;
   background-position-y: -607px;
+}
+
+.my-weekly .tl-month-editor::before {
+  background-position-y: -870px;
 }

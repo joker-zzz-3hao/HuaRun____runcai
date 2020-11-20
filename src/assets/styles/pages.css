@@ -2837,6 +2837,26 @@
   background: #fff;
 }
 
+.my-weekly .tl-custom-tabs {
+  display: flex;
+  align-items: center;
+}
+
+.my-weekly .tl-month-editor .el-input__inner {
+  position: relative;
+  border-color: transparent;
+}
+
+.my-weekly .tl-month-editor {
+  display: flex;
+  align-items: center;
+}
+
+.my-weekly .tl-month-editor::before {
+  content: '';
+  z-index: 10;
+}
+
 .calendar-select,
 .weekly-select,
 .weekly-select li,
