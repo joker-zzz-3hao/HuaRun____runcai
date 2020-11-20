@@ -188,6 +188,90 @@ export default {
     }
   },
   methods: {
+    initPage() {
+      this.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+      const self = this;
+      // 来自任务的数据,同步至本周任务中
+      const tempOkrList = [];
+      // 将任务的okr遍历出来
+      if (self.$route.params && self.$route.params.weeklySumParams) {
+        self.canUpdate = true;
+        self.$route.params.weeklySumParams.forEach((okr) => {
+          if (okr.okrDetailId) {
+            tempOkrList.push({
+              okrDetailId: okr.okrDetailId,
+            });
+          }
+        });
+      }
+      if (self.weeklyDataCopy.weeklyId) { // 后端查回来的数据
+        // 任务汇总传过来的数据
+        if (self.$route.params && self.$route.params.weeklySumParams) {
+          // 初始化
+          self.$route.params.weeklySumParams.forEach((work) => {
+            self.weeklyWorkVoSaveList.push({
+              okrCultureValueIds: '',
+              okrIds: '',
+              okrDetailId: work.okrDetailId || '',
+              projectId: work.projectId || '',
+              projectNameCn: work.projectName || '',
+              weeklyId: '',
+              workContent: work.taskTitle || '',
+              workDesc: work.taskDesc || '',
+              workId: '',
+              workIndex: 0,
+              workProgress: '',
+              selectedOkr: [],
+              workOkrList: [],
+              okrCultureValueList: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+            });
+          });
+          // 合并后端取回数据
+          self.weeklyWorkVoSaveList = [
+            ...self.weeklyWorkVoSaveList,
+            ...self.weeklyDataCopy.weeklyWorkVoList,
+          ];
+        } else {
+          // 后端查询数据
+          self.weeklyWorkVoSaveList = self.weeklyDataCopy.weeklyWorkVoList;// 列表数据
+        }
+        // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+        self.setOkrProcess([...tempOkrList, ...self.weeklyDataCopy.weeklyOkrVoList]);
+      } else if (!self.weeklyDataCopy.weeklyId) {
+        // 任务汇总传过来的数据
+        if (self.$route.params && self.$route.params.weeklySumParams) {
+          // 初始化
+          self.$route.params.weeklySumParams.forEach((work) => {
+            self.weeklyWorkVoSaveList.push({
+              okrCultureValueIds: '',
+              okrIds: '',
+              projectId: work.projectId || '',
+              okrDetailId: work.okrDetailId || '',
+              projectNameCn: work.projectName || '',
+              weeklyId: '',
+              workContent: work.taskTitle || '',
+              workDesc: work.taskDesc || '',
+              workId: '',
+              workIndex: 0,
+              workProgress: '',
+              selectedOkr: [],
+              workOkrList: [],
+              okrCultureValueList: [],
+              randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+            });
+          });
+        }
+        // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
+        self.setOkrProcess(tempOkrList);
+      }
+      // 反显周报列表数据
+      self.setWorkTableData();
+      // 反显本周感想
+      self.setThoughts();
+      // 反显下周计划
+      self.setNextWeekPlan();
+    },
     // 进度
     validateProcess(rule, value, callback) {
       if (!value) {

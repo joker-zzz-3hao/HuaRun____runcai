@@ -651,6 +651,7 @@ export default {
   },
   methods: {
     init() {
+      debugger;
       this.thisPageWeeklyTypeList = this.weeklyTypeList;
       if (this.week.weeklyId) {
         this.weeklyId = this.week.weeklyId;
@@ -679,6 +680,7 @@ export default {
           // 本周感想初始化数据
           this.addThought();
         }
+        this.initPage();
       }
     },
     initPage() {
@@ -714,7 +716,6 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: 0.5,
               selectedOkr: [],
               workOkrList: [],
               okrCultureValueList: [],
@@ -749,7 +750,6 @@ export default {
               workId: '',
               workIndex: 0,
               workProgress: '',
-              workTime: 0.5,
               selectedOkr: [],
               workOkrList: [],
               okrCultureValueList: [],
