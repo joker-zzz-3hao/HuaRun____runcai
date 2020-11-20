@@ -50,29 +50,11 @@
         </tl-search-table>
       </div>
       <tl-mission ref="mission"></tl-mission>
+      <tl-setperiod ref="setperiod" @success="getPeriod"></tl-setperiod>
     </div>
     <div class="operating-area">
       <div class="operating-area-inside">
         <div class="operating-box">
-          <el-input
-            placeholder="请输入OKR内容、部门、用户"
-            v-model="keyword"
-            @keyup.enter.native="search"
-            class="tl-input"
-          >
-            <i
-              slot="prefix"
-              class="el-input__icon el-icon-search"
-              @click="search"
-            ></i>
-          </el-input>
-          <el-button
-            :disabled="!hasPower('okr-maps-query')"
-            type="primary"
-            class="tl-btn amt-bg-slip"
-            @click="search"
-            >搜索</el-button
-          >
           <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>周期</dt>
             <dd>
@@ -92,6 +74,7 @@
                 ></el-option>
               </el-select>
             </dd>
+            <dd class="prefer-text" @click="showSetPeriod">设置偏好</dd>
           </dl>
           <dl class="dl-item" v-if="showDepartmentSelect">
             <dt>组织</dt>
@@ -113,6 +96,32 @@
               ></el-cascader>
             </dd>
           </dl>
+          <dl class="dl-item">
+            <dd>
+              <el-input
+                placeholder="请输入OKR内容、部门、用户"
+                v-model="keyword"
+                @keyup.enter.native="search"
+                class="tl-input"
+              >
+                <i
+                  slot="prefix"
+                  class="el-input__icon el-icon-search"
+                  @click="search"
+                ></i>
+              </el-input>
+            </dd>
+            <dd>
+              <el-button
+                :disabled="!hasPower('okr-maps-query')"
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                @click="search"
+                >搜索</el-button
+              >
+            </dd>
+          </dl>
+
           <div class="toggle-view" v-if="showDepartmentSelect">
             <i
               class="table-view"
@@ -187,6 +196,7 @@ import { mapMutations } from 'vuex';
 import card from './components/card';
 import okrTable from './components/okrTable';
 import mission from './components/mission';
+import setPeriod from './components/setPeriod';
 import searchTable from './components/searchTable';
 import CONST from './const';
 import Server from './server';
@@ -220,6 +230,7 @@ export default {
       periodId: '',
       periodList: [],
       loading: true,
+      hadSet: false,
     };
   },
   mixins: [global],
@@ -227,13 +238,15 @@ export default {
     svgtree,
     card,
     'tl-mission': mission,
+    'tl-setperiod': setPeriod,
     'tl-okr-table': okrTable,
     'tl-search-table': searchTable,
     'tl-okr-detail': okrDetail,
   },
   mounted() {
     const self = this;
-    self.init();
+    // self.getPeriod();
+    self.getOrgTable();
   },
   methods: {
     ...mapMutations('common', ['changeTestModel']),
@@ -241,19 +254,29 @@ export default {
       this.test = data;
       this.showCascader = false;
     },
-    init() {
-      const self = this;
+    getPeriod() {
       // 查询周期
-      self.server.getOkrCycleList().then((res) => {
+      this.server.getOkrMapPeriod({ orgFullId: this.orgFullId }).then((res) => {
         if (res.code == 200) {
           this.periodList = res.data || [];
-          this.okrCycle = this.periodList.filter((item) => item.checkStatus == '1')[0] || {};
-          this.periodId = this.okrCycle.periodId;
+          this.periodList.forEach((item) => {
+            // 如果有设置偏好
+            console.log(item.okrMapDefault);
+            if (item.okrMapDefault) {
+              this.okrCycle = item;
+              this.periodId = this.okrCycle.periodId;
+              this.hadSet = true;
+              console.log(this.okrCycle);
+            }
+            if (item.checkStatus == 1 && !this.hadSet) {
+              this.okrCycle = item;
+              this.periodId = this.okrCycle.periodId;
+            }
+          });
         }
       });
-      // 查询组织树
-      self.getOrgTable();
     },
+    // 查询组织树
     getOkrTree() {
       if (this.okrCycle.periodId && this.orgFullId) {
         this.treeTableData = [];
@@ -270,6 +293,9 @@ export default {
               this.treeTableData.push(res.data);
             } else {
               this.treeTableData = [];
+              if (this.hadSet == false) {
+                this.showSetPeriod();
+              }
             }
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
@@ -317,7 +343,7 @@ export default {
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
-            this.getOkrTree();
+            this.getPeriod();
           }
         }
       });
@@ -345,6 +371,7 @@ export default {
       // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
+      // this.getPeriod();
       this.getOkrTree();
     },
     getOrgName(data, index) {
@@ -411,6 +438,12 @@ export default {
             },
           });
         }
+      });
+    },
+    // 打开设置周期
+    showSetPeriod() {
+      this.$nextTick(() => {
+        this.$refs.setperiod.show(this.periodId, this.periodList);
       });
     },
   },
