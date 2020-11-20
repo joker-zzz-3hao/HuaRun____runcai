@@ -11,10 +11,11 @@
         </div>
         <dl class="okr-state">
           <dt>
+            <i :class="CONST.STATUS_LIST_MAP[okrMain.status].className"></i>
             <em>状态</em>
           </dt>
           <dd class="is-highlighted">
-            <em>{{ CONST.STATUS_LIST_MAP[okrMain.status] }}</em>
+            <em>{{ CONST.STATUS_LIST_MAP[okrMain.status].name }}</em>
           </dd>
         </dl>
         <dl class="okr-type">

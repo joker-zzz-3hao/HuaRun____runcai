@@ -1,12 +1,12 @@
 const STATUS_LIST_MAP = {
-  1: '进行中',
-  2: '复盘中',
-  3: '已完成',
-  4: '已结束',
-  5: '未开始',
-  6: '起草中',
-  7: '审批中',
-  8: '被退回',
+  1: { name: '进行中', className: 'running' },
+  2: { name: '复盘中', className: 'replay' },
+  3: { name: '已完成', className: 'finish' },
+  4: { name: '已结束', className: 'ending' },
+  5: { name: '未开始', className: 'not-started' },
+  6: { name: '起草中', className: 'draft' },
+  7: { name: '审批中', className: 'approve' },
+  8: { name: '被退回', className: 'recall' },
 };
 
 const OKR_TYPE_MAP = {
