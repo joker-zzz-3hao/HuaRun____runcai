@@ -315,7 +315,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import calendar from '../myWeekly/components/calendar';
+import calendar from './components/calendar';
 import Server from './server';
 
 const server = new Server();
