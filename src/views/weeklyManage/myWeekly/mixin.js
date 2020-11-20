@@ -3,7 +3,6 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
-
       weekDataList: [
         {
           value: '0',
@@ -146,7 +145,9 @@ export default {
       configItemCodeOKR: (state) => state.configItemCodeOKR,
       weeklyTypeList: (state) => state.weeklyTypeList,
       originalMyOkrList: (state) => state.originalMyOkrList,
-
+    }),
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
     }),
     setOkrStyle() {
       return (okr) => {
@@ -178,6 +179,13 @@ export default {
       });
       return result;
     },
+  },
+  created() {
+    // 内部员工不展示周六、周日
+    if (this.userInfo.ldapType == 'Full-Time') {
+      this.weekDataList.pop();
+      this.weekDataList.pop();
+    }
   },
   methods: {
     // 进度

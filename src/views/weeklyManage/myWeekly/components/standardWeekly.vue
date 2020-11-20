@@ -1079,7 +1079,7 @@ export default {
       });
       this.$forceUpdate();
     },
-    // 禁用已选时间（除了正在展开的）
+    // 禁用已选时间（除了当前工作项）
     visibleChange(workForm) {
       let selectedList = [];
       const self = this;
