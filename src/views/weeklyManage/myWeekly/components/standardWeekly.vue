@@ -34,7 +34,7 @@
           placement="top"
           popper-class="tl-tooltip-popper"
           @click.native="
-            weeklyWorkVoSaveList.length > 1 && deleteItem(workForm)
+            weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
           "
         >
           <i class="el-icon-delete"></i>
@@ -526,14 +526,6 @@
       :server="server"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
-    <select-project
-      ref="selectProject"
-      :showProjectDialog.sync="showProjectDialog"
-      v-if="showProjectDialog"
-      :server="server"
-      :randomIdForProject="randomIdForProject"
-      @closeProjectDia="closeProjectDia"
-    ></select-project>
   </div>
 </template>
 
@@ -544,11 +536,10 @@ import confidenceSelect from '@/components/confidenceSelect';
 import merge from 'webpack-merge';
 import CONST from '@/components/const';
 import CONST1 from '@/lib/const';
-import { mapState } from 'vuex';
+
 import Server from '../server';
-import selectProject from './selectProject';
 import addOkr from './addOkr';
-import mixin from '../validateMixin';
+import mixin from '../mixin';
 
 const server = new Server();
 export default {
@@ -556,7 +547,6 @@ export default {
   mixins: [mixin],
   components: {
     'add-okr': addOkr,
-    'select-project': selectProject,
     'tl-process': tlProcess,
     'tl-confidence': confidenceSelect,
   },
@@ -604,9 +594,6 @@ export default {
           label: '低',
         },
       ],
-      thoughtOpen: false,
-      // planOpen: false,
-      randomIdForProject: '',
       textarea: '',
       showTaskProcess: false,
       weeklyDataCopy: {},
@@ -620,44 +607,7 @@ export default {
     this.init();
   },
   computed: {
-    ...mapState('weekly', {
-      weekList: (state) => state.weekList,
-      projectList: (state) => state.projectList,
-      configItemCodeOKR: (state) => state.configItemCodeOKR,
-      weeklyTypeList: (state) => state.weeklyTypeList,
-      originalMyOkrList: (state) => state.originalMyOkrList,
 
-    }),
-    setOkrStyle() {
-      return (okr) => {
-        if (okr && okr.length > 5) {
-          return `${okr.slice(0, 5)}...`;
-        }
-        return okr;
-      };
-    },
-    itemIndex() {
-      return (okr) => {
-        const result = [];
-        this.weeklyWorkVoSaveList.forEach((item) => {
-          item.selectedOkr.forEach((element) => {
-            if (okr.okrDetailId == element.okrDetailId) {
-              result.push(this.weeklyWorkVoSaveList.indexOf(item) + 1);
-            }
-          });
-        });
-        return result.join('、');
-      };
-    },
-    canEdit() {
-      let result = false;
-      this.weekList.forEach((item) => {
-        if (item.calendarId == this.week.calendarId) {
-          result = item.canEdit;
-        }
-      });
-      return result;
-    },
   },
   methods: {
     init() {
@@ -692,7 +642,6 @@ export default {
     },
     initPage() {
       this.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
-
       const self = this;
       // 来自任务的数据,同步至本周任务中
       const tempOkrList = [];
@@ -776,8 +725,6 @@ export default {
       self.setThoughts();
       // 反显下周计划
       self.setNextWeekPlan();
-      // // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
-      // self.setOkrProcess([...tempOkrList, ...self.weeklyDataCopy.weeklyOkrVoList]);
     },
     setOkrProcess(weeklyOkrVoList) {
       // 将上次保存的o、kr找出来，多行支撑项
@@ -948,7 +895,7 @@ export default {
         randomId: Math.random().toString(36).substr(3),
       });
     },
-    deleteItem(item) {
+    deleteWork(item) {
       // 本地数据
       this.weeklyWorkVoSaveList = this.weeklyWorkVoSaveList.filter(
         (thisWeek) => thisWeek.randomId != item.randomId,
@@ -959,6 +906,15 @@ export default {
       this.weeklyPlanSaveList = this.weeklyPlanSaveList.filter(
         (nextWeek) => nextWeek.randomId != item.randomId,
       );
+    },
+    deleteThoughts(randomId) {
+      for (const item of this.weeklyThoughtSaveList) {
+        if (item.randomId == randomId) {
+          this.weeklyThoughtSaveList = this.weeklyThoughtSaveList.filter(
+            (element) => element.randomId != randomId,
+          );
+        }
+      }
     },
     addSupportOkr(data) {
       this.currenItemrandomId = data.randomId;
@@ -991,20 +947,10 @@ export default {
       this.$forceUpdate();
     },
 
-    deleteThoughts(randomId) {
-      for (const item of this.weeklyThoughtSaveList) {
-        if (item.randomId == randomId) {
-          this.weeklyThoughtSaveList = this.weeklyThoughtSaveList.filter(
-            (element) => element.randomId != randomId,
-          );
-        }
-      }
-    },
     thoughtTypeChange(thoughts, type) {
       thoughts.thoughtType = type;
       this.$forceUpdate();
     },
-
     submitWeekly() {
       const self = this;
       if (self.weeklyEmotion === '') {
@@ -1066,75 +1012,14 @@ export default {
         }
       });
     },
-    renderHeader(h, { column }) {
-      // 这里在最外层插入一个div标签
-      return h('div', [// h即为cerateElement的简写
-        h(column ? 'span' : '', { style: { color: 'red' } }, '*'),
-        // 在div里面插入span
-        h('span', {
-          // 表示内容
-          domProps: {
-            innerHTML: column.label,
-          },
-        }),
-
-      ]);
-    },
     processChange(item) {
       item.progressAfter = Math.round(item.progressAfter);
-    },
-    // tableProcessChange(item) {
-    //   item.workProgress = Math.round(item.workProgress);
-    // },
-    openThought() {
-      this.thoughtOpen = true;
-    },
-    closeThought() {
-      this.thoughtOpen = false;
     },
     projectInputFocus(work) {
       this.randomIdForProject = work.randomId;
       this.showProjectDialog = true;
       this.$nextTick(() => {
         this.$refs.selectProject.show();
-      });
-    },
-    projectDelete() {
-      this.weeklyWorkVoSaveList.forEach((work) => {
-        work.projectId = '';
-        work.projectNameCn = '';
-      });
-    },
-    closeProjectDia(data) {
-      this.weeklyWorkVoSaveList.forEach((work) => {
-        if (work.randomId == data.randomIdForProject) {
-          work.projectId = data.project.projectId;
-          work.projectNameCn = data.project.projectNameCn;
-        }
-      });
-      this.$forceUpdate();
-    },
-    workTimeChange(row) {
-      this.weeklyWorkVoSaveList.forEach((work) => {
-        if (row.randomId == work.randomId) {
-          // 数据转换为0.5单位
-          const tempArr = String(work.workTime).split('.');
-          // eslint-disable-next-line no-restricted-globals
-          if (isNaN(work.workTime)) { // 不是数字，清空
-            work.workTime = 0.5;
-          }
-          if (work.workTime < 0) {
-            work.workTime = 0.5;
-          }
-          if (tempArr.length > 1) { // 有小数位
-            // if (tempArr[1].length == 1) {
-            // work.workTime.toFixed();
-            if (tempArr[1] != 5) { // 小数点后不为5
-              work.workTime = Number(work.workTime).toFixed(0);
-            }
-            // }
-          }
-        }
       });
     },
     getPlaceholder(type) {
@@ -1145,23 +1030,6 @@ export default {
       } if (type == 2) {
         return '做版本更好的自己，希望你本周有收获，记下来吧';
       }
-    },
-    tableProcessChange(row) {
-      this.weeklyWorkVoSaveList.forEach((work) => {
-        if (row.randomId == work.randomId) {
-          work.workProgress = Number(work.workProgress).toFixed(0);
-          if (work.workProgress > 100) {
-            work.workProgress = 100;
-          }
-          if (work.workProgress < 0) {
-            work.workProgress = '';
-          }
-          // eslint-disable-next-line no-restricted-globals
-          if (isNaN(work.workProgress)) { // 不是数字，清空
-            work.workProgress = '';
-          }
-        }
-      });
     },
     projectChange(work) {
       this.weeklyWorkVoSaveList.forEach((element) => {

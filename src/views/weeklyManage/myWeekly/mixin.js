@@ -1,3 +1,5 @@
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -136,6 +138,46 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapState('weekly', {
+      weekList: (state) => state.weekList,
+      projectList: (state) => state.projectList,
+      configItemCodeOKR: (state) => state.configItemCodeOKR,
+      weeklyTypeList: (state) => state.weeklyTypeList,
+      originalMyOkrList: (state) => state.originalMyOkrList,
+
+    }),
+    setOkrStyle() {
+      return (okr) => {
+        if (okr && okr.length > 5) {
+          return `${okr.slice(0, 5)}...`;
+        }
+        return okr;
+      };
+    },
+    itemIndex() {
+      return (okr) => {
+        const result = [];
+        this.weeklyWorkVoSaveList.forEach((item) => {
+          item.selectedOkr.forEach((element) => {
+            if (okr.okrDetailId == element.okrDetailId) {
+              result.push(this.weeklyWorkVoSaveList.indexOf(item) + 1);
+            }
+          });
+        });
+        return result.join('、');
+      };
+    },
+    canEdit() {
+      let result = false;
+      this.weekList.forEach((item) => {
+        if (item.calendarId == this.week.calendarId) {
+          result = item.canEdit;
+        }
+      });
+      return result;
+    },
   },
   methods: {
     // 进度
