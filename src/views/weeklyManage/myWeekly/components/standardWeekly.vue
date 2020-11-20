@@ -1213,13 +1213,15 @@ export default {
       this.$nextTick(() => {
         self.weeklyWorkVoSaveList.forEach((item) => {
           if (item.randomId != workForm.randomId) {
-            console.log(self.$refs);
-            const list = self.$refs[item.randomId][0].getCheckedNodes(true);
-            selectedList = [...selectedList, ...list];
+            // console.log(self.$refs);
+            // const list = self.$refs[item.randomId][0].getCheckedNodes(false);
+            // debugger;
+            selectedList = [...selectedList, ...item.selectedNodeList];
+            debugger;
           }
         });
         // 遍历级联框数据，将整理好的数据禁用
-        // self.setDisabledSelectedData(selectedList);
+        self.setDisabledSelectedData(selectedList);
       });
     },
     selectWeekData(workItem) {
@@ -1265,15 +1267,17 @@ export default {
       });
       this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
       // this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
+      workItem.selectedNodeList = this.selectedNodes(workItem);
       // }
     },
     selectedNodes(workItem) {
+      let selectedList = [];
       this.weeklyWorkVoSaveList.forEach((element) => {
         if (element.randomId == workItem.randomId) {
-          const selectedList = this.$refs[element.randomId][0].getCheckedNodes(false);
-          return selectedList;
+          selectedList = this.$refs[element.randomId][0].getCheckedNodes(false);
         }
       });
+      return selectedList;
     },
     setWeeklyType(data) {
       this.weeklyType = data;
