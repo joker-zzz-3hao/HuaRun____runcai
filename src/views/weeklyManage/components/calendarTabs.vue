@@ -133,6 +133,9 @@ export default {
         });
       }
       this.setSelectWeek(item);
+      // 团队周报查询
+      this.$emit('setCalendarId', item.calendarId);
+      this.$emit('getWeeklyById', item);
     },
     getWeekItem(item, index) {
       if (item.calendarId) {
@@ -202,11 +205,17 @@ export default {
           item.btnType = 'success';
           this.setSelectWeek(item);
           this.$emit('update:weekIndex', this.weekList.indexOf(item));
+          // 团队周报查询
+          this.$emit('setCalendarId', item.calendarId);
+          this.$emit('getWeeklyById', item);
         }
       }
       if (!currentBelongsToSelectedMonth) {
         // 选中本周按钮
         this.weekList[this.weekList.length - 1].btnType = 'success';
+        // 团队周报查询
+        this.$emit('setCalendarId', this.weekList[this.weekList.length - 1].calendarId);
+        this.$emit('getWeeklyById', this.weekList[this.weekList.length - 1]);
       }
     },
     setCurrentMonthData() {
