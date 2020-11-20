@@ -2,19 +2,6 @@
   <div>
     <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <!-- <div class="operating-box">
-        <div
-          class="tl-custom-btn"
-          v-for="item in weeklyTypeList"
-          :key="item"
-          :class="{
-            'is-select': weeklyType == item,
-          }"
-          @click="setWeeklyType(item)"
-        >
-          <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
-        </div>
-      </div> -->
     </div>
 
     <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
@@ -29,7 +16,7 @@
           <div class="no-data-bg"></div>
           <div class="no-data-txt">周报未填写</div>
         </div>
-        <div>
+        <div v-else>
           <standard-Weekly
             :week="week"
             :orgOkrList="orgOkrList"

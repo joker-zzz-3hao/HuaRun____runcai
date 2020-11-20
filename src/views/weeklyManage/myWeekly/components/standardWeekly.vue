@@ -13,6 +13,7 @@
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
     </div>
+    <div>{{ getWeekItem() }}</div>
     <div class="weekly-cont">
       <el-form
         ref="work"
@@ -399,10 +400,7 @@
           <div class="okr-risk" v-if="hasValue(item.kr)">
             <span>信心指数</span>
             <template v-if="canUpdate">
-              <tl-confidence
-                v-model="item.confidenceAfter"
-                @change="changeConfidence"
-              ></tl-confidence>
+              <tl-confidence v-model="item.confidenceAfter"></tl-confidence>
             </template>
             <template v-else>
               <div class="state-grid">
@@ -860,6 +858,9 @@ export default {
           this.$set(element, 'showCascader', false);// 存到后端的okr
           this.$set(element, 'timeList', this.setTimeList(element.weekList));// 存到后端的okr
           this.$set(element, 'timeSpanList', this.setTimeSpanList(element.weekList));// 存到后端的okr
+          this.$nextTick(() => {
+            this.$set(element, 'selectedNodeList', this.selectedNodes(element));
+          });
         });
       }
       this.$forceUpdate();
@@ -1005,24 +1006,25 @@ export default {
     },
 
     submitWeekly() {
-      if (this.weeklyEmotion === '') {
-        this.showEmotionError = true;
+      const self = this;
+      if (self.weeklyEmotion === '') {
+        self.showEmotionError = true;
       }
       // 多表单校验
-      if (this.$refs.work instanceof Array && this.$refs.work.length > 0) {
+      if (self.$refs.work instanceof Array && self.$refs.work.length > 0) {
         let result = true;
-        for (let i = 0; i < this.$refs.work.length; i += 1) {
+        for (let i = 0; i < self.$refs.work.length; i += 1) {
           // eslint-disable-next-line no-loop-func
-          this.$refs.work[i].validate((valid) => {
+          self.$refs.work[i].validate((valid) => {
             result = result && valid;
           });
         }
-        if (!result || this.showEmotionError) {
-          this.$message.error('您有必填项未填写，请填写后重试！');
+        if (!result || self.showEmotionError) {
+          self.$message.error('您有必填项未填写，请填写后重试！');
           return;
         }
         // 提交周报
-        this.submitData();
+        self.submitData();
       }
     },
     submitData() {
@@ -1033,6 +1035,13 @@ export default {
       this.weeklyPlanSaveList = this.weeklyPlanSaveList.filter(
         (plan) => !!plan.planContent,
       );
+      // 删除冗余字段
+      const tempList = [...this.weeklyWorkVoSaveList];
+      tempList.forEach((workItem) => {
+        delete workItem.selectedNodeList;
+        delete workItem.timeList;
+        delete workItem.timeSpanList;
+      });
       const params = {
         calendarId: this.week.calendarId,
         weeklyEmotion: this.weeklyEmotion,
@@ -1041,10 +1050,12 @@ export default {
         weeklyOkrSaveList: this.weeklyOkrSaveList,
         weeklyPlanSaveList: this.weeklyPlanSaveList,
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
-        weeklyWorkVoSaveList: this.weeklyWorkVoSaveList,
+        weeklyWorkVoSaveList: tempList,
       };
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
+        console.log(params);
+        debugger;
         this.submitLoading = false;
         if (res.code == 200) {
           this.$message.success('保存成功');
@@ -1156,7 +1167,6 @@ export default {
         }
       });
     },
-    changeConfidence() {},
     projectChange(work) {
       this.weeklyWorkVoSaveList.forEach((element) => {
         if (work.randomId == element.randomId) {
@@ -1213,11 +1223,7 @@ export default {
       this.$nextTick(() => {
         self.weeklyWorkVoSaveList.forEach((item) => {
           if (item.randomId != workForm.randomId) {
-            // console.log(self.$refs);
-            // const list = self.$refs[item.randomId][0].getCheckedNodes(false);
-            // debugger;
             selectedList = [...selectedList, ...item.selectedNodeList];
-            debugger;
           }
         });
         // 遍历级联框数据，将整理好的数据禁用
@@ -1266,21 +1272,26 @@ export default {
         });
       });
       this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
-      // this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
-      workItem.selectedNodeList = this.selectedNodes(workItem);
+      this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
       // }
     },
     selectedNodes(workItem) {
       let selectedList = [];
-      this.weeklyWorkVoSaveList.forEach((element) => {
+      const self = this;
+      self.weeklyWorkVoSaveList.forEach((element) => {
         if (element.randomId == workItem.randomId) {
-          selectedList = this.$refs[element.randomId][0].getCheckedNodes(false);
+          selectedList = self.$refs[element.randomId][0].getCheckedNodes(false);
         }
       });
       return selectedList;
     },
     setWeeklyType(data) {
       this.weeklyType = data;
+    },
+    getWeekItem() {
+      const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
+      const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
+      return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
     },
   },
   watch: {

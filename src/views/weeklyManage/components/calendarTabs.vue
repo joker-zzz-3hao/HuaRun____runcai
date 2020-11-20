@@ -136,9 +136,7 @@ export default {
     },
     getWeekItem(item, index) {
       if (item.calendarId) {
-        const beg = item.weekBegin.split('-').splice(1, 2).join('/');
-        const end = item.weekEnd.split('-').splice(1, 2).join('/');
-        return `第${index + 1}周(${beg}-${end})`;
+        return `第${index + 1}周`;
       }
     },
     getWeek(newMonth) {
