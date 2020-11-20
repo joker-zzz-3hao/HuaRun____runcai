@@ -42,9 +42,17 @@
         <el-form-item
           prop="workContent"
           label="工作项"
-          :rules="[
-            { required: true, validator: validateWorkContent, trigger: 'blur' },
-          ]"
+          :rules="
+            canUpdate
+              ? [
+                  {
+                    required: true,
+                    validator: validateWorkContent,
+                    trigger: 'blur',
+                  },
+                ]
+              : ''
+          "
         >
           <el-input
             :autosize="{ minRows: 1, maxRows: 8 }"
@@ -74,9 +82,17 @@
         <el-form-item
           label="进度"
           prop="workProgress"
-          :rules="[
-            { required: true, validator: validateProcess, trigger: 'change' },
-          ]"
+          :rules="
+            canUpdate
+              ? [
+                  {
+                    required: true,
+                    validator: validateProcess,
+                    trigger: 'change',
+                  },
+                ]
+              : ''
+          "
         >
           <div class="tl-progress-group">
             <tl-process
@@ -110,9 +126,11 @@
           label="工时"
           class="time-cascader"
           prop="timeList"
-          :rules="[
-            { required: true, validator: validateTime, trigger: 'change' },
-          ]"
+          :rules="
+            canUpdate
+              ? [{ required: true, validator: validateTime, trigger: 'change' }]
+              : ''
+          "
         >
           <span v-for="(text, index) in workForm.timeSpanList" :key="index"
             >{{ text }}
@@ -138,9 +156,11 @@
         <el-form-item
           label="项目"
           prop="projectId"
-          :rules="[
-            { required: true, message: '请选择项目', trigger: 'change' },
-          ]"
+          :rules="
+            canUpdate
+              ? [{ required: true, message: '请选择项目', trigger: 'change' }]
+              : ''
+          "
         >
           <el-select
             v-if="canUpdate"
@@ -162,9 +182,11 @@
         <el-form-item
           label="支撑OKR/价值观"
           prop="valueOrOkrIds"
-          :rules="[
-            { required: true, validator: validateOkr, trigger: 'change' },
-          ]"
+          :rules="
+            canUpdate
+              ? [{ required: true, validator: validateOkr, trigger: 'change' }]
+              : ''
+          "
         >
           <div class="tag-group">
             <ul class="tag-lists">
@@ -643,6 +665,7 @@ export default {
           }
         });
       } else if (!this.weeklyDataCopy.weeklyId) {
+        this.canUpdate = true;
         // eslint-disable-next-line prefer-destructuring
         this.weeklyType = this.weeklyTypeList[0];
         this.weeklyDataCopy = { ...this.weeklyData };
