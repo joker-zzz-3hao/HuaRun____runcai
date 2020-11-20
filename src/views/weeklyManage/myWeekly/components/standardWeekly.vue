@@ -37,7 +37,7 @@
             weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
           "
         >
-          <i class="el-icon-delete"></i>
+          <i v-show="canUpdate" class="el-icon-delete"></i>
         </el-tooltip>
         <el-form-item
           prop="workContent"
@@ -46,17 +46,30 @@
             { required: true, validator: validateWorkContent, trigger: 'blur' },
           ]"
         >
-          <el-input v-model="workForm.workContent"></el-input>
+          <el-input
+            :autosize="{ minRows: 1, maxRows: 8 }"
+            type="textarea"
+            maxlength="50"
+            v-if="canUpdate"
+            clearable
+            placeholder="简短概括任务"
+            class="tl-textarea"
+            v-model="workForm.workContent"
+          ></el-input>
+          <em v-else> {{ workForm.workContent }}</em>
         </el-form-item>
         <el-form-item label="内容" v-show="weeklyType == 1">
           <el-input
             v-model="workForm.workDesc"
-            :autosize="{ minRows: 3, maxRows: 8 }"
+            :autosize="{ minRows: 1, maxRows: 8 }"
             type="textarea"
+            v-if="canUpdate"
+            placeholder="请描述任务项"
             class="tl-textarea"
             clearable
             maxlength="500"
           ></el-input>
+          <em v-else> {{ workForm.workDesc }}</em>
         </el-form-item>
         <el-form-item
           label="进度"
@@ -68,18 +81,20 @@
           <div class="tl-progress-group">
             <tl-process
               :data="parseInt(workForm.workProgress, 10)"
-              :showNumber="false"
+              :showNumber="!canUpdate"
               :width="30"
               :marginLeft="2"
             ></tl-process>
             <!-- kr支持更改进度 -->
             <el-slider
+              v-if="canUpdate"
               v-model.number="workForm.workProgress"
               :step="1"
               @change="processChange(workForm)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
+              v-if="canUpdate"
               v-model.number="workForm.workProgress"
               controls-position="right"
               :min="0"
@@ -104,11 +119,12 @@
           </span>
           <el-button
             type="text"
-            v-if="!workForm.showCascader"
+            v-if="!workForm.showCascader && canUpdate"
             @click="workForm.showCascader = true"
             >添加工时</el-button
           >
           <el-cascader
+            v-if="canUpdate"
             :ref="workForm.randomId"
             v-model="workForm.timeList"
             :options="weekDataList"
@@ -127,6 +143,7 @@
           ]"
         >
           <el-select
+            v-if="canUpdate"
             v-model="workForm.projectId"
             placeholder="请选择关联项目"
             @change="projectChange(workForm)"
@@ -140,6 +157,7 @@
             >
             </el-option>
           </el-select>
+          <em v-else>{{ workForm.projectNameCn }}</em>
         </el-form-item>
         <el-form-item
           label="支撑OKR/价值观"
@@ -564,7 +582,7 @@ export default {
       CONST,
       CONST1,
       weeklyData: {},
-      canUpdate: true,
+      canUpdate: false, // 本周、上周可编辑；
       weeklyEmotion: '',
       showEmotionError: false,
       weeklyId: '',
@@ -1000,6 +1018,7 @@ export default {
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
         if (res.code == 200) {
+          this.canUpdate = false;
           this.$message.success('保存成功');
           // 刷新日历数据
           this.$busEmit('refreshCalendar');
