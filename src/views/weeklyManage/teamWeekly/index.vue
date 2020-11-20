@@ -168,7 +168,6 @@
                       <em>我想静静</em>
                     </template>
                     <template v-else>
-                      <i></i>
                       <em>--</em>
                     </template>
                   </div>
