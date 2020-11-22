@@ -836,7 +836,6 @@ export default {
       this.$forceUpdate();
     },
     addThought() {
-      debugger;
       this.weeklyThoughtSaveList.push({
         thoughtContent: '',
         thoughtId: '',
