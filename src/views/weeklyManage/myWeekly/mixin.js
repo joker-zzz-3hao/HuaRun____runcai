@@ -188,8 +188,8 @@ export default {
     }
   },
   methods: {
+    // 该方法主要是兼容从我的任务-任务汇总模块汇总过来的数据
     initPage() {
-      this.weeklyWorkVoSaveList = this.weeklyDataCopy.weeklyWorkVoList;// 列表数据
       const self = this;
       // 来自任务的数据,同步至本周任务中
       const tempOkrList = [];
@@ -205,8 +205,11 @@ export default {
         });
       }
       if (self.weeklyDataCopy.weeklyId) { // 后端查回来的数据
-        // 任务汇总传过来的数据
-        if (self.$route.params && self.$route.params.weeklySumParams) {
+        // 任务汇总传过来的数据，合并至当前周
+        if (self.$route.params
+          && self.$route.params.weeklySumParams
+          && this.currentWeek.calendarId == this.week.calendarId
+        ) {
           // 初始化
           self.$route.params.weeklySumParams.forEach((work) => {
             self.weeklyWorkVoSaveList.push({
@@ -220,7 +223,7 @@ export default {
               workDesc: work.taskDesc || '',
               workId: '',
               workIndex: 0,
-              workProgress: '',
+              workProgress: work.taskProgress || '',
               selectedOkr: [],
               workOkrList: [],
               okrCultureValueList: [],
@@ -229,8 +232,8 @@ export default {
           });
           // 合并后端取回数据
           self.weeklyWorkVoSaveList = [
-            ...self.weeklyWorkVoSaveList,
-            ...self.weeklyDataCopy.weeklyWorkVoList,
+            ...self.weeklyWorkVoSaveList, // 任务汇总过来的数据
+            ...self.weeklyDataCopy.weeklyWorkVoList, // 后端查回来的数据
           ];
         } else {
           // 后端查询数据
@@ -239,8 +242,11 @@ export default {
         // 反显个人OKR进度,判断支撑okr中是否有个人okr，如果有则现在是个人okr进度（O、KR）
         self.setOkrProcess([...tempOkrList, ...self.weeklyDataCopy.weeklyOkrVoList]);
       } else if (!self.weeklyDataCopy.weeklyId) {
-        // 任务汇总传过来的数据
-        if (self.$route.params && self.$route.params.weeklySumParams) {
+        // 任务汇总传过来的数据，合并至当前周
+        if (self.$route.params
+          && self.$route.params.weeklySumParams
+           && this.currentWeek.calendarId == this.week.calendarId
+        ) {
           // 初始化
           self.$route.params.weeklySumParams.forEach((work) => {
             self.weeklyWorkVoSaveList.push({

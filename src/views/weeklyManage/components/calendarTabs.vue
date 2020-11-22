@@ -119,7 +119,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('weekly', ['setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType']),
+    ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
         this.weekIndex = index;
@@ -168,6 +168,7 @@ export default {
         end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
           // 当前周
+          this.setCurrentWeek(week);
           this.weekIndex = this.weekList.indexOf(week); // 月份是本月
           // 本月
           if (new Date(this.monthDate).getMonth() == new Date().getMonth()) {

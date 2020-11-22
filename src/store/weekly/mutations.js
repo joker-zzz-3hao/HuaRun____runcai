@@ -39,4 +39,7 @@ export default {
   setWeeklyTypeList: (state, weeklyTypeList = []) => {
     state.weeklyTypeList = weeklyTypeList;
   },
+  setCurrentWeek: (state, currentWeek = []) => {
+    state.currentWeek = currentWeek;
+  },
 };
