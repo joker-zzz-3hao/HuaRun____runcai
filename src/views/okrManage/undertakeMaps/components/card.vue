@@ -22,11 +22,7 @@
         >
       </dt>
     </dl>
-    <tl-process
-      :data="node.okrDetailProgress"
-      :width="36"
-      :marginLeft="6"
-    ></tl-process>
+    <tl-process ref="process" :data="node.okrDetailProgress"></tl-process>
     <div class="department-info" @click.stop="takeOvierview(node)">
       <p>
         <span>负责人</span> <em>{{ node.userName }}</em>
@@ -91,6 +87,13 @@ export default {
       this.$emit('takeOvierview', node);
     },
   },
-  watch: {},
+  watch: {
+    'node.show': {
+      handler() {
+        // 重新触发进度条计算
+        this.$refs.process.changeWidth();
+      },
+    },
+  },
 };
 </script>

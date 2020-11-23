@@ -7,6 +7,7 @@
         row-key="orgId"
         :data="treeData"
         class="tl-table"
+        @expand-change="expand"
       >
         <el-table-column prop="orgName" label="名称" min-width="170">
           <template slot-scope="scope">
@@ -26,7 +27,10 @@
         </el-table-column>
         <el-table-column prop="okrProgress" label="进度" width="180">
           <template slot-scope="scope">
-            <tl-process :data="scope.row.okrProgress"></tl-process>
+            <tl-process
+              :ref="'process' + scope.row.orgId + scope.row.okrProgress"
+              :data="scope.row.okrProgress"
+            ></tl-process>
           </template>
         </el-table-column>
         <el-table-column
@@ -88,6 +92,19 @@ export default {
     },
     goDetail(okrid) {
       this.$emit('showDetail', okrid);
+    },
+    // 重新触发进度条计算
+    expand(row, expanded) {
+      if (expanded) {
+        row.children.forEach((item) => {
+          console.log(item.orgId);
+          if (item.okrProgress > 0) {
+            this.$nextTick(() => {
+              this.$refs[`process${item.orgId}${item.okrProgress}`].changeWidth();
+            });
+          }
+        });
+      }
     },
   },
   watch: {},
