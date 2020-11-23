@@ -820,7 +820,7 @@ export default {
           thought.randomId = Math.random().toString(36).substr(3);
         });
       } else {
-        this.addThought();
+        // this.addThought();
       }
     },
     setNextWeekPlan() {
@@ -830,7 +830,7 @@ export default {
           plan.randomId = Math.random().toString(36).substr(3);
         });
       } else {
-        this.addNextWeekWork();
+        // this.addNextWeekWork();
       }
     },
     setTimeList(weekList) {
@@ -1174,6 +1174,18 @@ export default {
   },
 
   watch: {
+    canUpdate: {
+      handler(newVal) {
+        if (newVal) {
+          if (this.weeklyPlanSaveList.length < 1) {
+            this.addNextWeekWork();
+          }
+          if (this.weeklyThoughtSaveList.length < 1) {
+            this.addThought();
+          }
+        }
+      },
+    },
     weeklyWorkVoSaveList: {
       handler(tableData) {
         // *****************将本周未完成任务自动同步至下周计划*************
