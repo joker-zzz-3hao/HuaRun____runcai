@@ -1125,16 +1125,6 @@ export default {
       const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
       return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
     },
-    // noCheck(workItem) {
-    //   if (workItem && workItem.weekList.length > 0) {
-    //     debugger;
-    //     if (this.hasValue(workItem.weekList[0].weekStatus) && [0, 1, 2].includes(workItem.weekList[0].weekStatus)) {
-    //       return false;
-    //     }
-    //     return true;
-    //   }
-    //   return true;
-    // },
   },
   watch: {
     weeklyWorkVoSaveList: {
