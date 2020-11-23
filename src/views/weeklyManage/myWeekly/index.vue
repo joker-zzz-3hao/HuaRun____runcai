@@ -2,71 +2,28 @@
   <div class="my-weekly">
     <div class="operating-area">
       <div class="page-title">我的周报</div>
-      <div class="operating-box" v-if="weeklyTypeList.length > 0">
-        <div
-          class="tl-custom-btn"
-          v-for="item in weeklyTypeList"
-          :key="item"
-          :class="{
-            'is-select': weeklyType == item,
-          }"
-          @click="setWeeklyType(item)"
-        >
-          <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
-        </div>
-      </div>
     </div>
-    <!-- <div class="cont-area" v-show="weeklyTypeList.length > 0"> -->
     <div class="cont-area">
-      <!-- 日期 -->
-      <tl-calendar
-        @setCalendarId="setCalendarId"
-        @getWeeklyById="getWeeklyById"
-      ></tl-calendar>
-      <div class="weekly-area" v-if="newPage">
-        <!-- 以前的周报未填写，友情提示 -->
-        <div v-if="noWrite" class="no-data">
-          <div class="no-data-bg"></div>
-          <div class="no-data-txt">周报未填写</div>
-        </div>
-        <!-- 标准版 -->
-        <div v-if="!noWrite && myOkrLoadFinish && teamOkrLoadFinish">
-          <standard-Weekly
-            :weeklyData="weeklyData"
-            :weeklyType="weeklyType"
-            :calendarId="calendarId"
-            :myOkrList="myOkrList"
-            :orgOkrList="orgOkrList"
-            :originalMyOkrList="originalMyOkrList"
-            :originalOrgOkrList="originalOrgOkrList"
-            :orgOkrPeriodList="orgOkrPeriodList"
-            :myOkrPeriodList="myOkrPeriodList"
-            :cultureList="cultureList"
-            :projectList="projectList"
-            :canEdit="canEdit"
-            @refreshMyOkr="refreshMyOkr"
-            :timeDisabled="timeDisabled"
-            :configItemCodeOKR="configItemCodeOKR"
-            v-if="weeklyType == '1'"
-          ></standard-Weekly>
-          <!-- 简单版 -->
-          <simple-weekly
-            :weeklyData="weeklyData"
-            :weeklyType="weeklyType"
-            :calendarId="calendarId"
-            :myOkrList="myOkrList"
-            :orgOkrList="orgOkrList"
-            :originalMyOkrList="originalMyOkrList"
-            :originalOrgOkrList="originalOrgOkrList"
-            :orgOkrPeriodList="orgOkrPeriodList"
-            :myOkrPeriodList="myOkrPeriodList"
-            :cultureList="cultureList"
-            :projectList="projectList"
-            :canEdit="canEdit"
-            :configItemCodeOKR="configItemCodeOKR"
-            @refreshMyOkr="refreshMyOkr"
-            v-else
-          ></simple-weekly>
+      <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
+      </tl-calendar-tabs>
+      <div
+        v-for="(week, index) in weekList"
+        v-show="weekIndex == index"
+        :key="week.calendarId"
+      >
+        <div class="weekly-area">
+          <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
+            <div class="no-data-bg"></div>
+            <div class="no-data-txt">周报未填写</div>
+          </div>
+          <div v-else>
+            <standard-Weekly
+              :week="week"
+              :orgOkrList="orgOkrList"
+              @refreshMyOkr="refreshMyOkr"
+              :timeDisabled="timeDisabled"
+            ></standard-Weekly>
+          </div>
         </div>
       </div>
     </div>
@@ -74,168 +31,120 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import standardWeekly from './components/standardWeekly';
-import simpleWeekly from './components/simpleWeekly';
-import calendar from './components/calendar';
+import { mapState, mapMutations } from 'vuex';
+import calendarTabs from '../components/calendarTabs';
 import Server from './server';
+import standardWeekly from './components/standardWeekly';
 
 const server = new Server();
 export default {
-  name: 'myWeekly',
+  name: '',
   components: {
+    'tl-calendar-tabs': calendarTabs,
     'standard-Weekly': standardWeekly,
-    'simple-weekly': simpleWeekly,
-    'tl-calendar': calendar,
+  },
+  props: {
+
   },
   data() {
     return {
       server,
-      newPage: false,
+      monthDate: this.dateFormat('YYYY-mm-dd', new Date()), // 初始化日期
+      calendarId: '', // 日历Id
+      weekIndex: undefined,
+      currentMonthWeekList: [],
+      afterDisabled: {
+        disabledDate: (date) => {
+          const now = new Date('2020-01-01');
+          return date.getTime() > new Date().getTime() || now.getTime() > date.getTime();
+        },
+      },
       noWrite: false,
-      calendarId: '',
-      weeklyType: '',
-      // weeklyTypeList: [],
-      weeklyData: {},
-      myOkrList: [],
-      orgOkrList: [],
-      originalMyOkrList: [],
-      originalOrgOkrList: [],
-      orgOkrPeriodList: [],
-      myOkrPeriodList: [],
-      teamOkrLoadFinish: false,
-      myOkrLoadFinish: false,
-      cultureList: [],
-      canEdit: false,
-      weeklyTypeList: [],
+
       timeDisabled: false,
-      orgId: '',
-      projectList: [],
-      configItemCodeOKR: '',
     };
   },
   created() {
-    this.init();
+  //  查询项目
+    this.getProjectList();
+    // 查询个人okr
+    this.queryPersonalOkr();
+    // 查询团队okr
+    this.queryTeamOkr();
+    // 价值观
+    this.getValues();
+    // 查询okr配置
+    this.getOkrConfig();
+    this.getWeeklyTypeConfig();
+  },
+  mounted() {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+    ...mapState('weekly', {
+      weekList: (state) => state.weekList,
+      orgOkrList: (state) => state.orgOkrList,
+      weeklyType: (state) => state.weeklyType,
+    }),
+    isChecked() {
+      return (weeklyId) => {
+        if (weeklyId) {
+          return true;
+        }
+        return false;
+      };
+    },
   },
   methods: {
-    init() {
-      this.queryPersonalOkr();
-      this.queryTeamOkr();
-      this.getValues();
-      this.getProjectList();
-      // 周报关联okr配置查询
-      this.server.getTypeConfig({
-        configType: 'OKR',
-        configTypeDetail: 'O-2',
-        level: 'T',
-        sourceId: this.userInfo.tenantId,
-      }).then((res) => {
-        if (res.code == 200) {
-          if (!!res.data && res.data.length > 0) {
-            this.configItemCodeOKR = res.data[0].configItemCode;
-          } else {
-            this.configItemCodeOKR = 'S';
-          }
-        }
-      });
-    },
-    refreshMyOkr() {
-      this.teamOkrLoadFinish = false;
-      this.myOkrLoadFinish = false;
-      this.queryPersonalOkr();
-      this.queryTeamOkr();
-    },
-    getValues() {
-      this.server.getValues().then((res) => {
-        if (res.code == 200) {
-          this.cultureList = res.data;
-        }
-      });
-    },
+    ...mapMutations('weekly',
+      [
+        'setOriginalOrgOkrList',
+        'setOrgOkrPeriodList',
+        'setOrgOkrList',
+        'setMyOkrList',
+        'setMyOkrPeriodList',
+        'setProjectList',
+        'setOriginalMyOkrList',
+        'setCultureList',
+        'setConfigItemCodeOKR',
+        'setWeeklyTypeList',
+      ]),
     getProjectList() {
       if (this.hasPower('weekly-project-query')) {
         this.server.queryOrgProject({ flag: '0' }).then((res) => {
           if (res.code == 200) {
-            this.projectList = res.data;
+            this.setProjectList(res.data);
           }
         });
       }
     },
-    // queryTeamOkr() {
-    //   if (this.roleCode.includes('ORG_ADMIN') && this.userInfo.orgParentName) {
-    //     this.departmentName = this.userInfo.orgParentName;
-    //     this.orgId = this.userInfo.orgParentId;
-    //   } else {
-    //     this.departmentName = this.userInfo.orgName || '部门';
-    //     this.orgId = this.userInfo.orgId;
-    //   }
-    //   const params = {
-    //     myOrOrg: 'org',
-    //     status: '1',
-    //     orgId: this.orgId,
-    //   };
-    //   this.server.getorgOkr(params).then((res) => {
-    //     if (res.code == 200) {
-    //       // 团队目标
-    //       this.orgOkrList = [];
-    //       this.originalOrgOkrList = res.data.okrDetails;
-    //       if (this.originalOrgOkrList) {
-    //         this.setMyOrOrgOkrList(this.originalOrgOkrList, 'org');
-    //       }
-    //     }
-    //   });
-    // },
-    queryTeamOkr() {
-      this.originalOrgOkrList = [];
-      this.orgOkrPeriodList = [];
-      this.server.getOrgOkr({ okrBelongType: 1 }).then((res) => {
-        if (res.code == 200) {
-          // 将所有团队目标、周期整合到一个数组
-          if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
-            res.data.parentUndertakeOkrInfoResults.forEach((element) => {
-              // 周期
-              this.orgOkrPeriodList.push(element.okrPeriodEntity);
-              element.okrList.forEach((okr) => {
-                okr.periodId = element.okrPeriodEntity.periodId;
-              });
-              this.originalOrgOkrList = [...this.originalOrgOkrList, ...element.okrList];
-            });
-            if (this.originalOrgOkrList) {
-              this.setOrgOkrList(this.originalOrgOkrList);
-            }
-          }
-          this.teamOkrLoadFinish = true;
-        }
-      });
-    },
     queryPersonalOkr() {
-      this.originalMyOkrList = [];
-      this.myOkrPeriodList = [];
+      let originalMyOkrList = [];
+      const myOkrPeriodList = [];
       this.server.queryPersonalOkr().then((res) => {
         if (res.code == 200) {
           // 将所有个人目标、周期整合到一个数组
           if (res.data && res.data.length > 0) {
             res.data.forEach((element) => {
               // 周期
-              this.myOkrPeriodList.push(element.okrMain);
+              myOkrPeriodList.push(element.okrMain);
               element.okrDetails.forEach((okr) => {
                 okr.periodId = element.okrMain.periodId;
               });
-              this.originalMyOkrList = [...this.originalMyOkrList, ...element.okrDetails];
+              originalMyOkrList = [...originalMyOkrList, ...element.okrDetails];
             });
-            if (this.originalMyOkrList) {
-              this.setMyOkrList(this.originalMyOkrList);
+            if (originalMyOkrList) {
+              this.getMyOkrList(originalMyOkrList);
             }
           }
-          this.myOkrLoadFinish = true;
+          this.setOriginalMyOkrList(originalMyOkrList);
+          this.setMyOkrPeriodList(myOkrPeriodList);
         }
       });
     },
-    setMyOkrList(okrDetails) {
+    getMyOkrList(okrDetails) {
       const tempResult = [];
-      // if (orgOrMy == 'org') {
-      //   tempResult = this.orgOkrList;
-      // }
       for (const okr of okrDetails) {
         okr.indexText = '目标O';
         this.$set(okr, 'okrType', 'O');
@@ -252,13 +161,34 @@ export default {
           }
         }
       }
-      this.myOkrList = [...tempResult];
+      this.setMyOkrList(tempResult);
     },
-    setOrgOkrList(okrDetails) {
+    queryTeamOkr() {
+      let originalOrgOkrList = [];
+      const orgOkrPeriodList = [];
+      this.server.getOrgOkr({ okrBelongType: 1 }).then((res) => {
+        if (res.code == 200) {
+          // 将所有团队目标、周期整合到一个数组
+          if (res.data.parentUndertakeOkrInfoResults && res.data.parentUndertakeOkrInfoResults.length > 0) {
+            res.data.parentUndertakeOkrInfoResults.forEach((element) => {
+              // 周期
+              orgOkrPeriodList.push(element.okrPeriodEntity);
+              element.okrList.forEach((okr) => {
+                okr.periodId = element.okrPeriodEntity.periodId;
+              });
+              originalOrgOkrList = [...originalOrgOkrList, ...element.okrList];
+            });
+            if (originalOrgOkrList) {
+              this.getOrgOkrList(originalOrgOkrList);
+            }
+          }
+          this.setOriginalOrgOkrList(originalOrgOkrList);
+          this.setOrgOkrPeriodList(orgOkrPeriodList);
+        }
+      });
+    },
+    getOrgOkrList(okrDetails) {
       const tempResult = [];
-      // if (orgOrMy == 'org') {
-      //   tempResult = this.orgOkrList;
-      // }
       for (const okr of okrDetails) {
         okr.o.indexText = '目标O';
         this.$set(okr.o, 'okrType', 'O');
@@ -275,106 +205,84 @@ export default {
           }
         }
       }
-      this.orgOkrList = [...tempResult];
+      this.setOrgOkrList(tempResult);
     },
-    newEdit(item) {
-      const now = new Date().getTime();
-      const weekBegin = new Date(item.weekBegin).getTime();
-      const weekEnd = new Date(item.weekEnd).getTime();
-      if (weekBegin < now && now < weekEnd) {
-        return true;
-      }
-      return false;
-    },
-    getWeeklyById(item) {
-      this.newPage = false;// 防止日历标签间点击页面闪烁
-      this.noWrite = false;
-      this.timeDisabled = this.newEdit(item);
-      this.canEdit = item.canEdit;
-      this.weeklyTypeList = [];
-      // 每次切换周报日期，则重新刷新okr数据，防止上次数据篡改
-      // this.queryPersonalOkr();
-      this.weeklyData = {};
-      if (item.weeklyId) {
-        if (this.hasPower('weekly-detail-query')) {
-          this.server.queryWeekly({ weeklyId: item.weeklyId }).then((res) => {
-            if (res.code == 200) {
-              this.weeklyType = String(res.data.weeklyType);
-              this.weeklyData = res.data;
-            }
-            this.newPage = false;// 清空页面实例，重新加载新页面
-            this.$nextTick(() => {
-              this.newPage = true;
-            });
-            this.getTypeConfig();// 在这调用，防止俩标签闪烁
-          });
+    getValues() {
+      this.server.getValues().then((res) => {
+        if (res.code == 200) {
+          this.setCultureList(res.data);
         }
-      } else if (!item.weeklyId && !this.timeDisabled) { // 以前的周 未填写周报
-        this.newPage = false;// 清空页面实例，重新加载新页面
-        this.$nextTick(() => {
-          this.newPage = true;
-        });
-        this.noWrite = true;
-        this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
-      } else {
-        this.newPage = false;// 清空页面实例，重新加载新页面
-        this.$nextTick(() => {
-          this.newPage = true;
-        });
-        this.getTypeConfig('noWrite');// 在这调用，防止俩标签闪烁
+      });
+    },
+    // 周报关联okr配置查询
+    getOkrConfig() {
+      let configItemCodeOKR = 'S';
+      this.server.getTypeConfig({
+        configType: 'OKR',
+        configTypeDetail: 'O-2',
+        level: 'T',
+        sourceId: this.userInfo.tenantId,
+      }).then((res) => {
+        if (res.code == 200) {
+          if (!!res.data && res.data.length > 0) {
+            configItemCodeOKR = res.data[0].configItemCode;
+          }
+        }
+        this.setConfigItemCodeOKR(configItemCodeOKR);
+      });
+    },
+    refreshMyOkr() {
+
+    },
+    seclectBtn(item) {
+      if (item.noOpen) {
+        return;
+      }
+      this.$emit('setCalendarId', item.calendarId);
+      this.weekList.forEach((week) => {
+        week.btnType = '';
+      });
+      item.btnType = 'success';
+      this.$forceUpdate();
+      this.$emit('getWeeklyById', item);
+    },
+
+    getWeekItem(item, index) {
+      if (item.calendarId) {
+        const beg = item.weekBegin.split('-').splice(1, 2).join('/');
+        const end = item.weekEnd.split('-').splice(1, 2).join('/');
+        return `第${index + 1}周(${beg}-${end})`;
       }
     },
-    getTypeConfig(writeStatus) {
+    goCurrentWeek() {
+      this.getWeek(this.dateFormat('YYYY-mm-dd', new Date()));
+    },
+
+    getWeeklyTypeConfig() {
+      let weeklyTypeListTemp = [];
       this.server.getTypeConfig({
         sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
       }).then((res) => {
         if (res.code == 200) {
           if (res.data.length > 0) {
-            this.weeklyTypeList = res.data[0].configItemCode.split(',');
+            weeklyTypeListTemp = res.data[0].configItemCode.split(',');
           } else {
-            this.weeklyTypeList = ['1', '2'];
+            weeklyTypeListTemp = ['1', '2'];
           }
         }
-        // 未提交周报时，给周报模式赋值
-        if (writeStatus && writeStatus == 'noWrite') { // 没提交周报
-          if (this.weeklyTypeList.includes('1')) {
-            this.weeklyType = '1';
-          } else {
-            this.weeklyType = '2';
-          }
-        } else { // 提交了周报
-          this.weeklyTypeList = [this.weeklyType];
-        }
-        this.$forceUpdate();
+        this.setWeeklyTypeList(weeklyTypeListTemp);
       });
     },
-    setCalendarId(id) {
-      this.calendarId = id;
-    },
-    standard() {
-      this.weeklyType = '1';
-    },
-    simple() {
-      this.weeklyType = '2';
-    },
-    setWeeklyType(data) {
-      this.weeklyType = data;
-    },
-    handleClick() {},
   },
-  computed: {
-    ...mapState('common', {
-      userInfo: (state) => state.userInfo,
-      roleCode: (state) => state.roleCode,
-    }),
+  watch: {
+    weekIndex: {
+      handler(val) {
+        console.log(val);
+      },
+    },
+
   },
+  updated() {},
+  beforeDestroy() {},
 };
 </script>
-<style lang="css" stylus>
-.is-stantard {
-  background: green;
-}
-.is-simple {
-  background: green;
-}
-</style>

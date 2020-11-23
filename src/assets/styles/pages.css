@@ -1742,6 +1742,43 @@
   margin-left: 6px !important;
 }
 
+.okr-maps .prefer-text{
+  color: #685df1;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.set-period .el-dialog__body {
+  height: 300px;
+  overflow: hidden;
+}
+
+.set-period .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+.set-period .el-scrollbar__view {
+  padding: 0 14px 0 0;
+}
+.set-period dl {
+ margin: 0 0 20px 0;
+}
+
+.set-period dl dd {
+ margin: 5px 0 0 0;
+ font-size: 12px;
+  color: #bdc5cd;
+}
+
+.set-period .el-radio-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.set-period .el-radio-group .tl-radio{
+  margin: 0 0 7px 0;
+}
+
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
@@ -2798,6 +2835,26 @@
   padding: 20px;
   border-radius: 4px;
   background: #fff;
+}
+
+.my-weekly .tl-custom-tabs {
+  display: flex;
+  align-items: center;
+}
+
+.my-weekly .tl-month-editor .el-input__inner {
+  position: relative;
+  border-color: transparent;
+}
+
+.my-weekly .tl-month-editor {
+  display: flex;
+  align-items: center;
+}
+
+.my-weekly .tl-month-editor::before {
+  content: '';
+  z-index: 10;
 }
 
 .calendar-select,

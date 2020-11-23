@@ -25,7 +25,8 @@
 .gave-praise i,
 .menu-control-button i,
 .icon-remind::before,
-.icon-help::before {
+.icon-help::before,
+.my-weekly .tl-month-editor::before {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -179,23 +180,30 @@
 
 /* 周报心情 */
 .mood i:first-child {
-  background-position-x: -10px;
+  width: 28px;
+  height: 28px;
+  background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
+  background-size: 182px 410px;
+}
+
+.mood i:first-child {
+  background-position-x: -9px;
 }
 
 .mood .is-selected i:first-child {
-  background-position-x: -70px;
+  background-position-x: -54px;
 }
 
 .mood .has-harvest i:first-child {
-  background-position-y: -70px;
+  background-position-y: -54px;
 }
 
 .mood .not-too-bad i:first-child {
-  background-position-y: -130px;
+  background-position-y: -100px;
 }
 
 .mood .let-quiet i:first-child {
-  background-position-y: -190px;
+  background-position-y: -145px;
 }
 
 .mood .has-harvest i:last-child {
@@ -366,4 +374,8 @@
   content: '';
   background-position-x: -6px;
   background-position-y: -607px;
+}
+
+.my-weekly .tl-month-editor::before {
+  background-position-y: -870px;
 }
