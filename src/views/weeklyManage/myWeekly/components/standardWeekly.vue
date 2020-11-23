@@ -13,7 +13,7 @@
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
     </div>
-    <div>{{ getWeekItem() }}</div>
+    <div class="weekly-title">{{ getWeekItem() }}</div>
     <div class="weekly-cont">
       <el-form
         ref="work"

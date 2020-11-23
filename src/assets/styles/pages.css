@@ -3304,6 +3304,13 @@
   top: 0;
 }
 
+.weekly-title {
+  margin: 0 0 18px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #222426;
+}
+
 .write-weekly > .operating-box .tl-custom-btn {
   cursor: pointer;
 }
