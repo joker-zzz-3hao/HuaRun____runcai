@@ -3346,11 +3346,16 @@
 .weekly-cont .form-item-group:last-child .el-form-item__label {
   flex: 0;
   flex-basis: 126px;
-  width: unset !important;
+  width: 126px !important;
+  min-width: 126px;
 }
 
 .weekly-cont .form-item-group:last-child {
-  flex: 0 0 40%;
+  flex: 0 0 45%;
+}
+
+.weekly-cont .form-item-group .tl-progress-group {
+  margin: 0 0 0 10px;
 }
 
 .write-weekly > .operating-box .tl-custom-btn {
