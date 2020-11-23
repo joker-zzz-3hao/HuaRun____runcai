@@ -632,6 +632,12 @@ export default {
         return {};
       },
     },
+    weeklyTypeList: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {

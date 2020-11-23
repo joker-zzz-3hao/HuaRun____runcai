@@ -18,7 +18,9 @@
           </div>
           <div v-else>
             <standard-Weekly
+              v-if="weeklyTypeList.length > 0"
               :week="week"
+              :weeklyTypeList="weeklyTypeList"
               :orgOkrList="orgOkrList"
               @refreshMyOkr="refreshMyOkr"
               :timeDisabled="timeDisabled"
@@ -86,6 +88,7 @@ export default {
       weekList: (state) => state.weekList,
       orgOkrList: (state) => state.orgOkrList,
       weeklyType: (state) => state.weeklyType,
+      weeklyTypeList: (state) => state.weeklyTypeList,
     }),
     isChecked() {
       return (weeklyId) => {
