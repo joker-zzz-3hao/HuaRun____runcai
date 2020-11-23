@@ -3315,24 +3315,6 @@
   cursor: pointer;
 }
 
-.weekly-cont > .el-form {
-  padding: 20px;
-  background: #f4f6f8;
-}
-
-.weekly-cont .item-title {
-  display: flex;
-  align-items: center;
-  color: #4d5155;
-  font-weight: 500;
-}
-
-.weekly-cont .form-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
 .okr-completion .tl-progress-group>span:first-child {
   margin: 0 10px 0 0;
   flex: 0 0 60px;
