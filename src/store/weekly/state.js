@@ -11,6 +11,5 @@ export default {
   cultureList: [],
   configItemCodeOKR: '',
   // weeklyType: '',
-  weeklyTypeList: [],
   currentWeek: {},
 };

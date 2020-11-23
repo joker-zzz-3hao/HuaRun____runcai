@@ -156,7 +156,7 @@
                 >添加工时</el-button
               >
               <el-cascader
-                v-if="canUpdate && workForm.noCheck"
+                v-show="canUpdate && workForm.noCheck"
                 :ref="workForm.randomId"
                 v-model="workForm.timeList"
                 :options="weekDataList"
@@ -635,9 +635,9 @@ export default {
       },
     },
     weeklyTypeList: {
-      type: Object,
+      type: Array,
       default() {
-        return {};
+        return [];
       },
     },
   },
@@ -774,7 +774,7 @@ export default {
       this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
       if (this.weeklyWorkVoSaveList && this.weeklyWorkVoSaveList.length > 0) {
         this.weeklyWorkVoSaveList.forEach((element) => {
-          this.$set(element, 'randomId', Math.random().toString(36).substr(3));
+          this.$set(element, 'randomId', element.workId);
           const valueIdList = [];
           const okrIdList = [];
           element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
@@ -809,7 +809,6 @@ export default {
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
-          this.$forceUpdate();
         });
       }
       this.$forceUpdate();
@@ -893,44 +892,6 @@ export default {
       }
       return result;
     },
-    selectWeekData111(workItem) {
-      workItem.weekList = [];
-      const dayList = [];
-      let daySet = [];
-      const dayAndTimeTypeList = [];
-      workItem.timeList.forEach((day) => {
-        // 日期遍历
-        dayList.push(day[0]);
-      });
-      // 去重
-      daySet = Array.from(new Set(dayList));
-      // 将同一天的数据合并为一条数据
-      daySet.forEach((item) => {
-        dayAndTimeTypeList.push({
-          date: item,
-          timeTypeList: [],
-        });
-        workItem.timeList.forEach((day) => {
-          if (day[0] == item) {
-            dayAndTimeTypeList[daySet.indexOf(item)].timeTypeList.push(day[1]);
-          }
-        });
-      });
-      // 将选中的数据转换成后端数据格式
-      // workItem.weekListCopy = [];
-      dayAndTimeTypeList.forEach((element) => {
-        const begindate = new Date(this.week.weekBegin);
-        begindate.setDate(begindate.getDate() + Number(element.date) - 1);
-        element.timeTypeList.forEach((timeType) => {
-          workItem.weekList.push({
-            weekDate: this.dateFormat('YYYY-mm-dd', begindate),
-            weekTimeType: timeType,
-          });
-        });
-      });
-      this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekListCopy));
-      this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
-    },
     selectedNodes(workItem) {
       let selectedList = [];
       const self = this;
@@ -990,6 +951,7 @@ export default {
       this.weeklyWorkVoSaveList = this.weeklyWorkVoSaveList.filter(
         (thisWeek) => thisWeek.randomId != item.randomId,
       );
+      this.visibleChange(item);
     },
     deletePlanItem(item) {
     // 本地数据
@@ -1147,7 +1109,15 @@ export default {
       this.showEmotionError = false;
     },
     setDisabledSelectedData(list) {
-    // 1、先将所有数据disabled状态置为false
+      // 1、先将所有数据disabled状态置为false
+      this.weekDataList.forEach((day) => {
+        day.disabled = false;
+        if (day.children && day.children.length > 0) {
+          day.children.forEach((dayChild) => {
+            dayChild.disabled = false;
+          });
+        }
+      });
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
           day.disabled = false;
@@ -1178,7 +1148,9 @@ export default {
       this.$nextTick(() => {
         self.weeklyWorkVoSaveList.forEach((item) => {
           if (item.randomId != workForm.randomId) {
-            selectedList = [...selectedList, ...item.selectedNodeList];
+            if (item.selectedNodeList) {
+              selectedList = [...selectedList, ...item.selectedNodeList];
+            }
           }
         });
         // 遍历级联框数据，将整理好的数据禁用

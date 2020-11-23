@@ -62,8 +62,8 @@ export default {
         },
       },
       noWrite: false,
-
       timeDisabled: false,
+      weeklyTypeList: [],
     };
   },
   created() {
@@ -88,7 +88,6 @@ export default {
       weekList: (state) => state.weekList,
       orgOkrList: (state) => state.orgOkrList,
       weeklyType: (state) => state.weeklyType,
-      weeklyTypeList: (state) => state.weeklyTypeList,
     }),
     isChecked() {
       return (weeklyId) => {
@@ -111,7 +110,6 @@ export default {
         'setOriginalMyOkrList',
         'setCultureList',
         'setConfigItemCodeOKR',
-        'setWeeklyTypeList',
       ]),
     getProjectList() {
       if (this.hasPower('weekly-project-query')) {
@@ -262,21 +260,21 @@ export default {
     },
 
     getWeeklyTypeConfig() {
-      let weeklyTypeListTemp = [];
+      let temp = [];
       this.server.getTypeConfig({
         sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
       }).then((res) => {
         if (res.code == 200) {
           if (res.data.length > 0) {
-            weeklyTypeListTemp = res.data[0].configItemCode.split(',');
-            if (weeklyTypeListTemp.length == 2) {
-              weeklyTypeListTemp = ['1', '2'];
+            temp = res.data[0].configItemCode.split(',');
+            if (temp.length == 2) {
+              temp = ['1', '2'];
             }
           } else {
-            weeklyTypeListTemp = ['1', '2'];
+            temp = ['1', '2'];
           }
         }
-        this.setWeeklyTypeList(weeklyTypeListTemp);
+        this.weeklyTypeList = temp;
       });
     },
   },
