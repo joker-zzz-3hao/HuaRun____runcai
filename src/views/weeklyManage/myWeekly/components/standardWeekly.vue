@@ -770,6 +770,7 @@ export default {
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
+          this.$forceUpdate();
         });
       }
       this.$forceUpdate();
@@ -1159,10 +1160,10 @@ export default {
         this.showTaskProcess = false;
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
-          // 临时项目反显
-          // if (data.workId && !data.projectId) {
-          //   data.validateProjectId = '临时项目';
-          // }
+          // this.$nextTick(() => {
+          //   this.$set(data, 'selectedNodeList', this.selectedNodes(data));
+          // });
+
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
