@@ -817,6 +817,13 @@ export default {
       let manHourSet = [];
       const dayAndTimeTypeList = [];
       manHourList.forEach((manHour) => {
+        // 日期遍历
+        dayList.push(manHour.weekDate);
+      });
+      // 去重
+      manHourSet = Array.from(new Set(dayList));
+
+      manHourSet.forEach((manHour) => {
         dayAndTimeTypeList.push({
           date: manHour,
           timeTypeList: [],
