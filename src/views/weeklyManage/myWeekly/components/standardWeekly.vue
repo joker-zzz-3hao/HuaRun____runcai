@@ -21,207 +21,240 @@
         :model="workForm"
         :key="workForm.randomId"
         v-for="workForm in weeklyWorkVoSaveList"
-        label-width="130px"
+        label-width="70px"
+        class="tl-form"
       >
-        <el-tooltip
-          class="icon-clear"
-          :class="{
-            'is-disabled': weeklyWorkVoSaveList.length == 1,
-          }"
-          effect="dark"
-          :content="
-            weeklyWorkVoSaveList.length > 1 ? '删除' : '至少有一条工作项'
-          "
-          placement="top"
-          popper-class="tl-tooltip-popper"
-          @click.native="
-            weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
-          "
-        >
-          <i v-show="canUpdate && workForm.noCheck" class="el-icon-delete"></i>
-        </el-tooltip>
-        <el-form-item
-          prop="workContent"
-          label="工作项"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [
-                  {
-                    required: true,
-                    validator: validateWorkContent,
-                    trigger: 'blur',
-                  },
-                ]
-              : []
-          "
-        >
-          <el-input
-            :autosize="{ minRows: 1, maxRows: 8 }"
-            type="textarea"
-            maxlength="50"
-            v-if="canUpdate && workForm.noCheck"
-            clearable
-            placeholder="简短概括任务"
-            class="tl-textarea"
-            v-model="workForm.workContent"
-          ></el-input>
-          <em v-else> {{ workForm.workContent }}</em>
-        </el-form-item>
-        <el-form-item label="内容" v-show="weeklyType == 1">
-          <el-input
-            v-model="workForm.workDesc"
-            :autosize="{ minRows: 1, maxRows: 8 }"
-            type="textarea"
-            v-if="canUpdate && workForm.noCheck"
-            placeholder="请描述任务项"
-            class="tl-textarea"
-            clearable
-            maxlength="500"
-          ></el-input>
-          <em v-else> {{ workForm.workDesc }}</em>
-        </el-form-item>
-        <el-form-item
-          label="进度"
-          prop="workProgress"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [
-                  {
-                    required: true,
-                    validator: validateProcess,
-                    trigger: 'change',
-                  },
-                ]
-              : []
-          "
-        >
-          <div class="tl-progress-group">
-            <tl-process
-              :data="parseInt(Number(workForm.workProgress), 10)"
-              :showNumber="!canUpdate && workForm.noCheck"
-              :width="30"
-              :marginLeft="2"
-            ></tl-process>
-            <!-- kr支持更改进度 -->
-            <el-slider
-              v-if="canUpdate && workForm.noCheck"
-              v-model.number="workForm.workProgress"
-              :step="1"
-              @change="processChange(workForm)"
-              tooltip-class="slider-tooltip"
-            ></el-slider>
-            <el-input-number
-              v-if="canUpdate && workForm.noCheck"
-              v-model.number="workForm.workProgress"
-              controls-position="right"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
-              class="tl-input-number"
-              @blur="progressAfterBlur(item)"
-            ></el-input-number>
-          </div>
-        </el-form-item>
-        <el-form-item
-          label="工时"
-          class="time-cascader"
-          prop="timeList"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, validator: validateTime, trigger: 'change' }]
-              : []
-          "
-        >
-          <span v-for="(text, index) in workForm.timeSpanList" :key="index"
-            >{{ text }}
-          </span>
-          <el-button type="text" v-if="canUpdate && workForm.noCheck"
-            >添加工时</el-button
+        <div class="flex-sb">
+          <div class="item-title"><i></i><span>工作项</span><em>1</em></div>
+          <el-tooltip
+            class="icon-clear"
+            :class="{
+              'is-disabled': weeklyWorkVoSaveList.length == 1,
+            }"
+            effect="dark"
+            :content="
+              weeklyWorkVoSaveList.length > 1 ? '删除' : '至少有一条工作项'
+            "
+            placement="top"
+            popper-class="tl-tooltip-popper"
+            @click.native="
+              weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
+            "
           >
-          <el-cascader
-            v-if="canUpdate && workForm.noCheck"
-            :ref="workForm.randomId"
-            v-model="workForm.timeList"
-            :options="weekDataList"
-            :props="props"
-            placeholder="添加工时"
-            collapse-tags
-            @visible-change="visibleChange(workForm)"
-            @change="selectWeekData(workForm)"
-          ></el-cascader>
-        </el-form-item>
-        <el-form-item
-          label="项目"
-          prop="projectId"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, message: '请选择项目', trigger: 'change' }]
-              : []
-          "
-        >
-          <el-select
-            v-if="canUpdate && workForm.noCheck"
-            v-model="workForm.projectId"
-            placeholder="请选择关联项目"
-            @change="projectChange(workForm)"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in projectList"
-              :key="item.projectId"
-              :label="item.projectNameCn"
-              :value="item.projectId"
+            <i
+              v-show="canUpdate && workForm.noCheck"
+              class="el-icon-delete"
+            ></i>
+          </el-tooltip>
+        </div>
+        <div class="form-item">
+          <div class="form-item-group">
+            <el-form-item
+              prop="workContent"
+              label="工作项"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateWorkContent,
+                        trigger: 'blur',
+                      },
+                    ]
+                  : []
+              "
             >
-            </el-option>
-          </el-select>
-          <em v-else>{{ workForm.projectNameCn }}</em>
-        </el-form-item>
-        <el-form-item
-          label="支撑OKR/价值观"
-          prop="valueOrOkrIds"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, validator: validateOkr, trigger: 'change' }]
-              : []
-          "
-        >
-          <div class="tag-group">
-            <ul class="tag-lists">
               <el-input
-                v-show="false"
-                v-model="workForm.valueOrOkrIds"
+                :autosize="{ minRows: 1, maxRows: 8 }"
+                type="textarea"
+                maxlength="50"
+                v-if="canUpdate && workForm.noCheck"
+                clearable
+                placeholder="简短概括任务"
+                class="tl-textarea"
+                v-model="workForm.workContent"
               ></el-input>
-              <li v-for="item in workForm.selectedOkr" :key="item.okrDetailId">
-                <el-tooltip
-                  class="select-values"
-                  effect="dark"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                >
-                  <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                  <em
-                    v-if="canUpdate && workForm.noCheck"
-                    @click="addSupportOkr(workForm)"
-                    >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
-                  >
-                  <em v-else>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
-                </el-tooltip>
-              </li>
-              <li
-                class="icon-bg"
-                v-if="
-                  workForm.selectedOkr.length < 1 &&
-                  canUpdate &&
-                  workForm.noCheck
-                "
-                @click="addSupportOkr(workForm)"
-              >
-                <i class="el-icon-plus"></i>
-              </li>
-            </ul>
+              <em v-else> {{ workForm.workContent }}</em>
+            </el-form-item>
+            <el-form-item label="内容" v-show="weeklyType == 1">
+              <el-input
+                v-model="workForm.workDesc"
+                :autosize="{ minRows: 5 }"
+                type="textarea"
+                v-if="canUpdate && workForm.noCheck"
+                placeholder="请描述任务项"
+                class="tl-textarea"
+                clearable
+              ></el-input>
+              <em v-else> {{ workForm.workDesc }}</em>
+            </el-form-item>
           </div>
-        </el-form-item>
+          <div class="form-item-group">
+            <el-form-item
+              label="进度"
+              prop="workProgress"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateProcess,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <div class="tl-progress-group">
+                <tl-process
+                  :data="parseInt(Number(workForm.workProgress), 10)"
+                  :showNumber="!canUpdate && workForm.noCheck"
+                  :width="30"
+                  :marginLeft="2"
+                ></tl-process>
+                <!-- kr支持更改进度 -->
+                <el-slider
+                  v-if="canUpdate && workForm.noCheck"
+                  v-model.number="workForm.workProgress"
+                  :step="1"
+                  @change="processChange(workForm)"
+                  tooltip-class="slider-tooltip"
+                ></el-slider>
+                <el-input-number
+                  v-if="canUpdate && workForm.noCheck"
+                  v-model.number="workForm.workProgress"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                  class="tl-input-number"
+                  @blur="progressAfterBlur(item)"
+                ></el-input-number>
+              </div>
+            </el-form-item>
+            <el-form-item
+              label="工时"
+              class="time-cascader"
+              prop="timeList"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateTime,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <span v-for="(text, index) in workForm.timeSpanList" :key="index"
+                >{{ text }}
+              </span>
+              <el-button type="text" v-if="canUpdate && workForm.noCheck"
+                >添加工时</el-button
+              >
+              <el-cascader
+                v-if="canUpdate && workForm.noCheck"
+                :ref="workForm.randomId"
+                v-model="workForm.timeList"
+                :options="weekDataList"
+                :props="props"
+                placeholder="添加工时"
+                collapse-tags
+                @visible-change="visibleChange(workForm)"
+                @change="selectWeekData(workForm)"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item
+              label="项目"
+              prop="projectId"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        message: '请选择项目',
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <el-select
+                v-if="canUpdate && workForm.noCheck"
+                v-model="workForm.projectId"
+                placeholder="请选择关联项目"
+                @change="projectChange(workForm)"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in projectList"
+                  :key="item.projectId"
+                  :label="item.projectNameCn"
+                  :value="item.projectId"
+                >
+                </el-option>
+              </el-select>
+              <em v-else>{{ workForm.projectNameCn }}</em>
+            </el-form-item>
+            <el-form-item
+              label="支撑OKR/价值观"
+              prop="valueOrOkrIds"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateOkr,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <div class="tag-group">
+                <ul class="tag-lists">
+                  <el-input
+                    v-show="false"
+                    v-model="workForm.valueOrOkrIds"
+                  ></el-input>
+                  <li
+                    v-for="item in workForm.selectedOkr"
+                    :key="item.okrDetailId"
+                  >
+                    <el-tooltip
+                      class="select-values"
+                      effect="dark"
+                      placement="top"
+                      popper-class="tl-tooltip-popper"
+                    >
+                      <em slot="content">{{ item.okrDetailObjectKr }}</em>
+                      <em
+                        v-if="canUpdate && workForm.noCheck"
+                        @click="addSupportOkr(workForm)"
+                        >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
+                      >
+                      <em v-else>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                    </el-tooltip>
+                  </li>
+                  <li
+                    class="icon-bg"
+                    v-if="
+                      workForm.selectedOkr.length < 1 &&
+                      canUpdate &&
+                      workForm.noCheck
+                    "
+                    @click="addSupportOkr(workForm)"
+                  >
+                    <i class="el-icon-plus"></i>
+                  </li>
+                </ul>
+              </div>
+            </el-form-item>
+          </div>
+        </div>
       </el-form>
       <div class="btn-box" v-if="canUpdate">
         <el-button
@@ -1237,26 +1270,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.select-error .el-input__inner {
-  border: 1px solid #f56c6c !important;
-  border-radius: 2px;
-}
-.okr-error {
-  background: #f56c6c !important;
-}
-.time-cascader .el-cascader {
-  margin-left: -56px;
-  width: 60px;
-}
-.time-cascader .el-cascader__tags {
-  display: none;
-}
-.time-cascader .el-cascader .el-input .el-input__inner {
-  border: solid 0px rgb(252, 250, 250);
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.time-cascader .el-input__suffix-inner {
-  display: none;
-}
-</style>

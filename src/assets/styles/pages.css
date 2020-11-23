@@ -3311,6 +3311,27 @@
   color: #222426;
 }
 
+.weekly-cont .tl-form {
+  padding: 20px;
+  background: #f4f6f8;
+}
+
+.weekly-cont .item-title {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+  font-weight: 500;
+}
+
+.weekly-cont .form-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.weekly-cont .form-item-group {
+  flex: 1;
+}
+
 .write-weekly > .operating-box .tl-custom-btn {
   cursor: pointer;
 }
