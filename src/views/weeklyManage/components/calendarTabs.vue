@@ -28,9 +28,7 @@
           <div class="period-time">{{ getWeekItem(item, idx) }}</div>
           <div v-if="!isFromTeam">
             <div class="period-state">
-              <div class="icon-bg">
-                <i></i>
-              </div>
+              <i></i>
               <em v-if="hasValue(item.weeklyId)">已提交</em>
               <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
               <em v-if="item.noOpen">未开放</em>

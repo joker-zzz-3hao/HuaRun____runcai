@@ -3298,6 +3298,16 @@
   margin: 0;
 }
 
+.write-weekly > .operating-box {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.write-weekly > .operating-box .tl-custom-btn {
+  cursor: pointer;
+}
+
 .okr-completion .tl-progress-group>span:first-child {
   margin: 0 10px 0 0;
   flex: 0 0 60px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="write-weekly standard-version">
+  <div class="write-weekly">
     <div class="operating-box">
       <div
         class="tl-custom-btn"

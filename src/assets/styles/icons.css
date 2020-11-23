@@ -28,7 +28,7 @@
 .icon-help::before,
 .my-weekly .tl-month-editor::before,
 .my-weekly .tl-month-editor .el-icon-date,
-.weekly-select .icon-bg i {
+.weekly-select .period-state i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -386,6 +386,20 @@
   background-position-y: -540px;
 }
 
-.weekly-select .is-unsubmit .icon-bg i {
-  background-position-y: -1950px;
+.weekly-select .period-state i {
+  width: 14px;
+  height: 14px;
+  background-position-x: -7px;
+}
+
+.weekly-select .is-unsubmit .period-state i {
+  background-position-y: -1987px;
+}
+
+.weekly-select .is-submit .period-state i {
+  background-position-y: -1957px;
+}
+
+.weekly-select .is-unopen .period-state i {
+  background-position-y: -2017px;
 }
