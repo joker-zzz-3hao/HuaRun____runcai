@@ -28,7 +28,7 @@
         <el-table-column prop="okrProgress" label="进度" width="180">
           <template slot-scope="scope">
             <tl-process
-              :ref="'process' + scope.row.orgId"
+              :ref="'process' + scope.row.orgId + scope.row.okrProgress"
               :data="scope.row.okrProgress"
             ></tl-process>
           </template>
@@ -99,7 +99,7 @@ export default {
         row.children.forEach((item) => {
           console.log(item.orgId);
           this.$nextTick(() => {
-            this.$refs[`process${item.orgId}`].changeWidth();
+            this.$refs[`process${item.orgId}${item.okrProgress}`].changeWidth();
           });
         });
       }
