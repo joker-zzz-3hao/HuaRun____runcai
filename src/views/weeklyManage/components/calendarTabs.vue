@@ -117,7 +117,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeeklyTypeList', 'setWeekList', 'setWeeklyType']),
+    ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
         this.weekIndex = index;

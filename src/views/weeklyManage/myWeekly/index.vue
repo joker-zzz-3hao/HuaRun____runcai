@@ -266,6 +266,9 @@ export default {
         if (res.code == 200) {
           if (res.data.length > 0) {
             weeklyTypeListTemp = res.data[0].configItemCode.split(',');
+            if (weeklyTypeListTemp.length == 2) {
+              weeklyTypeListTemp = ['1', '2'];
+            }
           } else {
             weeklyTypeListTemp = ['1', '2'];
           }
