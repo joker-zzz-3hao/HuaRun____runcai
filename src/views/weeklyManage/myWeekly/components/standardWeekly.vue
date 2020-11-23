@@ -38,13 +38,13 @@
             weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
           "
         >
-          <i v-show="canUpdate && noCheck(workForm)" class="el-icon-delete"></i>
+          <i v-show="canUpdate && workForm.noCheck" class="el-icon-delete"></i>
         </el-tooltip>
         <el-form-item
           prop="workContent"
           label="工作项"
           :rules="
-            canUpdate
+            canUpdate && workForm.noCheck
               ? [
                   {
                     required: true,
@@ -59,7 +59,7 @@
             :autosize="{ minRows: 1, maxRows: 8 }"
             type="textarea"
             maxlength="50"
-            v-if="canUpdate && noCheck(workForm)"
+            v-if="canUpdate && workForm.noCheck"
             clearable
             placeholder="简短概括任务"
             class="tl-textarea"
@@ -72,7 +72,7 @@
             v-model="workForm.workDesc"
             :autosize="{ minRows: 1, maxRows: 8 }"
             type="textarea"
-            v-if="canUpdate && noCheck(workForm)"
+            v-if="canUpdate && workForm.noCheck"
             placeholder="请描述任务项"
             class="tl-textarea"
             clearable
@@ -84,7 +84,7 @@
           label="进度"
           prop="workProgress"
           :rules="
-            canUpdate
+            canUpdate && workForm.noCheck
               ? [
                   {
                     required: true,
@@ -98,20 +98,20 @@
           <div class="tl-progress-group">
             <tl-process
               :data="parseInt(Number(workForm.workProgress), 10)"
-              :showNumber="!canUpdate"
+              :showNumber="!canUpdate && workForm.noCheck"
               :width="30"
               :marginLeft="2"
             ></tl-process>
             <!-- kr支持更改进度 -->
             <el-slider
-              v-if="canUpdate && noCheck(workForm)"
+              v-if="canUpdate && workForm.noCheck"
               v-model.number="workForm.workProgress"
               :step="1"
               @change="processChange(workForm)"
               tooltip-class="slider-tooltip"
             ></el-slider>
             <el-input-number
-              v-if="canUpdate && noCheck(workForm)"
+              v-if="canUpdate && workForm.noCheck"
               v-model.number="workForm.workProgress"
               controls-position="right"
               :min="0"
@@ -128,7 +128,7 @@
           class="time-cascader"
           prop="timeList"
           :rules="
-            canUpdate
+            canUpdate && workForm.noCheck
               ? [{ required: true, validator: validateTime, trigger: 'change' }]
               : []
           "
@@ -136,11 +136,11 @@
           <span v-for="(text, index) in workForm.timeSpanList" :key="index"
             >{{ text }}
           </span>
-          <el-button type="text" v-if="canUpdate && noCheck(workForm)"
+          <el-button type="text" v-if="canUpdate && workForm.noCheck"
             >添加工时</el-button
           >
           <el-cascader
-            v-if="canUpdate && noCheck(workForm)"
+            v-if="canUpdate && workForm.noCheck"
             :ref="workForm.randomId"
             v-model="workForm.timeList"
             :options="weekDataList"
@@ -155,13 +155,13 @@
           label="项目"
           prop="projectId"
           :rules="
-            canUpdate
+            canUpdate && workForm.noCheck
               ? [{ required: true, message: '请选择项目', trigger: 'change' }]
               : []
           "
         >
           <el-select
-            v-if="canUpdate && noCheck(workForm)"
+            v-if="canUpdate && workForm.noCheck"
             v-model="workForm.projectId"
             placeholder="请选择关联项目"
             @change="projectChange(workForm)"
@@ -181,7 +181,7 @@
           label="支撑OKR/价值观"
           prop="valueOrOkrIds"
           :rules="
-            canUpdate
+            canUpdate && workForm.noCheck
               ? [{ required: true, validator: validateOkr, trigger: 'change' }]
               : []
           "
@@ -201,7 +201,7 @@
                 >
                   <em slot="content">{{ item.okrDetailObjectKr }}</em>
                   <em
-                    v-if="canUpdate && noCheck(workForm)"
+                    v-if="canUpdate && workForm.noCheck"
                     @click="addSupportOkr(workForm)"
                     >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
                   >
@@ -213,7 +213,7 @@
                 v-if="
                   workForm.selectedOkr.length < 1 &&
                   canUpdate &&
-                  noCheck(workForm)
+                  workForm.noCheck
                 "
                 @click="addSupportOkr(workForm)"
               >
@@ -223,7 +223,7 @@
           </div>
         </el-form-item>
       </el-form>
-      <div class="btn-box" v-if="canUpdate && noCheck(workForm)">
+      <div class="btn-box" v-if="canUpdate">
         <el-button
           type="text"
           @click="addWork"
@@ -619,7 +619,6 @@ export default {
       weeklyThoughtSaveList: [],
       weeklyPlanSaveList: [],
       weeklyWorkVoSaveList: [],
-
       selectedOkr: [],
       tempResult: [],
       weeklyOkrSaveList: [],
@@ -1109,7 +1108,6 @@ export default {
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
     },
     selectedNodes(workItem) {
-      debugger;
       let selectedList = [];
       const self = this;
       self.weeklyWorkVoSaveList.forEach((element) => {
@@ -1127,18 +1125,16 @@ export default {
       const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
       return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
     },
-    noCheck(workItem) {
-      debugger;
-      if (workItem && workItem.weekList.length > 0) {
-        if (workItem.weekList[0].weekStatus && workItem.weekList[0] == 0) {
-
-        }
-        return true;
-      }
-      return true;
-
-      return false;
-    },
+    // noCheck(workItem) {
+    //   if (workItem && workItem.weekList.length > 0) {
+    //     debugger;
+    //     if (this.hasValue(workItem.weekList[0].weekStatus) && [0, 1, 2].includes(workItem.weekList[0].weekStatus)) {
+    //       return false;
+    //     }
+    //     return true;
+    //   }
+    //   return true;
+    // },
   },
   watch: {
     weeklyWorkVoSaveList: {
@@ -1231,6 +1227,18 @@ export default {
             this.showTaskProcess = true;
           });
         }
+        // 工作项可编辑状态
+        tableData.forEach((workItem) => {
+          if (workItem && workItem.weekList.length > 0) {
+            if (this.hasValue(workItem.weekList[0].weekStatus) && ['1', '2'].includes(workItem.weekList[0].weekStatus)) {
+              workItem.noCheck = false;
+            } else {
+              workItem.noCheck = true;
+            }
+          } else {
+            workItem.noCheck = true;
+          }
+        });
         this.$forceUpdate();
       },
       deep: true,
