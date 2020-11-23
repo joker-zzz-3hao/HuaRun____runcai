@@ -1734,12 +1734,55 @@
   border-bottom-color: #e5e9ee;
 }
 
-.okr-maps .progress-bg {
+.okr-maps .maps-card .progress-bg {
   width: 38px !important;
 }
 
-.okr-maps .progress-bg:not(:first-child) {
+.okr-maps .maps-card .progress-bg:not(:first-child) {
   margin-left: 6px !important;
+}
+.okr-maps .maps-view-table .progress-bg {
+  width: 18px !important;
+}
+
+.okr-maps .maps-view-table .progress-bg:not(:first-child) {
+  margin-left: 3px !important;
+}
+.okr-maps .prefer-text{
+  color: #685df1;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.set-period .el-dialog__body {
+  height: 300px;
+  overflow: hidden;
+}
+
+.set-period .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+.set-period .el-scrollbar__view {
+  padding: 0 14px 0 0;
+}
+.set-period dl {
+ margin: 0 0 20px 0;
+}
+
+.set-period dl dd {
+ margin: 5px 0 0 0;
+ font-size: 12px;
+  color: #bdc5cd;
+}
+
+.set-period .el-radio-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.set-period .el-radio-group .tl-radio{
+  margin: 0 0 7px 0;
 }
 
 /* undertake-maps */
@@ -2800,6 +2843,42 @@
   background: #fff;
 }
 
+.my-weekly .tl-custom-tabs {
+  display: flex;
+  align-items: center;
+}
+
+.my-weekly .tl-month-editor .el-input__inner {
+  padding-left: 6px;
+  position: relative;
+  border-color: transparent;
+  height: 32px;
+}
+
+.my-weekly .tl-month-editor {
+  display: flex;
+  align-items: center;
+  width: 140px;
+}
+
+.my-weekly .tl-month-editor::before {
+  flex: 0 0 32px;
+  content: '';
+}
+
+.my-weekly .tl-month-editor .el-input__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.my-weekly .tl-month-editor .el-input__prefix {
+  right: 0;
+}
+
+.my-weekly .tl-month-editor .el-icon-date::before {
+  content: '';
+}
+
 .calendar-select,
 .weekly-select,
 .weekly-select li,
@@ -2813,7 +2892,6 @@
 }
 
 .weekly-select {
-  margin: 0 16px 0 15px;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
@@ -2883,14 +2961,8 @@
   font-size: 12px;
 }
 
-.weekly-select .icon-bg {
-  margin: 0 6px 0 0;
-  width: 14px;
-  height: 14px;
-}
-
 .weekly-select .icon-bg i {
-  font-size: 12px;
+  margin: 0 6px 0 0;
 }
 
 .weekly-select .el-tooltip {
@@ -3230,6 +3302,44 @@
 
 .write-weekly .week-plan .btn-box {
   margin: 0;
+}
+
+.write-weekly > .operating-box {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.weekly-title {
+  margin: 0 0 18px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #222426;
+}
+
+.weekly-cont .tl-form {
+  padding: 20px;
+  background: #f4f6f8;
+}
+
+.weekly-cont .item-title {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+  font-weight: 500;
+}
+
+.weekly-cont .form-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.weekly-cont .form-item-group {
+  flex: 1;
+}
+
+.write-weekly > .operating-box .tl-custom-btn {
+  cursor: pointer;
 }
 
 .okr-completion .tl-progress-group>span:first-child {
