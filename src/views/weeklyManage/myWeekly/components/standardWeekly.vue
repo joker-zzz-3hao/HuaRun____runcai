@@ -109,8 +109,6 @@
                 <tl-process
                   :data="parseInt(Number(workForm.workProgress), 10)"
                   :showNumber="!canUpdate && workForm.noCheck"
-                  :width="30"
-                  :marginLeft="2"
                 ></tl-process>
                 <!-- kr支持更改进度 -->
                 <el-slider
