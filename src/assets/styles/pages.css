@@ -2843,18 +2843,34 @@
 }
 
 .my-weekly .tl-month-editor .el-input__inner {
+  padding-left: 6px;
   position: relative;
   border-color: transparent;
+  height: 32px;
 }
 
 .my-weekly .tl-month-editor {
   display: flex;
   align-items: center;
+  width: 140px;
 }
 
 .my-weekly .tl-month-editor::before {
+  flex: 0 0 32px;
   content: '';
-  z-index: 10;
+}
+
+.my-weekly .tl-month-editor .el-input__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.my-weekly .tl-month-editor .el-input__prefix {
+  right: 0;
+}
+
+.my-weekly .tl-month-editor .el-icon-date::before {
+  content: '';
 }
 
 .calendar-select,
@@ -2870,7 +2886,6 @@
 }
 
 .weekly-select {
-  margin: 0 16px 0 15px;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
@@ -2940,14 +2955,8 @@
   font-size: 12px;
 }
 
-.weekly-select .icon-bg {
-  margin: 0 6px 0 0;
-  width: 14px;
-  height: 14px;
-}
-
 .weekly-select .icon-bg i {
-  font-size: 12px;
+  margin: 0 6px 0 0;
 }
 
 .weekly-select .el-tooltip {

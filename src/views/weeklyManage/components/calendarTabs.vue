@@ -29,7 +29,7 @@
           <div v-if="!isFromTeam">
             <div class="period-state">
               <div class="icon-bg">
-                <i :class="{ 'el-icon-check': !item.noOpen }"></i>
+                <i></i>
               </div>
               <em v-if="hasValue(item.weeklyId)">已提交</em>
               <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
