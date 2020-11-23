@@ -20,12 +20,14 @@
         ref="work"
         :model="workForm"
         :key="workForm.randomId"
-        v-for="workForm in weeklyWorkVoSaveList"
+        v-for="(workForm, index) in weeklyWorkVoSaveList"
         label-width="70px"
         class="tl-form"
       >
         <div class="flex-sb">
-          <div class="item-title"><i></i><span>工作项</span><em>1</em></div>
+          <div class="item-title">
+            <i></i><span>工作项</span><em>{{ index + 1 }}</em>
+          </div>
           <el-tooltip
             class="icon-clear"
             :class="{
@@ -1041,7 +1043,7 @@ export default {
     },
     submitWeekly() {
       const self = this;
-      if (self.weeklyEmotion === '') {
+      if (!this.hasValue(self.weeklyEmotion)) {
         self.showEmotionError = true;
       }
       // 多表单校验
