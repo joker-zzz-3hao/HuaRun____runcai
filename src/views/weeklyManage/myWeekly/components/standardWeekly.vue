@@ -1,5 +1,5 @@
 <template>
-  <div class="write-weekly standard-version">
+  <div class="write-weekly">
     <div class="operating-box">
       <div
         class="tl-custom-btn"
@@ -13,7 +13,7 @@
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
     </div>
-    <div>{{ getWeekItem() }}</div>
+    <div class="weekly-title">{{ getWeekItem() }}</div>
     <div class="weekly-cont">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
       <el-form
