@@ -1734,14 +1734,20 @@
   border-bottom-color: #e5e9ee;
 }
 
-.okr-maps .progress-bg {
+.okr-maps .maps-card .progress-bg {
   width: 38px !important;
 }
 
-.okr-maps .progress-bg:not(:first-child) {
+.okr-maps .maps-card .progress-bg:not(:first-child) {
   margin-left: 6px !important;
 }
+.okr-maps .maps-view-table .progress-bg {
+  width: 18px !important;
+}
 
+.okr-maps .maps-view-table .progress-bg:not(:first-child) {
+  margin-left: 3px !important;
+}
 .okr-maps .prefer-text{
   color: #685df1;
   cursor: pointer;
