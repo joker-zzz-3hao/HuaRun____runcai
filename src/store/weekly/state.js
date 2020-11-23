@@ -10,7 +10,7 @@ export default {
   orgOkrList: [],
   cultureList: [],
   configItemCodeOKR: '',
-  weeklyType: '',
+  // weeklyType: '',
   weeklyTypeList: [],
   currentWeek: {},
 };

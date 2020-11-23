@@ -3,28 +3,37 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      WEEK_MAP: {
+        1: '周一',
+        2: '周二',
+        3: '周三',
+        4: '周四',
+        5: '周五',
+        6: '周六',
+        0: '周日',
+      },
       weekDataList: [
         {
-          value: '0',
+          value: '1',
           label: '周一',
-          id: 'zero',
+          id: 'one',
           disabled: false,
           children: [{
             value: '1',
-            id: 'zero_1',
+            id: 'one_1',
             label: '上午',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
-            id: 'zero_2',
+            id: 'one_2',
             disabled: false,
 
           }],
         },
         {
-          value: '1',
+          value: '2',
           label: '周二',
           id: 'two',
           disabled: false,
@@ -43,7 +52,7 @@ export default {
           }],
         },
         {
-          value: '2',
+          value: '3',
           label: '周三',
           id: 'three',
           disabled: false,
@@ -62,7 +71,7 @@ export default {
           }],
         },
         {
-          value: '3',
+          value: '4',
           label: '周四',
           id: 'four',
           disabled: false,
@@ -81,7 +90,7 @@ export default {
           }],
         },
         {
-          value: '4',
+          value: '5',
           label: '周五',
           id: 'five',
           disabled: false,
@@ -100,7 +109,7 @@ export default {
           }],
         },
         {
-          value: '5',
+          value: '6',
           label: '周六',
           id: 'six',
           children: [{
@@ -118,7 +127,7 @@ export default {
           }],
         },
         {
-          value: '6',
+          value: '0',
           label: '周日',
           id: 'seven',
           disabled: false,

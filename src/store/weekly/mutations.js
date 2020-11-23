@@ -33,9 +33,9 @@ export default {
   setConfigItemCodeOKR: (state, configItemCodeOKR = '') => {
     state.configItemCodeOKR = configItemCodeOKR;
   },
-  setWeeklyType: (state, weeklyType = '') => {
-    state.weeklyType = weeklyType;
-  },
+  // setWeeklyType: (state, weeklyType = '') => {
+  //   state.weeklyType = weeklyType;
+  // },
   setWeeklyTypeList: (state, weeklyTypeList = []) => {
     state.weeklyTypeList = weeklyTypeList;
   },
