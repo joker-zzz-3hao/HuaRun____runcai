@@ -828,6 +828,8 @@ export default {
         selectedOkr: [],
         timeList: [],
         weekList: [],
+        workOkrList: [],
+        okrCultureValueList: [],
         okrCultureValueIds: '',
         okrIds: '',
         workIndex: 0,
