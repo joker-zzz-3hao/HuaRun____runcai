@@ -231,6 +231,7 @@ export default {
       periodList: [],
       loading: true,
       hadSet: false,
+      preferPeriod: '', // 偏好周期
     };
   },
   mixins: [global],
@@ -265,12 +266,17 @@ export default {
             if (item.okrMapDefault) {
               this.okrCycle = item;
               this.periodId = this.okrCycle.periodId;
+              this.preferPeriod = this.okrCycle.periodId;
               this.hadSet = true;
               console.log(this.okrCycle);
             }
             if (item.checkStatus == 1 && !this.hadSet) {
               this.okrCycle = item;
               this.periodId = this.okrCycle.periodId;
+              console.log(item.checkStatus);
+              if (!item.existOkrData) {
+                this.showSetPeriod();
+              }
             }
           });
         }
@@ -293,9 +299,9 @@ export default {
               this.treeTableData.push(res.data);
             } else {
               this.treeTableData = [];
-              if (this.hadSet == false) {
-                this.showSetPeriod();
-              }
+              // if (this.hadSet == false) {
+              //   this.showSetPeriod();
+              // }
             }
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
@@ -443,7 +449,7 @@ export default {
     // 打开设置周期
     showSetPeriod() {
       this.$nextTick(() => {
-        this.$refs.setperiod.show(this.periodId, this.periodList);
+        this.$refs.setperiod.show(this.preferPeriod, this.periodList);
       });
     },
   },
