@@ -38,17 +38,19 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.test = this.$refs.progressBg;
+      // this.test = this.$refs.progressBg;
       this.changeWidth();
     });
   },
   methods: {
     changeWidth() {
+      this.test = this.$refs.progressBg;
       const self = this;
       self.processList = [];
       const a = parseInt(self.data / 20, 10);
       const b = self.data % 20;
       const progressWidth = this.test[0].clientWidth;
+      console.log(self.data, progressWidth);
       for (let i = 0; i < 5; i += 1) {
         if (i < a) {
           self.processList.push({

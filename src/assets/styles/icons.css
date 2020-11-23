@@ -28,11 +28,12 @@
 .icon-help::before,
 .my-weekly .tl-month-editor::before,
 .my-weekly .tl-month-editor .el-icon-date,
-.weekly-select .period-state i {
+.weekly-select .period-state i,
+.weekly-cont .tl-form .item-title i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
-  background-size: 120px 2190px;
+  background-size: 120px 2220px;
 }
 
 /* 60 */
@@ -402,4 +403,11 @@
 
 .weekly-select .is-unopen .period-state i {
   background-position-y: -2017px;
+}
+
+.weekly-cont .tl-form .item-title i {
+  width: 21px;
+  height: 21px;
+  background-position-x: -5px;
+  background-position-y: -2195px;
 }

@@ -18,10 +18,9 @@
         </dd>
       </dl>
       <tl-process
+        ref="process"
         @click.stop="goDetail(node.node.okrId)"
         :data="node.node.okrProgress"
-        :width="38"
-        :marginLeft="6"
       ></tl-process>
       <div class="department-info">
         <p>
@@ -67,7 +66,9 @@ export default {
     };
   },
   mounted() {
-    console.log(`node:${this.node}`);
+    this.$nextTick(() => {
+      console.log(`node:${this.node.node.show}`);
+    });
   },
   computed: {},
   methods: {
@@ -79,6 +80,13 @@ export default {
       this.$emit('takeOvierview', node);
     },
   },
-  watch: {},
+  watch: {
+    'node.node.show': {
+      handler() {
+        // 重新触发进度条计算
+        this.$refs.process.changeWidth();
+      },
+    },
+  },
 };
 </script>

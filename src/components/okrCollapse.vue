@@ -5,7 +5,7 @@
     v-if="formData.tableList.length > 0"
     class="tl-form"
   >
-    <elcollapse v-model="activeList" class="tl-collapse">
+    <elcollapse v-model="activeList" class="tl-collapse" @change="expand">
       <elcollapseitem
         ref="okrcoll"
         v-for="(item, index) in formData.tableList"
@@ -321,7 +321,10 @@
             <div>
               <i class="el-icon-odometer"></i>
               <span>当前进度</span>
-              <tl-process :data="kritem.okrDetailProgress"></tl-process>
+              <tl-process
+                :ref="'process' + index + krIndex"
+                :data="kritem.okrDetailProgress"
+              ></tl-process>
             </div>
             <div>
               <i class="el-icon-bell"></i>
@@ -560,13 +563,13 @@ export default {
       CONST,
       okrmain: {},
       formData: { tableList: [] },
-      innerActiveList: [],
       // errormsg
       oerror: '',
       krerror: '',
       checkerror: '',
       judgeerror: '',
       weighterror: '',
+      activeList: [],
     };
   },
   props: {
@@ -579,14 +582,6 @@ export default {
     okrid: {
       type: String,
       default: '',
-    },
-    // 默认展开的序号数组
-    // 如果 disabled为true，需传入activeList
-    activeList: {
-      type: Array,
-      default() {
-        return [];
-      },
     },
     // disabled(不能收起：true;能收起展开：false)
     disabled: {
@@ -606,7 +601,6 @@ export default {
 
   },
   mounted() {
-    this.innerActiveList = this.activeList;
   },
   created() {
 
@@ -662,6 +656,16 @@ export default {
         newItem.okrDetailProgress = 0;
         this.$forceUpdate();
       }
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item, index) => {
+        this.tableList[index].krList.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${index}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
     },
   },
   watch: {

@@ -1734,14 +1734,20 @@
   border-bottom-color: #e5e9ee;
 }
 
-.okr-maps .progress-bg {
+.okr-maps .maps-card .progress-bg {
   width: 38px !important;
 }
 
-.okr-maps .progress-bg:not(:first-child) {
+.okr-maps .maps-card .progress-bg:not(:first-child) {
   margin-left: 6px !important;
 }
+.okr-maps .maps-view-table .progress-bg {
+  width: 18px !important;
+}
 
+.okr-maps .maps-view-table .progress-bg:not(:first-child) {
+  margin-left: 3px !important;
+}
 .okr-maps .prefer-text{
   color: #685df1;
   cursor: pointer;
@@ -3311,6 +3317,42 @@
   color: #222426;
 }
 
+.weekly-cont .tl-form {
+  padding: 20px;
+  background: #f4f6f8;
+}
+
+.weekly-cont .item-title {
+  display: flex;
+  align-items: center;
+  color: #4d5155;
+  font-weight: 500;
+}
+
+.weekly-cont .form-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.weekly-cont .form-item-group {
+  flex: 1;
+}
+
+.weekly-cont .form-item-group .el-form-item__label {
+  padding: 0 10px 0 0;
+  text-align: left;
+}
+
+.weekly-cont .form-item-group:last-child .el-form-item__label {
+  flex: 0;
+  flex-basis: 126px;
+  width: unset !important;
+}
+
+.weekly-cont .form-item-group:last-child {
+  flex: 0 0 40%;
+}
+
 .write-weekly > .operating-box .tl-custom-btn {
   cursor: pointer;
 }
@@ -3521,14 +3563,13 @@
   padding-left: 0;
 }
 
-.my-weekly .tl-input-number {
-  width: 60px;
+.my-weekly .tl-input-number .el-input {
+  width: 72px;
 }
 
 .my-weekly .tl-input-number .el-input__inner {
-  padding: 0 8px;
-  width: 48px;
-  height: 40px;
+  padding: 0 10px;
+  text-align: left;
 }
 
 .my-weekly .okr-completion .tl-input-number .el-input__inner {
