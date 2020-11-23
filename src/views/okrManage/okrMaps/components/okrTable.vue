@@ -98,9 +98,11 @@ export default {
       if (expanded) {
         row.children.forEach((item) => {
           console.log(item.orgId);
-          this.$nextTick(() => {
-            this.$refs[`process${item.orgId}${item.okrProgress}`].changeWidth();
-          });
+          if (item.okrProgress > 0) {
+            this.$nextTick(() => {
+              this.$refs[`process${item.orgId}${item.okrProgress}`].changeWidth();
+            });
+          }
         });
       }
     },
