@@ -240,7 +240,6 @@ export default {
       this.initSelectedData();
     },
     confirm() {
-      debugger;
       this.$emit('closeOkrDialog', {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList, ...this.noOkrList],
         selectedOkr: [...this.orgOkr, ...this.personalOkr],
