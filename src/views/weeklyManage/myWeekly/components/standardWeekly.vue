@@ -391,7 +391,7 @@
       </dd>
       <dd v-for="(item, index) in weeklyPlanSaveList" :key="item.randomId">
         <div>
-          <span>计划项{{ index + 1 }}</span>
+          <span>计划项</span><em>{{ index + 1 }}</em>
         </div>
         <el-input
           type="textarea"

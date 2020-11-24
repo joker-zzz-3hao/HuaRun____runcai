@@ -3326,7 +3326,12 @@
 }
 
 .week-plan dd > div:first-child {
-  flex: 0 0 60px;
+  flex: 0 0 64px;
+  color: #879099;
+}
+
+.week-plan dd > div:first-child em {
+  margin: 0 0 0 4px;
 }
 
 .write-weekly > .operating-box {
@@ -3642,6 +3647,12 @@
 
 .my-weekly .okr-completion .no-data span {
   color: #879099;
+}
+
+.mood {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .mood ul {
@@ -4152,7 +4163,7 @@
 
 .is-sub-menu+.my-weekly .footer-panel .tl-btn,
 .is-sub-menu+.my-weekly .footer-panel>span {
-  margin: 0 0 0 248px;
+  margin: 0 0 0 212px;
   transition: all .4s ease-out;
 }
 
