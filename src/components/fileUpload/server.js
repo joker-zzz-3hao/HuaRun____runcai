@@ -10,6 +10,6 @@ import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
   deleteFile(param = {}) {
-    return this._ajaxPost(`gateway/crcloud-cert/resource/delete?resourceId=${param.resourceId}`);
+    return this._ajaxPost(`gateway/system-service/sys/attachment/remove?resourceId=${param.resourceId}&sourceType=${param.sourceType}`);
   }
 }
