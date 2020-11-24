@@ -162,7 +162,7 @@ export default {
         return { };
       },
     },
-    currenItemrandomId: {
+    currenItemRandomId: {
       type: String,
       default() {
         return '';
@@ -240,11 +240,12 @@ export default {
       this.initSelectedData();
     },
     confirm() {
+      debugger;
       this.$emit('closeOkrDialog', {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList, ...this.noOkrList],
         selectedOkr: [...this.orgOkr, ...this.personalOkr],
         selectedCulture: [...this.selectedCultureList, ...this.noOkrList], // 不关联任何okr合并至价值观，省事
-        currenItemrandomId: this.currenItemrandomId,
+        currenItemRandomId: this.currenItemRandomId,
         supportMyOkrObj: this.supportMyOkrObj,
       });
       this.visible = false;

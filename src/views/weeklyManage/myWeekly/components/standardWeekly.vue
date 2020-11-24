@@ -28,7 +28,9 @@
           <div class="item-title">
             <i></i><span>工作项</span><em>{{ index + 1 }}</em>
           </div>
+          <span v-if="hasChecked(workForm)">已审批</span>
           <el-tooltip
+            v-else
             class="icon-clear"
             :class="{
               'is-disabled': weeklyWorkVoSaveList.length == 1,
@@ -598,7 +600,7 @@
       ref="addOkr"
       v-if="showAddOkr"
       :showAddOkr.sync="showAddOkr"
-      :currenItemrandomId="currenItemrandomId"
+      :currenItemRandomId="currenItemRandomId"
       :selectedOkr="selectedOkr"
       :server="server"
       @closeOkrDialog="closeOkrDialog"
@@ -651,7 +653,7 @@ export default {
       showEmotionError: false,
       weeklyId: '',
       tableLoading: false,
-      currenItemrandomId: '',
+      currenItemRandomId: '',
       showAddOkr: false,
       showProjectDialog: false,
       submitLoading: false,
@@ -695,7 +697,6 @@ export default {
   methods: {
     init() {
       this.thisPageWeeklyTypeList = this.weeklyTypeList;
-      debugger;
       if (this.week.weeklyId) {
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
@@ -775,7 +776,7 @@ export default {
       this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
       if (this.weeklyWorkVoSaveList && this.weeklyWorkVoSaveList.length > 0) {
         this.weeklyWorkVoSaveList.forEach((element) => {
-          this.$set(element, 'randomId', element.workId);
+          this.$set(element, 'randomId', Math.random().toString(36).substr(3));
           const valueIdList = [];
           const okrIdList = [];
           element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
@@ -928,7 +929,6 @@ export default {
         workIndex: 0,
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
-      this.$forceUpdate();
     },
     addThought() {
       this.weeklyThoughtSaveList.push({
@@ -970,7 +970,7 @@ export default {
       }
     },
     addSupportOkr(data) {
-      this.currenItemrandomId = data.randomId;
+      this.currenItemRandomId = data.randomId;
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
     },
@@ -978,7 +978,7 @@ export default {
       for (const item of this.weeklyWorkVoSaveList) {
         const valueIdList = [];
         const okrIdList = [];
-        if (item.randomId == selectedData.currenItemrandomId) {
+        if (item.randomId == selectedData.currenItemRandomId) {
         // 给列表赋值，价值观、任务项，用于提交
           selectedData.selectedCulture.forEach((value) => {
             valueIdList.push(value.okrDetailId);
@@ -1171,6 +1171,15 @@ export default {
 
       this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
+    },
+    hasChecked(workItem) {
+      if (workItem && workItem.weekList && workItem.weekList.length > 0) {
+        if (workItem.weekList[0].weekStatus && workItem.weekList[0].weekStatus == '2') {
+          return true;
+        }
+        return false;
+      }
+      return false;
     },
   },
 
