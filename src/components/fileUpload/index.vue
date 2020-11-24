@@ -16,6 +16,7 @@
       :on-remove="removeImg"
       :on-exceed="handleExceed"
       :taskId="taskId"
+      :sourceType="sourceType"
     >
       <el-button type="text" class="tl-btn up-btn">+添加附件</el-button>
       <span class="el-upload__tip">{{ tips }}</span>

@@ -36,9 +36,7 @@ export default {
   // setWeeklyType: (state, weeklyType = '') => {
   //   state.weeklyType = weeklyType;
   // },
-  setWeeklyTypeList: (state, weeklyTypeList = []) => {
-    state.weeklyTypeList = weeklyTypeList;
-  },
+
   setCurrentWeek: (state, currentWeek = []) => {
     state.currentWeek = currentWeek;
   },

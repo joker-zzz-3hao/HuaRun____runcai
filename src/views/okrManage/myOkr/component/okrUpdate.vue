@@ -131,8 +131,6 @@
                       <tl-process
                         :data="parseInt(formData.okrDetailProgress, 10)"
                         :showNumber="false"
-                        :width="68"
-                        :marginLeft="6"
                       ></tl-process>
                       <el-slider
                         v-model="formData.okrDetailProgress"

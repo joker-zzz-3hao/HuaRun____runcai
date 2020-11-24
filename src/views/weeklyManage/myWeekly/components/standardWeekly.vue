@@ -20,208 +20,241 @@
         ref="work"
         :model="workForm"
         :key="workForm.randomId"
-        v-for="workForm in weeklyWorkVoSaveList"
-        label-width="130px"
+        v-for="(workForm, index) in weeklyWorkVoSaveList"
+        label-width="70px"
+        class="tl-form"
       >
-        <el-tooltip
-          class="icon-clear"
-          :class="{
-            'is-disabled': weeklyWorkVoSaveList.length == 1,
-          }"
-          effect="dark"
-          :content="
-            weeklyWorkVoSaveList.length > 1 ? '删除' : '至少有一条工作项'
-          "
-          placement="top"
-          popper-class="tl-tooltip-popper"
-          @click.native="
-            weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
-          "
-        >
-          <i v-show="canUpdate && workForm.noCheck" class="el-icon-delete"></i>
-        </el-tooltip>
-        <el-form-item
-          prop="workContent"
-          label="工作项"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [
-                  {
-                    required: true,
-                    validator: validateWorkContent,
-                    trigger: 'blur',
-                  },
-                ]
-              : []
-          "
-        >
-          <el-input
-            :autosize="{ minRows: 1, maxRows: 8 }"
-            type="textarea"
-            maxlength="50"
-            v-if="canUpdate && workForm.noCheck"
-            clearable
-            placeholder="简短概括任务"
-            class="tl-textarea"
-            v-model="workForm.workContent"
-          ></el-input>
-          <em v-else> {{ workForm.workContent }}</em>
-        </el-form-item>
-        <el-form-item label="内容" v-show="weeklyType == 1">
-          <el-input
-            v-model="workForm.workDesc"
-            :autosize="{ minRows: 1, maxRows: 8 }"
-            type="textarea"
-            v-if="canUpdate && workForm.noCheck"
-            placeholder="请描述任务项"
-            class="tl-textarea"
-            clearable
-            maxlength="500"
-          ></el-input>
-          <em v-else> {{ workForm.workDesc }}</em>
-        </el-form-item>
-        <el-form-item
-          label="进度"
-          prop="workProgress"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [
-                  {
-                    required: true,
-                    validator: validateProcess,
-                    trigger: 'change',
-                  },
-                ]
-              : []
-          "
-        >
-          <div class="tl-progress-group">
-            <tl-process
-              :data="parseInt(Number(workForm.workProgress), 10)"
-              :showNumber="!canUpdate && workForm.noCheck"
-              :width="30"
-              :marginLeft="2"
-            ></tl-process>
-            <!-- kr支持更改进度 -->
-            <el-slider
-              v-if="canUpdate && workForm.noCheck"
-              v-model.number="workForm.workProgress"
-              :step="1"
-              @change="processChange(workForm)"
-              tooltip-class="slider-tooltip"
-            ></el-slider>
-            <el-input-number
-              v-if="canUpdate && workForm.noCheck"
-              v-model.number="workForm.workProgress"
-              controls-position="right"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
-              class="tl-input-number"
-              @blur="progressAfterBlur(item)"
-            ></el-input-number>
+        <div class="flex-sb">
+          <div class="item-title">
+            <i></i><span>工作项</span><em>{{ index + 1 }}</em>
           </div>
-        </el-form-item>
-        <el-form-item
-          label="工时"
-          class="time-cascader"
-          prop="timeList"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, validator: validateTime, trigger: 'change' }]
-              : []
-          "
-        >
-          <span v-for="(text, index) in workForm.timeSpanList" :key="index"
-            >{{ text }}
-          </span>
-          <el-button type="text" v-if="canUpdate && workForm.noCheck"
-            >添加工时</el-button
+          <el-tooltip
+            class="icon-clear"
+            :class="{
+              'is-disabled': weeklyWorkVoSaveList.length == 1,
+            }"
+            effect="dark"
+            :content="
+              weeklyWorkVoSaveList.length > 1 ? '删除' : '至少有一条工作项'
+            "
+            placement="top"
+            popper-class="tl-tooltip-popper"
+            @click.native="
+              weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
+            "
           >
-          <el-cascader
-            v-if="canUpdate && workForm.noCheck"
-            :ref="workForm.randomId"
-            v-model="workForm.timeList"
-            :options="weekDataList"
-            :props="props"
-            placeholder="添加工时"
-            collapse-tags
-            @visible-change="visibleChange(workForm)"
-            @change="selectWeekData(workForm)"
-          ></el-cascader>
-        </el-form-item>
-        <el-form-item
-          label="项目"
-          prop="projectId"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, message: '请选择项目', trigger: 'change' }]
-              : []
-          "
-        >
-          <el-select
-            v-if="canUpdate && workForm.noCheck"
-            v-model="workForm.projectId"
-            placeholder="请选择关联项目"
-            @change="projectChange(workForm)"
-            class="tl-select"
-          >
-            <el-option
-              v-for="item in projectList"
-              :key="item.projectId"
-              :label="item.projectNameCn"
-              :value="item.projectId"
+            <i
+              v-show="canUpdate && workForm.noCheck"
+              class="el-icon-delete"
+            ></i>
+          </el-tooltip>
+        </div>
+        <div class="form-item">
+          <div class="form-item-group">
+            <el-form-item
+              prop="workContent"
+              label="工作项"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateWorkContent,
+                        trigger: 'blur',
+                      },
+                    ]
+                  : []
+              "
             >
-            </el-option>
-          </el-select>
-          <em v-else>{{ workForm.projectNameCn }}</em>
-        </el-form-item>
-        <el-form-item
-          label="支撑OKR/价值观"
-          prop="valueOrOkrIds"
-          :rules="
-            canUpdate && workForm.noCheck
-              ? [{ required: true, validator: validateOkr, trigger: 'change' }]
-              : []
-          "
-        >
-          <div class="tag-group">
-            <ul class="tag-lists">
               <el-input
-                v-show="false"
-                v-model="workForm.valueOrOkrIds"
+                :autosize="{ minRows: 1, maxRows: 8 }"
+                type="textarea"
+                maxlength="50"
+                v-if="canUpdate && workForm.noCheck"
+                clearable
+                placeholder="简短概括任务"
+                class="tl-textarea"
+                v-model="workForm.workContent"
               ></el-input>
-              <li v-for="item in workForm.selectedOkr" :key="item.okrDetailId">
-                <el-tooltip
-                  class="select-values"
-                  effect="dark"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                >
-                  <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                  <em
-                    v-if="canUpdate && workForm.noCheck"
-                    @click="addSupportOkr(workForm)"
-                    >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
-                  >
-                  <em v-else>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
-                </el-tooltip>
-              </li>
-              <li
-                class="icon-bg"
-                v-if="
-                  workForm.selectedOkr.length < 1 &&
-                  canUpdate &&
-                  workForm.noCheck
-                "
-                @click="addSupportOkr(workForm)"
-              >
-                <i class="el-icon-plus"></i>
-              </li>
-            </ul>
+              <em v-else> {{ workForm.workContent }}</em>
+            </el-form-item>
+            <el-form-item label="内容" v-show="weeklyType == 1">
+              <el-input
+                v-model="workForm.workDesc"
+                :autosize="{ minRows: 5 }"
+                type="textarea"
+                v-if="canUpdate && workForm.noCheck"
+                placeholder="请描述任务项"
+                class="tl-textarea"
+                clearable
+              ></el-input>
+              <em v-else> {{ workForm.workDesc }}</em>
+            </el-form-item>
           </div>
-        </el-form-item>
+          <div class="form-item-group">
+            <el-form-item
+              label="进度"
+              prop="workProgress"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateProcess,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <div class="tl-progress-group">
+                <tl-process
+                  :data="parseInt(Number(workForm.workProgress), 10)"
+                  :showNumber="!canUpdate && workForm.noCheck"
+                ></tl-process>
+                <!-- kr支持更改进度 -->
+                <el-slider
+                  v-if="canUpdate && workForm.noCheck"
+                  v-model.number="workForm.workProgress"
+                  :step="1"
+                  @change="processChange(workForm)"
+                  tooltip-class="slider-tooltip"
+                ></el-slider>
+                <el-input-number
+                  v-if="canUpdate && workForm.noCheck"
+                  v-model.number="workForm.workProgress"
+                  controls-position="right"
+                  :min="0"
+                  :max="100"
+                  :step="1"
+                  :precision="0"
+                  class="tl-input-number"
+                  @blur="progressAfterBlur(item)"
+                ></el-input-number>
+              </div>
+            </el-form-item>
+            <el-form-item
+              label="工时"
+              class="time-cascader"
+              prop="timeList"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateTime,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <span v-for="(text, index) in workForm.timeSpanList" :key="index"
+                >{{ text }}
+              </span>
+              <el-button type="text" v-if="canUpdate && workForm.noCheck"
+                >添加工时</el-button
+              >
+              <el-cascader
+                v-show="canUpdate && workForm.noCheck"
+                :ref="workForm.randomId"
+                v-model="workForm.timeList"
+                :options="weekDataList"
+                :props="props"
+                placeholder="添加工时"
+                collapse-tags
+                @visible-change="visibleChange(workForm)"
+                @change="selectWeekData(workForm)"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item
+              label="项目"
+              prop="projectId"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        message: '请选择项目',
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <el-select
+                v-if="canUpdate && workForm.noCheck"
+                v-model="workForm.projectId"
+                placeholder="请选择关联项目"
+                @change="projectChange(workForm)"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in projectList"
+                  :key="item.projectId"
+                  :label="item.projectNameCn"
+                  :value="item.projectId"
+                >
+                </el-option>
+              </el-select>
+              <em v-else>{{ workForm.projectNameCn }}</em>
+            </el-form-item>
+            <el-form-item
+              label="支撑OKR/价值观"
+              prop="valueOrOkrIds"
+              :rules="
+                canUpdate && workForm.noCheck
+                  ? [
+                      {
+                        required: true,
+                        validator: validateOkr,
+                        trigger: 'change',
+                      },
+                    ]
+                  : []
+              "
+            >
+              <div class="tag-group">
+                <ul class="tag-lists">
+                  <el-input
+                    v-show="false"
+                    v-model="workForm.valueOrOkrIds"
+                  ></el-input>
+                  <li
+                    v-for="item in workForm.selectedOkr"
+                    :key="item.okrDetailId"
+                  >
+                    <el-tooltip
+                      class="select-values"
+                      effect="dark"
+                      placement="top"
+                      popper-class="tl-tooltip-popper"
+                    >
+                      <em slot="content">{{ item.okrDetailObjectKr }}</em>
+                      <em
+                        v-if="canUpdate && workForm.noCheck"
+                        @click="addSupportOkr(workForm)"
+                        >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
+                      >
+                      <em v-else>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                    </el-tooltip>
+                  </li>
+                  <li
+                    class="icon-bg"
+                    v-if="
+                      workForm.selectedOkr.length < 1 &&
+                      canUpdate &&
+                      workForm.noCheck
+                    "
+                    @click="addSupportOkr(workForm)"
+                  >
+                    <i class="el-icon-plus"></i>
+                  </li>
+                </ul>
+              </div>
+            </el-form-item>
+          </div>
+        </div>
       </el-form>
       <div class="btn-box" v-if="canUpdate">
         <el-button
@@ -601,6 +634,12 @@ export default {
         return {};
       },
     },
+    weeklyTypeList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -656,6 +695,7 @@ export default {
   methods: {
     init() {
       this.thisPageWeeklyTypeList = this.weeklyTypeList;
+      debugger;
       if (this.week.weeklyId) {
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
@@ -735,7 +775,7 @@ export default {
       this.weeklyEmotion = this.weeklyDataCopy.weeklyEmotion;// 心情
       if (this.weeklyWorkVoSaveList && this.weeklyWorkVoSaveList.length > 0) {
         this.weeklyWorkVoSaveList.forEach((element) => {
-          this.$set(element, 'randomId', Math.random().toString(36).substr(3));
+          this.$set(element, 'randomId', element.workId);
           const valueIdList = [];
           const okrIdList = [];
           element.okrCultureValueList.forEach((item) => { // 将价值观数据添加与okr一样的字段
@@ -770,7 +810,6 @@ export default {
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
-          this.$forceUpdate();
         });
       }
       this.$forceUpdate();
@@ -782,7 +821,7 @@ export default {
           thought.randomId = Math.random().toString(36).substr(3);
         });
       } else {
-        this.addThought();
+        // this.addThought();
       }
     },
     setNextWeekPlan() {
@@ -792,7 +831,7 @@ export default {
           plan.randomId = Math.random().toString(36).substr(3);
         });
       } else {
-        this.addNextWeekWork();
+        // this.addNextWeekWork();
       }
     },
     setTimeList(weekList) {
@@ -810,16 +849,41 @@ export default {
       }
       return result;
     },
-    setTimeSpanList(weekList) {
+    setTimeSpanList(manHourList) {
       const result = [];
-      if (weekList && weekList.length > 0) {
-        weekList.forEach((day) => {
-          const dateTemp = day.weekDate.split(' ')[0];
+      // 将数据整理，同一天的合并为一天
+      const dayList = [];
+      let manHourSet = [];
+      const dayAndTimeTypeList = [];
+      manHourList.forEach((manHour) => {
+        // 日期遍历
+        dayList.push(manHour.weekDate);
+      });
+      // 去重
+      manHourSet = Array.from(new Set(dayList));
+
+      manHourSet.forEach((manHour) => {
+        dayAndTimeTypeList.push({
+          date: manHour,
+          timeTypeList: [],
+        });
+      });
+
+      dayAndTimeTypeList.forEach((dayAndTimeType) => {
+        manHourList.forEach((day) => {
+          if (day.weekDate == dayAndTimeType.date) {
+            dayAndTimeType.timeTypeList.push(day.weekTimeType);
+          }
+        });
+      });
+      if (dayAndTimeTypeList && dayAndTimeTypeList.length > 0) {
+        dayAndTimeTypeList.forEach((day) => {
+          const dateTemp = day.date.split(' ')[0];
           const whichDay = new Date(dateTemp).getDay();
           let text = '';
-          if (day.weekTimeType == 0) {
+          if (day.timeTypeList.length == 2) {
             text = `${this.WEEK_MAP[whichDay]}全天`;
-          } else if (day.weekTimeType == 1) {
+          } else if (day.timeTypeList[0] == 1) {
             text = `${this.WEEK_MAP[whichDay]}上午`;
           } else {
             text = `${this.WEEK_MAP[whichDay]}下午`;
@@ -828,6 +892,24 @@ export default {
         });
       }
       return result;
+    },
+    selectedNodes(workItem) {
+      let selectedList = [];
+      const self = this;
+      self.weeklyWorkVoSaveList.forEach((element) => {
+        if (element.randomId == workItem.randomId && self.$refs[element.randomId]) {
+          selectedList = self.$refs[element.randomId][0].getCheckedNodes(false);
+        }
+      });
+      return selectedList;
+    },
+    setWeeklyType(data) {
+      this.weeklyType = data;
+    },
+    getWeekItem() {
+      const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
+      const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
+      return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
     },
     addWork() {
       this.weeklyWorkVoSaveList.push({
@@ -866,13 +948,14 @@ export default {
       });
     },
     deleteWork(item) {
-      // 本地数据
+    // 本地数据
       this.weeklyWorkVoSaveList = this.weeklyWorkVoSaveList.filter(
         (thisWeek) => thisWeek.randomId != item.randomId,
       );
+      this.visibleChange(item);
     },
     deletePlanItem(item) {
-      // 本地数据
+    // 本地数据
       this.weeklyPlanSaveList = this.weeklyPlanSaveList.filter(
         (nextWeek) => nextWeek.randomId != item.randomId,
       );
@@ -896,7 +979,7 @@ export default {
         const valueIdList = [];
         const okrIdList = [];
         if (item.randomId == selectedData.currenItemrandomId) {
-          // 给列表赋值，价值观、任务项，用于提交
+        // 给列表赋值，价值观、任务项，用于提交
           selectedData.selectedCulture.forEach((value) => {
             valueIdList.push(value.okrDetailId);
           });
@@ -923,14 +1006,14 @@ export default {
     },
     submitWeekly() {
       const self = this;
-      if (self.weeklyEmotion === '') {
+      if (!this.hasValue(self.weeklyEmotion)) {
         self.showEmotionError = true;
       }
       // 多表单校验
       if (self.$refs.work instanceof Array && self.$refs.work.length > 0) {
         let result = true;
         for (let i = 0; i < self.$refs.work.length; i += 1) {
-          // eslint-disable-next-line no-loop-func
+        // eslint-disable-next-line no-loop-func
           self.$refs.work[i].validate((valid) => {
             result = result && valid;
           });
@@ -944,7 +1027,7 @@ export default {
       }
     },
     submitData() {
-      // 将下周计划、感想有未填写的内容的数据删除
+    // 将下周计划、感想有未填写的内容的数据删除
       this.weeklyThoughtSaveList = this.weeklyThoughtSaveList.filter(
         (thought) => !!thought.thoughtContent,
       );
@@ -1028,6 +1111,14 @@ export default {
     },
     setDisabledSelectedData(list) {
       // 1、先将所有数据disabled状态置为false
+      this.weekDataList.forEach((day) => {
+        day.disabled = false;
+        if (day.children && day.children.length > 0) {
+          day.children.forEach((dayChild) => {
+            dayChild.disabled = false;
+          });
+        }
+      });
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
           day.disabled = false;
@@ -1058,7 +1149,9 @@ export default {
       this.$nextTick(() => {
         self.weeklyWorkVoSaveList.forEach((item) => {
           if (item.randomId != workForm.randomId) {
-            selectedList = [...selectedList, ...item.selectedNodeList];
+            if (item.selectedNodeList) {
+              selectedList = [...selectedList, ...item.selectedNodeList];
+            }
           }
         });
         // 遍历级联框数据，将整理好的数据禁用
@@ -1067,67 +1160,33 @@ export default {
     },
     selectWeekData(workItem) {
       workItem.weekList = [];
-      const dayList = [];
-      let daySet = [];
-      const dayAndTimeTypeList = [];
       workItem.timeList.forEach((day) => {
-        // 日期遍历
-        dayList.push(day[0]);
-      });
-      // 去重
-      daySet = Array.from(new Set(dayList));
-      // 将同一天的数据合并为一条数据
-      daySet.forEach((item) => {
-        dayAndTimeTypeList.push({
-          date: item,
-          timeTypeList: [],
-        });
-        workItem.timeList.forEach((day) => {
-          if (day[0] == item) {
-            dayAndTimeTypeList[daySet.indexOf(item)].timeTypeList.push(day[1]);
-          }
-        });
-      });
-      // 将选中的数据转换成后端数据格式
-      dayAndTimeTypeList.forEach((element) => {
-        let timeType = 0;// 上、下午、全天
-        if (element.timeTypeList.length == 1) {
-          // eslint-disable-next-line prefer-destructuring
-          timeType = element.timeTypeList[0];
-        } else if (element.timeTypeList.length == 2) {
-          timeType = 0;
-        }
-        // 日期转换
         const begindate = new Date(this.week.weekBegin);
-        begindate.setDate(begindate.getDate() + Number(element.date) - 1);
+        begindate.setDate(begindate.getDate() + Number(day[0]) - 1);
         workItem.weekList.push({
           weekDate: this.dateFormat('YYYY-mm-dd', begindate),
-          weekTimeType: timeType,
+          weekTimeType: day[1],
         });
       });
+
       this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
     },
-    selectedNodes(workItem) {
-      let selectedList = [];
-      const self = this;
-      self.weeklyWorkVoSaveList.forEach((element) => {
-        if (element.randomId == workItem.randomId && self.$refs[element.randomId]) {
-          selectedList = self.$refs[element.randomId][0].getCheckedNodes(false);
-        }
-      });
-      return selectedList;
-    },
-    setWeeklyType(data) {
-      this.weeklyType = data;
-    },
-    getWeekItem() {
-      const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
-      const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
-      return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
-    },
   },
+
   watch: {
+    canUpdate: {
+      handler(newVal) {
+        if (newVal) {
+          if (this.weeklyPlanSaveList.length < 1) {
+            this.addNextWeekWork();
+          }
+          if (this.weeklyThoughtSaveList.length < 1) {
+            this.addThought();
+          }
+        }
+      },
+    },
     weeklyWorkVoSaveList: {
       handler(tableData) {
         // *****************将本周未完成任务自动同步至下周计划*************
@@ -1238,26 +1297,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.select-error .el-input__inner {
-  border: 1px solid #f56c6c !important;
-  border-radius: 2px;
-}
-.okr-error {
-  background: #f56c6c !important;
-}
-.time-cascader .el-cascader {
-  margin-left: -56px;
-  width: 60px;
-}
-.time-cascader .el-cascader__tags {
-  display: none;
-}
-.time-cascader .el-cascader .el-input .el-input__inner {
-  border: solid 0px rgb(252, 250, 250);
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.time-cascader .el-input__suffix-inner {
-  display: none;
-}
-</style>

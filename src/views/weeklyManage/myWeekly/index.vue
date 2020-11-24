@@ -11,7 +11,7 @@
         v-show="weekIndex == index"
         :key="week.calendarId"
       >
-        <div class="weekly-area">
+        <div class="weekly-area" v-if="weeklyTypeList.length > 0">
           <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
             <div class="no-data-bg"></div>
             <div class="no-data-txt">周报未填写</div>
@@ -19,6 +19,7 @@
           <div v-else>
             <standard-Weekly
               :week="week"
+              :weeklyTypeList="weeklyTypeList"
               :orgOkrList="orgOkrList"
               @refreshMyOkr="refreshMyOkr"
               :timeDisabled="timeDisabled"
@@ -60,8 +61,8 @@ export default {
         },
       },
       noWrite: false,
-
       timeDisabled: false,
+      weeklyTypeList: [],
     };
   },
   created() {
@@ -108,7 +109,6 @@ export default {
         'setOriginalMyOkrList',
         'setCultureList',
         'setConfigItemCodeOKR',
-        'setWeeklyTypeList',
       ]),
     getProjectList() {
       if (this.hasPower('weekly-project-query')) {
@@ -259,21 +259,21 @@ export default {
     },
 
     getWeeklyTypeConfig() {
-      let weeklyTypeListTemp = [];
+      let temp = [];
       this.server.getTypeConfig({
         sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
       }).then((res) => {
         if (res.code == 200) {
           if (res.data.length > 0) {
-            weeklyTypeListTemp = res.data[0].configItemCode.split(',');
-            if (weeklyTypeListTemp.length == 2) {
-              weeklyTypeListTemp = ['1', '2'];
+            temp = res.data[0].configItemCode.split(',');
+            if (temp.length == 2) {
+              temp = ['1', '2'];
             }
           } else {
-            weeklyTypeListTemp = ['1', '2'];
+            temp = ['1', '2'];
           }
         }
-        this.setWeeklyTypeList(weeklyTypeListTemp);
+        this.weeklyTypeList = temp;
       });
     },
   },

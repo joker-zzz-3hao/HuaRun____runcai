@@ -152,7 +152,6 @@ export default {
       weekList: (state) => state.weekList,
       projectList: (state) => state.projectList,
       configItemCodeOKR: (state) => state.configItemCodeOKR,
-      weeklyTypeList: (state) => state.weeklyTypeList,
       originalMyOkrList: (state) => state.originalMyOkrList,
     }),
     ...mapState('common', {
