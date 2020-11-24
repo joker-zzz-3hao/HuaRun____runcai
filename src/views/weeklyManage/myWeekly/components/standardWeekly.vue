@@ -175,7 +175,7 @@
                     <span>修改原因：</span><span>{{ workForm.remark }}</span>
                   </li>
                 </ul>
-                <div v-show="!hasValue(workForm.remark)" slot="reference">
+                <div v-show="hasValue(workForm.remark)" slot="reference">
                   <i class="el-icon-info"></i>
                   <span>工时已被项目经理修改</span>
                 </div>
