@@ -695,7 +695,6 @@ export default {
   methods: {
     init() {
       this.thisPageWeeklyTypeList = this.weeklyTypeList;
-      debugger;
       if (this.week.weeklyId) {
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
