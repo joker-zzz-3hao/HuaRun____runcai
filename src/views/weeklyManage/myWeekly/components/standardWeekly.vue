@@ -157,9 +157,6 @@
               <span v-for="(text, index) in workForm.timeSpanList" :key="index"
                 >{{ text }}
               </span>
-              <el-button type="text" v-if="canUpdate && workForm.noCheck"
-                >添加工时</el-button
-              >
               <el-cascader
                 v-show="canUpdate && workForm.noCheck"
                 :ref="workForm.randomId"
@@ -170,6 +167,7 @@
                 collapse-tags
                 @visible-change="visibleChange(workForm)"
                 @change="selectWeekData(workForm)"
+                class="tl-cascader"
               ></el-cascader>
             </el-form-item>
             <el-form-item

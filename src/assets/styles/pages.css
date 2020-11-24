@@ -3350,6 +3350,18 @@
 .weekly-cont .is-standard-version .form-item-group:first-child {
   padding: 0 20px 0 0;
   margin: 0 20px 0 0;
+  position: relative;
+}
+
+.weekly-cont .is-standard-version .form-item-group:first-child::after {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  right: 0;
+  content: '';
+  width: 1px;
+  border-right: 1px dashed transparent;
+  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #f4f6f8 0, #f4f6f8 0.6em);
 }
 
 .weekly-cont .is-standard-version .form-item-group:last-child .el-form-item__label {
