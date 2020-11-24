@@ -338,9 +338,9 @@
           maxlength="500"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
-          @click.native="isEdit"
-          @blur="noEdit"
-          :class="{ 'has-edit': hasEdit }"
+          @click.native="updateThought(item)"
+          @blur="noUpdateThought(item)"
+          :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
@@ -402,9 +402,9 @@
           clearable
           placeholder="建议添加多条作为下周计划项，显得计划比较详实"
           class="tl-textarea"
-          @click.native="isEdit"
-          @blur="noEdit"
-          :class="{ 'has-edit': hasEdit }"
+          @click.native="updatePlan(item)"
+          @blur="noUpdatePlan(item)"
+          :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
@@ -731,7 +731,6 @@ export default {
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
-      hasEdit: false,
     };
   },
   created() {
@@ -775,11 +774,35 @@ export default {
         this.initPage();
       }
     },
-    isEdit() {
-      this.hasEdit = true;
+    updateThought(thought) {
+      this.weeklyThoughtSaveList.forEach((item) => {
+        item.isUpdating = false;
+        if (thought.randomId == item.randomId) {
+          item.isUpdating = true;
+        }
+      });
+      this.$forceUpdate();
     },
-    noEdit() {
-      this.hasEdit = false;
+    noUpdateThought() {
+      this.weeklyThoughtSaveList.forEach((item) => {
+        item.isUpdating = false;
+      });
+      this.$forceUpdate();
+    },
+    updatePlan(plan) {
+      this.weeklyPlanSaveList.forEach((item) => {
+        item.isUpdating = false;
+        if (plan.randomId == item.randomId) {
+          item.isUpdating = true;
+        }
+      });
+      this.$forceUpdate();
+    },
+    noUpdatePlan() {
+      this.weeklyPlanSaveList.forEach((item) => {
+        item.isUpdating = false;
+      });
+      this.$forceUpdate();
     },
     setOkrProcess(weeklyOkrVoList) {
       // 将上次保存的o、kr找出来，多行支撑项
@@ -873,6 +896,7 @@ export default {
       if (!!this.weeklyThoughtSaveList && this.weeklyThoughtSaveList.length > 0) {
         this.weeklyThoughtSaveList.forEach((thought) => {
           thought.randomId = Math.random().toString(36).substr(3);
+          thought.isUpdating = false;
         });
       } else {
         // this.addThought();
@@ -1012,6 +1036,7 @@ export default {
         thoughtId: '',
         thoughtType: 0,
         weeklyId: '',
+        isUpdating: false,
         randomId: Math.random().toString(36).substr(3),
       });
     },
