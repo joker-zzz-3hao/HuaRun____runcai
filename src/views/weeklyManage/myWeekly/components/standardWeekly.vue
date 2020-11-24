@@ -636,6 +636,16 @@
       :server="server"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
+    <!-- 添加支撑项 -->
+    <tl-select-project
+      ref="selectProject"
+      v-if="showProject"
+      :showProject.sync="showProject"
+      :currenItemRandomId="currenItemRandomId"
+      :selectedOkr="selectedOkr"
+      :server="server"
+      @closeOkrDialog="closeOkrDialog"
+    ></tl-select-project>
   </div>
 </template>
 
@@ -649,6 +659,7 @@ import CONST from '@/components/const';
 import { mapState } from 'vuex';
 import Server from '../server';
 import addOkr from './addOkr';
+import selectProject from './selectProject';
 import mixin from '../mixin';
 
 const server = new Server();
@@ -659,6 +670,7 @@ export default {
     'add-okr': addOkr,
     'tl-process': tlProcess,
     'tl-confidence': confidenceSelect,
+    'tl-select-project': selectProject,
   },
   props: {
     week: {
@@ -686,6 +698,7 @@ export default {
       tableLoading: false,
       currenItemRandomId: '',
       showAddOkr: false,
+      showProject: false,
       showProjectDialog: false,
       submitLoading: false,
       weeklyThoughtSaveList: [],
