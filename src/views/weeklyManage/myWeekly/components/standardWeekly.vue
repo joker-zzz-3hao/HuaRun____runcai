@@ -49,7 +49,10 @@
             ></i>
           </el-tooltip>
         </div>
-        <div class="form-item">
+        <div
+          class="form-item"
+          :class="{ 'is-standard-version': weeklyType == 1 }"
+        >
           <div class="form-item-group">
             <el-form-item
               prop="workContent"
