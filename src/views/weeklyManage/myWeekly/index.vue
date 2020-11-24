@@ -20,9 +20,6 @@
             <standard-Weekly
               :week="week"
               :weeklyTypeList="weeklyTypeList"
-              :orgOkrList="orgOkrList"
-              @refreshMyOkr="refreshMyOkr"
-              :timeDisabled="timeDisabled"
             ></standard-Weekly>
           </div>
         </div>
@@ -61,7 +58,6 @@ export default {
         },
       },
       noWrite: false,
-      timeDisabled: false,
       weeklyTypeList: [],
     };
   },
@@ -230,9 +226,6 @@ export default {
         }
         this.setConfigItemCodeOKR(configItemCodeOKR);
       });
-    },
-    refreshMyOkr() {
-
     },
     seclectBtn(item) {
       if (item.noOpen) {

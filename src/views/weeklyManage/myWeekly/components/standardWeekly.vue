@@ -727,7 +727,6 @@ export default {
       textarea: '',
       showTaskProcess: false,
       weeklyDataCopy: {},
-
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
@@ -756,21 +755,19 @@ export default {
             this.initPage();
           }
         });
-      } else if (!this.weeklyDataCopy.weeklyId) {
+      } else if (!this.week.weeklyId) {
         this.canUpdate = true;
         // eslint-disable-next-line prefer-destructuring
         this.weeklyType = this.weeklyTypeList[0];
-        this.weeklyDataCopy = { ...this.weeklyData };
-        if (!this.weeklyDataCopy.weeklyId) {
-          if (!(this.$route.params && this.$route.params.weeklySumParams)) {
+        this.weeklyDataCopy = {};
+        if (!(this.$route.params && this.$route.params.weeklySumParams)) {
           // 本周任务初始化数据
-            this.addWork();
-            // 下周计划初始化数据
-            this.addNextWeekWork();
-          }
-          // 本周感想初始化数据
-          this.addThought();
+          this.addWork();
+          // 下周计划初始化数据
+          this.addNextWeekWork();
         }
+        // 本周感想初始化数据
+        this.addThought();
         this.initPage();
       }
     },
@@ -1342,6 +1339,8 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
               if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
+                debugger;
+                console.log(this.weeklyDataCopy.weeklyOkrVoList);
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
                     this.$set(data.supportMyOkrObj, 'confidenceBefor', element.confidenceBefor);
@@ -1357,6 +1356,7 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
               // 如果是详情则从详情中取值
               if (data.supportMyOkrObj.o.id) {
+                debugger;
                 // 后端数据中匹配
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
