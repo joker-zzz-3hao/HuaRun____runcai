@@ -586,18 +586,21 @@
           <ul>
             <li>本周心情</li>
             <li
+              v-show="canUpdate || weeklyEmotion === 100"
               class="has-harvest"
               :class="{ 'is-selected': weeklyEmotion === 100 }"
             >
               <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 50"
               class="not-too-bad"
               :class="{ 'is-selected': weeklyEmotion === 50 }"
             >
               <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 0"
               class="let-quiet"
               :class="{ 'is-selected': weeklyEmotion === 0 }"
             >
