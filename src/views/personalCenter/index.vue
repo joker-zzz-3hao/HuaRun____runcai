@@ -22,6 +22,7 @@
               :imgHeight="199"
               :files="[img]"
               @change="returnParams"
+              :sourceKey="userInfo.userId"
             ></tl-upload>
           </div>
           <div class="dl-list">
@@ -212,14 +213,16 @@ export default {
       if (!params.resourceUrl) {
         return;
       }
-      this.server.queryByTenantIdAndUserId().then((res) => {
-        if (res.code == '200') {
-          this.setUserInfo(res.data);
-          this.img = {
-            url: this.userInfo.headUrl,
-            resourceId: '',
-          };
-        }
+      this.server.updateResource({ resourceId: params.resourceId, sourceType: 'USER_HEAD' }).then(() => {
+        this.server.queryByTenantIdAndUserId().then((res) => {
+          if (res.code == '200') {
+            this.setUserInfo(res.data);
+            this.img = {
+              url: this.userInfo.headUrl,
+              resourceId: '',
+            };
+          }
+        });
       });
     },
   },
