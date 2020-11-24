@@ -10,7 +10,10 @@
     @closed="closed"
   >
     <div slot="title" class="flex-sb">
-      <div v-if="writeInfo.canWrite == 'draft'" class="drawer-title">
+      <div v-if="searchForm.approvalType == 1" class="drawer-title">
+        编辑被退回OKR
+      </div>
+      <div v-else-if="writeInfo.canWrite == 'draft'" class="drawer-title">
         编辑OKR
       </div>
       <div v-else class="drawer-title">创建OKR</div>
@@ -384,8 +387,52 @@
                 <i class="el-icon-plus"></i>添加目标
               </el-button>
             </div>
+            <div v-if="searchForm.approvalType == 1" class="change-reason">
+              <span>变更原因</span>
+              <el-form-item
+                prop="reason"
+                :rules="[
+                  {
+                    trigger: 'blur',
+                    message: '变更原因不能为空',
+                    required: true,
+                  },
+                ]"
+              >
+                <el-input
+                  v-model="formData.reason"
+                  maxlength="200"
+                  type="textarea"
+                  :rows="3"
+                  resize="none"
+                  class="tl-textarea"
+                ></el-input>
+              </el-form-item>
+            </div>
           </el-form>
         </div>
+        <dl class="upload-file" v-if="searchForm.approvalType == 1">
+          <dt>附件上传</dt>
+          <dd>
+            <file-upload
+              ref="fileUpload"
+              :fileList="fileList"
+              :limit="10"
+              @change="fileChange"
+              :sourceKey="formData.okrMainId"
+              sourceType="OKRMODIFY"
+              accept="
+              .jpg,
+              .jpeg,
+              image/png,
+              application/msword,
+              application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+              .pptx,
+              .xlsx"
+              tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+            ></file-upload>
+          </dd>
+        </dl>
       </div>
     </el-scrollbar>
     <div class="operating-box">
@@ -456,6 +503,7 @@ import { mapState, mapMutations } from 'vuex';
 import confidenceSelect from '@/components/confidenceSelect';
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
+import fileUpload from '@/components/fileUpload/index';
 import validateMixin from '@/mixin/validateMixin';
 import undertakeTable from './component/undertakeTable';
 import Server from './server';
@@ -471,6 +519,7 @@ export default {
     elcollapseitem,
     'undertake-table': undertakeTable,
     'tl-confidence': confidenceSelect,
+    'file-upload': fileUpload,
   },
   props: {
     writeInfo: {
@@ -524,12 +573,12 @@ export default {
           }],
           undertakeOkrVo: {},
         }],
+        attachmentList: [],
       },
       dialogVisible: false, // 弹出框打开关闭
       selectIndex: '', // 选择o的序号
       innerDrawer: false,
       periodName: '', // 周期名
-      reason: {},
       visibleQuota: false, // 考核的弹窗
       loading: false,
       activeList: [0],
@@ -542,6 +591,7 @@ export default {
       weighterror: '',
       // 权重计算
       lastWeightmsg: '剩余权重 计算中...',
+      fileList: [], // 文件列表
     };
   },
   computed: {
@@ -602,6 +652,7 @@ export default {
         this.searchForm.okrType = 1;
       } else { this.searchForm.okrType = 2; }
       if (this.writeInfo.canWrite == 'draft') {
+        console.log(this.writeInfo);
         this.searchForm.okrStatus = this.writeInfo.okrStatus || '';
         this.searchForm.draftParams = this.writeInfo.draftParams || '';
         this.searchForm.draftId = this.writeInfo.draftId || '';
@@ -633,6 +684,7 @@ export default {
     // 获取暂存的草稿
     getOkrDraftById() {
       this.formData = JSON.parse(this.searchForm.draftParams);
+      this.fileList = this.formData.attachmentList;
       //
       if (this.formData.okrInfoList.length > 0) {
         this.formData.okrInfoList.forEach((item) => {
@@ -746,6 +798,10 @@ export default {
       this.checkerror = '';
       this.judgeerror = '';
       this.weighterror = '';
+      if (!this.formData.reason) {
+        this.$message.error('请填写变更原因');
+        return;
+      }
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           // 校验权重比例
@@ -871,6 +927,10 @@ export default {
     },
     // 变更
     summitChange() {
+      if (!this.formData.reason) {
+        this.$message.error('请填写变更原因');
+        return;
+      }
       // 拼入参
       this.formData.okrInfoList.forEach((item) => {
         // 新增或变更承接项
@@ -884,10 +944,11 @@ export default {
         okrInfoList: this.formData.okrInfoList,
         periodId: this.formData.periodId,
         okrProgress: this.formData.okrProgress,
-        modifyReason: this.reason.modifyReason,
+        modifyReason: this.formData.reason,
         okrMainId: this.formData.okrMainId,
         okrBelongType: this.formData.okrBelongType,
         approvalId: this.formData.approvalId,
+        attachmentList: this.formData.attachmentList,
       };
       this.server.modifyOkrInfo(formChangeData).then((res) => {
         if (res.code == 200) {
@@ -957,6 +1018,10 @@ export default {
       if (!kitem.okrDetailProgress) {
         kitem.okrDetailProgress = 0;
       }
+    },
+    // 文件
+    fileChange(data) {
+      this.formData.attachmentList = data.list;
     },
   },
   watch: {
