@@ -6,13 +6,13 @@
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
     class="tl-dialog set-period"
-    width="600px"
+    width="400px"
   >
+    <dl>
+      <dt>为了方便您查看全局OKR，请先选择您希望看到的OKR周期。</dt>
+      <dd>选择确认后系统将记住您的选项</dd>
+    </dl>
     <el-scrollbar>
-      <dl>
-        <dt>为了方便您查看全局OKR，请先选择您希望看到的OKR周期。</dt>
-        <dd>选择确认后系统将记住您的选项</dd>
-      </dl>
       <el-radio-group v-model="periodId">
         <el-radio
           class="tl-radio"

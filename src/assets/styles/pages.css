@@ -1755,7 +1755,7 @@
 }
 
 .set-period .el-dialog__body {
-  height: 300px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -1767,7 +1767,7 @@
   padding: 0 14px 0 0;
 }
 .set-period dl {
- margin: 0 0 20px 0;
+ margin: 30px 0 20px 0;
 }
 
 .set-period dl dd {
@@ -1783,6 +1783,10 @@
 }
 .set-period .el-radio-group .tl-radio{
   margin: 0 0 7px 0;
+}
+
+.set-period .el-scrollbar__bar {
+  opacity: 0.5;
 }
 
 /* undertake-maps */
@@ -3329,7 +3333,7 @@
   font-weight: 500;
 }
 
-.weekly-cont .form-item {
+.weekly-cont .form-item.is-standard-version {
   display: flex;
   align-items: flex-start;
 }
@@ -3343,7 +3347,24 @@
   text-align: left;
 }
 
-.weekly-cont .form-item-group:last-child .el-form-item__label {
+.weekly-cont .is-standard-version .form-item-group:first-child {
+  padding: 0 20px 0 0;
+  margin: 0 20px 0 0;
+  position: relative;
+}
+
+.weekly-cont .is-standard-version .form-item-group:first-child::after {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  right: 0;
+  content: '';
+  width: 1px;
+  border-right: 1px dashed transparent;
+  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #f4f6f8 0, #f4f6f8 0.6em);
+}
+
+.weekly-cont .is-standard-version .form-item-group:last-child .el-form-item__label {
   flex: 0;
   flex-basis: 126px;
   width: 126px !important;
@@ -3351,7 +3372,7 @@
 }
 
 .weekly-cont .form-item-group:last-child {
-  flex: 0 0 45%;
+  flex: 0 0 50%;
 }
 
 .weekly-cont .form-item-group .tl-progress-group {

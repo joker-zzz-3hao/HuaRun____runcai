@@ -104,6 +104,9 @@ export default {
   created() {
     // 获取每月日历
     this.getWeek();
+    this.$busOn('getWeekList', () => {
+      this.getWeek();
+    });
   },
   computed: {
     ...mapState('common', {
