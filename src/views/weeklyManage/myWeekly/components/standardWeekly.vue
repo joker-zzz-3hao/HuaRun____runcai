@@ -154,9 +154,11 @@
                   : []
               "
             >
-              <span v-for="(text, index) in workForm.timeSpanList" :key="index"
-                >{{ text }}
-              </span>
+              <span>{{ getTimes(workForm) }}</span>
+              <div>
+                <i class="el-icon-info"></i>
+                <span>工时已被项目经理修改</span>
+              </div>
               <el-cascader
                 v-show="canUpdate && workForm.noCheck"
                 :ref="workForm.randomId"
@@ -1182,6 +1184,11 @@ export default {
         return false;
       }
       return false;
+    },
+    getTimes(workItem) {
+      const days = (workItem.weekList.length) / 2;
+      const dayTexts = workItem.timeSpanList.join('、');
+      return `${days}天（${dayTexts}）`;
     },
   },
 
