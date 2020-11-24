@@ -3093,6 +3093,10 @@
   margin-bottom: 0;
 }
 
+.my-weekly .dl-card-panel dd.no-data {
+  flex-direction: unset;
+}
+
 .supporting-values .el-drawer__body {
   width: 600px;
 }
@@ -3179,6 +3183,18 @@
   margin: 10px 0 0 0;
 }
 
+.weekly-thoughts .el-textarea__inner,
+.week-plan .el-textarea__inner {
+  border-color: transparent;
+  resize: unset;
+}
+
+.weekly-thoughts .tl-textarea.has-edit .el-textarea__inner,
+.week-plan .tl-textarea.has-edit .el-textarea__inner {
+  border-color: #d5dde3;
+  resize: vertical;
+}
+
 .write-weekly .tl-btn.el-button--text i {
   margin: 0 10px 0 0;
 }
@@ -3246,7 +3262,8 @@
   border-color: rgba(77, 132, 255, 0.10);
 }
 
-.weekly-thoughts dd>i {
+.weekly-thoughts dd > i,
+.week-plan dd > i {
   margin: 0 0 0 20px;
   flex: 0 0 20px;
 }
@@ -3306,6 +3323,10 @@
 
 .write-weekly .week-plan .btn-box {
   margin: 0;
+}
+
+.week-plan dd > div:first-child {
+  flex: 0 0 60px;
 }
 
 .write-weekly > .operating-box {
