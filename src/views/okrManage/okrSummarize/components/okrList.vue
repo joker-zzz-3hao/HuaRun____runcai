@@ -94,7 +94,7 @@
               <el-input-number
                 controls-position="right"
                 v-model="params.okrProgress"
-                :min="1"
+                :min="0"
                 :max="100"
                 :precision="0"
                 class="tl-input-number"
@@ -115,7 +115,7 @@
                 controls-position="right"
                 v-model="params.okrUpdateCount"
                 :precision="0"
-                :min="1"
+                :min="0"
                 class="tl-input-number"
               ></el-input-number>
               <span> 次</span>
@@ -133,7 +133,7 @@
               <el-input-number
                 controls-position="right"
                 v-model="params.okrUpdateTimeCount"
-                :min="1"
+                :min="0"
                 :precision="0"
                 class="tl-input-number"
               ></el-input-number>
@@ -504,22 +504,9 @@ export default {
   },
   methods: {
     ...mapMutations('common', ['setOkrSummarizeDetailData', 'setOkrSummarizeStep', 'setSummasizeOptionType']),
-    partZreo() {
-      if (this.params.okrProgress == '') {
-        this.params.okrProgress = 0;
-      }
-      if (this.params.okrUpdateCount == '') {
-        // eslint-disable-next-line no-unused-expressions
-        this.params.okrUpdateCount = 0;
-      }
-      if (this.params.okrUpdateTimeCount == '') {
-        // eslint-disable-next-line no-unused-expressions
-        this.params.okrUpdateTimeCount = 0;
-      }
-    },
     alertLink(progress, type) {
       if (!progress) {
-        this.$message.error('请填写发送条件');
+        this.$message.error('请填写发送条件,数值不能为0');
         return false;
       }
       const text = this.remindType == '1' ? '部门负责人' : '所有人员';

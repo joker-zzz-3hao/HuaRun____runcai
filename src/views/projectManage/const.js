@@ -15,6 +15,27 @@ const PROJECT_TYPE_MAP = {
   5: '售前项目',
 };
 
+const DATE_MODE = {
+  mondayMor: '周一上午',
+  mondayAft: '周一下午',
+  tuesdayMor: '周二上午',
+  tuesdayAft: '周二下午',
+  wednesdayMor: '周三上午',
+  wednesdayAft: '周三下午',
+  thursdayMor: '周四上午',
+  thursdayAft: '周四下午',
+  fridayMor: '周五上午',
+  fridayAft: '周五下午',
+};
+
+const DATE_NUM = {
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+};
+
 const PROJECT_TYPE_LIST = [
   { value: '', label: '全部' },
   { value: '0', label: '可行性研究项目' },
@@ -101,4 +122,6 @@ export default {
   PROJECT_STATUS_LIST,
   PROJECT_TYPE_CREATE_LIST,
   THROW_TYPE_CREATE_LIST,
+  DATE_MODE,
+  DATE_NUM,
 };

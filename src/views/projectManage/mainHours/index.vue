@@ -96,11 +96,12 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table :data="tableData" class="tl-table" height="500px">
+          <el-table :data="tableData" class="tl-table">
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column label="工作项"> </el-table-column>
-            <el-table-column label="工作项内容"> </el-table-column>
-
+            <el-table-column label="工作项内容" min-width="110">
+            </el-table-column>
+            <el-table-column label="进度" min-width="110"> </el-table-column>
             <el-table-column prop="applyTime" label="提交人" min-width="180">
               <template slot-scope="scope">
                 <div class="user-info">
@@ -124,36 +125,127 @@
             <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
                 <div>
-                  <el-popover
-                    placement="top"
-                    width="300"
-                    v-model="popoverVisible"
-                    popper-class="approval-pop"
-                  >
-                    <el-input
-                      type="textarea"
-                      :rows="2"
-                      placeholder="请输入内容"
-                      class="tl-textarea"
-                    >
-                    </el-input>
-                    <div class="flex-end">
-                      <el-button
-                        type="primary"
-                        class="tl-btn amt-bg-slip"
-                        @click="confirmTimeSheet"
-                        >确定</el-button
-                      >
-                    </div>
-                  </el-popover>
-
                   <div>
-                    <em>1.5天</em>
-                    <el-button type="text" @click="popoverVisible = true"
-                      >修改</el-button
+                    <em v-if="timeMay[scope.$index]"
+                      >{{ timeMay[scope.$index] }}天
+                    </em>
+                    <el-popover
+                      placement="top"
+                      width="300"
+                      trigger="click"
+                      :tabindex="scope.$index"
+                      :ref="'popover' + scope.$index"
+                      popper-class="approval-pop"
+                      @show="
+                        listTimeFun(scope.row.weekWorkList, scope.row.weekBegin)
+                      "
                     >
+                      <div>
+                        <dt>周一</dt>
+
+                        <el-checkbox
+                          label="周一上午"
+                          v-model="checkList.mondayMor"
+                          true-label="周一上午"
+                          >上午</el-checkbox
+                        >
+                        <el-checkbox
+                          label="周一下午"
+                          v-model="checkList.mondayAft"
+                          true-label="周一下午"
+                          >下午</el-checkbox
+                        >
+                      </div>
+                      <div>
+                        <dt>周二</dt>
+
+                        <el-checkbox
+                          label="周二上午"
+                          v-model="checkList.tuesdayMor"
+                          true-label="周二上午"
+                          >上午</el-checkbox
+                        >
+                        <el-checkbox
+                          label="周二下午"
+                          v-model="checkList.tuesdayAft"
+                          true-label="周二下午"
+                          >下午</el-checkbox
+                        >
+                      </div>
+                      <div>
+                        <dt>周三</dt>
+
+                        <el-checkbox
+                          label="周三上午"
+                          v-model="checkList.wednesdayMor"
+                          true-label="周三上午"
+                          >上午</el-checkbox
+                        >
+                        <el-checkbox
+                          label="周三下午"
+                          v-model="checkList.wednesdayAft"
+                          true-label="周三下午"
+                          >下午</el-checkbox
+                        >
+                      </div>
+                      <div>
+                        <dt>周四</dt>
+
+                        <el-checkbox
+                          label="周四上午"
+                          v-model="checkList.thursdayMor"
+                          true-label="周四上午"
+                          >上午</el-checkbox
+                        >
+                        <el-checkbox
+                          label="周四下午"
+                          v-model="checkList.thursdayAft"
+                          true-label="周四下午"
+                          >下午</el-checkbox
+                        >
+                      </div>
+                      <div>
+                        <dt>周五</dt>
+
+                        <el-checkbox
+                          label="周五上午"
+                          v-model="checkList.fridayMor"
+                          true-label="周五上午"
+                          >上午</el-checkbox
+                        >
+                        <el-checkbox
+                          label="周五下午"
+                          v-model="checkList.fridayAft"
+                          true-label="周五下午"
+                          >下午</el-checkbox
+                        >
+                      </div>
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        placeholder="请输入修改原因"
+                        class="tl-textarea"
+                      >
+                      </el-input>
+                      <div class="flex-end">
+                        <el-button
+                          type="primary"
+                          class="tl-btn amt-bg-slip"
+                          @click="confirmTimeSheet(scope.$index)"
+                          >确定</el-button
+                        >
+                      </div>
+                      <el-button type="text" slot="reference">修改</el-button>
+                    </el-popover>
                   </div>
-                  <div>周一全天,周二全天</div>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="textMay[scope.$index]"
+                    placement="top"
+                  >
+                    <div>{{ textMay[scope.$index] }}</div>
+                  </el-tooltip>
                 </div>
               </template>
             </el-table-column>
@@ -234,6 +326,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-button type="primary">批量审批</el-button>
         </div>
       </tl-crcloud-table>
     </div>
@@ -275,6 +368,12 @@ export default {
       showApproval: false,
       showApprovalDetail: false,
       tableData: [],
+      textMay: [],
+      timeMay: [],
+      checkList: {
+
+      },
+      showPop: false,
       projectList: [],
       popoverVisible: false,
       editRemark: '',
@@ -316,8 +415,22 @@ export default {
     });
   },
   methods: {
-    confirmTimeSheet() {
-      this.popoverVisible = true;
+    confirmTimeSheet(index) {
+      console.log(this.checkList);
+      const dateList = [];
+      let timeTotal = 0;
+      // eslint-disable-next-line guard-for-in
+      for (const key in this.checkList) {
+        dateList.push(this.checkList[key]);
+      }
+
+      const mapList = dateList.filter((item) => item);
+      timeTotal = mapList.length * 0.5 + timeTotal;
+      const listString = mapList.join(',');
+
+      this.$set(this.textMay, index, listString);
+      this.$set(this.timeMay, index, timeTotal);
+      this.$refs[`popover${index}`].doClose();
     },
     searchList() {
       this.server.timeSheetList({
@@ -334,8 +447,46 @@ export default {
           this.projectConfirmCurrency = res.data.projectConfirmCurrency;
           this.tableData = res.data.resultPageDto.content;
           this.total = res.data.resultPageDto.total;
+          this.tableData.forEach((item, index) => {
+            const arr = [];
+            item.weekWorkList.forEach((li) => {
+              const obj = this.changeTimeText(item.weekBegin, li.weekDate, li.weekTimeType);
+
+              arr.push(obj.text);
+              this.textMay[index] = arr.join(',');
+              this.timeMay[index] = arr.length * 0.5;
+            });
+          });
         }
       });
+    },
+    listTimeFun(list, weekBegin) {
+      this.$set(this, 'checkList', {
+        mondayMor: '',
+        mondayAft: '',
+        tuesdayMor: '',
+        tuesdayAft: '',
+        wednesdayMor: '',
+        wednesdayAft: '',
+        thursdayMor: '',
+        thursdayAft: '',
+        fridayMor: '',
+        fridayAft: '',
+      });
+      const listText = list.map((item) => this.changeTimeText(weekBegin, item.weekDate, item.weekTimeType));
+      listText.forEach((item) => {
+        this.$set(this.checkList, item.day, item.text);
+      });
+      this.$forceUpdate();
+    },
+    changeTimeText(weekBegin, weekDate, weekTimeType) {
+      const oneDate = 24 * 60 * 60 * 1000;
+      const date = new Date(weekDate) - new Date(weekBegin);
+      const timePro = (date + oneDate) / oneDate;
+      console.log(timePro);
+      const mode = weekTimeType == 0 ? 'Mor' : 'Aft';
+      // eslint-disable-next-line max-len
+      return { day: CONST.DATE_NUM[timePro.toString()] + mode, text: CONST.DATE_MODE[CONST.DATE_NUM[timePro.toString()] + mode] };
     },
     changeProject() {
       this.searchList();
