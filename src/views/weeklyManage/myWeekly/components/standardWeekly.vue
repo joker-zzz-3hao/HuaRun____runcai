@@ -167,6 +167,7 @@
                 collapse-tags
                 @visible-change="visibleChange(workForm)"
                 @change="selectWeekData(workForm)"
+                popper-class="tl-cascader-popper"
                 class="tl-cascader"
               ></el-cascader>
             </el-form-item>
