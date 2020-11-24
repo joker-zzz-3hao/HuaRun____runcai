@@ -1055,6 +1055,7 @@ export default {
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
         if (res.code == 200) {
+          this.$busEmit('getWeekList');
           this.canUpdate = false;
           this.$message.success('保存成功');
           // 刷新日历数据
