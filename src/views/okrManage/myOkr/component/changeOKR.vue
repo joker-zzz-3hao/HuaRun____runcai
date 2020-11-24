@@ -658,10 +658,10 @@ export default {
       this.attachmentList = data.list;
       console.log(data);
     },
-    // updateResource
+    // 更新文件状态
     updateFile() {
       const files = this.attachmentList.map((file) => file.resourceId).toString();
-      this.server.updateResource({ resourceId: files, sourceType: 'OKRMODIFY' }).then();
+      this.server.updateResource({ resourceId: files, sourceType: 'OKRMODIFY' });
     },
   },
   watch: {
