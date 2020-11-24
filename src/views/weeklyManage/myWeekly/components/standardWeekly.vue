@@ -586,18 +586,21 @@
           <ul>
             <li>本周心情</li>
             <li
+              v-show="canUpdate || weeklyEmotion === 100"
               class="has-harvest"
               :class="{ 'is-selected': weeklyEmotion === 100 }"
             >
               <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 50"
               class="not-too-bad"
               :class="{ 'is-selected': weeklyEmotion === 50 }"
             >
               <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 0"
               class="let-quiet"
               :class="{ 'is-selected': weeklyEmotion === 0 }"
             >
@@ -636,6 +639,16 @@
       :server="server"
       @closeOkrDialog="closeOkrDialog"
     ></add-okr>
+    <!-- 添加支撑项 -->
+    <tl-select-project
+      ref="selectProject"
+      v-if="showProject"
+      :showProject.sync="showProject"
+      :currenItemRandomId="currenItemRandomId"
+      :selectedOkr="selectedOkr"
+      :server="server"
+      @closeOkrDialog="closeProjectDialog"
+    ></tl-select-project>
   </div>
 </template>
 
@@ -649,6 +662,7 @@ import CONST from '@/components/const';
 import { mapState } from 'vuex';
 import Server from '../server';
 import addOkr from './addOkr';
+import selectProject from './selectProject';
 import mixin from '../mixin';
 
 const server = new Server();
@@ -659,6 +673,7 @@ export default {
     'add-okr': addOkr,
     'tl-process': tlProcess,
     'tl-confidence': confidenceSelect,
+    'tl-select-project': selectProject,
   },
   props: {
     week: {
@@ -686,6 +701,7 @@ export default {
       tableLoading: false,
       currenItemRandomId: '',
       showAddOkr: false,
+      showProject: false,
       showProjectDialog: false,
       submitLoading: false,
       weeklyThoughtSaveList: [],
