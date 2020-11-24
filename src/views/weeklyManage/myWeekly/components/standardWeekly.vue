@@ -644,7 +644,7 @@
       :currenItemRandomId="currenItemRandomId"
       :selectedOkr="selectedOkr"
       :server="server"
-      @closeOkrDialog="closeOkrDialog"
+      @closeOkrDialog="closeProjectDialog"
     ></tl-select-project>
   </div>
 </template>
