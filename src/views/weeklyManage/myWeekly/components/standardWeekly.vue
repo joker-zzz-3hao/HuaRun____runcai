@@ -154,11 +154,32 @@
                   : []
               "
             >
-              <span>{{ getTimes(workForm) }}</span>
-              <div>
-                <i class="el-icon-info"></i>
-                <span>工时已被项目经理修改</span>
-              </div>
+              <span>{{ getTimes(workForm, "updated") }}</span>
+              <el-popover
+                placement="top-start"
+                title=""
+                width="200"
+                trigger="hover"
+                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+              >
+                <ul>
+                  <li>
+                    <span>填入工时：</span
+                    ><span>{{ getTimes(workForm, "original") }}</span>
+                  </li>
+                  <li>
+                    <span>修改后工时：</span
+                    ><span>{{ getTimes(workForm, "updated") }}</span>
+                  </li>
+                  <li>
+                    <span>修改原因：</span><span>{{ workForm.remark }}</span>
+                  </li>
+                </ul>
+                <div v-show="!hasValue(workForm.remark)" slot="reference">
+                  <i class="el-icon-info"></i>
+                  <span>工时已被项目经理修改</span>
+                </div>
+              </el-popover>
               <el-cascader
                 v-show="canUpdate && workForm.noCheck"
                 :ref="workForm.randomId"
@@ -811,7 +832,7 @@ export default {
           this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
           this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
           this.$set(element, 'timeList', this.setTimeList(element.weekList));// 存到后端的okr
-          this.$set(element, 'timeSpanList', this.setTimeSpanList(element.weekList));// 存到后端的okr
+          // this.$set(element, 'timeSpanList', this.setTimeSpanList(element));// 存到后端的okr
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
@@ -853,6 +874,29 @@ export default {
         });
       }
       return result;
+    },
+    getTimes(workItem, type) {
+      if (workItem.weekList && workItem.weekList.length > 0) {
+        let tempWeekList = [];
+        // 1、审批后工时被改动：过滤掉weekTimeAfter == '0'的数据
+        if (this.hasValue(workItem.remark)) {
+          if (type == 'updated') { // 更改后
+            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeAfter !== '0');
+          } else if (type == 'original') { // 更改前
+            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeFront === '1');
+          }
+        } else {
+          tempWeekList = workItem.weekList;
+        }
+        // 2、工时未被改动：不作处理
+
+        workItem.timeSpanList = this.setTimeSpanList(tempWeekList);
+        // 过滤掉删除的数据
+        const days = (tempWeekList.length) / 2;
+        const dayTexts = workItem.timeSpanList.join('、');
+        return `${days}天（${dayTexts}）`;
+      }
+      return '';
     },
     setTimeSpanList(manHourList) {
       const result = [];
@@ -1174,7 +1218,7 @@ export default {
         });
       });
 
-      this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem.weekList));
+      // this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem));
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
     },
     hasChecked(workItem) {
@@ -1186,11 +1230,7 @@ export default {
       }
       return false;
     },
-    getTimes(workItem) {
-      const days = (workItem.weekList.length) / 2;
-      const dayTexts = workItem.timeSpanList.join('、');
-      return `${days}天（${dayTexts}）`;
-    },
+
   },
 
   watch: {
