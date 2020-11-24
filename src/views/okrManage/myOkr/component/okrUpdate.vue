@@ -160,6 +160,12 @@
                       <tl-confidence
                         v-model="formData.okrDetailConfidence"
                       ></tl-confidence>
+                      <div class="add-progress" @click="addProgress(5)">
+                        +5%
+                      </div>
+                      <div class="add-progress" @click="addProgress(5)">
+                        +10%
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -332,6 +338,10 @@ export default {
       if (!this.formData.okrDetailProgress) {
         this.formData.okrDetailProgress = 0;
       }
+    },
+    // 加进度
+    addProgress(num) {
+      this.formData.okrDetailProgress += num;
     },
   },
   watch: {
