@@ -317,6 +317,9 @@
           maxlength="500"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
+          @click.native="isEdit"
+          @blur="noEdit"
+          :class="{ 'has-edit': hasEdit }"
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
@@ -357,7 +360,7 @@
     </dl>
     <!-- 下周计划-->
     <dl
-      class="dl-card-panel weekly-thoughts"
+      class="dl-card-panel week-plan"
       :class="{ 'is-edit': canUpdate }"
       v-if="weeklyType == 1"
     >
@@ -378,6 +381,9 @@
           clearable
           placeholder="建议添加多条作为下周计划项，显得计划比较详实"
           class="tl-textarea"
+          @click.native="isEdit"
+          @blur="noEdit"
+          :class="{ 'has-edit': hasEdit }"
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
@@ -688,6 +694,7 @@ export default {
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
+      hasEdit: false,
     };
   },
   created() {
@@ -731,7 +738,12 @@ export default {
         this.initPage();
       }
     },
-
+    isEdit() {
+      this.hasEdit = true;
+    },
+    noEdit() {
+      this.hasEdit = false;
+    },
     setOkrProcess(weeklyOkrVoList) {
       // 将上次保存的o、kr找出来，多行支撑项
       const supportList = [];
