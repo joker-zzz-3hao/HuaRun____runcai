@@ -35,12 +35,14 @@
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">
               <dt>
-                <i class></i>
+                <i
+                  :class="CONST.STATUS_LIST_MAP[item.okrMain.status].className"
+                ></i>
                 <em>状态</em>
               </dt>
               <dd class="is-highlighted">
                 <!-- <i class="el-icon-sunny"></i> -->
-                <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
+                <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status].name }}</em>
               </dd>
             </dl>
             <dl class="okr-type">

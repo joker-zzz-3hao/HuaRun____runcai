@@ -12,7 +12,7 @@
               placeholder="请选择项目"
               @change="changeProject"
               popper-class="tl-select-dropdown"
-              class="tl-select"
+              class="tl-select project-select"
             >
               <el-option
                 v-for="(item, index) in projectList"
@@ -42,31 +42,6 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt>时间</dt>
-          <dd>
-            <el-date-picker
-              v-model="value1"
-              type="week"
-              format="yyyy 第 WW 周"
-              placeholder="选择周"
-            >
-            </el-date-picker>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dd>
-            <el-input
-              maxlength="64"
-              v-model="keyWord"
-              placeholder="请输入项目名称或者项目经理"
-              class="tl-input-search"
-            >
-              <i class="el-icon-search" slot="prefix"></i>
-            </el-input>
-            <el-button plain class="tl-btn"> 搜索 </el-button>
           </dd>
         </dl>
       </div>
@@ -261,15 +236,6 @@
                 <span v-else>--</span>
               </template>
             </el-table-column> -->
-
-            <el-table-column prop="submitTime" label="提交日期" min-width="180">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.submitTime)">{{
-                  scope.row.submitTime
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
             <el-table-column
               prop="approvalStatus"
               label="审批状态"
@@ -290,14 +256,34 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
+            <el-table-column prop="submitTime" label="提交日期" min-width="180">
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.submitTime)">{{
+                  scope.row.submitTime
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="approvalTime"
-              label="审批时间"
+              label="审批日期"
               min-width="180"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
                   scope.row.approvalTime
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="approvalUserName"
+              label="审批人"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.approvalUserName)">{{
+                  scope.row.approvalUserName
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -314,14 +300,14 @@
                   @click="approval(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >确认审批</el-button
+                  >审批</el-button
                 >
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
                   @click="detail(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >已审批</el-button
+                  >查看</el-button
                 >
               </template>
             </el-table-column>
@@ -341,7 +327,6 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
-    <div class="dialog-footer-l"></div>
   </div>
 </template>
 
@@ -359,7 +344,6 @@ export default {
   data() {
     return {
       CONST,
-      value1: '',
       server,
       keyWord: '',
       total: 0,
@@ -375,8 +359,6 @@ export default {
       },
       showPop: false,
       projectList: [],
-      popoverVisible: false,
-      editRemark: '',
       formData: {
         projectId: '',
         approvalStatus: '',

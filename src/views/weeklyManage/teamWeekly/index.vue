@@ -39,6 +39,7 @@
       v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId"
     >
       <tl-calendar
+        :server="server"
         @setCalendarId="setCalendarId"
         @getWeeklyById="refreshPageList"
         :isFromTeam="true"
@@ -168,7 +169,6 @@
                       <em>我想静静</em>
                     </template>
                     <template v-else>
-                      <i></i>
                       <em>--</em>
                     </template>
                   </div>
@@ -316,7 +316,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import calendar from '../myWeekly/components/calendar';
+import calendar from '../components/calendarTabs';
 import Server from './server';
 
 const server = new Server();
