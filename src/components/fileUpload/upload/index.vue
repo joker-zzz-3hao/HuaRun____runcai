@@ -2,7 +2,9 @@
 import Migrating from './migrating';
 import UploadList from './upload-list';
 import Upload from './upload';
+import Server from '../server';
 
+const server = new Server();
 function noop() {}
 
 export default {
@@ -107,10 +109,15 @@ export default {
       type: String,
       default: '', //
     },
+    sourceType: {
+      type: String,
+      default: '', //
+    },
   },
 
   data() {
     return {
+      server,
       uploadFiles: [],
       dragOver: false,
       draging: false,
@@ -215,6 +222,9 @@ export default {
         fileList.splice(fileList.indexOf(file), 1);
         this.onRemove(file, fileList);
       };
+      if (this.sourceType == 'OKRMODIFY') {
+        this.server.deleteFile({ resourceId: file.resourceId, sourceType: this.sourceType });
+      }
 
       if (!this.beforeRemove) {
         doRemove();

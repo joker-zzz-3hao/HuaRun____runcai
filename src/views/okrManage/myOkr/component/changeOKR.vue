@@ -635,6 +635,7 @@ export default {
       this.server.modifyOkrInfo(this.formData).then((res) => {
         this.loading = false;
         if (res.code == 200) {
+          this.updateFile();
           this.$message.success('提交成功，请等待上级领导审批');
           this.close();
           this.$emit('success');
@@ -656,6 +657,11 @@ export default {
     fileChange(data) {
       this.attachmentList = data.list;
       console.log(data);
+    },
+    // updateResource
+    updateFile() {
+      const files = this.attachmentList.map((file) => file.resourceId).toString();
+      this.server.updateResource({ resourceId: files, sourceType: 'OKRMODIFY' }).then();
     },
   },
   watch: {
