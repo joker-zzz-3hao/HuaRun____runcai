@@ -37,7 +37,7 @@
               v-if="!hasValue(item.weeklyId) && !item.noOpen && !item.canEdit"
               class
               effect="dark"
-              content="本周之前周报不可提交"
+              content="上周之前周报不可提交"
               placement="top"
               popper-class="tl-tooltip-popper"
             >
@@ -71,7 +71,6 @@ export default {
           return date.getTime() > new Date().getTime() || now.getTime() > date.getTime();
         },
       },
-      weeklyTypeListTemp: [],
     };
   },
   props: {

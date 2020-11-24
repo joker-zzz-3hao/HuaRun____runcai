@@ -11,14 +11,13 @@
         v-show="weekIndex == index"
         :key="week.calendarId"
       >
-        <div class="weekly-area">
+        <div class="weekly-area" v-if="weeklyTypeList.length > 0">
           <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
             <div class="no-data-bg"></div>
             <div class="no-data-txt">周报未填写</div>
           </div>
           <div v-else>
             <standard-Weekly
-              v-if="weeklyTypeList.length > 0"
               :week="week"
               :weeklyTypeList="weeklyTypeList"
               :orgOkrList="orgOkrList"
