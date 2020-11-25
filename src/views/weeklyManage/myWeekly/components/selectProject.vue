@@ -5,7 +5,18 @@
   备注：
 -->
 <template>
-  <div>llllll</div>
+  <el-drawer
+    :wrapperClosable="false"
+    :modal-append-to-body="true"
+    :append-to-body="true"
+    :before-close="close"
+    @closed="closed"
+    :visible.sync="visible"
+    custom-class="custom-drawer supporting-values"
+    class="tl-drawer"
+  >
+    ffff
+  </el-drawer>
 </template>
 
 <script>
@@ -15,12 +26,20 @@ export default {
   props: {},
   data() {
     return {
+      visible: false,
     };
   },
   created() {},
   mounted() {},
   computed: {},
-  methods: {},
+  methods: {
+    close() {
+      this.visible = false;
+    },
+    closed() {
+      this.$emit('update:showProject', false);
+    },
+  },
   watch: {},
   updated() {},
   beforeDestroy() {},

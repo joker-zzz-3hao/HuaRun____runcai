@@ -224,7 +224,7 @@
               <el-button
                 type="text"
                 v-if="!workForm.projectNameCn"
-                @click="showProject = true"
+                @click="selectProject(workForm)"
                 class="tl-btn dotted-line list-add"
               >
                 <i class="el-icon-plus"></i>关联项目
@@ -232,7 +232,7 @@
               <em
                 v-else
                 @click="
-                  canUpdate && workForm.noCheck ? (showProject = true) : ''
+                  canUpdate && workForm.noCheck ? selectProject(workForm) : ''
                 "
                 >{{ workForm.projectNameCn }}</em
               >
@@ -662,7 +662,7 @@
       :currenItemRandomId="currenItemRandomId"
       :selectedPro="selectedPro"
       :server="server"
-      @closeOkrDialog="closeProjectDialog"
+      @closeProjectDialog="closeProjectDialog"
     ></tl-select-project>
   </div>
 </template>
@@ -717,7 +717,6 @@ export default {
       currenItemRandomId: '',
       showAddOkr: false,
       showProject: false,
-      showProjectDialog: false,
       submitLoading: false,
       weeklyThoughtSaveList: [],
       weeklyPlanSaveList: [],
@@ -1088,6 +1087,11 @@ export default {
       this.selectedOkr = data.selectedOkr;
       this.showAddOkr = true;
     },
+    selectProject(workForm) {
+      this.currenItemRandomId = workForm.randomId;
+      this.selectedPro = workForm.selectedPro;
+      this.showProject = true;
+    },
     closeOkrDialog(selectedData) {
       for (const item of this.weeklyWorkVoSaveList) {
         const valueIdList = [];
@@ -1186,13 +1190,6 @@ export default {
     },
     processChange(item) {
       item.progressAfter = Math.round(item.progressAfter);
-    },
-    projectInputFocus(work) {
-      this.randomIdForProject = work.randomId;
-      this.showProjectDialog = true;
-      this.$nextTick(() => {
-        this.$refs.selectProject.show();
-      });
     },
     getPlaceholder(type) {
       if (type == 0) {
