@@ -272,7 +272,6 @@
                     </el-tooltip>
                   </li>
                   <li
-                    class="icon-bg"
                     v-if="
                       workForm.selectedOkr.length < 1 &&
                       canUpdate &&
@@ -281,9 +280,10 @@
                     @click="addSupportOkr(workForm)"
                   >
                     <i class="el-icon-plus"></i>
-                    <el-button type="text" class="tl-btn dotted-line list-add">
+                    <em>支撑OKR/价值观</em>
+                    <!-- <el-button type="text" class="tl-btn dotted-line list-add">
                       <i class="el-icon-plus"></i>支撑OKR/价值观
-                    </el-button>
+                    </el-button> -->
                   </li>
                 </ul>
               </div>
