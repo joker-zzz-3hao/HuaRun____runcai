@@ -659,7 +659,7 @@ export default {
     },
     // 重新触发进度条计算
     expand(activeList) {
-      activeList.forEach((item, index) => {
+      activeList.forEach((item) => {
         this.tableList[item].krList.forEach((kritem, krIndex) => {
           this.$nextTick(() => {
             this.$refs[`process${item}${krIndex}`][0].changeWidth();
