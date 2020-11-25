@@ -83,7 +83,7 @@
             <el-form-item label="内容" v-show="weeklyType == 1">
               <el-input
                 v-model="workForm.workDesc"
-                :autosize="{ minRows: 5 }"
+                :autosize="{ minRows: 6 }"
                 type="textarea"
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述任务项"
@@ -219,21 +219,6 @@
                   : []
               "
             >
-              <!-- <el-select
-                v-if="canUpdate && workForm.noCheck"
-                v-model="workForm.projectId"
-                placeholder="请选择关联项目"
-                @change="projectChange(workForm)"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="item in projectList"
-                  :key="item.projectId"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                >
-                </el-option>
-              </el-select> -->
               <el-button
                 type="text"
                 v-if="!workForm.projectNameCn"
@@ -247,7 +232,7 @@
                 @click="
                   canUpdate && workForm.noCheck ? selectProject(workForm) : ''
                 "
-                >{{ workForm.projectNameCn }}</em
+                >{{ workForm.projectNameCn }}11</em
               >
             </el-form-item>
             <el-form-item
@@ -267,10 +252,6 @@
             >
               <div class="tag-group">
                 <ul class="tag-lists">
-                  <el-input
-                    v-show="false"
-                    v-model="workForm.valueOrOkrIds"
-                  ></el-input>
                   <li
                     v-for="item in workForm.selectedOkr"
                     :key="item.okrDetailId"
