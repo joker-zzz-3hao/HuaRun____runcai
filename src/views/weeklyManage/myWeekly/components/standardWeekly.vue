@@ -90,7 +90,7 @@
                 class="tl-textarea"
                 clearable
               ></el-input>
-              <em v-else> {{ workForm.workDesc }}</em>
+              <pre v-else class="font-normal">{{ workForm.workDesc }}</pre>
             </el-form-item>
           </div>
           <div class="form-item-group">
@@ -282,9 +282,9 @@
                       <em
                         v-if="canUpdate && workForm.noCheck"
                         @click="addSupportOkr(workForm)"
-                        >{{ setOkrStyle(item.okrDetailObjectKr) }}</em
+                        >{{ item.okrDetailObjectKr }}</em
                       >
-                      <em v-else>{{ setOkrStyle(item.okrDetailObjectKr) }}</em>
+                      <em v-else>{{ item.okrDetailObjectKr }}</em>
                     </el-tooltip>
                   </li>
                   <li
