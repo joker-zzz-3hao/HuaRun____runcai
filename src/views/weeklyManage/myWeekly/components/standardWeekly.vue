@@ -196,7 +196,7 @@
                   </li>
                 </ul>
                 <div v-show="!hasValue(workForm.remark)" slot="reference">
-                  <i class="el-icon-info"></i>
+                  <i class="icon-remind"></i>
                   <span>工时已被项目经理修改</span>
                 </div>
               </el-popover>

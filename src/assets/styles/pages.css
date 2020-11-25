@@ -3437,8 +3437,15 @@
   margin: 16px 0 24px 0 ;
 }
 
+.weekly-cont .time-cascader .el-form-item__content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .weekly-cont .add-working-hours {
   position: relative;
+  margin: 0 10px 0 0;
 }
 
 .weekly-cont .add-working-hours .tl-cascader {
@@ -3448,6 +3455,14 @@
   opacity: 0;
   z-index: 5;
   cursor: pointer;
+}
+
+.weekly-cont .add-working-hours .tl-cascader .el-cascader__tags {
+  display: none;
+}
+
+.weekly-cont .add-working-hours .tl-cascader .el-input__inner {
+  height: unset;
 }
 
 .weekly-cont .add-working-hours .el-icon-close {
@@ -3460,6 +3475,15 @@
 
 .popper-working-hours .popper__arrow {
   left: 80px !important;
+}
+
+.weekly-cont .el-popover__reference {
+  display: flex;
+  align-items: center;
+}
+
+.weekly-cont .icon-remind {
+  margin: 0;
 }
 
 .write-weekly > .operating-box .tl-custom-btn {
@@ -3730,11 +3754,6 @@
 
 .mood li i:last-child {
   margin: 10px 0 0 0;
-}
-
-.mood dd {
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .mood dd span {
