@@ -133,6 +133,7 @@
                   class="tl-input-number"
                   @blur="progressAfterBlur(item)"
                 ></el-input-number>
+                <span v-if="canUpdate && workForm.noCheck">%</span>
               </div>
             </el-form-item>
             <el-form-item
@@ -152,12 +153,34 @@
               "
             >
               <span>{{ getTimes(workForm, "updated") }}</span>
+              <div class="add-working-hours">
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-if="canUpdate && workForm.noCheck"
+                  >添加工时</el-button
+                >
+                <el-cascader
+                  v-show="canUpdate && workForm.noCheck"
+                  :ref="workForm.randomId"
+                  v-model="workForm.timeList"
+                  :options="weekDataList"
+                  :props="props"
+                  placeholder="添加工时"
+                  collapse-tags
+                  @visible-change="visibleChange(workForm)"
+                  @change="selectWeekData(workForm)"
+                  popper-class="tl-cascader-popper"
+                  class="tl-cascader"
+                ></el-cascader>
+              </div>
               <el-popover
                 placement="top-start"
                 title=""
                 width="200"
                 trigger="hover"
                 content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                popper-class="popper-working-hours"
               >
                 <ul>
                   <li>
@@ -172,24 +195,11 @@
                     <span>修改原因：</span><span>{{ workForm.remark }}</span>
                   </li>
                 </ul>
-                <div v-show="hasValue(workForm.remark)" slot="reference">
+                <div v-show="!hasValue(workForm.remark)" slot="reference">
                   <i class="el-icon-info"></i>
                   <span>工时已被项目经理修改</span>
                 </div>
               </el-popover>
-              <el-cascader
-                v-show="canUpdate && workForm.noCheck"
-                :ref="workForm.randomId"
-                v-model="workForm.timeList"
-                :options="weekDataList"
-                :props="props"
-                placeholder="添加工时"
-                collapse-tags
-                @visible-change="visibleChange(workForm)"
-                @change="selectWeekData(workForm)"
-                popper-class="tl-cascader-popper"
-                class="tl-cascader"
-              ></el-cascader>
             </el-form-item>
             <el-form-item
               label="项目"

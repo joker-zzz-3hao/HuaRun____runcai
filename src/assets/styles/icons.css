@@ -109,10 +109,15 @@
 
 /* 删除 */
 .icon-clear i {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
-  background-position-y: -2073px;
+  background-position-x: -7px;
+  background-position-y: -1658px;
+}
+
+.icon-clear:hover i {
+  background-position-x: -37px;
 }
 
 /* 暂无数据 */
