@@ -1117,8 +1117,14 @@ export default {
       }
       this.$forceUpdate();
     },
-    closeProjectDialog(project) {
-      console.log(project);
+    closeProjectDialog(data) {
+      this.weeklyWorkVoSaveList.forEach((workItem) => {
+        if (workItem.randomId == data.currenItemRandomId) {
+          workItem.projectId = data.projectObj.projectId;
+          workItem.projectNameCn = data.projectObj.projectNameCn;
+        }
+      });
+      this.$forceUpdate();
     },
 
     thoughtTypeChange(thoughts, type) {
