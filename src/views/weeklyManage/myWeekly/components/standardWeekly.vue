@@ -28,7 +28,7 @@
           <div class="item-title">
             <i></i><span>工作项</span><em>{{ index + 1 }}</em>
           </div>
-          <span v-if="hasChecked(workForm)">已审批</span>
+          <span v-if="hasChecked(workForm)" class="has-approval">已审批</span>
           <el-tooltip
             v-else
             v-show="canUpdate && workForm.noCheck"
