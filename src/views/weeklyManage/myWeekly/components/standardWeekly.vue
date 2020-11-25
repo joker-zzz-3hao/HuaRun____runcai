@@ -152,7 +152,7 @@
                   : []
               "
             >
-              <span>{{ getTimes(workForm, "updated", "days") }}</span>
+              <em>{{ getTimes(workForm, "updated", "days") }}</em>
               <span>{{ getTimes(workForm, "updated", "info") }}</span>
               <div class="add-working-hours">
                 <el-button
