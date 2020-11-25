@@ -132,7 +132,7 @@
               :fileList="fileList"
               :limit="10"
               @change="fileChange"
-              :okrId="writeInfo.okrId"
+              :sourceKey="writeInfo.okrId"
               sourceType="OKRMODIFY"
               accept="
               .jpg,
