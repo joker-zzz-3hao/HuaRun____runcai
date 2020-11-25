@@ -951,6 +951,9 @@ export default {
       };
       this.server.modifyOkrInfo(formChangeData).then((res) => {
         if (res.code == 200) {
+          if (this.formData.attachmentList.length > 0) {
+            this.updateFile();
+          }
           this.$message.success('提交成功');
           this.close();
         } else if (res.code === 30000) {
@@ -1021,6 +1024,11 @@ export default {
     // 文件
     fileChange(data) {
       this.formData.attachmentList = data.list;
+    },
+    // 更新文件状态
+    updateFile() {
+      const files = this.formData.attachmentList.map((file) => file.resourceId).toString();
+      this.server.updateResource({ resourceId: files, sourceType: 'OKRMODIFY' });
     },
   },
   watch: {
