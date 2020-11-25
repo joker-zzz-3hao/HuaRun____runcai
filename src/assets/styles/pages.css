@@ -3048,6 +3048,20 @@
   cursor: pointer;
 }
 
+.weekly-cont .icon-clear {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.weekly-cont .icon-clear em {
+  color: #acb6bf;
+}
+
+.weekly-cont .icon-clear:hover em {
+  color: #685df1;
+}
+
 .my-weekly .tl-table .el-table__body-wrapper .el-table__body tr:hover>td,
 .my-weekly .tl-table .el-table__body-wrapper .el-table__body .expanded>td,
 .my-weekly .el-table__body tr.hover-row.current-row>td,
