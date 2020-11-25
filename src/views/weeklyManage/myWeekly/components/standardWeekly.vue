@@ -153,6 +153,27 @@
               "
             >
               <span>{{ getTimes(workForm, "updated") }}</span>
+              <div class="add-working-hours">
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-if="canUpdate && workForm.noCheck"
+                  >添加工时</el-button
+                >
+                <el-cascader
+                  v-show="canUpdate && workForm.noCheck"
+                  :ref="workForm.randomId"
+                  v-model="workForm.timeList"
+                  :options="weekDataList"
+                  :props="props"
+                  placeholder="添加工时"
+                  collapse-tags
+                  @visible-change="visibleChange(workForm)"
+                  @change="selectWeekData(workForm)"
+                  popper-class="tl-cascader-popper"
+                  class="tl-cascader"
+                ></el-cascader>
+              </div>
               <el-popover
                 placement="top-start"
                 title=""
@@ -179,19 +200,6 @@
                   <span>工时已被项目经理修改</span>
                 </div>
               </el-popover>
-              <el-cascader
-                v-show="canUpdate && workForm.noCheck"
-                :ref="workForm.randomId"
-                v-model="workForm.timeList"
-                :options="weekDataList"
-                :props="props"
-                placeholder="添加工时"
-                collapse-tags
-                @visible-change="visibleChange(workForm)"
-                @change="selectWeekData(workForm)"
-                popper-class="tl-cascader-popper"
-                class="tl-cascader"
-              ></el-cascader>
             </el-form-item>
             <el-form-item
               label="项目"

@@ -3219,6 +3219,12 @@
   transition: all .4s ease-out;
 }
 
+.write-weekly .weekly-cont .tl-btn.el-button--text {
+  padding: 0;
+  color: #685df1;
+  min-width: unset;
+}
+
 .write-weekly .tl-btn.el-button--text:hover {
   color: #685df1;
 }
@@ -3429,6 +3435,23 @@
 
 .weekly-cont .form-item-group .el-form-item {
   margin: 16px 0 24px 0 ;
+}
+
+.weekly-cont .add-working-hours {
+  position: relative;
+}
+
+.weekly-cont .add-working-hours .tl-cascader {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.weekly-cont .add-working-hours .el-icon-close {
+  display: none;
 }
 
 .popper-working-hours {
