@@ -843,7 +843,7 @@ export default {
               this.summitNew();
             }
           }).catch(() => {});
-        } else if (!this.formData.reason) {
+        } else if (!this.formData.reason && this.searchForm.approvalType == 1) {
           this.$message.error('请填写变更原因');
         } else {
           this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
