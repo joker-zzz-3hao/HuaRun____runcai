@@ -227,7 +227,7 @@
                 @click="showProject = true"
                 class="tl-btn dotted-line list-add"
               >
-                <i class="el-icon-plus"></i>添加
+                <i class="el-icon-plus"></i>关联项目
               </el-button>
               <em
                 v-else
@@ -287,6 +287,9 @@
                     @click="addSupportOkr(workForm)"
                   >
                     <i class="el-icon-plus"></i>
+                    <el-button type="text" class="tl-btn dotted-line list-add">
+                      <i class="el-icon-plus"></i>支撑OKR/价值观
+                    </el-button>
                   </li>
                 </ul>
               </div>
