@@ -152,7 +152,8 @@
                   : []
               "
             >
-              <span>{{ getTimes(workForm, "updated") }}</span>
+              <span>{{ getTimes(workForm, "updated", "days") }}</span>
+              <span>{{ getTimes(workForm, "updated", "info") }}</span>
               <div class="add-working-hours">
                 <el-button
                   type="text"
@@ -184,12 +185,14 @@
               >
                 <ul>
                   <li>
-                    <span>填入工时：</span
-                    ><span>{{ getTimes(workForm, "original") }}</span>
+                    <span>填入工时：</span>
+                    <span>{{ getTimes(workForm, "original", "days") }}</span>
+                    <span>{{ getTimes(workForm, "original", "info") }}</span>
                   </li>
                   <li>
-                    <span>修改后工时：</span
-                    ><span>{{ getTimes(workForm, "updated") }}</span>
+                    <span>修改后工时：</span>
+                    <span>{{ getTimes(workForm, "updated", "days") }}</span>
+                    <span>{{ getTimes(workForm, "updated", "info") }}</span>
                   </li>
                   <li>
                     <span>修改原因：</span><span>{{ workForm.remark }}</span>
@@ -949,7 +952,7 @@ export default {
       }
       return result;
     },
-    getTimes(workItem, type) {
+    getTimes(workItem, type, daysOrInfo) {
       if (workItem.weekList && workItem.weekList.length > 0) {
         let tempWeekList = [];
         // 1、审批后工时被改动：过滤掉weekTimeAfter == '0'的数据
@@ -968,7 +971,10 @@ export default {
         // 过滤掉删除的数据
         const days = (tempWeekList.length) / 2;
         const dayTexts = workItem.timeSpanList.join('、');
-        return `${days}天（${dayTexts}）`;
+        if (daysOrInfo == 'days') {
+          return `${days}天`;
+        }
+        return `（${dayTexts}）`;
       }
       return '';
     },
