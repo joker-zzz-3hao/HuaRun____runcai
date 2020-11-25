@@ -3415,8 +3415,28 @@
   flex: 0 0 50%;
 }
 
-.weekly-cont .form-item-group .tl-progress-group {
+.weekly-cont .form-item-group:last-child .el-form-item:first-child .el-form-item__content {
+  flex: 0 0 400px;
+}
+
+.weekly-cont .form-item-group:last-child .el-form-item:first-child .progress-bg {
+  width: 55px !important;
+}
+
+.weekly-cont .form-item-group .is-required .tl-progress-group {
   margin: 0 0 0 10px;
+}
+
+.weekly-cont .form-item-group .el-form-item {
+  margin: 16px 0 24px 0 ;
+}
+
+.popper-working-hours {
+  width: 400px !important;
+}
+
+.popper-working-hours .popper__arrow {
+  left: 80px !important;
 }
 
 .write-weekly > .operating-box .tl-custom-btn {
@@ -4147,10 +4167,6 @@
 .my-weekly .dl-card-panel>dd,
 .teams-weekly-detail .dl-card-panel>dd {
   margin: 10px 0 20px 0;
-}
-
-.my-weekly .el-form-item__error {
-  display: none;
 }
 
 .teams-weekly-detail .dl-card-panel .btn-box {

@@ -133,6 +133,7 @@
                   class="tl-input-number"
                   @blur="progressAfterBlur(item)"
                 ></el-input-number>
+                <span v-if="canUpdate && workForm.noCheck">%</span>
               </div>
             </el-form-item>
             <el-form-item
@@ -158,6 +159,7 @@
                 width="200"
                 trigger="hover"
                 content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                popper-class="popper-working-hours"
               >
                 <ul>
                   <li>
@@ -172,7 +174,7 @@
                     <span>修改原因：</span><span>{{ workForm.remark }}</span>
                   </li>
                 </ul>
-                <div v-show="hasValue(workForm.remark)" slot="reference">
+                <div v-show="!hasValue(workForm.remark)" slot="reference">
                   <i class="el-icon-info"></i>
                   <span>工时已被项目经理修改</span>
                 </div>
