@@ -61,9 +61,7 @@
               >预览</span
             >
             <!-- 只有sourceKey存在才能下载 -->
-            <span
-              v-if="hasValue(sourceKey) && hasValue(file.resourceId)"
-              @click="downExistFile(file)"
+            <span v-if="hasValue(sourceKey)" @click="downExistFile(file)"
               >下载</span
             >
             <!-- <span v-else @click="downFile(file)">下载</span> -->
