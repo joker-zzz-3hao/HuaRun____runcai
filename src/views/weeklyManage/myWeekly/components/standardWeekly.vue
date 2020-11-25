@@ -209,7 +209,7 @@
                   : []
               "
             >
-              <el-select
+              <!-- <el-select
                 v-if="canUpdate && workForm.noCheck"
                 v-model="workForm.projectId"
                 placeholder="请选择关联项目"
@@ -223,8 +223,22 @@
                   :value="item.projectId"
                 >
                 </el-option>
-              </el-select>
-              <em v-else>{{ workForm.projectNameCn }}</em>
+              </el-select> -->
+              <el-button
+                type="text"
+                v-if="!workForm.projectNameCn"
+                @click="showProject = true"
+                class="tl-btn dotted-line list-add"
+              >
+                <i class="el-icon-plus"></i>添加
+              </el-button>
+              <em
+                v-else
+                @click="
+                  canUpdate && workForm.noCheck ? (showProject = true) : ''
+                "
+                >{{ workForm.projectNameCn }}</em
+              >
             </el-form-item>
             <el-form-item
               label="支撑OKR/价值观"
@@ -645,7 +659,7 @@
       v-if="showProject"
       :showProject.sync="showProject"
       :currenItemRandomId="currenItemRandomId"
-      :selectedOkr="selectedOkr"
+      :selectedPro="selectedPro"
       :server="server"
       @closeOkrDialog="closeProjectDialog"
     ></tl-select-project>
@@ -708,6 +722,7 @@ export default {
       weeklyPlanSaveList: [],
       weeklyWorkVoSaveList: [],
       selectedOkr: [],
+      selectedPro: '',
       tempResult: [],
       weeklyOkrSaveList: [],
       riskList: [
@@ -1097,6 +1112,9 @@ export default {
       }
       this.$forceUpdate();
     },
+    closeProjectDialog(project) {
+      console.log(project);
+    },
 
     thoughtTypeChange(thoughts, type) {
       thoughts.thoughtType = type;
@@ -1328,10 +1346,6 @@ export default {
         this.showTaskProcess = false;
         const tempWeeklyOkrSaveList = [];
         for (const data of tableData) {
-          // this.$nextTick(() => {
-          //   this.$set(data, 'selectedNodeList', this.selectedNodes(data));
-          // });
-
           if (data.supportMyOkrObj && data.supportMyOkrObj.o) {
             if (data.supportMyOkrObj.kr) { // kr
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
