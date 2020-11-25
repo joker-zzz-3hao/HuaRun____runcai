@@ -90,7 +90,7 @@
                 class="tl-textarea"
                 clearable
               ></el-input>
-              <em v-else> {{ workForm.workDesc }}</em>
+              <pre v-else class="font-normal">{{ workForm.workDesc }}</pre>
             </el-form-item>
           </div>
           <div class="form-item-group">
