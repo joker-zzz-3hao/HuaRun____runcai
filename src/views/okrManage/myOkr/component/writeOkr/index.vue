@@ -798,10 +798,7 @@ export default {
       this.checkerror = '';
       this.judgeerror = '';
       this.weighterror = '';
-      if (!this.formData.reason) {
-        this.$message.error('请填写变更原因');
-        return;
-      }
+
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           // 校验权重比例
@@ -846,6 +843,8 @@ export default {
               this.summitNew();
             }
           }).catch(() => {});
+        } else if (!this.formData.reason) {
+          this.$message.error('请填写变更原因');
         } else {
           this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
         }
