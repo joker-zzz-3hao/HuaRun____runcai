@@ -352,7 +352,7 @@
           @click.native="addThought(item.randomId)"
         >
           <div class="icon-bg">
-            <i class="el-icon-minus"></i>
+            <i></i>
           </div>
         </el-tooltip>
         <el-tooltip
