@@ -228,11 +228,12 @@
                 <i class="el-icon-plus"></i>关联项目
               </el-button>
               <em
+                :class="{ 'is-edit': canUpdate && workForm.noCheck }"
                 v-else
                 @click="
                   canUpdate && workForm.noCheck ? selectProject(workForm) : ''
                 "
-                >{{ workForm.projectNameCn }}11</em
+                >{{ workForm.projectNameCn }}</em
               >
             </el-form-item>
             <el-form-item
@@ -265,6 +266,7 @@
                       <em slot="content">{{ item.okrDetailObjectKr }}</em>
                       <em
                         v-if="canUpdate && workForm.noCheck"
+                        :class="{ 'is-edit': canUpdate && workForm.noCheck }"
                         @click="addSupportOkr(workForm)"
                         >{{ item.okrDetailObjectKr }}</em
                       >
