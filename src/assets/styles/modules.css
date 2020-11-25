@@ -2252,6 +2252,12 @@ transition: transform .3s;
   border-color: #685df1;
 }
 
+.tl-cascader-popper .el-checkbox__input.is-checked .el-checkbox__inner,
+.tl-cascader-popper .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #685df1;
+  border-color: #685df1;
+}
+
 .el-cascader__dropdown.tl-cascader-popper {
   margin-top: 6px;
 }

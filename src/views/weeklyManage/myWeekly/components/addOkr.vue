@@ -10,7 +10,7 @@
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">{{ drawerTitle }}</div>
+      <div class="drawer-title">支撑OKR/价值观</div>
     </div>
     <el-scrollbar>
       <div class="cont-box">
@@ -174,12 +174,6 @@ export default {
         return [];
       },
     },
-
-    drawerTitle: {
-      type: String,
-      default: '支撑OKR/价值观',
-    },
-
   },
   data() {
     return {

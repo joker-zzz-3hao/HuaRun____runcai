@@ -157,14 +157,14 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    setOkrStyle() {
-      return (okr) => {
-        if (okr && okr.length > 5) {
-          return `${okr.slice(0, 5)}...`;
-        }
-        return okr;
-      };
-    },
+    // setOkrStyle() {
+    //   return (okr) => {
+    //     if (okr && okr.length > 5) {
+    //       return `${okr.slice(0, 5)}...`;
+    //     }
+    //     return okr;
+    //   };
+    // },
     itemIndex() {
       return (okr) => {
         const result = [];
