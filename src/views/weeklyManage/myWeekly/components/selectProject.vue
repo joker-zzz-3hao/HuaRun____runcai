@@ -62,6 +62,15 @@ export default {
         return '';
       },
     },
+    selectedPro: {
+      type: Object,
+      default() {
+        return {
+          projectId: '',
+          projectNameCn: '',
+        };
+      },
+    },
   },
   data() {
     return {
@@ -77,6 +86,8 @@ export default {
   methods: {
     init() {
       this.visible = true;
+      this.projectObj = { ...this.selectedPro };
+      this.selectData = this.selectedPro.projectId;
     },
     projectChange(e, index, project) {
       // 原生click会执行两次，第一次在label等，第二次在input

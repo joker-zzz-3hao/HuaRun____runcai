@@ -1099,7 +1099,10 @@ export default {
     },
     selectProject(workForm) {
       this.currenItemRandomId = workForm.randomId;
-      this.selectedPro = workForm.selectedPro;
+      this.selectedPro = {
+        projectId: workForm.projectId,
+        projectNameCn: workForm.projectNameCn,
+      };
       this.showProject = true;
     },
     closeOkrDialog(selectedData) {
