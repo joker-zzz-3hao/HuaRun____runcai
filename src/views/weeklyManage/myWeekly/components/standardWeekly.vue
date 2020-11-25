@@ -31,7 +31,7 @@
           <span v-if="hasChecked(workForm)">已审批</span>
           <el-tooltip
             v-else
-            class="icon-clear"
+            v-show="canUpdate && workForm.noCheck"
             :class="{
               'is-disabled': weeklyWorkVoSaveList.length == 1,
             }"
@@ -45,10 +45,7 @@
               weeklyWorkVoSaveList.length > 1 && deleteWork(workForm)
             "
           >
-            <i
-              v-show="canUpdate && workForm.noCheck"
-              class="el-icon-delete"
-            ></i>
+            <div class="icon-clear"><i></i><em>删除</em></div>
           </el-tooltip>
         </div>
         <div
@@ -345,7 +342,6 @@
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
           v-if="canUpdate"
-          class="icon-clear"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
           }"
@@ -355,7 +351,9 @@
           popper-class="tl-tooltip-popper"
           @click.native="addThought(item.randomId)"
         >
-          <i class="el-icon-plus"></i>
+          <div class="icon-bg">
+            <i class="el-icon-minus"></i>
+          </div>
         </el-tooltip>
         <el-tooltip
           v-if="canUpdate"
@@ -1339,7 +1337,6 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
               if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
-                debugger;
                 console.log(this.weeklyDataCopy.weeklyOkrVoList);
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
@@ -1356,7 +1353,6 @@ export default {
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.o.okrDetailProgress);
               // 如果是详情则从详情中取值
               if (data.supportMyOkrObj.o.id) {
-                debugger;
                 // 后端数据中匹配
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.o.okrDetailId) {
