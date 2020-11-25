@@ -15,7 +15,8 @@
       :on-success="imgUploadSuccess"
       :on-remove="removeImg"
       :on-exceed="handleExceed"
-      :taskId="taskId"
+      :sourceKey="sourceKey"
+      :sourceType="sourceType"
     >
       <el-button type="text" class="tl-btn up-btn">+添加附件</el-button>
       <span class="el-upload__tip">{{ tips }}</span>
@@ -93,11 +94,7 @@ export default {
       type: String,
       default: '',
     },
-    taskId: {
-      type: String,
-      default: '',
-    },
-    okrId: {
+    sourceKey: {
       type: String,
       default: '',
     },
@@ -119,11 +116,11 @@ export default {
     };
   },
   created() {
-    if (this.okrId) {
+    if (this.sourceType == 'OKRMODIFY') {
       this.dataParams = {
-        sourceType: this.sourceType, ...this.params, sourceKey: this.okrId,
+        sourceType: this.sourceType, ...this.params, sourceKey: this.sourceKey,
       };
-      // this.taskId = this.okrId;
+      // this.sourceKey = this.okrId;
     } else {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params,

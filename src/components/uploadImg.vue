@@ -54,12 +54,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    sourceKey: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       dialogVisible: false,
       dialogImageUrl: '',
-      dataParams: { sourceType: 'USER_HEAD', validateCode: '', ...this.params },
+      dataParams: {},
+    };
+  },
+  created() {
+    this.dataParams = {
+      sourceType: 'USER_HEAD', sourceKey: this.sourceKey, validateCode: '', ...this.params,
     };
   },
   computed: {
