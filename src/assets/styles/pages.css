@@ -3334,7 +3334,12 @@
 }
 
 .week-plan dd > div:first-child {
-  flex: 0 0 60px;
+  flex: 0 0 64px;
+  color: #879099;
+}
+
+.week-plan dd > div:first-child em {
+  margin: 0 0 0 4px;
 }
 
 .write-weekly > .operating-box {
@@ -3650,6 +3655,12 @@
 
 .my-weekly .okr-completion .no-data span {
   color: #879099;
+}
+
+.mood {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .mood ul {
@@ -4158,15 +4169,24 @@
   margin: 0 0 20px 0;
 }
 
-.is-sub-menu+.my-weekly .footer-panel .tl-btn,
-.is-sub-menu+.my-weekly .footer-panel>span {
-  margin: 0 0 0 248px;
+.is-sub-menu + .my-weekly .footer-panel .tl-btn,
+.is-sub-menu + .my-weekly .footer-panel>span {
+  margin: 0 0 0 212px;
   transition: all .4s ease-out;
 }
 
-.is-sub-menu.is-shrink+.my-weekly .footer-panel .tl-btn,
-.is-sub-menu.is-shrink+.my-weekly .footer-panel>span {
-  margin: 0 0 0 96px;
+.is-sub-menu.is-shrink + .my-weekly .footer-panel .tl-btn,
+.is-sub-menu.is-shrink + .my-weekly .footer-panel>span {
+  margin: 0 0 0 106px;
+}
+
+.is-sub-menu.is-shrink + .my-weekly .mood {
+  left: 106px;
+}
+
+.is-sub-menu + .my-weekly .mood {
+  left: 212px;
+  transition: all .4s ease-out;
 }
 
 .no-data em {
@@ -5297,14 +5317,14 @@
   background: #f4f6f8;
 }
 
-.project-description>dl {
+.project-description > dl {
   padding: 0 0 16px 0;
   border-bottom: 1px dashed transparent;
   background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.2em, #f4f6f8 0, #f4f6f8 0.4em);
 }
 
-.project-description>dl dt,
-.project-description>dl dd {
+.project-description > dl dt,
+.project-description > dl dd {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5413,6 +5433,14 @@
   border-radius: 2px 2px 100px 2px;
   font-size: 12px;
   color: #5b84f7;
+}
+
+.project-description .is-ongoing {
+  padding: 0 5px;
+  border: 1px solid #ffbc20;
+  font-size: 12px;
+  border-radius: 2px;
+  color: #ffbc20;
 }
 
 .project-members .card-title {

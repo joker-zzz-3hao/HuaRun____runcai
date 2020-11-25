@@ -338,9 +338,9 @@
           maxlength="500"
           :placeholder="getPlaceholder(item.thoughtType)"
           class="tl-textarea"
-          @click.native="isEdit"
-          @blur="noEdit"
-          :class="{ 'has-edit': hasEdit }"
+          @click.native="updateThought(item)"
+          @blur="noUpdateThought(item)"
+          :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
@@ -391,7 +391,7 @@
       </dd>
       <dd v-for="(item, index) in weeklyPlanSaveList" :key="item.randomId">
         <div>
-          <span>计划项{{ index + 1 }}</span>
+          <span>计划项</span><em>{{ index + 1 }}</em>
         </div>
         <el-input
           type="textarea"
@@ -402,9 +402,9 @@
           clearable
           placeholder="建议添加多条作为下周计划项，显得计划比较详实"
           class="tl-textarea"
-          @click.native="isEdit"
-          @blur="noEdit"
-          :class="{ 'has-edit': hasEdit }"
+          @click.native="updatePlan(item)"
+          @blur="noUpdatePlan(item)"
+          :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
@@ -586,18 +586,21 @@
           <ul>
             <li>本周心情</li>
             <li
+              v-show="canUpdate || weeklyEmotion === 100"
               class="has-harvest"
               :class="{ 'is-selected': weeklyEmotion === 100 }"
             >
               <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 50"
               class="not-too-bad"
               :class="{ 'is-selected': weeklyEmotion === 50 }"
             >
               <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
             </li>
             <li
+              v-show="canUpdate || weeklyEmotion === 0"
               class="let-quiet"
               :class="{ 'is-selected': weeklyEmotion === 0 }"
             >
@@ -724,11 +727,9 @@ export default {
       textarea: '',
       showTaskProcess: false,
       weeklyDataCopy: {},
-
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
-      hasEdit: false,
     };
   },
   created() {
@@ -754,29 +755,51 @@ export default {
             this.initPage();
           }
         });
-      } else if (!this.weeklyDataCopy.weeklyId) {
+      } else if (!this.week.weeklyId) {
         this.canUpdate = true;
         // eslint-disable-next-line prefer-destructuring
         this.weeklyType = this.weeklyTypeList[0];
-        this.weeklyDataCopy = { ...this.weeklyData };
-        if (!this.weeklyDataCopy.weeklyId) {
-          if (!(this.$route.params && this.$route.params.weeklySumParams)) {
+        this.weeklyDataCopy = {};
+        if (!(this.$route.params && this.$route.params.weeklySumParams)) {
           // 本周任务初始化数据
-            this.addWork();
-            // 下周计划初始化数据
-            this.addNextWeekWork();
-          }
-          // 本周感想初始化数据
-          this.addThought();
+          this.addWork();
+          // 下周计划初始化数据
+          this.addNextWeekWork();
         }
+        // 本周感想初始化数据
+        this.addThought();
         this.initPage();
       }
     },
-    isEdit() {
-      this.hasEdit = true;
+    updateThought(thought) {
+      this.weeklyThoughtSaveList.forEach((item) => {
+        item.isUpdating = false;
+        if (thought.randomId == item.randomId) {
+          item.isUpdating = true;
+        }
+      });
+      this.$forceUpdate();
     },
-    noEdit() {
-      this.hasEdit = false;
+    noUpdateThought() {
+      this.weeklyThoughtSaveList.forEach((item) => {
+        item.isUpdating = false;
+      });
+      this.$forceUpdate();
+    },
+    updatePlan(plan) {
+      this.weeklyPlanSaveList.forEach((item) => {
+        item.isUpdating = false;
+        if (plan.randomId == item.randomId) {
+          item.isUpdating = true;
+        }
+      });
+      this.$forceUpdate();
+    },
+    noUpdatePlan() {
+      this.weeklyPlanSaveList.forEach((item) => {
+        item.isUpdating = false;
+      });
+      this.$forceUpdate();
     },
     setOkrProcess(weeklyOkrVoList) {
       // 将上次保存的o、kr找出来，多行支撑项
@@ -870,6 +893,7 @@ export default {
       if (!!this.weeklyThoughtSaveList && this.weeklyThoughtSaveList.length > 0) {
         this.weeklyThoughtSaveList.forEach((thought) => {
           thought.randomId = Math.random().toString(36).substr(3);
+          thought.isUpdating = false;
         });
       } else {
         // this.addThought();
@@ -1009,6 +1033,7 @@ export default {
         thoughtId: '',
         thoughtType: 0,
         weeklyId: '',
+        isUpdating: false,
         randomId: Math.random().toString(36).substr(3),
       });
     },
@@ -1312,7 +1337,7 @@ export default {
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              if (data.supportMyOkrObj.kr.id) { // 判断是不是前端临时数据、还是后端返回的数据
+              if (data.supportMyOkrObj.kr.id && this.weeklyDataCopy.weeklyOkrVoList) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
