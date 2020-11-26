@@ -7,7 +7,7 @@
 <template>
   <el-drawer
     :wrapperClosable="false"
-    :modal-append-to-body="false"
+    :modal-append-to-body="true"
     :append-to-body="true"
     :before-close="close"
     @closed="closed"
