@@ -251,6 +251,10 @@
                   : []
               "
             >
+              <el-input
+                v-model="workForm.valueOrOkrIds"
+                v-show="false"
+              ></el-input>
               <div class="tag-group">
                 <ul class="tag-lists">
                   <li
@@ -1037,7 +1041,9 @@ export default {
         okrCultureValueList: [],
         okrCultureValueIds: '',
         okrIds: '',
+        valueOrOkrIds: '',
         workIndex: 0,
+        noCheck: true,
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
     },
