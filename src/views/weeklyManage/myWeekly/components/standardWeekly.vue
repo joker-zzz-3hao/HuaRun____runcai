@@ -670,7 +670,6 @@
       :showProject.sync="showProject"
       :currenItemRandomId="currenItemRandomId"
       :selectedPro="selectedPro"
-      :server="server"
       @closeProjectDialog="closeProjectDialog"
     ></tl-select-project>
   </div>
