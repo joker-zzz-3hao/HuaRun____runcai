@@ -60,8 +60,8 @@
               @click="openresFile(file)"
               >预览</span
             >
-            <!-- 只有taskid存在才能下载 -->
-            <span v-if="file.sourceType == 'TASK'" @click="downExistFile(file)"
+            <!-- 只有sourceKey存在才能下载 -->
+            <span v-if="hasValue(sourceKey)" @click="downExistFile(file)"
               >下载</span
             >
             <!-- <span v-else @click="downFile(file)">下载</span> -->
@@ -145,7 +145,8 @@ export default {
     },
     handlePreview: Function,
     listType: String,
-    taskId: String,
+    sourceKey: String,
+    sourceType: String,
   },
   methods: {
     cutType(name) {
@@ -190,15 +191,21 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=${this.sourceType}&sourceKey=${this.sourceKey}`;
       window.open(url);
     },
     // 下载
     downExistFile(fileObj) {
+      let resourceId = '';
+      if (fileObj.resourceId) {
+        resourceId = fileObj.resourceId;
+      } else if (fileObj.response.data) {
+        resourceId = fileObj.response.data.resourceId;
+      }
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=TASK&sourceKey=${this.taskId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${resourceId}&sourceType=${this.sourceType}&sourceKey=${this.sourceKey}`;
       window.open(url);
     },
   },

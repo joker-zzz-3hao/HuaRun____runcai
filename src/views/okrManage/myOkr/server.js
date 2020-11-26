@@ -110,4 +110,9 @@ export default class Server extends ServerBase {
   recall(param) {
     return this._ajaxPost('gateway/talent-okr/okr/main/recall', param);
   }
+
+  // 更新文件状态
+  updateResource(param) {
+    return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
+  }
 }

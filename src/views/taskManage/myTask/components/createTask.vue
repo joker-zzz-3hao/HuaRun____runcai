@@ -111,7 +111,7 @@
               :limit="10"
               @change="fileChange"
               :fileList="fileList"
-              :taskId="this.formData.taskId"
+              :sourceKey="formData.taskId"
             ></file-upload>
 
             <!-- <el-upload
