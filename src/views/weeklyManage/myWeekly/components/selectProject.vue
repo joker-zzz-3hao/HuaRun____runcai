@@ -1,13 +1,7 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年11月24日 15:55:47
-  备注：
--->
 <template>
   <el-drawer
     :wrapperClosable="false"
-    :modal-append-to-body="false"
+    :modal-append-to-body="true"
     :append-to-body="true"
     :before-close="close"
     @closed="closed"
@@ -80,8 +74,8 @@ export default {
       projectObj: {},
     };
   },
-  created() { this.init(); },
-  mounted() {},
+  created() { },
+  mounted() { this.init(); },
   computed: {},
   methods: {
     init() {

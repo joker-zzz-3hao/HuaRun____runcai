@@ -4,7 +4,7 @@
       <div class="page-title">我的周报</div>
     </div>
     <div class="cont-area">
-      <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
+      <tl-calendar-tabs :server="server" :selectedWeekIndex.sync="weekIndex">
       </tl-calendar-tabs>
       <div
         v-for="(week, index) in weekList"
@@ -73,6 +73,12 @@ export default {
     // 查询okr配置
     this.getOkrConfig();
     this.getWeeklyTypeConfig();
+    this.$busOn('refreshMyOkr', () => {
+      // 查询个人okr
+      this.queryPersonalOkr();
+      // 查询团队okr
+      this.queryTeamOkr();
+    });
   },
   mounted() {},
   computed: {

@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="weekly-title">{{ getWeekItem() }}</div>
-    <div class="weekly-cont">
+    <div class="weekly-cont" v-if="refreshForm">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
       <el-form
         ref="work"
@@ -23,6 +23,7 @@
         v-for="(workForm, index) in weeklyWorkVoSaveList"
         label-width="70px"
         class="tl-form"
+        :class="{ 'is-edit': canUpdate && workForm.noCheck }"
       >
         <div class="flex-sb">
           <div class="item-title">
@@ -152,8 +153,6 @@
                   : []
               "
             >
-              <em>{{ getTimes(workForm, "updated", "days") }}</em>
-              <span>{{ getTimes(workForm, "updated", "info") }}</span>
               <div class="add-working-hours">
                 <el-button
                   type="text"
@@ -175,34 +174,38 @@
                   class="tl-cascader"
                 ></el-cascader>
               </div>
-              <el-popover
-                placement="top-start"
-                title=""
-                width="200"
-                trigger="hover"
-                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-                popper-class="popper-working-hours"
-              >
-                <ul>
-                  <li>
-                    <span>填入工时：</span>
-                    <span>{{ getTimes(workForm, "original", "days") }}</span>
-                    <span>{{ getTimes(workForm, "original", "info") }}</span>
-                  </li>
-                  <li>
-                    <span>修改后工时：</span>
-                    <span>{{ getTimes(workForm, "updated", "days") }}</span>
-                    <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                  </li>
-                  <li>
-                    <span>修改原因：</span><span>{{ workForm.remark }}</span>
-                  </li>
-                </ul>
-                <div v-show="!hasValue(workForm.remark)" slot="reference">
-                  <i class="icon-remind"></i>
-                  <span>工时已被项目经理修改</span>
-                </div>
-              </el-popover>
+              <em>{{ getTimes(workForm, "updated", "days") }}</em>
+              <div class="working-hours-info">
+                <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                <el-popover
+                  placement="top-start"
+                  title=""
+                  width="200"
+                  trigger="hover"
+                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                  popper-class="popper-working-hours"
+                >
+                  <ul>
+                    <li>
+                      <span>填入工时：</span>
+                      <span>{{ getTimes(workForm, "original", "days") }}</span>
+                      <span>{{ getTimes(workForm, "original", "info") }}</span>
+                    </li>
+                    <li>
+                      <span>修改后工时：</span>
+                      <span>{{ getTimes(workForm, "updated", "days") }}</span>
+                      <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                    </li>
+                    <li>
+                      <span>修改原因：</span><span>{{ workForm.remark }}</span>
+                    </li>
+                  </ul>
+                  <div v-show="hasValue(workForm.remark)" slot="reference">
+                    <i class="icon-remind"></i>
+                    <span>工时已被项目经理修改</span>
+                  </div>
+                </el-popover>
+              </div>
             </el-form-item>
             <el-form-item
               label="项目"
@@ -219,22 +222,32 @@
                   : []
               "
             >
-              <el-button
-                type="text"
-                v-if="!workForm.projectNameCn"
-                @click="selectProject(workForm)"
-                class="tl-btn dotted-line list-add"
-              >
-                <i class="el-icon-plus"></i>关联项目
-              </el-button>
-              <em
-                :class="{ 'is-edit': canUpdate && workForm.noCheck }"
-                v-else
-                @click="
-                  canUpdate && workForm.noCheck ? selectProject(workForm) : ''
-                "
-                >{{ workForm.projectNameCn }}</em
-              >
+              <el-input v-model="workForm.projectId" v-show="false"></el-input>
+              <div class="tag-group">
+                <ul class="tag-lists">
+                  <li v-if="workForm.projectNameCn">
+                    <el-tooltip
+                      class="select-values"
+                      effect="dark"
+                      placement="top"
+                      popper-class="tl-tooltip-popper"
+                    >
+                      <em slot="content">{{ workForm.projectNameCn }}</em>
+                      <em @click="selectProject(workForm)">{{
+                        workForm.projectNameCn
+                      }}</em>
+                    </el-tooltip>
+                  </li>
+                  <li
+                    v-if="!workForm.projectNameCn"
+                    @click="selectProject(workForm)"
+                    class="is-init"
+                  >
+                    <i class="el-icon-plus"></i>
+                    <em>关联项目</em>
+                  </li>
+                </ul>
+              </div>
             </el-form-item>
             <el-form-item
               label="支撑OKR/价值观"
@@ -251,6 +264,10 @@
                   : []
               "
             >
+              <el-input
+                v-model="workForm.valueOrOkrIds"
+                v-show="false"
+              ></el-input>
               <div class="tag-group">
                 <ul class="tag-lists">
                   <li
@@ -266,7 +283,6 @@
                       <em slot="content">{{ item.okrDetailObjectKr }}</em>
                       <em
                         v-if="canUpdate && workForm.noCheck"
-                        :class="{ 'is-edit': canUpdate && workForm.noCheck }"
                         @click="addSupportOkr(workForm)"
                         >{{ item.okrDetailObjectKr }}</em
                       >
@@ -280,12 +296,10 @@
                       workForm.noCheck
                     "
                     @click="addSupportOkr(workForm)"
+                    class="is-init"
                   >
                     <i class="el-icon-plus"></i>
                     <em>支撑OKR/价值观</em>
-                    <!-- <el-button type="text" class="tl-btn dotted-line list-add">
-                      <i class="el-icon-plus"></i>支撑OKR/价值观
-                    </el-button> -->
                   </li>
                 </ul>
               </div>
@@ -632,7 +646,7 @@
       <el-button
         v-if="canEdit && !canUpdate"
         type="primary"
-        @click="canUpdate = true"
+        @click="updateWeekly"
         class="tl-btn amt-bg-slip"
         >编辑</el-button
       >
@@ -657,7 +671,6 @@
       :showProject.sync="showProject"
       :currenItemRandomId="currenItemRandomId"
       :selectedPro="selectedPro"
-      :server="server"
       @closeProjectDialog="closeProjectDialog"
     ></tl-select-project>
   </div>
@@ -741,9 +754,12 @@ export default {
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
+      refreshForm: false,
     };
   },
   created() {
+  },
+  mounted() {
     this.init();
   },
   computed: {
@@ -764,6 +780,7 @@ export default {
             this.thisPageWeeklyTypeList = [res.data.weeklyType];
             this.weeklyDataCopy = { ...this.weeklyData };
             this.initPage();
+            this.refreshForm = true;
           }
         });
       } else if (!this.week.weeklyId) {
@@ -780,6 +797,7 @@ export default {
         // 本周感想初始化数据
         this.addThought();
         this.initPage();
+        this.refreshForm = true;
       }
     },
     updateThought(thought) {
@@ -884,6 +902,7 @@ export default {
             }];
             valueIdList.push('noOkr');
           }
+          this.$set(element, 'noCheck', true);
           this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
           this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
           this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
@@ -891,7 +910,6 @@ export default {
           this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
           this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
           this.$set(element, 'timeList', this.setTimeList(element.weekList));// 存到后端的okr
-          // this.$set(element, 'timeSpanList', this.setTimeSpanList(element));// 存到后端的okr
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
@@ -1037,7 +1055,9 @@ export default {
         okrCultureValueList: [],
         okrCultureValueIds: '',
         okrIds: '',
+        valueOrOkrIds: '',
         workIndex: 0,
+        noCheck: true,
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
     },
@@ -1133,6 +1153,16 @@ export default {
       thoughts.thoughtType = type;
       this.$forceUpdate();
     },
+    updateWeekly() {
+      this.canUpdate = true;
+      // 清除表单
+      this.refreshForm = false;
+      this.$nextTick(() => {
+        // 重新渲染表单  校验才会生效
+        this.refreshForm = true;
+      });
+      this.$forceUpdate();
+    },
     submitWeekly() {
       const self = this;
       if (!this.hasValue(self.weeklyEmotion)) {
@@ -1182,13 +1212,12 @@ export default {
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
         if (res.code == 200) {
-          this.$busEmit('getWeekList');
           this.canUpdate = false;
           this.$message.success('保存成功');
           // 刷新日历数据
-          this.$busEmit('refreshCalendar');
-          // 更新个人okr数据
-          this.$emit('refreshMyOkr');
+          this.$busEmit('getWeekList');
+          // 更新个人okr数据,取到最新数据
+          this.$busEmit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
           this.$router.push({
             query: merge({}, { params: 'clear' }),
@@ -1308,6 +1337,12 @@ export default {
   },
 
   watch: {
+    week: {
+      handler(newVal) {
+        // 提交成功后返回最新weekLyId,防止编辑时传参weeklyId丢失，保存周报失败
+        this.weeklyId = newVal.weeklyId || '';
+      },
+    },
     canUpdate: {
       handler(newVal) {
         if (newVal) {
