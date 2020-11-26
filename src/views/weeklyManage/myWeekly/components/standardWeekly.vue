@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="weekly-title">{{ getWeekItem() }}</div>
-    <div class="weekly-cont">
+    <div class="weekly-cont" v-if="refreshForm">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
       <el-form
         ref="work"
@@ -73,15 +73,13 @@
                 :autosize="{ minRows: 1, maxRows: 8 }"
                 type="textarea"
                 maxlength="50"
-                v-show="canUpdate && workForm.noCheck"
+                v-if="canUpdate && workForm.noCheck"
                 clearable
                 placeholder="简短概括任务"
                 class="tl-textarea"
                 v-model="workForm.workContent"
               ></el-input>
-              <em v-show="!(canUpdate && workForm.noCheck)">
-                {{ workForm.workContent }}</em
-              >
+              <em v-else> {{ workForm.workContent }}</em>
             </el-form-item>
             <el-form-item label="内容" v-show="weeklyType == 1">
               <el-input
@@ -756,6 +754,7 @@ export default {
       props: { multiple: true },
       weeklyType: '',
       thisPageWeeklyTypeList: [],
+      refreshForm: false,
     };
   },
   created() {
@@ -781,6 +780,7 @@ export default {
             this.thisPageWeeklyTypeList = [res.data.weeklyType];
             this.weeklyDataCopy = { ...this.weeklyData };
             this.initPage();
+            this.refreshForm = true;
           }
         });
       } else if (!this.week.weeklyId) {
@@ -797,6 +797,7 @@ export default {
         // 本周感想初始化数据
         this.addThought();
         this.initPage();
+        this.refreshForm = true;
       }
     },
     updateThought(thought) {
@@ -1154,6 +1155,12 @@ export default {
     },
     updateWeekly() {
       this.canUpdate = true;
+      // 清除表单
+      this.refreshForm = false;
+      this.$nextTick(() => {
+        // 重新渲染表单  校验才会生效
+        this.refreshForm = true;
+      });
       this.$forceUpdate();
     },
     submitWeekly() {
