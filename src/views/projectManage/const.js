@@ -26,6 +26,10 @@ const DATE_MODE = {
   thursdayAft: '周四下午',
   fridayMor: '周五上午',
   fridayAft: '周五下午',
+  saturdayMor: '周六上午',
+  saturdayAft: '周六下午',
+  sundayMor: '周日上午',
+  sundayAft: '周日下午',
 };
 
 const DATE_MODE_NUM = [
@@ -39,6 +43,10 @@ const DATE_MODE_NUM = [
   { weekDate: 3, weekTimeType: 1, value: '周四下午' },
   { weekDate: 4, weekTimeType: 0, value: '周五上午' },
   { weekDate: 4, weekTimeType: 1, value: '周五下午' },
+  { weekDate: 4, weekTimeType: 0, value: '周六上午' },
+  { weekDate: 4, weekTimeType: 1, value: '周六下午' },
+  { weekDate: 4, weekTimeType: 0, value: '周日上午' },
+  { weekDate: 4, weekTimeType: 1, value: '周日下午' },
 ];
 
 const DATE_MODE_NUMOBJ = {
@@ -52,6 +60,10 @@ const DATE_MODE_NUMOBJ = {
   周四下午: { weekDate: 4, weekTimeType: 1, value: '周四下午' },
   周五上午: { weekDate: 5, weekTimeType: 0, value: '周五上午' },
   周五下午: { weekDate: 5, weekTimeType: 1, value: '周五下午' },
+  周六上午: { weekDate: 5, weekTimeType: 1, value: '周六上午' },
+  周六下午: { weekDate: 5, weekTimeType: 1, value: '周六下午' },
+  周日上午: { weekDate: 5, weekTimeType: 1, value: '周日上午' },
+  周日下午: { weekDate: 5, weekTimeType: 1, value: '周日下午' },
 };
 
 const DATE_NUM = {
@@ -60,6 +72,8 @@ const DATE_NUM = {
   3: 'wednesday',
   4: 'thursday',
   5: 'friday',
+  6: 'saturday',
+  7: 'sunday',
 };
 
 const PROJECT_TYPE_LIST = [
