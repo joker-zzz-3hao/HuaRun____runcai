@@ -73,6 +73,12 @@ export default {
     // 查询okr配置
     this.getOkrConfig();
     this.getWeeklyTypeConfig();
+    this.$busOn('refreshMyOkr', () => {
+      // 查询个人okr
+      this.queryPersonalOkr();
+      // 查询团队okr
+      this.queryTeamOkr();
+    });
   },
   mounted() {},
   computed: {

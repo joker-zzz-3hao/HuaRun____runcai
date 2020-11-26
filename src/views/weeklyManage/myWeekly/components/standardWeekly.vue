@@ -1182,12 +1182,11 @@ export default {
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
         if (res.code == 200) {
-          this.$busEmit('getWeekList');
           this.canUpdate = false;
           this.$message.success('保存成功');
           // 刷新日历数据
-          this.$busEmit('refreshCalendar');
-          // 更新个人okr数据
+          this.$busEmit('getWeekList');
+          // 更新个人okr数据,取到最新数据
           this.$emit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
           this.$router.push({
