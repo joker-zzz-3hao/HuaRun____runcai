@@ -68,4 +68,12 @@ export default class Server extends ServerBase {
   queryByCodes(param) {
     return this._ajaxPost('gateway/system-service/sys/dictionary/queryByCodes', param);
   }
+
+  selectWeeklyTimeSumByUserId(param) {
+    return this._ajaxPost('gateway/project-service/project/query/selectWeeklyTimeSumByUserId', param);
+  }
+
+  timeSheetListapproval(param) {
+    return this._ajaxPost('gateway/project-service/project/approval/timeSheetList', param);
+  }
 }

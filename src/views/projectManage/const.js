@@ -28,6 +28,32 @@ const DATE_MODE = {
   fridayAft: '周五下午',
 };
 
+const DATE_MODE_NUM = [
+  { weekDate: 0, weekTimeType: 0, value: '周一上午' },
+  { weekDate: 0, weekTimeType: 1, value: '周一下午' },
+  { weekDate: 1, weekTimeType: 0, value: '周二上午' },
+  { weekDate: 1, weekTimeType: 1, value: '周二下午' },
+  { weekDate: 2, weekTimeType: 0, value: '周三上午' },
+  { weekDate: 2, weekTimeType: 1, value: '周三下午' },
+  { weekDate: 3, weekTimeType: 0, value: '周四上午' },
+  { weekDate: 3, weekTimeType: 1, value: '周四下午' },
+  { weekDate: 4, weekTimeType: 0, value: '周五上午' },
+  { weekDate: 4, weekTimeType: 1, value: '周五下午' },
+];
+
+const DATE_MODE_NUMOBJ = {
+  周一上午: { weekDate: 1, weekTimeType: 0, value: '周一上午' },
+  周一下午: { weekDate: 1, weekTimeType: 1, value: '周一下午' },
+  周二上午: { weekDate: 2, weekTimeType: 0, value: '周二上午' },
+  周二下午: { weekDate: 2, weekTimeType: 1, value: '周二下午' },
+  周三上午: { weekDate: 3, weekTimeType: 0, value: '周三上午' },
+  周三下午: { weekDate: 3, weekTimeType: 1, value: '周三下午' },
+  周四上午: { weekDate: 4, weekTimeType: 0, value: '周四上午' },
+  周四下午: { weekDate: 4, weekTimeType: 1, value: '周四下午' },
+  周五上午: { weekDate: 5, weekTimeType: 0, value: '周五上午' },
+  周五下午: { weekDate: 5, weekTimeType: 1, value: '周五下午' },
+};
+
 const DATE_NUM = {
   1: 'monday',
   2: 'tuesday',
@@ -124,4 +150,6 @@ export default {
   THROW_TYPE_CREATE_LIST,
   DATE_MODE,
   DATE_NUM,
+  DATE_MODE_NUM,
+  DATE_MODE_NUMOBJ,
 };
