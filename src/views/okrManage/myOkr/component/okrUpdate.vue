@@ -15,7 +15,7 @@
         <div class="tl-custom-timeline">
           <el-form :model="formData" ref="dataForm" class="tl-form">
             <dl class="timeline-list">
-              <dd>
+              <dd v-if="hasValue(historyFirst)">
                 <div class="list-info">
                   <div class="list-title">
                     <em>上次更新时间：{{ historyFirst.createTime }}</em>
@@ -217,7 +217,7 @@ export default {
       myokrDrawer: false,
       drawerTitle: '更新进度',
       loading: false,
-      historyFirst: {},
+      historyFirst: '',
       histoyExist: false,
     };
   },
@@ -273,7 +273,7 @@ export default {
       };
       this.server.getOkrUpdateHistory(params).then((res) => {
         if (res.code == 200) {
-          if (res.data) {
+          if (res.data.length > 0) {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
           }
