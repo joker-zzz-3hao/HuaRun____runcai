@@ -101,13 +101,14 @@ export default {
     // const borderWidth = document.querySelector('.custom-drawer .border-slip');
     // borderWidth.style.left = `${selfLeft}px`;
     // borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
-  },
-  created() {
     // 获取每月日历
     this.getWeek();
     this.$busOn('getWeekList', () => {
       this.getWeek('noResetDelectBtn');
     });
+  },
+  created() {
+
   },
   computed: {
     ...mapState('common', {
