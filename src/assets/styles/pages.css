@@ -3233,6 +3233,14 @@
   margin: 10px 0 0 0;
 }
 
+.write-weekly .weekly-thoughts .icon-bg,
+.write-weekly .week-plan .icon-bg {
+  width: 21px;
+  height: 21px;
+  margin: 0 0 0 20px;
+  background: #f4f6f8;
+}
+
 .weekly-thoughts .el-textarea__inner,
 .week-plan .el-textarea__inner {
   border-color: transparent;
