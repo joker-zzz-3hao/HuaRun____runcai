@@ -22,7 +22,7 @@
             'is-unsubmit': !item.weeklyId && !item.noOpen,
             'is-unopen': item.noOpen,
             'is-curent': item.btnType == 'success',
-            'is-focus': weekIndex === idx,
+            'is-focus': selectedWeekIndex === idx,
           }"
         >
           <div class="period-time">{{ getWeekItem(item, idx) }}</div>
@@ -64,6 +64,7 @@ export default {
       monthDate: this.dateFormat('YYYY-mm-dd', new Date()), // 初始化日期
       calendarId: '', // 日历Id
       weekIndex: undefined,
+      selectedWeekIndex: undefined,
       currentMonthWeekList: [],
       afterDisabled: {
         disabledDate: (date) => {
@@ -105,7 +106,7 @@ export default {
     // 获取每月日历
     this.getWeek();
     this.$busOn('getWeekList', () => {
-      this.getWeek();
+      this.getWeek('noResetDelectBtn');
     });
   },
   computed: {
@@ -122,11 +123,10 @@ export default {
     ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
-        this.weekIndex = index;
-        this.$emit('update:weekIndex', index);
+        this.selectedWeekIndex = index;
+        this.$emit('update:selectedWeekIndex', index);
         this.$set(item, 'btnType', 'success');
-        const weekListTemp = [...this.weekList];
-        weekListTemp.forEach((week) => {
+        this.weekList.forEach((week) => {
           if (item.calendarId != week.calendarId) {
             week.btnType = '';
           }
@@ -142,7 +142,11 @@ export default {
         return `第${index + 1}周`;
       }
     },
-    getWeek(newMonth) {
+    getWeek(data) {
+      let newMonth = '';
+      if (data != 'noResetDelectBtn') {
+        newMonth = data;
+      }
       // 选择的月份
       if (newMonth) {
         this.monthDate = newMonth;
@@ -151,14 +155,29 @@ export default {
         if (res.code == 200) {
           this.setWeekList(res.data);
           // 设置日历的可点击状态以及周报可编辑状态
-          this.setWeekClickOrEditStatus(this.monthDate);
+          this.setWeekClickOrEditStatus(this.monthDate, data);
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
-          this.selectCurrentWeek();
+          if (data != 'noResetDelectBtn') {
+            this.selectCurrentWeek();
+          } else {
+            this.$nextTick(() => {
+              for (let i = 0; i < this.weekList.length; i += 1) {
+                this.$set(this.weekList[i], 'btnType', '');
+                if (i == this.selectedWeekIndex) {
+                  this.$set(this.weekList[i], 'btnType', 'success');
+                  this.setSelectWeek(this.weekList[i]);
+                  this.$emit('update:selectedWeekIndex', i);
+                }
+              }
+            });
+          }
         }
       });
     },
-    setWeekClickOrEditStatus(newMonth) {
-      this.weekIndex = undefined;
+    setWeekClickOrEditStatus(newMonth, data) {
+      if (data != 'noResetDelectBtn') {
+        this.selectedWeekIndex = undefined;
+      }
       const current = new Date();
       this.weekList.forEach((week) => {
         // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
@@ -168,8 +187,11 @@ export default {
         end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
           // 当前周
-          this.setCurrentWeek(week);
-          this.weekIndex = this.weekList.indexOf(week); // 月份是本月
+          if (data != 'noResetDelectBtn') {
+            this.setCurrentWeek(week);
+            this.selectedWeekIndex = this.weekList.indexOf(week); // 月份是本月
+          }
+          this.weekIndex = this.weekList.indexOf(week);
           // 本月
           if (new Date(this.monthDate).getMonth() == new Date().getMonth()) {
             this.currentMonthWeekList = [...this.weekList];
@@ -205,7 +227,7 @@ export default {
           // 选种本周按钮
           item.btnType = 'success';
           this.setSelectWeek(item);
-          this.$emit('update:weekIndex', this.weekList.indexOf(item));
+          this.$emit('update:selectedWeekIndex', this.weekList.indexOf(item));
           // 团队周报查询
           this.$emit('setCalendarId', item.calendarId);
           this.$emit('getWeeklyById', item);
