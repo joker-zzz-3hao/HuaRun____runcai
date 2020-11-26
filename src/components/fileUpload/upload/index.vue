@@ -2,7 +2,9 @@
 import Migrating from './migrating';
 import UploadList from './upload-list';
 import Upload from './upload';
+import Server from '../server';
 
+const server = new Server();
 function noop() {}
 
 export default {
@@ -103,7 +105,11 @@ export default {
       type: Function,
       default: noop,
     },
-    taskId: {
+    sourceKey: {
+      type: String,
+      default: '', //
+    },
+    sourceType: {
       type: String,
       default: '', //
     },
@@ -111,6 +117,7 @@ export default {
 
   data() {
     return {
+      server,
       uploadFiles: [],
       dragOver: false,
       draging: false,
@@ -215,6 +222,9 @@ export default {
         fileList.splice(fileList.indexOf(file), 1);
         this.onRemove(file, fileList);
       };
+      if (this.sourceType == 'OKRMODIFY') {
+        this.server.deleteFile({ resourceId: file.resourceId, sourceType: this.sourceType });
+      }
 
       if (!this.beforeRemove) {
         doRemove();
@@ -287,7 +297,8 @@ export default {
         <UploadList
           disabled={this.uploadDisabled}
           listType={this.listType}
-          taskId={this.taskId}
+          sourceKey={this.sourceKey}
+          sourceType={this.sourceType}
           files={this.uploadFiles}
           on-remove={this.handleRemove}
           handlePreview={this.onPreview}>
