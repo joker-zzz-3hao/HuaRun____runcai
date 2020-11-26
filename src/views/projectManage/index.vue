@@ -17,7 +17,7 @@
             搜索
           </el-button>
           <el-button
-            v-show="isTenantAdmin"
+            v-show="hasPower('project-create')"
             :disabled="!codes.length > 0"
             type="primary"
             icon="el-icon-plus"
