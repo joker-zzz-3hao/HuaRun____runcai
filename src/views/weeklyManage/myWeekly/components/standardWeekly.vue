@@ -1323,6 +1323,12 @@ export default {
   },
 
   watch: {
+    week: {
+      handler(newVal) {
+        // 提交成功后返回最新weekLyId,防止编辑时传参weeklyId丢失，保存周报失败
+        this.weeklyId = newVal.weeklyId || '';
+      },
+    },
     canUpdate: {
       handler(newVal) {
         if (newVal) {
