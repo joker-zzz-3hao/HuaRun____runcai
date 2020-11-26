@@ -3,6 +3,8 @@ const apiMocker = require('mocker-api');
 const proxyConfig = require('./proxyIndex');
 
 const isMock = !!process.env.VUE_APP_MOCK;
+// const Timestamp = new Date().getTime();
+
 module.exports = {
   // 生成环境部署路径，默认为'/'
   publicPath: './',
@@ -13,7 +15,7 @@ module.exports = {
   // 指定生成的 index.html 的输出路径 (相对于 outputDir)
   indexPath: 'index.html',
   // 默认情况下，生成的静态资源在它们的文件名中包含了 hash 以便更好的控制缓存,可设置false关闭
-  filenameHashing: true,
+  filenameHashing: false,
   // 在 multi-page （多页面应用）模式下构建应用
   pages: {
     index: {
@@ -40,12 +42,20 @@ module.exports = {
   lintOnSave: true,
   // 调整 webpack 配置最简单的方式就是在 vue.config.js 中的 configureWebpack 选项提供一个对象：1.如果这个值是一个对象，则会通过 [webpack-merge](https://github.com/survivejs/webpack-merge) 合并到最终的配置中
   // 2、如果这个值是一个函数，则会接收被解析的配置作为参数。该函数及可以修改配置并不返回任何东西，也可以返回一个被克隆或合并过的配置版本。
-  configureWebpack: () => {
-    if (process.env.NODE_ENV === 'production') {
-      // 为生产环境修改配置...
-    } else {
-      // 为开发环境修改配置...
-    }
+  // configureWebpack: () => {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     // 为生产环境修改配置...
+  //   } else {
+  //     // 为开发环境修改配置...
+  //   }
+  // },
+  configureWebpack: {
+    output: {
+      path: path.resolve(__dirname, './dist'),
+      // 输出重构  打包编译后的 文件名称  【模块名称.时间戳】
+      filename: './js/[name].[chunkhash].js',
+      chunkFilename: './js/[name].[chunkhash].js',
+    },
   },
   devServer: {
     open: false, // 是否自动弹出浏览器页面
