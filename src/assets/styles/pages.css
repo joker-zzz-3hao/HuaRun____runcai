@@ -3424,7 +3424,7 @@
 
 .weekly-cont .form-item.is-standard-version {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .weekly-cont .form-item:not(.is-standard-version) .tl-textarea {
@@ -3450,8 +3450,15 @@
   padding: 0 20px 0 0;
   margin: 0 20px 0 0;
   position: relative;
-  min-height: 186px;
 }
+
+/* .weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:first-child {
+  min-height: 256px;
+}
+
+.weekly-cont .is-standard-version .form-item-group:first-child {
+  min-height: 186px;
+} */
 
 .weekly-cont .tl-form.is-edit .is-standard-version .form-item-group .el-form-item:last-child,
 .weekly-cont .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:last-child {
@@ -3557,6 +3564,10 @@
 
 .weekly-cont .add-working-hours .el-icon-close {
   display: none;
+}
+
+.weekly-cont .working-hours-info > span:first-child {
+  color: #879099;
 }
 
 .weekly-cont .working-hours-info > span:last-child {
