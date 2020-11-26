@@ -1203,7 +1203,7 @@ export default {
           // 刷新日历数据
           this.$busEmit('getWeekList');
           // 更新个人okr数据,取到最新数据
-          this.$emit('refreshMyOkr');
+          this.$busEmit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
           this.$router.push({
             query: merge({}, { params: 'clear' }),
