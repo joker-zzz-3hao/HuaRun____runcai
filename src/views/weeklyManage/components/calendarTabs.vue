@@ -33,7 +33,7 @@
               <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
               <em v-if="item.noOpen">未开放</em>
             </div>
-            <el-tooltip
+            <!-- <el-tooltip
               v-if="!hasValue(item.weeklyId) && !item.noOpen && !item.canEdit"
               class
               effect="dark"
@@ -42,7 +42,7 @@
               popper-class="tl-tooltip-popper"
             >
               <i></i>
-            </el-tooltip>
+            </el-tooltip> -->
           </div>
         </li>
       </ul>
@@ -108,7 +108,6 @@ export default {
     });
   },
   created() {
-
   },
   computed: {
     ...mapState('common', {
