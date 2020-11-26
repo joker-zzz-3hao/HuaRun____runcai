@@ -23,6 +23,7 @@
         v-for="(workForm, index) in weeklyWorkVoSaveList"
         label-width="70px"
         class="tl-form"
+        :class="{ 'is-edit': canUpdate && workForm.noCheck }"
       >
         <div class="flex-sb">
           <div class="item-title">
@@ -152,8 +153,6 @@
                   : []
               "
             >
-              <em>{{ getTimes(workForm, "updated", "days") }}</em>
-              <span>{{ getTimes(workForm, "updated", "info") }}</span>
               <div class="add-working-hours">
                 <el-button
                   type="text"
@@ -175,34 +174,38 @@
                   class="tl-cascader"
                 ></el-cascader>
               </div>
-              <el-popover
-                placement="top-start"
-                title=""
-                width="200"
-                trigger="hover"
-                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-                popper-class="popper-working-hours"
-              >
-                <ul>
-                  <li>
-                    <span>填入工时：</span>
-                    <span>{{ getTimes(workForm, "original", "days") }}</span>
-                    <span>{{ getTimes(workForm, "original", "info") }}</span>
-                  </li>
-                  <li>
-                    <span>修改后工时：</span>
-                    <span>{{ getTimes(workForm, "updated", "days") }}</span>
-                    <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                  </li>
-                  <li>
-                    <span>修改原因：</span><span>{{ workForm.remark }}</span>
-                  </li>
-                </ul>
-                <div v-show="hasValue(workForm.remark)" slot="reference">
-                  <i class="icon-remind"></i>
-                  <span>工时已被项目经理修改</span>
-                </div>
-              </el-popover>
+              <em>{{ getTimes(workForm, "updated", "days") }}</em>
+              <div class="working-hours-info">
+                <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                <el-popover
+                  placement="top-start"
+                  title=""
+                  width="200"
+                  trigger="hover"
+                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                  popper-class="popper-working-hours"
+                >
+                  <ul>
+                    <li>
+                      <span>填入工时：</span>
+                      <span>{{ getTimes(workForm, "original", "days") }}</span>
+                      <span>{{ getTimes(workForm, "original", "info") }}</span>
+                    </li>
+                    <li>
+                      <span>修改后工时：</span>
+                      <span>{{ getTimes(workForm, "updated", "days") }}</span>
+                      <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                    </li>
+                    <li>
+                      <span>修改原因：</span><span>{{ workForm.remark }}</span>
+                    </li>
+                  </ul>
+                  <div v-show="hasValue(workForm.remark)" slot="reference">
+                    <i class="icon-remind"></i>
+                    <span>工时已被项目经理修改</span>
+                  </div>
+                </el-popover>
+              </div>
             </el-form-item>
             <el-form-item
               label="项目"
@@ -220,22 +223,31 @@
               "
             >
               <el-input v-model="workForm.projectId" v-show="false"></el-input>
-              <el-button
-                type="text"
-                v-if="!workForm.projectNameCn"
-                @click="selectProject(workForm)"
-                class="tl-btn dotted-line list-add"
-              >
-                <i class="el-icon-plus"></i>关联项目
-              </el-button>
-              <em
-                :class="{ 'is-edit': canUpdate && workForm.noCheck }"
-                v-else
-                @click="
-                  canUpdate && workForm.noCheck ? selectProject(workForm) : ''
-                "
-                >{{ workForm.projectNameCn }}</em
-              >
+              <div class="tag-group">
+                <ul class="tag-lists">
+                  <li v-if="workForm.projectNameCn">
+                    <el-tooltip
+                      class="select-values"
+                      effect="dark"
+                      placement="top"
+                      popper-class="tl-tooltip-popper"
+                    >
+                      <em slot="content">{{ workForm.projectNameCn }}</em>
+                      <em @click="selectProject(workForm)">{{
+                        workForm.projectNameCn
+                      }}</em>
+                    </el-tooltip>
+                  </li>
+                  <li
+                    v-if="!workForm.projectNameCn"
+                    @click="selectProject(workForm)"
+                    class="is-init"
+                  >
+                    <i class="el-icon-plus"></i>
+                    <em>关联项目</em>
+                  </li>
+                </ul>
+              </div>
             </el-form-item>
             <el-form-item
               label="支撑OKR/价值观"
@@ -271,7 +283,6 @@
                       <em slot="content">{{ item.okrDetailObjectKr }}</em>
                       <em
                         v-if="canUpdate && workForm.noCheck"
-                        :class="{ 'is-edit': canUpdate && workForm.noCheck }"
                         @click="addSupportOkr(workForm)"
                         >{{ item.okrDetailObjectKr }}</em
                       >
@@ -285,12 +296,10 @@
                       workForm.noCheck
                     "
                     @click="addSupportOkr(workForm)"
+                    class="is-init"
                   >
                     <i class="el-icon-plus"></i>
                     <em>支撑OKR/价值观</em>
-                    <!-- <el-button type="text" class="tl-btn dotted-line list-add">
-                      <i class="el-icon-plus"></i>支撑OKR/价值观
-                    </el-button> -->
                   </li>
                 </ul>
               </div>
