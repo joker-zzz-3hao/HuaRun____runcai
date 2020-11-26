@@ -6,7 +6,7 @@
     :before-close="close"
     @closed="closed"
     class="tl-dialog"
-    width="600px"
+    width="800px"
   >
     <div slot="title" class="check-title">更新记录</div>
     <div class="tl-custom-timeline">
@@ -34,7 +34,7 @@
                     <span>%</span>
                   </div>
                   <div>
-                    <span>信心指数修改为</span>
+                    <span>信心指数(^_−)☆修改为</span>
                     <div class="state-grid">
                       <div
                         :class="{
