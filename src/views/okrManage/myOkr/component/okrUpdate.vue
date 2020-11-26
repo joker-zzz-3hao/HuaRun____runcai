@@ -28,17 +28,51 @@
                         {{ historyFirst.userName }}
                       </span>
                     </div>
-                    <div>
+                    <div v-if="historyFirst.updateContents">
                       <em>更新前进度</em>
                       <span>
                         {{ historyFirst.updateContents.beforeProgress }} %
                       </span>
                     </div>
-                    <div>
+                    <div v-if="historyFirst.updateContents">
                       <em>更新后进度</em>
                       <span>
                         {{ historyFirst.updateContents.afterProgress }} %
                       </span>
+                    </div>
+                    <div v-if="historyFirst.updateContents">
+                      <em>信心指数修改为</em>
+                      <div class="state-grid">
+                        <div
+                          :class="{
+                            'is-no-risk':
+                              historyFirst.updateContents.afterConfidence == 1,
+                            'is-risks':
+                              historyFirst.updateContents.afterConfidence == 2,
+                            'is-uncontrollable':
+                              historyFirst.updateContents.afterConfidence == 3,
+                          }"
+                        ></div>
+                        <div
+                          :class="{
+                            'is-risks':
+                              historyFirst.updateContents.afterConfidence == 2,
+                            'is-uncontrollable':
+                              historyFirst.updateContents.afterConfidence == 3,
+                          }"
+                        ></div>
+                        <div
+                          :class="{
+                            'is-uncontrollable':
+                              historyFirst.updateContents.afterConfidence == 3,
+                          }"
+                        ></div>
+                      </div>
+                      <em>{{
+                        CONST.CONFIDENCE_MAP[
+                          historyFirst.updateContents.afterConfidence
+                        ]
+                      }}</em>
                     </div>
                     <div>
                       <em>更新说明</em>
@@ -163,6 +197,7 @@ import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
 import { mapMutations } from 'vuex';
 import updateHistoy from './updateHistoy';
+import CONST from '../const';
 
 export default {
   name: 'okrUpdate',
@@ -173,6 +208,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       formData: {

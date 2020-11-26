@@ -5,7 +5,7 @@
     :visible.sync="dialogVisible"
     :before-close="close"
     @closed="closed"
-    class="tl-dialog check-judge"
+    class="tl-dialog"
     width="600px"
   >
     <div slot="title" class="check-title">更新记录</div>
@@ -35,7 +35,37 @@
                   </div>
                   <div>
                     <span>信心指数修改为</span>
-                    <!-- <em>{{ activity.updateContents.afterProgress }}</em> -->
+                    <div class="state-grid">
+                      <div
+                        :class="{
+                          'is-no-risk':
+                            activity.updateContents.afterConfidence == 1,
+                          'is-risks':
+                            activity.updateContents.afterConfidence == 2,
+                          'is-uncontrollable':
+                            activity.updateContents.afterConfidence == 3,
+                        }"
+                      ></div>
+                      <div
+                        :class="{
+                          'is-risks':
+                            activity.updateContents.afterConfidence == 2,
+                          'is-uncontrollable':
+                            activity.updateContents.afterConfidence == 3,
+                        }"
+                      ></div>
+                      <div
+                        :class="{
+                          'is-uncontrollable':
+                            activity.updateContents.afterConfidence == 3,
+                        }"
+                      ></div>
+                    </div>
+                    <em>{{
+                      CONST.CONFIDENCE_MAP[
+                        activity.updateContents.afterConfidence
+                      ]
+                    }}</em>
                   </div>
                 </li>
               </ul>
@@ -50,6 +80,7 @@
 <script>
 
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
 
@@ -67,6 +98,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       server,
       dialogVisible: false,
       historyList: [],
