@@ -3233,6 +3233,14 @@
   margin: 10px 0 0 0;
 }
 
+.write-weekly .weekly-thoughts .icon-bg,
+.write-weekly .week-plan .icon-bg {
+  width: 21px;
+  height: 21px;
+  margin: 0 0 0 20px;
+  background: #f4f6f8;
+}
+
 .weekly-thoughts .el-textarea__inner,
 .week-plan .el-textarea__inner {
   border-color: transparent;
@@ -3497,6 +3505,10 @@
 
 .weekly-cont .form-item:not(.is-standard-version) .form-item-group .el-form-item__label {
   min-width: 126px;
+}
+
+.weekly-cont .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item__label {
+  min-width: unset;
 }
 
 .weekly-cont .form-item-group:last-child {

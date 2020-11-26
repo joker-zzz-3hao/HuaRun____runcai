@@ -30,7 +30,9 @@
 .my-weekly .tl-month-editor .el-icon-date,
 .weekly-select .period-state i,
 .weekly-cont .tl-form .item-title i,
-.icon-clear i {
+.icon-clear i,
+.icon-add,
+.icon-reduce {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -412,4 +414,19 @@
   height: 21px;
   background-position-x: -5px;
   background-position-y: -2195px;
+}
+
+.icon-add,
+.icon-reduce {
+  width: 16px;
+  height: 16px;
+  background-position-x: -7px;
+}
+
+.icon-add {
+  background-position-y: -697px;
+}
+
+.icon-reduce {
+  background-position-y: -726px;
 }

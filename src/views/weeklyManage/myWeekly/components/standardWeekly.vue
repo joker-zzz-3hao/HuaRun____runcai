@@ -379,12 +379,11 @@
           @click.native="addThought(item.randomId)"
         >
           <div class="icon-bg">
-            <i></i>
+            <i class="icon-add"></i>
           </div>
         </el-tooltip>
         <el-tooltip
           v-if="canUpdate"
-          class="icon-clear"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
           }"
@@ -400,7 +399,9 @@
               : ''
           "
         >
-          <i class="el-icon-minus"></i>
+          <div class="icon-bg">
+            <i class="icon-reduce"></i>
+          </div>
         </el-tooltip>
       </dd>
     </dl>
@@ -434,7 +435,6 @@
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
           v-if="canUpdate"
-          class="icon-clear"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
           }"
@@ -444,11 +444,12 @@
           popper-class="tl-tooltip-popper"
           @click.native="addNextWeekWork"
         >
-          <i class="el-icon-plus"></i>
+          <div class="icon-bg">
+            <i class="icon-add"></i>
+          </div>
         </el-tooltip>
         <el-tooltip
           v-if="canUpdate"
-          class="icon-clear"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
           }"
@@ -460,7 +461,9 @@
             weeklyPlanSaveList.length > 1 ? deletePlanItem(item) : ''
           "
         >
-          <i class="el-icon-minus"></i>
+          <div class="icon-bg">
+            <i class="icon-reduce"></i>
+          </div>
         </el-tooltip>
       </dd>
     </dl>
