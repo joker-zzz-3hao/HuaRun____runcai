@@ -4,7 +4,7 @@
       <div class="page-title">我的周报</div>
     </div>
     <div class="cont-area">
-      <tl-calendar-tabs :server="server" :weekIndex.sync="weekIndex">
+      <tl-calendar-tabs :server="server" :selectedWeekIndex.sync="weekIndex">
       </tl-calendar-tabs>
       <div
         v-for="(week, index) in weekList"

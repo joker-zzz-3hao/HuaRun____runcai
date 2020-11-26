@@ -22,7 +22,7 @@
             'is-unsubmit': !item.weeklyId && !item.noOpen,
             'is-unopen': item.noOpen,
             'is-curent': item.btnType == 'success',
-            'is-focus': weekIndex === idx,
+            'is-focus': selectedWeekIndex === idx,
           }"
         >
           <div class="period-time">{{ getWeekItem(item, idx) }}</div>
@@ -64,6 +64,7 @@ export default {
       monthDate: this.dateFormat('YYYY-mm-dd', new Date()), // 初始化日期
       calendarId: '', // 日历Id
       weekIndex: undefined,
+      selectedWeekIndex: undefined,
       currentMonthWeekList: [],
       afterDisabled: {
         disabledDate: (date) => {
@@ -122,8 +123,8 @@ export default {
     ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
-        this.weekIndex = index;
-        this.$emit('update:weekIndex', index);
+        this.selectedWeekIndex = index;
+        this.$emit('update:selectedWeekIndex', index);
         this.$set(item, 'btnType', 'success');
         this.weekList.forEach((week) => {
           if (item.calendarId != week.calendarId) {
@@ -163,10 +164,10 @@ export default {
             this.$nextTick(() => {
               for (let i = 0; i < this.weekList.length; i += 1) {
                 this.$set(this.weekList[i], 'btnType', '');
-                if (i == this.weekIndex) {
+                if (i == this.selectedWeekIndex) {
                   this.$set(this.weekList[i], 'btnType', 'success');
                   this.setSelectWeek(this.weekList[i]);
-                  this.$emit('update:weekIndex', i);
+                  this.$emit('update:selectedWeekIndex', i);
                 }
               }
             });
@@ -176,7 +177,7 @@ export default {
     },
     setWeekClickOrEditStatus(newMonth, data) {
       if (data != 'noResetDelectBtn') {
-        this.weekIndex = undefined;
+        this.selectedWeekIndex = undefined;
       }
       const current = new Date();
       this.weekList.forEach((week) => {
@@ -189,8 +190,9 @@ export default {
           // 当前周
           if (data != 'noResetDelectBtn') {
             this.setCurrentWeek(week);
-            this.weekIndex = this.weekList.indexOf(week); // 月份是本月
+            this.selectedWeekIndex = this.weekList.indexOf(week); // 月份是本月
           }
+          this.weekIndex = this.weekList.indexOf(week);
           // 本月
           if (new Date(this.monthDate).getMonth() == new Date().getMonth()) {
             this.currentMonthWeekList = [...this.weekList];
@@ -226,7 +228,7 @@ export default {
           // 选种本周按钮
           item.btnType = 'success';
           this.setSelectWeek(item);
-          this.$emit('update:weekIndex', this.weekList.indexOf(item));
+          this.$emit('update:selectedWeekIndex', this.weekList.indexOf(item));
           // 团队周报查询
           this.$emit('setCalendarId', item.calendarId);
           this.$emit('getWeeklyById', item);
