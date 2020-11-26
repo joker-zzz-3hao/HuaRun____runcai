@@ -135,6 +135,7 @@ export default {
           loginPwd: self.loginPwd,
         }).then((res) => {
           if (res.code == '200') {
+            window.location.reload();
             localSave('token', res.data);
             this.$router.push({
               name: 'transfer',
