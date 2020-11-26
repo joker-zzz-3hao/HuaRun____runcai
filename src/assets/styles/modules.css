@@ -3609,6 +3609,7 @@ height: 70%;
 }
 
 .icon-bg {
+  flex: 0 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4615,7 +4616,7 @@ svg {
   bottom: 0;
   left: 0;
   right:16px;
-  z-index: 99;
+  z-index: 9999;
   background: #fff;
   box-shadow: 4px 0 14px 0 #f4f6f8;
   height: 70px;
