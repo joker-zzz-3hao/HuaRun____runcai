@@ -1043,6 +1043,14 @@
   margin-left: 30px;
 }
 
+/* change by xinquan */
+.create-okr .change-reason>span{
+  color: #879099;
+}
+.upload-file dt{
+  color: #879099;
+}
+
 .associated-undertaking>.el-scrollbar {
   margin: 0 0 30px 0;
 }
