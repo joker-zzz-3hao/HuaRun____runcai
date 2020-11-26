@@ -105,7 +105,7 @@ export default {
       type: Function,
       default: noop,
     },
-    taskId: {
+    sourceKey: {
       type: String,
       default: '', //
     },
@@ -222,13 +222,8 @@ export default {
         fileList.splice(fileList.indexOf(file), 1);
         this.onRemove(file, fileList);
       };
-      console.log('123', file);
       if (this.sourceType == 'OKRMODIFY') {
-        this.server.deleteFile({ resourceId: file.resourceId, sourceType: this.sourceType }).then((res) => {
-          if (res.code == 200) {
-            this.$message('成功');
-          }
-        });
+        this.server.deleteFile({ resourceId: file.resourceId, sourceType: this.sourceType });
       }
 
       if (!this.beforeRemove) {
@@ -302,7 +297,8 @@ export default {
         <UploadList
           disabled={this.uploadDisabled}
           listType={this.listType}
-          taskId={this.taskId}
+          sourceKey={this.sourceKey}
+          sourceType={this.sourceType}
           files={this.uploadFiles}
           on-remove={this.handleRemove}
           handlePreview={this.onPreview}>
