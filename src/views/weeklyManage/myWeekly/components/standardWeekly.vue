@@ -73,13 +73,15 @@
                 :autosize="{ minRows: 1, maxRows: 8 }"
                 type="textarea"
                 maxlength="50"
-                v-if="canUpdate && workForm.noCheck"
+                v-show="canUpdate && workForm.noCheck"
                 clearable
                 placeholder="简短概括任务"
                 class="tl-textarea"
                 v-model="workForm.workContent"
               ></el-input>
-              <em v-else> {{ workForm.workContent }}</em>
+              <em v-show="!(canUpdate && workForm.noCheck)">
+                {{ workForm.workContent }}</em
+              >
             </el-form-item>
             <el-form-item label="内容" v-show="weeklyType == 1">
               <el-input
@@ -646,7 +648,7 @@
       <el-button
         v-if="canEdit && !canUpdate"
         type="primary"
-        @click="canUpdate = true"
+        @click="updateWeekly"
         class="tl-btn amt-bg-slip"
         >编辑</el-button
       >
@@ -757,6 +759,8 @@ export default {
     };
   },
   created() {
+  },
+  mounted() {
     this.init();
   },
   computed: {
@@ -897,6 +901,7 @@ export default {
             }];
             valueIdList.push('noOkr');
           }
+          this.$set(element, 'noCheck', true);
           this.$set(element, 'okrIdList', okrIdList);// 将已选okr设置在行数据中
           this.$set(element, 'valueIdList', valueIdList);// 将已选价值观设置在行数据中
           this.$set(element, 'selectedOkr', [...element.okrCultureValueList, ...element.workOkrList]);// 反显已勾选的价值观、okr
@@ -904,7 +909,6 @@ export default {
           this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
           this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
           this.$set(element, 'timeList', this.setTimeList(element.weekList));// 存到后端的okr
-          // this.$set(element, 'timeSpanList', this.setTimeSpanList(element));// 存到后端的okr
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
@@ -1146,6 +1150,10 @@ export default {
 
     thoughtTypeChange(thoughts, type) {
       thoughts.thoughtType = type;
+      this.$forceUpdate();
+    },
+    updateWeekly() {
+      this.canUpdate = true;
       this.$forceUpdate();
     },
     submitWeekly() {

@@ -160,7 +160,6 @@ export default {
           if (data != 'noResetDelectBtn') {
             this.selectCurrentWeek();
           } else {
-            debugger;
             this.$nextTick(() => {
               for (let i = 0; i < this.weekList.length; i += 1) {
                 this.$set(this.weekList[i], 'btnType', '');
