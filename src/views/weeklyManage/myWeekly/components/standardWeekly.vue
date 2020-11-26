@@ -200,7 +200,7 @@
                       <span>修改原因：</span><span>{{ workForm.remark }}</span>
                     </li>
                   </ul>
-                  <div v-show="!hasValue(workForm.remark)" slot="reference">
+                  <div v-show="hasValue(workForm.remark)" slot="reference">
                     <i class="icon-remind"></i>
                     <span>工时已被项目经理修改</span>
                   </div>
@@ -222,6 +222,7 @@
                   : []
               "
             >
+              <el-input v-model="workForm.projectId" v-show="false"></el-input>
               <div class="tag-group">
                 <ul class="tag-lists">
                   <li v-if="workForm.projectNameCn">
@@ -1321,6 +1322,12 @@ export default {
   },
 
   watch: {
+    week: {
+      handler(newVal) {
+        // 提交成功后返回最新weekLyId,防止编辑时传参weeklyId丢失，保存周报失败
+        this.weeklyId = newVal.weeklyId || '';
+      },
+    },
     canUpdate: {
       handler(newVal) {
         if (newVal) {
