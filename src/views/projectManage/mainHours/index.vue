@@ -474,7 +474,11 @@ export default {
       const showOld = arr.filter((item) => item.weekTimeAfter == '1');
       const showNewText = showNew.map((item) => item.text);
       const showOldText = showOld.map((item) => item.text);
-      return { showNewText: this.totalDate(showNewText).join(','), showOldText: this.totalDate(showOldText).join(','), day: showNew.length * 0.5 };
+      return {
+        showNewText: this.totalDate(showNewText).join(','),
+        showOldText: this.totalDate(showOldText).join(','),
+        day: showNew.length * 0.5,
+      };
     },
     selectList(select) {
       this.workList = select.map((item) => ({
