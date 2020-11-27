@@ -346,24 +346,7 @@ export default {
         });
       }
     },
-    setThisWeekStatus() {
-      let newWeekList = [];
-      const tempList = [...this.weekList];
-      this.server.getCalendar({ date: this.monthDate }).then((res) => {
-        if (res.code == 200) {
-          newWeekList = res.data;
-        }
-      });
-      // 周报提交成功了，将该周的状态改为已提交
-      tempList.forEach((week) => {
-        newWeekList.forEach((neWeek) => {
-          if (week.calendarId == neWeek.calendarId) {
-            week.weeklyId = neWeek.weeklyId;
-          }
-        });
-      });
-      this.setWeekList(tempList);
-    },
+
   },
   watch: {
 

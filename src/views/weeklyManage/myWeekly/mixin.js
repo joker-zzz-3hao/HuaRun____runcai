@@ -1,4 +1,4 @@
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -17,10 +17,12 @@ export default {
           value: '1',
           label: '周一',
           id: 'one',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             id: 'one_1',
+            parentId: 'one',
             label: '上午',
             disabled: false,
 
@@ -28,6 +30,7 @@ export default {
             value: '2',
             label: '下午',
             id: 'one_2',
+            parentId: 'one',
             disabled: false,
 
           }],
@@ -36,17 +39,20 @@ export default {
           value: '2',
           label: '周二',
           id: 'two',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             label: '上午',
             id: 'two_1',
+            parentId: 'two',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'two_2',
+            parentId: 'two',
             disabled: false,
 
           }],
@@ -55,17 +61,20 @@ export default {
           value: '3',
           label: '周三',
           id: 'three',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             label: '上午',
             id: 'three_1',
+            parentId: 'three',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'three_2',
+            parentId: 'three',
             disabled: false,
 
           }],
@@ -74,17 +83,20 @@ export default {
           value: '4',
           label: '周四',
           id: 'four',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             label: '上午',
             id: 'four_1',
+            parentId: 'four',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'four_2',
+            parentId: 'four',
             disabled: false,
 
           }],
@@ -93,17 +105,20 @@ export default {
           value: '5',
           label: '周五',
           id: 'five',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             label: '上午',
             id: 'five_1',
+            parentId: 'five',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'five_2',
+            parentId: 'five',
             disabled: false,
 
           }],
@@ -112,16 +127,19 @@ export default {
           value: '6',
           label: '周六',
           id: 'six',
+          parentId: '',
           children: [{
             value: '1',
             label: '上午',
             id: 'six_1',
+            parentId: 'six',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'six_2',
+            parentId: 'six',
             disabled: false,
 
           }],
@@ -130,17 +148,20 @@ export default {
           value: '0',
           label: '周日',
           id: 'seven',
+          parentId: '',
           disabled: false,
           children: [{
             value: '1',
             label: '上午',
             id: 'seven_1',
+            parentId: 'seven',
             disabled: false,
 
           }, {
             value: '2',
             label: '下午',
             id: 'seven_2',
+            parentId: 'seven',
             disabled: false,
           }],
         },
@@ -153,6 +174,7 @@ export default {
       projectList: (state) => state.projectList,
       configItemCodeOKR: (state) => state.configItemCodeOKR,
       originalMyOkrList: (state) => state.originalMyOkrList,
+      currentWeek: (state) => state.currentWeek,
     }),
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
@@ -196,6 +218,8 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('weekly', ['setWeekList']),
+
     // 该方法主要是兼容从我的任务-任务汇总模块汇总过来的数据
     initPage() {
       const self = this;
