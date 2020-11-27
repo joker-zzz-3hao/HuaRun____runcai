@@ -279,7 +279,9 @@ export default {
   watch: {
     weekIndex: {
       handler(val) {
-        console.log(val);
+        if (this.hasValue(val)) {
+          this.$busEmit('refreshPage');
+        }
       },
     },
 
