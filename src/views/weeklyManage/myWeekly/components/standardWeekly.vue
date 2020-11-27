@@ -89,6 +89,7 @@
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述任务项"
                 class="tl-textarea"
+                maxlength="500"
                 clearable
               ></el-input>
               <pre v-else class="font-normal">{{ workForm.workDesc }}</pre>
@@ -761,6 +762,15 @@ export default {
     };
   },
   created() {
+    this.$busOn('refreshPage', () => {
+      // 清除表单
+      this.refreshForm = false;
+      this.$nextTick(() => {
+        // 重新渲染表单  校验才会生效
+        this.refreshForm = true;
+      });
+      this.$forceUpdate();
+    });
   },
   mounted() {
     this.init();
@@ -918,7 +928,9 @@ export default {
           });
         });
       }
-      this.$forceUpdate();
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      });
     },
     setThoughts() {
       this.weeklyThoughtSaveList = this.weeklyDataCopy.weeklyThoughtList || [];
