@@ -1763,7 +1763,7 @@
 }
 
 .set-period .el-dialog__body {
-  height: 300px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -1775,7 +1775,7 @@
   padding: 0 14px 0 0;
 }
 .set-period dl {
- margin: 0 0 20px 0;
+ margin: 30px 0 20px 0;
 }
 
 .set-period dl dd {
@@ -1793,6 +1793,9 @@
   margin: 0 0 7px 0;
 }
 
+.set-period .el-scrollbar__bar {
+  opacity: 0.5;
+}
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;

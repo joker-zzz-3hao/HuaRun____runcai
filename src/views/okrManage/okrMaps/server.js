@@ -65,4 +65,14 @@ export default class Server extends ServerBase {
   getCultureContent(param) {
     return this._ajaxPost('gateway/talent-okr/okr/cultureValue/queryCultureList', param);
   }
+
+  // 周期偏好列表查询
+  getOkrMapPeriod(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/getOkrMapPeriod', param);
+  }
+
+  // 周期偏好设置
+  setOkrMapPeriodId(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/setOkrMapPeriodId', param);
+  }
 }
