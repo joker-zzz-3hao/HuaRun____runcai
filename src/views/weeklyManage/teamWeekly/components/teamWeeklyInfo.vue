@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="pageLoading" class="teams-weekly-detail">
+  <div v-loading="pageLoading" class="write-weekly">
     <div class="operating-area">
       <div class="page-title">团队周报</div>
       <div class="operating-box">
@@ -10,109 +10,94 @@
     </div>
     <div class="cont-area">
       <template v-if="openOrClose == 'OPEN'">
-        <dl class="dl-card-panel weekly">
-          <dd>
-            <dl class="user-info">
-              <dt>负责人</dt>
-              <dd v-if="true">
-                <img
-                  v-if="$route.query.headerUrl"
-                  :src="$route.query.headerUrl"
-                  alt
-                />
-              </dd>
-              <dd v-else-if="$route.query.userName" class="user-name">
-                <em>{{
-                  $route.query.userName.substring(
-                    $route.query.userName.length - 2
-                  )
-                }}</em>
-              </dd>
-              <dd>{{ $route.query.userName }}</dd>
-            </dl>
-            <el-table ref="workTable" :data="weeklyWorkVoList" class="tl-table">
-              <el-table-column
-                label="序号"
-                type="index"
-                width="55"
-              ></el-table-column>
-              <el-table-column
-                label="工作项"
-                prop="workContent"
-                min-width="150"
-              >
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workContent }}</em></template
-                ></el-table-column
-              >
-              <el-table-column
-                label="内容"
-                prop="workDesc"
-                v-if="weeklyType == '1'"
-                min-width="150"
-              >
-                <template slot-scope="scope">
-                  <pre class="font-normal">{{ scope.row.workDesc }}</pre>
-                </template>
-              </el-table-column>
-              <el-table-column width="80" label="进度" prop="workProgress">
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workProgress }}%</em>
-                </template>
-              </el-table-column>
-              <el-table-column width="80" label="投入工时" prop="workTime">
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workTime }}天</em>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="关联项目"
-                prop="projectNameCn"
-                min-width="120"
-              >
-                <template slot-scope="scope">
+        <div class="weekly-cont">
+          <dl class="user-info">
+            <dt>当前周报</dt>
+            <dd v-if="true">
+              <img
+                v-if="$route.query.headerUrl"
+                :src="$route.query.headerUrl"
+                alt
+              />
+            </dd>
+            <dd v-else-if="$route.query.userName" class="user-name">
+              <em>{{
+                $route.query.userName.substring(
+                  $route.query.userName.length - 2
+                )
+              }}</em>
+            </dd>
+            <dd>{{ $route.query.userName }}</dd>
+          </dl>
+          <el-form
+            ref="work"
+            :model="workForm"
+            :key="workForm.workId"
+            v-for="(workForm, index) in weeklyWorkVoList"
+            label-width="70px"
+            class="tl-form"
+            :class="{ 'is-edit': true }"
+          >
+            <div class="flex-sb">
+              <div class="item-title">
+                <i></i><span>工作项</span><em>{{ index + 1 }}</em>
+              </div>
+            </div>
+            <div
+              class="form-item"
+              :class="{ 'is-standard-version': weeklyType == 1 }"
+            >
+              <div class="form-item-group">
+                <el-form-item label="工作项">
+                  <em> {{ workForm.workContent }}</em>
+                </el-form-item>
+                <el-form-item label="内容" v-show="weeklyType == 1">
+                  <pre class="font-normal">{{ workForm.workDesc }}</pre>
+                </el-form-item>
+              </div>
+              <div class="form-item-group">
+                <el-form-item label="进度">
+                  <div class="tl-progress-group">
+                    <tl-process
+                      :data="parseInt(Number(workForm.workProgress), 10)"
+                      :showNumber="true"
+                    ></tl-process>
+                  </div>
+                </el-form-item>
+                <el-form-item label="工时" class="time-cascader">
+                  <em>{{ getTimes(workForm, "updated", "days") }}</em>
+                  <div class="working-hours-info">
+                    <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                  </div>
+                </el-form-item>
+                <el-form-item label="项目">
                   <div class="tag-group">
-                    <ul class="tag-lists">
-                      <li>
+                    <ul>
+                      <li v-if="workForm.projectNameCn">
                         <el-tooltip
                           class="select-values"
                           effect="dark"
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{
-                            scope.row.projectNameCn
-                              ? scope.row.projectNameCn
-                              : "临时项目"
-                          }}</em>
-                          <em>{{
-                            scope.row.projectNameCn
-                              ? scope.row.projectNameCn
-                              : "临时项目"
-                          }}</em>
+                          <em slot="content">{{ workForm.projectNameCn }}</em>
+                          <em>{{ workForm.projectNameCn }}</em>
                         </el-tooltip>
                       </li>
                     </ul>
                   </div>
-                  <!-- <em>{{
-                    scope.row.projectNameCn
-                      ? scope.row.projectNameCn
-                      : "临时项目"
-                  }}</em> -->
-                </template>
-              </el-table-column>
-              <el-table-column label="支持OKR/价值观" min-width="120">
-                <template slot-scope="scope">
+                </el-form-item>
+                <el-form-item label="支撑OKR/价值观">
                   <div
                     class="tag-group"
                     v-if="
-                      scope.row.okrCultureValueList.length > 0 ||
-                      scope.row.workOkrList.length > 0
+                      workForm.okrCultureValueList.length > 0 ||
+                      workForm.workOkrList.length > 0
                     "
                   >
-                    <ul class="tag-lists">
+                    <ul>
                       <li
-                        v-for="value in scope.row.okrCultureValueList"
+                        v-for="value in workForm.okrCultureValueList"
                         :key="value.id"
                       >
                         <el-tooltip
@@ -125,10 +110,7 @@
                           <em>{{ setOkrStyle(value.cultureName) }}</em>
                         </el-tooltip>
                       </li>
-                      <li
-                        v-for="value in scope.row.workOkrList"
-                        :key="value.id"
-                      >
+                      <li v-for="value in workForm.workOkrList" :key="value.id">
                         <el-tooltip
                           class="select-values"
                           effect="dark"
@@ -141,12 +123,29 @@
                       </li>
                     </ul>
                   </div>
-                  <div v-else>--</div>
-                </template>
-              </el-table-column>
-            </el-table>
-          </dd>
-        </dl>
+                  <div class="tag-group">
+                    <ul class="tag-lists">
+                      <li
+                        v-for="item in workForm.selectedOkr"
+                        :key="item.okrDetailId"
+                      >
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ item.okrDetailObjectKr }}</em>
+                          <em>{{ item.okrDetailObjectKr }}</em>
+                        </el-tooltip>
+                      </li>
+                    </ul>
+                  </div>
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
+        </div>
         <dl class="dl-card-panel weekly-thoughts" v-if="weeklyType == '1'">
           <dt class="card-title"><em>本周感想、建议、收获</em></dt>
           <dd v-for="item in weeklyThoughtList" :key="item.thoughtId">
@@ -182,23 +181,21 @@
             <em>本周没有填写感想、建议或者收获！</em>
           </dd>
         </dl>
-        <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
+        <!-- 下周计划-->
+        <dl
+          class="dl-card-panel week-plan"
+          :class="{ 'is-edit': canUpdate }"
+          v-if="weeklyType == 1"
+        >
           <dt class="card-title"><em>下周计划</em></dt>
-          <dd v-if="weeklyPlanList.length > 0">
-            <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
-              <el-table-column
-                label="序号"
-                type="index"
-                width="55"
-              ></el-table-column>
-              <el-table-column
-                label="工作项"
-                prop="planContent"
-              ></el-table-column>
-            </el-table>
+          <dd v-if="weeklyPlanList.length < 1" class="no-data">
+            <em>本周未填写下周计划</em>
           </dd>
-          <dd v-else class="no-data">
-            <em>未填写下周计划</em>
+          <dd v-for="(item, index) in weeklyPlanList" :key="item.workId">
+            <div>
+              <span>计划项</span><em>{{ index + 1 }}</em>
+            </div>
+            <pre>{{ item.planContent }}</pre>
           </dd>
         </dl>
         <dl class="dl-card-panel okr-completion">
@@ -334,25 +331,27 @@
           <dd>
             <ul>
               <li
+                v-if="weeklyEmotion === 100"
                 class="has-harvest"
                 :class="{ 'is-selected': weeklyEmotion === 100 }"
               >
                 <i></i><i></i>
               </li>
               <li
+                v-if="weeklyEmotion === 50"
                 class="not-too-bad"
                 :class="{ 'is-selected': weeklyEmotion === 50 }"
               >
                 <i></i><i></i>
               </li>
               <li
+                v-if="weeklyEmotion === 0"
                 class="let-quiet"
                 :class="{ 'is-selected': weeklyEmotion === 0 }"
               >
                 <i></i><i></i>
               </li>
             </ul>
-            <span v-if="showEmotionError">请选择本周心情</span>
           </dd>
         </dl>
         <dl class="dl-card-panel who-browse">
@@ -587,10 +586,12 @@
 import tlProcess from '@/components/process';
 import { mapState } from 'vuex';
 import Server from '../server';
+import mixin from '../../myWeekly/mixin';
 
 const server = new Server();
 export default {
   name: 'teamWeeklyInfo',
+  mixins: [mixin],
   components: {
     'tl-process': tlProcess,
   },
@@ -721,6 +722,7 @@ export default {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
     },
+
   },
   watch: {},
   updated() {},

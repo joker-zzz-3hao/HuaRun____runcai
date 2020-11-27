@@ -89,6 +89,7 @@
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述任务项"
                 class="tl-textarea"
+                maxlength="500"
                 clearable
               ></el-input>
               <pre v-else class="font-normal">{{ workForm.workDesc }}</pre>
@@ -761,6 +762,15 @@ export default {
     };
   },
   created() {
+    this.$busOn('refreshPage', () => {
+      // 清除表单
+      this.refreshForm = false;
+      this.$nextTick(() => {
+        // 重新渲染表单  校验才会生效
+        this.refreshForm = true;
+      });
+      this.$forceUpdate();
+    });
   },
   mounted() {
     this.init();
@@ -918,7 +928,9 @@ export default {
           });
         });
       }
-      this.$forceUpdate();
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      });
     },
     setThoughts() {
       this.weeklyThoughtSaveList = this.weeklyDataCopy.weeklyThoughtList || [];
@@ -952,76 +964,6 @@ export default {
           } else {
             result.push([whichDay, day.weekTimeType]);
           }
-        });
-      }
-      return result;
-    },
-    getTimes(workItem, type, daysOrInfo) {
-      if (workItem.weekList && workItem.weekList.length > 0) {
-        let tempWeekList = [];
-        // 1、审批后工时被改动：过滤掉weekTimeAfter == '0'的数据
-        if (this.hasValue(workItem.remark)) {
-          if (type == 'updated') { // 更改后
-            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeAfter !== '0');
-          } else if (type == 'original') { // 更改前
-            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeFront === '1');
-          }
-        } else {
-          tempWeekList = workItem.weekList;
-        }
-        // 2、工时未被改动：不作处理
-
-        workItem.timeSpanList = this.setTimeSpanList(tempWeekList);
-        // 过滤掉删除的数据
-        const days = (tempWeekList.length) / 2;
-        const dayTexts = workItem.timeSpanList.join('、');
-        if (daysOrInfo == 'days') {
-          return `${days}天`;
-        }
-        return `（${dayTexts}）`;
-      }
-      return '';
-    },
-    setTimeSpanList(manHourList) {
-      const result = [];
-      // 将数据整理，同一天的合并为一天
-      const dayList = [];
-      let manHourSet = [];
-      const dayAndTimeTypeList = [];
-      manHourList.forEach((manHour) => {
-        // 日期遍历
-        dayList.push(manHour.weekDate);
-      });
-      // 去重
-      manHourSet = Array.from(new Set(dayList));
-
-      manHourSet.forEach((manHour) => {
-        dayAndTimeTypeList.push({
-          date: manHour,
-          timeTypeList: [],
-        });
-      });
-
-      dayAndTimeTypeList.forEach((dayAndTimeType) => {
-        manHourList.forEach((day) => {
-          if (day.weekDate == dayAndTimeType.date) {
-            dayAndTimeType.timeTypeList.push(day.weekTimeType);
-          }
-        });
-      });
-      if (dayAndTimeTypeList && dayAndTimeTypeList.length > 0) {
-        dayAndTimeTypeList.forEach((day) => {
-          const dateTemp = day.date.split(' ')[0];
-          const whichDay = new Date(dateTemp).getDay();
-          let text = '';
-          if (day.timeTypeList.length == 2) {
-            text = `${this.WEEK_MAP[whichDay]}全天`;
-          } else if (day.timeTypeList[0] == 1) {
-            text = `${this.WEEK_MAP[whichDay]}上午`;
-          } else {
-            text = `${this.WEEK_MAP[whichDay]}下午`;
-          }
-          result.push(text);
         });
       }
       return result;
@@ -1157,6 +1099,13 @@ export default {
       this.$forceUpdate();
     },
     updateWeekly() {
+      // 感想、计划如果没有数据，默认添加一条
+      if (this.weeklyThoughtSaveList.length < 1) {
+        this.addThought();
+      }
+      if (this.weeklyPlanSaveList.length < 1) {
+        this.addNextWeekWork();
+      }
       this.canUpdate = true;
       // 清除表单
       this.refreshForm = false;
@@ -1217,8 +1166,10 @@ export default {
         if (res.code == 200) {
           this.canUpdate = false;
           this.$message.success('保存成功');
-          // 刷新日历数据
-          this.$busEmit('getWeekList');
+          // 刷新当前页周报数据
+          this.refresh();
+          // 刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
+          this.$busEmit('setThisWeekStatus');
           // 更新个人okr数据,取到最新数据
           this.$busEmit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
@@ -1227,6 +1178,28 @@ export default {
           });
         }
       });
+    },
+    refresh() {
+      if (this.week.weeklyId) {
+        this.weeklyId = this.week.weeklyId;
+        this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
+          if (res.code == 200) {
+            // 将所有数据保存
+            this.weeklyData = res.data;
+            this.weeklyType = res.data.weeklyType;
+            this.thisPageWeeklyTypeList = [res.data.weeklyType];
+            this.weeklyDataCopy = { ...this.weeklyData };
+            this.initPage();
+            // // 清除表单
+            // this.refreshForm = false;
+            // this.$nextTick(() => {
+            //   // 重新渲染表单  校验才会生效
+            //   this.refreshForm = true;
+            // });
+            // this.$forceUpdate();
+          }
+        });
+      }
     },
     processChange(item) {
       item.progressAfter = Math.round(item.progressAfter);
@@ -1317,7 +1290,10 @@ export default {
       workItem.weekList = [];
       workItem.timeList.forEach((day) => {
         const begindate = new Date(this.week.weekBegin);
-        begindate.setDate(begindate.getDate() + Number(day[0]) - 1);
+        begindate.setDate(begindate.getDate() + Number(day[0]) - 1);// 周日兼容
+        if (day[0] == 0) {
+          begindate.setDate(begindate.getDate() + 7);
+        }
         workItem.weekList.push({
           weekDate: this.dateFormat('YYYY-mm-dd', begindate),
           weekTimeType: day[1],
