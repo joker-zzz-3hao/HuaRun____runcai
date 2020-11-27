@@ -1856,7 +1856,7 @@ transition: transform .3s;
 /* change by xinquan */
 .tl-collapse-other .tag-kind dd:last-child em {
   margin: 0 4px 0 0;
-  width: 23px;
+  width: 35px;
   cursor: pointer;
   color: #FFBC20;
 }
