@@ -343,16 +343,16 @@ export default {
               pitem.forEach((citem) => {
                 const contentObject = JSON.parse(citem.content) || {};
                 // eslint-disable-next-line max-len
-                if (citem.operateType == '5') {
+                if (citem.operateType == 5) {
                   citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
                 } else if (
-                  citem.operateType == '6'
+                  citem.operateType == 6
                 ) {
                   citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
                   citem.weekBegin = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekBegin));
                   citem.weekEnd = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekEnd));
                 } else if (
-                  citem.operateType == '7'
+                  citem.operateType == 7
                 ) {
                   citem.okrDetailProgress = (contentObject.afterProgress - contentObject.beforeProgress) || 0;
                 }
