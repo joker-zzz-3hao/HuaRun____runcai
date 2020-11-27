@@ -139,12 +139,12 @@ export default {
         }
       });
     },
-    refreshMyOkr() {
-      this.teamOkrLoadFinish = false;
-      this.myOkrLoadFinish = false;
-      this.queryPersonalOkr();
-      this.queryTeamOkr();
-    },
+    // refreshMyOkr() {
+    //   this.teamOkrLoadFinish = false;
+    //   this.myOkrLoadFinish = false;
+    //   this.queryPersonalOkr();
+    //   this.queryTeamOkr();
+    // },
     getValues() {
       this.server.getValues().then((res) => {
         if (res.code == 200) {
