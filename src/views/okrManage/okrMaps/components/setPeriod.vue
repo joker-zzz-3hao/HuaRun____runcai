@@ -31,6 +31,7 @@
         class="tl-btn amt-bg-slip"
         @click="summit"
         :loading="loading"
+        :disabled="loading"
         >确定</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -64,9 +65,11 @@ export default {
     close() {
       // 清空选项
       this.dialogTableVisible = false;
+      this.$nextTick(() => { this.loading = false; }, 1000);
     },
     summit() {
       if (this.periodId) {
+        this.loading = true;
         this.server.setOkrMapPeriodId({ periodId: this.periodId }).then((res) => {
           if (res.code == 200) {
             this.$message.success('设置成功');
