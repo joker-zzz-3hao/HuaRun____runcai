@@ -31,6 +31,7 @@
         class="tl-btn amt-bg-slip"
         @click="summit"
         :loading="loading"
+        :disabled="loading"
         >确定</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
@@ -67,12 +68,14 @@ export default {
     },
     summit() {
       if (this.periodId) {
+        this.loading = true;
         this.server.setOkrMapPeriodId({ periodId: this.periodId }).then((res) => {
           if (res.code == 200) {
             this.$message.success('设置成功');
             this.close();
             this.$emit('success');
           }
+          this.$nextTick(() => { this.loading = false; }, 3000);
         });
       } else {
         this.$message.error('请选择一个周期');
