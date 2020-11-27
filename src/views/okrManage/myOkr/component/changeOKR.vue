@@ -271,6 +271,7 @@ export default {
       historyDrawer: false,
       loading: false,
       fileList: [], // 文件列表
+      attachmentList: [],
     };
   },
   components: {
@@ -635,7 +636,9 @@ export default {
       this.server.modifyOkrInfo(this.formData).then((res) => {
         this.loading = false;
         if (res.code == 200) {
-          this.updateFile();
+          if (this.attachmentList && this.attachmentList.length > 0) {
+            this.updateFile();
+          }
           this.$message.success('提交成功，请等待上级领导审批');
           this.close();
           this.$emit('success');

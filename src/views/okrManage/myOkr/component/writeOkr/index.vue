@@ -951,7 +951,7 @@ export default {
       };
       this.server.modifyOkrInfo(formChangeData).then((res) => {
         if (res.code == 200) {
-          if (this.formData.attachmentList.length > 0) {
+          if (this.formData.attachmentList && this.formData.attachmentList.length > 0) {
             this.updateFile();
           }
           this.$message.success('提交成功');
