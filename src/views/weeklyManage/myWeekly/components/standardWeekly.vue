@@ -1147,8 +1147,8 @@ export default {
         if (res.code == 200) {
           this.canUpdate = false;
           this.$message.success('保存成功');
-          // 刷新日历数据
-          this.$busEmit('getWeekList');
+          // 刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
+          this.$busEmit('setThisWeekStatus');
           // 更新个人okr数据,取到最新数据
           this.$busEmit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
