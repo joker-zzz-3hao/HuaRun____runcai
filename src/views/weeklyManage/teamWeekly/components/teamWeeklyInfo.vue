@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="pageLoading" class="write-weekly">
+  <div v-loading="pageLoading" class="teams-weekly">
     <div class="operating-area">
       <div class="page-title">团队周报</div>
       <div class="operating-box">
