@@ -7,6 +7,7 @@
     :visible.sync="dialogTableVisible"
     class="tl-dialog set-period"
     width="400px"
+    title="偏好设置"
   >
     <dl>
       <dt>为了方便您查看全局OKR，请先选择您希望看到的OKR周期。</dt>
