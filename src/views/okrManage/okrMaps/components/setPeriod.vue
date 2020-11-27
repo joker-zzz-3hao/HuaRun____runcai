@@ -65,7 +65,6 @@ export default {
     close() {
       // 清空选项
       this.dialogTableVisible = false;
-      this.$nextTick(() => { this.loading = false; }, 1000);
     },
     summit() {
       if (this.periodId) {
@@ -76,6 +75,7 @@ export default {
             this.close();
             this.$emit('success');
           }
+          this.$nextTick(() => { this.loading = false; }, 3000);
         });
       } else {
         this.$message.error('请选择一个周期');
