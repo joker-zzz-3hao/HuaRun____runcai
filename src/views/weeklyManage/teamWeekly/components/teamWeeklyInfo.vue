@@ -12,7 +12,7 @@
       <template v-if="openOrClose == 'OPEN'">
         <div class="weekly-cont">
           <dl class="user-info">
-            <dt>负责人</dt>
+            <dt>当前周报</dt>
             <dd v-if="true">
               <img
                 v-if="$route.query.headerUrl"
