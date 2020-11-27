@@ -255,12 +255,16 @@
                   <el-tooltip class="item" effect="dark" placement="top">
                     <div slot="content">
                       <div>
-                        填入工时：{{ checkOldNew(scope.row).showOldText }}
+                        填入工时：{{
+                          checkOldNew(scope.row).showOldText || "无"
+                        }}
                       </div>
                       <div>
-                        修改工时：{{ checkOldNew(scope.row).showNewText }}
+                        修改工时：{{
+                          checkOldNew(scope.row).showNewText || "无"
+                        }}
                       </div>
-                      <div>修改原因：{{ scope.row.remark }}</div>
+                      <div>修改原因：{{ scope.row.remark || "无" }}</div>
                     </div>
                     <i
                       class="el-icon-warning"
