@@ -286,6 +286,76 @@ export default {
       // 反显下周计划
       self.setNextWeekPlan();
     },
+    setTimeSpanList(manHourList) {
+      const result = [];
+      // 将数据整理，同一天的合并为一天
+      const dayList = [];
+      let manHourSet = [];
+      const dayAndTimeTypeList = [];
+      manHourList.forEach((manHour) => {
+        // 日期遍历
+        dayList.push(manHour.weekDate);
+      });
+      // 去重
+      manHourSet = Array.from(new Set(dayList));
+
+      manHourSet.forEach((manHour) => {
+        dayAndTimeTypeList.push({
+          date: manHour,
+          timeTypeList: [],
+        });
+      });
+
+      dayAndTimeTypeList.forEach((dayAndTimeType) => {
+        manHourList.forEach((day) => {
+          if (day.weekDate == dayAndTimeType.date) {
+            dayAndTimeType.timeTypeList.push(day.weekTimeType);
+          }
+        });
+      });
+      if (dayAndTimeTypeList && dayAndTimeTypeList.length > 0) {
+        dayAndTimeTypeList.forEach((day) => {
+          const dateTemp = day.date.split(' ')[0];
+          const whichDay = new Date(dateTemp).getDay();
+          let text = '';
+          if (day.timeTypeList.length == 2) {
+            text = `${this.WEEK_MAP[whichDay]}全天`;
+          } else if (day.timeTypeList[0] == 1) {
+            text = `${this.WEEK_MAP[whichDay]}上午`;
+          } else {
+            text = `${this.WEEK_MAP[whichDay]}下午`;
+          }
+          result.push(text);
+        });
+      }
+      return result;
+    },
+    getTimes(workItem, type, daysOrInfo) {
+      if (workItem.weekList && workItem.weekList.length > 0) {
+        let tempWeekList = [];
+        // 1、审批后工时被改动：过滤掉weekTimeAfter == '0'的数据
+        if (this.hasValue(workItem.remark)) {
+          if (type == 'updated') { // 更改后
+            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeAfter !== '0');
+          } else if (type == 'original') { // 更改前
+            tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeFront === '1');
+          }
+        } else {
+          tempWeekList = workItem.weekList;
+        }
+        // 2、工时未被改动：不作处理
+
+        workItem.timeSpanList = this.setTimeSpanList(tempWeekList);
+        // 过滤掉删除的数据
+        const days = (tempWeekList.length) / 2;
+        const dayTexts = workItem.timeSpanList.join('、');
+        if (daysOrInfo == 'days') {
+          return `${days}天`;
+        }
+        return `（${dayTexts}）`;
+      }
+      return '';
+    },
     // 进度
     validateProcess(rule, value, callback) {
       if (!value) {

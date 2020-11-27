@@ -33,7 +33,7 @@
               <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
               <em v-if="item.noOpen">未开放</em>
             </div>
-            <el-tooltip
+            <!-- <el-tooltip
               v-if="!hasValue(item.weeklyId) && !item.noOpen && !item.canEdit"
               class
               effect="dark"
@@ -42,7 +42,7 @@
               popper-class="tl-tooltip-popper"
             >
               <i></i>
-            </el-tooltip>
+            </el-tooltip> -->
           </div>
         </li>
       </ul>
@@ -101,13 +101,16 @@ export default {
     // const borderWidth = document.querySelector('.custom-drawer .border-slip');
     // borderWidth.style.left = `${selfLeft}px`;
     // borderWidth.style.width = `${liWidth[0].offsetWidth}px`;
-  },
-  created() {
     // 获取每月日历
     this.getWeek();
-    this.$busOn('getWeekList', () => {
-      this.getWeek('noResetDelectBtn');
+    // this.$busOn('getWeekList', () => {
+    //   this.getWeek('noResetDelectBtn');
+    // });
+    this.$busOn('setThisWeekStatus', () => {
+      this.setThisWeekStatus();
     });
+  },
+  created() {
   },
   computed: {
     ...mapState('common', {
@@ -117,6 +120,7 @@ export default {
     ...mapState('weekly', {
       weekList: (state) => state.weekList,
       weeklyDataList: (state) => state.weeklyDataList,
+      currentWeek: (state) => state.currentWeek,
     }),
   },
   methods: {
@@ -143,41 +147,35 @@ export default {
       }
     },
     getWeek(data) {
-      let newMonth = '';
-      if (data != 'noResetDelectBtn') {
-        newMonth = data;
-      }
       // 选择的月份
-      if (newMonth) {
-        this.monthDate = newMonth;
+      if (data) {
+        this.monthDate = data;
       }
       this.server.getCalendar({ date: this.monthDate }).then((res) => {
         if (res.code == 200) {
           this.setWeekList(res.data);
           // 设置日历的可点击状态以及周报可编辑状态
-          this.setWeekClickOrEditStatus(this.monthDate, data);
+          this.setWeekClickOrEditStatus(this.monthDate);
           // 初始化页面时，自动定位到本周,如果周报写过了，则需要查询本周周报详情
-          if (data != 'noResetDelectBtn') {
-            this.selectCurrentWeek();
-          } else {
-            this.$nextTick(() => {
-              for (let i = 0; i < this.weekList.length; i += 1) {
-                this.$set(this.weekList[i], 'btnType', '');
-                if (i == this.selectedWeekIndex) {
-                  this.$set(this.weekList[i], 'btnType', 'success');
-                  this.setSelectWeek(this.weekList[i]);
-                  this.$emit('update:selectedWeekIndex', i);
-                }
-              }
-            });
-          }
+          // if (data != 'noResetDelectBtn') {
+          this.selectCurrentWeek();
+          // } else {
+          //   this.$nextTick(() => {
+          //     for (let i = 0; i < this.weekList.length; i += 1) {
+          //       this.$set(this.weekList[i], 'btnType', '');
+          //       if (i == this.selectedWeekIndex) {
+          //         this.$set(this.weekList[i], 'btnType', 'success');
+          //         this.setSelectWeek(this.weekList[i]);
+          //         this.$emit('update:selectedWeekIndex', i);
+          //       }
+          //     }
+          //   });
+          // }
         }
       });
     },
-    setWeekClickOrEditStatus(newMonth, data) {
-      if (data != 'noResetDelectBtn') {
-        this.selectedWeekIndex = undefined;
-      }
+    setWeekClickOrEditStatus(newMonth) {
+      this.selectedWeekIndex = undefined;
       const current = new Date();
       this.weekList.forEach((week) => {
         // 由于精确到日的日期格式化之后是上午八点，所以beg应该减去8小时，end加上16小时
@@ -187,10 +185,10 @@ export default {
         end = end.setHours(end.getHours() + 16);
         if (current >= beg && current <= end) {
           // 当前周
-          if (data != 'noResetDelectBtn') {
-            this.setCurrentWeek(week);
-            this.selectedWeekIndex = this.weekList.indexOf(week); // 月份是本月
-          }
+          // if (data != 'noResetDelectBtn') {
+          this.setCurrentWeek(week);
+          this.selectedWeekIndex = this.weekList.indexOf(week); // 月份是本月
+          // }
           this.weekIndex = this.weekList.indexOf(week);
           // 本月
           if (new Date(this.monthDate).getMonth() == new Date().getMonth()) {
@@ -347,6 +345,24 @@ export default {
           week.noOpen = false;
         });
       }
+    },
+    setThisWeekStatus() {
+      let newWeekList = [];
+      const tempList = [...this.weekList];
+      this.server.getCalendar({ date: this.monthDate }).then((res) => {
+        if (res.code == 200) {
+          newWeekList = res.data;
+        }
+      });
+      // 周报提交成功了，将该周的状态改为已提交
+      tempList.forEach((week) => {
+        newWeekList.forEach((neWeek) => {
+          if (week.calendarId == neWeek.calendarId) {
+            week.weeklyId = neWeek.weeklyId;
+          }
+        });
+      });
+      this.setWeekList(tempList);
     },
   },
   watch: {
