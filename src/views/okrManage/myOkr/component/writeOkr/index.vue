@@ -191,7 +191,7 @@
                             :precision="0"
                             class="tl-input-number"
                           ></el-input-number> -->
-                          <span>0 %</span>
+                          <span>{{ oitem.okrDetailProgress }} %</span>
                         </el-form-item>
                       </div>
                       <div>
@@ -329,7 +329,7 @@
                         :step="1"
                         :precision="0"
                         class="tl-input-number"
-                        @blur="progressChange(kitem)"
+                        @blur="progressChange(oitem, kitem)"
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
@@ -951,7 +951,7 @@ export default {
       };
       this.server.modifyOkrInfo(formChangeData).then((res) => {
         if (res.code == 200) {
-          if (this.formData.attachmentList.length > 0) {
+          if (this.formData.attachmentList && this.formData.attachmentList.length > 0) {
             this.updateFile();
           }
           this.$message.success('提交成功');
@@ -1007,6 +1007,16 @@ export default {
         this.formData.okrInfoList[oindex].showTip = false;
       } else {
         this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
+        this.formData.okrInfoList[oindex].okrDetailProgress = 0;
+        this.formData.okrInfoList[oindex].krList.forEach((item) => {
+          this.formData.okrInfoList[oindex].okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
+          if (this.formData.okrInfoList[oindex].okrDetailProgress < 100) {
+            // eslint-disable-next-line max-len
+            this.formData.okrInfoList[oindex].okrDetailProgress = Math.floor(this.formData.okrInfoList[oindex].okrDetailProgress);
+          } else {
+            this.formData.okrInfoList[oindex].okrDetailProgress = 100;
+          }
+        });
       }
       this.lastWeightmsg = '剩余权重 计算中...';
     },
@@ -1016,10 +1026,19 @@ export default {
       this.$forceUpdate();
     },
     // 进度默认值
-    progressChange(kitem) {
+    progressChange(oitem, kitem) {
       if (!kitem.okrDetailProgress) {
         kitem.okrDetailProgress = 0;
       }
+      oitem.okrDetailProgress = 0;
+      oitem.krList.forEach((item) => {
+        oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
+        if (oitem.okrDetailProgress < 100) {
+          oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
+        } else {
+          oitem.okrDetailProgress = 100;
+        }
+      });
     },
     // 文件
     fileChange(data) {
