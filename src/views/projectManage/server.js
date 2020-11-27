@@ -76,4 +76,8 @@ export default class Server extends ServerBase {
   timeSheetListapproval(param) {
     return this._ajaxPost('gateway/project-service/project/approval/timeSheetList', param);
   }
+
+  calendarqurey(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
 }

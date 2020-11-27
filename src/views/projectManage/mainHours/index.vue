@@ -3,7 +3,7 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div class="page-title">工时审批</div>
+      <!-- <div class="page-title">工时审批</div> -->
       <div class="operating-box">
         <dl class="dl-item">
           <dt>项目</dt>
@@ -49,13 +49,23 @@
         <dl class="dl-item">
           <dt>时间</dt>
           <dd>
-            <el-date-picker
+            <!-- <el-date-picker
               v-model="weekBegin"
               type="week"
               format="yyyy 第 WW 周"
               value-format="yyyy-MM-dd"
-              @change="changePick"
+
               placeholder="选择周"
+            >
+            </el-date-picker> -->
+            <el-date-picker
+              v-model="weekLine"
+              type="daterange"
+              @change="changePick"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
             >
             </el-date-picker>
           </dd>
@@ -120,9 +130,20 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent">
+            <el-table-column label="工作项" prop="workContent" min-width="150">
             </el-table-column>
-            <el-table-column label="工作项内容" min-width="110" prop="workDesc">
+            <el-table-column label="工作项内容" min-width="150" prop="workDesc">
+              <template slot-scope="scope">
+                <el-popover
+                  placement="top"
+                  width="300"
+                  trigger="hover"
+                  popper-class="approval-pop"
+                >
+                  {{ scope.row.workDesc }}
+                  <span slot="reference">{{ scope.row.workDesc }}</span>
+                </el-popover>
+              </template>
             </el-table-column>
             <el-table-column label="进度" min-width="180" prop="workProgress">
               <template slot-scope="scope">
@@ -150,16 +171,16 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="周期时间">
+            <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
-                {{ getMonthWeek(scope.row.weekBegin) }}
+                {{ weekWorkListCheck(scope.row) }}
               </template>
             </el-table-column>
             <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
                 <div v-if="scope.row.approvalStatus == '0'">
                   <div>
-                    <em>{{ scope.row.weekWorkList.length * 0.5 }}天 </em>
+                    <em>{{ scope.row.arr.length * 0.5 }}天 </em>
                     <el-popover
                       placement="top"
                       width="300"
@@ -241,7 +262,10 @@
                       </div>
                       <div>修改原因：{{ scope.row.remark }}</div>
                     </div>
-                    <i class="el-icon-warning"></i>
+                    <i
+                      class="el-icon-warning"
+                      v-if="checkOldNew(scope.row).show"
+                    ></i>
                   </el-tooltip>
                   <div>
                     {{ checkOldNew(scope.row).showNewText }}
@@ -336,7 +360,12 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-button type="primary" @click="alertSelectAll">批量审批</el-button>
+          <el-button
+            type="primary"
+            @click="alertSelectAll"
+            class="tl-btn amt-bg-slip"
+            >批量审批</el-button
+          >
         </div>
       </tl-crcloud-table>
     </div>
@@ -368,7 +397,7 @@ export default {
   name: 'mainHours',
   data() {
     return {
-      weekBegin: '',
+      weekLine: [],
       monDayList: [
         '周一',
         '周二',
@@ -441,7 +470,10 @@ export default {
     changePick() {
       this.searchList();
     },
-
+    weekWorkListCheck(row) {
+      const list = row.weekWorkList.map((item) => `${item.weekDate.split('-')[1]}月${item.weekDate.split('-')[2]}日`);
+      return list.join(',');
+    },
     getMonthWeek(dateTime) {
       const timeArr = dateTime.split('-');
       const a = timeArr[0];
@@ -474,10 +506,22 @@ export default {
       const showOld = arr.filter((item) => item.weekTimeAfter == '1');
       const showNewText = showNew.map((item) => item.text);
       const showOldText = showOld.map((item) => item.text);
+      let bool = true;
+      // eslint-disable-next-line no-unused-vars
+      let oldNew;
+      if (showNewText.length == 0) {
+        bool = false;
+        oldNew = showOldText;
+      } else {
+        bool = true;
+        oldNew = [...showNewText, ...showOldText];
+      }
+
       return {
-        showNewText: this.totalDate(showNewText).join(','),
+        showNewText: this.totalDate(oldNew).join(','),
         showOldText: this.totalDate(showOldText).join(','),
-        day: showNew.length * 0.5,
+        day: oldNew.length * 0.5,
+        show: bool,
       };
     },
     selectList(select) {
@@ -618,13 +662,16 @@ export default {
       });
     },
     searchList() {
+      const weekBegin = this.weekLine[0] || '';
+      const weekEnd = this.weekLine[1] || '';
       this.server.timeSheetList({
         currentPage: this.currentPage,
         pageSize: this.pageSize,
         projectId: this.formData.projectId,
         approvalStatus: this.formData.approvalStatus,
         approvalUser: this.userInfo.userAccount,
-        weekBegin: this.weekBegin,
+        weekBegin,
+        weekEnd,
         keyWord: this.keyWord,
       }).then((res) => {
         if (res.code == '200') {
@@ -655,6 +702,7 @@ export default {
       return this.totalDate(arr).join(',');
     },
     listTimeFun(list, userId, weekBegin, ldapType) {
+      this.monDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
       if (ldapType == 'OTHER' || !ldapType) {
         this.monDayList.remove('周六');
         this.monDayList.remove('周日');
@@ -670,6 +718,13 @@ export default {
       const mode = weekTimeType == 1 ? 'Mor' : 'Aft';
       // eslint-disable-next-line max-len
       return { day: CONST.DATE_NUM[timePro.toString()] + mode, text: CONST.DATE_MODE[CONST.DATE_NUM[timePro.toString()] + mode] };
+    },
+    async calendarqurey(date) {
+      const res = await this.server.calendarqurey({ date });
+      const nowDate = new Date(date).getTime();
+      // eslint-disable-next-line max-len
+      const index = res.data.findIndex((item) => nowDate > new Date(item.weekBegin).getTime() && nowDate < (new Date(item.weekEnd).getTime() + 24 * 60 * 60 * 1000));
+      return `${new Date(date).getMonth()}月${index}周`;
     },
     changeProject() {
       this.searchList();
