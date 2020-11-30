@@ -1,6 +1,6 @@
 <template>
   <div class="write-weekly">
-    <div class="operating-box">
+    <!-- <div class="operating-box">
       <div
         class="tl-custom-btn"
         v-for="item in thisPageWeeklyTypeList"
@@ -12,7 +12,7 @@
       >
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
-    </div>
+    </div> -->
     <!-- <div class="weekly-title">{{ getWeekItem() }}</div> -->
     <div class="weekly-cont" v-if="refreshForm">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
@@ -49,10 +49,11 @@
             <div class="icon-clear"><i></i><em>删除</em></div>
           </el-tooltip>
         </div>
-        <div
+        <div class="form-item is-standard-version">
+          <!-- <div
           class="form-item"
           :class="{ 'is-standard-version': weeklyType == 1 }"
-        >
+        > -->
           <div class="form-item-group">
             <el-form-item
               prop="workContent"
@@ -81,7 +82,7 @@
               ></el-input>
               <em v-else> {{ workForm.workContent }}</em>
             </el-form-item>
-            <el-form-item label="内容" v-show="weeklyType == 1">
+            <el-form-item label="内容">
               <el-input
                 v-model="workForm.workDesc"
                 :autosize="{ minRows: 4 }"
@@ -154,58 +155,65 @@
                   : []
               "
             >
-              <div class="add-working-hours">
-                <el-button
-                  type="text"
-                  class="tl-btn"
-                  v-if="canUpdate && workForm.noCheck"
-                  >添加工时</el-button
-                >
-                <el-cascader
-                  v-show="canUpdate && workForm.noCheck"
-                  :ref="workForm.randomId"
-                  v-model="workForm.timeList"
-                  :options="weekDataList"
-                  :props="props"
-                  placeholder="添加工时"
-                  collapse-tags
-                  @visible-change="visibleChange(workForm)"
-                  @change="selectWeekData(workForm)"
-                  popper-class="tl-cascader-popper"
-                  class="tl-cascader"
-                ></el-cascader>
-              </div>
-              <em>{{ getTimes(workForm, "updated", "days") }}</em>
-              <div class="working-hours-info">
-                <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                <el-popover
-                  placement="top-start"
-                  title=""
-                  width="200"
-                  trigger="hover"
-                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-                  popper-class="popper-working-hours"
-                >
-                  <ul>
-                    <li>
-                      <span>填入工时：</span>
-                      <span>{{ getTimes(workForm, "original", "days") }}</span>
-                      <span>{{ getTimes(workForm, "original", "info") }}</span>
-                    </li>
-                    <li>
-                      <span>修改后工时：</span>
-                      <span>{{ getTimes(workForm, "updated", "days") }}</span>
-                      <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                    </li>
-                    <li>
-                      <span>修改原因：</span><span>{{ workForm.remark }}</span>
-                    </li>
-                  </ul>
-                  <div v-show="hasValue(workForm.remark)" slot="reference">
-                    <i class="icon-remind"></i>
-                    <span>工时已被项目经理修改</span>
-                  </div>
-                </el-popover>
+              <div class="working-hours-cont">
+                <div class="add-working-hours">
+                  <el-button
+                    type="text"
+                    class="tl-btn"
+                    v-if="canUpdate && workForm.noCheck"
+                    >添加工时</el-button
+                  >
+                  <el-cascader
+                    v-show="canUpdate && workForm.noCheck"
+                    :ref="workForm.randomId"
+                    v-model="workForm.timeList"
+                    :options="weekDataList"
+                    :props="props"
+                    placeholder="添加工时"
+                    collapse-tags
+                    @visible-change="visibleChange(workForm)"
+                    @change="selectWeekData(workForm)"
+                    popper-class="tl-cascader-popper working-hours"
+                    class="tl-cascader"
+                  ></el-cascader>
+                </div>
+                <em>{{ getTimes(workForm, "updated", "days") }}</em>
+                <div class="working-hours-info">
+                  <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                  <el-popover
+                    placement="top-start"
+                    title=""
+                    width="200"
+                    trigger="hover"
+                    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                    popper-class="popper-working-hours"
+                  >
+                    <ul>
+                      <li>
+                        <span>填入工时：</span>
+                        <span>{{
+                          getTimes(workForm, "original", "days")
+                        }}</span>
+                        <span>{{
+                          getTimes(workForm, "original", "info")
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>修改后工时：</span>
+                        <span>{{ getTimes(workForm, "updated", "days") }}</span>
+                        <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                      </li>
+                      <li>
+                        <span>修改原因：</span
+                        ><span>{{ workForm.remark }}</span>
+                      </li>
+                    </ul>
+                    <div v-show="!hasValue(workForm.remark)" slot="reference">
+                      <i class="icon-remind"></i>
+                      <span>工时已被项目经理修改</span>
+                    </div>
+                  </el-popover>
+                </div>
               </div>
             </el-form-item>
             <el-form-item
@@ -319,11 +327,7 @@
       </div>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <dl
-      class="dl-card-panel weekly-thoughts"
-      :class="{ 'is-edit': canUpdate }"
-      v-if="weeklyType == 1"
-    >
+    <dl class="dl-card-panel weekly-thoughts" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
       <dd v-if="weeklyThoughtSaveList.length < 1" class="no-data">
         <em>本周未填写感想、建议、收获</em>
@@ -407,11 +411,7 @@
       </dd>
     </dl>
     <!-- 下周计划-->
-    <dl
-      class="dl-card-panel week-plan"
-      :class="{ 'is-edit': canUpdate }"
-      v-if="weeklyType == 1"
-    >
+    <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>下周计划</em></dt>
       <dd v-if="weeklyPlanSaveList.length < 1" class="no-data">
         <em>本周未填写下周计划</em>
@@ -1258,7 +1258,6 @@ export default {
       // 将上下午都选过的数据的父节点禁用(有的场景不支持父节点被选中，在此做兼容)
       const parantIdList = [];
       const willBeDisabledParentNodeList = [];
-      // const noDisabledParentNodeList = [];
       list.forEach((selectedData) => {
         if (selectedData.data.parentId) {
           parantIdList.push(selectedData.data.parentId);
@@ -1279,22 +1278,9 @@ export default {
         });
         if (obj.childList.length == 2) {
           willBeDisabledParentNodeList.push(obj.parentId);
-        } else {
-          // noDisabledParentNodeList.push(obj.parentId);
         }
       });
-      // noDisabledParentNodeList.forEach((parentNodeId) => {
-      //   this.weekDataList.forEach((weekData) => {
-      //     // weekData.disabled = false;
-      //     this.$nextTick(() => {
-      //       if (parentNodeId == weekData.id) {
-      //         debugger;
-      //         weekData.disabled = false;
-      //         this.$forceUpdate();
-      //       }
-      //     });
-      //   });
-      // });
+
       // 将被选中的数据禁用
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
@@ -1305,10 +1291,10 @@ export default {
                 dayChild.disabled = true;
               }
             });
-            day.disabled = false;
-            if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
-              day.disabled = true;
-            }
+          }
+          day.disabled = false;
+          if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
+            day.disabled = true;
           }
         });
       });

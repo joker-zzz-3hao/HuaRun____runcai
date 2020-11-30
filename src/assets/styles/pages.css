@@ -2922,7 +2922,7 @@
 .weekly-select li {
   position: relative;
   justify-content: space-between;
-  margin: 5px 12px;
+  margin: 5px 10px;
   padding: 0 10px;
   max-width: 226px;
   height: 40px;
@@ -3487,7 +3487,7 @@
 
 .weekly-cont .is-standard-version .form-item-group:first-child::after {
   position: absolute;
-  top: 16px;
+  top: 0;
   bottom: 0;
   right: 0;
   content: '';
@@ -3496,8 +3496,8 @@
   background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #f4f6f8 0, #f4f6f8 0.6em);
 }
 
-.weekly-cont .tl-form:not(.is-edit) .form-item:not(.is-standard-version) .form-item-group:first-child {
-  padding: 0 0 20px 0;
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:first-child {
+  padding: 0 0 14px 0;
   position: relative;
 }
 
@@ -3529,29 +3529,28 @@
   min-width: 70px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:first-child .el-form-item__label {
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:first-child .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item__label {
   margin: 10px 0 0 0;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label {
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label {
   margin-top: 10px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
-  margin-top: 6px;
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label {
+  margin-top: 2px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
-  margin-top: 6px;
-}
-
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item:nth-child(1) .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item:nth-child(2) .el-form-item__label {
-  margin-top: 10px;
-}
-
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label,
 .weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
+  margin-top: 6px;
+}
+
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
   margin-top: 6px;
 }
 
@@ -3584,6 +3583,11 @@
   margin: 10px 0 0 0;
 }
 
+.weekly-cont .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item,
+.weekly-cont .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item {
+  margin: 10px 0 0 0;
+}
+
 .weekly-cont .time-cascader .el-form-item__content {
   margin: 10px 0 0 0;
   display: flex;
@@ -3591,7 +3595,7 @@
 }
 
 .weekly-cont .time-cascader .el-form-item__content em {
-  flex: 0 0 24px;
+  flex: 0 0 auto;
   color: #4d5155;
 }
 
@@ -3606,7 +3610,7 @@
 
 .weekly-cont .tl-form.is-edit .add-working-hours {
   position: relative;
-  margin: 0 10px 0 0;
+  margin: 2px 10px 0 0;
 }
 
 .weekly-cont .tl-form:not(.is-edit) .form-item.is-standard-version {
@@ -3656,6 +3660,16 @@
   width: 400px;
 }
 
+.weekly-cont .working-hours-cont {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tl-cascader-popper.working-hours .el-cascader-menu__wrap {
+  height: 258px;
+}
+
 .weekly-cont .add-working-hours .tl-cascader {
   position: absolute;
   left: 0;
@@ -3670,7 +3684,7 @@
 }
 
 .weekly-cont .add-working-hours .tl-cascader .el-input__inner {
-  height: unset;
+  height: unset !important;
 }
 
 .weekly-cont .add-working-hours .el-icon-close {

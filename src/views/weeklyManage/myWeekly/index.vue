@@ -11,16 +11,14 @@
         v-show="weekIndex == index"
         :key="week.calendarId"
       >
-        <div class="weekly-area" v-if="weeklyTypeList.length > 0">
+        <!-- <div class="weekly-area" v-if="weeklyTypeList.length > 0"> -->
+        <div class="weekly-area">
           <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
             <div class="no-data-bg"></div>
             <div class="no-data-txt">周报未填写</div>
           </div>
           <div v-else>
-            <standard-Weekly
-              :week="week"
-              :weeklyTypeList="weeklyTypeList"
-            ></standard-Weekly>
+            <standard-Weekly :week="week"></standard-Weekly>
           </div>
         </div>
       </div>
@@ -58,7 +56,7 @@ export default {
         },
       },
       noWrite: false,
-      weeklyTypeList: [],
+      // weeklyTypeList: [],
     };
   },
   created() {
@@ -72,7 +70,7 @@ export default {
     this.getValues();
     // 查询okr配置
     this.getOkrConfig();
-    this.getWeeklyTypeConfig();
+    // this.getWeeklyTypeConfig();
     this.$busOn('refreshMyOkr', () => {
       // 查询个人okr
       this.queryPersonalOkr();
@@ -257,24 +255,24 @@ export default {
       this.getWeek(this.dateFormat('YYYY-mm-dd', new Date()));
     },
 
-    getWeeklyTypeConfig() {
-      let temp = [];
-      this.server.getTypeConfig({
-        sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
-      }).then((res) => {
-        if (res.code == 200) {
-          if (res.data.length > 0) {
-            temp = res.data[0].configItemCode.split(',');
-            if (temp.length == 2) {
-              temp = ['1', '2'];
-            }
-          } else {
-            temp = ['1', '2'];
-          }
-        }
-        this.weeklyTypeList = temp;
-      });
-    },
+    // getWeeklyTypeConfig() {
+    //   let temp = [];
+    //   this.server.getTypeConfig({
+    //     sourceId: this.userInfo.orgId, configType: 'WEEKLY', configTypeDetail: 'W-2', level: 'O',
+    //   }).then((res) => {
+    //     if (res.code == 200) {
+    //       if (res.data.length > 0) {
+    //         temp = res.data[0].configItemCode.split(',');
+    //         if (temp.length == 2) {
+    //           temp = ['1', '2'];
+    //         }
+    //       } else {
+    //         temp = ['1', '2'];
+    //       }
+    //     }
+    //     this.weeklyTypeList = temp;
+    //   });
+    // },
   },
   watch: {
     weekIndex: {
