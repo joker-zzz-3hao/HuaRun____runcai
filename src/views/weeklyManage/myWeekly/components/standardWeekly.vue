@@ -49,7 +49,7 @@
             <div class="icon-clear"><i></i><em>删除</em></div>
           </el-tooltip>
         </div>
-        <div class="form-item is-standard-version">
+        <div class="form-item">
           <!-- <div
           class="form-item"
           :class="{ 'is-standard-version': weeklyType == 1 }"
@@ -208,7 +208,7 @@
                         ><span>{{ workForm.remark }}</span>
                       </li>
                     </ul>
-                    <div v-show="!hasValue(workForm.remark)" slot="reference">
+                    <div v-show="hasValue(workForm.remark)" slot="reference">
                       <i class="icon-remind"></i>
                       <span>工时已被项目经理修改</span>
                     </div>
@@ -1484,7 +1484,7 @@ export default {
         // 工作项可编辑状态
         tableData.forEach((workItem) => {
           if (workItem && workItem.weekList.length > 0) {
-            if (this.hasValue(workItem.weekList[0].weekStatus) && ['1', '2'].includes(workItem.weekList[0].weekStatus)) {
+            if (this.hasValue(workItem.weekList[0].weekStatus) && workItem.weekList[0].weekStatus == '2') {
               workItem.noCheck = false;
             } else {
               workItem.noCheck = true;
