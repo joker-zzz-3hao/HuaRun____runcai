@@ -75,7 +75,7 @@
                 maxlength="50"
                 v-if="canUpdate && workForm.noCheck"
                 clearable
-                placeholder="简短概括任务"
+                placeholder="简短概括工作项"
                 class="tl-textarea"
                 v-model="workForm.workContent"
               ></el-input>
@@ -87,7 +87,7 @@
                 :autosize="{ minRows: 6 }"
                 type="textarea"
                 v-if="canUpdate && workForm.noCheck"
-                placeholder="请描述任务项"
+                placeholder="请描述工作项内容"
                 class="tl-textarea"
                 maxlength="500"
                 clearable
@@ -1280,7 +1280,7 @@ export default {
           willBeDisabledParentNodeList.push(parentId);
         }
       });
-      // 禁用父节点
+      // 禁用父节点(不同工作项只选择一个上午或下午，累计该天全被选中时，父节点不能禁用)
       willBeDisabledParentNodeList.forEach((parentNodeId) => {
         this.weekDataList.forEach((weekData) => {
           weekData.disabled = false;
