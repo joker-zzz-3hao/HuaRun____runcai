@@ -173,7 +173,7 @@
                     collapse-tags
                     @visible-change="visibleChange(workForm)"
                     @change="selectWeekData(workForm)"
-                    popper-class="tl-cascader-popper"
+                    popper-class="tl-cascader-popper working-hours"
                     class="tl-cascader"
                   ></el-cascader>
                 </div>
@@ -208,7 +208,7 @@
                         ><span>{{ workForm.remark }}</span>
                       </li>
                     </ul>
-                    <div v-show="hasValue(workForm.remark)" slot="reference">
+                    <div v-show="!hasValue(workForm.remark)" slot="reference">
                       <i class="icon-remind"></i>
                       <span>工时已被项目经理修改</span>
                     </div>

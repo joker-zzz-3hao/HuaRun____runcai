@@ -3666,6 +3666,10 @@
   width: 100%;
 }
 
+.tl-cascader-popper.working-hours .el-cascader-menu__wrap {
+  height: 258px;
+}
+
 .weekly-cont .add-working-hours .tl-cascader {
   position: absolute;
   left: 0;
