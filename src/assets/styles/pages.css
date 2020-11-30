@@ -3358,7 +3358,7 @@
 
 .weekly pre,
 .write-weekly pre,
-.weekly-thoughts dd>pre {
+.weekly-thoughts dd > pre {
   margin: 0;
   flex: 1;
   font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -3431,7 +3431,7 @@
 }
 
 .weekly-cont .tl-form:not(:last-child) {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
 }
 
 .weekly-cont .tl-form {
@@ -3474,38 +3474,16 @@
   color: #879099;
 }
 
-.weekly-cont .is-standard-version .form-item-group:first-child {
-  padding: 0 20px 0 0;
-  margin: 0 20px 0 0;
-  position: relative;
-}
-
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group .el-form-item:last-child,
-.weekly-cont .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:last-child {
-  margin: 10px 0 0 0;
-}
-
-.weekly-cont .is-standard-version .form-item-group:first-child::after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  content: '';
-  width: 1px;
-  border-right: 1px dashed transparent;
-  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #f4f6f8 0, #f4f6f8 0.6em);
-}
-
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:first-child {
   padding: 0 0 14px 0;
   position: relative;
 }
 
-.weekly-cont .tl-form:not(.is-edit) .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item {
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group .el-form-item {
   margin-bottom: 0;
 }
 
-.weekly-cont .tl-form:not(.is-edit) .form-item:not(.is-standard-version) .form-item-group:first-child::after {
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:first-child::after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -3516,10 +3494,9 @@
   background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #f4f6f8 0, #f4f6f8 0.6em);
 }
 
-.weekly-cont .is-standard-version .form-item-group:last-child .el-form-item__label {
+.weekly-cont .form-item-group:last-child .el-form-item__label {
   flex: 0;
   flex-basis: 126px;
-  width: 126px !important;
   min-width: 126px;
 }
 
@@ -3529,36 +3506,33 @@
   min-width: 70px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:first-child .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item__label {
+.weekly-cont .tl-form.is-edit .form-item-group:first-child .el-form-item__label {
   margin: 10px 0 0 0;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label {
+.weekly-cont .tl-form.is-edit .form-item .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label {
   margin-top: 10px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label {
+.weekly-cont .tl-form.is-edit .form-item .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label {
   margin-top: 2px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
+.weekly-cont .tl-form.is-edit .form-item .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__content {
+  flex-direction: column;
+}
+
+.weekly-cont .tl-form.is-edit .form-item .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
   margin-top: 6px;
 }
 
-.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label,
-.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
-  margin-top: 6px;
-}
-
-.weekly-cont .form-item:not(.is-standard-version) .form-item-group .el-form-item__label {
+.weekly-cont .form-item .form-item-group .el-form-item__label {
   min-width: 126px;
 }
 
-.weekly-cont .tl-form:not(.is-edit) .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item__label {
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:first-child .el-form-item__label {
+  flex: 0 0 70px;
   min-width: unset;
 }
 
@@ -3570,8 +3544,16 @@
   flex: 0 0 300px;
 }
 
-.weekly-cont .form-item-group:last-child .el-form-item:first-child .progress-bg {
+.weekly-cont .tl-form:not(.is-edit) .form-item-group:last-child .el-form-item:first-child .el-form-item__content {
+  flex: 0 0 160px;
+}
+
+.weekly-cont .tl-form.is-edit .form-item-group:last-child .el-form-item:first-child .progress-bg {
   width: 56px !important;
+}
+
+.weekly-cont .tl-form:not(.is-edit) .form-item-group:last-child .el-form-item:first-child .progress-bg {
+  width: 20px !important;
 }
 
 .weekly-cont .form-item-group .el-form-item {
@@ -3583,9 +3565,8 @@
   margin: 10px 0 0 0;
 }
 
-.weekly-cont .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item,
-.weekly-cont .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item {
-  margin: 10px 0 0 0;
+.weekly-cont .form-item-group:last-child .el-form-item:first-child {
+  margin-top: 10px;
 }
 
 .weekly-cont .time-cascader .el-form-item__content {
@@ -3642,18 +3623,22 @@
 
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(1),
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(3) {
-  width: 37%;
+  width: 24%;
 }
 
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(2),
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(4) {
-  width: 63%;
+  width: 76%;
 }
 
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label,
 .weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
   flex-basis: 72px;
   min-width: unset;
+}
+
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(1) .tl-progress-group {
+  margin: 10px 0 0 0;
 }
 
 .weekly-cont .tl-form.is-edit .tl-progress-group {

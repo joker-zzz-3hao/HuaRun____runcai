@@ -49,7 +49,7 @@
             <div class="icon-clear"><i></i><em>删除</em></div>
           </el-tooltip>
         </div>
-        <div class="form-item is-standard-version">
+        <div class="form-item">
           <!-- <div
           class="form-item"
           :class="{ 'is-standard-version': weeklyType == 1 }"
@@ -208,7 +208,7 @@
                         ><span>{{ workForm.remark }}</span>
                       </li>
                     </ul>
-                    <div v-show="!hasValue(workForm.remark)" slot="reference">
+                    <div v-show="hasValue(workForm.remark)" slot="reference">
                       <i class="icon-remind"></i>
                       <span>工时已被项目经理修改</span>
                     </div>
