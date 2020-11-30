@@ -84,7 +84,7 @@
             <el-form-item label="内容" v-show="weeklyType == 1">
               <el-input
                 v-model="workForm.workDesc"
-                :autosize="{ minRows: 6 }"
+                :autosize="{ minRows: 4 }"
                 type="textarea"
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述工作项内容"
