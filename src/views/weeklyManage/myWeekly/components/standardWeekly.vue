@@ -1484,7 +1484,7 @@ export default {
         // 工作项可编辑状态
         tableData.forEach((workItem) => {
           if (workItem && workItem.weekList.length > 0) {
-            if (this.hasValue(workItem.weekList[0].weekStatus) && ['1', '2'].includes(workItem.weekList[0].weekStatus)) {
+            if (this.hasValue(workItem.weekList[0].weekStatus) && workItem.weekList[0].weekStatus == '2') {
               workItem.noCheck = false;
             } else {
               workItem.noCheck = true;
