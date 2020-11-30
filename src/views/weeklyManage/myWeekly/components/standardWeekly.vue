@@ -687,7 +687,7 @@ import confidenceSelect from '@/components/confidenceSelect';
 import merge from 'webpack-merge';
 import CONST from '@/components/const';
 
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 import Server from '../server';
 import addOkr from './addOkr';
 import selectProject from './selectProject';
@@ -776,9 +776,7 @@ export default {
     this.init();
   },
   computed: {
-    ...mapState('weekly', {
-      currentWeek: (state) => state.currentWeek,
-    }),
+
   },
   methods: {
     init() {
@@ -1099,6 +1097,7 @@ export default {
       this.$forceUpdate();
     },
     updateWeekly() {
+      console.log(this.weeklyWorkVoSaveList);
       // 感想、计划如果没有数据，默认添加一条
       if (this.weeklyThoughtSaveList.length < 1) {
         this.addThought();
@@ -1112,6 +1111,13 @@ export default {
       this.$nextTick(() => {
         // 重新渲染表单  校验才会生效
         this.refreshForm = true;
+      });
+      this.$nextTick(() => {
+        this.weeklyWorkVoSaveList.forEach((workItem) => {
+          this.$nextTick(() => {
+            this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
+          });
+        });
       });
       this.$forceUpdate();
     },
@@ -1167,9 +1173,11 @@ export default {
           this.canUpdate = false;
           this.$message.success('保存成功');
           // 刷新当前页周报数据
-          this.refresh();
-          // 刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
-          this.$busEmit('setThisWeekStatus');
+          // this.refresh();
+          // 新增周报，刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
+          // if (!this.weeklyId) {
+          this.setThisWeekStatus();
+          // }
           // 更新个人okr数据,取到最新数据
           this.$busEmit('refreshMyOkr');
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
@@ -1191,12 +1199,12 @@ export default {
             this.weeklyDataCopy = { ...this.weeklyData };
             this.initPage();
             // // 清除表单
-            // this.refreshForm = false;
-            // this.$nextTick(() => {
-            //   // 重新渲染表单  校验才会生效
-            //   this.refreshForm = true;
-            // });
-            // this.$forceUpdate();
+            this.refreshForm = false;
+            this.$nextTick(() => {
+              // 重新渲染表单  校验才会生效
+              this.refreshForm = true;
+            });
+            this.$forceUpdate();
           }
         });
       }
@@ -1247,6 +1255,43 @@ export default {
           });
         }
       });
+      // 将上下午都选过的数据的父节点禁用(有的场景不支持父节点被选中，在此做兼容)
+      const parantIdList = [];
+      const willBeDisabledParentNodeList = [];
+      list.forEach((selectedData) => {
+        if (selectedData.data.parentId) {
+          parantIdList.push(selectedData.data.parentId);
+        }
+      });
+      // 去重
+      const newParentIdList = [...new Set(parantIdList)];
+      newParentIdList.forEach((parentId) => {
+        const obj = {
+          parentId,
+          childList: [],
+        };
+
+        list.forEach((data) => {
+          if (data.parent && parentId == data.parent.data.id) {
+            obj.childList.push(parentId);
+          }
+        });
+        if (obj.childList.length == 2) {
+          willBeDisabledParentNodeList.push(parentId);
+        }
+      });
+      // 禁用父节点
+      willBeDisabledParentNodeList.forEach((parentNodeId) => {
+        this.weekDataList.forEach((weekData) => {
+          weekData.disabled = false;
+          this.$nextTick(() => {
+            if (parentNodeId == weekData.id) {
+              weekData.disabled = true;
+            }
+          });
+        });
+      });
+      // 将被选中的数据禁用
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
           day.disabled = false;
@@ -1299,8 +1344,6 @@ export default {
           weekTimeType: day[1],
         });
       });
-
-      // this.$set(workItem, 'timeSpanList', this.setTimeSpanList(workItem));
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
     },
     hasChecked(workItem) {
@@ -1311,6 +1354,27 @@ export default {
         return false;
       }
       return false;
+    },
+    setThisWeekStatus() {
+      let newWeekList = [];
+      const tempList = [...this.weekList];
+      this.server.getCalendar({ date: this.monthDate }).then((res) => {
+        if (res.code == 200) {
+          newWeekList = res.data;
+          newWeekList.forEach((newWeek) => {
+            if (newWeek.calendarId == this.week.calendarId) {
+              this.weeklyId = newWeek.weeklyId;
+            }
+          });
+          // 周报提交成功了，将该周的状态改为已提交
+          tempList.forEach((week) => {
+            if (week.calendarId == this.week.calendarId) {
+              week.weeklyId = this.weeklyId;
+            }
+          });
+          this.setWeekList(tempList);
+        }
+      });
     },
 
   },

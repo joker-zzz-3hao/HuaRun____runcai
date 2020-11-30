@@ -7,6 +7,7 @@
     :visible.sync="dialogTableVisible"
     class="tl-dialog set-period"
     width="400px"
+    title="偏好设置"
   >
     <dl>
       <dt>为了方便您查看全局OKR，请先选择您希望看到的OKR周期。</dt>
@@ -65,7 +66,6 @@ export default {
     close() {
       // 清空选项
       this.dialogTableVisible = false;
-      this.$nextTick(() => { this.loading = false; }, 1000);
     },
     summit() {
       if (this.periodId) {
@@ -76,6 +76,7 @@ export default {
             this.close();
             this.$emit('success');
           }
+          this.$nextTick(() => { this.loading = false; }, 3000);
         });
       } else {
         this.$message.error('请选择一个周期');

@@ -47,7 +47,7 @@
                   >历史okr对齐</span
                 >
               </template>
-              <a v-else @click="okrCheck(okrItem.okrDetailId, 0)">返回</a>
+              <a v-else @click="okrCheck(okrItem.okrDetailId, 0)">返回》</a>
             </dt>
             <!-- 对齐 -->
             <dd>
