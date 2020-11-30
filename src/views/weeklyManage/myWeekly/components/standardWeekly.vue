@@ -972,9 +972,6 @@ export default {
       self.weeklyWorkVoSaveList.forEach((element) => {
         if (element.randomId == workItem.randomId && self.$refs[element.randomId]) {
           selectedList = self.$refs[element.randomId][0].getCheckedNodes(false);
-          selectedList.forEach((element) => {
-            element.randomId = workItem.randomId || Math.random().toString(36).substr(3);
-          });
         }
       });
       return selectedList;
@@ -1277,10 +1274,7 @@ export default {
 
         list.forEach((data) => {
           if (data.parent && parentId == data.parent.data.id) {
-            obj.childList.push({
-              parentId,
-              randomId: data.randomId,
-            });
+            obj.childList.push(parentId);
           }
         });
         if (obj.childList.length == 2) {
