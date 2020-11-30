@@ -22,10 +22,14 @@
             'is-unsubmit': !item.weeklyId && !item.noOpen,
             'is-unopen': item.noOpen,
             'is-curent': item.btnType == 'success',
+            'is-curent-week': weekIndex == idx,
             'is-focus': selectedWeekIndex === idx,
           }"
         >
           <div class="period-time">{{ getWeekItem(item, idx) }}</div>
+          <div v-show="selectedWeekIndex === idx">
+            {{ getWeekItemDate(item) }}
+          </div>
           <div v-if="!isFromTeam">
             <div class="period-state">
               <i></i>
@@ -144,6 +148,13 @@ export default {
     getWeekItem(item, index) {
       if (item.calendarId) {
         return `第${index + 1}周`;
+      }
+    },
+    getWeekItemDate(item) {
+      if (item.calendarId) {
+        const beg = item.weekBegin.split('-').splice(1, 2).join('/');
+        const end = item.weekEnd.split('-').splice(1, 2).join('/');
+        return `(${beg}-${end})`;
       }
     },
     getWeek(data) {

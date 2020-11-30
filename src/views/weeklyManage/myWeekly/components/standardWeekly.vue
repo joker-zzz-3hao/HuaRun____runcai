@@ -13,7 +13,7 @@
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
     </div>
-    <div class="weekly-title">{{ getWeekItem() }}</div>
+    <!-- <div class="weekly-title">{{ getWeekItem() }}</div> -->
     <div class="weekly-cont" v-if="refreshForm">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
       <el-form
@@ -979,11 +979,11 @@ export default {
     setWeeklyType(data) {
       this.weeklyType = data;
     },
-    getWeekItem() {
-      const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
-      const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
-      return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
-    },
+    // getWeekItem() {
+    //   const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
+    //   const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
+    //   return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
+    // },
     addWork() {
       this.weeklyWorkVoSaveList.push({
         workContent: '',
