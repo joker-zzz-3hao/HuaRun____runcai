@@ -972,6 +972,9 @@ export default {
       self.weeklyWorkVoSaveList.forEach((element) => {
         if (element.randomId == workItem.randomId && self.$refs[element.randomId]) {
           selectedList = self.$refs[element.randomId][0].getCheckedNodes(false);
+          selectedList.forEach((element) => {
+            element.randomId = workItem.randomId || Math.random().toString(36).substr(3);
+          });
         }
       });
       return selectedList;
@@ -1258,6 +1261,7 @@ export default {
       // 将上下午都选过的数据的父节点禁用(有的场景不支持父节点被选中，在此做兼容)
       const parantIdList = [];
       const willBeDisabledParentNodeList = [];
+      // const noDisabledParentNodeList = [];
       list.forEach((selectedData) => {
         if (selectedData.data.parentId) {
           parantIdList.push(selectedData.data.parentId);
@@ -1273,12 +1277,46 @@ export default {
 
         list.forEach((data) => {
           if (data.parent && parentId == data.parent.data.id) {
-            obj.childList.push(parentId);
+            obj.childList.push({
+              parentId,
+              randomId: data.randomId,
+            });
           }
         });
         if (obj.childList.length == 2) {
-          willBeDisabledParentNodeList.push(parentId);
+          willBeDisabledParentNodeList.push(obj.parentId);
+        } else {
+          // noDisabledParentNodeList.push(obj.parentId);
         }
+      });
+      // noDisabledParentNodeList.forEach((parentNodeId) => {
+      //   this.weekDataList.forEach((weekData) => {
+      //     // weekData.disabled = false;
+      //     this.$nextTick(() => {
+      //       if (parentNodeId == weekData.id) {
+      //         debugger;
+      //         weekData.disabled = false;
+      //         this.$forceUpdate();
+      //       }
+      //     });
+      //   });
+      // });
+      // 将被选中的数据禁用
+      list.forEach((selectedData) => {
+        this.weekDataList.forEach((day) => {
+          if (day.children && day.children.length > 0) {
+            day.children.forEach((dayChild) => {
+              dayChild.disabled = false;
+              if (selectedData.data.id == dayChild.id) {
+                dayChild.disabled = true;
+              }
+            });
+            day.disabled = false;
+            if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
+              day.disabled = true;
+            }
+          }
+        });
       });
       // 禁用父节点(不同工作项只选择一个上午或下午，累计该天全被选中时，父节点不能禁用)
       willBeDisabledParentNodeList.forEach((parentNodeId) => {
@@ -1289,27 +1327,6 @@ export default {
               weekData.disabled = true;
             }
           });
-        });
-      });
-      // 将被选中的数据禁用
-      list.forEach((selectedData) => {
-        this.weekDataList.forEach((day) => {
-          day.disabled = false;
-          this.$nextTick(() => {
-            if (selectedData.data.id == day.id) {
-              day.disabled = true;
-            }
-          });
-          if (day.children && day.children.length > 0) {
-            day.children.forEach((dayChild) => {
-              dayChild.disabled = false;
-              this.$nextTick(() => {
-                if (selectedData.data.id == dayChild.id) {
-                  dayChild.disabled = true;
-                }
-              });
-            });
-          }
         });
       });
       this.$forceUpdate();
