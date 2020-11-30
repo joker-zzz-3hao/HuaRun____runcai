@@ -1160,7 +1160,7 @@ export default {
         calendarId: this.week.calendarId,
         weeklyEmotion: this.weeklyEmotion,
         weeklyId: this.weeklyId,
-        weeklyType: this.weeklyType,
+        weeklyType: '1', // 暂时写死标准版
         weeklyOkrSaveList: this.weeklyOkrSaveList,
         weeklyPlanSaveList: this.weeklyPlanSaveList,
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
@@ -1258,7 +1258,6 @@ export default {
       // 将上下午都选过的数据的父节点禁用(有的场景不支持父节点被选中，在此做兼容)
       const parantIdList = [];
       const willBeDisabledParentNodeList = [];
-      // const noDisabledParentNodeList = [];
       list.forEach((selectedData) => {
         if (selectedData.data.parentId) {
           parantIdList.push(selectedData.data.parentId);
@@ -1279,22 +1278,9 @@ export default {
         });
         if (obj.childList.length == 2) {
           willBeDisabledParentNodeList.push(obj.parentId);
-        } else {
-          // noDisabledParentNodeList.push(obj.parentId);
         }
       });
-      // noDisabledParentNodeList.forEach((parentNodeId) => {
-      //   this.weekDataList.forEach((weekData) => {
-      //     // weekData.disabled = false;
-      //     this.$nextTick(() => {
-      //       if (parentNodeId == weekData.id) {
-      //         debugger;
-      //         weekData.disabled = false;
-      //         this.$forceUpdate();
-      //       }
-      //     });
-      //   });
-      // });
+
       // 将被选中的数据禁用
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
@@ -1305,10 +1291,10 @@ export default {
                 dayChild.disabled = true;
               }
             });
-            day.disabled = false;
-            if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
-              day.disabled = true;
-            }
+          }
+          day.disabled = false;
+          if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
+            day.disabled = true;
           }
         });
       });
@@ -1511,7 +1497,6 @@ export default {
       },
       deep: true,
     },
-
   },
 };
 </script>
