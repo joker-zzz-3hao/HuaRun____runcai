@@ -1160,7 +1160,7 @@ export default {
         calendarId: this.week.calendarId,
         weeklyEmotion: this.weeklyEmotion,
         weeklyId: this.weeklyId,
-        weeklyType: this.weeklyType,
+        weeklyType: '1', // 暂时写死标准版
         weeklyOkrSaveList: this.weeklyOkrSaveList,
         weeklyPlanSaveList: this.weeklyPlanSaveList,
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
@@ -1497,7 +1497,6 @@ export default {
       },
       deep: true,
     },
-
   },
 };
 </script>
