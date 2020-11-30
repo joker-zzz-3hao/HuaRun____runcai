@@ -4,7 +4,7 @@
   <div class="working-hours">
     <div class="operating-area">
       <!-- <div class="page-title">工时审批</div> -->
-      <div class="operating-box">
+      <div>
         <dl class="dl-item">
           <dt>项目</dt>
           <dd>
@@ -71,11 +71,53 @@
           </dd>
         </dl>
         <dl class="dl-item">
+          <dt>按周选择投入工时</dt>
+          <dd>
+            <el-date-picker
+              v-model="weekBegin"
+              type="week"
+              format="yyyy 第 WW 周"
+              value-format="yyyy-MM-dd"
+              placeholder="选择周"
+            >
+            </el-date-picker>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>提交人</dt>
+          <dd>
+            <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
           <dd>
             <el-input
               maxlength="64"
               v-model="keyWord"
-              placeholder="成员姓名、工作项"
+              placeholder="工作项"
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+            <el-button plain class="tl-btn" @click="searchList">
+              搜索
+            </el-button>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              maxlength="64"
+              v-model="keyWord"
+              placeholder="工作内容"
               class="tl-input-search"
             >
               <i class="el-icon-search" slot="prefix" @click="searchList"></i>
@@ -271,9 +313,9 @@
                       v-if="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
-                  <div>
+                  <!-- <div>
                     {{ checkOldNew(scope.row).showNewText }}
-                  </div>
+                  </div> -->
                 </div>
               </template>
             </el-table-column>
