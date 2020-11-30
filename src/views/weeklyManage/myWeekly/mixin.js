@@ -212,10 +212,10 @@ export default {
   },
   created() {
     // 内部员工不展示周六、周日
-    if (this.userInfo.ldapType == 'Full-Time') {
-      this.weekDataList.pop();
-      this.weekDataList.pop();
-    }
+    // if (this.userInfo.ldapType == 'Full-Time') {
+    //   this.weekDataList.pop();
+    //   this.weekDataList.pop();
+    // }
   },
   methods: {
     ...mapMutations('weekly', ['setWeekList']),
