@@ -154,58 +154,65 @@
                   : []
               "
             >
-              <div class="add-working-hours">
-                <el-button
-                  type="text"
-                  class="tl-btn"
-                  v-if="canUpdate && workForm.noCheck"
-                  >添加工时</el-button
-                >
-                <el-cascader
-                  v-show="canUpdate && workForm.noCheck"
-                  :ref="workForm.randomId"
-                  v-model="workForm.timeList"
-                  :options="weekDataList"
-                  :props="props"
-                  placeholder="添加工时"
-                  collapse-tags
-                  @visible-change="visibleChange(workForm)"
-                  @change="selectWeekData(workForm)"
-                  popper-class="tl-cascader-popper"
-                  class="tl-cascader"
-                ></el-cascader>
-              </div>
-              <em>{{ getTimes(workForm, "updated", "days") }}</em>
-              <div class="working-hours-info">
-                <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                <el-popover
-                  placement="top-start"
-                  title=""
-                  width="200"
-                  trigger="hover"
-                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-                  popper-class="popper-working-hours"
-                >
-                  <ul>
-                    <li>
-                      <span>填入工时：</span>
-                      <span>{{ getTimes(workForm, "original", "days") }}</span>
-                      <span>{{ getTimes(workForm, "original", "info") }}</span>
-                    </li>
-                    <li>
-                      <span>修改后工时：</span>
-                      <span>{{ getTimes(workForm, "updated", "days") }}</span>
-                      <span>{{ getTimes(workForm, "updated", "info") }}</span>
-                    </li>
-                    <li>
-                      <span>修改原因：</span><span>{{ workForm.remark }}</span>
-                    </li>
-                  </ul>
-                  <div v-show="hasValue(workForm.remark)" slot="reference">
-                    <i class="icon-remind"></i>
-                    <span>工时已被项目经理修改</span>
-                  </div>
-                </el-popover>
+              <div class="working-hours-cont">
+                <div class="add-working-hours">
+                  <el-button
+                    type="text"
+                    class="tl-btn"
+                    v-if="canUpdate && workForm.noCheck"
+                    >添加工时</el-button
+                  >
+                  <el-cascader
+                    v-show="canUpdate && workForm.noCheck"
+                    :ref="workForm.randomId"
+                    v-model="workForm.timeList"
+                    :options="weekDataList"
+                    :props="props"
+                    placeholder="添加工时"
+                    collapse-tags
+                    @visible-change="visibleChange(workForm)"
+                    @change="selectWeekData(workForm)"
+                    popper-class="tl-cascader-popper"
+                    class="tl-cascader"
+                  ></el-cascader>
+                </div>
+                <em>{{ getTimes(workForm, "updated", "days") }}</em>
+                <div class="working-hours-info">
+                  <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                  <el-popover
+                    placement="top-start"
+                    title=""
+                    width="200"
+                    trigger="hover"
+                    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                    popper-class="popper-working-hours"
+                  >
+                    <ul>
+                      <li>
+                        <span>填入工时：</span>
+                        <span>{{
+                          getTimes(workForm, "original", "days")
+                        }}</span>
+                        <span>{{
+                          getTimes(workForm, "original", "info")
+                        }}</span>
+                      </li>
+                      <li>
+                        <span>修改后工时：</span>
+                        <span>{{ getTimes(workForm, "updated", "days") }}</span>
+                        <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                      </li>
+                      <li>
+                        <span>修改原因：</span
+                        ><span>{{ workForm.remark }}</span>
+                      </li>
+                    </ul>
+                    <div v-show="hasValue(workForm.remark)" slot="reference">
+                      <i class="icon-remind"></i>
+                      <span>工时已被项目经理修改</span>
+                    </div>
+                  </el-popover>
+                </div>
               </div>
             </el-form-item>
             <el-form-item
