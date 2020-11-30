@@ -74,8 +74,9 @@
           <dt>按周选择投入工时</dt>
           <dd>
             <el-date-picker
-              v-model="weekBegin"
+              v-model="startTime"
               type="week"
+              @change="searchList"
               format="yyyy 第 WW 周"
               value-format="yyyy-MM-dd"
               placeholder="选择周"
@@ -86,38 +87,29 @@
         <dl class="dl-item">
           <dt>提交人</dt>
           <dd>
-            <el-select v-model="value" placeholder="请选择">
+            <el-select
+              v-model="userId"
+              placeholder="请选择"
+              filterable
+              @change="searchList"
+            >
               <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
               >
               </el-option>
             </el-select>
           </dd>
         </dl>
+
         <dl class="dl-item">
           <dd>
             <el-input
               maxlength="64"
               v-model="keyWord"
-              placeholder="工作项"
-              class="tl-input-search"
-            >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-            </el-input>
-            <el-button plain class="tl-btn" @click="searchList">
-              搜索
-            </el-button>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dd>
-            <el-input
-              maxlength="64"
-              v-model="keyWord"
-              placeholder="工作内容"
+              placeholder="工作项,工作内容"
               class="tl-input-search"
             >
               <i class="el-icon-search" slot="prefix" @click="searchList"></i>
@@ -236,7 +228,8 @@
                           scope.row.arr,
                           scope.row.userId,
                           scope.row.weekBegin,
-                          scope.row.ldapType
+                          scope.row.ldapType,
+                          scope.$index
                         )
                       "
                     >
@@ -444,6 +437,7 @@ export default {
   data() {
     return {
       weekLine: [],
+      userId: '',
       monDayList: [
         '周一',
         '周二',
@@ -453,6 +447,9 @@ export default {
         '周六',
         '周日',
       ],
+      options: [],
+      weekBegin: '',
+      startTime: '',
       checkItem: {},
       CONST,
       server,
@@ -513,12 +510,20 @@ export default {
     });
   },
   methods: {
+    summaryList() {
+      this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
+        if (res.code == 200) {
+          this.options = res.data;
+        }
+      });
+    },
     changePick() {
       this.searchList();
     },
     weekWorkListCheck(row) {
       const list = row.weekWorkList.map((item) => `${item.weekDate.split('-')[1]}月${item.weekDate.split('-')[2]}日`);
-      return list.join(',');
+      const checkList = [...new Set(list)];
+      return checkList.join(',');
     },
     getMonthWeek(dateTime) {
       const timeArr = dateTime.split('-');
@@ -573,33 +578,47 @@ export default {
     selectList(select) {
       this.workList = select.map((item) => ({
         sourceId: item.sourceId,
-        weekWorkList: item.checkList,
-        weekBegin: item.weekBegin,
-        remark: item.remark,
         projectApprovalId: item.projectApprovalId,
+        weekSum: item.weekSum,
       }));
     },
-
+    getTypeTm(li) {
+      const list = CONST.DATE_MODE_NUMOBJ.filter((item) => li == item.value);
+      console.log(list);
+      return { weekDate: list[0].weekDate, weekTimeType: list[0].weekTimeType };
+    },
     confirmTimeSheet(index) {
-      const arr = this.checkList.map((item) => ({ weekDate: item, type: '0' }));
+      const arr = this.checkList.map((item) => ({ weekDate: item, type: '0', weekTimeFront: '' }));
       // eslint-disable-next-line array-callback-return
       this.tableData[index].old.forEach((item) => {
-        if (!(arr.some((li) => li.weekDate == item))) {
-          arr.push({ weekDate: item, type: '1' });
+        const eq = arr.findIndex((k) => k.weekDate == item.text);
+        if (eq >= 0) {
+          arr[eq].weekTimeFront = item.weekTimeFront || '';
+        }
+        if (!(arr.some((li) => li.weekDate == item.text))) {
+          arr.push({ weekDate: item.text, type: '1', weekTimeFront: item.weekTimeFront });
         } else {
-          const indexs = arr.findIndex((li) => li.weekDate == item);
+          const indexs = arr.findIndex((li) => li.weekDate == item.text);
           arr[indexs].type = '2';
         }
       });
-      if (!arr.every((item) => item.type == '2')) {
+
+      // eslint-disable-next-line max-len
+      const arrgo = arr.map((item) => ({
+        // eslint-disable-next-line max-len
+        weekDate: this.getTypeTm(item.weekDate).weekDate, type: item.type, weekTimeType: this.getTypeTm(item.weekDate).weekTimeType, weekTimeFront: item.weekTimeFront,
+      }));
+      console.log(arrgo);
+      if (!arrgo.every((item) => item.type == '2')) {
         if (!this.tableData[index].remark) {
           this.$message.error('修改理由不能为空');
           return false;
         }
       }
-      this.tableData[index].arr = this.checkList;
-      this.$set(this.tableData[index], arr, this.checkList);
-      this.tableData[index].checkList = arr;
+      this.tableData[index].arrgo = this.checkList;
+      this.$set(this.tableData[index], arrgo, this.checkList);
+      this.tableData[index].checkList = arrgo;
+      this.updateTimeWeek(this.tableData[index]);
       this.$refs[`popover${index}`].doClose();
     },
     // 组合全天
@@ -640,7 +659,7 @@ export default {
         });
       });
     },
-    timeSheetListapproval(row) {
+    updateTimeWeek(row) {
       const {
         projectApprovalId, weekBegin, checkList, sourceId, remark,
       } = row;
@@ -650,6 +669,21 @@ export default {
       params.weekBegin = weekBegin;
       params.remark = remark;
       params.projectApprovalId = projectApprovalId;
+      this.server.updateTimeWeek(params).then((res) => {
+        if (res.code == '200') {
+          this.$message.success('修改成功');
+          this.searchList();
+        }
+      });
+    },
+    timeSheetListapproval(row) {
+      const {
+        projectApprovalId, sourceId,
+      } = row;
+      const params = {};
+      params.sourceId = sourceId;
+      params.projectApprovalId = projectApprovalId;
+      params.weekSum = row.weekSum;
       this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
@@ -700,7 +734,7 @@ export default {
             setArr.remove(item);
           }
         });
-        console.log(setArr);
+
         this.listDis = setArr;
         this.listDis.forEach((item) => {
           this.$set(this.checkItem, item, true);
@@ -717,6 +751,8 @@ export default {
         approvalStatus: this.formData.approvalStatus,
         approvalUser: this.userInfo.userAccount,
         weekBegin,
+        startTime: this.startTime,
+        userId: this.userId,
         weekEnd,
         keyWord: this.keyWord,
       }).then((res) => {
@@ -729,14 +765,17 @@ export default {
           this.total = res.data.resultPageDto.total;
           this.tableData.forEach((item, index) => {
             const arr = [];
+            const arrOld = [];
             item.weekWorkList.forEach((li, i) => {
               const obj = this.changeTimeText(item.weekBegin, li.weekDate, li.weekTimeType);
               arr.push(obj.text);
               this.tableData[index].weekWorkList[i].text = obj.text;
               this.tableData[index].weekWorkList[i].num = 0.5;
+              arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
             });
-            this.tableData[index].old = arr;
+            this.tableData[index].old = arrOld;
             this.tableData[index].arr = arr;
+            this.tableData[index].weekSum = arrOld.filter((li) => li.weekTimeFront == '1').length;
             // eslint-disable-next-line no-shadow
             this.tableData[index].checkList = arr.map((item) => ({ weekDate: item, type: '2' }));
           });
@@ -747,7 +786,7 @@ export default {
       const arr = JSON.parse(JSON.stringify(time));
       return this.totalDate(arr).join(',');
     },
-    listTimeFun(list, userId, weekBegin, ldapType) {
+    listTimeFun(list, userId, weekBegin, ldapType, index) {
       this.monDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
       if (ldapType == 'OTHER' || !ldapType) {
         this.monDayList.remove('周六');
@@ -755,7 +794,8 @@ export default {
       }
       this.checkList = list;
       this.checkItem = {};
-      this.selectWeeklyTimeSumByUserId(userId, weekBegin);
+
+      this.selectWeeklyTimeSumByUserId(userId, weekBegin, index);
     },
     changeTimeText(weekBegin, weekDate, weekTimeType) {
       const oneDate = 24 * 60 * 60 * 1000;
@@ -773,6 +813,7 @@ export default {
       return `${new Date(date).getMonth()}月${index}周`;
     },
     changeProject() {
+      this.summaryList();
       this.searchList();
     },
     changeStatus(data) {

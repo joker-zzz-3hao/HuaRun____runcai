@@ -80,4 +80,8 @@ export default class Server extends ServerBase {
   calendarqurey(param) {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
   }
+
+  updateTimeWeek(param) {
+    return this._ajaxPost('gateway/project-service/project/update/updateTimeWeek', param);
+  }
 }
