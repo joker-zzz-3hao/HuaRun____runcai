@@ -3527,6 +3527,11 @@
   margin-top: 6px;
 }
 
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label,
+.weekly-cont .tl-form:not(.is-edit) .form-item .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
+  margin-top: 5px;
+}
+
 .weekly-cont .form-item .form-item-group .el-form-item__label {
   min-width: 126px;
 }
