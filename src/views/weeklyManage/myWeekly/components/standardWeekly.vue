@@ -1,6 +1,6 @@
 <template>
   <div class="write-weekly">
-    <div class="operating-box">
+    <!-- <div class="operating-box">
       <div
         class="tl-custom-btn"
         v-for="item in thisPageWeeklyTypeList"
@@ -12,7 +12,7 @@
       >
         <em>{{ item == "1" ? "标准版" : "简单版" }}</em>
       </div>
-    </div>
+    </div> -->
     <!-- <div class="weekly-title">{{ getWeekItem() }}</div> -->
     <div class="weekly-cont" v-if="refreshForm">
       <!-- `week_status 状态( 0 未同步： 1 已同步 ：2 已审批 : 50 失效作废 ) -->
@@ -49,10 +49,11 @@
             <div class="icon-clear"><i></i><em>删除</em></div>
           </el-tooltip>
         </div>
-        <div
+        <div class="form-item is-standard-version">
+          <!-- <div
           class="form-item"
           :class="{ 'is-standard-version': weeklyType == 1 }"
-        >
+        > -->
           <div class="form-item-group">
             <el-form-item
               prop="workContent"
@@ -81,7 +82,7 @@
               ></el-input>
               <em v-else> {{ workForm.workContent }}</em>
             </el-form-item>
-            <el-form-item label="内容" v-show="weeklyType == 1">
+            <el-form-item label="内容">
               <el-input
                 v-model="workForm.workDesc"
                 :autosize="{ minRows: 4 }"
@@ -326,11 +327,7 @@
       </div>
     </div>
     <!-- 本周感想、建议、收获 -->
-    <dl
-      class="dl-card-panel weekly-thoughts"
-      :class="{ 'is-edit': canUpdate }"
-      v-if="weeklyType == 1"
-    >
+    <dl class="dl-card-panel weekly-thoughts" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>本周感想、建议、收获</em></dt>
       <dd v-if="weeklyThoughtSaveList.length < 1" class="no-data">
         <em>本周未填写感想、建议、收获</em>
@@ -414,11 +411,7 @@
       </dd>
     </dl>
     <!-- 下周计划-->
-    <dl
-      class="dl-card-panel week-plan"
-      :class="{ 'is-edit': canUpdate }"
-      v-if="weeklyType == 1"
-    >
+    <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
       <dt class="card-title"><em>下周计划</em></dt>
       <dd v-if="weeklyPlanSaveList.length < 1" class="no-data">
         <em>本周未填写下周计划</em>

@@ -43,15 +43,12 @@
                 <i></i><span>工作项</span><em>{{ index + 1 }}</em>
               </div>
             </div>
-            <div
-              class="form-item"
-              :class="{ 'is-standard-version': weeklyType == 1 }"
-            >
+            <div class="form-item is-standard-version">
               <div class="form-item-group">
                 <el-form-item label="工作项">
                   <em> {{ workForm.workContent }}</em>
                 </el-form-item>
-                <el-form-item label="内容" v-show="weeklyType == 1">
+                <el-form-item label="内容">
                   <pre class="font-normal">{{ workForm.workDesc }}</pre>
                 </el-form-item>
               </div>
@@ -146,7 +143,7 @@
             </div>
           </el-form>
         </div>
-        <dl class="dl-card-panel weekly-thoughts" v-if="weeklyType == '1'">
+        <dl class="dl-card-panel weekly-thoughts">
           <dt class="card-title"><em>本周感想、建议、收获</em></dt>
           <dd v-for="item in weeklyThoughtList" :key="item.thoughtId">
             <div class="tag-group">
@@ -182,11 +179,7 @@
           </dd>
         </dl>
         <!-- 下周计划-->
-        <dl
-          class="dl-card-panel week-plan"
-          :class="{ 'is-edit': canUpdate }"
-          v-if="weeklyType == 1"
-        >
+        <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
           <dt class="card-title"><em>下周计划</em></dt>
           <dd v-if="weeklyPlanList.length < 1" class="no-data">
             <em>本周未填写下周计划</em>
@@ -607,7 +600,7 @@ export default {
       weeklyPlanList: [],
       weeklyOkrVoList: [],
       visitUserNameList: [],
-      weeklyType: '',
+
       openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
@@ -676,7 +669,7 @@ export default {
     queryWeekly() {
       this.server.queryWeekly({ weeklyId: this.$route.query.weeklyId }).then((res) => {
         if (res.code == 200) {
-          this.weeklyType = res.data.weeklyType;
+          // this.weeklyType = res.data.weeklyType;
           this.weeklyEmotion = res.data.weeklyEmotion;
           this.weeklyWorkVoList = res.data.weeklyWorkVoList;
           this.weeklyThoughtList = res.data.weeklyThoughtList;
