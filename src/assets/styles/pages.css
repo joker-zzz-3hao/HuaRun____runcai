@@ -3441,8 +3441,13 @@
 }
 
 .weekly-cont .form-item.is-standard-version {
+  margin: 16px 0 0 0;
   display: flex;
   align-items: stretch;
+}
+
+.weekly-cont .form-item:not(.is-standard-version) {
+  margin: 16px 0 0 0;
 }
 
 .weekly-cont .form-item-group {
@@ -3463,7 +3468,7 @@
 
 .weekly-cont .tl-form.is-edit .is-standard-version .form-item-group .el-form-item:last-child,
 .weekly-cont .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:last-child {
-  margin: 16px 0 6px 0;
+  margin: 10px 0 0 0;
 }
 
 .weekly-cont .is-standard-version .form-item-group:first-child::after {
@@ -3505,10 +3510,35 @@
 }
 
 .weekly-cont .is-standard-version .form-item-group:first-child .el-form-item__label {
-  margin: 10px 0 0 0;
   flex: 0;
   flex-basis: 70px;
   min-width: 70px;
+}
+
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:first-child .el-form-item__label {
+  margin: 10px 0 0 0;
+}
+
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(1) .el-form-item__label {
+  margin-top: 10px;
+}
+
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
+  margin-top: 6px;
+}
+
+.weekly-cont .tl-form.is-edit .is-standard-version .form-item-group:last-child .el-form-item:nth-child(4) .el-form-item__label {
+  margin-top: 6px;
+}
+
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item:nth-child(1) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:first-child .el-form-item:nth-child(2) .el-form-item__label {
+  margin-top: 10px;
+}
+
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(2) .el-form-item__label,
+.weekly-cont .tl-form.is-edit .form-item:not(.is-standard-version) .form-item-group:last-child .el-form-item:nth-child(3) .el-form-item__label {
+  margin-top: 6px;
 }
 
 .weekly-cont .form-item:not(.is-standard-version) .form-item-group .el-form-item__label {
@@ -3532,8 +3562,12 @@
 }
 
 .weekly-cont .form-item-group .el-form-item {
-  margin: 16px 0;
+  margin: 0;
   align-items: flex-start;
+}
+
+.weekly-cont .form-item-group .el-form-item:not(:first-child) {
+  margin: 10px 0 0 0;
 }
 
 .weekly-cont .time-cascader .el-form-item__content {
@@ -3661,6 +3695,7 @@
 }
 
 .weekly-cont .el-form-item__error {
+  margin: 3px 0 0 0;
   position: unset;
 }
 
