@@ -239,16 +239,32 @@
                 <ul class="tag-lists">
                   <li v-if="workForm.projectNameCn">
                     <el-tooltip
+                      v-if="workForm.projectId != 'DEFAULT_PROJECT'"
                       class="select-values"
                       effect="dark"
                       placement="top"
                       popper-class="tl-tooltip-popper"
                     >
                       <em slot="content">{{ workForm.projectNameCn }}</em>
-                      <em @click="selectProject(workForm)">{{
-                        workForm.projectNameCn
-                      }}</em>
+                      <em
+                        @click="
+                          canUpdate && workForm.noCheck
+                            ? selectProject(workForm)
+                            : ''
+                        "
+                        >{{ workForm.projectNameCn }}</em
+                      >
                     </el-tooltip>
+                    <div v-else>
+                      <em
+                        @click="
+                          canUpdate && workForm.noCheck
+                            ? selectProject(workForm)
+                            : ''
+                        "
+                        >{{ workForm.projectNameCn }}</em
+                      >
+                    </div>
                   </li>
                   <li
                     v-if="!workForm.projectNameCn"
@@ -287,6 +303,7 @@
                     :key="item.okrDetailId"
                   >
                     <el-tooltip
+                      v-if="item.okrDetailObjectKr != '不关联任何OKR'"
                       class="select-values"
                       effect="dark"
                       placement="top"
@@ -300,6 +317,14 @@
                       >
                       <em v-else>{{ item.okrDetailObjectKr }}</em>
                     </el-tooltip>
+                    <div v-else>
+                      <em
+                        v-if="canUpdate && workForm.noCheck"
+                        @click="addSupportOkr(workForm)"
+                        >{{ item.okrDetailObjectKr }}</em
+                      >
+                      <em v-else>{{ item.okrDetailObjectKr }}</em>
+                    </div>
                   </li>
                   <li
                     v-if="
@@ -421,7 +446,7 @@
       </dd>
       <dd v-for="(item, index) in weeklyPlanSaveList" :key="item.randomId">
         <div>
-          <span>计划项</span><em>{{ index + 1 }}</em>
+          <em>{{ index + 1 }}</em>
         </div>
         <el-input
           type="textarea"

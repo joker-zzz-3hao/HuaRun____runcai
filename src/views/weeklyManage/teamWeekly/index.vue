@@ -2,6 +2,7 @@
   <div class="teams-weekly">
     <div class="operating-area">
       <div class="operating-box">
+        团队
         <el-cascader
           v-model="orgIdList"
           ref="cascader"
