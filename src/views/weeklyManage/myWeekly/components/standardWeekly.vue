@@ -332,7 +332,7 @@
       <dd v-if="weeklyThoughtSaveList.length < 1" class="no-data">
         <em>本周未填写感想、建议、收获</em>
       </dd>
-      <dd v-for="item in weeklyThoughtSaveList" :key="item.randomId">
+      <dd v-for="(item, index) in weeklyThoughtSaveList" :key="item.randomId">
         <div class="tag-group">
           <div
             class="tag-kinds"
@@ -373,7 +373,7 @@
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && index == weeklyThoughtSaveList.length - 1"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
           }"
@@ -435,7 +435,7 @@
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && index == weeklyPlanSaveList.length - 1"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
           }"
