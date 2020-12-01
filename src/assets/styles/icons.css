@@ -27,16 +27,20 @@
 .icon-remind::before,
 .icon-help::before,
 .my-weekly .tl-month-editor::before,
+.teams-weekly .tl-month-editor::before,
 .my-weekly .tl-month-editor .el-icon-date,
+.teams-weekly .tl-month-editor .el-icon-date,
 .weekly-select .period-state i,
 .weekly-cont .tl-form .item-title i,
 .icon-clear i,
 .icon-add,
-.icon-reduce {
+.icon-reduce,
+.is-submitted i,
+.un-submitted i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
-  background-size: 120px 2220px;
+  background-size: 120px 2310px;
 }
 
 /* 60 */
@@ -46,7 +50,10 @@
 .el-message-box.warning .tip-icon i,
 .el-message-box.success .tip-icon i,
 .el-message-box.error .tip-icon i,
-.el-message-box.waiting .tip-icon i {
+.el-message-box.waiting .tip-icon i,
+.has-mood i,
+.is-ok i,
+.want-quietly i {
   width: 40px;
   height: 40px;
   background: url('~@/assets/images/icon_60_y.png') 0 0 no-repeat;
@@ -383,11 +390,13 @@
   background-position-y: -607px;
 }
 
-.my-weekly .tl-month-editor::before {
+.my-weekly .tl-month-editor::before,
+.teams-weekly .tl-month-editor::before {
   background-position-y: -870px;
 }
 
-.my-weekly .tl-month-editor .el-icon-date {
+.my-weekly .tl-month-editor .el-icon-date,
+.teams-weekly .tl-month-editor .el-icon-date {
   background-position-y: -540px;
 }
 
@@ -429,4 +438,37 @@
 
 .icon-reduce {
   background-position-y: -726px;
+}
+
+.teams-weekly .operating-area .tl-btn .icon-remind::before {
+  background-position-y: -2227px;
+}
+
+.is-submitted i {
+  background-position-x: -5px;
+  background-position-y: -2285px;
+}
+
+.un-submitted i {
+  background-position-x: -5px;
+  background-position-y: -2255px;
+}
+
+.teams-weekly .mood-state i {
+  background-size: 146px 330px;
+}
+
+.has-mood i {
+  background-position-x: -44px;
+  background-position-y: -44px;
+}
+
+.is-ok i {
+  background-position-x: -44px;
+  background-position-y: -80px;
+}
+
+.want-quietly i {
+  background-position-x: -44px;
+  background-position-y: -117px;
 }

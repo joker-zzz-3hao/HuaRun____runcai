@@ -26,10 +26,9 @@
         <el-button
           plain
           class="tl-btn btn-lineheight"
-          icon="el-icon-phone"
           v-show="showRemindBtn"
           @click="remindWriteWeekly"
-          >提醒写周报</el-button
+          ><i class="icon-remind"></i><em>提醒写周报</em></el-button
         >
       </div>
     </div>
@@ -104,7 +103,10 @@
               @click="weeklyInfo(weekly)"
             >
               <!-- weekly.visitId 存在时  则是被查看的  否则是没被查看的TODO:待与炜哥沟通 -->
-              <dl class="tl-card-list">
+              <dl
+                class="tl-card-list"
+                :class="weekly.visitId ? 'is-visited' : 'un-visited'"
+              >
                 <dt>
                   <div class="user-info">
                     <img
@@ -133,15 +135,7 @@
                     class="weekly-state"
                     :class="weekly.weeklyId ? 'is-submitted' : 'un-submitted'"
                   >
-                    <div class="icon-bg">
-                      <i
-                        :class="
-                          weekly.weeklyId
-                            ? 'el-icon-circle-check'
-                            : 'el-icon-warning-outline'
-                        "
-                      ></i>
-                    </div>
+                    <i></i>
                     <p>{{ weekly.weeklyId ? "已提交" : "未提交" }}</p>
                   </div>
                 </dt>
