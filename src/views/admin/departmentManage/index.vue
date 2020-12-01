@@ -281,7 +281,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import createDepart from './components/createDepartment';
 import createUser from './components/createUser';
 import editUser from './components/editUser';
