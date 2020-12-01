@@ -24,11 +24,44 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
   name: 'replay',
   data() {
     return {
+      currentIndex: 0,
       tabsList: [
+        {
+          menuTitle: 'OKR复核',
+          toName: 'replayList',
+        },
+      ],
+    };
+  },
+  components: {
+  },
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+      roleCode: (state) => state.roleCode,
+    }),
+  },
+  created() {
+    if (this.roleCode.includes('ORG_ADMIN')) {
+      this.tabsList = [
+        {
+          menuTitle: 'OKR复核',
+          toName: 'replayList',
+        },
+        {
+          menuTitle: '绩效排名',
+          toName: 'replayScore',
+        },
+      ];
+    } else if (this.roleCode.includes('TENANT_ADMIN')) {
+      this.tabsList = [
         {
           menuTitle: 'OKR复核',
           toName: 'replayList',
@@ -37,11 +70,19 @@ export default {
           menuTitle: 'OKR复核得分',
           toName: 'replayScore',
         },
-
-      ],
-    };
-  },
-  components: {
+        {
+          menuTitle: '绩效复核',
+          toName: 'replayScore',
+        },
+      ];
+    } else {
+      this.tabsList = [
+        {
+          menuTitle: 'OKR复核',
+          toName: 'replayList',
+        },
+      ];
+    }
   },
   mounted() {
     this.currentIndex = 0;
