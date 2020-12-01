@@ -212,7 +212,7 @@
             </el-table-column>
             <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
-                <div v-if="scope.row.approvalStatus == '0'">
+                <div v-show="scope.row.approvalStatus == '1'">
                   <div>
                     <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
                     <el-popover
@@ -266,7 +266,7 @@
                           @click="
                             confirmTimeSheet(
                               scope.$index,
-                              scope.row.arr,
+                              scope.row.arrHide,
                               scope.row.weekBegin
                             )
                           "
@@ -285,7 +285,7 @@
                     <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
-                <div v-else>
+                <div v-show="scope.row.approvalStatus == '2'">
                   <em>{{ checkOldNew(scope.row).day }}天 </em>
                   <el-tooltip class="item" effect="dark" placement="top">
                     <div slot="content">
@@ -333,8 +333,8 @@
                 <span v-if="hasValue(scope.row.approvalStatus)">
                   <i
                     :class="{
-                      'el-icon-basketball': scope.row.approvalStatus == '0',
                       'el-icon-basketball': scope.row.approvalStatus == '1',
+                      'el-icon-basketball': scope.row.approvalStatus == '2',
                     }"
                   ></i>
                   {{
@@ -384,14 +384,14 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.approvalStatus == '0'"
+                  v-if="scope.row.approvalStatus == '1'"
                   @click="alertSelect(scope.row)"
                   type="text"
                   class="tl-btn"
                   >确认审批</el-button
                 >
                 <el-button
-                  v-if="scope.row.approvalStatus == '1'"
+                  v-if="scope.row.approvalStatus == '2'"
                   type="text"
                   class="tl-btn"
                   >已审批</el-button
@@ -444,8 +444,6 @@ export default {
         '周三',
         '周四',
         '周五',
-        '周六',
-        '周日',
       ],
       options: [],
       weekBegin: '',
@@ -785,7 +783,7 @@ export default {
             this.tableData[index].old = arrOld;
             this.tableData[index].arr = arr;
             this.tableData[index].arrHide = arrHide;
-            this.tableData[index].weekSum = arrOld.filter((li) => li.weekTimeFront == '1').length;
+            this.tableData[index].weekSum = this.tableData[index].weekWorkList.filter((li) => li.weekTimeFront == '1').length;
             // eslint-disable-next-line no-shadow
             this.tableData[index].checkList = arr.map((item) => ({ weekDate: item, type: '2' }));
             console.log(this.tableData);
@@ -798,12 +796,13 @@ export default {
       return this.totalDate(arr).join(',');
     },
     listTimeFun(list, userId, weekBegin, ldapType, index) {
-      this.monDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+    //  this.monDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+      this.$set(this, 'monDayList', ['周一', '周二', '周三', '周四', '周五', '周六', '周日']);
       if (ldapType == 'OTHER' || !ldapType) {
         this.monDayList.remove('周六');
         this.monDayList.remove('周日');
       }
-      this.checkList = list;
+      this.checkList = JSON.parse(JSON.stringify(list));
       this.checkItem = {};
 
       this.selectWeeklyTimeSumByUserId(userId, weekBegin, index);

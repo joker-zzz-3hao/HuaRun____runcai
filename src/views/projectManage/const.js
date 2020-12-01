@@ -133,14 +133,14 @@ const PROJECT_STATUS_MAP = {
 };
 
 const APPROVAL_STATUS_MAP = {
-  0: '待审批',
-  1: '已审批',
+  1: '待审批',
+  2: '已审批',
 };
 
 const APPROVAL_STATUS_LIST = [
   { value: '', label: '全部' },
-  { value: '0', label: '待审批' },
-  { value: '1', label: '已审批' },
+  { value: '1', label: '待审批' },
+  { value: '2', label: '已审批' },
 ];
 const PROJECT_SOURCE_MAP = [
   { value: 'TENANT', label: '虚拟项目' },
