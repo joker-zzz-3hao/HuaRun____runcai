@@ -185,7 +185,7 @@
                     title=""
                     width="200"
                     trigger="hover"
-                    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                    content=""
                     popper-class="popper-working-hours"
                   >
                     <ul>
@@ -205,10 +205,13 @@
                       </li>
                       <li>
                         <span>修改原因：</span
-                        ><span>{{ workForm.remark }}</span>
+                        ><span>{{ workForm.weekList[0].remark }}</span>
                       </li>
                     </ul>
-                    <div v-show="hasValue(workForm.remark)" slot="reference">
+                    <div
+                      v-show="hasValue(workForm.weekList[0].remark)"
+                      slot="reference"
+                    >
                       <i class="icon-remind"></i>
                       <span>工时已被项目经理修改</span>
                     </div>
@@ -236,16 +239,32 @@
                 <ul class="tag-lists">
                   <li v-if="workForm.projectNameCn">
                     <el-tooltip
+                      v-if="workForm.projectId != 'DEFAULT_PROJECT'"
                       class="select-values"
                       effect="dark"
                       placement="top"
                       popper-class="tl-tooltip-popper"
                     >
                       <em slot="content">{{ workForm.projectNameCn }}</em>
-                      <em @click="selectProject(workForm)">{{
-                        workForm.projectNameCn
-                      }}</em>
+                      <em
+                        @click="
+                          canUpdate && workForm.noCheck
+                            ? selectProject(workForm)
+                            : ''
+                        "
+                        >{{ workForm.projectNameCn }}</em
+                      >
                     </el-tooltip>
+                    <div v-else>
+                      <em
+                        @click="
+                          canUpdate && workForm.noCheck
+                            ? selectProject(workForm)
+                            : ''
+                        "
+                        >{{ workForm.projectNameCn }}</em
+                      >
+                    </div>
                   </li>
                   <li
                     v-if="!workForm.projectNameCn"
@@ -284,6 +303,7 @@
                     :key="item.okrDetailId"
                   >
                     <el-tooltip
+                      v-if="item.okrDetailObjectKr != '不关联任何OKR'"
                       class="select-values"
                       effect="dark"
                       placement="top"
@@ -297,6 +317,14 @@
                       >
                       <em v-else>{{ item.okrDetailObjectKr }}</em>
                     </el-tooltip>
+                    <div v-else>
+                      <em
+                        v-if="canUpdate && workForm.noCheck"
+                        @click="addSupportOkr(workForm)"
+                        >{{ item.okrDetailObjectKr }}</em
+                      >
+                      <em v-else>{{ item.okrDetailObjectKr }}</em>
+                    </div>
                   </li>
                   <li
                     v-if="
@@ -332,7 +360,7 @@
       <dd v-if="weeklyThoughtSaveList.length < 1" class="no-data">
         <em>本周未填写感想、建议、收获</em>
       </dd>
-      <dd v-for="item in weeklyThoughtSaveList" :key="item.randomId">
+      <dd v-for="(item, index) in weeklyThoughtSaveList" :key="item.randomId">
         <div class="tag-group">
           <div
             class="tag-kinds"
@@ -373,7 +401,7 @@
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && index == weeklyThoughtSaveList.length - 1"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
           }"
@@ -418,7 +446,7 @@
       </dd>
       <dd v-for="(item, index) in weeklyPlanSaveList" :key="item.randomId">
         <div>
-          <span>计划项</span><em>{{ index + 1 }}</em>
+          <em>{{ index + 1 }}</em>
         </div>
         <el-input
           type="textarea"
@@ -435,7 +463,7 @@
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && index == weeklyPlanSaveList.length - 1"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
           }"

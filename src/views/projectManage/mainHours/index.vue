@@ -303,7 +303,7 @@
                     </div>
                     <i
                       class="el-icon-warning"
-                      v-if="checkOldNew(scope.row).show"
+                      v-show="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
                   <!-- <div>

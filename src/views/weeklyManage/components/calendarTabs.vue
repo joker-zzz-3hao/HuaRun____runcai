@@ -30,11 +30,13 @@
           <div v-show="selectedWeekIndex === idx">
             {{ getWeekItemDate(item) }}
           </div>
-          <div v-if="!isFromTeam">
+          <div>
             <div class="period-state">
-              <i></i>
-              <em v-if="hasValue(item.weeklyId)">已提交</em>
-              <em v-if="!hasValue(item.weeklyId) && !item.noOpen">未提交</em>
+              <i v-if="!isFromTeam"></i>
+              <em v-if="hasValue(item.weeklyId) && !isFromTeam">已提交</em>
+              <em v-if="!hasValue(item.weeklyId) && !item.noOpen && !isFromTeam"
+                >未提交</em
+              >
               <em v-if="item.noOpen">未开放</em>
             </div>
             <!-- <el-tooltip
