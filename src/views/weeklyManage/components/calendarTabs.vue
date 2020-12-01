@@ -16,7 +16,7 @@
         <li
           v-for="(item, idx) in weekList"
           :key="item.id"
-          @click="borderSlip(item, idx)"
+          @click="weekIndex >= idx ? borderSlip(item, idx) : ''"
           :class="{
             'is-submit': item.weeklyId,
             'is-unsubmit': !item.weeklyId && !item.noOpen,
