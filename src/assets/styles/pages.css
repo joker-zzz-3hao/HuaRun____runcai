@@ -2956,9 +2956,17 @@
   color: #fff;
 }
 
-.weekly-select .is-unsubmit::before,
-.weekly-select .is-unopen::before {
+.weekly-select .is-unsubmit::before {
   background: #d5dde3;
+}
+
+.weekly-select .is-unopen::before {
+  background: #ffbc20;
+}
+
+.weekly-select .is-curent-week {
+  border-color: #4ccd79;
+  background: #f9f8fe;
 }
 
 .weekly-select .is-curent::before {
@@ -2967,11 +2975,6 @@
 
 .weekly-select .is-curent {
   border-color: #685df1;
-  background: #f9f8fe;
-}
-
-.weekly-select .is-curent-week {
-  border-color: #4ccd79;
   background: #f9f8fe;
 }
 
@@ -3278,6 +3281,7 @@
   color: #879099;
   font-weight: normal;
   transition: all .4s ease-out;
+  width: 100%;
 }
 
 .write-weekly .weekly-cont .add-working-hours .tl-btn.el-button--text {
