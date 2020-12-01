@@ -182,15 +182,6 @@
                         <i></i>
                         <span>当前进度</span>
                         <el-form-item>
-                          <!-- <el-input-number
-                            v-model="oitem.okrDetailProgress"
-                            controls-position="right"
-                            :min="0"
-                            :max="100"
-                            :step="1"
-                            :precision="0"
-                            class="tl-input-number"
-                          ></el-input-number> -->
                           <span>{{ oitem.okrDetailProgress }} %</span>
                         </el-form-item>
                       </div>
@@ -316,6 +307,7 @@
                           class="tl-input-number"
                           @focus="showTip('kr', index, kindex)"
                           @blur="hideTip('kr', index, kindex)"
+                          @change="computeProgress(oitem)"
                         ></el-input-number>
                       </el-popover>
                       <span>%</span>
@@ -330,6 +322,7 @@
                         :precision="0"
                         class="tl-input-number"
                         @blur="progressChange(oitem, kitem)"
+                        @change="computeProgress(oitem)"
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
@@ -1007,16 +1000,6 @@ export default {
         this.formData.okrInfoList[oindex].showTip = false;
       } else {
         this.formData.okrInfoList[oindex].krList[krindex].showTip = false;
-        this.formData.okrInfoList[oindex].okrDetailProgress = 0;
-        this.formData.okrInfoList[oindex].krList.forEach((item) => {
-          this.formData.okrInfoList[oindex].okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
-          if (this.formData.okrInfoList[oindex].okrDetailProgress < 100) {
-            // eslint-disable-next-line max-len
-            this.formData.okrInfoList[oindex].okrDetailProgress = Math.floor(this.formData.okrInfoList[oindex].okrDetailProgress);
-          } else {
-            this.formData.okrInfoList[oindex].okrDetailProgress = 100;
-          }
-        });
       }
       this.lastWeightmsg = '剩余权重 计算中...';
     },
@@ -1030,6 +1013,9 @@ export default {
       if (!kitem.okrDetailProgress) {
         kitem.okrDetailProgress = 0;
       }
+    },
+    // 计算o的进度
+    computeProgress(oitem) {
       oitem.okrDetailProgress = 0;
       oitem.krList.forEach((item) => {
         oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
