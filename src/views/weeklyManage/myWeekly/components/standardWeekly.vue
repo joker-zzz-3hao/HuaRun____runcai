@@ -1280,22 +1280,25 @@ export default {
           willBeDisabledParentNodeList.push(obj.parentId);
         }
       });
-
       // 将被选中的数据禁用
       list.forEach((selectedData) => {
         this.weekDataList.forEach((day) => {
           if (day.children && day.children.length > 0) {
             day.children.forEach((dayChild) => {
               dayChild.disabled = false;
-              if (selectedData.data.id == dayChild.id) {
-                dayChild.disabled = true;
-              }
+              this.$nextTick(() => {
+                if (selectedData.data.id == dayChild.id) {
+                  dayChild.disabled = true;
+                }
+              });
             });
           }
           day.disabled = false;
-          if (selectedData.data.id == day.id && day.children[0].disabled == true && day.children[1].disabled) {
-            day.disabled = true;
-          }
+          this.$nextTick(() => {
+            if (selectedData.data.id == day.id && day.children[0].disabled && day.children[1].disabled) {
+              day.disabled = true;
+            }
+          });
         });
       });
       // 禁用父节点(不同工作项只选择一个上午或下午，累计该天全被选中时，父节点不能禁用)
