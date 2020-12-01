@@ -12,4 +12,5 @@ export default {
   configItemCodeOKR: '',
   // weeklyType: '',
   currentWeek: {},
+  selectedMonth: '',
 };

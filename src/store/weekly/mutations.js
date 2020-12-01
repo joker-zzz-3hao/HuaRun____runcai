@@ -37,7 +37,10 @@ export default {
   //   state.weeklyType = weeklyType;
   // },
 
-  setCurrentWeek: (state, currentWeek = []) => {
+  setCurrentWeek: (state, currentWeek = {}) => {
     state.currentWeek = currentWeek;
+  },
+  setSelectedMonth: (state, selectedMonth = '') => {
+    state.selectedMonth = selectedMonth;
   },
 };

@@ -214,7 +214,7 @@
               <template slot-scope="scope">
                 <div v-if="scope.row.approvalStatus == '0'">
                   <div>
-                    <em>{{ scope.row.arr.length * 0.5 }}天 </em>
+                    <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
                     <el-popover
                       placement="top"
                       width="300"
@@ -225,7 +225,7 @@
                       popper-class="approval-pop"
                       @show="
                         listTimeFun(
-                          scope.row.arr,
+                          scope.row.arrHide,
                           scope.row.userId,
                           scope.row.weekBegin,
                           scope.row.ldapType,
@@ -279,10 +279,10 @@
                   <el-tooltip
                     class="item"
                     effect="dark"
-                    :content="changeListDate(scope.row.arr)"
+                    :content="changeListDate(scope.row.arrHide)"
                     placement="top"
                   >
-                    <div>{{ changeListDate(scope.row.arr) }}</div>
+                    <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
                 <div v-else>
@@ -589,6 +589,7 @@ export default {
     },
     confirmTimeSheet(index) {
       const arr = this.checkList.map((item) => ({ weekDate: item, type: '0', weekTimeFront: '' }));
+      console.log(arr);
       // eslint-disable-next-line array-callback-return
       this.tableData[index].old.forEach((item) => {
         const eq = arr.findIndex((k) => k.weekDate == item.text);
@@ -609,7 +610,7 @@ export default {
         weekDate: this.getTypeTm(item.weekDate).weekDate, type: item.type, weekTimeType: this.getTypeTm(item.weekDate).weekTimeType, weekTimeFront: item.weekTimeFront,
       }));
       console.log(arrgo);
-      if (!arrgo.every((item) => item.type == '2')) {
+      if (!arrgo.every((item) => item.type == '1')) {
         if (!this.tableData[index].remark) {
           this.$message.error('修改理由不能为空');
           return false;
@@ -713,7 +714,7 @@ export default {
       });
       return [...list, ...arr1];
     },
-    selectWeeklyTimeSumByUserId(userId, weekBegin) {
+    selectWeeklyTimeSumByUserId(userId, weekBegin, index) {
       this.server.selectWeeklyTimeSumByUserId({
         userId,
         weekDate: weekBegin,
@@ -728,7 +729,7 @@ export default {
 
         const setArr = JSON.parse(JSON.stringify(listDis));
         listDis.forEach((item) => {
-          const bool = this.checkList.some((li) => li == item);
+          const bool = this.tableData[index].old.some((li) => li.text == item);
 
           if (bool) {
             setArr.remove(item);
@@ -766,18 +767,28 @@ export default {
           this.tableData.forEach((item, index) => {
             const arr = [];
             const arrOld = [];
+            const arrHide = [];
             item.weekWorkList.forEach((li, i) => {
               const obj = this.changeTimeText(item.weekBegin, li.weekDate, li.weekTimeType);
-              arr.push(obj.text);
+
+              if (li.weekTimeAfter != 0) {
+                arrHide.push(obj.text);
+                arr.push(obj.text);
+              }
+
               this.tableData[index].weekWorkList[i].text = obj.text;
               this.tableData[index].weekWorkList[i].num = 0.5;
-              arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
+              if (li.weekTimeAfter != 0) {
+                arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
+              }
             });
             this.tableData[index].old = arrOld;
             this.tableData[index].arr = arr;
+            this.tableData[index].arrHide = arrHide;
             this.tableData[index].weekSum = arrOld.filter((li) => li.weekTimeFront == '1').length;
             // eslint-disable-next-line no-shadow
             this.tableData[index].checkList = arr.map((item) => ({ weekDate: item, type: '2' }));
+            console.log(this.tableData);
           });
         }
       });
