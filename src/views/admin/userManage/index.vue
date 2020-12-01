@@ -1,7 +1,6 @@
 <template>
   <div class="user-manage">
     <div class="operating-area">
-      <div class="page-title">用户管理</div>
       <div class="operating-box-group">
         <div class="operating-box">
           <el-input

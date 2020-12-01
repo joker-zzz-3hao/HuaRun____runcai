@@ -1,7 +1,6 @@
 <template>
   <div v-loading="pageLoading" class="teams-weekly">
     <div class="operating-area">
-      <div class="page-title">团队周报</div>
       <div class="operating-box">
         <el-button plain class="tl-btn amt-border-slip" @click="goback"
           >返回<span class="lines"></span
@@ -10,8 +9,28 @@
     </div>
     <div class="cont-area">
       <template v-if="openOrClose == 'OPEN'">
-        <div class="weekly-cont">
+        <div class="weekly">
           <dl class="user-info">
+            <dt>当前周报</dt>
+            <dd v-if="$route.query.headerUrl">
+              <img
+                v-if="$route.query.headerUrl"
+                :src="$route.query.headerUrl"
+                alt
+              />
+            </dd>
+            <dd v-else-if="$route.query.userName" class="user-name">
+              <em>{{
+                $route.query.userName.substring(
+                  $route.query.userName.length - 2
+                )
+              }}</em>
+            </dd>
+            <dd>{{ $route.query.userName }}</dd>
+          </dl>
+        </div>
+        <div class="weekly-cont">
+          <!-- <dl class="user-info">
             <dt>当前周报</dt>
             <dd v-if="true">
               <img
@@ -28,7 +47,7 @@
               }}</em>
             </dd>
             <dd>{{ $route.query.userName }}</dd>
-          </dl>
+          </dl> -->
           <el-form
             ref="work"
             :model="workForm"
@@ -36,7 +55,6 @@
             v-for="(workForm, index) in weeklyWorkVoList"
             label-width="70px"
             class="tl-form"
-            :class="{ 'is-edit': true }"
           >
             <div class="flex-sb">
               <div class="item-title">
