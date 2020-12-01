@@ -510,7 +510,8 @@
 .okr-approval-list,
 .team-view,
 .staff-view,
-.department-view {
+.department-view,
+.replay-list {
   padding: 50px 0 0 0;
 }
 
@@ -528,7 +529,8 @@
 .okr-approval .operating-area,
 .team-view .operating-area,
 .staff-view .operating-area,
-.department-view .operating-area {
+.department-view .operating-area,
+.replay-okr .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -544,7 +546,8 @@
 .okr-approval .operating-area-inside,
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
-.department-view .operating-area-inside {
+.department-view .operating-area-inside,
+.replay-okr .operating-area-inside {
   padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
@@ -655,7 +658,8 @@
 .undertake-maps .cont-area,
 .okr-approval .cont-area， .team-view .cont-area,
 .staff-view .cont-area,
-.department-view .cont-area {
+.department-view .cont-area,
+.replay-okr .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

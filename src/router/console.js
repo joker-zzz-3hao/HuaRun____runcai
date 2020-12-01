@@ -261,6 +261,18 @@ export default [{
         },
         component: () => import('@/views/replay/component/replayList'),
       },
+      {
+        path: '/replayScore',
+        name: 'replayScore',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myOkr',
+          title: 'replay',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayScore/replayScoreList'),
+      },
     ],
   },
   // 项目
