@@ -185,7 +185,7 @@
                     title=""
                     width="200"
                     trigger="hover"
-                    content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                    content=""
                     popper-class="popper-working-hours"
                   >
                     <ul>
@@ -205,10 +205,13 @@
                       </li>
                       <li>
                         <span>修改原因：</span
-                        ><span>{{ workForm.remark }}</span>
+                        ><span>{{ workForm.weekList[0].remark }}</span>
                       </li>
                     </ul>
-                    <div v-show="hasValue(workForm.remark)" slot="reference">
+                    <div
+                      v-show="hasValue(workForm.weekList[0].remark)"
+                      slot="reference"
+                    >
                       <i class="icon-remind"></i>
                       <span>工时已被项目经理修改</span>
                     </div>
