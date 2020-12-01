@@ -1342,6 +1342,7 @@ export default {
         workItem.weekList.push({
           weekDate: this.dateFormat('YYYY-mm-dd', begindate),
           weekTimeType: day[1],
+          workId: workItem.workId || '',
         });
       });
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
