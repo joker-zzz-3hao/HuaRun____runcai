@@ -6229,3 +6229,25 @@
 .can-click:hover {
   color: #685df1;
 }
+
+
+.update-progress .okr-risk .tl-custom-popover{
+  margin: 0px 42px 0 0;
+}
+
+.add-progress{
+  cursor: pointer;
+  font-size: 12px;
+  margin: 0 0 0 30px;
+  line-height: 1.7;
+  text-align: center;
+  width: 47px;
+  height: 26px;
+  color: #879099;
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.4em, #fff 0, #fff 0.6em);
+}
+
+.add-progress:hover {
+  color: #685df1;
+}

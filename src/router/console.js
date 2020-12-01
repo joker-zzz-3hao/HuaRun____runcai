@@ -272,7 +272,7 @@ export default [{
       isSubMenu: true,
       parentRoute: 'projectManage',
       title: 'projectManage',
-      power: 'projectList',
+      power: 'project-menu',
     },
     component: () => import('@/views/projectManage/index'),
   },
