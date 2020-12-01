@@ -923,6 +923,7 @@ export default {
           this.$set(element, 'okrCultureValueIds', valueIdList.join(','));// 存到后端的价值观
           this.$set(element, 'okrIds', okrIdList.join(','));// 存到后端的okr
           this.$set(element, 'timeList', this.setTimeList(element.weekList));// 存到后端的okr
+          this.$set(element, 'weekListCopy', element.weekList);// 存到后端的okr
           this.$nextTick(() => {
             this.$set(element, 'selectedNodeList', this.selectedNodes(element));
           });
@@ -959,15 +960,12 @@ export default {
         weekList.forEach((day) => {
           const dateTemp = day.weekDate.split(' ')[0];
           const whichDay = new Date(dateTemp).getDay();
-          if (day.weekTimeType == 0) {
-            result.push([whichDay, 1], [whichDay, 2]);
-          } else {
-            result.push([whichDay, day.weekTimeType]);
-          }
+          result.push([whichDay, day.weekTimeType]);
         });
       }
       return result;
     },
+
     selectedNodes(workItem) {
       let selectedList = [];
       const self = this;
@@ -1158,6 +1156,16 @@ export default {
       tempList.forEach((workItem) => {
         delete workItem.selectedNodeList;
       });
+      // 提交前将后端返回的数据的weekId放回去
+      tempList.forEach((item) => {
+        item.weekList.forEach((week) => {
+          item.weekListCopy.forEach((weekCopy) => {
+            if (week.weekDate == weekCopy.weekDate) {
+              week.weekId = weekCopy.weekId;
+            }
+          });
+        });
+      });
       const params = {
         calendarId: this.week.calendarId,
         weeklyEmotion: this.weeklyEmotion,
@@ -1168,6 +1176,8 @@ export default {
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
         weeklyWorkVoSaveList: tempList,
       };
+      console.log(params);
+
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
@@ -1344,7 +1354,7 @@ export default {
         workItem.weekList.push({
           weekDate: this.dateFormat('YYYY-mm-dd', begindate),
           weekTimeType: day[1],
-          workId: workItem.workId || '',
+          weekId: day[2] || '',
         });
       });
       this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
