@@ -687,7 +687,7 @@ import confidenceSelect from '@/components/confidenceSelect';
 import merge from 'webpack-merge';
 import CONST from '@/components/const';
 
-// import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 import Server from '../server';
 import addOkr from './addOkr';
 import selectProject from './selectProject';
@@ -776,7 +776,9 @@ export default {
     this.init();
   },
   computed: {
-
+    ...mapState('weekly', {
+      selectedMonth: (state) => state.selectedMonth,
+    }),
   },
   methods: {
     init() {
@@ -1359,7 +1361,7 @@ export default {
     setThisWeekStatus() {
       let newWeekList = [];
       const tempList = [...this.weekList];
-      this.server.getCalendar({ date: this.monthDate }).then((res) => {
+      this.server.getCalendar({ date: this.selectedMonth }).then((res) => {
         if (res.code == 200) {
           newWeekList = res.data;
           newWeekList.forEach((newWeek) => {
