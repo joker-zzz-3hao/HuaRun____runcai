@@ -3168,6 +3168,7 @@
 
 .weekly-cont .tl-form .tag-lists li:not(.is-init) em {
   color: #4d5155;
+  max-width: 150px;
 }
 
 .weekly-cont .tag-lists li em {
