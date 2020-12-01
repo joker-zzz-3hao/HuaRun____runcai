@@ -97,6 +97,20 @@ export default [{
     },
     component: () => import('@/views/worthManage/index'),
   },
+  {
+    // 绩效评定
+    path: '/performanceEvaluate',
+    name: 'performanceEvaluate',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: '',
+      title: '绩效评定设置',
+      power: '',
+    },
+    component: () => import('@/views/settings/performanceEvaluateSet/index'),
+
+  },
 
   ],
 }];
