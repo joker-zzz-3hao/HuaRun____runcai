@@ -1,7 +1,7 @@
 <template>
   <div class="teams-manage">
     <div class="operating-area">
-      <div class="page-title">团队管理</div>
+      <!-- <div class="page-title">团队管理</div> -->
       <div class="operating-box">
         <el-button
           plain

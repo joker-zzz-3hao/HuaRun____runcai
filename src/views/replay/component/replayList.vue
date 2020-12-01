@@ -5,7 +5,7 @@
   </div>
   <div v-else class="replay-okr">
     <div class="operating-area">
-      <div class="page-title">OKR复盘</div>
+      <!-- <div class="page-title">OKR复盘</div> -->
       <div class="operating-box">
         <dl class="dl-item">
           <dt>周期</dt>
