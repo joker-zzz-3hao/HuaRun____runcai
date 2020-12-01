@@ -307,7 +307,7 @@
                           class="tl-input-number"
                           @focus="showTip('kr', index, kindex)"
                           @blur="hideTip('kr', index, kindex)"
-                          @change="computeprogress(oitem)"
+                          @change="computeProgress(oitem)"
                         ></el-input-number>
                       </el-popover>
                       <span>%</span>
@@ -322,7 +322,7 @@
                         :precision="0"
                         class="tl-input-number"
                         @blur="progressChange(oitem, kitem)"
-                        @change="computeprogress(oitem)"
+                        @change="computeProgress(oitem)"
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
@@ -1014,7 +1014,8 @@ export default {
         kitem.okrDetailProgress = 0;
       }
     },
-    computeprogress(oitem) {
+    // 计算o的进度
+    computeProgress(oitem) {
       oitem.okrDetailProgress = 0;
       oitem.krList.forEach((item) => {
         oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
