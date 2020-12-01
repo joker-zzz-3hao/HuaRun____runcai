@@ -1158,13 +1158,15 @@ export default {
       });
       // 提交前将后端返回的数据的weekId放回去
       tempList.forEach((item) => {
-        item.weekList.forEach((week) => {
-          item.weekListCopy.forEach((weekCopy) => {
-            if (week.weekDate == weekCopy.weekDate) {
-              week.weekId = weekCopy.weekId;
-            }
+        if (item.weekListCopy && item.weekListCopy.length > 0) {
+          item.weekList.forEach((week) => {
+            item.weekListCopy.forEach((weekCopy) => {
+              if (week.weekDate == weekCopy.weekDate && week.weekTimeType == weekCopy.weekTimeType) {
+                week.weekId = weekCopy.weekId;
+              }
+            });
           });
-        });
+        }
       });
       const params = {
         calendarId: this.week.calendarId,
