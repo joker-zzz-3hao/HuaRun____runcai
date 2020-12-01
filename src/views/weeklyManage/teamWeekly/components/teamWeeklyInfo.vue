@@ -138,6 +138,21 @@
                       </li>
                     </ul>
                   </div>
+                  <div v-else>
+                    <ul>
+                      <l>
+                        <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">不关联任何OKR</em>
+                          <em>不关联任何OKR</em>
+                        </el-tooltip>
+                      </l>
+                    </ul>
+                  </div>
                   <div class="tag-group">
                     <ul class="tag-lists">
                       <li
@@ -197,7 +212,8 @@
           </dd>
         </dl>
         <!-- 下周计划-->
-        <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }">
+        <!-- <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }"> -->
+        <dl class="dl-card-panel week-plan">
           <dt class="card-title"><em>下周计划</em></dt>
           <dd v-if="weeklyPlanList.length < 1" class="no-data">
             <em>本周未填写下周计划</em>

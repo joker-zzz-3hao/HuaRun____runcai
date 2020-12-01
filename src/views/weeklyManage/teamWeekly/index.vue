@@ -575,6 +575,8 @@ export default {
             break;
         }
         this.refreshPageList();
+      } else {
+        this.clearSubmitOrLooked();
       }
     },
     clearSubmitOrLooked() {
