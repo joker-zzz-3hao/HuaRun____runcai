@@ -159,7 +159,7 @@
               width="55"
               :selectable="
                 (row) => {
-                  return row.approvalStatus == '0';
+                  return row.approvalStatus == '1';
                 }
               "
             >
@@ -549,10 +549,10 @@ export default {
       const arr = [];
       list.forEach((item) => {
         const obj = this.changeTimeText(weekBegin, item.weekDate, item.weekTimeType);
-        arr.push({ text: obj.text, weekTimeAfter: item.weekTimeAfter });
+        arr.push({ text: obj.text, weekTimeAfter: item.weekTimeAfter, weekTimeFront: item.weekTimeFront });
       });
       const showNew = arr.filter((item) => item.weekTimeAfter == '2');
-      const showOld = arr.filter((item) => item.weekTimeAfter == '1');
+      const showOld = arr.filter((item) => item.weekTimeFront == '1');
       const showNewText = showNew.map((item) => item.text);
       const showOldText = showOld.map((item) => item.text);
       let bool = true;

@@ -325,7 +325,7 @@ export default {
       orgIdList: [],
       treeData: [],
       userList: [],
-      canEdit: false,
+      // canEdit: false,
       showRemindBtn: false,
       tableLoading: false,
       isQuickLook: false,
@@ -408,7 +408,7 @@ export default {
         }
       });
       return {
-        canEdit: this.canEdit,
+        // canEdit: this.canEdit,
         orgId: this.formData.orgId,
         isLeader,
       };
@@ -582,11 +582,12 @@ export default {
       this.formData.looked = '';
       this.refreshPageList();
     },
-    refreshPageList(calender) {
+    // refreshPageList(calender) {
+    refreshPageList() {
       this.tableLoading = false;
-      if (calender && calender.calendarId) {
-        this.canEdit = calender.canEdit;
-      }
+      // if (calender && calender.calendarId) {
+      //   this.canEdit = calender.canEdit;
+      // }
       if (this.formData.queryType) {
         if (this.hasPower('weekly-look')) {
           this.server.lookQuickly(this.formData).then((res) => {
@@ -656,7 +657,9 @@ export default {
           //  1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
           // 2、当组织切换至别的部门时不显示该按钮:
           // 3、不是部门负责人不显示该按钮:
-          this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId && val.isLeader && this.hasPower('weekly-notice');
+          // this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId
+          // && val.isLeader && this.hasPower('weekly-notice');
+          this.showRemindBtn = val.orgId == this.userInfo.orgId && val.isLeader && this.hasPower('weekly-notice');
         }
       },
     },
