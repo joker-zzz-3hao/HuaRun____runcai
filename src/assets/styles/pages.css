@@ -2864,41 +2864,48 @@
   background: #fff;
 }
 
-.my-weekly .tl-custom-tabs {
+.my-weekly .tl-custom-tabs,
+.teams-weekly .tl-custom-tabs {
   padding: 0 0 16px 0;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #e8ecf0;
 }
 
-.my-weekly .tl-month-editor .el-input__inner {
+.my-weekly .tl-month-editor .el-input__inner,
+.teams-weekly .tl-month-editor .el-input__inner {
   padding-left: 6px;
   position: relative;
   border-color: transparent;
   height: 32px;
 }
 
-.my-weekly .tl-month-editor {
+.my-weekly .tl-month-editor,
+.teams-weekly .tl-month-editor {
   display: flex;
   align-items: center;
   width: 140px;
 }
 
-.my-weekly .tl-month-editor::before {
+.my-weekly .tl-month-editor::before,
+.teams-weekly .tl-month-editor::before {
   flex: 0 0 32px;
   content: '';
 }
 
-.my-weekly .tl-month-editor .el-input__icon {
+.my-weekly .tl-month-editor .el-input__icon,
+.teams-weekly .tl-month-editor .el-input__icon {
   width: 32px;
   height: 32px;
 }
 
-.my-weekly .tl-month-editor .el-input__prefix {
+.my-weekly .tl-month-editor .el-input__prefix,
+.teams-weekly .tl-month-editor .el-input__prefix {
   right: 0;
 }
 
-.my-weekly .tl-month-editor .el-icon-date::before {
+.my-weekly .tl-month-editor .el-icon-date::before,
+.teams-weekly .tl-month-editor .el-icon-date::before {
   content: '';
 }
 
@@ -2961,7 +2968,7 @@
 }
 
 .weekly-select .is-unopen::before {
-  background: #ffbc20;
+  background: #d5dde3;
 }
 
 .weekly-select .is-curent-week {
@@ -4057,7 +4064,7 @@
 }
 
 .teams-weekly .table-pagination {
-  min-height: calc(100vh - 357px);
+  min-height: calc(100vh - 321px);
 }
 
 .user-list .el-select-dropdown__list li {
@@ -4076,6 +4083,24 @@
 .teams-weekly .tl-card-list {
   margin: 15px;
   padding: 30px;
+  position: relative;
+}
+
+.teams-weekly .tl-card-list::after {
+  position: absolute;
+  left: 13px;
+  top: 30px;
+  bottom: 30px;
+  content: '';
+  width: 3px;
+}
+
+.teams-weekly .tl-card-list.is-visited::after {
+  background: #bcc4cc;
+}
+
+.teams-weekly .tl-card-list.un-visited::after {
+  background: #ffbc20;
 }
 
 .teams-weekly .tl-card-list>dt {
@@ -4103,6 +4128,13 @@
 .teams-weekly .tl-card-list .user-txt p em {
   color: #4d5155;
   font-weight: 500;
+}
+
+.teams-weekly .tl-card-list .user-info em,
+.teams-weekly .tl-card-list .user-info img {
+  width: 42px;
+  height: 42px;
+  font-size: 14px;
 }
 
 .teams-weekly .tl-card-list .user-txt p {
@@ -4157,6 +4189,11 @@
 
 .weekly-state.un-submitted p {
   color: #bcc4cc;
+}
+
+.teams-weekly .weekly-state i {
+  width: 20px;
+  height: 20px;
 }
 
 .teams-weekly .table-container .quick-look {
@@ -4531,6 +4568,25 @@
 
 .who-browse .btn-box i {
   color: unset;
+}
+
+.teams-weekly .operating-area .tl-btn span {
+  display: flex;
+  align-items: center;
+}
+
+.teams-weekly .operating-area .tl-btn .icon-remind {
+  margin: 0;
+}
+
+.teams-weekly .mood-state {
+  display: flex;
+  align-items: center;
+}
+
+.teams-weekly .mood-state i {
+  width: 24px;
+  height: 24px;
 }
 
 /* 任务 */
