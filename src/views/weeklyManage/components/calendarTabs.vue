@@ -21,8 +21,8 @@
             'is-submit': item.weeklyId,
             'is-unsubmit': !item.weeklyId && !item.noOpen,
             'is-unopen': item.noOpen,
-            'is-curent': item.btnType == 'success',
             'is-curent-week': weekIndex == idx,
+            'is-curent': item.btnType == 'success',
             'is-focus': selectedWeekIndex === idx,
           }"
         >
