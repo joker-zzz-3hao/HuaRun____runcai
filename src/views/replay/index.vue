@@ -1,6 +1,13 @@
 <template>
   <div class="replay-okr">
-    <div class="operating-area">
+    <div
+      class="operating-area"
+      v-show="
+        ['replayList', 'replayScore', 'assessRank', 'repalyAssess'].includes(
+          $route.name
+        )
+      "
+    >
       <div class="operating-area-inside">
         <div class="tl-custom-tabs">
           <div class="tab-menus">
@@ -50,42 +57,28 @@ export default {
   },
   created() {
     if (this.roleCode.includes('ORG_ADMIN')) {
-      this.tabsList = [
-        {
-          menuTitle: 'OKR复核',
-          toName: 'replayList',
-        },
-        {
-          menuTitle: '绩效排名',
-          toName: 'replayScore',
-        },
-      ];
-    } else if (this.roleCode.includes('TENANT_ADMIN')) {
-      this.tabsList = [
-        {
-          menuTitle: 'OKR复核',
-          toName: 'replayList',
-        },
-        {
-          menuTitle: 'OKR复核得分',
-          toName: 'replayScore',
-        },
-        {
-          menuTitle: '绩效复核',
-          toName: 'replayScore',
-        },
-      ];
-    } else {
-      this.tabsList = [
-        {
-          menuTitle: 'OKR复核',
-          toName: 'replayList',
-        },
-      ];
+      this.tabsList.push({
+        menuTitle: '绩效排名',
+        toName: 'assessRank',
+      });
+    }
+    if (this.roleCode.includes('TENANT_ADMIN')) {
+      this.tabsList.push({
+        menuTitle: 'OKR复核得分',
+        toName: 'replayScore',
+      },
+      {
+        menuTitle: '绩效复核',
+        toName: 'repalyAssess',
+      });
     }
   },
   mounted() {
-    this.currentIndex = 0;
+    this.tabsList.forEach((item, index) => {
+      if (item.toName == this.$route.name) {
+        this.currentIndex = index;
+      }
+    });
     const borderWidth = document.querySelector('.operating-area .border-slip');
     const selfLeft = document.querySelectorAll('.operating-area .tab-list li')[this.currentIndex].offsetLeft;
     const liWidth = document.querySelectorAll('.operating-area .tab-list li');
@@ -103,7 +96,6 @@ export default {
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
-      console.log('qieh', item);
       this.go(item.toName);
     },
   },
