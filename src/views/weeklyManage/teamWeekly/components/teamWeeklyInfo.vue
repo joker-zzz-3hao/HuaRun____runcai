@@ -43,7 +43,7 @@
                 <i></i><span>工作项</span><em>{{ index + 1 }}</em>
               </div>
             </div>
-            <div class="form-item is-standard-version">
+            <div class="form-item">
               <div class="form-item-group">
                 <el-form-item label="工作项">
                   <em> {{ workForm.workContent }}</em>
