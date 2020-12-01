@@ -182,7 +182,9 @@
                         <i></i>
                         <span>当前进度</span>
                         <el-form-item>
-                          <span>{{ oitem.okrDetailProgress }} %</span>
+                          <span
+                            >{{ Math.floor(oitem.okrDetailProgress) }} %</span
+                          >
                         </el-form-item>
                       </div>
                       <div>
@@ -982,7 +984,7 @@ export default {
         this.formData.okrInfoList.forEach((oitem) => {
           opercent += oitem.okrWeight;
         });
-        this.lastWeightmsg = `剩余可填权重${100 - opercent}%`;
+        this.lastWeightmsg = `剩余可填权重${(100 - opercent).toFixed(1)}%`;
         this.formData.okrInfoList[oindex].showTip = true;
         this.$forceUpdate();
       } else {
@@ -990,7 +992,7 @@ export default {
         this.formData.okrInfoList[oindex].krList.forEach((kitem) => {
           keypercent += kitem.okrWeight;
         });
-        this.lastWeightmsg = `剩余可填权重${100 - keypercent}%`;
+        this.lastWeightmsg = `剩余可填权重${(100 - keypercent).toFixed(1)}%`;
         this.formData.okrInfoList[oindex].krList[krindex].showTip = true;
         this.$forceUpdate();
       }
@@ -1018,10 +1020,9 @@ export default {
     computeProgress(oitem) {
       oitem.okrDetailProgress = 0;
       oitem.krList.forEach((item) => {
-        oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
-        if (oitem.okrDetailProgress < 100) {
-          oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
-        } else {
+        oitem.okrDetailProgress += (item.okrDetailProgress * item.okrWeight) / 100;
+        console.log();
+        if (oitem.okrDetailProgress > 100) {
           oitem.okrDetailProgress = 100;
         }
       });

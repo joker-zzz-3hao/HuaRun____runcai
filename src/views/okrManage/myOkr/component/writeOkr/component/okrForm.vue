@@ -81,7 +81,7 @@
                   <i class="el-icon-odometer"></i>
                   <span>当前进度</span>
                   <el-form-item>
-                    <span> {{ oitem.okrDetailProgress }} % </span>
+                    <span> {{ Math.floor(oitem.okrDetailProgress) }} % </span>
                   </el-form-item>
                 </div>
                 <div>
@@ -743,15 +743,12 @@ export default {
     computeProgress(oitem) {
       oitem.okrDetailProgress = 0;
       oitem.krList.forEach((item) => {
-        oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
-        if (oitem.okrDetailProgress < 100) {
-          oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
-        } else {
+        oitem.okrDetailProgress += (item.okrDetailProgress * item.okrWeight) / 100;
+        console.log();
+        if (oitem.okrDetailProgress > 100) {
           oitem.okrDetailProgress = 100;
         }
       });
-      console.log(oitem, oitem.okrDetailProgress);
-      // this.$forceUpdate();
     },
   },
   watch: {
