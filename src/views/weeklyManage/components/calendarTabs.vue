@@ -110,9 +110,6 @@ export default {
     // this.$busOn('getWeekList', () => {
     //   this.getWeek('noResetDelectBtn');
     // });
-    this.$busOn('setThisWeekStatus', () => {
-      this.setThisWeekStatus();
-    });
   },
   created() {
   },
@@ -128,7 +125,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations('weekly', ['setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
+    ...mapMutations('weekly', ['setSelectedMonth', 'setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
     borderSlip(item, index) {
       if (!item.noOpen) {
         this.selectedWeekIndex = index;
@@ -162,6 +159,7 @@ export default {
       if (data) {
         this.monthDate = data;
       }
+      this.setSelectedMonth(data);
       this.server.getCalendar({ date: this.monthDate }).then((res) => {
         if (res.code == 200) {
           this.setWeekList(res.data);
