@@ -81,7 +81,7 @@
                   <i class="el-icon-odometer"></i>
                   <span>当前进度</span>
                   <el-form-item>
-                    <span>0 %</span>
+                    <span> {{ oitem.okrDetailProgress }} % </span>
                   </el-form-item>
                 </div>
                 <div>
@@ -195,6 +195,7 @@
                   :step="0.1"
                   step-strictly
                   class="tl-input-number"
+                  @change="computeProgress(oitem)"
                 ></el-input-number>
                 <span>%</span>
               </el-form-item>
@@ -208,6 +209,7 @@
                   :precision="0"
                   class="tl-input-number"
                   @blur="progressChange(kitem)"
+                  @change="computeProgress(oitem)"
                 ></el-input-number>
                 <span>%</span>
               </el-form-item>
@@ -736,6 +738,20 @@ export default {
       if (!kitem.okrDetailProgress) {
         kitem.okrDetailProgress = 0;
       }
+    },
+    // 计算o的进度
+    computeProgress(oitem) {
+      oitem.okrDetailProgress = 0;
+      oitem.krList.forEach((item) => {
+        oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
+        if (oitem.okrDetailProgress < 100) {
+          oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
+        } else {
+          oitem.okrDetailProgress = 100;
+        }
+      });
+      console.log(oitem, oitem.okrDetailProgress);
+      // this.$forceUpdate();
     },
   },
   watch: {
