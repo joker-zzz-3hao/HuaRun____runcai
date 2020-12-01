@@ -1,7 +1,6 @@
 <template>
   <div class="okr-summarize-list">
     <div class="operating-area">
-      <div class="page-title">OKR汇总</div>
       <div class="operating-box">
         <dl class="dl-item">
           <dt>周期</dt>
