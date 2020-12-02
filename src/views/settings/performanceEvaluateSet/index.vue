@@ -57,20 +57,39 @@
         </div>
       </crcloud-table>
     </div>
+    <tl-create-evaluate
+      ref="createEvaluate"
+      v-if="showDialog"
+      :showDialog.sync="showDialog"
+      :server="server"
+      :optionType="optionType"
+      @closeDialog="closeDialog"
+    ></tl-create-evaluate>
   </div>
 </template>
 
 <script>
+import createEvaluate from './components/createEvaluate';
+import Server from './server';
+
+const server = new Server();
+
 export default {
   name: '',
-  components: {},
+  components: {
+    'tl-create-evaluate': createEvaluate,
+  },
   props: {},
   data() {
     return {
       total: 0,
       pageSize: 10,
       currentPage: 1,
+      server,
+      loading: false,
       evaluateData: [],
+      showDialog: false,
+      optionType: '',
     };
   },
   created() {},
@@ -81,7 +100,12 @@ export default {
 
     },
     addEvaluate() {
-
+      this.showDialog = true;
+      this.$nextTick(() => {
+        this.$refs.createEvaluate.show();
+      });
+    },
+    closeDialog() {
     },
   },
   watch: {},

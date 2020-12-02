@@ -104,7 +104,7 @@ export default [{
     meta: {
       hasMainMenu: true,
       isSubMenu: true,
-      parentRoute: '',
+      parentRoute: 'orgManage',
       title: '绩效评定设置',
       power: '',
     },
