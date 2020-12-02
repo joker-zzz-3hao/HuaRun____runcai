@@ -1,7 +1,7 @@
 import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
-  tenantList(param) {
-    return this._ajaxPost('gateway/system-service/sys/tenant/pageTenantList', param);
+  addEvaluate(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/rule/create', param);
   }
 }

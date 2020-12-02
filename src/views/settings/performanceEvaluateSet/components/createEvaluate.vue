@@ -20,7 +20,11 @@
       :key="evaluateItem.randomId"
       label-width="90px"
     >
-      <el-button type="text" @click="deleteEvaluateItem(evaluateItem)"
+      <el-button
+        type="text"
+        @click="
+          evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
+        "
         >删除整个体系</el-button
       >
 
@@ -33,21 +37,48 @@
       </el-form-item>
       <el-form-item label="自定义体系" prop="ruleName">
         <div
-          v-for="ruleItem in evaluateItem.ruleDetailList"
+          v-for="(ruleItem, index) in evaluateItem.ruleDetailList"
           :key="ruleItem.detailRandomId"
         >
           <el-input v-model.trim="ruleItem.value"></el-input>
           <el-input v-model.trim="ruleItem.unit"></el-input>
           说明
           <el-input v-model.trim="ruleItem.description"></el-input>
-          <el-button type="text" @click="addRuleItem">添加</el-button>
-          <el-button type="text" @click="deleteRuleItem(ruleItem)"
+          <el-button
+            type="text"
+            v-show="evaluateItem.ruleDetailList.length - 1 == index"
+            @click="addRuleItem(evaluateItem)"
+            >添加</el-button
+          >
+          <el-button
+            type="text"
+            @click="
+              evaluateItem.ruleDetailList.length > 1
+                ? deleteRuleItem(evaluateItem, ruleItem)
+                : ''
+            "
             >删除</el-button
           >
         </div>
       </el-form-item>
     </el-form>
     <el-button type="text" @click="addEvaluateItem">添加评定体系</el-button>
+    <div class="operating-box">
+      <el-button
+        :loading="loading"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="addEvaluate"
+        >确认</el-button
+      >
+      <el-button
+        :disabled="loading"
+        plain
+        class="tl-btn amt-border-fadeout"
+        @click="close"
+        >取消</el-button
+      >
+    </div>
   </el-dialog>
 </template>
 
@@ -55,10 +86,18 @@
 export default {
   name: '',
   components: {},
-  props: {},
+  props: {
+    server: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       visible: false,
+      loading: false,
       evaluateFormList: [],
     };
   },
@@ -86,12 +125,46 @@ export default {
       });
     },
     deleteEvaluateItem(evaluateItem) {
-      console.log(evaluateItem);
+      this.evaluateFormList.forEach((item) => {
+        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
+          item.ruleDetailList.push({
+            unit: '单位',
+            value: '值',
+            description: '我是说明',
+            detailRandomId: this.getRandomId(),
+          });
+        }
+      });
+      this.evaluateFormList = this.evaluateFormList.filter((item) => item.ruleRandomId != evaluateItem.ruleRandomId);
     },
-    addRuleItem() {
+    addRuleItem(evaluateItem) {
+      this.evaluateFormList.forEach((item) => {
+        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
+          item.ruleDetailList.push({
+            unit: '单位',
+            value: '值',
+            description: '我是说明',
+            detailRandomId: this.getRandomId(),
+          });
+        }
+      });
     },
-    deleteRuleItem(ruleItem) {
-      console.log(ruleItem);
+    deleteRuleItem(evaluateItem, ruleItem) {
+      this.evaluateFormList.forEach((item) => {
+        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
+          item.ruleDetailList = item.ruleDetailList.filter((detail) => detail.detailRandomId != ruleItem.detailRandomId);
+        }
+      });
+    },
+    addEvaluate() {
+      const params = {};
+      this.loading = true;
+      this.server.addEvaluate(params).then((res) => {
+        this.loading = false;
+        if (res.code == 200) {
+          console.log(res);
+        }
+      });
     },
     show() {
       this.visible = true;
