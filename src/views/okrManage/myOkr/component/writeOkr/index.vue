@@ -182,16 +182,9 @@
                         <i></i>
                         <span>当前进度</span>
                         <el-form-item>
-                          <!-- <el-input-number
-                            v-model="oitem.okrDetailProgress"
-                            controls-position="right"
-                            :min="0"
-                            :max="100"
-                            :step="1"
-                            :precision="0"
-                            class="tl-input-number"
-                          ></el-input-number> -->
-                          <span>0 %</span>
+                          <span
+                            >{{ Math.floor(oitem.okrDetailProgress) }} %</span
+                          >
                         </el-form-item>
                       </div>
                       <div>
@@ -316,6 +309,7 @@
                           class="tl-input-number"
                           @focus="showTip('kr', index, kindex)"
                           @blur="hideTip('kr', index, kindex)"
+                          @change="computeProgress(oitem)"
                         ></el-input-number>
                       </el-popover>
                       <span>%</span>
@@ -329,7 +323,8 @@
                         :step="1"
                         :precision="0"
                         class="tl-input-number"
-                        @blur="progressChange(kitem)"
+                        @blur="progressChange(oitem, kitem)"
+                        @change="computeProgress(oitem)"
                       ></el-input-number>
                       <span>%</span>
                     </el-form-item>
@@ -726,6 +721,7 @@ export default {
         return;
       }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
+      this.computeProgress(this.formData.okrInfoList[oindex]);
     },
     // 增加o
     addobject() {
@@ -806,10 +802,10 @@ export default {
           let keypercent = 0;
           try {
             this.formData.okrInfoList.forEach((oitem) => {
-              opercent += oitem.okrWeight;
+              opercent += oitem.okrWeight || 0;
               keypercent = 0;
               oitem.krList.forEach((kitem) => {
-                keypercent += kitem.okrWeight;
+                keypercent += kitem.okrWeight || 0;
               });
               if (keypercent != 100) {
                 this.$message.error('结果KR权重值总和必须为100');
@@ -951,7 +947,7 @@ export default {
       };
       this.server.modifyOkrInfo(formChangeData).then((res) => {
         if (res.code == 200) {
-          if (this.formData.attachmentList.length > 0) {
+          if (this.formData.attachmentList && this.formData.attachmentList.length > 0) {
             this.updateFile();
           }
           this.$message.success('提交成功');
@@ -987,17 +983,17 @@ export default {
       if (type == 'o') {
         let opercent = 0;
         this.formData.okrInfoList.forEach((oitem) => {
-          opercent += oitem.okrWeight;
+          opercent += oitem.okrWeight || 0;
         });
-        this.lastWeightmsg = `剩余可填权重${100 - opercent}%`;
+        this.lastWeightmsg = `剩余可填权重${(100 - opercent).toFixed(1)}%`;
         this.formData.okrInfoList[oindex].showTip = true;
         this.$forceUpdate();
       } else {
         let keypercent = 0;
         this.formData.okrInfoList[oindex].krList.forEach((kitem) => {
-          keypercent += kitem.okrWeight;
+          keypercent += kitem.okrWeight || 0;
         });
-        this.lastWeightmsg = `剩余可填权重${100 - keypercent}%`;
+        this.lastWeightmsg = `剩余可填权重${(100 - keypercent).toFixed(1)}%`;
         this.formData.okrInfoList[oindex].krList[krindex].showTip = true;
         this.$forceUpdate();
       }
@@ -1016,10 +1012,21 @@ export default {
       this.$forceUpdate();
     },
     // 进度默认值
-    progressChange(kitem) {
+    progressChange(oitem, kitem) {
       if (!kitem.okrDetailProgress) {
         kitem.okrDetailProgress = 0;
       }
+    },
+    // 计算o的进度
+    computeProgress(oitem) {
+      oitem.okrDetailProgress = 0;
+      oitem.krList.forEach((item) => {
+        oitem.okrDetailProgress += (item.okrDetailProgress * item.okrWeight || 0) / 100;
+        console.log();
+        if (oitem.okrDetailProgress > 100) {
+          oitem.okrDetailProgress = 100;
+        }
+      });
     },
     // 文件
     fileChange(data) {

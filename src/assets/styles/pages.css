@@ -1763,7 +1763,7 @@
 }
 
 .set-period .el-dialog__body {
-  height: 300px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -1775,7 +1775,7 @@
   padding: 0 14px 0 0;
 }
 .set-period dl {
- margin: 0 0 20px 0;
+ margin: 10px 0 20px 0;
 }
 
 .set-period dl dd {
@@ -1790,9 +1790,12 @@
   width: 100%;
 }
 .set-period .el-radio-group .tl-radio{
-  margin: 0 0 7px 0;
+  margin: 0 0 10px 0;
 }
 
+.set-period .el-scrollbar__bar {
+  opacity: 0.5;
+}
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
@@ -1858,6 +1861,7 @@
 }
 
 .undertake-maps-detail .align-history dd>span {
+  font-size: 12px;
   margin: 0 10px 0 0;
   color: #acb6bf;
 }
@@ -1880,7 +1884,7 @@
 .undertake-maps-detail .undertake-name {
   font-size: 14px;
   color: #4D5155;
-  line-height: 5;
+  line-height: 3;
 }
 
 .undertake-maps-detail .timeline-list .list-title {
@@ -1902,7 +1906,7 @@
 }
 
 .undertake-maps-detail .timeline-list .list-cont {
-  padding: 5px 0 5px 20px;
+  padding: 0 0 0 20px;
 }
 
 .undertake-maps-detail .timeline-list .list-cont div {
@@ -5781,7 +5785,7 @@
 .weight-tip .el-popper {
   background-color: #7e7e7e;
   color: #fff;
-  width: 50px;
+  width: 160px;
   font-size: 12px;
   height: 25px;
 }
