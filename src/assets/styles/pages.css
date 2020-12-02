@@ -2850,8 +2850,17 @@
 
 /* 周报 */
 .my-weekly {
-  margin: 16px 16px 86px 16px;
+  margin: 16px;
+}
+
+.my-weekly:not(.has-no-data) {
+  margin-bottom: 86px;
   min-height: calc(100vh - 172px);
+}
+
+.my-weekly.has-no-data .weekly-area {
+  display: flex;
+  align-items: center;
 }
 
 .my-weekly .operating-area {
@@ -3145,6 +3154,10 @@
   margin: 20px 0 0 0;
 }
 
+.write-weekly {
+  width: 100%;
+}
+
 .my-weekly .write-weekly .dl-card-panel:last-of-type {
   margin: 0;
 }
@@ -3191,7 +3204,6 @@
 
 .weekly-cont .tl-form .tag-lists li:not(.is-init) em {
   color: #4d5155;
-  max-width: 150px;
 }
 
 .weekly-cont .tag-lists li em {
