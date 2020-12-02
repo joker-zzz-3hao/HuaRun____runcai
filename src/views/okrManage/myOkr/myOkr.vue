@@ -11,7 +11,16 @@
         </el-alert>
       </template>
       <template v-if="okrList[0] && okrList[0].tableList.length > 0">
-        <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
+        <div
+          v-for="item in okrList"
+          :key="item.id"
+          class="tl-card-panel"
+          :class="{
+            'is-show':
+              ['1', 1, 3, 4, 5].includes(item.okrMain.status) &&
+              item.okrMain.readStatus != 0,
+          }"
+        >
           <div
             class="okr-tag"
             v-if="

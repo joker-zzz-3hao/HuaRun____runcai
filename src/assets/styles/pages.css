@@ -1569,6 +1569,18 @@
   color: #685df1;
 }
 
+.my-okr .tl-card-panel.is-show {
+  padding-top: 50px;
+  position: relative;
+}
+
+.my-okr .tl-card-panel.is-show .okr-tag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
 .okr-maps .tl-select-dropdown.el-popper {
   margin-top: 8px;
 }
@@ -3603,6 +3615,8 @@
 
 .weekly-cont .time-cascader .el-form-item__content .working-hours-info {
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .weekly-cont .tl-form .el-form-item__content>em {
@@ -3692,6 +3706,7 @@
 
 .weekly-cont .add-working-hours .tl-cascader .el-input__inner {
   height: unset !important;
+  line-height: unset;
 }
 
 .weekly-cont .add-working-hours .el-icon-close {
@@ -3700,11 +3715,6 @@
 
 .weekly-cont .working-hours-info>span:first-child {
   color: #879099;
-}
-
-.weekly-cont .working-hours-info>span:last-child {
-  display: inline-block;
-  vertical-align: -4px;
 }
 
 .popper-working-hours {
