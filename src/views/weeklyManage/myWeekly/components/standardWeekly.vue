@@ -177,9 +177,22 @@
                     class="tl-cascader"
                   ></el-cascader>
                 </div>
-                <em>{{ getTimes(workForm, "updated", "days") }}</em>
+                <!-- 当未审批时 展示原始数据  审批之后展示修改后的数据 -->
+                <em>{{
+                  getTimes(
+                    workForm,
+                    hasChecked(workForm) ? "updated" : "original",
+                    "days"
+                  )
+                }}</em>
                 <div class="working-hours-info">
-                  <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                  <span>{{
+                    getTimes(
+                      workForm,
+                      hasChecked(workForm) ? "updated" : "original",
+                      "info"
+                    )
+                  }}</span>
                   <el-popover
                     placement="top-start"
                     title=""
@@ -205,11 +218,18 @@
                       </li>
                       <li>
                         <span>修改原因：</span
-                        ><span>{{ workForm.weekList[0].remark }}</span>
+                        ><span>{{
+                          workForm.weekList.length > 0
+                            ? workForm.weekList[0].remark
+                            : ""
+                        }}</span>
                       </li>
                     </ul>
                     <div
-                      v-show="hasValue(workForm.weekList[0].remark)"
+                      v-show="
+                        workForm.weekList.length > 0 &&
+                        workForm.weekList[0].remark
+                      "
                       slot="reference"
                     >
                       <i class="icon-remind"></i>
