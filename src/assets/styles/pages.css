@@ -733,7 +733,7 @@
 .my-okr .card-panel-head .update-time {
   position: absolute;
   left: 0;
-  top: calc(50% + 16px);
+  top: calc(50% + 10px);
 }
 
 .my-okr .card-panel-head .update-time em {
@@ -1578,6 +1578,16 @@
   position: absolute;
   left: 0;
   right: 0;
+  top: 0;
+}
+
+.my-okr .card-panel-body .tl-table th,
+.overview .card-panel-body .tl-table th {
+  height: 30px;
+}
+
+.my-okr .tl-table-fix .tl-thead,
+.overview .tl-table-fix .tl-thead {
   top: 0;
 }
 
@@ -4042,6 +4052,12 @@
 
 .teams-weekly .operating-area .operating-box>div:not(:first-child) {
   margin: 0 0 0 20px;
+}
+
+.teams-weekly .cont-area.not-opened {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teams-weekly .cont-area>.flex-sb {
