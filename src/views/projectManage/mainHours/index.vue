@@ -519,7 +519,8 @@ export default {
       this.searchList();
     },
     weekWorkListCheck(row) {
-      const list = row.weekWorkList.map((item) => `${item.weekDate.split('-')[1]}月${item.weekDate.split('-')[2]}日`);
+      const listFiler = row.weekWorkList.filter((item) => item.weekTimeAfter != '0');
+      const list = listFiler.map((item) => `${item.weekDate.split('-')[1]}月${item.weekDate.split('-')[2]}日`);
       const checkList = [...new Set(list)];
       return checkList.join(',');
     },
@@ -552,7 +553,7 @@ export default {
         arr.push({ text: obj.text, weekTimeAfter: item.weekTimeAfter, weekTimeFront: item.weekTimeFront });
       });
       const showNew = arr.filter((item) => item.weekTimeAfter == '2');
-      const showOld = arr.filter((item) => item.weekTimeFront == '1');
+      const showOld = arr.filter((item) => item.weekTimeAfter == '1');
       const showNewText = showNew.map((item) => item.text);
       const showOldText = showOld.map((item) => item.text);
       let bool = true;
@@ -598,7 +599,11 @@ export default {
           arr.push({ weekDate: item.text, type: '1', weekTimeFront: item.weekTimeFront });
         } else {
           const indexs = arr.findIndex((li) => li.weekDate == item.text);
-          arr[indexs].type = '2';
+          if (item.weekTimeFront == 1) {
+            arr[indexs].type = '3';
+          } else {
+            arr[indexs].type = '2';
+          }
         }
       });
 
@@ -776,7 +781,7 @@ export default {
 
               this.tableData[index].weekWorkList[i].text = obj.text;
               this.tableData[index].weekWorkList[i].num = 0.5;
-              if (li.weekTimeAfter != 0) {
+              if (li.weekTimeFront == 1) {
                 arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
               }
             });
