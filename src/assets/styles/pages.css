@@ -843,11 +843,21 @@
 }
 
 .update-progress .progress-bg {
-  width: 68px !important;
+  width: 65px !important;
 }
 
 .update-progress .progress-bg:not(:first-child) {
-  margin-left: 6px !important;
+  margin-left: 4px !important;
+}
+.update-progress .flex-up {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.update-progress .note-book {
+  width: 420px;
+  height: 500px;
+  padding: 0 0 0 20px;
 }
 
 /* 部门okr */

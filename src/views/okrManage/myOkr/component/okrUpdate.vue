@@ -2,170 +2,207 @@
   <el-dialog
     :append-to-body="true"
     :close-on-click-modal="false"
-    :title="drawerTitle"
     :visible.sync="myokrDrawer"
     @closed="closed"
     :before-close="close"
-    custom-class="update-progress"
+    custom-class="custom-drawer update-progress"
     class="tl-dialog"
-    width="620px"
+    width="1000px"
   >
+    <template slot="title">
+      <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
+      </tl-tabs>
+      <!-- <span>更新进度</span>
+      <span>更多更新记录</span> -->
+    </template>
     <el-scrollbar>
-      <div class="okr-info">
-        <div class="tl-custom-timeline">
-          <el-form :model="formData" ref="dataForm" class="tl-form">
-            <dl class="timeline-list">
-              <dd v-if="hasValue(historyFirst)">
-                <div class="list-info">
-                  <div class="list-title">
-                    <em>上次更新时间：{{ historyFirst.createTime }}</em>
-                    <div @click="openHistory">更多更新记录</div>
-                  </div>
-                  <div class="list-cont">
-                    <div>
-                      <em>操作人</em>
-                      <span>
-                        {{ historyFirst.userName }}
-                      </span>
+      <div class="flex-up">
+        <div class="okr-info">
+          <div class="tl-custom-timeline" v-if="currentIndex === 0">
+            <el-form :model="formData" ref="dataForm" class="tl-form">
+              <dl class="timeline-list">
+                <dd v-if="hasValue(historyFirst)">
+                  <div class="list-info">
+                    <div class="list-title">
+                      <em>上次更新时间：{{ historyFirst.createTime }}</em>
                     </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>更新前进度</em>
-                      <span>
-                        {{ historyFirst.updateContents.beforeProgress }} %
-                      </span>
-                    </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>更新后进度</em>
-                      <span>
-                        {{ historyFirst.updateContents.afterProgress }} %
-                      </span>
-                    </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>信心指数修改为</em>
-                      <div class="state-grid">
-                        <div
-                          :class="{
-                            'is-no-risk':
-                              historyFirst.updateContents.afterConfidence == 1,
-                            'is-risks':
-                              historyFirst.updateContents.afterConfidence == 2,
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
-                        <div
-                          :class="{
-                            'is-risks':
-                              historyFirst.updateContents.afterConfidence == 2,
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
-                        <div
-                          :class="{
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
+                    <div class="list-cont">
+                      <div>
+                        <em>操作人</em>
+                        <span>
+                          {{ historyFirst.userName }}
+                        </span>
                       </div>
+                      <div v-if="historyFirst.updateContents">
+                        <em>更新前进度</em>
+                        <span>
+                          {{ historyFirst.updateContents.beforeProgress }} %
+                        </span>
+                      </div>
+                      <div v-if="historyFirst.updateContents">
+                        <em>更新后进度</em>
+                        <span>
+                          {{ historyFirst.updateContents.afterProgress }} %
+                        </span>
+                      </div>
+                      <div v-if="historyFirst.updateContents">
+                        <em>信心指数修改为</em>
+                        <div class="state-grid">
+                          <div
+                            :class="{
+                              'is-no-risk':
+                                historyFirst.updateContents.afterConfidence ==
+                                1,
+                              'is-risks':
+                                historyFirst.updateContents.afterConfidence ==
+                                2,
+                              'is-uncontrollable':
+                                historyFirst.updateContents.afterConfidence ==
+                                3,
+                            }"
+                          ></div>
+                          <div
+                            :class="{
+                              'is-risks':
+                                historyFirst.updateContents.afterConfidence ==
+                                2,
+                              'is-uncontrollable':
+                                historyFirst.updateContents.afterConfidence ==
+                                3,
+                            }"
+                          ></div>
+                          <div
+                            :class="{
+                              'is-uncontrollable':
+                                historyFirst.updateContents.afterConfidence ==
+                                3,
+                            }"
+                          ></div>
+                        </div>
+                        <em>{{
+                          CONST.CONFIDENCE_MAP[
+                            historyFirst.updateContents.afterConfidence
+                          ]
+                        }}</em>
+                      </div>
+                      <div>
+                        <em>更新说明</em>
+                        <span>
+                          {{ historyFirst.reason }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+                <dd>
+                  <div class="list-info">
+                    <div class="list-title">
                       <em>{{
-                        CONST.CONFIDENCE_MAP[
-                          historyFirst.updateContents.afterConfidence
-                        ]
+                        formData.okrDetailType === 0 ? "目标O" : "关键结果"
                       }}</em>
+                      <span>{{ formData.okrDetailObjectKr }}</span>
                     </div>
-                    <div>
-                      <em>更新说明</em>
-                      <span>
-                        {{ historyFirst.reason }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </dd>
-              <dd>
-                <div class="list-info">
-                  <div class="list-title">
-                    <em>{{
-                      formData.okrDetailType === 0 ? "目标O" : "关键结果"
-                    }}</em>
-                    <span>{{ formData.okrDetailObjectKr }}</span>
-                  </div>
-                  <div class="list-cont">
-                    <div class="tl-progress-group">
-                      <tl-process
-                        :data="parseInt(formData.okrDetailProgress, 10)"
-                        :showNumber="false"
-                        :width="68"
-                        :marginLeft="6"
-                      ></tl-process>
-                      <el-slider
-                        v-model="formData.okrDetailProgress"
-                        :step="1"
-                        @change="changeProgress(formData)"
-                        tooltip-class="slider-tooltip"
-                      ></el-slider>
-                      <el-input-number
-                        v-model="formData.okrDetailProgress"
-                        controls-position="right"
-                        :min="0"
-                        :max="100"
-                        :step="1"
-                        :precision="0"
-                        class="tl-input-number"
-                        @blur="progressChange"
-                      ></el-input-number>
-                      <span>%</span>
-                    </div>
-                    <div
-                      class="okr-risk"
-                      v-if="hasValue(formData.okrDetailConfidence)"
-                    >
-                      <span>信心指数</span>
-                      <tl-confidence
-                        v-model="formData.okrDetailConfidence"
-                      ></tl-confidence>
-                      <div class="add-progress" @click="addProgress(1)">
-                        +1%
+                    <div class="list-cont">
+                      <div class="tl-progress-group">
+                        <tl-process
+                          :data="parseInt(formData.okrDetailProgress, 10)"
+                          :showNumber="false"
+                          :width="68"
+                          :marginLeft="6"
+                        ></tl-process>
+                        <el-slider
+                          v-model="formData.okrDetailProgress"
+                          :step="1"
+                          @change="changeProgress(formData)"
+                          tooltip-class="slider-tooltip"
+                        ></el-slider>
+                        <el-input-number
+                          v-model="formData.okrDetailProgress"
+                          controls-position="right"
+                          :min="0"
+                          :max="100"
+                          :step="1"
+                          :precision="0"
+                          class="tl-input-number"
+                          @blur="progressChange"
+                        ></el-input-number>
+                        <span>%</span>
                       </div>
-                      <div class="add-progress" @click="addProgress(5)">
-                        +5%
-                      </div>
-                      <div class="add-progress" @click="addProgress(10)">
-                        +10%
+                      <div
+                        class="okr-risk"
+                        v-if="hasValue(formData.okrDetailConfidence)"
+                      >
+                        <span>信心指数</span>
+                        <tl-confidence
+                          v-model="formData.okrDetailConfidence"
+                        ></tl-confidence>
+                        <div class="add-progress" @click="addProgress(1)">
+                          +1%
+                        </div>
+                        <div class="add-progress" @click="addProgress(5)">
+                          +5%
+                        </div>
+                        <div class="add-progress" @click="addProgress(10)">
+                          +10%
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </dd>
-            </dl>
-            <dl class="change-reason">
-              <!-- <dt>更新说明</dt> -->
-              <dd>
-                <el-form-item
-                  label="更新说明"
-                  prop="updateexplain"
-                  :rules="[
-                    {
-                      trigger: 'blur',
-                      message: '请输入更新说明',
-                      required: true,
-                    },
-                  ]"
-                >
-                  <el-input
-                    placeholder="请输入更新说明"
-                    maxlength="200"
-                    v-model="formData.updateexplain"
-                    type="textarea"
-                    :rows="3"
-                    resize="none"
-                    class="tl-textarea"
-                  ></el-input>
-                </el-form-item>
-              </dd>
-            </dl>
-          </el-form>
+                </dd>
+              </dl>
+              <dl class="change-reason">
+                <!-- <dt>更新说明</dt> -->
+                <dd>
+                  <el-form-item
+                    label="更新说明"
+                    prop="updateexplain"
+                    :rules="[
+                      {
+                        trigger: 'blur',
+                        message: '请输入更新说明',
+                        required: true,
+                      },
+                    ]"
+                  >
+                    <el-input
+                      placeholder="请输入更新说明"
+                      maxlength="200"
+                      v-model="formData.updateexplain"
+                      type="textarea"
+                      :rows="3"
+                      resize="none"
+                      class="tl-textarea"
+                    ></el-input>
+                  </el-form-item>
+                </dd>
+              </dl>
+            </el-form>
+          </div>
+          <div v-else>
+            <tl-updatehistoy
+              :exist.sync="histoyExist"
+              v-if="hasValue(histoyExist)"
+              ref="updatehistory"
+              :okrDetailId="formData.okrDetailId"
+              :krName="formData.okrDetailObjectKr"
+            ></tl-updatehistoy>
+          </div>
+        </div>
+        <div class="note-book">
+          <div>
+            <span>OKR记事本</span>
+            <el-button type="primary" class="tl-btn amt-bg-slip"
+              >更新</el-button
+            >
+          </div>
+          <div>
+            <el-input
+              type="textarea"
+              :rows="3"
+              resize="none"
+              class="tl-textarea"
+            ></el-input>
+          </div>
         </div>
       </div>
     </el-scrollbar>
@@ -182,19 +219,13 @@
         >取消</el-button
       >
     </div>
-    <tl-updatehistoy
-      :exist.sync="histoyExist"
-      v-if="hasValue(histoyExist)"
-      ref="updatehistory"
-      :okrDetailId="formData.okrDetailId"
-      :krName="formData.okrDetailObjectKr"
-    ></tl-updatehistoy>
   </el-dialog>
 </template>
 
 <script>
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
+import tabs from '@/components/tabs';
 import { mapMutations } from 'vuex';
 import updateHistoy from './updateHistoy';
 import CONST from '../const';
@@ -205,20 +236,27 @@ export default {
     'tl-confidence': confidenceSelect,
     'tl-process': process,
     'tl-updatehistoy': updateHistoy,
+    'tl-tabs': tabs,
   },
   data() {
     return {
       CONST,
-      dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
       },
       myokrDrawer: false,
-      drawerTitle: '更新进度',
       loading: false,
       historyFirst: '',
       histoyExist: false,
+      // tab
+      currentIndex: 0,
+      tabMenuList: [{
+        menuName: '更新进展',
+      },
+      {
+        menuName: '更多更新记录',
+      }],
     };
   },
   props: {
@@ -244,7 +282,8 @@ export default {
   },
   created() {
   },
-
+  mounted() {
+  },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 控制弹窗
@@ -330,6 +369,13 @@ export default {
     },
   },
   watch: {
+    currentIndex: {
+      handler(newVal) {
+        if (newVal === 1) {
+          this.openHistory();
+        }
+      },
+    },
   },
 };
 </script>
