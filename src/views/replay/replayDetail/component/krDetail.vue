@@ -69,33 +69,6 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
-              <i class="el-icon-bell"></i>
-              <span>信心指数</span>
-              <div class="state-grid">
-                <div
-                  :class="{
-                    'is-no-risk': krData.okrDetailConfidence == 1,
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-              </div>
-              <div class="state-txt">
-                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
-              </div>
-            </div> -->
           </dd>
           <dd>
             <div>
@@ -109,6 +82,21 @@
               <em>{{ list.judgeMethod }}</em>
             </div>
           </dd>
+          <dd>
+            <dl>
+              <dt>评分</dt>
+              <dd></dd>
+            </dl>
+            <dl>
+              <dt>评分说明</dt>
+              <dd></dd>
+            </dl>
+            <dl>
+              <dt>佐证材料</dt>
+              <dd></dd>
+            </dl>
+          </dd>
+          <!-- 复盘详情有则显示 -->
           <dd>
             <dl>
               <dt>价值与收获</dt>

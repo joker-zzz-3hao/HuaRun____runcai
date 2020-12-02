@@ -142,6 +142,7 @@
                 </dd>
               </dl>
               <dl>
+                <!-- TODO: 改成一条了还要用list吗？ -->
                 <dt>改进措施</dt>
                 <template v-if="list.measure.length > 1">
                   <dd v-for="(li, d) in list.measure || []" :key="d">
