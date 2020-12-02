@@ -3372,7 +3372,7 @@
 .teams-weekly pre,
 .weekly pre,
 .write-weekly pre,
-.weekly-thoughts dd > pre {
+.weekly-thoughts dd>pre {
   margin: 0;
   flex: 1;
   font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -3422,16 +3422,16 @@
   margin: 0;
 }
 
-.week-plan dd > div:first-child {
-  flex: 0 0 64px;
+.week-plan dd>div:first-child {
+  flex: 0 0 20px;
   color: #879099;
 }
 
-.week-plan dd > div:first-child em {
+.week-plan dd>div:first-child em {
   margin: 0 0 0 4px;
 }
 
-.write-weekly > .operating-box {
+.write-weekly>.operating-box {
   position: absolute;
   right: 0;
   top: 0;
@@ -6261,7 +6261,7 @@
 .weight-tip .el-popper {
   background-color: #7e7e7e;
   color: #fff;
-  width: 50px;
+  width: 160px;
   font-size: 12px;
   height: 25px;
 }
@@ -6329,11 +6329,11 @@
 }
 
 
-.update-progress .okr-risk .tl-custom-popover{
+.update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
 }
 
-.add-progress{
+.add-progress {
   cursor: pointer;
   font-size: 12px;
   margin: 0 0 0 30px;
