@@ -144,10 +144,9 @@
             <span>上传附件</span>
             <file-upload
               ref="fileUpload"
-              :fileList="fileList"
+              :fileList="list.fileList"
               :limit="10"
               @change="fileChange"
-              :sourceKey="formData.okrMainId"
               sourceType="OKRMODIFY"
               accept="
               .jpg,

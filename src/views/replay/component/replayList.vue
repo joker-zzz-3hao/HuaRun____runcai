@@ -58,6 +58,12 @@
           </el-input>
         </dd>
       </dl>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="okrReviewList"
+        >搜索</el-button
+      >
     </div>
     <div class="cont-area">
       <tl-crcloud-table

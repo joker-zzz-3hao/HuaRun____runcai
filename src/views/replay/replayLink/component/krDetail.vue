@@ -26,28 +26,6 @@
                   :data="parseInt(item.o.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
-              <!-- <div>
-                <i class="el-icon-attract"></i>
-                <span>关联父目标</span>
-                <em
-                  v-if="
-                    oData.undertakeOkrDto &&
-                    oData.undertakeOkrDto.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em
-                  v-else-if="
-                    oData.undertakeOkrVo &&
-                    oData.undertakeOkrVo.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
-                <em v-else>暂无</em>
-              </div> -->
             </dd>
           </dl>
         </template>
@@ -69,33 +47,6 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
-              <i class="el-icon-bell"></i>
-              <span>信心指数</span>
-              <div class="state-grid">
-                <div
-                  :class="{
-                    'is-no-risk': krData.okrDetailConfidence == 1,
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-              </div>
-              <div class="state-txt">
-                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
-              </div>
-            </div> -->
           </dd>
           <dd>
             <div>
@@ -111,6 +62,21 @@
           </dd>
           <dd>
             <dl>
+              <dt>自评分</dt>
+              <dd></dd>
+            </dl>
+            <dl>
+              <dt>自评说明</dt>
+              <dd></dd>
+            </dl>
+            <dl>
+              <dt>佐证材料</dt>
+              <dd></dd>
+            </dl>
+          </dd>
+          <!-- 复盘详情 -->
+          <dd>
+            <dl>
               <dt>价值与收获</dt>
               <dd>{{ list.advantage }}</dd>
             </dl>
@@ -122,7 +88,7 @@
               <dt>改进措施</dt>
               <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <dl>
+            <!-- <dl>
               <dt>复盘沟通</dt>
               <dd>
                 <el-input
@@ -134,8 +100,8 @@
                   class="tl-textarea"
                 ></el-input>
               </dd>
-            </dl>
-            <dl>
+            </dl> -->
+            <!-- <dl>
               <dt>评定</dt>
               <dd>
                 <dl class="tag-lists">
@@ -154,11 +120,81 @@
                   </dd>
                 </dl>
               </dd>
-            </dl>
+            </dl> -->
           </dd>
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <div>
+      <span>OKR得分</span>
+      <em></em>
+    </div>
+    <dl>
+      <dd>
+        <el-form
+          :model="ruleForm"
+          ref="ruleForm"
+          label-width="100px"
+          class="el-form"
+        >
+          <el-form-item label="复盘沟通结果" prop="replayStatus">
+            <el-radio-group
+              v-model.trim="ruleForm.replayStatus"
+              class="tl-radio-group"
+            >
+              <el-radio label="1" class="tl-radio">通过</el-radio>
+              <el-radio label="2" class="tl-radio">退回</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            v-if="ruleForm.replayStatus == '1'"
+            label="复盘沟通"
+            prop="communication"
+          >
+            <el-input
+              type="textarea"
+              placeholder="不超过500个字符"
+              v-model.trim="ruleForm.communication"
+              :maxlength="500"
+              class="tl-textarea"
+              :rows="3"
+              resize="none"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            v-if="ruleForm.replayStatus == '2'"
+            label="驳回原因"
+            prop="refuseInfo"
+            :rules="[
+              {
+                required: ruleForm.replayStatus == '2',
+                message: '请输入驳回原因',
+              },
+            ]"
+          >
+            <el-input
+              type="textarea"
+              placeholder="请输入驳回原因，不超过100个字符"
+              v-model.trim="ruleForm.refuseInfo"
+              :maxlength="100"
+              class="tl-textarea"
+              :rows="3"
+              resize="none"
+            ></el-input>
+          </el-form-item>
+          <div>
+            <span>快捷评语：</span>
+            <em
+              v-for="sortComment in sortCommentList"
+              :key="sortComment"
+              @click="fastWrite(sortComment)"
+            >
+              {{ sortComment }}
+            </em>
+          </div>
+        </el-form>
+      </dd>
+    </dl>
     <tl-footer
       :btnText="'确认沟通'"
       :saveLoad="saveLoad"
@@ -217,6 +253,10 @@ export default {
           clsName: 'refuel',
         },
       ],
+      ruleForm: {
+        replayStatus: 1,
+      },
+      sortCommentList: ['无异意', '已线下沟通', '已知晓'],
     };
   },
   created() {
@@ -371,6 +411,9 @@ export default {
         this.okrMain = res.data;
         this.checkDatakrs();
       });
+    },
+    fastWrite(text) {
+      this.ruleForm.communication = text;
     },
   },
 };
