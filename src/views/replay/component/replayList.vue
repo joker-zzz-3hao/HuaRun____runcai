@@ -75,7 +75,7 @@
             ></el-table-column>
             <el-table-column
               prop="okrBelongType"
-              label="OkR所属类型"
+              label="OKR所属类型"
               min-width="165"
             >
               <template slot-scope="scope">
@@ -94,13 +94,10 @@
                 ></tl-process> </template
             ></el-table-column>
             <el-table-column
-              prop="reviewStatus"
+              prop="reviewStatusCn"
               label="复盘状态"
               min-width="80"
             >
-              <template slot-scope="scope">
-                <span>{{ CONST.REVIEW_STATUS[scope.row.reviewStatus] }}</span>
-              </template>
             </el-table-column>
             <el-table-column
               prop="reviewCommitTime"
@@ -132,7 +129,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="!scope.row.isOwner && scope.row.reviewStatus == 2"
+                  v-if="!scope.row.ownerFlag && scope.row.reviewStatus == 2"
                   @click="
                     $router.push({
                       name: 'replayLink',
@@ -146,7 +143,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.isOwner && scope.row.reviewStatus == 1"
+                  v-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -162,14 +159,14 @@
                   class="tl-btn"
                   v-if="
                     scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.isOwner)
+                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag)
                   "
                   @click="
                     $router.push({
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        isOwner: scope.row.isOwner,
+                        ownerFlag: scope.row.ownerFlag,
                       },
                     })
                   "
@@ -218,7 +215,7 @@ export default {
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
-      this.server.okrReviewList({
+      this.server.getOkrReviewPage({
 
         periodId: this.periodId, // 周期id，必传
         reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>

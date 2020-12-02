@@ -36,4 +36,9 @@ export default class Server extends ServerBase {
   getOkrReviewHistoryList(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrReview/getOkrReviewHistoryList', param);
   }
+
+  // 查询复盘列表
+  getOkrReviewPage(param) {
+    return this._ajaxPost('gateway/talent-query/okr/review/query/getOkrReviewPage', param);
+  }
 }
