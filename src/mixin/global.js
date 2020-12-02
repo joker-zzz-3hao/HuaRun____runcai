@@ -371,6 +371,9 @@ export default {
     hasValue(value) {
       return ((value !== false) && ![undefined, null, ''].includes(value)) || (value === 0) || (value === '0');
     },
+    getRandomId() {
+      return Math.random().toString(36).substr(3);
+    },
   },
 
 };
