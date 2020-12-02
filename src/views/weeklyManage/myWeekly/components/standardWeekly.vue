@@ -72,20 +72,19 @@
             >
               <el-input
                 :autosize="{ minRows: 1, maxRows: 8 }"
-                type="textarea"
                 maxlength="50"
                 v-if="canUpdate && workForm.noCheck"
                 clearable
                 placeholder="简短概括工作项"
                 class="tl-textarea"
-                v-model="workForm.workContent"
+                v-model.trim="workForm.workContent"
               ></el-input>
               <em v-else> {{ workForm.workContent }}</em>
             </el-form-item>
             <el-form-item label="内容">
               <el-input
                 v-model="workForm.workDesc"
-                :autosize="{ minRows: 4 }"
+                :autosize="{ minRows: 2 }"
                 type="textarea"
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述工作项内容"
@@ -516,11 +515,11 @@
         </el-tooltip>
       </dd>
     </dl>
-    <!-- 个人OKR完成度 -->
+    <!-- 个人OKR完成度   refreshForm为了解决样式不刷新问题-->
     <dl
       class="dl-card-panel okr-completion"
       :class="{ 'is-edit': canUpdate }"
-      v-if="configItemCodeOKR == 'O'"
+      v-if="configItemCodeOKR == 'O' && refreshForm"
     >
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
@@ -1145,7 +1144,6 @@ export default {
       this.$forceUpdate();
     },
     updateWeekly() {
-      console.log(this.weeklyWorkVoSaveList);
       // 感想、计划如果没有数据，默认添加一条
       if (this.weeklyThoughtSaveList.length < 1) {
         this.addThought();
@@ -1226,8 +1224,6 @@ export default {
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
         weeklyWorkVoSaveList: tempList,
       };
-      console.log(params);
-
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
@@ -1246,6 +1242,15 @@ export default {
           this.$router.push({
             query: merge({}, { params: 'clear' }),
           });
+        } else {
+          this.$nextTick(() => {
+            this.weeklyWorkVoSaveList.forEach((workItem) => {
+              this.$nextTick(() => {
+                this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
+              });
+            });
+          });
+          this.$forceUpdate();
         }
       });
     },
