@@ -516,11 +516,11 @@
         </el-tooltip>
       </dd>
     </dl>
-    <!-- 个人OKR完成度 -->
+    <!-- 个人OKR完成度   refreshForm为了解决样式不刷新问题-->
     <dl
       class="dl-card-panel okr-completion"
       :class="{ 'is-edit': canUpdate }"
-      v-if="configItemCodeOKR == 'O'"
+      v-if="configItemCodeOKR == 'O' && refreshForm"
     >
       <dt class="card-title"><em>个人OKR完成度</em></dt>
       <!-- 这里循环 dd 每一条支撑周报的 O 或者 是  KR  如果是O ？is-o：is-kr -->
