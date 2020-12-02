@@ -220,7 +220,7 @@
           </dd>
           <dd v-for="(item, index) in weeklyPlanList" :key="item.workId">
             <div>
-              <span>计划项</span><em>{{ index + 1 }}</em>
+              <em>{{ index + 1 }}</em>
             </div>
             <pre>{{ item.planContent }}</pre>
           </dd>
