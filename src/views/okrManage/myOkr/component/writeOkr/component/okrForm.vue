@@ -81,7 +81,7 @@
                   <i class="el-icon-odometer"></i>
                   <span>当前进度</span>
                   <el-form-item>
-                    <span> {{ oitem.okrDetailProgress }} % </span>
+                    <span> {{ Math.floor(oitem.okrDetailProgress) }} % </span>
                   </el-form-item>
                 </div>
                 <div>
@@ -477,6 +477,7 @@ export default {
         return;
       }
       this.formData.okrInfoList[oindex].krList.splice(krindex, 1);
+      this.computeProgress(this.formData.okrInfoList[oindex]);
     },
     // 增加o
     addobject() {
@@ -550,10 +551,10 @@ export default {
           let keypercent = 0;
           try {
             this.formData.okrInfoList.forEach((oitem) => {
-              opercent += oitem.okrWeight;
+              opercent += oitem.okrWeight || 0;
               keypercent = 0;
               oitem.krList.forEach((kitem) => {
-                keypercent += kitem.okrWeight;
+                keypercent += kitem.okrWeight || 0;
               });
               if (keypercent != 100) {
                 this.$message.error('结果KR权重值总和必须为100');
@@ -705,7 +706,7 @@ export default {
       if (type == 'o') {
         let opercent = 0;
         this.formData.okrInfoList.forEach((oitem) => {
-          opercent += oitem.okrWeight;
+          opercent += oitem.okrWeight || 0;
         });
         this.lastWeightmsg = `剩余可填权重${100 - opercent}%`;
         this.formData.okrInfoList[oindex].showTip = true;
@@ -713,7 +714,7 @@ export default {
       } else {
         let keypercent = 0;
         this.formData.okrInfoList[oindex].krList.forEach((kitem) => {
-          keypercent += kitem.okrWeight;
+          keypercent += kitem.okrWeight || 0;
         });
         this.lastWeightmsg = `剩余可填权重${100 - keypercent}%`;
         this.formData.okrInfoList[oindex].krList[krindex].showTip = true;
@@ -743,15 +744,12 @@ export default {
     computeProgress(oitem) {
       oitem.okrDetailProgress = 0;
       oitem.krList.forEach((item) => {
-        oitem.okrDetailProgress += (item.okrDetailProgress / 100) * item.okrWeight;
-        if (oitem.okrDetailProgress < 100) {
-          oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
-        } else {
+        oitem.okrDetailProgress += (item.okrDetailProgress * item.okrWeight || 0) / 100;
+        console.log();
+        if (oitem.okrDetailProgress > 100) {
           oitem.okrDetailProgress = 100;
         }
       });
-      console.log(oitem, oitem.okrDetailProgress);
-      // this.$forceUpdate();
     },
   },
   watch: {
