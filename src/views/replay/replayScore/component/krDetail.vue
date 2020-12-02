@@ -183,7 +183,7 @@
       </div>
     </div>
     <div class="footer-panel">
-      <el-button>复核完成</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip">复核完成</el-button>
     </div>
   </div>
 </template>
