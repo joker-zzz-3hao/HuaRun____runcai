@@ -85,7 +85,7 @@
             <el-form-item label="内容">
               <el-input
                 v-model="workForm.workDesc"
-                :autosize="{ minRows: 4 }"
+                :autosize="{ minRows: 2 }"
                 type="textarea"
                 v-if="canUpdate && workForm.noCheck"
                 placeholder="请描述工作项内容"
@@ -1145,7 +1145,6 @@ export default {
       this.$forceUpdate();
     },
     updateWeekly() {
-      console.log(this.weeklyWorkVoSaveList);
       // 感想、计划如果没有数据，默认添加一条
       if (this.weeklyThoughtSaveList.length < 1) {
         this.addThought();
@@ -1226,8 +1225,6 @@ export default {
         weeklyThoughtSaveList: this.weeklyThoughtSaveList,
         weeklyWorkVoSaveList: tempList,
       };
-      console.log(params);
-
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
         this.submitLoading = false;
@@ -1246,6 +1243,15 @@ export default {
           this.$router.push({
             query: merge({}, { params: 'clear' }),
           });
+        } else {
+          this.$nextTick(() => {
+            this.weeklyWorkVoSaveList.forEach((workItem) => {
+              this.$nextTick(() => {
+                this.$set(workItem, 'selectedNodeList', this.selectedNodes(workItem));
+              });
+            });
+          });
+          this.$forceUpdate();
         }
       });
     },
