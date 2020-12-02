@@ -72,13 +72,12 @@
             >
               <el-input
                 :autosize="{ minRows: 1, maxRows: 8 }"
-                type="textarea"
                 maxlength="50"
                 v-if="canUpdate && workForm.noCheck"
                 clearable
                 placeholder="简短概括工作项"
                 class="tl-textarea"
-                v-model="workForm.workContent"
+                v-model.trim="workForm.workContent"
               ></el-input>
               <em v-else> {{ workForm.workContent }}</em>
             </el-form-item>
