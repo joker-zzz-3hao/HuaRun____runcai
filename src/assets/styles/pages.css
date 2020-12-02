@@ -1397,6 +1397,7 @@
 
 .okr-detail .timeline-list .operate-reason {
   margin: 20px 0 0 0;
+  display: flex;
 }
 
 .okr-detail .timeline-list dt .list-title::before {
@@ -5882,4 +5883,13 @@
 
 .add-progress:hover {
   color: #685df1;
+}
+/* 富文本 */
+.update-progress .el-tiptap-editor__command-button{
+  height: 30px;
+  width: 30px;
+}
+
+.update-progress .el-tiptap-editor>.el-tiptap-editor__content {
+  cursor: text;
 }

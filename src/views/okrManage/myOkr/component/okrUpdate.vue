@@ -196,12 +196,10 @@
             >
           </div>
           <div>
-            <el-input
-              type="textarea"
-              :rows="3"
-              resize="none"
-              class="tl-textarea"
-            ></el-input>
+            <el-tiptap
+              v-model="formData.updateexplain"
+              :extensions="extensions"
+            />
           </div>
         </div>
       </div>
@@ -223,6 +221,20 @@
 </template>
 
 <script>
+import {
+  // 需要的 extensions
+  Doc,
+  Text,
+  Paragraph,
+  Bold,
+  Underline,
+  Italic,
+  FontSize,
+  TextColor,
+  ListItem,
+  OrderedList,
+  TextHighlight,
+} from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
@@ -246,6 +258,20 @@ export default {
         updateexplain: '',
       },
       myokrDrawer: false,
+      drawerTitle: '更新进度',
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Bold(),
+        new Underline(),
+        new Italic(),
+        new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
+        new TextColor(),
+        new TextHighlight(),
+        new ListItem(),
+        new OrderedList(),
+      ],
       loading: false,
       historyFirst: '',
       histoyExist: false,
