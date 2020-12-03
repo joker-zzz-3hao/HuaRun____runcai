@@ -304,7 +304,18 @@
         </div>
       </crcloud-table>
     </div>
-    <div v-else>该团队周报未开放</div>
+    <div
+      v-else
+      class="cont-area"
+      :class="{
+        'not-opened': !(openOrClose == 'O' || formData.orgId == userInfo.orgId),
+      }"
+    >
+      <div class="no-data">
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">该团队周报未开放</div>
+      </div>
+    </div>
   </div>
 </template>
 

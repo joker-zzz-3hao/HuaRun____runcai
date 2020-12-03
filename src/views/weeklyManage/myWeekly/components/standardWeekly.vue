@@ -419,7 +419,7 @@
           :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.thoughtContent }}</pre>
-        <el-tooltip
+        <!-- <el-tooltip
           v-if="canUpdate && index == weeklyThoughtSaveList.length - 1"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
@@ -433,28 +433,35 @@
           <div class="icon-bg">
             <i class="icon-add"></i>
           </div>
-        </el-tooltip>
+        </el-tooltip> -->
+        <div
+          @click="addThought(item.randomId)"
+          class="icon-bg"
+          v-if="canUpdate && index == weeklyThoughtSaveList.length - 1"
+        >
+          <i class="icon-add"></i>
+        </div>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && weeklyThoughtSaveList.length == 1"
           :class="{
             'is-disabled': weeklyThoughtSaveList.length == 1,
           }"
           effect="dark"
-          :content="
-            weeklyThoughtSaveList.length > 1 ? '删除' : '至少保留一条数据'
-          "
+          content="至少保留一条数据"
           placement="top"
           popper-class="tl-tooltip-popper"
-          @click.native="
-            weeklyThoughtSaveList.length > 1
-              ? deleteThoughts(item.randomId)
-              : ''
-          "
         >
           <div class="icon-bg">
             <i class="icon-reduce"></i>
           </div>
         </el-tooltip>
+        <div
+          @click="deleteThoughts(item.randomId)"
+          class="icon-bg"
+          v-if="canUpdate && weeklyThoughtSaveList.length > 1"
+        >
+          <i class="icon-reduce"></i>
+        </div>
       </dd>
     </dl>
     <!-- 下周计划-->
@@ -481,7 +488,7 @@
           :class="{ 'has-edit': item.isUpdating }"
         ></el-input>
         <pre v-else>{{ item.planContent }}</pre>
-        <el-tooltip
+        <!-- <el-tooltip
           v-if="canUpdate && index == weeklyPlanSaveList.length - 1"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
@@ -492,27 +499,35 @@
           popper-class="tl-tooltip-popper"
           @click.native="addNextWeekWork"
         >
-          <div class="icon-bg">
-            <i class="icon-add"></i>
-          </div>
-        </el-tooltip>
+        </el-tooltip> -->
+        <div
+          class="icon-bg"
+          v-if="canUpdate && index == weeklyPlanSaveList.length - 1"
+          @click="addNextWeekWork"
+        >
+          <i class="icon-add"></i>
+        </div>
         <el-tooltip
-          v-if="canUpdate"
+          v-if="canUpdate && weeklyPlanSaveList.length == 1"
           :class="{
             'is-disabled': weeklyPlanSaveList.length == 1,
           }"
           effect="dark"
-          :content="weeklyPlanSaveList.length > 1 ? '删除' : '至少保留一条数据'"
+          content="至少保留一条数据"
           placement="top"
           popper-class="tl-tooltip-popper"
-          @click.native="
-            weeklyPlanSaveList.length > 1 ? deletePlanItem(item) : ''
-          "
         >
           <div class="icon-bg">
             <i class="icon-reduce"></i>
           </div>
         </el-tooltip>
+        <div
+          class="icon-bg"
+          v-if="canUpdate && weeklyPlanSaveList.length > 1"
+          @click="deletePlanItem(item)"
+        >
+          <i class="icon-reduce"></i>
+        </div>
       </dd>
     </dl>
     <!-- 个人OKR完成度   refreshForm为了解决样式不刷新问题-->

@@ -1,22 +1,19 @@
 <template>
-  <div class="my-weekly">
+  <div class="my-weekly" :class="{ 'has-no-data': !week.weeklyId }">
     <div class="cont-area">
       <tl-calendar-tabs :server="server" :selectedWeekIndex.sync="weekIndex">
       </tl-calendar-tabs>
       <div
         v-for="(week, index) in weekList"
-        v-show="weekIndex == index"
         :key="week.calendarId"
+        v-show="weekIndex == index"
       >
-        <!-- <div class="weekly-area" v-if="weeklyTypeList.length > 0"> -->
         <div class="weekly-area">
           <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
             <div class="no-data-bg"></div>
             <div class="no-data-txt">周报未填写</div>
           </div>
-          <div v-else>
-            <standard-Weekly :week="week"></standard-Weekly>
-          </div>
+          <standard-Weekly v-else :week="week"></standard-Weekly>
         </div>
       </div>
     </div>
@@ -84,6 +81,7 @@ export default {
       weekList: (state) => state.weekList,
       orgOkrList: (state) => state.orgOkrList,
       weeklyType: (state) => state.weeklyType,
+      week: (state) => state.week,
     }),
     isChecked() {
       return (weeklyId) => {

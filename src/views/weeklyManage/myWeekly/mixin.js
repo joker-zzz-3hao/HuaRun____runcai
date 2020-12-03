@@ -358,7 +358,7 @@ export default {
       if (workItem.weekList && workItem.weekList.length > 0) {
         let tempWeekList = [];
         // 1、审批后工时被改动：过滤掉weekTimeAfter == '0'的数据
-        if (this.hasValue(workItem.remark)) {
+        if (this.hasValue(workItem.weekList[0].remark)) {
           if (type == 'updated') { // 更改后
             tempWeekList = workItem.weekList.filter((manHour) => manHour.weekTimeAfter !== '0');
           } else if (type == 'original') { // 更改前
@@ -368,7 +368,6 @@ export default {
           tempWeekList = workItem.weekList;
         }
         // 2、工时未被改动：不作处理
-
         workItem.timeSpanList = this.setTimeSpanList(tempWeekList);
         // 过滤掉删除的数据
         const days = (tempWeekList.length) / 2;

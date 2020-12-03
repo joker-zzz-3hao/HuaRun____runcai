@@ -47,7 +47,7 @@
           </dd>
         </dl>
         <dl class="dl-item">
-          <dt>时间</dt>
+          <dt>投入工时时间</dt>
           <dd>
             <!-- <el-date-picker
               v-model="weekBegin"
@@ -62,6 +62,7 @@
               v-model="weekLine"
               type="daterange"
               @change="changePick"
+              @clear="searchList"
               value-format="yyyy-MM-dd"
               range-separator="至"
               start-placeholder="开始日期"
@@ -70,20 +71,22 @@
             </el-date-picker>
           </dd>
         </dl>
-        <dl class="dl-item">
+        <!-- <dl class="dl-item">
           <dt>按周选择投入工时</dt>
           <dd>
             <el-date-picker
               v-model="startTime"
               type="week"
               @change="searchList"
-              format="yyyy 第 WW 周"
+              format=" yyyy 年 MM 月"
+              @click="searchList"
+              ref="picker"
               value-format="yyyy-MM-dd"
               placeholder="选择周"
             >
             </el-date-picker>
           </dd>
-        </dl>
+        </dl> -->
         <dl class="dl-item">
           <dt>提交人</dt>
           <dd>
@@ -93,6 +96,12 @@
               filterable
               @change="searchList"
             >
+             <el-option
+
+                label="全部"
+                value=""
+              >
+              </el-option>
               <el-option
                 v-for="item in options"
                 :key="item.userId"
@@ -205,7 +214,7 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="投入工时" min-width="200px">
+            <el-table-column label="工时日期" min-width="200px">
               <template slot-scope="scope">
                 {{ weekWorkListCheck(scope.row) }}
               </template>
@@ -218,10 +227,10 @@
                     <el-popover
                       placement="top"
                       width="300"
-                      :key="scope.$index + scope.row.projectId"
+                      :key="scope.$index"
                       trigger="click"
                       :tabindex="scope.$index"
-                      :ref="'popover' + scope.$index"
+                      :ref="'popover-' + scope.$index"
                       popper-class="approval-pop"
                       @show="
                         listTimeFun(
@@ -264,13 +273,15 @@
                           type="primary"
                           class="tl-btn amt-bg-slip"
                           @click="
-                            confirmTimeSheet(
-                              scope.$index,
-                              scope.row.arrHide,
-                              scope.row.weekBegin
-                            )
+                           alertSelect(scope,true)
                           "
-                          >确定</el-button
+                          >确认审批</el-button
+                        >
+                    <el-button
+                          type="primary"
+                          class="tl-btn amt-bg-slip"
+                          @click="close(scope)"
+                          >取消</el-button
                         >
                       </div>
                       <el-button type="text" slot="reference">修改</el-button>
@@ -286,7 +297,7 @@
                   </el-tooltip>
                 </div>
                 <div v-show="scope.row.approvalStatus == '2'">
-                  <em>{{ checkOldNew(scope.row).day }}天 </em>
+                  <em>{{ scope.row.arrHide.length*0.5 }}天 </em>
                   <el-tooltip class="item" effect="dark" placement="top">
                     <div slot="content">
                       <div>
@@ -385,7 +396,7 @@
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
-                  @click="alertSelect(scope.row)"
+                  @click="alertSelect(scope,false)"
                   type="text"
                   class="tl-btn"
                   >确认审批</el-button
@@ -405,6 +416,7 @@
             class="tl-btn amt-bg-slip"
             >批量审批</el-button
           >
+          <em>已选择{{workList.length}}位成员</em>
         </div>
       </tl-crcloud-table>
     </div>
@@ -444,6 +456,8 @@ export default {
         '周三',
         '周四',
         '周五',
+        '周六',
+        '周日',
       ],
       options: [],
       weekBegin: '',
@@ -552,25 +566,25 @@ export default {
         const obj = this.changeTimeText(weekBegin, item.weekDate, item.weekTimeType);
         arr.push({ text: obj.text, weekTimeAfter: item.weekTimeAfter, weekTimeFront: item.weekTimeFront });
       });
-      const showNew = arr.filter((item) => item.weekTimeAfter == '2');
-      const showOld = arr.filter((item) => item.weekTimeAfter == '1');
+      const showNew = arr.filter((item) => item.weekTimeAfter != '0');
+      const showOld = arr.filter((item) => item.weekTimeFront == '1');
       const showNewText = showNew.map((item) => item.text);
       const showOldText = showOld.map((item) => item.text);
       let bool = true;
       // eslint-disable-next-line no-unused-vars
       let oldNew;
-      if (showNewText.length == 0) {
+      if (this.scalarArrayEquals(showNewText, showOldText)) {
         bool = false;
         oldNew = showOldText;
       } else {
         bool = true;
-        oldNew = [...showNewText, ...showOldText];
+        oldNew = [...showOldText];
       }
 
       return {
-        showNewText: this.totalDate(oldNew).join(','),
+        showNewText: this.totalDate(showNewText).join(','),
         showOldText: this.totalDate(showOldText).join(','),
-        day: oldNew.length * 0.5,
+        day: showNewText.length * 0.5,
         show: bool,
       };
     },
@@ -579,6 +593,9 @@ export default {
         sourceId: item.sourceId,
         projectApprovalId: item.projectApprovalId,
         weekSum: item.weekSum,
+        weekWorkList: item.checkList,
+        weekBegin: item.weekBegin,
+        remark: item.remark,
       }));
     },
     getTypeTm(li) {
@@ -586,7 +603,8 @@ export default {
       console.log(list);
       return { weekDate: list[0].weekDate, weekTimeType: list[0].weekTimeType };
     },
-    confirmTimeSheet(index) {
+
+    confirmTimeSheet(index, scope) {
       const arr = this.checkList.map((item) => ({ weekDate: item, type: '0', weekTimeFront: '' }));
       console.log(arr);
       // eslint-disable-next-line array-callback-return
@@ -599,11 +617,7 @@ export default {
           arr.push({ weekDate: item.text, type: '1', weekTimeFront: item.weekTimeFront });
         } else {
           const indexs = arr.findIndex((li) => li.weekDate == item.text);
-          if (item.weekTimeFront == 1) {
-            arr[indexs].type = '3';
-          } else {
-            arr[indexs].type = '2';
-          }
+          arr[indexs].type = '2';
         }
       });
 
@@ -613,17 +627,25 @@ export default {
         weekDate: this.getTypeTm(item.weekDate).weekDate, type: item.type, weekTimeType: this.getTypeTm(item.weekDate).weekTimeType, weekTimeFront: item.weekTimeFront,
       }));
       console.log(arrgo);
-      if (!arrgo.every((item) => item.type == '1')) {
-        if (!this.tableData[index].remark) {
-          this.$message.error('修改理由不能为空');
-          return false;
-        }
-      }
-      this.tableData[index].arrgo = this.checkList;
+
+      // if (arrgo.some((item) => item.type == '0' || item.type == '1')) {
+
+      //  }
+
+      // eslint-disable-next-line max-len
+      // } else if (arrgo.every((item) => item.type == '3' || (item.type == '1' && item.weekTimeFront == '0')) && this.tableData[index].remark) {
+      //   this.$message.error('当前未修改工作项，不需要写修改原因');
+      //   return false;
+      // }
+      // this.tableData[index].arrgo = this.checkList;
       this.$set(this.tableData[index], arrgo, this.checkList);
       this.tableData[index].checkList = arrgo;
-      this.updateTimeWeek(this.tableData[index]);
-      this.$refs[`popover${index}`].doClose();
+      this.timeSheetListapproval(this.tableData[index]);
+      scope._self.$refs[`popover-${index}`].doClose();
+    },
+    close(scope) {
+      console.log(scope._self);
+      scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
     // 组合全天
     totalDate(dateArr) {
@@ -636,14 +658,23 @@ export default {
           dateArr.push(`${li}全天`);
         }
       });
+      this.$forceUpdate();
       return dateArr;
     },
-    alertSelect(row) {
+    alertSelect(scope, desc) {
+      console.log(this.tableData[scope.$index]);
+      if (desc) {
+        if (!this.tableData[scope.$index].remark) {
+          this.$message.error('修改理由不能为空');
+          return false;
+        }
+      }
+
       this.$xconfirm({
         title: '确认审批',
         content: '工时确认后将不可再修改, 请确认',
       }).then(() => {
-        this.timeSheetListapproval(row);
+        this.confirmTimeSheet(scope.$index, scope);
       });
     },
     alertSelectAll() {
@@ -688,6 +719,9 @@ export default {
       params.sourceId = sourceId;
       params.projectApprovalId = projectApprovalId;
       params.weekSum = row.weekSum;
+      params.weekBegin = row.weekBegin;
+      params.weekWorkList = row.checkList;
+      params.remark = row.remark;
       this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
@@ -722,7 +756,7 @@ export default {
         userId,
         weekDate: weekBegin,
       }).then((res) => {
-        const arr = res.data;
+        const arr = res.data.filter((item) => item.weekTimeAfter != 0);
         // eslint-disable-next-line no-shadow
         const listDis = [];
         arr.forEach((item) => {
@@ -745,9 +779,23 @@ export default {
         });
       });
     },
+    scalarArrayEquals(array1, array2) {
+      return array1.length == array2.length && array1.every((v, i) => v === array2[i]);
+    },
     searchList() {
-      const weekBegin = this.weekLine[0] || '';
-      const weekEnd = this.weekLine[1] || '';
+      console.log(this.$refs.picker);
+      let weekBegin;
+      let weekEnd;
+      if (this.weekLine) {
+        // eslint-disable-next-line no-unused-vars
+
+        weekBegin = this.weekLine[0] || '';
+        weekEnd = this.weekLine[1] || '';
+      } else {
+        weekBegin = '';
+        weekEnd = '';
+      }
+
       this.server.timeSheetList({
         currentPage: this.currentPage,
         pageSize: this.pageSize,
@@ -771,26 +819,28 @@ export default {
             const arr = [];
             const arrOld = [];
             const arrHide = [];
+            const arrDev = [];
             item.weekWorkList.forEach((li, i) => {
               const obj = this.changeTimeText(item.weekBegin, li.weekDate, li.weekTimeType);
 
-              if (li.weekTimeAfter != 0) {
+              if (li.weekTimeAfter != '0') {
                 arrHide.push(obj.text);
                 arr.push(obj.text);
+                arrDev.push({ text: obj.text, weekTimeFront: li.weekTimeFront });
               }
 
               this.tableData[index].weekWorkList[i].text = obj.text;
               this.tableData[index].weekWorkList[i].num = 0.5;
-              if (li.weekTimeFront == 1) {
-                arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
-              }
+              //  if (li.weekTimeFront == 1) {
+              arrOld.push({ text: obj.text, weekTimeFront: li.weekTimeFront, weekTimeType: li.weekTimeType });
+            //  }
             });
             this.tableData[index].old = arrOld;
             this.tableData[index].arr = arr;
             this.tableData[index].arrHide = arrHide;
             this.tableData[index].weekSum = this.tableData[index].weekWorkList.filter((li) => li.weekTimeFront == '1').length;
             // eslint-disable-next-line no-shadow
-            this.tableData[index].checkList = arr.map((item) => ({ weekDate: item, type: '2' }));
+            this.tableData[index].checkList = arrDev.map((item) => ({ weekDate: this.getTypeTm(item.text).weekDate, type: '2', weekTimeFront: item.weekTimeFront }));
             console.log(this.tableData);
           });
         }
@@ -803,9 +853,10 @@ export default {
     listTimeFun(list, userId, weekBegin, ldapType, index) {
     //  this.monDayList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
       this.$set(this, 'monDayList', ['周一', '周二', '周三', '周四', '周五', '周六', '周日']);
-      if (ldapType == 'OTHER' || !ldapType) {
-        this.monDayList.remove('周六');
-        this.monDayList.remove('周日');
+      if (ldapType == 'OTHER') {
+        this.$set(this, 'monDayList', ['周一', '周二', '周三', '周四', '周五']);
+      } else {
+        this.$set(this, 'monDayList', ['周一', '周二', '周三', '周四', '周五', '周六', '周日']);
       }
       this.checkList = JSON.parse(JSON.stringify(list));
       this.checkItem = {};
@@ -852,6 +903,5 @@ export default {
       this.searchList();
     },
   },
-  watch: {},
 };
 </script>

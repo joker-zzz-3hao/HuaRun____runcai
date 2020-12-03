@@ -733,7 +733,7 @@
 .my-okr .card-panel-head .update-time {
   position: absolute;
   left: 0;
-  top: calc(50% + 16px);
+  top: calc(50% + 10px);
 }
 
 .my-okr .card-panel-head .update-time em {
@@ -1567,6 +1567,28 @@
 
 .my-okr .cont-area .expanded .tag-kind .kind-parent+em {
   color: #685df1;
+}
+
+.my-okr .tl-card-panel.is-show {
+  padding-top: 50px;
+  position: relative;
+}
+
+.my-okr .tl-card-panel.is-show .okr-tag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.my-okr .card-panel-body .tl-table th,
+.overview .card-panel-body .tl-table th {
+  height: 30px;
+}
+
+.my-okr .tl-table-fix .tl-thead,
+.overview .tl-table-fix .tl-thead {
+  top: 0;
 }
 
 .okr-maps .tl-select-dropdown.el-popper {
@@ -2838,8 +2860,17 @@
 
 /* 周报 */
 .my-weekly {
-  margin: 16px 16px 86px 16px;
+  margin: 16px;
+}
+
+.my-weekly:not(.has-no-data) {
+  margin-bottom: 86px;
   min-height: calc(100vh - 172px);
+}
+
+.my-weekly.has-no-data .weekly-area {
+  display: flex;
+  align-items: center;
 }
 
 .my-weekly .operating-area {
@@ -3133,6 +3164,10 @@
   margin: 20px 0 0 0;
 }
 
+.write-weekly {
+  width: 100%;
+}
+
 .my-weekly .write-weekly .dl-card-panel:last-of-type {
   margin: 0;
 }
@@ -3179,7 +3214,6 @@
 
 .weekly-cont .tl-form .tag-lists li:not(.is-init) em {
   color: #4d5155;
-  max-width: 150px;
 }
 
 .weekly-cont .tag-lists li em {
@@ -3603,6 +3637,8 @@
 
 .weekly-cont .time-cascader .el-form-item__content .working-hours-info {
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .weekly-cont .tl-form .el-form-item__content>em {
@@ -3692,6 +3728,7 @@
 
 .weekly-cont .add-working-hours .tl-cascader .el-input__inner {
   height: unset !important;
+  line-height: unset;
 }
 
 .weekly-cont .add-working-hours .el-icon-close {
@@ -3700,11 +3737,6 @@
 
 .weekly-cont .working-hours-info>span:first-child {
   color: #879099;
-}
-
-.weekly-cont .working-hours-info>span:last-child {
-  display: inline-block;
-  vertical-align: -4px;
 }
 
 .popper-working-hours {
@@ -4020,6 +4052,12 @@
 
 .teams-weekly .operating-area .operating-box>div:not(:first-child) {
   margin: 0 0 0 20px;
+}
+
+.teams-weekly .cont-area.not-opened {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teams-weekly .cont-area>.flex-sb {
