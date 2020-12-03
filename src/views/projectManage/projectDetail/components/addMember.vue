@@ -32,7 +32,7 @@
             >
               <dl class="user-info">
                 <dd>{{ item.userName }}</dd>
-                <dd>{{ item.orgName }}</dd>
+                <dd>( {{ item.orgName }} )</dd>
               </dl>
             </el-option>
           </el-select>
