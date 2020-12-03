@@ -117,7 +117,7 @@ const THROW_TYPE_CREATE_LIST = [
   { value: '1', label: '研发支出' },
 ];
 const CURRENCY_LIST = [
-  { value: '0', label: '港币' },
+  // { value: '0', label: '港币' },
   { value: '1', label: '人民币' },
 ];
 
