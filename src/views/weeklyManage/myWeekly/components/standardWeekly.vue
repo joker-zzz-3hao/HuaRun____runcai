@@ -1265,7 +1265,6 @@ export default {
               });
             });
           });
-          this.$forceUpdate();
         }
         // 清除表单
         this.refreshForm = false;
