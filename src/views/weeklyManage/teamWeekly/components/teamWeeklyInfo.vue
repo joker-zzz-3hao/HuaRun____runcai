@@ -27,6 +27,9 @@
               }}</em>
             </dd>
             <dd>{{ $route.query.userName }}</dd>
+            <dd>
+              <div class="weekly-title">{{ getWeekItem() }}</div>
+            </dd>
           </dl>
         </div>
         <div class="weekly-cont">
@@ -634,7 +637,6 @@ export default {
       weeklyPlanList: [],
       weeklyOkrVoList: [],
       visitUserNameList: [],
-
       openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
@@ -652,6 +654,9 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+    }),
+    ...mapState('weekly', {
+      week: (state) => state.week,
     }),
     setOkrStyle() {
       return (item) => {
@@ -748,6 +753,11 @@ export default {
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
+    },
+    getWeekItem() {
+      const beg = this.week.weekBegin.split('-').splice(1, 2).join('/');
+      const end = this.week.weekEnd.split('-').splice(1, 2).join('/');
+      return `第${this.weekList.indexOf(this.week) + 1}周(${beg}-${end})`;
     },
 
   },
