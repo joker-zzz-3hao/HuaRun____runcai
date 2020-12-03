@@ -24,7 +24,7 @@
                   <span>%</span>
                 </div>
                 <div>
-                  <span>信心指数(^_−)☆修改为</span>
+                  <span>信心指数修改为</span>
                   <div class="state-grid">
                     <div
                       :class="{

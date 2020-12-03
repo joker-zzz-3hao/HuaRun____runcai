@@ -824,9 +824,8 @@
 }
 
 /* change by xinquan */
-.update-progress .el-dialog__body {
-  width: 102%;
-  height: 400px;
+.update-progress .okr-info {
+  height: 500px;
   overflow: hidden;
 }
 
@@ -859,7 +858,27 @@
   height: 500px;
   padding: 0 0 0 20px;
 }
+.update-progress .update-histoy {
+  width: 300px;
+}
+/* 富文本 */
+.update-progress .el-tiptap-editor__command-button{
+  height: 25px;
+  width: 25px;
+}
 
+.update-progress .el-tiptap-editor>.el-tiptap-editor__content{
+  height: 350px;
+  cursor: text;
+  padding: 5px 15px;
+}
+
+.update-progress .el-tiptap-editor__menu-bar .el-tiptap-editor__command-button.hide{
+  display: none;
+}
+.update-progress .el-tiptap-editor .ProseMirror{
+  height: 100%;
+}
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
@@ -5883,13 +5902,4 @@
 
 .add-progress:hover {
   color: #685df1;
-}
-/* 富文本 */
-.update-progress .el-tiptap-editor__command-button{
-  height: 30px;
-  width: 30px;
-}
-
-.update-progress .el-tiptap-editor>.el-tiptap-editor__content {
-  cursor: text;
 }

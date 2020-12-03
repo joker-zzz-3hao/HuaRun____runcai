@@ -10,14 +10,13 @@
     width="1000px"
   >
     <template slot="title">
-      <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList">
-      </tl-tabs>
       <!-- <span>更新进度</span>
       <span>更多更新记录</span> -->
     </template>
-    <el-scrollbar>
-      <div class="flex-up">
-        <div class="okr-info">
+    <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
+    <div class="flex-up">
+      <div class="okr-info">
+        <el-scrollbar ref="detailscrollbar">
           <div class="tl-custom-timeline" v-if="currentIndex === 0">
             <el-form :model="formData" ref="dataForm" class="tl-form">
               <dl class="timeline-list">
@@ -178,32 +177,96 @@
               </dl>
             </el-form>
           </div>
-          <div v-else>
-            <tl-updatehistoy
-              :exist.sync="histoyExist"
-              v-if="hasValue(histoyExist)"
-              ref="updatehistory"
-              :okrDetailId="formData.okrDetailId"
-              :krName="formData.okrDetailObjectKr"
-            ></tl-updatehistoy>
+          <div class="update-histoy" v-else>
+            <div class="tl-custom-timeline">
+              <dl class="timeline-list" v-if="historyList.length">
+                <dd v-for="activity in historyList" :key="activity.id">
+                  <div class="list-info">
+                    <div class="list-title">{{ activity.createTime }}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <em>{{ activity.userName }}</em>
+                        <span>更新</span>
+                      </div>
+                      <ul class="operate-kind">
+                        <li>
+                          <div>
+                            <span>关键结果</span>
+                            <em>{{ formData.okrDetailObjectKr }}</em>
+                          </div>
+                          <div>
+                            <span>进度由</span>
+                            <em>{{
+                              activity.updateContents.beforeProgress
+                            }}</em>
+                            <span>%</span>
+                            <span>更新为</span>
+                            <em>{{ activity.updateContents.afterProgress }}</em>
+                            <span>%</span>
+                          </div>
+                          <div>
+                            <span>信心指数修改为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                  'is-no-risk':
+                                    activity.updateContents.afterConfidence ==
+                                    1,
+                                  'is-risks':
+                                    activity.updateContents.afterConfidence ==
+                                    2,
+                                  'is-uncontrollable':
+                                    activity.updateContents.afterConfidence ==
+                                    3,
+                                }"
+                              ></div>
+                              <div
+                                :class="{
+                                  'is-risks':
+                                    activity.updateContents.afterConfidence ==
+                                    2,
+                                  'is-uncontrollable':
+                                    activity.updateContents.afterConfidence ==
+                                    3,
+                                }"
+                              ></div>
+                              <div
+                                :class="{
+                                  'is-uncontrollable':
+                                    activity.updateContents.afterConfidence ==
+                                    3,
+                                }"
+                              ></div>
+                            </div>
+                            <em>{{
+                              CONST.CONFIDENCE_MAP[
+                                activity.updateContents.afterConfidence
+                              ]
+                            }}</em>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
           </div>
+        </el-scrollbar>
+      </div>
+      <div class="note-book">
+        <div>
+          <span>OKR记事本</span>
+          <el-button type="primary" class="tl-btn amt-bg-slip">更新</el-button>
         </div>
-        <div class="note-book">
-          <div>
-            <span>OKR记事本</span>
-            <el-button type="primary" class="tl-btn amt-bg-slip"
-              >更新</el-button
-            >
-          </div>
-          <div>
-            <el-tiptap
-              v-model="formData.updateexplain"
-              :extensions="extensions"
-            />
-          </div>
+        <div>
+          <el-tiptap
+            v-model="formData.updateexplain"
+            :extensions="extensions"
+          />
         </div>
       </div>
-    </el-scrollbar>
+    </div>
     <div slot="footer" class="dialog-footer">
       <el-button
         :disabled="!hasPower('okr-update')"
@@ -239,7 +302,6 @@ import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
 import { mapMutations } from 'vuex';
-import updateHistoy from './updateHistoy';
 import CONST from '../const';
 
 export default {
@@ -247,7 +309,6 @@ export default {
   components: {
     'tl-confidence': confidenceSelect,
     'tl-process': process,
-    'tl-updatehistoy': updateHistoy,
     'tl-tabs': tabs,
   },
   data() {
@@ -283,6 +344,9 @@ export default {
       {
         menuName: '更多更新记录',
       }],
+      pageSize: 10,
+      status: 1,
+      currentPage: 1,
     };
   },
   props: {
@@ -305,10 +369,17 @@ export default {
       type: String,
       default: '',
     },
+
   },
   created() {
   },
   mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.onScroll, true);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll, true);
   },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
@@ -334,13 +405,21 @@ export default {
       const params = {
         currentPage: 1,
         okrDetailId: this.formData.okrDetailId,
-        pageSize: 1,
+        pageSize: this.pageSize * this.currentPage,
       };
       this.server.getOkrUpdateHistory(params).then((res) => {
         if (res.code == 200) {
           if (res.data.length > 0) {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
+            this.historyList = res.data;
+            console.log(this.historyList.length);
+            this.historyList.forEach((item) => {
+              const content = JSON.parse(item.content);
+              item.updateContents = content || {};
+            });
+            this.$forceUpdate();
+            this.status = 1;
           }
         }
       });
@@ -393,13 +472,44 @@ export default {
         this.$refs.updatehistory.show();
       });
     },
+    // 获取滚动条当前的位置
+    getScrollTop() {
+      let scrollTop = 0;
+      scrollTop = this.$refs.detailscrollbar.wrap.scrollTop;
+
+      return scrollTop;
+    },
+    // 获取当前可视范围的高度
+    getClientHeight() {
+      let clientHeight = 0;
+
+      clientHeight = this.$refs.detailscrollbar.$el.offsetWidth;
+      return clientHeight;
+    },
+
+    // 滚动事件触发下拉加载
+    onScroll() {
+      console.log('滚动', this.getScrollTop() / this.getClientHeight());
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage * 5) {
+        if (this.status === 1) {
+          this.status = 0;
+          // 页码，分页用，默认第一页
+          this.currentPage += 1;
+          // 调用请求函数
+          this.getHistory();
+        }
+      }
+    },
   },
   watch: {
     currentIndex: {
       handler(newVal) {
         if (newVal === 1) {
-          this.openHistory();
+          this.pageSize = 10;
+        } else {
+          this.pageSize = 10;
         }
+        // this.getHistory();
       },
     },
   },
