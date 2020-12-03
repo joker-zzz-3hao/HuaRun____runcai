@@ -10,12 +10,7 @@
       <el-button @click="addEvaluate">添加评定</el-button>
     </div>
     <div class="cont-area">
-      <crcloud-table
-        :total="total"
-        :pageSize.sync="pageSize"
-        :currentPage.sync="currentPage"
-        @searchList="searchList"
-      >
+      <crcloud-table :isPage="false" @searchList="searchList">
         <div slot="tableContainer" class="table-container">
           <el-table
             ref="performanceEvaluate"
@@ -25,7 +20,7 @@
             <el-table-column
               label="评定方式"
               align="left"
-              prop=""
+              prop="ruleName"
             ></el-table-column>
             <el-table-column
               label="内容"
@@ -35,24 +30,42 @@
             <el-table-column
               label="设置时间"
               align="left"
-              prop=""
+              prop="createTime"
             ></el-table-column>
             <el-table-column
               label="更新时间"
               align="left"
-              prop=""
+              prop="updateTime"
             ></el-table-column>
             <el-table-column
               label="添加人"
               align="left"
-              prop=""
+              prop="createUserName"
             ></el-table-column>
             <el-table-column
               label="操作"
               align="left"
               width="100px"
               fixed="right"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <el-button
+                  v-if="hasPower('sys_dictionary_update')"
+                  type="text"
+                  @click="editDic(scope.row)"
+                  size="small"
+                  >修改</el-button
+                >
+
+                <el-button
+                  v-if="hasPower('sys_dictionary_delete')"
+                  type="text"
+                  size="small"
+                  @click="deleteDic(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </crcloud-table>
@@ -82,9 +95,6 @@ export default {
   props: {},
   data() {
     return {
-      total: 0,
-      pageSize: 10,
-      currentPage: 1,
       server,
       loading: false,
       evaluateData: [],
@@ -92,12 +102,17 @@ export default {
       optionType: '',
     };
   },
-  created() {},
+  created() { this.searchList(); },
   mounted() {},
   computed: {},
   methods: {
     searchList() {
-
+      this.server.getEvaluateList().then((res) => {
+        this.loading = false;
+        if (res.code == 200) {
+          this.evaluateData = res.data;
+        }
+      });
     },
     addEvaluate() {
       this.showDialog = true;

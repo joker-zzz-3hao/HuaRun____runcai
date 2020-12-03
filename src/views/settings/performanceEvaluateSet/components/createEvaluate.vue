@@ -11,58 +11,73 @@
     @close="close"
     title="设置绩效评定体系"
     :close-on-click-modal="false"
-    width="70%"
   >
-    <el-form
-      ref="dicForm"
-      v-for="evaluateItem in evaluateFormList"
-      :model="evaluateItem"
-      :key="evaluateItem.randomId"
-      label-width="90px"
-    >
-      <el-button
-        type="text"
-        @click="
-          evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
-        "
-        >删除整个体系</el-button
+    <div v-show="step == 1">
+      <el-form
+        ref="dicForm"
+        v-for="evaluateItem in evaluateFormList"
+        :model="evaluateItem"
+        :key="evaluateItem.randomId"
+        label-width="90px"
       >
+        <el-button
+          type="text"
+          @click="
+            evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
+          "
+          >删除整个体系</el-button
+        >
 
-      <el-form-item label="自定义名称" prop="ruleName">
-        <el-input
-          v-model.trim="evaluateItem.ruleName"
-          maxlength="50"
-          clearable
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="自定义体系" prop="ruleName">
-        <div
-          v-for="(ruleItem, index) in evaluateItem.ruleDetailList"
+        <el-form-item label="自定义名称" prop="ruleName">
+          <el-input
+            v-model.trim="evaluateItem.ruleName"
+            maxlength="50"
+            clearable
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="自定义体系" prop="ruleName">
+          <div
+            v-for="(ruleItem, index) in evaluateItem.ruleDetailList"
+            :key="ruleItem.detailRandomId"
+          >
+            <el-input v-model.trim="ruleItem.value"></el-input>
+            <el-input v-model.trim="ruleItem.unit"></el-input>
+            说明
+            <el-input v-model.trim="ruleItem.description"></el-input>
+            <el-button
+              type="text"
+              v-show="evaluateItem.ruleDetailList.length - 1 == index"
+              @click="addRuleItem(evaluateItem)"
+              >添加</el-button
+            >
+            <el-button
+              type="text"
+              @click="
+                evaluateItem.ruleDetailList.length > 1
+                  ? deleteRuleItem(evaluateItem, ruleItem)
+                  : ''
+              "
+              >删除</el-button
+            >
+          </div>
+        </el-form-item>
+      </el-form>
+      <el-button type="text" @click="addEvaluateItem">添加评定体系</el-button>
+    </div>
+    <div v-show="step == 2">
+      <dl v-for="evaluateItem in evaluateFormList" :key="evaluateItem.randomId">
+        <dt>{{ evaluateItem.ruleName }}</dt>
+        <dd
+          v-for="ruleItem in evaluateItem.ruleDetailList"
           :key="ruleItem.detailRandomId"
         >
-          <el-input v-model.trim="ruleItem.value"></el-input>
-          <el-input v-model.trim="ruleItem.unit"></el-input>
+          <span>{{ ruleItem.value }}</span>
+          <span>{{ ruleItem.unit }}</span>
           说明
-          <el-input v-model.trim="ruleItem.description"></el-input>
-          <el-button
-            type="text"
-            v-show="evaluateItem.ruleDetailList.length - 1 == index"
-            @click="addRuleItem(evaluateItem)"
-            >添加</el-button
-          >
-          <el-button
-            type="text"
-            @click="
-              evaluateItem.ruleDetailList.length > 1
-                ? deleteRuleItem(evaluateItem, ruleItem)
-                : ''
-            "
-            >删除</el-button
-          >
-        </div>
-      </el-form-item>
-    </el-form>
-    <el-button type="text" @click="addEvaluateItem">添加评定体系</el-button>
+          <span>{{ ruleItem.description }}</span>
+        </dd>
+      </dl>
+    </div>
     <div class="operating-box">
       <el-button
         :loading="loading"
@@ -75,7 +90,7 @@
         :disabled="loading"
         plain
         class="tl-btn amt-border-fadeout"
-        @click="close"
+        @click="cancel"
         >取消</el-button
       >
     </div>
@@ -99,6 +114,7 @@ export default {
       visible: false,
       loading: false,
       evaluateFormList: [],
+      step: '1',
     };
   },
   created() { this.init(); },
@@ -111,39 +127,29 @@ export default {
     addEvaluateItem() {
       this.evaluateFormList.push({
         ruleRandomId: this.getRandomId(),
-        ruleName: '我是自定义名称',
+        ruleName: '',
         ruleDetailList: [{
           // level: 0,
           // ruleDetailId: 0,
           // ruleId: 'string',
-          unit: '单位',
-          value: '值',
-          description: '我是说明',
+          unit: '',
+          value: '',
+          description: '',
           detailRandomId: this.getRandomId(),
         }],
 
       });
     },
     deleteEvaluateItem(evaluateItem) {
-      this.evaluateFormList.forEach((item) => {
-        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
-          item.ruleDetailList.push({
-            unit: '单位',
-            value: '值',
-            description: '我是说明',
-            detailRandomId: this.getRandomId(),
-          });
-        }
-      });
       this.evaluateFormList = this.evaluateFormList.filter((item) => item.ruleRandomId != evaluateItem.ruleRandomId);
     },
     addRuleItem(evaluateItem) {
       this.evaluateFormList.forEach((item) => {
         if (evaluateItem.ruleRandomId == item.ruleRandomId) {
           item.ruleDetailList.push({
-            unit: '单位',
-            value: '值',
-            description: '我是说明',
+            unit: '',
+            value: '',
+            description: '',
             detailRandomId: this.getRandomId(),
           });
         }
@@ -157,17 +163,28 @@ export default {
       });
     },
     addEvaluate() {
-      const params = {};
-      this.loading = true;
-      this.server.addEvaluate(params).then((res) => {
-        this.loading = false;
-        if (res.code == 200) {
-          console.log(res);
-        }
-      });
+      if (this.step == 1) {
+        this.step = 2;
+      } else {
+        this.loading = true;
+        this.server.addEvaluate(this.evaluateFormList).then((res) => {
+          this.loading = false;
+          if (res.code == 200) {
+            this.$message.success('成功');
+            this.close();
+          }
+        });
+      }
     },
     show() {
       this.visible = true;
+    },
+    cancel() {
+      if (this.step == 1) {
+        this.close();
+      } else {
+        this.step = 1;
+      }
     },
     close() {
       this.visible = false;
