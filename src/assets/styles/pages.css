@@ -3301,6 +3301,7 @@
   height: 21px;
   margin: 0 0 0 20px;
   background: #f4f6f8;
+  cursor: pointer;
 }
 
 .weekly-thoughts .el-textarea__inner,
@@ -4613,6 +4614,7 @@
 .teams-weekly .operating-area .tl-btn span {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .teams-weekly .operating-area .tl-btn .icon-remind {
