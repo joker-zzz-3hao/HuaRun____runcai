@@ -1335,7 +1335,7 @@
 }
 
 .okr-detail .timeline-list .operate-kind li {
-  padding: 20px 0;
+  padding: 20px 0 4px 0;
   margin: 0;
   justify-content: space-between;
 }
@@ -4007,7 +4007,7 @@
 }
 
 .my-weekly .okr-completion .no-data span {
-  color: #879099;
+  color: #bcc4cc;
 }
 
 .mood {
@@ -4494,11 +4494,13 @@
   margin: 0 14px 0 0;
 }
 
-.weekly .user-info dd:last-child {
+.weekly .user-info .user-name + dd {
   font-size: 16px;
   font-weight: 500;
   color: #4d5155;
 }
+
+.weekly .user-info .
 
 .weekly .tl-table .el-table__body .cell {
   padding: 10px;
