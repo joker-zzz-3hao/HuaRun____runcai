@@ -114,7 +114,7 @@
               <div class="tl-progress-group">
                 <tl-process
                   :data="parseInt(Number(workForm.workProgress), 10)"
-                  :showNumber="!canUpdate && workForm.noCheck"
+                  :showNumber="!canUpdate || !workForm.noCheck"
                 ></tl-process>
                 <!-- kr支持更改进度 -->
                 <el-slider
@@ -257,23 +257,23 @@
               <div class="tag-group">
                 <ul class="tag-lists">
                   <li v-if="workForm.projectNameCn">
-                    <el-tooltip
+                    <!-- <el-tooltip
                       v-if="workForm.projectId != 'DEFAULT_PROJECT'"
                       class="select-values"
                       effect="dark"
                       placement="top"
                       popper-class="tl-tooltip-popper"
+                    > -->
+                    <!-- <em slot="content">{{ workForm.projectNameCn }}</em> -->
+                    <em
+                      @click="
+                        canUpdate && workForm.noCheck
+                          ? selectProject(workForm)
+                          : ''
+                      "
+                      >{{ workForm.projectNameCn }}</em
                     >
-                      <em slot="content">{{ workForm.projectNameCn }}</em>
-                      <em
-                        @click="
-                          canUpdate && workForm.noCheck
-                            ? selectProject(workForm)
-                            : ''
-                        "
-                        >{{ workForm.projectNameCn }}</em
-                      >
-                    </el-tooltip>
+                    <!-- </el-tooltip>
                     <div v-else>
                       <em
                         @click="
@@ -283,7 +283,7 @@
                         "
                         >{{ workForm.projectNameCn }}</em
                       >
-                    </div>
+                    </div> -->
                   </li>
                   <li
                     v-if="!workForm.projectNameCn"
@@ -321,21 +321,21 @@
                     v-for="item in workForm.selectedOkr"
                     :key="item.okrDetailId"
                   >
-                    <el-tooltip
+                    <!-- <el-tooltip
                       v-if="item.okrDetailObjectKr != '不关联任何OKR'"
                       class="select-values"
                       effect="dark"
                       placement="top"
                       popper-class="tl-tooltip-popper"
+                    > -->
+                    <!-- <em slot="content">{{ item.okrDetailObjectKr }}</em> -->
+                    <em
+                      v-if="canUpdate && workForm.noCheck"
+                      @click="addSupportOkr(workForm)"
+                      >{{ item.okrDetailObjectKr }}</em
                     >
-                      <em slot="content">{{ item.okrDetailObjectKr }}</em>
-                      <em
-                        v-if="canUpdate && workForm.noCheck"
-                        @click="addSupportOkr(workForm)"
-                        >{{ item.okrDetailObjectKr }}</em
-                      >
-                      <em v-else>{{ item.okrDetailObjectKr }}</em>
-                    </el-tooltip>
+                    <em v-else>{{ item.okrDetailObjectKr }}</em>
+                    <!-- </el-tooltip>
                     <div v-else>
                       <em
                         v-if="canUpdate && workForm.noCheck"
@@ -343,7 +343,7 @@
                         >{{ item.okrDetailObjectKr }}</em
                       >
                       <em v-else>{{ item.okrDetailObjectKr }}</em>
-                    </div>
+                    </div> -->
                   </li>
                   <li
                     v-if="
@@ -1022,7 +1022,9 @@ export default {
         weekList.forEach((day) => {
           const dateTemp = day.weekDate.split(' ')[0];
           const whichDay = new Date(dateTemp).getDay();
-          result.push([whichDay, day.weekTimeType]);
+          if (day.weekTimeAfter !== '0') {
+            result.push([whichDay, day.weekTimeType]);
+          }
         });
       }
       return result;

@@ -92,15 +92,19 @@
                   <div class="tag-group">
                     <ul>
                       <li v-if="workForm.projectNameCn">
-                        <el-tooltip
+                        <!-- <el-tooltip
+                          v-if="workForm.projectId != 'DEFAULT_PROJECT'"
                           class="select-values"
                           effect="dark"
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{ workForm.projectNameCn }}</em>
+                          <em slot="content">{{ workForm.projectNameCn }}</em> -->
+                        <em>{{ workForm.projectNameCn }}</em>
+                        <!-- </el-tooltip>
+                        <div v-else>
                           <em>{{ workForm.projectNameCn }}</em>
-                        </el-tooltip>
+                        </div> -->
                       </li>
                     </ul>
                   </div>
@@ -118,42 +122,34 @@
                         v-for="value in workForm.okrCultureValueList"
                         :key="value.id"
                       >
-                        <el-tooltip
+                        <!-- <el-tooltip
                           class="select-values"
                           effect="dark"
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{ value.cultureName }}</em>
-                          <em>{{ setOkrStyle(value.cultureName) }}</em>
-                        </el-tooltip>
+                          <em slot="content">{{ value.cultureName }}</em> -->
+                        <em>{{ value.cultureName }}</em>
+                        <!-- </el-tooltip> -->
                       </li>
                       <li v-for="value in workForm.workOkrList" :key="value.id">
-                        <el-tooltip
+                        <!-- <el-tooltip
                           class="select-values"
                           effect="dark"
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{ value.okrDetailObjectKr }}</em>
-                          <em>{{ setOkrStyle(value.okrDetailObjectKr) }}</em>
-                        </el-tooltip>
+                          <em slot="content">{{ value.okrDetailObjectKr }}</em> -->
+                        <em>{{ value.okrDetailObjectKr }}</em>
+                        <!-- </el-tooltip> -->
                       </li>
                     </ul>
                   </div>
                   <div v-else>
                     <ul>
-                      <l>
-                        <el-tooltip
-                          class="select-values"
-                          effect="dark"
-                          placement="top"
-                          popper-class="tl-tooltip-popper"
-                        >
-                          <em slot="content">不关联任何OKR</em>
-                          <em>不关联任何OKR</em>
-                        </el-tooltip>
-                      </l>
+                      <li>
+                        <em>不关联任何OKR</em>
+                      </li>
                     </ul>
                   </div>
                   <div class="tag-group">
