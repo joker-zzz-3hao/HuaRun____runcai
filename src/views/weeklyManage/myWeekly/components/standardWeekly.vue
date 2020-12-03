@@ -172,7 +172,7 @@
                     collapse-tags
                     @visible-change="visibleChange(workForm)"
                     @change="selectWeekData(workForm)"
-                    popper-class="tl-cascader-popper working-hours"
+                    popper-class="tl-cascader-popper working-hours-wzr"
                     class="tl-cascader"
                   ></el-cascader>
                 </div>
