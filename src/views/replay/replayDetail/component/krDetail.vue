@@ -85,15 +85,25 @@
           <dd>
             <dl>
               <dt>评分</dt>
-              <dd></dd>
+              <dd>{{ list.score }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.scoreRemark">
               <dt>评分说明</dt>
-              <dd></dd>
+              <dd>{{ list.scoreRemark }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.attachmentList">
               <dt>佐证材料</dt>
-              <dd></dd>
+              <dd v-for="file in list.fileList" :key="file.resourceId">
+                <em>{{ file.resourceName }}</em>
+                <span>
+                  <span
+                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                    @click="openFile(file)"
+                    >预览</span
+                  >
+                  <span @click="downFile(file)">下载</span>
+                </span>
+              </dd>
             </dl>
           </dd>
           <!-- 复盘详情有则显示 -->
@@ -140,6 +150,7 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 
@@ -147,6 +158,8 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
+import CONST from '@/lib/const';
+import imgDialog from '@/components/imgDialog';
 import Server from '../../server';
 
 const server = new Server();
@@ -155,6 +168,7 @@ export default {
   props: ['okrMain'],
   data() {
     return {
+      CONST,
       reviewType: 1,
       form: {},
       activeNames: [0],
@@ -188,6 +202,7 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
+    'img-dialog': imgDialog,
   },
   methods: {
     selectColor(txt) {
@@ -197,7 +212,27 @@ export default {
       }
       return '';
     },
-
+    // -------------文件-------------
+    // 截取文件类型
+    cutType(name) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
+    // 预览
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    // 下载
+    downFile(fileObj) {
+      console.log(this.data);
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=${this.data.okrMainId}`;
+      window.open(url);
+    },
   },
 };
 </script>

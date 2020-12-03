@@ -66,7 +66,7 @@
         </dd>
       </dl>
     </dd>
-    <dd class="flex-end" v-if="$route.name !== 'replayEdit'">
+    <!-- <dd class="flex-end" v-if="$route.name !== 'replayEdit'">
       <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
       <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>
     </dd>
@@ -75,7 +75,7 @@
         <el-radio :label="1" class="tl-radio">以关键结果KR复盘</el-radio>
         <el-radio :label="0" class="tl-radio">以目标O复盘</el-radio>
       </el-radio-group>
-    </dd>
+    </dd> -->
   </dl>
 </template>
 <script>

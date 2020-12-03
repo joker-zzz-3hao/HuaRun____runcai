@@ -30,78 +30,103 @@
           </dl>
         </template>
         <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
-          <dt class="tag-kind">
-            <span class="kind-child">KR</span>
-            <em>{{ list.okrDetailObjectKr }}</em>
-          </dt>
-          <dd>
-            <div>
-              <i class="el-icon-medal"></i>
-              <span>权重</span>
-              <em>{{ list.okrWeight }}%</em>
-            </div>
-            <div>
-              <i class="el-icon-odometer"></i>
-              <span>进度</span>
-              <tl-process
-                :data="parseInt(list.okrDetailProgress, 10)"
-              ></tl-process>
-            </div>
-          </dd>
-          <dd>
-            <div>
-              <span>考核指标</span>
-              <em>{{ list.checkQuota }}</em>
-            </div>
-          </dd>
-          <dd>
-            <div>
-              <span>衡量方法</span>
-              <em>{{ list.judgeMethod }}</em>
-            </div>
-          </dd>
-          <dd>
-            <dl>
-              <dt>评分</dt>
-              <dd>
-                <el-input-number
-                  v-model="list.score"
-                  controls-position="right"
-                  class="tl-input-number"
-                  :min="0"
-                  :max="1"
-                  :step="0.1"
-                  step-strictly
-                ></el-input-number>
-                <span>
-                  如您输入的评分与KR进度分数不一致，则需要给出解释，如：KR进度90%，评分应该是0.9，如不一样，请说明原因。
-                </span>
-              </dd>
-            </dl>
-            <dl>
-              <dt>评分说明</dt>
-              <dd>
-                <el-input
-                  v-model="list.communication"
-                  placeholder="请输入评分原因"
-                  maxlength="200"
-                  type="textarea"
-                  :rows="3"
-                  resize="none"
-                  class="tl-textarea"
-                ></el-input>
-              </dd>
-            </dl>
-            <dl>
-              <dt>上传佐证材料</dt>
-              <dd>
-                <file-upload
-                  ref="fileUpload"
-                  :fileList="list.fileList"
-                  :limit="10"
-                  @change="fileChange"
-                  sourceType="OKRMODIFY"
-                  accept="
+          <el-form :model="list" :ref="i + 'dataForm'">
+            <dt class="tag-kind">
+              <span class="kind-child">KR</span>
+              <em>{{ list.okrDetailObjectKr }}</em>
+            </dt>
+            <dd>
+              <div>
+                <i class="el-icon-medal"></i>
+                <span>权重</span>
+                <em>{{ list.okrWeight }}%</em>
+              </div>
+              <div>
+                <i class="el-icon-odometer"></i>
+                <span>进度</span>
+                <tl-process
+                  :data="parseInt(list.okrDetailProgress, 10)"
+                ></tl-process>
+              </div>
+            </dd>
+            <dd>
+              <div>
+                <span>考核指标</span>
+                <em>{{ list.checkQuota || "--" }}</em>
+              </div>
+            </dd>
+            <dd>
+              <div>
+                <span>衡量方法</span>
+                <em>{{ list.judgeMethod || "--" }}</em>
+              </div>
+            </dd>
+            <dd>
+              <dl>
+                <dt>评分</dt>
+                <dd>
+                  <el-form-item
+                    prop="score"
+                    :rules="[
+                      {
+                        trigger: 'blur',
+                        required: true,
+                        message: '请输入评分',
+                      },
+                    ]"
+                  >
+                    <el-input-number
+                      v-model="list.score"
+                      controls-position="right"
+                      class="tl-input-number"
+                      :min="0"
+                      :max="1"
+                      :step="0.01"
+                      step-strictly
+                      @change="showscore(list)"
+                    ></el-input-number
+                  ></el-form-item>
+
+                  <span>
+                    如您输入的评分与KR进度分数不一致，则需要给出解释，如：KR进度90%，评分应该是0.9，如不一样，请说明原因。
+                  </span>
+                </dd>
+              </dl>
+              <dl v-if="list.score * 100 != list.okrDetailProgress">
+                <dt>评分说明</dt>
+                <dd>
+                  <el-form-item
+                    prop="scoreRemark"
+                    :rules="[
+                      {
+                        trigger: 'blur',
+                        required: true,
+                        message: '请输入评分说明',
+                      },
+                    ]"
+                  >
+                    <el-input
+                      v-model="list.scoreRemark"
+                      placeholder="请输入评分说明"
+                      maxlength="200"
+                      type="textarea"
+                      resize="none"
+                      class="tl-textarea"
+                    ></el-input>
+                  </el-form-item>
+                </dd>
+              </dl>
+              <dl>
+                <dt>上传佐证材料</dt>
+                <dd>
+                  <file-upload
+                    :actionIndex="{ oindex: index, krindex: i }"
+                    ref="fileUpload"
+                    :fileList="list.fileList"
+                    :limit="10"
+                    @change="fileChange"
+                    sourceType="OKRMODIFY"
+                    accept="
               .jpg,
               .jpeg,
               image/png,
@@ -109,81 +134,74 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .pptx,
               .xlsx"
-                  tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
-                ></file-upload>
-              </dd>
-            </dl>
-            <div @click="openMore(list)">展开</div>
-            <div v-show="list.openAdvantage">
-              <dl>
-                <dt>价值与收获</dt>
-                <dd>
-                  <el-input
-                    maxlength="2000"
-                    :autosize="{ minRows: 1, maxRows: 8 }"
-                    v-model="list.advantage"
-                    type="textarea"
-                    class="tl-textarea"
-                    placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
-                  ></el-input>
+                    tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+                    @click="uploadList(i)"
+                  ></file-upload>
                 </dd>
               </dl>
-              <dl>
-                <dt>问题与不足</dt>
-                <dd>
-                  <el-input
-                    :autosize="{ minRows: 1, maxRows: 8 }"
-                    maxlength="2000"
-                    v-model="list.disadvantage"
-                    type="textarea"
-                    class="tl-textarea"
-                    placeholder="事情做的有那些不足，自己表现有哪些不足？"
-                  ></el-input>
-                </dd>
-              </dl>
-              <dl>
-                <!-- TODO: 改成一条了还要用list吗？ -->
-                <dt>改进措施</dt>
-                <template v-if="list.measure.length > 1">
-                  <dd v-for="(li, d) in list.measure || []" :key="d">
+              <div @click="openMore(list)">展开</div>
+              <div v-show="list.openAdvantage">
+                <dl>
+                  <dt>价值与收获</dt>
+                  <dd>
                     <el-input
+                      maxlength="2000"
                       :autosize="{ minRows: 1, maxRows: 8 }"
+                      v-model="list.advantage"
                       type="textarea"
                       class="tl-textarea"
-                      placeholder="请针对问题与不足进行改进措施陈述。"
-                      v-model="list.measure[d]"
+                      placeholder="事情完成情况说明，这件事的价值与意义，亮点如何？"
                     ></el-input>
-                    <!-- <el-button
-                        v-if="list.measure.length == d + 1"
-                        type="text"
-                        @click="addDefic(index, i)"
-                        >添加</el-button
-                      > -->
                   </dd>
-                </template>
-                <template v-else>
+                </dl>
+                <dl>
+                  <dt>问题与不足</dt>
                   <dd>
                     <el-input
                       :autosize="{ minRows: 1, maxRows: 8 }"
+                      maxlength="2000"
+                      v-model="list.disadvantage"
                       type="textarea"
-                      placeholder="请针对问题与不足进行改进措施陈述。"
-                      v-model="list.measure[0]"
                       class="tl-textarea"
+                      placeholder="事情做的有那些不足，自己表现有哪些不足？"
                     ></el-input>
                   </dd>
-                  <!-- <el-button type="text" @click="addDefic(index, i)"
-                      >添加</el-button
-                    > -->
-                </template>
-              </dl>
-            </div>
-          </dd>
+                </dl>
+                <dl>
+                  <!-- TODO: 改成一条了还要用list吗？ -->
+                  <dt>改进措施</dt>
+                  <template v-if="list.measure.length > 1">
+                    <dd v-for="(li, d) in list.measure || []" :key="d">
+                      <el-input
+                        :autosize="{ minRows: 1, maxRows: 8 }"
+                        type="textarea"
+                        class="tl-textarea"
+                        placeholder="请针对问题与不足进行改进措施陈述。"
+                        v-model="list.measure[d]"
+                      ></el-input>
+                    </dd>
+                  </template>
+                  <template v-else>
+                    <dd>
+                      <el-input
+                        :autosize="{ minRows: 1, maxRows: 8 }"
+                        type="textarea"
+                        placeholder="请针对问题与不足进行改进措施陈述。"
+                        v-model="list.measure[0]"
+                        class="tl-textarea"
+                      ></el-input>
+                    </dd>
+                  </template>
+                </dl>
+              </div>
+            </dd>
+          </el-form>
         </dl>
       </elcollapseitem>
     </elcollapse>
     <div>
       <span>最终得分</span>
-      <em></em>
+      <em>{{ selfAssessmentScore }}</em>
     </div>
     <!-- TODO:加复盘记录 -->
     <tl-footer
@@ -241,6 +259,7 @@ export default {
           clsName: 'refuel',
         },
       ],
+      selfAssessmentScore: 0,
     };
   },
   created() {
@@ -252,6 +271,9 @@ export default {
     'tl-process': process,
     'tl-footer': replayFoot,
     'file-upload': fileUpload,
+  },
+  computed: {
+
   },
   methods: {
 
@@ -296,6 +318,9 @@ export default {
           disadvantage: item.disadvantage,
           measure: item.measure || [],
           communicationLabel: item.communicationLabel,
+          attachmentList: JSON.stringify(item.attachmentList),
+          score: item.score,
+          remark: item.scoreRemark,
         }));
       }
     },
@@ -307,6 +332,7 @@ export default {
         okrMainVo: {
           reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
+          selfAssessmentScore: this.selfAssessmentScore,
         },
         list: this.list,
       };
@@ -350,6 +376,7 @@ export default {
         okrMainVo: {
           reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
+          selfAssessmentScore: this.selfAssessmentScore,
         },
         list: this.list,
       };
@@ -362,6 +389,13 @@ export default {
         }
       });
     },
+    getFormPromise(form) {
+      return new Promise((resolve) => {
+        form.validate((res) => {
+          resolve(res);
+        });
+      });
+    },
     submit() {
       this.submitLoad = true;
       this.checkDatakrs(false);
@@ -370,24 +404,37 @@ export default {
           reviewType: this.reviewType,
           okrBelongType: this.okrMain.okrMainVo.okrBelongType,
           okrId: this.okrMain.okrMainVo.okrId,
+          selfAssessmentScore: this.selfAssessmentScore,
         },
         list: this.list,
       };
-      const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
-      if (CheckNull) {
-        this.submitLoad = false;
-        this.$message.error('未完成复盘，尚有未填写内容，请检查');
-        return false;
-      }
-      this.server.okrReviewSubmit(params).then((res) => {
-        this.submitLoad = false;
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$router.push('/replayList');
+      // for (let i = 0; i < oLength; i += 1) {
+      //   formValidate[i] = this.$refs[`${i}dataForm`];
+      //   console.log('校验', i, this.$refs[`${i}dataForm`]);
+      // }
+      Promise.all(this.$refs[`${0}dataForm`].map(this.getFormPromise)).then((res) => {
+        const validateResult = res.every((item) => !!item);
+        if (validateResult) {
+          console.log('表单都校验通过', validateResult);
+          this.server.okrReviewSubmit(params).then((response) => {
+            this.submitLoad = false;
+            if (response.code == 200) {
+              this.$message.success('提交成功');
+              this.$router.push('/replayList');
+            } else {
+              this.$message.error(response.msg);
+            }
+          });
         } else {
-          this.$message.error(res.msg);
+          this.$message.error('您有必填项未填');
         }
       });
+      // const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
+      // if (CheckNull) {
+      //   this.submitLoad = false;
+      //   this.$message.error('未完成复盘，尚有未填写内容，请检查');
+      //   return false;
+      // }
     },
     getOldList() {
       const KrList = JSON.parse(JSON.stringify(this.okrMain.okrReviewPojoList));
@@ -420,7 +467,35 @@ export default {
     },
     // 折叠展开
     openMore(list) {
+      console.log(list.openAdvantage);
       list.openAdvantage = !list.openAdvantage;
+      this.$forceUpdate();
+    },
+    showscore() {
+      this.selfAssessmentScore = Math.floor(this.computeScore() / 100) / 100;
+    },
+    fileChange(fileobject) {
+      console.log(fileobject.list, fileobject.action);
+      this.okrMain.okrReviewPojoList[fileobject.action.oindex]
+        .krs[fileobject.action.krindex].attachmentList = fileobject.list;
+    },
+    uploadList(i) {
+      console.log(i, 'upload');
+    },
+    computeScore() {
+      let score = 0;
+      this.okrMain.okrReviewPojoList.forEach((item) => {
+        // o的权重
+        const oWeight = item.o.okrWeight;
+        let krscore = 0;
+        // kr
+        item.krs.forEach((list) => {
+          krscore += (list.score || 0) * list.okrWeight;
+        });
+        score += krscore * oWeight;
+        console.log('krscore', score);
+      });
+      return score;
     },
   },
 };
