@@ -402,6 +402,7 @@ export default {
       ],
       submitedOrLooked: '',
       changeweek: true,
+      weekDate: '',
     };
   },
   created() {
@@ -410,6 +411,10 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+    }),
+    ...mapState('weekly', {
+      week: (state) => state.week,
+      weekList: (state) => state.weekList,
     }),
 
     severalData() {
@@ -437,6 +442,7 @@ export default {
       // 查询该组织的周报是否开放
       this.getTypeConfig();
     },
+
     getTypeConfig() {
       this.server.getTypeConfig({
         sourceId: this.formData.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
@@ -472,7 +478,15 @@ export default {
     },
     weeklyInfo(weekly) {
       if (weekly.weeklyId) {
-        this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
+        this.go('teamWeeklyInfo', {
+          query: {
+            weeklyId: weekly.weeklyId,
+            userName: weekly.userName,
+            headerUrl: weekly.headerUrl,
+            formData: this.formData,
+            weekDate: this.weekDate,
+          },
+        });
       }
       //  else {
       //   this.$message.warning('该用户周报还未提交');
@@ -532,7 +546,8 @@ export default {
         }
       });
     },
-    setCalendarId(id) {
+    setCalendarId(id, weekDate) {
+      this.weekDate = weekDate;
       this.formData.calendarId = id;
     },
     remindWriteWeekly() {
