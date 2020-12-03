@@ -259,12 +259,12 @@
                           @click="alertSelect(scope, true)"
                           >确认审批</el-button
                         >
-                        <el-button
+                        <!-- <el-button
                           plain
                           class="tl-btn amt-border-fadeout"
                           @click="close(scope)"
                           >取消</el-button
-                        >
+                        > -->
                       </div>
                       <el-button type="text" slot="reference">修改</el-button>
                     </el-popover>
@@ -284,15 +284,15 @@
                     <div slot="content">
                       <div>
                         填入工时：{{
-                          checkOldNew(scope.row).showOldText || "无"
+                          checkOldNew(scope.row).showOldText || "0天"
                         }}
                       </div>
                       <div>
                         修改工时：{{
-                          checkOldNew(scope.row).showNewText || "无"
+                          checkOldNew(scope.row).showNewText || "0天"
                         }}
                       </div>
-                      <div>修改原因：{{ scope.row.remark || "无" }}</div>
+                      <div>修改原因：{{ scope.row.remark || "0天" }}</div>
                     </div>
                     <i
                       class="el-icon-warning"
