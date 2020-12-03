@@ -1976,7 +1976,10 @@
 .undertake-maps .progress-bg:not(:first-child) {
   margin-left: 6px !important;
 }
-
+.undertake-maps-tree .tl-btn {
+  height: 35px;
+  width: 30px;
+}
 /* concerned-okr */
 .concerned-okr .cont-area {
   display: flex;

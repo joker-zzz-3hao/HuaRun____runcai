@@ -8,9 +8,8 @@
         <em>{{ node.okrDetailObjectKr }}</em>
         <el-button
           :disabled="!hasPower('okr-continue-align')"
-          type="text"
-          plain
-          class="tl-btn btn-lineheight"
+          type="primary"
+          class="tl-btn amt-bg-slip"
           v-if="
             showbutton &&
             node.children &&
