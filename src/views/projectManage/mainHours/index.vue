@@ -215,8 +215,17 @@
               </template>
             </el-table-column>
             <el-table-column label="工时日期" min-width="200px">
-              <template slot-scope="scope">
-                {{ weekWorkListCheck(scope.row) }}
+                <template slot-scope="scope">
+                <el-popover
+                  placement="top"
+                  width="300"
+                  trigger="hover"
+                  popper-class="approval-pop"
+                >
+                  <span>{{ weekWorkListCheck(scope.row)||'--' }}</span>
+                  <span slot="reference">{{ weekWorkListCheck(scope.row)||'--' }}</span>
+                </el-popover>
+
               </template>
             </el-table-column>
             <el-table-column label="投入工时" min-width="200px">
@@ -516,6 +525,7 @@ export default {
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
           this.formData.projectId = list[0].projectId
            || this.projectList[0].projectId;
+          this.summaryList();
           this.searchList();
         }
       }
@@ -595,7 +605,7 @@ export default {
         weekSum: item.weekSum,
         weekWorkList: item.checkList,
         weekBegin: item.weekBegin,
-        remark: item.remark,
+        remark: '',
       }));
     },
     getTypeTm(li) {
@@ -674,7 +684,12 @@ export default {
         title: '确认审批',
         content: '工时确认后将不可再修改, 请确认',
       }).then(() => {
-        this.confirmTimeSheet(scope.$index, scope);
+        if (desc) {
+          this.confirmTimeSheet(scope.$index, scope);
+        } else {
+          this.tableData[scope.$index].remark = '';
+          this.timeSheetListapproval(scope.row);
+        }
       });
     },
     alertSelectAll() {
@@ -879,6 +894,7 @@ export default {
       return `${new Date(date).getMonth()}月${index}周`;
     },
     changeProject() {
+      this.userId = '';
       this.summaryList();
       this.searchList();
     },
