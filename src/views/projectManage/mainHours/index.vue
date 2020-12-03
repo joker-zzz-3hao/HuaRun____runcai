@@ -30,6 +30,7 @@
                 v-model="formData.approvalStatus"
                 :popper-append-to-body="false"
                 placeholder="请选择审批状态"
+                style="width:100px"
                 @change="changeStatus"
                 clearable
                 popper-class="tl-select-dropdown"
@@ -96,6 +97,7 @@
                 v-model="userId"
                 placeholder="请选择"
                 filterable
+                    style="width:118px"
                 @change="searchList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
@@ -172,64 +174,29 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="300">
+            <el-table-column label="工作项" prop="workContent" min-width="200">
             </el-table-column>
-            <el-table-column label="工作项内容" min-width="300" prop="workDesc">
+            <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
                 <el-popover
                   placement="top"
                   width="300"
                   trigger="hover"
                   popper-class="approval-pop"
-                  class="tl-popover"
                 >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{ scope.row.workDesc||'--' }}</span>
+                  <span slot="reference">{{ GetLength(scope.row.workDesc)||'--' }}</span>
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column label="进度" min-width="180" prop="workProgress">
+
+            <el-table-column prop="applyTime" label="提交人" min-width="130">
               <template slot-scope="scope">
-                <tl-process
-                  :data="parseInt(scope.row.workProgress || 0, 10)"
-                ></tl-process>
-              </template>
-            </el-table-column>
-            <el-table-column prop="applyTime" label="提交人" min-width="180">
-              <template slot-scope="scope">
-                <div class="user-info">
-                  <img
-                    v-if="hasValue(scope.row.headUrl)"
-                    :src="scope.row.headUrl"
-                    alt
-                  />
-                  <div v-else-if="scope.row.userName" class="user-name">
-                    <em>{{
-                      scope.row.userName.substring(
-                        scope.row.userName.length - 2
-                      )
-                    }}</em>
-                  </div>
-                </div>
+
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="工时日期" min-width="200px">
-              <template slot-scope="scope">
-                <el-popover
-                  placement="top"
-                  width="300"
-                  trigger="hover"
-                  popper-class="approval-pop"
-                >
-                  <span>{{ weekWorkListCheck(scope.row) || "--" }}</span>
-                  <span slot="reference">{{
-                    weekWorkListCheck(scope.row) || "--"
-                  }}</span>
-                </el-popover>
-              </template>
-            </el-table-column>
-            <el-table-column label="投入工时" min-width="200px">
+              <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
                   <div>
@@ -242,7 +209,6 @@
                       :tabindex="scope.$index"
                       :ref="'popover-' + scope.$index"
                       popper-class="approval-pop"
-                      class="tl-popover"
                       @show="
                         listTimeFun(
                           scope.row.arrHide,
@@ -299,12 +265,7 @@
                           >取消</el-button
                         >
                       </div>
-                      <el-button
-                        type="text"
-                        class="tl-btn light"
-                        slot="reference"
-                        >修改</el-button
-                      >
+                      <el-button type="text" slot="reference">修改</el-button>
                     </el-popover>
                   </div>
                   <el-tooltip
@@ -312,22 +273,13 @@
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
-                    popper-class="tl-tooltip-popper"
                   >
                     <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
-                <div
-                  v-show="scope.row.approvalStatus == '2'"
-                  class="flex-start"
-                >
+                <div v-show="scope.row.approvalStatus == '2'">
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    placement="top"
-                    popper-class="tl-tooltip-popper"
-                  >
+                  <el-tooltip class="item" effect="dark" placement="top">
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -342,7 +294,7 @@
                       <div>修改原因：{{ scope.row.remark || "无" }}</div>
                     </div>
                     <i
-                      class="icon-remind"
+                      class="el-icon-warning"
                       v-show="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
@@ -352,6 +304,22 @@
                 </div>
               </template>
             </el-table-column>
+            <el-table-column label="工时日期" min-width="200px">
+              <template slot-scope="scope">
+                <el-popover
+                  placement="top"
+                  width="300"
+                  trigger="hover"
+                  popper-class="approval-pop"
+                >
+                  <span>{{ weekWorkListCheck(scope.row) || "--" }}</span>
+                  <span slot="reference">{{
+                    weekWorkListCheck(scope.row) || "--"
+                  }}</span>
+                </el-popover>
+              </template>
+            </el-table-column>
+
             <!-- <el-table-column
               prop="projectNameCn"
               label="项目名称"
@@ -367,20 +335,32 @@
             <el-table-column
               prop="approvalStatus"
               label="审批状态"
-              min-width="180"
+              min-width="100"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalStatus)">
-                  <i
+                  <!-- <i
                     :class="{
                       'el-icon-basketball111': scope.row.approvalStatus == '1',
                       'el-icon-basketball222': scope.row.approvalStatus == '2',
                     }"
-                  ></i>
+                  ></i> -->
                   {{
                     CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
                   }}</span
                 >
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+                <el-table-column
+              prop="approvalTime"
+              label="审批时间"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.approvalTime)">{{
+                  scope.row.approvalTime
+                }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
@@ -392,16 +372,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="approvalTime"
-              label="审批时间"
-              min-width="180"
-            >
+
+             <el-table-column label="进度" min-width="180" prop="workProgress">
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.approvalTime)">{{
-                  scope.row.approvalTime
-                }}</span>
-                <span v-else>--</span>
+                <tl-process
+                  :data="parseInt(scope.row.workProgress || 0, 10)"
+                ></tl-process>
               </template>
             </el-table-column>
             <!-- <el-table-column
@@ -558,6 +534,22 @@ export default {
     });
   },
   methods: {
+    GetLength(text) {
+      if (this.getBLen(text) >= 46) {
+        const str = JSON.parse(JSON.stringify(text));
+        return `${str.substring(0, 46)}...`;
+      }
+      return text;
+    },
+
+    getBLen(str) {
+      if (str == null) return 0;
+      if (typeof str != 'string') {
+        str += '';
+      }
+      // eslint-disable-next-line no-control-regex
+      return str.replace(/[^\x00-\xff]/g, '01').length;
+    },
     summaryList() {
       this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
         if (res.code == 200) {
