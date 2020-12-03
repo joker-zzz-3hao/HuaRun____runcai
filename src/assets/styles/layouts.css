@@ -125,6 +125,12 @@
   width: 100%;
 }
 
+.flex-start {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .flex-end {
   margin: 10px 0;
   display: flex;

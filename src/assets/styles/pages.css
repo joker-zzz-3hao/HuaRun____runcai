@@ -3301,6 +3301,7 @@
   height: 21px;
   margin: 0 0 0 20px;
   background: #f4f6f8;
+  cursor: pointer;
 }
 
 .weekly-thoughts .el-textarea__inner,
@@ -4613,6 +4614,7 @@
 .teams-weekly .operating-area .tl-btn span {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .teams-weekly .operating-area .tl-btn .icon-remind {
@@ -5901,6 +5903,10 @@
   height: 54px;
 }
 
+.working-hours .table-container>.tl-table td {
+  height: 70px;
+}
+
 .tl-dialog .add-members {
   width: 80vw;
 }
@@ -5959,6 +5965,26 @@
 .working-hours .operating-box .el-range-editor.el-input__inner {
   display: unset;
   margin: 0;
+}
+
+.working-hours .el-button--text.light {
+  padding: 0 5px;
+  height: unset;
+  font-size: 12px;
+}
+
+.working-hours .flex-start .icon-remind {
+  margin: 0 0 0 6px;
+}
+
+.working-hours .tl-table .el-table__body-wrapper .el-table__body .el-table__row td:not(:nth-child(5)) .cell {
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 .approval .el-dialog__body,
