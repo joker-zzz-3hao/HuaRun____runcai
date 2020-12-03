@@ -412,7 +412,7 @@
                   v-if="scope.row.approvalStatus == '2'"
                   type="text"
                   class="tl-btn"
-                  >已审批</el-button
+                  >审批完成</el-button
                 >
               </template>
             </el-table-column>
