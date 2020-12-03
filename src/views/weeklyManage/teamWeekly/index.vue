@@ -483,7 +483,7 @@ export default {
             weeklyId: weekly.weeklyId,
             userName: weekly.userName,
             headerUrl: weekly.headerUrl,
-            formData: this.formData,
+            // formData: this.formData,
             weekDate: this.weekDate,
           },
         });
