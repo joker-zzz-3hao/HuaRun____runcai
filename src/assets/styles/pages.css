@@ -5938,7 +5938,7 @@
   color: #acb6bf;
 }
 
-.working-hours .dl-item dd span {
+.working-hours .dl-item dd > span {
   color: #acb6bf;
 }
 
@@ -5954,6 +5954,11 @@
 
 .working-hours .project-select {
   width: 430px;
+}
+
+.working-hours .operating-box .el-range-editor.el-input__inner {
+  display: unset;
+  margin: 0;
 }
 
 .approval .el-dialog__body,

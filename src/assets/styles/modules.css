@@ -50,6 +50,10 @@
   background: transparent;
 }
 
+.tl-btn.is-plain span {
+  color: #685df1 !important;
+}
+
 .tl-btn.is-plain:hover {
   background: transparent;
   border-color: transparent;
