@@ -97,6 +97,10 @@
   justify-content: flex-end;
 }
 
+.operating-box-group {
+  flex: 1;
+}
+
 .operating-box-group .operating-box:last-child {
   margin: 10px 0 0 0;
 }

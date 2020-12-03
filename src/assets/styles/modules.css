@@ -3652,6 +3652,11 @@ height: 70%;
   margin: 0 0 0 20px;
 }
 
+.tl-btn.light,
+.tl-btn.light:hover {
+  background: #f0effe;
+}
+
 .dl-card-panel {
   margin: 0 0 30px 0;
 }

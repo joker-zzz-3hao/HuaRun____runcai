@@ -5696,6 +5696,15 @@
 }
 
 /* .project-manage */
+.project-manage .operating-box-group .operating-box:first-child {
+  justify-content: space-between;
+}
+
+.project-manage .operating-box-group .operating-box .dl-group {
+  display: flex;
+  align-items: center;
+}
+
 .project-manage .page-title {
   margin: 6px 0 0 0;
   align-self: start;
