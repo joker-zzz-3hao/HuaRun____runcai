@@ -253,8 +253,12 @@
                         )
                       "
                     >
-                      <div v-for="(item, index) in monDayList" :key="index">
-                        <dt>{{ item }}</dt>
+                      <div
+                        v-for="(item, index) in monDayList"
+                        :key="index"
+                        class="flex-start"
+                      >
+                        <div class="week-day">{{ item }}</div>
                         <el-checkbox-group
                           v-model="checkList"
                           :ref="'check' + index"
@@ -262,11 +266,13 @@
                           <el-checkbox
                             :label="item + '上午'"
                             :disabled="checkItem[item + '上午']"
+                            class="tl-checkbox"
                             >上午</el-checkbox
                           >
                           <el-checkbox
                             :label="item + '下午'"
                             :disabled="checkItem[item + '下午']"
+                            class="tl-checkbox"
                             >下午</el-checkbox
                           >
                         </el-checkbox-group>
@@ -287,8 +293,8 @@
                           >确认审批</el-button
                         >
                         <el-button
-                          type="primary"
-                          class="tl-btn amt-bg-slip"
+                          plain
+                          class="tl-btn amt-border-fadeout"
                           @click="close(scope)"
                           >取消</el-button
                         >
@@ -367,8 +373,8 @@
                 <span v-if="hasValue(scope.row.approvalStatus)">
                   <i
                     :class="{
-                      'el-icon-basketball': scope.row.approvalStatus == '1',
-                      'el-icon-basketball': scope.row.approvalStatus == '2',
+                      'el-icon-basketball111': scope.row.approvalStatus == '1',
+                      'el-icon-basketball222': scope.row.approvalStatus == '2',
                     }"
                   ></i>
                   {{
@@ -433,16 +439,22 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-button
-            type="primary"
-            @click="alertSelectAll"
-            class="tl-btn amt-bg-slip"
-            >批量审批</el-button
-          >
-          <em>已选择{{ workList.length }}位成员</em>
         </div>
       </tl-crcloud-table>
     </div>
+    <div class="footer-panel">
+      <span
+        >已选择<em>{{ workList.length }}</em
+        >位成员</span
+      >
+      <el-button
+        type="primary"
+        @click="alertSelectAll"
+        class="tl-btn amt-bg-slip"
+        >批量审批</el-button
+      >
+    </div>
+
     <tl-approval
       ref="approval"
       v-if="showApproval"
