@@ -172,15 +172,16 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="150">
+            <el-table-column label="工作项" prop="workContent" min-width="300">
             </el-table-column>
-            <el-table-column label="工作项内容" min-width="150" prop="workDesc">
+            <el-table-column label="工作项内容" min-width="300" prop="workDesc">
               <template slot-scope="scope">
                 <el-popover
                   placement="top"
                   width="300"
                   trigger="hover"
                   popper-class="approval-pop"
+                  class="tl-popover"
                 >
                   {{ scope.row.workDesc }}
                   <span slot="reference">{{ scope.row.workDesc }}</span>
@@ -241,6 +242,7 @@
                       :tabindex="scope.$index"
                       :ref="'popover-' + scope.$index"
                       popper-class="approval-pop"
+                      class="tl-popover"
                       @show="
                         listTimeFun(
                           scope.row.arrHide,
@@ -291,7 +293,12 @@
                           >取消</el-button
                         >
                       </div>
-                      <el-button type="text" slot="reference">修改</el-button>
+                      <el-button
+                        type="text"
+                        class="tl-btn light"
+                        slot="reference"
+                        >修改</el-button
+                      >
                     </el-popover>
                   </div>
                   <el-tooltip
@@ -299,13 +306,22 @@
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
+                    popper-class="tl-tooltip-popper"
                   >
                     <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
-                <div v-show="scope.row.approvalStatus == '2'">
+                <div
+                  v-show="scope.row.approvalStatus == '2'"
+                  class="flex-start"
+                >
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
-                  <el-tooltip class="item" effect="dark" placement="top">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -320,7 +336,7 @@
                       <div>修改原因：{{ scope.row.remark || "无" }}</div>
                     </div>
                     <i
-                      class="el-icon-warning"
+                      class="icon-remind"
                       v-show="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
