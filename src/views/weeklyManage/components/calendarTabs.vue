@@ -141,7 +141,7 @@ export default {
       }
       this.setSelectWeek(item);
       // 团队周报查询
-      this.$emit('setCalendarId', item.calendarId);
+      this.$emit('setCalendarId', item.calendarId, this.setTime(item));
       this.$emit('getWeeklyById', item);
     },
     getWeekItem(item, index) {
@@ -238,7 +238,7 @@ export default {
           this.setSelectWeek(item);
           this.$emit('update:selectedWeekIndex', this.weekList.indexOf(item));
           // 团队周报查询
-          this.$emit('setCalendarId', item.calendarId);
+          this.$emit('setCalendarId', item.calendarId, this.setTime(item));
           this.$emit('getWeeklyById', item);
         }
       }
@@ -246,7 +246,7 @@ export default {
         // 选中本周按钮
         this.weekList[this.weekList.length - 1].btnType = 'success';
         // 团队周报查询
-        this.$emit('setCalendarId', this.weekList[this.weekList.length - 1].calendarId);
+        this.$emit('setCalendarId', this.weekList[this.weekList.length - 1].calendarId, this.setTime(this.weekList[this.weekList.length - 1]));
         this.$emit('getWeeklyById', this.weekList[this.weekList.length - 1]);
       }
     },
@@ -356,6 +356,11 @@ export default {
           week.noOpen = false;
         });
       }
+    },
+    setTime(week) {
+      const beg = week.weekBegin.split('-').splice(1, 2).join('/');
+      const end = week.weekEnd.split('-').splice(1, 2).join('/');
+      return `第${this.weekList.indexOf(week) + 1}周(${beg}-${end})`;
     },
 
   },
