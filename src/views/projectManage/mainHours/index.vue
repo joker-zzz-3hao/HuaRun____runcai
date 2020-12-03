@@ -280,7 +280,7 @@
                 </div>
                 <div v-show="scope.row.approvalStatus == '2'">
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
-                  <el-tooltip class="item" effect="dark" placement="top">
+                  <el-tooltip class="item" effect="dark" placement="top" >
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -292,7 +292,7 @@
                           checkOldNew(scope.row).showNewText || "0天"
                         }}
                       </div>
-                      <div>修改原因：{{ scope.row.remark || "0天" }}</div>
+                      <div style="max-width:200px">修改原因：{{ scope.row.remark || "0天" }}</div>
                     </div>
                     <i
                       class="el-icon-warning"
@@ -943,5 +943,8 @@ export default {
 <style  scoped="">
 .working-hours .operating-box .el-range-editor.el-input__inner{
   display: inherit;
+}
+.approval-pop {
+    padding: 10px 20px 20px 20px;
 }
 </style>
