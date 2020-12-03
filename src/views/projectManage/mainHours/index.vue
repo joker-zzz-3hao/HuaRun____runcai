@@ -159,7 +159,7 @@
             class="tl-table"
             @select="selectList"
             @select-all="selectList"
-            row-key="projectApprovalId"
+            row-key="sourceId"
           >
             <el-table-column
               :reserve-selection="true"
@@ -184,7 +184,7 @@
                   class="tl-popover"
                 >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{ scope.row.workDesc }}</span>
+                  <span slot="reference">{{ scope.row.workDesc||'--' }}</span>
                 </el-popover>
               </template>
             </el-table-column>
@@ -433,7 +433,7 @@
                 <el-button
                   v-if="scope.row.approvalStatus == '2'"
                   type="text"
-                  class="tl-btn"
+                  disabled
                   >审批完成</el-button
                 >
               </template>
