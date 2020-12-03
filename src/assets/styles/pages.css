@@ -4583,6 +4583,17 @@
   margin-left: 3px !important;
 }
 
+.my-weekly .cont-area .no-write {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 232px);
+}
+
+.my-weekly .cont-area .no-write .no-data {
+  margin: 0;
+}
+
 .teams-weekly .weekly-cont {
   margin: 0 0 30px 0;
 }
@@ -5905,6 +5916,7 @@
 
 .working-hours .table-container>.tl-table td {
   height: 70px;
+  max-height: 70px;
 }
 
 .tl-dialog .add-members {
@@ -5985,6 +5997,33 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   word-break: break-all;
+  max-height: 70px;
+}
+
+.working-hours .tl-table .el-table__body-wrapper .el-table__body .el-table__row td:nth-child(7) .cell > div > div:last-child {
+  margin: 5px 0 0 0;
+  font-size: 12px;
+  color: #acb6bf;
+}
+
+.working-hours {
+  margin-bottom: 86px;
+  min-height: calc(100vh - 172px);
+}
+
+.working-hours .footer-panel {
+  padding: 0 30px 0 0;
+  justify-content: flex-end;
+}
+
+.working-hours .footer-panel > span {
+  margin: 0 20px 0 0;
+  color: #acb6bf;
+}
+
+.working-hours .footer-panel span em {
+  margin: 0 5px;
+  color: #685df1;
 }
 
 .approval .el-dialog__body,
@@ -6100,6 +6139,23 @@
 
 .approval-pop .flex-end {
   margin: 30px 0 10px 0;
+}
+
+.approval-pop .flex-start {
+  margin: 20px 0;
+}
+
+.approval-pop .flex-start .el-checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.approval-pop {
+  padding: 0 20px 20px 20px;
+}
+
+.approval-pop .week-day {
+  margin: 0 30px 0 0;
 }
 
 /* msg-notice */

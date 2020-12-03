@@ -1,5 +1,8 @@
 <template>
-  <div class="my-weekly" :class="{ 'has-no-data': !week.weeklyId }">
+  <div
+    class="my-weekly"
+    :class="{ 'has-no-data': !week.weeklyId && !week.canEdit }"
+  >
     <div class="cont-area">
       <tl-calendar-tabs :server="server" :selectedWeekIndex.sync="weekIndex">
       </tl-calendar-tabs>
@@ -7,6 +10,7 @@
         v-for="(week, index) in weekList"
         :key="week.calendarId"
         v-show="weekIndex == index"
+        :class="{ 'no-write': !week.weeklyId && !week.canEdit }"
       >
         <div class="weekly-area">
           <div v-if="!week.weeklyId && !week.canEdit" class="no-data">
