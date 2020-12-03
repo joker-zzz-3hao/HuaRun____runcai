@@ -86,7 +86,7 @@
           <dt><span>投入类型</span></dt>
           <dd>
             <em>{{
-              CONST.THROW_TYPE_MAP[baseInfo.projectInputType] || "--"
+              baseInfo.projectInputType || "--"
             }}</em>
           </dd>
         </dl>
