@@ -12,7 +12,7 @@
             >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
           >
           <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
             </span>

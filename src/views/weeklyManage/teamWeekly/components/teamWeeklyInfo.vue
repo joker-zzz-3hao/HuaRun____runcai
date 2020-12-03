@@ -28,7 +28,7 @@
             </dd>
             <dd>{{ $route.query.userName }}</dd>
             <dd>
-              <div class="weekly-title">{{ $route.query.weekDate }}</div>
+              <em>{{ $route.query.weekDate }}</em>
             </dd>
           </dl>
         </div>

@@ -50,6 +50,10 @@
   background: transparent;
 }
 
+.tl-btn.is-plain span {
+  color: #685df1 !important;
+}
+
 .tl-btn.is-plain:hover {
   background: transparent;
   border-color: transparent;
@@ -3650,6 +3654,11 @@ height: 70%;
 
 .operating-box .tl-btn {
   margin: 0 0 0 20px;
+}
+
+.tl-btn.light,
+.tl-btn.light:hover {
+  background: #f0effe;
 }
 
 .dl-card-panel {

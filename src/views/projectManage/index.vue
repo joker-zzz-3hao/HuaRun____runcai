@@ -1,21 +1,67 @@
 <template>
   <div class="project-manage">
     <div class="operating-area">
-      <div class="page-title">项目管理</div>
       <div class="operating-box-group">
         <div class="operating-box">
-          <el-input
-            maxlength="64"
-            @keyup.enter.native="searchManage"
-            v-model="keyWord"
-            placeholder="请输入项目名称或者项目经理"
-            class="tl-input-search"
-          >
-            <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
-          </el-input>
-          <el-button plain class="tl-btn" @click="searchManage">
-            搜索
-          </el-button>
+          <div class="dl-group">
+            <dl class="dl-item">
+              <dt>项目状态</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectStatus"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.PROJECT_STATUS_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt>项目类型</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectType"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.PROJECT_TYPE_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt>投入类型</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectInputTypeCode"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.THROW_TYPE_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+          </div>
           <el-button
             v-show="hasPower('project-create')"
             :disabled="!codes.length > 0"
@@ -27,63 +73,18 @@
           >
         </div>
         <div class="operating-box">
-          <dl class="dl-item">
-            <dt>项目状态</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectStatus"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.PROJECT_STATUS_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>项目类型</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectType"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.PROJECT_TYPE_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>投入类型</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectInputTypeCode"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.THROW_TYPE_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
+          <el-input
+            maxlength="64"
+            @keyup.enter.native="searchManage"
+            v-model="keyWord"
+            placeholder="请输入项目名称或者项目经理"
+            class="tl-input-search"
+          >
+            <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
+          </el-input>
+          <el-button plain class="tl-btn light" @click="searchManage">
+            搜索
+          </el-button>
         </div>
       </div>
     </div>

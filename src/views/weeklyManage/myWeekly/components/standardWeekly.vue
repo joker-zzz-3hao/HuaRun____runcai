@@ -1265,8 +1265,14 @@ export default {
               });
             });
           });
-          this.$forceUpdate();
         }
+        // 清除表单
+        this.refreshForm = false;
+        this.$nextTick(() => {
+        // 重新渲染表单  校验才会生效
+          this.refreshForm = true;
+        });
+        this.$forceUpdate();
       });
     },
     refresh() {

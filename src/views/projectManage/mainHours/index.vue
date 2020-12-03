@@ -1,55 +1,53 @@
-/* eslint-disable no-extend-native */
-/* eslint-disable func-names */
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <!-- <div class="page-title">工时审批</div> -->
-      <div>
-        <dl class="dl-item">
-          <dt>项目</dt>
-          <dd>
-            <el-select
-              v-model="formData.projectId"
-              :popper-append-to-body="false"
-              placeholder="请选择项目"
-              @change="changeProject"
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                v-for="(item, index) in projectList"
-                :key="index + item.projectId"
-                :label="item.projectNameCn"
-                :value="item.projectId"
-              ></el-option>
-            </el-select>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt>审批状态</dt>
-          <dd>
-            <el-select
-              v-model="formData.approvalStatus"
-              :popper-append-to-body="false"
-              placeholder="请选择审批状态"
-              @change="changeStatus"
-              clearable
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                v-for="(item, index) in CONST.APPROVAL_STATUS_LIST"
-                :key="index + item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt>投入工时时间</dt>
-          <dd>
-            <!-- <el-date-picker
+      <div class="operating-box-group">
+        <div class="operating-box">
+          <dl class="dl-item">
+            <dt>项目</dt>
+            <dd>
+              <el-select
+                v-model="formData.projectId"
+                :popper-append-to-body="false"
+                placeholder="请选择项目"
+                @change="changeProject"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item, index) in projectList"
+                  :key="index + item.projectId"
+                  :label="item.projectNameCn"
+                  :value="item.projectId"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>审批状态</dt>
+            <dd>
+              <el-select
+                v-model="formData.approvalStatus"
+                :popper-append-to-body="false"
+                placeholder="请选择审批状态"
+                @change="changeStatus"
+                clearable
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item, index) in CONST.APPROVAL_STATUS_LIST"
+                  :key="index + item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>投入工时时间</dt>
+            <dd>
+              <!-- <el-date-picker
               v-model="weekBegin"
               type="week"
               format="yyyy 第 WW 周"
@@ -58,20 +56,22 @@
               placeholder="选择周"
             >
             </el-date-picker> -->
-            <el-date-picker
-              v-model="weekLine"
-              type="daterange"
-              @change="changePick"
-              @clear="searchList"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            >
-            </el-date-picker>
-          </dd>
-        </dl>
-        <!-- <dl class="dl-item">
+              <el-date-picker
+                v-model="weekLine"
+                type="daterange"
+                @change="changePick"
+                @clear="searchList"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                class="tl-range-editor"
+                popper-class="tl-range-popper"
+              >
+              </el-date-picker>
+            </dd>
+          </dl>
+          <!-- <dl class="dl-item">
           <dt>按周选择投入工时</dt>
           <dd>
             <el-date-picker
@@ -87,47 +87,46 @@
             </el-date-picker>
           </dd>
         </dl> -->
-        <dl class="dl-item">
-          <dt>提交人</dt>
-          <dd>
-            <el-select
-              v-model="userId"
-              placeholder="请选择"
-              filterable
-              @change="searchList"
-            >
-             <el-option
-
-                label="全部"
-                value=""
+        </div>
+        <div class="operating-box">
+          <dl class="dl-item">
+            <dt>提交人</dt>
+            <dd>
+              <el-select
+                v-model="userId"
+                placeholder="请选择"
+                filterable
+                @change="searchList"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
               >
-              </el-option>
-              <el-option
-                v-for="item in options"
-                :key="item.userId"
-                :label="item.userName"
-                :value="item.userId"
+                <el-option label="全部" value=""> </el-option>
+                <el-option
+                  v-for="item in options"
+                  :key="item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                </el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dd>
+              <el-input
+                maxlength="64"
+                v-model="keyWord"
+                placeholder="工作项,工作内容"
+                class="tl-input-search"
               >
-              </el-option>
-            </el-select>
-          </dd>
-        </dl>
-
-        <dl class="dl-item">
-          <dd>
-            <el-input
-              maxlength="64"
-              v-model="keyWord"
-              placeholder="工作项,工作内容"
-              class="tl-input-search"
-            >
-              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-            </el-input>
-            <el-button plain class="tl-btn" @click="searchList">
-              搜索
-            </el-button>
-          </dd>
-        </dl>
+                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+              </el-input>
+              <el-button plain class="tl-btn light" @click="searchList">
+                搜索
+              </el-button>
+            </dd>
+          </dl>
+        </div>
       </div>
     </div>
     <div class="cont-area">
@@ -160,7 +159,7 @@
             class="tl-table"
             @select="selectList"
             @select-all="selectList"
-            row-key="projectApprovalId"
+            row-key="sourceId"
           >
             <el-table-column
               :reserve-selection="true"
@@ -173,18 +172,19 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="150">
+            <el-table-column label="工作项" prop="workContent" min-width="300">
             </el-table-column>
-            <el-table-column label="工作项内容" min-width="150" prop="workDesc">
+            <el-table-column label="工作项内容" min-width="300" prop="workDesc">
               <template slot-scope="scope">
                 <el-popover
                   placement="top"
                   width="300"
                   trigger="hover"
                   popper-class="approval-pop"
+                  class="tl-popover"
                 >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{ scope.row.workDesc }}</span>
+                  <span slot="reference">{{ scope.row.workDesc||'--' }}</span>
                 </el-popover>
               </template>
             </el-table-column>
@@ -215,17 +215,18 @@
               </template>
             </el-table-column>
             <el-table-column label="工时日期" min-width="200px">
-                <template slot-scope="scope">
+              <template slot-scope="scope">
                 <el-popover
                   placement="top"
                   width="300"
                   trigger="hover"
                   popper-class="approval-pop"
                 >
-                  <span>{{ weekWorkListCheck(scope.row)||'--' }}</span>
-                  <span slot="reference">{{ weekWorkListCheck(scope.row)||'--' }}</span>
+                  <span>{{ weekWorkListCheck(scope.row) || "--" }}</span>
+                  <span slot="reference">{{
+                    weekWorkListCheck(scope.row) || "--"
+                  }}</span>
                 </el-popover>
-
               </template>
             </el-table-column>
             <el-table-column label="投入工时" min-width="200px">
@@ -241,6 +242,7 @@
                       :tabindex="scope.$index"
                       :ref="'popover-' + scope.$index"
                       popper-class="approval-pop"
+                      class="tl-popover"
                       @show="
                         listTimeFun(
                           scope.row.arrHide,
@@ -281,19 +283,22 @@
                         <el-button
                           type="primary"
                           class="tl-btn amt-bg-slip"
-                          @click="
-                           alertSelect(scope,true)
-                          "
+                          @click="alertSelect(scope, true)"
                           >确认审批</el-button
                         >
-                    <el-button
+                        <el-button
                           type="primary"
                           class="tl-btn amt-bg-slip"
                           @click="close(scope)"
                           >取消</el-button
                         >
                       </div>
-                      <el-button type="text" slot="reference">修改</el-button>
+                      <el-button
+                        type="text"
+                        class="tl-btn light"
+                        slot="reference"
+                        >修改</el-button
+                      >
                     </el-popover>
                   </div>
                   <el-tooltip
@@ -301,13 +306,22 @@
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
+                    popper-class="tl-tooltip-popper"
                   >
                     <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
-                <div v-show="scope.row.approvalStatus == '2'">
-                  <em>{{ scope.row.arrHide.length*0.5 }}天 </em>
-                  <el-tooltip class="item" effect="dark" placement="top">
+                <div
+                  v-show="scope.row.approvalStatus == '2'"
+                  class="flex-start"
+                >
+                  <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -322,7 +336,7 @@
                       <div>修改原因：{{ scope.row.remark || "无" }}</div>
                     </div>
                     <i
-                      class="el-icon-warning"
+                      class="icon-remind"
                       v-show="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
@@ -405,7 +419,7 @@
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
-                  @click="alertSelect(scope,false)"
+                  @click="alertSelect(scope, false)"
                   type="text"
                   class="tl-btn"
                   >确认审批</el-button
@@ -413,8 +427,8 @@
                 <el-button
                   v-if="scope.row.approvalStatus == '2'"
                   type="text"
-                  class="tl-btn"
-                  >已审批</el-button
+                  disabled
+                  >审批完成</el-button
                 >
               </template>
             </el-table-column>
@@ -425,7 +439,7 @@
             class="tl-btn amt-bg-slip"
             >批量审批</el-button
           >
-          <em>已选择{{workList.length}}位成员</em>
+          <em>已选择{{ workList.length }}位成员</em>
         </div>
       </tl-crcloud-table>
     </div>
