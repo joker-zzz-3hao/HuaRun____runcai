@@ -62,6 +62,7 @@
                 type="daterange"
                 @change="changePick"
                 @clear="searchList"
+                clearable
                 value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -939,3 +940,8 @@ export default {
   },
 };
 </script>
+<style  scoped="">
+.working-hours .operating-box .el-range-editor.el-input__inner{
+  display: inherit;
+}
+</style>

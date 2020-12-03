@@ -114,6 +114,24 @@
               label="项目经理"
               min-width="100"
             ></el-table-column>
+                <el-table-column
+              prop="projectStatus"
+              label="项目状态"
+              min-width="120"
+            >
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.projectStatus)">
+                  <i
+                    :class="{
+                      'el-icon-basketball': scope.row.projectStatus == '0',
+                      'el-icon-basketball': scope.row.projectStatus == '1',
+                    }"
+                  ></i>
+                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
+                >
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="projectBudget"
               label="项目总预算(元)"
@@ -125,7 +143,7 @@
                 ></em>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectCurrency"
               label="币种"
               min-width="100"
@@ -136,7 +154,7 @@
                 }}</span>
                 <span v-else>--</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="projectUserCount"
               label="项目成员(位)"
@@ -168,7 +186,7 @@
             <el-table-column
               prop="projectType"
               label="项目类型"
-              min-width="180"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.projectType)">{{
@@ -177,28 +195,11 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="projectStatus"
-              label="项目状态"
-              min-width="120"
-            >
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.projectStatus)">
-                  <i
-                    :class="{
-                      'el-icon-basketball': scope.row.projectStatus == '0',
-                      'el-icon-basketball': scope.row.projectStatus == '1',
-                    }"
-                  ></i>
-                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
-                >
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
+
             <el-table-column
               prop="projectInputType"
               label="投入类型"
-              min-width="180"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.projectInputType)">{{
@@ -207,12 +208,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectApplyDate"
               label="申请时间"
               min-width="180"
             >
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               fixed="right"
               label="操作"
