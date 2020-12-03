@@ -372,8 +372,15 @@ export default {
         // 过滤掉删除的数据
         const days = (tempWeekList.length) / 2;
         const dayTexts = workItem.timeSpanList.join('、');
+
         if (daysOrInfo == 'days') {
+          if (days == 0) {
+            return '0天';
+          }
           return `${days}天`;
+        }
+        if (days == 0) {
+          return '';
         }
         return `（${dayTexts}）`;
       }
