@@ -84,8 +84,8 @@
                       :step="0.01"
                       step-strictly
                       @change="showscore(list)"
-                    ></el-input-number
-                  ></el-form-item>
+                    ></el-input-number>
+                  </el-form-item>
 
                   <span>
                     如您输入的评分与KR进度分数不一致，则需要给出解释，如：KR进度90%，评分应该是0.9，如不一样，请说明原因。

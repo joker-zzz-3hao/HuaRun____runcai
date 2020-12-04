@@ -165,7 +165,7 @@
             <em
               v-for="sortComment in sortCommentList"
               :key="sortComment"
-              @click="fastWrite(sortComment)"
+              @click="ruleForm.communication = sortComment"
             >
               {{ sortComment }}
             </em>
@@ -403,10 +403,6 @@ export default {
         this.okrMain = res.data;
         this.checkDatakrs();
       });
-    },
-    // 快速填入
-    fastWrite(text) {
-      this.ruleForm.communication = text;
     },
     // 折叠展开
     openMore(list) {
