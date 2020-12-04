@@ -179,17 +179,17 @@
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                <el-popover
-                  placement="top"
-                  width="300"
-                  trigger="hover"
-                  popper-class="approval-pop"
-                >
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="scope.row.workDesc"
+                    placement="top"
+                  >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{
+                  <span>{{
                     GetLength(scope.row.workDesc) || "--"
                   }}</span>
-                </el-popover>
+                </el-tooltip>
               </template>
             </el-table-column>
 
@@ -270,6 +270,7 @@
                       <el-button type="text" slot="reference">修改</el-button>
                     </el-popover>
                   </div>
+
                   <el-tooltip
                     class="item"
                     effect="dark"
@@ -313,17 +314,17 @@
             </el-table-column>
             <el-table-column label="工时日期" min-width="200px">
               <template slot-scope="scope">
-                <el-popover
-                  placement="top"
-                  width="300"
-                  trigger="hover"
-                  popper-class="approval-pop"
-                >
+               <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="weekWorkListCheck(scope.row)"
+                    placement="top"
+                  >
                   <span>{{ weekWorkListCheck(scope.row) || "--" }}</span>
                   <span slot="reference">{{
                     weekWorkListCheck(scope.row) || "--"
                   }}</span>
-                </el-popover>
+                </el-tooltip>
               </template>
             </el-table-column>
 
@@ -532,8 +533,13 @@ export default {
         if (this.projectList.length > 0) {
         //  this.formData.projectId = this.projectList[0].projectId;
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          this.formData.projectId = list[0].projectId
-           || this.projectList[0].projectId;
+          console.log(list);
+          if (list.length > 0) {
+            this.formData.projectId = list[0].projectId;
+          } else {
+            this.formData.projectId = this.projectList[0].projectId;
+          }
+
           this.summaryList();
           this.searchList();
         }
