@@ -145,13 +145,13 @@ export default {
       });
     },
     addOrEditEvaluate(rowData) {
-      this.rowData = {};
+      // this.rowData = {};
       if (rowData && rowData.ruleId) {
-        this.rowData = rowData;
+        // this.rowData = rowData;
       }
       this.showDialog = true;
       this.$nextTick(() => {
-        this.$refs.createEvaluate.show();
+        this.$refs.createEvaluate.show(rowData);
       });
     },
     closeDialog() {
