@@ -21,7 +21,7 @@
         label-width="90px"
       >
         <el-button
-          v-if="this.rowData.ruleId"
+          v-if="showAddBtn()"
           type="text"
           @click="
             evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
@@ -63,7 +63,7 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-button v-if="this.rowData.ruleId" type="text" @click="addEvaluateItem"
+      <el-button v-if="showAddBtn()" type="text" @click="addEvaluateItem"
         >添加评定体系</el-button
       >
     </div>
@@ -111,12 +111,12 @@ export default {
         return {};
       },
     },
-    rowData: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
+    // rowData: {
+    //   type: Object,
+    //   default() {
+    //     return {};
+    //   },
+    // },
     // optionType: {
     //   type: String,
     //   default() {
@@ -132,20 +132,16 @@ export default {
       step: '1',
     };
   },
-  created() { this.init(); },
+  created() { },
   mounted() {},
   computed: {},
   methods: {
-    init() {
-      if (this.rowData.ruleId) {
-        this.setInitData();
-      } else {
-        this.addEvaluateItem();
-      }
-    },
-    setInitData() {
-      this.evaluateFormList.push(this.rowData);
-    },
+    // init() {
+
+    // },
+    // setInitData() {
+    //   this.evaluateFormList.push(this.rowData);
+    // },
     addEvaluateItem() {
       this.evaluateFormList.push({
         ruleRandomId: this.getRandomId(),
@@ -203,8 +199,15 @@ export default {
         });
       }
     },
-    show() {
-      this.visible = true;
+    show(rowData) {
+      if (rowData && rowData.ruleId) {
+        this.evaluateFormList.push(rowData);
+      } else {
+        this.addEvaluateItem();
+      }
+      this.$nextTick(() => {
+        this.visible = true;
+      });
     },
     cancel() {
       if (this.step == 1) {
@@ -216,6 +219,12 @@ export default {
     close() {
       this.visible = false;
       this.$emit('update:showDialog', false);
+    },
+    showAddBtn() {
+      if (this.evaluateFormList.length == 1 && this.evaluateFormList[0].ruleId) {
+        return false;
+      }
+      return true;
     },
   },
   watch: {},
