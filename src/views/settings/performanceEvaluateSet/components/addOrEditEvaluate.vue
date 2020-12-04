@@ -178,6 +178,7 @@ export default {
       });
     },
     deleteRuleItem(evaluateItem, ruleItem) {
+      // 编辑时删除的数据需要传给后端TODO:
       this.evaluateFormList.forEach((item) => {
         if (evaluateItem.ruleRandomId == item.ruleRandomId) {
           item.ruleDetailList = item.ruleDetailList.filter((detail) => detail.detailRandomId != ruleItem.detailRandomId);
@@ -189,7 +190,11 @@ export default {
         this.step = 2;
       } else {
         this.loading = true;
-        this.server.addEvaluate(this.evaluateFormList).then((res) => {
+        let requestName = 'addEvaluate';
+        if (this.rowData.ruleId) {
+          requestName = 'updateEvaluate';
+        }
+        this.server[requestName](this.evaluateFormList).then((res) => {
           this.loading = false;
           if (res.code == 200) {
             this.$message.success('成功');
