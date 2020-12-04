@@ -550,30 +550,30 @@
         <div class="o-kr-group" v-if="hasValue(item.kr)">
           <div class="tag-kind">
             <span class="kind-parent">目标</span>
-            <el-tooltip
+            <!-- <el-tooltip
               class="select-values"
               effect="dark"
               placement="top"
               popper-class="tl-tooltip-popper"
-            >
-              <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
-              <em>{{ item.o.okrDetailObjectKr }}</em>
-            </el-tooltip>
+            > -->
+            <!-- <em slot="content">{{ item.o.okrDetailObjectKr }}</em> -->
+            <em>{{ item.o.okrDetailObjectKr }}</em>
+            <!-- </el-tooltip> -->
           </div>
         </div>
         <div class="o-kr-group">
           <template v-if="hasValue(item.kr)">
             <div class="tag-kind">
               <span class="kind-child">KR</span>
-              <el-tooltip
+              <!-- <el-tooltip
                 class="select-values"
                 effect="dark"
                 placement="top"
                 popper-class="tl-tooltip-popper"
-              >
-                <em slot="content">{{ item.kr.okrDetailObjectKr }}</em>
-                <em>{{ item.kr.okrDetailObjectKr }}</em>
-              </el-tooltip>
+              > -->
+              <!-- <em slot="content">{{ item.kr.okrDetailObjectKr }}</em> -->
+              <em>{{ item.kr.okrDetailObjectKr }}</em>
+              <!-- </el-tooltip> -->
               <span
                 >被工作项<em>{{ itemIndex(item.kr) }}</em
                 >支撑</span
@@ -583,15 +583,15 @@
           <template v-else>
             <div class="tag-kind">
               <span class="kind-parent">目标</span>
-              <el-tooltip
+              <!-- <el-tooltip
                 class="select-values"
                 effect="dark"
                 placement="top"
                 popper-class="tl-tooltip-popper"
               >
-                <em slot="content">{{ item.o.okrDetailObjectKr }}</em>
-                <em>{{ item.o.okrDetailObjectKr }}</em>
-              </el-tooltip>
+                <em slot="content">{{ item.o.okrDetailObjectKr }}</em> -->
+              <em>{{ item.o.okrDetailObjectKr }}</em>
+              <!-- </el-tooltip> -->
               <span
                 >被工作项<em>{{ itemIndex(item.o) }}</em
                 >支撑</span
