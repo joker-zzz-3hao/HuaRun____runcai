@@ -114,7 +114,7 @@
               label="项目经理"
               min-width="100"
             ></el-table-column>
-                <el-table-column
+            <el-table-column
               prop="projectStatus"
               label="项目状态"
               min-width="120"
@@ -123,8 +123,8 @@
                 <span v-if="hasValue(scope.row.projectStatus)">
                   <i
                     :class="{
-                      'el-icon-basketball': scope.row.projectStatus == '0',
-                      'el-icon-basketball': scope.row.projectStatus == '1',
+                      'el-icon-basketball1111': scope.row.projectStatus == '0',
+                      'el-icon-basketball2222': scope.row.projectStatus == '1',
                     }"
                   ></i>
                   {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
