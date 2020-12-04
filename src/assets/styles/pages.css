@@ -1851,6 +1851,10 @@
   min-width: unset;
 }
 
+.undertake-maps .cont-area .is-plain span {
+  color: #fff !important;
+}
+
 .undertake-maps .cont-area .department-info .is-plain {
   width: 37px;
   height: 21px;
