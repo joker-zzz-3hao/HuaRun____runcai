@@ -21,7 +21,7 @@
         label-width="90px"
       >
         <el-button
-          v-if="showAddBtn()"
+          v-if="isEdit()"
           type="text"
           @click="
             evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
@@ -63,7 +63,7 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-button v-if="showAddBtn()" type="text" @click="addEvaluateItem"
+      <el-button v-if="isEdit()" type="text" @click="addEvaluateItem"
         >添加评定体系</el-button
       >
     </div>
@@ -187,7 +187,7 @@ export default {
       } else {
         this.loading = true;
         let requestName = 'addEvaluate';
-        if (this.rowData.ruleId) {
+        if (this.isEdit()) {
           requestName = 'updateEvaluate';
         }
         this.server[requestName](this.evaluateFormList).then((res) => {
@@ -220,7 +220,7 @@ export default {
       this.visible = false;
       this.$emit('update:showDialog', false);
     },
-    showAddBtn() {
+    isEdit() {
       if (this.evaluateFormList.length == 1 && this.evaluateFormList[0].ruleId) {
         return false;
       }
