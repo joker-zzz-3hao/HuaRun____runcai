@@ -41,7 +41,7 @@ export default {
       currentIndex: 0,
       tabsList: [
         {
-          menuTitle: 'OKR复核',
+          menuTitle: 'OKR复盘',
           toName: 'replayList',
         },
       ],

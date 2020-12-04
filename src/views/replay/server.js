@@ -41,4 +41,9 @@ export default class Server extends ServerBase {
   getOkrReviewPage(param) {
     return this._ajaxPost('gateway/talent-query/okr/review/query/getOkrReviewPage', param);
   }
+
+  // 更新文件状态
+  updateResource(param) {
+    return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
+  }
 }

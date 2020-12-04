@@ -108,19 +108,19 @@
           </dd>
           <!-- 复盘详情有则显示 -->
           <dd>
-            <dl>
+            <dl v-if="list.advantage">
               <dt>价值与收获</dt>
               <dd>{{ list.advantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.disadvantage">
               <dt>问题与不足</dt>
               <dd>{{ list.disadvantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.measure.length">
               <dt>改进措施</dt>
               <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+            <!-- <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
               <dt>复盘沟通</dt>
               <dd>
                 {{ list.communication }}
@@ -144,8 +144,7 @@
                   </dd>
                 </dl>
               </dd>
-            </dl>
-            <dl v-else></dl>
+            </dl> -->
           </dd>
         </dl>
       </elcollapseitem>
@@ -230,11 +229,10 @@ export default {
     },
     // 下载
     downFile(fileObj) {
-      console.log(this.data);
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=${this.data.okrMainId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_REVIEW&sourceKey=${this.$route.query.okrId}`;
       window.open(url);
     },
   },

@@ -125,7 +125,7 @@ export default {
     };
   },
   created() {
-    if (this.sourceType == 'OKRMODIFY') {
+    if (this.sourceType == 'OKRMODIFY' || this.sourceType == 'OKR_REVIEW') {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params, sourceKey: this.sourceKey,
       };

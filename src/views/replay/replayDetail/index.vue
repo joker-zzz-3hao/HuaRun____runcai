@@ -64,8 +64,7 @@ export default {
         this.okrMain.okrReviewPojoList.forEach((item) => {
           console.log('okrReviewPojoList');
           item.krs.forEach((list) => {
-            list.fileList = list.attachmentList ? JSON.parse(list.attachmentList) : [];
-            console.log(JSON.parse(list.attachmentList));
+            list.fileList = list.attachmentList;
           });
         });
         console.log(this.okrMain.okrReviewPojoList);

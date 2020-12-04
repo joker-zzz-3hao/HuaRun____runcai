@@ -63,71 +63,49 @@
           <dd>
             <dl>
               <dt>自评分</dt>
-              <dd></dd>
+              <dd>{{ list.score }}</dd>
             </dl>
-            <dl>
-              <dt>自评说明</dt>
-              <dd></dd>
+            <dl v-if="list.scoreRemark">
+              <dt>评分说明</dt>
+              <dd>{{ list.scoreRemark }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.attachmentList">
               <dt>佐证材料</dt>
-              <dd></dd>
+              <dd v-for="file in list.fileList" :key="file.resourceId">
+                <em>{{ file.resourceName }}</em>
+                <span>
+                  <span
+                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                    @click="openFile(file)"
+                    >预览</span
+                  >
+                  <span @click="downFile(file)">下载</span>
+                </span>
+              </dd>
             </dl>
           </dd>
           <!-- 复盘详情 -->
-          <dd>
-            <dl>
+          <div @click="openMore(list)">展开</div>
+          <dd v-show="list.openAdvantage">
+            <dl v-if="list.advantage">
               <dt>价值与收获</dt>
               <dd>{{ list.advantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.disadvantage">
               <dt>问题与不足</dt>
               <dd>{{ list.disadvantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.measure.length">
               <dt>改进措施</dt>
               <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <!-- <dl>
-              <dt>复盘沟通</dt>
-              <dd>
-                <el-input
-                  :autosize="{ minRows: 1, maxRows: 8 }"
-                  type="textarea"
-                  placeholder="不超过1000字符"
-                  maxlength="1000"
-                  v-model="list.communication"
-                  class="tl-textarea"
-                ></el-input>
-              </dd>
-            </dl> -->
-            <!-- <dl>
-              <dt>评定</dt>
-              <dd>
-                <dl class="tag-lists">
-                  <dd
-                    @click="selectCommunicationLabel(btnText.txt, index, i)"
-                    v-for="(btnText, key) in listBtn"
-                    :key="key"
-                    :class="[
-                      {
-                        'is-selected': list.communicationLabel == btnText.txt,
-                      },
-                      btnText.clsName,
-                    ]"
-                  >
-                    <em>{{ btnText.txt }}</em>
-                  </dd>
-                </dl>
-              </dd>
-            </dl> -->
           </dd>
         </dl>
       </elcollapseitem>
     </elcollapse>
     <div>
       <span>OKR得分</span>
-      <em></em>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
     </div>
     <dl>
       <dd>
@@ -182,7 +160,7 @@
               resize="none"
             ></el-input>
           </el-form-item>
-          <div>
+          <div v-if="ruleForm.replayStatus == '1'">
             <span>快捷评语：</span>
             <em
               v-for="sortComment in sortCommentList"
@@ -195,14 +173,22 @@
         </el-form>
       </dd>
     </dl>
-    <tl-footer
-      :btnText="'确认沟通'"
-      :saveLoad="saveLoad"
-      :submitLoad="submitLoad"
-      @submit="submit"
-      @save="save"
-      @handleDeleteOne="handleDeleteOne"
-    ></tl-footer>
+    <div class="footer-panel">
+      <el-button
+        type="primary"
+        @click="submit"
+        :loading="submitLoad"
+        class="tl-btn amt-bg-slip"
+        >确认沟通
+      </el-button>
+      <el-button
+        plain
+        @click="handleDeleteOne"
+        class="tl-btn amt-border-fadeout"
+        >关闭
+      </el-button>
+    </div>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 
@@ -210,7 +196,8 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
-import replayFoot from '../../component/replayFoot';
+import CONST from '@/lib/const';
+import imgDialog from '@/components/imgDialog';
 import Server from '../../server';
 
 const server = new Server();
@@ -221,10 +208,11 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
-    'tl-footer': replayFoot,
+    'img-dialog': imgDialog,
   },
   data() {
     return {
+      CONST,
       form: {},
       activeNames: [0],
       server,
@@ -254,7 +242,9 @@ export default {
         },
       ],
       ruleForm: {
-        replayStatus: 1,
+        replayStatus: '1',
+        communication: '',
+        refuseInfo: '',
       },
       sortCommentList: ['无异意', '已线下沟通', '已知晓'],
     };
@@ -302,12 +292,15 @@ export default {
       } else {
         this.list = krsList.map((item) => ({
           detailId: item.detailId,
+          okrDetailId: item.okrDetailId,
+          communication: item.communication,
           advantage: item.advantage,
           disadvantage: item.disadvantage,
           measure: item.measure || [],
-          okrDetailId: item.okrDetailId,
-          communication: item.communication,
           communicationLabel: item.communicationLabel,
+          attachmentList: item.attachmentList,
+          score: item.score,
+          remark: item.scoreRemark,
         }));
       }
     },
@@ -379,27 +372,26 @@ export default {
       });
     },
     submit() {
-      this.submitLoad = true;
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
-      };
-      const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
-      if (CheckNull) {
-        this.submitLoad = false;
-        this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
-        return false;
-      }
-      this.server.okrReviewCommunicationSubmit(params).then((res) => {
-        this.submitLoad = false;
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$router.push('/replayList');
-        } else {
-          this.$message.error(res.msg);
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          debugger;
+          this.submitLoad = true;
+          this.checkDatakrs(false);
+          const params = {
+            okrMainVo: {
+              okrId: this.okrMain.okrMainVo.okrId,
+            },
+            list: this.list,
+          };
+          this.server.okrReviewCommunicationSubmit(params).then((res) => {
+            this.submitLoad = false;
+            if (res.code == 200) {
+              this.$message.success('提交成功');
+              this.$router.push('/replayList');
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
         }
       });
     },
@@ -412,8 +404,47 @@ export default {
         this.checkDatakrs();
       });
     },
+    // 快速填入
     fastWrite(text) {
       this.ruleForm.communication = text;
+    },
+    // 折叠展开
+    openMore(list) {
+      list.openAdvantage = !list.openAdvantage;
+      this.$forceUpdate();
+    },
+    // -------------文件-------------
+    // 截取文件类型
+    cutType(name) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
+    // 预览
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_REVIEW&sourceKey=${this.$route.query.okrId}`;
+      window.open(url);
+    },
+  },
+  watch: {
+    'ruleForm.replayStatus': {
+      handler() {
+        console.log(this.$refs.ruleForm.fields);
+        const fields = this.$refs.ruleForm.fields || [];
+        fields.forEach((i) => {
+          if (i.prop === 'refuseInfo' || i.prop === 'communication') { // 通过prop属性值相同来判断是哪个输入框，比如：要移除prop为'user'
+            i.resetField();
+          }
+        });
+      },
     },
   },
 };

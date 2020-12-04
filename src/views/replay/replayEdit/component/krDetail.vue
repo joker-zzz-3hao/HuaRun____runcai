@@ -125,7 +125,8 @@
                     :fileList="list.fileList"
                     :limit="10"
                     @change="fileChange"
-                    sourceType="OKRMODIFY"
+                    sourceType="OKR_REVIEW"
+                    :sourceKey="$route.query.okrId"
                     accept="
               .jpg,
               .jpeg,
@@ -135,7 +136,6 @@
               .pptx,
               .xlsx"
                     tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
-                    @click="uploadList(i)"
                   ></file-upload>
                 </dd>
               </dl>
@@ -318,7 +318,7 @@ export default {
           disadvantage: item.disadvantage,
           measure: item.measure || [],
           communicationLabel: item.communicationLabel,
-          attachmentList: item.newattachmentList ? JSON.stringify(item.newattachmentList) : item.attachmentList,
+          attachmentList: item.attachmentList,
           score: item.score,
           remark: item.scoreRemark,
         }));
@@ -340,6 +340,7 @@ export default {
         this.saveLoad = false;
         if (res.code == 200) {
           this.$emit('getView');
+          this.updateFile();
           this.getOldList();
           this.$message.success('保存成功');
         } else {
@@ -349,12 +350,16 @@ export default {
     },
     handleDeleteOne() {
       this.checkDatakrs(false);
-      const CheckNull = this.list.every((item) => !item.advantage && !item.disadvantage && item.measure.length == 0);
+      const CheckNull = this.list.every((
+        item,
+      ) => !item.score && !item.remark && !item.advantage && !item.disadvantage && item.measure.length == 0);
       if (CheckNull) {
+        console.log(this.list);
         this.$router.push('/replayList');
         return false;
       }
 
+      console.log(JSON.stringify(this.oldList), JSON.stringify(this.list));
       if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
         this.$router.push('/replayList');
       } else {
@@ -420,6 +425,7 @@ export default {
             this.submitLoad = false;
             if (response.code == 200) {
               this.$message.success('提交成功');
+              this.updateFile();
               this.$router.push('/replayList');
             } else {
               this.$message.error(response.msg);
@@ -455,6 +461,9 @@ export default {
         disadvantage: item.disadvantage,
         measure: item.measure || [],
         communicationLabel: item.communicationLabel,
+        attachmentList: item.attachmentList,
+        score: item.score,
+        remark: item.scoreRemark,
       }));
     },
     getOkrReviewDetail() {
@@ -467,7 +476,6 @@ export default {
     },
     // 折叠展开
     openMore(list) {
-      console.log(list.openAdvantage);
       list.openAdvantage = !list.openAdvantage;
       this.$forceUpdate();
     },
@@ -477,11 +485,9 @@ export default {
     fileChange(fileobject) {
       console.log(fileobject.list, fileobject.action);
       this.okrMain.okrReviewPojoList[fileobject.action.oindex]
-        .krs[fileobject.action.krindex].newattachmentList = fileobject.list;
+        .krs[fileobject.action.krindex].attachmentList = fileobject.list;
     },
-    uploadList(i) {
-      console.log(i, 'upload');
-    },
+
     computeScore() {
       let score = 0;
       this.okrMain.okrReviewPojoList.forEach((item) => {
@@ -496,6 +502,13 @@ export default {
         console.log('krscore', score);
       });
       return score;
+    },
+    // 更新文件状态
+    updateFile() {
+      this.list.forEach((item) => {
+        const files = item.attachmentList.map((file) => file.resourceId).toString();
+        this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
+      });
     },
   },
 };
