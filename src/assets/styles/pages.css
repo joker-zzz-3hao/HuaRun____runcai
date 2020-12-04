@@ -4028,11 +4028,16 @@
 .mood {
   position: absolute;
   right: 10px;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .teams-weekly .mood {
   position: unset;
+}
+
+.my-weekly .dl-card-panel.mood > dd {
+  margin: 0;
 }
 
 .mood ul {
@@ -4043,7 +4048,6 @@
 .mood ul li {
   margin: 0 30px 0 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
@@ -4051,8 +4055,8 @@
   cursor: pointer;
 }
 
-.mood li i:last-child {
-  margin: 10px 0 0 0;
+.mood ul li i + i {
+  margin: 0 0 0 10px;
 }
 
 .mood dd span {
@@ -5721,7 +5725,8 @@
 }
 
 /* .project-manage */
-.project-manage .operating-box-group .operating-box:first-child {
+.project-manage .operating-box-group .operating-box:first-child,
+.working-hours .operating-box-group .operating-box:first-child {
   justify-content: space-between;
 }
 
@@ -6039,6 +6044,14 @@
 .working-hours .footer-panel span em {
   margin: 0 5px;
   color: #685df1;
+}
+
+.working-hours .operating-box-group .operating-box:last-child {
+  justify-content: flex-start;
+}
+
+.working-hours .operating-box-group .operating-box:first-child .tl-select  {
+  width: 500px;
 }
 
 .approval .el-dialog__body,
