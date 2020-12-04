@@ -84,9 +84,11 @@ export default {
         this.okrMain = res.data;
         this.okrMain.okrReviewPojoList.forEach((item) => {
           item.krs.forEach((list) => {
-            list.fileList = item.attachmentList ? JSON.parse(item.attachmentList) : [];
+            list.fileList = list.attachmentList ? JSON.parse(list.attachmentList) : [];
+            console.log(JSON.parse(list.attachmentList));
           });
         });
+        console.log(this.okrMain.okrReviewPojoList);
         this.okrMain.okrMainVo.reviewType = 1;
       });
     },

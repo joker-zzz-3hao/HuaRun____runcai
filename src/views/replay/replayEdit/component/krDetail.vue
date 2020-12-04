@@ -201,7 +201,7 @@
     </elcollapse>
     <div>
       <span>最终得分</span>
-      <em>{{ selfAssessmentScore }}</em>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
     </div>
     <!-- TODO:加复盘记录 -->
     <tl-footer
@@ -318,7 +318,7 @@ export default {
           disadvantage: item.disadvantage,
           measure: item.measure || [],
           communicationLabel: item.communicationLabel,
-          attachmentList: JSON.stringify(item.attachmentList),
+          attachmentList: item.newattachmentList ? JSON.stringify(item.newattachmentList) : item.attachmentList,
           score: item.score,
           remark: item.scoreRemark,
         }));
@@ -332,7 +332,7 @@ export default {
         okrMainVo: {
           reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
-          selfAssessmentScore: this.selfAssessmentScore,
+          selfAssessmentScore: this.okrMain.okrMainVo.selfAssessmentScore,
         },
         list: this.list,
       };
@@ -376,7 +376,7 @@ export default {
         okrMainVo: {
           reviewType: this.reviewType,
           okrId: this.okrMain.okrMainVo.okrId,
-          selfAssessmentScore: this.selfAssessmentScore,
+          selfAssessmentScore: this.okrMain.okrMainVo.selfAssessmentScore,
         },
         list: this.list,
       };
@@ -385,7 +385,7 @@ export default {
         if (res.code == 200) {
           this.$router.push('/replayList');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },
@@ -404,7 +404,7 @@ export default {
           reviewType: this.reviewType,
           okrBelongType: this.okrMain.okrMainVo.okrBelongType,
           okrId: this.okrMain.okrMainVo.okrId,
-          selfAssessmentScore: this.selfAssessmentScore,
+          selfAssessmentScore: this.okrMain.okrMainVo.selfAssessmentScore,
         },
         list: this.list,
       };
@@ -472,12 +472,12 @@ export default {
       this.$forceUpdate();
     },
     showscore() {
-      this.selfAssessmentScore = Math.floor(this.computeScore() / 100) / 100;
+      this.okrMain.okrMainVo.selfAssessmentScore = Math.floor(this.computeScore() / 100) / 100;
     },
     fileChange(fileobject) {
       console.log(fileobject.list, fileobject.action);
       this.okrMain.okrReviewPojoList[fileobject.action.oindex]
-        .krs[fileobject.action.krindex].attachmentList = fileobject.list;
+        .krs[fileobject.action.krindex].newattachmentList = fileobject.list;
     },
     uploadList(i) {
       console.log(i, 'upload');

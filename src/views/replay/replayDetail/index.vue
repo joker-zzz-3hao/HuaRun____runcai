@@ -61,6 +61,14 @@ export default {
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
+        this.okrMain.okrReviewPojoList.forEach((item) => {
+          console.log('okrReviewPojoList');
+          item.krs.forEach((list) => {
+            list.fileList = list.attachmentList ? JSON.parse(list.attachmentList) : [];
+            console.log(JSON.parse(list.attachmentList));
+          });
+        });
+        console.log(this.okrMain.okrReviewPojoList);
       });
     },
 

@@ -150,6 +150,10 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <div>
+      <span>最终得分</span>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+    </div>
     <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
