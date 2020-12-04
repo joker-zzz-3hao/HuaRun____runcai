@@ -1,47 +1,6 @@
 <template>
   <div class="replay-list">
-     <dl class="dl-item">
-        <dt>周期</dt>
-        <dd>
-          <el-select
-            :disabled="periodIdList.length == 0"
-            v-model.trim="periodId"
-            placeholder="用户类型"
-            :popper-append-to-body="false"
-            @change="okrReviewList"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              :label="item.periodName"
-              :value="item.periodId"
-              v-for="(item, index) in periodIdList"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
-          <dl class="dl-item">
-        <dt>组织</dt>
-        <dd>
-          <el-select
-            :disabled="periodIdList.length == 0"
-            v-model.trim="periodId"
-            placeholder="用户类型"
-            :popper-append-to-body="false"
-            @change="okrReviewList"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-          >
-            <el-option
-              :label="item.periodName"
-              :value="item.periodId"
-              v-for="(item, index) in periodIdList"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </dd>
-      </dl>
+
        <div class="cont-area">
                <tl-crcloud-table
                :isPage="false"
@@ -96,7 +55,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
-import Server from '../server';
+import Server from '../../server';
 
 const server = new Server();
 export default {
