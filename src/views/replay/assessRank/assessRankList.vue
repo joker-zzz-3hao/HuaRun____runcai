@@ -91,7 +91,22 @@
         </div>
       </tl-crcloud-table>
     </div>
+    <div>
+      <span>*是否已经确认沟通 </span>
+
+  <el-radio v-model="radio" label="1">已沟通</el-radio>
+  <el-radio v-model="radio" label="2">未沟通</el-radio>
+    </div>
+    <div>
+      <el-button   type="primary"
+
+        class="tl-btn amt-bg-slip">暂存</el-button>
+      <el-button    type="primary"
+
+        class="tl-btn amt-bg-slip" @click="submit">提交</el-button>
+    </div>
     <rank-before-list ref="beforeList"></rank-before-list>
+    <causes-rank ref="causesRank"></causes-rank>
   </div>
 </template>
 
@@ -101,6 +116,7 @@ import crcloudTable from '@/components/crcloudTable';
 import Sortable from 'sortablejs';
 import Server from '../server';
 import RankBeforeList from './components/RankBeforeList';
+import causesRank from './components/causesRank';
 
 const server = new Server();
 export default {
@@ -108,9 +124,11 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
     'rank-before-list': RankBeforeList,
+    'causes-rank': causesRank,
   },
   data() {
     return {
+      radio: '',
       periodIdList: [],
       server,
       periodId: '',
@@ -228,7 +246,9 @@ export default {
     showbeforeList() {
       this.$refs.beforeList.show();
     },
-
+    submit() {
+      this.$refs.causesRank.show();
+    },
   },
 
 };
