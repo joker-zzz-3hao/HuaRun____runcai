@@ -12,7 +12,7 @@
             >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
           >
           <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
             </span>
@@ -77,7 +77,7 @@
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
-            <em v-money="{ value: baseInfo.projectBudget, precision: 0 }"></em
+            <em v-money="{ value: baseInfo.projectBudget, precision: 2 }"></em
             ><span>元</span
             ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
@@ -86,7 +86,7 @@
           <dt><span>投入类型</span></dt>
           <dd>
             <em>{{
-              CONST.THROW_TYPE_MAP[baseInfo.projectInputType] || "--"
+              baseInfo.projectInputType || "--"
             }}</em>
           </dd>
         </dl>

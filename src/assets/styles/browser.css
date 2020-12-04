@@ -42,12 +42,21 @@ _:future,
   .weekly-select li:last-child {
     margin-right: 0;
   }
+
+  .weekly-cont .tl-form.is-edit .form-item-group:first-child .el-form-item__content {
+    width: 932px;
+  }
 }
 
 @media screen and (min-width:1921px) {
   .tl-table .sub-tr .okr-kr-name::before {
     left: -95px;
     width: 86px;
+  }
+
+  .weekly-cont .tl-form.is-edit .form-item-group:first-child .el-form-item__content {
+    flex: 0 0 932px;
+    width: 932px;
   }
 }
 

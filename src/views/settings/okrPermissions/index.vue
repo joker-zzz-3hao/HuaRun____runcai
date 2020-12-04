@@ -1,7 +1,7 @@
 <template>
   <div class="okr-permissions">
     <div class="operating-area">
-      <div class="page-title">设置OKR</div>
+      <!-- <div class="page-title">设置OKR</div> -->
       <div class="operating-box"></div>
     </div>
     <div class="cont-area">

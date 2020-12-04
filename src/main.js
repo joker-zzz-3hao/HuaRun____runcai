@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import Vue from 'vue';
 import Element from 'element-ui';
 import animated from 'animate.css';
@@ -42,7 +43,13 @@ directives(Vue);
 window.$store = store;
 
 Vue.config.productionTip = false;
-
+// eslint-disable-next-line no-extend-native
+Array.prototype.remove = function (val) {
+  const index = this.indexOf(val);
+  if (index > -1) {
+    this.splice(index, 1);
+  }
+};
 new Vue({
   router,
   store,
