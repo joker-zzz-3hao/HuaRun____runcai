@@ -172,7 +172,7 @@
                     collapse-tags
                     @visible-change="visibleChange(workForm)"
                     @change="selectWeekData(workForm)"
-                    popper-class="tl-cascader-popper working-hours-wzr"
+                    popper-class="tl-cascader-popper working-hours-cascader"
                     class="tl-cascader"
                   ></el-cascader>
                 </div>
@@ -772,12 +772,7 @@ export default {
         return {};
       },
     },
-    weeklyTypeList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+
   },
   data() {
     return {
@@ -819,7 +814,6 @@ export default {
       weeklyDataCopy: {},
       props: { multiple: true },
       weeklyType: '',
-      thisPageWeeklyTypeList: [],
       refreshForm: false,
     };
   },
@@ -844,7 +838,6 @@ export default {
   },
   methods: {
     init() {
-      this.thisPageWeeklyTypeList = this.weeklyTypeList;
       if (this.week.weeklyId) {
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
@@ -852,7 +845,6 @@ export default {
             // 将所有数据保存
             this.weeklyData = res.data;
             this.weeklyType = res.data.weeklyType;
-            this.thisPageWeeklyTypeList = [res.data.weeklyType];
             this.weeklyDataCopy = { ...this.weeklyData };
             this.initPage();
             this.refreshForm = true;
@@ -861,7 +853,6 @@ export default {
       } else if (!this.week.weeklyId) {
         this.canUpdate = true;
         // eslint-disable-next-line prefer-destructuring
-        this.weeklyType = this.weeklyTypeList[0];
         this.weeklyDataCopy = {};
         if (!(this.$route.params && this.$route.params.weeklySumParams)) {
           // 本周任务初始化数据
@@ -1247,8 +1238,6 @@ export default {
         if (res.code == 200) {
           this.canUpdate = false;
           this.$message.success('保存成功');
-          // 刷新当前页周报数据
-          // this.refresh();
           // 新增周报，刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
           // if (!this.weeklyId) {
           this.setThisWeekStatus();
@@ -1267,25 +1256,24 @@ export default {
               });
             });
           });
+          // 清除表单
+          this.refreshForm = false;
+          this.$nextTick(() => {
+            // 重新渲染表单  校验才会生效
+            this.refreshForm = true;
+          });
+          this.$forceUpdate();
         }
-        // 清除表单
-        this.refreshForm = false;
-        this.$nextTick(() => {
-        // 重新渲染表单  校验才会生效
-          this.refreshForm = true;
-        });
-        this.$forceUpdate();
       });
     },
     refresh() {
       if (this.week.weeklyId) {
+        this.refreshForm = false;
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
           if (res.code == 200) {
             // 将所有数据保存
             this.weeklyData = res.data;
-            this.weeklyType = res.data.weeklyType;
-            this.thisPageWeeklyTypeList = [res.data.weeklyType];
             this.weeklyDataCopy = { ...this.weeklyData };
             this.initPage();
             // // 清除表单
@@ -1463,7 +1451,10 @@ export default {
               week.weeklyId = this.weeklyId;
             }
           });
+
           this.setWeekList(tempList);
+          // 刷新当前页周报数据
+          this.refresh();
         }
       });
     },

@@ -30,7 +30,7 @@
                 v-model="formData.approvalStatus"
                 :popper-append-to-body="false"
                 placeholder="请选择审批状态"
-                style="width:100px"
+                style="width: 100px"
                 @change="changeStatus"
                 clearable
                 popper-class="tl-select-dropdown"
@@ -62,6 +62,7 @@
                 type="daterange"
                 @change="changePick"
                 @clear="searchList"
+                clearable
                 value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -97,7 +98,7 @@
                 v-model="userId"
                 placeholder="请选择"
                 filterable
-                    style="width:118px"
+                style="width: 118px"
                 @change="searchList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
@@ -185,18 +186,19 @@
                   popper-class="approval-pop"
                 >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{ GetLength(scope.row.workDesc)||'--' }}</span>
+                  <span slot="reference">{{
+                    GetLength(scope.row.workDesc) || "--"
+                  }}</span>
                 </el-popover>
               </template>
             </el-table-column>
 
             <el-table-column prop="applyTime" label="提交人" min-width="130">
               <template slot-scope="scope">
-
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-              <el-table-column label="投入工时" min-width="200px">
+            <el-table-column label="投入工时" min-width="200px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
                   <div>
@@ -258,12 +260,12 @@
                           @click="alertSelect(scope, true)"
                           >确认审批</el-button
                         >
-                        <el-button
+                        <!-- <el-button
                           plain
                           class="tl-btn amt-border-fadeout"
                           @click="close(scope)"
                           >取消</el-button
-                        >
+                        > -->
                       </div>
                       <el-button type="text" slot="reference">修改</el-button>
                     </el-popover>
@@ -277,24 +279,29 @@
                     <div>{{ changeListDate(scope.row.arrHide) }}</div>
                   </el-tooltip>
                 </div>
-                <div v-show="scope.row.approvalStatus == '2'">
+                <div
+                  v-show="scope.row.approvalStatus == '2'"
+                  class="flex-start"
+                >
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
                   <el-tooltip class="item" effect="dark" placement="top">
                     <div slot="content">
                       <div>
                         填入工时：{{
-                          checkOldNew(scope.row).showOldText || "无"
+                          checkOldNew(scope.row).showOldText || "0天"
                         }}
                       </div>
                       <div>
                         修改工时：{{
-                          checkOldNew(scope.row).showNewText || "无"
+                          checkOldNew(scope.row).showNewText || "0天"
                         }}
                       </div>
-                      <div>修改原因：{{ scope.row.remark || "无" }}</div>
+                      <div style="max-width: 200px">
+                        修改原因：{{ scope.row.remark || "0天" }}
+                      </div>
                     </div>
                     <i
-                      class="el-icon-warning"
+                      class="icon-remind"
                       v-show="checkOldNew(scope.row).show"
                     ></i>
                   </el-tooltip>
@@ -352,7 +359,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-                <el-table-column
+            <el-table-column
               prop="approvalTime"
               label="审批时间"
               min-width="180"
@@ -373,7 +380,7 @@
               </template>
             </el-table-column>
 
-             <el-table-column label="进度" min-width="180" prop="workProgress">
+            <el-table-column label="进度" min-width="180" prop="workProgress">
               <template slot-scope="scope">
                 <tl-process
                   :data="parseInt(scope.row.workProgress || 0, 10)"
