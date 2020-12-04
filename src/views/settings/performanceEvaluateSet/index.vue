@@ -7,7 +7,7 @@
 <template>
   <div>
     <div class="operating-area">
-      <el-button @click="addEvaluate">添加评定</el-button>
+      <el-button @click="addOrEditEvaluate()">添加评定</el-button>
     </div>
     <div class="cont-area">
       <crcloud-table :isPage="false" @searchList="searchList">
@@ -21,26 +21,58 @@
               label="评定方式"
               align="left"
               prop="ruleName"
+              min-width="150px"
             ></el-table-column>
-            <el-table-column
-              label="内容"
-              align="left"
-              prop=""
-            ></el-table-column>
+            <el-table-column label="内容" align="left" min-width="200px">
+              <template slot-scope="scope">
+                <span
+                  v-for="(item, index) in scope.row.ruleDetailList"
+                  :key="item.ruleId"
+                >
+                  {{ item.value + item.unit
+                  }}{{
+                    scope.row.ruleDetailList.length - 1 != index ? "、" : ""
+                  }}
+                </span>
+              </template></el-table-column
+            >
             <el-table-column
               label="设置时间"
               align="left"
               prop="createTime"
-            ></el-table-column>
+              min-width="165px"
+              ><template slot-scope="scope">
+                <div>
+                  {{
+                    dateFormat(
+                      "YYYY-mm-dd HH:MM:SS",
+                      new Date(scope.row.createTime)
+                    )
+                  }}
+                </div>
+              </template></el-table-column
+            >
             <el-table-column
               label="更新时间"
               align="left"
               prop="updateTime"
-            ></el-table-column>
+              min-width="165px"
+              ><template slot-scope="scope">
+                <div>
+                  {{
+                    dateFormat(
+                      "YYYY-mm-dd HH:MM:SS",
+                      new Date(scope.row.updateTime)
+                    )
+                  }}
+                </div>
+              </template></el-table-column
+            >
             <el-table-column
               label="添加人"
               align="left"
               prop="createUserName"
+              min-width="100px"
             ></el-table-column>
             <el-table-column
               label="操作"
@@ -50,15 +82,13 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="hasPower('sys_dictionary_update')"
                   type="text"
-                  @click="editDic(scope.row)"
+                  @click="addOrEditEvaluate(scope.row)"
                   size="small"
-                  >修改</el-button
+                  >编辑</el-button
                 >
 
                 <el-button
-                  v-if="hasPower('sys_dictionary_delete')"
                   type="text"
                   size="small"
                   @click="deleteDic(scope.row)"
@@ -75,14 +105,14 @@
       v-if="showDialog"
       :showDialog.sync="showDialog"
       :server="server"
-      :optionType="optionType"
+      :rowData="rowData"
       @closeDialog="closeDialog"
     ></tl-create-evaluate>
   </div>
 </template>
 
 <script>
-import createEvaluate from './components/createEvaluate';
+import addOrEditEvaluate from './components/addOrEditEvaluate';
 import Server from './server';
 
 const server = new Server();
@@ -90,7 +120,7 @@ const server = new Server();
 export default {
   name: '',
   components: {
-    'tl-create-evaluate': createEvaluate,
+    'tl-create-evaluate': addOrEditEvaluate,
   },
   props: {},
   data() {
@@ -99,7 +129,7 @@ export default {
       loading: false,
       evaluateData: [],
       showDialog: false,
-      optionType: '',
+      rowData: {},
     };
   },
   created() { this.searchList(); },
@@ -114,7 +144,11 @@ export default {
         }
       });
     },
-    addEvaluate() {
+    addOrEditEvaluate(rowData) {
+      this.rowData = {};
+      if (rowData && rowData.ruleId) {
+        this.rowData = rowData;
+      }
       this.showDialog = true;
       this.$nextTick(() => {
         this.$refs.createEvaluate.show();

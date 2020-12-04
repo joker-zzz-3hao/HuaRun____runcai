@@ -21,6 +21,7 @@
         label-width="90px"
       >
         <el-button
+          v-if="this.rowData.ruleId"
           type="text"
           @click="
             evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
@@ -62,7 +63,9 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-button type="text" @click="addEvaluateItem">添加评定体系</el-button>
+      <el-button v-if="this.rowData.ruleId" type="text" @click="addEvaluateItem"
+        >添加评定体系</el-button
+      >
     </div>
     <div v-show="step == 2">
       <dl v-for="evaluateItem in evaluateFormList" :key="evaluateItem.randomId">
@@ -99,7 +102,7 @@
 
 <script>
 export default {
-  name: '',
+  name: 'addOrEditEvaluate',
   components: {},
   props: {
     server: {
@@ -108,6 +111,18 @@ export default {
         return {};
       },
     },
+    rowData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    // optionType: {
+    //   type: String,
+    //   default() {
+    //     return 'add';
+    //   },
+    // },
   },
   data() {
     return {
@@ -122,7 +137,14 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.addEvaluateItem();
+      if (this.rowData.ruleId) {
+        this.setInitData();
+      } else {
+        this.addEvaluateItem();
+      }
+    },
+    setInitData() {
+      this.evaluateFormList.push(this.rowData);
     },
     addEvaluateItem() {
       this.evaluateFormList.push({
