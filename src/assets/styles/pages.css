@@ -3713,7 +3713,7 @@
   width: 100%;
 }
 
-.tl-cascader-popper.working-hours .el-cascader-menu__wrap {
+.tl-cascader-popper.working-hours-cascader .el-cascader-menu__wrap {
   height: 258px;
 }
 
@@ -5976,8 +5976,11 @@
 }
 
 .working-hours .operating-box .el-range-editor.el-input__inner {
-  display: unset;
   margin: 0;
+}
+
+.working-hours .operating-box .el-range-editor .el-range-separator {
+  line-height: 28px;
 }
 
 .working-hours .el-button--text.light {
@@ -6010,11 +6013,6 @@
 .working-hours {
   margin-bottom: 86px;
   min-height: calc(100vh - 172px);
-}
-
-.working-hours-wzr {
-  margin-bottom: 86px;
-  /* min-height: calc(100vh - 172px); */
 }
 
 .working-hours .footer-panel {
