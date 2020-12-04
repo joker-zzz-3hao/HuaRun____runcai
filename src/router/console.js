@@ -280,8 +280,8 @@ export default [{
         path: '/replayScoreDetail',
         name: 'replayScoreDetail',
         meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
+          hasMainMenu: false,
+          isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replayScoreDetail',
           belongsTo: 'replayList',

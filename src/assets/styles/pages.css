@@ -2844,11 +2844,11 @@
 .replay-link .progress-bg:not(:first-child) {
   margin-left: 2px !important;
 }
-.replay-score .tl-collapse .el-collapse-item__content {
+.replay-score .tl-collapse .el-collapse-item__content div {
   display: flex;
 }
 .replay-score .input-dl{
-  flex: 50%;
+  flex: 100%;
 }
 /* 周报 */
 .my-weekly {
