@@ -1058,6 +1058,9 @@ export default {
         noCheck: true,
         randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
       });
+      if (this.weeklyWorkVoSaveList.length > 1) {
+        this.$message.success(`新增工作项 ${this.weeklyWorkVoSaveList.length}`);
+      }
     },
     addThought() {
       this.weeklyThoughtSaveList.push({

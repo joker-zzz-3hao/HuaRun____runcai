@@ -139,7 +139,7 @@
             >
               <template slot-scope="scope">
                 <em
-                  v-money="{ value: scope.row.projectBudget, precision: 0 }"
+                  v-money="{ value: scope.row.projectBudget, precision: 2 }"
                 ></em>
               </template>
             </el-table-column>
