@@ -1602,6 +1602,10 @@
   top: 0;
 }
 
+.overview .user-info + dd {
+  cursor: pointer;
+}
+
 .okr-maps .tl-select-dropdown.el-popper {
   margin-top: 8px;
 }
@@ -1851,6 +1855,10 @@
   min-width: unset;
 }
 
+.undertake-maps .cont-area .is-plain span {
+  color: #fff !important;
+}
+
 .undertake-maps .cont-area .department-info .is-plain {
   width: 37px;
   height: 21px;
@@ -1991,6 +1999,15 @@
   height: 35px;
   width: 30px;
 }
+
+.undertake-maps .el-collapse-item__header {
+  cursor: default;
+}
+
+.undertake-maps .tl-collapse-other .collpase-icon {
+  cursor: pointer;
+}
+
 /* concerned-okr */
 .concerned-okr .cont-area {
   display: flex;
