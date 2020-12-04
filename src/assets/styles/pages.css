@@ -1838,6 +1838,10 @@
 .set-period .el-scrollbar__bar {
   opacity: 0.5;
 }
+.set-period .el-radio__label em {
+
+  letter-spacing: 2px;
+}
 
 /* undertake-maps */
 .undertake-maps .draw-area {
