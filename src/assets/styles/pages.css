@@ -1048,6 +1048,17 @@
   color: #879099;
 }
 
+.create-okr .icon-bg {
+  width: 21px;
+  height: 21px;
+  background: #f4f6f8;
+  cursor: pointer;
+}
+
+.create-okr .icon-reduce {
+  margin: 0;
+}
+
 .upload-file dt {
   color: #879099;
 }
