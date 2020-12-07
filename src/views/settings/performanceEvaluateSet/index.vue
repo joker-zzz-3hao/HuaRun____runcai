@@ -77,21 +77,50 @@
             <el-table-column
               label="操作"
               align="left"
-              width="100px"
+              width="120px"
               fixed="right"
             >
               <template slot-scope="scope">
+                <el-tooltip
+                  effect="dark"
+                  :content="'不能编辑'"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <el-button
+                    type="text"
+                    style="color: #9e9e9e; cursor: default"
+                    size="small"
+                  >
+                    编辑</el-button
+                  >
+                </el-tooltip>
                 <el-button
                   type="text"
                   @click="addOrEditEvaluate(scope.row)"
                   size="small"
-                  >编辑</el-button
                 >
-
+                  编辑</el-button
+                >
+                <el-tooltip
+                  effect="dark"
+                  :content="'不能删除'"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <el-button
+                    type="text"
+                    style="color: #9e9e9e; cursor: default"
+                    size="small"
+                  >
+                    删除</el-button
+                  >
+                </el-tooltip>
                 <el-button
                   type="text"
                   size="small"
-                  @click="deleteDic(scope.row)"
+                  :disabled="false"
+                  @click="removeEvaluate(scope.row)"
                   >删除</el-button
                 >
               </template>
@@ -106,7 +135,7 @@
       :showDialog.sync="showDialog"
       :server="server"
       :rowData="rowData"
-      @closeDialog="closeDialog"
+      @refreshPage="searchList"
     ></tl-create-evaluate>
   </div>
 </template>
@@ -154,8 +183,20 @@ export default {
         this.$refs.createEvaluate.show(rowData);
       });
     },
-    closeDialog() {
+    removeEvaluate(rowData) {
+      this.$xconfirm({
+        title: '确认删除？',
+        content: '',
+      }).then(() => {
+        this.server.removeEvaluate({ ruleId: rowData.ruleId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.searchList();
+          }
+        });
+      });
     },
+
   },
   watch: {},
   updated() {},

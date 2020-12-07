@@ -13,49 +13,45 @@
     :close-on-click-modal="false"
   >
     <div v-show="step == 1">
-      <el-form
-        ref="dicForm"
-        v-for="evaluateItem in evaluateFormList"
-        :model="evaluateItem"
-        :key="evaluateItem.randomId"
-        label-width="90px"
-      >
-        <el-button
-          v-if="isEdit()"
-          type="text"
-          @click="
-            evaluateFormList.length > 1 ? deleteEvaluateItem(evaluateItem) : ''
-          "
-          >删除整个体系</el-button
-        >
-
+      <el-form ref="dicForm" :model="performanceData" label-width="90px">
         <el-form-item label="自定义名称" prop="ruleName">
           <el-input
-            v-model.trim="evaluateItem.ruleName"
-            maxlength="50"
+            v-model.trim="performanceData.ruleName"
+            maxlength="30"
+            placeholder="请填写名称"
             clearable
           ></el-input>
         </el-form-item>
         <el-form-item label="自定义体系" prop="ruleName">
           <div
-            v-for="(ruleItem, index) in evaluateItem.ruleDetailList"
+            v-for="(ruleItem, index) in performanceData.ruleDetailList"
             :key="ruleItem.detailRandomId"
           >
-            <el-input v-model.trim="ruleItem.value"></el-input>
-            <el-input v-model.trim="ruleItem.unit"></el-input>
+            <el-input v-model.trim="ruleItem.value" maxlength="30"></el-input>
+            <el-input
+              v-model.trim="ruleItem.unit"
+              placeholder="如有单位，请填写"
+            ></el-input>
             说明
-            <el-input v-model.trim="ruleItem.description"></el-input>
+            <el-input
+              v-model="ruleItem.description"
+              type="textarea"
+              :autosize="{ minRows: 1, maxRows: 8 }"
+              class="tl-textarea"
+              placeholder="请填写说明"
+              maxlength="500"
+            ></el-input>
             <el-button
               type="text"
-              v-show="evaluateItem.ruleDetailList.length - 1 == index"
-              @click="addRuleItem(evaluateItem)"
+              v-show="performanceData.ruleDetailList.length - 1 == index"
+              @click="addRuleItem(performanceData)"
               >添加</el-button
             >
             <el-button
               type="text"
               @click="
-                evaluateItem.ruleDetailList.length > 1
-                  ? deleteRuleItem(evaluateItem, ruleItem)
+                performanceData.ruleDetailList.length > 1
+                  ? deleteRuleItem(ruleItem)
                   : ''
               "
               >删除</el-button
@@ -63,15 +59,12 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-button v-if="isEdit()" type="text" @click="addEvaluateItem"
-        >添加评定体系</el-button
-      >
     </div>
     <div v-show="step == 2">
-      <dl v-for="evaluateItem in evaluateFormList" :key="evaluateItem.randomId">
-        <dt>{{ evaluateItem.ruleName }}</dt>
+      <dl>
+        <dt>{{ performanceData.ruleName }}</dt>
         <dd
-          v-for="ruleItem in evaluateItem.ruleDetailList"
+          v-for="ruleItem in performanceData.ruleDetailList"
           :key="ruleItem.detailRandomId"
         >
           <span>{{ ruleItem.value }}</span>
@@ -128,58 +121,44 @@ export default {
     return {
       visible: false,
       loading: false,
-      evaluateFormList: [],
       step: '1',
+      performanceData: {},
     };
   },
   created() { },
   mounted() {},
   computed: {},
   methods: {
-    // init() {
-
-    // },
-    // setInitData() {
-    //   this.evaluateFormList.push(this.rowData);
-    // },
     addEvaluateItem() {
       this.evaluateFormList.push({
-        ruleRandomId: this.getRandomId(),
         ruleName: '',
         ruleDetailList: [{
-          // level: 0,
-          // ruleDetailId: 0,
-          // ruleId: 'string',
           unit: '',
           value: '',
           description: '',
           detailRandomId: this.getRandomId(),
         }],
+      });
+    },
 
+    addRuleItem() {
+      this.performanceData.ruleDetailList.push({
+        unit: '',
+        value: '',
+        description: '',
+        detailRandomId: this.getRandomId(),
       });
     },
-    deleteEvaluateItem(evaluateItem) {
-      this.evaluateFormList = this.evaluateFormList.filter((item) => item.ruleRandomId != evaluateItem.ruleRandomId);
-    },
-    addRuleItem(evaluateItem) {
-      this.evaluateFormList.forEach((item) => {
-        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
-          item.ruleDetailList.push({
-            unit: '',
-            value: '',
-            description: '',
-            detailRandomId: this.getRandomId(),
-          });
-        }
-      });
-    },
-    deleteRuleItem(evaluateItem, ruleItem) {
-      // 编辑时删除的数据需要传给后端TODO:
-      this.evaluateFormList.forEach((item) => {
-        if (evaluateItem.ruleRandomId == item.ruleRandomId) {
-          item.ruleDetailList = item.ruleDetailList.filter((detail) => detail.detailRandomId != ruleItem.detailRandomId);
-        }
-      });
+    deleteRuleItem(ruleItem) {
+      // 编辑时删除的数据需要传给后端
+      if (ruleItem.ruleDetailId) {
+        this.performanceData.ruleDetailList.forEach((detail) => {
+          if (detail.detailRandomId == ruleItem.detailRandomId) {
+
+          }
+        });
+      }
+      // this.performanceData.ruleDetailList = this.performanceData.ruleDetailList.filter((detail) => detail.detailRandomId != ruleItem.detailRandomId);
     },
     addEvaluate() {
       if (this.step == 1) {
@@ -187,13 +166,19 @@ export default {
       } else {
         this.loading = true;
         let requestName = 'addEvaluate';
-        if (this.isEdit()) {
+        if (this.performanceData.ruleId) {
           requestName = 'updateEvaluate';
         }
-        this.server[requestName](this.evaluateFormList).then((res) => {
+        // 添加level字段
+        for (let i = 0; i < this.performanceData.ruleDetailList.length; i += 1) {
+          this.performanceData.ruleDetailList[i].level = i + 1;
+        }
+        const params = [this.performanceData];
+        this.server[requestName](params).then((res) => {
           this.loading = false;
           if (res.code == 200) {
             this.$message.success('成功');
+            this.$emit('refreshPage');
             this.close();
           }
         });
@@ -201,9 +186,20 @@ export default {
     },
     show(rowData) {
       if (rowData && rowData.ruleId) {
-        this.evaluateFormList.push(rowData);
+        this.performanceData = { ...rowData };
+        this.performanceData.ruleDetailList.forEach((detail) => {
+          detail.detailRandomId = this.getRandomId();
+        });
       } else {
-        this.addEvaluateItem();
+        this.performanceData = {
+          ruleName: '',
+          ruleDetailList: [{
+            unit: '',
+            value: '',
+            description: '',
+            detailRandomId: this.getRandomId(),
+          }],
+        };
       }
       this.$nextTick(() => {
         this.visible = true;
@@ -220,12 +216,7 @@ export default {
       this.visible = false;
       this.$emit('update:showDialog', false);
     },
-    isEdit() {
-      if (this.evaluateFormList.length == 1 && this.evaluateFormList[0].ruleId) {
-        return false;
-      }
-      return true;
-    },
+
   },
   watch: {},
   updated() {},

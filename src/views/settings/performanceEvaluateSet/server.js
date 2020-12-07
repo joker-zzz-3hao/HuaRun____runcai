@@ -9,6 +9,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/assessment/rule/update', param);
   }
 
+  removeEvaluate(param) {
+    return this._ajaxPost(`gateway/talent-okr/assessment/rule/remove?ruleId=${param.ruleId}`, param);
+  }
+
   getEvaluateList(param) {
     return this._ajaxPost('gateway/talent-query/assessment/rule/query', param);
   }
