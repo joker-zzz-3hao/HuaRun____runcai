@@ -83,22 +83,27 @@
                 </span>
               </dd>
             </dl>
-          </dd>
-          <!-- 复盘详情 -->
-          <div @click="openMore(list)">展开</div>
-          <dd v-show="list.openAdvantage">
-            <dl v-if="list.advantage">
-              <dt>价值与收获</dt>
-              <dd>{{ list.advantage }}</dd>
-            </dl>
-            <dl v-if="list.disadvantage">
-              <dt>问题与不足</dt>
-              <dd>{{ list.disadvantage }}</dd>
-            </dl>
-            <dl v-if="list.measure.length">
-              <dt>改进措施</dt>
-              <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
-            </dl>
+            <!-- 复盘详情 -->
+            <template v-if="list.openAdvantage">
+              <dl>
+                <dt>价值与收获</dt>
+                <dd>{{ list.advantage || "--" }}</dd>
+              </dl>
+              <dl>
+                <dt>问题与不足</dt>
+                <dd>{{ list.disadvantage || "--" }}</dd>
+              </dl>
+              <dl>
+                <dt>改进措施</dt>
+                <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
+                <dd v-if="list.measure.length == 0">--</dd>
+              </dl>
+            </template>
+            <div @click="openMore(list)">
+              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+              <span v-if="list.openAdvantage">收起</span>
+              <span v-else>展开</span>
+            </div>
           </dd>
         </dl>
       </elcollapseitem>
