@@ -46,4 +46,9 @@ export default class Server extends ServerBase {
   updateResource(param) {
     return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
   }
+
+  // 查询组织
+  getOrgTable(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
+  }
 }

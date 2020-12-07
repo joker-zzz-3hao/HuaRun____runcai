@@ -251,29 +251,9 @@ export default {
     };
   },
   created() {
-    this.getOldList();
   },
   methods: {
-    getOldList() {
-      const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
-      const krs = [];
 
-      krsData.forEach((item) => {
-        // eslint-disable-next-line prefer-spread
-        krs.push.apply(krs, item);
-      });
-      const krsList = krs;
-
-      this.oldList = krsList.map((item) => ({
-        detailId: item.detailId,
-        advantage: item.advantage,
-        disadvantage: item.disadvantage,
-        measure: item.measure || [],
-        okrDetailId: item.okrDetailId,
-        communication: item.communication,
-        communicationLabel: item.communicationLabel,
-      }));
-    },
     checkDatakrs(clear) {
       const krsData = this.okrMain.okrReviewPojoList.map((item) => item.krs);
       const krs = [];
@@ -305,78 +285,13 @@ export default {
         }));
       }
     },
-    inputCommunication(value, index, i) {
-      this.okrMain.okrReviewPojoList[index].krs[i].communication = value;
-    },
-    selectCommunicationLabel(value, index, i) {
-      const mainData = this.okrMain.okrReviewPojoList[index].krs[i];
-      mainData.communicationLabel = value;
-    },
-    save() {
-      this.saveLoad = true;
-      this.checkDatakrs(false);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-          reviewType: this.okrMain.okrMainVo.reviewType,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
-        this.saveLoad = false;
-        if (res.code == 200) {
-          this.$emit('getView');
-          this.getOldList();
-          this.$message.success('保存成功');
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
-    },
     handleDeleteOne() {
-      this.checkDatakrs(false);
-      const CheckNull = this.list.every((item) => !item.communication && !item.communicationLabel);
-      if (CheckNull) {
-        this.$router.push('/replayList');
-        return false;
-      }
-
-      if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
-        this.$router.push('/replayList');
-        return false;
-      }
-      this.$confirm('关闭后您填写内容将被清除，请确认是否关闭?', {
-        confirmButtonText: '确定保存',
-        cancelButtonText: '关闭',
-      })
-        .then(() => {
-          this.save();
-        }).then(() => { this.$router.push('/replayList'); })
-        .catch(() => {
-          this.$router.push('/replayList');
-        });
-    },
-    clearClose() {
-      this.checkDatakrs(true);
-      const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
-      };
-      this.server.okrReviewCommunicationSave(params).then((res) => {
-        if (res.code == 200) {
-          this.$router.push('/replayList');
-        } else {
-          this.$$message.error(res.msg);
-        }
-      });
+      this.$router.push('/replayList');
     },
     submit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.submitLoad = true;
-          this.checkDatakrs(false);
           const params = {
             okrId: this.okrMain.okrMainVo.okrId,
             passFlag: this.ruleForm.passFlag == '1',

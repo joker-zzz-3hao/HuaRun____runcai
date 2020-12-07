@@ -15,9 +15,14 @@ const REVIEW_STATUS_LIST = [
   { name: '待沟通', status: 2 },
   { name: '复盘结束', status: 3 },
 ];
-
+const REPLAY_STATUS_LIST = [
+  { name: '全部', status: '' },
+  { name: '待复核', status: 1 },
+  { name: '已复核', status: 2 },
+];
 export default {
   REVIEW_STATUS,
   REVIEW_STATUS_LIST,
   OKR_BELONGTYPE,
+  REPLAY_STATUS_LIST,
 };

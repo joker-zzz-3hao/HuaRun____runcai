@@ -1,7 +1,6 @@
 <template>
   <div class="replay-link">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
-
     <div>
       <tl-kr-detail
         v-if="okrMain.okrMainVo.reviewType == 1"
