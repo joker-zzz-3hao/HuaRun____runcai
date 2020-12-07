@@ -51,4 +51,13 @@ export default class Server extends ServerBase {
   getOrgTable(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
+
+  // 查询复核列表
+  getOkrCheckPage(param) {
+    return this._ajaxPost('gateway/talent-query/okr/review/query/getOkrCheckPage', param);
+  }
+
+  getOkrCheckDetail(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrReview/getOkrCheckDetail', param);
+  }
 }

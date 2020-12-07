@@ -17,8 +17,8 @@ const REVIEW_STATUS_LIST = [
 ];
 const REPLAY_STATUS_LIST = [
   { name: '全部', status: '' },
-  { name: '待复核', status: 1 },
-  { name: '已复核', status: 2 },
+  { name: '待复核', status: 3 },
+  { name: '已复核', status: 0 },
 ];
 const REVIEW_STATUS_MAP = {
   1: 'no-review',

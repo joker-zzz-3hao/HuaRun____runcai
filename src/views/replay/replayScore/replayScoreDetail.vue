@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getOkrReviewDetail() {
-      this.server.getOkrReviewDetail({
+      this.server.getOkrCheckDetail({
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
