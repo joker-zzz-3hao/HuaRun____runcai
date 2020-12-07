@@ -25,7 +25,6 @@
         <el-form-item label="自定义体系" prop="ruleName">
           <div
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
-            v-show="ruleItem.status != '1'"
             :key="ruleItem.detailRandomId"
           >
             <el-input v-model.trim="ruleItem.value" maxlength="30"></el-input>
@@ -71,7 +70,7 @@
           <span>{{ ruleItem.value }}</span>
           <span>{{ ruleItem.unit }}</span>
           说明
-          <span>{{ ruleItem.description }}</span>
+          <pre>{{ ruleItem.description }}</pre>
         </dd>
       </dl>
     </div>
@@ -88,6 +87,7 @@
         plain
         class="tl-btn amt-border-fadeout"
         @click="cancel"
+        v-if="performanceData.status < 1"
         >取消</el-button
       >
     </div>
@@ -105,18 +105,6 @@ export default {
         return {};
       },
     },
-    // rowData: {
-    //   type: Object,
-    //   default() {
-    //     return {};
-    //   },
-    // },
-    // optionType: {
-    //   type: String,
-    //   default() {
-    //     return 'add';
-    //   },
-    // },
   },
   data() {
     return {
@@ -140,17 +128,17 @@ export default {
       });
     },
     deleteRuleItem(ruleItem) {
-      // 编辑时删除的数据需要传给后端
-      if (ruleItem.ruleDetailId) {
-        this.performanceData.ruleDetailList.forEach((detail) => {
-          if (detail.detailRandomId == ruleItem.detailRandomId) {
-            detail.status = '1';
-          }
-        });
-      }
-      // this.performanceData.ruleDetailList = this.performanceData.ruleDetailList.filter((detail) => detail.detailRandomId != ruleItem.detailRandomId);
+      this.performanceData.ruleDetailList = this.performanceData.ruleDetailList.filter(
+        (detail) => detail.detailRandomId != ruleItem.detailRandomId,
+      );
     },
     addEvaluate() {
+      if (this.performanceData
+      && this.performanceData.ruleId
+       && this.performanceData.status > 0) {
+        this.close();
+        return;
+      }
       if (this.step == 1) {
         this.title = '确认后部门将按照以下规则进行配置！';
         this.step = 2;
@@ -181,11 +169,16 @@ export default {
         this.performanceData.ruleDetailList.forEach((detail) => {
           detail.detailRandomId = this.getRandomId();
         });
+        if (rowData.status > 0) {
+          this.title = '详情';
+          this.step = 2;
+        } else {
+          this.step = 1;
+        }
       } else {
         this.performanceData = {
           ruleName: '',
           ruleDetailList: [{
-            status: '0',
             unit: '',
             value: '',
             description: '',

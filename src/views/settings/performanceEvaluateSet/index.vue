@@ -81,9 +81,18 @@
               fixed="right"
             >
               <template slot-scope="scope">
+                <el-button
+                  v-if="scope.row.status > 0"
+                  type="text"
+                  @click="addOrEditEvaluate(scope.row)"
+                  size="small"
+                >
+                  详情</el-button
+                >
                 <el-tooltip
+                  v-if="scope.row.status > 0"
                   effect="dark"
-                  :content="'不能编辑'"
+                  :content="'绩效评定已分配给部门，不能编辑'"
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
@@ -96,6 +105,7 @@
                   >
                 </el-tooltip>
                 <el-button
+                  v-else
                   type="text"
                   @click="addOrEditEvaluate(scope.row)"
                   size="small"
@@ -103,8 +113,9 @@
                   编辑</el-button
                 >
                 <el-tooltip
+                  v-if="scope.row.status > 0"
                   effect="dark"
-                  :content="'不能删除'"
+                  :content="'绩效评定已分配给部门，不能删除'"
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
@@ -117,6 +128,7 @@
                   >
                 </el-tooltip>
                 <el-button
+                  v-else
                   type="text"
                   size="small"
                   :disabled="false"
