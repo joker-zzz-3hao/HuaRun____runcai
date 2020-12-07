@@ -16,4 +16,14 @@ export default class Server extends ServerBase {
   addOrUpdateAmount(param) {
     return this._ajaxPost('gateway/talent-query/assessment/periodRule/update', param);
   }
+
+  // 查周期
+  getOkrCycleList(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/period', param);
+  }
+
+  // 查询组织
+  getOrg(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
+  }
 }
