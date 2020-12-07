@@ -16,12 +16,12 @@
         <li
           v-for="(item, idx) in weekList"
           :key="item.id"
-          @click="weekIndex >= idx ? borderSlip(item, idx) : ''"
+          @click="borderSlip(item, idx)"
           :class="{
-            'is-submit': item.weeklyId,
+            'is-submit': item.weeklyId && !isFromTeam,
             'is-unsubmit': !item.weeklyId && !item.noOpen,
             'is-unopen': item.noOpen,
-            'is-curent-week': weekIndex == idx,
+            'is-curent-week': weekIndex === idx && isThisWeek,
             'is-curent': item.btnType == 'success',
             'is-focus': selectedWeekIndex === idx,
           }"
@@ -125,6 +125,9 @@ export default {
       weeklyDataList: (state) => state.weeklyDataList,
       currentWeek: (state) => state.currentWeek,
     }),
+    isThisWeek() {
+      return this.monthDate == this.dateFormat('YYYY-mm-dd', new Date());
+    },
   },
   methods: {
     ...mapMutations('weekly', ['setSelectedMonth', 'setCurrentWeek', 'setSelectWeek', 'setWeekList', 'setWeeklyType']),
@@ -138,11 +141,11 @@ export default {
             week.btnType = '';
           }
         });
+        this.setSelectWeek(item);
+        // 团队周报查询
+        this.$emit('setCalendarId', item.calendarId, this.setTime(item));
+        this.$emit('getWeeklyById', item);
       }
-      this.setSelectWeek(item);
-      // 团队周报查询
-      this.$emit('setCalendarId', item.calendarId, this.setTime(item));
-      this.$emit('getWeeklyById', item);
     },
     getWeekItem(item, index) {
       if (item.calendarId) {

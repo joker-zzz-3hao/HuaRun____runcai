@@ -1048,6 +1048,17 @@
   color: #879099;
 }
 
+.create-okr .icon-bg {
+  width: 21px;
+  height: 21px;
+  background: #f4f6f8;
+  cursor: pointer;
+}
+
+.create-okr .icon-reduce {
+  margin: 0;
+}
+
 .upload-file dt {
   color: #879099;
 }
@@ -1591,6 +1602,10 @@
   top: 0;
 }
 
+.overview .user-info+dd {
+  cursor: pointer;
+}
+
 .okr-maps .tl-select-dropdown.el-popper {
   margin-top: 8px;
 }
@@ -1824,6 +1839,11 @@
   opacity: 0.5;
 }
 
+.set-period .el-radio__label em {
+
+  letter-spacing: 2px;
+}
+
 /* undertake-maps */
 .undertake-maps .draw-area {
   padding: 0;
@@ -1838,6 +1858,10 @@
   width: 46px;
   height: 28px;
   min-width: unset;
+}
+
+.undertake-maps .cont-area .is-plain span {
+  color: #fff !important;
 }
 
 .undertake-maps .cont-area .department-info .is-plain {
@@ -1976,10 +2000,20 @@
 .undertake-maps .progress-bg:not(:first-child) {
   margin-left: 6px !important;
 }
+
 .undertake-maps-tree .tl-btn {
   height: 35px;
   width: 30px;
 }
+
+.undertake-maps .el-collapse-item__header {
+  cursor: default;
+}
+
+.undertake-maps .tl-collapse-other .collpase-icon {
+  cursor: pointer;
+}
+
 /* concerned-okr */
 .concerned-okr .cont-area {
   display: flex;
@@ -4017,11 +4051,17 @@
 .mood {
   position: absolute;
   right: 10px;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .teams-weekly .mood {
   position: unset;
+  transform: unset;
+}
+
+.my-weekly .dl-card-panel.mood>dd {
+  margin: 0;
 }
 
 .mood ul {
@@ -4032,7 +4072,6 @@
 .mood ul li {
   margin: 0 30px 0 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
@@ -4040,8 +4079,8 @@
   cursor: pointer;
 }
 
-.mood li i:last-child {
-  margin: 10px 0 0 0;
+.mood ul li i+i {
+  margin: 0 0 0 10px;
 }
 
 .mood dd span {
@@ -5710,7 +5749,8 @@
 }
 
 /* .project-manage */
-.project-manage .operating-box-group .operating-box:first-child {
+.project-manage .operating-box-group .operating-box:first-child,
+.working-hours .operating-box-group .operating-box:first-child {
   justify-content: space-between;
 }
 
@@ -6028,6 +6068,14 @@
 .working-hours .footer-panel span em {
   margin: 0 5px;
   color: #685df1;
+}
+
+.working-hours .operating-box-group .operating-box:last-child {
+  justify-content: flex-start;
+}
+
+.working-hours .operating-box-group .operating-box:first-child .tl-select {
+  width: 500px;
 }
 
 .approval .el-dialog__body,

@@ -8,8 +8,9 @@
         <em>{{ node.okrDetailObjectKr }}</em>
         <el-button
           :disabled="!hasPower('okr-continue-align')"
-          type="primary"
-          class="tl-btn amt-bg-slip"
+          type="text"
+          plain
+          class="tl-btn btn-lineheight"
           v-if="
             showbutton &&
             node.children &&
@@ -22,9 +23,10 @@
       </dt>
     </dl>
     <tl-process ref="process" :data="node.okrDetailProgress"></tl-process>
-    <div class="department-info" @click.stop="takeOvierview(node)">
+    <div class="department-info">
       <p>
-        <span>负责人</span> <em>{{ node.userName }}</em>
+        <span>负责人</span>
+        <em @click.stop="takeOvierview(node)">{{ node.userName }}</em>
       </p>
       <el-button type="text" plain class="tl-btn btn-lineheight">{{
         CONST.OKR_TYPE_MAP[node.okrBelongType]

@@ -24,6 +24,23 @@
             </dd>
           </dl>
           <dl class="dl-item">
+            <dd>
+              <el-input
+                maxlength="64"
+                v-model="keyWord"
+                placeholder="工作项,工作内容"
+                class="tl-input-search"
+              >
+                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+              </el-input>
+              <el-button plain class="tl-btn light" @click="searchList">
+                搜索
+              </el-button>
+            </dd>
+          </dl>
+        </div>
+        <div class="operating-box">
+          <dl class="dl-item">
             <dt>审批状态</dt>
             <dd>
               <el-select
@@ -45,52 +62,6 @@
               </el-select>
             </dd>
           </dl>
-          <dl class="dl-item">
-            <dt>投入工时时间</dt>
-            <dd>
-              <!-- <el-date-picker
-              v-model="weekBegin"
-              type="week"
-              format="yyyy 第 WW 周"
-              value-format="yyyy-MM-dd"
-
-              placeholder="选择周"
-            >
-            </el-date-picker> -->
-              <el-date-picker
-                v-model="weekLine"
-                type="daterange"
-                @change="changePick"
-                @clear="searchList"
-                clearable
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                class="tl-range-editor"
-                popper-class="tl-range-popper"
-              >
-              </el-date-picker>
-            </dd>
-          </dl>
-          <!-- <dl class="dl-item">
-          <dt>按周选择投入工时</dt>
-          <dd>
-            <el-date-picker
-              v-model="startTime"
-              type="week"
-              @change="searchList"
-              format=" yyyy 年 MM 月"
-              @click="searchList"
-              ref="picker"
-              value-format="yyyy-MM-dd"
-              placeholder="选择周"
-            >
-            </el-date-picker>
-          </dd>
-        </dl> -->
-        </div>
-        <div class="operating-box">
           <dl class="dl-item">
             <dt>提交人</dt>
             <dd>
@@ -115,18 +86,22 @@
             </dd>
           </dl>
           <dl class="dl-item">
+            <dt>投入工时时间</dt>
             <dd>
-              <el-input
-                maxlength="64"
-                v-model="keyWord"
-                placeholder="工作项,工作内容"
-                class="tl-input-search"
+              <el-date-picker
+                v-model="weekLine"
+                type="daterange"
+                @change="changePick"
+                @clear="searchList"
+                clearable
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                class="tl-range-editor"
+                popper-class="tl-range-popper"
               >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-              </el-input>
-              <el-button plain class="tl-btn light" @click="searchList">
-                搜索
-              </el-button>
+              </el-date-picker>
             </dd>
           </dl>
         </div>
@@ -179,17 +154,17 @@
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                <el-popover
-                  placement="top"
-                  width="300"
-                  trigger="hover"
-                  popper-class="approval-pop"
-                >
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="scope.row.workDesc"
+                    placement="top"
+                  >
                   {{ scope.row.workDesc }}
-                  <span slot="reference">{{
+                  <span>{{
                     GetLength(scope.row.workDesc) || "--"
                   }}</span>
-                </el-popover>
+                </el-tooltip>
               </template>
             </el-table-column>
 
@@ -270,6 +245,7 @@
                       <el-button type="text" slot="reference">修改</el-button>
                     </el-popover>
                   </div>
+
                   <el-tooltip
                     class="item"
                     effect="dark"
@@ -313,17 +289,17 @@
             </el-table-column>
             <el-table-column label="工时日期" min-width="200px">
               <template slot-scope="scope">
-                <el-popover
-                  placement="top"
-                  width="300"
-                  trigger="hover"
-                  popper-class="approval-pop"
-                >
+               <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="weekWorkListCheck(scope.row)"
+                    placement="top"
+                  >
                   <span>{{ weekWorkListCheck(scope.row) || "--" }}</span>
                   <span slot="reference">{{
                     weekWorkListCheck(scope.row) || "--"
                   }}</span>
-                </el-popover>
+                </el-tooltip>
               </template>
             </el-table-column>
 
@@ -532,8 +508,13 @@ export default {
         if (this.projectList.length > 0) {
         //  this.formData.projectId = this.projectList[0].projectId;
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          this.formData.projectId = list[0].projectId
-           || this.projectList[0].projectId;
+          console.log(list);
+          if (list.length > 0) {
+            this.formData.projectId = list[0].projectId;
+          } else {
+            this.formData.projectId = this.projectList[0].projectId;
+          }
+
           this.summaryList();
           this.searchList();
         }
