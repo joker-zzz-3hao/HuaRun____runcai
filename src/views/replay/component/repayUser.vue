@@ -63,6 +63,7 @@
         </dd>
       </dl>
     </dd>
+    <dd class="flex-end" v-if="$route.name == 'replayScoreDetail'">评分说明</dd>
     <!-- <dd class="flex-end" v-if="$route.name !== 'replayEdit'">
       <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
       <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>

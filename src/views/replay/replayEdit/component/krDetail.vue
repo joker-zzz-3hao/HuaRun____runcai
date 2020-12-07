@@ -508,7 +508,7 @@ export default {
     // 更新文件状态
     updateFile() {
       this.list.forEach((item) => {
-        if (item.attachmentList.length > 0) {
+        if (item.attachmentList && item.attachmentList.length > 0) {
           const files = item.attachmentList.map((file) => file.resourceId).toString();
           this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
         }
