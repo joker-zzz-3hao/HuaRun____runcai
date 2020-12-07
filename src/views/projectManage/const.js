@@ -15,6 +15,67 @@ const PROJECT_TYPE_MAP = {
   5: '售前项目',
 };
 
+const DATE_MODE = {
+  mondayMor: '周一上午',
+  mondayAft: '周一下午',
+  tuesdayMor: '周二上午',
+  tuesdayAft: '周二下午',
+  wednesdayMor: '周三上午',
+  wednesdayAft: '周三下午',
+  thursdayMor: '周四上午',
+  thursdayAft: '周四下午',
+  fridayMor: '周五上午',
+  fridayAft: '周五下午',
+  saturdayMor: '周六上午',
+  saturdayAft: '周六下午',
+  sundayMor: '周日上午',
+  sundayAft: '周日下午',
+};
+
+const DATE_MODE_NUM = [
+  { weekDate: 0, weekTimeType: 1, value: '周一上午' },
+  { weekDate: 0, weekTimeType: 2, value: '周一下午' },
+  { weekDate: 1, weekTimeType: 1, value: '周二上午' },
+  { weekDate: 1, weekTimeType: 2, value: '周二下午' },
+  { weekDate: 2, weekTimeType: 1, value: '周三上午' },
+  { weekDate: 2, weekTimeType: 2, value: '周三下午' },
+  { weekDate: 3, weekTimeType: 1, value: '周四上午' },
+  { weekDate: 3, weekTimeType: 2, value: '周四下午' },
+  { weekDate: 4, weekTimeType: 1, value: '周五上午' },
+  { weekDate: 4, weekTimeType: 2, value: '周五下午' },
+  { weekDate: 4, weekTimeType: 1, value: '周六上午' },
+  { weekDate: 4, weekTimeType: 2, value: '周六下午' },
+  { weekDate: 4, weekTimeType: 1, value: '周日上午' },
+  { weekDate: 4, weekTimeType: 2, value: '周日下午' },
+];
+
+const DATE_MODE_NUMOBJ = [
+  { weekDate: 0, weekTimeType: 1, value: '周一上午' },
+  { weekDate: 0, weekTimeType: 2, value: '周一下午' },
+  { weekDate: 1, weekTimeType: 1, value: '周二上午' },
+  { weekDate: 1, weekTimeType: 2, value: '周二下午' },
+  { weekDate: 2, weekTimeType: 1, value: '周三上午' },
+  { weekDate: 2, weekTimeType: 2, value: '周三下午' },
+  { weekDate: 3, weekTimeType: 1, value: '周四上午' },
+  { weekDate: 3, weekTimeType: 2, value: '周四下午' },
+  { weekDate: 4, weekTimeType: 1, value: '周五上午' },
+  { weekDate: 4, weekTimeType: 2, value: '周五下午' },
+  { weekDate: 5, weekTimeType: 1, value: '周六上午' },
+  { weekDate: 5, weekTimeType: 2, value: '周六下午' },
+  { weekDate: 6, weekTimeType: 1, value: '周日上午' },
+  { weekDate: 6, weekTimeType: 2, value: '周日下午' },
+];
+
+const DATE_NUM = {
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+  6: 'saturday',
+  7: 'sunday',
+};
+
 const PROJECT_TYPE_LIST = [
   { value: '', label: '全部' },
   { value: '0', label: '可行性研究项目' },
@@ -56,7 +117,7 @@ const THROW_TYPE_CREATE_LIST = [
   { value: '1', label: '研发支出' },
 ];
 const CURRENCY_LIST = [
-  { value: '0', label: '港币' },
+  // { value: '0', label: '港币' },
   { value: '1', label: '人民币' },
 ];
 
@@ -72,14 +133,14 @@ const PROJECT_STATUS_MAP = {
 };
 
 const APPROVAL_STATUS_MAP = {
-  0: '待审批',
-  1: '已审批',
+  1: '待审批',
+  2: '已审批',
 };
 
 const APPROVAL_STATUS_LIST = [
   { value: '', label: '全部' },
-  { value: '0', label: '待审批' },
-  { value: '1', label: '已审批' },
+  { value: '1', label: '待审批' },
+  { value: '2', label: '已审批' },
 ];
 const PROJECT_SOURCE_MAP = [
   { value: 'TENANT', label: '虚拟项目' },
@@ -101,4 +162,8 @@ export default {
   PROJECT_STATUS_LIST,
   PROJECT_TYPE_CREATE_LIST,
   THROW_TYPE_CREATE_LIST,
+  DATE_MODE,
+  DATE_NUM,
+  DATE_MODE_NUM,
+  DATE_MODE_NUMOBJ,
 };

@@ -36,7 +36,7 @@ export default class Server extends ServerBase {
   }
 
   // 保存周报
-  submitWeekly(param) {
+  commitWeekly(param) {
     return this._ajaxPost('gateway/weekly-service/weekly/save', param);
   }
 
