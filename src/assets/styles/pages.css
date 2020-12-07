@@ -510,7 +510,8 @@
 .okr-approval-list,
 .team-view,
 .staff-view,
-.department-view {
+.department-view,
+.replay-list {
   padding: 50px 0 0 0;
 }
 
@@ -528,7 +529,8 @@
 .okr-approval .operating-area,
 .team-view .operating-area,
 .staff-view .operating-area,
-.department-view .operating-area {
+.department-view .operating-area,
+.replay-okr .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -544,7 +546,8 @@
 .okr-approval .operating-area-inside,
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
-.department-view .operating-area-inside {
+.department-view .operating-area-inside,
+.replay-okr .operating-area-inside {
   padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
@@ -655,7 +658,8 @@
 .undertake-maps .cont-area,
 .okr-approval .cont-area， .team-view .cont-area,
 .staff-view .cont-area,
-.department-view .cont-area {
+.department-view .cont-area,
+.replay-okr .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -2604,18 +2608,20 @@
 }
 
 /* replay-link */
-.replay-link {
+.replay-link,
+.replay-score {
   margin: 16px auto;
   width: 1060px;
   flex: unset;
   min-height: calc(100vh - 172px);
 }
 
-.replay-link.is-padding {
+.replay-link.is-padding,
+.replay-score.is-padding {
   padding: 0 0 56px 0;
 }
 
-.replay-info dt {
+.replay-info dt{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2680,30 +2686,38 @@
 }
 
 .replay-link .tl-collapse .el-collapse-item,
-.replay-link .tl-collapse .el-collapse-item__header.is-active {
+.replay-score .tl-collapse .el-collapse-item,
+.replay-link .tl-collapse .el-collapse-item__header.is-active,
+.replay-score .tl-collapse .el-collapse-item__header.is-active {
   box-shadow: unset;
 }
 
-.replay-link .tl-collapse .el-collapse-item__header {
+.replay-link .tl-collapse .el-collapse-item__header,
+.replay-score  .tl-collapse .el-collapse-item__header {
   padding: 0;
   margin: 0;
 }
 
-.replay-link .tl-collapse .el-collapse-item__wrap {
+.replay-link .tl-collapse .el-collapse-item__wrap,
+.replay-score  .tl-collapse .el-collapse-item__wrap {
   padding: 0;
 }
 
-.replay-link .okr-change-list .el-collapse-item {
+.replay-link .okr-change-list .el-collapse-item,
+.replay-score .okr-change-list .el-collapse-item {
   border: 1px solid #e5e9ee;
 }
 
 .replay-link .okr-change-list .is-o,
-.replay-link .okr-change-list .is-kr {
+.replay-link .okr-change-list .is-kr,
+.replay-score  .okr-change-list .is-o,
+.replay-score  .okr-change-list .is-kr {
   padding: 20px;
   width: 100%;
 }
 
-.replay-link .okr-change-list dl.is-o::before {
+.replay-link .okr-change-list dl.is-o::before,
+.replay-score  .okr-change-list dl.is-o::before {
   position: absolute;
   left: -2px;
   top: -1px;
@@ -2713,7 +2727,8 @@
   background: #4ccd79;
 }
 
-.replay-link .okr-change-list dt span {
+.replay-link .okr-change-list dt span,
+.replay-score .okr-change-list dt span {
   margin: 0 10px 0 0;
   align-self: start;
 }
@@ -2726,27 +2741,30 @@
   color: #4d5155;
 }
 
-.replay-link .okr-change-list .is-kr dt em {
+.replay-link .okr-change-list .is-kr dt em,
+.replay-score .okr-change-list .is-kr dt em {
   color: #4d5155;
   -webkit-line-clamp: unset;
   word-break: break-all;
 }
 
-.replay-link .okr-change-list dd {
+.replay-link .okr-change-list dd,
+.replay-score .okr-change-list dd {
   margin: 14px 0 0 0;
   display: flex;
   align-items: flex-start;
 }
 
-.replay-link .okr-change-list dd div {
+.replay-link .okr-change-list dd div,
+.replay-score .okr-change-list dd div {
   font-size: 12px;
 }
 
 .replay-link .okr-change-list dd:nth-last-of-type(1)>div,
 .replay-link .okr-change-list dt~dd>div {
-  display: flex;
-  align-items: center;
-  width: 100%;
+  /* display: flex; */
+  /* align-items: center; */
+  /* width: 100%; */
 }
 
 .replay-link .okr-change-list dd:nth-of-type(1)>div:nth-child(3) {
@@ -2894,7 +2912,12 @@
 .replay-link .progress-bg:not(:first-child) {
   margin-left: 2px !important;
 }
-
+.replay-score .tl-collapse .el-collapse-item__content div {
+  display: flex;
+}
+.replay-score .input-dl{
+  flex: 100%;
+}
 /* 周报 */
 .my-weekly {
   margin: 16px;

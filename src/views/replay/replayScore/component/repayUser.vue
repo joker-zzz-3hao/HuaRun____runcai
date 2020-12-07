@@ -1,19 +1,13 @@
 <template>
   <dl class="replay-info">
     <dt>
-      <div class="replay-title">
-        <span v-if="$route.name == 'replayEdit'">复盘与举证对象：</span>
-        <span v-else>复盘对象：</span>
-        <em>{{ okrMain.okrMainVo.periodName }}</em
-        ><em
-          >({{
-            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
-            "~" +
-            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
-          }})</em
-        >
-      </div>
-      <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+      <div class="replay-title"><span>复盘对象:</span><em>部门名</em></div>
+      <el-button
+        plain
+        @click="$router.back()"
+        class="tl-btn amt-border-slip"
+        v-if="$route.name == 'replayDetail'"
+      >
         返回
         <span class="lines"></span>
       </el-button>

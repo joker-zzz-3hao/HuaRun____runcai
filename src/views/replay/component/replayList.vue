@@ -1,74 +1,69 @@
 <template>
-  <div v-if="showpic" class="no-data">
-    <div class="note-wait-bg"></div>
-    <div class="task-wait-txt">更多功能敬请期待~</div>
-  </div>
-  <div v-else class="replay-okr">
-    <div class="operating-area">
-      <!-- <div class="page-title">OKR复盘</div> -->
-      <div class="operating-box">
-        <dl class="dl-item">
-          <dt>周期</dt>
-          <dd>
-            <el-select
-              :disabled="periodIdList.length == 0"
-              v-model.trim="periodId"
-              placeholder="用户类型"
-              :popper-append-to-body="false"
-              @change="okrReviewList"
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                :label="item.periodName"
-                :value="item.periodId"
-                v-for="(item, index) in periodIdList"
-                :key="index"
-              ></el-option>
-            </el-select>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt>复盘状态</dt>
-          <dd>
-            <el-select
-              v-model.trim="reviewStatus"
-              placeholder="用户状态"
-              :popper-append-to-body="false"
-              @change="okrReviewList"
-              clearable
-              popper-class="tl-select-dropdown"
-              class="tl-select"
-            >
-              <el-option
-                :label="item.name"
-                :value="item.status"
-                v-for="(item, index) in CONST.REVIEW_STATUS_LIST"
-                :key="index"
-              ></el-option>
-            </el-select>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dd>
-            <el-input
-              maxlength="64"
-              v-model="userName"
-              placeholder="请输入用户名称"
-              clearable
-              @keyup.enter.native="okrReviewList"
-              @clear="okrReviewList"
-              class="tl-input-search"
-            >
-              <i
-                class="el-icon-search"
-                slot="prefix"
-                @click="okrReviewList"
-              ></i>
-            </el-input>
-          </dd>
-        </dl>
-      </div>
+  <div class="replay-list">
+    <div class="operating-box">
+      <dl class="dl-item">
+        <dt>周期</dt>
+        <dd>
+          <el-select
+            :disabled="periodIdList.length == 0"
+            v-model.trim="periodId"
+            placeholder="用户类型"
+            :popper-append-to-body="false"
+            @change="okrReviewList"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              :label="item.periodName"
+              :value="item.periodId"
+              v-for="(item, index) in periodIdList"
+              :key="index"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="dl-item">
+        <dt>复盘状态</dt>
+        <dd>
+          <el-select
+            v-model.trim="reviewStatus"
+            placeholder="用户状态"
+            :popper-append-to-body="false"
+            @change="okrReviewList"
+            clearable
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              :label="item.name"
+              :value="item.status"
+              v-for="(item, index) in CONST.REVIEW_STATUS_LIST"
+              :key="index"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="dl-item">
+        <dd>
+          <el-input
+            maxlength="64"
+            v-model="userName"
+            placeholder="请输入用户名称"
+            clearable
+            @keyup.enter.native="okrReviewList"
+            @clear="okrReviewList"
+            class="tl-input-search"
+          >
+            <i class="el-icon-search" slot="prefix" @click="okrReviewList"></i>
+          </el-input>
+        </dd>
+      </dl>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="okrReviewList"
+        >搜索</el-button
+      >
     </div>
     <div class="cont-area">
       <tl-crcloud-table
@@ -86,7 +81,7 @@
             ></el-table-column>
             <el-table-column
               prop="okrBelongType"
-              label="OkR所属类型"
+              label="OKR所属类型"
               min-width="165"
             >
               <template slot-scope="scope">
@@ -105,12 +100,13 @@
                 ></tl-process> </template
             ></el-table-column>
             <el-table-column
-              prop="reviewStatus"
+              prop="reviewStatusCn"
               label="复盘状态"
-              min-width="80"
+              min-width="100"
             >
               <template slot-scope="scope">
-                <span>{{ CONST.REVIEW_STATUS[scope.row.reviewStatus] }}</span>
+                <i :class="CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus]"></i>
+                <em>{{ scope.row.reviewStatusCn }}</em>
               </template>
             </el-table-column>
             <el-table-column
@@ -143,7 +139,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="!scope.row.isOwner && scope.row.reviewStatus == 2"
+                  v-if="!scope.row.ownerFlag && scope.row.reviewStatus == 2"
                   @click="
                     $router.push({
                       name: 'replayLink',
@@ -157,7 +153,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.isOwner && scope.row.reviewStatus == 1"
+                  v-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -173,14 +169,14 @@
                   class="tl-btn"
                   v-if="
                     scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.isOwner)
+                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag)
                   "
                   @click="
                     $router.push({
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        isOwner: scope.row.isOwner,
+                        ownerFlag: scope.row.ownerFlag,
                       },
                     })
                   "
@@ -229,7 +225,7 @@ export default {
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
-      this.server.okrReviewList({
+      this.server.getOkrReviewPage({
 
         periodId: this.periodId, // 周期id，必传
         reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>

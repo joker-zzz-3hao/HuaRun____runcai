@@ -36,4 +36,19 @@ export default class Server extends ServerBase {
   getOkrReviewHistoryList(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrReview/getOkrReviewHistoryList', param);
   }
+
+  // 查询复盘列表
+  getOkrReviewPage(param) {
+    return this._ajaxPost('gateway/talent-query/okr/review/query/getOkrReviewPage', param);
+  }
+
+  // 更新文件状态
+  updateResource(param) {
+    return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
+  }
+
+  // 查询组织
+  getOrgTable(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
+  }
 }

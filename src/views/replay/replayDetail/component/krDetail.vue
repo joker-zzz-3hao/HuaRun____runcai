@@ -69,33 +69,6 @@
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
-              <i class="el-icon-bell"></i>
-              <span>信心指数</span>
-              <div class="state-grid">
-                <div
-                  :class="{
-                    'is-no-risk': krData.okrDetailConfidence == 1,
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-              </div>
-              <div class="state-txt">
-                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
-              </div>
-            </div> -->
           </dd>
           <dd>
             <div>
@@ -111,18 +84,43 @@
           </dd>
           <dd>
             <dl>
+              <dt>评分</dt>
+              <dd>{{ list.score }}</dd>
+            </dl>
+            <dl v-if="list.scoreRemark">
+              <dt>评分说明</dt>
+              <dd>{{ list.scoreRemark }}</dd>
+            </dl>
+            <dl v-if="list.attachmentList">
+              <dt>佐证材料</dt>
+              <dd v-for="file in list.fileList" :key="file.resourceId">
+                <em>{{ file.resourceName }}</em>
+                <span>
+                  <span
+                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                    @click="openFile(file)"
+                    >预览</span
+                  >
+                  <span @click="downFile(file)">下载</span>
+                </span>
+              </dd>
+            </dl>
+          </dd>
+          <!-- 复盘详情有则显示 -->
+          <dd>
+            <dl v-if="list.advantage">
               <dt>价值与收获</dt>
               <dd>{{ list.advantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.disadvantage">
               <dt>问题与不足</dt>
               <dd>{{ list.disadvantage }}</dd>
             </dl>
-            <dl>
+            <dl v-if="list.measure.length">
               <dt>改进措施</dt>
               <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
             </dl>
-            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
+            <!-- <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
               <dt>复盘沟通</dt>
               <dd>
                 {{ list.communication }}
@@ -146,12 +144,16 @@
                   </dd>
                 </dl>
               </dd>
-            </dl>
-            <dl v-else></dl>
+            </dl> -->
           </dd>
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <div>
+      <span>最终得分</span>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+    </div>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 
@@ -159,6 +161,8 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
+import CONST from '@/lib/const';
+import imgDialog from '@/components/imgDialog';
 import Server from '../../server';
 
 const server = new Server();
@@ -167,6 +171,7 @@ export default {
   props: ['okrMain'],
   data() {
     return {
+      CONST,
       reviewType: 1,
       form: {},
       activeNames: [0],
@@ -200,6 +205,7 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
+    'img-dialog': imgDialog,
   },
   methods: {
     selectColor(txt) {
@@ -209,7 +215,26 @@ export default {
       }
       return '';
     },
-
+    // -------------文件-------------
+    // 截取文件类型
+    cutType(name) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
+    // 预览
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_REVIEW&sourceKey=${this.$route.query.okrId}`;
+      window.open(url);
+    },
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <dl class="dl-card-panel replay-record">
+  <dl class="dl-card-panel replay-record" v-if="activities.length">
     <dt><em>复盘记录</em></dt>
     <dd>
       <div class="tl-custom-timeline">
