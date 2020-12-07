@@ -107,7 +107,8 @@
       <span>OKR得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
     </div>
-    <dl>
+    <dl class="dl-card-panel replay-record">
+      <dt><em>复盘沟通</em></dt>
       <dd>
         <el-form
           :model="ruleForm"
@@ -115,9 +116,9 @@
           label-width="100px"
           class="el-form"
         >
-          <el-form-item label="复盘沟通结果" prop="replayStatus">
+          <el-form-item label="复盘沟通结果" prop="passFlag">
             <el-radio-group
-              v-model.trim="ruleForm.replayStatus"
+              v-model.trim="ruleForm.passFlag"
               class="tl-radio-group"
             >
               <el-radio label="1" class="tl-radio">通过</el-radio>
@@ -125,7 +126,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
-            v-if="ruleForm.replayStatus == '1'"
+            v-if="ruleForm.passFlag == '1'"
             label="复盘沟通"
             prop="communication"
           >
@@ -140,12 +141,12 @@
             ></el-input>
           </el-form-item>
           <el-form-item
-            v-if="ruleForm.replayStatus == '2'"
+            v-if="ruleForm.passFlag == '2'"
             label="驳回原因"
             prop="refuseInfo"
             :rules="[
               {
-                required: ruleForm.replayStatus == '2',
+                required: ruleForm.passFlag == '2',
                 message: '请输入驳回原因',
               },
             ]"
@@ -160,7 +161,7 @@
               resize="none"
             ></el-input>
           </el-form-item>
-          <div v-if="ruleForm.replayStatus == '1'">
+          <div v-if="ruleForm.passFlag == '1'">
             <span>快捷评语：</span>
             <em
               v-for="sortComment in sortCommentList"
@@ -242,7 +243,7 @@ export default {
         },
       ],
       ruleForm: {
-        replayStatus: '1',
+        passFlag: '1',
         communication: '',
         refuseInfo: '',
       },
@@ -374,14 +375,12 @@ export default {
     submit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          debugger;
           this.submitLoad = true;
           this.checkDatakrs(false);
           const params = {
-            okrMainVo: {
-              okrId: this.okrMain.okrMainVo.okrId,
-            },
-            list: this.list,
+            okrId: this.okrMain.okrMainVo.okrId,
+            passFlag: this.ruleForm.passFlag == '1',
+            remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
           };
           this.server.okrReviewCommunicationSubmit(params).then((res) => {
             this.submitLoad = false;
@@ -431,7 +430,7 @@ export default {
     },
   },
   watch: {
-    'ruleForm.replayStatus': {
+    'ruleForm.passFlag': {
       handler() {
         console.log(this.$refs.ruleForm.fields);
         const fields = this.$refs.ruleForm.fields || [];
