@@ -294,6 +294,7 @@ import {
   ListItem,
   OrderedList,
   TextHighlight,
+  Image,
 } from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
@@ -330,6 +331,7 @@ export default {
         new TextHighlight(),
         new ListItem(),
         new OrderedList(),
+        new Image({ }),
       ],
       loading: false,
       historyFirst: '',
@@ -497,6 +499,9 @@ export default {
           this.getHistory();
         }
       }
+    },
+    uploadImg() {
+
     },
   },
   watch: {
