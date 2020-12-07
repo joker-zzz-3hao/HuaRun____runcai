@@ -2606,8 +2606,7 @@
 }
 
 /* replay-link */
-.replay-link,
-.replay-score {
+.replay-link {
   margin: 16px auto;
   width: 1060px;
   flex: unset;
@@ -2684,38 +2683,30 @@
 }
 
 .replay-link .tl-collapse .el-collapse-item,
-.replay-score .tl-collapse .el-collapse-item,
-.replay-link .tl-collapse .el-collapse-item__header.is-active,
-.replay-score .tl-collapse .el-collapse-item__header.is-active {
+.replay-link .tl-collapse .el-collapse-item__header.is-active {
   box-shadow: unset;
 }
 
-.replay-link .tl-collapse .el-collapse-item__header,
-.replay-score  .tl-collapse .el-collapse-item__header {
+.replay-link .tl-collapse .el-collapse-item__header {
   padding: 0;
   margin: 0;
 }
 
-.replay-link .tl-collapse .el-collapse-item__wrap,
-.replay-score  .tl-collapse .el-collapse-item__wrap {
+.replay-link .tl-collapse .el-collapse-item__wrap {
   padding: 0;
 }
 
-.replay-link .okr-change-list .el-collapse-item,
-.replay-score .okr-change-list .el-collapse-item {
+.replay-link .okr-change-list .el-collapse-item {
   border: 1px solid #e5e9ee;
 }
 
 .replay-link .okr-change-list .is-o,
-.replay-link .okr-change-list .is-kr,
-.replay-score  .okr-change-list .is-o,
-.replay-score  .okr-change-list .is-kr {
+.replay-link .okr-change-list .is-kr {
   padding: 20px;
   width: 100%;
 }
 
-.replay-link .okr-change-list dl.is-o::before,
-.replay-score  .okr-change-list dl.is-o::before {
+.replay-link .okr-change-list dl.is-o::before {
   position: absolute;
   left: -2px;
   top: -1px;
@@ -2725,8 +2716,7 @@
   background: #4ccd79;
 }
 
-.replay-link .okr-change-list dt span,
-.replay-score .okr-change-list dt span {
+.replay-link .okr-change-list dt span {
   margin: 0 10px 0 0;
   align-self: start;
 }
@@ -2739,22 +2729,19 @@
   color: #4d5155;
 }
 
-.replay-link .okr-change-list .is-kr dt em,
-.replay-score .okr-change-list .is-kr dt em {
+.replay-link .okr-change-list .is-kr dt em {
   color: #4d5155;
   -webkit-line-clamp: unset;
   word-break: break-all;
 }
 
-.replay-link .okr-change-list dd,
-.replay-score .okr-change-list dd {
+.replay-link .okr-change-list dd {
   margin: 14px 0 0 0;
   display: flex;
   align-items: flex-start;
 }
 
-.replay-link .okr-change-list dd div,
-.replay-score .okr-change-list dd div {
+.replay-link .okr-change-list dd div {
   font-size: 12px;
 }
 

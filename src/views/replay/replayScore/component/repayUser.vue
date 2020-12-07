@@ -2,12 +2,7 @@
   <dl class="replay-info">
     <dt>
       <div class="replay-title"><span>复盘对象:</span><em>部门名</em></div>
-      <el-button
-        plain
-        @click="$router.back()"
-        class="tl-btn amt-border-slip"
-        v-if="$route.name == 'replayDetail'"
-      >
+      <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
         <span class="lines"></span>
       </el-button>
@@ -57,16 +52,7 @@
         </dd>
       </dl>
     </dd>
-    <!-- <dd class="flex-end" v-if="$route.name !== 'replayEdit'">
-      <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
-      <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>
-    </dd>
-    <dd class="flex-end" v-else>
-      <el-radio-group v-model="okrMain.okrMainVo.reviewType">
-        <el-radio :label="1" class="tl-radio">以关键结果KR复盘</el-radio>
-        <el-radio :label="0" class="tl-radio">以目标O复盘</el-radio>
-      </el-radio-group>
-    </dd> -->
+    <dd class="flex-end" v-if="$route.name == 'replayScoreDetail'">评分说明</dd>
   </dl>
 </template>
 <script>

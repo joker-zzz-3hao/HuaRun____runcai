@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-score is-padding">
+  <div class="replay-link is-padding">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
     <tl-kr-detail @getView="getOkrReviewDetail" :okrMain="okrMain" />
   </div>
