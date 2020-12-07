@@ -104,6 +104,10 @@
               label="复盘状态"
               min-width="100"
             >
+              <template slot-scope="scope">
+                <i :class="CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus]"></i>
+                <em>{{ scope.row.reviewStatusCn }}</em>
+              </template>
             </el-table-column>
             <el-table-column
               prop="reviewCommitTime"

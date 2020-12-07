@@ -139,8 +139,7 @@
                   ></file-upload>
                 </dd>
               </dl>
-              <div @click="openMore(list)">展开</div>
-              <div v-show="list.openAdvantage">
+              <div v-if="list.openAdvantage">
                 <dl>
                   <dt>价值与收获</dt>
                   <dd>
@@ -168,7 +167,6 @@
                   </dd>
                 </dl>
                 <dl>
-                  <!-- TODO: 改成一条了还要用list吗？ -->
                   <dt>改进措施</dt>
                   <template v-if="list.measure.length > 1">
                     <dd v-for="(li, d) in list.measure || []" :key="d">
@@ -194,6 +192,11 @@
                   </template>
                 </dl>
               </div>
+              <div @click="openMore(list)">
+                <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+                <span v-if="list.openAdvantage">收起</span>
+                <span v-else>展开</span>
+              </div>
             </dd>
           </el-form>
         </dl>
@@ -203,7 +206,6 @@
       <span>最终得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
     </div>
-    <!-- TODO:加复盘记录 -->
     <tl-footer
       :btnText="'提交复盘'"
       :saveLoad="saveLoad"
@@ -402,7 +404,6 @@ export default {
       });
     },
     submit() {
-      this.submitLoad = true;
       this.checkDatakrs(false);
       const params = {
         okrMainVo: {
@@ -421,6 +422,7 @@ export default {
         const validateResult = res.every((item) => !!item);
         if (validateResult) {
           console.log('表单都校验通过', validateResult);
+          this.submitLoad = true;
           this.server.okrReviewSubmit(params).then((response) => {
             this.submitLoad = false;
             if (response.code == 200) {
