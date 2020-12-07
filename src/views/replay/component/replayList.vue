@@ -178,20 +178,6 @@
                   "
                   >查看</el-button
                 >
-                <el-button
-                  type="text"
-                  class="tl-btn"
-                  v-if="scope.row.reviewStatus == 2"
-                  @click="
-                    $router.push({
-                      name: 'replayScoreDetail',
-                      query: {
-                        okrId: scope.row.okrId,
-                      },
-                    })
-                  "
-                  >复核</el-button
-                >
               </template>
             </el-table-column>
           </el-table>

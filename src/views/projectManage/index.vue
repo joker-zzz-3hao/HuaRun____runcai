@@ -1,8 +1,78 @@
 <template>
   <div class="project-manage">
     <div class="operating-area">
-      <div class="page-title">项目管理</div>
       <div class="operating-box-group">
+        <div class="operating-box">
+          <div class="dl-group">
+            <dl class="dl-item">
+              <dt>项目状态</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectStatus"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.PROJECT_STATUS_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt>项目类型</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectType"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.PROJECT_TYPE_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt>投入类型</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectInputTypeCode"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.THROW_TYPE_LIST"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
+          </div>
+          <el-button
+            v-show="hasPower('project-create')"
+            v-if="isTalent"
+            :disabled="!codes.length > 0"
+            type="primary"
+            icon="el-icon-plus"
+            @click="addProject"
+            class="tl-btn amt-bg-slip"
+            >创建虚拟项目</el-button
+          >
+        </div>
         <div class="operating-box">
           <el-input
             maxlength="64"
@@ -13,77 +83,9 @@
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
           </el-input>
-          <el-button plain class="tl-btn" @click="searchManage">
+          <el-button plain class="tl-btn light" @click="searchManage">
             搜索
           </el-button>
-          <el-button
-            v-show="isTenantAdmin"
-            :disabled="!codes.length > 0"
-            type="primary"
-            icon="el-icon-plus"
-            @click="addProject"
-            class="tl-btn amt-bg-slip"
-            >创建虚拟项目</el-button
-          >
-        </div>
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>项目状态</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectStatus"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.PROJECT_STATUS_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>项目类型</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectType"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.PROJECT_TYPE_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>投入类型</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectInputTypeCode"
-                :popper-append-to-body="false"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-                @change="searchManage"
-              >
-                <el-option
-                  v-for="item in CONST.THROW_TYPE_LIST"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
         </div>
       </div>
     </div>
@@ -114,17 +116,35 @@
               min-width="100"
             ></el-table-column>
             <el-table-column
+              prop="projectStatus"
+              label="项目状态"
+              min-width="120"
+            >
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.projectStatus)">
+                  <i
+                    :class="{
+                      'el-icon-basketball1111': scope.row.projectStatus == '0',
+                      'el-icon-basketball2222': scope.row.projectStatus == '1',
+                    }"
+                  ></i>
+                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
+                >
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="projectBudget"
               label="项目总预算(元)"
               min-width="120"
             >
               <template slot-scope="scope">
                 <em
-                  v-money="{ value: scope.row.projectBudget, precision: 0 }"
+                  v-money="{ value: scope.row.projectBudget, precision: 2 }"
                 ></em>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectCurrency"
               label="币种"
               min-width="100"
@@ -135,7 +155,7 @@
                 }}</span>
                 <span v-else>--</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="projectUserCount"
               label="项目成员(位)"
@@ -167,7 +187,7 @@
             <el-table-column
               prop="projectType"
               label="项目类型"
-              min-width="180"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.projectType)">{{
@@ -176,28 +196,11 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="projectStatus"
-              label="项目状态"
-              min-width="120"
-            >
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.projectStatus)">
-                  <i
-                    :class="{
-                      'el-icon-basketball': scope.row.projectStatus == '0',
-                      'el-icon-basketball': scope.row.projectStatus == '1',
-                    }"
-                  ></i>
-                  {{ CONST.PROJECT_STATUS_MAP[scope.row.projectStatus] }}</span
-                >
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
+
             <el-table-column
               prop="projectInputType"
               label="投入类型"
-              min-width="180"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.projectInputType)">{{
@@ -206,12 +209,12 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectApplyDate"
               label="申请时间"
               min-width="180"
             >
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               fixed="right"
               label="操作"

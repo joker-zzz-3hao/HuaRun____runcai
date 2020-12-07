@@ -425,8 +425,8 @@ export default {
             this.submitLoad = false;
             if (response.code == 200) {
               this.$message.success('提交成功');
-              this.updateFile();
               this.$router.push('/replayList');
+              this.updateFile();
             } else {
               this.$message.error(response.msg);
             }
@@ -506,8 +506,10 @@ export default {
     // 更新文件状态
     updateFile() {
       this.list.forEach((item) => {
-        const files = item.attachmentList.map((file) => file.resourceId).toString();
-        this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
+        if (item.attachmentList.length > 0) {
+          const files = item.attachmentList.map((file) => file.resourceId).toString();
+          this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
+        }
       });
     },
   },

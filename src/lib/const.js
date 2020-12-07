@@ -44,6 +44,7 @@ const IMAGES_MAP = {
   bmp: true,
   gif: true,
 };
+
 export default {
   bbb,
   CYCLE_LIST,

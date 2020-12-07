@@ -32,6 +32,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
+                  v-if="scope.row.reviewStatus == 2"
                   @click="
                     $router.push({
                       name: 'replayScoreDetail',
@@ -41,8 +42,9 @@
                     })
                   "
                 >
-                  复盘得分
+                  复核得分
                 </el-button>
+
                 <el-button type="text" class="tl-btn"> 详情 </el-button>
               </template>
             </el-table-column>

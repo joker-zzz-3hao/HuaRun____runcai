@@ -1,8 +1,8 @@
 <template>
   <div class="teams-weekly">
     <div class="operating-area">
-      <div class="page-title">团队周报</div>
       <div class="operating-box">
+        团队
         <el-cascader
           v-model="orgIdList"
           ref="cascader"
@@ -27,10 +27,9 @@
         <el-button
           plain
           class="tl-btn btn-lineheight"
-          icon="el-icon-phone"
           v-show="showRemindBtn"
           @click="remindWriteWeekly"
-          >提醒写周报</el-button
+          ><i class="icon-remind"></i><em>提醒写周报</em></el-button
         >
       </div>
     </div>
@@ -39,6 +38,7 @@
       v-if="openOrClose == 'O' || formData.orgId == userInfo.orgId"
     >
       <tl-calendar
+        :server="server"
         @setCalendarId="setCalendarId"
         @getWeeklyById="refreshPageList"
         :isFromTeam="true"
@@ -104,7 +104,10 @@
               @click="weeklyInfo(weekly)"
             >
               <!-- weekly.visitId 存在时  则是被查看的  否则是没被查看的TODO:待与炜哥沟通 -->
-              <dl class="tl-card-list">
+              <dl
+                class="tl-card-list"
+                :class="weekly.visitId ? 'is-visited' : 'un-visited'"
+              >
                 <dt>
                   <div class="user-info">
                     <img
@@ -133,15 +136,7 @@
                     class="weekly-state"
                     :class="weekly.weeklyId ? 'is-submitted' : 'un-submitted'"
                   >
-                    <div class="icon-bg">
-                      <i
-                        :class="
-                          weekly.weeklyId
-                            ? 'el-icon-circle-check'
-                            : 'el-icon-warning-outline'
-                        "
-                      ></i>
-                    </div>
+                    <i></i>
                     <p>{{ weekly.weeklyId ? "已提交" : "未提交" }}</p>
                   </div>
                 </dt>
@@ -168,7 +163,6 @@
                       <em>我想静静</em>
                     </template>
                     <template v-else>
-                      <i></i>
                       <em>--</em>
                     </template>
                   </div>
@@ -310,13 +304,24 @@
         </div>
       </crcloud-table>
     </div>
-    <div v-else>该团队周报未开放</div>
+    <div
+      v-else
+      class="cont-area"
+      :class="{
+        'not-opened': !(openOrClose == 'O' || formData.orgId == userInfo.orgId),
+      }"
+    >
+      <div class="no-data">
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">该团队周报未开放</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import calendar from '../myWeekly/components/calendar';
+import calendar from '../components/calendarTabs';
 import Server from './server';
 
 const server = new Server();
@@ -332,7 +337,7 @@ export default {
       orgIdList: [],
       treeData: [],
       userList: [],
-      canEdit: false,
+      // canEdit: false,
       showRemindBtn: false,
       tableLoading: false,
       isQuickLook: false,
@@ -397,6 +402,7 @@ export default {
       ],
       submitedOrLooked: '',
       changeweek: true,
+      weekDate: '',
     };
   },
   created() {
@@ -405,6 +411,10 @@ export default {
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
+    }),
+    ...mapState('weekly', {
+      week: (state) => state.week,
+      weekList: (state) => state.weekList,
     }),
 
     severalData() {
@@ -415,7 +425,7 @@ export default {
         }
       });
       return {
-        canEdit: this.canEdit,
+        // canEdit: this.canEdit,
         orgId: this.formData.orgId,
         isLeader,
       };
@@ -432,6 +442,7 @@ export default {
       // 查询该组织的周报是否开放
       this.getTypeConfig();
     },
+
     getTypeConfig() {
       this.server.getTypeConfig({
         sourceId: this.formData.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
@@ -467,7 +478,15 @@ export default {
     },
     weeklyInfo(weekly) {
       if (weekly.weeklyId) {
-        this.go('teamWeeklyInfo', { query: { weeklyId: weekly.weeklyId, userName: weekly.userName, headerUrl: weekly.headerUrl } });
+        this.go('teamWeeklyInfo', {
+          query: {
+            weeklyId: weekly.weeklyId,
+            userName: weekly.userName,
+            headerUrl: weekly.headerUrl,
+            // formData: this.formData,
+            weekDate: this.weekDate,
+          },
+        });
       }
       //  else {
       //   this.$message.warning('该用户周报还未提交');
@@ -527,7 +546,8 @@ export default {
         }
       });
     },
-    setCalendarId(id) {
+    setCalendarId(id, weekDate) {
+      this.weekDate = weekDate;
       this.formData.calendarId = id;
     },
     remindWriteWeekly() {
@@ -582,6 +602,8 @@ export default {
             break;
         }
         this.refreshPageList();
+      } else {
+        this.clearSubmitOrLooked();
       }
     },
     clearSubmitOrLooked() {
@@ -589,11 +611,12 @@ export default {
       this.formData.looked = '';
       this.refreshPageList();
     },
-    refreshPageList(calender) {
+    // refreshPageList(calender) {
+    refreshPageList() {
       this.tableLoading = false;
-      if (calender && calender.calendarId) {
-        this.canEdit = calender.canEdit;
-      }
+      // if (calender && calender.calendarId) {
+      //   this.canEdit = calender.canEdit;
+      // }
       if (this.formData.queryType) {
         if (this.hasPower('weekly-look')) {
           this.server.lookQuickly(this.formData).then((res) => {
@@ -663,7 +686,9 @@ export default {
           //  1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
           // 2、当组织切换至别的部门时不显示该按钮:
           // 3、不是部门负责人不显示该按钮:
-          this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId && val.isLeader && this.hasPower('weekly-notice');
+          // this.showRemindBtn = val.canEdit && val.orgId == this.userInfo.orgId
+          // && val.isLeader && this.hasPower('weekly-notice');
+          this.showRemindBtn = val.orgId == this.userInfo.orgId && val.isLeader && this.hasPower('weekly-notice');
         }
       },
     },

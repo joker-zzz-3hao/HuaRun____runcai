@@ -1,7 +1,6 @@
 <template>
-  <div v-loading="pageLoading" class="teams-weekly-detail">
+  <div v-loading="pageLoading" class="teams-weekly">
     <div class="operating-area">
-      <div class="page-title">团队周报</div>
       <div class="operating-box">
         <el-button plain class="tl-btn amt-border-slip" @click="goback"
           >返回<span class="lines"></span
@@ -10,110 +9,154 @@
     </div>
     <div class="cont-area">
       <template v-if="openOrClose == 'OPEN'">
-        <dl class="dl-card-panel weekly">
-          <dd>
-            <dl class="user-info">
-              <dt>负责人</dt>
-              <dd v-if="true">
-                <img
-                  v-if="$route.query.headerUrl"
-                  :src="$route.query.headerUrl"
-                  alt
-                />
-              </dd>
-              <dd v-else-if="$route.query.userName" class="user-name">
-                <em>{{
-                  $route.query.userName.substring(
-                    $route.query.userName.length - 2
-                  )
-                }}</em>
-              </dd>
-              <dd>{{ $route.query.userName }}</dd>
-            </dl>
-            <el-table ref="workTable" :data="weeklyWorkVoList" class="tl-table">
-              <el-table-column
-                label="序号"
-                type="index"
-                width="55"
-              ></el-table-column>
-              <el-table-column
-                label="工作项"
-                prop="workContent"
-                min-width="150"
-              >
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workContent }}</em></template
-                ></el-table-column
-              >
-              <el-table-column
-                label="内容"
-                prop="workDesc"
-                v-if="weeklyType == '1'"
-                min-width="150"
-              >
-                <template slot-scope="scope">
-                  <pre class="font-normal">{{ scope.row.workDesc }}</pre>
-                </template>
-              </el-table-column>
-              <el-table-column width="80" label="进度" prop="workProgress">
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workProgress }}%</em>
-                </template>
-              </el-table-column>
-              <el-table-column width="80" label="投入工时" prop="workTime">
-                <template slot-scope="scope">
-                  <em>{{ scope.row.workTime }}天</em>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="关联项目"
-                prop="projectNameCn"
-                min-width="120"
-              >
-                <template slot-scope="scope">
+        <div class="weekly">
+          <dl class="user-info">
+            <dt>当前周报</dt>
+            <dd v-if="$route.query.headerUrl">
+              <img
+                v-if="$route.query.headerUrl"
+                :src="$route.query.headerUrl"
+                alt
+              />
+            </dd>
+            <dd v-else-if="$route.query.userName" class="user-name">
+              <em>{{
+                $route.query.userName.substring(
+                  $route.query.userName.length - 2
+                )
+              }}</em>
+            </dd>
+            <dd>{{ $route.query.userName }}</dd>
+            <dd>
+              <em>{{ $route.query.weekDate }}</em>
+            </dd>
+          </dl>
+        </div>
+        <div class="weekly-cont">
+          <!-- <dl class="user-info">
+            <dt>当前周报</dt>
+            <dd v-if="true">
+              <img
+                v-if="$route.query.headerUrl"
+                :src="$route.query.headerUrl"
+                alt
+              />
+            </dd>
+            <dd v-else-if="$route.query.userName" class="user-name">
+              <em>{{
+                $route.query.userName.substring(
+                  $route.query.userName.length - 2
+                )
+              }}</em>
+            </dd>
+            <dd>{{ $route.query.userName }}</dd>
+          </dl> -->
+          <el-form
+            ref="work"
+            :model="workForm"
+            :key="workForm.workId"
+            v-for="(workForm, index) in weeklyWorkVoList"
+            label-width="70px"
+            class="tl-form"
+          >
+            <div class="flex-sb">
+              <div class="item-title">
+                <i></i><span>工作项</span><em>{{ index + 1 }}</em>
+              </div>
+            </div>
+            <div class="form-item">
+              <div class="form-item-group">
+                <el-form-item label="工作项">
+                  <em> {{ workForm.workContent }}</em>
+                </el-form-item>
+                <el-form-item label="内容">
+                  <pre class="font-normal">{{ workForm.workDesc }}</pre>
+                </el-form-item>
+              </div>
+              <div class="form-item-group">
+                <el-form-item label="进度">
+                  <div class="tl-progress-group">
+                    <tl-process
+                      :data="parseInt(Number(workForm.workProgress), 10)"
+                      :showNumber="true"
+                    ></tl-process>
+                  </div>
+                </el-form-item>
+                <el-form-item label="工时" class="time-cascader">
+                  <em>{{ getTimes(workForm, "updated", "days") }}</em>
+                  <div class="working-hours-info">
+                    <span>{{ getTimes(workForm, "updated", "info") }}</span>
+                  </div>
+                </el-form-item>
+                <el-form-item label="项目">
                   <div class="tag-group">
-                    <ul class="tag-lists">
-                      <li>
-                        <el-tooltip
+                    <ul>
+                      <li v-if="workForm.projectNameCn">
+                        <!-- <el-tooltip
+                          v-if="workForm.projectId != 'DEFAULT_PROJECT'"
                           class="select-values"
                           effect="dark"
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{
-                            scope.row.projectNameCn
-                              ? scope.row.projectNameCn
-                              : "临时项目"
-                          }}</em>
-                          <em>{{
-                            scope.row.projectNameCn
-                              ? scope.row.projectNameCn
-                              : "临时项目"
-                          }}</em>
-                        </el-tooltip>
+                          <em slot="content">{{ workForm.projectNameCn }}</em> -->
+                        <em>{{ workForm.projectNameCn }}</em>
+                        <!-- </el-tooltip>
+                        <div v-else>
+                          <em>{{ workForm.projectNameCn }}</em>
+                        </div> -->
                       </li>
                     </ul>
                   </div>
-                  <!-- <em>{{
-                    scope.row.projectNameCn
-                      ? scope.row.projectNameCn
-                      : "临时项目"
-                  }}</em> -->
-                </template>
-              </el-table-column>
-              <el-table-column label="支持OKR/价值观" min-width="120">
-                <template slot-scope="scope">
+                </el-form-item>
+                <el-form-item label="支撑OKR/价值观">
                   <div
                     class="tag-group"
                     v-if="
-                      scope.row.okrCultureValueList.length > 0 ||
-                      scope.row.workOkrList.length > 0
+                      workForm.okrCultureValueList.length > 0 ||
+                      workForm.workOkrList.length > 0
                     "
                   >
+                    <ul>
+                      <li
+                        v-for="value in workForm.okrCultureValueList"
+                        :key="value.id"
+                      >
+                        <!-- <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ value.cultureName }}</em> -->
+                        <em>{{ value.cultureName }}</em>
+                        <!-- </el-tooltip> -->
+                      </li>
+                      <li v-for="value in workForm.workOkrList" :key="value.id">
+                        <!-- <el-tooltip
+                          class="select-values"
+                          effect="dark"
+                          placement="top"
+                          popper-class="tl-tooltip-popper"
+                        >
+                          <em slot="content">{{ value.okrDetailObjectKr }}</em> -->
+                        <em>{{ value.okrDetailObjectKr }}</em>
+                        <!-- </el-tooltip> -->
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-else>
+                    <ul>
+                      <li>
+                        <em>不关联任何OKR</em>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="tag-group">
                     <ul class="tag-lists">
                       <li
-                        v-for="value in scope.row.okrCultureValueList"
-                        :key="value.id"
+                        v-for="item in workForm.selectedOkr"
+                        :key="item.okrDetailId"
                       >
                         <el-tooltip
                           class="select-values"
@@ -121,33 +164,18 @@
                           placement="top"
                           popper-class="tl-tooltip-popper"
                         >
-                          <em slot="content">{{ value.cultureName }}</em>
-                          <em>{{ setOkrStyle(value.cultureName) }}</em>
-                        </el-tooltip>
-                      </li>
-                      <li
-                        v-for="value in scope.row.workOkrList"
-                        :key="value.id"
-                      >
-                        <el-tooltip
-                          class="select-values"
-                          effect="dark"
-                          placement="top"
-                          popper-class="tl-tooltip-popper"
-                        >
-                          <em slot="content">{{ value.okrDetailObjectKr }}</em>
-                          <em>{{ setOkrStyle(value.okrDetailObjectKr) }}</em>
+                          <em slot="content">{{ item.okrDetailObjectKr }}</em>
+                          <em>{{ item.okrDetailObjectKr }}</em>
                         </el-tooltip>
                       </li>
                     </ul>
                   </div>
-                  <div v-else>--</div>
-                </template>
-              </el-table-column>
-            </el-table>
-          </dd>
-        </dl>
-        <dl class="dl-card-panel weekly-thoughts" v-if="weeklyType == '1'">
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
+        </div>
+        <dl class="dl-card-panel weekly-thoughts">
           <dt class="card-title"><em>本周感想、建议、收获</em></dt>
           <dd v-for="item in weeklyThoughtList" :key="item.thoughtId">
             <div class="tag-group">
@@ -182,23 +210,18 @@
             <em>本周没有填写感想、建议或者收获！</em>
           </dd>
         </dl>
-        <dl class="dl-card-panel week-plan" v-if="weeklyType == '1'">
+        <!-- 下周计划-->
+        <!-- <dl class="dl-card-panel week-plan" :class="{ 'is-edit': canUpdate }"> -->
+        <dl class="dl-card-panel week-plan">
           <dt class="card-title"><em>下周计划</em></dt>
-          <dd v-if="weeklyPlanList.length > 0">
-            <el-table ref="workTable" :data="weeklyPlanList" class="tl-table">
-              <el-table-column
-                label="序号"
-                type="index"
-                width="55"
-              ></el-table-column>
-              <el-table-column
-                label="工作项"
-                prop="planContent"
-              ></el-table-column>
-            </el-table>
+          <dd v-if="weeklyPlanList.length < 1" class="no-data">
+            <em>本周未填写下周计划</em>
           </dd>
-          <dd v-else class="no-data">
-            <em>未填写下周计划</em>
+          <dd v-for="(item, index) in weeklyPlanList" :key="item.workId">
+            <div>
+              <em>{{ index + 1 }}</em>
+            </div>
+            <pre>{{ item.planContent }}</pre>
           </dd>
         </dl>
         <dl class="dl-card-panel okr-completion">
@@ -219,7 +242,7 @@
             >
               <div class="tag-kind">
                 <span class="kind-parent">目标</span>
-                <el-tooltip
+                <!-- <el-tooltip
                   class="select-values"
                   effect="dark"
                   placement="top"
@@ -227,9 +250,9 @@
                 >
                   <em slot="content">{{
                     item.parentOkrDetail.okrDetailObjectKr
-                  }}</em>
-                  <em>{{ item.parentOkrDetail.okrDetailObjectKr }}</em>
-                </el-tooltip>
+                  }}</em> -->
+                <em>{{ item.parentOkrDetail.okrDetailObjectKr }}</em>
+                <!-- </el-tooltip> -->
               </div>
             </div>
             <div class="o-kr-group">
@@ -238,7 +261,7 @@
               >
                 <div class="tag-kind">
                   <span class="kind-child">KR</span>
-                  <el-tooltip
+                  <!-- <el-tooltip
                     class="select-values"
                     effect="dark"
                     placement="top"
@@ -246,9 +269,9 @@
                   >
                     <em slot="content">{{
                       item.okrDetail.okrDetailObjectKr
-                    }}</em>
-                    <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
-                  </el-tooltip>
+                    }}</em> -->
+                  <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
+                  <!-- </el-tooltip> -->
                   <span
                     >被工作项<em>{{ itemIndex(item) }}</em
                     >支撑</span
@@ -258,7 +281,7 @@
               <template v-else>
                 <div class="tag-kind">
                   <span class="kind-parent">目标</span>
-                  <el-tooltip
+                  <!-- <el-tooltip
                     class="select-values"
                     effect="dark"
                     placement="top"
@@ -266,9 +289,9 @@
                   >
                     <em slot="content">{{
                       item.okrDetail.okrDetailObjectKr
-                    }}</em>
-                    <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
-                  </el-tooltip>
+                    }}</em> -->
+                  <em>{{ item.okrDetail.okrDetailObjectKr }}</em>
+                  <!-- </el-tooltip> -->
                   <span
                     >被工作项<em>{{ itemIndex(item) }}</em
                     >支撑</span
@@ -334,25 +357,27 @@
           <dd>
             <ul>
               <li
+                v-if="weeklyEmotion === 100"
                 class="has-harvest"
                 :class="{ 'is-selected': weeklyEmotion === 100 }"
               >
                 <i></i><i></i>
               </li>
               <li
+                v-if="weeklyEmotion === 50"
                 class="not-too-bad"
                 :class="{ 'is-selected': weeklyEmotion === 50 }"
               >
                 <i></i><i></i>
               </li>
               <li
+                v-if="weeklyEmotion === 0"
                 class="let-quiet"
                 :class="{ 'is-selected': weeklyEmotion === 0 }"
               >
                 <i></i><i></i>
               </li>
             </ul>
-            <span v-if="showEmotionError">请选择本周心情</span>
           </dd>
         </dl>
         <dl class="dl-card-panel who-browse">
@@ -393,188 +418,7 @@
               </el-button>
             </div>
           </dd>
-          <!-- 谁浏览了 -->
-          <!-- <div style="margintop: 50px">
-              <h2>谁浏览了</h2>
-              <span
-                style="marginleft: 10px"
-                v-for="user in visitUserNameList"
-                :key="user"
-              >
-                <el-avatar
-                  :size="30"
-                  :src="user.headerUrl"
-                  @error="errorHandler"
-                >
-                  <div v-if="user.userName" class="user-name">
-                    <em>{{
-                      user.userName.substring(user.userName.length - 2)
-                    }}</em>
-                  </div>
-                </el-avatar>
-                <span>{{ user.userName }}</span>
-              </span>
-            </div> -->
         </dl>
-        <div class="current-user-info">
-          <div>
-            <!-- 本周工作项 -->
-            <div></div>
-            <!-- 本周感想、建议、收获 -->
-            <!-- <div v-if="weeklyType == '1'" style="margintop: 50px">
-              <h2>本周感想、建议、收获</h2>
-              <div v-for="item in weeklyThoughtList" :key="item.thoughtId">
-                <el-button
-                  v-if="item.thoughtType == 0"
-                  :class="{ 'is-thoughts': item.thoughtType == 0 }"
-                  >感想</el-button
-                >
-                <el-button
-                  v-if="item.thoughtType == 1"
-                  :class="{ 'is-suggest': item.thoughtType == 1 }"
-                  >建议</el-button
-                >
-                <el-button
-                  v-if="item.thoughtType == 2"
-                  :class="{ 'is-harvest': item.thoughtType == 2 }"
-                  >收获</el-button
-                >
-                <span>{{ item.thoughtContent }}</span>
-              </div>
-            </div> -->
-            <!-- 下周计划 -->
-            <!-- <div v-if="weeklyType == '1'" style="margintop: 50px">
-              <h2>下周计划</h2>
-              <el-table ref="workTable" :data="weeklyPlanList">
-                <el-table-column label="序号" type="index"></el-table-column>
-                <el-table-column
-                  label="工作项"
-                  prop="planContent"
-                ></el-table-column>
-              </el-table>
-              <div v-if="weeklyPlanList.length < 1">您没有写下周计划</div>
-            </div> -->
-            <!-- 个人okr完成度 -->
-            <!-- <div v-if="weeklyOkrVoList.length > 0" style="margintop: 50px">
-              <h2>个人okr完成度</h2>
-              <div v-for="item in weeklyOkrVoList" :key="item.okrDetailId">
-                <div
-                  v-if="
-                    item.parentOkrDetail && item.parentOkrDetail.okrDetailId
-                  "
-                >
-                  <el-row :gutter="20">
-                    <el-col :span="20">
-                      <div>
-                        <span>目标</span>
-                        <span style="marginleft: 15px">{{
-                          item.parentOkrDetail.okrDetailObjectKr
-                        }}</span>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div>
-                        <span>KR</span>
-                        <span style="marginleft: 15px">{{
-                          item.okrDetail.okrDetailObjectKr
-                        }}</span>
-                        <span style="marginleft: 15px"
-                          >被工作项{{ itemIndex(item) }}支持</span
-                        >
-                      </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <span style="marginleft: 15px">
-                          信心指数
-                          <el-button
-                            :class="{ 'no-risk': item.confidenceAfter == 1 }"
-                          ></el-button>
-                          <el-button
-                            :class="{
-                              'risk-is-controlled': item.confidenceAfter == 2,
-                            }"
-                          ></el-button>
-                          <el-button
-                            :class="{
-                              'risk-cannot-be-controlled':
-                                item.confidenceAfter == 3,
-                            }"
-                          ></el-button>
-                          <span>{{ riskMap[item.confidenceAfter] }}</span>
-                        </span>
-                      </div>
-                    </el-col>
-                    <el-col :span="7">
-                      <div>
-                        <span style="marginleft: 15px">
-                          当前进度
-                          <el-progress
-                            :percentage="item.progressAfter"
-                            :format="format"
-                          ></el-progress>
-                        </span>
-                      </div>
-                    </el-col>
-                    <el-col :span="2">
-                      <div>
-                        <span style="marginleft: 15px">
-                          本周变化
-                          <span
-                            >{{
-                              item.progressAfter - item.progressBefor
-                            }}%</span
-                          >
-                        </span>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div v-else>
-                  <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div>
-                        目标
-                        <span style="marginleft: 15px">{{
-                          item.okrDetail.okrDetailObjectKr
-                        }}</span>
-                        <span style="marginleft: 15px"
-                          >被工作项{{ itemIndex(item) }}支持</span
-                        >
-                      </div>
-                    </el-col>
-
-                    <el-col :span="7" :offset="6">
-                      <div>
-                        <span style="marginleft: 15px">
-                          当前进度
-                          <el-progress
-                            :percentage="item.progressAfter"
-                            :format="format"
-                          ></el-progress>
-                        </span>
-                      </div>
-                    </el-col>
-                    <el-col :span="2">
-                      <div>
-                        <span style="marginleft: 15px">
-                          本周变化
-                          <span
-                            >{{
-                              item.progressAfter - item.progressBefor
-                            }}%</span
-                          >
-                        </span>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
-            </div> -->
-          </div>
-        </div>
       </template>
       <template v-if="openOrClose == 'CLOSE'"
         >该用户所在团队未公开周报</template
@@ -587,10 +431,12 @@
 import tlProcess from '@/components/process';
 import { mapState } from 'vuex';
 import Server from '../server';
+import mixin from '../../myWeekly/mixin';
 
 const server = new Server();
 export default {
   name: 'teamWeeklyInfo',
+  mixins: [mixin],
   components: {
     'tl-process': tlProcess,
   },
@@ -606,7 +452,6 @@ export default {
       weeklyPlanList: [],
       weeklyOkrVoList: [],
       visitUserNameList: [],
-      weeklyType: '',
       openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
@@ -675,7 +520,7 @@ export default {
     queryWeekly() {
       this.server.queryWeekly({ weeklyId: this.$route.query.weeklyId }).then((res) => {
         if (res.code == 200) {
-          this.weeklyType = res.data.weeklyType;
+          // this.weeklyType = res.data.weeklyType;
           this.weeklyEmotion = res.data.weeklyEmotion;
           this.weeklyWorkVoList = res.data.weeklyWorkVoList;
           this.weeklyThoughtList = res.data.weeklyThoughtList;
@@ -721,6 +566,7 @@ export default {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
     },
+
   },
   watch: {},
   updated() {},

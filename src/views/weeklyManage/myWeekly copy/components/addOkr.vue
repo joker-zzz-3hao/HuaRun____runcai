@@ -10,7 +10,7 @@
     class="tl-drawer"
   >
     <div slot="title" class="flex-sb">
-      <div class="drawer-title">支撑OKR/价值观</div>
+      <div class="drawer-title">{{ drawerTitle }}</div>
     </div>
     <el-scrollbar>
       <div class="cont-box">
@@ -34,6 +34,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
+              @change="periodChange"
             >
               <el-option
                 v-for="item in orgOkrPeriodList"
@@ -75,6 +76,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
+              @change="periodChange"
             >
               <el-option
                 v-for="item in myOkrPeriodList"
@@ -162,7 +164,7 @@ export default {
         return { };
       },
     },
-    currenItemRandomId: {
+    currenItemrandomId: {
       type: String,
       default() {
         return '';
@@ -173,6 +175,56 @@ export default {
       default() {
         return [];
       },
+    },
+    myOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    orgOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    myOkrPeriodList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalMyOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    originalOrgOkrList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    cultureList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    drawerTitle: {
+      type: String,
+      default: '支撑OKR/价值观',
+    },
+    configItemCodeOKR: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -211,16 +263,6 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
     }),
-    ...mapState('weekly', {
-      cultureList: (state) => state.cultureList,
-      myOkrList: (state) => state.myOkrList,
-      orgOkrList: (state) => state.orgOkrList,
-      orgOkrPeriodList: (state) => state.orgOkrPeriodList,
-      myOkrPeriodList: (state) => state.myOkrPeriodList,
-      originalMyOkrList: (state) => state.originalMyOkrList,
-      originalOrgOkrList: (state) => state.originalOrgOkrList,
-      configItemCodeOKR: (state) => state.configItemCodeOKR,
-    }),
   },
   methods: {
     init() {
@@ -238,7 +280,7 @@ export default {
         selectedOkrAndCulture: [...this.orgOkr, ...this.personalOkr, ...this.selectedCultureList, ...this.noOkrList],
         selectedOkr: [...this.orgOkr, ...this.personalOkr],
         selectedCulture: [...this.selectedCultureList, ...this.noOkrList], // 不关联任何okr合并至价值观，省事
-        currenItemRandomId: this.currenItemRandomId,
+        currenItemrandomId: this.currenItemrandomId,
         supportMyOkrObj: this.supportMyOkrObj,
       });
       this.visible = false;
@@ -398,7 +440,6 @@ export default {
       this.orgOkr = [];
       this.personalOkr = [];
       this.selectedCultureList = [];
-      this.valueSelectData = '';
       if (e.target.tagName != 'INPUT') return;
       if (this.noOkrIndex === index) { // 取消选中
         this.noOkrIndex = undefined;
@@ -411,6 +452,9 @@ export default {
         this.noOkrIndex = index;
       }
       this.$forceUpdate();
+    },
+    periodChange(period) {
+      console.log(period);
     },
   },
   watch: {

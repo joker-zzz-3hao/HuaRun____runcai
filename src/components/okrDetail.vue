@@ -758,6 +758,7 @@ export default {
               }
             });
             this.cycleFirst = this.cycleList.splice(0, 1)[0] || {};
+            console.log(this.cycleFirst);
             this.status = 1;
           }
         });
