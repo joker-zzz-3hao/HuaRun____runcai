@@ -64,6 +64,7 @@
           </div>
           <el-button
             v-show="hasPower('project-create')"
+            v-if="isTalent"
             :disabled="!codes.length > 0"
             type="primary"
             icon="el-icon-plus"
