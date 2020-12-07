@@ -18,81 +18,34 @@
       <div class="okr-info">
         <el-scrollbar ref="detailscrollbar">
           <div class="tl-custom-timeline" v-if="currentIndex === 0">
+            <div v-if="hasValue(historyFirst)">
+              <div>
+                <em>上次更新时间</em>
+                <span>{{ historyFirst.createTime }}</span>
+              </div>
+              <div v-if="historyFirst.updateContents">
+                <em>进度</em>
+                <span>
+                  由
+                  {{ historyFirst.updateContents.beforeProgress }}%更新为
+                  {{ historyFirst.updateContents.afterProgress }}%
+                </span>
+              </div>
+              <div>
+                <em>操作人</em>
+                <span>
+                  {{ historyFirst.userName }}
+                </span>
+              </div>
+              <div>
+                <em>更新说明</em>
+                <span>
+                  {{ historyFirst.reason }}
+                </span>
+              </div>
+            </div>
             <el-form :model="formData" ref="dataForm" class="tl-form">
               <dl class="timeline-list">
-                <dd v-if="hasValue(historyFirst)">
-                  <div class="list-info">
-                    <div class="list-title">
-                      <em>上次更新时间：{{ historyFirst.createTime }}</em>
-                    </div>
-                    <div class="list-cont">
-                      <div>
-                        <em>操作人</em>
-                        <span>
-                          {{ historyFirst.userName }}
-                        </span>
-                      </div>
-                      <div v-if="historyFirst.updateContents">
-                        <em>更新前进度</em>
-                        <span>
-                          {{ historyFirst.updateContents.beforeProgress }} %
-                        </span>
-                      </div>
-                      <div v-if="historyFirst.updateContents">
-                        <em>更新后进度</em>
-                        <span>
-                          {{ historyFirst.updateContents.afterProgress }} %
-                        </span>
-                      </div>
-                      <div v-if="historyFirst.updateContents">
-                        <em>信心指数修改为</em>
-                        <div class="state-grid">
-                          <div
-                            :class="{
-                              'is-no-risk':
-                                historyFirst.updateContents.afterConfidence ==
-                                1,
-                              'is-risks':
-                                historyFirst.updateContents.afterConfidence ==
-                                2,
-                              'is-uncontrollable':
-                                historyFirst.updateContents.afterConfidence ==
-                                3,
-                            }"
-                          ></div>
-                          <div
-                            :class="{
-                              'is-risks':
-                                historyFirst.updateContents.afterConfidence ==
-                                2,
-                              'is-uncontrollable':
-                                historyFirst.updateContents.afterConfidence ==
-                                3,
-                            }"
-                          ></div>
-                          <div
-                            :class="{
-                              'is-uncontrollable':
-                                historyFirst.updateContents.afterConfidence ==
-                                3,
-                            }"
-                          ></div>
-                        </div>
-                        <em>{{
-                          CONST.CONFIDENCE_MAP[
-                            historyFirst.updateContents.afterConfidence
-                          ]
-                        }}</em>
-                      </div>
-                      <div>
-                        <em>更新说明</em>
-                        <span>
-                          {{ historyFirst.reason }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </dd>
                 <dd>
                   <div class="list-info">
                     <div class="list-title">
@@ -168,7 +121,7 @@
                       maxlength="200"
                       v-model="formData.updateexplain"
                       type="textarea"
-                      :rows="3"
+                      :autosize="{ minRows: 1 }"
                       resize="none"
                       class="tl-textarea"
                     ></el-input>
