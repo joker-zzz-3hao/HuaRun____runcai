@@ -52,18 +52,34 @@
         </dd>
       </dl>
     </dd>
-    <dd class="flex-end" v-if="$route.name == 'replayScoreDetail'">评分说明</dd>
+    <dd
+      class="flex-end"
+      v-if="$route.name == 'replayScoreDetail'"
+      @click="openRule"
+    >
+      评分说明
+    </dd>
+    <tl-scorerule ref="scorerule"></tl-scorerule>
   </dl>
 </template>
 <script>
+
+import scoreRule from './scoreRule';
+
 export default {
   props: ['okrMain'],
+  components: {
+    'tl-scorerule': scoreRule,
+  },
   methods: {
     cutName(userName) {
       if (userName) {
         const nameLength = userName.length;
         return userName.substring(nameLength - 2, nameLength);
       }
+    },
+    openRule() {
+      this.$refs.scorerule.show();
     },
   },
 };
