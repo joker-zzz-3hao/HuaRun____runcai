@@ -260,10 +260,7 @@
           <el-button type="primary" class="tl-btn amt-bg-slip">更新</el-button>
         </div>
         <div>
-          <el-tiptap
-            v-model="formData.updateexplain"
-            :extensions="extensions"
-          />
+          <el-tiptap v-model="formData.noteText" :extensions="extensions" />
         </div>
       </div>
     </div>
@@ -317,6 +314,7 @@ export default {
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
+        noteText: '',
       },
       myokrDrawer: false,
       drawerTitle: '更新进度',
