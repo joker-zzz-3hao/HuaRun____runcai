@@ -40,4 +40,9 @@ export default class Server extends ServerBase {
   getTypeConfig(param) {
     return this._ajaxPost('gateway/system-service/sys/config/query', param);
   }
+
+  // 查询日历
+  getCalendar(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
 }

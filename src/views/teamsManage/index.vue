@@ -1,7 +1,7 @@
 <template>
   <div class="teams-manage">
     <div class="operating-area">
-      <div class="page-title">团队管理</div>
+      <!-- <div class="page-title">团队管理</div> -->
       <div class="operating-box">
         <el-button
           plain
@@ -87,7 +87,7 @@
             <span>提示：周报开放后团队外人员可以查看你团队成员的周报</span>
           </p>
         </dd>
-        <dd>
+        <!-- <dd>
           <span>写周报模式</span>
           <el-checkbox-group
             v-model="weeklyMode"
@@ -98,7 +98,7 @@
             <el-checkbox label="1" class="tl-checkbox">标准模式</el-checkbox>
             <el-checkbox label="2" class="tl-checkbox">简单模式</el-checkbox>
           </el-checkbox-group>
-        </dd>
+        </dd> -->
         <dd>
           <span>设置默认首页</span>
           <el-select

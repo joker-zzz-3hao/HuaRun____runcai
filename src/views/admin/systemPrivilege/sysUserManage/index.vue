@@ -1,9 +1,6 @@
 <template>
   <div class="system-user-management">
     <div>
-      <div>系统用户管理</div>
-    </div>
-    <div>
       <el-form class="tl-form" v-if="hasPower('sys_auth')">
         <el-form-item label="用户账号">
           <em>{{ userInfo.userAccount }}</em>

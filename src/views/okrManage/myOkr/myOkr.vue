@@ -11,7 +11,16 @@
         </el-alert>
       </template>
       <template v-if="okrList[0] && okrList[0].tableList.length > 0">
-        <div v-for="item in okrList" :key="item.id" class="tl-card-panel">
+        <div
+          v-for="item in okrList"
+          :key="item.id"
+          class="tl-card-panel"
+          :class="{
+            'is-show':
+              ['1', 1, 3, 4, 5].includes(item.okrMain.status) &&
+              item.okrMain.readStatus != 0,
+          }"
+        >
           <div
             class="okr-tag"
             v-if="
@@ -35,12 +44,14 @@
             <div class="okr-title">{{ okrCycle.periodName }}</div>
             <dl class="okr-state">
               <dt>
-                <i class></i>
+                <i
+                  :class="CONST.STATUS_LIST_MAP[item.okrMain.status].className"
+                ></i>
                 <em>状态</em>
               </dt>
               <dd class="is-highlighted">
                 <!-- <i class="el-icon-sunny"></i> -->
-                <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status] }}</em>
+                <em>{{ CONST.STATUS_LIST_MAP[item.okrMain.status].name }}</em>
               </dd>
             </dl>
             <dl class="okr-type">
@@ -267,7 +278,8 @@
         <em>加载中...</em>
       </div>
       <div v-else class="tl-card-panel no-data">
-        <div class="bg-no-data"></div>
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">暂无数据</div>
       </div>
     </div>
 

@@ -221,7 +221,7 @@ export default {
         projectManager: '',
         userCompany: '',
         totalBudget: 0,
-        currency: '0',
+        currency: '1',
         projectDate: [],
         userLevel: '',
         startDate: '',
