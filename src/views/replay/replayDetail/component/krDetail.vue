@@ -26,28 +26,6 @@
                   :data="parseInt(item.o.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
-              <!-- <div>
-                <i class="el-icon-attract"></i>
-                <span>关联父目标</span>
-                <em
-                  v-if="
-                    oData.undertakeOkrDto &&
-                    oData.undertakeOkrDto.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em
-                  v-else-if="
-                    oData.undertakeOkrVo &&
-                    oData.undertakeOkrVo.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
-                <em v-else>暂无</em>
-              </div> -->
             </dd>
           </dl>
         </template>
@@ -105,46 +83,26 @@
                 </span>
               </dd>
             </dl>
-          </dd>
-          <!-- 复盘详情有则显示 -->
-          <dd>
-            <dl v-if="list.advantage">
-              <dt>价值与收获</dt>
-              <dd>{{ list.advantage }}</dd>
-            </dl>
-            <dl v-if="list.disadvantage">
-              <dt>问题与不足</dt>
-              <dd>{{ list.disadvantage }}</dd>
-            </dl>
-            <dl v-if="list.measure.length">
-              <dt>改进措施</dt>
-              <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
-            </dl>
-            <!-- <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-              <dt>复盘沟通</dt>
-              <dd>
-                {{ list.communication }}
-              </dd>
-            </dl>
-            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-              <dt>评论</dt>
-              <dd>
-                <dl class="tag-lists">
-                  <dd
-                    :class="[
-                      {
-                        'is-selected':
-                          list.communicationLabel ==
-                          selectColor(list.communicationLabel).txt,
-                      },
-                      selectColor(list.communicationLabel).clsName,
-                    ]"
-                  >
-                    <em>{{ list.communicationLabel }}</em>
-                  </dd>
-                </dl>
-              </dd>
-            </dl> -->
+            <template v-if="list.openAdvantage">
+              <dl>
+                <dt>价值与收获</dt>
+                <dd>{{ list.advantage || "--" }}</dd>
+              </dl>
+              <dl>
+                <dt>问题与不足</dt>
+                <dd>{{ list.disadvantage || "--" }}</dd>
+              </dl>
+              <dl>
+                <dt>改进措施</dt>
+                <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
+                <dd v-if="list.measure.length == 0">--</dd>
+              </dl>
+            </template>
+            <div @click="openMore(list)">
+              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+              <span v-if="list.openAdvantage">收起</span>
+              <span v-else>展开</span>
+            </div>
           </dd>
         </dl>
       </elcollapseitem>
@@ -214,6 +172,11 @@ export default {
         return data[0];
       }
       return '';
+    },
+    // 折叠展开
+    openMore(list) {
+      list.openAdvantage = !list.openAdvantage;
+      this.$forceUpdate();
     },
     // -------------文件-------------
     // 截取文件类型

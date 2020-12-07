@@ -139,7 +139,7 @@
                   ></file-upload>
                 </dd>
               </dl>
-              <div v-show="list.openAdvantage">
+              <div v-if="list.openAdvantage">
                 <dl>
                   <dt>价值与收获</dt>
                   <dd>
@@ -193,6 +193,7 @@
                 </dl>
               </div>
               <div @click="openMore(list)">
+                <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
                 <span v-if="list.openAdvantage">收起</span>
                 <span v-else>展开</span>
               </div>
