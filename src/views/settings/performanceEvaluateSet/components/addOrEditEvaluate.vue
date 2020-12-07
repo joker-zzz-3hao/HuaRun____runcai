@@ -9,7 +9,7 @@
     :append-to-body="true"
     :visible="visible"
     @close="close"
-    title="设置绩效评定体系"
+    :title="title"
     :close-on-click-modal="false"
   >
     <div v-show="step == 1">
@@ -25,6 +25,7 @@
         <el-form-item label="自定义体系" prop="ruleName">
           <div
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
+            v-show="ruleItem.status != '1'"
             :key="ruleItem.detailRandomId"
           >
             <el-input v-model.trim="ruleItem.value" maxlength="30"></el-input>
@@ -123,24 +124,13 @@ export default {
       loading: false,
       step: '1',
       performanceData: {},
+      title: '设置绩效评定体系',
     };
   },
   created() { },
   mounted() {},
   computed: {},
   methods: {
-    addEvaluateItem() {
-      this.evaluateFormList.push({
-        ruleName: '',
-        ruleDetailList: [{
-          unit: '',
-          value: '',
-          description: '',
-          detailRandomId: this.getRandomId(),
-        }],
-      });
-    },
-
     addRuleItem() {
       this.performanceData.ruleDetailList.push({
         unit: '',
@@ -154,7 +144,7 @@ export default {
       if (ruleItem.ruleDetailId) {
         this.performanceData.ruleDetailList.forEach((detail) => {
           if (detail.detailRandomId == ruleItem.detailRandomId) {
-
+            detail.status = '1';
           }
         });
       }
@@ -162,6 +152,7 @@ export default {
     },
     addEvaluate() {
       if (this.step == 1) {
+        this.title = '确认后部门将按照以下规则进行配置！';
         this.step = 2;
       } else {
         this.loading = true;
@@ -194,6 +185,7 @@ export default {
         this.performanceData = {
           ruleName: '',
           ruleDetailList: [{
+            status: '0',
             unit: '',
             value: '',
             description: '',
@@ -210,6 +202,7 @@ export default {
         this.close();
       } else {
         this.step = 1;
+        this.title = '设置绩效评定体系';
       }
     },
     close() {
