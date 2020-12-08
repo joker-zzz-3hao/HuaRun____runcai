@@ -680,22 +680,25 @@
               v-show="canUpdate || weeklyEmotion === 100"
               class="has-harvest"
               :class="{ 'is-selected': weeklyEmotion === 100 }"
+              @click="canUpdate ? setEmotion(100) : ''"
             >
-              <i @click="canUpdate ? setEmotion(100) : ''"></i><i></i>
+              <i></i><i></i>
             </li>
             <li
               v-show="canUpdate || weeklyEmotion === 50"
               class="not-too-bad"
               :class="{ 'is-selected': weeklyEmotion === 50 }"
+              @click="canUpdate ? setEmotion(50) : ''"
             >
-              <i @click="canUpdate ? setEmotion(50) : ''"></i><i></i>
+              <i></i><i></i>
             </li>
             <li
               v-show="canUpdate || weeklyEmotion === 0"
               class="let-quiet"
               :class="{ 'is-selected': weeklyEmotion === 0 }"
+              @click="canUpdate ? setEmotion(0) : ''"
             >
-              <i @click="canUpdate ? setEmotion(0) : ''"></i><i></i>
+              <i></i><i></i>
             </li>
           </ul>
           <span v-if="showEmotionError">请选择本周心情</span>

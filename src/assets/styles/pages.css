@@ -1606,7 +1606,7 @@
   top: 0;
 }
 
-.overview .user-info + dd {
+.overview .user-info+dd {
   cursor: pointer;
 }
 
@@ -1842,6 +1842,7 @@
 .set-period .el-scrollbar__bar {
   opacity: 0.5;
 }
+
 .set-period .el-radio__label em {
 
   letter-spacing: 2px;
@@ -2003,6 +2004,7 @@
 .undertake-maps .progress-bg:not(:first-child) {
   margin-left: 6px !important;
 }
+
 .undertake-maps-tree .tl-btn {
   height: 35px;
   width: 30px;
@@ -4065,9 +4067,10 @@
 
 .teams-weekly .mood {
   position: unset;
+  transform: unset;
 }
 
-.my-weekly .dl-card-panel.mood > dd {
+.my-weekly .dl-card-panel.mood>dd {
   margin: 0;
 }
 
@@ -4086,7 +4089,7 @@
   cursor: pointer;
 }
 
-.mood ul li i + i {
+.mood ul li i+i {
   margin: 0 0 0 10px;
 }
 
@@ -6081,7 +6084,7 @@
   justify-content: flex-start;
 }
 
-.working-hours .operating-box-group .operating-box:first-child .tl-select  {
+.working-hours .operating-box-group .operating-box:first-child .tl-select {
   width: 500px;
 }
 
