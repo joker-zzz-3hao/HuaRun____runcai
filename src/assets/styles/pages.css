@@ -510,8 +510,7 @@
 .okr-approval-list,
 .team-view,
 .staff-view,
-.department-view,
-.replay-list {
+.department-view {
   padding: 50px 0 0 0;
 }
 
@@ -529,8 +528,7 @@
 .okr-approval .operating-area,
 .team-view .operating-area,
 .staff-view .operating-area,
-.department-view .operating-area,
-.replay-okr .operating-area {
+.department-view .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -546,8 +544,7 @@
 .okr-approval .operating-area-inside,
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
-.department-view .operating-area-inside,
-.replay-okr .operating-area-inside {
+.department-view .operating-area-inside {
   padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
@@ -658,8 +655,7 @@
 .undertake-maps .cont-area,
 .okr-approval .cont-area， .team-view .cont-area,
 .staff-view .cont-area,
-.department-view .cont-area,
-.replay-okr .cont-area {
+.department-view .cont-area {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -2615,12 +2611,11 @@
   min-height: calc(100vh - 172px);
 }
 
-.replay-link.is-padding,
-.replay-score.is-padding {
+.replay-link.is-padding {
   padding: 0 0 56px 0;
 }
 
-.replay-info dt{
+.replay-info dt {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2749,9 +2744,9 @@
 
 .replay-link .okr-change-list dd:nth-last-of-type(1)>div,
 .replay-link .okr-change-list dt~dd>div {
-  /* display: flex; */
-  /* align-items: center; */
-  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(1)>div:nth-child(3) {
@@ -2899,12 +2894,7 @@
 .replay-link .progress-bg:not(:first-child) {
   margin-left: 2px !important;
 }
-.replay-score .tl-collapse .el-collapse-item__content div {
-  display: flex;
-}
-.replay-score .input-dl{
-  flex: 100%;
-}
+
 /* 周报 */
 .my-weekly {
   margin: 16px;
