@@ -46,4 +46,9 @@ export default class Server extends ServerBase {
   updateResource(param) {
     return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
   }
+
+  // 绩效排名
+  summary(param) {
+    return this._ajaxPost('gateway/system-service/sys/assessment/result/summary', param);
+  }
 }
