@@ -13,7 +13,13 @@
       <dl class="layout-rows">
         <dt><em>成员</em></dt>
         <dd>
-          <el-select
+               <el-button
+        type="primary"
+        @click="addDotted"
+        class="tl-btn amt-bg-slip"
+        >添加成员</el-button
+      >
+          <!-- <el-select
             v-model="keyword"
             placeholder="请输入成员姓名"
             filterable
@@ -35,7 +41,7 @@
                 <dd>( {{ item.orgName }} )</dd>
               </dl>
             </el-option>
-          </el-select>
+          </el-select> -->
         </dd>
       </dl>
       <tl-crcloud-table :isPage="false">
@@ -175,10 +181,22 @@
         >确定</el-button
       >
     </div>
+        <tl-add-member
+      v-if="exist"
+      :selectListed="selectListed"
+      :exist.sync="exist"
+      :objectType="true"
+      :projectManagerList="projectManagerList"
+      :userType="true"
+      title="添加虚线汇报人"
+      :rouleType="true"
+      @submitFunctin="listRoleUser"
+    ></tl-add-member>
   </el-dialog>
 </template>
 
 <script>
+import addMember from '@/components/addMember';
 import crcloudTable from '@/components/crcloudTable';
 import CONST from '../../const';
 
@@ -196,6 +214,9 @@ export default {
       levelList: [],
       funcList: [],
       companyList: [],
+      fictitiousList: [],
+      selectListed: [],
+      exist: false,
       dataForm: {
         tableData: [],
       },
@@ -203,6 +224,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-add-member': addMember,
   },
   props: {
     server: {
@@ -220,7 +242,7 @@ export default {
   },
   computed: {},
   mounted() {
-    this.server.projectUserList({}).then((res) => {
+    this.server.projectUserList({ projectId: this.$route.query.projectId }).then((res) => {
       if (res.code == '200') {
         this.projectManagerList = res.data || [];
       }
@@ -242,6 +264,16 @@ export default {
     });
   },
   methods: {
+    listRoleUser(data) {
+      console.log(data);
+
+      this.dataForm.tableData = data;
+      this.selectListed = data;
+      this.exist = false;
+    },
+    addDotted() {
+      this.exist = true;
+    },
     show() {
       this.visible = true;
       this.dataForm.tableData = [];
@@ -306,7 +338,7 @@ export default {
       });
     },
     filterMembers(param) {
-      this.projectManagerList = [];
+      // this.projectManagerList = [];
       this.server.projectUserList({
         param,
       }).then((res) => {

@@ -510,7 +510,8 @@
 .okr-approval-list,
 .team-view,
 .staff-view,
-.department-view {
+.department-view,
+.replay-okr {
   padding: 50px 0 0 0;
 }
 
@@ -528,7 +529,8 @@
 .okr-approval .operating-area,
 .team-view .operating-area,
 .staff-view .operating-area,
-.department-view .operating-area {
+.department-view .operating-area,
+.replay-okr .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -544,7 +546,8 @@
 .okr-approval .operating-area-inside,
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
-.department-view .operating-area-inside {
+.department-view .operating-area-inside,
+.replay-okr .operating-area-inside {
   padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
@@ -620,14 +623,16 @@
   color: #fff;
 }
 
-.no-sub-menu+.my-okr .operating-area {
+.no-sub-menu + .my-okr .operating-area,
+.no-sub-menu + .replay-okr .operating-area {
   left: 70px;
 }
 
-.is-shrink+.my-okr .operating-area .operating-area-inside,
-.is-shrink+.okr-maps .operating-area .operating-area-inside,
-.is-shrink+.undertake-maps .operating-area .operating-area-inside,
-.is-shrink+.okr-approval .operating-area .operating-area-inside {
+.is-shrink + .my-okr .operating-area .operating-area-inside,
+.is-shrink + .okr-maps .operating-area .operating-area-inside,
+.is-shrink + .undertake-maps .operating-area .operating-area-inside,
+.is-shrink + .okr-approval .operating-area .operating-area-inside,
+.is-shrink + .replay-okr .operating-area .operating-area-inside {
   padding: 0 30px 0 46px;
 }
 
@@ -637,7 +642,8 @@
 .okr-approval .operating-area-inside::before,
 .team-view .operating-area-inside::before,
 .staff-view .operating-area-inside::before,
-.department-view .operating-area-inside::before {
+.department-view .operating-area-inside::before,
+.replay-okr .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
