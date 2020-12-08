@@ -120,7 +120,6 @@
                         </el-form-item>
                       </div>
                       <el-tooltip
-                        class="icon-clear"
                         :class="{
                           'is-disabled': formData.okrInfoList.length === 1,
                         }"
@@ -136,7 +135,9 @@
                           formData.okrInfoList.length > 1 && deleteobject(index)
                         "
                       >
-                        <i class="el-icon-minus"></i>
+                        <div class="icon-bg">
+                          <i class="icon-reduce"></i>
+                        </div>
                       </el-tooltip>
                     </dt>
                     <dd class="is-edit has-third-child">
@@ -256,7 +257,6 @@
                       </el-form-item>
                     </div>
                     <el-tooltip
-                      class="icon-clear"
                       :class="{ 'is-disabled': oitem.krList.length === 1 }"
                       effect="dark"
                       :content="
@@ -268,7 +268,9 @@
                         oitem.krList.length > 1 && deletekr(index, kindex)
                       "
                     >
-                      <i class="el-icon-minus"></i>
+                      <div class="icon-bg">
+                        <i class="icon-reduce"></i>
+                      </div>
                     </el-tooltip>
                   </dt>
                   <dd class="has-third-child">

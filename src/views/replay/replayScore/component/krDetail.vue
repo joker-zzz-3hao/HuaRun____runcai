@@ -61,76 +61,76 @@
                 <em>{{ list.judgeMethod || "暂无" }}</em>
               </div>
             </dd>
+
             <dd>
-              <div v-for="file in list.attachmentList" :key="file.resourceId">
-                <em>{{ file.resourceName }}</em>
-                <span>
-                  <span
-                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-                    @click="openFile(file)"
-                    >预览</span
+              <dl>
+                <dt>评分</dt>
+                <dd>{{ list.score }}</dd>
+              </dl>
+              <dl v-if="list.scoreRemark">
+                <dt>评分说明</dt>
+                <dd>{{ list.scoreRemark }}</dd>
+              </dl>
+              <dl>
+                <dt>佐证材料</dt>
+                <dd v-for="file in list.attachmentList" :key="file.resourceId">
+                  <em>{{ file.resourceName }}</em>
+                  <span>
+                    <span
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="downFile(file)">下载</span>
+                  </span>
+                </dd>
+              </dl>
+              <dl>
+                <dt>复核得分</dt>
+                <dd>
+                  <el-input-number
+                    v-model="list.reviewscore"
+                    controls-position="right"
+                    class="tl-input-number"
+                    :min="0"
+                    :max="1"
+                    :step="0.01"
+                    step-strictly
+                    @change="showscore(list)"
+                  ></el-input-number>
+                </dd>
+              </dl>
+              <dl>
+                <dt>复核说明</dt>
+                <dd>
+                  <el-input
+                    v-model="list.communication"
+                    placeholder="请输入复核原因（非必填）"
+                    maxlength="200"
+                    type="textarea"
+                    resize="none"
+                    class="tl-textarea"
+                  ></el-input>
+                  <em
+                    v-for="sortComment in sortCommentList"
+                    :key="sortComment"
+                    @click="list.communication = sortComment"
                   >
-                  <span @click="downFile(file)">下载</span>
-                </span>
-              </div>
-            </dd>
-            <dd>
-              <div>
-                <span>自评分</span>
-                <em>{{ list.score }}</em>
-              </div>
-            </dd>
-            <dd>
-              <div v-if="list.scoreRemark">
-                <span>评分说明</span>
-                <em>{{ list.scoreRemark }}</em>
-              </div>
-            </dd>
-          </dl>
-          <dl class="input-dl">
-            <dd>
-              <span>复核得分</span>
-              <el-input-number
-                v-model="list.score"
-                controls-position="right"
-                class="tl-input-number"
-                :min="0"
-                :max="1"
-                :step="0.1"
-                step-strictly
-              ></el-input-number>
-            </dd>
-            <dd>
-              <el-input
-                v-model="list.communication"
-                placeholder="请输入复核原因（非必填）"
-                maxlength="200"
-                type="textarea"
-                :rows="3"
-                resize="none"
-                class="tl-textarea"
-              ></el-input>
-            </dd>
-            <dd>
-              <span>快捷评语：</span>
-              <em
-                v-for="sortComment in sortCommentList"
-                :key="sortComment"
-                @click="list.communication = sortComment"
-              >
-                {{ sortComment }}
-              </em>
-            </dd>
-            <dd>
-              <span>上传附件</span>
-              <file-upload
-                :actionIndex="{ oindex: index, krindex: i }"
-                ref="fileUpload"
-                :fileList="list.fileList"
-                :limit="10"
-                @change="fileChange"
-                sourceType="SCORE_REVIEW"
-                accept="
+                    {{ sortComment }}
+                  </em>
+                </dd>
+              </dl>
+              <dl>
+                <dt>上传附件</dt>
+                <dd>
+                  <file-upload
+                    :actionIndex="{ oindex: index, krindex: i }"
+                    ref="fileUpload"
+                    :fileList="list.fileList"
+                    :limit="10"
+                    @change="fileChange"
+                    sourceType="SCORE_REVIEW"
+                    accept="
               .jpg,
               .jpeg,
               image/png,
@@ -138,21 +138,23 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .pptx,
               .xlsx"
-                tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
-              ></file-upload>
+                    tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+                  ></file-upload>
+                </dd>
+              </dl>
             </dd>
           </dl>
         </div>
       </elcollapseitem>
     </elcollapse>
-    <div>
+    <div v-if="okrMain.okrReviewCommunicationDetailEntity">
       <div>
         <span>上级的复盘沟通结果：</span>
-        <em></em>
+        <em>通过</em>
       </div>
       <div>
-        <span>沟通说明：</span>
-        <em></em>
+        <span>复盘沟通说明：</span>
+        <em>{{ okrMain.okrReviewCommunicationDetailEntity.communication }}</em>
       </div>
     </div>
     <div>
@@ -162,15 +164,7 @@
       </div>
       <div>
         <span>OKR复核最终得分</span>
-        <el-input-number
-          v-model="finalScore"
-          controls-position="right"
-          class="tl-input-number"
-          :min="0"
-          :max="1"
-          :step="0.01"
-          step-strictly
-        ></el-input-number>
+        <em>{{ okrMain.okrMainVo.finalScore }}</em>
       </div>
     </div>
     <div class="footer-panel">
@@ -309,6 +303,24 @@ export default {
         this.okrMain = res.data;
         this.checkDatakrs();
       });
+    },
+    showscore() {
+      this.okrMain.okrMainVo.finalScore = Math.floor(this.computeScore() / 100) / 100;
+    },
+    computeScore() {
+      let score = 0;
+      this.okrMain.okrReviewPojoList.forEach((item) => {
+        // o的权重
+        const oWeight = item.o.okrWeight;
+        let krscore = 0;
+        // kr
+        item.krs.forEach((list) => {
+          krscore += (list.reviewscore || 0) * list.okrWeight;
+        });
+        score += krscore * oWeight;
+        console.log('krscore', score);
+      });
+      return score;
     },
     // -------------文件-------------
     fileChange(fileobject) {

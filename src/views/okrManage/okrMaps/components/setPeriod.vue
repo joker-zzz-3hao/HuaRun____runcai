@@ -22,7 +22,7 @@
           :key="item.periodId"
         >
           <span>{{ item.periodName }}</span>
-          <em v-if="item.existOkrData">（公司全局OKR）</em>
+          <em v-if="item.existOkrData">----------有数据</em>
         </el-radio>
       </el-radio-group>
     </el-scrollbar>

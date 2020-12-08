@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-score is-padding">
+  <div class="replay-link is-padding">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
     <tl-kr-detail @getView="getOkrReviewDetail" :okrMain="okrMain" />
   </div>
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getOkrReviewDetail() {
-      this.server.getOkrReviewDetail({
+      this.server.getOkrCheckDetail({
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;

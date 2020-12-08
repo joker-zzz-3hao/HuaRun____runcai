@@ -6,11 +6,13 @@
           <div class="okr-title">{{ okrMain.periodName }}</div>
           <dl class="okr-state">
             <dt>
-              <!-- <i class="el-icon-set-up"></i> -->
+              <i
+                :class="CONST.STATUS_LIST_MAP[searchForm.status].className"
+              ></i>
               <em>状态</em>
             </dt>
             <dd class="is-highlighted">
-              <em>{{ CONST.STATUS_LIST_MAP[searchForm.status] }}</em>
+              <em>{{ CONST.STATUS_LIST_MAP[searchForm.status].name }}</em>
             </dd>
           </dl>
           <dl class="okr-responsible">
@@ -161,7 +163,8 @@
         <em>加载中...</em>
       </div>
       <div v-else class="tl-card-panel no-data">
-        <div class="bg-no-data"></div>
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">暂无数据</div>
       </div>
       <div class="tl-card-panel">
         <div class="card-panel-head">

@@ -104,6 +104,10 @@
               label="复盘状态"
               min-width="100"
             >
+              <template slot-scope="scope">
+                <i :class="CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus]"></i>
+                <em>{{ scope.row.reviewStatusCn }}</em>
+              </template>
             </el-table-column>
             <el-table-column
               prop="reviewCommitTime"
@@ -177,20 +181,6 @@
                     })
                   "
                   >查看</el-button
-                >
-                <el-button
-                  type="text"
-                  class="tl-btn"
-                  v-if="scope.row.reviewStatus == 2"
-                  @click="
-                    $router.push({
-                      name: 'replayScoreDetail',
-                      query: {
-                        okrId: scope.row.okrId,
-                      },
-                    })
-                  "
-                  >复核</el-button
                 >
               </template>
             </el-table-column>

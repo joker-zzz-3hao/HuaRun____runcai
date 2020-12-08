@@ -2,7 +2,9 @@
   <dl class="replay-info">
     <dt>
       <div class="replay-title">
-        <span>复盘对象:</span><em>{{ okrMain.okrMainVo.periodName }}</em
+        <span v-if="$route.name == 'replayEdit'">复盘与举证对象：</span>
+        <span v-else>复盘对象：</span>
+        <em>{{ okrMain.okrMainVo.periodName }}</em
         ><em
           >({{
             dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
@@ -11,12 +13,7 @@
           }})</em
         >
       </div>
-      <el-button
-        plain
-        @click="$router.back()"
-        class="tl-btn amt-border-slip"
-        v-if="$route.name == 'replayDetail'"
-      >
+      <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
         <span class="lines"></span>
       </el-button>

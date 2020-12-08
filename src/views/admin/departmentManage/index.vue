@@ -1,7 +1,6 @@
 <template>
   <div class="organize-management">
     <div class="operating-area">
-      <div class="page-title">组织管理</div>
       <div class="operating-box">
         <div class="flex-auto">
           <el-form @keyup.enter.native="searchList()" class="tl-form">
