@@ -9,7 +9,7 @@
             v-model.trim="periodId"
             placeholder="用户类型"
             :popper-append-to-body="false"
-            @change="okrReviewList"
+            @change="assessment"
             popper-class="tl-select-dropdown"
             class="tl-select"
           >
@@ -180,6 +180,7 @@ export default {
     this.getOkrCycleList();
   },
   methods: {
+    // 查询排名列表接口
     assessment() {
       this.server.assessment({
         periodId: this.periodId,
@@ -189,6 +190,7 @@ export default {
         }
       });
     },
+    // 调用暂存接口
     assessmentSave() {
       this.server.assessmentSave().then((res) => {
         if (res.code == 200) {
@@ -196,6 +198,7 @@ export default {
         }
       });
     },
+    // 调用提交接口
     assessmentSubmit() {
       this.server.assessmentSubmit().then((res) => {
         if (res.code == 200) {
@@ -216,6 +219,7 @@ export default {
         },
       });
     },
+    // 获取后端为数据重新排序
     setNewList(tableData) {
       tableData.forEach((item, index) => {
         this.$set(tableData[index], 'num', index + 1);
@@ -238,15 +242,13 @@ export default {
         },
       });
     },
+    // 获取周期列表数据
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
         this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
         this.assessment();
       });
-    },
-    okrReviewList() {
-      this.assessment();
     },
     // 向上移动
     upGo(fieldData, index) {
@@ -268,9 +270,11 @@ export default {
       }
       this.setNewList(fieldData);
     },
+    // 显示历史列表
     showbeforeList() {
       this.$refs.beforeList.show();
     },
+    // 提交
     submit() {
       this.$refs.causesRank.show();
     },
