@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-list">
+  <div class="replay-list cont-area">
     <div class="operating-box">
       <dl class="dl-item">
         <dt>周期</dt>
