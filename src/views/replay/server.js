@@ -79,4 +79,9 @@ export default class Server extends ServerBase {
   getOkrCheckDetail(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrReview/getOkrCheckDetail', param);
   }
+
+  // 提交复核
+  okrCheckSubmit(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrReview/okrCheckSubmit', param);
+  }
 }

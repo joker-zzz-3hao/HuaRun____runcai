@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -45,6 +49,7 @@
                 <i class="el-icon-odometer"></i>
                 <span>进度</span>
                 <tl-process
+                  :ref="'process' + index + i"
                   :data="parseInt(list.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
@@ -61,7 +66,6 @@
                 <em>{{ list.judgeMethod || "暂无" }}</em>
               </div>
             </dd>
-
             <dd>
               <dl>
                 <dt>评分</dt>
@@ -73,7 +77,10 @@
               </dl>
               <dl>
                 <dt>佐证材料</dt>
-                <dd v-for="file in list.attachmentList" :key="file.resourceId">
+                <dd
+                  v-for="file in list.attachmentDtoList"
+                  :key="file.resourceId"
+                >
                   <em>{{ file.resourceName }}</em>
                   <span>
                     <span
@@ -88,23 +95,36 @@
               <dl>
                 <dt>复核得分</dt>
                 <dd>
-                  <el-input-number
-                    v-model="list.reviewscore"
-                    controls-position="right"
-                    class="tl-input-number"
-                    :min="0"
-                    :max="1"
-                    :step="0.01"
-                    step-strictly
-                    @change="showscore(list)"
-                  ></el-input-number>
+                  <el-form :model="list" :ref="i + 'dataForm'">
+                    <el-form-item
+                      prop="finalScore"
+                      :rules="[
+                        {
+                          trigger: 'blur',
+                          required: true,
+                          validator: validateScore,
+                        },
+                      ]"
+                    >
+                      <el-input-number
+                        v-model="list.finalScore"
+                        controls-position="right"
+                        class="tl-input-number"
+                        :min="0"
+                        :max="1"
+                        :step="0.01"
+                        step-strictly
+                        @change="showscore(list)"
+                      ></el-input-number>
+                    </el-form-item>
+                  </el-form>
                 </dd>
               </dl>
               <dl>
                 <dt>复核说明</dt>
                 <dd>
                   <el-input
-                    v-model="list.communication"
+                    v-model="list.remark"
                     placeholder="请输入复核原因（非必填）"
                     maxlength="200"
                     type="textarea"
@@ -114,7 +134,7 @@
                   <em
                     v-for="sortComment in sortCommentList"
                     :key="sortComment"
-                    @click="list.communication = sortComment"
+                    @click="list.remark = sortComment"
                   >
                     {{ sortComment }}
                   </em>
@@ -168,7 +188,9 @@
       </div>
     </div>
     <div class="footer-panel">
-      <el-button type="primary" class="tl-btn amt-bg-slip">复核完成</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+        >复核完成</el-button
+      >
       <el-button
         plain
         @click="handleDeleteOne"
@@ -187,11 +209,13 @@ import process from '@/components/process';
 import fileUpload from '@/components/fileUpload/index';
 import CONST from '@/lib/const';
 import imgDialog from '@/components/imgDialog';
+import validateMixin from '@/mixin/validateMixin';
 import Server from '../../server';
 
 const server = new Server();
 export default {
   name: 'home',
+  mixins: [validateMixin],
   props: ['okrMain'],
   components: {
     elcollapse,
@@ -249,50 +273,57 @@ export default {
       const krsList = krs;
       if (clear) {
         this.list = krsList.map((item) => ({
-          detailId: item.detailId,
           okrDetailId: item.okrDetailId,
-          communication: '',
-          communicationLabel: '',
+          remark: '',
+          finalScore: '',
+          attachmentList: [],
         }));
       } else {
         this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          advantage: item.advantage,
-          disadvantage: item.disadvantage,
-          measure: item.measure || [],
           okrDetailId: item.okrDetailId,
-          communication: item.communication,
-          communicationLabel: item.communicationLabel,
+          remark: item.remark,
+          finalScore: item.finalScore,
+          attachmentList: item.attachmentList,
         }));
       }
     },
 
     handleDeleteOne() {
-      this.$router.push('/replayList');
+      this.$router.push('/replayScore');
     },
     submit() {
       this.submitLoad = true;
       this.checkDatakrs(false);
       const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
+
+        okrMainId: this.okrMain.okrMainVo.okrId,
+        finalScore: this.okrMain.okrMainVo.finalScore,
+
+        okrCheckDetailDtoList: this.list,
       };
-      const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
-      if (CheckNull) {
-        this.submitLoad = false;
-        this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
-        return false;
-      }
-      this.server.okrReviewCommunicationSubmit(params).then((res) => {
-        this.submitLoad = false;
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$router.push('/replayList');
+      Promise.all(this.$refs[`${0}dataForm`].map(this.getFormPromise)).then((res) => {
+        const validateResult = res.every((item) => !!item);
+        if (validateResult) {
+          this.server.okrCheckSubmit(params).then((response) => {
+            this.submitLoad = false;
+            if (response.code == 200) {
+              this.$message.success('提交成功');
+              this.$router.push('/replayScore');
+            } else {
+              this.$message.error(response.msg);
+            }
+          });
         } else {
-          this.$message.error(res.msg);
+          this.$message.error('您有必填项「复核得分」未填');
         }
+      });
+    },
+    // 校验
+    getFormPromise(form) {
+      return new Promise((resolve) => {
+        form.validate((res) => {
+          resolve(res);
+        });
       });
     },
 
@@ -315,12 +346,22 @@ export default {
         let krscore = 0;
         // kr
         item.krs.forEach((list) => {
-          krscore += (list.reviewscore || 0) * list.okrWeight;
+          krscore += (list.finalScore || 0) * list.okrWeight;
         });
         score += krscore * oWeight;
         console.log('krscore', score);
       });
       return score;
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
     },
     // -------------文件-------------
     fileChange(fileobject) {
