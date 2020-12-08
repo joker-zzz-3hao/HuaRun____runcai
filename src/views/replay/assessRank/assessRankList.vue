@@ -99,8 +99,7 @@
     </div>
     <div>
       <el-button   type="primary"
-
-        class="tl-btn amt-bg-slip">暂存</el-button>
+        class="tl-btn amt-bg-slip" @click="assessmentSave">暂存</el-button>
       <el-button    type="primary"
 
         class="tl-btn amt-bg-slip" @click="submit">提交</el-button>
@@ -173,6 +172,7 @@ export default {
         score1: '22',
         scorelist: 'E',
       }],
+      assessmentList: [],
     };
   },
   mounted() {
@@ -180,6 +180,29 @@ export default {
     this.getOkrCycleList();
   },
   methods: {
+    assessment() {
+      this.server.assessment({
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.assessmentList = res.data;
+        }
+      });
+    },
+    assessmentSave() {
+      this.server.assessmentSave().then((res) => {
+        if (res.code == 200) {
+          this.$message.success('暂存成功');
+        }
+      });
+    },
+    assessmentSubmit() {
+      this.server.assessmentSubmit().then((res) => {
+        if (res.code == 200) {
+          this.$message.success('提交成功');
+        }
+      });
+    },
     getSort() {
       const table = document.querySelector('.el-table__body-wrapper tbody');
       const self = this;
@@ -218,11 +241,13 @@ export default {
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-
         this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        this.assessment();
       });
     },
-    okrReviewList() {},
+    okrReviewList() {
+      this.assessment();
+    },
     // 向上移动
     upGo(fieldData, index) {
       if (index != 0) {

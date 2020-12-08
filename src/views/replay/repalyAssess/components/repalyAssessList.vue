@@ -85,6 +85,10 @@
               label="操作"
               min-width="100"
             >
+            <template>
+              <el-button type="text" @click="$router.push('/assessPast')">绩效复核</el-button>
+               <el-button type="text" @click="$router.push('/assessDetail') ">详情</el-button>
+            </template>
             </el-table-column>
 
           </el-table>
@@ -96,7 +100,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
-import Server from '../server';
+import Server from '../../server';
 
 const server = new Server();
 export default {
@@ -106,6 +110,14 @@ export default {
       periodIdList: [],
       periodId: '',
       server,
+      tableData: [
+        {
+          num: 1,
+          org: '部门',
+          user: '11',
+          score: 1,
+        },
+      ],
     };
   },
   components: {

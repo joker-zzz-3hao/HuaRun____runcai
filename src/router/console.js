@@ -315,8 +315,23 @@ export default [{
           belongsTo: 'replayList',
           power: '',
         },
-        component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
+        component: () => import('@/views/replay/repalyAssess/index'),
+        redirect: {
+          name: 'repalyAssessList',
+        },
         children: [
+          {
+            path: '/repalyAssessList',
+            name: 'repalyAssessList',
+            meta: {
+              hasMainMenu: true,
+              isSubMenu: false,
+              parentRoute: 'myOkr',
+              title: 'replay',
+              power: '',
+            },
+            component: () => import('@/views/replay/repalyAssess/components/repalyAssessList'),
+          },
           {
             path: '/assessDetail',
             name: 'assessDetail',

@@ -48,8 +48,22 @@ export default class Server extends ServerBase {
   }
 
   // 绩效排名
+  assessment(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/result/init', param);
+  }
+
+  // 绩效排名保存
+  assessmentSave(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/result/save', param);
+  }
+
+  // 绩效排名
   summary(param) {
-    return this._ajaxPost('gateway/system-service/sys/assessment/result/summary', param);
+    return this._ajaxPost('gateway/talent-okr/assessment/result/summary', param);
+  }
+
+  assessmentSubmit(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/result/submit', param);
   }
 
   // 查询组织
