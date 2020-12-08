@@ -320,7 +320,7 @@ export default {
           disadvantage: item.disadvantage,
           measure: item.measure || [],
           communicationLabel: item.communicationLabel,
-          attachmentList: item.attachmentList,
+          attachmentDtoList: item.attachmentDtoList,
           score: item.score,
           remark: item.scoreRemark,
         }));
@@ -463,7 +463,7 @@ export default {
         disadvantage: item.disadvantage,
         measure: item.measure || [],
         communicationLabel: item.communicationLabel,
-        attachmentList: item.attachmentList,
+        attachmentDtoList: item.attachmentDtoList,
         score: item.score,
         remark: item.scoreRemark,
       }));
@@ -487,7 +487,7 @@ export default {
     fileChange(fileobject) {
       console.log(fileobject.list, fileobject.action);
       this.okrMain.okrReviewPojoList[fileobject.action.oindex]
-        .krs[fileobject.action.krindex].attachmentList = fileobject.list;
+        .krs[fileobject.action.krindex].attachmentDtoList = fileobject.list;
     },
 
     computeScore() {
@@ -508,8 +508,8 @@ export default {
     // 更新文件状态
     updateFile() {
       this.list.forEach((item) => {
-        if (item.attachmentList && item.attachmentList.length > 0) {
-          const files = item.attachmentList.map((file) => file.resourceId).toString();
+        if (item.attachmentDtoList && item.attachmentDtoList.length > 0) {
+          const files = item.attachmentDtoList.map((file) => file.resourceId).toString();
           this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
         }
       });

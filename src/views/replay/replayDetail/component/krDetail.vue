@@ -69,9 +69,9 @@
               <dt>评分说明</dt>
               <dd>{{ list.scoreRemark }}</dd>
             </dl>
-            <dl v-if="list.attachmentList">
+            <dl v-if="list.attachmentDtoList">
               <dt>佐证材料</dt>
-              <dd v-for="file in list.fileList" :key="file.resourceId">
+              <dd v-for="file in list.attachmentDtoList" :key="file.resourceId">
                 <em>{{ file.resourceName }}</em>
                 <span>
                   <span
