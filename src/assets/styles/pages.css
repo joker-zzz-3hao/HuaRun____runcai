@@ -873,9 +873,16 @@
   padding: 5px 15px;
 }
 
-.update-progress .el-tiptap-editor__menu-bar .el-tiptap-editor__command-button.hide{
-  display: none;
+.update-progress .el-tiptap-editor__menu-bar,
+.update-progress .el-tiptap-editor__footer,
+.update-progress .el-tiptap-editor>.el-tiptap-editor__content  {
+  border: 0;
 }
+
+.update-progress .hide-input .el-tiptap-editor__menu-bar{
+  opacity: 0;
+}
+
 .update-progress .el-tiptap-editor .ProseMirror{
   height: 100%;
 }

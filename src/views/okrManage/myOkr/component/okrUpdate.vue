@@ -13,6 +13,7 @@
       <!-- <span>更新进度</span>
       <span>更多更新记录</span> -->
     </template>
+    <div>OKR记事本</div>
     <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
     <div class="flex-up">
       <div class="okr-info">
@@ -207,13 +208,20 @@
           </div>
         </el-scrollbar>
       </div>
-      <div class="note-book">
+      <div
+        class="note-book"
+        @click="showInput = true"
+        :class="{ 'hide-input': showInput == false }"
+      >
+        <el-tiptap v-model="noteText" :extensions="extensions" />
         <div>
-          <span>OKR记事本</span>
-          <el-button type="primary" class="tl-btn amt-bg-slip">更新</el-button>
-        </div>
-        <div>
-          <el-tiptap v-model="formData.noteText" :extensions="extensions" />
+          <span>更新于{{}}</span>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="updateNote"
+            >更新
+          </el-button>
         </div>
       </div>
     </div>
@@ -268,8 +276,9 @@ export default {
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
-        noteText: '',
+
       },
+      noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
       extensions: [
@@ -300,6 +309,7 @@ export default {
       pageSize: 10,
       status: 1,
       currentPage: 1,
+      showInput: false,
     };
   },
   props: {
@@ -353,6 +363,10 @@ export default {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
       }
+      this.noteText = `
+        <h1>欢迎使用OKR记事本</h1>
+        <div><img src="@/assets/images/user/user.jpg" alt /></div>
+      `;
     },
     getHistory() {
       const params = {
@@ -453,9 +467,11 @@ export default {
         }
       }
     },
-    uploadImg() {
-
+    updateNote() {
+      console.log(this.noteText);
+      this.showInput = false;
     },
+
   },
   watch: {
     currentIndex: {
