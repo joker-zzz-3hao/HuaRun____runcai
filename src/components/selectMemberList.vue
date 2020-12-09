@@ -129,6 +129,7 @@ export default {
     this.getSelected();
 
     this.dialogTableVisible = true;
+
     this.getqueryOrgAndUser({});
   },
   methods: {

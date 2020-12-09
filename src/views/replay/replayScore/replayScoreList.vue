@@ -45,7 +45,7 @@
       <dl class="dl-item">
         <dt>复核状态</dt>
         <el-select
-          v-model.trim="reviewStatus"
+          v-model.trim="checkStatus"
           placeholder="全部"
           :popper-append-to-body="false"
           @change="okrReviewList"
@@ -71,19 +71,36 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="userName" label="部门"></el-table-column>
+            <el-table-column prop="orgFullName" label="部门"></el-table-column>
             <el-table-column prop="userName" label="姓名"></el-table-column>
-            <el-table-column prop="userName" label="OKR周期"></el-table-column>
-            <el-table-column prop="userName" label="复核状态"></el-table-column>
-            <el-table-column prop="userName" label="OKR进度"></el-table-column>
-            <el-table-column prop="userName" label="OKR得分"></el-table-column>
-            <el-table-column prop="userName" label="复核得分"></el-table-column>
+            <el-table-column
+              prop="periodName"
+              label="OKR周期"
+            ></el-table-column>
+            <el-table-column
+              prop="reviewStatusCn"
+              label="复核状态"
+            ></el-table-column>
+            <el-table-column
+              prop="okrProgress"
+              label="OKR进度"
+            ></el-table-column>
+            <el-table-column prop="selfAssessmentScore" label="OKR得分">
+            </el-table-column>
+            <el-table-column prop="finalScore" label="复核得分">
+              <template slot-scope="scope">
+                <span v-if="scope.row.finalScore != null">{{
+                  scope.row.finalScore
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
             <el-table-column width="80" label="操作" fixed="right">
               <template slot-scope="scope">
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.reviewStatus == 2"
+                  v-if="scope.row.reviewStatus == 3"
                   @click="
                     $router.push({
                       name: 'replayScoreDetail',
@@ -95,8 +112,22 @@
                 >
                   复核得分
                 </el-button>
-
-                <el-button type="text" class="tl-btn"> 详情 </el-button>
+                <el-button
+                  v-else
+                  type="text"
+                  class="tl-btn"
+                  @click="
+                    $router.push({
+                      name: 'replayScoreDetail',
+                      query: {
+                        okrId: scope.row.okrId,
+                        isdetail: true,
+                      },
+                    })
+                  "
+                >
+                  详情
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -127,6 +158,8 @@ export default {
       orgFullIdList: [],
       departmentData: [],
       periodId: '',
+      checkStatus: '',
+      orgId: '',
     };
   },
   components: {
@@ -139,14 +172,14 @@ export default {
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
-      this.server.okrReviewList({
-
+      this.server.getOkrCheckPage({
         periodId: this.periodId, // 周期id，必传
         reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
         userName: this.userName, // 支持精确搜索
         currentPage: this.currentPage, // 可以不传，默认是1
         pageSize: this.pageSize, // 可以不传，默认是20
-
+        checkStatus: this.checkStatus,
+        orgId: this.orgId,
       }).then((res) => {
         this.tableData = res.data.content;
         this.totalpage = res.data.total;
@@ -175,10 +208,12 @@ export default {
               this.replaceName(this.departmentData[0]);
             }
             // 默认取第二层润联科技
-            this.orgFullId = this.departmentData[0].children[0].orgFullId;
+            this.orgFullId = this.departmentData[0].orgFullId;
+            this.orgId = this.departmentData[0].orgId;
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
+            this.okrReviewList();
           }
         }
       });
@@ -199,6 +234,8 @@ export default {
       this.orgFullIdList = data;
       this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
+      this.orgId = data[data.length - 1];
+      this.okrReviewList();
     },
   },
 };

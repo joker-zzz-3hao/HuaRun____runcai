@@ -1,6 +1,12 @@
 <template>
   <div class="replay-list">
-
+    <el-button type="text">返回</el-button>
+        <div class="cont-area">
+          <div>组织:华润云</div>
+          <div>负责人:小孩三</div>
+          <div>提交时间:2020-1-1</div>
+        </div>
+        <div>是否已确认沟通:已沟通</div>
        <div class="cont-area">
                <tl-crcloud-table
                :isPage="false"
@@ -50,11 +56,17 @@
         </div>
       </tl-crcloud-table>
     </div>
+    <div>
+      <el-button @click="submit" >提交</el-button>
+        <el-button @click="assessPast">驳回</el-button>
+    </div>
+    <tl-assess-person ref="assessPerson"></tl-assess-person>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import assessPerson from './assessPerson';
 import Server from '../../server';
 
 const server = new Server();
@@ -69,6 +81,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-assess-person': assessPerson,
   },
   mounted() {
     this.getOkrCycleList();
@@ -80,6 +93,15 @@ export default {
 
         this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
       });
+    },
+    submit() {
+      this.$xconfirm({
+        title: '',
+        content: '确认后，部门将按照当前绩效结果分配',
+      });
+    },
+    assessPast() {
+      this.$refs.assessPerson.show();
     },
   },
 };

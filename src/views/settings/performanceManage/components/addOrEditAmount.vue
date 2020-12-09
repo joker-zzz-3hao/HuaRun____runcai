@@ -74,17 +74,9 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    show(ruleId) {
-      this.ruleId = ruleId;
-      if (ruleId) {
-        this.server.getAmountData({
-          ruleId: this.ruleId,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.formData = res.data;
-          }
-        });
-      }
+    show(selectedRule) {
+      this.selectedRule = selectedRule;
+
       this.$nextTick(() => {
         this.visible = true;
       });
@@ -101,7 +93,7 @@ export default {
         ruleId: '',
       }).then((res) => {
         if (res.code == 200) {
-          debugger;
+          console.log(res);
         }
       });
     },

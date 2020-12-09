@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -45,6 +49,7 @@
                 <i class="el-icon-odometer"></i>
                 <span>进度</span>
                 <tl-process
+                  :ref="'process' + index + i"
                   :data="parseInt(list.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
@@ -62,75 +67,123 @@
               </div>
             </dd>
             <dd>
-              <div v-for="file in list.attachmentList" :key="file.resourceId">
-                <em>{{ file.resourceName }}</em>
-                <span>
-                  <span
-                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-                    @click="openFile(file)"
-                    >预览</span
+              <dl>
+                <dt>评分</dt>
+                <dd>{{ list.score }}</dd>
+              </dl>
+              <dl v-if="list.scoreRemark">
+                <dt>评分说明</dt>
+                <dd>{{ list.scoreRemark }}</dd>
+              </dl>
+              <dl>
+                <dt>佐证材料</dt>
+                <dd
+                  v-for="file in list.attachmentDtoList"
+                  :key="file.resourceId"
+                >
+                  <em>{{ file.resourceName }}</em>
+                  <span>
+                    <span
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="downFile(file)">下载</span>
+                  </span>
+                </dd>
+              </dl>
+              <dl>
+                <dt>复核得分</dt>
+                <dd v-if="isdetail">
+                  <em>{{ list.finalScore }}</em>
+                </dd>
+                <dd v-else>
+                  <el-form :model="list" :ref="i + 'dataForm'">
+                    <el-form-item
+                      prop="finalScore"
+                      :rules="[
+                        {
+                          trigger: 'blur',
+                          required: true,
+                          validator: validateScore,
+                        },
+                      ]"
+                    >
+                      <el-input-number
+                        v-model="list.finalScore"
+                        controls-position="right"
+                        class="tl-input-number"
+                        :min="0"
+                        :max="1"
+                        :step="0.01"
+                        step-strictly
+                        @change="showscore(list)"
+                      ></el-input-number>
+                    </el-form-item>
+                  </el-form>
+                </dd>
+              </dl>
+              <dl>
+                <dt>复核说明</dt>
+                <dd v-if="isdetail">
+                  <em>{{ list.finalRemark }}</em>
+                </dd>
+                <dd v-else>
+                  <el-input
+                    v-model="list.remark"
+                    placeholder="请输入复核原因（非必填）"
+                    maxlength="200"
+                    type="textarea"
+                    resize="none"
+                    class="tl-textarea"
+                  ></el-input>
+                  <em
+                    v-for="sortComment in sortCommentList"
+                    :key="sortComment"
+                    @click="addSortComment(list, sortComment)"
+                    :class="{
+                      'high-light': list.remark.indexOf(sortComment) >= 0,
+                    }"
                   >
-                  <span @click="downFile(file)">下载</span>
-                </span>
-              </div>
-            </dd>
-            <dd>
-              <div>
-                <span>自评分</span>
-                <em>{{ list.score }}</em>
-              </div>
-            </dd>
-            <dd>
-              <div v-if="list.scoreRemark">
-                <span>评分说明</span>
-                <em>{{ list.scoreRemark }}</em>
-              </div>
-            </dd>
-          </dl>
-          <dl class="input-dl">
-            <dd>
-              <span>复核得分</span>
-              <el-input-number
-                v-model="list.score"
-                controls-position="right"
-                class="tl-input-number"
-                :min="0"
-                :max="1"
-                :step="0.1"
-                step-strictly
-              ></el-input-number>
-            </dd>
-            <dd>
-              <el-input
-                v-model="list.communication"
-                placeholder="请输入复核原因（非必填）"
-                maxlength="200"
-                type="textarea"
-                :rows="3"
-                resize="none"
-                class="tl-textarea"
-              ></el-input>
-            </dd>
-            <dd>
-              <span>快捷评语：</span>
-              <em
-                v-for="sortComment in sortCommentList"
-                :key="sortComment"
-                @click="list.communication = sortComment"
-              >
-                {{ sortComment }}
-              </em>
-            </dd>
-            <dd>
-              <span>上传附件</span>
-              <file-upload
-                :actionIndex="{ oindex: index, krindex: i }"
-                ref="fileUpload"
-                :fileList="list.fileList"
-                :limit="10"
-                @change="fileChange"
-                sourceType="SCORE_REVIEW"
-                accept="
+                    {{ sortComment }}
+                  </em>
+                </dd>
+              </dl>
+              <dl v-if="isdetail">
+                <dt>复核材料</dt>
+                <dd
+                  v-for="file in list.finalAttachmentList"
+                  :key="file.resourceId"
+                >
+                  <em>{{ file.resourceName }}</em>
+                  <span>
+                    <span
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="downFile(file)">下载</span>
+                  </span>
+                </dd>
+                <dd
+                  v-if="
+                    !(finalAttachmentList && finalAttachmentList.length === 0)
+                  "
+                >
+                  暂无
+                </dd>
+              </dl>
+              <dl v-else>
+                <dt>上传附件</dt>
+                <dd>
+                  <file-upload
+                    :actionIndex="{ oindex: index, krindex: i }"
+                    ref="fileUpload"
+                    :fileList="list.fileList"
+                    :limit="10"
+                    @change="fileChange"
+                    sourceType="SCORE_REVIEW"
+                    accept="
               .jpg,
               .jpeg,
               image/png,
@@ -138,21 +191,23 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .pptx,
               .xlsx"
-                tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
-              ></file-upload>
+                    tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+                  ></file-upload>
+                </dd>
+              </dl>
             </dd>
           </dl>
         </div>
       </elcollapseitem>
     </elcollapse>
-    <div>
+    <div v-if="okrMain.okrReviewCommunicationDetailEntity">
       <div>
         <span>上级的复盘沟通结果：</span>
-        <em></em>
+        <em>通过</em>
       </div>
       <div>
-        <span>沟通说明：</span>
-        <em></em>
+        <span>复盘沟通说明：</span>
+        <em>{{ okrMain.okrReviewCommunicationDetailEntity.communication }}</em>
       </div>
     </div>
     <div>
@@ -162,19 +217,17 @@
       </div>
       <div>
         <span>OKR复核最终得分</span>
-        <el-input-number
-          v-model="finalScore"
-          controls-position="right"
-          class="tl-input-number"
-          :min="0"
-          :max="1"
-          :step="0.01"
-          step-strictly
-        ></el-input-number>
+        <em>{{ okrMain.okrMainVo.finalScore }}</em>
       </div>
     </div>
     <div class="footer-panel">
-      <el-button type="primary" class="tl-btn amt-bg-slip">复核完成</el-button>
+      <el-button
+        v-if="!isdetail"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="submit"
+        >复核完成</el-button
+      >
       <el-button
         plain
         @click="handleDeleteOne"
@@ -193,12 +246,23 @@ import process from '@/components/process';
 import fileUpload from '@/components/fileUpload/index';
 import CONST from '@/lib/const';
 import imgDialog from '@/components/imgDialog';
+import validateMixin from '@/mixin/validateMixin';
 import Server from '../../server';
 
 const server = new Server();
 export default {
   name: 'home',
-  props: ['okrMain'],
+  mixins: [validateMixin],
+  props: {
+    okrMain: {
+      type: Object,
+      required: true,
+    },
+    isdetail: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     elcollapse,
     elcollapseitem,
@@ -255,50 +319,57 @@ export default {
       const krsList = krs;
       if (clear) {
         this.list = krsList.map((item) => ({
-          detailId: item.detailId,
           okrDetailId: item.okrDetailId,
-          communication: '',
-          communicationLabel: '',
+          remark: '',
+          finalScore: '',
+          attachmentList: [],
         }));
       } else {
         this.list = krsList.map((item) => ({
-          detailId: item.detailId,
-          advantage: item.advantage,
-          disadvantage: item.disadvantage,
-          measure: item.measure || [],
           okrDetailId: item.okrDetailId,
-          communication: item.communication,
-          communicationLabel: item.communicationLabel,
+          remark: item.remark,
+          finalScore: item.finalScore,
+          attachmentList: item.attachmentList,
         }));
       }
     },
 
     handleDeleteOne() {
-      this.$router.push('/replayList');
+      this.$router.push('/replayScore');
     },
     submit() {
       this.submitLoad = true;
       this.checkDatakrs(false);
       const params = {
-        okrMainVo: {
-          okrId: this.okrMain.okrMainVo.okrId,
-        },
-        list: this.list,
+
+        okrMainId: this.okrMain.okrMainVo.okrId,
+        finalScore: this.okrMain.okrMainVo.finalScore,
+
+        okrCheckDetailDtoList: this.list,
       };
-      const CheckNull = this.list.some((item) => !item.communication || !item.communicationLabel);
-      if (CheckNull) {
-        this.submitLoad = false;
-        this.$message.error('未完成复盘沟通完毕，尚有未填写内容，请检查');
-        return false;
-      }
-      this.server.okrReviewCommunicationSubmit(params).then((res) => {
-        this.submitLoad = false;
-        if (res.code == 200) {
-          this.$message.success('提交成功');
-          this.$router.push('/replayList');
+      Promise.all(this.$refs[`${0}dataForm`].map(this.getFormPromise)).then((res) => {
+        const validateResult = res.every((item) => !!item);
+        if (validateResult) {
+          this.server.okrCheckSubmit(params).then((response) => {
+            this.submitLoad = false;
+            if (response.code == 200) {
+              this.$message.success('提交成功');
+              this.$router.push('/replayScore');
+            } else {
+              this.$message.error(response.msg);
+            }
+          });
         } else {
-          this.$message.error(res.msg);
+          this.$message.error('您有必填项「复核得分」未填');
         }
+      });
+    },
+    // 校验
+    getFormPromise(form) {
+      return new Promise((resolve) => {
+        form.validate((res) => {
+          resolve(res);
+        });
       });
     },
 
@@ -309,6 +380,39 @@ export default {
         this.okrMain = res.data;
         this.checkDatakrs();
       });
+    },
+    showscore() {
+      this.okrMain.okrMainVo.finalScore = Math.floor(this.computeScore() / 100) / 100;
+    },
+    computeScore() {
+      let score = 0;
+      this.okrMain.okrReviewPojoList.forEach((item) => {
+        // o的权重
+        const oWeight = item.o.okrWeight;
+        let krscore = 0;
+        // kr
+        item.krs.forEach((list) => {
+          krscore += (list.finalScore || 0) * list.okrWeight;
+        });
+        score += krscore * oWeight;
+        console.log('krscore', score);
+      });
+      return score;
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
+    },
+    addSortComment(list, text) {
+      if (list.remark.indexOf(text) == -1) {
+        list.remark += text;
+      }
     },
     // -------------文件-------------
     fileChange(fileobject) {

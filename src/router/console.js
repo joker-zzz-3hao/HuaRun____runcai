@@ -316,12 +316,13 @@ export default [{
           power: '',
         },
         component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
+
         children: [
           {
             path: '/assessDetail',
             name: 'assessDetail',
             meta: {
-              hasMainMenu: true,
+              hasMainMenu: false,
               isSubMenu: false,
               parentRoute: 'myOkr',
               title: 'replay',
@@ -333,7 +334,7 @@ export default [{
             path: '/assessPast',
             name: 'assessPast',
             meta: {
-              hasMainMenu: true,
+              hasMainMenu: false,
               isSubMenu: false,
               parentRoute: 'myOkr',
               title: 'replay',

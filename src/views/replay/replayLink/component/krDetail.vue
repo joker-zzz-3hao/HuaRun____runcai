@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -44,6 +48,7 @@
               <i class="el-icon-odometer"></i>
               <span>进度</span>
               <tl-process
+                :ref="'process' + index + i"
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
@@ -69,9 +74,9 @@
               <dt>评分说明</dt>
               <dd>{{ list.scoreRemark }}</dd>
             </dl>
-            <dl v-if="list.attachmentList">
+            <dl v-if="list.attachmentDtoList">
               <dt>佐证材料</dt>
-              <dd v-for="file in list.fileList" :key="file.resourceId">
+              <dd v-for="file in list.attachmentDtoList" :key="file.resourceId">
                 <em>{{ file.resourceName }}</em>
                 <span>
                   <span
@@ -127,17 +132,25 @@
               class="tl-radio-group"
             >
               <el-radio label="1" class="tl-radio">通过</el-radio>
-              <el-radio label="2" class="tl-radio">退回</el-radio>
+              <el-radio label="2" class="tl-radio">驳回</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item
             v-if="ruleForm.passFlag == '1'"
             label="复盘沟通"
             prop="communication"
+            :rules="[
+              {
+                required: ruleForm.passFlag == '1',
+
+                message: '请输入复盘沟通',
+                trigger: 'blur',
+              },
+            ]"
           >
             <el-input
               type="textarea"
-              placeholder="不超过500个字符"
+              placeholder="请输入复盘沟通，不超过500个字符"
               v-model.trim="ruleForm.communication"
               :maxlength="500"
               class="tl-textarea"
@@ -153,14 +166,15 @@
               {
                 required: ruleForm.passFlag == '2',
                 message: '请输入驳回原因',
+                trigger: 'blur',
               },
             ]"
           >
             <el-input
               type="textarea"
-              placeholder="请输入驳回原因，不超过100个字符"
+              placeholder="请输入驳回原因，不超过500个字符"
               v-model.trim="ruleForm.refuseInfo"
-              :maxlength="100"
+              :maxlength="500"
               class="tl-textarea"
               :rows="3"
               resize="none"
@@ -171,7 +185,10 @@
             <em
               v-for="sortComment in sortCommentList"
               :key="sortComment"
-              @click="ruleForm.communication = sortComment"
+              @click="addSortComment(sortComment)"
+              :class="{
+                'high-light': ruleForm.communication.indexOf(sortComment) >= 0,
+              }"
             >
               {{ sortComment }}
             </em>
@@ -253,6 +270,7 @@ export default {
         refuseInfo: '',
       },
       sortCommentList: ['无异意', '已线下沟通', '已知晓'],
+      commentList: [],
     };
   },
   created() {
@@ -302,6 +320,7 @@ export default {
             passFlag: this.ruleForm.passFlag == '1',
             remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
           };
+          debugger;
           this.server.okrReviewCommunicationSubmit(params).then((res) => {
             this.submitLoad = false;
             if (res.code == 200) {
@@ -327,6 +346,21 @@ export default {
     openMore(list) {
       list.openAdvantage = !list.openAdvantage;
       this.$forceUpdate();
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
+    },
+    addSortComment(text) {
+      if (this.ruleForm.communication.indexOf(text) == -1) {
+        this.ruleForm.communication += text;
+      }
     },
     // -------------文件-------------
     // 截取文件类型

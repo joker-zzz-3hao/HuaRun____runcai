@@ -1,7 +1,17 @@
 <template>
   <div class="replay-list">
-
-       <div class="cont-area">
+    <el-button type="text">返回</el-button>
+        <div class="cont-area">
+          <div>组织:华润云</div>
+          <div>负责人:小孩三</div>
+          <div>提交时间:2020-1-1</div>
+        </div>
+         <div class="cont-area">
+          <div>复核结果:已确认</div>
+          <div>复核人:小孩三</div>
+          <div>绩效复核时间:2020-1-1</div>
+        </div>
+         <div class="cont-area">
                <tl-crcloud-table
                :isPage="false"
       >

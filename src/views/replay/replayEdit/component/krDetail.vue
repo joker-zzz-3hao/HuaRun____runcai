@@ -45,6 +45,7 @@
                 <i class="el-icon-odometer"></i>
                 <span>进度</span>
                 <tl-process
+                  :ref="'process' + index + i"
                   :data="parseInt(list.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
@@ -176,6 +177,7 @@
                         class="tl-textarea"
                         placeholder="请针对问题与不足进行改进措施陈述。"
                         v-model="list.measure[d]"
+                        maxlength="2000"
                       ></el-input>
                     </dd>
                   </template>
@@ -320,7 +322,7 @@ export default {
           disadvantage: item.disadvantage,
           measure: item.measure || [],
           communicationLabel: item.communicationLabel,
-          attachmentList: item.attachmentList,
+          attachmentDtoList: item.attachmentDtoList,
           score: item.score,
           remark: item.scoreRemark,
         }));
@@ -463,7 +465,7 @@ export default {
         disadvantage: item.disadvantage,
         measure: item.measure || [],
         communicationLabel: item.communicationLabel,
-        attachmentList: item.attachmentList,
+        attachmentDtoList: item.attachmentDtoList,
         score: item.score,
         remark: item.scoreRemark,
       }));
@@ -487,7 +489,7 @@ export default {
     fileChange(fileobject) {
       console.log(fileobject.list, fileobject.action);
       this.okrMain.okrReviewPojoList[fileobject.action.oindex]
-        .krs[fileobject.action.krindex].attachmentList = fileobject.list;
+        .krs[fileobject.action.krindex].attachmentDtoList = fileobject.list;
     },
 
     computeScore() {
@@ -508,8 +510,8 @@ export default {
     // 更新文件状态
     updateFile() {
       this.list.forEach((item) => {
-        if (item.attachmentList.length > 0) {
-          const files = item.attachmentList.map((file) => file.resourceId).toString();
+        if (item.attachmentDtoList && item.attachmentDtoList.length > 0) {
+          const files = item.attachmentDtoList.map((file) => file.resourceId).toString();
           this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
         }
       });
