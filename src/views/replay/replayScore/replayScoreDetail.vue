@@ -1,7 +1,11 @@
 <template>
   <div class="replay-link is-padding">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
-    <tl-kr-detail @getView="getOkrReviewDetail" :okrMain="okrMain" />
+    <tl-kr-detail
+      @getView="getOkrReviewDetail"
+      :okrMain="okrMain"
+      :isdetail="$route.query.isdetail"
+    />
   </div>
 </template>
 

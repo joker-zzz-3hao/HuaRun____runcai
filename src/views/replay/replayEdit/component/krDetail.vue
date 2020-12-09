@@ -45,6 +45,7 @@
                 <i class="el-icon-odometer"></i>
                 <span>进度</span>
                 <tl-process
+                  :ref="'process' + index + i"
                   :data="parseInt(list.okrDetailProgress, 10)"
                 ></tl-process>
               </div>

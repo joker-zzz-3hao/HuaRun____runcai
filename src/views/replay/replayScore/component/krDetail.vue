@@ -94,7 +94,10 @@
               </dl>
               <dl>
                 <dt>复核得分</dt>
-                <dd>
+                <dd v-if="isdetail">
+                  <em>{{ list.finalScore }}</em>
+                </dd>
+                <dd v-else>
                   <el-form :model="list" :ref="i + 'dataForm'">
                     <el-form-item
                       prop="finalScore"
@@ -122,7 +125,10 @@
               </dl>
               <dl>
                 <dt>复核说明</dt>
-                <dd>
+                <dd v-if="isdetail">
+                  <em>{{ list.finalRemark }}</em>
+                </dd>
+                <dd v-else>
                   <el-input
                     v-model="list.remark"
                     placeholder="请输入复核原因（非必填）"
@@ -140,7 +146,31 @@
                   </em>
                 </dd>
               </dl>
-              <dl>
+              <dl v-if="isdetail">
+                <dt>复核材料</dt>
+                <dd
+                  v-for="file in list.finalAttachmentList"
+                  :key="file.resourceId"
+                >
+                  <em>{{ file.resourceName }}</em>
+                  <span>
+                    <span
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</span
+                    >
+                    <span @click="downFile(file)">下载</span>
+                  </span>
+                </dd>
+                <dd
+                  v-if="
+                    !(finalAttachmentList && finalAttachmentList.length === 0)
+                  "
+                >
+                  暂无
+                </dd>
+              </dl>
+              <dl v-else>
                 <dt>上传附件</dt>
                 <dd>
                   <file-upload
@@ -188,7 +218,11 @@
       </div>
     </div>
     <div class="footer-panel">
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+      <el-button
+        v-if="!isdetail"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="submit"
         >复核完成</el-button
       >
       <el-button
@@ -216,7 +250,16 @@ const server = new Server();
 export default {
   name: 'home',
   mixins: [validateMixin],
-  props: ['okrMain'],
+  props: {
+    okrMain: {
+      type: Object,
+      required: true,
+    },
+    isdetail: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     elcollapse,
     elcollapseitem,
