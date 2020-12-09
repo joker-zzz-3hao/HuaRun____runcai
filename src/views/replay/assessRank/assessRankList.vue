@@ -107,7 +107,8 @@ import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
 import Server from '../server';
-import rankBeforeList from './components/rankBeforeList';
+// eslint-disable-next-line import/no-unresolved
+
 import causesRank from './components/causesRank';
 
 const server = new Server();
@@ -115,7 +116,6 @@ export default {
   name: 'repalyAssessList',
   components: {
     'tl-crcloud-table': crcloudTable,
-    'rank-before-list': rankBeforeList,
     'causes-rank': causesRank,
   },
   data() {
