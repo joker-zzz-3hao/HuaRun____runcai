@@ -84,4 +84,8 @@ export default class Server extends ServerBase {
   updateTimeWeek(param) {
     return this._ajaxPost('gateway/project-service/project/update/updateTimeWeek', param);
   }
+
+  projectUserTimeList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/projectUserTimeList', param);
+  }
 }

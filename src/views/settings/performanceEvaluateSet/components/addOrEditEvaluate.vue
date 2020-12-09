@@ -58,6 +58,10 @@
             >
           </div>
         </el-form-item>
+        <el-form-item label="自定义名称" prop="type">
+          <el-radio v-model="performanceData.type" label="1">部门</el-radio>
+          <el-radio v-model="performanceData.type" label="2">个人</el-radio>
+        </el-form-item>
       </el-form>
     </div>
     <div v-show="step == 2">
