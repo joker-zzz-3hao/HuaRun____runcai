@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-list cont-area">
+  <div class="replay-list">
     <div class="operating-box">
       <dl class="dl-item">
         <dt>周期</dt>
@@ -58,10 +58,7 @@
           </el-input>
         </dd>
       </dl>
-      <el-button
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="okrReviewList"
+      <el-button plain class="tl-btn light" @click="okrReviewList"
         >搜索</el-button
       >
     </div>

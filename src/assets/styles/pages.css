@@ -5715,6 +5715,16 @@
   margin-left: 2px !important;
 }
 
+.replay-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.replay-list .operating-box {
+  margin-bottom: 16px;
+}
+
 /* personal-center */
 .personal-center .cont-wrap {
   flex-direction: column;
