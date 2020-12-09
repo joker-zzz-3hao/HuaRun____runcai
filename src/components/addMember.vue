@@ -20,7 +20,9 @@
           :selectListed="selectListed"
           :disabledId="disabledId"
           @selectUserCheck="selectUserCheck"
+          :objectType="objectType"
           :userType="userType"
+          @filterMembers="filterMembers"
         ></tl-select-member>
       </el-form-item>
     </el-form>
@@ -81,6 +83,10 @@ export default {
       type: String,
       required: false,
     },
+    projectManagerList: {
+      type: Array,
+      required: false,
+    },
   },
 
   data() {
@@ -102,6 +108,9 @@ export default {
     this.dialogTableVisible = true;
   },
   methods: {
+    filterMembers() {
+      this.$emit('filterMembers');
+    },
     selectUserCheck(id) {
       this.$emit('selectUserCheck', id);
     },
