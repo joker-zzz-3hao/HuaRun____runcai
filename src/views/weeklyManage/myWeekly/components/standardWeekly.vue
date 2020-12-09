@@ -660,7 +660,7 @@
             <span>%</span>
           </div>
           <div class="week-change">
-            <span>本周变化</span
+            <span>本次变化</span
             ><em
               >{{ item.progressAfter - item.progressBefor > 0 ? "+" : ""
               }}{{ item.progressAfter - item.progressBefor }}%</em
@@ -1523,7 +1523,7 @@ export default {
               this.$set(data.supportMyOkrObj, 'okrDetailId', data.supportMyOkrObj.kr.okrDetailId);
               this.$set(data.supportMyOkrObj, 'confidenceAfter', data.supportMyOkrObj.kr.okrDetailConfidence);
               this.$set(data.supportMyOkrObj, 'progressAfter', data.supportMyOkrObj.kr.okrDetailProgress);
-              if (data.supportMyOkrObj.kr.id && this.weeklyDataCopy.weeklyOkrVoList) { // 判断是不是前端临时数据、还是后端返回的数据
+              if (data.supportMyOkrObj.kr.id && this.weeklyDataCopy.weeklyOkrVoList && this.weeklyDataCopy.weeklyOkrVoList.length > 0) { // 判断是不是前端临时数据、还是后端返回的数据
                 // 后端数据中匹配
                 this.weeklyDataCopy.weeklyOkrVoList.forEach((element) => {
                   if (element.okrDetailId == data.supportMyOkrObj.kr.okrDetailId) {
@@ -1567,6 +1567,7 @@ export default {
           }
         }
         this.weeklyOkrSaveList = result;
+        debugger;
         if (this.weeklyOkrSaveList.length > 0) {
           this.$nextTick(() => {
             this.showTaskProcess = true;
