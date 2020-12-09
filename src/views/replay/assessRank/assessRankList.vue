@@ -182,6 +182,9 @@ export default {
           this.assessmentList = res.data;
         }
       });
+      this.server.querySort({
+        periodId: this.periodId,
+      });
     },
     // 调用暂存接口
     assessmentSave() {

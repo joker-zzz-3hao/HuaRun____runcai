@@ -62,6 +62,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/assessment/result/summary', param);
   }
 
+  // 查询绩效排名列表
+  querySort(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/result/sort/summary', param);
+  }
+
   // 绩效排名提交
   assessmentSubmit(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/submit', param);
