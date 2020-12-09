@@ -109,10 +109,10 @@ export default {
           menuTitle: '部门OKR',
           toName: 'departmentOkr',
         },
-        // {
-        //   menuTitle: '虚拟部门OKR',
-        //   toName: '',
-        // },
+        {
+          menuTitle: '全局OKR',
+          toName: 'okrTable',
+        },
         // {
         //   menuTitle: '历史部门OKR',
         //   toName: '',

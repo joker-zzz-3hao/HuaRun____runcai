@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar class="console-layout">
+  <el-scrollbar class="console-layout" ref="myScrollbar">
     <!-- <tl-assistant></tl-assistant> -->
     <tl-header></tl-header>
     <tl-main-area :menuList="crMenuList"></tl-main-area>
@@ -120,6 +120,12 @@ export default {
     };
   },
   computed: {},
+  created() {
+    this.$busOn('resetScroll', () => {
+      // this.$refs.myScrollbar.wrap.scrollTop = 100;
+      console.log('zaiconsole', this.$refs.myScrollbar.wrap);
+    });
+  },
   mounted() {
     this.init();
   },

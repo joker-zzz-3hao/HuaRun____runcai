@@ -246,8 +246,10 @@ export default {
   },
   mounted() {
     const self = this;
-    // self.getPeriod();
+    // self.getPeriod();document.documentElement.scrollTop
     self.getOrgTable();
+    document.body.scrollTop = 200;
+    console.log('滚动条', document.body.scrollTop, document.documentElement.scrollTop);
   },
   methods: {
     ...mapMutations('common', ['changeTestModel']),

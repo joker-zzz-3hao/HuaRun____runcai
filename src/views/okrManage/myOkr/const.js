@@ -63,6 +63,13 @@ const READ_RESULT_MAP = {
   1: '无异议',
   2: '建议调整',
 };
+const TABLE_STATUS_MAP = {
+  1: '进行中',
+  2: '复盘中',
+  3: '已完成',
+  4: '已结束',
+  5: '未开始',
+};
 export default {
   STATUS_LIST,
   CONFIDENCE,
@@ -72,4 +79,5 @@ export default {
   OKR_TYPE_LIST,
   OKR_KIND_MAP,
   READ_RESULT_MAP,
+  TABLE_STATUS_MAP,
 };
