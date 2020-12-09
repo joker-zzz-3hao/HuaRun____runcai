@@ -23,8 +23,9 @@ const REPLAY_STATUS_LIST = [
 ];
 const REPLAY_ASSESS_STATUS_LIST = [
   { name: '全部', status: '' },
-  { name: '待复核', status: 3 },
-  { name: '驳回', status: 0 },
+  { name: '待复核', status: 1 },
+  { name: '同意', status: 2 },
+  { name: '驳回', status: 3 },
 ];
 const REVIEW_STATUS_MAP = {
   0: { name: '复盘结束', classname: 'finish-review' },

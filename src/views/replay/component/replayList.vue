@@ -175,7 +175,8 @@
                   class="tl-btn"
                   v-if="
                     scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag)
+                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag) ||
+                    scope.row.reviewStatus === 0
                   "
                   @click="
                     $router.push({
