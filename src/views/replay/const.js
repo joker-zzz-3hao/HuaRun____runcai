@@ -21,6 +21,11 @@ const REPLAY_STATUS_LIST = [
   { name: '待复核', status: 3 },
   { name: '已复核', status: 0 },
 ];
+const REPLAY_ASSESS_STATUS_LIST = [
+  { name: '全部', status: '' },
+  { name: '待复核', status: 3 },
+  { name: '驳回', status: 0 },
+];
 const REVIEW_STATUS_MAP = {
   0: { name: '复盘结束', classname: 'finish-review' },
   1: { name: '待复盘', classname: 'no-review' },
@@ -33,4 +38,5 @@ export default {
   OKR_BELONGTYPE,
   REPLAY_STATUS_LIST,
   REVIEW_STATUS_MAP,
+  REPLAY_ASSESS_STATUS_LIST,
 };

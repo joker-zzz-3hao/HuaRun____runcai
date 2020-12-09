@@ -231,10 +231,17 @@ export default {
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
+      let reviewStatus = [];
+      if (this.reviewStatus === 3) {
+        reviewStatus = [0, 3];
+      } else if (this.reviewStatus == '') {
+        reviewStatus = null;
+      } else {
+        reviewStatus[0] = this.reviewStatus;
+      }
       this.server.getOkrReviewPage({
-
         periodId: this.periodId, // 周期id，必传
-        reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
+        reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束[0,3];<不传参数，则表示查询全部>
         userName: this.userName, // 支持精确搜索
         currentPage: this.currentPage, // 可以不传，默认是1
         pageSize: this.pageSize, // 可以不传，默认是20
