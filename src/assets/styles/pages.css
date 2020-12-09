@@ -564,7 +564,7 @@
 }
 
 .overview .operating-area-inside {
-  padding: 0 30px 0 30px;
+  padding: 0 30px 0 14px;
 }
 
 .overview .img-list {
@@ -665,18 +665,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.my-okr .operating-area-inside .el-input .el-input__inner,
-.okr-maps .operating-area-inside .el-input .el-input__inner,
-.undertake-maps .operating-area-inside .el-input .el-input__inner,
-.okr-approval .operating-area-inside .el-input .el-input__inner,
-.team-view .operating-area-inside .el-input .el-input__inner,
-.staff-view .operating-area-inside .el-input .el-input__inner,
-.department-view .operating-area-inside .el-input .el-input__inner,
-.teams-weekly .operating-area .el-input .el-input__inner,
-.associated-undertaking .operating-area-inside .el-input .el-input__inner {
-  background: #f4f6f8;
 }
 
 .my-okr .operating-area-inside .dl-item dt {
@@ -1535,12 +1523,6 @@
   margin: 3px 0 0 0;
 }
 
-.okr-maps .operating-area .el-input__inner,
-.teams-weekly .operating-area .el-input__inner {
-  border: transparent;
-  color: #879099;
-}
-
 .okr-maps .operating-area .el-icon-search {
   line-height: unset;
   width: 18px;
@@ -1557,16 +1539,6 @@
 
 .okr-maps .operating-area .dl-item {
   margin: 0 0 0 20px;
-}
-
-.okr-maps .operating-area .dl-item dt {
-  margin: 0 10px 0 0;
-  color: #4d5155;
-}
-
-.okr-maps .tl-select .el-input__inner,
-.okr-maps .tl-cascader .el-input__inner {
-  background: #f4f6f8;
 }
 
 .my-okr .tl-select-dropdown.el-popper,
@@ -1617,7 +1589,7 @@
 }
 
 .okr-maps .toggle-view {
-  margin: 0 0 0 20px;
+  margin: 0 0 0 22px;
 }
 
 .okr-maps .tag-kind .kind-child {
@@ -5214,7 +5186,6 @@
 
 /* 切换部门--by xinquan  */
 .toggle-department {
-  margin: 0 0 0 16px;
   display: flex;
   align-items: center;
 }

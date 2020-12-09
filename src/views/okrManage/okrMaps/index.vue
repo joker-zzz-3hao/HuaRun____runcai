@@ -114,8 +114,8 @@
             <dd>
               <el-button
                 :disabled="!hasPower('okr-maps-query')"
-                type="primary"
-                class="tl-btn amt-bg-slip"
+                plain
+                class="tl-btn light"
                 @click="search"
                 >搜索</el-button
               >
