@@ -1,5 +1,5 @@
 <template>
-   <div class="replay-list">
+  <div class="replay-list">
     <div class="operating-box">
       <dl class="dl-item">
         <dt>周期</dt>
@@ -22,33 +22,34 @@
           </el-select>
         </dd>
       </dl>
-
     </div>
     <div class="cont-area">
       <div>部门总数：11</div>
-       <div>待复核：11</div>
-       <div>绩效符合状态：驳回</div>
-          <div>驳回原因：XXXXXXXXXXXXXXXX</div>
-       <div>复合时间：2020-10-11</div>
-        <div>绩效系数：1.5分3个 1.25分4个</div>
-         <div>复合时间：2020-10-11</div>
-         <el-button type="text" @click="showbeforeList">查看历史提交记录</el-button>
-    </div>
-    <div>调整，你好部门绩效需等到整体符合结束后，您才可以进行调整，请等待，谢谢</div>
-      <div class="cont-area">
-               <tl-crcloud-table
-               :isPage="false"
+      <div>待复核：11</div>
+      <div>绩效符合状态：驳回</div>
+      <div>驳回原因：XXXXXXXXXXXXXXXX</div>
+      <div>复合时间：2020-10-11</div>
+      <div>绩效系数：1.5分3个 1.25分4个</div>
+      <div>复合时间：2020-10-11</div>
+      <el-button type="text" @click="showbeforeList"
+        >查看历史提交记录</el-button
       >
+    </div>
+    <div>
+      调整，你好部门绩效需等到整体符合结束后，您才可以进行调整，请等待，谢谢
+    </div>
+    <div class="cont-area">
+      <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table tableSort" row-key="id" >
-             <el-table-column
-              prop="num"
-              label="排序"
-              min-width="165"
-            >
-            <template slot-scope="scope">
-              <el-button type="text" @click="upGo(tableData,scope.$index)">向上</el-button>
-                 <el-button type="text" @click="downGo(tableData,scope.$index)">向下</el-button>
+          <el-table :data="tableData" class="tl-table tableSort" row-key="id">
+            <el-table-column prop="num" label="排序" min-width="165">
+              <template slot-scope="scope">
+                <el-button type="text" @click="upGo(tableData, scope.$index)"
+                  >向上</el-button
+                >
+                <el-button type="text" @click="downGo(tableData, scope.$index)"
+                  >向下</el-button
+                >
               </template>
             </el-table-column>
 
@@ -63,25 +64,13 @@
               min-width="170"
             ></el-table-column>
 
+            <el-table-column prop="user" label="负责人" min-width="100">
+            </el-table-column>
+            <el-table-column prop="score" label="自评得分" min-width="100">
+            </el-table-column>
+            <el-table-column prop="score1" label="复合得分" min-width="100">
+            </el-table-column>
             <el-table-column
-              prop="user"
-              label="负责人"
-              min-width="100"
-            >
-            </el-table-column>
-             <el-table-column
-              prop="score"
-              label="自评得分"
-              min-width="100"
-            >
-            </el-table-column>
-               <el-table-column
-              prop="score1"
-              label="复合得分"
-              min-width="100"
-            >
-            </el-table-column>
-              <el-table-column
               prop="scorelist"
               label="绩效系数分配"
               min-width="100"
@@ -94,15 +83,19 @@
     <div>
       <span>*是否已经确认沟通 </span>
 
-  <el-radio v-model="radio" label="1">已沟通</el-radio>
-  <el-radio v-model="radio" label="2">未沟通</el-radio>
+      <el-radio v-model="radio" label="1">已沟通</el-radio>
+      <el-radio v-model="radio" label="2">未沟通</el-radio>
     </div>
     <div>
-      <el-button   type="primary"
-        class="tl-btn amt-bg-slip" @click="assessmentSave">暂存</el-button>
-      <el-button    type="primary"
-
-        class="tl-btn amt-bg-slip" @click="submit">提交</el-button>
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="assessmentSave"
+        >暂存</el-button
+      >
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+        >提交</el-button
+      >
     </div>
     <rank-before-list ref="beforeList"></rank-before-list>
     <causes-rank ref="causesRank"></causes-rank>
@@ -114,7 +107,7 @@ import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
 import Server from '../server';
-import RankBeforeList from './components/RankBeforeList';
+import rankBeforeList from './components/rankBeforeList';
 import causesRank from './components/causesRank';
 
 const server = new Server();
@@ -122,7 +115,7 @@ export default {
   name: 'repalyAssessList',
   components: {
     'tl-crcloud-table': crcloudTable,
-    'rank-before-list': RankBeforeList,
+    'rank-before-list': rankBeforeList,
     'causes-rank': causesRank,
   },
   data() {

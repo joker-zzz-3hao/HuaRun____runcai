@@ -69,11 +69,6 @@ export default {
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
-        this.okrMain.okrReviewPojoList.forEach((item) => {
-          item.krs.forEach((list) => {
-            list.fileList = list.attachmentList;
-          });
-        });
         this.checkDatakrs();
       });
     },

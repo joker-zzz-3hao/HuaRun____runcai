@@ -112,8 +112,22 @@
                 >
                   复核得分
                 </el-button>
-
-                <el-button v-else type="text" class="tl-btn"> 详情 </el-button>
+                <el-button
+                  v-else
+                  type="text"
+                  class="tl-btn"
+                  @click="
+                    $router.push({
+                      name: 'replayScoreDetail',
+                      query: {
+                        okrId: scope.row.okrId,
+                        isdetail: true,
+                      },
+                    })
+                  "
+                >
+                  详情
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
