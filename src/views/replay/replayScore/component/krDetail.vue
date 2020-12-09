@@ -140,7 +140,10 @@
                   <em
                     v-for="sortComment in sortCommentList"
                     :key="sortComment"
-                    @click="list.remark = sortComment"
+                    @click="addSortComment(list, sortComment)"
+                    :class="{
+                      'high-light': list.remark.indexOf(sortComment) > 0,
+                    }"
                   >
                     {{ sortComment }}
                   </em>
@@ -405,6 +408,11 @@ export default {
           });
         });
       });
+    },
+    addSortComment(list, text) {
+      if (list.remark.indexOf(text) == -1) {
+        list.remark += text;
+      }
     },
     // -------------文件-------------
     fileChange(fileobject) {

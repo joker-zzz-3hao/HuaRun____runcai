@@ -177,6 +177,9 @@
               v-for="sortComment in sortCommentList"
               :key="sortComment"
               @click="addSortComment(sortComment)"
+              :class="{
+                'high-light': ruleForm.communication.indexOf(sortComment) > 0,
+              }"
             >
               {{ sortComment }}
             </em>
