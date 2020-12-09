@@ -47,12 +47,12 @@ export default class Server extends ServerBase {
     return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
   }
 
-  // 绩效排名
+  // 查询排名列表接口
   assessment(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/init', param);
   }
 
-  // 绩效排名保存
+  // 绩效排名暂存
   assessmentSave(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/save', param);
   }
@@ -62,6 +62,7 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/assessment/result/summary', param);
   }
 
+  // 绩效排名提交
   assessmentSubmit(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/submit', param);
   }

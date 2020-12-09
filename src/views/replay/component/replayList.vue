@@ -47,7 +47,7 @@
         <dd>
           <el-input
             maxlength="64"
-            v-model="userName"
+            v-model.trim="userName"
             placeholder="请输入用户名称"
             clearable
             @keyup.enter.native="okrReviewList"
@@ -102,8 +102,14 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <i :class="CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus]"></i>
-                <em>{{ scope.row.reviewStatusCn }}</em>
+                <i
+                  :class="
+                    CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].classname
+                  "
+                ></i>
+                <em>{{
+                  CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].name
+                }}</em>
               </template>
             </el-table-column>
             <el-table-column
@@ -222,10 +228,17 @@ export default {
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
+      let reviewStatus = [];
+      if (this.reviewStatus === 3) {
+        reviewStatus = [0, 3];
+      } else if (this.reviewStatus == '') {
+        reviewStatus = null;
+      } else {
+        reviewStatus[0] = this.reviewStatus;
+      }
       this.server.getOkrReviewPage({
-
         periodId: this.periodId, // 周期id，必传
-        reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
+        reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束[0,3];<不传参数，则表示查询全部>
         userName: this.userName, // 支持精确搜索
         currentPage: this.currentPage, // 可以不传，默认是1
         pageSize: this.pageSize, // 可以不传，默认是20

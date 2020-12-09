@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -44,6 +48,7 @@
               <i class="el-icon-odometer"></i>
               <span>进度</span>
               <tl-process
+                :ref="'process' + index + i"
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
@@ -177,6 +182,16 @@ export default {
     openMore(list) {
       list.openAdvantage = !list.openAdvantage;
       this.$forceUpdate();
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
     },
     // -------------文件-------------
     // 截取文件类型

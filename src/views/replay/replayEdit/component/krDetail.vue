@@ -45,6 +45,7 @@
                 <i class="el-icon-odometer"></i>
                 <span>进度</span>
                 <tl-process
+                  :ref="'process' + index + i"
                   :data="parseInt(list.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
@@ -176,6 +177,7 @@
                         class="tl-textarea"
                         placeholder="请针对问题与不足进行改进措施陈述。"
                         v-model="list.measure[d]"
+                        maxlength="2000"
                       ></el-input>
                     </dd>
                   </template>
