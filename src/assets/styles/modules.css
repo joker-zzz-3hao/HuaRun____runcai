@@ -3665,6 +3665,10 @@
   margin: 0 0 0 20px;
 }
 
+.operating-box .tl-btn.light {
+  margin: 0 0 0 10px;
+}
+
 .tl-btn.light,
 .tl-btn.light:hover {
   background: #f0effe;
