@@ -177,6 +177,7 @@
                         class="tl-textarea"
                         placeholder="请针对问题与不足进行改进措施陈述。"
                         v-model="list.measure[d]"
+                        maxlength="2000"
                       ></el-input>
                     </dd>
                   </template>

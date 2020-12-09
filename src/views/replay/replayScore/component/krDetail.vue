@@ -142,7 +142,7 @@
                     :key="sortComment"
                     @click="addSortComment(list, sortComment)"
                     :class="{
-                      'high-light': list.remark.indexOf(sortComment) > 0,
+                      'high-light': list.remark.indexOf(sortComment) >= 0,
                     }"
                   >
                     {{ sortComment }}

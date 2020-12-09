@@ -47,7 +47,7 @@
         <dd>
           <el-input
             maxlength="64"
-            v-model="userName"
+            v-model.trim="userName"
             placeholder="请输入用户名称"
             clearable
             @keyup.enter.native="okrReviewList"

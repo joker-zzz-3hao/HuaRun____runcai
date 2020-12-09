@@ -139,6 +139,14 @@
             v-if="ruleForm.passFlag == '1'"
             label="复盘沟通"
             prop="communication"
+            :rules="[
+              {
+                required: ruleForm.passFlag == '1',
+
+                message: '请输入复盘沟通',
+                trigger: 'blur',
+              },
+            ]"
           >
             <el-input
               type="textarea"
@@ -158,6 +166,7 @@
               {
                 required: ruleForm.passFlag == '2',
                 message: '请输入驳回原因',
+                trigger: 'blur',
               },
             ]"
           >
@@ -178,7 +187,7 @@
               :key="sortComment"
               @click="addSortComment(sortComment)"
               :class="{
-                'high-light': ruleForm.communication.indexOf(sortComment) > 0,
+                'high-light': ruleForm.communication.indexOf(sortComment) >= 0,
               }"
             >
               {{ sortComment }}
@@ -311,6 +320,7 @@ export default {
             passFlag: this.ruleForm.passFlag == '1',
             remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
           };
+          debugger;
           this.server.okrReviewCommunicationSubmit(params).then((res) => {
             this.submitLoad = false;
             if (res.code == 200) {
