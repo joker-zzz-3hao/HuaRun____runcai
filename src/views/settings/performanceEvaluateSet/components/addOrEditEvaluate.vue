@@ -58,9 +58,9 @@
             >
           </div>
         </el-form-item>
-        <el-form-item label="自定义名称" prop="type">
-          <el-radio v-model="performanceData.type" label="1">部门</el-radio>
-          <el-radio v-model="performanceData.type" label="2">个人</el-radio>
+        <el-form-item label="应用范围" prop="ruleType">
+          <el-radio v-model="performanceData.ruleType" label="1">部门</el-radio>
+          <el-radio v-model="performanceData.ruleType" label="2">个人</el-radio>
         </el-form-item>
       </el-form>
     </div>
@@ -75,6 +75,9 @@
           <span>{{ ruleItem.unit }}</span>
           说明
           <pre>{{ ruleItem.description }}</pre>
+        </dd>
+        <dd>
+          <span>应用范围 </span><span>{{ performanceData.ruleType }}</span>
         </dd>
       </dl>
     </div>
@@ -91,7 +94,7 @@
         plain
         class="tl-btn amt-border-fadeout"
         @click="cancel"
-        v-if="performanceData.status < 1"
+        v-if="performanceData.status < 1 || !hasValue(performanceData.status)"
         >取消</el-button
       >
     </div>
@@ -115,7 +118,11 @@ export default {
       visible: false,
       loading: false,
       step: '1',
-      performanceData: {},
+      performanceData: {
+        ruleName: '',
+        ruleType: '1',
+        ruleDetailList: [],
+      },
       title: '设置绩效评定体系',
     };
   },
@@ -128,6 +135,7 @@ export default {
         unit: '',
         value: '',
         description: '',
+
         detailRandomId: this.getRandomId(),
       });
     },
@@ -170,6 +178,7 @@ export default {
     show(rowData) {
       if (rowData && rowData.ruleId) {
         this.performanceData = { ...rowData };
+        this.performanceData.ruleType = String(this.performanceData.ruleType);
         this.performanceData.ruleDetailList.forEach((detail) => {
           detail.detailRandomId = this.getRandomId();
         });
@@ -182,6 +191,7 @@ export default {
       } else {
         this.performanceData = {
           ruleName: '',
+          ruleType: '1',
           ruleDetailList: [{
             unit: '',
             value: '',
