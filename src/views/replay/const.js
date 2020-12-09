@@ -1,4 +1,5 @@
 const REVIEW_STATUS = {
+  0: '复盘结束',
   1: '待复盘',
   2: '待沟通',
   3: '复盘结束',
@@ -21,9 +22,10 @@ const REPLAY_STATUS_LIST = [
   { name: '已复核', status: 0 },
 ];
 const REVIEW_STATUS_MAP = {
-  1: 'no-review',
-  2: 'no-talk',
-  3: 'finish-review',
+  0: { name: '复盘结束', classname: 'finish-review' },
+  1: { name: '待复盘', classname: 'no-review' },
+  2: { name: '待沟通', classname: 'no-talk' },
+  3: { name: '复盘结束', classname: 'finish-review' },
 };
 export default {
   REVIEW_STATUS,

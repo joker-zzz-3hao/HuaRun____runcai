@@ -105,8 +105,14 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <i :class="CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus]"></i>
-                <em>{{ scope.row.reviewStatusCn }}</em>
+                <i
+                  :class="
+                    CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].classname
+                  "
+                ></i>
+                <em>{{
+                  CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].name
+                }}</em>
               </template>
             </el-table-column>
             <el-table-column
