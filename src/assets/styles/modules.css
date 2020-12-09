@@ -1157,8 +1157,7 @@
 
 /* select */
 .tl-select .el-input__inner {
-  border: unset;
-  background: unset;
+  border: 1px solid #e5e9ee;
   color: #879099;
 }
 

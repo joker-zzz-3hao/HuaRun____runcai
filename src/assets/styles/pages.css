@@ -5195,10 +5195,6 @@
   color: #879099;
 }
 
-.toggle-department .tl-select .el-input__inner {
-  background: #f4f6f8;
-}
-
 .toggle-department .tl-select-dropdown .el-select-dropdown__item {
   display: flex;
   justify-content: space-between;
