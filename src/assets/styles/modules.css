@@ -3681,6 +3681,11 @@
   background: unset;
 }
 
+.operating-box .tl-select.has-bg .el-input__inner {
+  border: 1px solid transparent;
+  background: #fff;
+}
+
 .tl-btn.light,
 .tl-btn.light:hover {
   background: #f0effe;
@@ -3796,6 +3801,18 @@
 .state-group {
   display: flex;
   align-items: center;
+}
+
+.w100 {
+  width: 100px;
+}
+
+.w180 {
+  width: 180px;
+}
+
+.w220 {
+  width: 220px;
 }
 
 /* ========================================================公共页面布局组件================================================================== */
