@@ -830,9 +830,8 @@
 }
 
 /* change by xinquan */
-.update-progress .el-dialog__body {
-  width: 102%;
-  height: 400px;
+.update-progress .okr-info {
+  height: 500px;
   overflow: hidden;
 }
 
@@ -849,13 +848,50 @@
 }
 
 .update-progress .progress-bg {
-  width: 68px !important;
+  width: 65px !important;
 }
 
 .update-progress .progress-bg:not(:first-child) {
-  margin-left: 6px !important;
+  margin-left: 4px !important;
+}
+.update-progress .flex-up {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.update-progress .note-book {
+  width: 420px;
+  height: 500px;
+  padding: 0 0 0 20px;
+}
+.update-progress .update-histoy {
+  width: 300px;
+}
+/* 富文本 */
+.update-progress .el-tiptap-editor__command-button{
+  height: 25px;
+  width: 25px;
 }
 
+.update-progress .el-tiptap-editor>.el-tiptap-editor__content{
+  height: 350px;
+  cursor: text;
+  padding: 5px 15px;
+}
+
+.update-progress .el-tiptap-editor__menu-bar,
+.update-progress .el-tiptap-editor__footer,
+.update-progress .el-tiptap-editor>.el-tiptap-editor__content  {
+  border: 0;
+}
+
+.update-progress .hide-input .el-tiptap-editor__menu-bar{
+  opacity: 0;
+}
+
+.update-progress .el-tiptap-editor .ProseMirror{
+  height: 100%;
+}
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
@@ -1405,6 +1441,7 @@
 
 .okr-detail .timeline-list .operate-reason {
   margin: 20px 0 0 0;
+  display: flex;
 }
 
 .okr-detail .timeline-list dt .list-title::before {
