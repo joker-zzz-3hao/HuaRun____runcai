@@ -124,8 +124,6 @@ export default {
     };
   },
   mounted() {
-    console.log(`11${this.userInfo}`);
-    console.log(this.orgUserId);
     this.getSelected();
 
     this.dialogTableVisible = true;
@@ -143,6 +141,7 @@ export default {
             userAccount: item.userAccount,
             roleId: this.$route.query.roleId,
             orgId: item.parentId,
+            orgName: item.orgName,
           });
         });
         this.member = this.roulelist;
@@ -158,6 +157,7 @@ export default {
       this.light = 0;
     },
     getqueryOrgAndUser(item) {
+      console.log(item);
       if (item.type == 'USER') return false;
       this.showLoad = false;
       this.selectList[item.level - 2] = item;
@@ -168,6 +168,7 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.data = res.data.reverse();
+          console.log(this.data);
           this.showLoad = true;
         }
       });
@@ -191,6 +192,7 @@ export default {
           userAccount: data.userAccount,
           roleId: this.$route.query.roleId,
           orgId: data.parentId,
+          orgName: data.orgName,
         });
       } else {
         this.roulelist.forEach((item, index) => {
@@ -217,6 +219,7 @@ export default {
           roleId: this.$route.query.roleId,
           userAccount: data.userAccount,
           orgId: this.rouleType ? data.orgId : data.parentId,
+          orgName: data.orgName,
         }];
       } else {
         this.roulelist.forEach((item, index) => {
@@ -237,6 +240,7 @@ export default {
           label: item.userName,
           id: item.id,
           type: 'user',
+          orgNmae: item.orgName,
           userId: item.userId,
           orgId: item.orgId,
         }));
@@ -256,6 +260,7 @@ export default {
           orgId: item.orgId,
           parentId: item.orgId,
           userAccount: item.userAccount,
+          orgNmae: item.orgName,
           type: 'USER',
         }));
       });

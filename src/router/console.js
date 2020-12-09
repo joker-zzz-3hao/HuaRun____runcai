@@ -399,6 +399,30 @@ export default [{
     component: () => import('@/views/projectManage/mainHours/index'),
   },
   {
+    path: '/approvalList',
+    name: 'approvalList',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: false,
+      parentRoute: 'projectManage',
+      title: 'approvalList',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/approvalList'),
+  },
+  {
+    path: '/HoursJoin',
+    name: 'HoursJoin',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'HoursJoin',
+      title: 'HoursJoin',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/HoursJoin'),
+  },
+  {
     // 周报管理
     // 我的周报
     path: '/myWeekly',
