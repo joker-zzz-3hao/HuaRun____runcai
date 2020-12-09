@@ -97,7 +97,7 @@
         >提交</el-button
       >
     </div>
-    <rank-before-list ref="beforeList"></rank-before-list>
+    <rank-history-list ref="beforeList"></rank-history-list>
     <causes-rank ref="causesRank"></causes-rank>
   </div>
 </template>
@@ -107,8 +107,7 @@ import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
 import Server from '../server';
-// eslint-disable-next-line import/no-unresolved
-
+import rankhistoryList from './components/rankhistoryList';
 import causesRank from './components/causesRank';
 
 const server = new Server();
@@ -117,6 +116,7 @@ export default {
   components: {
     'tl-crcloud-table': crcloudTable,
     'causes-rank': causesRank,
+    'rank-history-list': rankhistoryList,
   },
   data() {
     return {
