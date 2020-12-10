@@ -233,6 +233,7 @@
                     class="item"
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
+
                     placement="top"
                   >
                     <div>

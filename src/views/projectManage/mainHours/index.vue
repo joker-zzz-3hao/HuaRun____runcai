@@ -123,7 +123,7 @@
 
             <el-table-column
               prop="submitTime"
-              label="最新审批时间"
+              label="最新提交时间"
               min-width="180"
             >
               <template slot-scope="scope">
@@ -148,13 +148,7 @@
                   class="tl-btn"
                   >工时审批</el-button
                 >
-                <el-button
-                  v-if="scope.row.approvalStatus == '2'"
-                  type="text"
-                  class="tl-btn"
-                  disabled
-                  >审批完成</el-button
-                >
+
               </template>
             </el-table-column>
           </el-table>
