@@ -11,6 +11,7 @@
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
                 @change="changeProject"
+                style="width:400px"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
@@ -94,7 +95,7 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="已审批共计投入工时" prop="approvedTimeSum" min-width="200px">
+            <el-table-column label="已审批工时" prop="approvedTimeSum" min-width="200px">
                <template slot-scope="scope">
                 <span>{{ scope.row.approvedTimeSum }} 天</span>
               </template>
@@ -139,18 +140,13 @@
             >
               <template slot-scope="scope">
                 <el-button
-                :disabled="scope.row.pendingApprovalTimeSum==0"
+
                   @click="goTo(scope.row)"
                   type="text"
 
-                  >工时审批</el-button
+                  >工时管理</el-button
                 >
-                 <el-button
-                  v-if="scope.row.approvalStatus == '2'"
-                  type="text"
-                  disabled
-                  >审批完成</el-button
-                >
+
               </template>
             </el-table-column>
           </el-table>
