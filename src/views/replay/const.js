@@ -35,8 +35,8 @@ const REVIEW_STATUS_MAP = {
 };
 const APPROVAL_STATUS_MAP = {
   1: { name: '未提交', classname: 'no-summit' },
-  2: { name: '审批中', classname: 'approval-ing' },
-  3: { name: '通过', classname: 'pass-summit' },
+  2: { name: '复核中', classname: 'approval-ing' },
+  3: { name: '同意', classname: 'pass-summit' },
   4: { name: '驳回', classname: 'refuse-summit' },
 };
 

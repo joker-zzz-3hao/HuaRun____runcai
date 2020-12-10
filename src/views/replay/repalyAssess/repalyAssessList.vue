@@ -124,6 +124,7 @@ export default {
       orgFullIdList: [],
       departmentData: [],
       periodId: '',
+      orgId: '',
       tableData: [
         {
           num: 1,
@@ -142,11 +143,21 @@ export default {
     this.getOrgTable();
   },
   methods: {
+    okrReviewList() {
+      this.server.summaryReview({
+        periodId: this.periodId,
+        orgId: this.orgId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableData = res.data;
+        }
+      });
+    },
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-
         this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        this.okrReviewList();
       });
     },
     // 查询组织树
@@ -165,7 +176,6 @@ export default {
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
-            this.okrReviewList();
           }
         }
       });

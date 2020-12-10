@@ -26,31 +26,37 @@
     <div class="cont-area">
       <div>
         <span>部门总数</span>
-        <em>{{ sortMsg.orgSum }}</em>
+        <em>{{ sortMsg.orgSum || 0 }}</em>
         <span>待复核</span>
-        <em>{{ sortMsg.reviewedOrgSum }}</em>
-        <div>绩效系数：1.5分3个 1.25分4个</div>
+        <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+        <div>
+          <em>{{ sortMsg.ruleName }}</em>
+          <span>{{ sortMsg.ruleDetailContent }}</span>
+        </div>
       </div>
       <div>
-        <span>绩效符合状态</span>
-        <em>{{ assessmentMsg.approvalStatus }}</em>
-        <span>复核时间</span>
-        <em>{{ assessmentMsg.reviewTime }}</em>
+        <span>绩效复核状态</span>
+        <em>{{ sortMsg.approvalStatus }}</em>
+        <span>绩效复核时间</span>
+        <em>{{ sortMsg.reviewTime || "--" }}</em>
         <span>驳回原因</span>
-        <em>{{ assessmentMsg.approvalMsg }}</em>
+        <em>{{ sortMsg.approvalMsg || "--" }}</em>
       </div>
       <el-button type="text" @click="showbeforeList"
         >查看历史提交记录</el-button
       >
     </div>
     <div>
-      调整，你好部门绩效需等到整体符合结束后，您才可以进行调整，请等待，谢谢
+      <span>调整绩效排名</span>
+      <em
+        >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
+      >
     </div>
     <div class="cont-area">
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table tableSort" row-key="id">
-            <el-table-column prop="num" label="排序" min-width="105">
+            <el-table-column prop="sort" label="排序" min-width="105">
               <template slot-scope="scope">
                 <el-button type="text" @click="upGo(tableData, scope.$index)"
                   >向上</el-button
@@ -62,7 +68,7 @@
             </el-table-column>
 
             <el-table-column
-              prop="num"
+              prop="sort"
               label="序号"
               min-width="65"
             ></el-table-column>
@@ -94,12 +100,9 @@
     </div>
     <div>
       <span>*是否已经确认沟通 </span>
-      <el-radio-group
-        v-model.trim="assessmentMsg.enableCommunicate"
-        class="tl-radio-group"
-      >
-        <el-radio v-model="radio" label="1">已沟通</el-radio>
-        <el-radio v-model="radio" label="2">未沟通</el-radio>
+      <el-radio-group v-model.trim="sortMsg.enableCommunicate">
+        <el-radio class="tl-radio" v-model="radio" :label="1">已沟通</el-radio>
+        <el-radio class="tl-radio" v-model="radio" :label="2">未沟通</el-radio>
       </el-radio-group>
     </div>
     <div>
@@ -109,7 +112,11 @@
         @click="assessmentSave"
         >暂存</el-button
       >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+      <el-button
+        :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="submit"
         >提交</el-button
       >
     </div>
@@ -142,7 +149,7 @@ export default {
       periodId: '',
       tableData: [{
         id: 1,
-        num: 1,
+        sort: 1,
         org: '行云',
         user: '大哥',
         score: '1',
@@ -150,7 +157,7 @@ export default {
         scorelist: 'A',
       }, {
         id: 2,
-        num: 2,
+        sort: 2,
         org: '盘云',
         user: '大的哥',
         score: '1',
@@ -158,7 +165,7 @@ export default {
         scorelist: 'B',
       }, {
         id: 3,
-        num: 3,
+        sort: 3,
         org: '牛云',
         user: '大小哥',
         score: '1',
@@ -166,7 +173,7 @@ export default {
         scorelist: 'C',
       }, {
         id: 4,
-        num: 4,
+        sort: 4,
         org: '海云',
         user: '大哥',
         score: '1',
@@ -174,7 +181,7 @@ export default {
         scorelist: 'D',
       }, {
         id: 5,
-        num: 5,
+        sort: 5,
         org: '熊云',
         user: '大哥为',
         score: '1',
@@ -193,13 +200,13 @@ export default {
   methods: {
     // 查询排名列表接口
     assessment() {
-      this.server.assessment({
-        periodId: this.periodId,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.assessmentMsg = res.data;
-        }
-      });
+      // this.server.assessment({
+      //   periodId: this.periodId,
+      // }).then((res) => {
+      //   if (res.code == 200) {
+      //     this.assessmentMsg = res.data;
+      //   }
+      // });
       this.server.querySort({
         periodId: this.periodId,
       }).then((res) => {
@@ -243,7 +250,7 @@ export default {
     // 获取后端为数据重新排序
     setNewList(tableData) {
       tableData.forEach((item, index) => {
-        this.$set(tableData[index], 'num', index + 1);
+        this.$set(tableData[index], 'sort', index + 1);
       });
     },
     setSort() {
@@ -293,7 +300,7 @@ export default {
     },
     // 显示历史列表
     showbeforeList() {
-      this.$refs.beforeList.show();
+      this.$refs.beforeList.show(this.periodId);
     },
     // 提交
     submit() {
