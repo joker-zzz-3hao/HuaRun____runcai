@@ -190,6 +190,7 @@
       :userType="true"
       title="添加虚线汇报人"
       :rouleType="true"
+      :DisuserId="DisuserId"
       @submitFunctin="listRoleUser"
     ></tl-add-member>
   </el-dialog>
@@ -237,6 +238,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    DisuserId: {
+      type: Object,
+      default() {
+        return {};
       },
     },
   },

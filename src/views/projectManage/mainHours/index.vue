@@ -16,7 +16,7 @@
               >
                 <el-option
                   v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
+                  :key="index"
                   :label="item.projectNameCn"
                   :value="item.projectId"
                 ></el-option>
@@ -39,8 +39,8 @@
               >
                 <el-option label="全部" value=""> </el-option>
                 <el-option
-                  v-for="item in options"
-                  :key="item.userId"
+                  v-for="(item,index) in options"
+                  :key="index"
                   :label="item.userName"
                   :value="item.userId"
                 >
@@ -85,9 +85,7 @@
           <el-table
             :data="tableData"
             class="tl-table"
-            @select="selectList"
-            @select-all="selectList"
-            row-key="sourceId"
+            row-key="index"
           >
 
             <el-table-column prop="applyTime" label="提交人" min-width="130">
@@ -96,9 +94,14 @@
               </template>
             </el-table-column>
             <el-table-column label="已审批共计投入工时" prop="approvedTimeSum" min-width="200px">
+               <template slot-scope="scope">
+                <span>{{ scope.row.approvedTimeSum }} 天</span>
+              </template>
             </el-table-column>
             <el-table-column label="待审批工时" prop="pendingApprovalTimeSum" min-width="200px">
-
+                 <template slot-scope="scope">
+                <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
+              </template>
             </el-table-column>
 
             <!-- <el-table-column
@@ -135,18 +138,18 @@
             >
               <template slot-scope="scope">
                 <el-button
-
-                  @click="$router.push({name:'approvalList',query:{userId:scope.row.userId}})"
+                :disabled="scope.row.pendingApprovalTimeSum==0"
+                  @click="goTo(scope.row)"
                   type="text"
-                  class="tl-btn"
+
                   >工时审批</el-button
                 >
-                <!-- <el-button
+                 <el-button
                   v-if="scope.row.approvalStatus == '2'"
                   type="text"
                   disabled
                   >审批完成</el-button
-                > -->
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -239,6 +242,9 @@ export default {
     this.projectPageList();
   },
   methods: {
+    goTo(row) {
+      this.$router.push({ name: 'approvalList', query: { userId: row.userId, projectId: this.formData.projectId } });
+    },
     searchList() {
       this.server.projectUserTimeList({
         projectId: this.formData.projectId,
@@ -292,6 +298,7 @@ export default {
             }
 
             this.timeSheetList();
+            this.summaryList();
             this.searchList();
           }
         }

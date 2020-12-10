@@ -36,8 +36,18 @@
               <el-button plain class="tl-btn light" @click="searchList">
                 搜索
               </el-button>
+
+                  <el-button
+          plain
+         @click="$router.back()"
+          class="tl-btn amt-border-slip"
+        >
+          返回
+          <span class="lines"></span>
+        </el-button>
             </dd>
           </dl>
+
         </div>
         <div class="operating-box">
           <dl class="dl-item">
@@ -484,13 +494,9 @@ export default {
       if (res.code == '200') {
         this.projectList = res.data.content;
         if (this.projectList.length > 0) {
-        //  this.formData.projectId = this.projectList[0].projectId;
-          const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          console.log(list);
-          if (list.length > 0) {
-            this.formData.projectId = list[0].projectId;
-          } else {
-            this.formData.projectId = this.projectList[0].projectId;
+          this.formData.projectId = this.projectList[0].projectId;
+          if (this.$route.query.projectId) {
+            this.formData.projectId = this.$route.query.projectId;
           }
 
           this.summaryList();
