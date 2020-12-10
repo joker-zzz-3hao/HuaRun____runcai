@@ -77,7 +77,7 @@
           <pre>{{ ruleItem.description }}</pre>
         </dd>
         <dd>
-          <span>应用范围 </span><span>{{ performanceData.ruleType }}</span>
+          <span>适用范围 </span><span>{{ performanceData.ruleType }}</span>
         </dd>
       </dl>
     </div>
