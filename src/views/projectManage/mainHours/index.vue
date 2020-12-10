@@ -146,7 +146,7 @@
                   @click="goTo(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >工时审批</el-button
+                  >工时管理</el-button
                 >
 
               </template>
