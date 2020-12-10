@@ -4,7 +4,7 @@
     v-model="queryParam.value"
     :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
     @change="weekChange"
-    value-format="yyyy-M-d"
+    value-format="yyyy/M/d"
     size="medium"
     type="week"
     placeholder=" 请选择周"
