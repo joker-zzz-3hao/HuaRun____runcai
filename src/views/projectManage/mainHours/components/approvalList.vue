@@ -124,6 +124,7 @@
                   :content="scope.row.workDesc"
                   v-if="scope.row.workDesc"
                   placement="top"
+                  popper-class="tl-tooltip-popper"
                 >
                   {{ scope.row.workDesc }}
                   <span>{{ GetLength(scope.row.workDesc, 46) }}</span>
@@ -131,7 +132,6 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-
             <el-table-column label="投入工时" min-width="180px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
@@ -212,6 +212,7 @@
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
+                    popper-class="tl-tooltip-popper"
                   >
                     <div>
                       {{ GetLength(changeListDate(scope.row.arrHide), 9) }}
@@ -223,7 +224,12 @@
                   class="flex-start"
                 >
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
-                  <el-tooltip class="item" effect="dark" placement="top">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -259,6 +265,7 @@
                   effect="dark"
                   :content="weekWorkListCheck(scope.row)"
                   placement="top"
+                  popper-class="tl-tooltip-popper"
                 >
                   <span>{{
                     GetLength(weekWorkListCheck(scope.row), 13) || "--"

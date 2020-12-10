@@ -11,14 +11,10 @@
   >
     <div class="cont-area">
       <dl class="layout-rows">
-        <dt><em>成员</em></dt>
         <dd>
-               <el-button
-        type="primary"
-        @click="addDotted"
-        class="tl-btn amt-bg-slip"
-        >添加成员</el-button
-      >
+          <el-button plain @click="addDotted" class="tl-btn amt-border-slip"
+            >选择成员<span class="lines"></span
+          ></el-button>
           <!-- <el-select
             v-model="keyword"
             placeholder="请输入成员姓名"
@@ -56,7 +52,7 @@
               <el-table-column prop="level" label="级别 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
-                   :key="scope.$index"
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.level'"
                     :rules="[
                       {
@@ -85,7 +81,7 @@
               <el-table-column prop="funcName" label="职能 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
-                   :key="scope.$index"
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.funcName'"
                     :rules="[
                       {
@@ -118,7 +114,7 @@
               >
                 <template slot-scope="scope">
                   <el-form-item
-                  :key="scope.$index"
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.companyName'"
                     :rules="[
                       {
@@ -184,7 +180,7 @@
         >确定</el-button
       >
     </div>
-        <tl-add-member
+    <tl-add-member
       v-if="exist"
       :selectListed="selectListed"
       :exist.sync="exist"
