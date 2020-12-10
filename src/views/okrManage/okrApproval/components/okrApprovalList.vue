@@ -201,16 +201,20 @@
                 maxlength="64"
                 v-model.trim="formData.keyword"
                 placeholder="请输入成员姓名"
-                class="tl-input-search"
+                class="tl-input"
                 @keyup.enter.native="searchList"
               >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+                <i
+                  class="el-input__icon el-icon-search"
+                  slot="prefix"
+                  @click="searchList"
+                ></i>
               </el-input>
             </el-form-item>
             <el-button
               :disabled="!hasPower('okr-approval-list')"
-              type="primary"
-              class="tl-btn amt-bg-slip"
+              plain
+              class="tl-btn light"
               @click="searchList"
               >搜索</el-button
             >

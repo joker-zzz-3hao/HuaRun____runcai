@@ -11,7 +11,7 @@
                   v-model="formData.projectStatus"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option
@@ -30,7 +30,7 @@
                   v-model="formData.projectType"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option
@@ -49,7 +49,7 @@
                   v-model="formData.projectInputTypeCode"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option

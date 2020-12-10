@@ -12,7 +12,7 @@
                 placeholder="请选择项目"
                 @change="changeProject"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option
                   v-for="(item, index) in projectList"
@@ -35,11 +35,11 @@
                 style="width: 118px"
                 @change="searchList"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option label="全部" value=""> </el-option>
                 <el-option
-                  v-for="(item,index) in options"
+                  v-for="(item, index) in options"
                   :key="index"
                   :label="item.userName"
                   :value="item.userId"
@@ -82,24 +82,27 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table
-            :data="tableData"
-            class="tl-table"
-            row-key="index"
-          >
-
+          <el-table :data="tableData" class="tl-table" row-key="index">
             <el-table-column prop="applyTime" label="提交人" min-width="130">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="已审批共计投入工时" prop="approvedTimeSum" min-width="200px">
-               <template slot-scope="scope">
+            <el-table-column
+              label="已审批共计投入工时"
+              prop="approvedTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
                 <span>{{ scope.row.approvedTimeSum }} 天</span>
               </template>
             </el-table-column>
-            <el-table-column label="待审批工时" prop="pendingApprovalTimeSum" min-width="200px">
-                 <template slot-scope="scope">
+            <el-table-column
+              label="待审批工时"
+              prop="pendingApprovalTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
                 <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
               </template>
             </el-table-column>
@@ -138,15 +141,16 @@
             >
               <template slot-scope="scope">
                 <el-button
-                :disabled="scope.row.pendingApprovalTimeSum==0"
+                  :disabled="scope.row.pendingApprovalTimeSum == 0"
                   @click="goTo(scope.row)"
                   type="text"
-
+                  class="tl-btn"
                   >工时审批</el-button
                 >
-                 <el-button
+                <el-button
                   v-if="scope.row.approvalStatus == '2'"
                   type="text"
+                  class="tl-btn"
                   disabled
                   >审批完成</el-button
                 >

@@ -37,17 +37,12 @@
                 搜索
               </el-button>
 
-                  <el-button
-          plain
-         @click="back()"
-          class="tl-btn amt-border-slip"
-        >
-          返回
-          <span class="lines"></span>
-        </el-button>
+              <el-button plain @click="back()" class="tl-btn amt-border-slip">
+                返回
+                <span class="lines"></span>
+              </el-button>
             </dd>
           </dl>
-
         </div>
         <div class="operating-box">
           <dl class="dl-item">
@@ -75,21 +70,26 @@
 
           <dl class="dl-item">
             <dt>投入工时时间</dt>
-             <dd style="margin-right:20px">
-
-                <el-select v-model="selectType"  style="width: 100px" popper-class="tl-select-dropdown"
-                class="tl-select"   placeholder="请选择">
-    <el-option
-      v-for="item in CONST.APPROVAL_SELECT"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
+            <dd style="margin-right: 20px">
+              <el-select
+                v-model="selectType"
+                style="width: 100px"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in CONST.APPROVAL_SELECT"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </dd>
             <dd>
               <el-date-picker
-              v-if="selectType == 2"
+                v-if="selectType == 2"
                 v-model="weekLine"
                 type="daterange"
                 @change="changePick"
@@ -101,18 +101,18 @@
                 end-placeholder="结束日期"
                 class="tl-range-editor"
                 popper-class="tl-range-popper"
-
               >
               </el-date-picker>
-               <tl-element-week v-else @weekSelect="weekSelect"></tl-element-week>
+              <tl-element-week
+                v-else
+                @weekSelect="weekSelect"
+              ></tl-element-week>
             </dd>
           </dl>
-
         </div>
       </div>
     </div>
     <div class="cont-area">
-
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -142,16 +142,14 @@
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="scope.row.workDesc"
-                    placement="top"
-                  >
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="scope.row.workDesc"
+                  placement="top"
+                >
                   {{ scope.row.workDesc }}
-                  <span>{{
-                    GetLength(scope.row.workDesc,46) || "--"
-                  }}</span>
+                  <span>{{ GetLength(scope.row.workDesc, 46) || "--" }}</span>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -225,7 +223,9 @@
                           >取消</el-button
                         > -->
                       </div>
-                      <el-button type="text" slot="reference">修改</el-button>
+                      <el-button type="text" class="tl-btn" slot="reference"
+                        >修改</el-button
+                      >
                     </el-popover>
                   </div>
 
@@ -235,7 +235,9 @@
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
                   >
-                    <div>{{ GetLength(changeListDate(scope.row.arrHide),9) }}</div>
+                    <div>
+                      {{ GetLength(changeListDate(scope.row.arrHide), 9) }}
+                    </div>
                   </el-tooltip>
                 </div>
                 <div
@@ -274,13 +276,15 @@
                </el-table-column> -->
             <el-table-column label="工时日期" min-width="200px">
               <template slot-scope="scope">
-               <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="weekWorkListCheck(scope.row)"
-                    placement="top"
-                  >
-                  <span>{{  GetLength(weekWorkListCheck(scope.row),13) || "--" }}</span>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="weekWorkListCheck(scope.row)"
+                  placement="top"
+                >
+                  <span>{{
+                    GetLength(weekWorkListCheck(scope.row), 13) || "--"
+                  }}</span>
                   <!-- <span slot="reference">{{
                      GetLength(weekWorkListCheck(scope.row),9) || "--"
                   }}</span> -->

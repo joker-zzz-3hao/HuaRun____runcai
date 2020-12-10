@@ -510,7 +510,8 @@
 .okr-approval-list,
 .team-view,
 .staff-view,
-.department-view {
+.department-view,
+.replay-okr {
   padding: 50px 0 0 0;
 }
 
@@ -528,7 +529,8 @@
 .okr-approval .operating-area,
 .team-view .operating-area,
 .staff-view .operating-area,
-.department-view .operating-area {
+.department-view .operating-area,
+.replay-okr .operating-area {
   position: fixed;
   top: 70px;
   left: 90px;
@@ -544,7 +546,8 @@
 .okr-approval .operating-area-inside,
 .team-view .operating-area-inside,
 .staff-view .operating-area-inside,
-.department-view .operating-area-inside {
+.department-view .operating-area-inside,
+.replay-okr .operating-area-inside {
   padding: 0 30px 0 145px;
   display: flex;
   justify-content: space-between;
@@ -561,7 +564,7 @@
 }
 
 .overview .operating-area-inside {
-  padding: 0 30px 0 30px;
+  padding: 0 30px 0 14px;
 }
 
 .overview .img-list {
@@ -620,14 +623,16 @@
   color: #fff;
 }
 
-.no-sub-menu+.my-okr .operating-area {
+.no-sub-menu + .my-okr .operating-area,
+.no-sub-menu + .replay-okr .operating-area {
   left: 70px;
 }
 
-.is-shrink+.my-okr .operating-area .operating-area-inside,
-.is-shrink+.okr-maps .operating-area .operating-area-inside,
-.is-shrink+.undertake-maps .operating-area .operating-area-inside,
-.is-shrink+.okr-approval .operating-area .operating-area-inside {
+.is-shrink + .my-okr .operating-area .operating-area-inside,
+.is-shrink + .okr-maps .operating-area .operating-area-inside,
+.is-shrink + .undertake-maps .operating-area .operating-area-inside,
+.is-shrink + .okr-approval .operating-area .operating-area-inside,
+.is-shrink + .replay-okr .operating-area .operating-area-inside {
   padding: 0 30px 0 46px;
 }
 
@@ -637,7 +642,8 @@
 .okr-approval .operating-area-inside::before,
 .team-view .operating-area-inside::before,
 .staff-view .operating-area-inside::before,
-.department-view .operating-area-inside::before {
+.department-view .operating-area-inside::before,
+.replay-okr .operating-area-inside::before {
   position: absolute;
   left: -30px;
   content: '';
@@ -659,18 +665,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.my-okr .operating-area-inside .el-input .el-input__inner,
-.okr-maps .operating-area-inside .el-input .el-input__inner,
-.undertake-maps .operating-area-inside .el-input .el-input__inner,
-.okr-approval .operating-area-inside .el-input .el-input__inner,
-.team-view .operating-area-inside .el-input .el-input__inner,
-.staff-view .operating-area-inside .el-input .el-input__inner,
-.department-view .operating-area-inside .el-input .el-input__inner,
-.teams-weekly .operating-area .el-input .el-input__inner,
-.associated-undertaking .operating-area-inside .el-input .el-input__inner {
-  background: #f4f6f8;
 }
 
 .my-okr .operating-area-inside .dl-item dt {
@@ -1525,42 +1519,14 @@
   width: 230px;
 }
 
-.okr-maps .operating-area .tl-input .el-input__icon {
-  margin: 3px 0 0 0;
-}
-
-.okr-maps .operating-area .el-input__inner,
-.teams-weekly .operating-area .el-input__inner {
-  border: transparent;
-  color: #879099;
-}
-
-.okr-maps .operating-area .el-icon-search {
-  line-height: unset;
-  width: 18px;
-}
-
-.okr-maps .operating-area .el-icon-search:before {
-  font-size: 16px;
-}
-
-.okr-maps .operating-area .el-input .el-input__prefix {
+.okr-maps .operating-area .el-input .el-input__prefix,
+.okr-approval-list .operating-area .el-input .el-input__prefix {
   display: flex;
   align-items: center;
 }
 
 .okr-maps .operating-area .dl-item {
   margin: 0 0 0 20px;
-}
-
-.okr-maps .operating-area .dl-item dt {
-  margin: 0 10px 0 0;
-  color: #4d5155;
-}
-
-.okr-maps .tl-select .el-input__inner,
-.okr-maps .tl-cascader .el-input__inner {
-  background: #f4f6f8;
 }
 
 .my-okr .tl-select-dropdown.el-popper,
@@ -1611,7 +1577,7 @@
 }
 
 .okr-maps .toggle-view {
-  margin: 0 0 0 20px;
+  margin: 0 0 0 22px;
 }
 
 .okr-maps .tag-kind .kind-child {
@@ -2538,6 +2504,10 @@
 
 .okr-approval .progress-bg:not(:first-child) {
   margin-left: 2px !important;
+}
+
+.okr-approval .operating-area .tl-input {
+  margin: 0;
 }
 
 /* OKR汇总 */
@@ -5208,7 +5178,6 @@
 
 /* 切换部门--by xinquan  */
 .toggle-department {
-  margin: 0 0 0 16px;
   display: flex;
   align-items: center;
 }
@@ -5216,10 +5185,6 @@
 .toggle-department dt {
   margin: 0 10px 0 0;
   color: #879099;
-}
-
-.toggle-department .tl-select .el-input__inner {
-  background: #f4f6f8;
 }
 
 .toggle-department .tl-select-dropdown .el-select-dropdown__item {
@@ -5709,6 +5674,16 @@
   margin-left: 2px !important;
 }
 
+.replay-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.replay-list .operating-box {
+  margin-bottom: 16px;
+}
+
 /* personal-center */
 .personal-center .cont-wrap {
   flex-direction: column;
@@ -5929,12 +5904,18 @@
   color: #5b84f7;
 }
 
-.project-description .is-ongoing {
+.project-description .is-ongoing,
+.project-description .is-over {
   padding: 0 5px;
   border: 1px solid #ffbc20;
   font-size: 12px;
   border-radius: 2px;
   color: #ffbc20;
+}
+
+.project-description .is-over {
+  border-color: #acb6bf;
+  color: #acb6bf;
 }
 
 .project-members .card-title {

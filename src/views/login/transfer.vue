@@ -1,6 +1,6 @@
 <template>
   <section class="login-layout">
-    <div>
+    <div class="loading-box">
       <i class="el-icon-loading"></i>
       <em>登录跳转中</em>
     </div>
