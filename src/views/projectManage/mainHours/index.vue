@@ -1,7 +1,7 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div class="operating-box-group">
+      <div >
         <div class="operating-box">
           <dl class="dl-item">
             <dt>项目</dt>
@@ -23,9 +23,7 @@
               </el-select>
             </dd>
           </dl>
-        </div>
-        <div class="operating-box">
-          <dl class="dl-item">
+            <dl class="dl-item">
             <dt>提交人</dt>
             <dd>
               <el-select
@@ -48,6 +46,9 @@
               </el-select>
             </dd>
           </dl>
+        </div>
+        <div class="operating-box">
+
           <!-- <dl class="dl-item">
 
             <dd>

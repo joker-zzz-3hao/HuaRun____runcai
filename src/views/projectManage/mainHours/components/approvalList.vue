@@ -77,7 +77,7 @@
             <dt>投入工时时间</dt>
              <dd style="margin-right:20px">
 
-                <el-select v-model="selectType"  style="width: 100px" popper-class="tl-select-dropdown"
+                <el-select v-model="selectType"  style="width: 150px" popper-class="tl-select-dropdown"
                 class="tl-select"   placeholder="请选择">
     <el-option
       v-for="item in CONST.APPROVAL_SELECT"
@@ -163,7 +163,7 @@
                     <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
                     <el-popover
                       placement="top"
-                      width="300"
+                     width="300"
                       :key="scope.$index"
                       trigger="click"
                       :tabindex="scope.$index"
@@ -429,7 +429,7 @@ export default {
   data() {
     return {
       weekLine: [],
-      selectType: 2,
+      selectType: 1,
       userId: '',
       monDayList: [
         '周一',
