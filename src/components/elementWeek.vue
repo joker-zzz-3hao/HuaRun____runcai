@@ -5,7 +5,7 @@
       v-model="queryParam.value"
       :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
       @change="weekChange"
-      value-format="yyyy-M-d"
+      value-format="yyyy/M/d"
       size="medium"
       type="week"
       placeholder=" 请选择周"
@@ -41,16 +41,16 @@ export default {
       if (day < 10) {
         day = `0${day}`;
       }
-      const nowDay = `${year}-${month}-${day}`;
+      const nowDay = `${year}/${month}/${day}`;
       this.queryParam.week = this.getWeekInMonth(new Date(nowDay));
-      this.queryParam.defValue = `${year}-${month}-${day}`;
+      this.queryParam.defValue = `${year}/${month}/${day}`;
     },
     weekChange(val) {
       console.log(val);
       if (val) {
         this.getDay(val);
         // eslint-disable-next-line no-unused-vars
-        const arr = val.split('-');
+        const arr = val.split('/');
         this.queryParam.week = this.getWeekInMonth(new Date(val));
         const oneDate = 24 * 60 * 60 * 1000;
         const valueTime = new Date(val).getTime() - oneDate;
