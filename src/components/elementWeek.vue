@@ -1,17 +1,17 @@
 <template>
-
-    <el-date-picker
-      :clearable="true"
-      v-model="queryParam.value"
-      :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
-      @change="weekChange"
-      value-format="yyyy/M/d"
-      size="medium"
-      type="week"
-      placeholder=" 请选择周"
-      :picker-options="{'firstDayOfWeek': 1}"
-    ></el-date-picker>
-
+  <el-date-picker
+    :clearable="true"
+    v-model="queryParam.value"
+    :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
+    @change="weekChange"
+    value-format="yyyy-M-d"
+    size="medium"
+    type="week"
+    placeholder=" 请选择周"
+    :picker-options="{ firstDayOfWeek: 1 }"
+    popper-class="tl-date-popper"
+    class="tl-date-editor"
+  ></el-date-picker>
 </template>
 
 <script>

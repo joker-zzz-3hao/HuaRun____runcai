@@ -1,50 +1,8 @@
 <template>
-  <div class="working-hours">
+  <div class="working-hours approval-list">
     <div class="operating-area">
-      <div class="operating-box-group">
-        <div class="operating-box">
-          <dl class="dl-item">
-            <!-- <dt>项目</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
-            </dd> -->
-          </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-input
-                maxlength="64"
-                v-model="keyWord"
-                placeholder="工作项,工作内容"
-                class="tl-input-search"
-              >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-              </el-input>
-              <el-button plain class="tl-btn light" @click="searchList">
-                搜索
-              </el-button>
-
-              <el-button plain @click="back()" class="tl-btn amt-border-slip">
-                返回
-                <span class="lines"></span>
-              </el-button>
-            </dd>
-          </dl>
-        </div>
-        <div class="operating-box">
+      <div class="operating-box">
+        <div class="dl-item-group">
           <dl class="dl-item">
             <dt>审批状态</dt>
             <dd>
@@ -67,13 +25,12 @@
               </el-select>
             </dd>
           </dl>
-
           <dl class="dl-item">
             <dt>投入工时时间</dt>
             <dd style="margin-right: 20px">
               <el-select
                 v-model="selectType"
-                style="width: 100px"
+                style="width: 130px"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
                 placeholder="请选择"
@@ -109,7 +66,26 @@
               ></tl-element-week>
             </dd>
           </dl>
+          <dl class="dl-item">
+            <dd>
+              <el-input
+                maxlength="64"
+                v-model="keyWord"
+                placeholder="工作项,工作内容"
+                class="tl-input-search"
+              >
+                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+              </el-input>
+              <el-button plain class="tl-btn light" @click="searchList">
+                搜索
+              </el-button>
+            </dd>
+          </dl>
         </div>
+        <el-button plain @click="back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
       </div>
     </div>
     <div class="cont-area">
@@ -235,7 +211,6 @@
                     class="item"
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
-
                     placement="top"
                   >
                     <div>
