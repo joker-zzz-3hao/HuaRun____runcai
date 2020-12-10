@@ -24,13 +24,21 @@
       </dl>
     </div>
     <div class="cont-area">
-      <div>部门总数：11</div>
-      <div>待复核：11</div>
-      <div>绩效符合状态：驳回</div>
-      <div>驳回原因：XXXXXXXXXXXXXXXX</div>
-      <div>复合时间：2020-10-11</div>
-      <div>绩效系数：1.5分3个 1.25分4个</div>
-      <div>复合时间：2020-10-11</div>
+      <div>
+        <span>部门总数</span>
+        <em>{{ sortMsg.orgSum }}</em>
+        <span>待复核</span>
+        <em>{{ sortMsg.reviewedOrgSum }}</em>
+        <div>绩效系数：1.5分3个 1.25分4个</div>
+      </div>
+      <div>
+        <span>绩效符合状态</span>
+        <em>{{ assessmentMsg.approvalStatus }}</em>
+        <span>复核时间</span>
+        <em>{{ assessmentMsg.reviewTime }}</em>
+        <span>驳回原因</span>
+        <em>{{ assessmentMsg.approvalMsg }}</em>
+      </div>
       <el-button type="text" @click="showbeforeList"
         >查看历史提交记录</el-button
       >
@@ -42,7 +50,7 @@
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table tableSort" row-key="id">
-            <el-table-column prop="num" label="排序" min-width="165">
+            <el-table-column prop="num" label="排序" min-width="105">
               <template slot-scope="scope">
                 <el-button type="text" @click="upGo(tableData, scope.$index)"
                   >向上</el-button
@@ -56,19 +64,23 @@
             <el-table-column
               prop="num"
               label="序号"
-              min-width="165"
+              min-width="65"
             ></el-table-column>
             <el-table-column
-              prop="org"
+              prop="orgName"
               label="部门"
               min-width="170"
             ></el-table-column>
 
-            <el-table-column prop="user" label="负责人" min-width="100">
+            <el-table-column prop="userName" label="负责人" min-width="100">
             </el-table-column>
-            <el-table-column prop="score" label="自评得分" min-width="100">
+            <el-table-column
+              prop="selfAssessmentScore"
+              label="自评得分"
+              min-width="100"
+            >
             </el-table-column>
-            <el-table-column prop="score1" label="复合得分" min-width="100">
+            <el-table-column prop="finalScore" label="复核得分" min-width="100">
             </el-table-column>
             <el-table-column
               prop="scorelist"
@@ -82,9 +94,13 @@
     </div>
     <div>
       <span>*是否已经确认沟通 </span>
-
-      <el-radio v-model="radio" label="1">已沟通</el-radio>
-      <el-radio v-model="radio" label="2">未沟通</el-radio>
+      <el-radio-group
+        v-model.trim="assessmentMsg.enableCommunicate"
+        class="tl-radio-group"
+      >
+        <el-radio v-model="radio" label="1">已沟通</el-radio>
+        <el-radio v-model="radio" label="2">未沟通</el-radio>
+      </el-radio-group>
     </div>
     <div>
       <el-button
@@ -97,7 +113,7 @@
         >提交</el-button
       >
     </div>
-    <rank-before-list ref="beforeList"></rank-before-list>
+    <rank-history-list ref="beforeList"></rank-history-list>
     <causes-rank ref="causesRank"></causes-rank>
   </div>
 </template>
@@ -107,7 +123,7 @@ import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
 import Server from '../server';
-import rankBeforeList from './components/rankBeforeList';
+import rankhistoryList from './components/rankhistoryList';
 import causesRank from './components/causesRank';
 
 const server = new Server();
@@ -115,8 +131,8 @@ export default {
   name: 'repalyAssessList',
   components: {
     'tl-crcloud-table': crcloudTable,
-    'rank-before-list': rankBeforeList,
     'causes-rank': causesRank,
+    'rank-history-list': rankhistoryList,
   },
   data() {
     return {
@@ -166,6 +182,8 @@ export default {
         scorelist: 'E',
       }],
       assessmentList: [],
+      assessmentMsg: {},
+      sortMsg: {},
     };
   },
   mounted() {
@@ -179,12 +197,22 @@ export default {
         periodId: this.periodId,
       }).then((res) => {
         if (res.code == 200) {
-          this.assessmentList = res.data;
+          this.assessmentMsg = res.data;
+        }
+      });
+      this.server.querySort({
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.sortMsg = res.data;
+          this.tableData = res.data.orgResultDetailMapList;
         }
       });
     },
     // 调用暂存接口
     assessmentSave() {
+      console.log(this.tableData);
+      debugger;
       this.server.assessmentSave().then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
