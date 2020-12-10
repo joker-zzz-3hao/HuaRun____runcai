@@ -258,6 +258,7 @@ export default {
       });
     },
     changeProject() {
+      sessionStorage.setItem('projectId', this.formData.projectId);
       this.timeSheetList();
       this.summaryList();
       this.searchList();
@@ -298,7 +299,9 @@ export default {
             } else {
               this.formData.projectId = this.projectList[0].projectId;
             }
-
+            if (this.$route.query.projectId) {
+              this.formData.projectId = this.$route.query.projectId;
+            }
             this.timeSheetList();
             this.summaryList();
             this.searchList();

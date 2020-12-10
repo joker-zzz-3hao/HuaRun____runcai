@@ -56,6 +56,7 @@
               <el-table-column prop="level" label="级别" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
+                   :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.level'"
                     :rules="[
                       {
@@ -84,6 +85,7 @@
               <el-table-column prop="funcName" label="职能" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
+                   :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.funcName'"
                     :rules="[
                       {
@@ -116,6 +118,7 @@
               >
                 <template slot-scope="scope">
                   <el-form-item
+                  :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.companyName'"
                     :rules="[
                       {
@@ -318,6 +321,10 @@ export default {
       this.keyword = '';
     },
     addMembers() {
+      if (this.dataForm.tableData.length == 0) {
+        this.$message.success('请添加成员');
+        return false;
+      }
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = [];
@@ -341,8 +348,13 @@ export default {
               this.$emit('addSuccess');
             }
           });
+        } else {
+          this.$message.success('请选择级别职能与公司');
         }
       });
+    },
+    closed() {
+      this.visible = false;
     },
     filterMembers(param) {
       // this.projectManagerList = [];

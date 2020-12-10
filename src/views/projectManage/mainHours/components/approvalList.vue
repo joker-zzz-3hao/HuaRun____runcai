@@ -4,7 +4,7 @@
       <div class="operating-box-group">
         <div class="operating-box">
           <dl class="dl-item">
-            <dt>项目</dt>
+            <!-- <dt>项目</dt>
             <dd>
               <el-select
                 v-model="formData.projectId"
@@ -21,7 +21,7 @@
                   :value="item.projectId"
                 ></el-option>
               </el-select>
-            </dd>
+            </dd> -->
           </dl>
           <dl class="dl-item">
             <dd>
@@ -39,7 +39,7 @@
 
                   <el-button
           plain
-         @click="$router.back()"
+         @click="back()"
           class="tl-btn amt-border-slip"
         >
           返回
@@ -506,6 +506,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.push({ name: 'mainHours', query: { projectId: this.formData.projectId } });
+    },
     GetLength(text, max) {
       if (this.getBLen(text) >= max) {
         const str = JSON.parse(JSON.stringify(text));
