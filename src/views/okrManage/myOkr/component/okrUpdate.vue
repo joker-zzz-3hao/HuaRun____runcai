@@ -15,74 +15,6 @@
         <div class="tl-custom-timeline">
           <el-form :model="formData" ref="dataForm" class="tl-form">
             <dl class="timeline-list">
-              <dd v-if="hasValue(historyFirst)">
-                <div class="list-info">
-                  <div class="list-title">
-                    <em>上次更新时间：{{ historyFirst.createTime }}</em>
-                    <div @click="openHistory">更多更新记录</div>
-                  </div>
-                  <div class="list-cont">
-                    <div>
-                      <em>操作人</em>
-                      <span>
-                        {{ historyFirst.userName }}
-                      </span>
-                    </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>更新前进度</em>
-                      <span>
-                        {{ historyFirst.updateContents.beforeProgress }} %
-                      </span>
-                    </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>更新后进度</em>
-                      <span>
-                        {{ historyFirst.updateContents.afterProgress }} %
-                      </span>
-                    </div>
-                    <div v-if="historyFirst.updateContents">
-                      <em>信心指数修改为</em>
-                      <div class="state-grid">
-                        <div
-                          :class="{
-                            'is-no-risk':
-                              historyFirst.updateContents.afterConfidence == 1,
-                            'is-risks':
-                              historyFirst.updateContents.afterConfidence == 2,
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
-                        <div
-                          :class="{
-                            'is-risks':
-                              historyFirst.updateContents.afterConfidence == 2,
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
-                        <div
-                          :class="{
-                            'is-uncontrollable':
-                              historyFirst.updateContents.afterConfidence == 3,
-                          }"
-                        ></div>
-                      </div>
-                      <em>{{
-                        CONST.CONFIDENCE_MAP[
-                          historyFirst.updateContents.afterConfidence
-                        ]
-                      }}</em>
-                    </div>
-                    <div>
-                      <em>更新说明</em>
-                      <span>
-                        {{ historyFirst.reason }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </dd>
               <dd>
                 <div class="list-info">
                   <div class="list-title">
@@ -123,15 +55,6 @@
                       <tl-confidence
                         v-model="formData.okrDetailConfidence"
                       ></tl-confidence>
-                      <div class="add-progress" @click="addProgress(1)">
-                        +1%
-                      </div>
-                      <div class="add-progress" @click="addProgress(5)">
-                        +5%
-                      </div>
-                      <div class="add-progress" @click="addProgress(10)">
-                        +10%
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -248,7 +171,6 @@ export default {
     // 控制弹窗
     showOkrDialog() {
       this.getokrDetail();
-      this.getHistory();
       this.myokrDrawer = true;
     },
 
