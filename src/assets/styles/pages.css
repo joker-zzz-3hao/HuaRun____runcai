@@ -6035,7 +6035,7 @@
   color: #acb6bf;
 }
 
-.working-hours {
+.working-hours.approval-list {
   margin-bottom: 86px;
   min-height: calc(100vh - 172px);
 }
@@ -6193,6 +6193,16 @@
 
 .approval-pop .week-day {
   margin: 0 30px 0 0;
+}
+
+.approval-list .dl-item-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.approval-list .dl-item-group .tl-date-editor {
+  margin: 0;
 }
 
 /* msg-notice */
