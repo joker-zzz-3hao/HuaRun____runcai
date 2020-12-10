@@ -107,11 +107,11 @@ export default {
               color: new echarts.graphic.LinearGradient(
                 0, 0, 0, 1, [{
                   offset: 0,
-                  color: '#3F7DFF',
+                  color: 'rgba(233,239,255,1)',
                 },
                 {
                   offset: 1,
-                  color: 'rgba(100,178,237,0.1)',
+                  color: 'rgba(255,255,255,0.1)',
                 },
                 ],
               ),
