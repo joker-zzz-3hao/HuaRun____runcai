@@ -137,6 +137,11 @@ const APPROVAL_STATUS_MAP = {
   2: '已审批',
 };
 
+const APPROVAL_SELECT = [
+  { value: 1, label: '按周期选择' },
+  { value: 2, label: '按日期选择' },
+];
+
 const APPROVAL_STATUS_LIST = [
   { value: '', label: '全部' },
   { value: '1', label: '待审批' },
@@ -166,4 +171,5 @@ export default {
   DATE_NUM,
   DATE_MODE_NUM,
   DATE_MODE_NUMOBJ,
+  APPROVAL_SELECT,
 };

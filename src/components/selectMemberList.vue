@@ -35,7 +35,7 @@
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                :disabled="disabledId == item.orgId || item.id == orgUserId"
+                :disabled="disabledId == item.orgId || item.id == orgUserId || DisuserId[item.id]"
                 @change="
                   !rouleType
                     ? checkOneMember($event, item)
@@ -100,7 +100,7 @@ import Server from './server';
 const server = new Server();
 export default {
   name: 'selectMember',
-  props: ['rouleType', 'selectListed', 'disabledId', 'userType', 'orgUserId'],
+  props: ['rouleType', 'selectListed', 'disabledId', 'userType', 'orgUserId', 'DisuserId'],
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
@@ -143,6 +143,7 @@ export default {
             userAccount: item.userAccount,
             roleId: this.$route.query.roleId,
             orgId: item.parentId,
+            orgName: item.orgName,
           });
         });
         this.member = this.roulelist;
@@ -191,6 +192,7 @@ export default {
           userAccount: data.userAccount,
           roleId: this.$route.query.roleId,
           orgId: data.parentId,
+          orgName: data.orgName,
         });
       } else {
         this.roulelist.forEach((item, index) => {
@@ -217,6 +219,7 @@ export default {
           roleId: this.$route.query.roleId,
           userAccount: data.userAccount,
           orgId: this.rouleType ? data.orgId : data.parentId,
+          orgName: data.orgName,
         }];
       } else {
         this.roulelist.forEach((item, index) => {
@@ -239,6 +242,7 @@ export default {
           type: 'user',
           userId: item.userId,
           orgId: item.orgId,
+          orgName: item.orgName,
         }));
       });
     },
