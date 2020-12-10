@@ -1834,8 +1834,12 @@
   width: 37px;
   height: 21px;
   background: #f1f5f7;
-  color: #879099;
+  color: #879099; 
   cursor: default;
+}
+
+.undertake-maps .cont-area .department-info .is-plain span{
+  color: #879099 !important; 
 }
 
 .undertake-maps .cont-area .tag-kind .el-button.is-plain:hover {

@@ -433,7 +433,7 @@ export default {
   data() {
     return {
       weekLine: [],
-      selectType: 2,
+      selectType: 1,
       userId: '',
       monDayList: [
         '周一',

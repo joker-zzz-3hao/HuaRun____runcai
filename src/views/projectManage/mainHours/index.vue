@@ -1,7 +1,7 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div class="operating-box-group">
+      <div>
         <div class="operating-box">
           <dl class="dl-item">
             <dt>项目</dt>
@@ -11,6 +11,7 @@
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
                 @change="changeProject"
+                style="width: 400px"
                 popper-class="tl-select-dropdown"
                 class="tl-select has-bg"
               >
@@ -23,8 +24,6 @@
               </el-select>
             </dd>
           </dl>
-        </div>
-        <div class="operating-box">
           <dl class="dl-item">
             <dt>提交人</dt>
             <dd>
@@ -48,6 +47,8 @@
               </el-select>
             </dd>
           </dl>
+        </div>
+        <div class="operating-box">
           <!-- <dl class="dl-item">
 
             <dd>

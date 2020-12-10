@@ -53,7 +53,7 @@
                 label="姓名"
                 min-width="140"
               ></el-table-column>
-              <el-table-column prop="level" label="级别" min-width="140">
+              <el-table-column prop="level" label="级别 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
                    :key="scope.$index"
@@ -82,7 +82,7 @@
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column prop="funcName" label="职能" min-width="140">
+              <el-table-column prop="funcName" label="职能 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
                    :key="scope.$index"
@@ -113,7 +113,7 @@
               </el-table-column>
               <el-table-column
                 prop="companyName"
-                label="所属公司"
+                label="所属公司 *"
                 min-width="140"
               >
                 <template slot-scope="scope">

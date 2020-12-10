@@ -53,7 +53,7 @@
                   CONST.WEEKLYEMOTION[scope.row.weeklyEmotion]
                 }}</span
               >
-              <span v-else>未填写：--</span>
+              <span v-else>--</span>
             </template>
           </el-table-column>
           <el-table-column label="提交时间">
