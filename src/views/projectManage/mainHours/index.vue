@@ -48,12 +48,12 @@
               </el-select>
             </dd>
           </dl>
-         <!-- <dl class="dl-item">
+          <dl class="dl-item">
 
             <dd>
            <el-button type="primary" class="tl-btn amt-bg-slip" @click="$router.push('/HoursJoin')">工时调入</el-button>
             </dd>
-          </dl> -->
+          </dl>
         </div>
       </div>
     </div>
@@ -249,6 +249,8 @@ export default {
       this.server.projectUserTimeList({
         projectId: this.formData.projectId,
         userId: this.userId,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
       }).then((res) => {
         this.tableData = res.data.content;
         this.total = res.data.total;
