@@ -52,22 +52,19 @@
           </dd>
         </dl>
         <div>
-          <span>评定规则</span>
-          <el-select
-            v-model.trim="searchForm.ruleId"
-            placeholder="添加评定规则"
-            :popper-append-to-body="false"
-            popper-class="tl-select-dropdown"
-            class="tl-select"
-            @change="addAmount"
-          >
-            <el-option
-              v-for="item in ruleList"
-              :key="item.ruleId"
-              :label="item.ruleName"
-              :value="item.ruleId"
-            ></el-option>
-          </el-select>
+          <el-dropdown @command="addAmount">
+            <span class="el-dropdown-link">
+              添加评定规则<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="item in ruleList"
+                :key="item.ruleId"
+                :command="item.ruleId"
+                >{{ item.ruleName }}</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -83,9 +80,13 @@
           :key="item.periodRuleDetailId"
           class="layout-flex dd-margin"
         >
-          {{ item.value + "（" + item.applyValue + "个）" }}
+          {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
         </dd>
-        <dd><el-button type="text">删除</el-button></dd>
+        <dd>
+          <el-button @click="deleteRule(amountData.periodRuleId)" type="text"
+            >删除</el-button
+          >
+        </dd>
         <dd>
           <el-button type="text" @click="updateAmount(amountData)"
             >修改</el-button
@@ -113,7 +114,7 @@
               prop="userName"
               min-width="150px"
             ></el-table-column>
-            <el-table-column label="奖金系数" align="left" min-width="200px">
+            <!-- <el-table-column label="奖金系数" align="left" min-width="200px">
               <template slot-scope="scope">
                 <span
                   v-for="(item, index) in scope.row.ruleDetailList"
@@ -125,21 +126,17 @@
                   }}
                 </span>
               </template></el-table-column
-            >
+            > -->
             <el-table-column
-              label="成员等级系数"
+              v-for="column in colums"
+              :key="column.name"
+              :label="column.label"
               align="left"
               min-width="200px"
             >
               <template slot-scope="scope">
-                <span
-                  v-for="(item, index) in scope.row.ruleDetailList"
-                  :key="item.ruleId"
-                >
-                  {{ item.value + item.unit
-                  }}{{
-                    scope.row.ruleDetailList.length - 1 != index ? "、" : ""
-                  }}
+                <span>
+                  {{ scope.row.name }}
                 </span>
               </template></el-table-column
             >
@@ -153,7 +150,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  @click="addOrEditAmount(scope.row)"
+                  @click="allocateAmount(scope.row)"
                   size="small"
                 >
                   设置</el-button
@@ -169,15 +166,24 @@
       v-if="showDialog"
       :showDialog.sync="showDialog"
       :server="server"
-      :rowData="rowData"
-      @refreshPage="searchList"
+      @refreshRule="refreshRule"
     ></tl-create-evaluate>
+    <tl-allocate-amount
+      ref="allocateAmount"
+      v-if="showAllocateDialog"
+      :showAllocateDialog.sync="showAllocateDialog"
+      :server="server"
+      :rowData="rowData"
+      :amountDataList="amountDataList"
+      @refreshPage="searchList"
+    ></tl-allocate-amount>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import addOrEditAmount from './components/addOrEditAmount';
+import allocateAmount from './components/allocateAmount';
 import Server from './server';
 
 const server = new Server();
@@ -186,6 +192,7 @@ export default {
   name: '',
   components: {
     'tl-create-evaluate': addOrEditAmount,
+    'tl-allocate-amount': allocateAmount,
   },
   props: {},
   data() {
@@ -196,6 +203,7 @@ export default {
       ruleList: [],
       orgData: [],
       showDialog: false,
+      showAllocateDialog: false,
       rowData: {},
       periodList: [],
       searchForm: {
@@ -206,7 +214,6 @@ export default {
       orgIdList: [],
       treeData: [],
       amountDataList: [],
-
     };
   },
   created() { this.init(); },
@@ -220,7 +227,6 @@ export default {
     init() {
       // 自己团队还要判断是否开发周报么?
       this.searchForm.orgId = this.userInfo.orgId;
-
       this.getRuleList();
       this.getOkrCycleList();
       this.getOrgTree();
@@ -233,6 +239,22 @@ export default {
         this.loading = false;
         if (res.code == 200) {
           this.orgData = res.data.rows;
+          this.colums = res.data.colums;
+          this.colums.forEach((column) => {
+            this.orgData.forEach((rowData) => {
+              const detailList = JSON.parse(rowData.detail);
+              debugger;
+              //  获取key值
+              for (const key in rowData) {
+                if (rowData.hasOwnProperty(key)) {
+                  if (key == column.name) {
+                    // rowData[key] =
+                  }
+                }
+              }
+            // 匹配key值
+            });
+          });
         }
       });
     },
@@ -315,6 +337,18 @@ export default {
       this.$refs.cascader.dropDownVisible = false;
     },
     addAmount(ruleId) {
+      this.searchForm.ruleId = ruleId;
+      this.amountDataList.forEach((element) => {
+        if (element.ruleId == ruleId) {
+          this.updateAmount(element);
+        }
+      });
+      for (let i = 0; i < this.amountDataList.length; i += 1) {
+        if (this.amountDataList[i].ruleId == ruleId) {
+          this.updateAmount(this.amountDataList[i]);
+          return;
+        }
+      }
       let selectedRule = {};
       this.ruleList.forEach((rule) => {
         if (rule.ruleId == ruleId) {
@@ -331,6 +365,27 @@ export default {
       this.$nextTick(() => {
         this.$refs.addOrEditAmount.show(data, this.searchForm, this.userInfo.tenantId);
       });
+    },
+    allocateAmount(data) {
+      this.rowData = data;
+
+      this.showAllocateDialog = true;
+      this.$nextTick(() => {
+        this.$refs.allocateAmount.show();
+      });
+    },
+    deleteRule(periodRuleId) {
+      this.$xconfirm({ title: '确认删除', content: '' }).then(() => {
+        this.server.deleteRule({ periodRuleId }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('删除成功');
+            this.getAmountData();
+          }
+        });
+      });
+    },
+    refreshRule() {
+      this.getAmountData();
     },
   },
   watch: {

@@ -26,4 +26,14 @@ export default class Server extends ServerBase {
   getOrg(param) {
     return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
   }
+
+  // 删除规则
+  deleteRule(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/periodRule/remove', param);
+  }
+
+  // 查询可分配数据
+  getRemainAmountList(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/periodRule/remove', param);
+  }
 }

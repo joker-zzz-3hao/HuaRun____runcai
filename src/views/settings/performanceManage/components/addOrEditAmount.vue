@@ -77,6 +77,7 @@ export default {
       this.selectedRule = { ...selectedRule };
       if (selectedRule.periodRuleId) {
         this.formData.ruleId = selectedRule.ruleId;
+        this.formData.periodRuleId = selectedRule.periodRuleId;
         this.selectedRule.ruleDetailList = [...selectedRule.periodRuleDetailList];
       } else {
         this.formData.ruleId = searchForm.ruleId;
@@ -98,15 +99,29 @@ export default {
     },
     submit() {
       this.formData.applyType = 1;
-      this.selectedRule.ruleDetailList.forEach((item) => {
-        this.formData.periodRuleDetailList.push({
-          applyValue: item.applyValue,
-          ruleDetailId: item.ruleDetailId,
+      // 编辑
+      if (this.selectedRule.periodRuleId) {
+        this.selectedRule.ruleDetailList.forEach((item) => {
+          this.formData.periodRuleDetailList.push({
+            applyValue: item.applyValue,
+            ruleDetailId: item.ruleDetailId,
+            periodRuleId: item.periodRuleId,
+            periodRuleDetailId: item.periodRuleDetailId,
+          });
         });
-      });
+      } else { // 新增
+        this.selectedRule.ruleDetailList.forEach((item) => {
+          this.formData.periodRuleDetailList.push({
+            applyValue: item.applyValue,
+            ruleDetailId: item.ruleDetailId,
+          });
+        });
+      }
       this.server.addOrUpdateAmount([this.formData]).then((res) => {
         if (res.code == 200) {
-          console.log(res);
+          this.$message.success('处理成功');
+          this.$emit('refreshRule');
+          this.close();
         }
       });
     },
