@@ -142,7 +142,7 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  :disabled="scope.row.pendingApprovalTimeSum == 0"
+
                   @click="goTo(scope.row)"
                   type="text"
                   class="tl-btn"
@@ -258,6 +258,7 @@ export default {
     },
     changeProject() {
       sessionStorage.setItem('projectId', this.formData.projectId);
+      this.userId = '';
       this.timeSheetList();
       this.summaryList();
       this.searchList();
