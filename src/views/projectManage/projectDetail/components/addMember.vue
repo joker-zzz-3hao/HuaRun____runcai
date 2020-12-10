@@ -13,7 +13,8 @@
       <dl class="layout-rows">
         <dd>
           <el-button plain @click="addDotted" class="tl-btn amt-border-slip"
-            >选择成员<span class="lines"></span
+            ><i class="el-icon-plus"></i><em>选择成员</em
+            ><span class="lines"></span
           ></el-button>
           <!-- <el-select
             v-model="keyword"
