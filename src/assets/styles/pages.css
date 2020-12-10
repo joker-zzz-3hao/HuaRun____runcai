@@ -5916,12 +5916,18 @@
   color: #5b84f7;
 }
 
-.project-description .is-ongoing {
+.project-description .is-ongoing,
+.project-description .is-over {
   padding: 0 5px;
   border: 1px solid #ffbc20;
   font-size: 12px;
   border-radius: 2px;
   color: #ffbc20;
+}
+
+.project-description .is-over {
+  border-color: #acb6bf;
+  color: #acb6bf;
 }
 
 .project-members .card-title {

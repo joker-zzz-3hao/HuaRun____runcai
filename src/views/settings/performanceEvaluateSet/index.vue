@@ -1,13 +1,15 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月01日 10:34:43
-  备注：
--->
 <template>
-  <div>
+  <div class="performance-evaluation">
     <div class="operating-area">
-      <el-button @click="addOrEditEvaluate()">添加评定</el-button>
+      <div class="operating-box">
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          @click="addOrEditEvaluate()"
+          class="tl-btn amt-bg-slip"
+          >添加绩效评定</el-button
+        >
+      </div>
     </div>
     <div class="cont-area">
       <crcloud-table :isPage="false" @searchList="searchList">
@@ -16,6 +18,7 @@
             ref="performanceEvaluate"
             v-loading="loading"
             :data="evaluateData"
+            class="tl-table"
           >
             <el-table-column
               label="评定方式"
@@ -77,15 +80,15 @@
             <el-table-column
               label="操作"
               align="left"
-              width="120px"
+              width="140px"
               fixed="right"
             >
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.status > 0"
                   type="text"
+                  class="tl-btn"
                   @click="addOrEditEvaluate(scope.row)"
-                  size="small"
                 >
                   详情</el-button
                 >
@@ -96,19 +99,13 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button
-                    type="text"
-                    style="color: #9e9e9e; cursor: default"
-                    size="small"
-                  >
-                    编辑</el-button
-                  >
+                  <el-button type="text" class="tl-btn"> 编辑</el-button>
                 </el-tooltip>
                 <el-button
                   v-else
                   type="text"
+                  class="tl-btn"
                   @click="addOrEditEvaluate(scope.row)"
-                  size="small"
                 >
                   编辑</el-button
                 >
@@ -119,18 +116,12 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button
-                    type="text"
-                    style="color: #9e9e9e; cursor: default"
-                    size="small"
-                  >
-                    删除</el-button
-                  >
+                  <el-button type="text" class="tl-btn"> 删除</el-button>
                 </el-tooltip>
                 <el-button
                   v-else
                   type="text"
-                  size="small"
+                  class="tl-btn"
                   :disabled="false"
                   @click="removeEvaluate(scope.row)"
                   >删除</el-button
