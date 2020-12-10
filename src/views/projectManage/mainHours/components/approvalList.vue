@@ -146,11 +146,13 @@
                   class="item"
                   effect="dark"
                   :content="scope.row.workDesc"
+                  v-if="scope.row.workDesc"
                   placement="top"
                 >
                   {{ scope.row.workDesc }}
-                  <span>{{ GetLength(scope.row.workDesc, 46) || "--" }}</span>
+                  <span>{{ GetLength(scope.row.workDesc, 46) }}</span>
                 </el-tooltip>
+                <span v-else>--</span>
               </template>
             </el-table-column>
 
