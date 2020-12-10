@@ -122,8 +122,13 @@ export default {
   computed: {},
   created() {
     this.$busOn('resetScroll', () => {
-      // this.$refs.myScrollbar.wrap.scrollTop = 100;
-      console.log('zaiconsole', this.$refs.myScrollbar.wrap);
+      const div = this.$refs.myScrollbar.wrap;
+      this.$nextTick(() => {
+        // clientHeight scrollHeight
+        div.scrollTop = div.scrollHeight / 2;
+        // div.scrollTo({ behavior: 'smooth', top: div.scrollHeight });
+        console.log('zaiconsole', div.scrollHeight, this.$refs.myScrollbar);
+      });
     });
   },
   mounted() {
