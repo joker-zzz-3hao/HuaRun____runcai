@@ -259,6 +259,7 @@ export default {
           orgId: item.orgId,
           parentId: item.orgId,
           userAccount: item.userAccount,
+          orgName: item.orgName,
           type: 'USER',
         }));
       });

@@ -340,6 +340,7 @@ export default {
           this.server.addProjectUser(params).then((res) => {
             this.commitLoading = false;
             if (res.code == '200') {
+              this.$message.success('添加成功');
               this.visible = false;
               this.$emit('addSuccess');
             }
