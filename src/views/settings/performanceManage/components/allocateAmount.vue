@@ -17,22 +17,21 @@
       <dd>
         <el-select
           v-model="periodRuleId"
-          placeholder="请选择目标周期"
           :popper-append-to-body="false"
           popper-class="tl-select-dropdown"
           class="tl-select"
           @change="dataChange"
           ><el-option
-            v-for="item in amountDataList"
+            v-for="item in amountDataListCopy"
             :key="item.periodRuleId"
             :label="item.ruleName"
             :value="item.periodRuleId"
           ></el-option
         ></el-select>
         <dl class="layout-flex">
-          <dt>当前剩余可分配'{{ amountData.ruleName }}'数量：</dt>
+          <dt>当前剩余可分配'{{ remainAmount.ruleName }}'数量：</dt>
           <dd
-            v-for="item in remainAmountList"
+            v-for="item in remainAmount.periodRuleDetailList"
             :key="item.periodRuleDetailId"
             class="layout-flex dd-margin"
           >
@@ -48,7 +47,13 @@
             class="layout-flex dd-margin"
           >
             <span>{{ item.value + item.unit }}</span
-            ><el-input v-model="item.applyValue"></el-input><span>个</span>
+            ><el-input
+              v-model="item.applyValue"
+              @input="inputChange(item)"
+              @blur="inputChange(item)"
+            ></el-input
+            ><span>个</span>
+            <span v-if="item.showError">{{ item.errorText }}</span>
           </dd>
         </dl>
       </dd>
@@ -96,6 +101,12 @@ export default {
         return [];
       },
     },
+    periodId: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -110,7 +121,9 @@ export default {
         ruleName: '',
         periodRuleDetailList: [],
       },
-      remainAmountList: [],
+      remainAmount: {},
+      amountDataListCopy: [],
+      detailList: [],
     };
   },
   created() { },
@@ -118,49 +131,105 @@ export default {
   computed: {},
   methods: {
     init() {
+      this.amountDataListCopy = [].concat(this.amountDataList);
       this.title = `分配绩效名额（${this.rowData.orgName}）`;
-      this.periodRuleId = this.amountDataList[0].periodRuleId;
-      this.setamountList(this.periodRuleId);
-      // this.getRemainAmountList();
+      this.periodRuleId = this.amountDataListCopy[0].periodRuleId;
+      this.getUnApplyNumber();
+      // 编辑
+      if (this.rowData.detail) {
+        this.setInitData(this.rowData.detail);
+      } else { // 新分配
+        this.setamountList(this.periodRuleId);
+      }
     },
-    getRemainAmountList() {
-      this.server.getRemainAmountList().then((res) => {
-        if (res.code == 200) {
-          debugger;
-        }
-      });
-    },
-    dataChange(periodRuleId) {
-      this.setamountList(periodRuleId);
-    },
-    setamountList(periodRuleId) {
-      this.amountDataList.forEach((element) => {
-        if (element.periodRuleId == periodRuleId) {
-          this.amountData = element;
-          // 如果非编辑状态
-          this.amountData.periodRuleDetailList.forEach((data) => {
-            data.applyValue = '';
+    setInitData(detailData) {
+      this.detailList = JSON.parse(detailData);
+      console.log(this.detailList);
+      this.detailList.forEach((detail) => {
+        if (detail.sourcePeriodRuleId == this.periodRuleId) { // 列数据跟下拉框数据匹配
+          detail.periodRuleDetailList.forEach((item) => {
+            this.amountDataListCopy.forEach((element) => {
+              if (element.periodRuleId == this.periodRuleId) { // 设置数量数据与下拉框选中项匹配
+                this.amountData = { ...element };
+                this.amountData.periodRuleDetailList.forEach((data) => {
+                  if (item.periodRuleDetailId == data.periodRuleDetailId) { // 已设置的数据赋值给输入框
+                    data.applyValue = item.applyValue || 0;// 已分配的数量赋值
+                    data.showError = false;
+                    data.errorText = '';
+                  }
+                });
+              }
+            });
           });
         }
       });
     },
-    show(selectedRule, searchForm, tenantId) {
-      // this.amountData.periodId = searchForm.periodId;
-      // this.amountData.applyId = tenantId;
-      // console.log(selectedRule);
-      // this.selectedRule = { ...selectedRule };
-      // if (selectedRule.periodRuleId) {
-      //   this.amountData.ruleId = selectedRule.ruleId;
-      //   this.selectedRule.ruleDetailList = [...selectedRule.periodRuleDetailList];
-      // } else {
-      //   this.amountData.ruleId = searchForm.ruleId;
-      //   this.selectedRule.ruleDetailList.forEach((item) => {
-      //     this.$set(item, 'applyValue', '');
-      //   });
-      // }
+    getUnApplyNumber() {
+      this.server.getUnApplyNumber({
+        periodRuleId: this.periodRuleId,
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          // eslint-disable-next-line prefer-destructuring
+          this.remainAmount = res.data[0];
+        }
+      });
+    },
+    dataChange(periodRuleId) {
+      this.periodRuleId = periodRuleId;
+      if (this.rowData.detail) {
+        this.setInitData(this.rowData.detail);
+      } else { // 新分配
+        this.setamountList(this.periodRuleId);
+      }
+      this.getUnApplyNumber();
+    },
+    setamountList(periodRuleId) {
+      this.amountDataListCopy.forEach((element) => {
+        if (element.periodRuleId == periodRuleId) {
+          this.amountData = { ...element };
+          // 如果非编辑状态
+          this.amountData.periodRuleDetailList.forEach((data) => {
+            data.applyValue = 0;
+            data.showError = false;
+            data.errorText = '';
+          });
+        }
+      });
+    },
+    show() {
       this.$nextTick(() => {
         this.visible = true;
       });
+      this.$forceUpdate();
+    },
+    inputChange(amountItem) {
+      // 校验
+
+      // this.amountData.periodRuleDetailList；this.remainAmount.periodRuleDetailList
+      this.amountData.periodRuleDetailList.forEach((element1) => {
+        if (element1.periodRuleDetailId == amountItem.periodRuleDetailId) {
+          this.remainAmount.periodRuleDetailList.forEach((element2) => {
+            if (element2.periodRuleDetailId == amountItem.periodRuleDetailId) {
+              // // 2、非空、数字
+              // if (!this.hasValue(amountItem.applyValue)) {
+              //   element1.showError = true;
+              //   element1.errorText = '请';
+              // }
+
+              // 1、分配的数值大小，不能大于剩余可用数量
+              if (amountItem.applyValue > element2.applyValue) {
+                element1.showError = true;
+                element1.errorText = '数量不能大于剩余数量';
+              } else {
+                element1.showError = false;
+                element1.errorText = '';
+              }
+            }
+          });
+        }
+      });
+
       this.$forceUpdate();
     },
     cancel() {
@@ -169,6 +238,9 @@ export default {
     close() {
       this.visible = false;
       this.$emit('update:showAllocateDialog', false);
+    },
+    validateForm() {
+      return true;
     },
     submit() {
       this.amountData.applyType = 2;// 类型：部门
@@ -195,12 +267,15 @@ export default {
       //   });
       // });
       // }
-
-      this.server.addOrUpdateAmount([this.amountData]).then((res) => {
-        if (res.code == 200) {
-          console.log(res);
-        }
-      });
+      if (this.validateForm()) {
+        this.server.addOrUpdateAmount([this.amountData]).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('成功');
+            this.$emit('refreshPage');
+            this.close();
+          }
+        });
+      }
     },
   },
   watch: {},

@@ -133,13 +133,14 @@
               :label="column.label"
               align="left"
               min-width="200px"
+              :prop="column.name"
             >
-              <template slot-scope="scope">
+              <!-- <template slot-scope="scope">
                 <span>
                   {{ scope.row.name }}
                 </span>
-              </template></el-table-column
-            >
+              </template> -->
+            </el-table-column>
 
             <el-table-column
               label="操作"
@@ -174,6 +175,7 @@
       :showAllocateDialog.sync="showAllocateDialog"
       :server="server"
       :rowData="rowData"
+      :periodId="searchForm.periodId"
       :amountDataList="amountDataList"
       @refreshPage="searchList"
     ></tl-allocate-amount>
@@ -240,21 +242,6 @@ export default {
         if (res.code == 200) {
           this.orgData = res.data.rows;
           this.colums = res.data.colums;
-          this.colums.forEach((column) => {
-            this.orgData.forEach((rowData) => {
-              const detailList = JSON.parse(rowData.detail);
-              debugger;
-              //  获取key值
-              for (const key in rowData) {
-                if (rowData.hasOwnProperty(key)) {
-                  if (key == column.name) {
-                    // rowData[key] =
-                  }
-                }
-              }
-            // 匹配key值
-            });
-          });
         }
       });
     },
@@ -367,8 +354,7 @@ export default {
       });
     },
     allocateAmount(data) {
-      this.rowData = data;
-
+      this.rowData = JSON.parse(JSON.stringify(data));
       this.showAllocateDialog = true;
       this.$nextTick(() => {
         this.$refs.allocateAmount.show();

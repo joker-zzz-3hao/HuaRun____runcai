@@ -32,8 +32,8 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/assessment/periodRule/remove', param);
   }
 
-  // 查询可分配数据
-  getRemainAmountList(param) {
-    return this._ajaxPost('gateway/talent-okr/assessment/periodRule/remove', param);
+  // 查询未分配数量
+  getUnApplyNumber(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/periodRule/unApplyNumber', param);
   }
 }
