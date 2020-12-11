@@ -1,45 +1,8 @@
 <template>
-  <div class="working-hours">
+  <div class="working-hours approval-list">
     <div class="operating-area">
-      <div class="operating-box-group">
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>项目</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-input
-                maxlength="64"
-                v-model="keyWord"
-                placeholder="工作项,工作内容"
-                class="tl-input-search"
-              >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-              </el-input>
-              <el-button plain class="tl-btn light" @click="searchList">
-                搜索
-              </el-button>
-            </dd>
-          </dl>
-        </div>
-        <div class="operating-box">
+      <div class="operating-box">
+        <div class="dl-item-group">
           <dl class="dl-item">
             <dt>审批状态</dt>
             <dd>
@@ -62,24 +25,28 @@
               </el-select>
             </dd>
           </dl>
-
           <dl class="dl-item">
             <dt>投入工时时间</dt>
-             <dd style="margin-right:20px">
-
-                <el-select v-model="selectType"  style="width: 100px" popper-class="tl-select-dropdown"
-                class="tl-select"   placeholder="请选择">
-    <el-option
-      v-for="item in CONST.APPROVAL_SELECT"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
+            <dd style="margin-right: 20px">
+              <el-select
+                v-model="selectType"
+                style="width: 130px"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in CONST.APPROVAL_SELECT"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </dd>
             <dd>
               <el-date-picker
-              v-if="selectType == 2"
+                v-if="selectType == 2"
                 v-model="weekLine"
                 type="daterange"
                 @change="changePick"
@@ -91,18 +58,37 @@
                 end-placeholder="结束日期"
                 class="tl-range-editor"
                 popper-class="tl-range-popper"
-
               >
               </el-date-picker>
-               <tl-element-week v-else @weekSelect="weekSelect"></tl-element-week>
+              <tl-element-week
+                v-else
+                @weekSelect="weekSelect"
+              ></tl-element-week>
             </dd>
           </dl>
-
+          <dl class="dl-item">
+            <dd>
+              <el-input
+                maxlength="64"
+                v-model="keyWord"
+                placeholder="工作项,工作内容"
+                class="tl-input-search"
+              >
+                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+              </el-input>
+              <el-button plain class="tl-btn light" @click="searchList">
+                搜索
+              </el-button>
+            </dd>
+          </dl>
         </div>
+        <el-button plain @click="back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
       </div>
     </div>
     <div class="cont-area">
-
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -132,20 +118,20 @@
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                  <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="scope.row.workDesc"
-                    placement="top"
-                  >
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="scope.row.workDesc"
+                  v-if="scope.row.workDesc"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
                   {{ scope.row.workDesc }}
-                  <span>{{
-                    GetLength(scope.row.workDesc,46) || "--"
-                  }}</span>
+                  <span>{{ GetLength(scope.row.workDesc, 46) }}</span>
                 </el-tooltip>
+                <span v-else>--</span>
               </template>
             </el-table-column>
-
             <el-table-column label="投入工时" min-width="180px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
@@ -215,7 +201,9 @@
                           >取消</el-button
                         > -->
                       </div>
-                      <el-button type="text" slot="reference">修改</el-button>
+                      <el-button type="text" class="tl-btn" slot="reference"
+                        >修改</el-button
+                      >
                     </el-popover>
                   </div>
 
@@ -224,8 +212,11 @@
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
                     placement="top"
+                    popper-class="tl-tooltip-popper"
                   >
-                    <div>{{ GetLength(changeListDate(scope.row.arrHide),9) }}</div>
+                    <div>
+                      {{ GetLength(changeListDate(scope.row.arrHide), 9) }}
+                    </div>
                   </el-tooltip>
                 </div>
                 <div
@@ -233,7 +224,12 @@
                   class="flex-start"
                 >
                   <em>{{ scope.row.arrHide.length * 0.5 }}天 </em>
-                  <el-tooltip class="item" effect="dark" placement="top">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    placement="top"
+                    popper-class="tl-tooltip-popper"
+                  >
                     <div slot="content">
                       <div>
                         填入工时：{{
@@ -264,13 +260,16 @@
                </el-table-column> -->
             <el-table-column label="工时日期" min-width="200px">
               <template slot-scope="scope">
-               <el-tooltip
-                    class="item"
-                    effect="dark"
-                    :content="weekWorkListCheck(scope.row)"
-                    placement="top"
-                  >
-                  <span>{{  GetLength(weekWorkListCheck(scope.row),13) || "--" }}</span>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="weekWorkListCheck(scope.row)"
+                  placement="top"
+                  popper-class="tl-tooltip-popper"
+                >
+                  <span>{{
+                    GetLength(weekWorkListCheck(scope.row), 13) || "--"
+                  }}</span>
                   <!-- <span slot="reference">{{
                      GetLength(weekWorkListCheck(scope.row),9) || "--"
                   }}</span> -->
@@ -419,7 +418,7 @@ export default {
   data() {
     return {
       weekLine: [],
-      selectType: 2,
+      selectType: 1,
       userId: '',
       monDayList: [
         '周一',
@@ -484,13 +483,9 @@ export default {
       if (res.code == '200') {
         this.projectList = res.data.content;
         if (this.projectList.length > 0) {
-        //  this.formData.projectId = this.projectList[0].projectId;
-          const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          console.log(list);
-          if (list.length > 0) {
-            this.formData.projectId = list[0].projectId;
-          } else {
-            this.formData.projectId = this.projectList[0].projectId;
+          this.formData.projectId = this.projectList[0].projectId;
+          if (this.$route.query.projectId) {
+            this.formData.projectId = this.$route.query.projectId;
           }
 
           this.summaryList();
@@ -500,6 +495,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.push({ name: 'mainHours', query: { projectId: this.formData.projectId } });
+    },
     GetLength(text, max) {
       if (this.getBLen(text) >= max) {
         const str = JSON.parse(JSON.stringify(text));

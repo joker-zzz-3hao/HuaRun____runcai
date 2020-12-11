@@ -6,7 +6,6 @@
     :before-close="close"
     :title="info.projectNameCn"
     :close-on-click-modal="false"
-    class="tl-dialog"
     width="900px"
   >
 

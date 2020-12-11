@@ -244,6 +244,7 @@
       :server="server"
       :codes="codes"
       @addSuccess="addSuccess"
+      :DisuserId="DisuserId"
     ></tl-add-member>
     <tl-check-manager
       ref="checkManager"
@@ -279,6 +280,7 @@ export default {
       codes: [],
       pWidth: '',
       emWidth: '',
+      DisuserId: {},
     };
   },
   components: {
@@ -424,9 +426,12 @@ export default {
       }).then((res) => {
         if (res.code == '200') {
           this.baseInfo = res.data;
+
           this.isManage = false;
+          this.DisuserId = {};
           if (this.baseInfo.projectUserVoList) {
             this.baseInfo.projectUserVoList.forEach((item) => {
+              this.DisuserId[item.userId] = true;
               if (item.projectUserType == '1') {
                 if (item.userId == this.userInfo.userId) {
                   this.isManage = true;
@@ -452,7 +457,10 @@ export default {
       handler() {
         let flag = false;
         if (this.baseInfo.projectUserVoList.length > 0) {
+          console.log(this.baseInfo.projectUserVoList);
+          this.DisuserId = {};
           this.baseInfo.projectUserVoList.forEach((item) => {
+            this.DisuserId[item.userId] = true;
             if (this.baseInfo.projectManagerCode.toLocaleLowerCase() == item.userAccount.toLocaleLowerCase()) {
               if (this.hasValue(item.userCompany) && this.hasValue(item.userLevel)) {
                 flag = true;
