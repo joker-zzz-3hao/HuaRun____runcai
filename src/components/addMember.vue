@@ -22,6 +22,7 @@
           @selectUserCheck="selectUserCheck"
           :objectType="objectType"
           :userType="userType"
+          :DisuserId="DisuserId"
           @filterMembers="filterMembers"
         ></tl-select-member>
       </el-form-item>
@@ -86,6 +87,12 @@ export default {
     projectManagerList: {
       type: Array,
       required: false,
+    },
+    DisuserId: {
+      type: Object,
+      required: false,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: {},
     },
   },
 

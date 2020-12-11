@@ -1,17 +1,17 @@
 <template>
-
-    <el-date-picker
-      :clearable="true"
-      v-model="queryParam.value"
-      :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
-      @change="weekChange"
-      value-format="yyyy-M-d"
-      size="medium"
-      type="week"
-      placeholder=" 请选择周"
-      :picker-options="{'firstDayOfWeek': 1}"
-    ></el-date-picker>
-
+  <el-date-picker
+    :clearable="true"
+    v-model="queryParam.value"
+    :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
+    @change="weekChange"
+    value-format="yyyy/M/d"
+    size="medium"
+    type="week"
+    placeholder=" 请选择周"
+    :picker-options="{ firstDayOfWeek: 1 }"
+    popper-class="tl-date-popper"
+    class="tl-date-editor"
+  ></el-date-picker>
 </template>
 
 <script>
@@ -41,30 +41,18 @@ export default {
       if (day < 10) {
         day = `0${day}`;
       }
-      const nowDay = `${year}-${month}-${day}`;
+      const nowDay = `${year}/${month}/${day}`;
       this.queryParam.week = this.getWeekInMonth(new Date(nowDay));
-      this.queryParam.defValue = `${year}-${month}-${day}`;
+      this.queryParam.defValue = `${year}/${month}/${day}`;
     },
     weekChange(val) {
       console.log(val);
       if (val) {
         this.getDay(val);
         // eslint-disable-next-line no-unused-vars
-        const arr = val.split('-');
+        const arr = val.split('/');
         this.queryParam.week = this.getWeekInMonth(new Date(val));
-        const oneDate = 24 * 60 * 60 * 1000;
-        const valueTime = new Date(val).getTime() - oneDate;
-        const valueTimeEnd = (new Date(val).getTime() - oneDate) + 6 * oneDate;
-        const startTime = this.dateFormat('YYYY-mm-dd', new Date(valueTime));
-        const endTime = this.dateFormat('YYYY-mm-dd', new Date(valueTimeEnd));
-        this.queryParam.value = this.queryParam.defValue;
-        this.$emit('weekSelect', startTime, endTime);
-      } else {
-        this.$emit('weekSelect', '', '');
-      }
-    },
     // 根据日期判断是月的第几周
-    getWeekInMonth(t) {
       if (t == undefined || t == '' || t == null) {
         t = new Date();
       } else {
