@@ -66,7 +66,9 @@
               ></tl-element-week>
             </dd>
           </dl>
-          <dl class="dl-item" style="">
+        </div>
+        <div class="dl-item-group">
+          <dl class="dl-item">
             <dd>
               <el-input
                 maxlength="64"
@@ -81,11 +83,11 @@
               </el-button>
             </dd>
           </dl>
+          <el-button plain @click="back()" class="tl-btn amt-border-slip">
+            返回
+            <span class="lines"></span>
+          </el-button>
         </div>
-        <el-button plain @click="back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
       </div>
     </div>
     <div class="cont-area">

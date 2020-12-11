@@ -6187,6 +6187,12 @@
   align-items: center;
 }
 
+.approval-pop .text-desc {
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #acb6bf;
+}
+
 .approval-pop {
   padding: 0 20px 20px 20px;
 }
@@ -6199,6 +6205,10 @@
   flex: 1;
   display: flex;
   align-items: center;
+}
+
+.approval-list .dl-item-group:last-child {
+  flex: unset;
 }
 
 .approval-list .dl-item-group .tl-date-editor {
