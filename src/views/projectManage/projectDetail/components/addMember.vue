@@ -11,14 +11,11 @@
   >
     <div class="cont-area">
       <dl class="layout-rows">
-        <dt><em>成员</em></dt>
         <dd>
-               <el-button
-        type="primary"
-        @click="addDotted"
-        class="tl-btn amt-bg-slip"
-        >添加成员</el-button
-      >
+          <el-button plain @click="addDotted" class="tl-btn amt-border-slip"
+            ><i class="el-icon-plus"></i><em>选择成员</em
+            ><span class="lines"></span
+          ></el-button>
           <!-- <el-select
             v-model="keyword"
             placeholder="请输入成员姓名"
@@ -53,9 +50,10 @@
                 label="姓名"
                 min-width="140"
               ></el-table-column>
-              <el-table-column prop="level" label="级别" min-width="140">
+              <el-table-column prop="level" label="级别 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.level'"
                     :rules="[
                       {
@@ -81,9 +79,10 @@
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column prop="funcName" label="职能" min-width="140">
+              <el-table-column prop="funcName" label="职能 *" min-width="140">
                 <template slot-scope="scope">
                   <el-form-item
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.funcName'"
                     :rules="[
                       {
@@ -111,11 +110,12 @@
               </el-table-column>
               <el-table-column
                 prop="companyName"
-                label="所属公司"
+                label="所属公司 *"
                 min-width="140"
               >
                 <template slot-scope="scope">
                   <el-form-item
+                    :key="scope.$index"
                     :prop="'tableData.' + scope.$index + '.companyName'"
                     :rules="[
                       {
@@ -181,7 +181,7 @@
         >确定</el-button
       >
     </div>
-        <tl-add-member
+    <tl-add-member
       v-if="exist"
       :selectListed="selectListed"
       :exist.sync="exist"
@@ -190,6 +190,7 @@
       :userType="true"
       title="添加虚线汇报人"
       :rouleType="true"
+      :DisuserId="DisuserId"
       @submitFunctin="listRoleUser"
     ></tl-add-member>
   </el-dialog>
@@ -237,6 +238,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    DisuserId: {
+      type: Object,
+      default() {
+        return {};
       },
     },
   },
@@ -311,6 +318,10 @@ export default {
       this.keyword = '';
     },
     addMembers() {
+      if (this.dataForm.tableData.length == 0) {
+        this.$message.success('请添加成员');
+        return false;
+      }
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           const params = [];
@@ -330,12 +341,18 @@ export default {
           this.server.addProjectUser(params).then((res) => {
             this.commitLoading = false;
             if (res.code == '200') {
+              this.$message.success('添加成功');
               this.visible = false;
               this.$emit('addSuccess');
             }
           });
+        } else {
+          this.$message.success('请选择级别职能与公司');
         }
       });
+    },
+    closed() {
+      this.visible = false;
     },
     filterMembers(param) {
       // this.projectManagerList = [];

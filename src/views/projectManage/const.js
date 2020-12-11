@@ -138,8 +138,8 @@ const APPROVAL_STATUS_MAP = {
 };
 
 const APPROVAL_SELECT = [
-  { value: 1, label: '按周' },
-  { value: 2, label: '时间段' },
+  { value: 1, label: '按周期选择' },
+  { value: 2, label: '按日期选择' },
 ];
 
 const APPROVAL_STATUS_LIST = [

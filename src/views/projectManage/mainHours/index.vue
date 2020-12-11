@@ -1,7 +1,7 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div class="operating-box-group">
+      <div>
         <div class="operating-box">
           <dl class="dl-item">
             <dt>项目</dt>
@@ -11,20 +11,19 @@
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
                 @change="changeProject"
+                style="width: 400px"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option
                   v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
+                  :key="index"
                   :label="item.projectNameCn"
                   :value="item.projectId"
                 ></el-option>
               </el-select>
             </dd>
           </dl>
-        </div>
-        <div class="operating-box">
           <dl class="dl-item">
             <dt>提交人</dt>
             <dd>
@@ -35,12 +34,12 @@
                 style="width: 118px"
                 @change="searchList"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option label="全部" value=""> </el-option>
                 <el-option
-                  v-for="item in options"
-                  :key="item.userId"
+                  v-for="(item, index) in options"
+                  :key="index"
                   :label="item.userName"
                   :value="item.userId"
                 >
@@ -48,12 +47,14 @@
               </el-select>
             </dd>
           </dl>
-         <dl class="dl-item">
+        </div>
+        <div class="operating-box">
+          <!-- <dl class="dl-item">
 
             <dd>
            <el-button type="primary" class="tl-btn amt-bg-slip" @click="$router.push('/HoursJoin')">工时调入</el-button>
             </dd>
-          </dl>
+          </dl> -->
         </div>
       </div>
     </div>
@@ -82,23 +83,29 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table
-            :data="tableData"
-            class="tl-table"
-            @select="selectList"
-            @select-all="selectList"
-            row-key="sourceId"
-          >
-
+          <el-table :data="tableData" class="tl-table" row-key="index">
             <el-table-column prop="applyTime" label="提交人" min-width="130">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="已审批共计投入工时" prop="approvedTimeSum" min-width="200px">
+            <el-table-column
+              label="已审批共计投入工时"
+              prop="approvedTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.approvedTimeSum }} 天</span>
+              </template>
             </el-table-column>
-            <el-table-column label="待审批工时" prop="pendingApprovalTimeSum" min-width="200px">
-
+            <el-table-column
+              label="待审批工时"
+              prop="pendingApprovalTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
+              </template>
             </el-table-column>
 
             <!-- <el-table-column
@@ -116,7 +123,7 @@
 
             <el-table-column
               prop="submitTime"
-              label="最新审批时间"
+              label="最新提交时间"
               min-width="180"
             >
               <template slot-scope="scope">
@@ -136,17 +143,12 @@
               <template slot-scope="scope">
                 <el-button
 
-                  @click="$router.push({name:'approvalList',query:{userId:scope.row.userId}})"
+                  @click="goTo(scope.row)"
                   type="text"
                   class="tl-btn"
-                  >工时审批</el-button
+                  >工时管理</el-button
                 >
-                <!-- <el-button
-                  v-if="scope.row.approvalStatus == '2'"
-                  type="text"
-                  disabled
-                  >审批完成</el-button
-                > -->
+
               </template>
             </el-table-column>
           </el-table>
@@ -239,10 +241,15 @@ export default {
     this.projectPageList();
   },
   methods: {
+    goTo(row) {
+      this.$router.push({ name: 'approvalList', query: { userId: row.userId, projectId: this.formData.projectId } });
+    },
     searchList() {
       this.server.projectUserTimeList({
         projectId: this.formData.projectId,
         userId: this.userId,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
       }).then((res) => {
         this.tableData = res.data.content;
         this.total = res.data.total;
@@ -250,6 +257,8 @@ export default {
       });
     },
     changeProject() {
+      sessionStorage.setItem('projectId', this.formData.projectId);
+      this.userId = '';
       this.timeSheetList();
       this.summaryList();
       this.searchList();
@@ -290,8 +299,11 @@ export default {
             } else {
               this.formData.projectId = this.projectList[0].projectId;
             }
-
+            if (this.$route.query.projectId) {
+              this.formData.projectId = this.$route.query.projectId;
+            }
             this.timeSheetList();
+            this.summaryList();
             this.searchList();
           }
         }

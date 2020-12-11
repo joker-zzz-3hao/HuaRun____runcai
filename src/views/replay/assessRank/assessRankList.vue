@@ -29,10 +29,16 @@
         <em>{{ sortMsg.orgSum || 0 }}</em>
         <span>待复核</span>
         <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
-        <div>
-          <em>{{ sortMsg.ruleName }}</em>
-          <span>{{ sortMsg.ruleDetailContent }}</span>
-        </div>
+        <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
+          <dt>{{ rule.ruleName }}</dt>
+          <dd
+            v-for="item in rule.periodRuleDetailList"
+            :key="item.ruleDetailId"
+          >
+            <span>{{ item.value }}</span>
+            <em v-if="item.unit">（{{ item.unit }}）</em>
+          </dd>
+        </dl>
       </div>
       <div>
         <span>绩效复核状态</span>
@@ -191,6 +197,7 @@ export default {
       assessmentList: [],
       assessmentMsg: {},
       sortMsg: {},
+      ruleDetailContentList: [],
     };
   },
   mounted() {
@@ -200,18 +207,19 @@ export default {
   methods: {
     // 查询排名列表接口
     assessment() {
-      // this.server.assessment({
-      //   periodId: this.periodId,
-      // }).then((res) => {
-      //   if (res.code == 200) {
-      //     this.assessmentMsg = res.data;
-      //   }
-      // });
+      this.server.assessment({
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.assessmentMsg = res.data;
+        }
+      });
       this.server.querySort({
         periodId: this.periodId,
       }).then((res) => {
         if (res.code == 200) {
           this.sortMsg = res.data;
+          this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
           this.tableData = res.data.orgResultDetailMapList;
         }
       });

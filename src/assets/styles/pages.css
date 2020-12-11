@@ -1519,20 +1519,8 @@
   width: 230px;
 }
 
-.okr-maps .operating-area .tl-input .el-input__icon {
-  margin: 3px 0 0 0;
-}
-
-.okr-maps .operating-area .el-icon-search {
-  line-height: unset;
-  width: 18px;
-}
-
-.okr-maps .operating-area .el-icon-search:before {
-  font-size: 16px;
-}
-
-.okr-maps .operating-area .el-input .el-input__prefix {
+.okr-maps .operating-area .el-input .el-input__prefix,
+.okr-approval-list .operating-area .el-input .el-input__prefix {
   display: flex;
   align-items: center;
 }
@@ -1846,8 +1834,12 @@
   width: 37px;
   height: 21px;
   background: #f1f5f7;
-  color: #879099;
+  color: #879099; 
   cursor: default;
+}
+
+.undertake-maps .cont-area .department-info .is-plain span{
+  color: #879099 !important; 
 }
 
 .undertake-maps .cont-area .tag-kind .el-button.is-plain:hover {
@@ -6043,7 +6035,7 @@
   color: #acb6bf;
 }
 
-.working-hours {
+.working-hours.approval-list {
   margin-bottom: 86px;
   min-height: calc(100vh - 172px);
 }
@@ -6201,6 +6193,34 @@
 
 .approval-pop .week-day {
   margin: 0 30px 0 0;
+}
+
+.approval-list .dl-item-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.approval-list .dl-item-group .tl-date-editor {
+  margin: 0;
+}
+
+.approval-list .tl-table .el-table__row td:nth-child(4) .cell div > div > span {
+  margin: 0 0 0 16px;
+  padding: 0 5px 3px 5px;
+  background: #f0effe;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.approval-list .tl-table .el-table__row td:nth-child(4) .cell div > div > span .el-button--text span {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.approval-list .tl-table .el-table__row td:nth-child(4) .cell div .el-tooltip {
+  font-size: 12px;
+  color: #acb6bf;
 }
 
 /* msg-notice */
