@@ -251,7 +251,7 @@ import Server from '../../server';
 
 const server = new Server();
 export default {
-  name: 'home',
+  name: 'replayScoreKr',
   mixins: [validateMixin],
   props: {
     okrMain: {
@@ -360,7 +360,7 @@ export default {
             }
           });
         } else {
-          this.$message.error('您有必填项「复核得分」未填');
+          this.$message.error('您有必填项「复核得分」未填，请检查');
         }
       });
     },
@@ -368,6 +368,7 @@ export default {
     getFormPromise(form) {
       return new Promise((resolve) => {
         form.validate((res) => {
+          console.log('校验', res);
           resolve(res);
         });
       });
