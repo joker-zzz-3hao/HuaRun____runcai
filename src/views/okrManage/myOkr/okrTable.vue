@@ -59,11 +59,22 @@
         </el-table>
       </div>
     </crcloud-table>
+    <tl-okr-detail
+      v-if="detailExist"
+      :exist.sync="detailExist"
+      ref="okrdetail"
+      :server="server"
+      :okrId="okrId"
+      :CONST="CONST"
+      :showSupport="true"
+      :drawerTitle="drawerTitle"
+    ></tl-okr-detail>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
+import okrDetail from '@/components/okrDetail';
 import process from '@/components/process';
 import Server from './server';
 import CONST from './const';
@@ -79,10 +90,13 @@ export default {
       treeData: [],
       treeTableData: [],
       expands: [],
+      detailExist: false,
+      drawerTitle: 'OKR详情',
     };
   },
   components: {
     'tl-process': process,
+    'tl-okr-detail': okrDetail,
   },
   props: {
   },
@@ -97,12 +111,48 @@ export default {
     }),
   },
   methods: {
+    ...mapMutations('common', ['changeTestModel']),
     gotoView(row) {
-      console.log(row);
-      this.$emit('takeOvierview', row);
+      this.changeTestModel(false);
+      this.server.identity({
+        orgId: row.orgId,
+        user: row.userId,
+      }).then((res) => {
+        if (res.data.identityType == 'org') {
+          this.$router.push({
+            name: 'departleader',
+            query: {
+              id: row.orgId, userId: row.userId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'team') {
+          this.$router.push({
+            name: 'teamleader',
+            query: {
+              id: row.orgId, userId: row.userId,
+            },
+          });
+          return false;
+        }
+        if (res.data.identityType == 'person') {
+          this.$router.push({
+            name: 'grassStaff',
+            query: {
+              id: row.orgId, userId: row.userId,
+            },
+          });
+        }
+      });
     },
-    goDetail(okrid) {
-      this.$emit('showDetail', okrid);
+    goDetail(okrId) {
+      this.okrId = okrId;
+      this.drawerTitle = this.okrCycle.periodName;
+      this.detailExist = true;
+      this.$nextTick(() => {
+        this.$refs.okrdetail.showOkrDialog();
+      });
     },
     // 重新触发进度条计算
     expand(row, expanded) {

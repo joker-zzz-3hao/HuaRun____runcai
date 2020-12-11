@@ -19,26 +19,6 @@
           </div>
         </div>
         <div class="operating-box">
-          <dl class="dl-item" v-if="$route.name == 'okrTable'">
-            <dt>组织</dt>
-            <dd>
-              <el-cascader
-                v-model="orgFullIdList"
-                ref="cascader"
-                :options="departmentData"
-                :show-all-levels="false"
-                :props="{
-                  checkStrictly: true,
-                  value: 'orgId',
-                  label: 'orgName',
-                  children: 'children',
-                }"
-                @change="selectIdChange"
-                popper-class="tl-cascader-popper"
-                class="tl-cascader"
-              ></el-cascader>
-            </dd>
-          </dl>
           <dl class="dl-item">
             <dt>目标周期</dt>
             <dd>
@@ -60,6 +40,26 @@
                   :value="item.periodId"
                 ></el-option>
               </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item org-selete" v-if="$route.name == 'okrTable'">
+            <dt>组织</dt>
+            <dd>
+              <el-cascader
+                v-model="orgFullIdList"
+                ref="cascader"
+                :options="departmentData"
+                :show-all-levels="false"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'children',
+                }"
+                @change="selectIdChange"
+                popper-class="tl-cascader-popper"
+                class="tl-cascader"
+              ></el-cascader>
             </dd>
           </dl>
           <dl class="dl-item" v-if="currentIndex === 0">
