@@ -1,74 +1,80 @@
 <template>
-  <crcloud-table :isPage="false">
-    <div slot="tableContainer" class="table-container">
-      <el-table
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        border
-        row-key="orgId"
-        :data="treeData"
-        class="tl-table"
-        @expand-change="expand"
-      >
-        <el-table-column prop="orgName" label="名称" min-width="170">
-          <template slot-scope="scope">
-            <span class="can-click" @click="gotoView(scope.row)">{{
-              cutOrgName(scope.row.orgName)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="userName" label="负责人" width="120">
-          <template slot-scope="scope">
-            <span class="can-click" @click="gotoView(scope.row)">{{
-              scope.row.userName
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="periodName" label="周期" min-width="116">
-        </el-table-column>
-        <el-table-column prop="okrProgress" label="进度" width="180">
-          <template slot-scope="scope">
-            <tl-process
-              :ref="'process' + scope.row.orgId + scope.row.okrProgress"
-              :data="scope.row.okrProgress"
-            ></tl-process>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="okrDetailObjectKr"
-          label="目标（O）"
-          min-width="160"
+  <div class="maps-view-table">
+    <crcloud-table :isPage="false">
+      <div slot="tableContainer" class="table-container">
+        <el-table
+          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+          border
+          row-key="orgId"
+          :data="treeData"
+          class="tl-table"
+          @expand-change="expand"
         >
-          <template slot-scope="scope">
-            <span class="can-click" @click="goDetail(scope.row.okrId)">{{
-              scope.row.okrDetailObjectKr
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="krCount"
-          label="关键结果（KR）"
-          width="130"
-        ></el-table-column>
-        <el-table-column prop="status" label="状态" width="70">
-          <template slot-scope="scope">
-            <span>{{ CONST.TABLE_STATUS_MAP[scope.row.status] }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-  </crcloud-table>
+          <el-table-column prop="orgName" label="名称" min-width="170">
+            <template slot-scope="scope">
+              <span class="can-click" @click="gotoView(scope.row)">{{
+                cutOrgName(scope.row.orgName)
+              }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="userName" label="负责人" width="120">
+            <template slot-scope="scope">
+              <span class="can-click" @click="gotoView(scope.row)">{{
+                scope.row.userName
+              }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="periodName" label="周期" min-width="116">
+          </el-table-column>
+          <el-table-column prop="okrProgress" label="进度" width="180">
+            <template slot-scope="scope">
+              <tl-process
+                :ref="'process' + scope.row.orgId + scope.row.okrProgress"
+                :data="scope.row.okrProgress"
+              ></tl-process>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="okrDetailObjectKr"
+            label="目标（O）"
+            min-width="160"
+          >
+            <template slot-scope="scope">
+              <span class="can-click" @click="goDetail(scope.row.okrId)">{{
+                scope.row.okrDetailObjectKr
+              }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="krCount"
+            label="关键结果（KR）"
+            width="130"
+          ></el-table-column>
+          <el-table-column prop="status" label="状态" width="70">
+            <template slot-scope="scope">
+              <span>{{ CONST.TABLE_STATUS_MAP[scope.row.status] }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </crcloud-table>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import process from '@/components/process';
+import Server from './server';
 import CONST from './const';
+
+const server = new Server();
 
 export default {
   name: 'okrTable',
   data() {
     return {
       CONST,
+      server,
       treeData: [],
     };
   },
@@ -78,12 +84,12 @@ export default {
   props: {
   },
   mounted() {
-    this.getOkrTree();
   },
   computed: {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       okrCycle: (state) => state.okrCycle,
+      orgFullId: (state) => state.orgFullId,
     }),
   },
   methods: {
@@ -109,6 +115,7 @@ export default {
     },
     // 查询组织树
     getOkrTree() {
+      console.log('组织树', this.okrCycle.periodId, this.orgFullId);
       if (this.okrCycle.periodId && this.orgFullId) {
         this.treeTableData = [];
         this.loading = true;
@@ -149,6 +156,16 @@ export default {
       }
     },
   },
-  watch: {},
+  watch: {
+    okrCycle: {
+      handler(newVal) {
+        if (newVal.periodId) {
+          this.getOkrTree();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>

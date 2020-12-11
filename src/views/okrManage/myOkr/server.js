@@ -121,8 +121,18 @@ export default class Server extends ServerBase {
     return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
   }
 
-  // 查询组织树
+  // 查询okr树
   getOkrTree(param) {
     return this._ajaxPost(`gateway/talent-query/okr/query/okrTree?periodId=${param.periodId}&orgId=${param.orgId}`, param);
+  }
+
+  // 周期偏好列表查询
+  getOkrMapPeriod(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/getOkrMapPeriod', param);
+  }
+
+  // 查询组织
+  getOrgTable(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
 }
