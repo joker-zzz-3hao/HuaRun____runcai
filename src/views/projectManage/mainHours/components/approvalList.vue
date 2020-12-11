@@ -26,7 +26,7 @@
             </dd>
           </dl>
           <dl class="dl-item">
-            <dt>投入工时时间</dt>
+            <dt>筛选工作项</dt>
             <dd style="margin-right: 20px">
               <el-select
                 v-model="selectType"
@@ -66,7 +66,7 @@
               ></tl-element-week>
             </dd>
           </dl>
-          <dl class="dl-item">
+          <dl class="dl-item" style="">
             <dd>
               <el-input
                 maxlength="64"
@@ -114,7 +114,12 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="200">
+            <el-table-column label="工作项" prop="workContent" min-width="180px">
+              <template slot-scope="scope">
+                <span>
+                  {{GetLength(scope.row.workContent,15)}}
+                </span>
+                </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
@@ -127,7 +132,7 @@
                   popper-class="tl-tooltip-popper"
                 >
                   {{ scope.row.workDesc }}
-                  <span>{{ GetLength(scope.row.workDesc, 46) }}</span>
+                  <span>{{ GetLength(scope.row.workDesc, 15) }}</span>
                 </el-tooltip>
                 <span v-else>--</span>
               </template>
@@ -165,19 +170,25 @@
                           v-model="checkList"
                           :ref="'check' + index"
                         >
+
                           <el-checkbox
                             :label="item + '上午'"
                             :disabled="checkItem[item + '上午']"
                             class="tl-checkbox"
                             >上午</el-checkbox
                           >
+
                           <el-checkbox
                             :label="item + '下午'"
                             :disabled="checkItem[item + '下午']"
                             class="tl-checkbox"
                             >下午</el-checkbox
                           >
+
                         </el-checkbox-group>
+                      </div>
+                      <div class="text-desc">
+                        不能选择的日期已被其他工作项占用
                       </div>
                       <el-input
                         type="textarea"
@@ -194,12 +205,12 @@
                           @click="alertSelect(scope, true)"
                           >确认审批</el-button
                         >
-                        <!-- <el-button
+                        <el-button
                           plain
                           class="tl-btn amt-border-fadeout"
                           @click="close(scope)"
                           >取消</el-button
-                        > -->
+                        >
                       </div>
                       <el-button type="text" class="tl-btn" slot="reference"
                         >修改</el-button
@@ -207,7 +218,7 @@
                     </el-popover>
                   </div>
 
-                  <el-tooltip
+                  <!-- <el-tooltip
                     class="item"
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
@@ -217,7 +228,7 @@
                     <div>
                       {{ GetLength(changeListDate(scope.row.arrHide), 9) }}
                     </div>
-                  </el-tooltip>
+                  </el-tooltip> -->
                 </div>
                 <div
                   v-show="scope.row.approvalStatus == '2'"
@@ -330,13 +341,13 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="进度" min-width="180" prop="workProgress">
+            <!-- <el-table-column label="进度" min-width="180" prop="workProgress">
               <template slot-scope="scope">
                 <tl-process
                   :data="parseInt(scope.row.workProgress || 0, 10)"
                 ></tl-process>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <!-- <el-table-column
               prop="approvalUserName"
               label="审批人"
@@ -405,7 +416,7 @@
 <script>
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
-import process from '@/components/process';
+// import process from '@/components/process';
 import elementWeek from '@/components/elementWeek';
 import approval from './approval';
 import approvalDetail from './approvalDetail';
@@ -464,7 +475,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-approval': approval,
     'tl-approval-detail': approvalDetail,
-    'tl-process': process,
+    // 'tl-process': process,
     'tl-element-week': elementWeek,
   },
   props: {},
@@ -501,7 +512,7 @@ export default {
     GetLength(text, max) {
       if (this.getBLen(text) >= max) {
         const str = JSON.parse(JSON.stringify(text));
-        return `${str.substring(0, max)}...`;
+        return `${str.substring(0, max)}`;
       }
       return text;
     },
@@ -649,7 +660,6 @@ export default {
       scope._self.$refs[`popover-${index}`].doClose();
     },
     close(scope) {
-      console.log(scope._self);
       scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
     // 组合全天
@@ -902,3 +912,10 @@ export default {
   },
 };
 </script>
+<style scoped="">
+.text-desc{
+  font-size: 13px;
+color: #858585;
+margin-bottom: 5px;
+}
+</style>
