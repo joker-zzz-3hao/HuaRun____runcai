@@ -93,10 +93,10 @@
               min-width="100"
             >
               <template>
-                <el-button type="text" @click="$router.push('/assessPast')"
+                <el-button type="text" @click="showAssesspast('edit')"
                   >绩效复核</el-button
                 >
-                <el-button type="text" @click="$router.push('/assessDetail')"
+                <el-button type="text" @click="showAssesspast('detail')"
                   >详情</el-button
                 >
               </template>
@@ -105,11 +105,13 @@
         </div>
       </tl-crcloud-table>
     </div>
+    <tl-assesspast ref="assesspast"></tl-assesspast>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import assessPast from './components/assessPast';
 import Server from '../server';
 import CONST from '../const';
 
@@ -137,6 +139,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-assesspast': assessPast,
   },
   mounted() {
     this.getOkrCycleList();
@@ -198,6 +201,10 @@ export default {
       this.getOrgName(this.departmentData, 0);
       this.orgId = data[data.length - 1];
       this.okrReviewList();
+    },
+    // 详情
+    showAssesspast(type) {
+      this.$refs.assesspast.show(type);
     },
   },
 };

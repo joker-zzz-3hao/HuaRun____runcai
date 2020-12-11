@@ -316,33 +316,6 @@ export default [{
           power: '',
         },
         component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
-
-        children: [
-          {
-            path: '/assessDetail',
-            name: 'assessDetail',
-            meta: {
-              hasMainMenu: false,
-              isSubMenu: false,
-              parentRoute: 'myOkr',
-              title: 'replay',
-              power: '',
-            },
-            component: () => import('@/views/replay/repalyAssess/components/assessDetail'),
-          },
-          {
-            path: '/assessPast',
-            name: 'assessPast',
-            meta: {
-              hasMainMenu: false,
-              isSubMenu: false,
-              parentRoute: 'myOkr',
-              title: 'replay',
-              power: '',
-            },
-            component: () => import('@/views/replay/repalyAssess/components/assessPast'),
-          },
-        ],
       },
     ],
   },

@@ -2,7 +2,6 @@
   <el-dialog
     :append-to-body="true"
     :visible="visible"
-    @closed="closed"
     :before-close="close"
     title="历史提交记录"
     :close-on-click-modal="false"
