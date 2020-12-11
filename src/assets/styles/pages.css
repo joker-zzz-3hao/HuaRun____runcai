@@ -6240,6 +6240,10 @@
   font-weight: normal;
 }
 
+.approval-list .tl-table .el-table__row td:nth-child(2) .cell > a:hover {
+  color: #685df1;
+}
+
 .approval-list .tl-table .el-table__row td:nth-child(4) .cell div .el-tooltip {
   font-size: 12px;
   color: #acb6bf;
