@@ -654,7 +654,10 @@
 .my-okr .operating-box .dl-item:nth-child(2) .tl-select {
   width: 90px;
 }
-
+/* change by xinquan */
+.my-okr .operating-box .dl-item.org-selete .tl-select {
+  width: 200px;
+}
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
