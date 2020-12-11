@@ -116,28 +116,20 @@
             </el-table-column>
             <el-table-column label="工作项" prop="workContent" min-width="180px">
               <template slot-scope="scope">
-                <span>
-                  {{GetLength(scope.row.workContent,15)}}
+                <span @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">
+                  {{GetLength(scope.row.workContent,20)}}
                 </span>
                 </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="scope.row.workDesc"
-                  v-if="scope.row.workDesc"
-                  placement="top"
-                  popper-class="tl-tooltip-popper"
-                >
-                  {{ scope.row.workDesc }}
-                  <span>{{ GetLength(scope.row.workDesc, 15) }}</span>
-                </el-tooltip>
+
+                  <span v-if="scope.row.workDesc " @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">{{ GetLength(scope.row.workDesc, 16) }}</span>
+
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column label="投入工时" min-width="180px">
+            <el-table-column label="投入工时" min-width="100px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
                   <div>
@@ -269,22 +261,22 @@
             </el-table-column>
             <!-- <el-table-column label="填入类型" prop="timeType" min-width="100px">
                </el-table-column> -->
-            <el-table-column label="工时日期" min-width="200px">
+            <el-table-column label="工时日期" min-width="150px">
               <template slot-scope="scope">
-                <el-tooltip
+                <!-- <el-tooltip
                   class="item"
                   effect="dark"
                   :content="weekWorkListCheck(scope.row)"
                   placement="top"
                   popper-class="tl-tooltip-popper"
-                >
+                > -->
                   <span>{{
                     GetLength(weekWorkListCheck(scope.row), 13) || "--"
                   }}</span>
                   <!-- <span slot="reference">{{
                      GetLength(weekWorkListCheck(scope.row),9) || "--"
                   }}</span> -->
-                </el-tooltip>
+                <!-- </el-tooltip> -->
               </template>
             </el-table-column>
 
@@ -323,19 +315,19 @@
             <el-table-column
               prop="approvalTime"
               label="审批时间"
-              min-width="180"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
-                  scope.row.approvalTime
+                  GetLength(scope.row.approvalTime,16)
                 }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="submitTime" label="提交日期" min-width="180">
+            <el-table-column prop="submitTime" label="提交日期" min-width="150">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.submitTime)">{{
-                  scope.row.submitTime
+                   GetLength(scope.row.submitTime,16)
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -410,6 +402,8 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
+    <tl-desc-model ref="descModel"></tl-desc-model>
+    <tl-select-approval ref="selectApproval"></tl-select-approval>
   </div>
 </template>
 
@@ -419,7 +413,9 @@ import crcloudTable from '@/components/crcloudTable';
 // import process from '@/components/process';
 import elementWeek from '@/components/elementWeek';
 import approval from './approval';
+import selectApproval from './selectApproval';
 import approvalDetail from './approvalDetail';
+import descModel from './descModel';
 import Server from '../../server';
 import CONST from '../../const';
 
@@ -468,6 +464,7 @@ export default {
       projectConfirmCurrency: '',
       workList: [],
       listDis: [],
+      tableDataSelect: [],
     };
   },
 
@@ -477,6 +474,8 @@ export default {
     'tl-approval-detail': approvalDetail,
     // 'tl-process': process,
     'tl-element-week': elementWeek,
+    'tl-desc-model': descModel,
+    'tl-select-approval': selectApproval,
   },
   props: {},
   computed: {
@@ -506,6 +505,9 @@ export default {
     });
   },
   methods: {
+    showDesc(row, day, text, week) {
+      this.$refs.descModel.show(row, day, text, week);
+    },
     back() {
       this.$router.push({ name: 'mainHours', query: { projectId: this.formData.projectId } });
     },
@@ -605,6 +607,7 @@ export default {
       };
     },
     selectList(select) {
+      this.tableDataSelect = select;
       this.workList = select.map((item) => ({
         sourceId: item.sourceId,
         projectApprovalId: item.projectApprovalId,
@@ -698,6 +701,8 @@ export default {
       });
     },
     alertSelectAll() {
+      this.$refs.selectApproval.show(this.tableDataSelect);
+      return false;
       if (this.workList.length == 0) {
         this.$message.success('请勾选审批项');
         return false;
