@@ -66,7 +66,9 @@
               ></tl-element-week>
             </dd>
           </dl>
-          <dl class="dl-item" style="">
+        </div>
+        <div class="dl-item-group">
+          <dl class="dl-item">
             <dd>
               <el-input
                 maxlength="64"
@@ -81,11 +83,11 @@
               </el-button>
             </dd>
           </dl>
+          <el-button plain @click="back()" class="tl-btn amt-border-slip">
+            返回
+            <span class="lines"></span>
+          </el-button>
         </div>
-        <el-button plain @click="back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
       </div>
     </div>
     <div class="cont-area">
@@ -114,12 +116,16 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="180px">
+            <el-table-column
+              label="工作项"
+              prop="workContent"
+              min-width="180px"
+            >
               <template slot-scope="scope">
                 <span @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">
                   {{GetLength(scope.row.workContent,20)}}
                 </span>
-                </template>
+              </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
@@ -162,7 +168,6 @@
                           v-model="checkList"
                           :ref="'check' + index"
                         >
-
                           <el-checkbox
                             :label="item + '上午'"
                             :disabled="checkItem[item + '上午']"
@@ -176,7 +181,6 @@
                             class="tl-checkbox"
                             >下午</el-checkbox
                           >
-
                         </el-checkbox-group>
                       </div>
                       <div class="text-desc">
@@ -917,10 +921,3 @@ export default {
   },
 };
 </script>
-<style scoped="">
-.text-desc{
-  font-size: 13px;
-color: #858585;
-margin-bottom: 5px;
-}
-</style>
