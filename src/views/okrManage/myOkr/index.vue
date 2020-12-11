@@ -105,10 +105,10 @@ export default {
           menuTitle: '我的OKR',
           toName: 'myOkr',
         },
-        {
-          menuTitle: '部门OKR',
-          toName: 'departmentOkr',
-        },
+        // {
+        //   menuTitle: '部门OKR',
+        //   toName: 'departmentOkr',
+        // },
         {
           menuTitle: '全局OKR',
           toName: 'okrTable',
@@ -150,20 +150,20 @@ export default {
 
     // TODO: 加orgId
     // 实体部门名
-    this.tabsList.forEach((item) => {
-      if (item.toName == 'departmentOkr') {
-        item.menuTitle = `${this.departmentName}OKR`;
-      }
-    });
+    // this.tabsList.forEach((item) => {
+    //   if (item.toName == 'departmentOkr') {
+    //     item.menuTitle = `${this.departmentName}OKR`;
+    //   }
+    // });
     // 如果是“根级组织人”，只展示“我的okr”
-    if (!this.userInfo.orgParentId) {
-      this.tabsList = [
-        {
-          menuTitle: '我的OKR',
-          toName: 'myOkr',
-        },
-      ];
-    }
+    // if (!this.userInfo.orgParentId) {
+    //   this.tabsList = [
+    //     {
+    //       menuTitle: '我的OKR',
+    //       toName: 'myOkr',
+    //     },
+    //   ];
+    // }
     // 有虚线汇报需展示虚线部门和实体部门
     // this.tabsList.push( {menuTitle: '部门OKR',toName: 'departmentOkr',},);
     this.getOkrCycleList();

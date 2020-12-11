@@ -120,4 +120,9 @@ export default class Server extends ServerBase {
   updateResource(param) {
     return this._ajaxPost(`gateway/system-service/sys/attachment/updateResource?resourceId=${param.resourceId}&sourceType=${param.sourceType}`, param);
   }
+
+  // 查询组织树
+  getOkrTree(param) {
+    return this._ajaxPost(`gateway/talent-query/okr/query/okrTree?periodId=${param.periodId}&orgId=${param.orgId}`, param);
+  }
 }

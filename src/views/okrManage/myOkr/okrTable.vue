@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import process from '@/components/process';
 import CONST from './const';
 
@@ -77,9 +78,14 @@ export default {
   props: {
   },
   mounted() {
-    console.log(this.treeData);
+    this.getOkrTree();
   },
-  computed: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+      okrCycle: (state) => state.okrCycle,
+    }),
+  },
   methods: {
     gotoView(row) {
       console.log(row);
