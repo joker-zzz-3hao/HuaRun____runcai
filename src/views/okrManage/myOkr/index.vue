@@ -149,6 +149,7 @@ export default {
       hadSet: false, // 是否有偏好周期
       orgFullIdList: [],
       departmentData: [],
+      orgFullId: '',
 
     };
   },
@@ -157,7 +158,7 @@ export default {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
       periodId: (state) => state.periodId,
-      orgFullId: (state) => state.orgFullId,
+      // orgFullId: (state) => state.orgFullId,
     }),
   },
   created() {
@@ -194,7 +195,8 @@ export default {
     if (this.$route.name == 'myOkr') {
       this.getOkrCycleList();
     } else {
-      this.getMapPeriod();
+      // this.getMapPeriod();
+      this.getOrgTable();
     }
   },
   mounted() {
@@ -212,7 +214,7 @@ export default {
     borderWidth.style.width = `${liWidth[this.currentIndex].offsetWidth}px`;
   },
   methods: {
-    ...mapMutations('common', ['setokrStatus', 'setokrCycle']),
+    ...mapMutations('common', ['setokrStatus', 'setokrCycle', 'setokrOrg']),
     goWriteOkr(periodId = '') {
       this.$router.replace('myOkr');
       // 调用接口校验是否可创建
@@ -281,6 +283,8 @@ export default {
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
+            this.setokrOrg(this.orgFullId);
+            this.getMapPeriod();
           }
         }
       });
@@ -292,8 +296,7 @@ export default {
       // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
       this.$refs.cascader.dropDownVisible = false;
       this.getOrgName(this.departmentData, 0);
-      // this.getPeriod();
-      // this.getOkrTree();
+      this.setokrOrg(this.orgFullId);
     },
     getOrgName(data, index) {
       data.forEach((item) => {
@@ -314,13 +317,12 @@ export default {
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
-      console.log('qieh', item);
       this.go(item.toName);
-      // if name == 虚线
     },
   },
   beforeDestroy() {
     this.setokrCycle();
+    this.setokrOrg();
   },
   watch: {
     '$route.name': {
@@ -328,7 +330,7 @@ export default {
         if (this.$route.name == 'myOkr') {
           this.getOkrCycleList();
         } else {
-          this.getMapPeriod();
+          this.getOrgTable();
         }
       },
     },

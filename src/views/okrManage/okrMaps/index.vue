@@ -291,9 +291,7 @@ export default {
         this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
-          // periodId: '1204827318294274048',
           orgId: this.orgFullId,
-          // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据

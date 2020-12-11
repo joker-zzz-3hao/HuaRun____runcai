@@ -6,9 +6,10 @@
           :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           border
           row-key="orgId"
-          :data="treeData"
+          :data="treeTableData"
           class="tl-table"
           @expand-change="expand"
+          :expand-row-keys="expands"
         >
           <el-table-column prop="orgName" label="名称" min-width="170">
             <template slot-scope="scope">
@@ -76,6 +77,8 @@ export default {
       CONST,
       server,
       treeData: [],
+      treeTableData: [],
+      expands: [],
     };
   },
   components: {
@@ -90,6 +93,7 @@ export default {
       userInfo: (state) => state.userInfo,
       okrCycle: (state) => state.okrCycle,
       orgFullId: (state) => state.orgFullId,
+      okrOrgId: (state) => state.okrOrgId,
     }),
   },
   methods: {
@@ -115,14 +119,14 @@ export default {
     },
     // 查询组织树
     getOkrTree() {
-      console.log('组织树', this.okrCycle.periodId, this.orgFullId);
-      if (this.okrCycle.periodId && this.orgFullId) {
+      console.log('组织树', this.okrCycle.periodId, this.okrOrgId);
+      if (this.okrCycle.periodId && this.okrOrgId) {
         this.treeTableData = [];
         this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
           // periodId: '1204827318294274048',
-          orgId: this.orgFullId,
+          orgId: this.okrOrgId,
           // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
@@ -131,23 +135,12 @@ export default {
               this.treeTableData.push(res.data);
             } else {
               this.treeTableData = [];
-              // if (this.hadSet == false) {
-              //   this.showSetPeriod();
-              // }
             }
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
+              // 默认展开第一个
+              this.expands[0] = this.treeTableData[0].orgId;
             }
-            // 如果搜索的不是第一级，就要将过滤数据里面的最高级orgParentId设置成null
-            if (res.data.okrTree.length > 0) {
-              res.data.okrTree.forEach((item) => {
-                if (item.orgFullId == this.orgFullId) {
-                // if (item.orgFullId == 'CR0011000054:CR0012000174:CR0012000184:') {
-                  item.orgParentId = null;
-                }
-              });
-            }
-            this.treeData = res.data.okrTree;
           }
           this.loading = false;
         });
@@ -160,6 +153,16 @@ export default {
     okrCycle: {
       handler(newVal) {
         if (newVal.periodId) {
+          this.getOkrTree();
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+    okrOrgId: {
+      handler(newVal) {
+        console.log('getOkrTree', newVal);
+        if (newVal) {
           this.getOkrTree();
         }
       },
