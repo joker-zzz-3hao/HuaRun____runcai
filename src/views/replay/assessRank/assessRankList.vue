@@ -35,8 +35,8 @@
             v-for="item in rule.periodRuleDetailList"
             :key="item.ruleDetailId"
           >
-            <span>{{ item.value }}</span>
-            <em v-if="item.unit">（{{ item.unit }}）</em>
+            <span>{{ item.value }}{{ item.unit }} </span>
+            <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
           </dd>
         </dl>
       </div>
@@ -227,7 +227,6 @@ export default {
     // 调用暂存接口
     assessmentSave() {
       console.log(this.tableData);
-      debugger;
       this.server.assessmentSave().then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
