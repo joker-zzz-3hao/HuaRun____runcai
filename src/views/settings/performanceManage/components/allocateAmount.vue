@@ -211,13 +211,12 @@ export default {
         if (element1.periodRuleDetailId == amountItem.periodRuleDetailId) {
           this.remainAmount.periodRuleDetailList.forEach((element2) => {
             if (element2.periodRuleDetailId == amountItem.periodRuleDetailId) {
-              // // 2、非空、数字
-              // if (!this.hasValue(amountItem.applyValue)) {
-              //   element1.showError = true;
-              //   element1.errorText = '请';
-              // }
-
-              // 1、分配的数值大小，不能大于剩余可用数量
+              // 1、正整数数字
+              if (!(/(^[0-9]\d*$)/.test(amountItem.applyValue))) {
+                element1.showError = true;
+                element1.errorText = '请填写正整数';
+              }
+              // 2、分配的数值大小，不能大于剩余可用数量
               if (amountItem.applyValue > element2.applyValue) {
                 element1.showError = true;
                 element1.errorText = '数量不能大于剩余数量';
