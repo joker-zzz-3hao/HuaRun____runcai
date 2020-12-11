@@ -216,6 +216,7 @@ export default {
       orgIdList: [],
       treeData: [],
       amountDataList: [],
+      colums: [],
     };
   },
   created() { this.init(); },
@@ -234,14 +235,15 @@ export default {
       this.getOrgTree();
     },
     searchList() {
+      this.loading = true;
       this.server.orgQuery({
         orgId: this.searchForm.orgId,
         periodId: this.searchForm.periodId,
       }).then((res) => {
         this.loading = false;
         if (res.code == 200) {
-          this.orgData = res.data.rows;
           this.colums = res.data.colums;
+          this.orgData = res.data.rows;
         }
       });
     },
@@ -316,7 +318,6 @@ export default {
       });
     },
     selectIdChange(data) {
-      console.log(this.searchForm);
       // 根据组织查数据
       this.searchForm.orgId = data[data.length - 1];
       this.orgIdList = data;

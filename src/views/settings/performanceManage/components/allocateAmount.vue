@@ -136,33 +136,33 @@ export default {
       this.periodRuleId = this.amountDataListCopy[0].periodRuleId;
       this.getUnApplyNumber();
       // 编辑
-      if (this.rowData.detail) {
-        this.setInitData(this.rowData.detail);
-      } else { // 新分配
-        this.setamountList(this.periodRuleId);
-      }
+      this.detailList = JSON.parse(this.rowData.detail);
+      // console.log(this.detailList);
+      // 将设置过得列显示在页面中（未设置的，初始化为0）
+      this.setInitData();
+      this.setFirstList(this.periodRuleId);
     },
-    setInitData(detailData) {
-      this.detailList = JSON.parse(detailData);
-      console.log(this.detailList);
-      this.detailList.forEach((detail) => {
-        if (detail.sourcePeriodRuleId == this.periodRuleId) { // 列数据跟下拉框数据匹配
-          detail.periodRuleDetailList.forEach((item) => {
-            this.amountDataListCopy.forEach((element) => {
-              if (element.periodRuleId == this.periodRuleId) { // 设置数量数据与下拉框选中项匹配
-                this.amountData = { ...element };
-                this.amountData.periodRuleDetailList.forEach((data) => {
-                  if (item.periodRuleDetailId == data.periodRuleDetailId) { // 已设置的数据赋值给输入框
-                    data.applyValue = item.applyValue || 0;// 已分配的数量赋值
-                    data.showError = false;
-                    data.errorText = '';
-                  }
-                });
-              }
+    setInitData() {
+      this.amountDataListCopy.forEach((element) => {
+        element.periodRuleDetailList.forEach((data) => {
+          data.applyValue = 0;
+          data.showError = false;
+          data.errorText = '';
+        });
+        this.detailList.forEach((detail) => {
+          if (detail.sourcePeriodRuleId == element.periodRuleId) { // 列数据跟下拉框数据匹配 // 设置数量数据与下拉框选中项匹配
+            element.periodRuleDetailList.forEach((data) => {
+              detail.periodRuleDetailList.forEach((detailChild) => {
+                if (data.ruleDetailId == detailChild.ruleDetailId) { // 已设置的数据赋值给输入框
+                  data.applyValue = detailChild.applyValue || 0;// 已分配的数量赋值
+                }
+              });
             });
-          });
-        }
+          }
+        });
       });
+      console.log('detailList', this.detailList);
+      console.log('amountDataListCopy', this.amountDataListCopy);
     },
     getUnApplyNumber() {
       this.server.getUnApplyNumber({
@@ -177,23 +177,15 @@ export default {
     },
     dataChange(periodRuleId) {
       this.periodRuleId = periodRuleId;
-      if (this.rowData.detail) {
-        this.setInitData(this.rowData.detail);
-      } else { // 新分配
-        this.setamountList(this.periodRuleId);
-      }
+
+      this.setFirstList(this.periodRuleId);
+
       this.getUnApplyNumber();
     },
-    setamountList(periodRuleId) {
+    setFirstList(periodRuleId) {
       this.amountDataListCopy.forEach((element) => {
         if (element.periodRuleId == periodRuleId) {
           this.amountData = { ...element };
-          // 如果非编辑状态
-          this.amountData.periodRuleDetailList.forEach((data) => {
-            data.applyValue = 0;
-            data.showError = false;
-            data.errorText = '';
-          });
         }
       });
     },
@@ -215,9 +207,7 @@ export default {
               if (!(/(^[0-9]\d*$)/.test(amountItem.applyValue))) {
                 element1.showError = true;
                 element1.errorText = '请填写正整数';
-              }
-              // 2、分配的数值大小，不能大于剩余可用数量
-              if (amountItem.applyValue > element2.applyValue) {
+              } else if (amountItem.applyValue > element2.applyValue) { // 2、分配的数值大小，不能大于剩余可用数量
                 element1.showError = true;
                 element1.errorText = '数量不能大于剩余数量';
               } else {
@@ -228,7 +218,6 @@ export default {
           });
         }
       });
-
       this.$forceUpdate();
     },
     cancel() {
