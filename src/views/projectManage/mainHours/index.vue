@@ -90,7 +90,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="已审批共计投入工时"
+              label="已审批工时"
               prop="approvedTimeSum"
               min-width="200px"
             >

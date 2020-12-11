@@ -211,7 +211,7 @@
                     class="item"
                     effect="dark"
                     :content="changeListDate(scope.row.arrHide)"
-                    placement="top"
+                    placement="left"
                     popper-class="tl-tooltip-popper"
                   >
                     <div>
