@@ -114,12 +114,16 @@
               "
             >
             </el-table-column>
-            <el-table-column label="工作项" prop="workContent" min-width="180px">
+            <el-table-column
+              label="工作项"
+              prop="workContent"
+              min-width="180px"
+            >
               <template slot-scope="scope">
                 <span>
-                  {{GetLength(scope.row.workContent,15)}}
+                  {{ GetLength(scope.row.workContent, 15) }}
                 </span>
-                </template>
+              </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
@@ -170,7 +174,6 @@
                           v-model="checkList"
                           :ref="'check' + index"
                         >
-
                           <el-checkbox
                             :label="item + '上午'"
                             :disabled="checkItem[item + '上午']"
@@ -184,7 +187,6 @@
                             class="tl-checkbox"
                             >下午</el-checkbox
                           >
-
                         </el-checkbox-group>
                       </div>
                       <div class="text-desc">
@@ -912,10 +914,3 @@ export default {
   },
 };
 </script>
-<style scoped="">
-.text-desc{
-  font-size: 13px;
-color: #858585;
-margin-bottom: 5px;
-}
-</style>
