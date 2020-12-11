@@ -52,7 +52,19 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const arr = val.split('/');
         this.queryParam.week = this.getWeekInMonth(new Date(val));
+        const oneDate = 24 * 60 * 60 * 1000;
+        const valueTime = new Date(val).getTime() - oneDate;
+        const valueTimeEnd = (new Date(val).getTime() - oneDate) + 6 * oneDate;
+        const startTime = this.dateFormat('YYYY-mm-dd', new Date(valueTime));
+        const endTime = this.dateFormat('YYYY-mm-dd', new Date(valueTimeEnd));
+        this.queryParam.value = this.queryParam.defValue;
+        this.$emit('weekSelect', startTime, endTime);
+      } else {
+        this.$emit('weekSelect', '', '');
+      }
+    },
     // 根据日期判断是月的第几周
+    getWeekInMonth(t) {
       if (t == undefined || t == '' || t == null) {
         t = new Date();
       } else {
