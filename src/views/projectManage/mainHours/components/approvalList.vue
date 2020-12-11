@@ -389,7 +389,7 @@
       >
       <el-button
         type="primary"
-        @click="alertSelectAll"
+        @click="showTableSelect"
         class="tl-btn amt-bg-slip"
         >批量审批</el-button
       >
@@ -407,7 +407,7 @@
       :server="server"
     ></tl-approval-detail>
     <tl-desc-model ref="descModel"></tl-desc-model>
-    <tl-select-approval ref="selectApproval"></tl-select-approval>
+    <tl-select-approval ref="selectApproval"   @alertSelectAll="alertSelectAll"></tl-select-approval>
   </div>
 </template>
 
@@ -704,23 +704,30 @@ export default {
         }
       });
     },
-    alertSelectAll() {
-      this.$refs.selectApproval.show(this.tableDataSelect);
-      return false;
+    showTableSelect() {
       if (this.workList.length == 0) {
         this.$message.success('请勾选审批项');
         return false;
       }
-      this.$xconfirm({
-        title: '确认批量审批',
-        content: '工时确认后将不可再修改, 请确认',
-      }).then(() => {
-        this.server.timeSheetListapproval({ workList: this.workList }).then((res) => {
-          if (res.code == '200') {
-            this.$message.success('审批成功');
-            this.searchList();
-          }
-        });
+      this.$nextTick(() => {
+        this.$refs.selectApproval.show(this.tableDataSelect);
+      });
+    },
+    alertSelectAll() {
+      // this.$xconfirm({
+      //   title: '确认批量审批',
+      //   content: '工时确认后将不可再修改, 请确认',
+      // }).then(() => {
+
+      // });
+      this.server.timeSheetListapproval({ workList: this.workList }).then((res) => {
+        if (res.code == '200') {
+          this.$message.success('审批成功');
+          this.$refs.selectApproval.close();
+          this.searchList();
+          this.tableDataSelect = [];
+          this.workList = [];
+        }
       });
     },
     updateTimeWeek(row) {
