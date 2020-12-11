@@ -205,6 +205,10 @@
   color: #fff;
 }
 
+.tl-btn.is-disabled {
+  color: #bcc4cc;
+}
+
 /* input */
 .tl-input,
 .tl-date-editor,
@@ -4426,6 +4430,15 @@
   justify-content: space-between;
   align-items: center;
   min-height: 36px;
+}
+
+.operating-area .tl-input .el-input__icon.el-icon-search {
+  margin: 5px 0 0 0;
+  line-height: unset;
+}
+
+.operating-area .el-icon-search:before {
+  font-size: 16px;
 }
 
 .page-title {
