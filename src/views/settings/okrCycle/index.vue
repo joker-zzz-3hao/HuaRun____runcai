@@ -1,7 +1,6 @@
 <template>
   <div class="okr-cycle">
     <div class="operating-area">
-      <!-- <div class="page-title">设置OKR周期与自评</div> -->
       <div class="operating-box">
         <el-button
           type="primary"

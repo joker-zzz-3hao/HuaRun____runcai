@@ -1,18 +1,7 @@
 <template>
   <dl class="replay-info">
     <dt>
-      <div class="replay-title">
-        <span v-if="$route.name == 'replayEdit'">复盘与举证对象：</span>
-        <span v-else>复盘对象：</span>
-        <em>{{ okrMain.okrMainVo.periodName }}</em
-        ><em
-          >({{
-            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
-            "~" +
-            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
-          }})</em
-        >
-      </div>
+      <div class="replay-title"><span>复盘对象:</span><em>部门名</em></div>
       <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
         <span class="lines"></span>
@@ -63,27 +52,34 @@
         </dd>
       </dl>
     </dd>
-    <!-- <dd class="flex-end" v-if="$route.name !== 'replayEdit'">
-      <em v-if="okrMain.okrMainVo.reviewType == 1">以关键结果KR复盘</em>
-      <em v-if="okrMain.okrMainVo.reviewType == 0">以目标O复盘</em>
+    <dd
+      class="flex-end"
+      v-if="$route.name == 'replayScoreDetail'"
+      @click="openRule"
+    >
+      评分说明
     </dd>
-    <dd class="flex-end" v-else>
-      <el-radio-group v-model="okrMain.okrMainVo.reviewType">
-        <el-radio :label="1" class="tl-radio">以关键结果KR复盘</el-radio>
-        <el-radio :label="0" class="tl-radio">以目标O复盘</el-radio>
-      </el-radio-group>
-    </dd> -->
+    <tl-scorerule ref="scorerule"></tl-scorerule>
   </dl>
 </template>
 <script>
+
+import scoreRule from './scoreRule';
+
 export default {
   props: ['okrMain'],
+  components: {
+    'tl-scorerule': scoreRule,
+  },
   methods: {
     cutName(userName) {
       if (userName) {
         const nameLength = userName.length;
         return userName.substring(nameLength - 2, nameLength);
       }
+    },
+    openRule() {
+      this.$refs.scorerule.show();
     },
   },
 };

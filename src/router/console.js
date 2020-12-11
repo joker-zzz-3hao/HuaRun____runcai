@@ -274,6 +274,62 @@ export default [{
         },
         component: () => import('@/views/replay/component/replayList'),
       },
+      // okr复核得分
+      {
+        path: '/replayScore',
+        name: 'replayScore',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myOkr',
+          title: 'replayScore',
+          belongsTo: 'replayList',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayScore/replayScoreList'),
+      },
+      // okr复核得分详情
+      {
+        path: '/replayScoreDetail',
+        name: 'replayScoreDetail',
+        meta: {
+          hasMainMenu: false,
+          isSubMenu: false,
+          parentRoute: 'myOkr',
+          title: 'replayScoreDetail',
+          belongsTo: 'replayList',
+          power: '',
+        },
+        component: () => import('@/views/replay/replayScore/replayScoreDetail'),
+      },
+      // 绩效排名
+      {
+        path: '/assessRank',
+        name: 'assessRank',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myOkr',
+          title: 'assessRank',
+          belongsTo: 'replayList',
+          power: '',
+        },
+        component: () => import('@/views/replay/assessRank/assessRankList'),
+      },
+      // 绩效复核
+      {
+        path: '/repalyAssess',
+        name: 'repalyAssess',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myOkr',
+          title: 'repalyAssess',
+          belongsTo: 'replayList',
+          power: '',
+        },
+        component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
+      },
     ],
   },
   // 项目
@@ -350,6 +406,30 @@ export default [{
       power: 'mainHours',
     },
     component: () => import('@/views/projectManage/mainHours/index'),
+  },
+  {
+    path: '/approvalList',
+    name: 'approvalList',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: false,
+      parentRoute: 'projectManage',
+      title: 'approvalList',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/approvalList'),
+  },
+  {
+    path: '/HoursJoin',
+    name: 'HoursJoin',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'HoursJoin',
+      title: 'HoursJoin',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/HoursJoin'),
   },
   {
     // 周报管理
