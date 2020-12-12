@@ -208,20 +208,26 @@
           </div>
         </el-scrollbar>
       </div>
-      <div
-        class="note-book"
-        @click="showInput = true"
-        :class="{ 'hide-input': showInput == false }"
-      >
-        <el-tiptap v-model="noteText" :extensions="extensions" />
+      <div class="note-book" :class="{ 'hide-input': showInput == false }">
+        <div @click="showInput = true">
+          <el-tiptap v-model="noteText" :extensions="extensions" />
+        </div>
         <div>
           <span>更新于{{}}</span>
           <el-button
-            type="primary"
-            class="tl-btn amt-bg-slip"
+            v-if="showInput === true"
+            plain
+            class="tl-btn amt-border-fadeout"
             @click="updateNote"
-            >更新
+            >保存笔记
           </el-button>
+          <el-button
+            v-else
+            @click="showInput = true"
+            plain
+            class="tl-btn amt-border-fadeout"
+            >编辑</el-button
+          >
         </div>
       </div>
     </div>
@@ -232,7 +238,7 @@
         class="tl-btn amt-bg-slip"
         @click="summitUpdate"
         :loading="loading"
-        >确定</el-button
+        >更新进展</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
@@ -364,7 +370,7 @@ export default {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
       }
       this.noteText = `
-        <h1>欢迎使用OKR记事本</h1>
+        <h1>记录OKR进展相关的点点滴滴</h1>
         <div><img src="@/assets/images/user/user.jpg" alt /></div>
       `;
     },

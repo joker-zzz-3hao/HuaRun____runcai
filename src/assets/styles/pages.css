@@ -886,6 +886,20 @@
 .update-progress .el-tiptap-editor .ProseMirror{
   height: 100%;
 }
+
+.update-progress .el-tiptap-editor__menu-bar{
+  background-color: #f8f8f8;
+  padding: 0px;
+}
+
+.update-progress .el-tiptap-editor .border-top-radius{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.update-progress .el-tiptap-editor__command-button {
+  transform: scale(0.8,0.8);
+}
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
