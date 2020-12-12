@@ -6249,6 +6249,18 @@
   color: #acb6bf;
 }
 
+.approval-list-detail .dl-group dl {
+  margin: 20px 0;
+  display: flex;
+  align-self: start;
+}
+
+.approval-list-detail .dl-group dt {
+  flex: 0 0 64px;
+  margin: 0 30px 0 0;
+  color: #acb6bf;
+}
+
 /* msg-notice */
 .msg-notice .cont-area {
   display: flex;
