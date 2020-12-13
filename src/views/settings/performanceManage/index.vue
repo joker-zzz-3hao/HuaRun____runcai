@@ -83,7 +83,7 @@
           {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
         </dd>
         <dd>
-          <el-button @click="deleteRule(amountData.periodRuleId)" type="text"
+          <el-button @click="deleteRule(amountData)" type="text"
             >删除</el-button
           >
         </dd>
@@ -357,9 +357,14 @@ export default {
         this.$refs.allocateAmount.show();
       });
     },
-    deleteRule(periodRuleId) {
+    deleteRule(amountData) {
+      // 如果已被分配了名额则不能被删除TODO:
+      // if (amountData.status) {
+      //   this.$message.warning('该规则已被使用，不可删除。');
+      //   return;
+      // }
       this.$xconfirm({ title: '确认删除', content: '' }).then(() => {
-        this.server.deleteRule({ periodRuleId }).then((res) => {
+        this.server.deleteRule({ periodRuleId: amountData.periodRuleId }).then((res) => {
           if (res.code == 200) {
             this.$message.success('删除成功');
             this.searchList();

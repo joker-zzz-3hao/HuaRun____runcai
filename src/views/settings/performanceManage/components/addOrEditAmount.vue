@@ -17,7 +17,9 @@
     <div>
       <div v-for="item in selectedRule.ruleDetailList" :key="item.ruleDetailId">
         <span>{{ item.value + item.unit }}</span
-        ><el-input v-model="item.applyValue"></el-input><span>个</span>
+        ><el-input v-model="item.applyValue" @blur="inputBlur(item)"></el-input
+        ><span>个</span>
+        <span v-if="item.showError">{{ item.errorText }}</span>
       </div>
     </div>
     <div class="operating-box">
@@ -86,6 +88,10 @@ export default {
           this.$set(item, 'applyValue', '');
         });
       }
+      this.selectedRule.ruleDetailList.forEach((item) => {
+        this.$set(item, 'showError', false);
+        this.$set(item, 'errorText', '');
+      });
       this.$nextTick(() => {
         this.visible = true;
         this.$forceUpdate();
@@ -97,6 +103,20 @@ export default {
     close() {
       this.visible = false;
       this.$emit('update:showDialog', false);
+    },
+    inputBlur(item) {
+      this.selectedRule.ruleDetailList.forEach((element) => {
+        if (item.periodRuleDetailId == element.periodRuleDetailId) {
+          if (element.applyValue < element.minValue) {
+            // element.showError = true;TODO:
+            // element.errorText = '修改后的值不能小于已分配的数量值';
+          } else {
+            element.showError = false;
+            element.errorText = '';
+          }
+          this.$forceUpdate();
+        }
+      });
     },
     submit() {
       this.formData.applyType = 1;
