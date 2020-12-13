@@ -64,6 +64,7 @@ export default {
 
         ],
       },
+      selectedRule: {},
     };
   },
   created() { },
@@ -73,12 +74,12 @@ export default {
     show(selectedRule, searchForm, tenantId) {
       this.formData.periodId = searchForm.periodId;
       this.formData.applyId = tenantId;
-      console.log(selectedRule);
-      this.selectedRule = { ...selectedRule };
-      if (selectedRule.periodRuleId) {
-        this.formData.ruleId = selectedRule.ruleId;
-        this.formData.periodRuleId = selectedRule.periodRuleId;
-        this.selectedRule.ruleDetailList = [...selectedRule.periodRuleDetailList];
+      // 深拷贝
+      this.selectedRule = this.deepCopy(selectedRule);
+      if (this.selectedRule.periodRuleId) {
+        this.formData.ruleId = this.selectedRule.ruleId;
+        this.formData.periodRuleId = this.selectedRule.periodRuleId;
+        this.selectedRule.ruleDetailList = [...this.selectedRule.periodRuleDetailList];
       } else {
         this.formData.ruleId = searchForm.ruleId;
         this.selectedRule.ruleDetailList.forEach((item) => {
@@ -87,8 +88,8 @@ export default {
       }
       this.$nextTick(() => {
         this.visible = true;
+        this.$forceUpdate();
       });
-      this.$forceUpdate();
     },
     cancel() {
 
@@ -121,6 +122,7 @@ export default {
         if (res.code == 200) {
           this.$message.success('处理成功');
           this.$emit('refreshRule');
+          this.$emit('refreshPage');
           this.close();
         }
       });

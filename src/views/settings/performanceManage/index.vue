@@ -168,6 +168,7 @@
       :showDialog.sync="showDialog"
       :server="server"
       @refreshRule="refreshRule"
+      @refreshPage="searchList"
     ></tl-create-evaluate>
     <tl-allocate-amount
       ref="allocateAmount"
@@ -176,7 +177,7 @@
       :server="server"
       :rowData="rowData"
       :periodId="searchForm.periodId"
-      :amountDataList="amountDataList"
+      :amountDataCopy="amountDataList"
       @refreshPage="searchList"
     ></tl-allocate-amount>
   </div>
@@ -228,7 +229,6 @@ export default {
   },
   methods: {
     init() {
-      // 自己团队还要判断是否开发周报么?
       this.searchForm.orgId = this.userInfo.orgId;
       this.getRuleList();
       this.getOkrCycleList();
@@ -326,11 +326,6 @@ export default {
     },
     addAmount(ruleId) {
       this.searchForm.ruleId = ruleId;
-      this.amountDataList.forEach((element) => {
-        if (element.ruleId == ruleId) {
-          this.updateAmount(element);
-        }
-      });
       for (let i = 0; i < this.amountDataList.length; i += 1) {
         if (this.amountDataList[i].ruleId == ruleId) {
           this.updateAmount(this.amountDataList[i]);
@@ -355,7 +350,8 @@ export default {
       });
     },
     allocateAmount(data) {
-      this.rowData = JSON.parse(JSON.stringify(data));
+      console.log(this.amountDataList);
+      this.rowData = data;
       this.showAllocateDialog = true;
       this.$nextTick(() => {
         this.$refs.allocateAmount.show();
@@ -366,6 +362,7 @@ export default {
         this.server.deleteRule({ periodRuleId }).then((res) => {
           if (res.code == 200) {
             this.$message.success('删除成功');
+            this.searchList();
             this.getAmountData();
           }
         });
