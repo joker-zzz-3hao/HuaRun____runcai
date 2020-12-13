@@ -346,6 +346,30 @@ export default [{
     component: () => import('@/views/projectManage/projectDetail/index'),
   },
   {
+    path: '/approvalList',
+    name: 'approvalList',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: false,
+      parentRoute: 'projectManage',
+      title: 'approvalList',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/approvalList'),
+  },
+  {
+    path: '/HoursJoin',
+    name: 'HoursJoin',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'HoursJoin',
+      title: 'HoursJoin',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/HoursJoin'),
+  },
+  {
     path: '/mainHours',
     name: 'mainHours',
     meta: {

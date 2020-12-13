@@ -320,7 +320,6 @@ export default {
             passFlag: this.ruleForm.passFlag == '1',
             remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
           };
-          debugger;
           this.server.okrReviewCommunicationSubmit(params).then((res) => {
             this.submitLoad = false;
             if (res.code == 200) {

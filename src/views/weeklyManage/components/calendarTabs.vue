@@ -126,7 +126,7 @@ export default {
       currentWeek: (state) => state.currentWeek,
     }),
     isThisWeek() {
-      return this.monthDate == this.dateFormat('YYYY-mm-dd', new Date());
+      return this.dateFormat('YYYY-mm', new Date(this.monthDate)) == this.dateFormat('YYYY-mm', new Date());
     },
   },
   methods: {
