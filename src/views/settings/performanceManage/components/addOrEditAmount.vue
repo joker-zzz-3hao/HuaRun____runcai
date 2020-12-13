@@ -107,13 +107,13 @@ export default {
     inputBlur(item) {
       this.selectedRule.ruleDetailList.forEach((element) => {
         if (item.periodRuleDetailId == element.periodRuleDetailId) {
-          if (element.applyValue < element.minValue) {
-            // element.showError = true;TODO:
-            // element.errorText = '修改后的值不能小于已分配的数量值';
-          } else {
-            element.showError = false;
-            element.errorText = '';
-          }
+          // if (element.applyValue < element.minValue) {
+          //   element.showError = true;
+          //   element.errorText = '修改后的值不能小于已分配的数量值';
+          // } else {
+          //   element.showError = false;
+          //   element.errorText = '';
+          // }
           this.$forceUpdate();
         }
       });
