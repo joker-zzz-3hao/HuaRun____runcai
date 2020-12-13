@@ -14,7 +14,13 @@
   >
     <div v-show="step == 1">
       <el-form ref="dicForm" :model="performanceData" label-width="90px">
-        <el-form-item label="自定义名称" prop="ruleName">
+        <el-form-item
+          label="自定义名称"
+          prop="ruleName"
+          :rules="[
+            { required: true, message: '请输入自定义名称', reigger: blur },
+          ]"
+        >
           <el-input
             v-model.trim="performanceData.ruleName"
             maxlength="30"
@@ -27,7 +33,12 @@
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
             :key="ruleItem.detailRandomId"
           >
-            <el-input v-model.trim="ruleItem.value" maxlength="30"></el-input>
+            <el-input
+              v-model.trim="ruleItem.value"
+              maxlength="30"
+              @blur="inputBlur(ruleItem)"
+            ></el-input>
+            <span v-if="ruleItem.showError">{{ ruleItem.errorText }}</span>
             <el-input
               v-model.trim="ruleItem.unit"
               placeholder="如有单位，请填写"
@@ -135,7 +146,8 @@ export default {
         unit: '',
         value: '',
         description: '',
-
+        showError: false,
+        errorText: '',
         detailRandomId: this.getRandomId(),
       });
     },
@@ -152,8 +164,22 @@ export default {
         return;
       }
       if (this.step == 1) {
-        this.title = '确认后部门将按照以下规则进行配置！';
-        this.step = 2;
+        this.$refs.dicForm.validate((valid) => {
+          let validateStatus = true;
+          this.performanceData.ruleDetailList.forEach((element) => {
+            if (!this.hasValue(element.value)) {
+              element.showError = true;
+              element.errorText = '请输入值';
+              validateStatus = false;
+            }
+          });
+          if (valid && validateStatus) {
+            this.title = '确认后部门将按照以下规则进行配置！';
+            this.step = 2;
+          } else {
+            this.$message.error('您有必填项未填写，请填写后重试');
+          }
+        });
       } else {
         this.loading = true;
         let requestName = 'addEvaluate';
@@ -165,6 +191,7 @@ export default {
           this.performanceData.ruleDetailList[i].level = i + 1;
         }
         const params = [this.performanceData];
+
         this.server[requestName](params).then((res) => {
           this.loading = false;
           if (res.code == 200) {
@@ -181,6 +208,8 @@ export default {
         this.performanceData.ruleType = String(this.performanceData.ruleType);
         this.performanceData.ruleDetailList.forEach((detail) => {
           detail.detailRandomId = this.getRandomId();
+          detail.showError = false;
+          detail.errorText = '';
         });
         if (rowData.status > 0) {
           this.title = '详情';
@@ -196,6 +225,8 @@ export default {
             unit: '',
             value: '',
             description: '',
+            showError: false,
+            errorText: '',
             detailRandomId: this.getRandomId(),
           }],
         };
@@ -215,6 +246,19 @@ export default {
     close() {
       this.visible = false;
       this.$emit('update:showDialog', false);
+    },
+    inputBlur(inputData) {
+      this.performanceData.ruleDetailList.forEach((element) => {
+        if (element.detailRandomId == inputData.detailRandomId) {
+          if (!this.hasValue(inputData.value)) {
+            element.showError = true;
+            element.errorText = '请输入值';
+          } else {
+            element.showError = false;
+            element.errorText = '';
+          }
+        }
+      });
     },
 
   },
