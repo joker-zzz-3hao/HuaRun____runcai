@@ -204,7 +204,7 @@ export default {
     },
     show(rowData) {
       if (rowData && rowData.ruleId) {
-        this.performanceData = { ...rowData };
+        this.performanceData = this.deepCopy(rowData);
         this.performanceData.ruleType = String(this.performanceData.ruleType);
         this.performanceData.ruleDetailList.forEach((detail) => {
           detail.detailRandomId = this.getRandomId();
