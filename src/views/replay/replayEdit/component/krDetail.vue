@@ -72,7 +72,7 @@
                       {
                         trigger: 'blur',
                         required: true,
-                        message: '请输入评分',
+                        validator: validateScore,
                       },
                     ]"
                   >
@@ -89,7 +89,7 @@
                   </el-form-item>
 
                   <span>
-                    如您输入的评分与KR进度分数不一致，则需要给出解释，如：KR进度90%，评分应该是0.9，如不一样，请说明原因。
+                    您输入的评分需与KR进度一致，例如KR进度90%，评分应该是0.9。如不一致，则需要给出评分说明。
                   </span>
                 </dd>
               </dl>
@@ -224,12 +224,14 @@ import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
 import fileUpload from '@/components/fileUpload/index';
+import validateMixin from '@/mixin/validateMixin';
 import replayFoot from '../../component/replayFoot';
 import Server from '../../server';
 
 const server = new Server();
 export default {
-  name: 'home',
+  name: 'replayEditKr',
+  mixins: [validateMixin],
   props: ['okrMain'],
   data() {
     return {
@@ -436,15 +438,9 @@ export default {
             }
           });
         } else {
-          this.$message.error('您有必填项未填');
+          this.$message.error('您有必填项未正确填写，请检查');
         }
       });
-      // const CheckNull = this.list.some((item) => !item.advantage || !item.disadvantage || item.measure.length == 0);
-      // if (CheckNull) {
-      //   this.submitLoad = false;
-      //   this.$message.error('未完成复盘，尚有未填写内容，请检查');
-      //   return false;
-      // }
     },
     getOldList() {
       const KrList = JSON.parse(JSON.stringify(this.okrMain.okrReviewPojoList));

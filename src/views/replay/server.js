@@ -62,6 +62,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-okr/assessment/result/summary', param);
   }
 
+  // 查询绩效排名列表
+  querySort(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/result/sort/summary', param);
+  }
+
   // 绩效排名提交
   assessmentSubmit(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/submit', param);
@@ -84,5 +89,15 @@ export default class Server extends ServerBase {
   // 提交复核
   okrCheckSubmit(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrReview/okrCheckSubmit', param);
+  }
+
+  // 查询历史绩效排名
+  queryAssessmentHistory(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/result/history/query', param);
+  }
+
+  // 查询绩效复核列表
+  summaryReview(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/result/review/summary', param);
   }
 }

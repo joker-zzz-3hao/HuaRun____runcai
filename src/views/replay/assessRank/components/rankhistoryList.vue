@@ -2,7 +2,6 @@
   <el-dialog
     :append-to-body="true"
     :visible="visible"
-    @closed="closed"
     :before-close="close"
     title="历史提交记录"
     :close-on-click-modal="false"
@@ -33,50 +32,29 @@
 </template>
 
 <script>
+import Server from '../../server';
+
+const server = new Server();
 
 export default {
   name: 'repalyAssessList',
   data() {
     return {
-      tableData: [{
-        id: 1,
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄',
-      }, {
-        id: 2,
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄',
-      }, {
-        id: 3,
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        list: [{
-          id: 31,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-        }, {
-          id: 32,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-        }],
-      }, {
-        id: 4,
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-      }],
-
+      server,
+      tableData: [],
       visible: false,
     };
   },
   methods: {
-    show() {
+    show(periodId) {
       this.visible = true;
+      this.server.queryAssessmentHistory({
+        periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.tableData = res.code || [];
+        }
+      });
     },
     close() {
       this.visible = false;

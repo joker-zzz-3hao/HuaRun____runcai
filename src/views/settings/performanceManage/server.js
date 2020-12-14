@@ -14,7 +14,7 @@ export default class Server extends ServerBase {
   }
 
   addOrUpdateAmount(param) {
-    return this._ajaxPost('gateway/talent-query/assessment/periodRule/update', param);
+    return this._ajaxPost('gateway/talent-okr/assessment/periodRule/update', param);
   }
 
   // 查周期
@@ -25,5 +25,15 @@ export default class Server extends ServerBase {
   // 查询组织
   getOrg(param) {
     return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
+  }
+
+  // 删除规则
+  deleteRule(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/periodRule/remove', param);
+  }
+
+  // 查询未分配数量
+  getUnApplyNumber(param) {
+    return this._ajaxPost('gateway/talent-query/assessment/periodRule/unApplyNumber', param);
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div >
+      <div>
         <div class="operating-box">
           <dl class="dl-item">
             <dt>项目</dt>
@@ -11,8 +11,9 @@
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
                 @change="changeProject"
+                style="width: 400px"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option
                   v-for="(item, index) in projectList"
@@ -23,8 +24,8 @@
               </el-select>
             </dd>
           </dl>
-            <dl class="dl-item">
-            <dt>提交人</dt>
+          <dl class="dl-item">
+            <dt>团队成员</dt>
             <dd>
               <el-select
                 v-model="userId"
@@ -33,11 +34,11 @@
                 style="width: 118px"
                 @change="searchList"
                 popper-class="tl-select-dropdown"
-                class="tl-select"
+                class="tl-select has-bg"
               >
                 <el-option label="全部" value=""> </el-option>
                 <el-option
-                  v-for="(item,index) in options"
+                  v-for="(item, index) in options"
                   :key="index"
                   :label="item.userName"
                   :value="item.userId"
@@ -46,9 +47,14 @@
               </el-select>
             </dd>
           </dl>
+            <dl class="dl-item">
+            <dt>按周汇总</dt>
+            <dd>
+            <tl-elementWeek :showTime="true"></tl-elementWeek>
+            </dd>
+          </dl>
         </div>
         <div class="operating-box">
-
           <!-- <dl class="dl-item">
 
             <dd>
@@ -59,6 +65,31 @@
       </div>
     </div>
     <div class="cont-area">
+        <div class="dl-list">
+        <dl class="dl-item">
+          <dt><span>项目成员</span></dt>
+          <dd>
+            <em>0 </em><span>人</span>
+            <span></span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>已提交/未提交工时</span></dt>
+          <dd>
+            <em >0/0 </em
+            ><span>人</span
+            >     <span></span>
+          </dd>
+        </dl>
+          <dl class="dl-item">
+          <dt><span>共填入工时</span></dt>
+          <dd>
+            <em >0 </em
+            ><span>天</span
+            >     <span></span>
+          </dd>
+        </dl>
+      </div>
       <div class="dl-list">
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
@@ -76,6 +107,7 @@
           </dd>
         </dl>
       </div>
+
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -83,24 +115,45 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table
-            :data="tableData"
-            class="tl-table"
-            row-key="index"
-          >
-
-            <el-table-column prop="applyTime" label="提交人" min-width="130">
+          <el-table :data="tableData" class="tl-table" row-key="index">
+            <el-table-column prop="applyTime" label="团队成员" min-width="130">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="已审批共计投入工时" prop="approvedTimeSum" min-width="200px">
-               <template slot-scope="scope">
+             <el-table-column prop="userPost" label="职能" min-width="130">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userPost }}</span>
+              </template>
+            </el-table-column>
+             <el-table-column prop="userLevel" label="职级" min-width="130">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userLevel }}</span>
+              </template>
+            </el-table-column>
+             <el-table-column prop="ldapType" label="成员类型" min-width="130">
+              <template slot-scope="scope">
+                <span v-if="scope.row.ldapType=='Contractor'">外部账户</span>
+                 <span v-if="scope.row.ldapType=='OTHER'">特殊账户</span>
+                  <span v-if="scope.row.ldapType=='Full-Time'">员工账户</span>
+                   <span v-if="!scope.row.ldapType">--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="已审批工时"
+              prop="approvedTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
                 <span>{{ scope.row.approvedTimeSum }} 天</span>
               </template>
             </el-table-column>
-            <el-table-column label="待审批工时" prop="pendingApprovalTimeSum" min-width="200px">
-                 <template slot-scope="scope">
+            <el-table-column
+              label="待审批工时"
+              prop="pendingApprovalTimeSum"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
                 <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
               </template>
             </el-table-column>
@@ -120,7 +173,7 @@
 
             <el-table-column
               prop="submitTime"
-              label="最新审批时间"
+              label="最新提交时间"
               min-width="180"
             >
               <template slot-scope="scope">
@@ -139,18 +192,13 @@
             >
               <template slot-scope="scope">
                 <el-button
-                :disabled="scope.row.pendingApprovalTimeSum==0"
+
                   @click="goTo(scope.row)"
                   type="text"
+                  class="tl-btn"
+                  >工时管理</el-button
+                >
 
-                  >工时审批</el-button
-                >
-                 <el-button
-                  v-if="scope.row.approvalStatus == '2'"
-                  type="text"
-                  disabled
-                  >审批完成</el-button
-                >
               </template>
             </el-table-column>
           </el-table>
@@ -169,12 +217,13 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
+import elementWeek from '@/components/elementWeek';
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
@@ -232,6 +281,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-approval': approval,
     'tl-approval-detail': approvalDetail,
+    'tl-elementWeek': elementWeek,
   },
   props: {},
   computed: {
@@ -260,6 +310,7 @@ export default {
     },
     changeProject() {
       sessionStorage.setItem('projectId', this.formData.projectId);
+      this.userId = '';
       this.timeSheetList();
       this.summaryList();
       this.searchList();

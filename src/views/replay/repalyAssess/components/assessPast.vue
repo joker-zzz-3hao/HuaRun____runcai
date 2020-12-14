@@ -1,67 +1,36 @@
 <template>
-  <div class="replay-list">
-    <el-button type="text">返回</el-button>
-        <div class="cont-area">
-          <div>组织:华润云</div>
-          <div>负责人:小孩三</div>
-          <div>提交时间:2020-1-1</div>
-        </div>
-        <div>是否已确认沟通:已沟通</div>
-       <div class="cont-area">
-               <tl-crcloud-table
-               :isPage="false"
-      >
-        <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table" row-key="id" >
-             <el-table-column
-              prop="num"
-              label="部门"
-              min-width="165"
-            >
-
-            </el-table-column>
-
-            <el-table-column
-              prop="num"
-              label="负责人"
-              min-width="165"
-            ></el-table-column>
-            <el-table-column
-              prop="org"
-              label="提交时间"
-              min-width="170"
-            ></el-table-column>
-
-            <el-table-column
-              prop="user"
-              label="复核时间"
-              min-width="100"
-            >
-            </el-table-column>
-             <el-table-column
-              prop="score"
-              label="是否已经确认沟通"
-              min-width="100"
-            >
-            </el-table-column>
-               <el-table-column
-              fixed="right"
-              prop="score1"
-              label="操作"
-              min-width="100"
-            >
-            </el-table-column>
-
-          </el-table>
-        </div>
-      </tl-crcloud-table>
-    </div>
+  <el-dialog
+    :append-to-body="true"
+    :visible="visible"
+    :before-close="close"
+    :close-on-click-modal="false"
+    class="tl-dialog check-judge"
+  >
     <div>
-      <el-button @click="submit" >提交</el-button>
-        <el-button @click="assessPast">驳回</el-button>
+      <dl><dt>组织</dt></dl>
+      <dl><dt>负责人</dt></dl>
+      <dl><dt>提交时间</dt></dl>
+      <dl><dt>复核结果</dt></dl>
+      <dl><dt>复核人</dt></dl>
+      <dl><dt>绩效复核时间</dt></dl>
     </div>
+    <tl-crcloud-table :isPage="false">
+      <div slot="tableContainer" class="table-container">
+        <el-table :data="tableData" class="tl-table" row-key="id">
+          <el-table-column prop="num" label="序号"> </el-table-column>
+          <el-table-column prop="num" label="部门"> </el-table-column>
+          <el-table-column prop="num" label="负责人"></el-table-column>
+          <el-table-column prop="org" label="自评得分"></el-table-column>
+          <el-table-column prop="user" label="OKR最终得分"> </el-table-column>
+          <el-table-column prop="score" label="绩效系数分配" min-width="100">
+          </el-table-column>
+          <el-table-column prop="score1" label="调整原因" min-width="100">
+          </el-table-column>
+        </el-table>
+      </div>
+    </tl-crcloud-table>
     <tl-assess-person ref="assessPerson"></tl-assess-person>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -77,6 +46,8 @@ export default {
       periodIdList: [],
       periodId: '',
       server,
+      visible: false,
+      dialogType: 'detail',
     };
   },
   components: {
@@ -84,15 +55,14 @@ export default {
     'tl-assess-person': assessPerson,
   },
   mounted() {
-    this.getOkrCycleList();
   },
   methods: {
-    getOkrCycleList() {
-      this.server.getOkrCycleList().then((res) => {
-        this.periodIdList = res.data;
-
-        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
-      });
+    show(type) {
+      this.visible = true;
+      this.dialogType = type;
+    },
+    close() {
+      this.visible = false;
     },
     submit() {
       this.$xconfirm({

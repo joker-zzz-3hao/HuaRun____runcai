@@ -11,7 +11,7 @@
                   v-model="formData.projectStatus"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option
@@ -30,7 +30,7 @@
                   v-model="formData.projectType"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option
@@ -49,7 +49,7 @@
                   v-model="formData.projectInputTypeCode"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select"
+                  class="tl-select has-bg"
                   @change="searchManage"
                 >
                   <el-option
@@ -218,12 +218,15 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="50"
+              width="100"
               v-if="tableData.length > 0"
             >
               <template slot-scope="scope">
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
+                >
+                   <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                  >设置</el-button
                 >
               </template>
             </el-table-column>
@@ -336,6 +339,14 @@ export default {
         name: 'projectDetail',
         query: {
           projectId: data.projectId,
+        },
+      });
+    },
+    setTime(row) {
+      this.$router.push({
+        name: 'hoursCollection',
+        query: {
+          projectId: row.projectId,
         },
       });
     },

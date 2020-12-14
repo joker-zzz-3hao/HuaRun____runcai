@@ -24,25 +24,45 @@
       </dl>
     </div>
     <div class="cont-area">
-      <div>部门总数：11</div>
-      <div>待复核：11</div>
-      <div>绩效符合状态：驳回</div>
-      <div>驳回原因：XXXXXXXXXXXXXXXX</div>
-      <div>复合时间：2020-10-11</div>
-      <div>绩效系数：1.5分3个 1.25分4个</div>
-      <div>复合时间：2020-10-11</div>
+      <div>
+        <span>部门总数</span>
+        <em>{{ sortMsg.orgSum || 0 }}</em>
+        <span>待复核</span>
+        <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+        <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
+          <dt>{{ rule.ruleName }}</dt>
+          <dd
+            v-for="item in rule.periodRuleDetailList"
+            :key="item.ruleDetailId"
+          >
+            <span>{{ item.value }}{{ item.unit }} </span>
+            <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
+          </dd>
+        </dl>
+      </div>
+      <div>
+        <span>绩效复核状态</span>
+        <em>{{ sortMsg.approvalStatus }}</em>
+        <span>绩效复核时间</span>
+        <em>{{ sortMsg.reviewTime || "--" }}</em>
+        <span>驳回原因</span>
+        <em>{{ sortMsg.approvalMsg || "--" }}</em>
+      </div>
       <el-button type="text" @click="showbeforeList"
         >查看历史提交记录</el-button
       >
     </div>
     <div>
-      调整，你好部门绩效需等到整体符合结束后，您才可以进行调整，请等待，谢谢
+      <span>调整绩效排名</span>
+      <em
+        >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
+      >
     </div>
     <div class="cont-area">
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table tableSort" row-key="id">
-            <el-table-column prop="num" label="排序" min-width="165">
+            <el-table-column prop="sort" label="排序" min-width="105">
               <template slot-scope="scope">
                 <el-button type="text" @click="upGo(tableData, scope.$index)"
                   >向上</el-button
@@ -54,21 +74,25 @@
             </el-table-column>
 
             <el-table-column
-              prop="num"
+              prop="sort"
               label="序号"
-              min-width="165"
+              min-width="65"
             ></el-table-column>
             <el-table-column
-              prop="org"
+              prop="orgName"
               label="部门"
               min-width="170"
             ></el-table-column>
 
-            <el-table-column prop="user" label="负责人" min-width="100">
+            <el-table-column prop="userName" label="负责人" min-width="100">
             </el-table-column>
-            <el-table-column prop="score" label="自评得分" min-width="100">
+            <el-table-column
+              prop="selfAssessmentScore"
+              label="自评得分"
+              min-width="100"
+            >
             </el-table-column>
-            <el-table-column prop="score1" label="复合得分" min-width="100">
+            <el-table-column prop="finalScore" label="复核得分" min-width="100">
             </el-table-column>
             <el-table-column
               prop="scorelist"
@@ -82,9 +106,10 @@
     </div>
     <div>
       <span>*是否已经确认沟通 </span>
-
-      <el-radio v-model="radio" label="1">已沟通</el-radio>
-      <el-radio v-model="radio" label="2">未沟通</el-radio>
+      <el-radio-group v-model.trim="sortMsg.enableCommunicate">
+        <el-radio class="tl-radio" v-model="radio" :label="1">已沟通</el-radio>
+        <el-radio class="tl-radio" v-model="radio" :label="2">未沟通</el-radio>
+      </el-radio-group>
     </div>
     <div>
       <el-button
@@ -93,11 +118,15 @@
         @click="assessmentSave"
         >暂存</el-button
       >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+      <el-button
+        :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="submit"
         >提交</el-button
       >
     </div>
-    <rank-before-list ref="beforeList"></rank-before-list>
+    <rank-history-list ref="beforeList"></rank-history-list>
     <causes-rank ref="causesRank"></causes-rank>
   </div>
 </template>
@@ -107,7 +136,7 @@ import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
 import Server from '../server';
-import rankBeforeList from './components/rankBeforeList';
+import rankhistoryList from './components/rankhistoryList';
 import causesRank from './components/causesRank';
 
 const server = new Server();
@@ -115,8 +144,8 @@ export default {
   name: 'repalyAssessList',
   components: {
     'tl-crcloud-table': crcloudTable,
-    'rank-before-list': rankBeforeList,
     'causes-rank': causesRank,
+    'rank-history-list': rankhistoryList,
   },
   data() {
     return {
@@ -126,7 +155,7 @@ export default {
       periodId: '',
       tableData: [{
         id: 1,
-        num: 1,
+        sort: 1,
         org: '行云',
         user: '大哥',
         score: '1',
@@ -134,7 +163,7 @@ export default {
         scorelist: 'A',
       }, {
         id: 2,
-        num: 2,
+        sort: 2,
         org: '盘云',
         user: '大的哥',
         score: '1',
@@ -142,7 +171,7 @@ export default {
         scorelist: 'B',
       }, {
         id: 3,
-        num: 3,
+        sort: 3,
         org: '牛云',
         user: '大小哥',
         score: '1',
@@ -150,7 +179,7 @@ export default {
         scorelist: 'C',
       }, {
         id: 4,
-        num: 4,
+        sort: 4,
         org: '海云',
         user: '大哥',
         score: '1',
@@ -158,7 +187,7 @@ export default {
         scorelist: 'D',
       }, {
         id: 5,
-        num: 5,
+        sort: 5,
         org: '熊云',
         user: '大哥为',
         score: '1',
@@ -166,6 +195,9 @@ export default {
         scorelist: 'E',
       }],
       assessmentList: [],
+      assessmentMsg: {},
+      sortMsg: {},
+      ruleDetailContentList: [],
     };
   },
   mounted() {
@@ -179,12 +211,22 @@ export default {
         periodId: this.periodId,
       }).then((res) => {
         if (res.code == 200) {
-          this.assessmentList = res.data;
+          this.assessmentMsg = res.data;
+        }
+      });
+      this.server.querySort({
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.sortMsg = res.data;
+          this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
+          this.tableData = res.data.orgResultDetailMapList;
         }
       });
     },
     // 调用暂存接口
     assessmentSave() {
+      console.log(this.tableData);
       this.server.assessmentSave().then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
@@ -215,7 +257,7 @@ export default {
     // 获取后端为数据重新排序
     setNewList(tableData) {
       tableData.forEach((item, index) => {
-        this.$set(tableData[index], 'num', index + 1);
+        this.$set(tableData[index], 'sort', index + 1);
       });
     },
     setSort() {
@@ -265,7 +307,7 @@ export default {
     },
     // 显示历史列表
     showbeforeList() {
-      this.$refs.beforeList.show();
+      this.$refs.beforeList.show(this.periodId);
     },
     // 提交
     submit() {

@@ -242,21 +242,21 @@
 </template>
 
 <script>
-import {
-  // 需要的 extensions
-  Doc,
-  Text,
-  Paragraph,
-  Bold,
-  Underline,
-  Italic,
-  FontSize,
-  TextColor,
-  ListItem,
-  OrderedList,
-  TextHighlight,
-  Image,
-} from 'element-tiptap';
+// import {
+//   // 需要的 extensions
+//   Doc,
+//   Text,
+//   Paragraph,
+//   Bold,
+//   Underline,
+//   Italic,
+//   FontSize,
+//   TextColor,
+//   ListItem,
+//   OrderedList,
+//   TextHighlight,
+//   Image,
+// } from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
@@ -281,20 +281,20 @@ export default {
       noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
-      extensions: [
-        new Doc(),
-        new Text(),
-        new Paragraph(),
-        new Bold(),
-        new Underline(),
-        new Italic(),
-        new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
-        new TextColor(),
-        new TextHighlight(),
-        new ListItem(),
-        new OrderedList(),
-        new Image({ }),
-      ],
+      // extensions: [
+      //   new Doc(),
+      //   new Text(),
+      //   new Paragraph(),
+      //   new Bold(),
+      //   new Underline(),
+      //   new Italic(),
+      //   new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
+      //   new TextColor(),
+      //   new TextHighlight(),
+      //   new ListItem(),
+      //   new OrderedList(),
+      //   new Image({ }),
+      // ],
       loading: false,
       historyFirst: '',
       histoyExist: false,
@@ -349,7 +349,6 @@ export default {
     // 控制弹窗
     showOkrDialog() {
       this.getokrDetail();
-      this.getHistory();
       this.myokrDrawer = true;
     },
 

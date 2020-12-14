@@ -1,4 +1,5 @@
 <template>
+<div class="model-layout elementToFadeInAndOut">
   <el-dialog
     @click.native="closeshowMember"
     :modal-append-to-body="true"
@@ -11,6 +12,7 @@
     :visible.sync="dialogTableVisible"
     class="tl-dialog"
   >
+
     <el-form ref="form" :model="form" label-width="80px" class="tl-form">
       <el-form-item label="选择成员" class="tl-label-self">
         <tl-select-member
@@ -44,7 +46,9 @@
         >取消</el-button
       >
     </div>
+
   </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -153,3 +157,28 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+.model-layout{
+  width:100%;
+  height:100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 2005;
+
+}
+
+.elementToFadeInAndOut {
+    opacity: 1;
+    animation: fade 0.5s;
+}
+
+@keyframes fade {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+</style>

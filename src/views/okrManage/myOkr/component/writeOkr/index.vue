@@ -804,6 +804,7 @@ export default {
           let keypercent = 0;
           try {
             this.formData.okrInfoList.forEach((oitem) => {
+              oitem.okrDetailProgress = Math.floor(oitem.okrDetailProgress);
               opercent += oitem.okrWeight || 0;
               keypercent = 0;
               oitem.krList.forEach((kitem) => {
@@ -855,6 +856,7 @@ export default {
       && this.formData.okrInfoList[0].okrDetailObjectKr == ''
       && this.formData.okrInfoList[0].krList[0].okrDetailObjectKr == ''
       ) {
+        this.$message('未填写内容');
         return;
       }
       if (this.searchForm.okrCycle.periodId) {
@@ -866,6 +868,7 @@ export default {
       // 校验是否有更改
       let hasChange = true;
       this.formData.okrInfoList.forEach((item) => {
+        item.okrDetailProgress = Math.floor(item.okrDetailProgress);
         if (item.okrDetailObjectKr) {
           hasChange = false;
           return;

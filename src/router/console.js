@@ -94,6 +94,19 @@ export default [{
       },
       component: () => import('@/views/okrManage/myOkr/departmentOkr'),
     },
+    {
+      path: '/okrTable',
+      name: 'okrTable',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'myOkr',
+        belongsTo: 'myOkr',
+        title: 'okrTable',
+        power: 'my-okr-menu',
+      },
+      component: () => import('@/views/okrManage/myOkr/okrTable'),
+    },
     ],
   },
   {
@@ -316,33 +329,6 @@ export default [{
           power: '',
         },
         component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
-
-        children: [
-          {
-            path: '/assessDetail',
-            name: 'assessDetail',
-            meta: {
-              hasMainMenu: false,
-              isSubMenu: false,
-              parentRoute: 'myOkr',
-              title: 'replay',
-              power: '',
-            },
-            component: () => import('@/views/replay/repalyAssess/components/assessDetail'),
-          },
-          {
-            path: '/assessPast',
-            name: 'assessPast',
-            meta: {
-              hasMainMenu: false,
-              isSubMenu: false,
-              parentRoute: 'myOkr',
-              title: 'replay',
-              power: '',
-            },
-            component: () => import('@/views/replay/repalyAssess/components/assessPast'),
-          },
-        ],
       },
     ],
   },
@@ -358,6 +344,19 @@ export default [{
       power: 'project-menu',
     },
     component: () => import('@/views/projectManage/index'),
+  },
+  {
+    path: '/hoursCollection',
+    name: 'hoursCollection',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
+      title: 'hoursCollection',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/hoursCollection/index'),
   },
   {
     path: '/projectDetail',
@@ -407,6 +406,30 @@ export default [{
       power: 'mainHours',
     },
     component: () => import('@/views/projectManage/mainHours/index'),
+  },
+  {
+    path: '/approvalList',
+    name: 'approvalList',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: false,
+      parentRoute: 'projectManage',
+      title: 'approvalList',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/approvalList'),
+  },
+  {
+    path: '/HoursJoin',
+    name: 'HoursJoin',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'HoursJoin',
+      title: 'HoursJoin',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/mainHours/components/HoursJoin'),
   },
   {
     // 周报管理

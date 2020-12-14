@@ -6,19 +6,17 @@
     :before-close="close"
     title="添加成员"
     :close-on-click-modal="false"
+    :modal="true"
     custom-class="add-members"
     class="tl-dialog"
   >
     <div class="cont-area">
       <dl class="layout-rows">
-        <dt><em>成员</em></dt>
         <dd>
-          <el-button
-            type="primary"
-            @click="addDotted"
-            class="tl-btn amt-bg-slip"
-            >添加成员</el-button
-          >
+          <el-button plain @click="addDotted" class="tl-btn amt-border-slip"
+            ><i class="el-icon-plus"></i><em>选择成员</em
+            ><span class="lines"></span
+          ></el-button>
           <!-- <el-select
             v-model="keyword"
             placeholder="请输入成员姓名"
@@ -200,7 +198,7 @@
 </template>
 
 <script>
-import addMember from '@/components/addMember';
+import addMember from '@/components/addMemberObject';
 import crcloudTable from '@/components/crcloudTable';
 import CONST from '../../const';
 
@@ -344,6 +342,7 @@ export default {
           this.server.addProjectUser(params).then((res) => {
             this.commitLoading = false;
             if (res.code == '200') {
+              this.$message.success('添加成功');
               this.visible = false;
               this.$emit('addSuccess');
             }

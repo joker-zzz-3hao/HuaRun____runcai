@@ -33,6 +33,13 @@ const REVIEW_STATUS_MAP = {
   2: { name: '待沟通', classname: 'no-talk' },
   3: { name: '复盘结束', classname: 'finish-review' },
 };
+const APPROVAL_STATUS_MAP = {
+  1: { name: '未提交', classname: 'no-summit' },
+  2: { name: '复核中', classname: 'approval-ing' },
+  3: { name: '同意', classname: 'pass-summit' },
+  4: { name: '驳回', classname: 'refuse-summit' },
+};
+
 export default {
   REVIEW_STATUS,
   REVIEW_STATUS_LIST,
@@ -40,4 +47,5 @@ export default {
   REPLAY_STATUS_LIST,
   REVIEW_STATUS_MAP,
   REPLAY_ASSESS_STATUS_LIST,
+  APPROVAL_STATUS_MAP,
 };

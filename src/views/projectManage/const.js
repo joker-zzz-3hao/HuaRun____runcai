@@ -137,9 +137,15 @@ const APPROVAL_STATUS_MAP = {
   2: '已审批',
 };
 
+const APPROVAL_LEVEL = {
+  Contractor: '外部账户',
+  OTHER: '特殊账户',
+  Full_Time: '员工账户',
+};
+
 const APPROVAL_SELECT = [
-  { value: 1, label: '按周期选择' },
-  { value: 2, label: '按日期选择' },
+  { value: 1, label: '按周筛选' },
+  { value: 2, label: '按日筛选' },
 ];
 
 const APPROVAL_STATUS_LIST = [
@@ -172,4 +178,5 @@ export default {
   DATE_MODE_NUM,
   DATE_MODE_NUMOBJ,
   APPROVAL_SELECT,
+  APPROVAL_LEVEL,
 };

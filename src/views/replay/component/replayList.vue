@@ -11,7 +11,7 @@
             :popper-append-to-body="false"
             @change="okrReviewList"
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg w180"
           >
             <el-option
               :label="item.periodName"
@@ -32,7 +32,7 @@
             @change="okrReviewList"
             clearable
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg w100"
           >
             <el-option
               :label="item.name"

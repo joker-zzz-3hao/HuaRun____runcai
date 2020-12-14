@@ -114,8 +114,8 @@
             <dd>
               <el-button
                 :disabled="!hasPower('okr-maps-query')"
-                type="primary"
-                class="tl-btn amt-bg-slip"
+                plain
+                class="tl-btn light"
                 @click="search"
                 >搜索</el-button
               >
@@ -246,8 +246,10 @@ export default {
   },
   mounted() {
     const self = this;
-    // self.getPeriod();
+    // self.getPeriod();document.documentElement.scrollTop
     self.getOrgTable();
+    document.body.scrollTop = 200;
+    console.log('滚动条', document.body.scrollTop, document.documentElement.scrollTop);
   },
   methods: {
     ...mapMutations('common', ['changeTestModel']),
@@ -289,9 +291,7 @@ export default {
         this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
-          // periodId: '1204827318294274048',
           orgId: this.orgFullId,
-          // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据

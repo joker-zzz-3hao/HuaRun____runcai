@@ -61,7 +61,6 @@
             <dt>更新说明</dt>
             <dd>
               <el-form-item
-                label="更新说明"
                 prop="updateexplain"
                 :rules="[
                   {
