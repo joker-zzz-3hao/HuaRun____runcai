@@ -5981,11 +5981,11 @@
 }
 
 .working-hours .cont-area > .dl-list .dl-item {
-  margin: 0 124px 0 0;
+  margin: 0 52px 0 0;
 }
 
 .working-hours .dl-list .dl-item dt {
-  margin: 0 30px 0 0;
+  margin: 0 10px 0 0;
   color: #acb6bf;
 }
 
@@ -5999,7 +5999,7 @@
 
 .working-hours .dl-item dd em {
   font-family: DINAlternate-Bold;
-  font-size: 34px;
+  font-size: 20px;
   color: #685df1;
 }
 
@@ -6243,8 +6243,24 @@
   font-weight: normal;
 }
 
+.approval-list .tl-table .el-table__row td:nth-child(2) .cell > a:hover {
+  color: #685df1;
+}
+
 .approval-list .tl-table .el-table__row td:nth-child(4) .cell div .el-tooltip {
   font-size: 12px;
+  color: #acb6bf;
+}
+
+.approval-list-detail .dl-group dl {
+  margin: 20px 0;
+  display: flex;
+  align-self: start;
+}
+
+.approval-list-detail .dl-group dt {
+  flex: 0 0 64px;
+  margin: 0 30px 0 0;
   color: #acb6bf;
 }
 

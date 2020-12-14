@@ -2,11 +2,12 @@
   <el-date-picker
     :clearable="true"
     v-model="queryParam.value"
-    :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
+    :format="showTime?' MM 月 第 ' + queryParam.week + ' 周 (MM 月 dd 日-MM 月 '+dayweek+' 日)':' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
     @change="weekChange"
     value-format="yyyy/M/d"
     size="medium"
     type="week"
+    :style="showTime?{width:'310px'}:''"
     placeholder=" 请选择周"
     :picker-options="{ firstDayOfWeek: 1 }"
     popper-class="tl-date-popper"
@@ -16,6 +17,7 @@
 
 <script>
 export default {
+  props: ['showTime'],
   data() {
     return {
       queryParam: {
@@ -23,6 +25,7 @@ export default {
         week: '',
         defValue: '',
       },
+      dayweek: '',
     };
   },
   created() {
@@ -32,16 +35,23 @@ export default {
     // 初始化日期
     getDay(val) {
       const date = new Date(val);
+      const oneDate = 24 * 60 * 60 * 1000;
+      const dateTimeWeek = date.getTime() + (oneDate * 6);
       const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
+      let dayweek = new Date(dateTimeWeek).getDate();
       if (month < 10) {
         month = `0${month}`;
       }
       if (day < 10) {
         day = `0${day}`;
       }
+      if (dayweek < 10) {
+        dayweek = `0${dayweek}`;
+      }
       const nowDay = `${year}/${month}/${day}`;
+      this.dayweek = dayweek;
       this.queryParam.week = this.getWeekInMonth(new Date(nowDay));
       this.queryParam.defValue = `${year}/${month}/${day}`;
     },

@@ -4,7 +4,6 @@
     :visible="visible"
     @close="close"
     :before-close="close"
-    :title="info.projectNameCn"
     :close-on-click-modal="false"
     custom-class="approval"
     class="tl-dialog"
@@ -82,15 +81,11 @@
               fixed="right"
               label="操作"
               width="100"
-              v-if="
-                baseInfo.projectUserVoList &&
-                baseInfo.projectUserVoList.length > 0
-              "
+
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
-                  @click="deleteMember(scope.row)"
+
                   type="text"
                   class="tl-btn"
                   >移除</el-button
@@ -98,7 +93,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-button type="text" @click="addUser()">添加成员</el-button>
+          <el-button type="text" >添加成员</el-button>
         </div>
     </tl-crcloud-table>
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"

@@ -122,15 +122,34 @@
               min-width="180px"
             >
               <template slot-scope="scope">
-                <span @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">
-                  {{GetLength(scope.row.workContent,20)}}
-                </span>
+                <a
+                  @click="
+                    showDesc(
+                      scope.row,
+                      scope.row.arrHide.length * 0.5,
+                      changeListDate(scope.row.arrHide),
+                      weekWorkListCheck(scope.row)
+                    )
+                  "
+                >
+                  {{ GetLength(scope.row.workContent, 20) }}
+                </a>
               </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-
-                  <span v-if="scope.row.workDesc " @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">{{ GetLength(scope.row.workDesc, 16) }}</span>
+                <span
+                  v-if="scope.row.workDesc"
+                  @click="
+                    showDesc(
+                      scope.row,
+                      scope.row.arrHide.length * 0.5,
+                      changeListDate(scope.row.arrHide),
+                      weekWorkListCheck(scope.row)
+                    )
+                  "
+                  >{{ GetLength(scope.row.workDesc, 16) }}</span
+                >
 
                 <span v-else>--</span>
               </template>
@@ -274,10 +293,10 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 > -->
-                  <span>{{
-                    GetLength(weekWorkListCheck(scope.row), 13) || "--"
-                  }}</span>
-                  <!-- <span slot="reference">{{
+                <span>{{
+                  GetLength(weekWorkListCheck(scope.row), 13) || "--"
+                }}</span>
+                <!-- <span slot="reference">{{
                      GetLength(weekWorkListCheck(scope.row),9) || "--"
                   }}</span> -->
                 <!-- </el-tooltip> -->
@@ -323,7 +342,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
-                  GetLength(scope.row.approvalTime,16)
+                  GetLength(scope.row.approvalTime, 16)
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -331,7 +350,7 @@
             <el-table-column prop="submitTime" label="提交日期" min-width="150">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.submitTime)">{{
-                   GetLength(scope.row.submitTime,16)
+                  GetLength(scope.row.submitTime, 16)
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -389,7 +408,7 @@
       >
       <el-button
         type="primary"
-        @click="alertSelectAll"
+        @click="showTableSelect"
         class="tl-btn amt-bg-slip"
         >批量审批</el-button
       >
@@ -407,7 +426,7 @@
       :server="server"
     ></tl-approval-detail>
     <tl-desc-model ref="descModel"></tl-desc-model>
-    <tl-select-approval ref="selectApproval"></tl-select-approval>
+    <tl-select-approval ref="selectApproval"   @alertSelectAll="alertSelectAll"></tl-select-approval>
   </div>
 </template>
 
@@ -704,23 +723,30 @@ export default {
         }
       });
     },
-    alertSelectAll() {
-      this.$refs.selectApproval.show(this.tableDataSelect);
-      return false;
+    showTableSelect() {
       if (this.workList.length == 0) {
         this.$message.success('请勾选审批项');
         return false;
       }
-      this.$xconfirm({
-        title: '确认批量审批',
-        content: '工时确认后将不可再修改, 请确认',
-      }).then(() => {
-        this.server.timeSheetListapproval({ workList: this.workList }).then((res) => {
-          if (res.code == '200') {
-            this.$message.success('审批成功');
-            this.searchList();
-          }
-        });
+      this.$nextTick(() => {
+        this.$refs.selectApproval.show(this.tableDataSelect);
+      });
+    },
+    alertSelectAll() {
+      // this.$xconfirm({
+      //   title: '确认批量审批',
+      //   content: '工时确认后将不可再修改, 请确认',
+      // }).then(() => {
+
+      // });
+      this.server.timeSheetListapproval({ workList: this.workList }).then((res) => {
+        if (res.code == '200') {
+          this.$message.success('审批成功');
+          this.$refs.selectApproval.close();
+          this.searchList();
+          this.tableDataSelect = [];
+          this.workList = [];
+        }
       });
     },
     updateTimeWeek(row) {

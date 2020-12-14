@@ -47,6 +47,12 @@
               </el-select>
             </dd>
           </dl>
+            <dl class="dl-item">
+            <dt>按周汇总</dt>
+            <dd>
+            <tl-elementWeek :showTime="true"></tl-elementWeek>
+            </dd>
+          </dl>
         </div>
         <div class="operating-box">
           <!-- <dl class="dl-item">
@@ -59,6 +65,31 @@
       </div>
     </div>
     <div class="cont-area">
+        <div class="dl-list">
+        <dl class="dl-item">
+          <dt><span>项目成员</span></dt>
+          <dd>
+            <em>0 </em><span>人</span>
+            <span></span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>已提交/未提交工时</span></dt>
+          <dd>
+            <em >0/0 </em
+            ><span>人</span
+            >     <span></span>
+          </dd>
+        </dl>
+          <dl class="dl-item">
+          <dt><span>共填入工时</span></dt>
+          <dd>
+            <em >0 </em
+            ><span>天</span
+            >     <span></span>
+          </dd>
+        </dl>
+      </div>
       <div class="dl-list">
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
@@ -76,6 +107,7 @@
           </dd>
         </dl>
       </div>
+
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -185,12 +217,13 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
+import elementWeek from '@/components/elementWeek';
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
@@ -248,6 +281,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-approval': approval,
     'tl-approval-detail': approvalDetail,
+    'tl-elementWeek': elementWeek,
   },
   props: {},
   computed: {
