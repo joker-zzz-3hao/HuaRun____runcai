@@ -936,10 +936,7 @@
   transform: scale(0.8,0.8);
 }
 
-.el-dialog__wrapper+.v-modal{
-  z-index: 2002 !important;
-}
-.el-tiptap-editor__content::-webkit-scrollbar{
+.update-progress .el-tiptap-editor__content::-webkit-scrollbar{
   display: none;
 }
 
