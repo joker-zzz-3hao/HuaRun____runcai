@@ -268,12 +268,12 @@ export default {
       }));
       console.log({
         resultDetailList: this.tableData,
+        orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
       });
-      debugger;
       this.server.assessmentSubmit({
         orgResultDetailMapList: this.tableData,
         ruleDetailContentList,

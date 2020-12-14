@@ -51,7 +51,7 @@ export default {
     // 单位M
     maxFileSzie: {
       type: Number,
-      default: 30,
+      default: 10,
     },
     accept: {
       type: String,
@@ -59,7 +59,7 @@ export default {
     },
     tips: {
       type: String,
-      default: '最多上传10个文件，单个文件不超过30M',
+      default: '最多上传10个文件，单个文件不超过10M',
     },
     limit: {
       type: Number,
