@@ -483,6 +483,7 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.showInput = false;
+          this.$message.success('保存成功');
           this.getOkrRemark();
         }
       });
