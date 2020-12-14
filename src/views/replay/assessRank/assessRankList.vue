@@ -42,7 +42,9 @@
       </div>
       <div>
         <span>绩效复核状态</span>
-        <em>{{ sortMsg.approvalStatus }}</em>
+        <em v-if="sortMsg.approvalStatus">{{
+          CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+        }}</em>
         <span>绩效复核时间</span>
         <em>{{ sortMsg.reviewTime || "--" }}</em>
         <span>驳回原因</span>
@@ -140,6 +142,7 @@
 import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
+import CONST from '../const';
 import Server from '../server';
 import rankhistoryList from './components/rankhistoryList';
 import causesRank from './components/causesRank';
@@ -154,6 +157,7 @@ export default {
   },
   data() {
     return {
+      CONST,
       radio: '',
       periodIdList: [],
       server,
