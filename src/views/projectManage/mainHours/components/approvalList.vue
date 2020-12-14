@@ -122,15 +122,34 @@
               min-width="180px"
             >
               <template slot-scope="scope">
-                <span @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">
-                  {{GetLength(scope.row.workContent,20)}}
-                </span>
+                <a
+                  @click="
+                    showDesc(
+                      scope.row,
+                      scope.row.arrHide.length * 0.5,
+                      changeListDate(scope.row.arrHide),
+                      weekWorkListCheck(scope.row)
+                    )
+                  "
+                >
+                  {{ GetLength(scope.row.workContent, 20) }}
+                </a>
               </template>
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-
-                  <span v-if="scope.row.workDesc " @click="showDesc(scope.row,scope.row.arrHide.length * 0.5,changeListDate(scope.row.arrHide),weekWorkListCheck(scope.row))">{{ GetLength(scope.row.workDesc, 16) }}</span>
+                <span
+                  v-if="scope.row.workDesc"
+                  @click="
+                    showDesc(
+                      scope.row,
+                      scope.row.arrHide.length * 0.5,
+                      changeListDate(scope.row.arrHide),
+                      weekWorkListCheck(scope.row)
+                    )
+                  "
+                  >{{ GetLength(scope.row.workDesc, 16) }}</span
+                >
 
                 <span v-else>--</span>
               </template>
@@ -274,10 +293,10 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 > -->
-                  <span>{{
-                    GetLength(weekWorkListCheck(scope.row), 13) || "--"
-                  }}</span>
-                  <!-- <span slot="reference">{{
+                <span>{{
+                  GetLength(weekWorkListCheck(scope.row), 13) || "--"
+                }}</span>
+                <!-- <span slot="reference">{{
                      GetLength(weekWorkListCheck(scope.row),9) || "--"
                   }}</span> -->
                 <!-- </el-tooltip> -->
@@ -323,7 +342,7 @@
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
-                  GetLength(scope.row.approvalTime,16)
+                  GetLength(scope.row.approvalTime, 16)
                 }}</span>
                 <span v-else>--</span>
               </template>
@@ -331,7 +350,7 @@
             <el-table-column prop="submitTime" label="提交日期" min-width="150">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.submitTime)">{{
-                   GetLength(scope.row.submitTime,16)
+                  GetLength(scope.row.submitTime, 16)
                 }}</span>
                 <span v-else>--</span>
               </template>
