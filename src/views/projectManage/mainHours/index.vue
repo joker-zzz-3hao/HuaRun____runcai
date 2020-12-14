@@ -99,7 +99,7 @@
           <dt><span>项目总预算</span></dt>
           <dd>
             <em v-money="{ value: projectBudgetAmount, precision: 2 }"></em
-            ><span>元</span><span>{{ projectBudgetCurrency || "人民币" }}</span>
+            ><span>元</span><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
         </dl>
         <dl class="dl-item">
