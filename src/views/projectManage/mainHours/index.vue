@@ -73,14 +73,14 @@
         <dl class="dl-item">
           <dt><span>项目成员</span></dt>
           <dd>
-            <em>{{projectUserSum}} </em><span>人</span>
+            <em>{{projectUserSum||0}} </em><span>人</span>
             <span></span>
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>预计提交工时</span></dt>
           <dd>
-            <em >{{submissionHours}} </em
+            <em >{{submissionHours||0}} </em
             ><span>天</span
             >     <span></span>
           </dd>
@@ -88,7 +88,7 @@
           <dl class="dl-item">
           <dt><span>实际提交工时</span></dt>
           <dd>
-            <em >{{actualSubmissionHours}} </em
+            <em >{{actualSubmissionHours||0}} </em
             ><span>天</span
             >     <span></span>
           </dd>
@@ -281,6 +281,7 @@ export default {
       week: '',
       projectUserSum: 0,
       submissionHours: 0,
+      isTalent: false,
     };
   },
 
@@ -357,11 +358,17 @@ export default {
       });
     },
     projectPageList() {
+      this.isTalent = false;
+      this.userInfo.roleList.forEach((item) => {
+        if (item.roleCode == 'TENANT_ADMIN') {
+          this.isTalent = true;
+        }
+      });
       this.server.projectPageList({
         currentPage: 1,
         pageSize: 9999,
         projectName: '',
-        userAccount: this.userInfo.userAccount,
+        userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
           this.projectList = res.data.content;
