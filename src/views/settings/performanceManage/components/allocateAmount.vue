@@ -22,7 +22,7 @@
           class="tl-select"
           @change="dataChange"
           ><el-option
-            v-for="item in amountDataListCopy"
+            v-for="item in amountDataList"
             :key="item.periodRuleId"
             :label="item.ruleName"
             :value="item.periodRuleId"
@@ -88,14 +88,13 @@ export default {
         return {};
       },
     },
-
     rowData: {
       type: Object,
       default() {
         return {};
       },
     },
-    amountDataList: {
+    amountDataCopy: {
       type: Array,
       default() {
         return [];
@@ -121,8 +120,10 @@ export default {
         ruleName: '',
         periodRuleDetailList: [],
       },
-      remainAmount: {},
-      amountDataListCopy: [],
+      remainAmount: {
+        ruleName: '',
+        periodRuleDetailList: [],
+      },
       detailList: [],
     };
   },
@@ -131,19 +132,20 @@ export default {
   computed: {},
   methods: {
     init() {
-      this.amountDataListCopy = [].concat(this.amountDataList);
       this.title = `分配绩效名额（${this.rowData.orgName}）`;
-      this.periodRuleId = this.amountDataListCopy[0].periodRuleId;
-      this.getUnApplyNumber();
-      // 编辑
+      this.amountDataList = this.deepCopy(this.amountDataCopy);
+      this.periodRuleId = this.amountDataList[0].periodRuleId;
       this.detailList = JSON.parse(this.rowData.detail);
-      // console.log(this.detailList);
+      console.log('detailList', this.detailList);
+      console.log('amountDataList', this.amountDataList);
+      this.getUnApplyNumber();
       // 将设置过得列显示在页面中（未设置的，初始化为0）
       this.setInitData();
       this.setFirstList(this.periodRuleId);
+      this.$forceUpdate();
     },
     setInitData() {
-      this.amountDataListCopy.forEach((element) => {
+      this.amountDataList.forEach((element) => {
         element.periodRuleDetailList.forEach((data) => {
           data.applyValue = 0;
           data.showError = false;
@@ -161,8 +163,6 @@ export default {
           }
         });
       });
-      console.log('detailList', this.detailList);
-      console.log('amountDataListCopy', this.amountDataListCopy);
     },
     getUnApplyNumber() {
       this.server.getUnApplyNumber({
@@ -171,21 +171,29 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           // eslint-disable-next-line prefer-destructuring
-          this.remainAmount = res.data[0];
+          this.remainAmount = res.data[0] || {
+            ruleName: '',
+            periodRuleDetailList: [],
+          };
         }
       });
     },
     dataChange(periodRuleId) {
       this.periodRuleId = periodRuleId;
-
       this.setFirstList(this.periodRuleId);
-
       this.getUnApplyNumber();
     },
     setFirstList(periodRuleId) {
-      this.amountDataListCopy.forEach((element) => {
+      this.amountDataList.forEach((element) => {
         if (element.periodRuleId == periodRuleId) {
           this.amountData = { ...element };
+          this.amountData.periodRuleId = '';
+          // 如果是新增则提交的periodRuleId为空；否则赋值
+          this.detailList.forEach((detail) => {
+            if (detail.periodRuleId == periodRuleId) {
+              this.amountData.periodRuleId = detail.periodRuleId;
+            }
+          });
         }
       });
     },
@@ -196,15 +204,12 @@ export default {
       this.$forceUpdate();
     },
     inputChange(amountItem) {
-      // 校验
-
-      // this.amountData.periodRuleDetailList；this.remainAmount.periodRuleDetailList
       this.amountData.periodRuleDetailList.forEach((element1) => {
         if (element1.periodRuleDetailId == amountItem.periodRuleDetailId) {
           this.remainAmount.periodRuleDetailList.forEach((element2) => {
             if (element2.periodRuleDetailId == amountItem.periodRuleDetailId) {
               // 1、正整数数字
-              if (!(/(^[0-9]\d*$)/.test(amountItem.applyValue))) {
+              if (!(/(^[0-9]\d*$)/.test(Number(amountItem.applyValue)))) {
                 element1.showError = true;
                 element1.errorText = '请填写正整数';
               } else if (amountItem.applyValue > element2.applyValue) { // 2、分配的数值大小，不能大于剩余可用数量
@@ -227,43 +232,29 @@ export default {
       this.visible = false;
       this.$emit('update:showAllocateDialog', false);
     },
-    validateForm() {
-      return true;
-    },
     submit() {
       this.amountData.applyType = 2;// 类型：部门
       this.amountData.applyId = this.rowData.orgId;// 部门id
-      this.amountData.sourcePeriodRuleId = this.periodRuleId;// 部门
-      this.amountData.periodRuleId = '';// 新增
+      this.amountData.sourcePeriodRuleId = this.periodRuleId;
       this.amountData.periodRuleDetailList.forEach((data) => {
         data.periodRuleDetailId = '';
         data.periodDetailId = '';
       });
-      // // 编辑
-      // if (this.selectedRule.periodRuleId) {
-      //   this.selectedRule.ruleDetailList.forEach((item) => {
-      //     this.amountData.periodRuleDetailList.push({
-      //       applyValue: item.applyValue,
-      //       ruleDetailId: item.ruleDetailId,
-      //     });
-      //   });
-      // } else { // 新增
-      // this.selectedRule.ruleDetailList.forEach((item) => {
-      //   this.amountData.periodRuleDetailList.push({
-      //     applyValue: item.applyValue,
-      //     ruleDetailId: item.ruleDetailId,
-      //   });
-      // });
-      // }
-      if (this.validateForm()) {
-        this.server.addOrUpdateAmount([this.amountData]).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('成功');
-            this.$emit('refreshPage');
-            this.close();
-          }
-        });
+      // 校验表单
+      for (let i = 0; i < this.amountData.periodRuleDetailList.length; i += 1) {
+        const element = this.amountData.periodRuleDetailList[i];
+        if (element.showError) {
+          this.$message.error('填写数据错误，请修改后重试。');
+          return;
+        }
       }
+      this.server.addOrUpdateAmount([this.amountData]).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('成功');
+          this.$emit('refreshPage');
+          this.close();
+        }
+      });
     },
   },
   watch: {},

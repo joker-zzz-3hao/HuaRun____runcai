@@ -61,7 +61,11 @@
     <div class="cont-area">
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table tableSort" row-key="id">
+          <el-table
+            :data="tableData"
+            class="tl-table tableSort"
+            row-key="orgId"
+          >
             <el-table-column prop="sort" label="排序" min-width="105">
               <template slot-scope="scope">
                 <el-button type="text" @click="upGo(tableData, scope.$index)"
@@ -94,9 +98,12 @@
             </el-table-column>
             <el-table-column prop="finalScore" label="复核得分" min-width="100">
             </el-table-column>
+            <!-- 动态 -->
             <el-table-column
-              prop="scorelist"
-              label="绩效系数分配"
+              v-for="rule in ruleDetailContentList"
+              :key="rule.applyId"
+              :prop="rule.ruleId"
+              :label="rule.ruleName"
               min-width="100"
             >
             </el-table-column>
@@ -118,16 +125,14 @@
         @click="assessmentSave"
         >暂存</el-button
       >
-      <el-button
-        :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="submit"
+
+      <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
         >提交</el-button
       >
     </div>
     <rank-history-list ref="beforeList"></rank-history-list>
-    <causes-rank ref="causesRank"></causes-rank>
+    <causes-rank ref="causesRank" @success="assessmentSubmit"></causes-rank>
   </div>
 </template>
 
@@ -198,6 +203,7 @@ export default {
       assessmentMsg: {},
       sortMsg: {},
       ruleDetailContentList: [],
+      propList: [],
     };
   },
   mounted() {
@@ -211,9 +217,11 @@ export default {
         periodId: this.periodId,
       }).then((res) => {
         if (res.code == 200) {
-          this.assessmentMsg = res.data;
+          this.queryList();
         }
       });
+    },
+    queryList() {
       this.server.querySort({
         periodId: this.periodId,
       }).then((res) => {
@@ -221,23 +229,61 @@ export default {
           this.sortMsg = res.data;
           this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
           this.tableData = res.data.orgResultDetailMapList;
+          this.propList = this.ruleDetailContentList.map((rule) => rule.ruleId);
+          // eslint-disable-next-line max-len
+          this.propData = res.data.orgResultDetailDynamicColumns;
+          console.log(this.propData);
         }
       });
     },
     // 调用暂存接口
     assessmentSave() {
-      console.log(this.tableData);
-      this.server.assessmentSave().then((res) => {
+      const resultDetailList = this.tableData.map((item) => ({
+        resultDetailId: item.resultDetailId,
+        type: item.type,
+        sourceId: item.orgId,
+        periodRuleDetailId: item.periodRuleDetailId,
+        sort: item.sort,
+      }));
+      this.server.assessmentSave({
+        resultId: this.sortMsg.resultId,
+        periodId: this.periodId,
+        enableCommunicate: this.sortMsg.enableCommunicate,
+        resultDetailList,
+      }).then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
+          this.queryList();
         }
       });
     },
     // 调用提交接口
     assessmentSubmit() {
-      this.server.assessmentSubmit().then((res) => {
+      this.tableData.forEach((item) => {
+        item.sourceId = item.orgId;
+      });
+      const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
+        ruleId: rule.ruleId,
+        ruleName: rule.ruleName,
+      }));
+      console.log({
+        resultDetailList: this.tableData,
+        ruleDetailContentList,
+        resultId: this.sortMsg.resultId,
+        periodId: this.periodId,
+        enableCommunicate: this.sortMsg.enableCommunicate,
+      });
+      debugger;
+      this.server.assessmentSubmit({
+        orgResultDetailMapList: this.tableData,
+        ruleDetailContentList,
+        resultId: this.sortMsg.resultId,
+        periodId: this.periodId,
+        enableCommunicate: this.sortMsg.enableCommunicate,
+      }).then((res) => {
         if (res.code == 200) {
           this.$message.success('提交成功');
+          this.queryList();
         }
       });
     },
@@ -258,6 +304,9 @@ export default {
     setNewList(tableData) {
       tableData.forEach((item, index) => {
         this.$set(tableData[index], 'sort', index + 1);
+        // 重新赋值系数
+        this.$set(tableData[index], this.propList[0], this.propData[index].content);
+        this.$set(tableData[index], 'periodRuleDetailId', this.propData[index].periodRuleDetailId);
       });
     },
     setSort() {

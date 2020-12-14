@@ -2,7 +2,6 @@
   <el-dialog
     :append-to-body="true"
     :visible="visible"
-    @closed="closed"
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog check-judge"
@@ -18,7 +17,9 @@
       </el-table-column>
     </el-table>
     <div>
-      <el-button type="primary" class="tl-btn amt-bg-slip">确认提交</el-button>
+      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+        >确认提交</el-button
+      >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
       >
@@ -42,6 +43,10 @@ export default {
     },
     close() {
       this.visible = false;
+    },
+    submit() {
+      this.$emit('success');
+      this.close();
     },
   },
 
