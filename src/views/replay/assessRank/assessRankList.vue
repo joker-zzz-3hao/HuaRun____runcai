@@ -275,6 +275,7 @@ export default {
         enableCommunicate: this.sortMsg.enableCommunicate,
       });
       this.server.assessmentSubmit({
+        resultDetailVoList: this.tableData,
         orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
