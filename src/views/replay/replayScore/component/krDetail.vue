@@ -440,6 +440,15 @@ export default {
       const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=SCORE_REVIEW&sourceKey=${this.$route.query.okrId}`;
       window.open(url);
     },
+    // 更新文件状态
+    updateFile() {
+      this.list.forEach((item) => {
+        if (item.attachmentList && item.attachmentList.length > 0) {
+          const files = item.attachmentList.map((file) => file.resourceId).toString();
+          this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
+        }
+      });
+    },
   },
 };
 </script>
