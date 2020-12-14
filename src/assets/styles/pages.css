@@ -900,6 +900,10 @@
 .update-progress .el-tiptap-editor__command-button {
   transform: scale(0.8,0.8);
 }
+
+.el-dialog__wrapper+.v-modal{
+  z-index: 2002 !important;
+}
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {

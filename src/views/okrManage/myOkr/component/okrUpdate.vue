@@ -81,14 +81,7 @@
                         ></el-input-number>
                         <span>%</span>
                       </div>
-                      <div
-                        class="okr-risk"
-                        v-if="hasValue(formData.okrDetailConfidence)"
-                      >
-                        <span>信心指数</span>
-                        <tl-confidence
-                          v-model="formData.okrDetailConfidence"
-                        ></tl-confidence>
+                      <div class="okr-risk">
                         <div class="add-progress" @click="addProgress(1)">
                           +1%
                         </div>
@@ -98,6 +91,15 @@
                         <div class="add-progress" @click="addProgress(10)">
                           +10%
                         </div>
+                      </div>
+                      <div
+                        class="okr-risk"
+                        v-if="hasValue(formData.okrDetailConfidence)"
+                      >
+                        <span>信心指数</span>
+                        <tl-confidence
+                          v-model="formData.okrDetailConfidence"
+                        ></tl-confidence>
                       </div>
                     </div>
                   </div>
@@ -213,7 +215,7 @@
           <el-tiptap v-model="noteText" :extensions="extensions" />
         </div>
         <div>
-          <span>更新于{{}}</span>
+          <span>更新于{{ noteCreateTime }}</span>
           <el-button
             v-if="showInput === true"
             plain
@@ -262,6 +264,8 @@ import {
   OrderedList,
   TextHighlight,
   Image,
+  Strike,
+  TextAlign,
 } from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
@@ -294,6 +298,8 @@ export default {
         new Bold(),
         new Underline(),
         new Italic(),
+        new Strike(),
+        new TextAlign(),
         new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
         new TextColor(),
         new TextHighlight(),
@@ -316,6 +322,7 @@ export default {
       status: 1,
       currentPage: 1,
       showInput: false,
+      noteCreateTime: '',
     };
   },
   props: {
@@ -356,6 +363,7 @@ export default {
     showOkrDialog() {
       this.getokrDetail();
       this.getHistory();
+      this.getOkrRemark();
       this.myokrDrawer = true;
     },
 
@@ -475,9 +483,25 @@ export default {
     },
     updateNote() {
       console.log(this.noteText);
-      this.showInput = false;
+      this.server.saveOkrRemark({
+        content: this.noteText,
+        okrDetailId: this.formData.okrDetailId,
+        okrMainId: this.formData.okrMainId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.showInput = false;
+          this.getOkrRemark();
+        }
+      });
     },
-
+    getOkrRemark() {
+      this.server.getOkrRemark({ okrDetailId: this.formData.okrDetailId }).then((res) => {
+        if (res.code == 200 && res.data) {
+          this.noteText = res.data.content;
+          this.noteCreateTime = res.data.createTime;
+        }
+      });
+    },
   },
   watch: {
     currentIndex: {
