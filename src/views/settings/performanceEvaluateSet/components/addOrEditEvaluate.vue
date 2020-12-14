@@ -35,12 +35,14 @@
           >
             <el-input
               v-model.trim="ruleItem.value"
-              maxlength="30"
+              maxlength="20"
               @blur="inputBlur(ruleItem)"
+              placeholder="请输入"
             ></el-input>
             <span v-if="ruleItem.showError">{{ ruleItem.errorText }}</span>
             <el-input
               v-model.trim="ruleItem.unit"
+              maxlength="20"
               placeholder="如有单位，请填写"
             ></el-input>
             说明
@@ -50,7 +52,7 @@
               :autosize="{ minRows: 1, maxRows: 8 }"
               class="tl-textarea"
               placeholder="请填写说明"
-              maxlength="500"
+              maxlength="100"
             ></el-input>
             <el-button
               type="text"
@@ -85,10 +87,11 @@
           <span>{{ ruleItem.value }}</span>
           <span>{{ ruleItem.unit }}</span>
           说明
-          <pre>{{ ruleItem.description }}</pre>
+          <pre>{{ ruleItem.description || "--" }}</pre>
         </dd>
         <dd>
-          <span>适用范围 </span><span>{{ performanceData.ruleType }}</span>
+          <span>适用范围 </span
+          ><span>{{ performanceData.ruleType == 1 ? "部门" : "个人" }}</span>
         </dd>
       </dl>
     </div>
