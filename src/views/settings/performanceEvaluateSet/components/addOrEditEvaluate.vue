@@ -37,7 +37,7 @@
               v-model.trim="ruleItem.value"
               maxlength="20"
               @blur="inputBlur(ruleItem)"
-              placeholder="请输入"
+              placeholder="请输入内容"
             ></el-input>
             <span v-if="ruleItem.showError">{{ ruleItem.errorText }}</span>
             <el-input
