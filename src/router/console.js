@@ -277,6 +277,19 @@ export default [{
     component: () => import('@/views/projectManage/index'),
   },
   {
+    path: '/hoursCollection',
+    name: 'hoursCollection',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
+      title: 'hoursCollection',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/hoursCollection/index'),
+  },
+  {
     path: '/projectDetail',
     name: 'projectDetail',
     meta: {

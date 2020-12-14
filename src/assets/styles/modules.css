@@ -770,6 +770,10 @@
   color: #685df1;
 }
 
+.el-checkbox__input.is-disabled:hover .el-checkbox__inner {
+  border-color: #dcdfe6;
+}
+
 /* dialog */
 .tl-dialog {
   display: flex;

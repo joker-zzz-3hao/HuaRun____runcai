@@ -3,15 +3,6 @@
     <div class="project-description">
       <dl>
         <dt>
-          <span
-            v-if="hasValue(baseInfo.projectStatus)"
-            :class="{
-              'is-ongoing': baseInfo.projectStatus == '0',
-              'is-over': baseInfo.projectStatus == '1',
-            }"
-            >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
-          >
-          <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
           <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
@@ -24,16 +15,8 @@
           </el-dropdown>
         </dt>
         <dd>
-          <span>项目描述:</span>
-          <p
-            ref="projectDesc"
-            id="projectDesc"
-            :class="openFlag ? 'unfold' : 'fold'"
-          >
-            <em id="projectDescInside">{{
-              `${baseInfo.projectDescription || "--"}`
-            }}</em>
-          </p>
+          <div>关于润才项目立项 <el-button type="text" @click="showhoursRecord">工时补录记录 >></el-button></div>
+
           <div class="toggle-state" v-if="pWidth == emWidth">
             <span @click="openFlag = !openFlag">{{
               openFlag ? "收起" : "展开"
@@ -43,37 +26,7 @@
         </dd>
       </dl>
       <div class="dl-list">
-        <dl class="dl-item">
-          <dt><span>项目经理</span></dt>
-          <dd>
-            <div class="user-info">
-              <img
-                v-if="hasValue(baseInfo.headUrl)"
-                :src="baseInfo.headUrl"
-                alt
-              />
-              <div v-else-if="baseInfo.projectManager" class="user-name">
-                <em>{{
-                  baseInfo.projectManager.substring(
-                    baseInfo.projectManager.length - 2
-                  )
-                }}</em>
-              </div>
-            </div>
-            <div class="user-name-txt">
-              <em>{{ baseInfo.projectManager }}</em>
-            </div>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目所属部门</span></dt>
-          <dd>
-            <em v-if="hasValue(baseInfo.parentOrgName)">{{
-              `${baseInfo.parentOrgName}-`
-            }}</em>
-            <em>{{ baseInfo.orgName }}</em>
-          </dd>
-        </dl>
+
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
@@ -83,22 +36,16 @@
           </dd>
         </dl>
         <dl class="dl-item">
-          <dt><span>投入类型</span></dt>
+          <dt><span>项目已确立人力成本</span></dt>
           <dd>
             <em>{{
               baseInfo.projectInputType || "--"
             }}</em>
           </dd>
         </dl>
-        <dl class="dl-item project-type">
-          <dt><span>项目类型</span></dt>
-          <dd>
-            <em>{{ baseInfo.projectType || "--" }}</em>
-            <div v-if="baseInfo.projectSourceSystem == 'TENANT'">虚拟项目</div>
-          </dd>
-        </dl>
+
         <dl class="dl-item">
-          <dt><span>申请时间</span></dt>
+          <dt><span>项目经理</span></dt>
           <dd>
             <em>{{ baseInfo.projectApplyDate || "--" }}</em>
           </dd>
@@ -115,13 +62,11 @@
     <div class="dl-card-panel project-members">
       <dt class="card-title">
         <em>项目成员</em
-        ><el-button plain class="tl-btn" @click="addMembers"
-          ><i class="el-icon-plus"></i><em>添加成员</em></el-button
         >
       </dt>
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="baseInfo.projectUserVoList" class="tl-table">
+          <el-table :data="tableData" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info" @click="setManager(scope.row)">
@@ -143,7 +88,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="120">
+            <el-table-column label="级别" min-width="120">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -171,7 +116,7 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevelName" label="级别" min-width="120">
+            <el-table-column prop="userLevelName" label="职能" min-width="120">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
@@ -179,7 +124,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="orgName" label="所属部门" min-width="160">
+            <el-table-column prop="orgName" label="所属公司" min-width="160">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.orgName)">{{
                   scope.row.orgName
@@ -187,7 +132,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPostName" label="职能" min-width="180">
+            <el-table-column prop="userPostName" label="工时时间范围" min-width="180">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userPostName)">{{
                   scope.row.userPostName
@@ -195,39 +140,26 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="createDate" label="加入时间" min-width="180">
+            <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.createDate)">{{
-                  scope.row.createDate
-                }}</span>
-                <span v-else>--</span>
+               <el-input style="width:50px"></el-input>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="userCompanyName"
-              label="所属公司"
-              min-width="180"
-            >
+   <el-table-column prop="createDate" label="工时内容" min-width="180">
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userCompanyName)">{{
-                  scope.row.userCompanyName
-                }}</span>
-                <span v-else>--</span>
+               <el-input placeholder="请输入内容"></el-input>
               </template>
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
               width="100"
-              v-if="
-                baseInfo.projectUserVoList &&
-                baseInfo.projectUserVoList.length > 0
-              "
+
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
-                  @click="deleteMember(scope.row)"
+
+                  @click="deleteMember(scope.$index)"
                   type="text"
                   class="tl-btn"
                   >移除</el-button
@@ -235,34 +167,35 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-button type="text" @click="addUser()">添加成员</el-button>
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-add-member
-      ref="addMember"
-      v-if="showAddMember"
-      :server="server"
-      :codes="codes"
-      @addSuccess="addSuccess"
-      :model="true"
-      :DisuserId="DisuserId"
-    ></tl-add-member>
-    <tl-check-manager
-      ref="checkManager"
-      v-if="checkManager"
-      :server="server"
-      :baseInfo="baseInfo"
-      @checkSuccess="checkSuccess"
-    ></tl-check-manager>
+  <div>
+    <div>已选3位成员，工时11天  人力成本5000人民币</div>
+    <div>
+       <el-button
+
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button
+        plain
+        class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
+    </div>
+  </div>
+  <tl-hours-record ref="hoursRecord"></tl-hours-record>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
-import addMember from './addMember';
-import checkManager from './checkManager';
-import CONST from '../../const';
+import hoursRecord from './components/hoursRecord';
+import CONST from '../const';
 
 export default {
   name: 'projectInfo',
@@ -275,7 +208,9 @@ export default {
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
-      tableData: [],
+      tableData: [{
+        userName: '111',
+      }],
       isManage: false,
       openFlag: false,
       codes: [],
@@ -286,8 +221,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-add-member': addMember,
-    'tl-check-manager': checkManager,
+    'tl-hours-record': hoursRecord,
   },
   props: {
     server: {
@@ -328,21 +262,17 @@ export default {
     });
   },
   methods: {
-    deleteMember(data) {
-      this.$xconfirm({
-        title: '删除确认',
-        content: '是否确认删除该数据，删除将无法恢复',
-
-      }).then(() => {
-        this.server.removeProjectUser({
-          projectId: data.projectId,
-          userId: data.userId,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.searchProject();
-          }
-        });
+    showhoursRecord() {
+      this.$refs.hoursRecord.show();
+    },
+    addUser() {
+      this.tableData.push({
+        type: 1,
+        userName: '11',
       });
+    },
+    deleteMember(index) {
+      this.tableData.splice(index, 1);
     },
     closeProject() {
       this.$xconfirm({
