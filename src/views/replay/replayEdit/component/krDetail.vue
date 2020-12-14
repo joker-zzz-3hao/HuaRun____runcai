@@ -193,6 +193,7 @@
                         placeholder="请针对问题与不足进行改进措施陈述。"
                         v-model="list.measure[0]"
                         class="tl-textarea"
+                        maxlength="2000"
                       ></el-input>
                     </dd>
                   </template>
