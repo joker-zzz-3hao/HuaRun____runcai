@@ -258,7 +258,6 @@ import {
   ListItem,
   OrderedList,
   TextHighlight,
-  Image,
   Strike,
   TextAlign,
 } from 'element-tiptap';
@@ -300,7 +299,6 @@ export default {
         new TextHighlight(),
         new ListItem(),
         new OrderedList(),
-        new Image({ }),
       ],
       loading: false,
       historyFirst: '',
