@@ -46,10 +46,11 @@ export default {
     };
   },
   methods: {
-    show(periodId) {
+    show(periodId, resultId) {
       this.visible = true;
       this.server.queryAssessmentHistory({
         periodId,
+        resultId,
       }).then((res) => {
         if (res.code == 200) {
           this.tableData = res.code || [];

@@ -357,7 +357,7 @@ export default {
     },
     // 显示历史列表
     showbeforeList() {
-      this.$refs.beforeList.show(this.periodId);
+      this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
     },
     // 提交
     submit() {
