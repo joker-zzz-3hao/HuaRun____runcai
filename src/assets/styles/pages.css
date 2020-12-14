@@ -5978,11 +5978,11 @@
 }
 
 .working-hours .cont-area > .dl-list .dl-item {
-  margin: 0 124px 0 0;
+  margin: 0 52px 0 0;
 }
 
 .working-hours .dl-list .dl-item dt {
-  margin: 0 30px 0 0;
+  margin: 0 10px 0 0;
   color: #acb6bf;
 }
 
@@ -5996,7 +5996,7 @@
 
 .working-hours .dl-item dd em {
   font-family: DINAlternate-Bold;
-  font-size: 34px;
+  font-size: 20px;
   color: #685df1;
 }
 

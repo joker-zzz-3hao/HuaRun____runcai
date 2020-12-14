@@ -154,15 +154,12 @@
               fixed="right"
               label="操作"
               width="100"
-              v-if="
-                baseInfo.projectUserVoList &&
-                baseInfo.projectUserVoList.length > 0
-              "
+
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
-                  @click="deleteMember(scope.row)"
+
+                  @click="deleteMember(scope.$index)"
                   type="text"
                   class="tl-btn"
                   >移除</el-button
@@ -274,21 +271,8 @@ export default {
         userName: '11',
       });
     },
-    deleteMember(data) {
-      this.$xconfirm({
-        title: '删除确认',
-        content: '是否确认删除该数据，删除将无法恢复',
-
-      }).then(() => {
-        this.server.removeProjectUser({
-          projectId: data.projectId,
-          userId: data.userId,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.searchProject();
-          }
-        });
-      });
+    deleteMember(index) {
+      this.tableData.splice(index, 1);
     },
     closeProject() {
       this.$xconfirm({
