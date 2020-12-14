@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -510,6 +514,16 @@ export default {
           const files = item.attachmentDtoList.map((file) => file.resourceId).toString();
           this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
         }
+      });
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
       });
     },
   },
