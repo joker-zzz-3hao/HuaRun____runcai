@@ -184,19 +184,16 @@ export default {
       this.getUnApplyNumber();
     },
     setFirstList(periodRuleId) {
-      this.amountData.periodRuleId = '';
       this.amountDataList.forEach((element) => {
         if (element.periodRuleId == periodRuleId) {
           this.amountData = { ...element };
-
-          // this.amountDataList.forEach((item) => {
-          //   this.detailList.forEach((detail) => {
-          //     if (detail.sourcePeriodRuleId == item.periodRuleId && item.periodRuleId == periodRuleId) {
-          //       debugger;
-          //       this.amountData.periodRuleId = periodRuleId;
-          //     }
-          //   });
-          // });
+          this.amountData.periodRuleId = '';
+          // 如果是新增则提交的periodRuleId为空；否则赋值
+          this.detailList.forEach((detail) => {
+            if (detail.periodRuleId == periodRuleId) {
+              this.amountData.periodRuleId = detail.periodRuleId;
+            }
+          });
         }
       });
     },
