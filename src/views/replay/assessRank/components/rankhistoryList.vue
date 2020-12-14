@@ -22,11 +22,12 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column prop="date" label="提交时间"> </el-table-column>
-      <el-table-column prop="name" label="负责人"> </el-table-column>
-      <el-table-column prop="address" label="复核结果"> </el-table-column>
-      <el-table-column prop="address" label="复核时间"> </el-table-column>
-      <el-table-column prop="address" label="复核人"> </el-table-column>
+      <el-table-column prop="createTime" label="提交时间"> </el-table-column>
+      <el-table-column prop="createUserName" label="负责人"> </el-table-column>
+      <el-table-column prop="approvalStatus" label="复核结果">
+      </el-table-column>
+      <el-table-column prop="updateTime" label="复核时间"> </el-table-column>
+      <el-table-column prop="updateUserName" label="复核人"> </el-table-column>
     </el-table>
   </el-dialog>
 </template>
@@ -53,7 +54,10 @@ export default {
         resultId,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableData = res.code || [];
+          this.tableData = res.data || [];
+          this.tableData.forEach((item) => {
+            item.list = [];
+          });
         }
       });
     },
