@@ -107,6 +107,17 @@ export default {
     inputBlur(item) {
       this.selectedRule.ruleDetailList.forEach((element) => {
         if (item.periodRuleDetailId == element.periodRuleDetailId) {
+          // 1、正整数数字
+          if (!(/(^[0-9]\d*$)/.test(Number(item.applyValue))) || !this.hasValue(item.applyValue)) {
+            element.showError = true;
+            element.errorText = '请填写正整数';
+          } else if (item.applyValue > 1000) {
+            element.showError = true;
+            element.errorText = '最大值为1000';
+          } else {
+            element.showError = false;
+            element.errorText = '';
+          }
           // if (element.applyValue < element.minValue) {
           //   element.showError = true;
           //   element.errorText = '修改后的值不能小于已分配的数量值';
@@ -120,6 +131,8 @@ export default {
     },
     submit() {
       this.formData.applyType = 1;
+
+      this.formData.periodRuleDetailList = [];
       // 编辑
       if (this.selectedRule.periodRuleId) {
         this.selectedRule.ruleDetailList.forEach((item) => {
@@ -138,14 +151,45 @@ export default {
           });
         });
       }
-      this.server.addOrUpdateAmount([this.formData]).then((res) => {
-        if (res.code == 200) {
-          this.$message.success('处理成功');
-          this.$emit('refreshRule');
-          this.$emit('refreshPage');
-          this.close();
+      this.validateStatus = true;
+      this.selectedRule.ruleDetailList.forEach((element) => {
+        // 1、正整数数字
+        if (!(/(^[0-9]\d*$)/.test(Number(element.applyValue))) || !this.hasValue(element.applyValue)) {
+          element.showError = true;
+          element.errorText = '请填写正整数';
+        } else if (element.applyValue > 1000) {
+          element.showError = true;
+          element.errorText = '最大值为1000';
+        } else {
+          element.showError = false;
+          element.errorText = '';
+        }
+        // if (element.applyValue < element.minValue) {
+        //   element.showError = true;
+        //   element.errorText = '修改后的值不能小于已分配的数量值';
+        // } else {
+        //   element.showError = false;
+        //   element.errorText = '';
+        // }
+        this.$forceUpdate();
+      });
+      this.selectedRule.ruleDetailList.forEach((element) => {
+        if (element.showError) {
+          this.validateStatus = false;
         }
       });
+      if (this.validateStatus) {
+        this.server.addOrUpdateAmount([this.formData]).then((res) => {
+          if (res.code == 200) {
+            this.$message.success('处理成功');
+            this.$emit('refreshRule');
+            this.$emit('refreshPage');
+            this.close();
+          }
+        });
+      } else {
+        this.$message.error('表单校验未通过，请修改后重试');
+      }
     },
   },
   watch: {},

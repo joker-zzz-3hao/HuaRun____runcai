@@ -145,6 +145,10 @@ export default {
   computed: {},
   methods: {
     addRuleItem() {
+      if (this.performanceData.ruleDetailList.length > 50) {
+        this.$message.error('不能超过50条');
+        return;
+      }
       this.performanceData.ruleDetailList.push({
         unit: '',
         value: '',

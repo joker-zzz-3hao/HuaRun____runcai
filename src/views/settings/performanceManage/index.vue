@@ -286,6 +286,14 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.amountDataList = res.data;
+          // periodRuleDetailList.forEach(element => {
+          this.amountDataList.forEach((element) => {
+            element.periodRuleDetailList.forEach((item) => {
+              if (!this.hasValue(item.applyValue)) {
+                item.applyValue = 0;
+              }
+            });
+          });
         }
       });
     },
