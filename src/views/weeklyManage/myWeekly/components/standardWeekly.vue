@@ -1206,10 +1206,10 @@ export default {
     submitData() {
     // 将下周计划、感想有未填写的内容的数据删除
       this.weeklyThoughtSaveList = this.weeklyThoughtSaveList.filter(
-        (thought) => !!thought.thoughtContent,
+        (thought) => !!thought.thoughtContent.trim(),
       );
       this.weeklyPlanSaveList = this.weeklyPlanSaveList.filter(
-        (plan) => !!plan.planContent,
+        (plan) => !!plan.planContent.trim(),
       );
       // 删除冗余字段
       const tempList = [...this.weeklyWorkVoSaveList];
