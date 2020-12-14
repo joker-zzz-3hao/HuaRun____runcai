@@ -654,10 +654,7 @@
 .my-okr .operating-box .dl-item:nth-child(2) .tl-select {
   width: 90px;
 }
-/* change by xinquan */
-.my-okr .operating-box .dl-item.org-selete .tl-select {
-  width: 200px;
-}
+
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
@@ -790,11 +787,6 @@
 }
 
 /* 更新进展 */
-.update-progress .list-cont {
-  padding: 20px;
-  border: 1px solid #f4f6f8;
-}
-
 .update-progress .timeline-list dt .list-cont {
   border-color: transparent;
 }
@@ -819,9 +811,14 @@
 }
 
 /* change by xinquan */
-.update-progress .okr-info {
+.update-progress .update-kr {
+  width: 500px;
   height: 500px;
   overflow: hidden;
+}
+.update-progress .tab-menus {
+  padding: 0 0 0 30px;
+  height: 40px;
 }
 
 .update-progress .el-scrollbar__wrap {
@@ -837,25 +834,57 @@
 }
 
 .update-progress .progress-bg {
-  width: 65px !important;
+  width: 56px !important;
 }
 
 .update-progress .progress-bg:not(:first-child) {
   margin-left: 4px !important;
 }
+
 .update-progress .flex-up {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
+
 .update-progress .note-book {
   width: 420px;
   height: 500px;
-  padding: 0 0 0 20px;
+  padding: 15px 0 0 10px;
 }
-.update-progress .update-histoy {
-  width: 300px;
+
+.update-progress .update-histoy,
+.update-progress .okr-info {
+  width: 500px;
 }
+
+.update-progress .last-update {
+  padding: 12px 0 10px 0;
+  border-bottom: 1px solid #E5E9EE;
+}
+
+.update-progress .last-update span {
+  color: #ACB6BF;
+  margin: 0 10px 0 0;
+  font-size: 12px;
+}
+
+.update-progress .last-update em {
+  margin: 0 10px 0 0;
+  color: #4d5155;
+  font-size: 12px;
+}
+.update-progress .note-msg {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 0 0;
+}
+.update-progress .note-msg span {
+  color: #ACB6BF;
+  margin: 0 10px 0 0;
+  font-size: 12px;
+}
+
 /* 富文本 */
 .update-progress .el-tiptap-editor__command-button{
   height: 25px;
@@ -881,6 +910,33 @@
 .update-progress .el-tiptap-editor .ProseMirror{
   height: 100%;
 }
+
+.update-progress .el-tiptap-editor__menu-bar{
+  background-color: #f8f8f8;
+  padding: 0px;
+}
+
+.update-progress .el-tiptap-editor .border-top-radius{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.update-progress .el-tiptap-editor {
+  border-bottom: 1px solid #E5E9EE;
+  border-radius: 0px;
+}  
+
+.update-progress .el-tiptap-editor__command-button {
+  transform: scale(0.8,0.8);
+}
+
+.update-progress .el-tiptap-editor__content::-webkit-scrollbar{
+  display: none;
+}
+.update-progress .okr-risk .tl-custom-popover {
+  margin: 0px 42px 0 0;
+}
+
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
@@ -1430,7 +1486,6 @@
 
 .okr-detail .timeline-list .operate-reason {
   margin: 20px 0 0 0;
-  display: flex;
 }
 
 .okr-detail .timeline-list dt .list-title::before {
@@ -1606,6 +1661,24 @@
 .my-okr .tl-table-fix .tl-thead,
 .overview .tl-table-fix .tl-thead {
   top: 0;
+}
+
+.add-progress {
+  cursor: pointer;
+  margin: 0 10px 0 0;
+  text-align: center;
+  width: 40px;
+  height: 18px;
+  font-size: 12px;
+  color: #879099;
+  border: 1px solid #E8ECF0;
+  border-radius: 2px;
+  border-radius: 2px;
+}
+
+.add-progress:hover {
+  color: #685df1;
+  background-color: #f0effe;
 }
 
 .overview .user-info + dd {
@@ -2664,14 +2737,8 @@
   color: #acb6bf;
 }
 
-.replay-info .user-info img,
-.replay-info .user-info .user-name em {
-  width: 54px;
-  height: 54px;
-}
-
 .replay-info .user-info dd:first-of-type {
-  margin: 0 20px 0 0;
+  margin: 0 10px 0 0;
 }
 
 .replay-info .flex-end {
