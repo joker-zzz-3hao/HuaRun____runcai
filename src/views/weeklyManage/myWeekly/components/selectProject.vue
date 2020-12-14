@@ -26,7 +26,7 @@
               >
                 <em>{{ project.projectNameCn }}</em>
                 <em v-if="project.projectManager"
-                  >项目经理：{{ project.projectManager }}</em
+                  > ( 项目经理：{{ project.projectManager }} )</em
                 >
               </el-radio>
             </el-radio-group>
