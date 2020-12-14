@@ -8,41 +8,37 @@
     custom-class="custom-drawer update-progress"
     class="tl-dialog"
     width="1000px"
+    :title="periodName"
   >
-    <template slot="title">
-      <!-- <span>更新进度</span>
-      <span>更多更新记录</span> -->
-    </template>
-    <div>OKR记事本</div>
     <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
     <div class="flex-up">
-      <div class="okr-info">
+      <div class="update-kr">
         <el-scrollbar ref="detailscrollbar">
           <div class="tl-custom-timeline" v-if="currentIndex === 0">
-            <div v-if="hasValue(historyFirst)">
+            <div class="last-update" v-if="hasValue(historyFirst)">
               <div>
-                <em>上次更新时间</em>
-                <span>{{ historyFirst.createTime }}</span>
+                <span>上次更新时间</span>
+                <em>{{ historyFirst.createTime }}</em>
               </div>
               <div v-if="historyFirst.updateContents">
-                <em>进度</em>
-                <span>
+                <span>进度</span>
+                <em>
                   由
                   {{ historyFirst.updateContents.beforeProgress }}%更新为
                   {{ historyFirst.updateContents.afterProgress }}%
-                </span>
+                </em>
               </div>
               <div>
-                <em>操作人</em>
-                <span>
+                <span>操作人</span>
+                <em>
                   {{ historyFirst.userName }}
-                </span>
+                </em>
               </div>
               <div>
-                <em>更新说明</em>
-                <span>
+                <span>更新说明</span>
+                <em>
                   {{ historyFirst.reason }}
-                </span>
+                </em>
               </div>
             </div>
             <el-form :model="formData" ref="dataForm" class="tl-form">
@@ -81,6 +77,17 @@
                         ></el-input-number>
                         <span>%</span>
                       </div>
+                      <div class="okr-risk">
+                        <div class="add-progress" @click="addProgress(1)">
+                          +1
+                        </div>
+                        <div class="add-progress" @click="addProgress(5)">
+                          +5
+                        </div>
+                        <div class="add-progress" @click="addProgress(10)">
+                          +10
+                        </div>
+                      </div>
                       <div
                         class="okr-risk"
                         v-if="hasValue(formData.okrDetailConfidence)"
@@ -89,25 +96,15 @@
                         <tl-confidence
                           v-model="formData.okrDetailConfidence"
                         ></tl-confidence>
-                        <div class="add-progress" @click="addProgress(1)">
-                          +1%
-                        </div>
-                        <div class="add-progress" @click="addProgress(5)">
-                          +5%
-                        </div>
-                        <div class="add-progress" @click="addProgress(10)">
-                          +10%
-                        </div>
                       </div>
                     </div>
                   </div>
                 </dd>
               </dl>
               <dl class="change-reason">
-                <!-- <dt>更新说明</dt> -->
+                <dt>更新说明</dt>
                 <dd>
                   <el-form-item
-                    label="更新说明"
                     prop="updateexplain"
                     :rules="[
                       {
@@ -131,7 +128,7 @@
               </dl>
             </el-form>
           </div>
-          <div class="update-histoy" v-else>
+          <div class="update-histoy okr-detail" v-else>
             <div class="tl-custom-timeline">
               <dl class="timeline-list" v-if="historyList.length">
                 <dd v-for="activity in historyList" :key="activity.id">
@@ -208,20 +205,26 @@
           </div>
         </el-scrollbar>
       </div>
-      <div
-        class="note-book"
-        @click="showInput = true"
-        :class="{ 'hide-input': showInput == false }"
-      >
-        <el-tiptap v-model="noteText" :extensions="extensions" />
-        <div>
-          <span>更新于{{}}</span>
+      <div class="note-book" :class="{ 'hide-input': showInput == false }">
+        <div @click="showInput = true">
+          <el-tiptap v-model="noteText" :extensions="extensions" />
+        </div>
+        <div class="note-msg">
+          <span><i class="el-icon-time"></i>更新于 {{ noteCreateTime }}</span>
           <el-button
-            type="primary"
-            class="tl-btn amt-bg-slip"
+            v-if="showInput === true"
+            plain
+            class="tl-btn btn-lineheight btn-small"
             @click="updateNote"
-            >更新
+            >保存笔记
           </el-button>
+          <el-button
+            v-else
+            @click="showInput = true"
+            plain
+            class="tl-btn btn-lineheight btn-small"
+            >编辑</el-button
+          >
         </div>
       </div>
     </div>
@@ -232,7 +235,7 @@
         class="tl-btn amt-bg-slip"
         @click="summitUpdate"
         :loading="loading"
-        >确定</el-button
+        >更新进展</el-button
       >
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
@@ -242,21 +245,22 @@
 </template>
 
 <script>
-// import {
-//   // 需要的 extensions
-//   Doc,
-//   Text,
-//   Paragraph,
-//   Bold,
-//   Underline,
-//   Italic,
-//   FontSize,
-//   TextColor,
-//   ListItem,
-//   OrderedList,
-//   TextHighlight,
-//   Image,
-// } from 'element-tiptap';
+import {
+  // 需要的 extensions
+  Doc,
+  Text,
+  Paragraph,
+  Bold,
+  Underline,
+  Italic,
+  FontSize,
+  TextColor,
+  ListItem,
+  OrderedList,
+  TextHighlight,
+  Strike,
+  TextAlign,
+} from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
 import tabs from '@/components/tabs';
@@ -281,20 +285,21 @@ export default {
       noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
-      // extensions: [
-      //   new Doc(),
-      //   new Text(),
-      //   new Paragraph(),
-      //   new Bold(),
-      //   new Underline(),
-      //   new Italic(),
-      //   new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
-      //   new TextColor(),
-      //   new TextHighlight(),
-      //   new ListItem(),
-      //   new OrderedList(),
-      //   new Image({ }),
-      // ],
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Bold(),
+        new Underline(),
+        new Italic(),
+        new Strike(),
+        new TextAlign(),
+        new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
+        new TextColor(),
+        new TextHighlight(),
+        new ListItem(),
+        new OrderedList(),
+      ],
       loading: false,
       historyFirst: '',
       histoyExist: false,
@@ -310,6 +315,7 @@ export default {
       status: 1,
       currentPage: 1,
       showInput: false,
+      noteCreateTime: '',
     };
   },
   props: {
@@ -332,6 +338,10 @@ export default {
       type: String,
       default: '',
     },
+    periodName: {
+      type: String,
+      default: '',
+    },
 
   },
   created() {
@@ -349,6 +359,8 @@ export default {
     // 控制弹窗
     showOkrDialog() {
       this.getokrDetail();
+      this.getHistory();
+      this.getOkrRemark();
       this.myokrDrawer = true;
     },
 
@@ -363,7 +375,7 @@ export default {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
       }
       this.noteText = `
-        <h1>欢迎使用OKR记事本</h1>
+        <h1>记录OKR进展相关的点点滴滴</h1>
         <div><img src="@/assets/images/user/user.jpg" alt /></div>
       `;
     },
@@ -379,7 +391,6 @@ export default {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
             this.historyList = res.data;
-            console.log(this.historyList.length);
             this.historyList.forEach((item) => {
               const content = JSON.parse(item.content);
               item.updateContents = content || {};
@@ -405,7 +416,6 @@ export default {
             periodId: this.periodId,
             remark: this.formData.updateexplain,
           };
-          console.log(summitForm);
           this.loading = true;
           this.server.singleUpdate(summitForm).then((res) => {
             this.loading = false;
@@ -455,7 +465,6 @@ export default {
 
     // 滚动事件触发下拉加载
     onScroll() {
-      console.log('滚动', this.getScrollTop() / this.getClientHeight());
       if (this.getScrollTop() / this.getClientHeight() >= this.currentPage * 5) {
         if (this.status === 1) {
           this.status = 0;
@@ -467,10 +476,26 @@ export default {
       }
     },
     updateNote() {
-      console.log(this.noteText);
-      this.showInput = false;
+      this.server.saveOkrRemark({
+        content: this.noteText,
+        okrDetailId: this.formData.okrDetailId,
+        okrMainId: this.formData.okrMainId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.showInput = false;
+          this.$message.success('保存成功');
+          this.getOkrRemark();
+        }
+      });
     },
-
+    getOkrRemark() {
+      this.server.getOkrRemark({ okrDetailId: this.formData.okrDetailId }).then((res) => {
+        if (res.code == 200 && res.data) {
+          this.noteText = res.data.content;
+          this.noteCreateTime = res.data.createTime;
+        }
+      });
+    },
   },
   watch: {
     currentIndex: {
