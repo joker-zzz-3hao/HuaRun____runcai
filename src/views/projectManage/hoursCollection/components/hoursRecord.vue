@@ -68,12 +68,12 @@
               </template>
             </el-table-column>
             <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
-              <template slot-scope="scope">
+              <template >
                <el-input style="width:50px"></el-input>
               </template>
             </el-table-column>
    <el-table-column prop="createDate" label="工时内容" min-width="180">
-              <template slot-scope="scope">
+              <template >
                <el-input placeholder="请输入内容"></el-input>
               </template>
             </el-table-column>
@@ -83,7 +83,7 @@
               width="100"
 
             >
-              <template slot-scope="scope">
+              <template >
                 <el-button
 
                   type="text"

@@ -88,4 +88,9 @@ export default class Server extends ServerBase {
   projectUserTimeList(param) {
     return this._ajaxPost('gateway/project-service/project/query/projectUserTimeList', param);
   }
+
+  // 查询日历
+  getCalendar(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
 }
