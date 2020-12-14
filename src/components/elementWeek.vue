@@ -2,7 +2,7 @@
   <el-date-picker
     :clearable="true"
     v-model="queryParam.value"
-    :format="showTime?' MM 月 第 ' + queryParam.week + ' 周 (MM 月 dd 日-MM 月 '+dayweek+' 日)':' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
+    :format="' yyyy 年 MM 月 第 ' + queryParam.week + ' 周'"
     @change="weekChange"
     value-format="yyyy/M/d"
     size="medium"
@@ -17,7 +17,6 @@
 
 <script>
 export default {
-  props: ['showTime'],
   data() {
     return {
       queryParam: {
@@ -56,7 +55,6 @@ export default {
       this.queryParam.defValue = `${year}/${month}/${day}`;
     },
     weekChange(val) {
-      console.log(val);
       if (val) {
         this.getDay(val);
         // eslint-disable-next-line no-unused-vars

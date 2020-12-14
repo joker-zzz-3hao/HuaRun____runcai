@@ -138,7 +138,7 @@
             </el-table-column>
             <el-table-column label="工作项内容" min-width="200" prop="workDesc">
               <template slot-scope="scope">
-                <span
+                <a
                   v-if="scope.row.workDesc"
                   @click="
                     showDesc(
@@ -148,7 +148,7 @@
                       weekWorkListCheck(scope.row)
                     )
                   "
-                  >{{ GetLength(scope.row.workDesc, 16) }}</span
+                  >{{ GetLength(scope.row.workDesc, 16) }}</a
                 >
 
                 <span v-else>--</span>
@@ -642,13 +642,12 @@ export default {
     },
     getTypeTm(li) {
       const list = CONST.DATE_MODE_NUMOBJ.filter((item) => li == item.value);
-      console.log(list);
       return { weekDate: list[0].weekDate, weekTimeType: list[0].weekTimeType };
     },
 
     confirmTimeSheet(index, scope) {
       const arr = this.checkList.map((item) => ({ weekDate: item, type: '0', weekTimeFront: '' }));
-      console.log(arr);
+
       // eslint-disable-next-line array-callback-return
       this.tableData[index].old.forEach((item) => {
         const eq = arr.findIndex((k) => k.weekDate == item.text);
@@ -668,7 +667,6 @@ export default {
         // eslint-disable-next-line max-len
         weekDate: this.getTypeTm(item.weekDate).weekDate, type: item.type, weekTimeType: this.getTypeTm(item.weekDate).weekTimeType, weekTimeFront: item.weekTimeFront,
       }));
-      console.log(arrgo);
 
       // if (arrgo.some((item) => item.type == '0' || item.type == '1')) {
 
@@ -703,7 +701,6 @@ export default {
       return dateArr;
     },
     alertSelect(scope, desc) {
-      console.log(this.tableData[scope.$index]);
       if (desc) {
         if (!this.tableData[scope.$index].remark) {
           this.$message.error('修改理由不能为空');
@@ -882,7 +879,6 @@ export default {
             this.tableData[index].weekSum = this.tableData[index].weekWorkList.filter((li) => li.weekTimeFront == '1').length;
             // eslint-disable-next-line no-shadow
             this.tableData[index].checkList = arrDev.map((item) => ({ weekDate: this.getTypeTm(item.text).weekDate, type: '2', weekTimeFront: item.weekTimeFront }));
-            console.log(this.tableData);
           });
         }
       });

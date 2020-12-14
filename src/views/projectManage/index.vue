@@ -225,9 +225,9 @@
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
                 >
-                   <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                   <!-- <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
                   >设置</el-button
-                >
+                > -->
               </template>
             </el-table-column>
           </el-table>

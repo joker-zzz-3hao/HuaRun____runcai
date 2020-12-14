@@ -158,6 +158,7 @@ export default {
         let date = new Date() date不是时间格式时
          dateFormat("YYYY-mm-dd HH:MM:SS", date) */
     dateFormat(fmt, date) {
+      console.log(this.isDate(date));
       let ret;
       const opt = {
         'Y+': date.getFullYear().toString(), // 年
@@ -177,6 +178,14 @@ export default {
         }
       }
       return fmt;
+    },
+    isDate(str) {
+      if (!/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.test(str)) { return false; }
+      const year = RegExp.$1 - 0;
+      const month = RegExp.$2 - 1;
+      const date = RegExp.$3 - 0;
+      const obj = new Date(year, month, date);
+      return !!(obj.getFullYear() == year && obj.getMonth() == month && obj.getDate() == date);
     },
     /**
      * @author: 王益
@@ -391,6 +400,15 @@ export default {
       return newObj; // 返回深度克隆后的对象
     },
 
+    getPageTable(list, page, pageSzie) {
+      const pageOne = page - 1;
+      // const pageNum = list.length / page;
+      const listPage = list.slice(pageOne * pageSzie, pageOne * pageSzie + pageSzie);
+      return {
+        total: list.length,
+        list: listPage,
+      };
+    },
   },
 
 };

@@ -176,7 +176,7 @@
                   <span>时间</span>
                   <em>{{
                     weekly.updateTime
-                      ? dateFormat("mm/dd HH:MM", new Date(weekly.updateTime))
+                      ? dateFormat("mm/dd HH:MM", new Date(weekly.updateTime.replace(/\-/g, '/')))
                       : "--"
                   }}</em>
                 </dd>

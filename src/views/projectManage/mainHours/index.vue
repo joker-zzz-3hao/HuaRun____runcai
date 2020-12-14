@@ -47,12 +47,12 @@
               </el-select>
             </dd>
           </dl>
-            <dl class="dl-item">
-            <dt>按周汇总</dt>
+            <!-- <dl class="dl-item">
+            <dt>选择查询日期</dt>
             <dd>
             <tl-elementWeek :showTime="true"></tl-elementWeek>
             </dd>
-          </dl>
+          </dl> -->
         </div>
         <div class="operating-box">
           <!-- <dl class="dl-item">
@@ -66,25 +66,29 @@
     </div>
     <div class="cont-area">
         <div class="dl-list">
+               <dl class="dl-item">
+          <dt><span> 上一周 {{week}} </span></dt>
+
+        </dl>
         <dl class="dl-item">
           <dt><span>项目成员</span></dt>
           <dd>
-            <em>0 </em><span>人</span>
+            <em>{{projectUserSum||0}} </em><span>人</span>
             <span></span>
           </dd>
         </dl>
         <dl class="dl-item">
-          <dt><span>已提交/未提交工时</span></dt>
+          <dt><span>预计提交工时</span></dt>
           <dd>
-            <em >0/0 </em
-            ><span>人</span
+            <em >{{submissionHours||0}} </em
+            ><span>天</span
             >     <span></span>
           </dd>
         </dl>
           <dl class="dl-item">
-          <dt><span>共填入工时</span></dt>
+          <dt><span>实际提交工时</span></dt>
           <dd>
-            <em >0 </em
+            <em >{{actualSubmissionHours||0}} </em
             ><span>天</span
             >     <span></span>
           </dd>
@@ -223,7 +227,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import elementWeek from '@/components/elementWeek';
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
@@ -272,8 +275,13 @@ export default {
       projectBudgetCurrency: '',
       projectConfirmAmount: 0,
       projectConfirmCurrency: '',
+      actualSubmissionHours: 0,
       workList: [],
       listDis: [],
+      week: '',
+      projectUserSum: 0,
+      submissionHours: 0,
+      isTalent: false,
     };
   },
 
@@ -281,7 +289,6 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-approval': approval,
     'tl-approval-detail': approvalDetail,
-    'tl-elementWeek': elementWeek,
   },
   props: {},
   computed: {
@@ -291,8 +298,22 @@ export default {
   },
   mounted() {
     this.projectPageList();
+    this.getWeekDate();
   },
   methods: {
+    getWeekDate() {
+      const oneDate = 24 * 60 * 60 * 1000;
+      const prevDate = new Date().getTime() - oneDate * 6;
+      const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
+      this.server.getCalendar({ date }).then((res) => {
+        console.log(res);
+        // eslint-disable-next-line max-len
+        const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
+        if (indexs) {
+          this.week = `${this.dateFormat('mm月dd日', new Date(res.data[indexs].weekBegin))}至${this.dateFormat('mm月dd日', new Date(res.data[indexs].weekEnd))}`;
+        }
+      });
+    },
     goTo(row) {
       this.$router.push({ name: 'approvalList', query: { userId: row.userId, projectId: this.formData.projectId } });
     },
@@ -331,14 +352,23 @@ export default {
         this.projectBudgetCurrency = res.data.projectBudgetCurrency;
         this.projectConfirmAmount = res.data.projectConfirmAmount || 0;
         this.projectConfirmCurrency = res.data.projectConfirmCurrency;
+        this.actualSubmissionHours = res.data.actualSubmissionHours;
+        this.submissionHours = res.data.submissionHours;
+        this.projectUserSum = res.data.projectUserSum;
       });
     },
     projectPageList() {
+      this.isTalent = false;
+      this.userInfo.roleList.forEach((item) => {
+        if (item.roleCode == 'TENANT_ADMIN') {
+          this.isTalent = true;
+        }
+      });
       this.server.projectPageList({
         currentPage: 1,
         pageSize: 9999,
         projectName: '',
-        userAccount: this.userInfo.userAccount,
+        userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
           this.projectList = res.data.content;

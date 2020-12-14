@@ -14,16 +14,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </dt>
-        <dd>
-          <div>关于润才项目立项 <el-button type="text" @click="showhoursRecord">工时补录记录 >></el-button></div>
 
-          <div class="toggle-state" v-if="pWidth == emWidth">
-            <span @click="openFlag = !openFlag">{{
-              openFlag ? "收起" : "展开"
-            }}</span
-            ><i></i>
-          </div>
-        </dd>
       </dl>
       <div class="dl-list">
 
@@ -64,7 +55,11 @@
         <em>项目成员</em
         >
       </dt>
-      <tl-crcloud-table :isPage="false">
+      <tl-crcloud-table
+      :total="total"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="searchList">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="140">
@@ -132,21 +127,24 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPostName" label="工时时间范围" min-width="180">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userPostName)">{{
-                  scope.row.userPostName
-                }}</span>
-                <span v-else>--</span>
+            <el-table-column prop="userPostName" label="工时时间范围" min-width="250">
+              <template >
+                   <el-date-picker
+                      v-model="value1"
+                      type="daterange"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期">
+                    </el-date-picker>
               </template>
             </el-table-column>
             <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
-              <template slot-scope="scope">
+              <template >
                <el-input style="width:50px"></el-input>
               </template>
             </el-table-column>
    <el-table-column prop="createDate" label="工时内容" min-width="180">
-              <template slot-scope="scope">
+              <template>
                <el-input placeholder="请输入内容"></el-input>
               </template>
             </el-table-column>
@@ -172,9 +170,14 @@
       </tl-crcloud-table>
     </div>
   <div>
-    <div>已选3位成员，工时11天  人力成本5000人民币</div>
-    <div>
-       <el-button
+
+  </div>
+      <div class="footer-panel">
+      <span
+        >已选择<em>0</em
+        >位成员，工时<em>11</em>天  人力成本<em>5000</em>人民币</span
+      >
+        <el-button
 
         type="primary"
         class="tl-btn amt-bg-slip"
@@ -185,8 +188,8 @@
         class="tl-btn amt-border-fadeout"
         >取消</el-button
       >
+
     </div>
-  </div>
   <tl-hours-record ref="hoursRecord"></tl-hours-record>
   </div>
 </template>
@@ -203,13 +206,35 @@ export default {
     return {
       CONST,
       total: 0,
-      currentPage: 0,
-      pageSize: 0,
+      currentPage: 1,
+      pageSize: 10,
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
-      tableData: [{
+      tableDataRow: [{
         userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '111',
+      }, {
+        userName: '222',
+      }, {
+        userName: '112221',
       }],
       isManage: false,
       openFlag: false,
@@ -244,15 +269,8 @@ export default {
     }),
   },
   mounted() {
-    if (this.baseInfo.projectUserVoList) {
-      this.baseInfo.projectUserVoList.forEach((item) => {
-        if (item.projectUserType == '1') {
-          if (item.userId == this.userInfo.userId) {
-            this.isManage = true;
-          }
-        }
-      });
-    }
+    this.searchList();
+
     this.server.queryByCodes({
       codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
     }).then((res) => {
@@ -262,6 +280,12 @@ export default {
     });
   },
   methods: {
+    searchList() {
+      // this.tableDataRow = this.tableDataRow
+      const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
+      this.tableData = list.list;
+      this.total = list.total;
+    },
     showhoursRecord() {
       this.$refs.hoursRecord.show();
     },

@@ -10,7 +10,10 @@
     width="820px"
   >
   <tl-crcloud-table
-        :isPage="false"
+          :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="searchList"
+            :total="total"
       >
       <div slot="tableContainer" class="table-container project-members">
          <el-table
@@ -73,6 +76,10 @@ export default {
       day: '',
       week: '',
       tableData: [],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      tableDataRow: [],
     };
   },
   components: {
@@ -90,9 +97,14 @@ export default {
   mounted() {},
   methods: {
     show(row) {
-      this.tableData = row;
-
+      this.tableDataRow = row;
+      this.searchList();
       this.visible = true;
+    },
+    searchList() {
+      const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
+      this.tableData = list.list;
+      this.total = list.total;
     },
     close() {
       this.visible = false;
