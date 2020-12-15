@@ -20,7 +20,14 @@
                 <dt>上次更新时间</dt>
                 <dd>{{ historyFirst.createTime }}</dd>
               </dl>
-              <dl v-if="historyFirst.updateContents.beforeProgress">
+              <dl>
+                <dt>操作人</dt>
+                <dd>{{ historyFirst.userName }}</dd>
+              </dl>
+              <dl
+                v-if="historyFirst.updateContents.beforeProgress"
+                class="progress"
+              >
                 <dt>进度</dt>
                 <dd>
                   <span>由</span
@@ -29,7 +36,10 @@
                   ><em>{{ historyFirst.updateContents.afterProgress }}%</em>
                 </dd>
               </dl>
-              <dl v-if="historyFirst.updateContents.afterConfidence">
+              <dl
+                v-if="historyFirst.updateContents.afterConfidence"
+                class="confidence"
+              >
                 <dt>信心指数改为</dt>
                 <div class="state-grid">
                   <div
@@ -63,11 +73,7 @@
                   ]
                 }}</em>
               </dl>
-              <dl>
-                <dt>操作人</dt>
-                <dd>{{ historyFirst.userName }}</dd>
-              </dl>
-              <dl>
+              <dl class="reason">
                 <dt>更新说明</dt>
                 <dd>{{ historyFirst.reason }}</dd>
               </dl>
@@ -149,7 +155,7 @@
                       maxlength="200"
                       v-model="formData.updateexplain"
                       type="textarea"
-                      :autosize="{ minRows: 6 }"
+                      :autosize="{ minRows: 4 }"
                       resize="none"
                       class="tl-textarea"
                     ></el-input>

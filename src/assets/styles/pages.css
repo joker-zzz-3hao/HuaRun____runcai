@@ -831,7 +831,7 @@
 /* change by xinquan */
 .update-progress .update-kr {
   width: 500px;
-  height: 486px;
+  height: 446px;
   overflow: hidden;
 }
 .update-progress .tab-menus {
@@ -870,7 +870,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 420px;
-  height: 486px;
+  height: 446px;
 }
 
 .update-progress .note-book-title {
@@ -910,25 +910,33 @@
   margin: 0 0 6px 0;
 }
 
-.update-progress .last-update dl:nth-child(1),
-.update-progress .last-update dl:nth-child(4) {
+.update-progress .last-update dl.reason {
   flex: 1 0 100%;
 }
 
-.update-progress .last-update dl:nth-child(2),
-.update-progress .last-update dl:nth-child(3) {
+.update-progress .last-update dl:nth-child(1),
+.update-progress .last-update dl:nth-child(2) {
   flex: 1 0 50%;
 }
 
-.update-progress .last-update dt,
-.update-progress .last-update dl:last-child dt {
+.update-progress .last-update dl.progress,
+.update-progress .last-update dl.confidence {
+  flex: 1 0 50%;
+}
+
+.update-progress .last-update dl:nth-child(2) + .last-update dl.progress dt,
+.update-progress .last-update dl:nth-child(2) + .last-update dl.confidence dt {
+  flex: 0 0 76px;
+}
+
+.update-progress .last-update dt {
   flex: 0 0 76px;
   color: #ACB6BF;
   margin: 0 10px 0 0;
   font-size: 12px;
 }
 
-.update-progress .last-update dl:nth-child(3) dt {
+.update-progress .last-update dl:nth-child(2) dt {
   flex: 0 0 40px;
 }
 
@@ -962,7 +970,7 @@
 .update-progress .el-tiptap-editor>.el-tiptap-editor__content{
   height: 350px;
   cursor: text;
-  padding: 5px 0;
+  padding: 10px 0;
 }
 
 .update-progress .el-tiptap-editor__menu-bar,
