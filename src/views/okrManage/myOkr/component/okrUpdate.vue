@@ -53,8 +53,6 @@
                         <tl-process
                           :data="parseInt(formData.okrDetailProgress, 10)"
                           :showNumber="false"
-                          :width="68"
-                          :marginLeft="6"
                         ></tl-process>
                         <el-slider
                           v-model="formData.okrDetailProgress"
@@ -74,7 +72,7 @@
                         ></el-input-number>
                         <span>%</span>
                       </div>
-                      <div class="okr-risk">
+                      <div class="okr-calibration">
                         <div class="add-progress" @click="addProgress(1)">
                           +1
                         </div>
@@ -99,7 +97,7 @@
                 </dd>
               </dl>
               <!-- 没有变化时不用填更新说明 -->
-              <dl class="change-reason" v-if="haveChange">
+              <dl class="change-reason">
                 <dt>更新说明</dt>
                 <dd>
                   <el-form-item
@@ -146,7 +144,7 @@
                             <span>关键结果</span>
                             <em>{{ formData.okrDetailObjectKr }}</em>
                           </div>
-                          <div>
+                          <div v-if="activity.updateContents.afterProgress">
                             <span>进度由</span>
                             <em>{{
                               activity.updateContents.beforeProgress
@@ -156,7 +154,7 @@
                             <em>{{ activity.updateContents.afterProgress }}</em>
                             <span>%</span>
                           </div>
-                          <div>
+                          <div v-if="activity.updateContents.afterConfidence">
                             <span>信心指数修改为</span>
                             <div class="state-grid">
                               <div
@@ -198,6 +196,10 @@
                           </div>
                         </li>
                       </ul>
+                      <div class="operate-reason" v-if="activity.reason">
+                        <span>说明：</span>
+                        <em>{{ activity.reason }}</em>
+                      </div>
                     </div>
                   </div>
                 </dd>
