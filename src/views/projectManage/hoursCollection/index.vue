@@ -137,14 +137,23 @@
                       v-model="scope.row.time"
                       type="daterange"
                       range-separator="至"
+                      @change="changeMinMax(scope.row.time,scope.$index)"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期">
                     </el-date-picker>
               </template>
             </el-table-column>
             <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
-              <template >
-               <el-input style="width:50px"></el-input>
+              <template slot-scope="scope">
+                     <el-input-number
+                controls-position="right"
+                v-model="scope.row.date"
+                :min="0"
+                :max="scope.row.max"
+                :disabled="!scope.row.time"
+                :precision="0"
+                class="tl-input-number"
+              ></el-input-number>
               </template>
             </el-table-column>
    <el-table-column prop="createDate" label="工时内容" min-width="180">
@@ -218,36 +227,48 @@ export default {
       tableDataRow: [{
         userName: '111',
         time: '',
+        disabled: true,
       }, {
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        disabled: true,
         userName: '111',
         time: '',
       }, {
         userName: '111',
         time: '',
       }, {
+        disabled: true,
         userName: '111',
         time: '',
       }, {
-        userName: '111',
-        time: '',
-      }, {
-        userName: '111',
-      }, {
-        userName: '111',
-        time: '',
-      }, {
-        userName: '111',
-        time: '',
-      }, {
-        userName: '111',
-        time: '',
-      }, {
-        userName: '111',
-        time: '',
-      }, {
+        disabled: true,
         userName: '222',
         time: '',
       }, {
+        disabled: true,
         userName: '112221',
         time: '',
       }],
@@ -286,15 +307,37 @@ export default {
   mounted() {
     this.searchList();
 
-    this.server.queryByCodes({
-      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
-    }).then((res) => {
-      if (res.code == '200') {
-        this.codes = res.data;
-      }
-    });
+    // this.server.queryByCodes({
+    //   codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+    // }).then((res) => {
+    //   if (res.code == '200') {
+    //     this.codes = res.data;
+    //   }
+    // });
   },
   methods: {
+    changeMinMax(time, index) {
+      let weekBegin;
+      let weekEnd;
+      if (time) {
+        // eslint-disable-next-line prefer-destructuring
+        weekBegin = time[0];
+        // eslint-disable-next-line prefer-destructuring
+        weekEnd = time[1];
+
+        console.log(time);
+        const oneDate = 24 * 60 * 60 * 1000;
+        const startTime = weekBegin.getTime();
+        const endTime = weekEnd.getTime();
+        const cheTime = (endTime - startTime) / oneDate;
+        this.tableData[index].max = cheTime;
+        this.tableData[index].date = '';
+        console.log(cheTime);
+      } else {
+        this.tableData[index].date = '';
+        this.tableData[index].disabled = true;
+      }
+    },
     searchList() {
       // this.tableDataRow = this.tableDataRow
       const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
