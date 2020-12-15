@@ -115,7 +115,7 @@
                       maxlength="200"
                       v-model="formData.updateexplain"
                       type="textarea"
-                      :autosize="{ minRows: 1 }"
+                      :autosize="{ minRows: 6 }"
                       resize="none"
                       class="tl-textarea"
                     ></el-input>
@@ -123,6 +123,19 @@
                 </dd>
               </dl>
             </el-form>
+            <div class="flex-end">
+              <el-button
+                :disabled="!hasPower('okr-update')"
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                @click="summitUpdate"
+                :loading="loading"
+                >更新进展</el-button
+              >
+              <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+                >取消</el-button
+              >
+            </div>
           </div>
           <div class="update-histoy okr-detail" v-else>
             <div class="tl-custom-timeline">
@@ -209,14 +222,14 @@
         </el-scrollbar>
       </div>
       <div class="note-book" :class="{ 'hide-input': showInput == false }">
-        <div @click="showInput = true">
-          <el-tiptap
-            v-model="noteText"
-            :extensions="extensions"
-            :readonly="!showInput"
-            :tooltip="showInput"
-          ></el-tiptap>
-        </div>
+        <div class="note-book-title">OKR记事本</div>
+        <el-tiptap
+          v-model="noteText"
+          :extensions="extensions"
+          :readonly="!showInput"
+          :tooltip="showInput"
+          @click.native="showInput = true"
+        ></el-tiptap>
         <div class="note-msg">
           <span><i class="el-icon-time"></i>更新于 {{ noteCreateTime }}</span>
           <el-button
@@ -235,19 +248,6 @@
           >
         </div>
       </div>
-    </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button
-        :disabled="!hasPower('okr-update')"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="summitUpdate"
-        :loading="loading"
-        >更新进展</el-button
-      >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
     </div>
   </el-dialog>
 </template>
