@@ -209,13 +209,16 @@ export default {
     },
     inputChange(amountItem) {
       this.amountData.periodRuleDetailList.forEach((element1) => {
+        if (!this.hasValue(element1.applyValue)) {
+          element1.applyValue = 0;
+        }
         if (element1.ruleDetailId == amountItem.ruleDetailId) {
           this.remainAmount.periodRuleDetailList.forEach((element2) => {
             if (element2.ruleDetailId == amountItem.ruleDetailId) {
               // 1、正整数数字
               if (!(/(^[0-9]\d*$)/.test(Number(amountItem.applyValue)))) {
                 element1.showError = true;
-                element1.errorText = '请填写正整数';
+                element1.errorText = '请填写不小于零的整数';
               } else if (!element1.periodRuleId) {
                 // 新增：分配的数值大小，不能大于剩余可用数量；
                 if (amountItem.applyValue > element2.applyValue) {
@@ -264,7 +267,7 @@ export default {
             // 1、正整数数字
             if (!(/(^[0-9]\d*$)/.test(Number(element1.applyValue)))) {
               element1.showError = true;
-              element1.errorText = '请填写正整数';
+              element1.errorText = '请填写不小于零的整数';
               validateStatus = false;
             } else if (!element1.periodRuleId) {
               // 新增：分配的数值大小，不能大于剩余可用数量；
