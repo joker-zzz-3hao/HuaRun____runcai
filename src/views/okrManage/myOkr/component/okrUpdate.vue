@@ -216,6 +216,7 @@
             v-model="noteText"
             :extensions="extensions"
             :readonly="!showInput"
+            :tooltip="showInput"
           ></el-tiptap>
         </div>
         <div class="note-msg">
