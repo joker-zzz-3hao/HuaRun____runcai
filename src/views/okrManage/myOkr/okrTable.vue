@@ -158,7 +158,6 @@ export default {
     expand(row, expanded) {
       if (expanded) {
         row.children.forEach((item) => {
-          console.log(item.orgId);
           if (item.okrProgress > 0) {
             this.$nextTick(() => {
               this.$refs[`process${item.orgId}${item.okrProgress}`].changeWidth();
@@ -169,19 +168,21 @@ export default {
     },
     // 查询组织树
     getOkrTree() {
-      console.log('组织树', this.okrCycle.periodId, this.okrOrgId);
       if (this.okrCycle.periodId && this.okrOrgId) {
         this.treeTableData = [];
         this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
-          // periodId: '1204827318294274048',
           orgId: this.okrOrgId,
-          // orgId: 'CR0011000054:CR0012000174:CR0012000184:',
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
-            this.treeTableData.push(res.data);
+            if (res.data.orgId) {
+              this.treeTableData.push(res.data);
+            } else {
+              this.treeTableData = [];
+            }
+            console.log(this.treeTableData);
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
               // 默认展开第一个
@@ -207,7 +208,6 @@ export default {
     },
     okrOrgId: {
       handler(newVal) {
-        console.log('getOkrTree', newVal);
         if (newVal) {
           this.getOkrTree();
         }

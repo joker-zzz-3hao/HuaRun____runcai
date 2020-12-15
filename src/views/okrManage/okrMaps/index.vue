@@ -295,7 +295,11 @@ export default {
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
-            this.treeTableData.push(res.data);
+            if (this.treeTableData.orgId) {
+              this.treeTableData.push(res.data);
+            } else {
+              this.treeTableData = [];
+            }
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
             }
