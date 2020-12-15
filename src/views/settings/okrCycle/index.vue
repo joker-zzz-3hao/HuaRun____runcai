@@ -1,7 +1,6 @@
 <template>
   <div class="okr-cycle">
     <div class="operating-area">
-      <!-- <div class="page-title">设置OKR周期与自评</div> -->
       <div class="operating-box">
         <el-button
           type="primary"
@@ -35,7 +34,7 @@
             <el-table-column prop="startTime" label="开始时间" min-width="120">
               <template slot-scope="scope">
                 <em v-if="scope.row.startTime">{{
-                  dateFormat("YYYY-mm-dd", new Date(scope.row.startTime))
+                  dateFormat("YYYY-mm-dd", scope.row.startTime)
                 }}</em>
                 <em v-else>--</em>
               </template>
@@ -43,7 +42,7 @@
             <el-table-column prop="endTime" label="结束时间" min-width="120">
               <template slot-scope="scope">
                 <em v-if="scope.row.endTime">{{
-                  dateFormat("YYYY-mm-dd", new Date(scope.row.endTime))
+                  dateFormat("YYYY-mm-dd", scope.row.endTime)
                 }}</em>
                 <em v-else>--</em>
               </template>
@@ -57,7 +56,7 @@
                 <em v-if="scope.row.draftingStartTime">{{
                   dateFormat(
                     "YYYY-mm-dd",
-                    new Date(scope.row.draftingStartTime)
+                   scope.row.draftingStartTime
                   )
                 }}</em>
                 <em v-else>--</em>
@@ -70,7 +69,7 @@
             >
               <template slot-scope="scope">
                 <em v-if="scope.row.approvalEndTime">{{
-                  dateFormat("YYYY-mm-dd", new Date(scope.row.approvalEndTime))
+                  dateFormat("YYYY-mm-dd", scope.row.approvalEndTime)
                 }}</em>
                 <em v-else>--</em>
               </template>
@@ -84,7 +83,7 @@
                 <em v-if="scope.row.selfAssessReminderTime">{{
                   dateFormat(
                     "YYYY-mm-dd",
-                    new Date(scope.row.selfAssessReminderTime)
+                    scope.row.selfAssessReminderTime
                   )
                 }}</em>
                 <em v-else>--</em>

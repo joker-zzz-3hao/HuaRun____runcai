@@ -304,13 +304,13 @@ export default {
     getWeekDate() {
       const oneDate = 24 * 60 * 60 * 1000;
       const prevDate = new Date().getTime() - oneDate * 6;
-      const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
+      const date = this.dateFormat('YYYY-mm-dd', prevDate);
       this.server.getCalendar({ date }).then((res) => {
         console.log(res);
         // eslint-disable-next-line max-len
         const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
         if (indexs) {
-          this.week = `${this.dateFormat('mm月dd日', new Date(res.data[indexs].weekBegin))}至${this.dateFormat('mm月dd日', new Date(res.data[indexs].weekEnd))}`;
+          this.week = `${this.dateFormat('mm月dd日', res.data[indexs].weekBegin)}至${this.dateFormat('mm月dd日', res.data[indexs].weekEnd)}`;
         }
       });
     },

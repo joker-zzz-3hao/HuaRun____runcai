@@ -169,7 +169,7 @@
                   scope.row.createTime
                     ? dateFormat(
                         "YYYY-mm-dd HH:MM",
-                        new Date(scope.row.createTime)
+                        scope.row.createTime
                       )
                     : "--"
                 }}
