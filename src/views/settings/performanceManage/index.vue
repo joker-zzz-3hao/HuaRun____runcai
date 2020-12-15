@@ -21,6 +21,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
+              @change="periodChange"
             >
               <el-option
                 v-for="item in periodList"
@@ -83,11 +84,26 @@
           {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
         </dd>
         <dd>
+          <el-tooltip
+            effect="dark"
+            content="该绩效方案已被使用，不能编辑/删除"
+            placement="top"
+          >
+            <em class="text-gray">删除</em>
+          </el-tooltip>
           <el-button @click="deleteRule(amountData)" type="text"
             >删除</el-button
           >
         </dd>
         <dd>
+          <el-tooltip
+            effect="dark"
+            content="该绩效方案已被使用，不能编辑/删除"
+            placement="top"
+          >
+            <em class="text-gray">修改</em>
+          </el-tooltip>
+
           <el-button type="text" @click="updateAmount(amountData)"
             >修改</el-button
           >
@@ -331,8 +347,11 @@ export default {
       this.orgIdList = data;
       // this.getTeamWeekly();
       this.$refs.cascader.dropDownVisible = false;
+      this.searchList();
     },
     addAmount(ruleId) {
+      // 判断是否支持编辑，如果不支持，弹出警告提示
+      this.$message.warning('该绩效方案已被使用，不能编辑/删除');
       this.searchForm.ruleId = ruleId;
       for (let i = 0; i < this.amountDataList.length; i += 1) {
         if (this.amountDataList[i].ruleId == ruleId) {
@@ -358,12 +377,15 @@ export default {
       });
     },
     allocateAmount(data) {
-      console.log(this.amountDataList);
-      this.rowData = data;
-      this.showAllocateDialog = true;
-      this.$nextTick(() => {
-        this.$refs.allocateAmount.show();
-      });
+      if (this.amountDataList && this.amountDataList.length > 0) {
+        this.rowData = data;
+        this.showAllocateDialog = true;
+        this.$nextTick(() => {
+          this.$refs.allocateAmount.show();
+        });
+      } else {
+        this.$message.warning('暂无可用绩效规则，请先添加绩效规则');
+      }
     },
     deleteRule(amountData) {
       // 如果已被分配了名额则不能被删除TODO:
@@ -384,6 +406,9 @@ export default {
     refreshRule() {
       this.getAmountData();
     },
+    periodChange(periodId) {
+
+    },
   },
   watch: {
 
@@ -398,5 +423,8 @@ export default {
 }
 .dd-margin {
   margin-right: 10px;
+}
+.text-gray {
+  color: gray;
 }
 </style>

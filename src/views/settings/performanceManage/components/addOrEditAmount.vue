@@ -85,7 +85,7 @@ export default {
       } else {
         this.formData.ruleId = searchForm.ruleId;
         this.selectedRule.ruleDetailList.forEach((item) => {
-          this.$set(item, 'applyValue', '');
+          this.$set(item, 'applyValue', 0);
         });
       }
       this.selectedRule.ruleDetailList.forEach((item) => {
@@ -106,11 +106,12 @@ export default {
     },
     inputBlur(item) {
       this.selectedRule.ruleDetailList.forEach((element) => {
-        if (item.periodRuleDetailId == element.periodRuleDetailId) {
+        console.log(this.selectedRule.ruleDetailList);
+        if (item.ruleDetailId == element.ruleDetailId) {
           // 1、正整数数字
           if (!(/(^[0-9]\d*$)/.test(Number(item.applyValue))) || !this.hasValue(item.applyValue)) {
             element.showError = true;
-            element.errorText = '请填写正整数';
+            element.errorText = '请填写不小于零的整数';
           } else if (item.applyValue > 1000) {
             element.showError = true;
             element.errorText = '最大值为1000';
@@ -137,7 +138,7 @@ export default {
       if (this.selectedRule.periodRuleId) {
         this.selectedRule.ruleDetailList.forEach((item) => {
           this.formData.periodRuleDetailList.push({
-            applyValue: item.applyValue,
+            applyValue: item.applyValue || 0,
             ruleDetailId: item.ruleDetailId,
             periodRuleId: item.periodRuleId,
             periodRuleDetailId: item.periodRuleDetailId,
@@ -146,7 +147,7 @@ export default {
       } else { // 新增
         this.selectedRule.ruleDetailList.forEach((item) => {
           this.formData.periodRuleDetailList.push({
-            applyValue: item.applyValue,
+            applyValue: item.applyValue || 0,
             ruleDetailId: item.ruleDetailId,
           });
         });
@@ -156,7 +157,7 @@ export default {
         // 1、正整数数字
         if (!(/(^[0-9]\d*$)/.test(Number(element.applyValue))) || !this.hasValue(element.applyValue)) {
           element.showError = true;
-          element.errorText = '请填写正整数';
+          element.errorText = '请填写不小于零的整数';
         } else if (element.applyValue > 1000) {
           element.showError = true;
           element.errorText = '最大值为1000';
