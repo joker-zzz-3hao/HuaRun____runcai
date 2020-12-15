@@ -16,30 +16,27 @@
         <el-scrollbar ref="detailscrollbar">
           <div class="tl-custom-timeline" v-if="currentIndex === 0">
             <div class="last-update" v-if="hasValue(historyFirst)">
-              <div>
-                <span>上次更新时间</span>
-                <em>{{ historyFirst.createTime }}</em>
-              </div>
-              <div v-if="historyFirst.updateContents">
-                <span>进度</span>
-                <em>
-                  由
-                  {{ historyFirst.updateContents.beforeProgress }}%更新为
-                  {{ historyFirst.updateContents.afterProgress }}%
-                </em>
-              </div>
-              <div>
-                <span>操作人</span>
-                <em>
-                  {{ historyFirst.userName }}
-                </em>
-              </div>
-              <div>
-                <span>更新说明</span>
-                <em>
-                  {{ historyFirst.reason }}
-                </em>
-              </div>
+              <dl>
+                <dt>上次更新时间</dt>
+                <dd>{{ historyFirst.createTime }}</dd>
+              </dl>
+              <dl v-if="historyFirst.updateContents">
+                <dt>进度</dt>
+                <dd>
+                  <span>由</span
+                  ><em>{{ historyFirst.updateContents.beforeProgress }}%</em
+                  ><span>更新为</span
+                  ><em>{{ historyFirst.updateContents.afterProgress }}%</em>
+                </dd>
+              </dl>
+              <dl>
+                <dt>操作人</dt>
+                <dd>{{ historyFirst.userName }}</dd>
+              </dl>
+              <dl>
+                <dt>更新说明</dt>
+                <dd>{{ historyFirst.reason }}</dd>
+              </dl>
             </div>
             <el-form :model="formData" ref="dataForm" class="tl-form">
               <dl class="timeline-list">
@@ -101,7 +98,8 @@
                   </div>
                 </dd>
               </dl>
-              <dl class="change-reason">
+              <!-- 没有变化时不用填更新说明 -->
+              <dl class="change-reason" v-if="haveChange">
                 <dt>更新说明</dt>
                 <dd>
                   <el-form-item
@@ -130,7 +128,10 @@
           </div>
           <div class="update-histoy okr-detail" v-else>
             <div class="tl-custom-timeline">
-              <dl class="timeline-list" v-if="historyList.length">
+              <dl
+                class="timeline-list"
+                v-if="historyList && historyList.length"
+              >
                 <dd v-for="activity in historyList" :key="activity.id">
                   <div class="list-info">
                     <div class="list-title">{{ activity.createTime }}</div>
@@ -201,13 +202,22 @@
                   </div>
                 </dd>
               </dl>
+              <dl class="no-data" v-else>
+                <div class="no-data-bg"></div>
+                <div class="no-data-txt">暂无更新记录</div>
+              </dl>
             </div>
           </div>
         </el-scrollbar>
       </div>
       <div class="note-book" :class="{ 'hide-input': showInput == false }">
         <div @click="showInput = true">
-          <el-tiptap v-model="noteText" :extensions="extensions" />
+          <el-tiptap
+            v-model="noteText"
+            :extensions="extensions"
+            :readonly="!showInput"
+            :tooltip="showInput"
+          ></el-tiptap>
         </div>
         <div class="note-msg">
           <span><i class="el-icon-time"></i>更新于 {{ noteCreateTime }}</span>
@@ -280,8 +290,8 @@ export default {
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
-
       },
+      sourceData: {},
       noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
@@ -316,6 +326,7 @@ export default {
       currentPage: 1,
       showInput: false,
       noteCreateTime: '',
+      historyList: [],
     };
   },
   props: {
@@ -354,6 +365,16 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.onScroll, true);
   },
+  computed: {
+    haveChange() {
+      if (this.sourceData.okrDetailConfidence
+                    != this.formData.okrDetailConfidence
+          || this.sourceData.okrDetailProgress != this.formData.okrDetailProgress) {
+        return true;
+      }
+      return false;
+    },
+  },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 控制弹窗
@@ -373,6 +394,7 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
+        this.sourceData = JSON.parse(JSON.stringify(this.okrItem));
       }
       this.noteText = `
         <h1>记录OKR进展相关的点点滴滴</h1>
@@ -390,7 +412,7 @@ export default {
           if (res.data.length > 0) {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
-            this.historyList = res.data;
+            this.historyList = res.data || [];
             this.historyList.forEach((item) => {
               const content = JSON.parse(item.content);
               item.updateContents = content || {};
@@ -402,11 +424,14 @@ export default {
       });
     },
     summitUpdate() {
-      if (!this.formData.updateexplain) {
+      if (this.haveChange === false) {
+        this.$message.warning('进展没有变化，无需更新');
+        return;
+      } if (!this.formData.updateexplain) {
         this.$message.error('请填写更新说明');
       }
       this.$refs.dataForm.validate((valid) => {
-        if (valid) {
+        if (valid && this.haveChange) {
           const summitForm = {
             detailId: this.formData.detailId,
             okrDetailConfidence: this.formData.okrDetailConfidence || 1,
@@ -420,7 +445,7 @@ export default {
           this.server.singleUpdate(summitForm).then((res) => {
             this.loading = false;
             if (res.code == 200) {
-              this.$message('更新成功');
+              this.$message.success('更新成功');
               this.$emit('success');
               this.close();
             }
