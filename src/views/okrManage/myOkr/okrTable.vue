@@ -170,29 +170,26 @@ export default {
     getOkrTree() {
       if (this.okrCycle.periodId && this.okrOrgId) {
         this.treeTableData = [];
-        this.loading = true;
         this.server.getOkrTree({
           periodId: this.okrCycle.periodId,
           orgId: this.okrOrgId,
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
+            this.treeTableData = [];
             if (res.data.orgId) {
               this.treeTableData.push(res.data);
             } else {
               this.treeTableData = [];
             }
-            console.log(this.treeTableData);
+            console.log('treeTableData', this.treeTableData);
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
               // 默认展开第一个
               this.expands[0] = this.treeTableData[0].orgId;
             }
           }
-          this.loading = false;
         });
-      } else {
-        this.loading = false;
       }
     },
   },
@@ -204,7 +201,7 @@ export default {
         }
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
     okrOrgId: {
       handler(newVal) {
@@ -213,7 +210,7 @@ export default {
         }
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
   },
 };
