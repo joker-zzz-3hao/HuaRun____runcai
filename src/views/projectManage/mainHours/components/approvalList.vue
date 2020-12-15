@@ -571,7 +571,8 @@ export default {
     weekWorkListCheck(row) {
       const listFiler = row.weekWorkList.filter((item) => item.weekTimeAfter != '0');
       const self = this;
-      const list = listFiler.map((item) => `${item.weekDate.split('-')[1]}月第${self.getWeekInMonth(new Date(item.weekDate))}周`);
+      // eslint-disable-next-line no-useless-escape
+      const list = listFiler.map((item) => `${item.weekDate.split('-')[1]}月第${self.getWeekInMonth(new Date(item.weekDate.replace(/\-/g, '/')))}周`);
       const checkList = [...new Set(list)];
       return checkList.join(',');
     },
