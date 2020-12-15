@@ -295,7 +295,7 @@ export default {
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
-            if (this.treeTableData.orgId) {
+            if (res.data.orgId) {
               this.treeTableData.push(res.data);
             } else {
               this.treeTableData = [];
