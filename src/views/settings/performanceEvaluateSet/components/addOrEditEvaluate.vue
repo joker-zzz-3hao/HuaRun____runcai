@@ -39,7 +39,9 @@
               @blur="inputBlur(ruleItem)"
               placeholder="请输入内容"
             ></el-input>
-            <span v-if="ruleItem.showError">{{ ruleItem.errorText }}</span>
+            <span v-if="ruleItem.showContentError">{{
+              ruleItem.contentErrorText
+            }}</span>
             <el-input
               v-model.trim="ruleItem.unit"
               maxlength="20"
@@ -53,7 +55,11 @@
               class="tl-textarea"
               placeholder="请填写说明"
               maxlength="100"
+              @blur="inputBlur(ruleItem)"
             ></el-input>
+            <span v-if="ruleItem.showRemarkError">{{
+              ruleItem.remarkErrorText
+            }}</span>
             <el-button
               type="text"
               v-show="performanceData.ruleDetailList.length - 1 == index"
@@ -153,8 +159,10 @@ export default {
         unit: '',
         value: '',
         description: '',
-        showError: false,
-        errorText: '',
+        showContentError: false,
+        showRemarkError: false,
+        contentErrorText: '',
+        remarkErrorText: '',
         detailRandomId: this.getRandomId(),
       });
     },
@@ -174,9 +182,14 @@ export default {
         this.$refs.dicForm.validate((valid) => {
           let validateStatus = true;
           this.performanceData.ruleDetailList.forEach((element) => {
-            if (!this.hasValue(element.value)) {
-              element.showError = true;
-              element.errorText = '请输入值';
+            if (!this.hasValue(element.value.trim())) {
+              element.showContentError = true;
+              element.contentErrorText = '请输入值';
+              validateStatus = false;
+            }
+            if (!this.hasValue(element.description.trim())) {
+              element.showRemarkError = true;
+              element.remarkErrorText = '请填写描述';
               validateStatus = false;
             }
           });
@@ -215,8 +228,10 @@ export default {
         this.performanceData.ruleType = String(this.performanceData.ruleType);
         this.performanceData.ruleDetailList.forEach((detail) => {
           detail.detailRandomId = this.getRandomId();
-          detail.showError = false;
-          detail.errorText = '';
+          detail.showContentError = false;
+          detail.contentErrorText = '';
+          detail.showRemarkError = false;
+          detail.remarkErrorText = '';
         });
         if (rowData.status > 0) {
           this.title = '详情';
@@ -232,8 +247,10 @@ export default {
             unit: '',
             value: '',
             description: '',
-            showError: false,
-            errorText: '',
+            showContentError: false,
+            contentErrorText: '',
+            showRemarkError: false,
+            remarkErrorText: '',
             detailRandomId: this.getRandomId(),
           }],
         };
@@ -257,12 +274,19 @@ export default {
     inputBlur(inputData) {
       this.performanceData.ruleDetailList.forEach((element) => {
         if (element.detailRandomId == inputData.detailRandomId) {
-          if (!this.hasValue(inputData.value)) {
-            element.showError = true;
-            element.errorText = '请输入值';
+          if (!this.hasValue(inputData.value.trim())) {
+            element.showContentError = true;
+            element.contentErrorText = '请输入值';
           } else {
-            element.showError = false;
-            element.errorText = '';
+            element.showContentError = false;
+            element.contentErrorText = '';
+          }
+          if (!this.hasValue(inputData.description.trim())) {
+            element.showRemarkError = true;
+            element.remarkErrorText = '请填写说明';
+          } else {
+            element.showRemarkError = false;
+            element.remarkErrorText = '';
           }
         }
       });
