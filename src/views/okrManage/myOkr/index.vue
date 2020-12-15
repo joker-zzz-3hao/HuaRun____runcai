@@ -42,26 +42,6 @@
               </el-select>
             </dd>
           </dl>
-          <dl class="dl-item org-selete" v-if="$route.name == 'okrTable'">
-            <dt>组织</dt>
-            <dd>
-              <el-cascader
-                v-model="orgFullIdList"
-                ref="cascader"
-                :options="departmentData"
-                :show-all-levels="false"
-                :props="{
-                  checkStrictly: true,
-                  value: 'orgId',
-                  label: 'orgName',
-                  children: 'children',
-                }"
-                @change="selectIdChange"
-                popper-class="tl-cascader-popper"
-                class="tl-cascader"
-              ></el-cascader>
-            </dd>
-          </dl>
           <dl class="dl-item" v-if="currentIndex === 0">
             <dt>状态</dt>
             <dd>
@@ -125,14 +105,14 @@ export default {
           menuTitle: '我的OKR',
           toName: 'myOkr',
         },
-        // {
-        //   menuTitle: '部门OKR',
-        //   toName: 'departmentOkr',
-        // },
         {
-          menuTitle: '全局OKR',
-          toName: 'okrTable',
+          menuTitle: '部门OKR',
+          toName: 'departmentOkr',
         },
+        // {
+        //   menuTitle: '虚拟部门OKR',
+        //   toName: '',
+        // },
         // {
         //   menuTitle: '历史部门OKR',
         //   toName: '',
@@ -146,11 +126,6 @@ export default {
       },
       periodList: [], // 周期列表
       okrCycle: {}, // 当前选择的周期
-      hadSet: false, // 是否有偏好周期
-      orgFullIdList: [],
-      departmentData: [],
-      orgFullId: '',
-
     };
   },
   computed: {
@@ -158,7 +133,6 @@ export default {
       userInfo: (state) => state.userInfo,
       roleCode: (state) => state.roleCode,
       periodId: (state) => state.periodId,
-      // orgFullId: (state) => state.orgFullId,
     }),
   },
   created() {
@@ -176,31 +150,25 @@ export default {
 
     // TODO: 加orgId
     // 实体部门名
-    // this.tabsList.forEach((item) => {
-    //   if (item.toName == 'departmentOkr') {
-    //     item.menuTitle = `${this.departmentName}OKR`;
-    //   }
-    // });
+    this.tabsList.forEach((item) => {
+      if (item.toName == 'departmentOkr') {
+        item.menuTitle = `${this.departmentName}OKR`;
+      }
+    });
     // 如果是“根级组织人”，只展示“我的okr”
-    // if (!this.userInfo.orgParentId) {
-    //   this.tabsList = [
-    //     {
-    //       menuTitle: '我的OKR',
-    //       toName: 'myOkr',
-    //     },
-    //   ];
-    // }
+    if (!this.userInfo.orgParentId) {
+      this.tabsList = [
+        {
+          menuTitle: '我的OKR',
+          toName: 'myOkr',
+        },
+      ];
+    }
     // 有虚线汇报需展示虚线部门和实体部门
     // this.tabsList.push( {menuTitle: '部门OKR',toName: 'departmentOkr',},);
-    if (this.$route.name == 'myOkr') {
-      this.getOkrCycleList();
-    } else {
-      // this.getMapPeriod();
-      this.getOrgTable();
-    }
+    this.getOkrCycleList();
   },
   mounted() {
-    // 来自概览页
     if (this.$route.query) {
       if (this.$route.query.openWriteOkr) {
         this.goWriteOkr(this.$route.query.periodId);
@@ -214,7 +182,7 @@ export default {
     borderWidth.style.width = `${liWidth[this.currentIndex].offsetWidth}px`;
   },
   methods: {
-    ...mapMutations('common', ['setokrStatus', 'setokrCycle', 'setokrOrg']),
+    ...mapMutations('common', ['setokrStatus', 'setokrCycle']),
     goWriteOkr(periodId = '') {
       this.$router.replace('myOkr');
       // 调用接口校验是否可创建
@@ -234,7 +202,7 @@ export default {
         }
       });
     },
-    // okr周期
+    // 周期
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         if (res.code == 200) {
@@ -245,71 +213,6 @@ export default {
         }
       });
     },
-    // 全局okr周期
-    getMapPeriod() {
-      // 查询周期
-      this.server.getOkrMapPeriod({ orgFullId: this.orgFullId }).then((res) => {
-        if (res.code == 200) {
-          this.periodList = res.data || [];
-          this.periodList.forEach((item) => {
-            // 如果有设置偏好
-            console.log(item.okrMapDefault);
-            if (item.okrMapDefault) {
-              this.okrCycle = item;
-              this.searchForm.periodId = this.okrCycle.periodId;
-              this.hadSet = true;
-            }
-            if (item.checkStatus == 1 && !this.hadSet) {
-              this.okrCycle = item;
-              this.searchForm.periodId = this.okrCycle.periodId;
-            }
-            this.setokrCycle(this.okrCycle);
-          });
-        }
-      });
-    },
-    // 查询组织树
-    getOrgTable() {
-      this.server.getOrgTable().then((res) => {
-        if (res.code == '200') {
-          if (res.data) {
-            this.departmentData = [];
-            this.departmentData.push(res.data);
-            if (this.departmentData.length > 0) {
-              this.replaceName(this.departmentData[0]);
-            }
-            // 默认取第二层润联科技
-            this.orgFullId = this.departmentData[0].children[0].orgFullId;
-            this.orgFullIdList = this.orgFullId.split(':');
-            this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
-            this.getOrgName(this.departmentData, 0);
-            this.setokrOrg(this.orgFullId);
-            this.getMapPeriod();
-          }
-        }
-      });
-    },
-    selectIdChange(data) {
-      this.showCascader = false;
-      this.orgFullId = `${data.join(':')}:`;
-      this.orgFullIdList = data;
-      // this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
-      this.$refs.cascader.dropDownVisible = false;
-      this.getOrgName(this.departmentData, 0);
-      this.setokrOrg(this.orgFullId);
-    },
-    getOrgName(data, index) {
-      data.forEach((item) => {
-        if (this.orgFullIdList[index] == item.orgId) {
-          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
-            this.getOrgName(item.children, index + 1);
-          } else if ((index + 1) == this.orgFullIdList.length) {
-            this.test = item.orgName;
-          }
-        }
-      });
-    },
-
     borderSlip(item, index) {
       const borderWidth = document.querySelector('.border-slip');
       const selfLeft = document.querySelectorAll('.tab-list li')[index].offsetLeft;
@@ -317,23 +220,15 @@ export default {
       borderWidth.style.left = `${selfLeft}px`;
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
+      console.log('qieh', item);
       this.go(item.toName);
+      // if name == 虚线
     },
   },
   beforeDestroy() {
     this.setokrCycle();
-    this.setokrOrg();
   },
   watch: {
-    '$route.name': {
-      handler() {
-        if (this.$route.name == 'myOkr') {
-          this.getOkrCycleList();
-        } else {
-          this.getOrgTable();
-        }
-      },
-    },
     'searchForm.periodId': {
       handler(newVal) {
         if (newVal) {

@@ -249,7 +249,7 @@ export default {
         this.formData = row;
         this.title = '编辑任务';
         if (row.taskBegDate) {
-          this.timeVal = [this.dateFormat('YYYY-mm-dd', row.taskBegDate), this.dateFormat('YYYY-mm-dd', row.taskEndDate)];
+          this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(row.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(row.taskEndDate))];
         }
         this.server.queryTaskDetail({ taskId: row.taskId }).then((res) => {
           if (res.code == 200 && res.data) {

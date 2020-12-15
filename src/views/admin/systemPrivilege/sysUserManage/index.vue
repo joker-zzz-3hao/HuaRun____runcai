@@ -14,7 +14,7 @@
         <el-form-item label="创建时间">
           <em>{{
             userInfo.createTime
-              ? dateFormat("YYYY-mm-dd HH:MM:SS", userInfo.createTime)
+              ? dateFormat("YYYY-mm-dd HH:MM:SS", new Date(userInfo.createTime))
               : "--"
           }}</em>
         </el-form-item>

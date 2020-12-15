@@ -74,9 +74,9 @@
                 <i class="el-icon-time"></i>
                 <span v-if="element.taskBegDate"
                   >{{
-                    dateFormat("YYYY-mm-dd", element.taskBegDate)
+                    dateFormat("YYYY-mm-dd", new Date(element.taskBegDate))
                   }}~{{
-                    dateFormat("YYYY-mm-dd", element.taskEndDate)
+                    dateFormat("YYYY-mm-dd", new Date(element.taskEndDate))
                   }}</span
                 >
                 <span v-else>未设置起止时间</span>

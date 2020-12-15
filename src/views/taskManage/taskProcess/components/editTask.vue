@@ -553,14 +553,14 @@ export default {
             this.taskUserId = this.formData.taskUserId;
             this.fileList = this.formData.attachmentList;
             if (res.data.taskBegDate) {
-              this.timeVal = [this.dateFormat('YYYY-mm-dd', res.data.taskBegDate), this.dateFormat('YYYY-mm-dd', res.data.taskEndDate)];
+              this.timeVal = [this.dateFormat('YYYY-mm-dd', new Date(res.data.taskBegDate)), this.dateFormat('YYYY-mm-dd', new Date(res.data.taskEndDate))];
             }
             if (this.formData.createTime) {
-              const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', this.formData.createTime);
-              const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', this.formData.createTime);
-              let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', this.formData.createTime);
-              let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', this.formData.createTime);
-              let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', this.formData.createTime);
+              const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+              const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+              let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+              let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+              let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
               if (dayNum >= 0 && hourNum < 0) {
                 hourNum = 1 * 24 + hourNum;
                 dayNum -= 1;
@@ -675,11 +675,11 @@ export default {
     // 时长计算
     timeSum() {
       if (this.formData.createTime) {
-        const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', this.formData.createTime);
-        const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', this.formData.createTime);
-        let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', this.formData.createTime);
-        let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', this.formData.createTime);
-        let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', this.formData.createTime);
+        const yearNum = this.dateFormat('YYYY', new Date()) - this.dateFormat('YYYY', new Date(this.formData.createTime));
+        const mouthNum = this.dateFormat('mm', new Date()) - this.dateFormat('mm', new Date(this.formData.createTime));
+        let dayNum = this.dateFormat('dd', new Date()) - this.dateFormat('dd', new Date(this.formData.createTime));
+        let hourNum = this.dateFormat('HH', new Date()) - this.dateFormat('HH', new Date(this.formData.createTime));
+        let minuteNum = this.dateFormat('MM', new Date()) - this.dateFormat('MM', new Date(this.formData.createTime));
         if (dayNum >= 0 && hourNum < 0) {
           hourNum = 1 * 24 + hourNum;
           dayNum -= 1;

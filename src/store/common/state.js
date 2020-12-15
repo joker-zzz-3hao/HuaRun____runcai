@@ -27,5 +27,4 @@ export default {
   orgFullId: '',
   processVal: '',
   optionType: '',
-  okrOrgId: '',
 };

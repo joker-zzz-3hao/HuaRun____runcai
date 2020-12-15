@@ -354,7 +354,7 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=${this.data.okrMainId}`;
       window.open(url);
     },
   },

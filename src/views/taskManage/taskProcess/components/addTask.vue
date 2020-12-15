@@ -208,11 +208,11 @@ export default {
     create() {
       this.formData.taskBegDate = this.dateFormat(
         'YYYY-mm-dd HH:MM:SS',
-        this.formData.taskBegDate,
+        new Date(this.formData.taskBegDate),
       );
       this.formData.taskEndDate = this.dateFormat(
         'YYYY-mm-dd HH:MM:SS',
-        this.formData.taskEndDate,
+        new Date(this.formData.taskEndDate),
       );
       // this.formData.taskEndDate = '';
       if (this.formData.typeId == '') {

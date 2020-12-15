@@ -63,8 +63,8 @@ export default {
         const oneDate = 24 * 60 * 60 * 1000;
         const valueTime = new Date(val).getTime() - oneDate;
         const valueTimeEnd = (new Date(val).getTime() - oneDate) + 6 * oneDate;
-        const startTime = this.dateFormat('YYYY-mm-dd', valueTime);
-        const endTime = this.dateFormat('YYYY-mm-dd', valueTimeEnd);
+        const startTime = this.dateFormat('YYYY-mm-dd', new Date(valueTime));
+        const endTime = this.dateFormat('YYYY-mm-dd', new Date(valueTimeEnd));
         this.queryParam.value = this.queryParam.defValue;
         this.$emit('weekSelect', startTime, endTime);
       } else {

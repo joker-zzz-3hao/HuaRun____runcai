@@ -155,17 +155,10 @@ export default {
       $bus.$emit(eventName, params);
     },
     /* 用法
+        let date = new Date() date不是时间格式时
          dateFormat("YYYY-mm-dd HH:MM:SS", date) */
-    dateFormat(fmt, dateRep) {
-      let date = '';
-      if (dateRep instanceof Date) {
-        date = dateRep;
-      } else {
-        const dateCheck = dateRep.replace('T', ' ');
-        // eslint-disable-next-line no-useless-escape
-        date = new Date(dateCheck.replace(/\-/g, '/'));
-      }
-
+    dateFormat(fmt, date) {
+      console.log(this.isDate(date));
       let ret;
       const opt = {
         'Y+': date.getFullYear().toString(), // 年
@@ -390,23 +383,6 @@ export default {
     getRandomId() {
       return Math.random().toString(36).substr(3);
     },
-    // 深拷贝
-    deepCopy(obj) {
-      const newObj = obj.constructor === Array ? [] : {};
-      if (typeof obj !== 'object') {
-        return obj;
-      }
-      for (const i in obj) {
-        if (typeof obj[i] === 'object' && this.hasValue(obj[i])) { // 判断对象的这条属性是否为对象
-          newObj[i] = this.deepCopy(obj[i]); // 若是对象进行嵌套调用
-        } else {
-          newObj[i] = obj[i];
-        }
-      }
-
-      return newObj; // 返回深度克隆后的对象
-    },
-
     getPageTable(list, page, pageSzie) {
       const pageOne = page - 1;
       // const pageNum = list.length / page;

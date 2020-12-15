@@ -84,10 +84,6 @@ export default {
   setokrCycle: (state, okrCycle = {}) => {
     state.okrCycle = okrCycle;
   },
-  // 我的okr切换组织
-  setokrOrg: (state, okrOrgId = '') => {
-    state.okrOrgId = okrOrgId;
-  },
 
   // 切换示例数据
   changeTestModel: (state, testModel = false) => {

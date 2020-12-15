@@ -149,14 +149,12 @@ export default {
     fileList: {
       immediate: true,
       handler(fileList) {
-        if (fileList) {
-          this.uploadFiles = fileList.map((item) => {
+        this.uploadFiles = fileList.map((item) => {
           // eslint-disable-next-line no-plusplus
-            item.uid = item.uid || (Date.now() + this.tempIndex++);
-            item.status = item.status || 'success';
-            return item;
-          });
-        }
+          item.uid = item.uid || (Date.now() + this.tempIndex++);
+          item.status = item.status || 'success';
+          return item;
+        });
       },
     },
   },

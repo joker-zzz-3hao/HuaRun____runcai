@@ -151,16 +151,5 @@ export default {
         callback();
       }
     },
-    // 校验得分
-    validateScore(rule, value, callback) {
-      console.log(value);
-      if (value === undefined) {
-        callback('请输入评分');
-      } else if (value === 0) {
-        callback('评分不得为0');
-      } else {
-        callback();
-      }
-    },
   },
 };

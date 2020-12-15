@@ -44,10 +44,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    attachmentList: {
-      type: String,
-      default: '',
-    },
+
     // 单位M
     maxFileSzie: {
       type: Number,
@@ -68,12 +65,6 @@ export default {
     actionName: {
       type: String,
       default: '',
-    },
-    actionIndex: {
-      type: Object,
-      default() {
-        return {};
-      },
     },
     // fileFormatFn: {
     //   type: Function,
@@ -125,7 +116,7 @@ export default {
     };
   },
   created() {
-    if (this.sourceType == 'OKRMODIFY' || this.sourceType == 'OKR_REVIEW') {
+    if (this.sourceType == 'OKRMODIFY') {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params, sourceKey: this.sourceKey,
       };
@@ -135,7 +126,6 @@ export default {
         sourceType: this.sourceType, ...this.params,
       };
     }
-    if (this.fileList.length == 0 && this.attachmentList) { this.fileList = JSON.parse(this.attachmentList); }
   },
   computed: {
     action() {
@@ -235,7 +225,7 @@ export default {
       });
       this.fileNum = list.length;
       // this.$emit('update:fileList', list);
-      this.$emit('change', { list, action: this.actionIndex });
+      this.$emit('change', { list, action: this.actionName });
     },
     imgUploadSuccess(response, file, fileList) {
       console.log(file);

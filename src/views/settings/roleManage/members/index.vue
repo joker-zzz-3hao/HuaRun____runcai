@@ -44,7 +44,7 @@
               <template slot-scope="scope">
                 <span
                   v-if="scope.row.createTime"
-                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.createTime)}}</span>
+                >{{ dateFormat("YYYY-mm-dd HH:MM:SS", new Date(scope.row.createTime))}}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>

@@ -19,7 +19,7 @@
             @change="switchOrg"
             :popper-append-to-body="true"
             popper-class="tl-select-dropdown toggle-teams"
-            class="tl-select w220"
+            class="tl-select"
           >
             <el-option
               v-for="item in userInfo.orgList"

@@ -317,7 +317,6 @@
       :okrId="okrId"
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
-      :periodName="okrCycle.periodName"
       @success="updateSearch()"
     ></tl-okr-update>
     <tl-okr-history

@@ -132,7 +132,7 @@
                     )
                   "
                 >
-                  {{ GetLength(scope.row.workContent, 12) }}
+                  {{ GetLength(scope.row.workContent, 20) }}
                 </a>
               </template>
             </el-table-column>
@@ -148,7 +148,7 @@
                       weekWorkListCheck(scope.row)
                     )
                   "
-                  >{{ GetLength(scope.row.workDesc, 12) }}</a
+                  >{{ GetLength(scope.row.workDesc, 16) }}</a
                 >
 
                 <span v-else>--</span>

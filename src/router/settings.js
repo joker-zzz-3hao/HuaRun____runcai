@@ -97,31 +97,6 @@ export default [{
     },
     component: () => import('@/views/worthManage/index'),
   },
-  {
-    // 绩效评定设置
-    path: '/performanceEvaluate',
-    name: 'performanceEvaluate',
-    meta: {
-      hasMainMenu: true,
-      isSubMenu: true,
-      parentRoute: 'orgManage',
-      title: '绩效评定设置',
-      power: '',
-    },
-    component: () => import('@/views/settings/performanceEvaluateSet/index'),
-  },
-  {
-    // 绩效考核
-    path: '/performanceManage',
-    name: 'performanceManage',
-    meta: {
-      hasMainMenu: true,
-      isSubMenu: true,
-      parentRoute: 'orgManage',
-      title: '绩效管理',
-      power: '',
-    },
-    component: () => import('@/views/settings/performanceManage/index'),
-  },
+
   ],
 }];

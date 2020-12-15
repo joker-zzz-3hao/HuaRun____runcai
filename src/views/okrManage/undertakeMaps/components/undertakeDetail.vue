@@ -309,8 +309,8 @@ export default {
                       citem.operateType == 6
                     ) {
                       citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
-                      citem.weekBegin = this.dateFormat('YYYY-mm-dd', contentObject.weekBegin);
-                      citem.weekEnd = this.dateFormat('YYYY-mm-dd', contentObject.weekEnd);
+                      citem.weekBegin = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekBegin));
+                      citem.weekEnd = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekEnd));
                     } else if (
                       citem.operateType == 7
                     ) {
@@ -349,8 +349,8 @@ export default {
                   citem.operateType == 6
                 ) {
                   citem.okrDetailProgress = (contentObject.progressAfter - contentObject.progressBefor) || 0;
-                  citem.weekBegin = this.dateFormat('YYYY-mm-dd', contentObject.weekBegin);
-                  citem.weekEnd = this.dateFormat('YYYY-mm-dd', contentObject.weekEnd);
+                  citem.weekBegin = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekBegin));
+                  citem.weekEnd = this.dateFormat('YYYY-mm-dd', new Date(contentObject.weekEnd));
                 } else if (
                   citem.operateType == 7
                 ) {
