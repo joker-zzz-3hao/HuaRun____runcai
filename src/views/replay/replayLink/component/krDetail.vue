@@ -384,14 +384,25 @@ export default {
   },
   watch: {
     'ruleForm.passFlag': {
-      handler() {
-        console.log(this.$refs.ruleForm.fields);
-        const fields = this.$refs.ruleForm.fields || [];
-        fields.forEach((i) => {
-          if (i.prop === 'refuseInfo' || i.prop === 'communication') { // 通过prop属性值相同来判断是哪个输入框，比如：要移除prop为'user'
-            i.resetField();
-          }
-        });
+      handler(newVal) {
+        if (newVal == '1' && this.ruleForm.refuseInfo == '') {
+          const fields = this.$refs.ruleForm.fields || [];
+          fields.forEach((i) => {
+            if (i.prop === 'refuseInfo') { // 通过prop属性值相同来判断是哪个输入框，比如：要移除prop为'user'
+              i.resetField();
+            }
+          });
+        }
+        if (newVal == '2' && this.ruleForm.communication == '') {
+          const fields = this.$refs.ruleForm.fields || [];
+          fields.forEach((i) => {
+            if (i.prop === 'communication') { // 通过prop属性值相同来判断是哪个输入框，比如：要移除prop为'user'
+              i.resetField();
+            }
+          });
+        }
+        console.log(this.ruleForm.refuseInfo == '');
+        console.log(this.ruleForm.communication);
       },
     },
   },

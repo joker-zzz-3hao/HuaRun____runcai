@@ -42,7 +42,9 @@
       </div>
       <div>
         <span>绩效复核状态</span>
-        <em>{{ sortMsg.approvalStatus }}</em>
+        <em v-if="sortMsg.approvalStatus">{{
+          CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+        }}</em>
         <span>绩效复核时间</span>
         <em>{{ sortMsg.reviewTime || "--" }}</em>
         <span>驳回原因</span>
@@ -140,6 +142,7 @@
 import crcloudTable from '@/components/crcloudTable';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sortable from 'sortablejs';
+import CONST from '../const';
 import Server from '../server';
 import rankhistoryList from './components/rankhistoryList';
 import causesRank from './components/causesRank';
@@ -154,51 +157,12 @@ export default {
   },
   data() {
     return {
+      CONST,
       radio: '',
       periodIdList: [],
       server,
       periodId: '',
-      tableData: [{
-        id: 1,
-        sort: 1,
-        org: '行云',
-        user: '大哥',
-        score: '1',
-        score1: '22',
-        scorelist: 'A',
-      }, {
-        id: 2,
-        sort: 2,
-        org: '盘云',
-        user: '大的哥',
-        score: '1',
-        score1: '22',
-        scorelist: 'B',
-      }, {
-        id: 3,
-        sort: 3,
-        org: '牛云',
-        user: '大小哥',
-        score: '1',
-        score1: '22',
-        scorelist: 'C',
-      }, {
-        id: 4,
-        sort: 4,
-        org: '海云',
-        user: '大哥',
-        score: '1',
-        score1: '22',
-        scorelist: 'D',
-      }, {
-        id: 5,
-        sort: 5,
-        org: '熊云',
-        user: '大哥为',
-        score: '1',
-        score1: '22',
-        scorelist: 'E',
-      }],
+      tableData: [],
       assessmentList: [],
       assessmentMsg: {},
       sortMsg: {},
@@ -268,13 +232,14 @@ export default {
       }));
       console.log({
         resultDetailList: this.tableData,
+        orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
       });
-      debugger;
       this.server.assessmentSubmit({
+        resultDetailVoList: this.tableData,
         orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
@@ -356,7 +321,7 @@ export default {
     },
     // 显示历史列表
     showbeforeList() {
-      this.$refs.beforeList.show(this.periodId);
+      this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
     },
     // 提交
     submit() {
