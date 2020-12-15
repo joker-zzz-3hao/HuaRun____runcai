@@ -183,6 +183,7 @@
                     :limit="10"
                     @change="fileChange"
                     sourceType="SCORE_REVIEW"
+                    :sourceKey="$route.query.okrId"
                     accept="
               .jpg,
               .jpeg,
