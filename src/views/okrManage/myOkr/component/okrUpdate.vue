@@ -212,7 +212,11 @@
       </div>
       <div class="note-book" :class="{ 'hide-input': showInput == false }">
         <div @click="showInput = true">
-          <el-tiptap v-model="noteText" :extensions="extensions" />
+          <el-tiptap
+            v-model="noteText"
+            :extensions="extensions"
+            :readonly="!showInput"
+          ></el-tiptap>
         </div>
         <div class="note-msg">
           <span><i class="el-icon-time"></i>更新于 {{ noteCreateTime }}</span>
