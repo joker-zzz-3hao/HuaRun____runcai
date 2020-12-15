@@ -98,7 +98,8 @@
                   </div>
                 </dd>
               </dl>
-              <dl class="change-reason">
+              <!-- 没有变化时不用填更新说明 -->
+              <dl class="change-reason" v-if="haveChange">
                 <dt>更新说明</dt>
                 <dd>
                   <el-form-item
@@ -127,7 +128,10 @@
           </div>
           <div class="update-histoy okr-detail" v-else>
             <div class="tl-custom-timeline">
-              <dl class="timeline-list" v-if="historyList.length">
+              <dl
+                class="timeline-list"
+                v-if="historyList && historyList.length"
+              >
                 <dd v-for="activity in historyList" :key="activity.id">
                   <div class="list-info">
                     <div class="list-title">{{ activity.createTime }}</div>
@@ -197,6 +201,10 @@
                     </div>
                   </div>
                 </dd>
+              </dl>
+              <dl class="no-data" v-else>
+                <div class="no-data-bg"></div>
+                <div class="no-data-txt">暂无更新记录</div>
               </dl>
             </div>
           </div>
@@ -277,8 +285,8 @@ export default {
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
-
       },
+      sourceData: {},
       noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
@@ -313,6 +321,7 @@ export default {
       currentPage: 1,
       showInput: false,
       noteCreateTime: '',
+      historyList: [],
     };
   },
   props: {
@@ -351,6 +360,16 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.onScroll, true);
   },
+  computed: {
+    haveChange() {
+      if (this.sourceData.okrDetailConfidence
+                    != this.formData.okrDetailConfidence
+          || this.sourceData.okrDetailProgress != this.formData.okrDetailProgress) {
+        return true;
+      }
+      return false;
+    },
+  },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 控制弹窗
@@ -370,6 +389,7 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
+        this.sourceData = JSON.parse(JSON.stringify(this.okrItem));
       }
       this.noteText = `
         <h1>记录OKR进展相关的点点滴滴</h1>
@@ -387,7 +407,7 @@ export default {
           if (res.data.length > 0) {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
-            this.historyList = res.data;
+            this.historyList = res.data || [];
             this.historyList.forEach((item) => {
               const content = JSON.parse(item.content);
               item.updateContents = content || {};
@@ -399,11 +419,14 @@ export default {
       });
     },
     summitUpdate() {
-      if (!this.formData.updateexplain) {
+      if (this.haveChange === false) {
+        this.$message.warning('进展没有变化，无需更新');
+        return;
+      } if (!this.formData.updateexplain) {
         this.$message.error('请填写更新说明');
       }
       this.$refs.dataForm.validate((valid) => {
-        if (valid) {
+        if (valid && this.haveChange) {
           const summitForm = {
             detailId: this.formData.detailId,
             okrDetailConfidence: this.formData.okrDetailConfidence || 1,
@@ -417,7 +440,7 @@ export default {
           this.server.singleUpdate(summitForm).then((res) => {
             this.loading = false;
             if (res.code == 200) {
-              this.$message('更新成功');
+              this.$message.success('更新成功');
               this.$emit('success');
               this.close();
             }
