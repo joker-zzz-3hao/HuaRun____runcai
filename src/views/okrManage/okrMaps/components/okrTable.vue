@@ -2,7 +2,7 @@
   <crcloud-table :isPage="false">
     <div slot="tableContainer" class="table-container">
       <el-table
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        :tree-props="{ children: 'children' }"
         border
         row-key="orgId"
         :data="treeData"

@@ -145,4 +145,9 @@ export default class Server extends ServerBase {
   saveOkrRemark(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrRemark/saveOkrRemark', param);
   }
+
+  // 周期偏好设置
+  setOkrMapPeriodId(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/setOkrMapPeriodId', param);
+  }
 }

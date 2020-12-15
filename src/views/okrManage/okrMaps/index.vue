@@ -295,14 +295,7 @@ export default {
         }).then((res) => {
           if (res.code == '200') {
             // OKR表格数据
-            if (res.data.children.length > 0) {
-              this.treeTableData.push(res.data);
-            } else {
-              this.treeTableData = [];
-              // if (this.hadSet == false) {
-              //   this.showSetPeriod();
-              // }
-            }
+            this.treeTableData.push(res.data);
             if (this.treeTableData.length > 0) {
               this.replaceName(this.treeTableData[0]);
             }

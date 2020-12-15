@@ -1944,7 +1944,8 @@
   margin-left: 3px !important;
 }
 
-.okr-maps .prefer-text {
+.okr-maps .prefer-text,
+.my-okr .prefer-text {
   color: #685df1;
   cursor: pointer;
   margin-left: 10px;
