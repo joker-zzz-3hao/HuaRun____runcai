@@ -795,19 +795,29 @@
   background: #4ccd79;
 }
 
-.update-progress .okr-risk {
-  margin: 20px 0 0 0;
+.update-progress .okr-risk,
+.update-progress .okr-calibration {
+  margin: 13px 0 0 0;
   display: flex;
   align-items: center;
 }
 
+.update-progress .okr-calibration {
+  margin: 12px 0 0 0;
+}
+
 .update-progress .okr-risk span {
   margin: 0 20px 0 0;
+  color: #acb6bf;
 }
 
 .update-progress .change-reason dt {
-  margin: 0 0 11px 0;
+  margin: 0 0 4px 0;
   color: #879099;
+}
+
+.update-progress .el-dialog__header {
+  margin-bottom: 10px;
 }
 
 /* change by xinquan */
@@ -829,11 +839,11 @@
 }
 
 .update-progress .tl-custom-timeline .list-title span {
-  margin: 15px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 .update-progress .progress-bg {
-  width: 56px !important;
+  width: 64px !important;
 }
 
 .update-progress .progress-bg:not(:first-child) {
@@ -868,10 +878,13 @@
   flex-wrap: wrap;
 }
 
-.update-progress .last-update dl:not(:last-child) {
-  margin: 0 0 6px 0;
+.update-progress .last-update dl {
   display: flex;
   align-items: center;
+}
+
+.update-progress .last-update dl:not(:last-child) {
+  margin: 0 0 6px 0;
 }
 
 .update-progress .last-update dl:nth-child(1),
@@ -890,6 +903,14 @@
   color: #ACB6BF;
   margin: 0 10px 0 0;
   font-size: 12px;
+}
+
+.update-progress .last-update dl:nth-child(3) dt {
+  flex: 0 0 40px;
+}
+
+.update-progress .tl-custom-timeline .last-update + .tl-form .timeline-list dd {
+  margin-top: 12px;
 }
 
 .update-progress .last-update dd {

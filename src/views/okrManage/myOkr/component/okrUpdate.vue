@@ -53,8 +53,6 @@
                         <tl-process
                           :data="parseInt(formData.okrDetailProgress, 10)"
                           :showNumber="false"
-                          :width="68"
-                          :marginLeft="6"
                         ></tl-process>
                         <el-slider
                           v-model="formData.okrDetailProgress"
@@ -74,7 +72,7 @@
                         ></el-input-number>
                         <span>%</span>
                       </div>
-                      <div class="okr-risk">
+                      <div class="okr-calibration">
                         <div class="add-progress" @click="addProgress(1)">
                           +1
                         </div>
@@ -99,7 +97,7 @@
                 </dd>
               </dl>
               <!-- 没有变化时不用填更新说明 -->
-              <dl class="change-reason" v-if="haveChange">
+              <dl class="change-reason">
                 <dt>更新说明</dt>
                 <dd>
                   <el-form-item
