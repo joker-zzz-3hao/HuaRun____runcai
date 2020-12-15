@@ -940,7 +940,7 @@
 }
 
 .update-progress .last-update dl:nth-child(2) dt {
-  flex: 0 0 40px;
+  flex: 0 0 76px;
 }
 
 .update-progress .tl-custom-timeline .last-update + .tl-form .timeline-list dd {

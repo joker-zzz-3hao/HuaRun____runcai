@@ -40,38 +40,21 @@
                 v-if="historyFirst.updateContents.afterConfidence"
                 class="confidence"
               >
-                <dt>信心指数改为</dt>
-                <div class="state-grid">
-                  <div
-                    :class="{
-                      'is-no-risk':
-                        historyFirst.updateContents.afterConfidence == 1,
-                      'is-risks':
-                        historyFirst.updateContents.afterConfidence == 2,
-                      'is-uncontrollable':
-                        historyFirst.updateContents.afterConfidence == 3,
-                    }"
-                  ></div>
-                  <div
-                    :class="{
-                      'is-no-risk':
-                        historyFirst.updateContents.afterConfidence == 1,
-                      'is-risks':
-                        historyFirst.updateContents.afterConfidence == 2,
-                    }"
-                  ></div>
-                  <div
-                    :class="{
-                      'is-no-risk':
-                        historyFirst.updateContents.afterConfidence == 1,
-                    }"
-                  ></div>
-                </div>
-                <em>{{
-                  CONST.CONFIDENCE_MAP[
-                    historyFirst.updateContents.afterConfidence
-                  ]
-                }}</em>
+                <dt>信心指数</dt>
+                <dd>
+                  <span>由</span
+                  ><em>{{
+                    CONST.CONFIDENCE_MAP[
+                      historyFirst.updateContents.beforeConfidence
+                    ]
+                  }}</em
+                  ><span>更新为</span
+                  ><em>{{
+                    CONST.CONFIDENCE_MAP[
+                      historyFirst.updateContents.afterConfidence
+                    ]
+                  }}</em>
+                </dd>
               </dl>
               <dl class="reason">
                 <dt>更新说明</dt>
