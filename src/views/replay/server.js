@@ -100,5 +100,9 @@ export default class Server extends ServerBase {
   summaryReview(param) {
     return this._ajaxPost('gateway/talent-query/assessment/result/review/summary', param);
   }
-  // POST /assessment/result/review/summary
+
+  // 绩效排名审核
+  submitApproval(param) {
+    return this._ajaxPost('gateway/talent-okr/assessment/result/approval', param);
+  }
 }

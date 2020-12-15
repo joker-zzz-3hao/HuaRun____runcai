@@ -58,22 +58,22 @@
       </el-table-column>
     </el-table>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
-      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+      <el-button type="primary" @click="sumbit" class="tl-btn amt-bg-slip"
         >确定</el-button
       >
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
-        >取消</el-button
+      <el-button plain @click="refuse" class="tl-btn amt-border-fadeout"
+        >驳回</el-button
       >
     </div>
-    <tl-assess-person
-      ref="assessPerson"
-      @success="searchOkr(searchForm.status)"
-    ></tl-assess-person>
+    <tl-assess-refuse
+      ref="assessrefuse"
+      @success="queryList()"
+    ></tl-assess-refuse>
   </el-dialog>
 </template>
 
 <script>
-import assessPerson from './assessPerson';
+import assessRefuse from './assessRefuse';
 import CONST from '../../const';
 import Server from '../../server';
 
@@ -104,7 +104,7 @@ export default {
     },
   },
   components: {
-    'tl-assess-person': assessPerson,
+    'tl-assess-refuse': assessRefuse,
   },
   mounted() {
   },
@@ -118,11 +118,21 @@ export default {
     close() {
       this.visible = false;
     },
-    submit() {
+    sumbit() {
       this.$xconfirm({
         title: '',
         content: '确认后，部门将按照当前绩效结果分配',
+      }).then(() => {
+        this.sumbitAssess();
       });
+    },
+    refuse() {
+      this.$nextTick(() => {
+        this.$refs.assessrefuse.show();
+      });
+    },
+    sumbitAssess() {
+      this.server.submitApproval();
     },
     queryList() {
       this.server.querySort({

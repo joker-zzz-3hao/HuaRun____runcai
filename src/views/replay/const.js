@@ -34,10 +34,10 @@ const REVIEW_STATUS_MAP = {
   3: { name: '复盘结束', classname: 'finish-review' },
 };
 const APPROVAL_SCORE_STATUS_MAP = {
-  1: { name: '未提交', classname: 'no-summit' },
+  1: { name: '未提交', classname: 'no-sumbit' },
   2: { name: '复核中', classname: 'approval-ing' },
-  3: { name: '同意', classname: 'pass-summit' },
-  4: { name: '驳回', classname: 'refuse-summit' },
+  3: { name: '同意', classname: 'pass-sumbit' },
+  4: { name: '驳回', classname: 'refuse-sumbit' },
 };
 const COMMUN_MAP = {
   1: '未沟通',

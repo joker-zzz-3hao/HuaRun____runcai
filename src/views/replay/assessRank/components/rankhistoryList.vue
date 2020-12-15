@@ -82,9 +82,9 @@ export default {
           this.tableData = res.data || [];
           this.tableData.forEach((item) => {
             item.list = [];
-            const summitForm = JSON.parse(item.contentJson);
-            item.ruleDetailContentList = summitForm.ruleDetailContentList || [];
-            item.list = summitForm.orgResultDetailMapList || [];
+            const sumbitForm = JSON.parse(item.contentJson);
+            item.ruleDetailContentList = sumbitForm.ruleDetailContentList || [];
+            item.list = sumbitForm.orgResultDetailMapList || [];
           });
         }
       });
