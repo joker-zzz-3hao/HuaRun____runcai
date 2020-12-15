@@ -220,7 +220,7 @@ export default {
                 // 新增：分配的数值大小，不能大于剩余可用数量；
                 if (amountItem.applyValue > element2.applyValue) {
                   element1.showError = true;
-                  element1.errorText = '数量不能大于剩余数量';
+                  element1.errorText = '剩余数量不够';
                 } else {
                   element1.showError = false;
                   element1.errorText = '';
@@ -229,7 +229,7 @@ export default {
                 // 编辑：新增的数据不能大于剩余的数量
                 if (amountItem.applyValue - amountItem.applyValueCopy > element2.applyValue) {
                   element1.showError = true;
-                  element1.errorText = '数量不能大于剩余数量';
+                  element1.errorText = '剩余数量不够';
                 } else {
                   element1.showError = false;
                   element1.errorText = '';
@@ -270,7 +270,7 @@ export default {
               // 新增：分配的数值大小，不能大于剩余可用数量；
               if (element1.applyValue > element2.applyValue) {
                 element1.showError = true;
-                element1.errorText = '数量不能大于剩余数量';
+                element1.errorText = '剩余数量不够';
                 validateStatus = false;
               } else {
                 element1.showError = false;
@@ -280,7 +280,7 @@ export default {
               // 编辑：新增的数据不能大于剩余的数量
               if (element1.applyValue - element1.applyValueCopy > element2.applyValue) {
                 element1.showError = true;
-                element1.errorText = '数量不能大于剩余数量';
+                element1.errorText = '剩余数量不够';
                 validateStatus = false;
               } else {
                 element1.showError = false;
