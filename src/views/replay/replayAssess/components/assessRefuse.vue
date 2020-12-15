@@ -60,7 +60,7 @@ export default {
     submit() {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-          this.$emit('success');
+          this.$emit('success', this.formData.remark);
           this.close();
         }
       });
