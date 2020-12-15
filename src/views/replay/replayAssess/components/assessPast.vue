@@ -67,7 +67,7 @@
     </div>
     <tl-assess-refuse
       ref="assessrefuse"
-      @success="queryList()"
+      @success="sumbitAssess(remark)"
     ></tl-assess-refuse>
   </el-dialog>
 </template>
@@ -131,8 +131,10 @@ export default {
         this.$refs.assessrefuse.show();
       });
     },
-    sumbitAssess() {
-      this.server.submitApproval();
+    sumbitAssess(remark = '') {
+      this.server.submitApproval({
+        refuseReason: remark,
+      });
     },
     queryList() {
       this.server.querySort({
