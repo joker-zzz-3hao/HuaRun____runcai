@@ -655,7 +655,10 @@
 .my-okr .operating-box .dl-item:nth-child(2) .tl-select {
   width: 90px;
 }
-
+/* change by xinquan */
+.my-okr .operating-box .dl-item.org-selete .tl-select {
+  width: 200px;
+}
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
@@ -1762,7 +1765,8 @@
   margin-left: 3px !important;
 }
 
-.okr-maps .prefer-text {
+.okr-maps .prefer-text,
+.my-okr .prefer-text {
   color: #685df1;
   cursor: pointer;
   margin-left: 10px;
