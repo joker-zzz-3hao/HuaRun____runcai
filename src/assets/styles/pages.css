@@ -881,6 +881,10 @@
   font-weight: 500;
 }
 
+.update-histoy.okr-detail {
+  padding: 0 20px 0 0;
+}
+
 .update-progress .update-histoy,
 .update-progress .okr-info {
   width: 500px;
