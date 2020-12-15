@@ -62,6 +62,10 @@
         @searchList="searchList">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
+                <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info" @click="setManager(scope.row)">
@@ -127,10 +131,10 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPostName" label="工时时间范围" min-width="250">
-              <template >
+            <el-table-column prop="time" label="工时时间范围" min-width="250" >
+              <template slot-scope="scope">
                    <el-date-picker
-                      v-model="value1"
+                      v-model="scope.row.time"
                       type="daterange"
                       range-separator="至"
                       start-placeholder="开始日期"
@@ -213,28 +217,39 @@ export default {
       checkManager: false,
       tableDataRow: [{
         userName: '111',
+        time: '',
+      }, {
+        userName: '111',
+        time: '',
+      }, {
+        userName: '111',
+        time: '',
+      }, {
+        userName: '111',
+        time: '',
+      }, {
+        userName: '111',
+        time: '',
       }, {
         userName: '111',
       }, {
         userName: '111',
+        time: '',
       }, {
         userName: '111',
+        time: '',
       }, {
         userName: '111',
+        time: '',
       }, {
         userName: '111',
-      }, {
-        userName: '111',
-      }, {
-        userName: '111',
-      }, {
-        userName: '111',
-      }, {
-        userName: '111',
+        time: '',
       }, {
         userName: '222',
+        time: '',
       }, {
         userName: '112221',
+        time: '',
       }],
       isManage: false,
       openFlag: false,

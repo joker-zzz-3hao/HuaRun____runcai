@@ -170,12 +170,12 @@ export default {
     this.dialogTableVisible = true;
     console.log(this.updateData);
     this.form = this.updateData;
-    this.dateTime = [this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime)), this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime))];
-    this.form.startTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime));
-    this.form.selfAssessReminderTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.selfAssessReminderTime));
-    this.form.endTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime));
-    this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.approvalEndTime));
-    this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.draftingStartTime));
+    this.dateTime = [this.dateFormat('YYYY-mm-dd', this.updateData.startTime), this.dateFormat('YYYY-mm-dd', this.updateData.endTime)];
+    this.form.startTime = this.dateFormat('YYYY-mm-dd', this.updateData.startTime);
+    this.form.selfAssessReminderTime = this.dateFormat('YYYY-mm-dd', this.updateData.selfAssessReminderTime);
+    this.form.endTime = this.dateFormat('YYYY-mm-dd', this.updateData.endTime);
+    this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', this.updateData.approvalEndTime);
+    this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', this.updateData.draftingStartTime);
   },
   methods: {
     draftingTime(date) {
