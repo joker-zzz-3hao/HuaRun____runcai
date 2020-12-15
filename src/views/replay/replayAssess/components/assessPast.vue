@@ -20,18 +20,22 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
-      <dl>
-        <dt>复核结果</dt>
-        <dd>{{ CONST.APPROVAL_SCORE_STATUS_MAP[row.approvalStatus].name }}</dd>
-      </dl>
-      <dl>
-        <dt>复核人</dt>
-        <dd>{{ row.updateBy || "--" }}</dd>
-      </dl>
-      <dl>
-        <dt>绩效复核时间</dt>
-        <dd>{{ row.updateTime || "--" }}</dd>
-      </dl>
+      <template v-if="row.approvalStatus != 2">
+        <dl>
+          <dt>复核结果</dt>
+          <dd>
+            {{ CONST.APPROVAL_SCORE_STATUS_MAP[row.approvalStatus].name }}
+          </dd>
+        </dl>
+        <dl>
+          <dt>复核人</dt>
+          <dd>{{ row.updateBy || "--" }}</dd>
+        </dl>
+        <dl>
+          <dt>绩效复核时间</dt>
+          <dd>{{ row.updateTime || "--" }}</dd>
+        </dl>
+      </template>
     </div>
 
     <el-table :data="tableData" class="tl-table">
@@ -53,8 +57,18 @@
       <el-table-column prop="reason" label="调整原因" min-width="100">
       </el-table-column>
     </el-table>
-
-    <tl-assess-person ref="assessPerson"></tl-assess-person>
+    <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
+      <el-button type="primary" @click="submit" class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
+    </div>
+    <tl-assess-person
+      ref="assessPerson"
+      @success="searchOkr(searchForm.status)"
+    ></tl-assess-person>
   </el-dialog>
 </template>
 
@@ -65,7 +79,7 @@ import Server from '../../server';
 
 const server = new Server();
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   data() {
     return {
       CONST,

@@ -45,7 +45,7 @@
       <dl class="dl-item">
         <dt>绩效复核状态</dt>
         <el-select
-          v-model.trim="checkStatus"
+          v-model.trim="approvalStatus"
           placeholder="全部"
           :popper-append-to-body="false"
           @change="okrReviewList"
@@ -119,16 +119,19 @@
               min-width="100"
             >
               <template slot-scope="scope">
+                <span v-if="scope.row.approvalStatus === null">--</span>
                 <el-button
+                  v-else-if="scope.row.approvalStatus == 2"
                   type="text"
                   @click="showAssesspast(scope.row, 'edit')"
-                  >绩效复核</el-button
-                >
+                  >绩效复核
+                </el-button>
                 <el-button
+                  v-else
                   type="text"
                   @click="showAssesspast(scope.row, 'detail')"
-                  >详情</el-button
-                >
+                  >详情
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -147,7 +150,7 @@ import CONST from '../const';
 
 const server = new Server();
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   data() {
     return {
       CONST,
@@ -158,6 +161,7 @@ export default {
       periodId: '',
       orgId: '',
       tableData: [],
+      approvalStatus: '',
     };
   },
   components: {
@@ -174,6 +178,7 @@ export default {
         this.server.summaryReview({
           periodId: this.periodId,
           orgId: this.orgId,
+          approvalStatus: this.approvalStatus,
         }).then((res) => {
           if (res.code == 200) {
             this.tableData = res.data;

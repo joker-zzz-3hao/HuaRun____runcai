@@ -1,28 +1,21 @@
 <template>
   <div class="replay-list">
     <el-button type="text">返回</el-button>
-        <div class="cont-area">
-          <div>组织:华润云</div>
-          <div>负责人:小孩三</div>
-          <div>提交时间:2020-1-1</div>
-        </div>
-         <div class="cont-area">
-          <div>复核结果:已确认</div>
-          <div>复核人:小孩三</div>
-          <div>绩效复核时间:2020-1-1</div>
-        </div>
-         <div class="cont-area">
-               <tl-crcloud-table
-               :isPage="false"
-      >
+    <div class="cont-area">
+      <div>组织:华润云</div>
+      <div>负责人:小孩三</div>
+      <div>提交时间:2020-1-1</div>
+    </div>
+    <div class="cont-area">
+      <div>复核结果:已确认</div>
+      <div>复核人:小孩三</div>
+      <div>绩效复核时间:2020-1-1</div>
+    </div>
+    <div class="cont-area">
+      <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table" row-key="id" >
-             <el-table-column
-              prop="num"
-              label="部门"
-              min-width="165"
-            >
-
+          <el-table :data="tableData" class="tl-table" row-key="id">
+            <el-table-column prop="num" label="部门" min-width="165">
             </el-table-column>
 
             <el-table-column
@@ -36,26 +29,21 @@
               min-width="170"
             ></el-table-column>
 
-            <el-table-column
-              prop="user"
-              label="复核时间"
-              min-width="100"
-            >
+            <el-table-column prop="user" label="复核时间" min-width="100">
             </el-table-column>
-             <el-table-column
+            <el-table-column
               prop="score"
               label="是否已经确认沟通"
               min-width="100"
             >
             </el-table-column>
-               <el-table-column
+            <el-table-column
               fixed="right"
               prop="score1"
               label="操作"
               min-width="100"
             >
             </el-table-column>
-
           </el-table>
         </div>
       </tl-crcloud-table>
@@ -69,7 +57,7 @@ import Server from '../../server';
 
 const server = new Server();
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   data() {
     return {
       periodIdList: [],
