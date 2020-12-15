@@ -817,7 +817,6 @@
   overflow: hidden;
 }
 .update-progress .tab-menus {
-  padding: 0 0 0 30px;
   height: 40px;
 }
 
@@ -863,22 +862,47 @@
   border-bottom: 1px solid #E5E9EE;
 }
 
-.update-progress .last-update span {
+.update-progress .last-update {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.update-progress .last-update dl:not(:last-child) {
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+}
+
+.update-progress .last-update dl:nth-child(1),
+.update-progress .last-update dl:nth-child(4) {
+  flex: 1 0 100%;
+}
+
+.update-progress .last-update dl:nth-child(2),
+.update-progress .last-update dl:nth-child(3) {
+  flex: 1 0 50%;
+}
+
+.update-progress .last-update dt,
+.update-progress .last-update dl:last-child dt {
+  flex: 0 0 76px;
   color: #ACB6BF;
   margin: 0 10px 0 0;
   font-size: 12px;
 }
 
-.update-progress .last-update em {
-  margin: 0 10px 0 0;
+.update-progress .last-update dd {
   color: #4d5155;
   font-size: 12px;
 }
+
 .update-progress .note-msg {
   display: flex;
   justify-content: space-between;
   margin: 10px 0 0 0;
 }
+
 .update-progress .note-msg span {
   color: #ACB6BF;
   margin: 0 10px 0 0;
@@ -935,6 +959,46 @@
 }
 .update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
+}
+
+.update-progress .add-progress {
+  cursor: pointer;
+  margin: 0 10px 0 0;
+  text-align: center;
+  width: 40px;
+  height: 18px;
+  font-size: 12px;
+  color: #879099;
+  border: 1px solid #E8ECF0;
+  border-radius: 2px;
+  border-radius: 2px;
+}
+
+.update-progress .add-progress:hover {
+  color: #685df1;
+  background-color: #f0effe;
+}
+
+.update-progress .tl-custom-tabs {
+  position: relative;
+}
+
+.update-progress .tl-custom-tabs::before,
+.update-progress .tl-custom-tabs::after {
+  position: absolute;
+  bottom: 0;
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: #e8ecf0;
+}
+
+.update-progress .tl-custom-tabs::before {
+  left: -30px;
+}
+
+.update-progress .tl-custom-tabs::after {
+  right: -30px;
 }
 
 /* 部门okr */
@@ -1661,24 +1725,6 @@
 .my-okr .tl-table-fix .tl-thead,
 .overview .tl-table-fix .tl-thead {
   top: 0;
-}
-
-.add-progress {
-  cursor: pointer;
-  margin: 0 10px 0 0;
-  text-align: center;
-  width: 40px;
-  height: 18px;
-  font-size: 12px;
-  color: #879099;
-  border: 1px solid #E8ECF0;
-  border-radius: 2px;
-  border-radius: 2px;
-}
-
-.add-progress:hover {
-  color: #685df1;
-  background-color: #f0effe;
 }
 
 .overview .user-info + dd {
@@ -6676,22 +6722,4 @@
 
 .update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
-}
-
-.add-progress {
-  cursor: pointer;
-  font-size: 12px;
-  margin: 0 0 0 30px;
-  line-height: 1.7;
-  text-align: center;
-  width: 47px;
-  height: 26px;
-  color: #879099;
-  border: 1px dashed transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-    repeating-linear-gradient(-45deg, #e1e6eb 0, #e1e6eb 0.4em, #fff 0, #fff 0.6em);
-}
-
-.add-progress:hover {
-  color: #685df1;
 }

@@ -16,30 +16,27 @@
         <el-scrollbar ref="detailscrollbar">
           <div class="tl-custom-timeline" v-if="currentIndex === 0">
             <div class="last-update" v-if="hasValue(historyFirst)">
-              <div>
-                <span>上次更新时间</span>
-                <em>{{ historyFirst.createTime }}</em>
-              </div>
-              <div v-if="historyFirst.updateContents">
-                <span>进度</span>
-                <em>
-                  由
-                  {{ historyFirst.updateContents.beforeProgress }}%更新为
-                  {{ historyFirst.updateContents.afterProgress }}%
-                </em>
-              </div>
-              <div>
-                <span>操作人</span>
-                <em>
-                  {{ historyFirst.userName }}
-                </em>
-              </div>
-              <div>
-                <span>更新说明</span>
-                <em>
-                  {{ historyFirst.reason }}
-                </em>
-              </div>
+              <dl>
+                <dt>上次更新时间</dt>
+                <dd>{{ historyFirst.createTime }}</dd>
+              </dl>
+              <dl v-if="historyFirst.updateContents">
+                <dt>进度</dt>
+                <dd>
+                  <span>由</span
+                  ><em>{{ historyFirst.updateContents.beforeProgress }}%</em
+                  ><span>更新为</span
+                  ><em>{{ historyFirst.updateContents.afterProgress }}%</em>
+                </dd>
+              </dl>
+              <dl>
+                <dt>操作人</dt>
+                <dd>{{ historyFirst.userName }}</dd>
+              </dl>
+              <dl>
+                <dt>更新说明</dt>
+                <dd>{{ historyFirst.reason }}</dd>
+              </dl>
             </div>
             <el-form :model="formData" ref="dataForm" class="tl-form">
               <dl class="timeline-list">
