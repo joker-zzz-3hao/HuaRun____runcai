@@ -654,10 +654,11 @@
 .my-okr .operating-box .dl-item:nth-child(2) .tl-select {
   width: 90px;
 }
-/* change by xinquan */
+
 .my-okr .operating-box .dl-item.org-selete .tl-select {
   width: 200px;
 }
+
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
@@ -1785,7 +1786,7 @@
   top: 0;
 }
 
-.overview .user-info+dd {
+.overview .user-info + dd {
   cursor: pointer;
 }
 
@@ -2051,7 +2052,7 @@
   width: 37px;
   height: 21px;
   background: #f1f5f7;
-  color: #879099; 
+  color: #879099;
   cursor: default;
 }
 
@@ -4248,7 +4249,7 @@
   transform: unset;
 }
 
-.my-weekly .dl-card-panel.mood>dd {
+.my-weekly .dl-card-panel.mood > dd {
   margin: 0;
 }
 
@@ -4267,7 +4268,7 @@
   cursor: pointer;
 }
 
-.mood ul li i+i {
+.mood ul li i + i {
   margin: 0 0 0 10px;
 }
 
