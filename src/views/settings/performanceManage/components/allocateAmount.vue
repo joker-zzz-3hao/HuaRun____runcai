@@ -156,6 +156,7 @@ export default {
               detail.periodRuleDetailList.forEach((detailChild) => {
                 if (data.ruleDetailId == detailChild.ruleDetailId) { // 已设置的数据赋值给输入框
                   data.applyValue = detailChild.applyValue || 0;// 已分配的数量赋值
+                  data.periodRuleDetailId = detailChild.periodRuleDetailId;
                 }
               });
             });
@@ -193,7 +194,7 @@ export default {
           this.amountData.periodRuleId = '';
           // 如果是新增则提交的periodRuleId为空；否则赋值
           this.detailList.forEach((detail) => {
-            if (detail.periodRuleId == periodRuleId) {
+            if (detail.sourcePeriodRuleId == periodRuleId) {
               this.amountData.periodRuleId = detail.periodRuleId;
             }
           });
@@ -254,10 +255,7 @@ export default {
       this.amountData.applyType = 2;// 类型：部门
       this.amountData.applyId = this.rowData.orgId;// 部门id
       this.amountData.sourcePeriodRuleId = this.periodRuleId;
-      // this.amountData.periodRuleDetailList.forEach((data) => {
-      // data.periodRuleDetailId = '';
-      // data.periodDetailId = '';
-      // });
+
       // 校验表单
       let validateStatus = true;
       this.amountData.periodRuleDetailList.forEach((element1) => {
@@ -295,8 +293,23 @@ export default {
           }
         });
       });
+
+      const params = this.deepCopy(this.amountData);
+      // 新增
+      if (!params.periodRuleId) {
+        params.periodRuleDetailList.forEach((data) => {
+          data.periodRuleDetailId = '';
+          // data.periodDetailId = '';
+          data.periodRuleId = '';
+        });
+      } else {
+        params.periodRuleDetailList.forEach((data) => {
+          data.periodRuleId = params.periodRuleId;
+        });
+      }
+      // 编辑
       if (validateStatus) {
-        this.server.addOrUpdateAmount([this.amountData]).then((res) => {
+        this.server.addOrUpdateAmount([params]).then((res) => {
           if (res.code == 200) {
             this.$message.success('成功');
             this.$emit('refreshPage');
