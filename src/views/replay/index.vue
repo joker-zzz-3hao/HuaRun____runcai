@@ -3,7 +3,7 @@
     <div
       class="operating-area"
       v-show="
-        ['replayList', 'replayScore', 'assessRank', 'repalyAssess'].includes(
+        ['replayList', 'replayScore', 'assessRank', 'replayAssess'].includes(
           $route.name
         )
       "
@@ -69,7 +69,7 @@ export default {
       },
       {
         menuTitle: '绩效复核',
-        toName: 'repalyAssess',
+        toName: 'replayAssess',
       });
     }
   },

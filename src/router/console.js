@@ -318,17 +318,17 @@ export default [{
       },
       // 绩效复核
       {
-        path: '/repalyAssess',
-        name: 'repalyAssess',
+        path: '/replayAssess',
+        name: 'replayAssess',
         meta: {
           hasMainMenu: true,
           isSubMenu: true,
           parentRoute: 'myOkr',
-          title: 'repalyAssess',
+          title: 'replayAssess',
           belongsTo: 'replayList',
           power: '',
         },
-        component: () => import('@/views/replay/repalyAssess/repalyAssessList'),
+        component: () => import('@/views/replay/replayAssess/replayAssessList'),
       },
     ],
   },
