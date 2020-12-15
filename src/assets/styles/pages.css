@@ -820,10 +820,18 @@
   margin-bottom: 10px;
 }
 
+.update-progress .flex-end {
+  margin: 0;
+}
+
+.update-progress .flex-end .tl-btn {
+  height: 36px;
+}
+
 /* change by xinquan */
 .update-progress .update-kr {
   width: 500px;
-  height: 500px;
+  height: 486px;
   overflow: hidden;
 }
 .update-progress .tab-menus {
@@ -857,9 +865,24 @@
 }
 
 .update-progress .note-book {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 420px;
-  height: 500px;
-  padding: 15px 0 0 10px;
+  height: 486px;
+}
+
+.update-progress .note-book-title {
+  position: absolute;
+  left: 0;
+  top: -30px;
+  color: #4d5155;
+  font-weight: 500;
+}
+
+.update-histoy.okr-detail {
+  padding: 0 20px 0 0;
 }
 
 .update-progress .update-histoy,
@@ -924,7 +947,7 @@
   margin: 10px 0 0 0;
 }
 
-.update-progress .note-msg span {
+.update-progress .note-msg > span {
   color: #ACB6BF;
   margin: 0 10px 0 0;
   font-size: 12px;
@@ -939,7 +962,7 @@
 .update-progress .el-tiptap-editor>.el-tiptap-editor__content{
   height: 350px;
   cursor: text;
-  padding: 5px 15px;
+  padding: 5px 0;
 }
 
 .update-progress .el-tiptap-editor__menu-bar,
@@ -949,7 +972,7 @@
 }
 
 .update-progress .hide-input .el-tiptap-editor__menu-bar{
-  opacity: 0;
+  display: none;
 }
 
 .update-progress .el-tiptap-editor .ProseMirror{
@@ -967,6 +990,7 @@
 }
 
 .update-progress .el-tiptap-editor {
+  flex: 1;
   border-bottom: 1px solid #E5E9EE;
   border-radius: 0px;
 }  
