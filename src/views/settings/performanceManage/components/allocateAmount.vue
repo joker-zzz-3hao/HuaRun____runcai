@@ -209,9 +209,9 @@ export default {
     },
     inputChange(amountItem) {
       this.amountData.periodRuleDetailList.forEach((element1) => {
-        if (element1.periodRuleDetailId == amountItem.periodRuleDetailId) {
+        if (element1.ruleDetailId == amountItem.ruleDetailId) {
           this.remainAmount.periodRuleDetailList.forEach((element2) => {
-            if (element2.periodRuleDetailId == amountItem.periodRuleDetailId) {
+            if (element2.ruleDetailId == amountItem.ruleDetailId) {
               // 1、正整数数字
               if (!(/(^[0-9]\d*$)/.test(Number(amountItem.applyValue)))) {
                 element1.showError = true;
@@ -260,7 +260,7 @@ export default {
       let validateStatus = true;
       this.amountData.periodRuleDetailList.forEach((element1) => {
         this.remainAmount.periodRuleDetailList.forEach((element2) => {
-          if (element1.periodRuleDetailId == element2.periodRuleDetailId) {
+          if (element1.ruleDetailId == element2.ruleDetailId) {
             // 1、正整数数字
             if (!(/(^[0-9]\d*$)/.test(Number(element1.applyValue)))) {
               element1.showError = true;
