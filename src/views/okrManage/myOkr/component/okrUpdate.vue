@@ -144,7 +144,7 @@
                             <span>关键结果</span>
                             <em>{{ formData.okrDetailObjectKr }}</em>
                           </div>
-                          <div>
+                          <div v-if="activity.updateContents.afterProgress">
                             <span>进度由</span>
                             <em>{{
                               activity.updateContents.beforeProgress
@@ -154,7 +154,7 @@
                             <em>{{ activity.updateContents.afterProgress }}</em>
                             <span>%</span>
                           </div>
-                          <div>
+                          <div v-if="activity.updateContents.afterConfidence">
                             <span>信心指数修改为</span>
                             <div class="state-grid">
                               <div
@@ -196,6 +196,10 @@
                           </div>
                         </li>
                       </ul>
+                      <div class="operate-reason" v-if="activity.reason">
+                        <span>说明：</span>
+                        <em>{{ activity.reason }}</em>
+                      </div>
                     </div>
                   </div>
                 </dd>
