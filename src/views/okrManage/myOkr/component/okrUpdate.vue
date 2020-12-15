@@ -20,7 +20,7 @@
                 <dt>上次更新时间</dt>
                 <dd>{{ historyFirst.createTime }}</dd>
               </dl>
-              <dl v-if="historyFirst.updateContents">
+              <dl v-if="historyFirst.updateContents.beforeProgress">
                 <dt>进度</dt>
                 <dd>
                   <span>由</span
@@ -28,6 +28,40 @@
                   ><span>更新为</span
                   ><em>{{ historyFirst.updateContents.afterProgress }}%</em>
                 </dd>
+              </dl>
+              <dl v-if="historyFirst.updateContents.afterConfidence">
+                <dt>信心指数改为</dt>
+                <div class="state-grid">
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                      'is-risks':
+                        historyFirst.updateContents.afterConfidence == 2,
+                      'is-uncontrollable':
+                        historyFirst.updateContents.afterConfidence == 3,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                      'is-risks':
+                        historyFirst.updateContents.afterConfidence == 2,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                    }"
+                  ></div>
+                </div>
+                <em>{{
+                  CONST.CONFIDENCE_MAP[
+                    historyFirst.updateContents.afterConfidence
+                  ]
+                }}</em>
               </dl>
               <dl>
                 <dt>操作人</dt>
@@ -185,19 +219,19 @@
                               ></div>
                               <div
                                 :class="{
+                                  'is-no-risk':
+                                    activity.updateContents.afterConfidence ==
+                                    1,
                                   'is-risks':
                                     activity.updateContents.afterConfidence ==
                                     2,
-                                  'is-uncontrollable':
-                                    activity.updateContents.afterConfidence ==
-                                    3,
                                 }"
                               ></div>
                               <div
                                 :class="{
-                                  'is-uncontrollable':
+                                  'is-no-risk':
                                     activity.updateContents.afterConfidence ==
-                                    3,
+                                    1,
                                 }"
                               ></div>
                             </div>
