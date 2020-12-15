@@ -155,10 +155,17 @@ export default {
       $bus.$emit(eventName, params);
     },
     /* 用法
-        let date = new Date() date不是时间格式时
          dateFormat("YYYY-mm-dd HH:MM:SS", date) */
-    dateFormat(fmt, date) {
-      console.log(this.isDate(date));
+    dateFormat(fmt, dateRep) {
+      let date = '';
+      if (dateRep instanceof Date) {
+        date = dateRep;
+      } else {
+        const dateCheck = dateRep.replace('T', ' ');
+        // eslint-disable-next-line no-useless-escape
+        date = new Date(dateCheck.replace(/\-/g, '/'));
+      }
+
       let ret;
       const opt = {
         'Y+': date.getFullYear().toString(), // 年
