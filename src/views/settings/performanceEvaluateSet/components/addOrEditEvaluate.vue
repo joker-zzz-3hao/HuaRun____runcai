@@ -107,7 +107,9 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="addEvaluate"
-        >确认</el-button
+        >{{
+          step == 1 || performanceData.status > 0 ? "确认" : "提交"
+        }}</el-button
       >
       <el-button
         :disabled="loading"
