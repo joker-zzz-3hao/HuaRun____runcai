@@ -269,7 +269,10 @@
           @click.native="showInput = true"
         ></el-tiptap>
         <div class="note-msg">
-          <span><i class="el-icon-time"></i>更新于 {{ noteCreateTime }}</span>
+          <span
+            ><i class="el-icon-time"></i>更新于
+            {{ noteCreateTime || "--" }}</span
+          >
           <el-button
             v-if="showInput === true"
             plain
@@ -433,8 +436,7 @@ export default {
         this.sourceData = JSON.parse(JSON.stringify(this.okrItem));
       }
       this.noteText = `
-        <h1>记录OKR进展相关的点点滴滴</h1>
-        <div><img src="@/assets/images/user/user.jpg" alt /></div>
+        <p>记录OKR进展相关的点点滴滴</p>
       `;
     },
     getHistory() {
