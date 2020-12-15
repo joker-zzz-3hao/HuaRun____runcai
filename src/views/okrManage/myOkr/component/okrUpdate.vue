@@ -2,122 +2,324 @@
   <el-dialog
     :append-to-body="true"
     :close-on-click-modal="false"
-    :title="drawerTitle"
     :visible.sync="myokrDrawer"
     @closed="closed"
     :before-close="close"
-    custom-class="update-progress"
+    custom-class="custom-drawer update-progress"
     class="tl-dialog"
-    width="620px"
+    width="1000px"
+    :title="periodName"
   >
-    <el-scrollbar>
-      <div class="okr-info">
-        <div class="tl-custom-timeline">
-          <el-form :model="formData" ref="dataForm" class="tl-form">
-            <dl class="timeline-list">
-              <dd>
-                <div class="list-info">
-                  <div class="list-title">
-                    <em>{{
-                      formData.okrDetailType === 0 ? "目标O" : "关键结果"
-                    }}</em>
-                    <span>{{ formData.okrDetailObjectKr }}</span>
-                  </div>
-                  <div class="list-cont">
-                    <div class="tl-progress-group">
-                      <tl-process
-                        :data="parseInt(formData.okrDetailProgress, 10)"
-                        :showNumber="false"
-                      ></tl-process>
-                      <el-slider
-                        v-model="formData.okrDetailProgress"
-                        :step="1"
-                        @change="changeProgress(formData)"
-                        tooltip-class="slider-tooltip"
-                      ></el-slider>
-                      <el-input-number
-                        v-model="formData.okrDetailProgress"
-                        controls-position="right"
-                        :min="0"
-                        :max="100"
-                        :step="1"
-                        :precision="0"
-                        class="tl-input-number"
-                        @blur="progressChange"
-                      ></el-input-number>
-                      <span>%</span>
-                    </div>
-                    <div
-                      class="okr-risk"
-                      v-if="hasValue(formData.okrDetailConfidence)"
-                    >
-                      <span>信心指数</span>
-                      <tl-confidence
-                        v-model="formData.okrDetailConfidence"
-                      ></tl-confidence>
-                    </div>
-                  </div>
+    <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
+    <div class="flex-up">
+      <div class="update-kr">
+        <el-scrollbar ref="detailscrollbar">
+          <div class="tl-custom-timeline" v-if="currentIndex === 0">
+            <div class="last-update" v-if="hasValue(historyFirst)">
+              <dl>
+                <dt>上次更新时间</dt>
+                <dd>{{ historyFirst.createTime }}</dd>
+              </dl>
+              <dl>
+                <dt>操作人</dt>
+                <dd>{{ historyFirst.userName }}</dd>
+              </dl>
+              <dl
+                v-if="historyFirst.updateContents.beforeProgress"
+                class="progress"
+              >
+                <dt>进度</dt>
+                <dd>
+                  <span>由</span
+                  ><em>{{ historyFirst.updateContents.beforeProgress }}%</em
+                  ><span>更新为</span
+                  ><em>{{ historyFirst.updateContents.afterProgress }}%</em>
+                </dd>
+              </dl>
+              <dl
+                v-if="historyFirst.updateContents.afterConfidence"
+                class="confidence"
+              >
+                <dt>信心指数改为</dt>
+                <div class="state-grid">
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                      'is-risks':
+                        historyFirst.updateContents.afterConfidence == 2,
+                      'is-uncontrollable':
+                        historyFirst.updateContents.afterConfidence == 3,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                      'is-risks':
+                        historyFirst.updateContents.afterConfidence == 2,
+                    }"
+                  ></div>
+                  <div
+                    :class="{
+                      'is-no-risk':
+                        historyFirst.updateContents.afterConfidence == 1,
+                    }"
+                  ></div>
                 </div>
-              </dd>
-            </dl>
-            <dl class="change-reason">
-              <!-- <dt>更新说明</dt> -->
-              <dd>
-                <el-form-item
-                  label="更新说明"
-                  prop="updateexplain"
-                  :rules="[
-                    {
-                      trigger: 'blur',
-                      message: '请输入更新说明',
-                      required: true,
-                    },
-                  ]"
-                >
-                  <el-input
-                    placeholder="请输入更新说明"
-                    maxlength="200"
-                    v-model="formData.updateexplain"
-                    type="textarea"
-                    :rows="3"
-                    resize="none"
-                    class="tl-textarea"
-                  ></el-input>
-                </el-form-item>
-              </dd>
-            </dl>
-          </el-form>
+                <em>{{
+                  CONST.CONFIDENCE_MAP[
+                    historyFirst.updateContents.afterConfidence
+                  ]
+                }}</em>
+              </dl>
+              <dl class="reason">
+                <dt>更新说明</dt>
+                <dd>{{ historyFirst.reason }}</dd>
+              </dl>
+            </div>
+            <el-form :model="formData" ref="dataForm" class="tl-form">
+              <dl class="timeline-list">
+                <dd>
+                  <div class="list-info">
+                    <div class="list-title">
+                      <em>{{
+                        formData.okrDetailType === 0 ? "目标O" : "关键结果"
+                      }}</em>
+                      <span>{{ formData.okrDetailObjectKr }}</span>
+                    </div>
+                    <div class="list-cont">
+                      <div class="tl-progress-group">
+                        <tl-process
+                          :data="parseInt(formData.okrDetailProgress, 10)"
+                          :showNumber="false"
+                        ></tl-process>
+                        <el-slider
+                          v-model="formData.okrDetailProgress"
+                          :step="1"
+                          @change="changeProgress(formData)"
+                          tooltip-class="slider-tooltip"
+                        ></el-slider>
+                        <el-input-number
+                          v-model="formData.okrDetailProgress"
+                          controls-position="right"
+                          :min="0"
+                          :max="100"
+                          :step="1"
+                          :precision="0"
+                          class="tl-input-number"
+                          @blur="progressChange"
+                        ></el-input-number>
+                        <span>%</span>
+                      </div>
+                      <div class="okr-calibration">
+                        <div class="add-progress" @click="addProgress(1)">
+                          +1
+                        </div>
+                        <div class="add-progress" @click="addProgress(5)">
+                          +5
+                        </div>
+                        <div class="add-progress" @click="addProgress(10)">
+                          +10
+                        </div>
+                      </div>
+                      <div
+                        class="okr-risk"
+                        v-if="hasValue(formData.okrDetailConfidence)"
+                      >
+                        <span>信心指数</span>
+                        <tl-confidence
+                          v-model="formData.okrDetailConfidence"
+                        ></tl-confidence>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+              <!-- 没有变化时不用填更新说明 -->
+              <dl class="change-reason">
+                <dt>更新说明</dt>
+                <dd>
+                  <el-form-item
+                    prop="updateexplain"
+                    :rules="[
+                      {
+                        trigger: 'blur',
+                        message: '请输入更新说明',
+                        required: true,
+                      },
+                    ]"
+                  >
+                    <el-input
+                      placeholder="请输入更新说明"
+                      maxlength="200"
+                      v-model="formData.updateexplain"
+                      type="textarea"
+                      :autosize="{ minRows: 4 }"
+                      resize="none"
+                      class="tl-textarea"
+                    ></el-input>
+                  </el-form-item>
+                </dd>
+              </dl>
+            </el-form>
+            <div class="flex-end">
+              <el-button
+                :disabled="!hasPower('okr-update')"
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                @click="summitUpdate"
+                :loading="loading"
+                >更新进展</el-button
+              >
+              <el-button plain class="tl-btn amt-border-fadeout" @click="close"
+                >取消</el-button
+              >
+            </div>
+          </div>
+          <div class="update-histoy okr-detail" v-else>
+            <div class="tl-custom-timeline">
+              <dl
+                class="timeline-list"
+                v-if="historyList && historyList.length"
+              >
+                <dd v-for="activity in historyList" :key="activity.id">
+                  <div class="list-info">
+                    <div class="list-title">{{ activity.createTime }}</div>
+                    <div class="list-cont">
+                      <div class="operate-type">
+                        <em>{{ activity.userName }}</em>
+                        <span>更新</span>
+                      </div>
+                      <ul class="operate-kind">
+                        <li>
+                          <div>
+                            <span>关键结果</span>
+                            <em>{{ formData.okrDetailObjectKr }}</em>
+                          </div>
+                          <div v-if="activity.updateContents.afterProgress">
+                            <span>进度由</span>
+                            <em>{{
+                              activity.updateContents.beforeProgress
+                            }}</em>
+                            <span>%</span>
+                            <span>更新为</span>
+                            <em>{{ activity.updateContents.afterProgress }}</em>
+                            <span>%</span>
+                          </div>
+                          <div v-if="activity.updateContents.afterConfidence">
+                            <span>信心指数修改为</span>
+                            <div class="state-grid">
+                              <div
+                                :class="{
+                                  'is-no-risk':
+                                    activity.updateContents.afterConfidence ==
+                                    1,
+                                  'is-risks':
+                                    activity.updateContents.afterConfidence ==
+                                    2,
+                                  'is-uncontrollable':
+                                    activity.updateContents.afterConfidence ==
+                                    3,
+                                }"
+                              ></div>
+                              <div
+                                :class="{
+                                  'is-no-risk':
+                                    activity.updateContents.afterConfidence ==
+                                    1,
+                                  'is-risks':
+                                    activity.updateContents.afterConfidence ==
+                                    2,
+                                }"
+                              ></div>
+                              <div
+                                :class="{
+                                  'is-no-risk':
+                                    activity.updateContents.afterConfidence ==
+                                    1,
+                                }"
+                              ></div>
+                            </div>
+                            <em>{{
+                              CONST.CONFIDENCE_MAP[
+                                activity.updateContents.afterConfidence
+                              ]
+                            }}</em>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="operate-reason" v-if="activity.reason">
+                        <span>说明：</span>
+                        <em>{{ activity.reason }}</em>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+              <dl class="no-data" v-else>
+                <div class="no-data-bg"></div>
+                <div class="no-data-txt">暂无更新记录</div>
+              </dl>
+            </div>
+          </div>
+        </el-scrollbar>
+      </div>
+      <div class="note-book" :class="{ 'hide-input': showInput == false }">
+        <div class="note-book-title">OKR记事本</div>
+        <el-tiptap
+          v-model="noteText"
+          :extensions="extensions"
+          :readonly="!showInput"
+          :tooltip="showInput"
+          @click.native="showInput = true"
+        ></el-tiptap>
+        <div class="note-msg">
+          <span
+            ><i class="el-icon-time"></i>更新于
+            {{ noteCreateTime || "--" }}</span
+          >
+          <el-button
+            v-if="showInput === true"
+            plain
+            class="tl-btn btn-lineheight btn-small"
+            @click="updateNote"
+            >保存笔记
+          </el-button>
+          <el-button
+            v-else
+            @click="showInput = true"
+            plain
+            class="tl-btn btn-lineheight btn-small"
+            >编辑</el-button
+          >
         </div>
       </div>
-    </el-scrollbar>
-    <div slot="footer" class="dialog-footer">
-      <el-button
-        :disabled="!hasPower('okr-update')"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="summitUpdate"
-        :loading="loading"
-        >确定</el-button
-      >
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
     </div>
-    <tl-updatehistoy
-      :exist.sync="histoyExist"
-      v-if="hasValue(histoyExist)"
-      ref="updatehistory"
-      :okrDetailId="formData.okrDetailId"
-      :krName="formData.okrDetailObjectKr"
-    ></tl-updatehistoy>
   </el-dialog>
 </template>
 
 <script>
+import {
+  // 需要的 extensions
+  Doc,
+  Text,
+  Paragraph,
+  Bold,
+  Underline,
+  Italic,
+  FontSize,
+  TextColor,
+  ListItem,
+  OrderedList,
+  TextHighlight,
+  Strike,
+  TextAlign,
+} from 'element-tiptap';
 import confidenceSelect from '@/components/confidenceSelect';
 import process from '@/components/process';
+import tabs from '@/components/tabs';
 import { mapMutations } from 'vuex';
-import updateHistoy from './updateHistoy';
 import CONST from '../const';
 
 export default {
@@ -125,21 +327,51 @@ export default {
   components: {
     'tl-confidence': confidenceSelect,
     'tl-process': process,
-    'tl-updatehistoy': updateHistoy,
+    'tl-tabs': tabs,
   },
   data() {
     return {
       CONST,
-      dialogTitle: '更新OKR', // 弹框标题
       dialogDetailVisible: false,
       formData: {
         updateexplain: '',
       },
+      sourceData: {},
+      noteText: '',
       myokrDrawer: false,
       drawerTitle: '更新进度',
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Bold(),
+        new Underline(),
+        new Italic(),
+        new Strike(),
+        new TextAlign(),
+        new FontSize({ fontSizes: ['8', '10', '12', '14', '16', '18', '20'] }),
+        new TextColor(),
+        new TextHighlight(),
+        new ListItem(),
+        new OrderedList(),
+      ],
       loading: false,
       historyFirst: '',
       histoyExist: false,
+      // tab
+      currentIndex: 0,
+      tabMenuList: [{
+        menuName: '更新进展',
+      },
+      {
+        menuName: '更多更新记录',
+      }],
+      pageSize: 10,
+      status: 1,
+      currentPage: 1,
+      showInput: false,
+      noteCreateTime: '',
+      historyList: [],
     };
   },
   props: {
@@ -162,15 +394,39 @@ export default {
       type: String,
       default: '',
     },
+    periodName: {
+      type: String,
+      default: '',
+    },
+
   },
   created() {
   },
-
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.onScroll, true);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll, true);
+  },
+  computed: {
+    haveChange() {
+      if (this.sourceData.okrDetailConfidence
+                    != this.formData.okrDetailConfidence
+          || this.sourceData.okrDetailProgress != this.formData.okrDetailProgress) {
+        return true;
+      }
+      return false;
+    },
+  },
   methods: {
     ...mapMutations('common', ['setMyokrDrawer']),
     // 控制弹窗
     showOkrDialog() {
       this.getokrDetail();
+      this.getHistory();
+      this.getOkrRemark();
       this.myokrDrawer = true;
     },
 
@@ -183,29 +439,43 @@ export default {
     getokrDetail() {
       if (this.okrItem) {
         this.formData = JSON.parse(JSON.stringify(this.okrItem));
+        this.sourceData = JSON.parse(JSON.stringify(this.okrItem));
       }
+      this.noteText = `
+        <p>记录OKR进展相关的点点滴滴</p>
+      `;
     },
     getHistory() {
       const params = {
         currentPage: 1,
         okrDetailId: this.formData.okrDetailId,
-        pageSize: 1,
+        pageSize: this.pageSize * this.currentPage,
       };
       this.server.getOkrUpdateHistory(params).then((res) => {
         if (res.code == 200) {
           if (res.data.length > 0) {
             this.historyFirst = res.data[0] || {};
             this.historyFirst.updateContents = JSON.parse(this.historyFirst.content);
+            this.historyList = res.data || [];
+            this.historyList.forEach((item) => {
+              const content = JSON.parse(item.content);
+              item.updateContents = content || {};
+            });
+            this.$forceUpdate();
+            this.status = 1;
           }
         }
       });
     },
     summitUpdate() {
-      if (!this.formData.updateexplain) {
+      if (this.haveChange === false) {
+        this.$message.warning('进展没有变化，无需更新');
+        return;
+      } if (!this.formData.updateexplain) {
         this.$message.error('请填写更新说明');
       }
       this.$refs.dataForm.validate((valid) => {
-        if (valid) {
+        if (valid && this.haveChange) {
           const summitForm = {
             detailId: this.formData.detailId,
             okrDetailConfidence: this.formData.okrDetailConfidence || 1,
@@ -215,12 +485,11 @@ export default {
             periodId: this.periodId,
             remark: this.formData.updateexplain,
           };
-          console.log(summitForm);
           this.loading = true;
           this.server.singleUpdate(summitForm).then((res) => {
             this.loading = false;
             if (res.code == 200) {
-              this.$message('更新成功');
+              this.$message.success('更新成功');
               this.$emit('success');
               this.close();
             }
@@ -248,8 +517,66 @@ export default {
         this.$refs.updatehistory.show();
       });
     },
+    // 获取滚动条当前的位置
+    getScrollTop() {
+      let scrollTop = 0;
+      scrollTop = this.$refs.detailscrollbar.wrap.scrollTop;
+
+      return scrollTop;
+    },
+    // 获取当前可视范围的高度
+    getClientHeight() {
+      let clientHeight = 0;
+
+      clientHeight = this.$refs.detailscrollbar.$el.offsetWidth;
+      return clientHeight;
+    },
+
+    // 滚动事件触发下拉加载
+    onScroll() {
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage * 5) {
+        if (this.status === 1) {
+          this.status = 0;
+          // 页码，分页用，默认第一页
+          this.currentPage += 1;
+          // 调用请求函数
+          this.getHistory();
+        }
+      }
+    },
+    updateNote() {
+      this.server.saveOkrRemark({
+        content: this.noteText,
+        okrDetailId: this.formData.okrDetailId,
+        okrMainId: this.formData.okrMainId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.showInput = false;
+          this.$message.success('保存成功');
+          this.getOkrRemark();
+        }
+      });
+    },
+    getOkrRemark() {
+      this.server.getOkrRemark({ okrDetailId: this.formData.okrDetailId }).then((res) => {
+        if (res.code == 200 && res.data) {
+          this.noteText = res.data.content;
+          this.noteCreateTime = res.data.createTime;
+        }
+      });
+    },
   },
   watch: {
+    currentIndex: {
+      handler(newVal) {
+        if (newVal === 1) {
+          this.pageSize = 10;
+        } else {
+          this.pageSize = 10;
+        }
+        // this.getHistory();
+      },
+    },
   },
 };
 </script>
