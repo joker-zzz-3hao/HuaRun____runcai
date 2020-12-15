@@ -17,7 +17,7 @@
             <el-table-column prop="userName" label="负责人"> </el-table-column>
             <el-table-column prop="selfAssessmentScore" label="自评得分">
             </el-table-column>
-            <el-table-column prop="finalScore" label="复合得分">
+            <el-table-column prop="finalScore" label="复核得分">
             </el-table-column>
             <!-- 动态 -->
             <el-table-column

@@ -5,37 +5,62 @@
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog check-judge"
+    width="800px"
   >
     <div>
-      <dl><dt>组织</dt></dl>
-      <dl><dt>负责人</dt></dl>
-      <dl><dt>提交时间</dt></dl>
-      <dl><dt>复核结果</dt></dl>
-      <dl><dt>复核人</dt></dl>
-      <dl><dt>绩效复核时间</dt></dl>
+      <dl>
+        <dt>组织</dt>
+        <dd>{{ row.orgName }}</dd>
+      </dl>
+      <dl>
+        <dt>负责人</dt>
+        <dd>{{ row.userName }}</dd>
+      </dl>
+      <dl>
+        <dt>提交时间</dt>
+        <dd>{{ row.submitTime }}</dd>
+      </dl>
+      <dl>
+        <dt>复核结果</dt>
+        <dd>{{ CONST.APPROVAL_SCORE_STATUS_MAP[row.approvalStatus].name }}</dd>
+      </dl>
+      <dl>
+        <dt>复核人</dt>
+        <dd>{{ row.updateBy || "--" }}</dd>
+      </dl>
+      <dl>
+        <dt>绩效复核时间</dt>
+        <dd>{{ row.updateTime || "--" }}</dd>
+      </dl>
     </div>
-    <tl-crcloud-table :isPage="false">
-      <div slot="tableContainer" class="table-container">
-        <el-table :data="tableData" class="tl-table" row-key="id">
-          <el-table-column prop="num" label="序号"> </el-table-column>
-          <el-table-column prop="num" label="部门"> </el-table-column>
-          <el-table-column prop="num" label="负责人"></el-table-column>
-          <el-table-column prop="org" label="自评得分"></el-table-column>
-          <el-table-column prop="user" label="OKR最终得分"> </el-table-column>
-          <el-table-column prop="score" label="绩效系数分配" min-width="100">
-          </el-table-column>
-          <el-table-column prop="score1" label="调整原因" min-width="100">
-          </el-table-column>
-        </el-table>
-      </div>
-    </tl-crcloud-table>
+
+    <el-table :data="tableData" class="tl-table">
+      <el-table-column prop="sort" label="序号"> </el-table-column>
+      <el-table-column prop="orgName" label="部门"> </el-table-column>
+      <el-table-column prop="userName" label="负责人"> </el-table-column>
+      <el-table-column prop="selfAssessmentScore" label="自评得分">
+      </el-table-column>
+      <el-table-column prop="finalScore" label="复核得分"> </el-table-column>
+      <!-- 动态 -->
+      <el-table-column
+        v-for="rule in ruleDetailContentList"
+        :key="rule.applyId"
+        :prop="rule.ruleId"
+        :label="rule.ruleName"
+        min-width="100"
+      >
+      </el-table-column>
+      <el-table-column prop="reason" label="调整原因" min-width="100">
+      </el-table-column>
+    </el-table>
+
     <tl-assess-person ref="assessPerson"></tl-assess-person>
   </el-dialog>
 </template>
 
 <script>
-import crcloudTable from '@/components/crcloudTable';
 import assessPerson from './assessPerson';
+import CONST from '../../const';
 import Server from '../../server';
 
 const server = new Server();
@@ -43,23 +68,38 @@ export default {
   name: 'repalyAssessList',
   data() {
     return {
+      CONST,
       periodIdList: [],
-      periodId: '',
       server,
       visible: false,
       dialogType: 'detail',
+      row: {
+        approvalStatus: 1,
+      },
+      sortMsg: {},
+      ruleDetailContentList: [],
+      tableData: [],
+      propList: [],
+      propData: '',
     };
   },
+  props: {
+    periodId: {
+      type: String,
+      default: '',
+    },
+  },
   components: {
-    'tl-crcloud-table': crcloudTable,
     'tl-assess-person': assessPerson,
   },
   mounted() {
   },
   methods: {
-    show(type) {
+    show(row, type) {
       this.visible = true;
       this.dialogType = type;
+      this.row = row;
+      this.queryList();
     },
     close() {
       this.visible = false;
@@ -70,8 +110,21 @@ export default {
         content: '确认后，部门将按照当前绩效结果分配',
       });
     },
-    assessPast() {
-      this.$refs.assessPerson.show();
+    queryList() {
+      this.server.querySort({
+        periodId: this.periodId,
+        orgId: this.row.orgId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.sortMsg = res.data;
+          this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
+          this.tableData = res.data.orgResultDetailMapList;
+          this.propList = this.ruleDetailContentList.map((rule) => rule.ruleId);
+          // eslint-disable-next-line max-len
+          this.propData = res.data.orgResultDetailDynamicColumns;
+          console.log(this.propData);
+        }
+      });
     },
   },
 };

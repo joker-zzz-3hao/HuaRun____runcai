@@ -39,7 +39,10 @@ const APPROVAL_SCORE_STATUS_MAP = {
   3: { name: '同意', classname: 'pass-summit' },
   4: { name: '驳回', classname: 'refuse-summit' },
 };
-
+const COMMUN_MAP = {
+  1: '未沟通',
+  2: '已沟通',
+};
 export default {
   REVIEW_STATUS,
   REVIEW_STATUS_LIST,
@@ -48,4 +51,5 @@ export default {
   REVIEW_STATUS_MAP,
   REPLAY_ASSESS_STATUS_LIST,
   APPROVAL_SCORE_STATUS_MAP,
+  COMMUN_MAP,
 };

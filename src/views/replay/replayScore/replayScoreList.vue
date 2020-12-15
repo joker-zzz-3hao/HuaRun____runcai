@@ -61,6 +61,9 @@
           ></el-option>
         </el-select>
       </dl>
+      <el-button plain class="tl-btn light" @click="okrReviewList"
+        >搜索</el-button
+      >
     </div>
     <div class="cont-area">
       <tl-crcloud-table
@@ -71,21 +74,31 @@
       >
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="orgFullName" label="部门"></el-table-column>
+            <el-table-column prop="orgFullName" label="部门" min-width="120">
+            </el-table-column>
             <el-table-column prop="userName" label="姓名"></el-table-column>
             <el-table-column
               prop="periodName"
               label="OKR周期"
+              min-width="120"
             ></el-table-column>
             <el-table-column
               prop="reviewStatusCn"
               label="复核状态"
             ></el-table-column>
-            <el-table-column
-              prop="okrProgress"
-              label="OKR进度"
+            <el-table-column prop="okrProgress" label="OKR进度" min-width="180">
+              <template slot-scope="scope">
+                <tl-process
+                  :data="scope.row.okrProgress"
+                ></tl-process> </template
             ></el-table-column>
             <el-table-column prop="selfAssessmentScore" label="OKR得分">
+              <template slot-scope="scope">
+                <span v-if="scope.row.selfAssessmentScore != null">{{
+                  scope.row.selfAssessmentScore
+                }}</span>
+                <span v-else>--</span>
+              </template>
             </el-table-column>
             <el-table-column prop="finalScore" label="复核得分">
               <template slot-scope="scope">
@@ -139,6 +152,7 @@
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
+import process from '@/components/process';
 import CONST from '../const';
 import Server from '../server';
 
@@ -164,6 +178,7 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
+    'tl-process': process,
   },
   created() {
     this.getOkrCycleList();

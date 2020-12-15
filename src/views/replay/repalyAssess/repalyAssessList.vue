@@ -1,90 +1,116 @@
 <template>
   <div class="replay-list">
-    <dl class="dl-item">
-      <dt>周期</dt>
-      <dd>
+    <div class="operating-box">
+      <dl class="dl-item">
+        <dt>周期</dt>
+        <dd>
+          <el-select
+            :disabled="periodIdList.length == 0"
+            v-model.trim="periodId"
+            placeholder="请选择目标周期"
+            :popper-append-to-body="false"
+            @change="okrReviewList"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+          >
+            <el-option
+              :label="item.periodName"
+              :value="item.periodId"
+              v-for="(item, index) in periodIdList"
+              :key="index"
+            ></el-option>
+          </el-select>
+        </dd>
+      </dl>
+      <dl class="dl-item">
+        <dt>组织</dt>
+        <dd>
+          <el-cascader
+            v-model="orgFullIdList"
+            ref="cascader"
+            :options="departmentData"
+            :show-all-levels="false"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'children',
+            }"
+            @change="selectIdChange"
+            popper-class="tl-cascader-popper"
+            class="tl-cascader"
+          ></el-cascader>
+        </dd>
+      </dl>
+      <dl class="dl-item">
+        <dt>绩效复核状态</dt>
         <el-select
-          :disabled="periodIdList.length == 0"
-          v-model.trim="periodId"
-          placeholder="请选择目标周期"
+          v-model.trim="checkStatus"
+          placeholder="全部"
           :popper-append-to-body="false"
           @change="okrReviewList"
+          clearable
           popper-class="tl-select-dropdown"
           class="tl-select"
         >
           <el-option
-            :label="item.periodName"
-            :value="item.periodId"
-            v-for="(item, index) in periodIdList"
+            :label="item.name"
+            :value="item.status"
+            v-for="(item, index) in CONST.REPLAY_ASSESS_STATUS_LIST"
             :key="index"
           ></el-option>
         </el-select>
-      </dd>
-    </dl>
-    <dl class="dl-item">
-      <dt>组织</dt>
-      <dd>
-        <el-cascader
-          v-model="orgFullIdList"
-          ref="cascader"
-          :options="departmentData"
-          :show-all-levels="false"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'children',
-          }"
-          @change="selectIdChange"
-          popper-class="tl-cascader-popper"
-          class="tl-cascader"
-        ></el-cascader>
-      </dd>
-    </dl>
-    <dl class="dl-item">
-      <dt>绩效复核状态</dt>
-      <el-select
-        v-model.trim="checkStatus"
-        placeholder="全部"
-        :popper-append-to-body="false"
-        @change="okrReviewList"
-        clearable
-        popper-class="tl-select-dropdown"
-        class="tl-select"
+      </dl>
+      <el-button plain class="tl-btn light" @click="okrReviewList"
+        >搜索</el-button
       >
-        <el-option
-          :label="item.name"
-          :value="item.status"
-          v-for="(item, index) in CONST.REPLAY_ASSESS_STATUS_LIST"
-          :key="index"
-        ></el-option>
-      </el-select>
-    </dl>
+    </div>
     <div class="cont-area">
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table" row-key="id">
-            <el-table-column prop="num" label="部门" min-width="165">
+            <el-table-column prop="orgName" label="部门" min-width="165">
             </el-table-column>
 
             <el-table-column
-              prop="num"
+              prop="userName"
               label="负责人"
               min-width="165"
             ></el-table-column>
-            <el-table-column
-              prop="org"
-              label="提交时间"
-              min-width="170"
-            ></el-table-column>
-
-            <el-table-column prop="user" label="复核时间" min-width="100">
+            <el-table-column prop="submitTime" label="提交时间" min-width="170">
+              <template slot-scope="props">
+                <span>{{ props.row.submitTime || "--" }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="updateTime" label="复核时间" min-width="100">
+              <template slot-scope="props">
+                <span>{{ props.row.updateTime || "--" }}</span>
+              </template>
             </el-table-column>
             <el-table-column
-              prop="score"
+              prop="approvalStatus"
+              label="绩效复核状态"
+              min-width="100"
+            >
+              <template slot-scope="props">
+                <span>{{
+                  CONST.APPROVAL_SCORE_STATUS_MAP[
+                    props.row.approvalStatus || "1"
+                  ].name
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="enableCommunicate"
               label="是否已经确认沟通"
               min-width="100"
             >
+              <template slot-scope="props">
+                <span v-if="hasValue(props.row.enableCommunicate)">{{
+                  CONST.COMMUN_MAP[props.row.enableCommunicate]
+                }}</span>
+                <span v-else>--</span>
+              </template>
             </el-table-column>
             <el-table-column
               fixed="right"
@@ -92,11 +118,15 @@
               label="操作"
               min-width="100"
             >
-              <template>
-                <el-button type="text" @click="showAssesspast('edit')"
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  @click="showAssesspast(scope.row, 'edit')"
                   >绩效复核</el-button
                 >
-                <el-button type="text" @click="showAssesspast('detail')"
+                <el-button
+                  type="text"
+                  @click="showAssesspast(scope.row, 'detail')"
                   >详情</el-button
                 >
               </template>
@@ -105,7 +135,7 @@
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-assesspast ref="assesspast"></tl-assesspast>
+    <tl-assesspast ref="assesspast" :periodId="periodId"></tl-assesspast>
   </div>
 </template>
 
@@ -127,14 +157,7 @@ export default {
       departmentData: [],
       periodId: '',
       orgId: '',
-      tableData: [
-        {
-          num: 1,
-          org: '部门',
-          user: '11',
-          score: 1,
-        },
-      ],
+      tableData: [],
     };
   },
   components: {
@@ -147,14 +170,16 @@ export default {
   },
   methods: {
     okrReviewList() {
-      this.server.summaryReview({
-        periodId: this.periodId,
-        orgId: this.orgId,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.tableData = res.data;
-        }
-      });
+      if (this.periodId && this.orgId) {
+        this.server.summaryReview({
+          periodId: this.periodId,
+          orgId: this.orgId,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.tableData = res.data;
+          }
+        });
+      }
     },
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
@@ -179,6 +204,7 @@ export default {
             this.orgFullIdList = this.orgFullId.split(':');
             this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
             this.getOrgName(this.departmentData, 0);
+            this.okrReviewList();
           }
         }
       });
@@ -203,8 +229,8 @@ export default {
       this.okrReviewList();
     },
     // 详情
-    showAssesspast(type) {
-      this.$refs.assesspast.show(type);
+    showAssesspast(row, type) {
+      this.$refs.assesspast.show(row, type);
     },
   },
 };
