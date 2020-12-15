@@ -299,7 +299,6 @@ export default {
       if (!params.periodRuleId) {
         params.periodRuleDetailList.forEach((data) => {
           data.periodRuleDetailId = '';
-          // data.periodDetailId = '';
           data.periodRuleId = '';
         });
       } else {
