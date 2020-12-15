@@ -21,7 +21,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
-              @change="periodChange"
+              @change="searchList"
             >
               <el-option
                 v-for="item in periodList"
@@ -405,9 +405,6 @@ export default {
     },
     refreshRule() {
       this.getAmountData();
-    },
-    periodChange(periodId) {
-
     },
   },
   watch: {
