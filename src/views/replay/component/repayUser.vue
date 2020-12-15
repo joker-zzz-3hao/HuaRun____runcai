@@ -7,9 +7,9 @@
         <em>{{ okrMain.okrMainVo.periodName }}</em
         ><em
           >({{
-            dateFormat("YYYY/mm/dd", okrMain.okrMainVo.startTime) +
+            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.startTime)) +
             "~" +
-            dateFormat("YYYY/mm/dd", okrMain.okrMainVo.endTime)
+            dateFormat("YYYY/mm/dd", new Date(okrMain.okrMainVo.endTime))
           }})</em
         >
       </div>

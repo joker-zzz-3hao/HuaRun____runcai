@@ -1418,7 +1418,7 @@ export default {
     selectWeekData(workItem) {
       workItem.weekList = [];
       workItem.timeList.forEach((day) => {
-        const begindate = new Date(this.week.weekBegin.replace(/-/g, '/'));
+        const begindate = new Date(this.week.weekBegin);
         begindate.setDate(begindate.getDate() + Number(day[0]) - 1);// 周日兼容
         if (day[0] == 0) {
           begindate.setDate(begindate.getDate() + 7);

@@ -49,7 +49,7 @@
                   {{
                     dateFormat(
                       "YYYY-mm-dd HH:MM:SS",
-                      scope.row.createTime
+                      new Date(scope.row.createTime)
                     )
                   }}
                 </div>
@@ -65,7 +65,7 @@
                   {{
                     dateFormat(
                       "YYYY-mm-dd HH:MM:SS",
-                      scope.row.updateTime
+                      new Date(scope.row.updateTime)
                     )
                   }}
                 </div>
