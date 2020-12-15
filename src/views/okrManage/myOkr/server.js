@@ -135,4 +135,9 @@ export default class Server extends ServerBase {
   getOrgTable(param) {
     return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
+
+  // 周期偏好设置
+  setOkrMapPeriodId(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/setOkrMapPeriodId', param);
+  }
 }

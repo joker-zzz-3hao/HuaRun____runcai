@@ -41,6 +41,13 @@
                 ></el-option>
               </el-select>
             </dd>
+            <dd
+              v-if="$route.name == 'okrTable'"
+              class="prefer-text"
+              @click="showSetPeriod"
+            >
+              设置偏好
+            </dd>
           </dl>
           <dl class="dl-item org-selete" v-if="$route.name == 'okrTable'">
             <dt>组织</dt>
@@ -99,12 +106,14 @@
       :userName="userInfo.userName"
       :writeInfo="writeInfo"
     ></tl-writeokr>
+    <tl-setperiod ref="setperiod" @success="getMapPeriod"></tl-setperiod>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
 import writeOkr from './component/writeOkr/index';
+import setPeriod from './component/setPeriod';
 import Server from './server';
 import CONST from './const';
 
@@ -114,6 +123,7 @@ export default {
   name: 'okr',
   components: {
     'tl-writeokr': writeOkr,
+    'tl-setperiod': setPeriod,
   },
   data() {
     return {
@@ -150,7 +160,7 @@ export default {
       orgFullIdList: [],
       departmentData: [],
       orgFullId: '',
-
+      preferPeriod: '',
     };
   },
   computed: {
@@ -258,10 +268,14 @@ export default {
               this.okrCycle = item;
               this.searchForm.periodId = this.okrCycle.periodId;
               this.hadSet = true;
+              this.preferPeriod = this.okrCycle.periodId;
             }
             if (item.checkStatus == 1 && !this.hadSet) {
               this.okrCycle = item;
               this.searchForm.periodId = this.okrCycle.periodId;
+              if (!item.existOkrData) {
+                this.showSetPeriod();
+              }
             }
             this.setokrCycle(this.okrCycle);
           });
@@ -318,6 +332,12 @@ export default {
       borderWidth.style.width = `${liWidth[index].offsetWidth}px`;
       this.currentIndex = index;
       this.go(item.toName);
+    },
+    // 打开设置周期
+    showSetPeriod() {
+      this.$nextTick(() => {
+        this.$refs.setperiod.show(this.preferPeriod, this.periodList);
+      });
     },
   },
   beforeDestroy() {
