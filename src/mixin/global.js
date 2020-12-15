@@ -416,6 +416,33 @@ export default {
         list: listPage,
       };
     },
+    // 根据日期判断是月的第几周
+    getWeekInMonth(t) {
+      if (t == undefined || t == '' || t == null) {
+        t = new Date();
+      } else {
+        const _t = new Date();
+        _t.setYear(t.getFullYear());
+        _t.setMonth(t.getMonth());
+        _t.setDate(t.getDate());
+
+        const date = _t.getDate(); // 给定的日期是几号
+
+        _t.setDate(1);
+        const d = _t.getDay(); // 1. 得到当前的1号是星期几。
+        let fisrtWeekend = d;
+        if (d == 0) {
+          fisrtWeekend = 1;
+          // 1号就是星期天
+        } else {
+          fisrtWeekend = 7 - d + 1; // 第一周的周未是几号
+        }
+        if (date <= fisrtWeekend) {
+          return 1;
+        }
+        return 1 + Math.ceil((date - fisrtWeekend) / 7);
+      }
+    },
   },
 
 };
