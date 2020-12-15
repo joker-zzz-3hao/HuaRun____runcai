@@ -7,7 +7,7 @@
           <el-select
             :disabled="periodIdList.length == 0"
             v-model.trim="periodId"
-            placeholder="用户类型"
+            placeholder="请选择目标周期"
             :popper-append-to-body="false"
             @change="assessment"
             popper-class="tl-select-dropdown"
@@ -149,7 +149,7 @@ import causesRank from './components/causesRank';
 
 const server = new Server();
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   components: {
     'tl-crcloud-table': crcloudTable,
     'causes-rank': causesRank,

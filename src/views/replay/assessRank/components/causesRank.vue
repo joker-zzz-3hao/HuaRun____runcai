@@ -30,7 +30,7 @@
 <script>
 
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   data() {
     return {
       tableData: [],

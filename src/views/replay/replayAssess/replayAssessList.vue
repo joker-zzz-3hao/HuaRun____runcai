@@ -43,9 +43,9 @@
         </dd>
       </dl>
       <dl class="dl-item">
-        <dt>复核状态</dt>
+        <dt>绩效复核状态</dt>
         <el-select
-          v-model.trim="checkStatus"
+          v-model.trim="approvalStatus"
           placeholder="全部"
           :popper-append-to-body="false"
           @change="okrReviewList"
@@ -56,7 +56,7 @@
           <el-option
             :label="item.name"
             :value="item.status"
-            v-for="(item, index) in CONST.REPLAY_STATUS_LIST"
+            v-for="(item, index) in CONST.REPLAY_ASSESS_STATUS_LIST"
             :key="index"
           ></el-option>
         </el-select>
@@ -66,80 +66,71 @@
       >
     </div>
     <div class="cont-area">
-      <tl-crcloud-table
-        :total="totalpage"
-        :currentPage.sync="currentPage"
-        :pageSize.sync="pageSize"
-        @searchList="okrReviewList"
-      >
+      <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
-            <el-table-column prop="orgFullName" label="部门" min-width="120">
+          <el-table :data="tableData" class="tl-table" row-key="id">
+            <el-table-column prop="orgName" label="部门" min-width="165">
             </el-table-column>
-            <el-table-column prop="userName" label="姓名"></el-table-column>
+
             <el-table-column
-              prop="periodName"
-              label="OKR周期"
-              min-width="120"
+              prop="userName"
+              label="负责人"
+              min-width="165"
             ></el-table-column>
+            <el-table-column prop="submitTime" label="提交时间" min-width="170">
+              <template slot-scope="props">
+                <span>{{ props.row.submitTime || "--" }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="updateTime" label="复核时间" min-width="100">
+              <template slot-scope="props">
+                <span>{{ props.row.updateTime || "--" }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="reviewStatusCn"
-              label="复核状态"
-            ></el-table-column>
-            <el-table-column prop="okrProgress" label="OKR进度" min-width="180">
-              <template slot-scope="scope">
-                <tl-process
-                  :data="scope.row.okrProgress"
-                ></tl-process> </template
-            ></el-table-column>
-            <el-table-column prop="selfAssessmentScore" label="OKR得分">
-              <template slot-scope="scope">
-                <span v-if="scope.row.selfAssessmentScore != null">{{
-                  scope.row.selfAssessmentScore
+              prop="approvalStatus"
+              label="绩效复核状态"
+              min-width="100"
+            >
+              <template slot-scope="props">
+                <span>{{
+                  CONST.APPROVAL_SCORE_STATUS_MAP[
+                    props.row.approvalStatus || "1"
+                  ].name
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="enableCommunicate"
+              label="是否已经确认沟通"
+              min-width="100"
+            >
+              <template slot-scope="props">
+                <span v-if="hasValue(props.row.enableCommunicate)">{{
+                  CONST.COMMUN_MAP[props.row.enableCommunicate]
                 }}</span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="finalScore" label="复核得分">
+            <el-table-column
+              fixed="right"
+              prop="score1"
+              label="操作"
+              min-width="100"
+            >
               <template slot-scope="scope">
-                <span v-if="scope.row.finalScore != null">{{
-                  scope.row.finalScore
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="80" label="操作" fixed="right">
-              <template slot-scope="scope">
+                <span v-if="scope.row.approvalStatus === null">--</span>
                 <el-button
+                  v-else-if="scope.row.approvalStatus == 2"
                   type="text"
-                  class="tl-btn"
-                  v-if="scope.row.reviewStatus == 3"
-                  @click="
-                    $router.push({
-                      name: 'replayScoreDetail',
-                      query: {
-                        okrId: scope.row.okrId,
-                      },
-                    })
-                  "
-                >
-                  复核得分
+                  @click="showAssesspast(scope.row, 'edit')"
+                  >绩效复核
                 </el-button>
                 <el-button
                   v-else
                   type="text"
-                  class="tl-btn"
-                  @click="
-                    $router.push({
-                      name: 'replayScoreDetail',
-                      query: {
-                        okrId: scope.row.okrId,
-                        isdetail: true,
-                      },
-                    })
-                  "
-                >
-                  详情
+                  @click="showAssesspast(scope.row, 'detail')"
+                  >详情
                 </el-button>
               </template>
             </el-table-column>
@@ -147,68 +138,58 @@
         </div>
       </tl-crcloud-table>
     </div>
+    <tl-assesspast ref="assesspast" :periodId="periodId"></tl-assesspast>
   </div>
 </template>
 
 <script>
 import crcloudTable from '@/components/crcloudTable';
-import process from '@/components/process';
-import CONST from '../const';
+import assessPast from './components/assessPast';
 import Server from '../server';
+import CONST from '../const';
 
 const server = new Server();
-
 export default {
-  name: 'replayScoreList',
+  name: 'replayAssessList',
   data() {
     return {
       CONST,
       server,
-      tableData: [],
-      pageSize: 20,
-      totalpage: 0,
-      currentPage: 1,
       periodIdList: [],
       orgFullIdList: [],
       departmentData: [],
       periodId: '',
-      checkStatus: '',
       orgId: '',
+      tableData: [],
+      approvalStatus: '',
     };
   },
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-process': process,
+    'tl-assesspast': assessPast,
   },
-  created() {
+  mounted() {
     this.getOkrCycleList();
     this.getOrgTable();
   },
   methods: {
     okrReviewList() {
-      sessionStorage.setItem('historyPer', this.periodId);
-      this.server.getOkrCheckPage({
-        periodId: this.periodId, // 周期id，必传
-        reviewStatus: this.reviewStatus, // 复盘状态 1、待复盘，2、待沟通，3、复盘结束;<不传参数，则表示查询全部>
-        userName: this.userName, // 支持精确搜索
-        currentPage: this.currentPage, // 可以不传，默认是1
-        pageSize: this.pageSize, // 可以不传，默认是20
-        checkStatus: this.checkStatus,
-        orgId: this.orgId,
-      }).then((res) => {
-        this.tableData = res.data.content;
-        this.totalpage = res.data.total;
-      });
+      if (this.periodId && this.orgId) {
+        this.server.summaryReview({
+          periodId: this.periodId,
+          orgId: this.orgId,
+          approvalStatus: this.approvalStatus,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.tableData = res.data;
+          }
+        });
+      }
     },
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-        if (sessionStorage.getItem('historyPer')) {
-          this.periodId = sessionStorage.getItem('historyPer');
-        } else {
-          this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
-        }
-
+        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
         this.okrReviewList();
       });
     },
@@ -251,6 +232,10 @@ export default {
       this.getOrgName(this.departmentData, 0);
       this.orgId = data[data.length - 1];
       this.okrReviewList();
+    },
+    // 详情
+    showAssesspast(row, type) {
+      this.$refs.assesspast.show(row, type);
     },
   },
 };

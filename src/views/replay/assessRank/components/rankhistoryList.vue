@@ -17,7 +17,7 @@
             <el-table-column prop="userName" label="负责人"> </el-table-column>
             <el-table-column prop="selfAssessmentScore" label="自评得分">
             </el-table-column>
-            <el-table-column prop="finalScore" label="复合得分">
+            <el-table-column prop="finalScore" label="复核得分">
             </el-table-column>
             <!-- 动态 -->
             <el-table-column
@@ -61,7 +61,7 @@ import Server from '../../server';
 const server = new Server();
 
 export default {
-  name: 'repalyAssessList',
+  name: 'replayAssessList',
   data() {
     return {
       CONST,
@@ -82,9 +82,9 @@ export default {
           this.tableData = res.data || [];
           this.tableData.forEach((item) => {
             item.list = [];
-            const summitForm = JSON.parse(item.contentJson);
-            item.ruleDetailContentList = summitForm.ruleDetailContentList || [];
-            item.list = summitForm.orgResultDetailMapList || [];
+            const sumbitForm = JSON.parse(item.contentJson);
+            item.ruleDetailContentList = sumbitForm.ruleDetailContentList || [];
+            item.list = sumbitForm.orgResultDetailMapList || [];
           });
         }
       });
