@@ -1000,7 +1000,9 @@
 .update-progress .tl-custom-tabs::after {
   right: -30px;
 }
-
+.update-progress .update-histoy .no-data {
+  margin-top: 80px;
+}
 /* 部门okr */
 .department-okr .pannel-title em,
 .department-okr .pannel-title span {
