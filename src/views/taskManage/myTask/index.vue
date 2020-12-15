@@ -255,14 +255,14 @@
                       <em>{{
                         dateFormat(
                           "YYYY-mm-dd",
-                          new Date(scope.row.taskBegDate)
+                         scope.row.taskBegDate
                         )
                       }}</em
                       ><span>~</span
                       ><em>{{
                         dateFormat(
                           "YYYY-mm-dd",
-                          new Date(scope.row.taskEndDate)
+                         scope.row.taskEndDate
                         )
                       }}</em>
                     </template>

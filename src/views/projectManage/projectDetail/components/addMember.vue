@@ -4,7 +4,6 @@
     :visible="visible"
     @closed="closed"
     :before-close="close"
-
     title="添加成员"
     :close-on-click-modal="false"
     :modal="true"

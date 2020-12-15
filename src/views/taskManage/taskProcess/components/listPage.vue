@@ -111,12 +111,12 @@
                       >{{
                         dateFormat(
                           "YYYY-mm-dd",
-                          new Date(scope.row.taskBegDate)
+                         scope.row.taskBegDate
                         )
                       }}~{{
                         dateFormat(
                           "YYYY-mm-dd",
-                          new Date(scope.row.taskEndDate)
+                          scope.row.taskEndDate
                         )
                       }}</span
                     >
