@@ -32,7 +32,7 @@
             </el-select>
           </dd>
         </dl>
-        <dl class="dl-item">
+        <!-- <dl class="dl-item">
           <dt>部门</dt>
           <dd>
             <el-cascader
@@ -51,7 +51,7 @@
               class="tl-cascader"
             ></el-cascader>
           </dd>
-        </dl>
+        </dl> -->
         <div>
           <el-dropdown @command="addAmount">
             <span class="el-dropdown-link">
