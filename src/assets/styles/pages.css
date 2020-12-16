@@ -655,6 +655,10 @@
   width: 90px;
 }
 
+.my-okr .operating-box .dl-item.org-selete .tl-select {
+  width: 200px;
+}
+
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
