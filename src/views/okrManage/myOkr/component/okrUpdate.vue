@@ -502,7 +502,7 @@ export default {
 
     // 滚动事件触发下拉加载
     onScroll() {
-      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage * 5) {
+      if (this.getScrollTop() / this.getClientHeight() >= this.currentPage) {
         if (this.status === 1) {
           this.status = 0;
           // 页码，分页用，默认第一页
