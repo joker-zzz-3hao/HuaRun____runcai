@@ -56,7 +56,11 @@
                   }}</em>
                 </dd>
               </dl>
-              <dl class="reason">
+              <dl v-if="historyFirst.updateContents.weeklyId" class="reason">
+                <dt>更新来自</dt>
+                <dd>周报</dd>
+              </dl>
+              <dl v-else class="reason">
                 <dt>更新说明</dt>
                 <dd>{{ historyFirst.reason }}</dd>
               </dl>
@@ -191,39 +195,13 @@
                             <span>%</span>
                           </div>
                           <div v-if="activity.updateContents.afterConfidence">
-                            <span>信心指数修改为</span>
-                            <div class="state-grid">
-                              <div
-                                :class="{
-                                  'is-no-risk':
-                                    activity.updateContents.afterConfidence ==
-                                    1,
-                                  'is-risks':
-                                    activity.updateContents.afterConfidence ==
-                                    2,
-                                  'is-uncontrollable':
-                                    activity.updateContents.afterConfidence ==
-                                    3,
-                                }"
-                              ></div>
-                              <div
-                                :class="{
-                                  'is-no-risk':
-                                    activity.updateContents.afterConfidence ==
-                                    1,
-                                  'is-risks':
-                                    activity.updateContents.afterConfidence ==
-                                    2,
-                                }"
-                              ></div>
-                              <div
-                                :class="{
-                                  'is-no-risk':
-                                    activity.updateContents.afterConfidence ==
-                                    1,
-                                }"
-                              ></div>
-                            </div>
+                            <span>信心指数由</span>
+                            <em>{{
+                              CONST.CONFIDENCE_MAP[
+                                activity.updateContents.beforeConfidence
+                              ]
+                            }}</em>
+                            <span>更新为</span>
                             <em>{{
                               CONST.CONFIDENCE_MAP[
                                 activity.updateContents.afterConfidence
@@ -235,6 +213,13 @@
                       <div class="operate-reason" v-if="activity.reason">
                         <span>说明：</span>
                         <em>{{ activity.reason }}</em>
+                      </div>
+                      <div
+                        class="operate-reason"
+                        v-else-if="activity.updateContents.weeklyId"
+                      >
+                        <span>更新来自</span>
+                        <em>周报</em>
                       </div>
                     </div>
                   </div>
