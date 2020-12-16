@@ -94,6 +94,19 @@ export default [{
       },
       component: () => import('@/views/okrManage/myOkr/departmentOkr'),
     },
+    {
+      path: '/okrTable',
+      name: 'okrTable',
+      meta: {
+        hasMainMenu: true,
+        isSubMenu: true,
+        parentRoute: 'myOkr',
+        belongsTo: 'myOkr',
+        title: 'okrTable',
+        power: 'my-okr-menu',
+      },
+      component: () => import('@/views/okrManage/myOkr/okrTable'),
+    },
     ],
   },
   {

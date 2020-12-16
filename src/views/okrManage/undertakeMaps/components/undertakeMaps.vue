@@ -148,6 +148,10 @@ export default {
   created() {
     this.init();
   },
+  mounted() {
+    this.$busEmit('resetScroll');
+    console.log('滚动条', document.body.scrollTop, document.documentElement.scrollTop);
+  },
   methods: {
     ...mapMutations('common', ['setPeriodId', 'changeTestModel']),
     init() {
