@@ -138,7 +138,11 @@
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-assesspast ref="assesspast" :periodId="periodId"></tl-assesspast>
+    <tl-assesspast
+      ref="assesspast"
+      :periodId="periodId"
+      @success="okrReviewList"
+    ></tl-assesspast>
   </div>
 </template>
 

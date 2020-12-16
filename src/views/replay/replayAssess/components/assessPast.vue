@@ -54,7 +54,10 @@
         min-width="100"
       >
       </el-table-column>
-      <el-table-column prop="reason" label="调整原因" min-width="100">
+      <el-table-column prop="adjustReason" label="调整原因" min-width="100">
+        <template scope="props">
+          <span>{{ props.row.adjustReason || "--" }}</span>
+        </template>
       </el-table-column>
     </el-table>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
@@ -137,9 +140,11 @@ export default {
         approvalStatus: status,
         resultId: this.row.resultId,
         periodId: this.periodId,
+        orgId: this.row.orgId,
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success(status == 3 ? '已同意' : '已驳回');
+          this.$emit('success');
           this.close();
         }
       });
