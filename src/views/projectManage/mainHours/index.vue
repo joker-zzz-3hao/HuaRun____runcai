@@ -304,7 +304,7 @@ export default {
     getWeekDate() {
       const oneDate = 24 * 60 * 60 * 1000;
       const prevDate = new Date().getTime() - oneDate * 6;
-      const date = this.dateFormat('YYYY-mm-dd', prevDate);
+      const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
       this.server.getCalendar({ date }).then((res) => {
         // eslint-disable-next-line max-len
         const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
