@@ -83,7 +83,6 @@ export default {
   data() {
     return {
       CONST,
-      periodIdList: [],
       server,
       visible: false,
       dialogType: 'detail',
@@ -137,6 +136,12 @@ export default {
         approvalMsg: remark,
         approvalStatus: status,
         resultId: this.row.resultId,
+        periodId: this.periodId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(status == 3 ? '已同意' : '已驳回');
+          this.close();
+        }
       });
     },
     queryList() {

@@ -11,7 +11,7 @@
             :popper-append-to-body="false"
             @change="assessment"
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg w180"
           >
             <el-option
               :label="item.periodName"
@@ -125,16 +125,26 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="assessmentSave"
+        :disabled="sortMsg.approvalStatus == 1"
         >暂存</el-button
       >
 
       <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :disabled="sortMsg.approvalStatus == 1"
+        @click="submit"
         >提交</el-button
       >
     </div>
     <rank-history-list ref="beforeList"></rank-history-list>
-    <causes-rank ref="causesRank" @success="assessmentSubmit"></causes-rank>
+    <causes-rank
+      ref="causesRank"
+      @success="assessmentSubmit"
+      :ruleDetailContentList="ruleDetailContentList"
+      :tableData="tableData"
+    ></causes-rank>
   </div>
 </template>
 
