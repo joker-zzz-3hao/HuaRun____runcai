@@ -253,7 +253,7 @@ export default {
     searchList() {
       this.loading = true;
       this.server.orgQuery({
-        orgId: this.searchForm.orgId,
+        // orgId: this.searchForm.orgId,
         periodId: this.searchForm.periodId,
       }).then((res) => {
         this.loading = false;
