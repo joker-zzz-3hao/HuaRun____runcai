@@ -655,6 +655,10 @@
   width: 90px;
 }
 
+.my-okr .operating-box .dl-item.org-selete .tl-select {
+  width: 200px;
+}
+
 .my-okr .cont-area,
 .okr-maps .cont-area,
 .undertake-maps .cont-area,
@@ -1976,7 +1980,8 @@
   margin-left: 3px !important;
 }
 
-.okr-maps .prefer-text {
+.okr-maps .prefer-text,
+.my-okr .prefer-text {
   color: #685df1;
   cursor: pointer;
   margin-left: 10px;
