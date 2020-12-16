@@ -133,7 +133,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="projectBudget"
               label="项目总预算(元)"
               min-width="120"
@@ -141,6 +141,26 @@
               <template slot-scope="scope">
                 <em
                   v-money="{ value: scope.row.projectBudget, precision: 2 }"
+                ></em>
+              </template>
+            </el-table-column> -->
+             <el-table-column
+              label="内部顾问预算(元)"
+              min-width="140"
+            >
+              <template slot-scope="scope">
+                <em
+                  v-money="{ value: scope.row.insideBudget, precision: 2 }"
+                ></em>
+              </template>
+            </el-table-column>
+             <el-table-column
+              label="外部顾问预算(元)"
+              min-width="140"
+            >
+              <template slot-scope="scope">
+                <em
+                  v-money="{ value: scope.row.outerConsultBudget, precision: 2 }"
                 ></em>
               </template>
             </el-table-column>
@@ -225,9 +245,9 @@
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
                 >
-                   <!-- <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                    <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
                   >设置</el-button
-                > -->
+                >
               </template>
             </el-table-column>
           </el-table>
