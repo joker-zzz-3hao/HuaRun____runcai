@@ -8,7 +8,7 @@
     custom-class="custom-drawer update-progress"
     class="tl-dialog"
     width="1000px"
-    :title="periodName"
+    title="更新进展"
   >
     <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
     <div class="flex-up">
@@ -528,7 +528,14 @@ export default {
     getOkrRemark() {
       this.server.getOkrRemark({ okrDetailId: this.formData.okrDetailId }).then((res) => {
         if (res.code == 200 && res.data) {
-          this.noteText = res.data.content;
+          this.noteText = res.data.content || `
+        <p>记录OKR进展相关的点点滴滴</p>
+      `;
+          if (this.noteText.indexOf('</p>') === 3) {
+            this.noteText = `
+        <p>记录OKR进展相关的点点滴滴</p>
+      `;
+          }
           this.noteCreateTime = res.data.createTime;
         }
       });
