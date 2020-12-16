@@ -7,7 +7,6 @@
     value-format="yyyy/M/d"
     size="medium"
     type="week"
-    :style="showTime?{width:'310px'}:''"
     placeholder=" 请选择周"
     :picker-options="{ firstDayOfWeek: 1 }"
     popper-class="tl-date-popper"

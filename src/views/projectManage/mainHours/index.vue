@@ -306,7 +306,6 @@ export default {
       const prevDate = new Date().getTime() - oneDate * 6;
       const date = this.dateFormat('YYYY-mm-dd', prevDate);
       this.server.getCalendar({ date }).then((res) => {
-        console.log(res);
         // eslint-disable-next-line max-len
         const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
         if (indexs) {
