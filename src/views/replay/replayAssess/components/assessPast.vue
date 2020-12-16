@@ -67,7 +67,7 @@
     </div>
     <tl-assess-refuse
       ref="assessrefuse"
-      @success="sumbitAssess(remark)"
+      @success="sumbitAssess"
     ></tl-assess-refuse>
   </el-dialog>
 </template>
@@ -123,7 +123,7 @@ export default {
         title: '',
         content: '确认后，部门将按照当前绩效结果分配',
       }).then(() => {
-        this.sumbitAssess();
+        this.sumbitAssess('', 3);
       });
     },
     refuse() {
@@ -131,9 +131,12 @@ export default {
         this.$refs.assessrefuse.show();
       });
     },
-    sumbitAssess(remark = '') {
+    sumbitAssess(remark, status) {
+      console.log('sumbitAssess', remark, status);
       this.server.submitApproval({
-        refuseReason: remark,
+        approvalMsg: remark,
+        approvalStatus: status,
+        resultId: this.row.resultId,
       });
     },
     queryList() {
