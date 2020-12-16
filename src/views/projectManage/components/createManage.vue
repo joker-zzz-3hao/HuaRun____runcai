@@ -177,7 +177,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-           <el-form-item label="外部顾问预算" prop="outerConsultBudget">
+        <el-form-item label="外部顾问预算" prop="outerConsultBudget">
         <el-input-number
           v-model="formData.outerConsultBudget"
           controls-position="right"
