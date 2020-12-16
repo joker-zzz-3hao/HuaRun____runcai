@@ -11,7 +11,7 @@
             :popper-append-to-body="false"
             @change="assessment"
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg w180"
           >
             <el-option
               :label="item.periodName"
@@ -68,7 +68,7 @@
             class="tl-table tableSort"
             row-key="orgId"
           >
-            <el-table-column prop="sort" label="排序" min-width="105">
+            <el-table-column prop="sort" label="排序" min-width="55">
               <template slot-scope="scope">
                 <el-button type="text" @click="upGo(tableData, scope.$index)"
                   >向上</el-button
@@ -125,16 +125,26 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="assessmentSave"
+        :disabled="sortMsg.approvalStatus == 2"
         >暂存</el-button
       >
 
       <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
+      <el-button
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        :disabled="sortMsg.approvalStatus == 2"
+        @click="submit"
         >提交</el-button
       >
     </div>
     <rank-history-list ref="beforeList"></rank-history-list>
-    <causes-rank ref="causesRank" @success="assessmentSubmit"></causes-rank>
+    <causes-rank
+      ref="causesRank"
+      @success="assessmentSubmit"
+      :ruleDetailContentList="ruleDetailContentList"
+      :tableData="tableData"
+    ></causes-rank>
   </div>
 </template>
 
@@ -222,8 +232,8 @@ export default {
       });
     },
     // 调用提交接口
-    assessmentSubmit() {
-      this.tableData.forEach((item) => {
+    assessmentSubmit(tableData = this.tableData) {
+      tableData.forEach((item) => {
         item.sourceId = item.orgId;
       });
       const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
@@ -231,16 +241,16 @@ export default {
         ruleName: rule.ruleName,
       }));
       console.log({
-        resultDetailList: this.tableData,
-        orgResultDetailMapList: this.tableData,
+        resultDetailList: tableData,
+        orgResultDetailMapList: tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
       });
       this.server.assessmentSubmit({
-        resultDetailVoList: this.tableData,
-        orgResultDetailMapList: this.tableData,
+        resultDetailVoList: tableData,
+        orgResultDetailMapList: tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
