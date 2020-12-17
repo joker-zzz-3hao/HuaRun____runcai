@@ -6096,7 +6096,7 @@
 }
 
 .project-description .dl-list {
-  margin: 20px 0 0 0;
+  margin: 10px 0 0 0;
   display: flex;
   flex-wrap: wrap;
 }
@@ -6473,10 +6473,6 @@
 }
 
 .approval-list .tl-table .el-table__row td:nth-child(2) .cell > a:hover {
-  color: #685df1;
-}
-
-.approval-list .tl-table .el-table__row td:nth-child(3) .cell > a:hover {
   color: #685df1;
 }
 
