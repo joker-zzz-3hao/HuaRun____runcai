@@ -1250,9 +1250,11 @@ export default {
           // 更新个人okr数据,取到最新数据
           this.$busEmit('refreshMyOkr');
           // 延时一秒再查询周报数据，防止okr数据请求未结束
-          setTimeout(() => {
+          const timer = setTimeout(() => {
             this.setThisWeekStatus();
           }, 1000);
+          timer();
+          clearTimeout(timer);
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
           this.$router.push({
             query: merge({}, { params: 'clear' }),
