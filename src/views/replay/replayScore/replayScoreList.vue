@@ -119,6 +119,7 @@
                       name: 'replayScoreDetail',
                       query: {
                         okrId: scope.row.okrId,
+                        isdetail: 'edit',
                       },
                     })
                   "
@@ -134,7 +135,7 @@
                       name: 'replayScoreDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        isdetail: true,
+                        isdetail: 'isdetail',
                       },
                     })
                   "

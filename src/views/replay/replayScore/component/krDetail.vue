@@ -68,11 +68,11 @@
             </dd>
             <dd>
               <dl>
-                <dt>评分</dt>
+                <dt>自评分</dt>
                 <dd>{{ list.score }}</dd>
               </dl>
               <dl v-if="list.scoreRemark">
-                <dt>评分说明</dt>
+                <dt>自评分说明</dt>
                 <dd>{{ list.scoreRemark }}</dd>
               </dl>
               <dl>
@@ -94,7 +94,7 @@
               </dl>
               <dl>
                 <dt>复核得分</dt>
-                <dd v-if="isdetail">
+                <dd v-if="isdetail == 'isdetail'">
                   <em>{{ list.finalScore }}</em>
                 </dd>
                 <dd v-else>
@@ -125,7 +125,7 @@
               </dl>
               <dl>
                 <dt>复核说明</dt>
-                <dd v-if="isdetail">
+                <dd v-if="isdetail == 'isdetail'">
                   <em>{{ list.finalRemark }}</em>
                 </dd>
                 <dd v-else>
@@ -149,7 +149,7 @@
                   </em>
                 </dd>
               </dl>
-              <dl v-if="isdetail">
+              <dl v-if="isdetail == 'isdetail'">
                 <dt>复核材料</dt>
                 <dd
                   v-for="file in list.finalAttachmentList"
@@ -165,13 +165,7 @@
                     <span @click="downFile(file)">下载</span>
                   </span>
                 </dd>
-                <dd
-                  v-if="
-                    !(finalAttachmentList && finalAttachmentList.length === 0)
-                  "
-                >
-                  暂无
-                </dd>
+                <dd v-if="!list.finalAttachmentList">暂无</dd>
               </dl>
               <dl v-else>
                 <dt>上传附件</dt>
@@ -211,7 +205,7 @@
         <em>{{ okrMain.okrReviewCommunicationDetailEntity.communication }}</em>
       </div>
     </div>
-    <div>
+    <div v-if="okrMain.okrMainVo">
       <div>
         <span>OKR自评得分</span>
         <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
@@ -223,7 +217,7 @@
     </div>
     <div class="footer-panel">
       <el-button
-        v-if="!isdetail"
+        v-if="isdetail === 'edit'"
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="submit"
@@ -260,8 +254,8 @@ export default {
       required: true,
     },
     isdetail: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: 'isdetail',
     },
   },
   components: {
