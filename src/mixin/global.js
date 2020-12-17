@@ -161,7 +161,13 @@ export default {
       if (dateRep instanceof Date) {
         date = dateRep;
       } else {
-        const dateCheck = dateRep.replace('T', ' ');
+        let dateCheck;
+        if (dateRep.indexOf('T') != -1) {
+          dateCheck = dateRep.replace('T', ' ');
+        } else {
+          dateCheck = dateRep;
+        }
+
         // eslint-disable-next-line no-useless-escape
         date = new Date(dateCheck.replace(/\-/g, '/'));
       }
