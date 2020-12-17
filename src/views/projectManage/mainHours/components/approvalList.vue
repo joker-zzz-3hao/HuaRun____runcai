@@ -338,7 +338,7 @@
             <el-table-column
               prop="approvalTime"
               label="审批时间"
-              min-width="120"
+              min-width="150"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalTime)">{{
@@ -426,7 +426,10 @@
       :server="server"
     ></tl-approval-detail>
     <tl-desc-model ref="descModel"></tl-desc-model>
-    <tl-select-approval ref="selectApproval"   @alertSelectAll="alertSelectAll"></tl-select-approval>
+    <tl-select-approval
+      ref="selectApproval"
+      @alertSelectAll="alertSelectAll"
+    ></tl-select-approval>
   </div>
 </template>
 

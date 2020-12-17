@@ -834,10 +834,29 @@
 
 /* change by xinquan */
 .update-progress .update-kr {
-  width: 500px;
+  margin: 12px 0 0 0;
+  flex: 0 0 54%;
   height: 446px;
   overflow: hidden;
+  border-right: 1px solid #e8ecf0;
 }
+
+.update-kr .tl-custom-timeline .timeline-list dd:first-child {
+  margin: 0;
+}
+
+.update-kr .okr-detail .timeline-list .list-cont {
+  padding: 10px 0 10px 40px;
+}
+
+.update-kr .okr-detail .timeline-list .operate-kind li {
+  padding-top: 6px;
+}
+
+.update-kr .okr-detail .timeline-list .operate-reason {
+  margin-top: 10px;
+}
+
 .update-progress .tab-menus {
   height: 40px;
 }
@@ -895,7 +914,7 @@
 }
 
 .update-progress .last-update {
-  padding: 12px 0 10px 0;
+  padding: 0 0 10px 0;
   border-bottom: 1px solid #E5E9EE;
 }
 
@@ -4734,7 +4753,7 @@
   color: #4d5155;
 }
 
-.weekly .user-info . .weekly .tl-table .el-table__body .cell {
+.weekly .user-info .weekly .tl-table .el-table__body .cell {
   padding: 10px;
 }
 
@@ -6077,7 +6096,7 @@
 }
 
 .project-description .dl-list {
-  margin: 20px 0 0 0;
+  margin: 10px 0 0 0;
   display: flex;
   flex-wrap: wrap;
 }
