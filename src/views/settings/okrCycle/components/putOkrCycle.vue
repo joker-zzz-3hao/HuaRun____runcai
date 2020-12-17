@@ -170,20 +170,23 @@ export default {
     this.dialogTableVisible = true;
     console.log(this.updateData);
     this.form = this.updateData;
-    this.dateTime = [this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime)), this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime))];
-    this.form.startTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.startTime));
-    this.form.selfAssessReminderTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.selfAssessReminderTime));
-    this.form.endTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.endTime));
-    this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.approvalEndTime));
-    this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', new Date(this.updateData.draftingStartTime));
+    this.dateTime = [this.dateFormat('YYYY-mm-dd', this.updateData.startTime), this.dateFormat('YYYY-mm-dd', this.updateData.endTime)];
+    this.form.startTime = this.dateFormat('YYYY-mm-dd', this.updateData.startTime);
+    this.form.selfAssessReminderTime = this.dateFormat('YYYY-mm-dd', this.updateData.selfAssessReminderTime);
+    this.form.endTime = this.dateFormat('YYYY-mm-dd', this.updateData.endTime);
+    this.form.approvalEndTime = this.dateFormat('YYYY-mm-dd', this.updateData.approvalEndTime);
+    this.form.draftingStartTime = this.dateFormat('YYYY-mm-dd', this.updateData.draftingStartTime);
   },
   methods: {
     draftingTime(date) {
       const tingTime = new Date(date).getTime();
       const startTime = new Date(this.form.startTime).getTime();
-      if (tingTime > startTime - 24 * 60 * 60 * 1000) {
-        this.$message.error('起草时间不能大于周期开始时间');
-        this.form.draftingStartTime = '';
+      if (this.form.startTime) {
+        if (tingTime > startTime - 24 * 60 * 60 * 1000) {
+          this.$message.error('起草时间不能大于周期开始时间');
+          this.form.draftingStartTime = '';
+          return false;
+        }
       }
     },
     approvalTime(date) {

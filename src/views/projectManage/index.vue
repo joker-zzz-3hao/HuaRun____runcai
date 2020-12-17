@@ -218,13 +218,16 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="50"
+              width="100"
               v-if="tableData.length > 0"
             >
               <template slot-scope="scope">
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
                 >
+                   <!-- <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                  >设置</el-button
+                > -->
               </template>
             </el-table-column>
           </el-table>
@@ -242,7 +245,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import createManage from './components/createManage';
 import Server from './server';
@@ -297,6 +300,11 @@ export default {
     this.searchManage();
   },
   methods: {
+    // eslint-disable-next-line no-undef
+    ...mapMutations('common',
+      [
+        'getprojectInfo',
+      ]),
     searchManage() {
       this.isTalent = false;
       this.userInfo.roleList.forEach((item) => {
@@ -336,6 +344,15 @@ export default {
         name: 'projectDetail',
         query: {
           projectId: data.projectId,
+        },
+      });
+    },
+    setTime(row) {
+      this.getprojectInfo(row);
+      this.$router.push({
+        name: 'hoursCollection',
+        query: {
+          projectId: row.projectId,
         },
       });
     },

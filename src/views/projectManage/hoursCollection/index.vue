@@ -3,15 +3,6 @@
     <div class="project-description">
       <dl>
         <dt>
-          <span
-            v-if="hasValue(baseInfo.projectStatus)"
-            :class="{
-              'is-ongoing': baseInfo.projectStatus == '0',
-              'is-over': baseInfo.projectStatus == '1',
-            }"
-            >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
-          >
-          <em>{{ `${baseInfo.projectNameCn || "--"}` }}</em>
           <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
@@ -23,57 +14,10 @@
             </el-dropdown-menu>
           </el-dropdown>
         </dt>
-        <dd>
-          <span>项目描述:</span>
-          <p
-            ref="projectDesc"
-            id="projectDesc"
-            :class="openFlag ? 'unfold' : 'fold'"
-          >
-            <em id="projectDescInside">{{
-              `${baseInfo.projectDescription || "--"}`
-            }}</em>
-          </p>
-          <div class="toggle-state" v-if="pWidth == emWidth">
-            <span @click="openFlag = !openFlag">{{
-              openFlag ? "收起" : "展开"
-            }}</span
-            ><i></i>
-          </div>
-        </dd>
+
       </dl>
       <div class="dl-list">
-        <dl class="dl-item">
-          <dt><span>项目经理</span></dt>
-          <dd>
-            <div class="user-info">
-              <img
-                v-if="hasValue(baseInfo.headUrl)"
-                :src="baseInfo.headUrl"
-                alt
-              />
-              <div v-else-if="baseInfo.projectManager" class="user-name">
-                <em>{{
-                  baseInfo.projectManager.substring(
-                    baseInfo.projectManager.length - 2
-                  )
-                }}</em>
-              </div>
-            </div>
-            <div class="user-name-txt">
-              <em>{{ baseInfo.projectManager }}</em>
-            </div>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目所属部门</span></dt>
-          <dd>
-            <em v-if="hasValue(baseInfo.parentOrgName)">{{
-              `${baseInfo.parentOrgName}-`
-            }}</em>
-            <em>{{ baseInfo.orgName }}</em>
-          </dd>
-        </dl>
+
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
@@ -83,22 +27,16 @@
           </dd>
         </dl>
         <dl class="dl-item">
-          <dt><span>投入类型</span></dt>
+          <dt><span>项目已确立人力成本</span></dt>
           <dd>
             <em>{{
               baseInfo.projectInputType || "--"
             }}</em>
           </dd>
         </dl>
-        <dl class="dl-item project-type">
-          <dt><span>项目类型</span></dt>
-          <dd>
-            <em>{{ baseInfo.projectType || "--" }}</em>
-            <div v-if="baseInfo.projectSourceSystem == 'TENANT'">虚拟项目</div>
-          </dd>
-        </dl>
+
         <dl class="dl-item">
-          <dt><span>申请时间</span></dt>
+          <dt><span>项目经理</span></dt>
           <dd>
             <em>{{ baseInfo.projectApplyDate || "--" }}</em>
           </dd>
@@ -115,13 +53,19 @@
     <div class="dl-card-panel project-members">
       <dt class="card-title">
         <em>项目成员</em
-        ><el-button plain class="tl-btn" @click="addMembers"
-          ><i class="el-icon-plus"></i><em>添加成员</em></el-button
         >
       </dt>
-      <tl-crcloud-table :isPage="false">
+      <tl-crcloud-table
+      :total="total"
+        :currentPage.sync="currentPage"
+        :pageSize.sync="pageSize"
+        @searchList="searchList">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="baseInfo.projectUserVoList" class="tl-table">
+          <el-table :data="tableData" class="tl-table">
+                <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info" @click="setManager(scope.row)">
@@ -143,7 +87,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="120">
+            <el-table-column label="级别" min-width="120">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -171,7 +115,7 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevelName" label="级别" min-width="120">
+            <el-table-column prop="userLevelName" label="职能" min-width="120">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
@@ -179,7 +123,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="orgName" label="所属部门" min-width="160">
+            <el-table-column prop="orgName" label="所属公司" min-width="160">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.orgName)">{{
                   scope.row.orgName
@@ -187,47 +131,46 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPostName" label="职能" min-width="180">
+            <el-table-column prop="time" label="工时时间范围" min-width="250" >
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userPostName)">{{
-                  scope.row.userPostName
-                }}</span>
-                <span v-else>--</span>
+                   <el-date-picker
+                      v-model="scope.row.time"
+                      type="daterange"
+                      range-separator="至"
+                      @change="changeMinMax(scope.row.time,scope.$index)"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期">
+                    </el-date-picker>
               </template>
             </el-table-column>
-            <el-table-column prop="createDate" label="加入时间" min-width="180">
+            <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.createDate)">{{
-                  scope.row.createDate
-                }}</span>
-                <span v-else>--</span>
+                     <el-input-number
+                controls-position="right"
+                v-model="scope.row.date"
+                :min="0"
+                :max="scope.row.max"
+                :disabled="!scope.row.time"
+                :precision="0"
+                class="tl-input-number"
+              ></el-input-number>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="userCompanyName"
-              label="所属公司"
-              min-width="180"
-            >
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userCompanyName)">{{
-                  scope.row.userCompanyName
-                }}</span>
-                <span v-else>--</span>
+   <el-table-column prop="createDate" label="工时内容" min-width="180">
+              <template>
+               <el-input placeholder="请输入内容"></el-input>
               </template>
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
               width="100"
-              v-if="
-                baseInfo.projectUserVoList &&
-                baseInfo.projectUserVoList.length > 0
-              "
+
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
-                  @click="deleteMember(scope.row)"
+
+                  @click="deleteMember(scope.$index)"
                   type="text"
                   class="tl-btn"
                   >移除</el-button
@@ -235,47 +178,115 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-button type="text" @click="addUser()">添加成员</el-button>
         </div>
       </tl-crcloud-table>
     </div>
-    <tl-add-member
-      ref="addMember"
-      v-if="showAddMember"
-      :server="server"
-      :codes="codes"
-      @addSuccess="addSuccess"
-      :model="true"
-      :DisuserId="DisuserId"
-    ></tl-add-member>
-    <tl-check-manager
-      ref="checkManager"
-      v-if="checkManager"
-      :server="server"
-      :baseInfo="baseInfo"
-      @checkSuccess="checkSuccess"
-    ></tl-check-manager>
+  <div>
+
+  </div>
+      <div class="footer-panel">
+      <span
+        >已选择<em>0</em
+        >位成员，工时<em>11</em>天  人力成本<em>5000</em>人民币</span
+      >
+        <el-button
+
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        >确定</el-button
+      >
+      <el-button
+        plain
+        class="tl-btn amt-border-fadeout"
+        >取消</el-button
+      >
+
+    </div>
+  <tl-hours-record ref="hoursRecord"></tl-hours-record>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
-import addMember from './addMember';
-import checkManager from './checkManager';
-import CONST from '../../const';
+import hoursRecord from './components/hoursRecord';
+import Server from '../server';
+import CONST from '../const';
 
+const server = new Server();
 export default {
   name: 'projectInfo',
   data() {
     return {
       CONST,
       total: 0,
-      currentPage: 0,
-      pageSize: 0,
+      currentPage: 1,
+      pageSize: 10,
+      server,
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
-      tableData: [],
+      tableDataRow: [{
+        id: 1,
+        userName: '111',
+        time: '',
+        disabled: true,
+      }, {
+        id: 1,
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        id: 1,
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        id: 1,
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        id: 1,
+        userName: '111',
+        disabled: true,
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        id: 1,
+        userName: '111',
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '111',
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '222',
+        time: '',
+      }, {
+        id: 1,
+        disabled: true,
+        userName: '112221',
+        time: '',
+      }],
       isManage: false,
       openFlag: false,
       codes: [],
@@ -286,16 +297,10 @@ export default {
   },
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-add-member': addMember,
-    'tl-check-manager': checkManager,
+    'tl-hours-record': hoursRecord,
   },
   props: {
-    server: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
+
     baseInfo: {
       type: Object,
       default() {
@@ -307,18 +312,13 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
+      projectInfo: (state) => state.projectInfo,
     }),
   },
   mounted() {
-    if (this.baseInfo.projectUserVoList) {
-      this.baseInfo.projectUserVoList.forEach((item) => {
-        if (item.projectUserType == '1') {
-          if (item.userId == this.userInfo.userId) {
-            this.isManage = true;
-          }
-        }
-      });
-    }
+    console.log(this.projectInfo);
+    this.searchList();
+
     this.server.queryByCodes({
       codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
     }).then((res) => {
@@ -328,21 +328,45 @@ export default {
     });
   },
   methods: {
-    deleteMember(data) {
-      this.$xconfirm({
-        title: '删除确认',
-        content: '是否确认删除该数据，删除将无法恢复',
+    changeMinMax(time, index) {
+      let weekBegin;
+      let weekEnd;
+      if (time) {
+        // eslint-disable-next-line prefer-destructuring
+        weekBegin = time[0];
+        // eslint-disable-next-line prefer-destructuring
+        weekEnd = time[1];
 
-      }).then(() => {
-        this.server.removeProjectUser({
-          projectId: data.projectId,
-          userId: data.userId,
-        }).then((res) => {
-          if (res.code == 200) {
-            this.searchProject();
-          }
-        });
+        console.log(time);
+        const oneDate = 24 * 60 * 60 * 1000;
+        const startTime = weekBegin.getTime();
+        const endTime = weekEnd.getTime();
+        const cheTime = (endTime - startTime) / oneDate;
+        this.tableData[index].max = cheTime;
+        this.tableData[index].date = '';
+        console.log(cheTime);
+      } else {
+        this.tableData[index].date = '';
+        this.tableData[index].disabled = true;
+      }
+    },
+    searchList() {
+      // this.tableDataRow = this.tableDataRow
+      const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
+      this.tableData = list.list;
+      this.total = list.total;
+    },
+    showhoursRecord() {
+      this.$refs.hoursRecord.show();
+    },
+    addUser() {
+      this.tableData.push({
+        type: 1,
+        userName: '11',
       });
+    },
+    deleteMember(index) {
+      this.tableData.splice(index, 1);
     },
     closeProject() {
       this.$xconfirm({

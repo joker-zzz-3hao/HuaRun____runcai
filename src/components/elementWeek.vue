@@ -23,6 +23,7 @@ export default {
         week: '',
         defValue: '',
       },
+      dayweek: '',
     };
   },
   created() {
@@ -32,21 +33,27 @@ export default {
     // 初始化日期
     getDay(val) {
       const date = new Date(val);
+      const oneDate = 24 * 60 * 60 * 1000;
+      const dateTimeWeek = date.getTime() + (oneDate * 6);
       const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
+      let dayweek = new Date(dateTimeWeek).getDate();
       if (month < 10) {
         month = `0${month}`;
       }
       if (day < 10) {
         day = `0${day}`;
       }
+      if (dayweek < 10) {
+        dayweek = `0${dayweek}`;
+      }
       const nowDay = `${year}/${month}/${day}`;
+      this.dayweek = dayweek;
       this.queryParam.week = this.getWeekInMonth(new Date(nowDay));
       this.queryParam.defValue = `${year}/${month}/${day}`;
     },
     weekChange(val) {
-      console.log(val);
       if (val) {
         this.getDay(val);
         // eslint-disable-next-line no-unused-vars

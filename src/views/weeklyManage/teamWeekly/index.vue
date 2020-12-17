@@ -2,7 +2,10 @@
   <div class="teams-weekly">
     <div class="operating-area">
       <div class="operating-box">
-        团队
+          <dl class="dl-item">
+            <dt>查看其他团队周报</dt>
+              <dd>
+
         <el-cascader
           v-model="orgIdList"
           ref="cascader"
@@ -18,6 +21,8 @@
           popper-class="tl-cascader-popper"
           class="tl-cascader"
         ></el-cascader>
+        </dd>
+        </dl>
         <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
         2、当组织切换时不显示该按钮
@@ -171,7 +176,7 @@
                   <span>时间</span>
                   <em>{{
                     weekly.updateTime
-                      ? dateFormat("mm/dd HH:MM", new Date(weekly.updateTime))
+                      ? dateFormat("mm/dd HH:MM", weekly.updateTime)
                       : "--"
                   }}</em>
                 </dd>

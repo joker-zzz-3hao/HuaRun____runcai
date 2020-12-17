@@ -60,7 +60,7 @@
                 <span v-if="scope.row.createTime">{{
                   dateFormat(
                     "YYYY-mm-dd HH:MM:SS",
-                    new Date(scope.row.createTime)
+                    scope.row.createTime
                   )
                 }}</span>
                 <span v-else>--</span>

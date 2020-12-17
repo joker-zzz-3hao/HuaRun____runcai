@@ -25,7 +25,7 @@
             </dd>
           </dl>
           <dl class="dl-item">
-            <dt>提交人</dt>
+            <dt>团队成员</dt>
             <dd>
               <el-select
                 v-model="userId"
@@ -47,6 +47,12 @@
               </el-select>
             </dd>
           </dl>
+            <!-- <dl class="dl-item">
+            <dt>选择查询日期</dt>
+            <dd>
+            <tl-elementWeek :showTime="true"></tl-elementWeek>
+            </dd>
+          </dl> -->
         </div>
         <div class="operating-box">
           <!-- <dl class="dl-item">
@@ -59,12 +65,41 @@
       </div>
     </div>
     <div class="cont-area">
+        <div class="dl-list">
+               <dl class="dl-item">
+          <dt><span> 上一周 {{week}} </span></dt>
+
+        </dl>
+        <dl class="dl-item">
+          <dt><span>项目成员</span></dt>
+          <dd>
+            <em>{{projectUserSum||0}} </em><span>人</span>
+            <span></span>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt><span>预计提交工时</span></dt>
+          <dd>
+            <em >{{submissionHours||0}} </em
+            ><span>天</span
+            >     <span></span>
+          </dd>
+        </dl>
+          <dl class="dl-item">
+          <dt><span>实际提交工时</span></dt>
+          <dd>
+            <em >{{actualSubmissionHours||0}} </em
+            ><span>天</span
+            >     <span></span>
+          </dd>
+        </dl>
+      </div>
       <div class="dl-list">
         <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
             <em v-money="{ value: projectBudgetAmount, precision: 2 }"></em
-            ><span>元</span><span>{{ projectBudgetCurrency || "人民币" }}</span>
+            ><span>元</span><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -76,6 +111,7 @@
           </dd>
         </dl>
       </div>
+
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -84,13 +120,31 @@
       >
         <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table" row-key="index">
-            <el-table-column prop="applyTime" label="提交人" min-width="130">
+            <el-table-column prop="applyTime" label="团队成员" min-width="130">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
+             <el-table-column prop="userPost" label="职能" min-width="130">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userPost }}</span>
+              </template>
+            </el-table-column>
+             <el-table-column prop="userLevel" label="职级" min-width="130">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userLevel }}</span>
+              </template>
+            </el-table-column>
+             <el-table-column prop="ldapType" label="成员类型" min-width="130">
+              <template slot-scope="scope">
+                <span v-if="scope.row.ldapType=='Contractor'">外部账户</span>
+                 <span v-if="scope.row.ldapType=='OTHER'">特殊账户</span>
+                  <span v-if="scope.row.ldapType=='Full-Time'">员工账户</span>
+                   <span v-if="!scope.row.ldapType">--</span>
+              </template>
+            </el-table-column>
             <el-table-column
-              label="已审批共计投入工时"
+              label="已审批工时"
               prop="approvedTimeSum"
               min-width="200px"
             >
@@ -167,12 +221,12 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
@@ -221,8 +275,13 @@ export default {
       projectBudgetCurrency: '',
       projectConfirmAmount: 0,
       projectConfirmCurrency: '',
+      actualSubmissionHours: 0,
       workList: [],
       listDis: [],
+      week: '',
+      projectUserSum: 0,
+      submissionHours: 0,
+      isTalent: false,
     };
   },
 
@@ -239,8 +298,22 @@ export default {
   },
   mounted() {
     this.projectPageList();
+    this.getWeekDate();
   },
   methods: {
+    getWeekDate() {
+      const oneDate = 24 * 60 * 60 * 1000;
+      const prevDate = new Date().getTime() - oneDate * 6;
+      const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
+      this.server.getCalendar({ date }).then((res) => {
+        console.log(res);
+        // eslint-disable-next-line max-len
+        const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
+        if (indexs) {
+          this.week = `${this.dateFormat('mm月dd日', res.data[indexs].weekBegin)}至${this.dateFormat('mm月dd日', res.data[indexs].weekEnd)}`;
+        }
+      });
+    },
     goTo(row) {
       this.$router.push({ name: 'approvalList', query: { userId: row.userId, projectId: this.formData.projectId } });
     },
@@ -279,14 +352,23 @@ export default {
         this.projectBudgetCurrency = res.data.projectBudgetCurrency;
         this.projectConfirmAmount = res.data.projectConfirmAmount || 0;
         this.projectConfirmCurrency = res.data.projectConfirmCurrency;
+        this.actualSubmissionHours = res.data.actualSubmissionHours;
+        this.submissionHours = res.data.submissionHours;
+        this.projectUserSum = res.data.projectUserSum;
       });
     },
     projectPageList() {
+      this.isTalent = false;
+      this.userInfo.roleList.forEach((item) => {
+        if (item.roleCode == 'TENANT_ADMIN') {
+          this.isTalent = true;
+        }
+      });
       this.server.projectPageList({
         currentPage: 1,
         pageSize: 9999,
         projectName: '',
-        userAccount: this.userInfo.userAccount,
+        userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
           this.projectList = res.data.content;
