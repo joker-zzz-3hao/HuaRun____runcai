@@ -134,7 +134,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         :disabled="sortMsg.approvalStatus == 2"
-        @click="assessmentSubmit()"
+        @click="submitValidator()"
         >提交</el-button
       >
     </div>
@@ -231,12 +231,35 @@ export default {
         }
       });
     },
-    // 调用提交接口
-    assessmentSubmit(tableData = this.tableData) {
-      console.log(this.tableData, tableData);
-      tableData.forEach((item) => {
+    // 提交校验
+    submitValidator() {
+      this.tableData.forEach((item) => {
         item.sourceId = item.orgId;
       });
+      const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
+        ruleId: rule.ruleId,
+        ruleName: rule.ruleName,
+      }));
+      this.server.assessmentSubmit({
+        resultDetailVoList: this.tableData,
+        orgResultDetailMapList: this.tableData,
+        ruleDetailContentList,
+        resultId: this.sortMsg.resultId,
+        periodId: this.periodId,
+        enableCommunicate: this.sortMsg.enableCommunicate,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.assessmentSubmit(this.tableData);
+        } else if (res.code == 30000) {
+          this.$refs.causesRank.show(res.data);
+        }
+      });
+    },
+    // 调用提交接口
+    assessmentSubmit(tableData = this.tableData) {
+      // tableData.forEach((item) => {
+      //   item.sourceId = item.orgId;
+      // });
       const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
         ruleId: rule.ruleId,
         ruleName: rule.ruleName,
