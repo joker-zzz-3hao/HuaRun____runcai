@@ -12,7 +12,7 @@
     <el-form
       ref="projectForm"
       :model="formData"
-      label-width="120px"
+      label-width="110px"
       :rules="rules"
       class="tl-form"
     >
@@ -24,7 +24,6 @@
           class="tl-input"
         ></el-input>
       </el-form-item>
-
       <el-form-item label="项目描述" prop="projectDesc">
         <el-input
           v-model.trim="formData.projectDesc"
@@ -129,12 +128,6 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
-       <el-form-item label="是否部门级项目" prop="projectOrgType">
-      <el-radio-group v-model="formData.projectOrgType">
-        <el-radio :label="1" class="tl-radio">是</el-radio>
-        <el-radio :label="0" class="tl-radio">否</el-radio>
-      </el-radio-group>
       </el-form-item>
       <el-form-item label="投入类型" prop="throwType">
         <el-select
@@ -283,7 +276,6 @@ export default {
         userCompany: [
           { required: true, message: '请选择所属公司', trigger: 'change' },
         ],
-        projectOrgType: [{ required: true, message: '请选择是否部门级项目', trigger: 'change' }],
         userLevel: [
           { required: true, message: '请选择级别', trigger: 'change' },
         ],
@@ -381,14 +373,12 @@ export default {
             projectTypeCode: this.formData.projectType,
             projectInputType: throwTypeObj.length > 0 ? throwTypeObj[0].label : this.formData.throwType,
             projectInputTypeCode: this.formData.throwType,
-            outerConsultBudget: this.formData.outerConsultBudget,
-            insideBudget: this.formData.insideBudget,
+            projectBudget: this.formData.totalBudget,
             projectCurrency: currencyObj.length > 0 ? currencyObj[0].label : this.formData.currency,
             projectCurrencyCode: this.formData.currency,
             projectBeginDate: this.formData.startDate,
             projectEndDate: this.formData.endDate,
             userLevel: this.formData.userLevel,
-            projectOrgType: this.formData.projectOrgType,
             userCompany: this.formData.userCompany,
             projectApplyDepCode: this.formData.orgIdList.length > 0 ? this.formData.orgIdList[this.formData.orgIdList.length - 1] : '',
           }).then((res) => {
