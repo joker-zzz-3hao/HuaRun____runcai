@@ -72,7 +72,7 @@
                 <dd>{{ list.score }}</dd>
               </dl>
               <dl v-if="list.scoreRemark">
-                <dt>自评分说明</dt>
+                <dt>自评说明</dt>
                 <dd>{{ list.scoreRemark }}</dd>
               </dl>
               <dl>

@@ -61,19 +61,21 @@ export default {
     ruleDetailContentList: {
       type: Array,
     },
-    tableData: {
+    sourceTable: {
       type: Array,
     },
 
   },
   methods: {
-    show() {
+    show(table) {
       this.visible = true;
+      this.tableData = table || [];
     },
     close() {
       this.visible = false;
     },
     submit() {
+      // 拼接
       // console.log(this.tableData);
       this.$emit('success', this.tableData);
       this.close();

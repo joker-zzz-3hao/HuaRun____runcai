@@ -55,8 +55,8 @@
       >
       </el-table-column>
       <el-table-column prop="adjustReason" label="调整原因" min-width="100">
-        <template scope="props">
-          <span>{{ props.row.adjustReason || "--" }}</span>
+        <template slot-scope="scope">
+          <span>{{ scope.row.adjustReason || "--" }}</span>
         </template>
       </el-table-column>
     </el-table>

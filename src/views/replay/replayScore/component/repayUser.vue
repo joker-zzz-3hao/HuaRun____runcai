@@ -1,7 +1,9 @@
 <template>
   <dl class="replay-info">
     <dt>
-      <div class="replay-title"><span>复盘对象:</span><em>部门名</em></div>
+      <div class="replay-title">
+        <span>复盘对象:</span><em>{{ okrMain.okrMainVo.orgName }}</em>
+      </div>
       <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
         <span class="lines"></span>
