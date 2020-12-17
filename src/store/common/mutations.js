@@ -115,4 +115,8 @@ export default {
   setProcessId: (state, processVal = '') => {
     state.processVal = processVal;
   },
+  // 项目列表信息
+  getprojectInfo: (state, projectInfo = {}) => {
+    state.projectInfo = projectInfo;
+  },
 };

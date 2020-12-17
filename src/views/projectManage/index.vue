@@ -290,7 +290,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import createManage from './components/createManage';
 import Server from './server';
@@ -345,6 +345,11 @@ export default {
     this.searchManage();
   },
   methods: {
+    // eslint-disable-next-line no-undef
+    ...mapMutations('common',
+      [
+        'getprojectInfo',
+      ]),
     searchManage() {
       this.isTalent = false;
       this.userInfo.roleList.forEach((item) => {
@@ -388,6 +393,7 @@ export default {
       });
     },
     setTime(row) {
+      this.getprojectInfo(row);
       this.$router.push({
         name: 'hoursCollection',
         query: {
