@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Element from 'element-ui';
 import animated from 'animate.css';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
+import { ElementTiptapPlugin } from 'element-tiptap';
 import App from './App';
 import router from './router';
 import mixin from './mixin/global';
@@ -18,12 +19,17 @@ import crcloudTable from './components/crcloudTable';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+import 'element-tiptap/lib/index.css';
 
 Vue.use(Element);
 Vue.use(animated);
 Vue.use(VueAwesomeSwiper);
 Vue.component('crcloud-table', crcloudTable);
 
+Vue.use(ElementTiptapPlugin, {
+  lang: 'zh', // 见 i18n
+  spellcheck: true, // 可被 editor 同名 prop 重写
+});
 // 按需引用echarts
 const echarts = require('echarts/lib/echarts');
 require('echarts/lib/chart/pie');
