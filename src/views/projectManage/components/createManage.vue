@@ -9,215 +9,217 @@
     custom-class="custom-dialog creat-project"
     class="tl-dialog"
   >
-    <el-form
-      ref="projectForm"
-      :model="formData"
-      label-width="120px"
-      :rules="rules"
-      class="tl-form"
-    >
-      <el-form-item label="项目名称" prop="projectName">
-        <el-input
-          v-model.trim="formData.projectName"
-          maxlength="20"
-          clearable
-          class="tl-input"
-        ></el-input>
-      </el-form-item>
+    <el-scrollbar>
+      <el-form
+        ref="projectForm"
+        :model="formData"
+        label-width="120px"
+        :rules="rules"
+        class="tl-form"
+      >
+        <el-form-item label="项目名称" prop="projectName">
+          <el-input
+            v-model.trim="formData.projectName"
+            maxlength="20"
+            clearable
+            class="tl-input"
+          ></el-input>
+        </el-form-item>
 
-      <el-form-item label="项目描述" prop="projectDesc">
-        <el-input
-          v-model.trim="formData.projectDesc"
-          maxlength="200"
-          type="textarea"
-          clearable
-          class="tl-textarea"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="申请部门" prop="orgIdList">
-        <el-cascader
-          ref="cascader"
-          v-model="formData.orgIdList"
-          :options="departmentData"
-          :show-all-levels="false"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'children',
-          }"
-          @change="selectIdChange"
-          popper-class="tl-cascader-popper"
-          class="tl-cascader"
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="项目经理" required>
-        <el-col :span="8">
-          <el-form-item prop="projectManager">
-            <el-select
-              v-model="formData.projectManager"
-              placeholder="请选择"
-              filterable
-              popper-class="select-dialog"
-              class="tl-select"
-            >
-              <el-option
-                v-for="(item, index) in projectManagerList"
-                :key="index + item.userAccount"
-                :label="item.userName"
-                :value="item.userAccount"
+        <el-form-item label="项目描述" prop="projectDesc">
+          <el-input
+            v-model.trim="formData.projectDesc"
+            maxlength="200"
+            type="textarea"
+            clearable
+            class="tl-textarea"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="申请部门" prop="orgIdList">
+          <el-cascader
+            ref="cascader"
+            v-model="formData.orgIdList"
+            :options="departmentData"
+            :show-all-levels="false"
+            :props="{
+              checkStrictly: true,
+              value: 'orgId',
+              label: 'orgName',
+              children: 'children',
+            }"
+            @change="selectIdChange"
+            popper-class="tl-cascader-popper"
+            class="tl-cascader"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="项目经理" required>
+          <el-col :span="8">
+            <el-form-item prop="projectManager">
+              <el-select
+                v-model="formData.projectManager"
+                placeholder="请选择"
+                filterable
+                popper-class="select-dialog"
+                class="tl-select"
               >
-                <dl class="user-info">
-                  <dd>{{ item.userName }}</dd>
-                  <dd>{{ item.orgName }}</dd>
-                </dl>
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="1"></el-col>
-        <el-col :span="7">
-          <el-form-item prop="userCompany">
-            <el-select
-              v-model="formData.userCompany"
-              placeholder="请选择所属公司"
-              popper-class="select-dialog"
-              class="tl-select"
-            >
-              <el-option
-                v-for="item in companyList"
-                :key="item.value"
-                :label="item.meaning"
-                :value="item.value"
+                <el-option
+                  v-for="(item, index) in projectManagerList"
+                  :key="index + item.userAccount"
+                  :label="item.userName"
+                  :value="item.userAccount"
+                >
+                  <dl class="user-info">
+                    <dd>{{ item.userName }}</dd>
+                    <dd>{{ item.orgName }}</dd>
+                  </dl>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1"></el-col>
+          <el-col :span="7">
+            <el-form-item prop="userCompany">
+              <el-select
+                v-model="formData.userCompany"
+                placeholder="请选择所属公司"
+                popper-class="select-dialog"
+                class="tl-select"
               >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="1"></el-col>
-        <el-col :span="7">
-          <el-form-item prop="userLevel">
-            <el-select
-              v-model="formData.userLevel"
-              placeholder="请选择级别"
-              popper-class="select-dialog"
-              class="tl-select"
-            >
-              <el-option
-                v-for="item in levelList"
-                :key="item.value"
-                :label="item.meaning"
-                :value="item.value"
+                <el-option
+                  v-for="item in companyList"
+                  :key="item.value"
+                  :label="item.meaning"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1"></el-col>
+          <el-col :span="7">
+            <el-form-item prop="userLevel">
+              <el-select
+                v-model="formData.userLevel"
+                placeholder="请选择级别"
+                popper-class="select-dialog"
+                class="tl-select"
               >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="项目类型" prop="projectType">
-        <el-select
-          v-model="formData.projectType"
-          placeholder="请选择项目类型"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in CONST.PROJECT_TYPE_CREATE_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+                <el-option
+                  v-for="item in levelList"
+                  :key="item.value"
+                  :label="item.meaning"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="项目类型" prop="projectType">
+          <el-select
+            v-model="formData.projectType"
+            placeholder="请选择项目类型"
+            popper-class="select-dialog"
+            class="tl-select"
           >
-          </el-option>
-        </el-select>
-      </el-form-item>
-       <el-form-item label="是否部门级项目" prop="projectOrgType">
-      <el-radio-group v-model="formData.projectOrgType">
-        <el-radio :label="1" class="tl-radio">是</el-radio>
-        <el-radio :label="0" class="tl-radio">否</el-radio>
-      </el-radio-group>
-      </el-form-item>
-      <el-form-item label="投入类型" prop="throwType">
-        <el-select
-          v-model="formData.throwType"
-          placeholder="请选择投入类型"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in CONST.THROW_TYPE_CREATE_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            <el-option
+              v-for="item in CONST.PROJECT_TYPE_CREATE_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否部门级项目" prop="projectOrgType">
+          <el-radio-group v-model="formData.projectOrgType">
+            <el-radio :label="1" class="tl-radio">是</el-radio>
+            <el-radio :label="0" class="tl-radio">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="投入类型" prop="throwType">
+          <el-select
+            v-model="formData.throwType"
+            placeholder="请选择投入类型"
+            popper-class="select-dialog"
+            class="tl-select"
           >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="内部顾问预算" prop="insideBudget" >
-        <el-input-number
-          v-model="formData.insideBudget"
-          controls-position="right"
-          :min="0"
-          :max="50000000"
-          class="tl-input-number"
-        ></el-input-number>
-        <span>元</span>
+            <el-option
+              v-for="item in CONST.THROW_TYPE_CREATE_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="内部顾问预算" prop="insideBudget">
+          <el-input-number
+            v-model="formData.insideBudget"
+            controls-position="right"
+            :min="0"
+            :max="50000000"
+            class="tl-input-number"
+          ></el-input-number>
+          <span>元</span>
 
-        <el-select
-          v-model="formData.currency"
-          placeholder="请选择币种"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in CONST.CURRENCY_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          <el-select
+            v-model="formData.currency"
+            placeholder="请选择币种"
+            popper-class="select-dialog"
+            class="tl-select"
           >
-          </el-option>
-        </el-select>
-      </el-form-item>
+            <el-option
+              v-for="item in CONST.CURRENCY_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="外部顾问预算" prop="outerConsultBudget">
-        <el-input-number
-          v-model="formData.outerConsultBudget"
-          controls-position="right"
-          :min="0"
-          :max="50000000"
-          class="tl-input-number"
-        ></el-input-number>
-        <span>元</span>
+          <el-input-number
+            v-model="formData.outerConsultBudget"
+            controls-position="right"
+            :min="0"
+            :max="50000000"
+            class="tl-input-number"
+          ></el-input-number>
+          <span>元</span>
 
-        <el-select
-          v-model="formData.currency"
-          placeholder="请选择币种"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in CONST.CURRENCY_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          <el-select
+            v-model="formData.currency"
+            placeholder="请选择币种"
+            popper-class="select-dialog"
+            class="tl-select"
           >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="项目周期" prop="projectDate">
-        <el-date-picker
-          v-model="formData.projectDate"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
-          @change="changeDate"
-          popper-class="tl-range-popper"
-          class="tl-range-editor"
-        >
-        </el-date-picker>
-      </el-form-item>
-    </el-form>
+            <el-option
+              v-for="item in CONST.CURRENCY_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="项目周期" prop="projectDate">
+          <el-date-picker
+            v-model="formData.projectDate"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            @change="changeDate"
+            popper-class="tl-range-popper"
+            class="tl-range-editor"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+    </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button
         :loading="loading"

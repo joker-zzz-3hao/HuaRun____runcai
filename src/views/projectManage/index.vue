@@ -11,7 +11,7 @@
                   v-model="formData.projectStatus"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w100"
                   @change="searchManage"
                 >
                   <el-option
@@ -30,7 +30,7 @@
                   v-model="formData.projectType"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w120"
                   @change="searchManage"
                 >
                   <el-option
@@ -49,7 +49,7 @@
                   v-model="formData.projectInputTypeCode"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w120"
                   @change="searchManage"
                 >
                   <el-option
@@ -68,8 +68,7 @@
                   v-model="formData.projectOrgType"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
-                  style="width:110px"
+                  class="tl-select has-bg w100"
                   @change="searchManage"
                 >
                   <el-option
@@ -153,10 +152,14 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-              <el-table-column prop="projectOrgType" label="是否部门级项目" min-width="180">
-                 <template slot-scope="scope">
-                   {{CONST.PROJECT_ORG_TYPE[scope.row.projectOrgType]}}
-                       </template>
+            <el-table-column
+              prop="projectOrgType"
+              label="是否部门级项目"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                {{ CONST.PROJECT_ORG_TYPE[scope.row.projectOrgType] }}
+              </template>
             </el-table-column>
             <!-- <el-table-column
               prop="projectBudget"
@@ -169,23 +172,20 @@
                 ></em>
               </template>
             </el-table-column> -->
-             <el-table-column
-              label="内部顾问预算(元)"
-              min-width="140"
-            >
+            <el-table-column label="内部顾问预算(元)" min-width="140">
               <template slot-scope="scope">
                 <em
                   v-money="{ value: scope.row.insideBudget, precision: 2 }"
                 ></em>
               </template>
             </el-table-column>
-             <el-table-column
-              label="外部顾问预算(元)"
-              min-width="140"
-            >
+            <el-table-column label="外部顾问预算(元)" min-width="140">
               <template slot-scope="scope">
                 <em
-                  v-money="{ value: scope.row.outerConsultBudget, precision: 2 }"
+                  v-money="{
+                    value: scope.row.outerConsultBudget,
+                    precision: 2,
+                  }"
                 ></em>
               </template>
             </el-table-column>
@@ -270,7 +270,10 @@
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
                 >
-                    <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                <el-button
+                  @click="setTime(scope.row)"
+                  type="text"
+                  class="tl-btn"
                   >设置</el-button
                 >
               </template>
