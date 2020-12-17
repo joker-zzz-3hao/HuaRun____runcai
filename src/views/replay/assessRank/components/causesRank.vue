@@ -61,21 +61,31 @@ export default {
     ruleDetailContentList: {
       type: Array,
     },
-    tableData: {
+    sourceTable: {
       type: Array,
     },
 
   },
   methods: {
-    show() {
+    show(table) {
       this.visible = true;
+      this.tableData = table || [];
     },
     close() {
       this.visible = false;
     },
     submit() {
-      // console.log(this.tableData);
-      this.$emit('success', this.tableData);
+      // 拼接
+      this.sourceTable.forEach((sourceItem) => {
+        this.tableData.forEach((item) => {
+          if (item.sourceId == sourceItem.sourceId) {
+            sourceItem.adjustReason = item.adjustReason;
+          }
+        });
+      });
+      console.log(this.sourceTable);
+      debugger;
+      this.$emit('success', this.sourceTable);
       this.close();
     },
   },
