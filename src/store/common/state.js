@@ -28,4 +28,5 @@ export default {
   processVal: '',
   optionType: '',
   projectInfo: {},
+  okrOrgId: '',
 };
