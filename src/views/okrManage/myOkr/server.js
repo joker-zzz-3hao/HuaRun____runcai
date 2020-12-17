@@ -136,6 +136,11 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
   }
 
+  // 周期偏好设置
+  setOkrMapPeriodId(param) {
+    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/setOkrMapPeriodId', param);
+  }
+
   // 查询记事本
   getOkrRemark(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrRemark/getOkrRemark', param);
@@ -144,10 +149,5 @@ export default class Server extends ServerBase {
   // 保存记事本
   saveOkrRemark(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrRemark/saveOkrRemark', param);
-  }
-
-  // 周期偏好设置
-  setOkrMapPeriodId(param) {
-    return this._ajaxPost('gateway/talent-okr/okr/okrPreferenceController/setOkrMapPeriodId', param);
   }
 }
