@@ -76,8 +76,16 @@ export default {
     },
     submit() {
       // 拼接
-      // console.log(this.tableData);
-      this.$emit('success', this.tableData);
+      this.sourceTable.forEach((sourceItem) => {
+        this.tableData.forEach((item) => {
+          if (item.sourceId == sourceItem.sourceId) {
+            sourceItem.adjustReason = item.adjustReason;
+          }
+        });
+      });
+      console.log(this.sourceTable);
+      debugger;
+      this.$emit('success', this.sourceTable);
       this.close();
     },
   },
