@@ -830,6 +830,9 @@ export default {
       });
       this.$forceUpdate();
     });
+    // this.$busOn('refreshWeekly', () => {
+    //   this.setThisWeekStatus();
+    // });
   },
   mounted() {
     this.init();
@@ -1240,16 +1243,18 @@ export default {
       };
       this.submitLoading = true;
       this.server.submitWeekly(params).then((res) => {
-        this.submitLoading = false;
         if (res.code == 200) {
           this.canUpdate = false;
           this.$message.success('保存成功');
           // 新增周报，刷新日历数据，不要请求日历查询接口，只要更改本周的数据即可
-          // if (!this.weeklyId) {
-          this.setThisWeekStatus();
-          // }
           // 更新个人okr数据,取到最新数据
           this.$busEmit('refreshMyOkr');
+          // 延时一秒再查询周报数据，防止okr数据请求未结束
+          const timer = setTimeout(() => {
+            this.setThisWeekStatus();
+          }, 1000);
+          timer();
+          clearTimeout(timer);
           // 清空params中的参数  防止再次将参数中的数据插入到任务列表中
           this.$router.push({
             query: merge({}, { params: 'clear' }),
@@ -1277,6 +1282,7 @@ export default {
         this.refreshForm = false;
         this.weeklyId = this.week.weeklyId;
         this.server.queryWeekly({ weeklyId: this.week.weeklyId }).then((res) => {
+          this.submitLoading = false;
           if (res.code == 200) {
             // 将所有数据保存
             this.weeklyData = res.data;
