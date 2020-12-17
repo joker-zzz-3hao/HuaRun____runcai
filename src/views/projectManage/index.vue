@@ -61,26 +61,6 @@
                 </el-select>
               </dd>
             </dl>
-            <dl class="dl-item">
-              <dt>是否部门级项目</dt>
-              <dd>
-                <el-select
-                  v-model="formData.projectOrgType"
-                  :popper-append-to-body="false"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
-                  style="width:110px"
-                  @change="searchManage"
-                >
-                  <el-option
-                    v-for="item in CONST.PROJECT_ORG_TYPE_ARR"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </dd>
-            </dl>
           </div>
           <el-button
             v-show="hasPower('project-create')"
@@ -152,11 +132,6 @@
                 >
                 <span v-else>--</span>
               </template>
-            </el-table-column>
-              <el-table-column prop="projectOrgType" label="是否部门级项目" min-width="180">
-                 <template slot-scope="scope">
-                   {{CONST.PROJECT_ORG_TYPE[scope.row.projectOrgType]}}
-                       </template>
             </el-table-column>
             <!-- <el-table-column
               prop="projectBudget"
