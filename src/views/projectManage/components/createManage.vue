@@ -12,7 +12,7 @@
     <el-form
       ref="projectForm"
       :model="formData"
-      label-width="110px"
+      label-width="100px"
       :rules="rules"
       class="tl-form"
     >
@@ -145,41 +145,15 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="内部顾问预算" prop="insideBudget" >
+      <el-form-item label="项目总预算" prop="totalBudget">
         <el-input-number
-          v-model="formData.insideBudget"
+          v-model="formData.totalBudget"
           controls-position="right"
           :min="0"
           :max="50000000"
           class="tl-input-number"
         ></el-input-number>
         <span>元</span>
-
-        <el-select
-          v-model="formData.currency"
-          placeholder="请选择币种"
-          popper-class="select-dialog"
-          class="tl-select"
-        >
-          <el-option
-            v-for="item in CONST.CURRENCY_LIST"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-           <el-form-item label="外部顾问预算" prop="outerConsultBudget">
-        <el-input-number
-          v-model="formData.outerConsultBudget"
-          controls-position="right"
-          :min="0"
-          :max="50000000"
-          class="tl-input-number"
-        ></el-input-number>
-        <span>元</span>
-
         <el-select
           v-model="formData.currency"
           placeholder="请选择币种"
@@ -246,8 +220,7 @@ export default {
         projectDesc: '',
         projectManager: '',
         userCompany: '',
-        insideBudget: 0,
-        outerConsultBudget: 0,
+        totalBudget: 0,
         currency: '1',
         projectDate: [],
         userLevel: '',
@@ -285,12 +258,8 @@ export default {
         throwType: [
           { required: true, message: '请选择投入类型', trigger: 'change' },
         ],
-
-        insideBudget: [
-          { required: true, message: '请选择内部顾问预算', trigger: 'change' },
-        ],
-        outerConsultBudget: [
-          { required: true, message: '请选择外部顾问预算', trigger: 'change' },
+        totalBudget: [
+          { required: true, message: '请选择投入类型', trigger: 'change' },
         ],
         projectDate: [
           { required: true, message: '请选择项目周期', trigger: 'change' },
