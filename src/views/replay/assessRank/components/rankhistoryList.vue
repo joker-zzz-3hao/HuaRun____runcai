@@ -12,7 +12,8 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table :data="props.row.list">
-            <el-table-column prop="sort" label="序号"> </el-table-column>
+            <el-table-column prop="sort" label="序号" width="30">
+            </el-table-column>
             <el-table-column prop="orgName" label="部门"> </el-table-column>
             <el-table-column prop="userName" label="负责人"> </el-table-column>
             <el-table-column prop="selfAssessmentScore" label="自评得分">
@@ -35,9 +36,12 @@
       <el-table-column prop="createUserName" label="负责人"> </el-table-column>
       <el-table-column prop="approvalStatus" label="复核结果">
         <template slot-scope="props">
-          <span>{{
-            CONST.APPROVAL_SCORE_STATUS_MAP[props.row.approvalStatus].name
-          }}</span>
+          <span
+            v-if="['1', '2', '3', '4'].includes(props.row.approvalStatus)"
+            >{{
+              CONST.APPROVAL_SCORE_STATUS_MAP[props.row.approvalStatus].name
+            }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="复核时间">

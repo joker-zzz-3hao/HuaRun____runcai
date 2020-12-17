@@ -54,7 +54,10 @@
         min-width="100"
       >
       </el-table-column>
-      <el-table-column prop="reason" label="调整原因" min-width="100">
+      <el-table-column prop="adjustReason" label="调整原因" min-width="100">
+        <template scope="props">
+          <span>{{ props.row.adjustReason || "--" }}</span>
+        </template>
       </el-table-column>
     </el-table>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
@@ -67,7 +70,7 @@
     </div>
     <tl-assess-refuse
       ref="assessrefuse"
-      @success="sumbitAssess(remark)"
+      @success="sumbitAssess"
     ></tl-assess-refuse>
   </el-dialog>
 </template>
@@ -83,7 +86,6 @@ export default {
   data() {
     return {
       CONST,
-      periodIdList: [],
       server,
       visible: false,
       dialogType: 'detail',
@@ -123,7 +125,7 @@ export default {
         title: '',
         content: '确认后，部门将按照当前绩效结果分配',
       }).then(() => {
-        this.sumbitAssess();
+        this.sumbitAssess('', 3);
       });
     },
     refuse() {
@@ -131,9 +133,20 @@ export default {
         this.$refs.assessrefuse.show();
       });
     },
-    sumbitAssess(remark = '') {
+    sumbitAssess(remark, status) {
+      console.log('sumbitAssess', remark, status);
       this.server.submitApproval({
-        refuseReason: remark,
+        approvalMsg: remark,
+        approvalStatus: status,
+        resultId: this.row.resultId,
+        periodId: this.periodId,
+        orgId: this.row.orgId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(status == 3 ? '已同意' : '已驳回');
+          this.$emit('success');
+          this.close();
+        }
       });
     },
     queryList() {

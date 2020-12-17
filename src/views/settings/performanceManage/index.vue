@@ -21,7 +21,7 @@
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
               class="tl-select"
-              @change="searchList"
+              @change="periodChange"
             >
               <el-option
                 v-for="item in periodList"
@@ -32,7 +32,7 @@
             </el-select>
           </dd>
         </dl>
-        <dl class="dl-item">
+        <!-- <dl class="dl-item">
           <dt>部门</dt>
           <dd>
             <el-cascader
@@ -51,7 +51,7 @@
               class="tl-cascader"
             ></el-cascader>
           </dd>
-        </dl>
+        </dl> -->
         <div>
           <el-dropdown @command="addAmount">
             <span class="el-dropdown-link">
@@ -84,25 +84,25 @@
           {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
         </dd>
         <dd>
-          <el-tooltip
+          <!-- <el-tooltip
             effect="dark"
             content="该绩效方案已被使用，不能编辑/删除"
             placement="top"
           >
             <em class="text-gray">删除</em>
-          </el-tooltip>
+          </el-tooltip> -->
           <el-button @click="deleteRule(amountData)" type="text"
             >删除</el-button
           >
         </dd>
         <dd>
-          <el-tooltip
+          <!-- <el-tooltip
             effect="dark"
             content="该绩效方案已被使用，不能编辑/删除"
             placement="top"
           >
             <em class="text-gray">修改</em>
-          </el-tooltip>
+          </el-tooltip> -->
 
           <el-button type="text" @click="updateAmount(amountData)"
             >修改</el-button
@@ -248,12 +248,12 @@ export default {
       this.searchForm.orgId = this.userInfo.orgId;
       this.getRuleList();
       this.getOkrCycleList();
-      this.getOrgTree();
+      // this.getOrgTree();
     },
     searchList() {
       this.loading = true;
       this.server.orgQuery({
-        orgId: this.searchForm.orgId,
+        // orgId: this.searchForm.orgId,
         periodId: this.searchForm.periodId,
       }).then((res) => {
         this.loading = false;
@@ -262,6 +262,10 @@ export default {
           this.orgData = res.data.rows;
         }
       });
+    },
+    periodChange() {
+      this.searchList();
+      this.getAmountData();
     },
     getRuleList() {
       this.server.getRuleList().then((res) => {
@@ -394,7 +398,10 @@ export default {
       //   return;
       // }
       this.$xconfirm({ title: '确认删除', content: '' }).then(() => {
-        this.server.deleteRule({ periodRuleId: amountData.periodRuleId }).then((res) => {
+        this.server.deleteRule({
+          periodRuleId: amountData.periodRuleId,
+          periodId: this.searchForm.periodId,
+        }).then((res) => {
           if (res.code == 200) {
             this.$message.success('删除成功');
             this.searchList();
