@@ -36,12 +36,9 @@
       <el-table-column prop="createUserName" label="负责人"> </el-table-column>
       <el-table-column prop="approvalStatus" label="复核结果">
         <template slot-scope="props">
-          <span
-            v-if="['1', '2', '3', '4'].includes(props.row.approvalStatus)"
-            >{{
-              CONST.APPROVAL_SCORE_STATUS_MAP[props.row.approvalStatus].name
-            }}</span
-          >
+          <span v-if="props.row.approvalStatus !== 0">{{
+            CONST.APPROVAL_SCORE_STATUS_MAP[props.row.approvalStatus].name
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="复核时间">
