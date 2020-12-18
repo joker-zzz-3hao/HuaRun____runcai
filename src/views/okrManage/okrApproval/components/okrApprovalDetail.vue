@@ -239,7 +239,7 @@ export default {
       okrId: '',
       data: {},
       tableList: [],
-      okrData: {},
+      okrData: { attachmentList: [] },
       loading: false,
       ruleForm: {
         approvalStatus: '1',
@@ -247,12 +247,6 @@ export default {
       },
       cycleList: [],
       cycleFirst: {},
-      attachmentList: [{
-        name: '润联科技.jpg',
-        resourceId: '217980e1-5877-4ebb-ae76-4877c6cb7fd9',
-        resourceName: '润联科技.jpg',
-        resourceUrl: 'http://cr-talent-test.crc.oss-hn01.crcloud.com/%2Ftalent-dev/CR0011000054/217980e1-5877-4ebb-ae76-4877c6cb7fd9?AWSAccessKeyId=VGFsZW50RGV2VXNlcg%3D%3D&Expires=1606586772&Signature=g%2Ba9hGD3ySZ%2Bs91xCrpo%2BvYYzlY%3D',
-      }],
     };
   },
   components: {

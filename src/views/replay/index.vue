@@ -1,5 +1,8 @@
 <template>
-  <div class="replay-okr">
+  <div
+    class="replay-okr"
+    :class="{ 'replay-edit': $route.name == 'replayEdit' }"
+  >
     <div
       class="operating-area"
       v-show="
