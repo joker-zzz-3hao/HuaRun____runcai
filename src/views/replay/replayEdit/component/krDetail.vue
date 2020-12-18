@@ -355,7 +355,7 @@ export default {
           this.getOldList();
           this.$message.success('保存成功');
         } else {
-          this.$$message.error(res.msg);
+          this.$message.error(res.msg);
         }
       });
     },
@@ -363,15 +363,26 @@ export default {
       this.checkDatakrs(false);
       const CheckNull = this.list.every((
         item,
-      ) => !item.score && !item.remark && !item.advantage && !item.disadvantage && item.measure.length == 0);
+      ) => (item.score == null) && !item.remark && !item.advantage && !item.disadvantage && item.measure.length == 0);
       if (CheckNull) {
         console.log(this.list);
         this.$router.push('/replayList');
         return false;
       }
-
-      console.log(JSON.stringify(this.oldList), JSON.stringify(this.list));
-      if (JSON.stringify(this.oldList) == JSON.stringify(this.list)) {
+      // 校验去掉文件列表
+      const list = this.list.map((item) => ({
+        detailId: item.detailId,
+        okrDetailId: item.okrDetailId,
+        communication: item.communication,
+        advantage: item.advantage,
+        disadvantage: item.disadvantage,
+        measure: item.measure || [],
+        communicationLabel: item.communicationLabel,
+        score: item.score,
+        remark: item.scoreRemark || null,
+      }));
+      console.log(JSON.stringify(this.oldList), JSON.stringify(list));
+      if (JSON.stringify(this.oldList) == JSON.stringify(list)) {
         this.$router.push('/replayList');
       } else {
         this.$confirm('关闭后您填写内容将被清除，请确认是否关闭?', {
@@ -466,7 +477,6 @@ export default {
         disadvantage: item.disadvantage,
         measure: item.measure || [],
         communicationLabel: item.communicationLabel,
-        attachmentDtoList: item.attachmentDtoList,
         score: item.score,
         remark: item.scoreRemark,
       }));
