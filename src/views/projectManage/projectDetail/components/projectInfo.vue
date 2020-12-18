@@ -74,26 +74,10 @@
             <em>{{ baseInfo.orgName }}</em>
           </dd>
         </dl>
-        <!-- <dl class="dl-item">
+        <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
             <em v-money="{ value: baseInfo.projectBudget, precision: 2 }"></em
-            ><span>元</span
-            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
-          </dd>
-        </dl> -->
-            <dl class="dl-item">
-          <dt><span>内部顾问预算</span></dt>
-          <dd>
-            <em v-money="{ value: baseInfo.insideBudget, precision: 2 }"></em
-            ><span>元</span
-            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
-          </dd>
-        </dl>
-            <dl class="dl-item">
-          <dt><span>外部顾问预算</span></dt>
-          <dd>
-            <em v-money="{ value: baseInfo.outerConsultBudget, precision: 2 }"></em
             ><span>元</span
             ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>

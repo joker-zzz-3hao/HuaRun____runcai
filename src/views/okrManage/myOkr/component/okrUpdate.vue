@@ -531,7 +531,7 @@ export default {
           this.noteText = res.data.content || `
         <p>记录OKR进展相关的点点滴滴</p>
       `;
-          if (this.noteText.indexOf('</p>') === 3) {
+          if (this.noteText.indexOf('</p>') === 3 && this.noteText.indexOf('</p><p>') === -1) {
             this.noteText = `
         <p>记录OKR进展相关的点点滴滴</p>
       `;

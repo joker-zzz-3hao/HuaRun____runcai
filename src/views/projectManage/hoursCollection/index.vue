@@ -211,8 +211,10 @@
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import hoursRecord from './components/hoursRecord';
+import Server from '../server';
 import CONST from '../const';
 
+const server = new Server();
 export default {
   name: 'projectInfo',
   data() {
@@ -221,53 +223,66 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 10,
+      server,
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
       tableDataRow: [{
+        id: 1,
         userName: '111',
         time: '',
         disabled: true,
       }, {
+        id: 1,
         userName: '111',
         disabled: true,
         time: '',
       }, {
+        id: 1,
         userName: '111',
         disabled: true,
         time: '',
       }, {
+        id: 1,
         userName: '111',
         disabled: true,
         time: '',
       }, {
+        id: 1,
         userName: '111',
         disabled: true,
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '111',
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '111',
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '111',
         time: '',
       }, {
+        id: 1,
         userName: '111',
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '111',
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '222',
         time: '',
       }, {
+        id: 1,
         disabled: true,
         userName: '112221',
         time: '',
@@ -285,12 +300,7 @@ export default {
     'tl-hours-record': hoursRecord,
   },
   props: {
-    server: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
+
     baseInfo: {
       type: Object,
       default() {
@@ -302,18 +312,20 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
+      projectInfo: (state) => state.projectInfo,
     }),
   },
   mounted() {
+    console.log(this.projectInfo);
     this.searchList();
 
-    // this.server.queryByCodes({
-    //   codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
-    // }).then((res) => {
-    //   if (res.code == '200') {
-    //     this.codes = res.data;
-    //   }
-    // });
+    this.server.queryByCodes({
+      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+    }).then((res) => {
+      if (res.code == '200') {
+        this.codes = res.data;
+      }
+    });
   },
   methods: {
     changeMinMax(time, index) {
