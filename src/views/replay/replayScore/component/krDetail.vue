@@ -72,7 +72,7 @@
                 <dd>{{ list.score }}</dd>
               </dl>
               <dl v-if="list.scoreRemark">
-                <dt>自评分说明</dt>
+                <dt>自评说明</dt>
                 <dd>{{ list.scoreRemark }}</dd>
               </dl>
               <dl>
@@ -432,7 +432,7 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=SCORE_REVIEW&sourceKey=${this.$route.query.okrId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_REVIEW&sourceKey=${this.$route.query.okrId}`;
       window.open(url);
     },
     // 更新文件状态
@@ -440,7 +440,7 @@ export default {
       this.list.forEach((item) => {
         if (item.attachmentList && item.attachmentList.length > 0) {
           const files = item.attachmentList.map((file) => file.resourceId).toString();
-          this.server.updateResource({ resourceId: files, sourceType: 'OKR_REVIEW' });
+          this.server.updateResource({ resourceId: files, sourceType: 'SCORE_REVIEW' });
         }
       });
     },

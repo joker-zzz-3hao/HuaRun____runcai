@@ -94,17 +94,17 @@
             ></el-table-column>
             <el-table-column prop="selfAssessmentScore" label="OKR得分">
               <template slot-scope="scope">
-                <span v-if="scope.row.selfAssessmentScore != null">{{
-                  scope.row.selfAssessmentScore
-                }}</span>
+                <span v-if="scope.row.selfAssessmentScore != null">
+                  {{ scope.row.selfAssessmentScore }}分
+                </span>
                 <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column prop="finalScore" label="复核得分">
               <template slot-scope="scope">
-                <span v-if="scope.row.finalScore != null">{{
-                  scope.row.finalScore
-                }}</span>
+                <span v-if="scope.row.finalScore != null">
+                  {{ scope.row.finalScore }}分
+                </span>
                 <span v-else>--</span>
               </template>
             </el-table-column>

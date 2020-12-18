@@ -56,13 +56,13 @@
           <dd>
             <div>
               <span>考核指标</span>
-              <em>{{ list.checkQuota }}</em>
+              <em>{{ list.checkQuota || "未填写" }}</em>
             </div>
           </dd>
           <dd>
             <div>
               <span>衡量方法</span>
-              <em>{{ list.judgeMethod }}</em>
+              <em>{{ list.judgeMethod || "未填写" }}</em>
             </div>
           </dd>
           <dd>
@@ -91,16 +91,16 @@
             <template v-if="list.openAdvantage">
               <dl>
                 <dt>价值与收获</dt>
-                <dd>{{ list.advantage || "--" }}</dd>
+                <dd>{{ list.advantage || "未填写" }}</dd>
               </dl>
               <dl>
                 <dt>问题与不足</dt>
-                <dd>{{ list.disadvantage || "--" }}</dd>
+                <dd>{{ list.disadvantage || "未填写" }}</dd>
               </dl>
               <dl>
                 <dt>改进措施</dt>
                 <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
-                <dd v-if="list.measure.length == 0">--</dd>
+                <dd v-if="list.measure.length == 0">未填写</dd>
               </dl>
             </template>
             <div @click="openMore(list)">

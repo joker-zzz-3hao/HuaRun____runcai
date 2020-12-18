@@ -134,7 +134,7 @@
         type="primary"
         class="tl-btn amt-bg-slip"
         :disabled="sortMsg.approvalStatus == 2"
-        @click="submit"
+        @click="submitValidator()"
         >提交</el-button
       >
     </div>
@@ -143,7 +143,7 @@
       ref="causesRank"
       @success="assessmentSubmit"
       :ruleDetailContentList="ruleDetailContentList"
-      :tableData="tableData"
+      :sourceTable="tableData"
     ></causes-rank>
   </div>
 </template>
@@ -212,7 +212,7 @@ export default {
     },
     // 调用暂存接口
     assessmentSave() {
-      const resultDetailList = this.tableData.map((item) => ({
+      const resultDetailVoList = this.tableData.map((item) => ({
         resultDetailId: item.resultDetailId,
         type: item.type,
         sourceId: item.orgId,
@@ -223,7 +223,7 @@ export default {
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
-        resultDetailList,
+        resultDetailVoList,
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
@@ -231,23 +231,39 @@ export default {
         }
       });
     },
-    // 调用提交接口
-    assessmentSubmit(tableData = this.tableData) {
-      tableData.forEach((item) => {
+    // 提交校验
+    submitValidator() {
+      this.tableData.forEach((item) => {
         item.sourceId = item.orgId;
       });
       const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
         ruleId: rule.ruleId,
         ruleName: rule.ruleName,
       }));
-      console.log({
-        resultDetailList: tableData,
-        orgResultDetailMapList: tableData,
+      this.server.assessmentSubmit({
+        resultDetailVoList: this.tableData,
+        orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.assessmentSubmit(this.tableData);
+        } else if (res.code == 30000) {
+          this.$refs.causesRank.show(res.data);
+        }
       });
+    },
+    // 调用提交接口
+    assessmentSubmit(tableData = this.tableData) {
+      // tableData.forEach((item) => {
+      //   item.sourceId = item.orgId;
+      // });
+      const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
+        ruleId: rule.ruleId,
+        ruleName: rule.ruleName,
+      }));
       this.server.assessmentSubmit({
         resultDetailVoList: tableData,
         orgResultDetailMapList: tableData,
@@ -332,10 +348,6 @@ export default {
     // 显示历史列表
     showbeforeList() {
       this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
-    },
-    // 提交
-    submit() {
-      this.$refs.causesRank.show();
     },
   },
 

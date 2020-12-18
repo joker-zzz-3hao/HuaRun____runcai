@@ -3426,6 +3426,19 @@
   width: 600px;
 }
 
+.supporting-values .tl-radio .el-radio__label {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.supporting-values .cont-box > .el-radio-group {
+  margin-bottom: 30px;
+}
+
+.supporting-values .dl-list dt em {
+  margin-right: 20px;
+}
+
 .tl-dialog .select-project {
   width: 900px;
 }
