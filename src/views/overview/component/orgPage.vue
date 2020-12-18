@@ -97,13 +97,14 @@
           :key="item.userId + index"
           @click="getidentity(item)"
         >
-          <dt class="user-info">
+          <!-- <dt class="user-info">
             <img v-if="item.headUrl" :src="item.headUrl" alt />
             <div class="user-name" v-else>
               <em>{{ cutName(item.userName) }}</em>
             </div>
-          </dt>
-          <dd>{{ item.userName }}</dd>
+          </dt> -->
+          <!-- <dd>{{ item.userName }}</dd> -->
+          <span class="org-btn">{{ cutOrgName(item.userName) }}</span>
         </dl>
       </div>
     </div>
