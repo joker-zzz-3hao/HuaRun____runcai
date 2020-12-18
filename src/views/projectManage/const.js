@@ -168,6 +168,16 @@ const PROJECT_SOURCE_MAP = [
   { value: 'TENANT', label: '虚拟项目' },
 ];
 
+const BELONGINGTYPE = [
+  { value: 1, label: '内部' },
+  { value: 2, label: '外部' },
+];
+
+const BELONGINGTYPE_TYPE = {
+  1: '内部',
+  2: '外部',
+};
+
 export default {
   THROW_TYPE_MAP,
   THROW_TYPE_LIST,
@@ -192,4 +202,6 @@ export default {
   APPROVAL_LEVEL,
   PROJECT_ORG_TYPE,
   PROJECT_ORG_TYPE_ARR,
+  BELONGINGTYPE,
+  BELONGINGTYPE_TYPE,
 };

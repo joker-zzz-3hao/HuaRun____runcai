@@ -93,4 +93,14 @@ export default class Server extends ServerBase {
   getCalendar(param) {
     return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
   }
+
+  //  查询列表
+  queryProjectUserList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectUserList', param);
+  }
+
+  //  计算总金额
+  queryCalculatingMoney(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryCalculatingMoney', param);
+  }
 }

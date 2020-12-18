@@ -19,11 +19,19 @@
       <div class="dl-list">
 
         <dl class="dl-item">
-          <dt><span>项目总预算</span></dt>
+          <dt><span>内部顾问预算</span></dt>
           <dd>
-            <em v-money="{ value: baseInfo.projectBudget, precision: 2 }"></em
+            <em v-money="{ value: projectInfo.insideBudget, precision: 2 }"></em
             ><span>元</span
-            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
+            ><span>({{ projectInfo.insideBudget || "人民币" }})</span>
+          </dd>
+        </dl>
+         <dl class="dl-item">
+          <dt><span>外部顾问预算</span></dt>
+          <dd>
+            <em v-money="{ value: projectInfo.outerConsultBudget, precision: 2 }"></em
+            ><span>元</span
+            ><span>({{ projectInfo.outerConsultBudget || "人民币" }})</span>
           </dd>
         </dl>
         <dl class="dl-item">
@@ -61,75 +69,105 @@
         :pageSize.sync="pageSize"
         @searchList="searchList">
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
+          <el-table :data="tableData" class="tl-table" row-key="userId"  @select="selectUser" @select-all="selectUser">
                 <el-table-column
+                reserve-selection
       type="selection"
+      :selectable="selectable"
       width="55">
     </el-table-column>
             <el-table-column prop="userName" label="姓名" min-width="140">
-              <template slot-scope="scope">
-                <div class="user-info" @click="setManager(scope.row)">
-                  <img
-                    v-if="hasValue(scope.row.headUrl)"
-                    :src="scope.row.headUrl"
-                    alt
-                  />
-                  <div v-else-if="scope.row.userName" class="user-name">
-                    <em>{{
-                      scope.row.userName.substring(
-                        scope.row.userName.length - 2
-                      )
-                    }}</em>
-                  </div>
-                </div>
-                <div class="user-name-txt">
-                  <em>{{ scope.row.userName }}</em>
-                </div>
-              </template>
+               <template slot-scope="scope">
+                   <el-input placeholder="请输入姓名" v-if="!scope.row.userId"
+                    @input="checkNull(scope.row)" v-model="scope.row.userName"></el-input>
+                    <span v-else>{{scope.row.userName}}</span>
+                </template>
             </el-table-column>
-            <el-table-column label="级别" min-width="120">
-              <template slot-scope="scope">
-                <div
-                  v-if="scope.row.projectUserType == '1'"
-                  :class="{ 'is-focus': scope.row.projectUserType == '1' }"
+            <el-table-column label="级别" prop="userLevel" min-width="120">
+               <template slot-scope="scope">
+                      <el-select
+                        @change="checkNull(scope.row)"
+                      v-if="!scope.row.userId"
+                v-model="scope.row.userLevel"
+                placeholder="请选择级别"
+                popper-class="select-dialog"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in levelList"
+                  :key="item.value"
+                  :label="item.meaning"
+                  :value="item.value"
                 >
-                  <i class="el-icon-medal"></i>
-                  <span>项目经理</span>
-                </div>
-                <div
-                  v-else-if="scope.row.projectUserType == '0'"
-                  @click="setManager(scope.row)"
+                </el-option>
+              </el-select>
+                    <span v-else>{{scope.row.userLevel}}</span>
+                    </template>
+            </el-table-column>
+             <el-table-column prop="userPost" label="职能类型" min-width="120">
+                <template slot-scope="scope">
+                     <el-select
+                       @change="checkNull(scope.row)"
+                      v-if="!scope.row.userId"
+                v-model="scope.row.belongingType"
+                placeholder="请选择"
+                filterable
+                popper-class="select-dialog"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item, index) in CONST.BELONGINGTYPE"
+                  :key="index"
+                  :label="item.label"
+                  :value="item.value"
                 >
-                  <el-tooltip
-                    effect="dark"
-                    placement="top"
-                    popper-class="tl-tooltip-popper"
-                  >
-                    <div slot="content">设置项目经理</div>
-                    <span class="can-click">
-                      <i class="el-icon-medal"></i>
-                      <span>--</span>
-                    </span>
-                  </el-tooltip>
-                </div>
-                <div v-else>--</div>
-              </template>
+                </el-option>
+              </el-select>
+                  <span v-else>{{CONST.BELONGINGTYPE_TYPE[scope.row.projectUserType]}}</span>
+                </template>
+                      </el-table-column>
+            <el-table-column prop="userPost" label="职能" min-width="120">
+                 <template slot-scope="scope">
+                     <el-select
+                       @change="checkNull(scope.row)"
+                      v-if="!scope.row.userId"
+                v-model="scope.row.userPost"
+                placeholder="请选择"
+                filterable
+                popper-class="select-dialog"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="(item, index) in funcList"
+                  :key="index + item.meaning"
+                  :label="item.meaning"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+                    <span v-else>{{getName(scope.row.userPost,funcList)}}</span>
+                    </template>
             </el-table-column>
-            <el-table-column prop="userLevelName" label="职能" min-width="120">
+            <el-table-column prop="userCompany" label="所属公司" min-width="160">
               <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userLevelName)">{{
-                  scope.row.userLevelName
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="orgName" label="所属公司" min-width="160">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.orgName)">{{
-                  scope.row.orgName
-                }}</span>
-                <span v-else>--</span>
-              </template>
+                      <el-select
+                       v-if="!scope.row.userId"
+                v-model="scope.row.userCompany"
+                @change="checkNull(scope.row)"
+                placeholder="请选择所属公司"
+                popper-class="select-dialog"
+                class="tl-select"
+              >
+                <el-option
+                  v-for="item in companyList"
+                  :key="item.value"
+                  :label="item.meaning"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+                    <span v-else>{{getName(scope.row.userCompany,companyList)}}</span>
+                    </template>
             </el-table-column>
             <el-table-column prop="time" label="工时时间范围" min-width="250" >
               <template slot-scope="scope">
@@ -137,7 +175,8 @@
                       v-model="scope.row.time"
                       type="daterange"
                       range-separator="至"
-                      @change="changeMinMax(scope.row.time,scope.$index)"
+                      value-format="yyyy-MM-dd"
+                      @change="changeMinMax(scope.row,scope.$index)"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期">
                     </el-date-picker>
@@ -147,18 +186,18 @@
               <template slot-scope="scope">
                      <el-input-number
                 controls-position="right"
-                v-model="scope.row.date"
-                :min="0"
+                v-model="scope.row.supplementTime"
+                :min="0.5"
                 :max="scope.row.max"
                 :disabled="!scope.row.time"
-                :precision="0"
+                :precision="1"
                 class="tl-input-number"
               ></el-input-number>
               </template>
             </el-table-column>
    <el-table-column prop="createDate" label="工时内容" min-width="180">
-              <template>
-               <el-input placeholder="请输入内容"></el-input>
+              <template slot-scope="scope">
+               <el-input placeholder="请输入内容" @input="checkNull(scope.row)" v-model="scope.row.supplementContent"></el-input>
               </template>
             </el-table-column>
             <el-table-column
@@ -169,7 +208,7 @@
             >
               <template slot-scope="scope">
                 <el-button
-
+                  v-if="!scope.row.userId"
                   @click="deleteMember(scope.$index)"
                   type="text"
                   class="tl-btn"
@@ -186,14 +225,13 @@
 
   </div>
       <div class="footer-panel">
-      <span
-        >已选择<em>0</em
-        >位成员，工时<em>11</em>天  人力成本<em>5000</em>人民币</span
-      >
+   <span>已选择<em>{{selection.length}}</em>位成员，工时<em>{{hours}}</em>天</span>
+
         <el-button
 
         type="primary"
         class="tl-btn amt-bg-slip"
+        @click="showhoursRecord"
         >确定</el-button
       >
       <el-button
@@ -203,7 +241,7 @@
       >
 
     </div>
-  <tl-hours-record ref="hoursRecord"></tl-hours-record>
+  <tl-hours-record ref="hoursRecord" :selection="selection"></tl-hours-record>
   </div>
 </template>
 
@@ -224,75 +262,22 @@ export default {
       currentPage: 1,
       pageSize: 10,
       server,
+      selection: [],
+      hours: 0,
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
-      tableDataRow: [{
-        id: 1,
-        userName: '111',
-        time: '',
-        disabled: true,
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '222',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '112221',
-        time: '',
-      }],
+      funcList: [],
+      companyList: [],
+      levelList: [],
+      tableData: [],
       isManage: false,
       openFlag: false,
       codes: [],
       pWidth: '',
       emWidth: '',
       DisuserId: {},
+      checkbool: false,
     };
   },
   components: {
@@ -317,6 +302,7 @@ export default {
   },
   mounted() {
     console.log(this.projectInfo);
+    this.getUserList();
     this.searchList();
 
     this.server.queryByCodes({
@@ -324,11 +310,58 @@ export default {
     }).then((res) => {
       if (res.code == '200') {
         this.codes = res.data;
+        this.codes.forEach((item) => {
+          switch (item.code) {
+            case 'PROJECT_EMPLOYEE_LEVEL':
+              this.levelList = item.subList;
+              break;
+            case 'PROJECT_TECH_TYPE':
+              this.funcList = item.subList;
+              break;
+            case 'PROJECT_EMPLOYEE_COMPANY':
+              this.companyList = item.subList;
+              break;
+            default:
+              break;
+          }
+        });
       }
     });
   },
   methods: {
-    changeMinMax(time, index) {
+    selectable(row) {
+      console.log(row);
+      // eslint-disable-next-line max-len
+      return row.checkNull;
+    },
+    checkNull(row) {
+      if (row.userName && row.userPost && row.userLevel && row.supplementTime && row.supplementContent) {
+        row.checkNull = true;
+      }
+    },
+    getUserList() {
+      this.server.projectUserList({}).then((res) => {
+        if (res.code == '200') {
+          this.projectManagerList = res.data;
+        }
+      });
+    },
+    searchList() {
+      this.server.queryProjectUserList({
+        projectId: this.$route.query.projectId,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        this.tableData = res.data.content;
+        this.total = res.data.total;
+      });
+    },
+    getName(code, arr) {
+      const name = arr.filter((item) => item.value == code);
+      return name[0].meaning;
+    },
+    changeMinMax(row, index) {
+      const { time } = row;
       let weekBegin;
       let weekEnd;
       if (time) {
@@ -343,179 +376,53 @@ export default {
         const endTime = weekEnd.getTime();
         const cheTime = (endTime - startTime) / oneDate;
         this.tableData[index].max = cheTime;
-        this.tableData[index].date = '';
-        console.log(cheTime);
+        this.tableData[index].supplementTime = '';
       } else {
-        this.tableData[index].date = '';
+        this.tableData[index].supplementTime = '';
         this.tableData[index].disabled = true;
       }
+      this.checkNull(row);
     },
-    searchList() {
-      // this.tableDataRow = this.tableDataRow
-      const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
-      this.tableData = list.list;
-      this.total = list.total;
-    },
+    // searchList() {
+    //   // this.tableDataRow = this.tableDataRow
+    //   const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
+    //   this.tableData = list.list;
+    //   this.total = list.total;
+    // },
     showhoursRecord() {
-      this.$refs.hoursRecord.show();
+      if (this.selection.length == 0) {
+        this.$message.success('请勾选补录工时人员');
+        return false;
+      }
+      const selection = this.selection.map((item) => ({
+        userLevel: item.userLevel,
+        userCompany: item.userCompany,
+        userPost: item.userPost == 'Project-Mng' ? '' : item.userPost,
+        supplementTime: item.supplementTime,
+        belongingType: item.belongingType || item.projectUserType,
+      }));
+      this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
+        if (res.code == 200) {
+          this.$refs.hoursRecord.show(res.data);
+        }
+      });
     },
     addUser() {
-      this.tableData.push({
-        type: 1,
-        userName: '11',
-      });
+      this.tableData.push({});
     },
     deleteMember(index) {
       this.tableData.splice(index, 1);
     },
-    closeProject() {
-      this.$xconfirm({
-        title: '结束项目',
-        content: '确定结束该项目吗?结束后将不可进行管理。',
-      }).then(() => {
-        this.server.closeProject({
-          projectId: this.$route.query.projectId || '',
-        }).then((res) => {
-          if (res.code == '200') {
-            this.$router.push({
-              name: 'projectManage',
-            });
-          }
-        });
+    selectUser(selection) {
+      this.selection = selection;
+      console.log(this.selection);
+      let hours = 0;
+      selection.forEach((item) => {
+        hours += item.supplementTime;
       });
+      this.hours = hours;
     },
-    setManager(data) {
-      const self = this;
-      if (data.projectUserType == '0') {
-        let managerName = '';
-        self.baseInfo.projectUserVoList.forEach((item) => {
-          if (item.projectUserType == '1') {
-            managerName = item.userName;
-          }
-        });
-        let content = '';
-        if (managerName == '') {
-          content = `是否设置「${data.userName}」为项目经理?`;
-        } else {
-          content = `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`;
-        }
-        self.$xconfirm({
-          title: '设置项目经理',
-          content,
-        }).then(() => {
-          self.server.setProjectManager({
-            userId: data.userId,
-            projectId: data.projectId,
-          }).then((res) => {
-            if (res.code == '200') {
-              // 1，进入项目详情页优先检测项目经理信息是否完整，如果不完整就弹框提示，让其在弹框中完善项目经理信息，否则不弹框
-              // 2，设置完项目经理后，如果自己不是项目经理或者租户管理员就跳转项目管理列表，否则还在当前页
-              let isManager = false;
-              self.userInfo.roleList.forEach((item) => {
-                if (item.roleCode == 'TENANT_ADMIN') {
-                  isManager = true;
-                }
-              });
-              if (data.userId == self.userInfo.userId) {
-                isManager = true;
-              }
-              if (isManager == true) {
-                self.searchProject();
-              } else {
-                self.$router.push({
-                  name: 'projectManage',
-                });
-              }
-            }
-          });
-        });
-      }
-    },
-    addMembers() {
-      this.showAddMember = true;
-      this.$nextTick(() => {
-        this.$refs.addMember.show();
-      });
-    },
-    addSuccess() {
-      this.showAddMember = false;
-      this.searchProject();
-    },
-    checkSuccess() {
-      this.checkManager = false;
-      this.searchProject();
-    },
-    searchProject() {
-      this.server.projectDetail({
-        projectId: this.$route.query.projectId || '',
-      }).then((res) => {
-        if (res.code == '200') {
-          this.baseInfo = res.data;
+  },
 
-          this.isManage = false;
-          this.DisuserId = {};
-          if (this.baseInfo.projectUserVoList) {
-            this.baseInfo.projectUserVoList.forEach((item) => {
-              this.DisuserId[item.userId] = true;
-              if (item.projectUserType == '1') {
-                if (item.userId == this.userInfo.userId) {
-                  this.isManage = true;
-                }
-              }
-            });
-          }
-        }
-      });
-    },
-  },
-  watch: {
-    'baseInfo.projectDescription': {
-      handler(val) {
-        console.log(val);
-        this.$nextTick(() => {
-          this.pWidth = document.getElementById('projectDesc').clientWidth;
-          this.emWidth = document.getElementById('projectDescInside').clientWidth;
-        });
-      },
-    },
-    'baseInfo.projectId': {
-      handler() {
-        let flag = false;
-        if (this.baseInfo.projectUserVoList.length > 0) {
-          console.log(this.baseInfo.projectUserVoList);
-          this.DisuserId = {};
-          this.baseInfo.projectUserVoList.forEach((item) => {
-            this.DisuserId[item.userId] = true;
-            if (this.baseInfo.projectManagerCode.toLocaleLowerCase() == item.userAccount.toLocaleLowerCase()) {
-              if (this.hasValue(item.userCompany) && this.hasValue(item.userLevel)) {
-                flag = true;
-              }
-            }
-            if (item.projectUserType == '1') {
-              if (item.userId == this.userInfo.userId) {
-                this.isManage = true;
-              }
-            }
-          });
-        } else {
-          flag = false;
-        }
-        if (flag == false) {
-          this.checkManager = true;
-          this.$nextTick(() => {
-            this.$refs.checkManager.show();
-          });
-        }
-      },
-    },
-    listenerWidth: {
-      handler(val) {
-        console.log(val);
-        this.pWidth = document.getElementById('projectDesc').clientWidth;
-        this.emWidth = document.getElementById('projectDescInside').clientWidth;
-      },
-      deep: true,
-    },
-  },
 };
 </script>

@@ -353,6 +353,7 @@ export default {
       [
         'getprojectInfo',
       ]),
+
     searchManage() {
       this.isTalent = false;
       this.userInfo.roleList.forEach((item) => {
