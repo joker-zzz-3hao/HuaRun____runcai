@@ -2854,7 +2854,8 @@
 
 .replay-info .dl-list-group {
   margin: 16px 0 16px 0;
-  padding: 16px 20px;
+  padding: 12px 20px 8px 32px;
+  background: #f4f6f8;
 }
 
 .replay-info .dl-list-group dt span {
@@ -5936,6 +5937,14 @@
   margin-bottom: 16px;
 }
 
+.replay-okr.replay-edit {
+  padding: 0;
+}
+
+.replay-okr.replay-edit .replay-link {
+  margin: 0 auto 86px auto;
+}
+
 /* personal-center */
 .personal-center .cont-wrap {
   flex-direction: column;
@@ -6213,6 +6222,19 @@
 .creat-project .tl-input-number,
 .creat-project .tl-input-number .el-input {
   width: 380px;
+}
+
+.creat-project .el-dialog__body {
+  height: 500px;
+  overflow: hidden;
+}
+
+.creat-project .el-dialog__body .tl-form {
+  padding: 0 16px 0 0;
+}
+
+.tl-dialog .creat-project .el-dialog__footer {
+  margin: 10px 0 0 0;
 }
 
 /* working-hours */
