@@ -10,7 +10,13 @@
               <div class="list-cont">
                 <div class="operate-type">
                   <em>{{ item.userName }}</em>
-                  <span>{{ item.content }}</span>
+                  <span v-if="item.operateName"
+                    >「{{ item.operateName }}」</span
+                  >
+                  <span v-if="item.operateResult">{{
+                    item.operateResult
+                  }}</span>
+                  <span v-if="item.content">原因：「{{ item.content }}」</span>
                 </div>
               </div>
             </div>
