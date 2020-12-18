@@ -94,7 +94,6 @@
         :currentPage.sync="formData.currentPage"
         :pageSize.sync="formData.pageSize"
         @searchList="refreshPageList"
-        v-if="tableLoading"
       >
         <div slot="tableContainer" class="table-container">
           <ul v-if="!isQuickLook">
@@ -339,7 +338,6 @@ export default {
       userList: [],
       // canEdit: false,
       showRemindBtn: false,
-      tableLoading: false,
       isQuickLook: false,
       openOrClose: '',
       formData: {
@@ -457,7 +455,6 @@ export default {
       });
     },
     getTeamWeekly() {
-      this.tableLoading = false;
       const params = {
         ...this.formData,
       };
@@ -471,7 +468,6 @@ export default {
           } else {
             this.$message.error(res.msg);
           }
-          this.tableLoading = true;
           this.isQuickLook = false;
         });
       }
@@ -558,7 +554,6 @@ export default {
       });
     },
     lookChange(queryType) {
-      this.tableLoading = false;
       this.formData.queryType = queryType;
       if (queryType) {
         this.server.lookQuickly(this.formData).then((res) => {
@@ -568,7 +563,6 @@ export default {
             this.formData.currentPage = res.data.currentPage;
             this.formData.pageSize = res.data.pageSize;
           }
-          this.tableLoading = true;
           this.isQuickLook = true;
         });
       } else {
@@ -613,7 +607,6 @@ export default {
     },
     // refreshPageList(calender) {
     refreshPageList() {
-      this.tableLoading = false;
       // if (calender && calender.calendarId) {
       //   this.canEdit = calender.canEdit;
       // }
@@ -626,7 +619,6 @@ export default {
               this.formData.currentPage = res.data.currentPage;
               this.formData.pageSize = res.data.pageSize;
             }
-            this.tableLoading = true;
           });
         }
       } else {
