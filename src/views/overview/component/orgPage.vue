@@ -374,7 +374,7 @@ export default {
   position: relative;
   overflow: hidden;
   color: #685df1;
-  padding: 5px 7px 5px 7px;
+  padding: 5px 7px;
   margin-right: -8px;
 }
 </style>
