@@ -212,7 +212,7 @@ export default {
     },
     // 调用暂存接口
     assessmentSave() {
-      const resultDetailList = this.tableData.map((item) => ({
+      const resultDetailVoList = this.tableData.map((item) => ({
         resultDetailId: item.resultDetailId,
         type: item.type,
         sourceId: item.orgId,
@@ -223,7 +223,7 @@ export default {
         resultId: this.sortMsg.resultId,
         periodId: this.periodId,
         enableCommunicate: this.sortMsg.enableCommunicate,
-        resultDetailList,
+        resultDetailVoList,
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success('暂存成功');
@@ -275,8 +275,6 @@ export default {
         if (res.code == 200) {
           this.$message.success('提交成功');
           this.queryList();
-        } else if (res.code == 30000) {
-          this.$refs.causesRank.show(res.data);
         }
       });
     },
