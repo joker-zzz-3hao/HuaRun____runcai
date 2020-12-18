@@ -189,7 +189,7 @@
       :objectType="true"
       :projectManagerList="projectManagerList"
       :userType="true"
-      title="添加虚线汇报人"
+      title="添加成员"
       :rouleType="true"
       :DisuserId="DisuserId"
       @submitFunctin="listRoleUser"
