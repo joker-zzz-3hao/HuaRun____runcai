@@ -11,9 +11,6 @@
         <dl class="dl-item">
           <dt>OKR周期</dt>
           <dd>
-            <!-- multiple 多选属性 -->
-            <!-- searchForm.periodId 单选 -->
-            <!-- multperiod 多选 -->
             <el-select
               :disabled="periodList.length == 0"
               v-model="searchForm.periodId"
@@ -84,26 +81,11 @@
           {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
         </dd>
         <dd>
-          <!-- <el-tooltip
-            effect="dark"
-            content="该绩效方案已被使用，不能编辑/删除"
-            placement="top"
-          >
-            <em class="text-gray">删除</em>
-          </el-tooltip> -->
           <el-button @click="deleteRule(amountData)" type="text"
             >删除</el-button
           >
         </dd>
         <dd>
-          <!-- <el-tooltip
-            effect="dark"
-            content="该绩效方案已被使用，不能编辑/删除"
-            placement="top"
-          >
-            <em class="text-gray">修改</em>
-          </el-tooltip> -->
-
           <el-button type="text" @click="updateAmount(amountData)"
             >修改</el-button
           >
@@ -130,19 +112,7 @@
               prop="userName"
               min-width="150px"
             ></el-table-column>
-            <!-- <el-table-column label="奖金系数" align="left" min-width="200px">
-              <template slot-scope="scope">
-                <span
-                  v-for="(item, index) in scope.row.ruleDetailList"
-                  :key="item.ruleId"
-                >
-                  {{ item.value + item.unit
-                  }}{{
-                    scope.row.ruleDetailList.length - 1 != index ? "、" : ""
-                  }}
-                </span>
-              </template></el-table-column
-            > -->
+
             <el-table-column
               v-for="column in colums"
               :key="column.name"
@@ -151,13 +121,7 @@
               min-width="200px"
               :prop="column.name"
             >
-              <!-- <template slot-scope="scope">
-                <span>
-                  {{ scope.row.name }}
-                </span>
-              </template> -->
             </el-table-column>
-
             <el-table-column
               label="操作"
               align="left"
@@ -355,7 +319,6 @@ export default {
     },
     addAmount(ruleId) {
       // 判断是否支持编辑，如果不支持，弹出警告提示
-      this.$message.warning('该绩效方案已被使用，不能编辑/删除');
       this.searchForm.ruleId = ruleId;
       for (let i = 0; i < this.amountDataList.length; i += 1) {
         if (this.amountDataList[i].ruleId == ruleId) {

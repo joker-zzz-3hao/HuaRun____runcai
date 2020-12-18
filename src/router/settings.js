@@ -15,7 +15,7 @@ export default [{
       isSubMenu: true,
       parentRoute: 'orgManage',
       title: 'orgManage',
-      power: '',
+      power: 'organize-menu',
     },
     component: () => import('@/views/settings/orgManage/index'),
   },
@@ -33,7 +33,7 @@ export default [{
     component: () => import('@/views/settings/roleManage/roleType/index'),
   },
   {
-    // 角色管理
+
     path: '/members',
     name: 'members',
     meta: {
