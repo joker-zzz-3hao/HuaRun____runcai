@@ -12,7 +12,7 @@
     :title="title"
     :close-on-click-modal="false"
   >
-    <dl>
+    <dl v-show="step == 1">
       <dt>请选择评定方式：</dt>
       <dd>
         <el-select
@@ -29,7 +29,7 @@
           ></el-option
         ></el-select>
         <dl class="layout-flex">
-          <dt>当前剩余可分配'{{ remainAmount.ruleName }}'数量：</dt>
+          <dt>当前剩余可分配{{ remainAmount.ruleName }}数量：</dt>
           <dd
             v-for="item in remainAmount.periodRuleDetailList"
             :key="item.periodRuleDetailId"
@@ -57,19 +57,35 @@
         </dl>
       </dd>
     </dl>
+    <dl v-show="step == 2">
+      <dd>
+        <dl class="layout-flex">
+          <dt>{{ amountData.ruleName }}数量：</dt>
+          <dd
+            v-for="item in amountData.periodRuleDetailList"
+            :key="item.periodRuleDetailId"
+            class="layout-flex dd-margin"
+          >
+            <span>{{ item.value + item.unit }}</span
+            ><em>{{ Number(item.applyValue || 0) }}</em
+            ><span>个</span>
+          </dd>
+        </dl>
+      </dd>
+    </dl>
     <div class="operating-box">
       <el-button
         :loading="loading"
         type="primary"
         class="tl-btn amt-bg-slip"
         @click="submit"
-        >确认</el-button
+        >{{ step == 1 ? "确认" : "提交" }}</el-button
       >
       <el-button
         :disabled="loading"
         plain
         class="tl-btn amt-border-fadeout"
-        @click="close"
+        @click="cancel"
         >取消</el-button
       >
     </div>
@@ -124,6 +140,7 @@ export default {
         periodRuleDetailList: [],
       },
       detailList: [],
+      step: 1,
     };
   },
   created() { },
@@ -135,8 +152,6 @@ export default {
       this.amountDataList = this.deepCopy(this.amountDataCopy);
       this.periodRuleId = this.amountDataList[0].periodRuleId;
       this.detailList = JSON.parse(this.rowData.detail);
-      console.log('detailList', this.detailList);
-      console.log('amountDataList', this.amountDataList);
       this.getUnApplyNumber();
       // 将设置过得列显示在页面中（未设置的，初始化为0）
       this.setInitData();
@@ -212,6 +227,7 @@ export default {
         if (!this.hasValue(element1.applyValue)) {
           element1.applyValue = 0;
         }
+        element1.applyValue = Number(element1.applyValue);
         if (element1.ruleDetailId == amountItem.ruleDetailId) {
           this.remainAmount.periodRuleDetailList.forEach((element2) => {
             if (element2.ruleDetailId == amountItem.ruleDetailId) {
@@ -248,7 +264,14 @@ export default {
       this.$forceUpdate();
     },
     cancel() {
-
+      if (this.step == 2) {
+        this.step = 1;
+        this.title = `分配绩效名额（${this.rowData.orgName}）`;
+        return;
+      }
+      if (this.step == 1) {
+        this.close();
+      }
     },
     close() {
       this.visible = false;
@@ -311,13 +334,20 @@ export default {
       }
       // 编辑
       if (validateStatus) {
-        this.server.addOrUpdateAmount([params]).then((res) => {
-          if (res.code == 200) {
-            this.$message.success('成功');
-            this.$emit('refreshPage');
-            this.close();
-          }
-        });
+        if (this.step == 1) {
+          this.step = 2;
+          this.title = `确认后${this.rowData.orgName}将分配所填数量`;
+          return;
+        }
+        if (this.step == 2) {
+          this.server.addOrUpdateAmount([params]).then((res) => {
+            if (res.code == 200) {
+              this.$message.success('成功');
+              this.$emit('refreshPage');
+              this.close();
+            }
+          });
+        }
       } else {
         this.$message.error('填写数据错误，请修改后重试。');
       }
