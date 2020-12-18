@@ -24,7 +24,9 @@
         <dl>
           <dt>复核结果</dt>
           <dd>
-            {{ CONST.APPROVAL_SCORE_STATUS_MAP[row.approvalStatus].name }}
+            {{
+              CONST.APPROVAL_SCORE_STATUS_MAP[row.approvalStatus || "1"].name
+            }}
           </dd>
         </dl>
         <dl>
