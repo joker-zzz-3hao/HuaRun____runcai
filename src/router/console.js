@@ -333,7 +333,7 @@ export default [{
     name: 'approvalList',
     meta: {
       hasMainMenu: true,
-      isSubMenu: false,
+      noSubMenu: true,
       parentRoute: 'projectManage',
       title: 'approvalList',
       power: '',
