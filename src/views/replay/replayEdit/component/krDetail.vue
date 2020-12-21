@@ -140,7 +140,7 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .pptx,
               .xlsx"
-                    tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+                    tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过10M"
                   ></file-upload>
                 </dd>
               </dl>
@@ -424,6 +424,9 @@ export default {
         });
       });
     },
+    beforeSubmit() {
+
+    },
     submit() {
       this.checkDatakrs(false);
       const params = {
@@ -443,17 +446,20 @@ export default {
         const validateResult = res.every((item) => !!item);
         if (validateResult) {
           console.log('表单都校验通过', validateResult);
-          this.submitLoad = true;
-          this.server.okrReviewSubmit(params).then((response) => {
-            this.submitLoad = false;
-            if (response.code == 200) {
-              this.$message.success('提交成功');
-              this.$router.push('/replayList');
-              this.updateFile();
-            } else {
-              this.$message.error(response.msg);
-            }
-          });
+          this.$xconfirm({ content: '', title: '提交后将流转至上级领导，请确定填写无误后提交' })
+            .then(() => {
+              this.submitLoad = true;
+              this.server.okrReviewSubmit(params).then((response) => {
+                this.submitLoad = false;
+                if (response.code == 200) {
+                  this.$message.success('提交成功');
+                  this.$router.push('/replayList');
+                  this.updateFile();
+                } else {
+                  this.$message.error(response.msg);
+                }
+              });
+            }).catch(() => {});
         } else {
           this.$message.error('您有必填项未正确填写，请检查');
         }
