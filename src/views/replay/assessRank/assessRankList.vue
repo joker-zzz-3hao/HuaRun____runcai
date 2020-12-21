@@ -23,120 +23,136 @@
         </dd>
       </dl>
     </div>
-    <div class="cont-area">
-      <div>
-        <span>部门总数</span>
-        <em>{{ sortMsg.orgSum || 0 }}</em>
-        <span>待复核</span>
-        <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
-        <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
-          <dt>{{ rule.ruleName }}</dt>
-          <dd
-            v-for="item in rule.periodRuleDetailList"
-            :key="item.ruleDetailId"
-          >
-            <span>{{ item.value }}{{ item.unit }} </span>
-            <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
-          </dd>
-        </dl>
-      </div>
-      <div>
-        <span>绩效复核状态</span>
-        <em v-if="sortMsg.approvalStatus">{{
-          CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
-        }}</em>
-        <span>绩效复核时间</span>
-        <em>{{ sortMsg.reviewTime || "--" }}</em>
-        <span>驳回原因</span>
-        <em>{{ sortMsg.approvalMsg || "--" }}</em>
-      </div>
-      <el-button type="text" @click="showbeforeList"
-        >查看历史提交记录</el-button
-      >
+    <div v-if="noData" class="tl-card-panel no-data">
+      <div class="no-data-bg"></div>
+      <div class="no-data-txt">该OKR周期的绩效排名未开始</div>
     </div>
-    <div>
-      <span>调整绩效排名</span>
-      <em
-        >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
-      >
-    </div>
-    <div class="cont-area">
-      <tl-crcloud-table :isPage="false">
-        <div slot="tableContainer" class="table-container">
-          <el-table
-            :data="tableData"
-            class="tl-table tableSort"
-            row-key="orgId"
-          >
-            <el-table-column prop="sort" label="排序" min-width="55">
-              <template slot-scope="scope">
-                <el-button type="text" @click="upGo(tableData, scope.$index)"
-                  >向上</el-button
-                >
-                <el-button type="text" @click="downGo(tableData, scope.$index)"
-                  >向下</el-button
-                >
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              prop="sort"
-              label="序号"
-              min-width="65"
-            ></el-table-column>
-            <el-table-column
-              prop="orgName"
-              label="部门"
-              min-width="170"
-            ></el-table-column>
-
-            <el-table-column prop="userName" label="负责人" min-width="100">
-            </el-table-column>
-            <el-table-column
-              prop="selfAssessmentScore"
-              label="自评得分"
-              min-width="100"
+    <div v-else>
+      <div class="cont-area">
+        <div>
+          <span>部门总数</span>
+          <em>{{ sortMsg.orgSum || 0 }}</em>
+          <span>待复核</span>
+          <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+          <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
+            <dt>{{ rule.ruleName }}</dt>
+            <dd
+              v-for="item in rule.periodRuleDetailList"
+              :key="item.ruleDetailId"
             >
-            </el-table-column>
-            <el-table-column prop="finalScore" label="复核得分" min-width="100">
-            </el-table-column>
-            <!-- 动态 -->
-            <el-table-column
-              v-for="rule in ruleDetailContentList"
-              :key="rule.applyId"
-              :prop="rule.ruleId"
-              :label="rule.ruleName"
-              min-width="100"
-            >
-            </el-table-column>
-          </el-table>
+              <span>{{ item.value }}{{ item.unit }} </span>
+              <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
+            </dd>
+          </dl>
         </div>
-      </tl-crcloud-table>
-    </div>
-    <div>
-      <span>*是否已经确认沟通 </span>
-      <el-radio-group v-model.trim="sortMsg.enableCommunicate">
-        <el-radio class="tl-radio" v-model="radio" :label="1">已沟通</el-radio>
-        <el-radio class="tl-radio" v-model="radio" :label="2">未沟通</el-radio>
-      </el-radio-group>
-    </div>
-    <div>
-      <el-button
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="assessmentSave"
-        :disabled="sortMsg.approvalStatus == 2"
-        >暂存</el-button
-      >
+        <div>
+          <span>绩效复核状态</span>
+          <em v-if="sortMsg.approvalStatus">{{
+            CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+          }}</em>
+          <span>绩效复核时间</span>
+          <em>{{ sortMsg.reviewTime || "--" }}</em>
+          <span>驳回原因</span>
+          <em>{{ sortMsg.approvalMsg || "--" }}</em>
+        </div>
+        <el-button type="text" @click="showbeforeList"
+          >查看历史提交记录</el-button
+        >
+      </div>
+      <div>
+        <span>调整绩效排名</span>
+        <em
+          >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
+        >
+      </div>
+      <div class="cont-area">
+        <tl-crcloud-table :isPage="false">
+          <div slot="tableContainer" class="table-container">
+            <el-table
+              :data="tableData"
+              class="tl-table tableSort"
+              row-key="orgId"
+            >
+              <el-table-column prop="sort" label="排序" min-width="55">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="upGo(tableData, scope.$index)"
+                    >向上</el-button
+                  >
+                  <el-button
+                    type="text"
+                    @click="downGo(tableData, scope.$index)"
+                    >向下</el-button
+                  >
+                </template>
+              </el-table-column>
 
-      <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
-      <el-button
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        :disabled="sortMsg.approvalStatus == 2"
-        @click="submitValidator()"
-        >提交</el-button
-      >
+              <el-table-column
+                prop="sort"
+                label="序号"
+                min-width="65"
+              ></el-table-column>
+              <el-table-column
+                prop="orgName"
+                label="部门"
+                min-width="170"
+              ></el-table-column>
+
+              <el-table-column prop="userName" label="负责人" min-width="100">
+              </el-table-column>
+              <el-table-column
+                prop="selfAssessmentScore"
+                label="自评得分"
+                min-width="100"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="finalScore"
+                label="复核得分"
+                min-width="100"
+              >
+              </el-table-column>
+              <!-- 动态 -->
+              <el-table-column
+                v-for="rule in ruleDetailContentList"
+                :key="rule.applyId"
+                :prop="rule.ruleId"
+                :label="rule.ruleName"
+                min-width="100"
+              >
+              </el-table-column>
+            </el-table>
+          </div>
+        </tl-crcloud-table>
+      </div>
+      <div>
+        <span>*是否已经确认沟通 </span>
+        <el-radio-group v-model.trim="sortMsg.enableCommunicate">
+          <el-radio class="tl-radio" v-model="radio" :label="1"
+            >已沟通</el-radio
+          >
+          <el-radio class="tl-radio" v-model="radio" :label="2"
+            >未沟通</el-radio
+          >
+        </el-radio-group>
+      </div>
+      <div>
+        <el-button
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          @click="assessmentSave"
+          :disabled="sortMsg.approvalStatus == 2"
+          >暂存</el-button
+        >
+
+        <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
+        <el-button
+          type="primary"
+          class="tl-btn amt-bg-slip"
+          :disabled="sortMsg.approvalStatus == 2"
+          @click="submitValidator()"
+          >提交</el-button
+        >
+      </div>
     </div>
     <rank-history-list ref="beforeList"></rank-history-list>
     <causes-rank
@@ -178,10 +194,10 @@ export default {
       sortMsg: {},
       ruleDetailContentList: [],
       propList: [],
+      noData: true,
     };
   },
   mounted() {
-    this.getSort();
     this.getOkrCycleList();
   },
   methods: {
@@ -207,6 +223,12 @@ export default {
           // eslint-disable-next-line max-len
           this.propData = res.data.orgResultDetailDynamicColumns;
           console.log(this.propData);
+          if (this.ruleDetailContentList.length > 0) {
+            this.noData = false;
+            this.getSort();
+          } else {
+            this.noData = true;
+          }
         }
       });
     },
@@ -331,7 +353,8 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         fieldData[index] = fieldData.splice(index - 1, 1, fieldData[index])[0];
       } else {
-        fieldData.push(fieldData.shift());
+        this.$message.warning('已经在第一了');
+      //   fieldData.push(fieldData.shift());
       }
       this.setNewList(fieldData);
     },
@@ -341,7 +364,8 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         fieldData[index] = fieldData.splice(index + 1, 1, fieldData[index])[0];
       } else {
-        fieldData.unshift(fieldData.splice(index, 1)[0]);
+        this.$message.warning('已经在末尾了');
+        // fieldData.unshift(fieldData.splice(index, 1)[0]);
       }
       this.setNewList(fieldData);
     },

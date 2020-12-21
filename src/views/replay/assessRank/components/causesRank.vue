@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       visible: false,
+      tableData: [],
     };
   },
   props: {
