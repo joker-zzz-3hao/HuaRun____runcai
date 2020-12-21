@@ -2853,8 +2853,9 @@
 }
 
 .replay-info .dl-list-group {
-  margin: 16px 0 16px 0;
-  padding: 16px 20px;
+  margin: 22px 0 14px 0;
+  padding: 12px 75px 8px 32px;
+  background: #f4f6f8;
 }
 
 .replay-info .dl-list-group dt span {
@@ -2963,6 +2964,7 @@
 
 .replay-link .okr-change-list dd:nth-of-type(1) > div:nth-child(1) {
   flex: 0 0 300px;
+  width: unset;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(1) > div:nth-child(2) {
@@ -2982,7 +2984,7 @@
 }
 
 .replay-link .okr-change-list dd div > span:nth-of-type(1) {
-  color: #acb6bf;
+  color: #879099;
 }
 
 .replay-link .okr-change-list dd > div:nth-child(2) .progress-number {
@@ -3027,8 +3029,17 @@
   flex: unset;
 }
 
+.replay-link .okr-change-list dd:nth-of-type(4) dd > div:nth-child(1).el-form-item {
+  margin-bottom: 0;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd > span {
+  margin: 0 0 0 8px;
+  color: #879099;
+  font-size: 12px;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) .el-textarea__inner {
-  min-height: 52px !important;
   font-size: 14px;
 }
 
@@ -3046,6 +3057,11 @@
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child dd {
   margin: 0;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd {
+  margin-top: 10px;
+  align-items: center;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child .tag-lists dd {
@@ -3083,6 +3099,19 @@
   color: #fa6400 !important;
 }
 
+.replay-link .okr-change-list dd dd .up-btn {
+  margin: 0 8px 0 0;
+  height: 34px;
+  border-radius: 17px;
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    repeating-linear-gradient(-45deg, #d5dde3 0, #d5dde3 0.3em, #fff 0, #fff 0.5em);
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .tl-textarea {
+  width: 100%;
+}
+
 .replay-link .footer-panel {
   right: 0;
 }
@@ -3097,6 +3126,25 @@
 
 .replay-link .progress-bg:not(:first-child) {
   margin-left: 2px !important;
+}
+
+.replay-link .final-score {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #4d5155;
+}
+
+.replay-link .final-score em {
+  margin: 0 2px 0 22px;
+  font-family: DINAlternate-Bold;
+  font-size: 26px;
+  color: #4D5155;
+}
+
+.replay-link .final-score em + span {
+  font-size: 12px;
+  font-weight: normal;
 }
 
 /* 周报 */
@@ -5934,6 +5982,18 @@
 
 .replay-list .operating-box {
   margin-bottom: 16px;
+}
+
+.replay-okr.replay-edit {
+  padding: 0;
+}
+
+.replay-okr.replay-edit .replay-link {
+  margin: 0 auto 86px auto;
+}
+
+.replay-link .el-form-item__content {
+  line-height: unset;
 }
 
 /* personal-center */
