@@ -5,6 +5,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/project-service/project/query/projectPageList', param);
   }
 
+  getProject(param) {
+    return this._ajaxPost('gateway/project-service/project/query/getProject', param);
+  }
+
   createProject(param) {
     return this._ajaxPost('gateway/project-service/project/create/project', param);
   }
@@ -111,5 +115,17 @@ export default class Server extends ServerBase {
 
   querySupplementHistory(param) {
     return this._ajaxPost('gateway/project-service/project/query/querySupplementHistory', param);
+  }
+
+  projectUserDetailWork(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectUserDetailWork', param);
+  }
+
+  projectDetailJoin(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectDetail', param);
+  }
+
+  allocate(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectList', param);
   }
 }

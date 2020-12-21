@@ -58,7 +58,8 @@
            <dl class="dl-item">
 
             <dd>
-           <el-button type="primary" class="tl-btn amt-bg-slip" @click="$router.push('/HoursJoin')">工时调入</el-button>
+           <el-button type="primary" class="tl-btn amt-bg-slip"
+           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})">工时调入</el-button>
             </dd>
           </dl>
         </div>
@@ -398,14 +399,14 @@ export default {
           this.isTalent = true;
         }
       });
-      this.server.projectPageList({
+      this.server.getProject({
         currentPage: 1,
         pageSize: 9999,
         projectName: '',
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
-          this.projectList = res.data.content;
+          this.projectList = res.data;
           if (this.projectList.length > 0) {
             //  this.formData.projectId = this.projectList[0].projectId;
             const list = this.projectList.filter((item) => Number(item.projectCount) > 0);

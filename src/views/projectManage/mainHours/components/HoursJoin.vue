@@ -40,7 +40,7 @@
             id="projectDesc"
             :class="openFlag ? 'unfold' : 'fold'"
           >
-
+          {{projectInfo.projectNameCn}}
           </p>
 
         </dd>
@@ -49,38 +49,44 @@
         <dl class="dl-item">
           <dt><span>项目经理</span></dt>
           <dd>
-
+            {{projectInfo.projectManager}}
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
-
+            {{projectInfo.orgName}}
           </dd>
         </dl>
         <dl class="dl-item">
-          <dt><span>项目总预算</span></dt>
+          <dt><span>内部同事预算</span></dt>
           <dd>
-
+            {{projectInfo.insideBudget}}
           </dd>
         </dl>
-
+<dl class="dl-item">
+          <dt><span>外部同事预算</span></dt>
+          <dd>
+            {{projectInfo.outerConsultBudget}}
+          </dd>
+        </dl>
         <dl class="dl-item project-type">
           <dt><span>项目类型</span></dt>
           <dd>
-
+            {{CONST.PROJECT_TYPE_MAP[projectInfo.projectType]}}
           </dd>
         </dl>
            <dl class="dl-item project-type">
           <dt><span>已用人力成本</span></dt>
           <dd>
-
+            {{projectInfo.outerConsultBudget+projectInfo.insideBudget}}
+            =内部同事预算+外部同事预算
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>项目时间</span></dt>
           <dd>
-
+            {{dateFormat('YYYY-mm-dd HH:MM:SS',projectInfo.createDate)}}
           </dd>
         </dl>
       </div>
@@ -94,7 +100,7 @@
               <el-date-picker
                 v-model="weekLine"
                 type="daterange"
-                @change="changePick"
+                @change="searchList"
                 @clear="searchList"
                 clearable
                 value-format="yyyy-MM-dd"
@@ -146,21 +152,22 @@
               width="55"
             >
             </el-table-column>
-            <el-table-column prop="user" label="提交人" min-width="170">
+            <el-table-column prop="userName" label="提交人" min-width="170">
               <template slot-scope="scope">
-                <span>{{ scope.row.user }}</span>
+                <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门" prop="dep" min-width="200px">
+            <el-table-column label="部门" prop="orgName" min-width="200px" >
+
             </el-table-column>
-               <el-table-column label="工作项" prop="work" min-width="200px">
+               <el-table-column label="工作项" prop="workContent" min-width="200px">
             </el-table-column>
-            <el-table-column label="工时投入(天)" prop="date" min-width="200px">
+            <el-table-column label="工时投入(天)" prop="weekTime" min-width="200px">
 
             </el-table-column>
 
            <el-table-column
-              prop="level"
+              prop="userLevel"
               label="级别"
               min-width="180"
             >
@@ -168,29 +175,27 @@
             </el-table-column>
 
            <el-table-column
-              prop="workType"
+              prop="userPost"
               label="职能"
               min-width="180"
             >
-
+              <template slot-scope="scope">
+              {{getName(scope.row.userPost,funcList)}}
+                </template>
             </el-table-column>
 
            <el-table-column
-              prop="company"
+              prop="userCompany"
               label="所属公司"
               min-width="180"
             >
+              <template slot-scope="scope">
+              {{getName(scope.row.userCompany,companyList)}}
+                </template>
                 </el-table-column>
 
              <el-table-column
-              prop="dep"
-              label="部门"
-              min-width="180"
-            >
-                </el-table-column>
-
-             <el-table-column
-              prop="sumbitTime"
+              prop="approvalTime"
               label="提交时间"
               min-width="180"
             >
@@ -204,7 +209,7 @@
     <div class="footer-panel">
       <span
         >已选择<em>{{totalMoney.len}}</em
-        >位成员,人力成本<em>{{totalMoney.money}}</em>元人民币</span
+        >位成员</span
       >
       <el-button
         type="primary"
@@ -257,18 +262,7 @@ export default {
       pageSize: 10,
       showApproval: false,
       showApprovalDetail: false,
-      tableData: [{
-        id: 1,
-        user: '假人员',
-        dep: '部门',
-        work: '版主工作',
-        date: '3',
-        level: 'L3',
-        money: 1000,
-        company: '华润',
-        workType: '部门长',
-        sumbitTime: '2020-10-10',
-      }],
+      tableData: [],
       checkList: [],
       showPop: false,
       projectList: [],
@@ -282,10 +276,19 @@ export default {
       projectConfirmCurrency: '',
       workList: [],
       listDis: [],
+      projectInfoList: [],
+      projectInfo: {},
       totalMoney: {
         len: 0,
         money: 0,
       },
+      levelList: [],
+      companyList: [],
+      funcList: [],
+      selection: [],
+      weekLine: '',
+      beginWeekDate: '',
+      endWeekDate: '',
     };
   },
 
@@ -302,14 +305,11 @@ export default {
     }),
   },
   mounted() {
-    this.server.projectPageList({
-      currentPage: 1,
-      pageSize: 9999,
-      projectName: '',
-      userAccount: this.userInfo.userAccount,
+    this.server.allocate({
+      projectId: this.$route.query.projectId,
     }).then((res) => {
       if (res.code == '200') {
-        this.projectList = res.data.content;
+        this.projectList = res.data;
         if (this.projectList.length > 0) {
         //  this.formData.projectId = this.projectList[0].projectId;
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
@@ -320,26 +320,85 @@ export default {
             this.formData.projectId = this.projectList[0].projectId;
           }
         }
+        this.getCode();
+        this.searchList();
+        this.projectDetailJoin();
       }
     });
   },
   methods: {
-    selectUser(selection) {
-      console.log(selection);
-      // eslint-disable-next-line no-unused-vars
-      let total = '';
-      selection.forEach((element) => {
-        total += element.money * element.date;
+    getCode() {
+      this.server.queryByCodes({
+        codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      }).then((res) => {
+        if (res.code == '200') {
+          this.codes = res.data;
+          this.codes.forEach((item) => {
+            switch (item.code) {
+              case 'PROJECT_EMPLOYEE_LEVEL':
+                this.levelList = item.subList;
+                break;
+              case 'PROJECT_TECH_TYPE':
+                this.funcList = item.subList;
+                break;
+              case 'PROJECT_EMPLOYEE_COMPANY':
+                this.companyList = item.subList;
+                break;
+              default:
+                break;
+            }
+          });
+        }
       });
+    },
+    getName(code, arr) {
+      let name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        name = [{ meaning: '' }];
+      }
+      return name[0].meaning;
+    },
+    selectUser(selection) {
+      this.selection = selection;
       this.totalMoney = {
         len: selection.length,
-        money: total,
       };
     },
     alertSelectAll() {
-      this.$refs.HoursList.show();
+      if (this.selection.length == 0) {
+        this.$message.success('请勾选调入工时');
+        return false;
+      }
+      this.$refs.HoursList.show(this.selection);
     },
-    searchList() {},
+    searchList() {
+      if (this.weekLine) {
+      // eslint-disable-next-line prefer-destructuring
+        this.beginWeekDate = this.weekLine[0];
+        // eslint-disable-next-line prefer-destructuring
+        this.endWeekDate = this.weekLine[1];
+      } else {
+        this.endWeekDate = '';
+        this.beginWeekDate = '';
+      }
+      const params = {
+        currentProjectId: this.$route.query.projectId,
+        projectId: this.formData.projectId,
+        keyWord: this.keyWord,
+        pageSize: this.pageSize,
+        currentPage: this.currentPage,
+        beginWeekDate: this.beginWeekDate,
+        endWeekDate: this.endWeekDate,
+      };
+      this.server.projectUserDetailWork(params).then((res) => {
+        this.tableData = res.data.content;
+      });
+    },
+    projectDetailJoin() {
+      this.server.projectDetailJoin({ projectId: this.formData.projectId }).then((res) => {
+        this.projectInfo = res.data;
+      });
+    },
   },
 
 };
