@@ -353,7 +353,8 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         fieldData[index] = fieldData.splice(index - 1, 1, fieldData[index])[0];
       } else {
-        fieldData.push(fieldData.shift());
+        this.$message.warning('已经在第一了');
+      //   fieldData.push(fieldData.shift());
       }
       this.setNewList(fieldData);
     },
@@ -363,7 +364,8 @@ export default {
         // eslint-disable-next-line prefer-destructuring
         fieldData[index] = fieldData.splice(index + 1, 1, fieldData[index])[0];
       } else {
-        fieldData.unshift(fieldData.splice(index, 1)[0]);
+        this.$message.warning('已经在末尾了');
+        // fieldData.unshift(fieldData.splice(index, 1)[0]);
       }
       this.setNewList(fieldData);
     },
