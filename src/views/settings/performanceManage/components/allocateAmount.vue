@@ -340,7 +340,7 @@ export default {
           return;
         }
         if (this.step == 2) {
-          this.server.addOrUpdateAmount([params]).then((res) => {
+          this.server.addOrUpdateOrgAmount([params]).then((res) => {
             if (res.code == 200) {
               this.$message.success('成功');
               this.$emit('refreshPage');
