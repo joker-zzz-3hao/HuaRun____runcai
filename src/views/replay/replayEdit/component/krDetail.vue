@@ -144,7 +144,7 @@
                   ></file-upload>
                 </dd>
               </dl>
-              <div v-if="list.openAdvantage">
+              <template v-if="list.openAdvantage">
                 <dl>
                   <dt>价值与收获</dt>
                   <dd>
@@ -198,7 +198,7 @@
                     </dd>
                   </template>
                 </dl>
-              </div>
+              </template>
               <div @click="openMore(list)">
                 <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
                 <span v-if="list.openAdvantage">收起</span>
@@ -209,9 +209,10 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div>
+    <div class="final-score">
       <span>最终得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+      <span>分</span>
     </div>
     <tl-footer
       :btnText="'提交复盘'"

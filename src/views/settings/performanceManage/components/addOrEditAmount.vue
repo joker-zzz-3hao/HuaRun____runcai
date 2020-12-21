@@ -186,6 +186,18 @@ export default {
             this.$emit('refreshRule');
             this.$emit('refreshPage');
             this.close();
+          } else if (res.code == 30000) { // 设置数量超过了已分配出去的数量
+            if (res.data && res.data.length > 0) {
+              // 匹配到具体的值，展示报错提示
+              this.selectedRule.ruleDetailList.forEach((item) => {
+                res.data[0].periodRuleDetailList.forEach((element) => {
+                  if (item.periodRuleDetailId == element.periodRuleDetailId) {
+                    item.showError = true;
+                    item.errorText = `数量不能小于已分配出去的数量(${Number(element.applyValueOffset) + Number(item.applyValue)}个)`;
+                  }
+                });
+              });
+            }
           }
         });
       } else {
