@@ -8,27 +8,26 @@
       </div>
     </div>
     <div class="cont-area">
-      <template v-if="openOrClose == 'OPEN'">
+      <!-- <template v-if="openOrClose == 'OPEN'"> -->
+      <template>
         <div class="weekly">
           <dl class="user-info">
             <dt>当前周报</dt>
-            <dd v-if="$route.query.headerUrl">
+            <dd v-if="infoParams.headerUrl">
               <img
-                v-if="$route.query.headerUrl"
-                :src="$route.query.headerUrl"
+                v-if="infoParams.headerUrl"
+                :src="infoParams.headerUrl"
                 alt
               />
             </dd>
-            <dd v-else-if="$route.query.userName" class="user-name">
+            <dd v-else-if="infoParams.userName" class="user-name">
               <em>{{
-                $route.query.userName.substring(
-                  $route.query.userName.length - 2
-                )
+                infoParams.userName.substring(infoParams.userName.length - 2)
               }}</em>
             </dd>
-            <dd>{{ $route.query.userName }}</dd>
+            <dd>{{ infoParams.userName }}</dd>
             <dd>
-              <em>{{ $route.query.weekDate }}</em>
+              <em>{{ infoParams.weekDate }}</em>
             </dd>
           </dl>
         </div>
@@ -37,19 +36,19 @@
             <dt>当前周报</dt>
             <dd v-if="true">
               <img
-                v-if="$route.query.headerUrl"
-                :src="$route.query.headerUrl"
+                v-if="infoParams.headerUrl"
+                :src="infoParams.headerUrl"
                 alt
               />
             </dd>
-            <dd v-else-if="$route.query.userName" class="user-name">
+            <dd v-else-if="infoParams.userName" class="user-name">
               <em>{{
-                $route.query.userName.substring(
-                  $route.query.userName.length - 2
+                infoParams.userName.substring(
+                  infoParams.userName.length - 2
                 )
               }}</em>
             </dd>
-            <dd>{{ $route.query.userName }}</dd>
+            <dd>{{ infoParams.userName }}</dd>
           </dl> -->
           <el-form
             ref="work"
@@ -420,9 +419,9 @@
           </dd>
         </dl>
       </template>
-      <template v-if="openOrClose == 'CLOSE'"
+      <!-- <template v-if="openOrClose == 'CLOSE'"
         >该用户所在团队未公开周报</template
-      >
+      > -->
     </div>
   </div>
 </template>
@@ -441,7 +440,9 @@ export default {
     'tl-process': tlProcess,
   },
   props: {
-
+    infoParams: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -452,7 +453,7 @@ export default {
       weeklyPlanList: [],
       weeklyOkrVoList: [],
       visitUserNameList: [],
-      openOrClose: '',
+      // openOrClose: '',
       supportCount: 0,
       weeklySupport: {},
       weeklyEmotion: '',
@@ -495,30 +496,31 @@ export default {
   },
   methods: {
     init() {
-      this.judgePower();
+      // this.judgePower();
+      this.queryWeekly();
     },
-    judgePower() {
-      // 是否是本部门
-      if (!!this.$route.query.orgId && this.userInfo.orgId != this.$route.query.orgId) {
-        // 该部门是否开放周报
-        this.server.getTypeConfig({
-          sourceId: this.$route.query.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
-        }).then((res) => {
-          if (res.code == 200) {
-            if (res.data.length > 0 && res.data[0].configItemCode == 'O') {
-              this.queryWeekly();
-            } else {
-              this.openOrClose = 'CLOSE';
-              this.pageLoading = false;
-            }
-          }
-        });
-      } else {
-        this.queryWeekly();
-      }
-    },
+    // judgePower() {
+    // 是否是本部门
+    // if (!!this.infoParams.orgId && this.userInfo.orgId != this.infoParams.orgId) {
+    //   // 该部门是否开放周报
+    //   this.server.getTypeConfig({
+    //     sourceId: this.infoParams.orgId, configType: 'WEEKLY', configTypeDetail: 'W-1', level: 'O',
+    //   }).then((res) => {
+    //     if (res.code == 200) {
+    //       if (res.data.length > 0 && res.data[0].configItemCode == 'O') {
+    //         this.queryWeekly();
+    //       } else {
+    //         this.openOrClose = 'CLOSE';
+    //         this.pageLoading = false;
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   this.queryWeekly();
+    // }
+    // },
     queryWeekly() {
-      this.server.queryWeekly({ weeklyId: this.$route.query.weeklyId }).then((res) => {
+      this.server.queryWeekly({ weeklyId: this.infoParams.weeklyId }).then((res) => {
         if (res.code == 200) {
           // this.weeklyType = res.data.weeklyType;
           this.weeklyEmotion = res.data.weeklyEmotion;
@@ -530,7 +532,7 @@ export default {
           this.supportCount = res.data.supportCount;
           this.weeklySupport = res.data.weeklySupport || {};
         }
-        this.openOrClose = 'OPEN';
+        // this.openOrClose = 'OPEN';
         this.pageLoading = false;
       });
     },
@@ -539,7 +541,7 @@ export default {
     },
     support(type) {
       const params = {
-        weeklyId: this.$route.query.weeklyId,
+        weeklyId: this.infoParams.weeklyId,
         supported: type,
         id: '', // 没点过赞
       };
@@ -560,13 +562,12 @@ export default {
       return percentage === 100 ? '完成' : `${percentage}%`;
     },
     goback() {
-      this.$router.go('-1');
+      this.$emit('showList');
     },
     cutName(userName) {
       const nameLength = userName.length;
       return userName.substring(nameLength - 2, nameLength);
     },
-
   },
   watch: {},
   updated() {},
