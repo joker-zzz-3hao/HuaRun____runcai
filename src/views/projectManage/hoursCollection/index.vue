@@ -2,9 +2,9 @@
   <div class="project-info">
     <div class="project-description">
       <dl>
-        <dt>
-          <a @click="querySupplementHistory">工时补录记录>></a>
-        </dt>
+
+          <dt><span>{{projectInfo.projectNameCn}}</span></dt>
+           <dd><a @click="$router.push({name:'queryHistory',query:{projectId:$route.query.projectId}})">工时补录记录>></a> </dd>
 
       </dl>
       <div class="dl-list">

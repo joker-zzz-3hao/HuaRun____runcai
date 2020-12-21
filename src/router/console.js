@@ -303,6 +303,19 @@ export default [{
     component: () => import('@/views/projectManage/hoursCollection/index'),
   },
   {
+    path: '/queryHistory',
+    name: 'queryHistory',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
+      title: 'queryHistory',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/hoursCollection/components/queryHistory'),
+  },
+  {
     path: '/projectDetail',
     name: 'projectDetail',
     meta: {
