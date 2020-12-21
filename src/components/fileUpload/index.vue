@@ -1,27 +1,27 @@
 <template>
-  <div>
-    <upload-custom
-      ref="uploadFile"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :multiple="true"
-      :limit="limit"
-      :accept="accept"
-      :file-list="fileList"
-      :headers="headers"
-      :action="action"
-      :data="dataParams"
-      :before-upload="beforeUpload"
-      :on-success="imgUploadSuccess"
-      :on-remove="removeImg"
-      :on-exceed="handleExceed"
-      :sourceKey="sourceKey"
-      :sourceType="sourceType"
+  <upload-custom
+    ref="uploadFile"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :multiple="true"
+    :limit="limit"
+    :accept="accept"
+    :file-list="fileList"
+    :headers="headers"
+    :action="action"
+    :data="dataParams"
+    :before-upload="beforeUpload"
+    :on-success="imgUploadSuccess"
+    :on-remove="removeImg"
+    :on-exceed="handleExceed"
+    :sourceKey="sourceKey"
+    :sourceType="sourceType"
+  >
+    <el-button type="text" class="tl-btn up-btn"
+      ><i class="icon-upload"></i><em>添加附件</em></el-button
     >
-      <el-button type="text" class="tl-btn up-btn">+添加附件</el-button>
-      <span class="el-upload__tip">{{ tips }}</span>
-    </upload-custom>
-  </div>
+    <span class="el-upload__tip">{{ tips }}</span>
+  </upload-custom>
 </template>
 
 <script>
