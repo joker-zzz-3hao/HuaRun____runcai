@@ -6,10 +6,10 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container project-members">
-    <el-table :data="tableData" row-key="resultHistoryId" class="tl-table">
+    <el-table :data="tableData"  class="tl-table">
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table :data="props.row.projectSupplementList">
+          <el-table :data="props.row.projectSupplementList" row-key="supplementId">
 
             <el-table-column prop="supplementUser" label="姓名"></el-table-column>
             <el-table-column prop="userLevel" label="级别"></el-table-column>
