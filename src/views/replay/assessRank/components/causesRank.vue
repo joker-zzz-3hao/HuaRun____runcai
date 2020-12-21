@@ -84,8 +84,6 @@ export default {
           }
         });
       });
-      console.log(this.sourceTable);
-      debugger;
       this.$emit('success', this.sourceTable);
       this.close();
     },
