@@ -103,4 +103,13 @@ export default class Server extends ServerBase {
   queryCalculatingMoney(param) {
     return this._ajaxPost('gateway/project-service/project/query/queryCalculatingMoney', param);
   }
+
+  //  计算总金额提交
+  addSupplementTime(param) {
+    return this._ajaxPost('gateway/project-service/project/add/addSupplementTime', param);
+  }
+
+  querySupplementHistory(param) {
+    return this._ajaxPost('gateway/project-service/project/query/querySupplementHistory', param);
+  }
 }

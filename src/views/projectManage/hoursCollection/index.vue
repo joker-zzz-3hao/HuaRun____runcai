@@ -3,16 +3,7 @@
     <div class="project-description">
       <dl>
         <dt>
-          <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
-            <span class="el-dropdown-link">
-              <i class="el-icon-more"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="closeProject"
-                >结束项目</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
+          <a @click="querySupplementHistory">工时补录记录>></a>
         </dt>
 
       </dl>
@@ -37,23 +28,23 @@
         <dl class="dl-item">
           <dt><span>项目已确立人力成本</span></dt>
           <dd>
-            <em>{{
-              baseInfo.projectInputType || "--"
-            }}</em>
+            <em v-money="{ value: projectInfo.outerConsultBudget +  projectInfo.insideBudget, precision: 2 }">{{
+            }}</em><span>元</span
+            ><span>({{ projectInfo.outerConsultBudget || "人民币" }})</span>
           </dd>
         </dl>
 
         <dl class="dl-item">
           <dt><span>项目经理</span></dt>
           <dd>
-            <em>{{ baseInfo.projectApplyDate || "--" }}</em>
+            <em>{{ projectInfo.projectManager || "--" }}</em>
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>项目时间</span></dt>
           <dd>
-            <em>{{ baseInfo.projectBeginDate || "--" }}</em
-            ><span>至</span><em>{{ baseInfo.projectEndDate || "--" }}</em>
+            <em>{{ projectInfo.projectBeginDate || "--" }}</em
+            ><span> 至 </span><em>{{ projectInfo.projectEndDate || "--" }}</em>
           </dd>
         </dl>
       </div>
@@ -76,17 +67,17 @@
       :selectable="selectable"
       width="55">
     </el-table-column>
-            <el-table-column prop="userName" label="姓名" min-width="140">
+            <el-table-column prop="userName" label="姓名" min-width="120">
                <template slot-scope="scope">
                    <el-input placeholder="请输入姓名" v-if="!scope.row.userId"
                     @input="checkNull(scope.row)" v-model="scope.row.userName"></el-input>
                     <span v-else>{{scope.row.userName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="级别" prop="userLevel" min-width="120">
+            <el-table-column label="级别" prop="userLevel" min-width="100">
                <template slot-scope="scope">
                       <el-select
-                        @change="checkNull(scope.row)"
+                        @change="selectLevel(scope.row)"
                       v-if="!scope.row.userId"
                 v-model="scope.row.userLevel"
                 placeholder="请选择级别"
@@ -104,7 +95,7 @@
                     <span v-else>{{scope.row.userLevel}}</span>
                     </template>
             </el-table-column>
-             <el-table-column prop="userPost" label="职能类型" min-width="120">
+             <el-table-column prop="userPost" label="职能类型" min-width="90">
                 <template slot-scope="scope">
                      <el-select
                        @change="checkNull(scope.row)"
@@ -148,7 +139,7 @@
                     <span v-else>{{getName(scope.row.userPost,funcList)}}</span>
                     </template>
             </el-table-column>
-            <el-table-column prop="userCompany" label="所属公司" min-width="160">
+            <el-table-column prop="userCompany" label="所属公司" min-width="100">
               <template slot-scope="scope">
                       <el-select
                        v-if="!scope.row.userId"
@@ -182,7 +173,7 @@
                     </el-date-picker>
               </template>
             </el-table-column>
-            <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
+            <el-table-column prop="createDate" label="补录工时(天)" min-width="130">
               <template slot-scope="scope">
                      <el-input-number
                 controls-position="right"
@@ -201,7 +192,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              fixed="right"
               label="操作"
               width="100"
 
@@ -278,6 +268,7 @@ export default {
       emWidth: '',
       DisuserId: {},
       checkbool: false,
+      projectInfo: {},
     };
   },
   components: {
@@ -297,11 +288,10 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
-      projectInfo: (state) => state.projectInfo,
     }),
   },
   mounted() {
-    console.log(this.projectInfo);
+    this.projectInfo = JSON.parse(sessionStorage.getItem('projectInfo'));
     this.getUserList();
     this.searchList();
 
@@ -329,6 +319,9 @@ export default {
     });
   },
   methods: {
+    selectLevel(row) {
+      this.checkNull(row);
+    },
     selectable(row) {
       console.log(row);
       // eslint-disable-next-line max-len
@@ -336,7 +329,13 @@ export default {
     },
     checkNull(row) {
       if (row.userName && row.userPost && row.userLevel && row.supplementTime && row.supplementContent) {
-        row.checkNull = true;
+        if (row.projectUserType) {
+          row.checkNull = true;
+        } else if (row.belongingType) {
+          row.checkNull = true;
+        } else {
+          row.checkNull = false;
+        }
       }
     },
     getUserList() {

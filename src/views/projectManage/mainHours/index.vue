@@ -127,7 +127,7 @@
             </el-table-column>
              <el-table-column prop="userPost" label="职能" min-width="130">
               <template slot-scope="scope">
-                <span>{{ scope.row.userPost }}</span>
+                <span>{{ getName(scope.row.userPost,funcList) }}</span>
               </template>
             </el-table-column>
              <el-table-column prop="userLevel" label="职级" min-width="130">
@@ -282,6 +282,9 @@ export default {
       projectUserSum: 0,
       submissionHours: 0,
       isTalent: false,
+      levelList: [],
+      funcList: [],
+      companyList: [],
     };
   },
 
@@ -297,10 +300,42 @@ export default {
     }),
   },
   mounted() {
+    this.getCode();
     this.projectPageList();
     this.getWeekDate();
   },
   methods: {
+    getName(code, arr) {
+      let name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        name = [{ meaning: '' }];
+      }
+      return name[0].meaning;
+    },
+    getCode() {
+      this.server.queryByCodes({
+        codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      }).then((res) => {
+        if (res.code == '200') {
+          this.codes = res.data;
+          this.codes.forEach((item) => {
+            switch (item.code) {
+              case 'PROJECT_EMPLOYEE_LEVEL':
+                this.levelList = item.subList;
+                break;
+              case 'PROJECT_TECH_TYPE':
+                this.funcList = item.subList;
+                break;
+              case 'PROJECT_EMPLOYEE_COMPANY':
+                this.companyList = item.subList;
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
+    },
     getWeekDate() {
       const oneDate = 24 * 60 * 60 * 1000;
       const prevDate = new Date().getTime() - oneDate * 6;

@@ -293,7 +293,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import createManage from './components/createManage';
 import Server from './server';
@@ -348,11 +348,9 @@ export default {
     this.searchManage();
   },
   methods: {
-    // eslint-disable-next-line no-undef
-    ...mapMutations('common',
-      [
-        'getprojectInfo',
-      ]),
+    getprojectInfo(row) {
+      sessionStorage.setItem('projectInfo', JSON.stringify(row));
+    },
 
     searchManage() {
       this.isTalent = false;
