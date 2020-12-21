@@ -41,7 +41,7 @@
         {{dateFormat('YYYY-mm-dd',scope.row.supplementSubmitTimeDate)}}
          </template>
       </el-table-column>
-      <el-table-column  label="补录人" prop="sortPropName"></el-table-column>
+      <el-table-column  label="补录人" prop="supplementSubmitter"></el-table-column>
       <el-table-column prop="timeSum" label="工时(天)">
       </el-table-column>
       <el-table-column prop="laborCost" label="人力成本(人民币)">
