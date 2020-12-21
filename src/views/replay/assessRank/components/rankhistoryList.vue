@@ -75,6 +75,7 @@ export default {
   methods: {
     show(periodId, resultId) {
       this.visible = true;
+      this.tableData = [];
       this.server.queryAssessmentHistory({
         periodId,
         resultId,
