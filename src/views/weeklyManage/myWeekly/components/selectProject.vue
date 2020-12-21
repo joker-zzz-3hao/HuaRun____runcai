@@ -19,6 +19,7 @@
             <el-radio-group v-model="selectData">
               <el-radio
                 class="tl-radio"
+                ref="radioList"
                 v-for="(project, index) in projectList"
                 :label="project.projectId"
                 :key="project.projectId"
@@ -89,7 +90,15 @@ export default {
     projectChange(e, index, project) {
       // 原生click会执行两次，第一次在label等，第二次在input
       if (e.target.tagName != 'INPUT') return;
-      if (this.selectProIndex === index) {
+      // 如果该项目是虚拟项目，且当前用户不在该项目中，弹出警告提示
+      if (project.projectOrgType == 1) {
+        this.$message.warning('您不在该项目中，请联系项目管理员将您加入该项目中。');
+        this.$refs.radioList.forEach((item) => {
+          if (item.label == project.projectId) {
+            item.model = this.selectData;
+          }
+        });
+      } else if (this.selectProIndex === index) {
         this.selectProIndex = undefined;
         this.selectData = '';
         this.projectObj = {
