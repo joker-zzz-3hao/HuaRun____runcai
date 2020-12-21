@@ -262,7 +262,7 @@ export default {
         ruleId: rule.ruleId,
         ruleName: rule.ruleName,
       }));
-      this.server.assessmentSubmit({
+      this.server.submitValidator({
         resultDetailVoList: this.tableData,
         orgResultDetailMapList: this.tableData,
         ruleDetailContentList,
