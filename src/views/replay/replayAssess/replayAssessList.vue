@@ -119,19 +119,22 @@
               min-width="100"
             >
               <template slot-scope="scope">
-                <span v-if="scope.row.approvalStatus === null">--</span>
                 <el-button
-                  v-else-if="scope.row.approvalStatus == 2"
+                  v-if="scope.row.approvalStatus == 2"
                   type="text"
                   @click="showAssesspast(scope.row, 'edit')"
                   >绩效复核
                 </el-button>
                 <el-button
-                  v-else
+                  v-else-if="
+                    scope.row.approvalStatus == 3 ||
+                    scope.row.approvalStatus == 4
+                  "
                   type="text"
                   @click="showAssesspast(scope.row, 'detail')"
                   >详情
                 </el-button>
+                <span v-else>--</span>
               </template>
             </el-table-column>
           </el-table>
