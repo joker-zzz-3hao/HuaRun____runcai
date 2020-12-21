@@ -329,6 +329,8 @@ export default {
               this.$message.error(res.msg);
             }
           });
+        } else {
+          this.$message.error('您有必填项未正确填写，请检查');
         }
       });
     },
