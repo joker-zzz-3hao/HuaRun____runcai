@@ -274,7 +274,7 @@
                   @click="setTime(scope.row)"
                   type="text"
                   class="tl-btn"
-
+                  v-if="isTalent"
                   >设置</el-button
                 >
               </template>
