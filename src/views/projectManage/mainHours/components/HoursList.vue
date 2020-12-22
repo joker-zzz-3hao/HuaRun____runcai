@@ -129,30 +129,10 @@ export default {
       this.tableData = list.list;
       this.total = list.total;
     },
-    confirmTimeSheet() {
-      this.popoverVisible = false;
-      this.timeSheet = this.confirmSheet;
-      this.remark = this.editRemark;
-    },
+
     approval() {
-      this.$xconfirm({
-        title: '工时确认后将不可再更改，请确认',
-        content: '',
-      }).then(() => {
-        this.server.approvaledTimeSheetList({
-          projectId: this.info.projectId,
-          timeSheet: this.timeSheet,
-          remark: this.remark,
-          sourceId: this.info.sourceId,
-          sourceType: this.info.sourceType,
-          projectApprovalId: this.info.projectApprovalId,
-        }).then((res) => {
-          if (res.code == '200') {
-            this.$emit('success');
-            this.close();
-          }
-        });
-      });
+      this.$emit('submit');
+      this.close();
     },
     close() {
       this.visible = false;

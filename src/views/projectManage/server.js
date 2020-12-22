@@ -132,4 +132,8 @@ export default class Server extends ServerBase {
   userCostSummary(param) {
     return this._ajaxPost('gateway/project-service/project/allocate/userCostSummary', param);
   }
+
+  submitAllocateUserWork(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/submitAllocateUserWork', param);
+  }
 }

@@ -51,7 +51,8 @@
 
             <dd>
            <el-button type="primary" class="tl-btn amt-bg-slip"
-           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})">工时调入</el-button>
+           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})"
+            :disabled="projectList.length==0">工时调入</el-button>
             </dd>
           </dl>
         </div>

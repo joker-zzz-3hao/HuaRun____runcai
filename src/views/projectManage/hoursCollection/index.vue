@@ -2,7 +2,7 @@
   <div class="working-hours-collection">
     <div class="operating-area">
       <div class="operating-box">
-        <el-button plain @click="back()" class="tl-btn amt-border-slip">
+        <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
           返回
           <span class="lines"></span>
         </el-button>
@@ -39,7 +39,7 @@
                 v-money="{ value: projectInfo.insideBudget, precision: 2 }"
               ></em
               ><span>元</span
-              ><span>({{ projectInfo.insideBudget || "人民币" }})</span>
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
             </dd>
           </dl>
           <dl class="dl-item">
@@ -52,7 +52,7 @@
                 }"
               ></em
               ><span>元</span
-              ><span>({{ projectInfo.outerConsultBudget || "人民币" }})</span>
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
             </dd>
           </dl>
           <dl class="dl-item">
@@ -64,9 +64,9 @@
                     projectInfo.outerConsultBudget + projectInfo.insideBudget,
                   precision: 2,
                 }"
-                >{{}}</em
+                ></em
               ><span>元</span
-              ><span>({{ projectInfo.outerConsultBudget || "人民币" }})</span>
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
             </dd>
           </dl>
 
@@ -100,14 +100,15 @@
             <el-table
               :data="tableData"
               class="tl-table"
+              ref="table"
               row-key="userId"
               @select="selectUser"
               @select-all="selectUser"
+              @selection-change="selectUser"
             >
               <el-table-column
                 reserve-selection
                 type="selection"
-                :selectable="selectable"
                 width="55"
               >
               </el-table-column>
@@ -243,6 +244,7 @@
                     v-model="scope.row.supplementTime"
                     :min="0.5"
                     :max="scope.row.max"
+                    @change="selectUserAdd"
                     :disabled="!scope.row.time"
                     :precision="1"
                     class="tl-input-number"
@@ -266,7 +268,7 @@
                 <template slot-scope="scope">
                   <el-button
                     v-if="!scope.row.userId"
-                    @click="deleteMember(scope.$index)"
+                    @click="deleteMember(scope.$index,scope.row)"
                     type="text"
                     class="tl-btn"
                     >移除</el-button
@@ -300,7 +302,7 @@
       >
 
     </div>
-    <tl-hours-record ref="hoursRecord" :selection="selection"></tl-hours-record>
+    <tl-hours-record ref="hoursRecord" :selection="selection" @success="clearSelection"></tl-hours-record>
   </div>
 </template>
 
@@ -396,16 +398,8 @@ export default {
       // eslint-disable-next-line max-len
       return row.checkNull;
     },
-    checkNull(row) {
-      if (row.userName && row.userPost && row.userLevel && row.supplementTime && row.supplementContent) {
-        if (row.projectUserType) {
-          row.checkNull = true;
-        } else if (row.belongingType) {
-          row.checkNull = true;
-        } else {
-          row.checkNull = false;
-        }
-      }
+    checkNull() {
+
     },
     getUserList() {
       this.server.projectUserList({}).then((res) => {
@@ -414,6 +408,10 @@ export default {
         }
       });
     },
+    clearSelection() {
+      this.searchList();
+      this.$refs.table.clearSelection();
+    },
     searchList() {
       this.server.queryProjectUserList({
         projectId: this.$route.query.projectId,
@@ -421,6 +419,9 @@ export default {
         pageSize: this.pageSize,
       }).then((res) => {
         this.tableData = res.data.content;
+        this.tableData.forEach((item, index) => {
+          this.tableData[index].checkNull = false;
+        });
         this.total = res.data.total;
       });
     },
@@ -440,16 +441,15 @@ export default {
 
         console.log(time);
         const oneDate = 24 * 60 * 60 * 1000;
-        const startTime = weekBegin.getTime();
-        const endTime = weekEnd.getTime();
+        const startTime = new Date(weekBegin).getTime();
+        const endTime = new Date(weekEnd).getTime();
         const cheTime = (endTime - startTime) / oneDate;
         this.tableData[index].max = cheTime;
-        this.tableData[index].supplementTime = '';
+        this.tableData[index].supplementTime = 0.5;
       } else {
-        this.tableData[index].supplementTime = '';
+        this.tableData[index].supplementTime = 0.5;
         this.tableData[index].disabled = true;
       }
-      this.checkNull(row);
     },
     // searchList() {
     //   // this.tableDataRow = this.tableDataRow
@@ -462,6 +462,14 @@ export default {
         this.$message.success('请勾选补录工时人员');
         return false;
       }
+      console.log(this.selection);
+      const check = this.selection.some((item) => !item.userName
+       || !item.userPost || !item.userLevel || !item.time || !item.supplementTime || !item.supplementContent);
+      if (check) {
+        this.$message.success('请填写完整勾选项');
+        return false;
+      }
+
       const selection = this.selection.map((item) => ({
         userLevel: item.userLevel,
         userCompany: item.userCompany,
@@ -476,17 +484,26 @@ export default {
       });
     },
     addUser() {
-      this.tableData.push({});
+      this.tableData.push({ supplementTime: 0.5 });
     },
-    deleteMember(index) {
+    deleteMember(index, row) {
       this.tableData.splice(index, 1);
+      this.$refs.table.toggleRowSelection(row, false);
+      this.selectUserAdd();
     },
     selectUser(selection) {
       this.selection = selection;
       console.log(this.selection);
       let hours = 0;
       selection.forEach((item) => {
-        hours += item.supplementTime;
+        hours += item.supplementTime || 0;
+      });
+      this.hours = hours;
+    },
+    selectUserAdd() {
+      let hours = 0;
+      this.selection.forEach((item) => {
+        hours += item.supplementTime || 0;
       });
       this.hours = hours;
     },
