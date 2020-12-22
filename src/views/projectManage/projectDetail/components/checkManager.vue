@@ -198,6 +198,7 @@ export default {
             userPost: 'Project-Mng',
             userCompany: self.formData.userCompany,
             projectApplyUserCode: this.baseInfo.projectApplyUserCode,
+            projectManagerCode: this.baseInfo.projectManagerCode,
             projectUserType: '1',
           });
           self.commitLoading = true;
