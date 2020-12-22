@@ -7,9 +7,9 @@
     class="tl-dialog check-judge"
     width="800px"
   >
-    <div>
+    <div class="dl-list-group">
       <!-- 第一次提交 -->
-      <dl>
+      <dl class="dl-item">
         <dt>组织</dt>
         <dd>{{ row.orgName }}</dd>
       </dl>
@@ -21,8 +21,8 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
-      <!-- 第二次提交  v-if="row.updateTime" -->
-      <template>
+      <!-- 第二次提交  -->
+      <template v-if="row.reviewTime">
         <dl>
           <dt @click="openHistory">历史提交记录》</dt>
         </dl>
@@ -41,9 +41,9 @@
         </dl>
         <dl>
           <dt>绩效复核时间</dt>
-          <dd>{{ row.updateTime || "--" }}</dd>
+          <dd>{{ row.reviewTime || "--" }}</dd>
         </dl>
-        <dl>
+        <dl v-if="row.approvalMsg">
           <dt>驳回原因</dt>
           <dd>{{ row.approvalMsg }}</dd>
         </dl>
