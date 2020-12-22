@@ -14,7 +14,13 @@
     <div class="flex-up">
       <div class="update-kr">
         <el-scrollbar ref="detailscrollbar">
-          <div class="tl-custom-timeline" v-if="currentIndex === 0">
+          <!-- 复盘中，已结束不展示更新操作 -->
+          <div
+            class="tl-custom-timeline"
+            v-if="
+              currentIndex === 0 && [1, '1', 3, '3'].includes(okrItemStatus)
+            "
+          >
             <div class="last-update" v-if="hasValue(historyFirst)">
               <dl>
                 <dt>上次更新时间</dt>
@@ -366,9 +372,27 @@ export default {
       type: String,
       default: '',
     },
+    okrItemStatus: {
+      type: Number,
+    },
 
   },
   created() {
+    if ([1, '1', 3, '3'].includes(this.okrItemStatus)) {
+      this.tabMenuList = [
+        {
+          menuName: '更新进展',
+        },
+        {
+          menuName: '更多更新记录',
+        }];
+    } else {
+      this.tabMenuList = [
+
+        {
+          menuName: '更多更新记录',
+        }];
+    }
   },
   mounted() {
     this.$nextTick(() => {
