@@ -106,7 +106,7 @@
               min-width="100"
             >
               <template slot-scope="props">
-                <span v-if="hasValue(props.row.enableCommunicate)">{{
+                <span v-if="props.row.enableCommunicate">{{
                   CONST.COMMUN_MAP[props.row.enableCommunicate]
                 }}</span>
                 <span v-else>--</span>

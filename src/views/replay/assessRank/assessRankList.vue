@@ -140,7 +140,7 @@
           type="primary"
           class="tl-btn amt-bg-slip"
           @click="assessmentSave"
-          :disabled="sortMsg.approvalStatus == 2"
+          :disabled="sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3"
           >暂存</el-button
         >
 
@@ -148,7 +148,6 @@
         <el-button
           type="primary"
           class="tl-btn amt-bg-slip"
-          :disabled="sortMsg.approvalStatus == 2"
           @click="submitValidator()"
           >提交</el-button
         >
@@ -260,7 +259,7 @@ export default {
       this.tableData.forEach((item) => {
         item.sourceId = item.orgId;
       });
-      if (!this.hasValue(this.sortMsg.enableCommunicate)) {
+      if (!this.sortMsg.enableCommunicate) {
         this.$message.error('请勾选是否已确认沟通');
         return;
       }
