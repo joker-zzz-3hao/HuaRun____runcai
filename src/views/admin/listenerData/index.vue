@@ -174,4 +174,10 @@ export default {
 };
 </script>
 <style scoped>
+.monitor-data .tl-custom-btn em {
+  margin: 5px;
+}
+.monitor-data .tl-custom-btn {
+  cursor: pointer;
+}
 </style>
