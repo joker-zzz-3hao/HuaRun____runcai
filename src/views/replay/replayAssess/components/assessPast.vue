@@ -21,8 +21,8 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
-      <!-- 第二次提交 -->
-      <template v-if="row.updateTime">
+      <!-- 第二次提交  v-if="row.updateTime" -->
+      <template>
         <dl>
           <dt @click="openHistory">历史提交记录》</dt>
         </dl>
@@ -91,11 +91,13 @@
       ref="assessrefuse"
       @success="sumbitAssess"
     ></tl-assess-refuse>
+    <rank-history-list ref="beforeList"></rank-history-list>
   </el-dialog>
 </template>
 
 <script>
 import assessRefuse from './assessRefuse';
+import rankhistoryList from './rankhistoryList';
 import CONST from '../../const';
 import Server from '../../server';
 
@@ -126,6 +128,7 @@ export default {
   },
   components: {
     'tl-assess-refuse': assessRefuse,
+    'rank-history-list': rankhistoryList,
   },
   mounted() {
   },
@@ -185,7 +188,7 @@ export default {
       });
     },
     openHistory() {
-
+      this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
     },
   },
 };
