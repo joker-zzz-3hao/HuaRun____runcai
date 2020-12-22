@@ -101,7 +101,7 @@
               :data="tableData"
               class="tl-table"
               ref="table"
-              row-key="userId"
+              row-key="key"
               @select="selectUser"
               @select-all="selectUser"
               @selection-change="selectUser"
@@ -109,6 +109,7 @@
               <el-table-column
                 reserve-selection
                 type="selection"
+                column-key="index"
                 width="55"
               >
               </el-table-column>
@@ -144,13 +145,13 @@
                   <span v-else>{{ scope.row.userLevel }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="userPost" label="职能类型" min-width="90">
+              <el-table-column  label="用户类型" min-width="90">
                 <template slot-scope="scope">
                   <el-select
                     @change="checkNull(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
-                    placeholder="请选择"
+                    placeholder="请选择用户类型"
                     filterable
                     popper-class="select-dialog"
                     class="tl-select"
@@ -174,7 +175,7 @@
                     @change="checkNull(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.userPost"
-                    placeholder="请选择"
+                    placeholder="请选择职能"
                     filterable
                     popper-class="select-dialog"
                     class="tl-select"
@@ -421,6 +422,7 @@ export default {
         this.tableData = res.data.content;
         this.tableData.forEach((item, index) => {
           this.tableData[index].checkNull = false;
+          this.tableData[index].key = (new Date()).getTime();
         });
         this.total = res.data.total;
       });
@@ -484,11 +486,13 @@ export default {
       });
     },
     addUser() {
-      this.tableData.push({ supplementTime: 0.5 });
+      this.tableData.push({ key: (new Date()).getTime(), supplementTime: 0.5 });
+      this.total += 1;
     },
     deleteMember(index, row) {
       this.tableData.splice(index, 1);
       this.$refs.table.toggleRowSelection(row, false);
+      this.total -= 1;
       this.selectUserAdd();
     },
     selectUser(selection) {
