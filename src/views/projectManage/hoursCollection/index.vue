@@ -292,7 +292,13 @@
         @click="showhoursRecord"
         >确定</el-button
       >
-      <el-button plain class="tl-btn amt-border-fadeout">取消</el-button>
+      <el-button
+        plain
+        class="tl-btn amt-border-fadeout"
+        @click="$router.back()"
+        >取消</el-button
+      >
+
     </div>
     <tl-hours-record ref="hoursRecord" :selection="selection"></tl-hours-record>
   </div>

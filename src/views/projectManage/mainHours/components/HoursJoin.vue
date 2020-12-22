@@ -10,7 +10,7 @@
                 v-model="formData.projectId"
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
-                @change="changeProject"
+                @change="searchList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
@@ -209,7 +209,11 @@
     <div class="footer-panel">
       <span
         >已选择<em>{{totalMoney.len}}</em
-        >位成员</span
+        >条</span
+      >
+       <span
+        >工时<em>{{totalMoney.hours}}</em
+        >天</span
       >
       <el-button
         type="primary"
@@ -280,7 +284,7 @@ export default {
       projectInfo: {},
       totalMoney: {
         len: 0,
-        money: 0,
+        hours: 0,
       },
       levelList: [],
       companyList: [],
@@ -360,8 +364,13 @@ export default {
     },
     selectUser(selection) {
       this.selection = selection;
+      let hours = 0;
+      selection.forEach((item) => {
+        hours += item.weekTime;
+      });
       this.totalMoney = {
         len: selection.length,
+        hours,
       };
     },
     alertSelectAll() {
@@ -369,7 +378,7 @@ export default {
         this.$message.success('请勾选调入工时');
         return false;
       }
-      this.$refs.HoursList.show(this.selection);
+      this.userCostSummary();
     },
     searchList() {
       if (this.weekLine) {
@@ -397,6 +406,16 @@ export default {
     projectDetailJoin() {
       this.server.projectDetailJoin({ projectId: this.formData.projectId }).then((res) => {
         this.projectInfo = res.data;
+      });
+    },
+    userCostSummary() {
+      this.server.userCostSummary({
+        projectId: this.formData.projectId,
+        allocateWorkDetailVoList: this.selection,
+      }).then((res) => {
+        console.log(res);
+        res.data.projectNameCn = this.projectInfo.projectNameCn;
+        this.$refs.HoursList.show(this.selection, res.data);
       });
     },
   },

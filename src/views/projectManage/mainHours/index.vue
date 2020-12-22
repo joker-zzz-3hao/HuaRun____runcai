@@ -47,14 +47,6 @@
               </el-select>
             </dd>
           </dl>
-            <!-- <dl class="dl-item">
-            <dt>选择查询日期</dt>
-            <dd>
-            <tl-elementWeek :showTime="true"></tl-elementWeek>
-            </dd>
-          </dl> -->
-        </div>
-        <div class="operating-box">
            <dl class="dl-item">
 
             <dd>
@@ -63,7 +55,9 @@
             </dd>
           </dl>
         </div>
-      </div>
+
+        </div>
+
     </div>
     <div class="cont-area">
         <div class="dl-list">
