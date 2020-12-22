@@ -195,8 +195,9 @@ export default {
             userAccount: projectManagerObj.length > 0 ? projectManagerObj[0].userAccount : '',
             userLevel: self.formData.userLevel,
             userName: projectManagerObj.length > 0 ? projectManagerObj[0].userName : '',
-            userPost: '项目经理',
+            userPost: 'Project-Mng',
             userCompany: self.formData.userCompany,
+            projectApplyUserCode: this.baseInfo.projectApplyUserCode,
             projectUserType: '1',
           });
           self.commitLoading = true;

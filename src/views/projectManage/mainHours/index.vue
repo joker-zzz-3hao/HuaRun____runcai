@@ -55,12 +55,13 @@
           </dl> -->
         </div>
         <div class="operating-box">
-          <!-- <dl class="dl-item">
+           <dl class="dl-item">
 
             <dd>
-           <el-button type="primary" class="tl-btn amt-bg-slip" @click="$router.push('/HoursJoin')">工时调入</el-button>
+           <el-button type="primary" class="tl-btn amt-bg-slip"
+           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})">工时调入</el-button>
             </dd>
-          </dl> -->
+          </dl>
         </div>
       </div>
     </div>
@@ -127,7 +128,7 @@
             </el-table-column>
              <el-table-column prop="userPost" label="职能" min-width="130">
               <template slot-scope="scope">
-                <span>{{ scope.row.userPost }}</span>
+                <span>{{ getName(scope.row.userPost,funcList) }}</span>
               </template>
             </el-table-column>
              <el-table-column prop="userLevel" label="职级" min-width="130">
@@ -282,6 +283,9 @@ export default {
       projectUserSum: 0,
       submissionHours: 0,
       isTalent: false,
+      levelList: [],
+      funcList: [],
+      companyList: [],
     };
   },
 
@@ -297,16 +301,47 @@ export default {
     }),
   },
   mounted() {
+    this.getCode();
     this.projectPageList();
     this.getWeekDate();
   },
   methods: {
+    getName(code, arr) {
+      let name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        name = [{ meaning: '' }];
+      }
+      return name[0].meaning;
+    },
+    getCode() {
+      this.server.queryByCodes({
+        codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      }).then((res) => {
+        if (res.code == '200') {
+          this.codes = res.data;
+          this.codes.forEach((item) => {
+            switch (item.code) {
+              case 'PROJECT_EMPLOYEE_LEVEL':
+                this.levelList = item.subList;
+                break;
+              case 'PROJECT_TECH_TYPE':
+                this.funcList = item.subList;
+                break;
+              case 'PROJECT_EMPLOYEE_COMPANY':
+                this.companyList = item.subList;
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
+    },
     getWeekDate() {
       const oneDate = 24 * 60 * 60 * 1000;
       const prevDate = new Date().getTime() - oneDate * 6;
       const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
       this.server.getCalendar({ date }).then((res) => {
-        console.log(res);
         // eslint-disable-next-line max-len
         const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
         if (indexs) {
@@ -364,14 +399,14 @@ export default {
           this.isTalent = true;
         }
       });
-      this.server.projectPageList({
+      this.server.getProject({
         currentPage: 1,
         pageSize: 9999,
         projectName: '',
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
       }).then((res) => {
         if (res.code == '200') {
-          this.projectList = res.data.content;
+          this.projectList = res.data;
           if (this.projectList.length > 0) {
             //  this.formData.projectId = this.projectList[0].projectId;
             const list = this.projectList.filter((item) => Number(item.projectCount) > 0);

@@ -8,7 +8,22 @@
     :close-on-click-modal="false"
     width="900px"
   >
+  <div class="project-info">
+    <div class="project-description">
 
+      <div class="dl-list">
+
+           <dl class="dl-item project-type">
+          <dt><span>已用人力成本</span></dt>
+          <dd>
+
+            =内部同事预算+外部同事预算
+          </dd>
+        </dl>
+
+      </div>
+    </div>
+     </div>
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -34,46 +49,45 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门" min-width="200px">
+            <el-table-column label="部门" prop="orgName" min-width="200px">
             </el-table-column>
-               <el-table-column label="工作项" min-width="200px">
+               <el-table-column label="工作项" prop="workContent" min-width="200px">
             </el-table-column>
-            <el-table-column label="工时投入(天)" min-width="200px">
+            <el-table-column label="工时投入(天)" prop="weekTime"   min-width="200px">
 
             </el-table-column>
 
            <el-table-column
-              prop="projectNameCn"
+              prop="userLevel"
               label="级别"
               min-width="180"
+
             >
 
             </el-table-column>
 
            <el-table-column
-              prop="projectNameCn"
+              prop="userPost"
               label="职能"
               min-width="180"
             >
-
+            <template slot-scope="scope">
+              {{getName(scope.row.userPost,funcList)}}
+                </template>
             </el-table-column>
 
            <el-table-column
-              prop="projectNameCn"
+              prop="userCompany"
               label="所属公司"
               min-width="180"
             >
+                  <template slot-scope="scope">
+              {{getName(scope.row.userCompany,companyList)}}
+                </template>
                 </el-table-column>
 
              <el-table-column
-              prop="projectNameCn"
-              label="部门"
-              min-width="180"
-            >
-                </el-table-column>
-
-             <el-table-column
-              prop="projectNameCn"
+              prop="approvalTime"
               label="提交时间"
               min-width="180"
             >
@@ -98,11 +112,14 @@
 
 import crcloudTable from '@/components/crcloudTable';
 import CONST from '../../const';
+import Server from '../../server';
 
+const server = new Server();
 export default {
   name: 'approval',
   data() {
     return {
+      server,
       CONST,
       visible: false,
       popoverVisible: false,
@@ -112,25 +129,32 @@ export default {
       info: {},
       remark: '',
       editRemark: '',
+      tableData: [],
+      companyList: [],
+      funcList: [],
+      levelList: [],
+      currentPage: 1,
+      pageSize: 10,
     };
   },
 
-  props: {
-    server: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
   computed: {},
   components: {
     'tl-crcloud-table': crcloudTable,
   },
-  mounted() {},
+  mounted() {
+    this.getCode();
+  },
   methods: {
-    show() {
+    show(selection) {
+      this.selection = selection;
+      this.searchList();
       this.visible = true;
+    },
+    searchList() {
+      const list = this.getPageTable(this.selection, this.currentPage, this.pageSize);
+      this.tableData = list.list;
+      this.total = list.total;
     },
     confirmTimeSheet() {
       this.popoverVisible = false;
@@ -159,6 +183,37 @@ export default {
     },
     close() {
       this.visible = false;
+    },
+    getCode() {
+      this.server.queryByCodes({
+        codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      }).then((res) => {
+        if (res.code == '200') {
+          this.codes = res.data;
+          this.codes.forEach((item) => {
+            switch (item.code) {
+              case 'PROJECT_EMPLOYEE_LEVEL':
+                this.levelList = item.subList;
+                break;
+              case 'PROJECT_TECH_TYPE':
+                this.funcList = item.subList;
+                break;
+              case 'PROJECT_EMPLOYEE_COMPANY':
+                this.companyList = item.subList;
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
+    },
+    getName(code, arr) {
+      let name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        name = [{ meaning: '' }];
+      }
+      return name[0].meaning;
     },
   },
   watch: {},
