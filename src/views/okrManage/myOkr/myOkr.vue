@@ -262,7 +262,7 @@
                       更新进展</em
                     >
                     <em v-show="['2', 2, 4, '4'].includes(item.okrMain.status)">
-                      查看详情</em
+                      OKR记事本</em
                     >
                   </div>
                   <tl-process
