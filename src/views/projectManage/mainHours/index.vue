@@ -102,11 +102,13 @@
         <dl class="dl-item">
           <dt><span>项目已确认人力成本</span></dt>
           <dd>
-            <em v-money="{ value: projectConfirmAmount, precision: 2 }"></em
+            <em v-money="{ value: externalConsultants+internalConsultant, precision: 2 }"></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
+            =外部同事成本({{externalConsultants}}) + 内部同事成本({{internalConsultant}})
           </dd>
         </dl>
+
       </div>
 
       <tl-crcloud-table
@@ -283,6 +285,8 @@ export default {
       levelList: [],
       funcList: [],
       companyList: [],
+      internalConsultant: 0,
+      externalConsultants: 0,
     };
   },
 
@@ -381,7 +385,7 @@ export default {
       });
     },
     timeSheetList() {
-      this.server.timeSheetList({
+      this.server.queryProjectCostUsed({
 
         projectId: this.formData.projectId,
       }).then((res) => {
@@ -392,6 +396,8 @@ export default {
         this.actualSubmissionHours = res.data.actualSubmissionHours;
         this.submissionHours = res.data.submissionHours;
         this.projectUserSum = res.data.projectUserSum;
+        this.externalConsultants = res.data.externalConsultants;
+        this.internalConsultant = res.data.internalConsultant;
       });
     },
     projectPageList() {

@@ -64,13 +64,8 @@ export default {
     show(data) {
       this.setData = data;
       this.visible = true;
-      this.queryProjectCostUsed();
     },
-    queryProjectCostUsed() {
-      this.server.queryProjectCostUsed({ projectId: this.$route.query.projectId }).then((res) => {
-        console.log(res);
-      });
-    },
+
     approval() {
       const selection = this.selection.map((item) => ({
         projectId: item.projectId || this.$route.query.projectId,
