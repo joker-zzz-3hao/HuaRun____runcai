@@ -53,6 +53,7 @@
            <el-button type="primary" class="tl-btn amt-bg-slip"
            @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})"
             :disabled="projectList.length==0">工时调入</el-button>
+            <a @click="showHistory">历史调入记录>></a>
             </dd>
           </dl>
         </div>
@@ -217,7 +218,7 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
-
+  <tl-hours-history ref="hoursHistory"></tl-hours-history>
   </div>
 </template>
 
@@ -226,6 +227,7 @@ import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import approval from './components/approval';
 import approvalDetail from './components/approvalDetail';
+import hoursHistory from './components/hoursHistory';
 import Server from '../server';
 import CONST from '../const';
 
@@ -288,6 +290,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
     'tl-approval': approval,
     'tl-approval-detail': approvalDetail,
+    'tl-hours-history': hoursHistory,
   },
   props: {},
   computed: {
@@ -301,6 +304,10 @@ export default {
     this.getWeekDate();
   },
   methods: {
+
+    showHistory() {
+      this.$refs.hoursHistory.show(this.formData.projectId);
+    },
     getName(code, arr) {
       let name = arr.filter((item) => item.value == code);
       if (name.length == 0) {

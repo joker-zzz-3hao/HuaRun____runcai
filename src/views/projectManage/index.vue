@@ -368,6 +368,7 @@ export default {
         projectInputTypeCode: this.formData.projectInputTypeCode,
         projectTypeCode: this.formData.projectType,
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
+        projectOrgType: this.formData.projectOrgType,
       };
       this.server.projectPageList(param).then((res) => {
         if (res.code == '200') {

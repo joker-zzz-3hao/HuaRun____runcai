@@ -142,6 +142,12 @@ const PROJECT_ORG_TYPE = {
   1: '是',
 };
 
+const ALLOCATESTATUS_TYPE = {
+  1: '填写',
+  2: '调入',
+  3: '调出',
+};
+
 const PROJECT_ORG_TYPE_ARR = [
   { value: '', label: '全部' },
   { value: 0, label: '否' },
@@ -204,4 +210,5 @@ export default {
   PROJECT_ORG_TYPE_ARR,
   BELONGINGTYPE,
   BELONGINGTYPE_TYPE,
+  ALLOCATESTATUS_TYPE,
 };
