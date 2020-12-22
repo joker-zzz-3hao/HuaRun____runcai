@@ -50,6 +50,7 @@
           <em v-if="sortMsg.approvalStatus">{{
             CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
           }}</em>
+          <em v-else>--</em>
           <span>绩效复核时间</span>
           <em>{{ sortMsg.reviewTime || "--" }}</em>
           <span>驳回原因</span>
@@ -126,7 +127,10 @@
       </div>
       <div>
         <span>*是否已经确认沟通 </span>
-        <el-radio-group v-model.trim="sortMsg.enableCommunicate">
+        <el-radio-group
+          v-model.trim="sortMsg.enableCommunicate"
+          :disabled="sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3"
+        >
           <el-radio class="tl-radio" v-model="radio" :label="2"
             >已沟通</el-radio
           >
@@ -149,6 +153,11 @@
           type="primary"
           class="tl-btn amt-bg-slip"
           @click="submitValidator()"
+          :disabled="
+            sortMsg.approvalStatus == 2 ||
+            sortMsg.approvalStatus == 3 ||
+            sortMsg.orgSum != sortMsg.reviewedOrgSum
+          "
           >提交</el-button
         >
       </div>
@@ -216,8 +225,10 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.sortMsg = res.data;
-          // 默认选中
-          // this.sortMsg.enableCommunicate = 1;
+          // 除了复核中清空
+          if (this.sortMsg.approvalStatus != 2) {
+            this.sortMsg.enableCommunicate = 0;
+          }
           this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
           this.tableData = res.data.orgResultDetailMapList;
           this.propList = this.ruleDetailContentList.map((rule) => rule.ruleId);
