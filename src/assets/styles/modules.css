@@ -3517,25 +3517,11 @@
   width: 100%;
 }
 
-.custom-drawer .cont-box .dl-list dd {
-  border-bottom: 1px dashed transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-    repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #fff 0, #fff 0.6em);
-}
-
 .dl-list .el-radio {
   margin: 0;
   padding: 15px 0;
   display: flex;
   align-items: center;
-  border-bottom: 1px dashed transparent;
-  background: linear-gradient(#fff, #fff) padding-box,
-    repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #fff 0, #fff 0.6em);
-}
-
-.custom-drawer .cont-box .dl-list dd:last-child,
-.dl-list .el-radio:last-child {
-  background: unset;
 }
 
 .custom-drawer .tl-form .tl-select {
@@ -3570,6 +3556,15 @@
 .dl-list .el-radio__label {
   display: flex;
   align-items: center;
+}
+
+.custom-drawer .dl-list .el-radio .el-radio__input {
+  margin-top: 2px;
+}
+
+.custom-drawer .dl-list dd > .el-radio-group .el-radio {
+  border-bottom: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box,repeating-linear-gradient(-45deg, #e5e9ee 0, #e5e9ee 0.4em, #fff 0, #fff 0.6em);
 }
 
 .tag-kind {
