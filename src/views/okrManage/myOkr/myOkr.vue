@@ -258,7 +258,12 @@
                   popper-class="tl-tooltip-popper"
                 >
                   <div slot="content">
-                    <em>更新进展</em>
+                    <em v-show="['1', 1, 3, '3'].includes(item.okrMain.status)">
+                      更新进展</em
+                    >
+                    <em v-show="['2', 2, 4, '4'].includes(item.okrMain.status)">
+                      查看详情</em
+                    >
                   </div>
                   <tl-process
                     :class="{

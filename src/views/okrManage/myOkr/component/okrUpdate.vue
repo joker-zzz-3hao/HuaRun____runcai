@@ -373,8 +373,7 @@ export default {
       default: '',
     },
     okrItemStatus: {
-      type: String,
-      default: '',
+      type: Number,
     },
 
   },
