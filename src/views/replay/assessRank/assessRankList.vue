@@ -127,10 +127,10 @@
       <div>
         <span>*是否已经确认沟通 </span>
         <el-radio-group v-model.trim="sortMsg.enableCommunicate">
-          <el-radio class="tl-radio" v-model="radio" :label="1"
+          <el-radio class="tl-radio" v-model="radio" :label="2"
             >已沟通</el-radio
           >
-          <el-radio class="tl-radio" v-model="radio" :label="2"
+          <el-radio class="tl-radio" v-model="radio" :label="1"
             >未沟通</el-radio
           >
         </el-radio-group>
@@ -217,6 +217,8 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.sortMsg = res.data;
+          // 默认选中
+          // this.sortMsg.enableCommunicate = 1;
           this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
           this.tableData = res.data.orgResultDetailMapList;
           this.propList = this.ruleDetailContentList.map((rule) => rule.ruleId);
@@ -258,6 +260,11 @@ export default {
       this.tableData.forEach((item) => {
         item.sourceId = item.orgId;
       });
+      if (!this.hasValue(this.sortMsg.enableCommunicate)) {
+        this.$message.error('请勾选是否已确认沟通');
+        return;
+      }
+
       const ruleDetailContentList = this.ruleDetailContentList.map((rule) => ({
         ruleId: rule.ruleId,
         ruleName: rule.ruleName,
