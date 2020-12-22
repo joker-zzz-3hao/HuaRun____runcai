@@ -93,6 +93,7 @@ export default {
         this.getCode();
       });
     },
+
     getCode() {
       this.server.queryByCodes({
         codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],

@@ -140,4 +140,8 @@ export default class Server extends ServerBase {
   userWorkHistory(param) {
     return this._ajaxPost('gateway/project-service/project/allocate/userWorkHistory', param);
   }
+
+  queryProjectCostUsed(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectCostUsed', param);
+  }
 }
