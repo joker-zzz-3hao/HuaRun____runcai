@@ -155,6 +155,11 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
+              <el-table-column label="投入工时" prop="allocateStatus" min-width="70px">
+                 <template slot-scope="scope">
+                {{CONST.ALLOCATESTATUS_TYPE[scope.row.allocateStatus]}}
+                 </template>
+               </el-table-column>
             <el-table-column label="投入工时" min-width="70px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
