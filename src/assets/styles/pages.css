@@ -3178,7 +3178,8 @@
 .working-hours .cont-area,
 .msg-notice .cont-area,
 .monitor-data .cont-area,
-.okr-summarize .cont-area {
+.okr-summarize .cont-area,
+.working-hours-collection .cont-area {
   padding: 20px;
   border-radius: 4px;
   background: #fff;
@@ -5962,7 +5963,8 @@
 /* replay-okr */
 .replay-okr .cont-area,
 .project-manage .cont-area,
-.working-hours .cont-area {
+.working-hours .cont-area,
+.working-hours-collection .cont-area {
   display: flex;
 }
 
@@ -6122,6 +6124,11 @@
   font-size: 16px;
   font-weight: 500;
   color: #26282b;
+}
+
+.project-description > dl dt a {
+  font-weight: 500;
+  color: #685df1;
 }
 
 .project-description > dl dd .fold em {
@@ -6365,7 +6372,8 @@
   color: #acb6bf;
 }
 
-.working-hours.approval-list {
+.working-hours.approval-list,
+.working-hours-collection {
   margin-bottom: 86px;
   min-height: calc(100vh - 172px);
 }
@@ -6577,6 +6585,25 @@
   flex: 0 0 64px;
   margin: 0 30px 0 0;
   color: #acb6bf;
+}
+
+.working-hours-collection .project-members {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.working-hours-collection .project-description dl {
+  align-items: baseline;
+}
+
+.working-hours-collection .project-description dl:nth-child(1) dd > em,
+.working-hours-collection .project-description dl:nth-child(2) dd > em,
+.working-hours-collection .project-description dl:nth-child(3) dd > em {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #685df1;
 }
 
 /* msg-notice */
