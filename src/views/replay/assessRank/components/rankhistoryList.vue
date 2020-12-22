@@ -45,9 +45,9 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="updateTime" label="复核时间">
+        <el-table-column prop="reviewTime" label="复核时间">
           <template slot-scope="props">
-            <span>{{ props.row.updateTime || "--" }}</span>
+            <span>{{ props.row.reviewTime || "--" }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateUserName" label="复核人">

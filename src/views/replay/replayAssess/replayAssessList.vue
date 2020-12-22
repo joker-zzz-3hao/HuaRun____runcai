@@ -82,9 +82,9 @@
                 <span>{{ props.row.submitTime || "--" }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="updateTime" label="复核时间" min-width="100">
+            <el-table-column prop="reviewTime" label="复核时间" min-width="100">
               <template slot-scope="props">
-                <span>{{ props.row.updateTime || "--" }}</span>
+                <span>{{ props.row.reviewTime || "--" }}</span>
               </template>
             </el-table-column>
             <el-table-column
