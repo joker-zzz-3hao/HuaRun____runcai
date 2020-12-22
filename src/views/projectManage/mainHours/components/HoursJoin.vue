@@ -162,7 +162,10 @@
             </el-table-column>
                <el-table-column label="工作项" prop="workContent" min-width="200px">
             </el-table-column>
-               <el-table-column label="工时管理" prop="weekDateStr" min-width="200px">
+               <el-table-column label="工时日期" prop="weekDateStr" min-width="200px">
+                    <template slot-scope="scope">
+                <span>{{ checkDate(scope.row.weekDateStr) }}</span>
+              </template>
             </el-table-column>
             <el-table-column label="工时投入(天)" prop="weekTime" min-width="200px">
 
@@ -197,7 +200,7 @@
                 </el-table-column>
 
              <el-table-column
-              prop="approvalTime"
+              prop="submitTime"
               label="提交时间"
               min-width="180"
             >
@@ -320,6 +323,15 @@ export default {
     });
   },
   methods: {
+    unique(arr) {
+      // Set数据结构，它类似于数组，其成员的值都是唯一的
+      return Array.from(new Set(arr)); // 利用Array.from将Set结构转换成数组
+    },
+    checkDate(time) {
+      const arrTime = time.split(',');
+      const list = arrTime.map((item) => this.dateFormat('mm月dd日', item));
+      return this.unique(list).join(',');
+    },
     getCode() {
       this.server.queryByCodes({
         codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],

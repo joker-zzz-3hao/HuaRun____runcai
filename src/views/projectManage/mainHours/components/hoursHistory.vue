@@ -8,75 +8,50 @@
     :close-on-click-modal="false"
     width="900px"
   >
-  <div class="project-info">
-    <div class="project-description">
-
-      <div class="dl-list">
-  <dl class="dl-item project-type">
-          <dt><span>确认后，工时将汇总到{{info.projectNameCn}}项目中</span></dt>
-          <dd>
-
-            已选{{info.userCount}}位，共计工时{{info.weekTimeCount}}天
-          </dd>
-        </dl>
-           <dl class="dl-item project-type">
-          <dt><span>已用人力成本</span></dt>
-          <dd>
-            {{info.innerCost+info.extendCost}}
-            =内部同事预算({{info.innerCost}})+外部同事预算({{info.extendCost}})
-          </dd>
-        </dl>
-
-      </div>
-    </div>
-     </div>
-      <tl-crcloud-table
+   <!-- <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="searchList"
+      > -->
+       <tl-crcloud-table
+        :isPage="false"
       >
         <div slot="tableContainer" class="table-container project-members">
-          <el-table
-            :data="tableData"
-            class="tl-table"
-            @select="selectList"
-            @select-all="selectList"
-            row-key="sourceId"
-          >
+    <el-table :data="tableData"  class="tl-table">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-table :data="changeDate(props.row.contentJson)" row-key="supplementId">
 
-            <el-table-column prop="applyTime" label="姓名" min-width="170">
-              <template slot-scope="scope">
-                <span>{{ scope.row.userName }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="职级" prop="userLevel" min-width="200px">
-            </el-table-column>
-               <el-table-column label="工时(天)" prop="weekTime" min-width="200px">
-            </el-table-column>
-            <el-table-column label="人力成本" prop="employeePrice"  min-width="200px">
+            <el-table-column prop="userName" label="姓名"></el-table-column>
+            <el-table-column prop="userLevel" label="职别"></el-table-column>
+            <el-table-column prop="workContent" label="工作项">
 
             </el-table-column>
-
-             <el-table-column
-              prop="submitTime"
-              label="提交时间"
-              min-width="180"
-            >
-
+             <el-table-column prop="weekDateStr" label="工作日期">
+                <template slot-scope="scope">
+                {{checkDate(scope.row.weekDateStr)}}
+                </template>
             </el-table-column>
-
+              <el-table-column prop="weekTime" label="工时投入(天)">
+            </el-table-column>
+                 <el-table-column prop="workDesc" label="工时内容">
+            </el-table-column>
           </el-table>
+        </template>
+      </el-table-column>
+      <el-table-column  label="调入时间" prop="createTime">
+
+      </el-table-column>
+      <el-table-column  label="提交人" prop="userName"></el-table-column>
+      <el-table-column prop="weekTimeCount" label="工时投入(天)">
+      </el-table-column>
+      <el-table-column prop="costAmt" label="人力成本(人民币)">
+      </el-table-column>
+
+    </el-table>
         </div>
-      </tl-crcloud-table>
-    <div slot="footer" class="dialog-footer">
-      <el-button plain class="tl-btn amt-border-fadeout" @click="close"
-        >取消</el-button
-      >
-      <el-button type="primary" class="tl-btn amt-bg-slip" @click="approval"
-        >提交</el-button
-      >
-    </div>
+   </tl-crcloud-table>
   </el-dialog>
 </template>
 
@@ -118,22 +93,29 @@ export default {
     this.getCode();
   },
   methods: {
-    show(selection, info) {
-      this.info = info;
-      this.selection = selection;
-      this.searchList();
+    unique(arr) {
+      // Set数据结构，它类似于数组，其成员的值都是唯一的
+      return Array.from(new Set(arr)); // 利用Array.from将Set结构转换成数组
+    },
+    checkDate(time) {
+      const arrTime = time.split(',');
+      const list = arrTime.map((item) => this.dateFormat('mm月dd日', item));
+      return this.unique(list).join(',');
+    },
+    changeDate(date) {
+      console.log(date);
+      return JSON.parse(date);
+    },
+    show(projectId) {
+      this.searchList(projectId);
       this.visible = true;
     },
-    searchList() {
-      const list = this.getPageTable(this.selection, this.currentPage, this.pageSize);
-      this.tableData = list.list;
-      this.total = list.total;
+    searchList(projectId) {
+      this.server.userWorkHistory({ projectId }).then((res) => {
+        this.tableData = res.data;
+      });
     },
 
-    approval() {
-      this.$emit('submit');
-      this.close();
-    },
     close() {
       this.visible = false;
     },

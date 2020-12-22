@@ -136,4 +136,8 @@ export default class Server extends ServerBase {
   submitAllocateUserWork(param) {
     return this._ajaxPost('gateway/project-service/project/allocate/submitAllocateUserWork', param);
   }
+
+  userWorkHistory(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/userWorkHistory', param);
+  }
 }
