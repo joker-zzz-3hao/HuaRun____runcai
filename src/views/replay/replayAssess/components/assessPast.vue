@@ -8,6 +8,7 @@
     width="800px"
   >
     <div>
+      <!-- 第一次提交 -->
       <dl>
         <dt>组织</dt>
         <dd>{{ row.orgName }}</dd>
@@ -20,7 +21,12 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
-      <template v-if="row.approvalStatus != 2">
+      <!-- 第二次提交 -->
+      <template v-if="row.updateTime">
+        <dl>
+          <dt @click="openHistory">历史提交记录》</dt>
+        </dl>
+
         <dl>
           <dt>复核结果</dt>
           <dd>
@@ -36,6 +42,10 @@
         <dl>
           <dt>绩效复核时间</dt>
           <dd>{{ row.updateTime || "--" }}</dd>
+        </dl>
+        <dl>
+          <dt>驳回原因</dt>
+          <dd>{{ row.approvalMsg }}</dd>
         </dl>
       </template>
     </div>
@@ -62,12 +72,19 @@
         </template>
       </el-table-column>
     </el-table>
+    <dl>
+      <dt>是否已确认沟通</dt>
+      <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
+    </dl>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
       <el-button type="primary" @click="sumbit" class="tl-btn amt-bg-slip"
         >确定</el-button
       >
       <el-button plain @click="refuse" class="tl-btn amt-border-fadeout"
         >驳回</el-button
+      >
+      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
+        >返回</el-button
       >
     </div>
     <tl-assess-refuse
@@ -166,6 +183,9 @@ export default {
           console.log(this.propData);
         }
       });
+    },
+    openHistory() {
+
     },
   },
 };
