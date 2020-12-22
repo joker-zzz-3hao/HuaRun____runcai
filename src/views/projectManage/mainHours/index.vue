@@ -47,23 +47,18 @@
               </el-select>
             </dd>
           </dl>
-            <!-- <dl class="dl-item">
-            <dt>选择查询日期</dt>
-            <dd>
-            <tl-elementWeek :showTime="true"></tl-elementWeek>
-            </dd>
-          </dl> -->
-        </div>
-        <div class="operating-box">
            <dl class="dl-item">
 
             <dd>
            <el-button type="primary" class="tl-btn amt-bg-slip"
-           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})">工时调入</el-button>
+           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})"
+            :disabled="projectList.length==0">工时调入</el-button>
             </dd>
           </dl>
         </div>
-      </div>
+
+        </div>
+
     </div>
     <div class="cont-area">
         <div class="dl-list">

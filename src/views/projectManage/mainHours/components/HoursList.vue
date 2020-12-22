@@ -12,12 +12,18 @@
     <div class="project-description">
 
       <div class="dl-list">
+  <dl class="dl-item project-type">
+          <dt><span>确认后，工时将汇总到{{info.projectNameCn}}项目中</span></dt>
+          <dd>
 
+            已选{{info.userCount}}位，共计工时{{info.weekTimeCount}}天
+          </dd>
+        </dl>
            <dl class="dl-item project-type">
           <dt><span>已用人力成本</span></dt>
           <dd>
-
-            =内部同事预算+外部同事预算
+            {{info.innerCost+info.extendCost}}
+            =内部同事预算({{info.innerCost}})+外部同事预算({{info.extendCost}})
           </dd>
         </dl>
 
@@ -38,53 +44,19 @@
             @select-all="selectList"
             row-key="sourceId"
           >
-          <el-table-column
-              :reserve-selection="true"
-              type="selection"
-              width="55"
-            >
-            </el-table-column>
-            <el-table-column prop="applyTime" label="提交人" min-width="170">
+
+            <el-table-column prop="applyTime" label="姓名" min-width="170">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门" prop="orgName" min-width="200px">
+            <el-table-column label="职级" prop="userLevel" min-width="200px">
             </el-table-column>
-               <el-table-column label="工作项" prop="workContent" min-width="200px">
+               <el-table-column label="工时(天)" prop="weekTime" min-width="200px">
             </el-table-column>
-            <el-table-column label="工时投入(天)" prop="weekTime"   min-width="200px">
-
-            </el-table-column>
-
-           <el-table-column
-              prop="userLevel"
-              label="级别"
-              min-width="180"
-
-            >
+            <el-table-column label="人力成本" prop="weekTime"  min-width="200px">
 
             </el-table-column>
-
-           <el-table-column
-              prop="userPost"
-              label="职能"
-              min-width="180"
-            >
-            <template slot-scope="scope">
-              {{getName(scope.row.userPost,funcList)}}
-                </template>
-            </el-table-column>
-
-           <el-table-column
-              prop="userCompany"
-              label="所属公司"
-              min-width="180"
-            >
-                  <template slot-scope="scope">
-              {{getName(scope.row.userCompany,companyList)}}
-                </template>
-                </el-table-column>
 
              <el-table-column
               prop="approvalTime"
@@ -146,7 +118,8 @@ export default {
     this.getCode();
   },
   methods: {
-    show(selection) {
+    show(selection, info) {
+      this.info = info;
       this.selection = selection;
       this.searchList();
       this.visible = true;
@@ -156,30 +129,10 @@ export default {
       this.tableData = list.list;
       this.total = list.total;
     },
-    confirmTimeSheet() {
-      this.popoverVisible = false;
-      this.timeSheet = this.confirmSheet;
-      this.remark = this.editRemark;
-    },
+
     approval() {
-      this.$xconfirm({
-        title: '工时确认后将不可再更改，请确认',
-        content: '',
-      }).then(() => {
-        this.server.approvaledTimeSheetList({
-          projectId: this.info.projectId,
-          timeSheet: this.timeSheet,
-          remark: this.remark,
-          sourceId: this.info.sourceId,
-          sourceType: this.info.sourceType,
-          projectApprovalId: this.info.projectApprovalId,
-        }).then((res) => {
-          if (res.code == '200') {
-            this.$emit('success');
-            this.close();
-          }
-        });
-      });
+      this.$emit('submit');
+      this.close();
     },
     close() {
       this.visible = false;

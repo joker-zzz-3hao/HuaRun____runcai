@@ -4,13 +4,13 @@
       <div class="operating-box-group">
         <div class="operating-box">
           <dl class="dl-item">
-            <dt>选择工时</dt>
+            <dt>选择调配工时项目</dt>
             <dd>
               <el-select
                 v-model="formData.projectId"
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
-                @change="changeProject"
+                @change="searchList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
@@ -162,6 +162,8 @@
             </el-table-column>
                <el-table-column label="工作项" prop="workContent" min-width="200px">
             </el-table-column>
+               <el-table-column label="工时管理" prop="weekDateStr" min-width="200px">
+            </el-table-column>
             <el-table-column label="工时投入(天)" prop="weekTime" min-width="200px">
 
             </el-table-column>
@@ -209,7 +211,11 @@
     <div class="footer-panel">
       <span
         >已选择<em>{{totalMoney.len}}</em
-        >位成员</span
+        >条</span
+      >
+       <span
+        >工时<em>{{totalMoney.hours}}</em
+        >天</span
       >
       <el-button
         type="primary"
@@ -218,18 +224,8 @@
         >批量审批</el-button
       >
     </div>
-    <tl-approval
-      ref="approval"
-      v-if="showApproval"
-      :server="server"
-      @success="approvalSuccess"
-    ></tl-approval>
-    <tl-approval-detail
-      ref="approvalDetail"
-      v-if="showApprovalDetail"
-      :server="server"
-    ></tl-approval-detail>
-    <tl-hours-list ref="HoursList"></tl-hours-list>
+
+    <tl-hours-list ref="HoursList" @submit="submit"></tl-hours-list>
   </div>
 </template>
 
@@ -238,8 +234,6 @@ import { mapState } from 'vuex';
 
 import crcloudTable from '@/components/crcloudTable';
 import HoursList from './HoursList';
-import approval from './approval';
-import approvalDetail from './approvalDetail';
 import Server from '../../server';
 import CONST from '../../const';
 
@@ -280,7 +274,7 @@ export default {
       projectInfo: {},
       totalMoney: {
         len: 0,
-        money: 0,
+        hours: 0,
       },
       levelList: [],
       companyList: [],
@@ -289,13 +283,12 @@ export default {
       weekLine: '',
       beginWeekDate: '',
       endWeekDate: '',
+      submitInfo: {},
     };
   },
 
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-approval': approval,
-    'tl-approval-detail': approvalDetail,
     'tl-hours-list': HoursList,
   },
   props: {},
@@ -360,8 +353,13 @@ export default {
     },
     selectUser(selection) {
       this.selection = selection;
+      let hours = 0;
+      selection.forEach((item) => {
+        hours += item.weekTime;
+      });
       this.totalMoney = {
         len: selection.length,
+        hours,
       };
     },
     alertSelectAll() {
@@ -369,7 +367,23 @@ export default {
         this.$message.success('请勾选调入工时');
         return false;
       }
-      this.$refs.HoursList.show(this.selection);
+      this.userCostSummary();
+    },
+    submit() {
+      const params = {
+        currentProjectId: this.$route.query.projectId,
+        projectId: this.formData.projectId,
+        allocateWorkDetailVoList: this.selection,
+        extendCostAmt: this.submitInfo.extendCost,
+        innerCostAmt: this.submitInfo.innerCost,
+        weekTimeCount: this.submitInfo.weekTimeCount,
+        userCount: this.submitInfo.userCount,
+      };
+      this.server.submitAllocateUserWork(params).then((res) => {
+        if (res.code == 200) {
+          this.searchList();
+        }
+      });
     },
     searchList() {
       if (this.weekLine) {
@@ -397,6 +411,18 @@ export default {
     projectDetailJoin() {
       this.server.projectDetailJoin({ projectId: this.formData.projectId }).then((res) => {
         this.projectInfo = res.data;
+      });
+    },
+    userCostSummary() {
+      this.server.userCostSummary({
+        projectId: this.formData.projectId,
+        currentProjectId: this.$route.query.projectId,
+        allocateWorkDetailVoList: this.selection,
+      }).then((res) => {
+        console.log(res);
+        res.data.projectNameCn = this.projectInfo.projectNameCn;
+        this.submitInfo = res.data;
+        this.$refs.HoursList.show(this.selection, res.data);
       });
     },
   },

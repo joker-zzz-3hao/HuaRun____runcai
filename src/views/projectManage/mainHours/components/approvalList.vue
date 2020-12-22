@@ -31,6 +31,7 @@
               <el-select
                 v-model="selectType"
                 style="width: 130px"
+                @change="changeType"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
                 placeholder="请选择"
@@ -559,6 +560,13 @@ export default {
           this.options = res.data;
         }
       });
+    },
+    changeType() {
+      this.weekLine = '';
+      this.weekBegin = '';
+      this.weekEnd = '';
+
+      this.searchList();
     },
     changePick() {
       if (this.weekLine) {

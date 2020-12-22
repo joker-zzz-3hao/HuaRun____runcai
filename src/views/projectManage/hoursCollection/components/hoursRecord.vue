@@ -84,6 +84,7 @@ export default {
 
       this.server.addSupplementTime(selection).then((res) => {
         if (res.code == '200') {
+          this.$message.success('补录成功');
           this.$emit('success');
           this.close();
         }
