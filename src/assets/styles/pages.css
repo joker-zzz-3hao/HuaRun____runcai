@@ -6627,8 +6627,22 @@
 .working-hours-collection .project-description dl:nth-child(2) dd > em,
 .working-hours-collection .project-description dl:nth-child(3) dd > em {
   font-family: DINAlternate-Bold;
-  font-size: 34px;
+  font-size: 18px;
   color: #685df1;
+}
+
+.working-hours-collection .flex-jc {
+  height: 54px;
+  border-bottom: 1px solid #e5e9ee;
+}
+
+.working-hours-collection .footer-panel {
+  padding-right: 30px;
+  justify-content: flex-end;
+}
+
+.working-hours-collection .footer-panel > span {
+  margin: 0 20px 0 0;
 }
 
 /* msg-notice */

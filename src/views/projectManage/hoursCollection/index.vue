@@ -64,7 +64,7 @@
                     projectInfo.outerConsultBudget + projectInfo.insideBudget,
                   precision: 2,
                 }"
-                ></em
+              ></em
               ><span>元</span
               ><span>({{ projectInfo.currency || "人民币" }})</span>
             </dd>
@@ -110,10 +110,10 @@
                 reserve-selection
                 type="selection"
                 column-key="index"
-                width="55"
+                width="40"
               >
               </el-table-column>
-              <el-table-column prop="userName" label="姓名" min-width="120">
+              <el-table-column prop="userName" label="姓名" min-width="110">
                 <template slot-scope="scope">
                   <el-input
                     placeholder="姓名"
@@ -145,13 +145,13 @@
                   <span v-else>{{ scope.row.userLevel }}</span>
                 </template>
               </el-table-column>
-              <el-table-column  label="用户类型" min-width="90">
+              <el-table-column label="用户类型" min-width="100">
                 <template slot-scope="scope">
                   <el-select
                     @change="checkNull(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
-                    placeholder="用户类型"
+                    placeholder="类型"
                     filterable
                     popper-class="select-dialog"
                     class="tl-select"
@@ -237,7 +237,7 @@
               <el-table-column
                 prop="createDate"
                 label="补录工时(天)"
-                min-width="130"
+                min-width="110"
               >
                 <template slot-scope="scope">
                   <el-input-number
@@ -265,11 +265,11 @@
                   ></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="100">
+              <el-table-column label="操作" width="60">
                 <template slot-scope="scope">
                   <el-button
                     v-if="!scope.row.userId"
-                    @click="deleteMember(scope.$index,scope.row)"
+                    @click="deleteMember(scope.$index, scope.row)"
                     type="text"
                     class="tl-btn"
                     >移除</el-button
@@ -277,7 +277,11 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-button type="text" @click="addUser()">添加成员</el-button>
+            <div class="flex-jc">
+              <el-button plain class="tl-btn" @click="addUser()"
+                ><i class="el-icon-plus"></i><em>添加成员</em></el-button
+              >
+            </div>
           </div>
         </tl-crcloud-table>
       </div>
@@ -295,15 +299,15 @@
         @click="showhoursRecord"
         >确定</el-button
       >
-      <el-button
-        plain
-        class="tl-btn amt-border-fadeout"
-        @click="$router.back()"
+      <el-button plain class="tl-btn amt-border-fadeout" @click="$router.back()"
         >取消</el-button
       >
-
     </div>
-    <tl-hours-record ref="hoursRecord" :selection="selection" @success="clearSelection"></tl-hours-record>
+    <tl-hours-record
+      ref="hoursRecord"
+      :selection="selection"
+      @success="clearSelection"
+    ></tl-hours-record>
   </div>
 </template>
 
