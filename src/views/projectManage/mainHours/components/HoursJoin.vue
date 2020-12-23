@@ -198,12 +198,12 @@
             @select="selectUser"
              @select-all="selectUser"
              @selection-change="selectUser"
-            row-key="weeklyId"
+            row-key="workId"
           >
           <el-table-column
               :reserve-selection="true"
               type="selection"
-              column-key="index"
+              column-key="workId"
               width="55"
             >
             </el-table-column>
