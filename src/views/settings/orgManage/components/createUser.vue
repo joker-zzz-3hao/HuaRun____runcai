@@ -108,10 +108,9 @@
             style="width: 100%"
           ></el-cascader>
         </el-form-item>
-        <!-- <el-form-item prop="sortIndex">
-          <el-button :loading="loading" @click="saveUser">确定</el-button>
-          <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item> -->
+        <el-form-item label="用户类型">
+          <el-input v-model.trim="formData.userTypeLdap"></el-input>
+        </el-form-item>
       </el-form>
       <div class="operating-box">
         <el-button
@@ -187,6 +186,7 @@ export default {
         userType: 2,
         newPwd: '',
         orgIdList: [],
+        userTypeLdap: '',
       },
 
     };

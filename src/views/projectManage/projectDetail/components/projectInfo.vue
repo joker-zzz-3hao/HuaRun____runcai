@@ -85,9 +85,7 @@
         <dl class="dl-item">
           <dt><span>投入类型</span></dt>
           <dd>
-            <em>{{
-              baseInfo.projectInputType || "--"
-            }}</em>
+            <em>{{ baseInfo.projectInputType || "--" }}</em>
           </dd>
         </dl>
         <dl class="dl-item project-type">
@@ -320,7 +318,7 @@ export default {
       });
     }
     this.server.queryByCodes({
-      codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      codes: ['PROJECT_TECH_TYPE', 'EMPLOYEE_COMPANY_INTERNAL', 'EMPLOYEE_COMPANY_PROVIDER', 'EMPLOYEE_LEVEL_INTERNAL', 'EMPLOYEE_LEVEL_PROVIDER'],
     }).then((res) => {
       if (res.code == '200') {
         this.codes = res.data;

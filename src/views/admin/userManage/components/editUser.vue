@@ -156,6 +156,9 @@
             style="width: 90%"
           ></el-cascader>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <el-input v-model.trim="formData.userTypeLdap"></el-input>
+        </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
@@ -237,6 +240,7 @@ export default {
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
+        userTypeLdap: '',
       },
     };
   },

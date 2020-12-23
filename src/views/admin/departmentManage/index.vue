@@ -33,7 +33,6 @@
         </div>
         <div class="operating-right">
           <el-button
-            v-if="hasPower('sys_department_add')"
             type="primary"
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
@@ -41,7 +40,6 @@
             >创建部门</el-button
           >
           <el-button
-            v-if="hasPower('tenant-user-add')"
             type="primary"
             icon="el-icon-plus"
             class="tl-btn amt-bg-slip"
@@ -49,7 +47,6 @@
             >创建用户</el-button
           >
           <el-button
-            v-if="hasPower('sys_department_import')"
             plain
             icon="el-icon-minus"
             class="tl-btn amt-border-slip"
@@ -189,10 +186,7 @@
                 <div>
                   {{
                     scope.row.createTime
-                      ? dateFormat(
-                          "YYYY-mm-dd HH:MM:SS",
-                          scope.row.createTime
-                        )
+                      ? dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.createTime)
                       : "--"
                   }}
                 </div>
