@@ -168,6 +168,7 @@
             <dd>
               <el-input
                 maxlength="64"
+                 clearable
                 v-model="keyWord"
                 placeholder="成员姓名，工作项"
                 class="tl-input-search"
