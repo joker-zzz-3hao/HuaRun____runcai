@@ -41,11 +41,7 @@
         </dt>
         <dd>
           <span>项目名称:</span>
-          <p
-            ref="projectDesc"
-            id="projectDesc"
-            :class="openFlag ? 'unfold' : 'fold'"
-          >
+          <p>
           {{projectInfo.projectNameCn}}
           </p>
 
@@ -196,6 +192,7 @@
             :data="tableData"
             class="tl-table"
             @select="selectUser"
+            ref="table"
              @select-all="selectUser"
              @selection-change="selectUser"
             row-key="workId"
@@ -483,6 +480,7 @@ export default {
       this.server.submitAllocateUserWork(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('调配完成');
+          this.$refs.table.clearSelection();
           this.selection = [];
           this.searchList();
         }
@@ -510,6 +508,7 @@ export default {
       };
       this.server.projectUserDetailWork(params).then((res) => {
         this.tableData = res.data.content;
+        this.total = res.data.total;
       });
     },
     projectDetailJoin() {
