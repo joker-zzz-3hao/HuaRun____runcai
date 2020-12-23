@@ -6081,6 +6081,22 @@
   top: 7px;
 }
 
+.add-member-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.3;
+  z-index: 2005;
+}
+
+.add-member .tl-checkbox.is-disabled .user-name {
+  background: #e5e9ee;
+  color: #c0c4cc;
+}
+
 .custom-dialog .el-form-item__content {
   display: flex;
   align-items: center;
