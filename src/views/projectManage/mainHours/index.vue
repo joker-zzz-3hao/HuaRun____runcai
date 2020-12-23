@@ -1,68 +1,66 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div>
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>项目</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                style="width: 400px"
-                popper-class="tl-select-dropdown"
-                class="tl-select has-bg"
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>项目</dt>
+          <dd>
+            <el-select
+              v-model="formData.projectId"
+              :popper-append-to-body="false"
+              placeholder="请选择项目"
+              @change="changeProject"
+              style="width: 400px"
+              popper-class="tl-select-dropdown"
+              class="tl-select has-bg"
+            >
+              <el-option
+                v-for="(item, index) in projectList"
+                :key="index"
+                :label="item.projectNameCn"
+                :value="item.projectId"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>团队成员</dt>
+          <dd>
+            <el-select
+              v-model="userId"
+              placeholder="请选择"
+              filterable
+              style="width: 118px"
+              @change="searchList"
+              popper-class="tl-select-dropdown"
+              class="tl-select has-bg"
+            >
+              <el-option label="全部" value=""> </el-option>
+              <el-option
+                v-for="(item, index) in options"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
               >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>团队成员</dt>
-            <dd>
-              <el-select
-                v-model="userId"
-                placeholder="请选择"
-                filterable
-                style="width: 118px"
-                @change="searchList"
-                popper-class="tl-select-dropdown"
-                class="tl-select has-bg"
-              >
-                <el-option label="全部" value=""> </el-option>
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                </el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-button
-                type="primary"
-                class="tl-btn amt-bg-slip"
-                @click="goToHours()"
-                v-if="!projectList.length == 0"
-                >工时调入</el-button
-              >
-              <a v-if="!projectList.length == 0" @click="showHistory"
-                >历史调入记录>></a
-              >
-            </dd>
-          </dl>
-        </div>
+              </el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
+      <dl class="dl-item">
+        <dd>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="goToHours()"
+            v-if="!projectList.length == 0"
+            >工时调入</el-button
+          >
+          <a v-if="!projectList.length == 0" @click="showHistory"
+            >历史调入记录>></a
+          >
+        </dd>
+      </dl>
     </div>
     <div class="cont-area">
       <div class="dl-list">
@@ -94,9 +92,17 @@
       </div>
       <div class="dl-list">
         <dl class="dl-item">
-          <dt><span>项目总预算</span></dt>
+          <dt><span>内部顾问预算</span></dt>
           <dd>
-            <em v-money="{ value: projectBudgetAmount, precision: 2 }"></em
+            <em v-money="{ value: insideBudget, precision: 2 }"></em
+            ><span>元</span
+            ><span>{{ projectConfirmCurrency || "人民币" }}</span>
+          </dd>
+        </dl>
+           <dl class="dl-item">
+          <dt><span>外部顾问预算</span></dt>
+          <dd>
+            <em v-money="{ value: outerConsultBudget, precision: 2 }"></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
@@ -112,10 +118,11 @@
             ></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
-            =外部同事成本({{ externalConsultants
-            }}{{ projectConfirmCurrency || "人民币" }}) + 内部同事成本({{
+            =外部同事成本(<span v-money="{ value: externalConsultants, precision: 2 }">{{ externalConsultants
+            }}</span>{{ projectConfirmCurrency || "人民币" }})
+            + 内部同事成本(<span v-money="{ value: projectConfirmCurrency, precision: 2 }">{{
               internalConsultant
-            }}{{ projectConfirmCurrency || "人民币" }})
+            }}</span>{{ projectConfirmCurrency || "人民币" }})
           </dd>
         </dl>
       </div>
@@ -273,6 +280,8 @@ export default {
       companyList: [],
       internalConsultant: 0,
       externalConsultants: 0,
+      insideBudget: 0,
+      outerConsultBudget: 0,
     };
   },
 
@@ -388,6 +397,8 @@ export default {
         this.projectUserSum = res.data.projectUserSum;
         this.externalConsultants = res.data.externalConsultants;
         this.internalConsultant = res.data.internalConsultant;
+        this.outerConsultBudget = res.data.outerConsultBudget;
+        this.insideBudget = res.data.insideBudget;
       });
     },
     projectPageList() {

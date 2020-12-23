@@ -105,8 +105,12 @@
               ></em
               ><span>元</span
               ><span>({{ projectInfo.currency || "人民币" }})</span>
-              =内部顾问预算({{projectCost.internalConsultant||0 }}{{ projectInfo.currency || "人民币" }})
-              +外部顾问预算({{projectCost.externalConsultants||0}}{{ projectInfo.currency || "人民币" }})
+              =内部顾问预算(<span  v-money="{
+                  value: projectCost.internalConsultant||0,
+                  precision: 2,
+                }">{{projectCost.internalConsultant||0 }}</span>{{ projectInfo.currency || "人民币" }})
+              +外部顾问预算(<span v-money="{value:projectCost.externalConsultants, precision: 2}">
+                {{projectCost.externalConsultants||0}}</span>{{ projectInfo.currency || "人民币" }})
             </dd>
         </dl>
         <dl class="dl-item">
@@ -359,7 +363,6 @@ export default {
     }),
   },
   mounted() {
-    this.queryProjectCostUsed();
     this.getOrgTree();
     this.server.allocate({
       projectId: this.$route.query.projectId,
@@ -379,6 +382,7 @@ export default {
         this.getCode();
         this.searchList();
         this.projectDetailJoin();
+        this.queryProjectCostUsed();
       }
     });
   },
@@ -408,6 +412,7 @@ export default {
     changeProject() {
       this.searchList();
       this.projectDetailJoin();
+      this.queryProjectCostUsed();
     },
     unique(arr) {
       // Set数据结构，它类似于数组，其成员的值都是唯一的
