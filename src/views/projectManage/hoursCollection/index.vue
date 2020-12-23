@@ -116,7 +116,7 @@
               <el-table-column prop="userName" label="姓名" min-width="120">
                 <template slot-scope="scope">
                   <el-input
-                    placeholder="请输入姓名"
+                    placeholder="姓名"
                     v-if="!scope.row.userId"
                     @input="checkNull(scope.row)"
                     v-model="scope.row.userName"
@@ -130,7 +130,7 @@
                     @change="selectLevel(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.userLevel"
-                    placeholder="请选择级别"
+                    placeholder="级别"
                     popper-class="select-dialog"
                     class="tl-select"
                   >
@@ -151,7 +151,7 @@
                     @change="checkNull(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
-                    placeholder="请选择用户类型"
+                    placeholder="用户类型"
                     filterable
                     popper-class="select-dialog"
                     class="tl-select"
@@ -175,7 +175,7 @@
                     @change="checkNull(scope.row)"
                     v-if="!scope.row.userId"
                     v-model="scope.row.userPost"
-                    placeholder="请选择职能"
+                    placeholder="职能"
                     filterable
                     popper-class="select-dialog"
                     class="tl-select"
@@ -203,7 +203,7 @@
                     v-if="!scope.row.userId"
                     v-model="scope.row.userCompany"
                     @change="checkNull(scope.row)"
-                    placeholder="请选择所属公司"
+                    placeholder="公司"
                     popper-class="select-dialog"
                     class="tl-select"
                   >
@@ -399,9 +399,6 @@ export default {
       // eslint-disable-next-line max-len
       return row.checkNull;
     },
-    checkNull() {
-
-    },
     getUserList() {
       this.server.projectUserList({}).then((res) => {
         if (res.code == '200') {
@@ -430,6 +427,9 @@ export default {
     },
     getName(code, arr) {
       const name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        return '';
+      }
       return name[0].meaning;
     },
     changeMinMax(row, index) {
@@ -444,8 +444,10 @@ export default {
 
         console.log(time);
         const oneDate = 24 * 60 * 60 * 1000;
-        const startTime = new Date(weekBegin).getTime();
-        const endTime = new Date(weekEnd).getTime();
+        // eslint-disable-next-line no-useless-escape
+        const startTime = new Date(weekBegin.split(/[- : \/]/)).getTime();
+        // eslint-disable-next-line no-useless-escape
+        const endTime = new Date(weekEnd.split(/[- : \/]/)).getTime();
         const cheTime = (endTime - startTime) / oneDate;
         this.tableData[index].max = cheTime;
         this.tableData[index].supplementTime = 0.5;

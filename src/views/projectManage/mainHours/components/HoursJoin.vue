@@ -109,7 +109,8 @@
               ></em
               ><span>元</span
               ><span>({{ projectInfo.currency || "人民币" }})</span>
-              =内部顾问预算({{projectCost.internalConsultant||0 }})+外部顾问预算({{projectCost.externalConsultants||0}})
+              =内部顾问预算({{projectCost.internalConsultant||0 }}{{ projectInfo.currency || "人民币" }})
+              +外部顾问预算({{projectCost.externalConsultants||0}}{{ projectInfo.currency || "人民币" }})
             </dd>
         </dl>
         <dl class="dl-item">
