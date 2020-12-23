@@ -3,7 +3,7 @@
     <div class="operating-area">
 
       <div class="operating-box-group">
-            <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+            <el-button plain @click="back()" class="tl-btn amt-border-slip">
           返回
           <span class="lines"></span>
         </el-button>
@@ -195,11 +195,13 @@
             class="tl-table"
             @select="selectUser"
              @select-all="selectUser"
-            row-key="id"
+             @selection-change="selectUser"
+            row-key="weeklyId"
           >
           <el-table-column
               :reserve-selection="true"
               type="selection"
+              column-key="index"
               width="55"
             >
             </el-table-column>
@@ -380,6 +382,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.push({ name: 'mainHours', query: { projectId: this.$route.query.projectId } });
+    },
     changeOrg() {
     //  console.log(this.$refs.cascader);
       this.$refs.cascader.dropDownVisible = false;
