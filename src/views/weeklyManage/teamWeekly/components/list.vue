@@ -2,7 +2,7 @@
   <div class="teams-weekly">
     <div class="operating-area">
       <div class="operating-box">
-        团队
+        查看其他团队周报
         <el-cascader
           v-model="orgIdList"
           ref="cascader"
