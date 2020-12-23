@@ -1,130 +1,138 @@
 <template>
-  <div class="working-hours">
+  <div class="working-hours hours-join">
     <div class="operating-area">
-
-      <div class="operating-box-group">
-            <el-button plain @click="back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
-        <div class="operating-box">
-
-          <dl class="dl-item">
-            <dt>选择调配工时项目</dt>
+      <el-button plain @click="back()" class="tl-btn amt-border-slip">
+        返回
+        <span class="lines"></span>
+      </el-button>
+    </div>
+    <div class="cont-area">
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>选择调配工时项目</dt>
+          <dd>
+            <el-select
+              v-model="formData.projectId"
+              :popper-append-to-body="false"
+              placeholder="请选择项目"
+              @change="changeProject"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in projectList"
+                :key="index + item.projectId"
+                :label="item.projectNameCn"
+                :value="item.projectId"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+      </div>
+      <div class="project-info">
+        <div class="project-description">
+          <dl>
+            <dt></dt>
             <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
-              >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
+              <span>项目名称:</span>
+              <p>
+                {{ projectInfo.projectNameCn }}
+              </p>
             </dd>
           </dl>
+          <div class="dl-list">
+            <dl class="dl-item">
+              <dt><span>项目经理</span></dt>
+              <dd>
+                {{ projectInfo.projectManager }}
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>项目所属部门</span></dt>
+              <dd>
+                {{ projectInfo.orgName }}
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>内部同事预算</span></dt>
+              <dd>
+                <em
+                  v-money="{
+                    value: projectInfo.insideBudget || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>外部同事预算</span></dt>
+
+              <dd>
+                <em
+                  v-money="{
+                    value: projectInfo.outerConsultBudget || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+              </dd>
+            </dl>
+            <dl class="dl-item project-type">
+              <dt><span>项目类型</span></dt>
+              <dd>
+                {{ CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode] }}
+              </dd>
+            </dl>
+            <dl class="dl-item project-type">
+              <dt><span>已用人力成本</span></dt>
+              <dd>
+                <em
+                  v-money="{
+                    value:
+                      projectCost.externalConsultants +
+                        projectCost.internalConsultant || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+                <em
+                  ><span>=</span><span>外部同事成本(</span
+                  ><em
+                    v-money="{
+                      value: projectCost.externalConsultants,
+                      precision: 2,
+                    }"
+                    >{{ projectCost.externalConsultants || 0 }}</em
+                  ><span
+                    >{{ projectInfo.currency || "人民币" }}) +
+                    内部同事成本(</span
+                  ><em
+                    v-money="{
+                      value: projectCost.internalConsultant || 0,
+                      precision: 2,
+                    }"
+                    >{{ projectCost.internalConsultant || 0 }}</em
+                  ><span>{{ projectInfo.currency || "人民币" }})</span></em
+                >
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>项目时间</span></dt>
+              <dd>
+                {{ projectInfo.projectBeginDate }} 至
+                {{ projectInfo.projectApplyDate }}
+              </dd>
+            </dl>
+          </div>
         </div>
-
       </div>
-    </div>
-    <div class="project-info">
-    <div class="project-description">
-      <dl>
-        <dt>
-
-        </dt>
-        <dd>
-          <span>项目名称:</span>
-          <p>
-          {{projectInfo.projectNameCn}}
-          </p>
-
-        </dd>
-      </dl>
-      <div class="dl-list">
-        <dl class="dl-item">
-          <dt><span>项目经理</span></dt>
-          <dd>
-            {{projectInfo.projectManager}}
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目所属部门</span></dt>
-          <dd>
-            {{projectInfo.orgName}}
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>内部同事预算</span></dt>
-             <dd>
-              <em
-                v-money="{
-                  value: projectInfo.insideBudget||0,
-                  precision: 2,
-                }"
-              ></em
-              ><span>元</span
-              ><span>({{ projectInfo.currency || "人民币" }})</span>
-            </dd>
-
-        </dl>
-<dl class="dl-item">
-          <dt><span>外部同事预算</span></dt>
-
-           <dd>
-              <em
-                v-money="{
-                  value: projectInfo.outerConsultBudget||0,
-                  precision: 2,
-                }"
-              ></em
-              ><span>元</span
-              ><span>({{ projectInfo.currency || "人民币" }})</span>
-            </dd>
-        </dl>
-        <dl class="dl-item project-type">
-          <dt><span>项目类型</span></dt>
-          <dd>
-            {{CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode]}}
-          </dd>
-        </dl>
-           <dl class="dl-item project-type">
-          <dt><span>已用人力成本</span></dt>
-            <dd>
-              <em
-                v-money="{
-                  value: projectCost.externalConsultants+projectCost.internalConsultant||0,
-                  precision: 2,
-                }"
-              ></em
-              ><span>元</span
-              ><span>({{ projectInfo.currency || "人民币" }})</span>
-              =内部顾问预算(<span  v-money="{
-                  value: projectCost.internalConsultant||0,
-                  precision: 2,
-                }">{{projectCost.internalConsultant||0 }}</span>{{ projectInfo.currency || "人民币" }})
-              +外部顾问预算(<span v-money="{value:projectCost.externalConsultants, precision: 2}">
-                {{projectCost.externalConsultants||0}}</span>{{ projectInfo.currency || "人民币" }})
-            </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目时间</span></dt>
-          <dd>
-            {{projectInfo.projectBeginDate}} 至 {{projectInfo.projectApplyDate}}
-          </dd>
-        </dl>
-      </div>
-    </div>
-     </div>
-         <div class="operating-box-group">
-    <div class="operating-box">
-         <dl class="dl-item">
+      <div class="operating-box-group">
+        <div class="operating-box">
+          <dl class="dl-item">
             <dt>按时间</dt>
             <dd>
               <el-date-picker
@@ -143,33 +151,33 @@
               </el-date-picker>
             </dd>
           </dl>
-            <dl class="dl-item">
+          <dl class="dl-item">
             <dt>组织</dt>
             <dd>
-               <el-cascader
-               clearable
-          v-model="orgId"
-          ref="cascader"
-          :options="treeData"
-          :show-all-levels="false"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'sonTree',
-            emitPath:false
-          }"
-          @change="changeOrg"
-          popper-class="tl-cascader-popper"
-          class="tl-cascader"
-        ></el-cascader>
+              <el-cascader
+                clearable
+                v-model="orgId"
+                ref="cascader"
+                :options="treeData"
+                :show-all-levels="false"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'sonTree',
+                  emitPath: false,
+                }"
+                @change="changeOrg"
+                popper-class="tl-cascader-popper"
+                class="tl-cascader"
+              ></el-cascader>
             </dd>
           </dl>
-           <dl class="dl-item">
+          <dl class="dl-item">
             <dd>
               <el-input
                 maxlength="64"
-                 clearable
+                clearable
                 v-model="keyWord"
                 placeholder="成员姓名，工作项"
                 class="tl-input-search"
@@ -181,10 +189,8 @@
               </el-button>
             </dd>
           </dl>
-    </div>
+        </div>
       </div>
-    <div class="cont-area">
-
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -197,11 +203,11 @@
             class="tl-table"
             @select="selectUser"
             ref="table"
-             @select-all="selectUser"
-             @selection-change="selectUser"
+            @select-all="selectUser"
+            @selection-change="selectUser"
             row-key="workId"
           >
-          <el-table-column
+            <el-table-column
               :reserve-selection="true"
               type="selection"
               column-key="workId"
@@ -213,70 +219,65 @@
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门" prop="orgName" min-width="200px" >
-
+            <el-table-column label="部门" prop="orgName" min-width="200px">
             </el-table-column>
-               <el-table-column label="工作项" prop="workContent" min-width="200px">
+            <el-table-column
+              label="工作项"
+              prop="workContent"
+              min-width="200px"
+            >
             </el-table-column>
-               <el-table-column label="工时日期" prop="weekDateStr" min-width="200px">
-                    <template slot-scope="scope">
+            <el-table-column
+              label="工时日期"
+              prop="weekDateStr"
+              min-width="200px"
+            >
+              <template slot-scope="scope">
                 <span>{{ checkDate(scope.row.weekDateStr) }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="工时投入(天)" prop="weekTime" min-width="200px">
-
-            </el-table-column>
-
-           <el-table-column
-              prop="userLevel"
-              label="级别"
-              min-width="180"
+            <el-table-column
+              label="工时投入(天)"
+              prop="weekTime"
+              min-width="200px"
             >
-              <template slot-scope="scope">
-              {{getName(scope.row.userLevel,levelList)}}
-                </template>
-
             </el-table-column>
 
-           <el-table-column
-              prop="userPost"
-              label="职能"
-              min-width="180"
-            >
+            <el-table-column prop="userLevel" label="级别" min-width="180">
               <template slot-scope="scope">
-              {{getName(scope.row.userPost,funcList)}}
-                </template>
+                {{ getName(scope.row.userLevel, levelList) }}
+              </template>
             </el-table-column>
 
-           <el-table-column
+            <el-table-column prop="userPost" label="职能" min-width="180">
+              <template slot-scope="scope">
+                {{ getName(scope.row.userPost, funcList) }}
+              </template>
+            </el-table-column>
+
+            <el-table-column
               prop="userCompany"
               label="所属公司"
               min-width="180"
             >
               <template slot-scope="scope">
-              {{getName(scope.row.userCompany,companyList)}}
-                </template>
-                </el-table-column>
-
-             <el-table-column
-              prop="submitTime"
-              label="提交时间"
-              min-width="180"
-            >
-
+                {{ getName(scope.row.userCompany, companyList) }}
+              </template>
             </el-table-column>
 
+            <el-table-column prop="submitTime" label="提交时间" min-width="180">
+            </el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
     </div>
     <div class="footer-panel">
       <span
-        >已选择<em>{{totalMoney.len}}</em
+        >已选择<em>{{ totalMoney.len }}</em
         >条</span
       >
-       <span
-        >工时<em>{{totalMoney.hours}}</em
+      <span
+        >工时<em>{{ totalMoney.hours }}</em
         >天</span
       >
       <el-button
