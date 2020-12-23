@@ -47,47 +47,48 @@
               </el-select>
             </dd>
           </dl>
-           <dl class="dl-item">
-
+          <dl class="dl-item">
             <dd>
-           <el-button type="primary" class="tl-btn amt-bg-slip"
-           @click="goToHours()"
-            v-if="!projectList.length==0">工时调入</el-button>
-            <a v-if="!projectList.length==0" @click="showHistory">历史调入记录>></a>
+              <el-button
+                type="primary"
+                class="tl-btn amt-bg-slip"
+                @click="goToHours()"
+                v-if="!projectList.length == 0"
+                >工时调入</el-button
+              >
+              <a v-if="!projectList.length == 0" @click="showHistory"
+                >历史调入记录>></a
+              >
             </dd>
           </dl>
         </div>
-
-        </div>
-
+      </div>
     </div>
     <div class="cont-area">
-        <div class="dl-list">
-               <dl class="dl-item">
-          <dt><span> 上一周 {{week}} </span></dt>
-
+      <div class="dl-list">
+        <dl class="dl-item">
+          <dt>
+            <span> 上一周 {{ week }} </span>
+          </dt>
         </dl>
         <dl class="dl-item">
           <dt><span>项目成员</span></dt>
           <dd>
-            <em>{{projectUserSum||0}} </em><span>人</span>
+            <em>{{ projectUserSum || 0 }} </em><span>人</span>
             <span></span>
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>预计提交工时</span></dt>
           <dd>
-            <em >{{submissionHours||0}} </em
-            ><span>天</span
-            >     <span></span>
+            <em>{{ submissionHours || 0 }} </em><span>天</span> <span></span>
           </dd>
         </dl>
-          <dl class="dl-item">
+        <dl class="dl-item">
           <dt><span>实际提交工时</span></dt>
           <dd>
-            <em >{{actualSubmissionHours||0}} </em
-            ><span>天</span
-            >     <span></span>
+            <em>{{ actualSubmissionHours || 0 }} </em><span>天</span>
+            <span></span>
           </dd>
         </dl>
       </div>
@@ -96,19 +97,26 @@
           <dt><span>项目总预算</span></dt>
           <dd>
             <em v-money="{ value: projectBudgetAmount, precision: 2 }"></em
-            ><span>元</span><span>{{ projectConfirmCurrency || "人民币" }}</span>
+            ><span>元</span
+            ><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>项目已确认人力成本</span></dt>
           <dd>
-            <em v-money="{ value: externalConsultants+internalConsultant, precision: 2 }"></em
+            <em
+              v-money="{
+                value: externalConsultants + internalConsultant,
+                precision: 2,
+              }"
+            ></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
-            =外部同事成本({{externalConsultants}}) + 内部同事成本({{internalConsultant}})
+            =外部同事成本({{ externalConsultants }}) + 内部同事成本({{
+              internalConsultant
+            }})
           </dd>
         </dl>
-
       </div>
 
       <tl-crcloud-table
@@ -119,33 +127,33 @@
       >
         <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table" row-key="index">
-            <el-table-column prop="applyTime" label="团队成员" min-width="130">
+            <el-table-column prop="applyTime" label="团队成员" width="100">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-             <el-table-column prop="userPost" label="职能" min-width="130">
+            <el-table-column prop="userPost" label="职能" width="150">
               <template slot-scope="scope">
-                <span>{{ getName(scope.row.userPost,funcList) }}</span>
+                <span>{{ getName(scope.row.userPost, funcList) }}</span>
               </template>
             </el-table-column>
-             <el-table-column prop="userLevel" label="职级" min-width="130">
+            <el-table-column prop="userLevel" label="职级" width="100">
               <template slot-scope="scope">
                 <span>{{ scope.row.userLevel }}</span>
               </template>
             </el-table-column>
-             <el-table-column prop="ldapType" label="成员类型" min-width="130">
+            <el-table-column prop="ldapType" label="成员类型" width="100">
               <template slot-scope="scope">
-                <span v-if="scope.row.ldapType=='Contractor'">外部账户</span>
-                 <span v-if="scope.row.ldapType=='OTHER'">特殊账户</span>
-                  <span v-if="scope.row.ldapType=='Full-Time'">员工账户</span>
-                   <span v-if="!scope.row.ldapType">--</span>
+                <span v-if="scope.row.ldapType == 'Contractor'">外部账户</span>
+                <span v-if="scope.row.ldapType == 'OTHER'">特殊账户</span>
+                <span v-if="scope.row.ldapType == 'Full-Time'">员工账户</span>
+                <span v-if="!scope.row.ldapType">--</span>
               </template>
             </el-table-column>
             <el-table-column
               label="已审批工时"
               prop="approvedTimeSum"
-              min-width="200px"
+              width="120"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.approvedTimeSum }} 天</span>
@@ -154,31 +162,13 @@
             <el-table-column
               label="待审批工时"
               prop="pendingApprovalTimeSum"
-              min-width="200px"
+              width="120"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
               </template>
             </el-table-column>
-
-            <!-- <el-table-column
-              prop="projectNameCn"
-              label="项目名称"
-              min-width="180"
-            >
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.projectNameCn)">{{
-                  scope.row.projectNameCn
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column> -->
-
-            <el-table-column
-              prop="submitTime"
-              label="最新提交时间"
-              min-width="180"
-            >
+            <el-table-column prop="submitTime" label="最新提交时间" width="180">
               <template slot-scope="scope">
                 <span v-if="scope.row.submitTime">{{
                   scope.row.submitTime
@@ -190,18 +180,13 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="100"
+              width="80"
               v-if="tableData.length > 0"
             >
               <template slot-scope="scope">
-                <el-button
-
-                  @click="goTo(scope.row)"
-                  type="text"
-                  class="tl-btn"
+                <el-button @click="goTo(scope.row)" type="text" class="tl-btn"
                   >工时管理</el-button
                 >
-
               </template>
             </el-table-column>
           </el-table>
@@ -220,7 +205,7 @@
       v-if="showApprovalDetail"
       :server="server"
     ></tl-approval-detail>
-  <tl-hours-history ref="hoursHistory"></tl-hours-history>
+    <tl-hours-history ref="hoursHistory"></tl-hours-history>
   </div>
 </template>
 
