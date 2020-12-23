@@ -350,7 +350,7 @@ export default [{
     name: 'hoursCollection',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
       parentRoute: 'projectManage',
       belongsTo: 'projectManage',
       title: 'hoursCollection',
@@ -401,7 +401,7 @@ export default [{
     name: 'HoursJoin',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
       parentRoute: 'HoursJoin',
       title: 'HoursJoin',
       power: '',
