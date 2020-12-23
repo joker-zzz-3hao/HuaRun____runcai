@@ -48,9 +48,7 @@
           <el-table
             :data="tableData"
             class="tl-table"
-            @select="selectList"
-            @select-all="selectList"
-            row-key="sourceId"
+            row-key="workId"
           >
 
             <el-table-column prop="applyTime" label="姓名" min-width="170">
@@ -119,6 +117,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       projectName: '',
+      total: 0,
     };
   },
 
