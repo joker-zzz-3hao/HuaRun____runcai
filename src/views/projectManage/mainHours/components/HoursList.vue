@@ -11,20 +11,28 @@
   <div class="project-info">
     <div class="project-description">
 
-      <div class="dl-list">
-  <dl class="dl-item project-type">
-          <dt><span>确认后，工时将汇总到{{info.projectNameCn}}项目中</span></dt>
+      <div >
+  <dl class="dl-item">
+          <dt><span>确认后，工时将汇总到{{projectName}}项目中</span></dt>
           <dd>
 
             已选{{info.userCount}}位，共计工时{{info.weekTimeCount}}天
           </dd>
         </dl>
-           <dl class="dl-item project-type">
-          <dt><span>已用人力成本</span></dt>
-          <dd>
-            {{info.innerCost+info.extendCost}}
-            =内部同事预算({{info.innerCost}})+外部同事预算({{info.extendCost}})
-          </dd>
+           <dl class="dl-item">
+              <dt>共计人力成本</dt>
+             <dd>
+              <em
+                v-money="{
+                  value: info.extendCost+info.innerCost,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>人民币</span>
+                =内部同事预算({{info.innerCost}})+外部同事预算({{info.extendCost}})
+            </dd>
+
         </dl>
 
       </div>
@@ -74,7 +82,7 @@
         >取消</el-button
       >
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="approval"
-        >提交</el-button
+        >确认调配</el-button
       >
     </div>
   </el-dialog>
@@ -107,6 +115,7 @@ export default {
       levelList: [],
       currentPage: 1,
       pageSize: 10,
+      projectName: '',
     };
   },
 
@@ -115,6 +124,7 @@ export default {
     'tl-crcloud-table': crcloudTable,
   },
   mounted() {
+    this.projectName = sessionStorage.getItem('projectName');
     this.getCode();
   },
   methods: {
@@ -161,6 +171,7 @@ export default {
         }
       });
     },
+
     getName(code, arr) {
       let name = arr.filter((item) => item.value == code);
       if (name.length == 0) {

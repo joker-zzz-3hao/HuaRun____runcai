@@ -1,8 +1,14 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
+
       <div class="operating-box-group">
+            <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
         <div class="operating-box">
+
           <dl class="dl-item">
             <dt>选择调配工时项目</dt>
             <dd>
@@ -10,7 +16,7 @@
                 v-model="formData.projectId"
                 :popper-append-to-body="false"
                 placeholder="请选择项目"
-                @change="searchList"
+                @change="changeProject"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
@@ -60,33 +66,56 @@
         </dl>
         <dl class="dl-item">
           <dt><span>内部同事预算</span></dt>
-          <dd>
-            {{projectInfo.insideBudget}}
-          </dd>
+             <dd>
+              <em
+                v-money="{
+                  value: projectInfo.insideBudget,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+            </dd>
+
         </dl>
 <dl class="dl-item">
           <dt><span>外部同事预算</span></dt>
-          <dd>
-            {{projectInfo.outerConsultBudget}}
-          </dd>
+
+           <dd>
+              <em
+                v-money="{
+                  value: projectInfo.outerConsultBudget,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+            </dd>
         </dl>
         <dl class="dl-item project-type">
           <dt><span>项目类型</span></dt>
           <dd>
-            {{CONST.PROJECT_TYPE_MAP[projectInfo.projectType]}}
+            {{CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode]}}
           </dd>
         </dl>
            <dl class="dl-item project-type">
           <dt><span>已用人力成本</span></dt>
-          <dd>
-            {{projectInfo.outerConsultBudget+projectInfo.insideBudget}}
-            =内部同事预算+外部同事预算
-          </dd>
+            <dd>
+              <em
+                v-money="{
+                  value: projectInfo.outerConsultBudget+projectInfo.insideBudget,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+              =内部同事预算({{projectInfo.outerConsultBudget}})+外部同事预算({{projectInfo.insideBudget}})
+            </dd>
         </dl>
         <dl class="dl-item">
           <dt><span>项目时间</span></dt>
           <dd>
-            {{dateFormat('YYYY-mm-dd HH:MM:SS',projectInfo.createDate)}}
+            {{projectInfo.projectBeginDate}} 至 {{projectInfo.projectApplyDate}}
           </dd>
         </dl>
       </div>
@@ -224,7 +253,7 @@
         type="primary"
         @click="alertSelectAll"
         class="tl-btn amt-bg-slip"
-        >批量审批</el-button
+        >批量调配</el-button
       >
     </div>
 
@@ -323,6 +352,10 @@ export default {
     });
   },
   methods: {
+    changeProject() {
+      this.searchList();
+      this.projectDetailJoin();
+    },
     unique(arr) {
       // Set数据结构，它类似于数组，其成员的值都是唯一的
       return Array.from(new Set(arr)); // 利用Array.from将Set结构转换成数组
@@ -393,6 +426,7 @@ export default {
       };
       this.server.submitAllocateUserWork(params).then((res) => {
         if (res.code == 200) {
+          this.$message.success('调配完成');
           this.searchList();
         }
       });

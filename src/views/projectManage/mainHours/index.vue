@@ -51,9 +51,9 @@
 
             <dd>
            <el-button type="primary" class="tl-btn amt-bg-slip"
-           @click="$router.push({path:'/HoursJoin',query:{projectId:formData.projectId}})"
-            :disabled="projectList.length==0">工时调入</el-button>
-            <a @click="showHistory">历史调入记录>></a>
+           @click="goToHours()"
+            v-if="!projectList.length==0">工时调入</el-button>
+            <a v-if="!projectList.length==0" @click="showHistory">历史调入记录>></a>
             </dd>
           </dl>
         </div>
@@ -308,7 +308,9 @@ export default {
     this.getWeekDate();
   },
   methods: {
-
+    goToHours() {
+      this.$router.push({ path: '/HoursJoin', query: { projectId: this.formData.projectId } });
+    },
     showHistory() {
       this.$refs.hoursHistory.show(this.formData.projectId);
     },
@@ -370,7 +372,9 @@ export default {
         this.pageSize = res.data.pageSize;
       });
     },
-    changeProject() {
+    changeProject(projectId) {
+      const projectName = this.projectList.filter((item) => item.projectId == projectId)[0].projectNameCn;
+      sessionStorage.setItem('projectName', projectName);
       sessionStorage.setItem('projectId', this.formData.projectId);
       this.userId = '';
       this.timeSheetList();
