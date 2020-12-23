@@ -61,7 +61,7 @@
               <em
                 v-money="{
                   value:
-                    projectInfo.outerConsultBudget + projectInfo.insideBudget,
+                    projectCost.externalConsultants + projectCost.internalConsultant,
                   precision: 2,
                 }"
                 ></em
@@ -343,6 +343,7 @@ export default {
       DisuserId: {},
       checkbool: false,
       projectInfo: {},
+      projectCost: {},
     };
   },
   components: {
@@ -368,7 +369,7 @@ export default {
     this.projectInfo = JSON.parse(sessionStorage.getItem('projectInfo'));
     this.getUserList();
     this.searchList();
-
+    this.queryProjectCostUsed();
     this.server.queryByCodes({
       codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
     }).then((res) => {
@@ -393,6 +394,13 @@ export default {
     });
   },
   methods: {
+    queryProjectCostUsed() {
+      this.server.queryProjectCostUsed({
+        projectId: this.$route.query.projectId,
+      }).then((res) => {
+        this.projectCost = res.data;
+      });
+    },
     selectLevel(row) {
       this.checkNull(row);
     },
