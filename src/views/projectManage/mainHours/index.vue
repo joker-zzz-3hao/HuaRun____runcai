@@ -49,6 +49,16 @@
       </div>
       <dl class="dl-item">
         <dd>
+           <a
+           style="margin-right:20px"
+              @click="
+                $router.push({
+                  name: 'queryHistory',
+                  query: { projectId: $route.query.projectId },
+                })
+              "
+              >工时补录记录>></a
+            >
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -59,6 +69,7 @@
           <a v-if="!projectList.length == 0" @click="showHistory"
             >历史调入记录>></a
           >
+
         </dd>
       </dl>
     </div>
