@@ -24,7 +24,7 @@
           <el-table :data="changeDate(props.row.contentJson)" row-key="supplementId">
 
             <el-table-column prop="userName" label="姓名"></el-table-column>
-            <el-table-column prop="userLevel" label="职别"></el-table-column>
+            <el-table-column prop="userLevel" label="级别"></el-table-column>
             <el-table-column prop="workContent" label="工作项">
 
             </el-table-column>
@@ -41,7 +41,9 @@
         </template>
       </el-table-column>
       <el-table-column  label="调入时间" prop="createTime">
-
+         <template slot-scope="scope">
+           {{dateFormat('YYYY-mm-dd',scope.row.createTime)}}
+         </template>
       </el-table-column>
       <el-table-column  label="提交人" prop="userName"></el-table-column>
       <el-table-column prop="weekTimeCount" label="工时投入(天)">
