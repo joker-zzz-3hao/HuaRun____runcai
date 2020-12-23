@@ -41,11 +41,7 @@
         </dt>
         <dd>
           <span>项目名称:</span>
-          <p
-            ref="projectDesc"
-            id="projectDesc"
-            :class="openFlag ? 'unfold' : 'fold'"
-          >
+          <p>
           {{projectInfo.projectNameCn}}
           </p>
 
@@ -196,14 +192,15 @@
             :data="tableData"
             class="tl-table"
             @select="selectUser"
+            ref="table"
              @select-all="selectUser"
              @selection-change="selectUser"
-            row-key="weeklyId"
+            row-key="workId"
           >
           <el-table-column
               :reserve-selection="true"
               type="selection"
-              column-key="index"
+              column-key="workId"
               width="55"
             >
             </el-table-column>
@@ -477,12 +474,14 @@ export default {
         allocateWorkDetailVoList: this.selection,
         extendCostAmt: this.submitInfo.extendCost,
         innerCostAmt: this.submitInfo.innerCost,
+        costAmt: this.submitInfo.extendCost + this.submitInfo.innerCost,
         weekTimeCount: this.submitInfo.weekTimeCount,
         userCount: this.submitInfo.userCount,
       };
       this.server.submitAllocateUserWork(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('调配完成');
+          this.$refs.table.clearSelection();
           this.selection = [];
           this.searchList();
         }
@@ -510,6 +509,7 @@ export default {
       };
       this.server.projectUserDetailWork(params).then((res) => {
         this.tableData = res.data.content;
+        this.total = res.data.total;
       });
     },
     projectDetailJoin() {

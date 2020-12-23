@@ -226,6 +226,7 @@
                     v-model="scope.row.time"
                     type="daterange"
                     range-separator="至"
+
                     value-format="yyyy-MM-dd"
                     @change="changeMinMax(scope.row, scope.$index)"
                     start-placeholder="开始日期"
@@ -244,6 +245,7 @@
                     controls-position="right"
                     v-model="scope.row.supplementTime"
                     :min="0.5"
+                    :step="0.5"
                     :max="scope.row.max"
                     @change="selectUserAdd"
                     :disabled="!scope.row.time"
@@ -488,7 +490,12 @@ export default {
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
-          this.$refs.hoursRecord.show(res.data);
+          const costPrice = res.data.insideBudget + res.data.outerConsultBudget;
+          if (costPrice <= (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)) {
+            this.$refs.hoursRecord.show(res.data);
+          } else {
+            this.$message.error('人力成本超过项目已确立人力成本');
+          }
         }
       });
     },
