@@ -1260,6 +1260,7 @@ export default {
             query: merge({}, { params: 'clear' }),
           });
         } else {
+          this.submitLoading = false;
           this.$nextTick(() => {
             this.weeklyWorkVoSaveList.forEach((workItem) => {
               this.$nextTick(() => {
