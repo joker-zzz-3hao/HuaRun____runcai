@@ -489,6 +489,8 @@ export default {
           this.$refs.table.clearSelection();
           this.selection = [];
           this.searchList();
+          this.projectDetailJoin();
+          this.queryProjectCostUsed();
         }
       });
     },
