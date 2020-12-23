@@ -103,13 +103,13 @@
             <dd>
               <em
                 v-money="{
-                  value: projectInfo.outerConsultBudget+projectInfo.insideBudget||0,
+                  value: projectCost.externalConsultants+projectCost.internalConsultant||0,
                   precision: 2,
                 }"
               ></em
               ><span>元</span
               ><span>({{ projectInfo.currency || "人民币" }})</span>
-              =内部同事预算({{projectInfo.outerConsultBudget}})+外部同事预算({{projectInfo.insideBudget}})
+              =内部顾问预算({{projectCost.internalConsultant||0 }})+外部顾问预算({{projectCost.externalConsultants||0}})
             </dd>
         </dl>
         <dl class="dl-item">
@@ -308,6 +308,7 @@ export default {
       startTime: '',
       checkItem: {},
       CONST,
+      projectCost: {},
       server,
       keyWord: '',
       total: 0,
@@ -359,6 +360,7 @@ export default {
     }),
   },
   mounted() {
+    this.queryProjectCostUsed();
     this.getOrgTree();
     this.server.allocate({
       projectId: this.$route.query.projectId,
@@ -395,6 +397,13 @@ export default {
         if (res.code == 200) {
           this.treeData = res.data;
         }
+      });
+    },
+    queryProjectCostUsed() {
+      this.server.queryProjectCostUsed({
+        projectId: this.formData.projectId,
+      }).then((res) => {
+        this.projectCost = res.data;
       });
     },
     changeProject() {

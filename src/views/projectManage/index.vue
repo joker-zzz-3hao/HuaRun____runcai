@@ -274,6 +274,7 @@
                   @click="setTime(scope.row)"
                   type="text"
                   class="tl-btn"
+                  :disabled="scope.row.projectStatus==1"
                   v-show="isTalent"
                   >设置</el-button
                 >
