@@ -307,7 +307,7 @@ export default [{
     name: 'queryHistory',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
       parentRoute: 'projectManage',
       belongsTo: 'projectManage',
       title: 'queryHistory',

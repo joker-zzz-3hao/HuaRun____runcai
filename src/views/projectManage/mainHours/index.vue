@@ -1,68 +1,66 @@
 <template>
   <div class="working-hours">
     <div class="operating-area">
-      <div>
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>项目</dt>
-            <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                style="width: 400px"
-                popper-class="tl-select-dropdown"
-                class="tl-select has-bg"
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>项目</dt>
+          <dd>
+            <el-select
+              v-model="formData.projectId"
+              :popper-append-to-body="false"
+              placeholder="请选择项目"
+              @change="changeProject"
+              style="width: 400px"
+              popper-class="tl-select-dropdown"
+              class="tl-select has-bg"
+            >
+              <el-option
+                v-for="(item, index) in projectList"
+                :key="index"
+                :label="item.projectNameCn"
+                :value="item.projectId"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
+          <dt>团队成员</dt>
+          <dd>
+            <el-select
+              v-model="userId"
+              placeholder="请选择"
+              filterable
+              style="width: 118px"
+              @change="searchList"
+              popper-class="tl-select-dropdown"
+              class="tl-select has-bg"
+            >
+              <el-option label="全部" value=""> </el-option>
+              <el-option
+                v-for="(item, index) in options"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
               >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dt>团队成员</dt>
-            <dd>
-              <el-select
-                v-model="userId"
-                placeholder="请选择"
-                filterable
-                style="width: 118px"
-                @change="searchList"
-                popper-class="tl-select-dropdown"
-                class="tl-select has-bg"
-              >
-                <el-option label="全部" value=""> </el-option>
-                <el-option
-                  v-for="(item, index) in options"
-                  :key="index"
-                  :label="item.userName"
-                  :value="item.userId"
-                >
-                </el-option>
-              </el-select>
-            </dd>
-          </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-button
-                type="primary"
-                class="tl-btn amt-bg-slip"
-                @click="goToHours()"
-                v-if="!projectList.length == 0"
-                >工时调入</el-button
-              >
-              <a v-if="!projectList.length == 0" @click="showHistory"
-                >历史调入记录>></a
-              >
-            </dd>
-          </dl>
-        </div>
+              </el-option>
+            </el-select>
+          </dd>
+        </dl>
       </div>
+      <dl class="dl-item">
+        <dd>
+          <el-button
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="goToHours()"
+            v-if="!projectList.length == 0"
+            >工时调入</el-button
+          >
+          <a v-if="!projectList.length == 0" @click="showHistory"
+            >历史调入记录>></a
+          >
+        </dd>
+      </dl>
     </div>
     <div class="cont-area">
       <div class="dl-list">
