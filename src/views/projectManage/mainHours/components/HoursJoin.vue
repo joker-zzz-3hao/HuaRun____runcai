@@ -69,7 +69,7 @@
              <dd>
               <em
                 v-money="{
-                  value: projectInfo.insideBudget,
+                  value: projectInfo.insideBudget||0,
                   precision: 2,
                 }"
               ></em
@@ -84,7 +84,7 @@
            <dd>
               <em
                 v-money="{
-                  value: projectInfo.outerConsultBudget,
+                  value: projectInfo.outerConsultBudget||0,
                   precision: 2,
                 }"
               ></em
@@ -103,7 +103,7 @@
             <dd>
               <em
                 v-money="{
-                  value: projectInfo.outerConsultBudget+projectInfo.insideBudget,
+                  value: projectInfo.outerConsultBudget+projectInfo.insideBudget||0,
                   precision: 2,
                 }"
               ></em
@@ -205,6 +205,9 @@
               label="级别"
               min-width="180"
             >
+              <template slot-scope="scope">
+              {{getName(scope.row.userLevel,levelList)}}
+                </template>
 
             </el-table-column>
 

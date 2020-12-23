@@ -59,12 +59,15 @@
               </template>
             </el-table-column>
             <el-table-column label="职级" prop="userLevel" min-width="200px">
+                <template slot-scope="scope">
+              {{getName(scope.row.userLevel,levelList)}}
+                </template>
             </el-table-column>
                <el-table-column label="工时(天)" prop="weekTime" min-width="200px">
             </el-table-column>
-            <el-table-column label="人力成本" prop="employeePrice"  min-width="200px">
+            <!-- <el-table-column label="人力成本" prop="employeePrice"  min-width="200px">
 
-            </el-table-column>
+            </el-table-column> -->
 
              <el-table-column
               prop="submitTime"

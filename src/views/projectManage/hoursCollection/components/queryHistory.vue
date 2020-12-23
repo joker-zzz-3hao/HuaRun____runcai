@@ -12,7 +12,11 @@
           <el-table :data="props.row.projectSupplementList" row-key="supplementId">
 
             <el-table-column prop="supplementUser" label="姓名"></el-table-column>
-            <el-table-column prop="userLevel" label="级别"></el-table-column>
+            <el-table-column prop="userLevel" label="级别">
+                <template slot-scope="scope">
+              {{getName(scope.row.userLevel,levelList)}}
+                </template>
+            </el-table-column>
             <el-table-column prop="userPost" label="职能">
                <template slot-scope="scope">
               {{getName(scope.row.userPost,funcList)}}
