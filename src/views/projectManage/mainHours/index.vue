@@ -99,7 +99,7 @@
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
         </dl>
-           <dl class="dl-item">
+        <dl class="dl-item">
           <dt><span>外部顾问预算</span></dt>
           <dd>
             <em v-money="{ value: outerConsultBudget, precision: 2 }"></em
@@ -107,6 +107,8 @@
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
           </dd>
         </dl>
+      </div>
+      <div class="dl-list">
         <dl class="dl-item">
           <dt><span>项目已确认人力成本</span></dt>
           <dd>
@@ -118,11 +120,18 @@
             ></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
-            =外部同事成本(<span v-money="{ value: externalConsultants, precision: 2 }">{{ externalConsultants
-            }}</span>{{ projectConfirmCurrency || "人民币" }})
-            + 内部同事成本(<span v-money="{ value: projectConfirmCurrency, precision: 2 }">{{
-              internalConsultant
-            }}</span>{{ projectConfirmCurrency || "人民币" }})
+            <em
+              ><span>=</span><span>外部顾问成本(</span
+              ><em v-money="{ value: externalConsultants||0, precision: 2 }">{{
+                externalConsultants || 0
+              }}</em
+              ><span
+                >{{ projectConfirmCurrency || "人民币" }}) + 内部顾问成本(</span
+              ><em v-money="{ value: projectConfirmCurrency || 0, precision: 2 }">{{
+                internalConsultant || 0
+              }}</em
+              ><span>{{ projectConfirmCurrency || "人民币" }})</span></em
+            >
           </dd>
         </dl>
       </div>

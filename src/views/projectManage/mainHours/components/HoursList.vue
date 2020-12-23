@@ -30,7 +30,7 @@
               ></em
               ><span>元</span
               ><span>人民币</span>
-                =内部同事预算({{info.innerCost}}人民币)+外部同事预算({{info.extendCost}}人民币)
+                =内部顾问预算({{info.innerCost}}人民币)+外部顾问预算({{info.extendCost}}人民币)
             </dd>
 
         </dl>

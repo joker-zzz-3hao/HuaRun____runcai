@@ -6216,6 +6216,11 @@
   margin-right: 0;
 }
 
+.project-description .dl-item:nth-child(6) {
+  flex: 1 0 100%;
+  width: 100%;
+}
+
 .project-description .dl-item + .dl-item:last-child {
   margin: 10px 30px 10px 0;
 }
@@ -6340,14 +6345,33 @@
   color: #acb6bf;
 }
 
-.working-hours .dl-item dd span:not(:last-child) {
+.working-hours .dl-item dd > span:not(:last-child) {
   margin: 0 0 0 6px;
 }
 
-.working-hours .dl-item dd em {
+.working-hours .dl-item dd > em {
+  display: flex;
+  align-items: center;
+}
+
+.working-hours .dl-item dd > em,
+.working-hours .dl-item dd > em em {
   font-family: DINAlternate-Bold;
   font-size: 20px;
   color: #685df1;
+}
+
+.working-hours .dl-item dd > em span {
+  font-size: 14px;
+  color: #4d5155;
+}
+
+.working-hours .dl-item dd > em em {
+  margin: 0 6px;
+}
+
+.working-hours .dl-item dd > em em + span {
+  margin: 0;
 }
 
 .working-hours .project-select {
@@ -6372,7 +6396,7 @@
   margin: 0 0 0 6px;
 }
 
-.working-hours .tl-table .el-table__body-wrapper .el-table__body .el-table__row td:not(:nth-child(5)) .cell {
+/* .working-hours .tl-table .el-table__body-wrapper .el-table__body .el-table__row td:not(:nth-child(5)) .cell {
   overflow: hidden;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
@@ -6381,6 +6405,16 @@
   -webkit-box-orient: vertical;
   word-break: break-all;
   max-height: 70px;
+} */
+
+.working-hours .tl-table .el-table__body-wrapper .el-table__body .el-table__row td:nth-child(5) .cell > div > div .el-button--text span {
+  margin: 0 0 0 6px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  background: #000;
+  background: #f0effe;
+  border-radius: 2px;
 }
 
 .working-hours
@@ -6398,7 +6432,8 @@
 }
 
 .working-hours.approval-list,
-.working-hours-collection {
+.working-hours-collection,
+.working-hours.hours-join {
   margin-bottom: 86px;
   min-height: calc(100vh - 172px);
 }
@@ -6648,6 +6683,31 @@
 
 .working-hours-collection .footer-panel > span {
   margin: 0 20px 0 0;
+}
+
+.working-hours .operating-box {
+  justify-content: flex-start;
+}
+
+.working-hours .operating-box + .dl-item a {
+  margin: 0 0 0 20px;
+  color: #685df1;
+}
+
+.working-hours.hours-join .operating-area {
+  justify-content: flex-end;
+}
+
+.working-hours.hours-join .cont-area .operating-box {
+  margin-bottom: 10px;
+}
+
+.working-hours.hours-join .cont-area .operating-box:nth-child(3) {
+  justify-content: space-between;
+}
+
+.working-hours.hours-join .cont-area .operating-box:nth-child(3) .dl-list {
+  margin: 0;
 }
 
 /* msg-notice */
