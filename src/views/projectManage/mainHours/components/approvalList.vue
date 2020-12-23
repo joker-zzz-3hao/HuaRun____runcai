@@ -103,12 +103,15 @@
             :data="tableData"
             class="tl-table"
             @select="selectList"
+            ref="table"
+            @selection-change="selectList"
             @select-all="selectList"
             row-key="sourceId"
           >
             <el-table-column
               :reserve-selection="true"
               type="selection"
+              column-key="index"
               width="55"
               :selectable="
                 (row) => {
@@ -795,6 +798,7 @@ export default {
       this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
+          this.$refs.table.toggleRowSelection(row, false);
           this.searchList();
         }
       });
