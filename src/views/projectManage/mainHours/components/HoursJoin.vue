@@ -474,6 +474,7 @@ export default {
         allocateWorkDetailVoList: this.selection,
         extendCostAmt: this.submitInfo.extendCost,
         innerCostAmt: this.submitInfo.innerCost,
+        costAmt: this.submitInfo.extendCost + this.submitInfo.innerCost,
         weekTimeCount: this.submitInfo.weekTimeCount,
         userCount: this.submitInfo.userCount,
       };
