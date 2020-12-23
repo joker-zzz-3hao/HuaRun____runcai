@@ -399,9 +399,6 @@ export default {
       // eslint-disable-next-line max-len
       return row.checkNull;
     },
-    checkNull() {
-
-    },
     getUserList() {
       this.server.projectUserList({}).then((res) => {
         if (res.code == '200') {
@@ -430,6 +427,9 @@ export default {
     },
     getName(code, arr) {
       const name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        return '';
+      }
       return name[0].meaning;
     },
     changeMinMax(row, index) {
@@ -444,8 +444,10 @@ export default {
 
         console.log(time);
         const oneDate = 24 * 60 * 60 * 1000;
-        const startTime = new Date(weekBegin).getTime();
-        const endTime = new Date(weekEnd).getTime();
+        // eslint-disable-next-line no-useless-escape
+        const startTime = new Date(weekBegin.split(/[- : \/]/)).getTime();
+        // eslint-disable-next-line no-useless-escape
+        const endTime = new Date(weekEnd.split(/[- : \/]/)).getTime();
         const cheTime = (endTime - startTime) / oneDate;
         this.tableData[index].max = cheTime;
         this.tableData[index].supplementTime = 0.5;
